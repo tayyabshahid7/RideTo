@@ -1,0 +1,15 @@
+.navBar {
+  height:150px;
+}
+
+.navLink {
+  margin:0 1rem;
+  color:#95989A;
+  text-decoration:none;
+  text-transform:uppercase;
+  font-weight:bold;
+}
+
+.activeNavLink {
+  border-bottom:2px solid #2CCEAC;
+}

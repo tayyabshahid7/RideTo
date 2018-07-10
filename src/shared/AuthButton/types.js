@@ -1,0 +1,1 @@
+export const REQUEST_LOGOUT = 'REQUEST_LOGOUT'

@@ -1,0 +1,20 @@
+.container {
+    display:flex;
+    align-items:center;
+}
+
+.image {
+    img {
+        height:40px;
+        padding:10px;
+    }
+}
+
+.header {
+    margin-left:20px;
+}
+
+
+.dark {
+    background-color:black;
+}

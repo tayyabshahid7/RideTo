@@ -1,0 +1,1 @@
+export const logout = () => {type:REQUEST_LOGOUT}
