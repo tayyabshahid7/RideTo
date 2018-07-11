@@ -6,7 +6,7 @@ import styles from './styles.scss'
 import Header from 'shared/Header'
 import logo from 'assets/images/scooter.png'
 
-class LoginPage extends Component {
+class Login extends Component {
 
   constructor(props) {
     super(props)
@@ -68,5 +68,5 @@ let mapDispatchToProps = (dispatch) => {
   }
 }
 
-LoginPage = withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginPage))
-export default LoginPage
+Login = withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))
+export default Login

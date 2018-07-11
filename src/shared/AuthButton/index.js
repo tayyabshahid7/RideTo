@@ -1,21 +1,21 @@
 import React from 'react'
-import { withRouter } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { withRouter, NavLink } from 'react-router-dom'
+import styles from './styles.scss'
 
 const AuthButton = withRouter(connect()(
-  ({ loginReducer, history }) =>
-    localStorage.getItem('token') ? (
-      <p>
-        Welcome!{loginReducer.session.user.first_name}
-        <button onClick={
-          () => {
-            sessionStorage.removeItem('token')
-            history.push("/")
-          }
-        }>
-          Sign out
-        </button>
-      </p>
-    ) : (
-      <p>You are not logged in.</p>
-    )
+  ({history }) =>
+    sessionStorage.getItem('token') &&
+    <div className={styles.container}>
+      <button onClick={
+        () => {
+          sessionStorage.removeItem('token')
+          history.push("/")
+        }
+      }>
+        Logout
+      </button>
+    </div>
 ));
+
+export default AuthButton

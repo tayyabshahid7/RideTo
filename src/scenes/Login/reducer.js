@@ -47,6 +47,7 @@ export default (state = initialState, action) => {
         },
       }
     case types.RESET:
+      sessionStorage.removeItem('token')
       return {...initialState}
     default:
       return state

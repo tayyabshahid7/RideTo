@@ -3,7 +3,7 @@ import * as types from './types'
 const initialState = {
   loading: false,
   error: null,
-  pendinOrders: null,
+  pendingOrders: null,
 }
 
 export default (state = initialState, action) => {
@@ -24,7 +24,7 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        pendinOrders: action.orders
+        pendingOrders: action.data.results
       }
     case types.RESET:
       return {...initialState}

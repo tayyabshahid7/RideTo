@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 // import { hot } from 'react-hot-loader';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import LoginPage from 'scenes/LoginPage'
+import Login from 'scenes/Login'
 import MainLayout from 'scenes/MainLayout'
 import ProtectedRoute from 'shared/ProtectedRoute'
 import styles from './styles.scss'
-
-// import Home from 'scenes/HomePage'
 
 class App extends Component{
   render(){
@@ -15,7 +13,7 @@ class App extends Component{
       <div className={styles.App}>
         <Router>
           <Switch>
-            <Route exact path="/login" component={LoginPage} />
+            <Route exact path="/login" component={Login} />
             <ProtectedRoute path="/" component={MainLayout} />
           </Switch>
         </Router>
@@ -25,4 +23,3 @@ class App extends Component{
 }
 
 export default App
-// export default hot(module)(App);

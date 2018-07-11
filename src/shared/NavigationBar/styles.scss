@@ -1,7 +1,15 @@
-.navBar {
-  height:150px;
+.container {
+  display:flex;
+  width:100%;
 }
 
+.navLinks {
+    width:85%;
+}
+
+.authMenu {
+    width:15%;
+}
 .navLink {
   margin:0 1rem;
   color:#95989A;

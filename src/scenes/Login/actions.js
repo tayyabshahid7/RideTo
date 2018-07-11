@@ -4,7 +4,7 @@ import * as types from './types'
 const loginRequest = () => ({ type: types.LOGIN_REQUEST })
 const loginError = (error) => ({ type: types.LOGIN_ERROR, error })
 const loginSuccess = (data) => ({ type: types.LOGIN_SUCCESS, data })
-const reset = () => ({ type: types.RESET })
+export const reset = () => ({type:types.RESET})
 
 export const login = (email, password) => {
   return async (dispatch) => {

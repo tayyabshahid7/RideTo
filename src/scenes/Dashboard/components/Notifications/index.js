@@ -8,7 +8,10 @@ class Notifications extends Component {
     render() {
         return (
             <div className={styles.container}>
+
                 <h1>Pending Orders</h1>
+            {
+                this.props.pendingOrders.length > 0 ?
                 <table>
                     <thead>
                         <tr>
@@ -19,6 +22,7 @@ class Notifications extends Component {
                         </tr>
                     </thead>
                     <tbody>
+
                         {
                             this.props.pendingOrders.map((order)=>
                                 <tr key={order.friendly_id}>
@@ -31,6 +35,9 @@ class Notifications extends Component {
                         }
                     </tbody>
                 </table>
+                :
+                <div className={styles.noResults}>There are no pending orders</div>
+            }
             </div>
         )
     }
