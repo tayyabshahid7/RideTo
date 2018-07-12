@@ -4,7 +4,7 @@ import styles from './styles.scss'
 import blackRideTologo from "assets/images/rideto-black.png"
 import whiteRideTologo from "assets/images/rideto-white.png"
 
-let Header = ({dark, children}) =>  {
+const Header = ({dark, children}) =>  {
   return (
   <div className={classNames(styles.container,dark&&styles.dark)}>
     <div className={styles.image}>

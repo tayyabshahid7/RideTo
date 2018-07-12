@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 // import { hot } from 'react-hot-loader';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-
 import Login from 'scenes/Login'
+import Modal from 'shared/Modal'
 import MainLayout from 'scenes/MainLayout'
 import ProtectedRoute from 'shared/ProtectedRoute'
 import styles from './styles.scss'
@@ -12,10 +12,12 @@ class App extends Component{
     return(
       <div className={styles.App}>
         <Router>
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <ProtectedRoute path="/" component={MainLayout} />
-          </Switch>
+          <div>
+            <Switch>
+              <Route exact path="/login" component={Login} />
+              <ProtectedRoute path="/" component={MainLayout} />
+            </Switch>
+          </div>
         </Router>
       </div>
     );

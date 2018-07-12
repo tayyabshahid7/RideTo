@@ -5,6 +5,7 @@ export const LOGIN_REQUEST_URL = 'api/users/login/'
 export const TOKEN_REFRESH_URL = 'api/users/refresh/'
 export const VERIFY_TOKEN_REQUEST_URL = 'api/users/verify/'
 export const GET_PENDING_ORDERS_URL = 'api/o/pending/'
+export const GET_CONFIRMED_ORDERS_URL = 'api/o/confirmed/'
 export const POST_METHOD = 'POST'
 export const GET_METHOD = 'GET'
 export const BASE_URL = 'http://localhost:8000/' //process.env.REST_API_BASE_URL
@@ -40,7 +41,7 @@ export const apiRequestVerifyToken = (token='invalid') => {
     baseURL: BASE_URL,
   }
   const data = {token: token}
-  return axios.post(VERIFY_TOKEN_REQUEST_URL, data, config).catch(error => error.status)
+  return axios.post(VERIFY_TOKEN_REQUEST_URL, data, config).catch(error => error)
 }
 
 
@@ -55,6 +56,33 @@ export const apiGetPendingOrders = (schoolId, token) => {
   }
   return axios.get(GET_PENDING_ORDERS_URL, config).catch(error => error)
 }
+
+
+export const apiGetSchoolOrders = (schoolId, token) => {
+  const config = {
+    headers: {
+      'Content-Type':'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    params: {sid: schoolId},
+    baseURL: BASE_URL,
+  }
+  return axios.get(GET_CONFIRMED_ORDERS_URL, config).catch(error => error)
+}
+
+
+export const apiGet = (token='invalid', url='', params={}, baseURL=BASE_URL) => {
+  const config = {
+    headers: {
+      'Content-Type':'application/json',
+      'Authorization': `Bearer ${token}`,
+    },
+    params: params,
+    baseURL: baseURL,
+  }
+  return axios.get(url, config).catch(error => error) 
+}
+
 
 // axios.put(this.apiBaseEndpoint + '/' + id, input)
 //     .then((response) => {

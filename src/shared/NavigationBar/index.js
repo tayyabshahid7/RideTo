@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom'
 import styles from './styles.scss';
 import Header from 'shared/Header'
-import AuthButton from 'shared/AuthButton'
+import UserMenu from 'shared/UserMenu'
 
 let NavigationBar = () =>  {
   return (
@@ -13,7 +13,7 @@ let NavigationBar = () =>  {
                 <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/orders">Orders</NavLink>
             </div>
             <div className={styles.authMenu}>
-                <AuthButton/>
+                <UserMenu/>
             </div>
         </div>
     </Header>

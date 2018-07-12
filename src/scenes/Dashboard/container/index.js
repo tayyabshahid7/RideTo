@@ -20,11 +20,10 @@ class Dashboard extends Component {
 
 export default withRouter(connect(
     state => ({
-        user: state.loginReducer.session.user,
-        pendingOrders: state.dashboardReducer.pendingOrders,
+        pendingOrders: state.dashboard.pendingOrders,
     }),
     dispatch => ({
-        getPendingOrders: schoolId => dispatch(getPendingOrders(schoolId, sessionStorage.getItem('token'))),
+        getPendingOrders: schoolId => dispatch(getPendingOrders(schoolId)),
 
     }),
 )(Dashboard))
