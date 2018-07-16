@@ -13,11 +13,11 @@ class Dashboard extends Component {
     }
 
     componentDidMount() {
-        this.props.getPendingOrders(803, this.props.page)
+        this.props.getPendingOrders(this.props.schoolId, this.props.page)
     }
 
     handleChangePage(page) {
-        this.props.getPendingOrders(803, page)
+        this.props.getPendingOrders(this.props.schoolId, page)
     }
 
     render() {
@@ -45,6 +45,7 @@ class Dashboard extends Component {
 
 export default withRouter(connect(
     state => ({
+        schoolId: state.login.schoolId,
         pendingOrders: state.dashboard.pendingOrders,
         page: state.dashboard.page,
     }),

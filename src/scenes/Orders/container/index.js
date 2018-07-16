@@ -9,15 +9,18 @@ import styles from './styles.scss'
 class Orders extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      schoolId: props.schoolId,
+    }
     this.handleChangePage = this.handleChangePage.bind(this)
   }
 
-  componentWillMount() {
-    this.props.getSchoolOrders(803, this.props.page)
+  componentDidMount() {
+    this.props.getSchoolOrders(this.state.schoolId, this.props.page)
   }
 
   handleChangePage(page) {
-    this.props.getSchoolOrders(803, page) 
+    this.props.getSchoolOrders(this.state.schoolId, page) 
   }
 
   render() {
@@ -47,6 +50,7 @@ class Orders extends Component {
 
 export default withRouter(connect(
   state => ({
+    schoolId: state.login.schoolId,
     confirmedOrders: state.orders.confirmedOrders,
     page: state.orders.page,
   }),

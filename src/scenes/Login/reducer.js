@@ -4,6 +4,7 @@ import * as types from './types'
 const initialState = {
   loading: false,
   loggedIn: false,
+  schoolId: null,
   error: null,
   session: {
     user: null,
@@ -13,6 +14,12 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case types.CHANGE_SCHOOL:
+      return {
+        ...state,
+        schoolId: action.schoolId,
+      }
+
     case types.LOGIN_REQUEST:
       return { 
         ...state,
@@ -32,6 +39,7 @@ export default (state = initialState, action) => {
         loading: false,
         loggedIn: true,
         error: null,
+        schoolId: action.data.user.suppliers[0].id,
         session: {
           user: action.data.user
         }
@@ -41,10 +49,9 @@ export default (state = initialState, action) => {
       return {
         ...state,
         loggedIn: false,
+         schoolId: null,
         error: null,
-        session: { 
-          user: null,
-        },
+        session: null,
       }
     case types.RESET:
       sessionStorage.removeItem('token')
