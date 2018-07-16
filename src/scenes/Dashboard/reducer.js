@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   error: null,
   pendingOrders: null,
+  page: 1,
 }
 
 export default (state = initialState, action) => {
@@ -27,6 +28,12 @@ export default (state = initialState, action) => {
         pendingOrders: action.data
 
       }
+    case types.PENDING_ORDERS_PAGE_CHANGE:
+      return {
+        ...state,
+        page: action.page,
+      }
+
     case types.RESET:
       return {...initialState}
     default:
