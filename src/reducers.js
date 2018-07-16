@@ -12,9 +12,9 @@ const appReducer = combineReducers({
 
 export default (state, action) => {
     if (action.type === SIGNOUT_REQUEST) {
+        clearState()
         state = undefined
         sessionStorage.removeItem('token')
-        clearState()
     }
     return appReducer(state, action)
 }

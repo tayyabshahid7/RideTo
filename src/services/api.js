@@ -35,7 +35,7 @@ export const apiRequestLogin = (email, password) => {
   return axios.post(LOGIN_REQUEST_URL, data, config).catch(error => error)
 }
 
-export const apiRequestVerifyToken = (token='invalid') => {
+export const apiRequestVerifyToken = (token) => {
   const config = {
     headers: {'Content-Type':'application/json'},
     baseURL: BASE_URL,
@@ -45,26 +45,32 @@ export const apiRequestVerifyToken = (token='invalid') => {
 }
 
 
-export const apiGetPendingOrders = (schoolId, token) => {
+export const apiGetPendingOrders = (schoolId, page, token) => {
   const config = {
     headers: {
       'Content-Type':'application/json',
       'Authorization': `Bearer ${token}`,
     },
-    params: {sid: schoolId},
+    params: {
+      page: page,
+      sid: schoolId
+    },
     baseURL: BASE_URL,
   }
   return axios.get(GET_PENDING_ORDERS_URL, config).catch(error => error)
 }
 
 
-export const apiGetSchoolOrders = (schoolId, token) => {
+export const apiGetSchoolOrders = (schoolId, page, token) => {
   const config = {
     headers: {
       'Content-Type':'application/json',
       'Authorization': `Bearer ${token}`,
     },
-    params: {sid: schoolId},
+    params: {
+      page: page,
+      sid: schoolId
+    },
     baseURL: BASE_URL,
   }
   return axios.get(GET_CONFIRMED_ORDERS_URL, config).catch(error => error)

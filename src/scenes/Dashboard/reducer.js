@@ -24,7 +24,8 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        pendingOrders: action.data.results
+        pendingOrders: action.data
+
       }
     case types.RESET:
       return {...initialState}

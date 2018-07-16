@@ -5,19 +5,22 @@
   const getSchoolOrdersSuccess = (data) => ({ type: types.GET_SCHOOL_ORDERS_SUCCESS, data})
   const getSchoolOrdersError = (error) => ({ type: types.GET_SCHOOL_ORDERS_ERROR, error })
 
+  export const changePage = (page) => ({type: types.ORDERS_CHANGE_PAGE, page})
   export const ordersReducerReset = () => ({ type: types.RESET })
 
 
-export const getSchoolOrders = (schoolId) => {
+export const getSchoolOrders = (schoolId, page=1) => {
   return async (dispatch) => {
     let token = sessionStorage.getItem('token')
     dispatch(getSchoolOrdersRequest())
     try { 
-      const response = await apiGetSchoolOrders(schoolId, token)
-      if(response.status === 200)
+      const response = await apiGetSchoolOrders(schoolId, page, token)
+      if(response.status === 200){
+        dispatch(changePage(page))
         dispatch(getSchoolOrdersSuccess(response.data))
-      else
+      } else {
         throw response
+      }
     } catch (error) {
       let errorMessage = 'Unexpected error'
       if (error.response) {

@@ -1,0 +1,39 @@
+.container {
+ table {
+    width:100%;
+    padding:10px;
+    text-align:center;
+    border-spacing:0px;
+  }
+  th {
+    position:sticky;
+    top:0px;
+    padding:10px;
+    background-color:white;
+    border-bottom: 1px solid grey;
+  }
+
+  td {
+    padding:15px 0;
+  }
+  
+  h1 {
+    padding:10px;
+  }
+}
+
+.respondLink {
+  color:white;
+  background-color:#2CCEAC;
+  border-radius:3px;
+  padding:10px;
+  text-decoration:none;
+}
+
+.noResults {
+  margin:auto;
+  widt: 100%;
+  padding:50px 0;
+  color:grey;
+  text-align:center;
+}

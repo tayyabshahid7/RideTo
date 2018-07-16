@@ -6,12 +6,12 @@ const pendingOrdersRequest = () => ({ type: types.PENDING_ORDERS_REQUEST })
 const pendingOrdersSuccess = (data) => ({ type: types.PENDING_ORDERS_SUCCESS, data })
 const pendingOrdersError = (error) => ({ type: types.PENDING_ORDERS_ERROR, error })
 
-export const getPendingOrders = (schoolId) => {
+export const getPendingOrders = (schoolId, page=1) => {
   return async (dispatch) => {
     dispatch(pendingOrdersRequest())
     try {
       const token = sessionStorage.getItem('token')
-      const response = await apiGetPendingOrders(schoolId, token)
+      const response = await apiGetPendingOrders(schoolId, page, token)
       if(response.status === 200)
         dispatch(pendingOrdersSuccess(response.data))
       else

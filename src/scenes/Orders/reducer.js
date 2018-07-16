@@ -3,7 +3,8 @@ import * as types from './types'
 const initialState = {
   loading: false,
   error: null,
-  schoolOrders: null,
+  confirmedOrders: null,
+  page:1,
 }
 
 export default (state = initialState, action) => {
@@ -24,8 +25,12 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         error: null,
-        confirmedOrders: action.data.results,
-        resulCount: action.data.count,
+        confirmedOrders: action.data,
+      }
+    case types.ORDERS_CHANGE_PAGE:
+      return {
+        ...state,
+        page: action.page,
       }
     case types.RESET:
       return {...initialState}
