@@ -24,7 +24,8 @@ class Dashboard extends Component {
         return (
             <div className={styles.container}>
              {
-                this.props.pendingOrders && this.props.pendingOrders.results.length > 0 ?
+                this.props.pendingOrders && 
+                this.props.pendingOrders.results.length > 0 ?
                     <div>
                         <Notifications pendingOrders={this.props.pendingOrders}/>
                         <PaginationLinks 
@@ -50,7 +51,7 @@ export default withRouter(connect(
         page: state.dashboard.page,
     }),
     dispatch => ({
-        getPendingOrders: schoolId => dispatch(getPendingOrders(schoolId)),
+        getPendingOrders: (schoolId, page) => dispatch(getPendingOrders(schoolId, page)),
 
     }),
 )(Dashboard))

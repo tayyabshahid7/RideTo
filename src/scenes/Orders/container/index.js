@@ -53,7 +53,7 @@ export default withRouter(connect(
     page: state.orders.page,
   }),
   dispatch => ({
-    getSchoolOrders: (page, schoolId) => dispatch(getSchoolOrders(page, schoolId)),
+    getSchoolOrders: (schoolId, page) => dispatch(getSchoolOrders(schoolId, page)),
     changePage: (page) => dispatch(changePage(page))
   })
 )(Orders))
