@@ -1,11 +1,22 @@
 import { apiRequestLogin } from 'services/api'
 import * as types from './types'
+import { getPendingOrders } from 'scenes/Dashboard/actions'
+import { getSchoolOrders } from 'scenes/Orders/actions'
 
 const loginRequest = () => ({ type: types.LOGIN_REQUEST })
 const loginError = (error) => ({ type: types.LOGIN_ERROR, error })
 const loginSuccess = (data) => ({ type: types.LOGIN_SUCCESS, data })
 
-export const changeSchool = (schoolId) => ({type: types.CHANGE_SCHOOL, schoolId})
+const changeSchoolRequest = (schoolId) => ({type: types.CHANGE_SCHOOL, schoolId})
+
+
+export const changeSchool = (schoolId) => {
+  return async (dispatch) => {
+    dispatch(getPendingOrders(schoolId))
+    dispatch(getSchoolOrders(schoolId))
+    dispatch(changeSchoolRequest(schoolId))
+  }
+}
 
 export const reset = () => ({type:types.RESET})
 

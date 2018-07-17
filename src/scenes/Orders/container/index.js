@@ -7,20 +7,18 @@ import PaginationLinks from 'shared/PaginationLinks'
 import styles from './styles.scss'
 
 class Orders extends Component {
+
   constructor(props) {
     super(props)
-    this.state = {
-      schoolId: props.schoolId,
-    }
     this.handleChangePage = this.handleChangePage.bind(this)
   }
 
   componentDidMount() {
-    this.props.getSchoolOrders(this.state.schoolId, this.props.page)
+    this.props.getSchoolOrders(this.props.schoolId, this.props.page)
   }
 
   handleChangePage(page) {
-    this.props.getSchoolOrders(this.state.schoolId, page) 
+    this.props.getSchoolOrders(this.props.schoolId, page) 
   }
 
   render() {

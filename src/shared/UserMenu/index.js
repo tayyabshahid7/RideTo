@@ -50,6 +50,7 @@ class UserMenu extends Component {
 
   handleSupplierChange(e) {
     this.props.changeSchool(e.target.value)
+    this.toggleMenu()
   }
 
   render() {
@@ -61,21 +62,17 @@ class UserMenu extends Component {
         {
           this.state.menuOpen &&
           <div ref={node => this.node = node} className={styles.userMenu}>
+            <br/>
             <button  onClick={this.handleLogout}>Logout</button>
             <br/>
             <br/>
             <select value={schoolId} onChange={(e) => this.handleSupplierChange(e)}>
-            
               {
                 user.suppliers.map((supplier) => 
-                  <option key={supplier} value={supplier}>{supplier}</option>  
+                  <option key={supplier.id} value={supplier.id}>{supplier.name}</option>  
                 )
               }
-              
             </select>
-            <p>Another action</p>
-            <p>Another action</p>
-            <p>Another action</p>
           </div>
         }
       </div>  

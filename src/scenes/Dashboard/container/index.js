@@ -9,15 +9,18 @@ import PaginationLinks from 'shared/PaginationLinks'
 class Dashboard extends Component {
     constructor(props) {
         super(props)
+        this.state = {
+            schoolId: null,
+        }
         this.handleChangePage = this.handleChangePage.bind(this)
     }
 
     componentDidMount() {
-        this.props.getPendingOrders(this.props.schoolId, this.props.page)
+        this.props.getPendingOrders(this.state.schoolId, this.props.page)
     }
 
     handleChangePage(page) {
-        this.props.getPendingOrders(this.props.schoolId, page)
+        this.props.getPendingOrders(this.state.schoolId, page)
     }
 
     render() {
@@ -28,7 +31,7 @@ class Dashboard extends Component {
                     <div>
                         <Notifications pendingOrders={this.props.pendingOrders}/>
                         <PaginationLinks 
-                          currentPage={this.props.page}
+                          currentPage={this.state.page}
                           count={this.props.pendingOrders.count}
                           pageSize={this.props.pendingOrders.results.length}
                           rowName={'orders'}
