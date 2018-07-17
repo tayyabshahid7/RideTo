@@ -12,6 +12,18 @@ class Login extends Component {
     super(props)
     this.emailInput = React.createRef()
     this.passwordInput = React.createRef()
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
+  }
+
+  handleFormSubmit(e){
+    e.preventDefault()
+    if (!this.emailInput.current.value.trim() && !this.passwordInput.current.value.trim()) {
+      return
+    }
+    // dispatch(login({email:emailInput.current.value, password:passwordInput.current.value}))
+    this.props.login(this.emailInput.current.value, this.passwordInput.current.value).then(
+      () => { this.props.history.push('/dashboard') }
+    )
   }
 
   render() {
@@ -28,16 +40,7 @@ class Login extends Component {
             </div>
             <form 
               className={styles.loginForm}
-              onSubmit={e => {
-                e.preventDefault()
-                if (!this.emailInput.current.value.trim() && !this.passwordInput.current.value.trim()) {
-                  return
-                }
-                // dispatch(login({email:emailInput.current.value, password:passwordInput.current.value}))
-                this.props.login(this.emailInput.current.value, this.passwordInput.current.value).then(
-                  () => { this.props.history.push('/dashboard') }
-                )
-              }}
+              onSubmit={this.handleFormSubmit}
             >
               <input type="email" autoComplete="email" ref={this.emailInput} name="email"/><br/>
               <input type="password" autoComplete="current-password" ref={this.passwordInput} name="password"/><br/>

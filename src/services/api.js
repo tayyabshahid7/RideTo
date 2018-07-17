@@ -41,7 +41,7 @@ export const apiRequestVerifyToken = (token) => {
     baseURL: BASE_URL,
   }
   const data = {token: token}
-  return axios.post(VERIFY_TOKEN_REQUEST_URL, data, config).catch(error => error)
+  return axios.post(VERIFY_TOKEN_REQUEST_URL, data, config)
 }
 
 
