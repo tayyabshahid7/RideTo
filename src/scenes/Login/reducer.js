@@ -1,6 +1,6 @@
 
 import * as types from './types'
-
+import { setToken, removeToken } from 'services/auth'
 const initialState = {
   loading: false,
   loggedIn: false,
@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
         error: action.error,
       }
     case types.LOGIN_SUCCESS:
-      sessionStorage.setItem('token', action.data.token)
+      setToken(action.data.token)
       return {
         ...state,
         loading: false,
@@ -45,7 +45,7 @@ export default (state = initialState, action) => {
         }
       }
     case types.LOGOUT:
-      sessionStorage.removeItem('token')
+      removeToken()
       return {
         ...state,
         loggedIn: false,
@@ -54,7 +54,7 @@ export default (state = initialState, action) => {
         session: null,
       }
     case types.RESET:
-      sessionStorage.removeItem('token')
+      removeToken()
       return {...initialState}
     default:
       return state

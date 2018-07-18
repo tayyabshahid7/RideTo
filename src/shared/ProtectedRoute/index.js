@@ -1,19 +1,21 @@
-import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import React from 'react'
+import { Route, Redirect } from 'react-router-dom'
+import { isAuthenticated } from 'services/auth'
 
 const ProtectedRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={ (props) => 
-      sessionStorage.getItem('token')? 
-        <Component {...props} />
-      : 
-        <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: props.location }
-          }}
-        />
+    render={ 
+      (props) => 
+        isAuthenticated() ? 
+          <Component {...props} />
+        : 
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
     }
   />
 )

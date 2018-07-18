@@ -4,7 +4,7 @@ import {Provider} from 'react-redux'
 import App from 'App'
 import './index.scss'
 import throttle from 'lodash/throttle'
-import {configureStore} from 'store'
+import { configureStore } from 'store'
 import { saveState, loadState } from './services/localStorage'
 
 const persistedState = loadState()
