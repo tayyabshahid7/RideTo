@@ -8,7 +8,7 @@ export const GET_PENDING_ORDERS_URL = 'api/o/pending/'
 export const GET_CONFIRMED_ORDERS_URL = 'api/o/confirmed/'
 export const POST_METHOD = 'POST'
 export const GET_METHOD = 'GET'
-export const BASE_URL = 'http://localhost:8000/' //process.env.REST_API_BASE_URL
+export const BASE_URL = process.env.REST_API_BASE_URL
 
 export const apiRequest = (url, params = null, data = null, method = GET_METHOD, headers = {}) => {
   const _headers = {
