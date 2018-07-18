@@ -11,7 +11,7 @@
 
 export const getSchoolOrders = (schoolId, page=1) => {
   return async (dispatch) => {
-    let token = sessionStorage.getItem('token')
+    let token = localStorage.getItem('token')
     dispatch(getSchoolOrdersRequest())
     try { 
       const response = await apiGetSchoolOrders(schoolId, page, token)

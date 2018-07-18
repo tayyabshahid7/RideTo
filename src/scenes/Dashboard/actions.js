@@ -12,7 +12,7 @@ export const getPendingOrders = (schoolId, page=1) => {
   return async (dispatch) => {
     dispatch(pendingOrdersRequest())
     try {
-      const token = sessionStorage.getItem('token')
+      const token = localStorage.getItem('token')
       const response = await apiGetPendingOrders(schoolId, page, token)
       if(response.status === 200){
         dispatch(changePage(page))

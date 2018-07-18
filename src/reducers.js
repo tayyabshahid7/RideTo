@@ -14,7 +14,7 @@ export default (state, action) => {
     if (action.type === SIGNOUT_REQUEST) {
         clearState()
         state = undefined
-        sessionStorage.removeItem('token')
+        localStorage.removeItem('token')
     }
     return appReducer(state, action)
 }

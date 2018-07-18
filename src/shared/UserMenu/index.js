@@ -56,7 +56,7 @@ class UserMenu extends Component {
   render() {
     let {user, schoolId} = this.props
     return (
-      sessionStorage.getItem('token') &&
+      localStorage.getItem('token') &&
       <div className={styles.container}>
         <div className={styles.username} onClick={this.toggleMenu}>{user.email}</div>
         {
