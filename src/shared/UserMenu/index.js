@@ -49,7 +49,8 @@ class UserMenu extends Component {
   }
 
   handleSupplierChange(e) {
-    this.props.changeSchool(e.target.value)
+    console.log(e)
+    this.props.changeSchool(e.target.value, e.target.options[e.target.selectedIndex].innerText)
     this.toggleMenu()
   }
 
@@ -69,7 +70,7 @@ class UserMenu extends Component {
             <select value={schoolId} onChange={(e) => this.handleSupplierChange(e)}>
               {
                 user.suppliers.map((supplier) => 
-                  <option key={supplier.id} value={supplier.id}>{supplier.name}</option>  
+                  <option key={supplier.id} value={supplier.id} name={supplier.name}>{supplier.name}</option>  
                 )
               }
             </select>
@@ -84,9 +85,10 @@ export default withRouter(connect(
     state => ({
         user: state.login.session.user,
         schoolId: state.login.schoolId,
+        schoolName: state.login.schoolName,
     }),
     dispatch => ({
       logout: () => dispatch(logout()),
-      changeSchool: (schoolId) => dispatch(changeSchool(schoolId))
+      changeSchool: (schoolId, schoolName) => dispatch(changeSchool(schoolId, schoolName))
     })
   )(UserMenu))

@@ -5,6 +5,7 @@ const initialState = {
   loading: false,
   loggedIn: false,
   schoolId: null,
+  schoolName: null,
   error: null,
   session: {
     user: null,
@@ -17,7 +18,8 @@ export default (state = initialState, action) => {
     case types.CHANGE_SCHOOL:
       return {
         ...state,
-        schoolId: action.schoolId,
+        schoolId: action.school.id,
+        schoolName: action.school.name,
       }
 
     case types.LOGIN_REQUEST:
@@ -40,6 +42,7 @@ export default (state = initialState, action) => {
         loggedIn: true,
         error: null,
         schoolId: action.data.user.suppliers[0].id,
+        schoolName: action.data.user.suppliers[0].name,
         session: {
           user: action.data.user
         }

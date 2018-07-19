@@ -26,9 +26,9 @@ class Dashboard extends Component {
              {
                 this.props.pendingOrders && 
                 this.props.pendingOrders.results.length > 0 ?
-                    <div>
-                        <Notifications pendingOrders={this.props.pendingOrders}/>
-                        <PaginationLinks 
+                    <div className={styles.main}>
+                        <Notifications pendingOrders={this.props.pendingOrders} schoolName={this.props.schoolName}/>
+                        <PaginationLinks
                           currentPage={this.props.page}
                           count={this.props.pendingOrders.count}
                           pageSize={this.props.pendingOrders.results.length}
@@ -47,6 +47,7 @@ class Dashboard extends Component {
 export default withRouter(connect(
     state => ({
         schoolId: state.login.schoolId,
+        schoolName: state.login.schoolName,
         pendingOrders: state.dashboard.pendingOrders,
         page: state.dashboard.page,
     }),

@@ -1,3 +1,18 @@
 .container {
     width:100%;
+    display:flex;
+    button {
+        border:none;
+        border-radius:5px;
+        padding:10px;
+        font-size:18px;
+        margin:5px;
+        min-width:45px;
+        &:focus {
+            outline: 0;
+        }
+        &:hover {
+            background-color:lightgrey;
+        }
+    }
 }

@@ -7,14 +7,14 @@ const loginRequest = () => ({ type: types.LOGIN_REQUEST })
 const loginError = (error) => ({ type: types.LOGIN_ERROR, error })
 const loginSuccess = (data) => ({ type: types.LOGIN_SUCCESS, data })
 
-const changeSchoolRequest = (schoolId) => ({type: types.CHANGE_SCHOOL, schoolId})
+const changeSchoolRequest = (school) => ({type: types.CHANGE_SCHOOL, school})
 
 
-export const changeSchool = (schoolId) => {
+export const changeSchool = (schoolId, schoolName) => {
   return async (dispatch) => {
     dispatch(getPendingOrders(schoolId))
     dispatch(getSchoolOrders(schoolId))
-    dispatch(changeSchoolRequest(schoolId))
+    dispatch(changeSchoolRequest({id: schoolId, name:schoolName}))
   }
 }
 

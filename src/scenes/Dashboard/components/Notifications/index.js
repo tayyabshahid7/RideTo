@@ -7,7 +7,7 @@ class Notifications extends Component {
   render() {
     return (
       <div className={styles.container}>
-        <h1>NOTIFICACIONS</h1>
+        <h1>NOTIFICACIONS - {this.props.schoolName} </h1>
         <h2>Pending Orders</h2>
         <hr/>
               <Table orders={this.props.pendingOrders.results}/>

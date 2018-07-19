@@ -11,12 +11,14 @@ const PaginationLinks = ({currentPage=1, count=0, pageSize=1, rowName='', onPage
 
     return (
         <div className={styles.container}>
-            Showing form {fromRow} to {toRow} of {count} {rowName}
-            <button type="button" page={first} disabled={currentPage===first} onClick={e => onPageChange(parseInt(e.target.getAttribute('page'),10))}>First</button>
-            <button type="button" page={previous} disabled={currentPage===first} onClick={e => onPageChange(parseInt(e.target.getAttribute('page'),10))}>Previous</button>
-            <button type="button" disabled >{currentPage}</button>
-            <button type="button" page={next} disabled={currentPage===last} onClick={e => onPageChange(parseInt(e.target.getAttribute('page'),10))}>Next</button>
-            <button type="button" page={last} disabled={currentPage===last} onClick={e => onPageChange(parseInt(e.target.getAttribute('page'),10))}>Last</button>
+            <div className={styles.infoText}>Showing form {fromRow} to {toRow} of {count} {rowName}</div>
+            <div className={styles.paginationButtons}>
+                <button type="button" page={first} disabled={currentPage===first} onClick={e => onPageChange(parseInt(e.target.getAttribute('page'),10))}>First</button>
+                <button type="button" page={previous} disabled={currentPage===first} onClick={e => onPageChange(parseInt(e.target.getAttribute('page'),10))}>Previous</button>
+                <button type="button" disabled >{currentPage}</button>
+                <button type="button" page={next} disabled={currentPage===last} onClick={e => onPageChange(parseInt(e.target.getAttribute('page'),10))}>Next</button>
+                <button type="button" page={last} disabled={currentPage===last} onClick={e => onPageChange(parseInt(e.target.getAttribute('page'),10))}>Last</button>
+            </div>
         </div>
     )
 }

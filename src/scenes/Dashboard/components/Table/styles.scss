@@ -1,4 +1,7 @@
 .container {
+ margin-left:10px;
+ min-height:650px;
+ 
  table {
     width:100%;
     padding:10px;
@@ -13,8 +16,12 @@
     border-bottom: 1px solid grey;
   }
 
+  tr:hover {
+    background-color:#b8f1e5;
+  }
+
   td {
-    padding:15px 0;
+    padding:10px 0;
   }
   
   h1 {
@@ -26,7 +33,7 @@
   color:white;
   background-color:#2CCEAC;
   border-radius:3px;
-  padding:10px;
+  padding:5px;
   text-decoration:none;
 }
 
@@ -36,4 +43,8 @@
   padding:50px 0;
   color:grey;
   text-align:center;
+}
+
+.trEven {
+  background-color:#f9f7f7;
 }

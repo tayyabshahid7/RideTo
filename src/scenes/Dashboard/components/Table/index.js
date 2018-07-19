@@ -1,6 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
+import classnames from 'classnames'
 
 class Table extends Component {
   render() {
@@ -18,8 +19,8 @@ class Table extends Component {
           </thead>
           <tbody>
             {
-              this.props.orders.map((order)=>
-                <tr key={order.friendly_id}>
+              this.props.orders.map((order, index)=>
+                <tr className={classnames(index%2?styles.trEven:styles.trOdd)}key={order.friendly_id}>
                   <td>{order.friendly_id}</td>
                   <td>{order.user_date}</td>
                   <td>{order.bike_hire}</td>

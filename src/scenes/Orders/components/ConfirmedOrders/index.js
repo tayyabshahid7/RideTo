@@ -7,7 +7,14 @@ class ConfirmedOrders extends Component {
   componentDidMount() {
 
   }
-  
+
+  checkCancelledOrRejected(order) {
+    if(order.cancelled || order.booking_status !=='SCHOOL_CONFIRMED_BOOK') {
+      return true
+    }
+    return false
+  }
+
   render() {
     return (
       <div className={styles.container}>
@@ -31,11 +38,11 @@ class ConfirmedOrders extends Component {
                   this.props.confirmedOrders.results.map((order)=>
                     <tr key={order.friendly_id}>
                       <td>{order.friendly_id}</td>
-                      <td>{order.user_date}</td>
+                      <td>{this.checkCancelledOrRejected(order) ? order.user_date : order.start_time}</td>
                       <td>{order.selected_licence}</td>
                       <td>{order.bike_hire}</td>
-                      <td>{order.user_name}</td>
-                      <td>{order.user_phone}</td>
+                      <td>{this.checkCancelledOrRejected(order) ? '-': order.user_name}</td>
+                      <td>{this.checkCancelledOrRejected(order) ? '-': order.user_phone}</td>
                       <td>{order.cancelled?'cancelled':(order.booking_status==='SCHOOL_CONFIRMED_BOOK'?'Confirmed':'Rejected')}</td>
                     </tr>
                   )
