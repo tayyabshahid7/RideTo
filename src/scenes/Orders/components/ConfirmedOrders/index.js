@@ -26,11 +26,10 @@ class ConfirmedOrders extends Component {
                      <th>Bike Hire</th>
                      <th>Rider Name</th>
                      <th>Mobile #</th>
-                     <th>STATUS</th>
+                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
-
                   {
                     this.props.confirmedOrders.results.map((order)=>
                       <tr key={order.friendly_id}>
@@ -40,7 +39,7 @@ class ConfirmedOrders extends Component {
                         <td>{order.bike_hire}</td>
                         <td>{this.checkCancelledOrRejected(order) ? '-': order.user_name}</td>
                         <td>{this.checkCancelledOrRejected(order) ? '-': order.user_phone}</td>
-                        <td>{order.cancelled?'cancelled':(order.booking_status==='SCHOOL_CONFIRMED_BOOK'?'Confirmed':'Rejected')}</td>
+                        <td>{order.cancelled?'Cancelled':(order.booking_status==='SCHOOL_CONFIRMED_BOOK'?'Confirmed':'Rejected')}</td>
                       </tr>
                     )
                   }

@@ -1,25 +1,36 @@
 .container {
+    cursor:default;
+    min-height:650px;
+    overflow-x:auto;
+
     table {
+
+        color:#707070;
         width:100%;
-        padding:10px;
         text-align:center;
         border-spacing:0px;
+        border: 1px solid #ACACAC;
+        font-size:15px;
+        min-width:850px;
     }
-    thead {
-        background-color: #F6F6F6;
-    }
+
     th {
         position:sticky;
         top:0px;
         padding:10px;
-        background-color:white;
-        border-bottom: 1px solid grey;
+        background-color:#F6F6F6;
+        border-bottom: 1px solid #ACACAC;
+    }
+
+    tr:hover {
+        background-color:#ddf9f3;
     }
 
     td {
-        padding:15px 0;
+        padding:10px 0;
+        margin: 0 10px;
     }
-    
+
     h1 {
         padding:10px;
     }

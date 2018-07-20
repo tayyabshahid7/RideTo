@@ -7,7 +7,6 @@ import Notifications from 'scenes/Dashboard/components/Notifications'
 import PaginationLinks from 'shared/PaginationLinks'
 import PendingOrdersTable from 'scenes/Dashboard/components/PendingOrdersTable'
 import Loading from 'shared/Loading'
-import IconCalendarOk from 'shared/IconCalendarOk'
 class Dashboard extends Component {
     constructor(props) {
         super(props)
@@ -41,7 +40,7 @@ class Dashboard extends Component {
                             />
                         </div>
                     :
-                        <div className={styles.noResults}>No orders yet. No worries we have your back! ;)</div>
+                        <div className={styles.noResults}>ʘ‿ʘ Everything up to date!</div>
                     }
                     
                 </Loading>

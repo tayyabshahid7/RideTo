@@ -28,6 +28,7 @@ class Orders extends Component {
       { this.props.confirmedOrders &&
         this.props.confirmedOrders.results.length > 0 ?
           <div className={styles.ordersContainer}>
+            <h2>Orders - {this.props.schoolName}</h2>
             <ConfirmedOrders loading={this.props.loading} confirmedOrders={this.props.confirmedOrders}/>
             <PaginationLinks 
               currentPage={this.props.page}
@@ -49,6 +50,7 @@ class Orders extends Component {
 export default withRouter(connect(
   state => ({
     schoolId: state.login.schoolId,
+    schoolName: state.login.schoolName,
     confirmedOrders: state.orders.confirmedOrders,
     page: state.orders.page,
     loading: state.orders.loading,

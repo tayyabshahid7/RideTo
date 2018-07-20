@@ -1,11 +1,14 @@
 .container {
  min-height:650px;
+ overflow-x:auto;
  
  table {
+    color: #707070;
     width:100%;
     text-align:center;
     border-spacing:0px;
-    border: 1px solid #ACACAC
+    border: 1px solid #ACACAC;
+    min-width:470px;
   }
 
   th {
@@ -17,7 +20,7 @@
   }
 
   tr:hover {
-    background-color:#b8f1e5;
+    background-color:#ddf9f3;
   }
 
   td {
@@ -35,6 +38,10 @@
   border-radius:3px;
   padding:5px;
   text-decoration:none;
+
+  &:hover {
+      background: #009c7b;
+  }
 }
 
 .noResults {

@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import styles from './styles.scss'
-import Loading from 'shared/Loading'
 class Notifications extends Component {
   
   render() {
