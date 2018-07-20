@@ -21,7 +21,7 @@ class ConfirmedOrders extends Component {
                 <thead>
                   <tr>
                      <th>Order #</th>
-                     <th>Date Requested</th>
+                     <th>Training Date</th>
                      <th>Course</th>
                      <th>Bike Hire</th>
                      <th>Rider Name</th>
@@ -36,7 +36,7 @@ class ConfirmedOrders extends Component {
                         <td>{order.friendly_id}</td>
                         <td>{this.checkCancelledOrRejected(order) ? order.user_date : order.start_time}</td>
                         <td>{order.selected_licence === 'LICENCE_CBT' ? 'CBT Training ': 'CBT Renewal'}</td>
-                        <td>{order.bike_hire}</td>
+                        <td>{order.bike_hire === 'auto' ? 'Automatic' : ( order.bike_hire === 'manual' ? 'Manual' : 'None' )}</td>
                         <td>{this.checkCancelledOrRejected(order) ? '-': order.user_name}</td>
                         <td>{this.checkCancelledOrRejected(order) ? '-': order.user_phone}</td>
                         <td>{order.cancelled?'Cancelled':(order.booking_status==='SCHOOL_CONFIRMED_BOOK'?'Confirmed':'Rejected')}</td>
@@ -46,7 +46,6 @@ class ConfirmedOrders extends Component {
                 </tbody>
               </table>  
             </Loading>
-            
           </div>
       }
       </div>

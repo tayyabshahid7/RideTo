@@ -23,7 +23,7 @@ class Table extends Component {
                   <td><a className={styles.respondLink} href={`${order.school_confirm_url}`} target="_blank">Respond</a></td>
                   <td>{order.friendly_id}</td>
                   <td>{order.user_date}</td>
-                  <td>{order.bike_hire}</td>
+                  <td>{order.bike_hire === 'auto' ? 'Automatic' : ( order.bike_hire === 'manual' ? 'Manual' : 'None' )}</td>
                   <td>{order.location}</td>
                 </tr>
               )
