@@ -33,7 +33,7 @@ class Orders extends Component {
             <PaginationLinks 
               currentPage={this.props.page}
               count={this.props.confirmedOrders.count}
-              pageSize={15}
+              pageSize={20}
               rowName={'orders'}
               onPageChange={this.handleChangePage}
             />

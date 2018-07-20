@@ -34,7 +34,7 @@ class Dashboard extends Component {
                             <PaginationLinks
                               currentPage={this.props.page}
                               count={this.props.pendingOrders.count}
-                              pageSize={15}
+                              pageSize={20}
                               rowName={'orders'}
                               onPageChange={this.handleChangePage}
                             />
