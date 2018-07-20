@@ -27,12 +27,12 @@ class Orders extends Component {
 
       { this.props.confirmedOrders &&
         this.props.confirmedOrders.results.length > 0 ?
-          <div>
-            <ConfirmedOrders confirmedOrders={this.props.confirmedOrders}/>
+          <div className={styles.ordersContainer}>
+            <ConfirmedOrders loading={this.props.loading} confirmedOrders={this.props.confirmedOrders}/>
             <PaginationLinks 
               currentPage={this.props.page}
               count={this.props.confirmedOrders.count}
-              pageSize={this.props.confirmedOrders.results.length}
+              pageSize={15}
               rowName={'orders'}
               onPageChange={this.handleChangePage}
             />
@@ -51,6 +51,7 @@ export default withRouter(connect(
     schoolId: state.login.schoolId,
     confirmedOrders: state.orders.confirmedOrders,
     page: state.orders.page,
+    loading: state.orders.loading,
   }),
   dispatch => ({
     getSchoolOrders: (schoolId, page) => dispatch(getSchoolOrders(schoolId, page)),

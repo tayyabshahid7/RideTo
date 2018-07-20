@@ -5,6 +5,7 @@ import { login } from './actions'
 import styles from './styles.scss'
 import Header from 'shared/Header'
 import logo from 'assets/images/scooter.png'
+import { isAuthenticated } from 'services/auth'
 
 class Login extends Component {
 
@@ -15,6 +16,12 @@ class Login extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
+  componentDidMount() {
+    if(isAuthenticated()) {
+      this.props.history.push('/')
+    }
+  }
+
   handleFormSubmit(e){
     e.preventDefault()
     if (!this.emailInput.current.value.trim() && !this.passwordInput.current.value.trim()) {
@@ -22,7 +29,7 @@ class Login extends Component {
     }
     // dispatch(login({email:emailInput.current.value, password:passwordInput.current.value}))
     this.props.login(this.emailInput.current.value, this.passwordInput.current.value).then(
-      () => { this.props.history.push('/dashboard') }
+      () => { this.props.history.push('/') }
     )
   }
 
@@ -60,6 +67,7 @@ class Login extends Component {
 
 let mapStateToProps = (state) => {
   return {
+    loggedIn: state.login.loggedIn,
     loading: state.login.loading,
     error: state.login.error,
   }

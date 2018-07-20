@@ -37,4 +37,4 @@ class Table extends Component {
 }
 
 
-export default connect()(Table)
+export default Table

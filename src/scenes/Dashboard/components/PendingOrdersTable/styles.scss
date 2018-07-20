@@ -1,19 +1,19 @@
 .container {
- margin-left:10px;
  min-height:650px;
  
  table {
     width:100%;
-    padding:10px;
     text-align:center;
     border-spacing:0px;
+    border: 1px solid #ACACAC
   }
+
   th {
     position:sticky;
     top:0px;
     padding:10px;
-    background-color:white;
-    border-bottom: 1px solid grey;
+    background-color:#F6F6F6;
+    border-bottom: 1px solid #ACACAC;
   }
 
   tr:hover {

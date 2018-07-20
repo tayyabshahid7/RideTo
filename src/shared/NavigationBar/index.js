@@ -9,7 +9,7 @@ let NavigationBar = () =>  {
     <Header>
         <div className={styles.container}>
             <div className={styles.navLinks}>
-                <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/dashboard">Home</NavLink>
+                <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} exact to="/">Home</NavLink>
                 <NavLink className={styles.navLink} activeClassName={styles.activeNavLink} to="/orders">Orders</NavLink>
             </div>
             <div className={styles.authMenu}>

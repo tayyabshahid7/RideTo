@@ -10,10 +10,12 @@ const MainLayout = () => {
   return (
     <div className={styles.container}>
       <NavigationBar/>
-      <Switch>
-        <Route path="/dashboard" render={Dashboard}/>
-        <Route path="/orders" render={Orders}/>
-      </Switch>
+      <div className={styles.bodyContainer}>
+        <Switch>
+          <Route path="/orders" render={Orders}/>
+          <Route exact path="/" component={Dashboard}/>
+        </Switch>
+      </div>
       <Footer/>
     </div>
   )

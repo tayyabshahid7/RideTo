@@ -5,7 +5,9 @@ import styles from './styles.scss'
 import {getPendingOrders} from 'scenes/Dashboard/actions'
 import Notifications from 'scenes/Dashboard/components/Notifications'
 import PaginationLinks from 'shared/PaginationLinks'
-
+import PendingOrdersTable from 'scenes/Dashboard/components/PendingOrdersTable'
+import Loading from 'shared/Loading'
+import IconCalendarOk from 'shared/IconCalendarOk'
 class Dashboard extends Component {
     constructor(props) {
         super(props)
@@ -23,22 +25,26 @@ class Dashboard extends Component {
     render() {
         return (
             <div className={styles.container}>
-             {
-                this.props.pendingOrders && 
-                this.props.pendingOrders.results.length > 0 ?
-                    <div className={styles.main}>
-                        <Notifications pendingOrders={this.props.pendingOrders} schoolName={this.props.schoolName}/>
-                        <PaginationLinks
-                          currentPage={this.props.page}
-                          count={this.props.pendingOrders.count}
-                          pageSize={this.props.pendingOrders.results.length}
-                          rowName={'orders'}
-                          onPageChange={this.handleChangePage}
-                        />
-                    </div>
-                :
-                    <div className={styles.noResults}>You're all update on orders</div>
-            }
+                <Notifications schoolName={this.props.schoolName}/>
+                <Loading loading={this.props.loading}>
+                    {
+                    this.props.pendingOrders && 
+                    this.props.pendingOrders.results.length > 0 ?
+                        <div className={styles.main}>
+                            <PendingOrdersTable orders={this.props.pendingOrders.results}/>
+                            <PaginationLinks
+                              currentPage={this.props.page}
+                              count={this.props.pendingOrders.count}
+                              pageSize={15}
+                              rowName={'orders'}
+                              onPageChange={this.handleChangePage}
+                            />
+                        </div>
+                    :
+                        <div className={styles.noResults}>No orders yet. No worries we have your back! ;)</div>
+                    }
+                    
+                </Loading>
             </div>
         )
     }
@@ -50,6 +56,7 @@ export default withRouter(connect(
         schoolName: state.login.schoolName,
         pendingOrders: state.dashboard.pendingOrders,
         page: state.dashboard.page,
+        loading: state.dashboard.loading,
     }),
     dispatch => ({
         getPendingOrders: (schoolId, page) => dispatch(getPendingOrders(schoolId, page)),
