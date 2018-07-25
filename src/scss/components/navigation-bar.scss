@@ -1,0 +1,23 @@
+.navigation-bar {
+  display: flex;
+  width: 100%;
+
+  .navLinks {
+    width: 85%;
+  }
+
+  .authMenu {
+    width: 15%;
+  }
+  .navLink {
+    margin: 0 1rem;
+    color: #95989a;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+
+  .activeNavLink {
+    border-bottom: 2px solid #2cceac;
+  }
+}

@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import styles from "./styles.scss";
-import classnames from "classnames";
 
 class Table extends Component {
   render() {
     return (
-      <div className={styles.container}>
+      <div className="pending-orders-table">
         <table>
           <thead>
             <tr>
@@ -19,12 +17,12 @@ class Table extends Component {
           <tbody>
             {this.props.orders.map((order, index) => (
               <tr
-                className={classnames(index % 2 ? styles.trEven : styles.trOdd)}
+                className={index % 2 ? "trEven" : "trOdd"}
                 key={order.friendly_id}
               >
                 <td>
                   <a
-                    className={styles.respondLink}
+                    className="respondLink"
                     href={`${order.school_confirm_url}`}
                     target="_blank"
                   >

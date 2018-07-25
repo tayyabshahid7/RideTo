@@ -1,0 +1,21 @@
+.header-component {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid grey;
+  &.dark {
+    background-color: black;
+  }
+
+  .logo {
+    img {
+      height: 40px;
+      padding: 10px;
+    }
+  }
+
+  .title {
+    margin-left: 20px;
+    width: 100%;
+  }
+}

@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import { getSchoolOrders, changePage } from "../../../actions/orders";
 import ConfirmedOrders from "../components/ConfirmedOrders";
 import PaginationLinks from "../../../components/PaginationLinks";
-import styles from "./styles.scss";
 
 class Orders extends Component {
   constructor(props) {
@@ -22,10 +21,10 @@ class Orders extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div className="page orders-page">
         {this.props.confirmedOrders &&
         this.props.confirmedOrders.results.length > 0 ? (
-          <div className={styles.ordersContainer}>
+          <div className="ordersContainer">
             <h2>Orders - {this.props.schoolName}</h2>
             <ConfirmedOrders
               loading={this.props.loading}
@@ -40,7 +39,7 @@ class Orders extends Component {
             />
           </div>
         ) : (
-          <div className={styles.noResults}>
+          <div className="noResults">
             No orders yet. No worries we have your back! ;)
           </div>
         )}

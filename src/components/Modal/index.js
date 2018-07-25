@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import styles from "./styles.scss";
 
 class Modal extends Component {
   constructor(props) {
@@ -18,15 +17,15 @@ class Modal extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
-        <div className={styles.modal}>
-          <div className={styles.modalHeader}>
-            <div className={styles.modalTitle}>TITLE</div>
-            <div className={styles.modalCloseButton} onClick={this.closeModal}>
+      <div className="modal-wrapper">
+        <div className="modal">
+          <div className="modalHeader">
+            <div className="modalTitle">TITLE</div>
+            <div className="modalCloseButton" onClick={this.closeModal}>
               x
             </div>
           </div>
-          <div className={styles.modalBody}>
+          <div className="modalBody">
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -37,11 +36,11 @@ class Modal extends Component {
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
-          <div className={styles.modalFooter}>
-            <div className={styles.modalActionButtons}>
+          <div className="modalFooter">
+            <div className="modalActionButtons">
               <button
                 type="button"
-                className={styles.button}
+                className="button"
                 onClick={this.closeModal}
               >
                 Close

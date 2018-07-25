@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "./styles.scss";
 
 const PaginationLinks = ({
   currentPage = 1,
@@ -21,11 +20,11 @@ const PaginationLinks = ({
       : (currentPage - 1) * pageSize + pageSize;
 
   return (
-    <div className={styles.container}>
-      <div className={styles.infoText}>
+    <div className="pagination-links">
+      <div className="infoText">
         Showing form {fromRow} to {toRow} of {count} {rowName}
       </div>
-      <div className={styles.paginationButtons}>
+      <div className="paginationButtons">
         <button
           type="button"
           page={first}

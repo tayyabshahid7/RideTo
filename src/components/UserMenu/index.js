@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { logout, changeSchool } from "../../actions/authActions";
-import styles from "./styles.scss";
 
 class UserMenu extends Component {
   constructor(props) {
@@ -57,12 +56,12 @@ class UserMenu extends Component {
     let { user, schoolId } = this.props;
     return (
       localStorage.getItem("token") && (
-        <div className={styles.container}>
-          <div className={styles.username} onClick={this.toggleMenu}>
+        <div className="user-menu-container">
+          <div className="username" onClick={this.toggleMenu}>
             {user.email}
           </div>
           {this.state.menuOpen && (
-            <div ref={node => (this.node = node)} className={styles.userMenu}>
+            <div ref={node => (this.node = node)} className="userMenu">
               <br />
               <button onClick={this.handleLogout}>Logout</button>
               <br />

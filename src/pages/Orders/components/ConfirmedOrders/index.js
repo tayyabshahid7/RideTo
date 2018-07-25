@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import styles from "./styles.scss";
 import Loading from "../../../../components/Loading";
 
 class ConfirmedOrders extends Component {
@@ -12,7 +11,7 @@ class ConfirmedOrders extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div className="confirmed-orders">
         {
           <div>
             <Loading loading={this.props.loading}>
