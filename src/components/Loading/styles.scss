@@ -1,0 +1,53 @@
+/*
+We set the element we are applying our loading mask to relative  
+*/
+.loadingMask {
+  position: relative;
+}
+
+/*
+Because we set .loadingMask relative, we can span our ::before  
+element over the whole parent element  
+*/
+.loadingMask::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/*
+Spin animation for .loadingMask::after  
+*/
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+/*
+The loading throbber is a single spinning element with three  
+visible borders and a border-radius of 50%.  
+Instead of a border we could also use a font-icon or any  
+image using the content attribute.  
+*/
+.loadingMask::after {
+  content: "";
+  position: absolute;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent rgb(44, 206, 172);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  top: calc(50% - 25px);
+  left: calc(50% - 25px);
+  animation: spin 2s infinite linear;
+  filter: drop-shadow(0 0 2 rgba(0, 0, 0, 0.33));
+}

@@ -1,20 +1,26 @@
-import axios from 'axios'
+import axios from "axios";
 
 // export const LOGIN_REQUEST_URL = 'api/auth/token/'
-export const LOGIN_REQUEST_URL = 'api/users/login/'
-export const TOKEN_REFRESH_URL = 'api/users/refresh/'
-export const VERIFY_TOKEN_REQUEST_URL = 'api/users/verify/'
-export const GET_PENDING_ORDERS_URL = 'api/o/pending/'
-export const GET_CONFIRMED_ORDERS_URL = 'api/o/confirmed/'
-export const POST_METHOD = 'POST'
-export const GET_METHOD = 'GET'
-export const BASE_URL = process.env.REACT_APP_REST_API_BASE_URL //see .env files
+export const LOGIN_REQUEST_URL = "api/users/login/";
+export const TOKEN_REFRESH_URL = "api/users/refresh/";
+export const VERIFY_TOKEN_REQUEST_URL = "api/users/verify/";
+export const GET_PENDING_ORDERS_URL = "api/o/pending/";
+export const GET_CONFIRMED_ORDERS_URL = "api/o/confirmed/";
+export const POST_METHOD = "POST";
+export const GET_METHOD = "GET";
+export const BASE_URL = process.env.REACT_APP_REST_API_BASE_URL; //see .env files
 
-export const apiRequest = (url, params = null, data = null, method = GET_METHOD, headers = {}) => {
+export const apiRequest = (
+  url,
+  params = null,
+  data = null,
+  method = GET_METHOD,
+  headers = {}
+) => {
   const _headers = {
     ...headers,
-    'Content-Type': 'application/json',
-  }
+    "Content-Type": "application/json"
+  };
   return axios({
     url,
     headers: _headers,
@@ -22,73 +28,73 @@ export const apiRequest = (url, params = null, data = null, method = GET_METHOD,
     method,
     params,
     data
-  })
-}
-
+  });
+};
 
 export const apiRequestLogin = (email, password) => {
   const config = {
-    headers: {'Content-Type':'application/json'},
-    baseURL: BASE_URL,
-  }
-  const data = {email: email, password: password}
-  return axios.post(LOGIN_REQUEST_URL, data, config).catch(error => error)
-}
+    headers: { "Content-Type": "application/json" },
+    baseURL: BASE_URL
+  };
+  const data = { email: email, password: password };
+  return axios.post(LOGIN_REQUEST_URL, data, config).catch(error => error);
+};
 
-export const apiRequestVerifyToken = (token) => {
+export const apiRequestVerifyToken = token => {
   const config = {
-    headers: {'Content-Type':'application/json'},
-    baseURL: BASE_URL,
-  }
-  const data = {token: token}
-  return axios.post(VERIFY_TOKEN_REQUEST_URL, data, config)
-}
-
+    headers: { "Content-Type": "application/json" },
+    baseURL: BASE_URL
+  };
+  const data = { token: token };
+  return axios.post(VERIFY_TOKEN_REQUEST_URL, data, config);
+};
 
 export const apiGetPendingOrders = (schoolId, page, token) => {
   const config = {
     headers: {
-      'Content-Type':'application/json',
-      'Authorization': `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
     params: {
       page: page,
       sid: schoolId
     },
-    baseURL: BASE_URL,
-  }
-  return axios.get(GET_PENDING_ORDERS_URL, config).catch(error => error)
-}
-
+    baseURL: BASE_URL
+  };
+  return axios.get(GET_PENDING_ORDERS_URL, config).catch(error => error);
+};
 
 export const apiGetSchoolOrders = (schoolId, page, token) => {
   const config = {
     headers: {
-      'Content-Type':'application/json',
-      'Authorization': `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
     params: {
       page: page,
       sid: schoolId
     },
-    baseURL: BASE_URL,
-  }
-  return axios.get(GET_CONFIRMED_ORDERS_URL, config).catch(error => error)
-}
+    baseURL: BASE_URL
+  };
+  return axios.get(GET_CONFIRMED_ORDERS_URL, config).catch(error => error);
+};
 
-
-export const apiGet = (token='invalid', url='', params={}, baseURL=BASE_URL) => {
+export const apiGet = (
+  token = "invalid",
+  url = "",
+  params = {},
+  baseURL = BASE_URL
+) => {
   const config = {
     headers: {
-      'Content-Type':'application/json',
-      'Authorization': `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`
     },
     params: params,
-    baseURL: baseURL,
-  }
-  return axios.get(url, config).catch(error => error) 
-}
-
+    baseURL: baseURL
+  };
+  return axios.get(url, config).catch(error => error);
+};
 
 // axios.put(this.apiBaseEndpoint + '/' + id, input)
 //     .then((response) => {

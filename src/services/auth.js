@@ -15,7 +15,6 @@ export const getToken = () => {
 };
 
 export const setToken = token => {
-  console.log("HALA savingTOken", token);
   localStorage.setItem("token", token);
 };
 

@@ -20,7 +20,6 @@ export const getSchoolOrders = (schoolId, page = 1) => async dispatch => {
   // return async (dispatch) => {
   let token = localStorage.getItem("token");
   dispatch(getSchoolOrdersRequest());
-  console.log("HALA here");
   try {
     const response = await apiGetSchoolOrders(schoolId, page, token);
     if (response.status === 200) {

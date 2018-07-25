@@ -1,12 +1,13 @@
 import { apiGetPendingOrders } from "../services/api";
 import * as types from "../actionTypes";
-import { reset as loginReset } from "../scenes/Login/actions";
+import { reset as loginReset } from "./authActions";
 
 const pendingOrdersRequest = () => ({ type: types.PENDING_ORDERS_REQUEST });
 const pendingOrdersSuccess = data => ({
   type: types.PENDING_ORDERS_SUCCESS,
   data
 });
+
 const pendingOrdersError = error => ({
   type: types.PENDING_ORDERS_ERROR,
   error

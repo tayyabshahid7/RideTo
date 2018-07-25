@@ -1,62 +1,55 @@
-import { AuthManager } from "../utils";
-
-import {
-  REQUEST,
-  SUCCESS,
-  FAILURE,
-  LOGIN,
-  SIGNUP,
-  LOGOUT
-} from "../actionTypes";
+import * as types from "../actionTypes";
+import { setToken, removeToken } from "../services/auth";
+import { clearState } from "../services/localStorage";
 
 const initialState = {
-  user: null,
-  autoLoggingIn: true,
-  signedUp: false,
-  isLoading: false,
-  error: null
+  loading: false,
+  loggedIn: false,
+  schoolId: null,
+  schoolName: null,
+  error: null,
+  user: null
 };
 
 export const auth = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN[REQUEST]:
-    case SIGNUP[REQUEST]:
+    case types.CHANGE_SCHOOL:
       return {
         ...state,
-        error: null,
-        isLoading: true
+        schoolId: action.school.id,
+        schoolName: action.school.name
       };
 
-    case LOGIN[SUCCESS]:
-      AuthManager.saveAuthentication(action.data);
+    case types.LOGIN_REQUEST:
       return {
         ...state,
+        loading: true
+      };
+    case types.LOGIN_ERROR:
+      return {
+        ...state,
+        loading: false,
+        loggedIn: false,
+        error: action.error
+      };
+    case types.LOGIN_SUCCESS:
+      setToken(action.data.token);
+      return {
+        ...state,
+        loading: false,
+        loggedIn: true,
         error: null,
-        user: action.data.user,
-        isLoading: false
+        schoolId: action.data.user.suppliers[0].id,
+        schoolName: action.data.user.suppliers[0].name,
+        user: action.data.user
       };
-
-    case SIGNUP[SUCCESS]:
-      return {
-        ...state,
-        error: null,
-        signedUp: true,
-        isLoading: false
-      };
-    case LOGOUT:
-      AuthManager.clearAuthentication();
-      return {
-        ...state,
-        user: null
-      };
-    case SIGNUP[FAILURE]:
-    case LOGIN[FAILURE]:
-      return {
-        ...state,
-        error: action.error,
-        isLoading: false
-      };
-
+    case types.LOGOUT:
+      clearState();
+      removeToken();
+      return { ...initialState };
+    case types.RESET:
+      removeToken();
+      return { ...initialState };
     default:
       return state;
   }

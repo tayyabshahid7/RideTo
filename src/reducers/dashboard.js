@@ -32,7 +32,7 @@ export const dashboard = (state = initialState, action) => {
         ...state,
         page: action.page
       };
-
+    case types.LOGOUT:
     case types.RESET:
       return { ...initialState };
     default:

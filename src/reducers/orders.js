@@ -32,6 +32,7 @@ export const orders = (state = initialState, action) => {
         ...state,
         page: action.page
       };
+    case types.LOGOUT:
     case types.RESET:
       return { ...initialState };
     default:

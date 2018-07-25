@@ -25,12 +25,7 @@ let render = () => {
   ReactDOM.render(<Component />, document.getElementById("root"));
 };
 render();
-// render(
-//   <Provider store={store}>
-//     <App />
-//   </Provider>,
-//   document.getElementById('root')
-// )
+
 if (module.hot) {
   module.hot.accept(Component => {
     render();
