@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { login } from "../../actions/authActions";
-import styles from "./styles.scss";
 import Header from "../../components/Header";
 import logo from "assets/images/scooter.png";
 import { isAuthenticated } from "services/auth";
@@ -38,17 +37,17 @@ class Login extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div className="page login-page">
         <Header dark />
-        <div className={styles.main}>
-          <div className={styles.image}>
+        <div className="main">
+          <div className="image">
             <img src={logo} alt="RideTo logo" />
           </div>
-          <div className={styles.loginFormContainer}>
-            <div className={styles.formTitle}>
+          <div className="loginFormContainer">
+            <div className="formTitle">
               <h1>Partner schools dashboard</h1>
             </div>
-            <form className={styles.loginForm} onSubmit={this.handleFormSubmit}>
+            <form className="loginForm" onSubmit={this.handleFormSubmit}>
               <input
                 type="email"
                 autoComplete="email"

@@ -1,19 +1,19 @@
 import React from "react";
-// import { Route, Switch } from 'react-router-dom'
-import { Switch, Route, Redirect } from "react-router";
+import { Switch, Route } from "react-router";
 import NavigationBar from "../../components/NavigationBar";
 import Dashboard from "../Dashboard/container";
 import Orders from "../Orders/container";
+import Calendar from "../Calendar";
 import Footer from "../../components/Footer";
-import styles from "./styles.scss";
 
 const MainLayout = ({ history }) => {
   return (
-    <div className={styles.container}>
+    <div className="main-layout">
       <NavigationBar history={history} />
-      <div className={styles.bodyContainer}>
+      <div className="bodyContainer">
         <Switch>
           <Route path="/orders" component={Orders} />
+          <Route path="/calendar" component={Calendar} />
           <Route exact path="/" component={Dashboard} />
         </Switch>
       </div>

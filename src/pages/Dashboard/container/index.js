@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-// import { withRouter} from 'react-router'
 import { connect } from "react-redux";
-import styles from "./styles.scss";
 import { getPendingOrders } from "../../../actions/dashboard";
 
 import Notifications from "../components/Notifications";
 import PaginationLinks from "../../../components/PaginationLinks";
 import PendingOrdersTable from "../components/PendingOrdersTable";
 import Loading from "../../../components/Loading";
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -24,12 +23,12 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div className="page dashboard-page">
         <Notifications schoolName={this.props.schoolName} />
         <Loading loading={this.props.loading}>
           {this.props.pendingOrders &&
           this.props.pendingOrders.results.length > 0 ? (
-            <div className={styles.main}>
+            <div className="main">
               <PendingOrdersTable orders={this.props.pendingOrders.results} />
               <PaginationLinks
                 currentPage={this.props.page}
@@ -40,7 +39,7 @@ class Dashboard extends Component {
               />
             </div>
           ) : (
-            <div className={styles.noResults}>ʘ‿ʘ Everything up to date!</div>
+            <div className="noResults">ʘ‿ʘ Everything up to date!</div>
           )}
         </Loading>
       </div>

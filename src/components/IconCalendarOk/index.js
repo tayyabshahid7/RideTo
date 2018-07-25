@@ -1,13 +1,11 @@
 import React from "react";
-import classNames from "classnames";
-import styles from "./styles.scss";
 
 const CalendarIconOk = props => {
   return (
-    <div className={styles.container}>
+    <div className="icon-calendar-ok">
       <h1>Alright! no pending orders!</h1>
-      <div className={classNames(styles.calendarContainer, styles.calendar)}>
-        <div className={styles.checkmark} />
+      <div className="calendarContainer calendar">
+        <div className="checkmark" />
       </div>
     </div>
   );

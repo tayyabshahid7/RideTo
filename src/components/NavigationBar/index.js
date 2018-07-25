@@ -1,38 +1,37 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import styles from "./styles.scss";
 import Header from "../Header";
 import UserMenu from "../UserMenu";
 
 let NavigationBar = ({ history }) => {
   return (
     <Header>
-      <div className={styles.container}>
-        <div className={styles.navLinks}>
+      <div className="navigation-bar">
+        <div className="navLinks">
           <NavLink
-            className={styles.navLink}
-            activeClassName={styles.activeNavLink}
+            className="navLink"
+            activeClassName="activeNavLink"
             exact
             to="/"
           >
             Home
           </NavLink>
           <NavLink
-            className={styles.navLink}
-            activeClassName={styles.activeNavLink}
+            className="navLink"
+            activeClassName="activeNavLink"
             to="/orders"
           >
             Orders
           </NavLink>
           <NavLink
-            className={styles.navLink}
-            activeClassName={styles.activeNavLink}
+            className="navLink"
+            activeClassName="activeNavLink"
             to="/calendar"
           >
             Calendar
           </NavLink>
         </div>
-        <div className={styles.authMenu}>
+        <div className="authMenu">
           <UserMenu history={history} />
         </div>
       </div>
