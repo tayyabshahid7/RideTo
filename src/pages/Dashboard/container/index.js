@@ -4,13 +4,15 @@ import { getPendingOrders } from "../../../actions/dashboard";
 
 import Notifications from "../components/Notifications";
 import PaginationLinks from "../../../components/PaginationLinks";
-import PendingOrdersTable from "../components/PendingOrdersTable";
+// import PendingOrdersTable from "../components/PendingOrdersTable";
 import Loading from "../../../components/Loading";
+import FilteredTable from "../../../components/FilteredTable";
 
 class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.handleChangePage = this.handleChangePage.bind(this);
+    this.handleSorting = this.handleSorting.bind(this);
   }
 
   componentDidMount() {
@@ -21,6 +23,11 @@ class Dashboard extends Component {
     this.props.getPendingOrders(this.props.schoolId, page);
   }
 
+  handleSorting(sorting) {
+    // console.log(sorting);
+    this.props.getPendingOrders(this.props.schoolId, this.props.page, sorting);
+  }
+
   render() {
     return (
       <div className="page dashboard-page">
@@ -29,7 +36,10 @@ class Dashboard extends Component {
           {this.props.pendingOrders &&
           this.props.pendingOrders.results.length > 0 ? (
             <div className="main">
-              <PendingOrdersTable orders={this.props.pendingOrders.results} />
+              <FilteredTable
+                orders={this.props.pendingOrders.results}
+                sortingChange={this.handleSorting}
+              />
               <PaginationLinks
                 currentPage={this.props.page}
                 count={this.props.pendingOrders.count}
@@ -56,7 +66,7 @@ export default connect(
     loading: state.dashboard.loading
   }),
   dispatch => ({
-    getPendingOrders: (schoolId, page) =>
-      dispatch(getPendingOrders(schoolId, page))
+    getPendingOrders: (schoolId, page, sorting = null) =>
+      dispatch(getPendingOrders(schoolId, page, sorting))
   })
 )(Dashboard);

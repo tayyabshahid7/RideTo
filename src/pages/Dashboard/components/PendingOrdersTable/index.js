@@ -8,7 +8,9 @@ class Table extends Component {
           <thead>
             <tr>
               <th />
-              <th>Order #</th>
+              <th>
+                Order #<span onClick={e => this.porps.sortingChange(e)}>X</span>
+              </th>
               <th>Date Requested</th>
               <th>Bike Type</th>
               <th>School location</th>

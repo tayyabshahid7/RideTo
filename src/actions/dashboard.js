@@ -18,12 +18,17 @@ export const changePage = page => ({
   page
 });
 
-export const getPendingOrders = (schoolId, page = 1) => {
+export const getPendingOrders = (schoolId, page = 1, sorting = null) => {
   return async dispatch => {
     dispatch(pendingOrdersRequest());
     try {
       const token = localStorage.getItem("token");
-      const response = await apiGetPendingOrders(schoolId, page, token);
+      const response = await apiGetPendingOrders(
+        schoolId,
+        page,
+        sorting,
+        token
+      );
       if (response.status === 200) {
         dispatch(changePage(page));
         dispatch(pendingOrdersSuccess(response.data));

@@ -4,8 +4,6 @@ import axios from "axios";
 export const LOGIN_REQUEST_URL = "api/users/login/";
 export const TOKEN_REFRESH_URL = "api/users/refresh/";
 export const VERIFY_TOKEN_REQUEST_URL = "api/users/verify/";
-export const GET_PENDING_ORDERS_URL = "api/o/pending/";
-export const GET_CONFIRMED_ORDERS_URL = "api/o/confirmed/";
 export const POST_METHOD = "POST";
 export const GET_METHOD = "GET";
 export const BASE_URL = process.env.REACT_APP_REST_API_BASE_URL; //see .env files
@@ -49,19 +47,19 @@ export const apiRequestVerifyToken = token => {
   return axios.post(VERIFY_TOKEN_REQUEST_URL, data, config);
 };
 
-export const apiGetPendingOrders = (schoolId, page, token) => {
+export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
   const config = {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`
     },
     params: {
-      page: page,
-      sid: schoolId
+      sort: sorting,
+      page: page
     },
     baseURL: BASE_URL
   };
-  return axios.get(GET_PENDING_ORDERS_URL, config).catch(error => error);
+  return axios.get(`api/o/${schoolId}/pending/`, config).catch(error => error);
 };
 
 export const apiGetSchoolOrders = (schoolId, page, token) => {
@@ -71,12 +69,13 @@ export const apiGetSchoolOrders = (schoolId, page, token) => {
       Authorization: `Bearer ${token}`
     },
     params: {
-      page: page,
-      sid: schoolId
+      page: page
     },
     baseURL: BASE_URL
   };
-  return axios.get(GET_CONFIRMED_ORDERS_URL, config).catch(error => error);
+  return axios
+    .get(`api/o/${schoolId}/confirmed/`, config)
+    .catch(error => error);
 };
 
 export const apiGet = (
