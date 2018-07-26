@@ -1,17 +1,19 @@
-import React, { Component } from "react";
-import Loading from "../../../../components/Loading";
+import React, { Component } from 'react'
+import Loading from '../../../../components/Loading'
+import styles from './styles.scss'
+import classnames from 'classnames'
 
 class ConfirmedOrders extends Component {
   checkCancelledOrRejected(order) {
-    if (order.cancelled || order.booking_status !== "SCHOOL_CONFIRMED_BOOK") {
-      return true;
+    if (order.cancelled || order.booking_status !== 'SCHOOL_CONFIRMED_BOOK') {
+      return true
     }
-    return false;
+    return false
   }
 
   render() {
     return (
-      <div className="confirmed-orders">
+      <div className={styles.container}>
         {
           <div>
             <Loading loading={this.props.loading}>
@@ -37,33 +39,33 @@ class ConfirmedOrders extends Component {
                           : order.start_time}
                       </td>
                       <td>
-                        {order.selected_licence === "LICENCE_CBT"
-                          ? "CBT Training "
-                          : "CBT Renewal"}
+                        {order.selected_licence === 'LICENCE_CBT'
+                          ? 'CBT Training '
+                          : 'CBT Renewal'}
                       </td>
                       <td>
-                        {order.bike_hire === "auto"
-                          ? "Automatic"
-                          : order.bike_hire === "manual"
-                            ? "Manual"
-                            : "None"}
+                        {order.bike_hire === 'auto'
+                          ? 'Automatic'
+                          : order.bike_hire === 'manual'
+                            ? 'Manual'
+                            : 'None'}
                       </td>
                       <td>
                         {this.checkCancelledOrRejected(order)
-                          ? "-"
+                          ? '-'
                           : order.user_name}
                       </td>
                       <td>
                         {this.checkCancelledOrRejected(order)
-                          ? "-"
+                          ? '-'
                           : order.user_phone}
                       </td>
                       <td>
                         {order.cancelled
-                          ? "Cancelled"
-                          : order.booking_status === "SCHOOL_CONFIRMED_BOOK"
-                            ? "Confirmed"
-                            : "Rejected"}
+                          ? 'Cancelled'
+                          : order.booking_status === 'SCHOOL_CONFIRMED_BOOK'
+                            ? 'Confirmed'
+                            : 'Rejected'}
                       </td>
                     </tr>
                   ))}
@@ -73,8 +75,8 @@ class ConfirmedOrders extends Component {
           </div>
         }
       </div>
-    );
+    )
   }
 }
 
-export default ConfirmedOrders;
+export default ConfirmedOrders

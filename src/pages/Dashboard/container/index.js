@@ -1,49 +1,51 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { getPendingOrders } from "../../../actions/dashboard";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { getPendingOrders } from '../../../actions/dashboard'
 
-import Notifications from "../components/Notifications";
-import PaginationLinks from "../../../components/PaginationLinks";
-import PendingOrdersTable from "../components/PendingOrdersTable";
-import Loading from "../../../components/Loading";
+import Notifications from '../components/Notifications'
+import PaginationLinks from '../../../components/PaginationLinks'
+import PendingOrdersTable from '../components/PendingOrdersTable'
+import Loading from '../../../components/Loading'
+import styles from './styles.scss'
+import classnames from 'classnames'
 
 class Dashboard extends Component {
   constructor(props) {
-    super(props);
-    this.handleChangePage = this.handleChangePage.bind(this);
+    super(props)
+    this.handleChangePage = this.handleChangePage.bind(this)
   }
 
   componentDidMount() {
-    this.props.getPendingOrders(this.props.schoolId, this.props.page);
+    this.props.getPendingOrders(this.props.schoolId, this.props.page)
   }
 
   handleChangePage(page) {
-    this.props.getPendingOrders(this.props.schoolId, page);
+    this.props.getPendingOrders(this.props.schoolId, page)
   }
 
   render() {
     return (
-      <div className="page dashboard-page">
+      <div className={styles.container}>
         <Notifications schoolName={this.props.schoolName} />
         <Loading loading={this.props.loading}>
           {this.props.pendingOrders &&
           this.props.pendingOrders.results.length > 0 ? (
-            <div className="main">
+            <div className={styles.main}>
               <PendingOrdersTable orders={this.props.pendingOrders.results} />
               <PaginationLinks
                 currentPage={this.props.page}
                 count={this.props.pendingOrders.count}
                 pageSize={20}
-                rowName={"orders"}
+                rowName={'orders'}
                 onPageChange={this.handleChangePage}
               />
             </div>
           ) : (
-            <div className="noResults">ʘ‿ʘ Everything up to date!</div>
+            <div className={styles.noResults}>ʘ‿ʘ Everything up to date!</div>
           )}
         </Loading>
       </div>
-    );
+    )
   }
 }
 
@@ -59,4 +61,4 @@ export default connect(
     getPendingOrders: (schoolId, page) =>
       dispatch(getPendingOrders(schoolId, page))
   })
-)(Dashboard);
+)(Dashboard)

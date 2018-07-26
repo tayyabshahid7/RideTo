@@ -1,9 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
+import styles from './styles.scss'
+import classnames from 'classnames'
 
 class Modal extends Component {
   constructor(props) {
-    super(props);
-    this.closeModal = this.closeModal.bind(this);
+    super(props)
+    this.closeModal = this.closeModal.bind(this)
   }
 
   componentDidMount() {
@@ -11,21 +13,21 @@ class Modal extends Component {
   }
 
   closeModal(e) {
-    e && e.stopPropagation();
-    this.props.history.goBack();
+    e && e.stopPropagation()
+    this.props.history.goBack()
   }
 
   render() {
     return (
-      <div className="modal-wrapper">
-        <div className="modal">
-          <div className="modalHeader">
-            <div className="modalTitle">TITLE</div>
-            <div className="modalCloseButton" onClick={this.closeModal}>
+      <div className={styles.container}>
+        <div className={styles.modal}>
+          <div className={styles.modalHeader}>
+            <div className={styles.modalTitle}>TITLE</div>
+            <div className={styles.modalCloseButton} onClick={this.closeModal}>
               x
             </div>
           </div>
-          <div className="modalBody">
+          <div className={styles.modalBody}>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
@@ -36,23 +38,22 @@ class Modal extends Component {
               sunt in culpa qui officia deserunt mollit anim id est laborum.
             </p>
           </div>
-          <div className="modalFooter">
-            <div className="modalActionButtons">
+          <div className={styles.modalFooter}>
+            <div className={styles.modalActionButtons}>
               <button
                 type="button"
-                className="button"
-                onClick={this.closeModal}
-              >
+                className={styles.button}
+                onClick={this.closeModal}>
                 Close
               </button>
             </div>
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
 // Place this <Router path="[link path]" component={Modal}/>
 // <Link to={'[path-here]'}>[text here]</Link>
-export default Modal;
+export default Modal

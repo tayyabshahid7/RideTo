@@ -5,12 +5,14 @@ import Dashboard from '../Dashboard/container'
 import Orders from '../Orders/container'
 import Calendar from '../Calendar'
 import Footer from '../../components/Footer'
+import styles from './styles.scss'
+import classnames from 'classnames'
 
 const MainLayout = ({ history }) => {
   return (
-    <div className="main-layout">
+    <div className={styles.container}>
       <NavigationBar history={history} />
-      <div className="main-content">
+      <div className={styles.bodyContainer}>
         <Switch>
           <Route path="/orders" component={Orders} />
           <Route path="/calendar" component={Calendar} />
