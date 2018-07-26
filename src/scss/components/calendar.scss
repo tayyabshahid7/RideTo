@@ -1,0 +1,127 @@
+.calendar {
+  width: 100%;
+
+  a {
+    color: #8e352e;
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  li {
+    list-style-type: none;
+    display: inline-block;
+    // width: 13.1%;
+    text-align: center;
+    margin-bottom: 4px;
+    font-size: 12px;
+    color: #777;
+
+    width: 14.342%;
+    padding: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    margin-right: -1px;
+    margin-bottom: -1px;
+  }
+  // li {
+  //   display: block;
+  //   float: left;
+  //   width: 14.342%;
+  //   padding: 5px;
+  //   box-sizing: border-box;
+  //   border: 1px solid #ccc;
+  //   margin-right: -1px;
+  //   margin-bottom: -1px;
+  // }
+
+  ul.weekdays {
+    height: 40px;
+    background: #8e352e;
+  }
+
+  ul.weekdays li {
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 20px;
+    border: none !important;
+    padding: 10px 6px;
+    color: #fff;
+    font-size: 13px;
+  }
+
+  .days li {
+    height: 180px;
+
+    .date {
+      text-align: center;
+      margin-bottom: 5px;
+      // padding: 4px;
+      background: #333;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      float: right;
+      line-height: 32px;
+    }
+
+    .event {
+      clear: both;
+      display: block;
+      font-size: 13px;
+      border-radius: 4px;
+      padding: 5px;
+      margin-top: 40px;
+      margin-bottom: 5px;
+      line-height: 14px;
+      background: #e4f2f2;
+      border: 1px solid #b5dbdc;
+      color: #009aaf;
+      text-decoration: none;
+    }
+
+    .event-desc {
+      color: #666;
+      margin: 3px 0 7px 0;
+      text-decoration: none;
+    }
+  }
+
+  .days li:hover {
+    background: #d3d3d3;
+  }
+
+  .other-month {
+    background: #f5f5f5;
+    color: #666;
+  }
+}
+
+/* ============================
+              Mobile Responsiveness
+ ============================*/
+
+// @media(max-width: 768px) {
+//   .calendar {
+//     .weekdays, .other-month {
+//       display: none;
+//     }
+
+//     li {
+//       height: auto !important;
+//       border: 1px solid #ededed;
+//       width: 100%;
+//       padding: 10px;
+//       margin-bottom: -1px;
+//     }
+
+//     .date {
+//       float: none;
+//     }
+//   }
+// }

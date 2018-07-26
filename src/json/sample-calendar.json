@@ -1,0 +1,93 @@
+{
+  "previous":
+    "https://www.rideto.com/api/calendar/?start_date=2018-01-01&end_date=2018-01-01",
+  "next":
+    "https://www.rideto.com/api/calendar/?start_date=2018-08-01&end_date=2018-01-01",
+  "count": 5,
+  "results": [
+    {
+      "id": "5b5724d99dc1e31480f1f056",
+      "date": "2018-03-24",
+      "time": "09:00",
+      "type": "CBT Training",
+      "available_spaces": 4,
+      "orders": []
+    },
+    {
+      "id": "5b5724d9be1f059e5baacae7",
+      "date": "2018-07-02",
+      "time": "09:00",
+      "type": "CBT Training",
+      "available_spaces": 0,
+      "orders": [
+        {
+          "id": 4697,
+          "rider_name": "Singleton Parks"
+        },
+        {
+          "id": 1407,
+          "rider_name": "Shannon Lynn"
+        },
+        {
+          "id": 1221,
+          "rider_name": "Maggie Ewing"
+        },
+        {
+          "id": 1407,
+          "rider_name": "Charles Simmons"
+        }
+      ]
+    },
+    {
+      "id": "5b5724d958f25fb98ac604d7",
+      "date": "2018-07-13",
+      "time": "09:00",
+      "type": "CBT Training",
+      "available_spaces": 1,
+      "orders": [
+        {
+          "id": 4697,
+          "rider_name": "Chen Duncan"
+        },
+        {
+          "id": 3863,
+          "rider_name": "Jennings Duke"
+        },
+        {
+          "id": 2252,
+          "rider_name": "Jennifer Romero"
+        }
+      ]
+    },
+    {
+      "id": "5b5724d90af45bd49782ad51",
+      "date": "2018-06-01",
+      "time": "09:00",
+      "type": "CBT Training",
+      "available_spaces": 3,
+      "orders": [
+        {
+          "id": 1407,
+          "rider_name": "Glover Boone"
+        }
+      ]
+    },
+    {
+      "id": "5b5724d992674c14e00ab793",
+      "date": "2018-06-18",
+      "time": "09:00",
+      "type": "CBT Training",
+      "available_spaces": 2,
+      "orders": [
+        {
+          "id": 1407,
+          "rider_name": "Ayers Berger"
+        },
+        {
+          "id": 3863,
+          "rider_name": "Fulton Richards"
+        }
+      ]
+    }
+  ]
+}

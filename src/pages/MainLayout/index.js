@@ -1,16 +1,16 @@
-import React from "react";
-import { Switch, Route } from "react-router";
-import NavigationBar from "../../components/NavigationBar";
-import Dashboard from "../Dashboard/container";
-import Orders from "../Orders/container";
-import Calendar from "../Calendar";
-import Footer from "../../components/Footer";
+import React from 'react'
+import { Switch, Route } from 'react-router'
+import NavigationBar from '../../components/NavigationBar'
+import Dashboard from '../Dashboard/container'
+import Orders from '../Orders/container'
+import Calendar from '../Calendar'
+import Footer from '../../components/Footer'
 
 const MainLayout = ({ history }) => {
   return (
     <div className="main-layout">
       <NavigationBar history={history} />
-      <div className="bodyContainer">
+      <div className="main-content">
         <Switch>
           <Route path="/orders" component={Orders} />
           <Route path="/calendar" component={Calendar} />
@@ -19,7 +19,7 @@ const MainLayout = ({ history }) => {
       </div>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default MainLayout;
+export default MainLayout
