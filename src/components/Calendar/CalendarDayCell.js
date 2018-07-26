@@ -1,4 +1,5 @@
 import React from 'react'
+import CalendarDaycellCourse from './CalendarDaycellCourse'
 
 const CalendarDayCell = ({ day, info, className = '' }) => (
   <li
@@ -6,13 +7,14 @@ const CalendarDayCell = ({ day, info, className = '' }) => (
       day.date.getMonth() !== info.month ? 'other-month' : ''
     }`}>
     <div className="date">{day.date.getDate()}</div>
-    {day.events &&
-      day.events.length > 0 && (
-        <div className="event">
-          <div className="event-desc">
-            HTML 5 lecture with Brad Traversy from Eduonix
-          </div>
-          <div className="event-time">1:00pm to 3:00pm</div>
+    {day.courses &&
+      day.courses.length > 0 && (
+        <div className="courses">
+          <CalendarDaycellCourse course={day.courses[0]} />
+          {day.courses.length > 1 && (
+            <CalendarDaycellCourse course={day.courses[1]} />
+          )}
+          {day.courses.length > 2 && <div>{day.courses.length - 2} more</div>}
         </div>
       )}
   </li>

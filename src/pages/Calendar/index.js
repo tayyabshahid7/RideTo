@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import CalendarComponent from '../../components/Calendar/CalendarComponent'
+import CoursesPanel from '../../components/Calendar/CoursesPanel'
 
 class CalendarPage extends Component {
   constructor(props) {
@@ -37,6 +38,9 @@ class CalendarPage extends Component {
       <div className="page calendar-page">
         <div className="calendar-wrap col-md-8">
           <CalendarComponent days={days} info={info} />
+        </div>
+        <div className="courses-panel-wrapper col-md-4">
+          <CoursesPanel />
         </div>
       </div>
     )
