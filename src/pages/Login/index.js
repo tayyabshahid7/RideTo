@@ -1,53 +1,55 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { login } from "../../actions/authActions";
-import Header from "../../components/Header";
-import logo from "assets/images/scooter.png";
-import { isAuthenticated } from "services/auth";
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { login } from '../../actions/authActions'
+import Header from '../../components/Header'
+import logo from 'assets/images/scooter.png'
+import { isAuthenticated } from 'services/auth'
+import styles from './styles.scss'
+import classnames from 'classnames'
 
 class Login extends Component {
   constructor(props) {
-    super(props);
-    this.emailInput = React.createRef();
-    this.passwordInput = React.createRef();
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    super(props)
+    this.emailInput = React.createRef()
+    this.passwordInput = React.createRef()
+    this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
   componentDidMount() {
     if (isAuthenticated()) {
-      this.props.history.push("/");
+      this.props.history.push('/')
     }
   }
 
   handleFormSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
     if (
       !this.emailInput.current.value.trim() &&
       !this.passwordInput.current.value.trim()
     ) {
-      return;
+      return
     }
     // dispatch(login({email:emailInput.current.value, password:passwordInput.current.value}))
     this.props
       .login(this.emailInput.current.value, this.passwordInput.current.value)
       .then(() => {
-        this.props.history.push("/");
-      });
+        this.props.history.push('/')
+      })
   }
 
   render() {
     return (
-      <div className="page login-page">
+      <div className={styles.container}>
         <Header dark />
-        <div className="main">
-          <div className="image">
+        <div className={styles.main}>
+          <div className={styles.image}>
             <img src={logo} alt="RideTo logo" />
           </div>
-          <div className="loginFormContainer">
-            <div className="formTitle">
+          <div className={styles.loginFormContainer}>
+            <div className={styles.formTitle}>
               <h1>Partner schools dashboard</h1>
             </div>
-            <form className="loginForm" onSubmit={this.handleFormSubmit}>
+            <form className={styles.loginForm} onSubmit={this.handleFormSubmit}>
               <input
                 type="email"
                 autoComplete="email"
@@ -65,12 +67,12 @@ class Login extends Component {
               <button type="submit">Login</button>
             </form>
             {this.props.error && (
-              <div style={{ color: "red" }}>{this.props.error}</div>
+              <div style={{ color: 'red' }}>{this.props.error}</div>
             )}
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
@@ -79,17 +81,17 @@ let mapStateToProps = state => {
     loggedIn: state.auth.loggedIn,
     loading: state.auth.loading,
     error: state.auth.error
-  };
-};
+  }
+}
 
 let mapDispatchToProps = dispatch => {
   return {
     login: (email, password) => dispatch(login(email, password))
-  };
-};
+  }
+}
 
 Login = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Login);
-export default Login;
+)(Login)
+export default Login
