@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logout, changeSchool } from '../../actions/authActions'
 import styles from './styles.scss'
-import classnames from 'classnames'
+
+import SchoolSelect from "components/SchoolSelect";
 
 class UserMenu extends Component {
   constructor(props) {
@@ -45,13 +46,9 @@ class UserMenu extends Component {
     }
   }
 
-  handleSupplierChange(e) {
-    console.log(e)
-    this.props.changeSchool(
-      e.target.value,
-      e.target.options[e.target.selectedIndex].innerText
-    )
-    this.toggleMenu()
+  handleSupplierChange(schoolId, schoolName) {
+    this.props.changeSchool(schoolId, schoolName);
+    this.toggleMenu();
   }
 
   render() {
@@ -68,18 +65,11 @@ class UserMenu extends Component {
               <button onClick={this.handleLogout}>Logout</button>
               <br />
               <br />
-              <select
-                value={schoolId}
-                onChange={e => this.handleSupplierChange(e)}>
-                {user.suppliers.map(supplier => (
-                  <option
-                    key={supplier.id}
-                    value={supplier.id}
-                    name={supplier.name}>
-                    {supplier.name}
-                  </option>
-                ))}
-              </select>
+              <SchoolSelect
+                schools={user.suppliers}
+                selected={schoolId}
+                onChange={this.handleSupplierChange}
+              />
             </div>
           )}
         </div>

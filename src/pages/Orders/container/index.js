@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import SchoolSelect from "components/SchoolSelect";
 import { getSchoolOrders, changePage } from '../../../actions/orders'
 import ConfirmedOrders from '../components/ConfirmedOrders'
 import PaginationLinks from '../../../components/PaginationLinks'
 import styles from './styles.scss'
 import classnames from 'classnames'
+
 
 class Orders extends Component {
   constructor(props) {
@@ -22,29 +24,40 @@ class Orders extends Component {
   }
 
   render() {
+    const { schoolId, user, changeSchool } = this.props;
+
     return (
       <div className={styles.container}>
-        {this.props.confirmedOrders &&
-        this.props.confirmedOrders.results.length > 0 ? (
-          <div className={styles.ordersContainer}>
-            <h2>Orders - {this.props.schoolName}</h2>
-            <ConfirmedOrders
-              loading={this.props.loading}
-              confirmedOrders={this.props.confirmedOrders}
+        <div className={styles.ordersContainer}>
+          <h2>
+            Orders -
+            <SchoolSelect
+              selected={schoolId}
+              schools={user.suppliers}
+              onChange={changeSchool}
             />
-            <PaginationLinks
-              currentPage={this.props.page}
-              count={this.props.confirmedOrders.count}
-              pageSize={20}
-              rowName={'orders'}
-              onPageChange={this.handleChangePage}
-            />
-          </div>
-        ) : (
+          </h2>
+          {this.props.confirmedOrders &&
+          this.props.confirmedOrders.results.length > 0 ? (
+            <React.Fragment>
+              <ConfirmedOrders
+                loading={this.props.loading}
+                confirmedOrders={this.props.confirmedOrders}
+              />
+              <PaginationLinks
+                currentPage={this.props.page}
+                count={this.props.confirmedOrders.count}
+                pageSize={20}
+                rowName={'orders'}
+                onPageChange={this.handleChangePage}
+              />
+            </React.Fragment>
+          ) : (
           <div className={styles.noResults}>
             No orders yet. No worries we have your back! ;)
           </div>
-        )}
+          )}
+        </div>
       </div>
     )
   }
@@ -52,6 +65,7 @@ class Orders extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    user: state.auth.user,
     schoolId: state.auth.schoolId,
     schoolName: state.auth.schoolName,
     confirmedOrders: state.orders.confirmedOrders,
@@ -64,7 +78,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getSchoolOrders,
-      changePage
+      changePage,
+      changeSchool
     },
     dispatch
   )
