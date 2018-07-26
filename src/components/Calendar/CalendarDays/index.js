@@ -1,8 +1,10 @@
 import React from 'react'
-import CalendarDayCell from './CalendarDayCell'
+// import classnames from 'classnames'
+import CalendarDayCell from '../CalendarDayCell'
+import styles from './index.scss'
 
 const CalendarDays = ({ days, info }) => (
-  <ul className="days">
+  <ul className={styles.container}>
     {days.map((day, index) => (
       <CalendarDayCell day={day} info={info} key={index} />
     ))}

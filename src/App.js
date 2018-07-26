@@ -7,8 +7,8 @@ import Login from './pages/Login'
 import MainLayout from './pages/MainLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 import history from './history1'
-import 'bootstrap'
-import 'bootstrap/dist/css/bootstrap.min.css'
+// import 'bootstrap'
+// import 'bootstrap/dist/css/bootstrap.min.css'
 import styles from './App.scss'
 
 class App extends Component {

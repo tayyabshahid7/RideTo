@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import styles from './CoursesPanel.scss'
+import classnames from 'classnames'
 
 class CoursesPanel extends Component {
   render() {
-    return <div className="courses-panel">Courses Panel</div>
+    return <div className={styles.container}>Courses Panel</div>
   }
 }
 

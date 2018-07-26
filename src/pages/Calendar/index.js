@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import CalendarComponent from '../../components/Calendar/CalendarComponent'
+import CalendarComponent from '../../components/Calendar'
 import CoursesPanel from '../../components/Calendar/CoursesPanel'
 
 class CalendarPage extends Component {

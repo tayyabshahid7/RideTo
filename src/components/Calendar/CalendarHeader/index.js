@@ -1,5 +1,7 @@
 import React from 'react'
 import moment from 'moment'
+// import styles from './index.scss'
+// import classnames from 'classnames'
 
 const CalendarHeader = ({ info }) => (
   <header>

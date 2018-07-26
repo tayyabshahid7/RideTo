@@ -1,7 +1,9 @@
 import React from 'react'
+// import classnames from 'classnames'
+import styles from './index.scss'
 
 const CalendarWeekdays = () => (
-  <ul className="weekdays">
+  <ul className={styles.container}>
     <li>Sun</li>
     <li>Mon</li>
     <li>Tue</li>

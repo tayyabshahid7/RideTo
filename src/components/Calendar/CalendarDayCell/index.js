@@ -1,15 +1,18 @@
 import React from 'react'
-import CalendarDaycellCourse from './CalendarDaycellCourse'
+import classnames from 'classnames'
+import CalendarDaycellCourse from '../CalendarDaycellCourse'
+import styles from './index.scss'
 
-const CalendarDayCell = ({ day, info, className = '' }) => (
+const CalendarDayCell = ({ day, info }) => (
   <li
-    className={`day ${className} ${
-      day.date.getMonth() !== info.month ? 'other-month' : ''
-    }`}>
-    <div className="date">{day.date.getDate()}</div>
+    className={classnames(
+      styles.container,
+      day.date.getMonth() !== info.month ? styles.otherMonth : ''
+    )}>
+    <div className={styles.date}>{day.date.getDate()}</div>
     {day.courses &&
       day.courses.length > 0 && (
-        <div className="courses">
+        <div>
           <CalendarDaycellCourse course={day.courses[0]} />
           {day.courses.length > 1 && (
             <CalendarDaycellCourse course={day.courses[1]} />

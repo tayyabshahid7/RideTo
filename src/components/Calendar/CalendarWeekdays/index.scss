@@ -1,0 +1,19 @@
+.container {
+  height: 40px;
+  background: #8e352e;
+  li {
+    text-align: center;
+    text-transform: uppercase;
+    line-height: 20px;
+    border: none !important;
+    padding: 10px 6px;
+    color: #fff;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: none;
+  }
+}
