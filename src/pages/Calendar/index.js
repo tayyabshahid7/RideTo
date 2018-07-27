@@ -2,11 +2,11 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import CalendarComponent from '../../components/Calendar'
-import CoursesPanel from '../../components/Calendar/CoursesPanel'
+import CalendarComponent from 'components/Calendar'
+import CoursesPanel from 'components/Calendar/CoursesPanel'
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
-import { getCourses } from '../../actions/calendar'
+import { getCourses } from 'actions/calendar'
 
 class CalendarPage extends Component {
   // constructor(props) {
@@ -42,13 +42,11 @@ class CalendarPage extends Component {
       )
       days.push({ date, courses: coursesForDate })
     }
-    console.log('HALA Days', days)
     return days
   }
   render() {
     const { schoolName, calendar } = this.props
     let info = { year: calendar.year, month: calendar.month }
-    console.log('HALA calendar', calendar)
     let days = this.generateCalendarInfo(calendar)
     return (
       <div className={styles.container}>
