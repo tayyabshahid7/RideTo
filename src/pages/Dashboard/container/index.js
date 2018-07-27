@@ -1,17 +1,20 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { getPendingOrders } from '../../../actions/dashboard'
-
+import { bindActionCreators } from 'redux'
+import { getPendingOrders } from 'actions/dashboard'
+import { changeSchool } from 'actions/authActions'
 import Notifications from '../components/Notifications'
-import PaginationLinks from '../../../components/PaginationLinks'
-import FilteredTable from '../../../components/FilteredTable'
-import Loading from '../../../components/Loading'
+import PendinOrdersTable from '../components/PendingOrdersTable'
+import PaginationLinks from 'components/PaginationLinks'
+import Loading from 'components/Loading'
 import styles from './styles.scss'
-import classnames from 'classnames'
 
 class Dashboard extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      sorting: null
+    }
     this.handleChangePage = this.handleChangePage.bind(this)
     this.handleSorting = this.handleSorting.bind(this)
   }
@@ -25,19 +28,29 @@ class Dashboard extends Component {
   }
 
   handleSorting(sorting) {
-    // console.log(sorting);
-    this.props.getPendingOrders(this.props.schoolId, this.props.page, sorting)
+    this.setState({ sorting: sorting }, () =>
+      this.props.getPendingOrders(
+        this.props.schoolId,
+        this.props.page,
+        this.state.sorting
+      )
+    )
   }
 
   render() {
     return (
       <div className={styles.container}>
-        <Notifications schoolName={this.props.schoolName} />
+        <Notifications
+          schoolName={this.props.schoolName}
+          schoolId={this.props.schoolId}
+          schools={this.props.user.suppliers}
+          changeSchool={this.props.changeSchool}
+        />
         <Loading loading={this.props.loading}>
           {this.props.pendingOrders &&
           this.props.pendingOrders.results.length > 0 ? (
             <div className={styles.main}>
-              <FilteredTable
+              <PendinOrdersTable
                 orders={this.props.pendingOrders.results}
                 sortingChange={this.handleSorting}
               />
@@ -58,16 +71,27 @@ class Dashboard extends Component {
   }
 }
 
-export default connect(
-  state => ({
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.auth.user,
     schoolId: state.auth.schoolId,
     schoolName: state.auth.schoolName,
     pendingOrders: state.dashboard.pendingOrders,
-    page: state.dashboard.page,
-    loading: state.dashboard.loading
-  }),
-  dispatch => ({
-    getPendingOrders: (schoolId, page, sorting = null) =>
-      dispatch(getPendingOrders(schoolId, page, sorting))
-  })
+    page: state.orders.page,
+    loading: state.orders.loading
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getPendingOrders,
+      changeSchool
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
 )(Dashboard)

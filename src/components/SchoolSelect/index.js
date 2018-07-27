@@ -1,8 +1,9 @@
 import React from 'react'
-
+import styles from './styles.scss'
 const SchoolSelect = ({ selected, schools, onChange }) => {
   return (
     <select
+      className={styles.schoolSelect}
       value={selected}
       onChange={e =>
         onChange(

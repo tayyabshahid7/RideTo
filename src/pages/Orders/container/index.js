@@ -2,25 +2,43 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import SchoolSelect from 'components/SchoolSelect'
-import { getSchoolOrders, changePage } from '../../../actions/orders'
-import { changeSchool } from '../../../actions/authActions'
+import { getSchoolOrders, changePage } from 'actions/orders'
+import { changeSchool } from 'actions/authActions'
 import ConfirmedOrders from '../components/ConfirmedOrders'
-import PaginationLinks from '../../../components/PaginationLinks'
+import PaginationLinks from 'components/PaginationLinks'
 import styles from './styles.scss'
-import classnames from 'classnames'
 
 class Orders extends Component {
   constructor(props) {
     super(props)
     this.handleChangePage = this.handleChangePage.bind(this)
+    this.handleSorting = this.handleSorting.bind(this)
+
+    this.state = {
+      sorting: null
+    }
   }
 
   componentDidMount() {
-    this.props.getSchoolOrders(this.props.schoolId, this.props.page)
+    this.props.getSchoolOrders(
+      this.props.schoolId,
+      this.props.page,
+      this.state.sorting
+    )
   }
 
   handleChangePage(page) {
-    this.props.getSchoolOrders(this.props.schoolId, page)
+    this.props.getSchoolOrders(this.props.schoolId, page, this.state.sorting)
+  }
+
+  handleSorting(sorting) {
+    this.setState({ sorting: sorting }, () =>
+      this.props.getSchoolOrders(
+        this.props.schoolId,
+        this.props.page,
+        this.state.sorting
+      )
+    )
   }
 
   render() {
@@ -29,20 +47,19 @@ class Orders extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.ordersContainer}>
-          <h2>
-            Orders -
-            <SchoolSelect
-              selected={schoolId}
-              schools={user.suppliers}
-              onChange={changeSchool}
-            />
-          </h2>
+          <h1>Orders</h1>
+          <SchoolSelect
+            selected={schoolId}
+            schools={user.suppliers}
+            onChange={changeSchool}
+          />
           {this.props.confirmedOrders &&
           this.props.confirmedOrders.results.length > 0 ? (
             <React.Fragment>
               <ConfirmedOrders
                 loading={this.props.loading}
                 confirmedOrders={this.props.confirmedOrders}
+                sortingChange={this.handleSorting}
               />
               <PaginationLinks
                 currentPage={this.props.page}

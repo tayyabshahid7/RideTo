@@ -93,13 +93,14 @@ export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
   return axios.get(`api/o/${schoolId}/pending/`, config).catch(error => error)
 }
 
-export const apiGetSchoolOrders = (schoolId, page, token) => {
+export const apiGetSchoolOrders = (schoolId, page, sorting, token) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`
     },
     params: {
+      sort: sorting,
       page: page
     },
     baseURL: BASE_URL
