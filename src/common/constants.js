@@ -1,4 +1,4 @@
 export const CALENDAR_VIEW = {
-  MONTH: 'momth',
+  MONTH: 'month',
   WEEK: 'week'
 }
