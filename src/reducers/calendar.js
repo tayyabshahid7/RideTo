@@ -22,7 +22,7 @@ export const calendar = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        courses: [...action.data.events],
+        courses: [...action.data.courses],
         month: action.data.month,
         year: action.data.year,
         error: null
