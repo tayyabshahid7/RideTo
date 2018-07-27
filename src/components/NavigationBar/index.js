@@ -1,42 +1,41 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
-import Header from "../Header";
-import UserMenu from "../UserMenu";
+import React from 'react'
+import { NavLink } from 'react-router-dom'
+import Header from '../Header'
+import UserMenu from '../UserMenu'
+import styles from './styles.scss'
+import classnames from 'classnames'
 
 let NavigationBar = ({ history }) => {
   return (
     <Header>
-      <div className="navigation-bar">
-        <div className="navLinks">
+      <div className={styles.container}>
+        <div className={styles.navLinks}>
           <NavLink
-            className="navLink"
-            activeClassName="activeNavLink"
+            className={styles.navLink}
+            activeClassName={styles.activeNavLink}
             exact
-            to="/"
-          >
+            to="/">
             Home
           </NavLink>
           <NavLink
-            className="navLink"
-            activeClassName="activeNavLink"
-            to="/orders"
-          >
+            className={styles.navLink}
+            activeClassName={styles.activeNavLink}
+            to="/orders">
             Orders
           </NavLink>
           <NavLink
-            className="navLink"
-            activeClassName="activeNavLink"
-            to="/calendar"
-          >
+            className={styles.navLink}
+            activeClassName={styles.activeNavLink}
+            to="/calendar">
             Calendar
           </NavLink>
         </div>
-        <div className="authMenu">
+        <div className={styles.authMenu}>
           <UserMenu history={history} />
         </div>
       </div>
     </Header>
-  );
-};
+  )
+}
 
-export default NavigationBar;
+export default NavigationBar
