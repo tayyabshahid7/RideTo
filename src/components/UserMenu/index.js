@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { logout, changeSchool } from '../../actions/authActions'
 import styles from './styles.scss'
 
-import SchoolSelect from "components/SchoolSelect";
+import SchoolSelect from 'components/SchoolSelect'
 
 class UserMenu extends Component {
   constructor(props) {
@@ -47,8 +47,8 @@ class UserMenu extends Component {
   }
 
   handleSupplierChange(schoolId, schoolName) {
-    this.props.changeSchool(schoolId, schoolName);
-    this.toggleMenu();
+    this.props.changeSchool(schoolId, schoolName)
+    this.toggleMenu()
   }
 
   render() {
