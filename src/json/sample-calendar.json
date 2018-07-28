@@ -25,19 +25,27 @@
       "orders": [
         {
           "friendly_id": 4697,
-          "user_name": "Singleton Parks"
+          "user_name": "Singleton Parks",
+          "user_phone": "0192109210912",
+          "bike_hire": "auto"
         },
         {
           "friendly_id": 1407,
-          "user_name": "Shannon Lynn"
+          "user_name": "Shannon Lynn",
+          "user_phone": "123123123",
+          "bike_hire": "auto"
         },
         {
           "friendly_id": 1221,
-          "user_name": "Maggie Ewing"
+          "user_name": "Maggie Ewing",
+          "user_phone": "987654321",
+          "bike_hire": "manual"
         },
         {
           "friendly_id": 1407,
-          "user_name": "Charles Simmons"
+          "user_name": "Charles Simmons",
+          "user_phone": "07712332123",
+          "bike_hire": "auto"
         }
       ]
     },
@@ -53,15 +61,21 @@
       "orders": [
         {
           "friendly_id": 4697,
-          "user_name": "Chen Duncan"
+          "user_name": "Chen Duncan",
+          "user_phone": "07777861232",
+          "bike_hire": "auto"
         },
         {
           "friendly_id": 3863,
-          "user_name": "Jennings Duke"
+          "user_name": "Jennings Duke",
+          "user_phone": "0774354213",
+          "bike_hire": "auto"
         },
         {
           "friendly_id": 2252,
-          "user_name": "Jennifer Romero"
+          "user_name": "Jennifer Romero",
+          "user_phone": "07712332123",
+          "bike_hire": "auto"
         }
       ]
     },
@@ -77,11 +91,15 @@
       "orders": [
         {
           "friendly_id": 4697,
-          "user_name": "Chen Duncan"
+          "user_name": "Chen Duncan",
+          "user_phone": "0774354213",
+          "bike_hire": "auto"
         },
         {
           "friendly_id": 2252,
-          "user_name": "Jennifer Romero"
+          "user_name": "Jennifer Romero",
+          "user_phone": "07712332123",
+          "bike_hire": "auto"
         }
       ]
     },
@@ -97,7 +115,9 @@
       "orders": [
         {
           "friendly_id": 1407,
-          "user_name": "Glover Boone"
+          "user_name": "Glover Boone",
+          "user_phone": "0774354213",
+          "bike_hire": "auto"
         }
       ]
     },
@@ -113,11 +133,15 @@
       "orders": [
         {
           "friendly_id": 1407,
-          "user_name": "Ayers Berger"
+          "user_name": "Ayers Berger",
+          "user_phone": "0774354213",
+          "bike_hire": "auto"
         },
         {
           "friendly_id": 3863,
-          "user_name": "Fulton Richards"
+          "user_name": "Fulton Richards",
+          "user_phone": "07712332123",
+          "bike_hire": "auto"
         }
       ]
     }

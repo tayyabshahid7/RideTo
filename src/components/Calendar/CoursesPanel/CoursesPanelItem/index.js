@@ -27,6 +27,8 @@ const CoursesPanelItem = ({ course, date }) => {
                   <strong>#{order.friendly_id}</strong>
                 </td>
                 <td>{order.user_name}</td>
+                <td>{order.user_phone}</td>
+                <td>{order.bike_hire}</td>
               </tr>
             ))}
           </tbody>
