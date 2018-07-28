@@ -14,19 +14,23 @@ const CoursesPanelItem = ({ course, date }) => {
           <div className={styles.title}>
             {course.course_type.name} | {getCourseSpaceText(course)}
           </div>
-          <Link to={`/calendar/${date}/order/${course.id}`}>
+          <Link to={`/calendar/${date}/orders/${course.id}`}>
             Edit / Add Order
           </Link>
         </div>
 
-        <div className={styles.orders}>
-          {course.orders.map(order => (
-            <div className={styles.order}>
-              <strong>{order.friendly_id}</strong>
-              <span>{order.user_name}</span>
-            </div>
-          ))}
-        </div>
+        <table className={styles.orders}>
+          <tbody>
+            {course.orders.map(order => (
+              <tr className={styles.order} key={order.friendly_id}>
+                <td>
+                  <strong>#{order.friendly_id}</strong>
+                </td>
+                <td>{order.user_name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )

@@ -66,6 +66,26 @@
       ]
     },
     {
+      "id": "5b5724d958f25fb98ac604d7",
+      "date": "2018-07-13",
+      "time": "12:00",
+      "course_type": {
+        "id": 1,
+        "name": "CBT Training"
+      },
+      "spaces": 4,
+      "orders": [
+        {
+          "friendly_id": 4697,
+          "user_name": "Chen Duncan"
+        },
+        {
+          "friendly_id": 2252,
+          "user_name": "Jennifer Romero"
+        }
+      ]
+    },
+    {
       "id": "5b5724d90af45bd49782ad51",
       "date": "2018-06-01",
       "time": "09:00",

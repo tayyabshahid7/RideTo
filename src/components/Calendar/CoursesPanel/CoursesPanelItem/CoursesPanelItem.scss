@@ -25,3 +25,22 @@
   padding: 12px 16px;
   margin-right: 16px;
 }
+
+.orders {
+  padding: 12px 16px;
+}
+
+.orders td {
+  margin-right: 16px;
+}
+
+.orders td:last-child {
+  margin-right: 0;
+}
+
+.order {
+  margin-top: 8px;
+  margin-bottom: 8px;
+
+  display: flex;
+}

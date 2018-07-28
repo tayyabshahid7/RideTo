@@ -65,6 +65,11 @@ class CalendarPage extends Component {
                 <CoursesPanel {...routeProps} days={days} />
               )}
             />
+            <Route
+              exact
+              path="/calendar/:date/orders/:courseId"
+              render={routeProps => <h3>Orders</h3>}
+            />
           </Col>
         </Row>
       </div>

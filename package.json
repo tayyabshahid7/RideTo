@@ -76,6 +76,9 @@
     ]
   },
   "jest": {
+    "projects": [
+        "<rootDir>/src"
+    ],
     "collectCoverageFrom": [
       "src/**/*.{js,jsx,mjs}"
     ],
@@ -97,7 +100,10 @@
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|mjs)$"
     ],
     "moduleNameMapper": {
-      "^react-native$": "react-native-web"
+      "^react-native$": "react-native-web",
+      "^services(.*)$": "<rootDir>/src/services$1",
+      "^components(.*)$": "<rootDir>/src/components$1",
+      "^utils(.*)$": "<rootDir>/src/utils$1"
     },
     "moduleFileExtensions": [
       "web.js",
