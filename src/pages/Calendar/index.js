@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -48,6 +49,7 @@ class CalendarPage extends Component {
     const { schoolName, calendar } = this.props
     let info = { year: calendar.year, month: calendar.month }
     let days = this.generateCalendarInfo(calendar)
+
     return (
       <div className={styles.container}>
         <h2>{schoolName}</h2>
@@ -56,7 +58,13 @@ class CalendarPage extends Component {
             <CalendarComponent days={days} info={info} ca />
           </Col>
           <Col xs="4">
-            <CoursesPanel />
+            <Route
+              exact
+              path="/calendar/:date"
+              render={routeProps => (
+                <CoursesPanel {...routeProps} days={days} />
+              )}
+            />
           </Col>
         </Row>
       </div>
