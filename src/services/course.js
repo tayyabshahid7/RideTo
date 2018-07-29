@@ -1,4 +1,5 @@
 import moment from 'moment'
+import { get } from 'services/api'
 import { s } from 'utils/helper'
 
 export const getCourseSpaceText = course => {
@@ -13,4 +14,16 @@ export const getCoursesOnDay = (days, dateStr) => {
     .filter(day => moment(day.date).format('YYYY-MM-DD') === dateStr)
     .map(day => day.courses)
     .reduce(day => day[0])
+}
+
+export const fetchCourses = async (schoolId, startDate, endDate) => {
+  const path = `school/${schoolId}/course`
+  const params = {
+    sdate: startDate,
+    edate: endDate
+  }
+
+  const response = await get(path, params)
+
+  return response.results
 }

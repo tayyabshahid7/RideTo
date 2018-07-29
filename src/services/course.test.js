@@ -1,4 +1,9 @@
-import { getCourseSpaceText } from 'services/course'
+import { fetchCourses, getCourseSpaceText } from 'services/course'
+import * as api from 'services/api'
+
+global.localStorage = {
+  getItem: jest.fn()
+}
 
 const COURSE = {
   id: 1,
@@ -30,5 +35,33 @@ describe('getCourseSpaceText', () => {
 
     const expected = '2 spaces available'
     expect(getCourseSpaceText(course)).toBe(expected)
+  })
+})
+
+describe('fetchCourses', () => {
+  it('Makes request with params', () => {
+    api.get = jest.fn(() => {
+      return {}
+    })
+
+    fetchCourses(1, '2018-01-01', '2018-01-30')
+
+    expect(api.get).toHaveBeenCalledWith('school/1/course', {
+      sdate: '2018-01-01',
+      edate: '2018-01-30'
+    })
+  })
+
+  it('Returns results', done => {
+    const results = [{ id: 5 }]
+
+    api.get = jest.fn(() => {
+      return { results }
+    })
+
+    fetchCourses(1, '2018-01-01', '2018-01-30').then(res => {
+      expect(res).toEqual(results)
+      done()
+    })
   })
 })
