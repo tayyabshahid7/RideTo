@@ -42,7 +42,7 @@
           "bike_hire": "manual"
         },
         {
-          "friendly_id": 1407,
+          "friendly_id": 1409,
           "user_name": "Charles Simmons",
           "user_phone": "07712332123",
           "bike_hire": "auto"
@@ -80,7 +80,7 @@
       ]
     },
     {
-      "id": "5b5724d958f25fb98ac604d7",
+      "id": "5b5724d958f25fb98ac604d6",
       "date": "2018-07-13",
       "time": "12:00",
       "course_type": {
@@ -102,6 +102,71 @@
           "bike_hire": "auto"
         }
       ]
+    },
+    {
+      "id": "1b5724d958f25fb98ac604d7",
+      "date": "2018-07-25",
+      "time": "09:00",
+      "course_type": {
+        "id": 1,
+        "name": "CBT Training"
+      },
+      "spaces": 4,
+      "orders": [
+        {
+          "friendly_id": 4697,
+          "user_name": "Chen Duncan",
+          "user_phone": "07777861232",
+          "bike_hire": "auto"
+        },
+        {
+          "friendly_id": 3863,
+          "user_name": "Jennings Duke",
+          "user_phone": "0774354213",
+          "bike_hire": "auto"
+        },
+        {
+          "friendly_id": 2252,
+          "user_name": "Jennifer Romero",
+          "user_phone": "07712332123",
+          "bike_hire": "auto"
+        }
+      ]
+    },
+    {
+      "id": "2b5724d958f25fb98ac604d6",
+      "date": "2018-07-25",
+      "time": "12:00",
+      "course_type": {
+        "id": 1,
+        "name": "CBT Training"
+      },
+      "spaces": 4,
+      "orders": [
+        {
+          "friendly_id": 4697,
+          "user_name": "Chen Duncan",
+          "user_phone": "0774354213",
+          "bike_hire": "auto"
+        },
+        {
+          "friendly_id": 2252,
+          "user_name": "Jennifer Romero",
+          "user_phone": "07712332123",
+          "bike_hire": "auto"
+        }
+      ]
+    },
+    {
+      "id": "3b5724d958f25fb98ac604d6",
+      "date": "2018-07-25",
+      "time": "15:00",
+      "course_type": {
+        "id": 1,
+        "name": "CBT Training"
+      },
+      "spaces": 4,
+      "orders": []
     },
     {
       "id": "5b5724d90af45bd49782ad51",
