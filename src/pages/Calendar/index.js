@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
+import OrdersPanel from 'components/Calendar/OrdersPanel'
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
 import { getCourses } from 'actions/calendar'
@@ -43,8 +44,10 @@ class CalendarPage extends Component {
       )
       days.push({ date, courses: coursesForDate })
     }
+
     return days
   }
+
   render() {
     const { schoolName, calendar } = this.props
     let info = { year: calendar.year, month: calendar.month }
@@ -68,7 +71,7 @@ class CalendarPage extends Component {
             <Route
               exact
               path="/calendar/:date/orders/:courseId"
-              render={routeProps => <h3>Orders</h3>}
+              render={routeProps => <OrdersPanel {...routeProps} days={days} />}
             />
           </Col>
         </Row>

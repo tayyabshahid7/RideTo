@@ -3,16 +3,10 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
+import { getCoursesOnDay } from 'services/course'
 import CoursesPanelItem from './CoursesPanelItem'
 
 import styles from './CoursesPanel.scss'
-
-const getCourses = (days, dateStr) => {
-  return days
-    .filter(day => moment(day.date).format('YYYY-MM-DD') === dateStr)
-    .map(day => day.courses)
-    .reduce(day => day[0])
-}
 
 class CoursesPanel extends React.Component {
   render() {
@@ -21,7 +15,7 @@ class CoursesPanel extends React.Component {
       params: { date }
     } = match
     const title = moment(date, 'YYYY-MM-DD').format('dddd Do MMMM YYYY')
-    const courses = getCourses(days, date)
+    const courses = getCoursesOnDay(days, date)
 
     return (
       <div className={styles.coursesPanel}>
