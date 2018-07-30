@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 // import { hot } from 'react-hot-loader';
 // import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'font-awesome/css/font-awesome.css'
 import { Switch, Route, Redirect } from 'react-router'
 import { ConnectedRouter } from 'connected-react-router'
 import Login from './pages/Login'

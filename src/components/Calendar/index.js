@@ -5,14 +5,67 @@ import CalendarMonthView from './CalendarMonthView'
 import CalendarHeader from './CalendarHeader'
 import styles from './index.scss'
 import classnames from 'classnames'
+import { CALENDAR_VIEW } from '../../common/constants'
+import CalendarWeekView from './CalendarWeekView'
 
 class CalendarComponent extends Component {
+  renderOverview() {
+    const { viewMode } = this.props.calendar
+    const { handleCustomEvent } = this.props
+    return (
+      <div>
+        <div>Calendar View</div>
+        <div>
+          <span
+            className={
+              viewMode === CALENDAR_VIEW.MONTH
+                ? styles.calendarTypeActive
+                : styles.calendarTypeInactive
+            }>
+            <a
+              onClick={() =>
+                handleCustomEvent('change-calendar-setting', {
+                  viewMode: CALENDAR_VIEW.WEEK
+                })
+              }>
+              View Week
+            </a>
+          </span>{' '}
+          |
+          <span
+            className={
+              viewMode === CALENDAR_VIEW.WEEK
+                ? styles.calendarTypeActive
+                : styles.calendarTypeInactive
+            }>
+            <a
+              onClick={() =>
+                handleCustomEvent('change-calendar-setting', {
+                  viewMode: CALENDAR_VIEW.MONTH
+                })
+              }>
+              {' '}
+              View Month
+            </a>
+          </span>
+        </div>
+      </div>
+    )
+  }
   render() {
-    let { days, info } = this.props
+    let { days, calendar, handleCustomEvent } = this.props
     return (
       <div className={styles.container}>
-        <CalendarHeader info={info} />
-        <CalendarMonthView days={days} info={info} />
+        {this.renderOverview()}
+        <CalendarHeader
+          calendar={calendar}
+          handleCustomEvent={handleCustomEvent}
+        />
+        {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
+          <CalendarWeekView days={days} calendar={calendar} />
+        ) : (
+          <CalendarMonthView days={days} calendar={calendar} />
+        )}
       </div>
     )
   }

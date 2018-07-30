@@ -1,7 +1,13 @@
 import SampleCalendar from '../json/sample-calendar.json'
 import { apiGetSchoolOrders } from '../services/api'
-import { COURSES_FETCH, REQUEST, SUCCESS, FAILURE } from '../actionTypes'
 import { fetchCourses } from 'services/course'
+import {
+  COURSES_FETCH,
+  REQUEST,
+  SUCCESS,
+  FAILURE,
+  UPDATE_CALENDAR_SETTING
+} from '../actionTypes'
 
 export const getCourses = filter => async dispatch => {
   dispatch({ type: COURSES_FETCH[REQUEST] })
@@ -22,4 +28,8 @@ export const getCourses = filter => async dispatch => {
   } catch (error) {
     dispatch({ type: COURSES_FETCH[FAILURE], error })
   }
+}
+
+export const updateCalendarSetting = data => async dispatch => {
+  dispatch({ type: UPDATE_CALENDAR_SETTING, data })
 }
