@@ -1,23 +1,24 @@
-import React from 'react'
-import styles from './styles.scss'
-const SchoolSelect = ({ selected, schools, onChange }) => {
-  return (
-    <select
-      className={styles.schoolSelect}
-      value={selected}
-      onChange={e =>
-        onChange(
-          e.target.value,
-          e.target.options[e.target.selectedIndex].innerText
-        )
-      }>
-      {schools.map(school => (
-        <option key={school.id} value={school.id} name={school.name}>
-          {school.name}
-        </option>
-      ))}
-    </select>
-  )
+import SchoolSelect from './SchoolSelect'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { changeSchool } from 'actions/authActions'
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    schools: state.auth.user.suppliers,
+    selected: state.auth.schoolId
+  }
 }
 
-export default SchoolSelect
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      onChange: changeSchool
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SchoolSelect)

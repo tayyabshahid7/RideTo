@@ -1,4 +1,10 @@
-import { COURSES_FETCH, REQUEST, SUCCESS, FAILURE } from '../actionTypes'
+import {
+  COURSES_FETCH,
+  REQUEST,
+  SUCCESS,
+  FAILURE,
+  UPDATE_CALENDAR_SETTING
+} from '../actionTypes'
 import { CALENDAR_VIEW } from '../common/constants'
 
 const initialState = {
@@ -6,6 +12,7 @@ const initialState = {
   loading: false,
   month: new Date().getMonth(),
   year: new Date().getFullYear(),
+  day: new Date().getDate(),
   error: null,
   viewMode: CALENDAR_VIEW.MONTH,
   rightPanelMode: null
@@ -13,6 +20,11 @@ const initialState = {
 
 export const calendar = (state = initialState, action) => {
   switch (action.type) {
+    case UPDATE_CALENDAR_SETTING:
+      return {
+        ...state,
+        ...action.data
+      }
     case COURSES_FETCH[REQUEST]:
       return {
         ...state,
@@ -23,8 +35,6 @@ export const calendar = (state = initialState, action) => {
         ...state,
         loading: false,
         courses: [...action.data.courses],
-        month: action.data.month,
-        year: action.data.year,
         error: null
       }
     case COURSES_FETCH[FAILURE]:

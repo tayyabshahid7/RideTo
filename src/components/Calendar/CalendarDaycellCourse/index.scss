@@ -4,7 +4,6 @@
   font-size: 13px;
   border-radius: 4px;
   padding: 5px;
-  margin-top: 40px;
   margin-bottom: 5px;
   line-height: 14px;
   background: #e4f2f2;
@@ -13,13 +12,20 @@
   text-decoration: none;
 }
 
+.container:first-child {
+  margin-top: 40px;
+}
+
 .courseDescription {
   color: #666;
   margin: 3px 0 7px 0;
   text-decoration: none;
 }
 .full {
-  color: red;
+  color: #fa0e0e;
+}
+.oneSpace {
+  color: #fa840e;
 }
 
 .courseSpace {

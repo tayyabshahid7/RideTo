@@ -1,2 +1,17 @@
+$h: 60px;
 .container {
+  display: flex;
+  height: $h;
+  line-height: $h;
+}
+.prev {
+  width: 40px;
+}
+.title {
+  flex-grow: 1;
+  text-align: center;
+}
+.next {
+  width: 40px;
+  text-align: right;
 }

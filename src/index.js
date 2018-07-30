@@ -9,6 +9,7 @@ import configureStore from './store'
 import { saveState, loadState, clearState } from './services/localStorage'
 import { removeToken } from './services/auth'
 
+// clearState()
 // removeToken()
 const persistedState = loadState()
 const store = configureStore(persistedState)
