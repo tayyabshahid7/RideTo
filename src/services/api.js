@@ -128,7 +128,16 @@ export const apiGet = (
   return axios.get(url, config).catch(error => error)
 }
 
-export const getCourses = () => {
-  const url = `/api/calendar/`
-  sendPostRequest(url, {})
+export const get = async (path, params) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`
+    },
+    params: params
+  }
+  const url = `${BASE_URL}api/${path}`
+  const response = await axios.get(url, config)
+
+  return response.data
 }

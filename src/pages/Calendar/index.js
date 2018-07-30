@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
+import OrdersPanel from 'components/Calendar/OrdersPanel'
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
 import { getCourses, updateCalendarSetting } from 'actions/calendar'
@@ -77,6 +79,7 @@ class CalendarPage extends Component {
       date.setDate(date.getDate() + i)
       days.push(date)
     }
+
     return days
   }
   handleCustomEvent(type, params) {
@@ -134,7 +137,18 @@ class CalendarPage extends Component {
             />
           </Col>
           <Col xs="4">
-            <CoursesPanel />
+            <Route
+              exact
+              path="/calendar/:date"
+              render={routeProps => (
+                <CoursesPanel {...routeProps} days={days} />
+              )}
+            />
+            <Route
+              exact
+              path="/calendar/:date/orders/:courseId"
+              render={routeProps => <OrdersPanel {...routeProps} days={days} />}
+            />
           </Col>
         </Row>
       </div>

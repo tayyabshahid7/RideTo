@@ -24,6 +24,11 @@
   color: #666;
 }
 
+.dayLink {
+  display: block;
+  height: 100%;
+}
+
 @media (max-width: 768px) {
   .otherMonth {
     display: none;
