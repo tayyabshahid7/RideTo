@@ -1,6 +1,5 @@
-import SampleCalendar from '../json/sample-calendar.json'
-import { apiGetSchoolOrders } from '../services/api'
 import { fetchCourses } from 'services/course'
+// import SampleCalendar from '../json/sample-calendar.json'
 import {
   COURSES_FETCH,
   REQUEST,
@@ -9,19 +8,21 @@ import {
   UPDATE_CALENDAR_SETTING
 } from '../actionTypes'
 
-export const getCourses = filter => async dispatch => {
+export const getCourses = ({
+  schoolId,
+  firstDate,
+  lastDate
+}) => async dispatch => {
   dispatch({ type: COURSES_FETCH[REQUEST] })
 
   try {
-    const courses = await fetchCourses(697, '2018-01-01', '2018-09-01')
+    const courses = await fetchCourses(schoolId, firstDate, lastDate)
 
     setTimeout(() => {
       dispatch({
         type: COURSES_FETCH[SUCCESS],
         data: {
-          courses,
-          month: new Date().getMonth(),
-          year: new Date().getFullYear()
+          courses
         }
       })
     }, 2000)

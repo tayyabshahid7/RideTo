@@ -7,6 +7,7 @@ import styles from './index.scss'
 import classnames from 'classnames'
 import { CALENDAR_VIEW } from '../../common/constants'
 import CalendarWeekView from './CalendarWeekView'
+import Loading from 'components/Loading'
 
 class CalendarComponent extends Component {
   renderOverview() {
@@ -61,11 +62,13 @@ class CalendarComponent extends Component {
           calendar={calendar}
           handleCustomEvent={handleCustomEvent}
         />
-        {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
-          <CalendarWeekView days={days} calendar={calendar} />
-        ) : (
-          <CalendarMonthView days={days} calendar={calendar} />
-        )}
+        <Loading loading={calendar.loading}>
+          {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
+            <CalendarWeekView days={days} calendar={calendar} />
+          ) : (
+            <CalendarMonthView days={days} calendar={calendar} />
+          )}
+        </Loading>
       </div>
     )
   }

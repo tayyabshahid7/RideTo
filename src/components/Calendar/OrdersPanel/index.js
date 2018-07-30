@@ -12,7 +12,8 @@ const OrdersPanel = ({ days, match }) => {
   const title = moment(date, 'YYYY-MM-DD').format('dddd Do MMMM YYYY')
 
   const courses = getCoursesOnDay(days, date)
-  const course = courses.filter(({ id }) => id === parseInt(courseId, 10))[0]
+  const course =
+    courses.filter(({ id }) => id === parseInt(courseId, 10))[0] || {}
   const backLink = `/calendar/${date}`
 
   return (

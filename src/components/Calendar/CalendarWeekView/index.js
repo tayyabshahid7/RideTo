@@ -14,7 +14,7 @@ class CalendarWeekView extends Component {
   // }
   renderTimeline() {
     return (
-      <div class={styles.timeline}>
+      <div className={styles.timeline}>
         <ul>
           <li>
             <span>09:00</span>
@@ -79,25 +79,24 @@ class CalendarWeekView extends Component {
   }
   renderDays() {
     const { days } = this.props
-    console.log('HALA days', days)
     return (
-      <div class={styles.events}>
+      <div className={styles.events}>
         <ul>
           {days.map(day => (
-            <li class={styles.eventsGroup}>
-              <div class={styles.topInfo}>
+            <li className={styles.eventsGroup}>
+              <div className={styles.topInfo}>
                 <span>{moment(day.date).format('ddd D')}</span>
               </div>
               <ul>
                 <li
-                  class={styles.singleEvent}
+                  className={styles.singleEvent}
                   data-start="09:30"
                   data-end="10:30"
                   data-content="event-abs-circuit"
                   data-event="event-1">
                   <a href="#0">
-                    <span class={styles.eventDate}>09:30 - 10:30</span>
-                    <em class={styles.eventName}>Abs Circuit</em>
+                    <span className={styles.eventDate}>09:30 - 10:30</span>
+                    <em className={styles.eventName}>Abs Circuit</em>
                   </a>
                 </li>
               </ul>

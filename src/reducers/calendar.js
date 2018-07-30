@@ -35,8 +35,6 @@ export const calendar = (state = initialState, action) => {
         ...state,
         loading: false,
         courses: [...action.data.courses],
-        month: action.data.month,
-        year: action.data.year,
         error: null
       }
     case COURSES_FETCH[FAILURE]:

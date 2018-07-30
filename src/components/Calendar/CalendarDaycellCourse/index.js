@@ -13,6 +13,7 @@ const CalendarDayCellCourse = ({ course }) => {
       <div
         className={classnames(
           styles.courseSpace,
+          availableSpaces === 1 && styles.oneSpace,
           availableSpaces === 0 && styles.full
         )}>
         {getCourseSpaceText(course)}

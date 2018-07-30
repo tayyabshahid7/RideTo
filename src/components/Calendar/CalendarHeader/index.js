@@ -6,7 +6,7 @@ import styles from './index.scss'
 const CalendarHeader = ({ calendar, handleCustomEvent }) => (
   <div className={styles.container}>
     <div className={styles.prev} onClick={() => handleCustomEvent('prev')}>
-      <i class="fas fa-angle-left" />
+      <i className="fa fa-angle-left" />
     </div>
     <div className={styles.title}>
       <h1>
@@ -14,7 +14,7 @@ const CalendarHeader = ({ calendar, handleCustomEvent }) => (
       </h1>
     </div>
     <div className={styles.next} onClick={() => handleCustomEvent('next')}>
-      <i class="fas fa-angle-right" />
+      <i className="fa fa-angle-right" />
     </div>
   </div>
 )

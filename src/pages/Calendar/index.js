@@ -5,25 +5,62 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
+// import { changeSchool } from 'actions/authActions'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
 import { getCourses, updateCalendarSetting } from 'actions/calendar'
-import { CALENDAR_VIEW } from '../../common/constants'
+import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
+import SchoolSelect from 'components/SchoolSelect'
 
 class CalendarPage extends Component {
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     info: {
-  //       year: 2018,
-  //       month: 5
-  //     }
-  //   }
-  // }
   componentDidMount() {
-    const { getCourses } = this.props
-    getCourses({})
+    this.loadCourses()
+  }
+
+  componentDidUpdate(prevProps) {
+    const { schoolId, calendar } = this.props
+    if (
+      schoolId !== prevProps.schoolId ||
+      calendar.month !== prevProps.calendar.month ||
+      calendar.year !== prevProps.calendar.year ||
+      calendar.day !== prevProps.calendar.day ||
+      calendar.viewMode !== prevProps.calendar.viewMode
+    ) {
+      this.loadCourses()
+    }
+  }
+
+  loadCourses() {
+    const { getCourses, schoolId, calendar } = this.props
+    const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+
+    getCourses({
+      schoolId,
+      firstDate: moment(firstDate).format(DATE_FORMAT),
+      lastDate: moment(lastDate).format(DATE_FORMAT)
+    })
+  }
+
+  getFirstAndLastDate({ year, month, day, viewMode }) {
+    let oneDay = 1000 * 60 * 60 * 24
+    if (viewMode === CALENDAR_VIEW.MONTH) {
+      let firstDay = new Date(year, month, 1)
+      let dayOne = firstDay.getDay()
+      let dayLast = new Date(year, month + 1, 0)
+      let firstDateInMonthCalendar = new Date(firstDay - dayOne * oneDay)
+      let monthViewDays = dayOne + dayLast.getDate() <= 35 ? 35 : 42
+      let date = new Date(firstDateInMonthCalendar)
+      date.setDate(date.getDate() + monthViewDays - 1)
+      return { firstDate: firstDateInMonthCalendar, lastDate: date }
+    }
+
+    let firstDay = new Date(year, month, day)
+    let dayOne = firstDay.getDay()
+    let firstDateInWeekCalendar = new Date(firstDay - dayOne * oneDay)
+    let date = new Date(firstDateInWeekCalendar)
+    date.setDate(date.getDate() + 6)
+    return { firstDate: firstDateInWeekCalendar, lastDate: date }
   }
 
   generateDaysDataFromCalendar({ courses, ...calendar }) {
@@ -123,11 +160,11 @@ class CalendarPage extends Component {
   }
 
   render() {
-    const { schoolName, calendar } = this.props
+    const { calendar } = this.props
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
       <div className={styles.container}>
-        <h2>{schoolName}</h2>
+        <SchoolSelect />
         <Row>
           <Col xs="8">
             <CalendarComponent
@@ -159,10 +196,6 @@ class CalendarPage extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     schoolId: state.auth.schoolId,
-    schoolName: state.auth.schoolName,
-    confirmedOrders: state.orders.confirmedOrders,
-    page: state.orders.page,
-    loading: state.orders.loading,
     calendar: state.calendar
   }
 }

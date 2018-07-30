@@ -5,14 +5,14 @@ import classnames from 'classnames'
 import CalendarDaycellCourse from '../CalendarDaycellCourse'
 import styles from './index.scss'
 
-const CalendarDayCell = ({ day, info }) => {
+const CalendarDayCell = ({ day, calendar }) => {
   const dateStr = moment(day.date).format('YYYY-MM-DD')
 
   return (
     <li
       className={classnames(
         styles.container,
-        day.date.getMonth() !== info.month ? styles.otherMonth : ''
+        day.date.getMonth() !== calendar.month ? styles.otherMonth : ''
       )}>
       <Link className={styles.dayLink} to={`/calendar/${dateStr}`}>
         <div className={styles.date}>{day.date.getDate()}</div>

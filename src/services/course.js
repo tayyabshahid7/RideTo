@@ -10,10 +10,11 @@ export const getCourseSpaceText = course => {
 }
 
 export const getCoursesOnDay = (days, dateStr) => {
-  return days
-    .filter(day => moment(day.date).format('YYYY-MM-DD') === dateStr)
-    .map(day => day.courses)
-    .reduce(day => day[0])
+  let day = days.find(day => moment(day.date).format('YYYY-MM-DD') === dateStr)
+  if (!day) {
+    return []
+  }
+  return day.courses
 }
 
 export const fetchCourses = async (schoolId, startDate, endDate) => {
