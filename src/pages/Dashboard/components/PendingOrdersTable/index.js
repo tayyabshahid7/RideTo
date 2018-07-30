@@ -1,25 +1,105 @@
 import React, { Component } from 'react'
 import styles from './styles.scss'
-import classnames from 'classnames'
 
-class Table extends Component {
+class FilteredTable extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      friendly_id: null,
+      user_date: null,
+      bike_hire: null
+    }
+    this.handleSort = this.handleSort.bind(this)
+  }
+
+  _getSortingData() {
+    const sortingData = Object.keys(this.state)
+      .filter(c => this.state[c] !== null)
+      .map(column => {
+        if (this.state[column] !== null) {
+          return this.state[column]
+        }
+        return undefined
+      })
+    return sortingData.toString()
+  }
+
+  handleSort(e) {
+    if (e.target) {
+      const column = e.target.getAttribute('name')
+      const shiftPressed = e.shiftKey
+
+      this.setState(
+        prevState => {
+          let newState = {}
+          if (!shiftPressed) {
+            newState = {
+              friendly_id: null,
+              user_date: null,
+              bike_hire: null
+            }
+          }
+
+          if (
+            prevState[column] === null ||
+            prevState[column] === `-${column}`
+          ) {
+            newState[column] = column
+          } else {
+            newState[column] = '-' + column
+          }
+          return newState
+        },
+        () => {
+          const sorting = this._getSortingData()
+          this.props.sortingChange(sorting)
+        }
+      )
+    }
+  }
+
   render() {
+    const { friendly_id, user_date, bike_hire } = this.state
     return (
       <div className={styles.container}>
         <table>
           <thead>
             <tr>
               <th />
-              <th>Order #</th>
-              <th>Date Requested</th>
-              <th>Bike Type</th>
-              <th>School location</th>
+              <th
+                className={
+                  friendly_id &&
+                  (friendly_id.startsWith('-') ? styles.asc : styles.desc)
+                }
+                name="friendly_id"
+                onClick={e => this.handleSort(e)}>
+                Order #
+              </th>
+              <th
+                className={
+                  user_date &&
+                  (user_date.startsWith('-') ? styles.asc : styles.desc)
+                }
+                name="user_date"
+                onClick={e => this.handleSort(e)}>
+                Date Requested
+              </th>
+              <th
+                className={
+                  bike_hire &&
+                  (bike_hire.startsWith('-') ? styles.asc : styles.desc)
+                }
+                name="bike_hire"
+                onClick={e => this.handleSort(e)}>
+                Bike Type
+              </th>
+              <th> School location </th>
             </tr>
           </thead>
           <tbody>
             {this.props.orders.map((order, index) => (
               <tr
-                className={classnames(index % 2 ? styles.trEven : styles.trOdd)}
+                className={index % 2 ? styles.trEven : styles.trOdd}
                 key={order.friendly_id}>
                 <td>
                   <a
@@ -48,4 +128,4 @@ class Table extends Component {
   }
 }
 
-export default Table
+export default FilteredTable

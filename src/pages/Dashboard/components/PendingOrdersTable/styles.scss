@@ -19,6 +19,14 @@
     border-bottom: 1px solid #acacac;
   }
 
+  .asc::after {
+    content: '⬇';
+  }
+
+  .desc::after {
+    content: '⬆';
+  }
+
   tr:hover {
     background-color: #ddf9f3;
   }
