@@ -4,7 +4,7 @@ import styles from './styles.scss'
 const SchoolSelect = ({ selected, schools, onChange }) => {
   return (
     <select
-      className={styles.schoolSelect}
+      className={styles.minimal}
       value={selected}
       onChange={e =>
         onChange(
