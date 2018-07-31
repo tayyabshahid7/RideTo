@@ -1,0 +1,18 @@
+.orderFilters {
+}
+
+.dateFilter {
+  padding-right: 16px;
+  padding-left: 16px;
+  border-right: solid 1px black;
+  cursor: pointer;
+}
+
+.dateFilter:first-child {
+  padding-left: 0;
+}
+
+.dateFilter:last-child {
+  padding-right: 0;
+  border-right: none;
+}
