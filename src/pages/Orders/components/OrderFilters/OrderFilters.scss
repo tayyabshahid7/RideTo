@@ -1,18 +1,22 @@
 .orderFilters {
 }
 
-.dateFilter {
+.filter {
   padding-right: 16px;
   padding-left: 16px;
   border-right: solid 1px black;
   cursor: pointer;
 }
 
-.dateFilter:first-child {
+.filter:first-child {
   padding-left: 0;
 }
 
-.dateFilter:last-child {
+.filter:last-child {
   padding-right: 0;
   border-right: none;
+}
+
+.active {
+  font-weight: bold;
 }

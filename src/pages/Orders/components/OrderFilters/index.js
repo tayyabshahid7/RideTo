@@ -2,6 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import styles from './OrderFilters.scss'
 
+import OrderSearch from 'pages/Orders/components/OrderSearch'
+
 const DATE_FORMAT = 'YYYY-MM-DD'
 const FILTERS = [
   {
@@ -28,19 +30,28 @@ const FILTERS = [
   }
 ]
 
-const OrderFilters = ({ onDateFilter }) => {
+const OrderFilters = ({ selected, onDateFilter, onSearch }) => {
   return (
     <div className={styles.orderFilters}>
       <div className={styles.dateFilters}>
-        {FILTERS.map(filter => (
-          <a
-            key={filter.name}
-            className={styles.dateFilter}
-            onClick={() => onDateFilter(filter.getDate())}>
-            {filter.name}
-          </a>
-        ))}
+        {FILTERS.map(filter => {
+          const className =
+            selected === filter.name
+              ? `${styles.filter} ${styles.active}`
+              : styles.filter
+
+          return (
+            <a
+              key={filter.name}
+              className={className}
+              onClick={() => onDateFilter(filter.getDate(), filter.name)}>
+              {filter.name}
+            </a>
+          )
+        })}
       </div>
+
+      <OrderSearch onSearch={onSearch} />
     </div>
   )
 }

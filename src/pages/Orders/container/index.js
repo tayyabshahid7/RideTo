@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import SchoolSelect from 'components/SchoolSelect'
 import PaginationLinks from 'components/PaginationLinks'
-import { getSchoolOrders, changePage } from 'actions/orders'
 import { fetchSchoolOrders } from 'services/order'
 import { changeSchool } from 'actions/authActions'
 
@@ -17,11 +16,15 @@ class Orders extends Component {
     this.handleChangePage = this.handleChangePage.bind(this)
     this.handleSorting = this.handleSorting.bind(this)
     this.handleDateFilter = this.handleDateFilter.bind(this)
+    this.handleSearch = this.handleSearch.bind(this)
 
     this.state = {
-      sorting: null,
+      loading: false,
+      page: 1,
+      ordering: null,
       sdate: null,
-      edate: null,
+      search: null,
+      dateFilter: 'This Week',
       confirmedOrders: {
         results: []
       }
@@ -29,44 +32,50 @@ class Orders extends Component {
   }
 
   async componentDidMount() {
-    const { schoolId, page, sorting } = this.props
     this.fetchOrders()
   }
 
+  async componentDidUpdate(oldProps) {
+    if (oldProps.schoolId !== this.props.schoolId) {
+      this.fetchOrders()
+    }
+  }
+
   async fetchOrders() {
-    const { schoolId, page, sorting } = this.props
-    const { sdate, edate } = this.state
-    const params = { sdate, edate, page, sorting }
+    const { schoolId } = this.props
+    const { sdate, search, ordering, page } = this.state
+    const params = { sdate, search, page, ordering }
     const orders = await fetchSchoolOrders(schoolId, params)
 
     this.setState({
-      confirmedOrders: orders
+      confirmedOrders: orders,
+      loading: false
     })
   }
 
   handleChangePage(page) {
-    this.props.getSchoolOrders(this.props.schoolId, page, this.state.sorting)
+    this.setState({ page, loading: true }, () => this.fetchOrders())
   }
 
-  handleSorting(sorting) {
-    this.setState({ sorting: sorting }, () =>
-      this.props.getSchoolOrders(
-        this.props.schoolId,
-        this.props.page,
-        this.state.sorting
-      )
-    )
+  handleSorting(ordering) {
+    this.setState({ ordering, loading: true }, () => this.fetchOrders())
   }
 
-  handleDateFilter(sdate) {
-    this.setState({ sdate }, () => {
+  handleDateFilter(sdate, dateFilter) {
+    this.setState({ sdate, dateFilter, loading: true }, () => {
+      this.fetchOrders()
+    })
+  }
+
+  handleSearch(search) {
+    this.setState({ search, loading: true }, () => {
       this.fetchOrders()
     })
   }
 
   render() {
     const { schoolId, user, changeSchool } = this.props
-    const { confirmedOrders } = this.state
+    const { confirmedOrders, dateFilter, page, loading } = this.state
 
     return (
       <div className={styles.container}>
@@ -77,7 +86,11 @@ class Orders extends Component {
             schools={user.suppliers}
             onChange={changeSchool}
           />
-          <OrderFilters onDateFilter={this.handleDateFilter} />
+          <OrderFilters
+            selected={dateFilter}
+            onDateFilter={this.handleDateFilter}
+            onSearch={this.handleSearch}
+          />
           {confirmedOrders.results.length > 0 ? (
             <React.Fragment>
               <ConfirmedOrders
@@ -86,9 +99,9 @@ class Orders extends Component {
                 sortingChange={this.handleSorting}
               />
               <PaginationLinks
-                currentPage={this.props.page}
+                currentPage={page}
                 count={confirmedOrders.count}
-                pageSize={20}
+                pageSize={15}
                 rowName={'orders'}
                 onPageChange={this.handleChangePage}
               />
@@ -109,16 +122,13 @@ const mapStateToProps = (state, ownProps) => {
     user: state.auth.user,
     schoolId: state.auth.schoolId,
     schoolName: state.auth.schoolName,
-    page: state.orders.page,
-    loading: state.orders.loading
+    page: state.orders.page
   }
 }
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getSchoolOrders,
-      changePage,
       changeSchool
     },
     dispatch
