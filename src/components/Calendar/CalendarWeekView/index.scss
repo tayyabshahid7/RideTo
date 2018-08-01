@@ -66,11 +66,12 @@
 .topInfo {
   width: 100%;
   padding: 0 5%;
-  > span {
+  > a {
     display: inline-block;
-    line-height: 1.2;
-    margin-bottom: 10px;
+    line-height: 50px;
     font-weight: bold;
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -112,7 +113,7 @@
     border-left-width: 0;
   }
   > ul {
-    height: 950px;
+    height: 1200px;
     /* reset style */
     display: block;
     overflow: visible;
@@ -158,9 +159,9 @@
   /* reset style */
   -ms-flex-negative: 1;
   flex-shrink: 1;
-  height: auto;
   max-width: none;
   margin-right: 0;
+  overflow: hidden;
   a {
     padding: 1.2em;
   }
@@ -192,7 +193,7 @@
 }
 
 .eventName {
-  font-size: 2.4rem;
+  font-size: 1rem;
 }
 
 .eventDate {
