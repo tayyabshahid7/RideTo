@@ -8,25 +8,38 @@ const DATE_FORMAT = 'YYYY-MM-DD'
 const FILTERS = [
   {
     name: 'Today',
-    getDate: () => moment().format(DATE_FORMAT)
+    getStartDate: () => moment().format(DATE_FORMAT),
+    getEndDate: () =>
+      moment()
+        .add(1, 'day')
+        .format(DATE_FORMAT)
   },
   {
     name: 'This Week',
-    getDate: () =>
+    getStartDate: () =>
       moment()
         .startOf('week')
+        .format(DATE_FORMAT),
+    getEndDate: () =>
+      moment()
+        .endOf('week')
         .format(DATE_FORMAT)
   },
   {
     name: 'This Month',
-    getDate: () =>
+    getStartDate: () =>
       moment()
         .startOf('month')
+        .format(DATE_FORMAT),
+    getEndDate: () =>
+      moment()
+        .endOf('month')
         .format(DATE_FORMAT)
   },
   {
     name: 'All',
-    getDate: () => null
+    getStartDate: () => null,
+    getEndDate: () => null
   }
 ]
 
@@ -44,7 +57,13 @@ const OrderFilters = ({ selected, onDateFilter, onSearch }) => {
             <a
               key={filter.name}
               className={className}
-              onClick={() => onDateFilter(filter.getDate(), filter.name)}>
+              onClick={() =>
+                onDateFilter(
+                  filter.getStartDate(),
+                  filter.getEndDate(),
+                  filter.name
+                )
+              }>
               {filter.name}
             </a>
           )

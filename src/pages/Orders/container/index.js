@@ -22,6 +22,7 @@ class Orders extends Component {
       loading: false,
       page: 1,
       ordering: null,
+      edate: null,
       sdate: null,
       search: null,
       dateFilter: 'This Week',
@@ -43,8 +44,8 @@ class Orders extends Component {
 
   async fetchOrders() {
     const { schoolId } = this.props
-    const { sdate, search, ordering, page } = this.state
-    const params = { sdate, search, page, ordering }
+    const { sdate, edate, search, ordering, page } = this.state
+    const params = { sdate, edate, search, page, ordering }
     const orders = await fetchSchoolOrders(schoolId, params)
 
     this.setState({
@@ -61,8 +62,8 @@ class Orders extends Component {
     this.setState({ ordering, loading: true }, () => this.fetchOrders())
   }
 
-  handleDateFilter(sdate, dateFilter) {
-    this.setState({ sdate, dateFilter, loading: true }, () => {
+  handleDateFilter(sdate, edate, dateFilter) {
+    this.setState({ sdate, edate, dateFilter, loading: true }, () => {
       this.fetchOrders()
     })
   }
