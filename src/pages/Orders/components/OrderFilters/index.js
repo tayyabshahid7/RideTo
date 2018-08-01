@@ -4,12 +4,13 @@ import styles from './OrderFilters.scss'
 import OrderSearch from 'pages/Orders/components/OrderSearch'
 
 const OrderFilters = ({ filters, selectedFilter, onDateFilter, onSearch }) => {
+  const selected = selectedFilter || {}
   return (
     <div className={styles.orderFilters}>
       <div className={styles.dateFilters}>
         {filters.map(filter => {
           const className =
-            selectedFilter.name === filter.name
+            selected.name === filter.name
               ? `${styles.filter} ${styles.active}`
               : styles.filter
 

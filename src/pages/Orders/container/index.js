@@ -96,7 +96,7 @@ class Orders extends Component {
           {confirmedOrders.results.length > 0 ? (
             <React.Fragment>
               <ConfirmedOrders
-                loading={this.props.loading}
+                loading={loading}
                 confirmedOrders={confirmedOrders}
                 sortingChange={this.handleSorting}
               />
