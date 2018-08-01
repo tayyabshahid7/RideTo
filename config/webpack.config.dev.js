@@ -154,7 +154,7 @@ module.exports = {
           // in development "style" loader enables hot editing of CSS.
           {
             test: /\.(sa|sc)ss$/,
-            // exclude: /node_modules/,
+            exclude: /bootstrap\.scss/,
             // include: /src/,
             use: [
               require.resolve('style-loader'),
@@ -190,6 +190,20 @@ module.exports = {
               {
                 loader: require.resolve('sass-loader'),
                 options: { sourceMap: true }
+              }
+            ]
+          },
+          {
+            test: /bootstrap\.scss$/,
+            use: [
+              {
+                loader: 'style-loader' // inject CSS to page
+              },
+              {
+                loader: 'css-loader' // translates CSS into CommonJS modules
+              },
+              {
+                loader: 'sass-loader' // compiles Sass to CSS
               }
             ]
           },
