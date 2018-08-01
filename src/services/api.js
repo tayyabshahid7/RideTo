@@ -134,7 +134,16 @@ export const get = async (path, params) => {
     params: params
   }
   const url = `${BASE_URL}api/${path}`
-  const response = await axios.get(url, config)
 
-  return response.data
+  try {
+    const response = await axios.get(url, config)
+    return response.data
+  } catch (error) {
+    // Auth failures dump out of app
+    if (error.response.status === 403) {
+      window.location.href = '/login'
+    }
+
+    return { results: [] }
+  }
 }
