@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import SchoolSelect from 'components/SchoolSelect'
 import PaginationLinks from 'components/PaginationLinks'
-import { fetchSchoolOrders } from 'services/order'
+import { fetchSchoolOrders, getDateFilters } from 'services/order'
 import { changeSchool } from 'actions/authActions'
 
 import ConfirmedOrders from '../components/ConfirmedOrders'
@@ -22,10 +22,8 @@ class Orders extends Component {
       loading: false,
       page: 1,
       ordering: null,
-      edate: null,
-      sdate: null,
       search: null,
-      dateFilter: 'This Week',
+      dateFilter: getDateFilters()[0],
       confirmedOrders: {
         results: []
       }
@@ -44,7 +42,9 @@ class Orders extends Component {
 
   async fetchOrders() {
     const { schoolId } = this.props
-    const { sdate, edate, search, ordering, page } = this.state
+    const { dateFilter, search, ordering, page } = this.state
+    const sdate = dateFilter.getStartDate()
+    const edate = dateFilter.getEndDate()
     const params = { sdate, edate, search, page, ordering }
     const orders = await fetchSchoolOrders(schoolId, params)
 
@@ -62,8 +62,8 @@ class Orders extends Component {
     this.setState({ ordering, loading: true }, () => this.fetchOrders())
   }
 
-  handleDateFilter(sdate, edate, dateFilter) {
-    this.setState({ sdate, edate, dateFilter, loading: true }, () => {
+  handleDateFilter(dateFilter) {
+    this.setState({ dateFilter, loading: true }, () => {
       this.fetchOrders()
     })
   }
@@ -88,7 +88,8 @@ class Orders extends Component {
             onChange={changeSchool}
           />
           <OrderFilters
-            selected={dateFilter}
+            filters={getDateFilters()}
+            selectedFilter={dateFilter}
             onDateFilter={this.handleDateFilter}
             onSearch={this.handleSearch}
           />
