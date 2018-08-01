@@ -87,12 +87,15 @@ class Orders extends Component {
             schools={user.suppliers}
             onChange={changeSchool}
           />
-          <OrderFilters
-            filters={getDateFilters()}
-            selectedFilter={dateFilter}
-            onDateFilter={this.handleDateFilter}
-            onSearch={this.handleSearch}
-          />
+          <div className={styles.orderFilters}>
+            <h2>Sort by training date</h2>
+            <OrderFilters
+              filters={getDateFilters()}
+              selectedFilter={dateFilter}
+              onDateFilter={this.handleDateFilter}
+              onSearch={this.handleSearch}
+            />
+          </div>
           {confirmedOrders.results.length > 0 ? (
             <React.Fragment>
               <ConfirmedOrders

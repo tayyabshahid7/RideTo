@@ -1,9 +1,17 @@
 .orderFilters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filters {
+  margin-right: 16px;
+  min-width: 300px;
 }
 
 .filter {
-  padding-right: 16px;
-  padding-left: 16px;
+  padding-right: 8px;
+  padding-left: 8px;
   border-right: solid 1px black;
   cursor: pointer;
 }

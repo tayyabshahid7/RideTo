@@ -1,4 +1,5 @@
 import React from 'react'
+import { Input, Button, InputGroup, InputGroupAddon } from 'reactstrap'
 
 import styles from './OrderSearch.scss'
 
@@ -27,13 +28,20 @@ class OrderSearch extends React.Component {
 
     return (
       <div className={styles.orderSearch}>
-        <input
-          type="text"
-          value={value}
-          onChange={this.handleChangeValue}
-          onKeyPress={this.handleKeyPress}
-        />
-        <button onClick={() => onSearch(value)}>Search</button>
+        <InputGroup>
+          <Input
+            type="text"
+            value={value}
+            placeholder="Search Rider or Order ID"
+            onChange={this.handleChangeValue}
+            onKeyPress={this.handleKeyPress}
+          />
+          <InputGroupAddon addonType="prepend">
+            <Button color="primary" onClick={() => onSearch(value)}>
+              Search
+            </Button>
+          </InputGroupAddon>
+        </InputGroup>
       </div>
     )
   }

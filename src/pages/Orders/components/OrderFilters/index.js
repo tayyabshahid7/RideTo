@@ -7,7 +7,7 @@ const OrderFilters = ({ filters, selectedFilter, onDateFilter, onSearch }) => {
   const selected = selectedFilter || {}
   return (
     <div className={styles.orderFilters}>
-      <div className={styles.dateFilters}>
+      <div className={styles.filters}>
         {filters.map(filter => {
           const className =
             selected.name === filter.name
