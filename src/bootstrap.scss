@@ -1,7 +1,27 @@
 $primary: #2cceac !default;
+$secondary: #2c4fd3;
+$info: #5bb5cb;
+
+$light: #ffffff;
+$white: #ffffff;
+$black: #000000;
+$dark: #434343;
+$grey: #434343;
+$danger: #fa0e0e;
+$warning: #fa840e;
+
+$theme-colors: (
+  'light': $light,
+  'dark': $dark,
+  'default': $black,
+  'primary': $primary,
+  'secondary': $secondary,
+  'info': $info,
+  'success': $secondary,
+  'warning': $warning,
+  'danger': $danger,
+  'grey': $grey,
+  'white': $white
+);
 
 @import '~bootstrap/scss/bootstrap';
-
-.btn-primary {
-  color: white;
-}
