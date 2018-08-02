@@ -1,7 +1,6 @@
 import React from 'react'
 import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
-import calendarStyles from '../index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME } from 'common/constants'
 
@@ -22,8 +21,8 @@ const CalendarWeekCourse = ({ course, position, barCount }) => {
     <li
       className={classnames(
         styles.singleEvent,
-        availableSpaces === 1 && calendarStyles.oneSpaceBorder,
-        availableSpaces === 0 && calendarStyles.fullBorder
+        availableSpaces === 1 && 'border-warning',
+        availableSpaces === 0 && 'border-danger'
       )}
       style={style}>
       <span className={styles.eventName}>
@@ -32,8 +31,8 @@ const CalendarWeekCourse = ({ course, position, barCount }) => {
       <span
         className={classnames(
           styles.courseSpace,
-          availableSpaces === 1 && calendarStyles.oneSpace,
-          availableSpaces === 0 && calendarStyles.full
+          availableSpaces === 1 && 'text-warning',
+          availableSpaces === 0 && 'text-danger'
         )}>
         {getCourseSpaceText(course)}
       </span>
