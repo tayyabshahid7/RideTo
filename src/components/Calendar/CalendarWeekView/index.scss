@@ -1,0 +1,210 @@
+.container {
+  position: relative;
+  li {
+    list-style: none;
+  }
+}
+.timeline {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  padding-top: 50px;
+  li {
+    position: relative;
+    height: 50px;
+    // list-style-type: none;
+    ::after {
+      /* this is used to create the table horizontal lines */
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: #eaeaea;
+    }
+    &:last-of-type::after {
+      display: none;
+    }
+    span {
+      // display: none;
+    }
+  }
+}
+
+.events {
+  position: relative;
+  z-index: 1;
+}
+
+.eventsGroup {
+  margin-bottom: 30px;
+  > ul {
+    position: relative;
+    padding: 0 5%;
+    /* force its children to stay on one line */
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
+    &::after {
+      /* never visible - used to add a right padding to .events-group > ul */
+      display: inline-block;
+      content: '-';
+      width: 1px;
+      height: 100%;
+      opacity: 0;
+      color: transparent;
+    }
+  }
+}
+
+.topInfo {
+  width: 100%;
+  padding: 0 5%;
+  > a {
+    display: inline-block;
+    line-height: 50px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+  }
+}
+
+.singleEvent {
+  /* force them to stay on one line */
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  float: left;
+  height: 150px;
+  width: 70%;
+  max-width: 300px;
+  box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+  margin-right: 20px;
+  -webkit-transition: opacity 0.2s, background 0.2s;
+  transition: opacity 0.2s, background 0.2s;
+  &:last-of-type {
+    margin-right: 5%;
+  }
+  a {
+    display: block;
+    height: 100%;
+    padding: 0.8em;
+    color: #a2b9b2;
+    text-decoration: none;
+  }
+}
+
+.events {
+  float: left;
+  width: 100%;
+}
+.eventsGroup {
+  width: 14%;
+  float: left;
+  border: 1px solid #eaeaea;
+  /* reset style */
+  margin-bottom: 0;
+  &:not(:first-of-type) {
+    border-left-width: 0;
+  }
+  > ul {
+    height: 1200px;
+    /* reset style */
+    display: block;
+    overflow: visible;
+    padding: 0;
+    &::after {
+      clear: both;
+      content: '';
+      display: block;
+    }
+    ::after {
+      /* reset style */
+      display: none;
+    }
+  }
+}
+
+.topInfo {
+  /* vertically center its content */
+  display: table;
+  height: 50px;
+  border-bottom: 1px solid #eaeaea;
+  /* reset style */
+  padding: 0;
+  > span {
+    /* vertically center inside its parent */
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 0.5em;
+    text-align: center;
+    /* reset style */
+    font-weight: normal;
+    margin-bottom: 0;
+  }
+}
+
+.singleEvent {
+  position: absolute;
+  z-index: 3;
+  /* top position and height will be set using js */
+  width: calc(100% + 2px);
+  left: -1px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+  /* reset style */
+  -ms-flex-negative: 1;
+  flex-shrink: 1;
+  max-width: none;
+  margin-right: 0;
+  overflow: hidden;
+  a {
+    padding: 1.2em;
+  }
+  &:last-of-type {
+    /* reset style */
+    margin-right: 0;
+  }
+}
+.selectedEvent {
+  /* the .selected-event class is added when an user select the event */
+  visibility: hidden;
+}
+
+@media only screen and (min-width: 1000px) {
+  .events {
+    /* 60px is the .timeline element width */
+    width: calc(100% - 60px);
+    margin-left: 60px;
+  }
+}
+
+.eventName,
+.eventDate {
+  display: block;
+  color: white;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.eventName {
+  font-size: 1rem;
+}
+
+.eventDate {
+  /* they are not included in the the HTML but added using JavScript */
+  font-size: 1.4rem;
+  opacity: 0.7;
+  line-height: 1.2;
+  margin-bottom: 0.2em;
+}
+
+.singleEvent[data-event='event-1'] {
+  /* this is used to set a background color for the event and the modal window */
+  background: #577f92;
+}

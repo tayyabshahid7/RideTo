@@ -1,19 +1,23 @@
 import axios from 'axios'
+import { getToken } from './auth'
 
-// export const LOGIN_REQUEST_URL = 'api/auth/token/'
 export const LOGIN_REQUEST_URL = 'api/users/login/'
 export const TOKEN_REFRESH_URL = 'api/users/refresh/'
 export const VERIFY_TOKEN_REQUEST_URL = 'api/users/verify/'
-export const GET_PENDING_ORDERS_URL = 'api/o/pending/'
-export const GET_CONFIRMED_ORDERS_URL = 'api/o/confirmed/'
 export const POST_METHOD = 'POST'
 export const GET_METHOD = 'GET'
 export const BASE_URL = process.env.REACT_APP_REST_API_BASE_URL //see .env files
 
-export const apiRequest = (url, params = null, data = null, method = GET_METHOD, headers = {}) => {
+export const apiRequest = (
+  url,
+  params = null,
+  data = null,
+  method = GET_METHOD,
+  headers = {}
+) => {
   const _headers = {
     ...headers,
-    'Content-Type': 'application/json',
+    'Content-Type': 'application/json'
   }
   return axios({
     url,
@@ -25,91 +29,121 @@ export const apiRequest = (url, params = null, data = null, method = GET_METHOD,
   })
 }
 
+function headerForRequest(headers = {}) {
+  const _headers = {
+    ...headers,
+    'Content-Type': 'application/json'
+  }
+  let token = getToken()
+  if (token) {
+    _headers['Authorization'] = `Bearer ${token}`
+  }
+  return _headers
+}
+
+async function sendGetRequest(relativeUrl, headers = {}) {
+  const url = `${BASE_URL}${relativeUrl}`
+  return axios({
+    method: 'GET',
+    url,
+    headers: headerForRequest(headers)
+  })
+}
+
+async function sendPostRequest(relativeUrl, formData, headers = {}) {
+  const url = `${BASE_URL}${relativeUrl}`
+  return axios({
+    method: 'POST',
+    url,
+    headers: headerForRequest(headers),
+    data: formData
+  })
+}
 
 export const apiRequestLogin = (email, password) => {
   const config = {
-    headers: {'Content-Type':'application/json'},
-    baseURL: BASE_URL,
+    headers: { 'Content-Type': 'application/json' },
+    baseURL: BASE_URL
   }
-  const data = {email: email, password: password}
+  const data = { email: email, password: password }
   return axios.post(LOGIN_REQUEST_URL, data, config).catch(error => error)
 }
 
-export const apiRequestVerifyToken = (token) => {
+export const apiRequestVerifyToken = token => {
   const config = {
-    headers: {'Content-Type':'application/json'},
-    baseURL: BASE_URL,
+    headers: { 'Content-Type': 'application/json' },
+    baseURL: BASE_URL
   }
-  const data = {token: token}
+  const data = { token: token }
   return axios.post(VERIFY_TOKEN_REQUEST_URL, data, config)
 }
 
-
-export const apiGetPendingOrders = (schoolId, page, token) => {
+export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
   const config = {
     headers: {
-      'Content-Type':'application/json',
-      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
     },
     params: {
-      page: page,
-      sid: schoolId
+      sort: sorting,
+      page: page
     },
-    baseURL: BASE_URL,
+    baseURL: BASE_URL
   }
-  return axios.get(GET_PENDING_ORDERS_URL, config).catch(error => error)
+  return axios.get(`api/o/${schoolId}/pending/`, config).catch(error => error)
 }
 
-
-export const apiGetSchoolOrders = (schoolId, page, token) => {
+export const apiGetSchoolOrders = (schoolId, page, sorting, token) => {
   const config = {
     headers: {
-      'Content-Type':'application/json',
-      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
     },
     params: {
-      page: page,
-      sid: schoolId
+      sort: sorting,
+      page: page
     },
-    baseURL: BASE_URL,
+    baseURL: BASE_URL
   }
-  return axios.get(GET_CONFIRMED_ORDERS_URL, config).catch(error => error)
+  return axios.get(`api/o/${schoolId}/confirmed/`, config).catch(error => error)
 }
 
-
-export const apiGet = (token='invalid', url='', params={}, baseURL=BASE_URL) => {
+export const apiGet = (
+  token = 'invalid',
+  url = '',
+  params = {},
+  baseURL = BASE_URL
+) => {
   const config = {
     headers: {
-      'Content-Type':'application/json',
-      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
     },
     params: params,
-    baseURL: baseURL,
+    baseURL: baseURL
   }
-  return axios.get(url, config).catch(error => error) 
+  return axios.get(url, config).catch(error => error)
 }
 
+export const get = async (path, params) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`
+    },
+    params: params
+  }
+  const url = `${BASE_URL}api/${path}`
 
-// axios.put(this.apiBaseEndpoint + '/' + id, input)
-//     .then((response) => {
-//         // Success
-//     })
-//     .catch((error) => {
-//         // Error
-//         if (error.response) {
-//             // The request was made and the server responded with a status code
-//             // that falls out of the range of 2xx
-//             // console.log(error.response.data);
-//             // console.log(error.response.status);
-//             // console.log(error.response.headers);
-//         } else if (error.request) {
-//             // The request was made but no response was received
-//             // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-//             // http.ClientRequest in node.js
-//             console.log(error.request);
-//         } else {
-//             // Something happened in setting up the request that triggered an Error
-//             console.log('Error', error.message);
-//         }
-//         console.log(error.config);
-//     });
+  try {
+    const response = await axios.get(url, config)
+    return response.data
+  } catch (error) {
+    // Auth failures dump out of app
+    if (error.response.status === 403) {
+      window.location.href = '/login'
+    }
+
+    return { results: [] }
+  }
+}
