@@ -41,12 +41,18 @@
 }
 
 .full {
-  color: #fa0e0e;
+  color: #fa0e0e !important;
 }
 .oneSpace {
-  color: #fa840e;
+  color: #fa840e !important;
 }
 
+.fullBorder {
+  border-color: #fa0e0e !important;
+}
+.oneSpaceBorder {
+  border-color: #fa840e !important;
+}
 /* ============================
               Mobile Responsiveness
  ============================*/

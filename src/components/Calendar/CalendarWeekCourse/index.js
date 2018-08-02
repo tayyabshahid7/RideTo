@@ -3,11 +3,7 @@ import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
 import calendarStyles from '../index.scss'
 import classnames from 'classnames'
-import {
-  WEEK_VIEW_START_TIME,
-  COLOR_RED_1,
-  COLOR_YELLOW_1
-} from 'common/constants'
+import { WEEK_VIEW_START_TIME } from 'common/constants'
 
 const CalendarWeekCourse = ({ course, position, barCount }) => {
   const availableSpaces = course.spaces - course.orders.length
@@ -15,28 +11,21 @@ const CalendarWeekCourse = ({ course, position, barCount }) => {
   let top = `${((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100}px`
   let left = `${(100 / barCount) * position}%`
   let width = `${100 / barCount}%`
-  let borderColor = 'black'
-  if (availableSpaces < 1) {
-    borderColor = COLOR_RED_1
-  } else if (availableSpaces === 1) {
-    borderColor = COLOR_YELLOW_1
-  }
+  // let borderColor = 'black'
   let style = {
     height,
     top,
     left,
-    width,
-    borderColor
+    width
   }
-  console.log(
-    'HALA style',
-    style,
-    course,
-    course.secondsForDay - WEEK_VIEW_START_TIME,
-    WEEK_VIEW_START_TIME
-  )
   return (
-    <li className={styles.singleEvent} style={style}>
+    <li
+      className={classnames(
+        styles.singleEvent,
+        availableSpaces === 1 && calendarStyles.oneSpaceBorder,
+        availableSpaces === 0 && calendarStyles.fullBorder
+      )}
+      style={style}>
       <span className={styles.eventName}>
         {course.course_type.name} | {course.time}
       </span>
