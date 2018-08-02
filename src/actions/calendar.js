@@ -17,15 +17,12 @@ export const getCourses = ({
 
   try {
     const courses = await fetchCourses(schoolId, firstDate, lastDate)
-
-    setTimeout(() => {
-      dispatch({
-        type: COURSES_FETCH[SUCCESS],
-        data: {
-          courses
-        }
-      })
-    }, 2000)
+    dispatch({
+      type: COURSES_FETCH[SUCCESS],
+      data: {
+        courses
+      }
+    })
   } catch (error) {
     dispatch({ type: COURSES_FETCH[FAILURE], error })
   }

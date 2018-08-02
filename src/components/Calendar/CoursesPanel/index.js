@@ -5,18 +5,37 @@ import moment from 'moment'
 
 import { getCoursesOnDay } from 'services/course'
 import CoursesPanelItem from './CoursesPanelItem'
-
+import { getDayCourses } from 'actions/day'
 import styles from './CoursesPanel.scss'
 
 class CoursesPanel extends React.Component {
+  componentDidMount() {
+    this.loadCourses()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.date !== this.props.match.params.date) {
+      this.loadCourses()
+    }
+  }
+
+  loadCourses() {
+    // const { getDayCourses, match } = this.props
+    // const {
+    //   params: { date }
+    // } = match
+    // console.log('Courses Panel componentDidMount', date)
+    // getDayCourses(date)
+  }
+
   render() {
     const { days, match } = this.props
     const {
       params: { date }
     } = match
     const title = moment(date, 'YYYY-MM-DD').format('dddd Do MMMM YYYY')
-    const courses = getCoursesOnDay(days, date)
-
+    let courses = getCoursesOnDay(days, date)
+    courses = courses.sort((a, b) => a.time > b.time)
     return (
       <div className={styles.coursesPanel}>
         <h3>{title}</h3>
@@ -32,10 +51,19 @@ class CoursesPanel extends React.Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    courses: state.day.courses,
+    loading: state.day.loading
+  }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getDayCourses
+    },
+    dispatch
+  )
 
 export default connect(
   mapStateToProps,
