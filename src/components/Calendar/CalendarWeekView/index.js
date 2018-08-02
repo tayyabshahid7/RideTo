@@ -1,104 +1,117 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 import styles from './index.scss'
-import classnames from 'classnames'
+import CalendarWeekCourse from '../CalendarWeekCourse'
+import { WORK_HOURS, WEEK_VIEW_START_TIME } from '../../../common/constants'
 
 class CalendarWeekView extends Component {
-  // renderHeader() {
-  //   const { days } = this.props
-  //   return (
-  //     <ul className={styles.container}>
-  //       {days.map(date => <li>{moment(date).format('ddd D')}</li>)}
-  //     </ul>
-  //   )
-  // }
   renderTimeline() {
     return (
       <div className={styles.timeline}>
         <ul>
-          <li>
-            <span>09:00</span>
-          </li>
-          <li>
-            <span>09:30</span>
-          </li>
-          <li>
-            <span>10:00</span>
-          </li>
-          <li>
-            <span>10:30</span>
-          </li>
-          <li>
-            <span>11:00</span>
-          </li>
-          <li>
-            <span>11:30</span>
-          </li>
-          <li>
-            <span>12:00</span>
-          </li>
-          <li>
-            <span>12:30</span>
-          </li>
-          <li>
-            <span>13:00</span>
-          </li>
-          <li>
-            <span>13:30</span>
-          </li>
-          <li>
-            <span>14:00</span>
-          </li>
-          <li>
-            <span>14:30</span>
-          </li>
-          <li>
-            <span>15:00</span>
-          </li>
-          <li>
-            <span>15:30</span>
-          </li>
-          <li>
-            <span>16:00</span>
-          </li>
-          <li>
-            <span>16:30</span>
-          </li>
-          <li>
-            <span>17:00</span>
-          </li>
-          <li>
-            <span>17:30</span>
-          </li>
-          <li>
-            <span>18:00</span>
-          </li>
+          {Array.apply(null, { length: WORK_HOURS * 2 }).map((val, index) => (
+            <li key={index}>
+              <span>
+                {moment(
+                  new Date(
+                    new Date('2000-01-01 00:00:00') -
+                      (WEEK_VIEW_START_TIME + index * 30 * 60) * -1000
+                  )
+                ).format('HH:mm')}
+              </span>
+            </li>
+          ))}
         </ul>
       </div>
     )
   }
+
+  showMonth(day) {
+    if (day.date.getDate() === 1) {
+      return `${moment(day.date).format('MMM')} - `
+    }
+    return ''
+  }
+
+  evaluateData(days) {
+    let date = '2000-01-01'
+    let baseDate = new Date('2000-01-01 00:00:00')
+    let results = days.map(day => {
+      let dayObj = { ...day }
+      dayObj.courses = dayObj.courses.map(course => {
+        return {
+          ...course,
+          secondsForDay: parseInt(
+            new Date(`${date} ${course.time}`) / 1000 - baseDate / 1000,
+            10
+          ),
+          duration: 2 * 60 * 60
+        } // Right now make duraton 1 hour
+      })
+      dayObj.courses = dayObj.courses.sort((a, b) => {
+        return a.secondsForDay - b.secondsForDay
+      })
+
+      let barMap = []
+      let coursePositions = []
+      for (let i = 0; i < dayObj.courses.length; i++) {
+        let course = dayObj.courses[i]
+        if (barMap.length === 0) {
+          barMap.push(course)
+          coursePositions.push(0)
+        } else {
+          let j
+          console.log(barMap, course)
+          for (j = 0; j < barMap.length; j++) {
+            if (
+              barMap[j].secondsForDay + barMap[j].duration <
+              course.secondsForDay
+            ) {
+              barMap.splice(j, 1, course)
+              coursePositions.push(j)
+              break
+            }
+          }
+          if (j === barMap.length) {
+            barMap.push(course)
+            coursePositions.push(j)
+          }
+        }
+      }
+      dayObj.barCount = barMap.length
+      dayObj.coursePositions = coursePositions
+      return dayObj
+    })
+    return results
+  }
+
   renderDays() {
     const { days } = this.props
+    let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.events}>
         <ul>
-          {days.map(day => (
-            <li className={styles.eventsGroup}>
+          {daysInfo.map((day, index) => (
+            <li className={styles.eventsGroup} key={index}>
               <div className={styles.topInfo}>
-                <span>{moment(day.date).format('ddd D')}</span>
+                <Link to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}>
+                  <span>
+                    {this.showMonth(day)}
+                    {moment(day.date).format('ddd D')}
+                  </span>
+                </Link>
               </div>
               <ul>
-                <li
-                  className={styles.singleEvent}
-                  data-start="09:30"
-                  data-end="10:30"
-                  data-content="event-abs-circuit"
-                  data-event="event-1">
-                  <a href="#0">
-                    <span className={styles.eventDate}>09:30 - 10:30</span>
-                    <em className={styles.eventName}>Abs Circuit</em>
-                  </a>
-                </li>
+                {day.courses &&
+                  day.courses.length > 0 &&
+                  day.courses.map((course, index) => (
+                    <CalendarWeekCourse
+                      course={course}
+                      position={day.coursePositions[index]}
+                      barCount={day.barCount}
+                    />
+                  ))}
               </ul>
             </li>
           ))}
@@ -106,8 +119,8 @@ class CalendarWeekView extends Component {
       </div>
     )
   }
+
   render() {
-    let { days, calendar } = this.props
     return (
       <div className={styles.container}>
         {this.renderTimeline()}

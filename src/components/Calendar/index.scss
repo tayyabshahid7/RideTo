@@ -1,6 +1,7 @@
 .container {
   width: 100%;
-
+  display: flex;
+  flex-direction: column;
   // a {
   //   color: #8e352e;
   //   text-decoration: none;
@@ -37,6 +38,13 @@
 .calendarTypeActive {
   color: #2cceac;
   cursor: pointer;
+}
+
+.full {
+  color: #fa0e0e !important;
+}
+.oneSpace {
+  color: #fa840e !important;
 }
 
 /* ============================
