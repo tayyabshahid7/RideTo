@@ -1,4 +1,4 @@
-import { apiGetSchoolOrders } from 'services/api'
+import { fetchSchoolOrders } from 'services/order'
 import * as types from 'actionTypes'
 
 const getSchoolOrdersRequest = () => ({
@@ -19,13 +19,12 @@ export const ordersReducerReset = () => ({ type: types.RESET })
 export const getSchoolOrders = (
   schoolId,
   page = 1,
-  sorting = null
+  sort = null
 ) => async dispatch => {
   // return async (dispatch) => {
-  let token = localStorage.getItem('token')
   dispatch(getSchoolOrdersRequest())
   try {
-    const response = await apiGetSchoolOrders(schoolId, page, sorting, token)
+    const response = await fetchSchoolOrders(schoolId, { page, sort })
     if (response.status === 200) {
       dispatch(changePage(page))
       dispatch(getSchoolOrdersSuccess(response.data))
