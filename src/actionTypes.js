@@ -29,3 +29,4 @@ export const ORDERS_CHANGE_PAGE = 'ORDERS_CHANGE_PAGE'
 export const COURSES_FETCH = createRequestTypes('COURSES_FETCH')
 export const UPDATE_CALENDAR_SETTING = 'UPDATE_CALENDAR_SETTING'
 export const DAY_COURSES_FETCH = createRequestTypes('DAY_COURSES_FETCH')
+export const SINGLE_COURSE_FETCH = createRequestTypes('SINGLE_COURSE_FETCH')

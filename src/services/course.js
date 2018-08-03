@@ -40,3 +40,11 @@ export const fetchDayCourses = async (schoolId, date) => {
 
   return response.results
 }
+
+export const fetchSingleCourse = async (schoolId, courseId) => {
+  const path = `school/${schoolId}/course/${courseId}`
+
+  const response = await get(path, {})
+
+  return response
+}

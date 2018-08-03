@@ -1,0 +1,9 @@
+.container {
+  display: flex;
+  border: 1px solid lightgrey;
+  padding: 5px;
+}
+
+.info {
+  flex-grow: 1;
+}
