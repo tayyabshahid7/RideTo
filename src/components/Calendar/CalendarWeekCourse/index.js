@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
@@ -25,26 +26,28 @@ const CalendarWeekCourse = ({ course, position, barCount }) => {
         availableSpaces === 0 && 'border-danger'
       )}
       style={style}>
-      <span className={styles.eventName}>
-        {course.course_type.name} | {course.time}
-      </span>
-      <span
-        className={classnames(
-          styles.courseSpace,
-          availableSpaces === 1 && 'text-warning',
-          availableSpaces === 0 && 'text-danger'
-        )}>
-        {getCourseSpaceText(course)}
-      </span>
-      <div>
-        {course.orders.map(order => (
-          <div className={styles.order}>
-            <span>#{order.friendly_id}</span>
-            <span>{order.bike_hire}</span>
-            <span>{order.user_name}</span>
-          </div>
-        ))}
-      </div>
+      <Link to={`/calendar/${course.date}/courses/${course.id}`}>
+        <span className={styles.eventName}>
+          {course.course_type.name} | {course.time}
+        </span>
+        <span
+          className={classnames(
+            styles.courseSpace,
+            availableSpaces === 1 && 'text-warning',
+            availableSpaces === 0 && 'text-danger'
+          )}>
+          {getCourseSpaceText(course)}
+        </span>
+        <div>
+          {course.orders.map(order => (
+            <div className={styles.order}>
+              <span>#{order.friendly_id}</span>
+              <span>{order.bike_hire}</span>
+              <span>{order.user_name}</span>
+            </div>
+          ))}
+        </div>
+      </Link>
     </li>
   )
 }

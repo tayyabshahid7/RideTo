@@ -47,6 +47,11 @@ class CalendarPage extends Component {
     if (viewMode === CALENDAR_VIEW.MONTH) {
       let firstDay = new Date(year, month, 1)
       let dayOne = firstDay.getDay()
+      if (dayOne === 0) {
+        dayOne = 6
+      } else {
+        dayOne--
+      }
       let dayLast = new Date(year, month + 1, 0)
       let firstDateInMonthCalendar = new Date(firstDay - dayOne * oneDay)
       let monthViewDays = dayOne + dayLast.getDate() <= 35 ? 35 : 42
@@ -57,6 +62,11 @@ class CalendarPage extends Component {
 
     let firstDay = new Date(year, month, day)
     let dayOne = firstDay.getDay()
+    if (dayOne === 0) {
+      dayOne = 6
+    } else {
+      dayOne--
+    }
     let firstDateInWeekCalendar = new Date(firstDay - dayOne * oneDay)
     let date = new Date(firstDateInWeekCalendar)
     date.setDate(date.getDate() + 6)
@@ -79,40 +89,39 @@ class CalendarPage extends Component {
     })
   }
 
-  generateCalendarDaysForMonth({ year, month }) {
-    let firstDay = new Date(year, month, 1)
-    let dayOne = firstDay.getDay()
-    let oneDay = 1000 * 60 * 60 * 24
+  generateCalendarDaysForMonth({ year, month, day }) {
+    let { firstDate } = this.getFirstAndLastDate({
+      year,
+      month,
+      day,
+      viewMode: CALENDAR_VIEW.MONTH
+    })
+
     let dayLast = new Date(year, month + 1, 0)
 
     let days = []
-
-    let firstDateInMonthCalendar = new Date(firstDay - dayOne * oneDay)
-    let monthViewDays = dayOne + dayLast.getDate() <= 35 ? 35 : 42
+    let diffDays = moment(dayLast).diff(moment(firstDate), 'days')
+    let monthViewDays = diffDays < 35 ? 35 : 42
     for (let i = 0; i < monthViewDays; i++) {
-      let date = new Date(firstDateInMonthCalendar)
+      let date = new Date(firstDate)
       date.setDate(date.getDate() + i)
       days.push(date)
-      // let dateInString = moment(date).format('YYYY-MM-DD')
-      // let coursesForDate = courses.filter(
-      //   course => course.date === dateInString
-      // )
-      // days.push({ date, courses: coursesForDate })
     }
     return days
   }
 
   generateCalendarDaysForWeek({ year, month, day }) {
-    let firstDay = new Date(year, month, day)
-    let dayOne = firstDay.getDay()
-    let oneDay = 1000 * 60 * 60 * 24
+    let { firstDate } = this.getFirstAndLastDate({
+      year,
+      month,
+      day,
+      viewMode: CALENDAR_VIEW.WEEK
+    })
 
     let days = []
 
-    let firstDateInWeekCalendar = new Date(firstDay - dayOne * oneDay)
-    console.log(firstDateInWeekCalendar)
     for (let i = 0; i < 7; i++) {
-      let date = new Date(firstDateInWeekCalendar)
+      let date = new Date(firstDate)
       date.setDate(date.getDate() + i)
       days.push(date)
     }
@@ -183,7 +192,7 @@ class CalendarPage extends Component {
             />
             <Route
               exact
-              path="/calendar/:date/orders/:courseId"
+              path="/calendar/:date/courses/:courseId"
               render={routeProps => <OrdersPanel {...routeProps} days={days} />}
             />
           </Col>

@@ -26,7 +26,7 @@ const CoursesPanelItem = ({ course, date }) => {
               {getCourseSpaceText(course)}
             </span>
           </div>
-          <Link to={`/calendar/${date}/orders/${course.id}`}>
+          <Link to={`/calendar/${date}/courses/${course.id}`}>
             Edit / Add Order
           </Link>
         </div>
