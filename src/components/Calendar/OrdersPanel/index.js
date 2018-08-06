@@ -1,33 +1,75 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import moment from 'moment'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { getSingleCourse, deleteCourse } from 'actions/course'
+import OrdersPanel from './OrdersPanel'
 
-import { getCoursesOnDay } from 'services/course'
-import styles from './OrdersPanel.scss'
+class OrdersPanelContainer extends React.Component {
+  componentDidMount() {
+    this.loadCourse()
+  }
 
-const OrdersPanel = ({ days, match }) => {
-  const {
-    params: { date, courseId }
-  } = match
-  const title = moment(date, 'YYYY-MM-DD').format('dddd Do MMMM YYYY')
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.courseId !== this.props.match.params.courseId) {
+      this.loadCourse()
+    }
+  }
 
-  const courses = getCoursesOnDay(days, date)
-  const course =
-    courses.filter(({ id }) => id === parseInt(courseId, 10))[0] || {}
-  const backLink = `/calendar/${date}`
+  loadCourse() {
+    const { getSingleCourse, match, schoolId } = this.props
+    const {
+      params: { courseId }
+    } = match
+    getSingleCourse({ schoolId, courseId })
+  }
 
-  return (
-    <div className={styles.ordersPanel}>
-      <h3>
-        {course.time} {title}
-      </h3>
-      <Link to={backLink}>&laquo; Back to day view</Link>
+  async handleDeleteCourse() {
+    try {
+      const { deleteCourse, match, schoolId, history, course } = this.props
+      let link = `/calendar/${course.date}`
+      const {
+        params: { courseId }
+      } = match
+      await deleteCourse({ schoolId, courseId: parseInt(courseId, 10) })
+      history.push(link)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
-      <h4>Orders</h4>
-
-      <div className={styles.orders} />
-    </div>
-  )
+  render() {
+    const { course, loading, error } = this.props
+    if (!course) {
+      return <div>{loading ? 'Loading...' : error ? `${error}` : ''}</div>
+    }
+    return (
+      <OrdersPanel
+        course={course}
+        deleteCourse={this.handleDeleteCourse.bind(this)}
+      />
+    )
+  }
 }
 
-export default OrdersPanel
+const mapStateToProps = (state, ownProps) => {
+  return {
+    schoolId: state.auth.schoolId,
+    course: state.course.single.course,
+    loading: state.course.single.loading,
+    error: state.course.single.error
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getSingleCourse,
+      deleteCourse
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrdersPanelContainer)
