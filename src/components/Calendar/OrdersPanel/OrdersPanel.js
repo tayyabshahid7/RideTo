@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import OrdersPanelItem from './OrdersPanelItem'
 import styles from './OrdersPanel.scss'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
+import { Button } from 'reactstrap'
 
 class OrdersPanel extends React.Component {
   handleAdd() {}
@@ -22,11 +23,12 @@ class OrdersPanel extends React.Component {
         </h3>
         <Link to={backLink}>&laquo; Back to day view</Link>
         {course.orders.length === 0 && (
-          <button
-            className="btn btn-danger pull-right btn-remove-course"
+          <Button
+            color="danger"
+            className="pull-right btn-remove-course"
             onClick={deleteCourse}>
             Remove Course
-          </button>
+          </Button>
         )}
         <h4>Orders</h4>
 

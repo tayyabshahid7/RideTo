@@ -1,16 +1,17 @@
 import React from 'react'
 import styles from './style.scss'
+import { Button } from 'reactstrap'
 
 const OrdersPanelSpaceItem = ({ onAdd, onRemove }) => {
   return (
     <div className={styles.container}>
       <span className={styles.info}>Available</span>
-      <button className="btn btn-primary" onClick={onAdd}>
+      <Button color="primary" onClick={onAdd} className="mr-1">
         Add
-      </button>
-      <button className="btn" onClick={onRemove}>
+      </Button>
+      <Button color="" onClick={onRemove}>
         Remove
-      </button>
+      </Button>
     </div>
   )
 }

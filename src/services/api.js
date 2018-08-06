@@ -148,7 +148,7 @@ export const get = async (path, params) => {
   }
 }
 
-export const delApi = async (path, params) => {
+export const destroy = async (path, params) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
