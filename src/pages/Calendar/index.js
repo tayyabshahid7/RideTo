@@ -9,7 +9,7 @@ import CoursesPanel from 'components/Calendar/CoursesPanel'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
-import { getCourses, updateCalendarSetting } from 'actions/calendar'
+import { getCourses, updateCalendarSetting } from 'actions/course'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 import SchoolSelect from 'components/SchoolSelect'
 
@@ -196,7 +196,7 @@ class CalendarPage extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     schoolId: state.auth.schoolId,
-    calendar: state.calendar
+    calendar: state.course.calendar
   }
 }
 

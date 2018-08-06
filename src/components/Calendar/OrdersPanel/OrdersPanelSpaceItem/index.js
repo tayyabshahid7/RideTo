@@ -8,7 +8,7 @@ const OrdersPanelSpaceItem = ({ onAdd, onRemove }) => {
       <button className="btn btn-primary" onClick={onAdd}>
         Add
       </button>
-      <button className="btn btn-danger" onClick={onRemove}>
+      <button className="btn" onClick={onRemove}>
         Remove
       </button>
     </div>

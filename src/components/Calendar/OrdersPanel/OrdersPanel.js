@@ -11,7 +11,7 @@ class OrdersPanel extends React.Component {
   handleRemove() {}
 
   render() {
-    let { course } = this.props
+    let { course, deleteCourse } = this.props
     const dateStr = moment(course.date, 'YYYY-MM-DD').format('dddd Do MMMM')
     const backLink = `/calendar/${course.date}`
     const availableSpaces = course.spaces - course.orders.length
@@ -22,7 +22,9 @@ class OrdersPanel extends React.Component {
         </h3>
         <Link to={backLink}>&laquo; Back to day view</Link>
         {course.orders.length === 0 && (
-          <button className="btn btn-danger pull-right btn-remove-course">
+          <button
+            className="btn btn-danger pull-right btn-remove-course"
+            onClick={deleteCourse}>
             Remove Course
           </button>
         )}

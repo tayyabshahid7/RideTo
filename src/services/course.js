@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { get } from 'services/api'
+import { get, delApi } from 'services/api'
 import { s } from 'utils/helper'
 
 export const getCourseSpaceText = course => {
@@ -45,6 +45,14 @@ export const fetchSingleCourse = async (schoolId, courseId) => {
   const path = `school/${schoolId}/course/${courseId}`
 
   const response = await get(path, {})
+
+  return response
+}
+
+export const deleteSingleCourse = async (schoolId, courseId) => {
+  const path = `school/${schoolId}/course/${courseId}`
+
+  const response = await delApi(path, {})
 
   return response
 }

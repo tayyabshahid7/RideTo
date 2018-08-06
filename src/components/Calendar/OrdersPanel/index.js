@@ -1,7 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getSingleCourse } from 'actions/course'
+import { getSingleCourse, deleteCourse } from 'actions/course'
 import OrdersPanel from './OrdersPanel'
 
 class OrdersPanelContainer extends React.Component {
@@ -23,12 +23,31 @@ class OrdersPanelContainer extends React.Component {
     getSingleCourse({ schoolId, courseId })
   }
 
+  async handleDeleteCourse() {
+    try {
+      const { deleteCourse, match, schoolId, history, course } = this.props
+      let link = `/calendar/${course.date}`
+      const {
+        params: { courseId }
+      } = match
+      await deleteCourse({ schoolId, courseId: parseInt(courseId, 10) })
+      history.push(link)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   render() {
     const { course, loading, error } = this.props
     if (!course) {
       return <div>{loading ? 'Loading...' : error ? `${error}` : ''}</div>
     }
-    return <OrdersPanel course={course} />
+    return (
+      <OrdersPanel
+        course={course}
+        deleteCourse={this.handleDeleteCourse.bind(this)}
+      />
+    )
   }
 }
 
@@ -44,7 +63,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getSingleCourse
+      getSingleCourse,
+      deleteCourse
     },
     dispatch
   )
