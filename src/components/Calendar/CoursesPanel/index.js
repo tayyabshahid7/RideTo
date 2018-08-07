@@ -33,7 +33,12 @@ class CoursesPanelContainer extends React.Component {
     if (loading) {
       return <div>Loading...</div>
     }
-    return <CoursesPanel date={date} courses={courses} />
+    return (
+      <CoursesPanel
+        date={date}
+        courses={courses.sort((a, b) => a.time > b.time)}
+      />
+    )
   }
 }
 

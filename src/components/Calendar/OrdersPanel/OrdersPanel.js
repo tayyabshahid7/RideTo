@@ -31,7 +31,11 @@ class OrdersPanel extends React.Component {
           </Button>
         )}
         <h4>Orders</h4>
-
+        <div>
+          Bikes available on the course:
+          <div>Manual: {course.manual_bikes}</div>
+          <div>Automatic: {course.auto_bikes}</div>
+        </div>
         <div className={styles.orders}>
           {course.orders.map((order, index) => (
             <OrdersPanelItem order={order} key={index} />
