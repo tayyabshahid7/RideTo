@@ -169,7 +169,7 @@ class CalendarPage extends Component {
   }
 
   render() {
-    const { calendar } = this.props
+    const { calendar, history } = this.props
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
       <div className={styles.container}>
@@ -180,6 +180,7 @@ class CalendarPage extends Component {
               days={days}
               calendar={calendar}
               handleCustomEvent={this.handleCustomEvent.bind(this)}
+              history={history}
             />
           </Col>
           <Col xs="4">

@@ -54,7 +54,7 @@ class CalendarComponent extends Component {
     )
   }
   render() {
-    let { days, calendar, handleCustomEvent } = this.props
+    let { days, calendar, handleCustomEvent, history } = this.props
     return (
       <div className={styles.container}>
         {this.renderOverview()}
@@ -64,9 +64,17 @@ class CalendarComponent extends Component {
         />
         <Loading loading={calendar.loading}>
           {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
-            <CalendarWeekView days={days} calendar={calendar} />
+            <CalendarWeekView
+              days={days}
+              calendar={calendar}
+              history={history}
+            />
           ) : (
-            <CalendarMonthView days={days} calendar={calendar} />
+            <CalendarMonthView
+              days={days}
+              calendar={calendar}
+              history={history}
+            />
           )}
         </Loading>
       </div>

@@ -1,7 +1,10 @@
 .container {
   a {
-    color: #8e352e;
+    // color: #8e352e;
     text-decoration: none;
+    &:hover {
+      text-decoration: none;
+    }
   }
 
   ul {
@@ -15,7 +18,7 @@
     list-style-type: none;
     // display: inline-block;
     // width: 13.1%;
-    text-align: center;
+    // text-align: center;
     margin-bottom: 4px;
     font-size: 12px;
     // color: #777;

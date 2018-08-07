@@ -87,7 +87,7 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { days } = this.props
+    const { days, history } = this.props
     let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.events}>
@@ -110,6 +110,7 @@ class CalendarWeekView extends Component {
                       course={course}
                       position={day.coursePositions[index]}
                       barCount={day.barCount}
+                      history={history}
                     />
                   ))}
               </ul>
