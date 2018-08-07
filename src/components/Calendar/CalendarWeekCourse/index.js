@@ -1,10 +1,12 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import moment from 'moment'
 import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME } from 'common/constants'
 
-const CalendarWeekCourse = ({ course, position, barCount }) => {
+const CalendarWeekCourse = ({ course, position, barCount, history }) => {
   const availableSpaces = course.spaces - course.orders.length
   let height = `${(course.duration / 3600) * 100}px` // TODO: This should be replaced by calculating height by duration
   let top = `${((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100}px`
@@ -24,9 +26,13 @@ const CalendarWeekCourse = ({ course, position, barCount }) => {
         availableSpaces === 1 && 'border-warning',
         availableSpaces === 0 && 'border-danger'
       )}
-      style={style}>
+      style={style}
+      onClick={() =>
+        history.push(`/calendar/${course.date}/courses/${course.id}`)
+      }>
       <span className={styles.eventName}>
-        {course.course_type.name} | {course.time}
+        {course.course_type.name} |{' '}
+        {moment(`2001/01/01 ${course.time}`).format('HH:mm')}
       </span>
       <span
         className={classnames(
