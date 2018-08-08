@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 // import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import 'font-awesome/css/font-awesome.css'
-import { Switch, Route, Redirect } from 'react-router'
+import { Switch, Route } from 'react-router'
 import { ConnectedRouter } from 'connected-react-router'
 import Login from './pages/Login'
 import MainLayout from './pages/MainLayout'
