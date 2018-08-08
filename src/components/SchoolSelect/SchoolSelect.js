@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 
-const SchoolSelect = ({ selected, schools, onChange }) => {
+const SchoolSelect = ({ selected, schools, onChange, valueField = 'id' }) => {
   return (
     <select
       className={styles.minimal}
@@ -13,7 +13,10 @@ const SchoolSelect = ({ selected, schools, onChange }) => {
         )
       }>
       {schools.map(school => (
-        <option key={school.id} value={school.id} name={school.name}>
+        <option
+          key={school[valueField]}
+          value={school[valueField]}
+          name={school.name}>
           {school.name}
         </option>
       ))}

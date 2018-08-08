@@ -1,0 +1,16 @@
+.booking {
+}
+
+.continue {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .continue {
+    display: block;
+  }
+
+  .options {
+    display: none;
+  }
+}
