@@ -31,8 +31,7 @@ const CalendarWeekCourse = ({ course, position, barCount, history }) => {
         history.push(`/calendar/${course.date}/courses/${course.id}`)
       }>
       <span className={styles.eventName}>
-        {course.course_type.name} |{' '}
-        {moment(`2001/01/01 ${course.time}`).format('HH:mm')}
+        {course.course_type.name} | {course.time.substring(0, 5)}
       </span>
       <span
         className={classnames(
