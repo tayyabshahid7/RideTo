@@ -183,7 +183,7 @@ class CalendarPage extends Component {
               history={history}
             />
           </Col>
-          <Col xs="4">
+          <Col xs="4" className={styles.rightPanel}>
             <Route
               exact
               path="/calendar/:date"

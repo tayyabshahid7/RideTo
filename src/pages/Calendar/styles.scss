@@ -3,3 +3,10 @@
     display: flex;
   }
 }
+
+.rightPanel {
+  position: fixed !important;
+  background: white;
+  right: 0px;
+  padding-top: 20px;
+}

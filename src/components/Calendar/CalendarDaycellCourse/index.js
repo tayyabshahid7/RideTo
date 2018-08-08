@@ -9,8 +9,7 @@ const CalendarDayCellCourse = ({ course }) => {
   return (
     <div className={styles.container}>
       <div className={styles.courseDescription}>
-        {course.course_type.name} |{' '}
-        {moment(`2001/01/01 ${course.time}`).format('HH:mm')}
+        {course.course_type.name} | {course.time.substring(0, 5)}
       </div>
       <div
         className={classnames(
