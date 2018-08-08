@@ -5,14 +5,46 @@ import OrdersPanelItem from './OrdersPanelItem'
 import styles from './OrdersPanel.scss'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 import { Button } from 'reactstrap'
+import ConfirmModal from 'components/Modals/ConfirmModal'
 
 class OrdersPanel extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showConfirmModal: false,
+      showDeleteCourseConfirmModal: false
+    }
+  }
   handleAdd() {}
 
-  handleRemove() {}
+  handleRemoveClick() {
+    this.setState({ showConfirmModal: true })
+  }
+
+  handleRemoveCourseClick() {
+    this.setState({ showDeleteCourseConfirmModal: true })
+  }
+
+  handleDeleteCourse() {
+    let { deleteCourse } = this.props
+    deleteCourse()
+  }
+
+  closeDeleteCourseConfirmModal() {
+    this.setState({ showDeleteCourseConfirmModal: false })
+  }
+
+  handleRemoveSpace() {
+    // Remove the space here
+  }
+
+  closeConfirmModal() {
+    this.setState({ showConfirmModal: false })
+  }
 
   render() {
-    let { course, deleteCourse } = this.props
+    let { course } = this.props
+    const { showConfirmModal, showDeleteCourseConfirmModal } = this.state
     const dateStr = moment(course.date, 'YYYY-MM-DD').format('dddd Do MMMM')
     const backLink = `/calendar/${course.date}`
     const availableSpaces = course.spaces - course.orders.length
@@ -26,7 +58,7 @@ class OrdersPanel extends React.Component {
           <Button
             color="danger"
             className="pull-right btn-remove-course"
-            onClick={deleteCourse}>
+            onClick={this.handleRemoveCourseClick.bind(this)}>
             Remove Course
           </Button>
         )}
@@ -43,11 +75,27 @@ class OrdersPanel extends React.Component {
           {Array.apply(null, Array(availableSpaces)).map((val, index) => (
             <OrdersPanelSpaceItem
               onAdd={this.handleAdd.bind(this)}
-              onRemove={this.handleRemove.bind(this)}
+              onRemove={this.handleRemoveClick.bind(this)}
               key={index}
             />
           ))}
         </div>
+        {showConfirmModal && (
+          <ConfirmModal
+            onClose={this.closeConfirmModal.bind(this)}
+            showModal={true}
+            onDelete={this.handleRemoveSpace.bind(this)}
+            message={`Are you sure to delete the space?`}
+          />
+        )}
+        {showDeleteCourseConfirmModal && (
+          <ConfirmModal
+            onClose={this.closeDeleteCourseConfirmModal.bind(this)}
+            showModal={true}
+            onDelete={this.handleDeleteCourse.bind(this)}
+            message={`Are you sure to delete the course?`}
+          />
+        )}
       </div>
     )
   }
