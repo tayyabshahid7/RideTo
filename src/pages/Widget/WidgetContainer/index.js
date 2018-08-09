@@ -4,28 +4,23 @@ import BookingOptions from 'pages/Widget/components/BookingOptions'
 import Details from 'pages/Widget/components/Details'
 import styles from './WidgetContainer.scss'
 
+const getAddress = loc => {
+  return `${loc.address_1}, ${loc.town}, ${loc.postcode}`
+}
+
 class WidgetContainer extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.handleChangeProfile = this.handleChangeProfile.bind(this)
-  }
-
-  handleChangeProfile(slug) {
-    const { history } = this.props
-    history.push(`/widget/${slug}/`)
-  }
-
   render() {
-    const { profile, profiles } = this.props
+    const { widget, locations, selectedLocation, onChangeLocation } = this.props
+    const address = getAddress(selectedLocation)
 
     return (
       <div className={styles.widgetContainer}>
-        <Details profile={profile} />
+        <Details widget={widget} address={address} />
         <BookingOptions
-          profile={profile}
-          profiles={profiles}
-          onChangeProfile={this.handleChangeProfile}
+          widget={widget}
+          selectedLocation={selectedLocation}
+          locations={locations}
+          onChangeLocation={onChangeLocation}
         />
       </div>
     )
