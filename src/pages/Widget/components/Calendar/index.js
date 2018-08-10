@@ -26,21 +26,44 @@ const isDayBlocked = (day, courses) => {
   return courses.filter(({ date }) => date === formatted).length === 0
 }
 
-const Calendar = ({ date, courses, onChangeDate }) => {
-  return (
-    <SingleDatePicker
-      numberOfMonths={1}
-      renderDayContents={day => renderDayContents(day, 120)}
-      onDateChange={onChangeDate}
-      date={date}
-      daySize={48}
-      onFocusChange={() => {}}
-      keepOpenOnDateSelect={true}
-      hideKeyboardShortcutsPanel={true}
-      focused={true}
-      isDayBlocked={day => isDayBlocked(day, courses)}
-    />
-  )
+class Calendar extends React.Component {
+  shouldComponentUpdate({ date, courses }) {
+    if (this.props.date !== date) {
+      return true
+    }
+
+    if (this.props.courses.length !== courses.length) {
+      return true
+    }
+
+    if (this.props.courses.length && courses.length) {
+      const courseId = this.props.courses[0].id
+      if (courseId !== courses[0].id) {
+        return true
+      }
+    }
+
+    return false
+  }
+
+  render() {
+    const { date, courses, onChangeDate } = this.props
+
+    return (
+      <SingleDatePicker
+        numberOfMonths={1}
+        renderDayContents={day => renderDayContents(day, 120)}
+        onDateChange={onChangeDate}
+        date={date}
+        daySize={48}
+        onFocusChange={() => {}}
+        keepOpenOnDateSelect={true}
+        hideKeyboardShortcutsPanel={true}
+        focused={true}
+        isDayBlocked={day => isDayBlocked(day, courses)}
+      />
+    )
+  }
 }
 
 export default Calendar
