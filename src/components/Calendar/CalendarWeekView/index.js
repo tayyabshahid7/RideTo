@@ -62,7 +62,6 @@ class CalendarWeekView extends Component {
           coursePositions.push(0)
         } else {
           let j
-          console.log(barMap, course)
           for (j = 0; j < barMap.length; j++) {
             if (
               barMap[j].secondsForDay + barMap[j].duration <

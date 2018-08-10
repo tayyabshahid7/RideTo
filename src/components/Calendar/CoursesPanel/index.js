@@ -21,7 +21,6 @@ class CoursesPanelContainer extends React.Component {
     const {
       params: { date }
     } = match
-    // console.log('Courses Panel componentDidMount', date)
     getDayCourses({ schoolId, date })
   }
 

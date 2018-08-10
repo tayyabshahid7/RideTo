@@ -1,4 +1,8 @@
 .container {
+  // overflow: auto;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   a {
     // color: #8e352e;
     text-decoration: none;
@@ -30,4 +34,10 @@
     margin-right: -1px;
     margin-bottom: -1px;
   }
+}
+
+.daysContainer {
+  overflow: hidden;
+  margin-right: -15px;
+  display: flex;
 }

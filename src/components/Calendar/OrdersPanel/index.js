@@ -1,7 +1,11 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getSingleCourse, deleteCourse } from 'actions/course'
+import {
+  getSingleCourse,
+  deleteCourse,
+  createSchoolOrder
+} from 'actions/course'
 import OrdersPanel from './OrdersPanel'
 
 class OrdersPanelContainer extends React.Component {
@@ -20,7 +24,7 @@ class OrdersPanelContainer extends React.Component {
     const {
       params: { courseId }
     } = match
-    getSingleCourse({ schoolId, courseId })
+    getSingleCourse({ schoolId, courseId, reset: true })
   }
 
   async handleDeleteCourse() {
@@ -38,12 +42,13 @@ class OrdersPanelContainer extends React.Component {
   }
 
   render() {
-    const { course, loading, error } = this.props
+    const { loading, error, course, ...rest } = this.props
     if (!course) {
       return <div>{loading ? 'Loading...' : error ? `${error}` : ''}</div>
     }
     return (
       <OrdersPanel
+        {...rest}
         course={course}
         deleteCourse={this.handleDeleteCourse.bind(this)}
       />
@@ -56,7 +61,9 @@ const mapStateToProps = (state, ownProps) => {
     schoolId: state.auth.schoolId,
     course: state.course.single.course,
     loading: state.course.single.loading,
-    error: state.course.single.error
+    saving: state.course.single.saving,
+    error: state.course.single.error,
+    info: state.info
   }
 }
 
@@ -64,7 +71,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getSingleCourse,
-      deleteCourse
+      deleteCourse,
+      createSchoolOrder
     },
     dispatch
   )

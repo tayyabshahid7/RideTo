@@ -11,11 +11,12 @@ class CoursesPanel extends React.Component {
     return (
       <div className={styles.coursesPanel}>
         <h3>{title}</h3>
-
-        <div className={styles.courses}>
-          {courses.map(course => (
-            <CoursesPanelItem key={course.time} date={date} course={course} />
-          ))}
+        <div className={styles.scrollContainer}>
+          <div className={styles.scrollContent}>
+            {courses.map(course => (
+              <CoursesPanelItem key={course.time} date={date} course={course} />
+            ))}
+          </div>
         </div>
       </div>
     )

@@ -7,7 +7,9 @@ import styles from './index.scss'
 const CalendarMonthView = ({ ...props }) => (
   <div className={styles.container}>
     <CalendarWeekdays />
-    <CalendarDays {...props} />
+    <div className={styles.daysContainer}>
+      <CalendarDays {...props} />
+    </div>
   </div>
 )
 

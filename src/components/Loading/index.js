@@ -4,7 +4,11 @@ import classnames from 'classnames'
 
 const Loading = props => {
   return (
-    <div className={classnames(props.loading && styles.loadingMask)}>
+    <div
+      className={classnames(
+        props.loading && styles.loadingMask,
+        props.className
+      )}>
       {props.children}
     </div>
   )
