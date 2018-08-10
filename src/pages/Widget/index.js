@@ -6,7 +6,7 @@ import WidgetContainer from 'pages/Widget/WidgetContainer'
 import MobileContainer from 'pages/Widget/MobileContainer'
 
 const isMobile = () => {
-  return window.innerWidth < 768
+  return window.innerWidth < 768 || window.screen.width < 768
 }
 
 class Widget extends React.Component {

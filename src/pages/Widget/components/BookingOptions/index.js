@@ -3,13 +3,15 @@ import moment from 'moment'
 
 import Calendar from 'pages/Widget/components/Calendar'
 import CourseSelect from 'pages/Widget/components/CourseSelect'
-import MinimalSelect from 'components/MinimalSelect'
 import BookingOption from 'pages/Widget/components/BookingOption'
 import { fetchWidgetCourses } from 'services/course'
 
 import styles from './BookingOptions.scss'
 
 const getSchoolCoursesByDate = (selectedDate, courses) => {
+  if (!selectedDate) {
+    return []
+  }
   const formatted = selectedDate.format('YYYY-MM-DD')
 
   return courses.filter(({ date }) => date === formatted)
@@ -25,31 +27,43 @@ class BookingOptions extends React.Component {
       schoolCourses: [],
       availableCourses: [],
       selectedCourse: null,
-      selectedDate: moment()
+      selectedDate: null,
+      month: moment().startOf('month'),
+      isLoading: true
     }
 
     this.handleChangeCourseType = this.handleChangeCourseType.bind(this)
     this.handleChangeDate = this.handleChangeDate.bind(this)
     this.handleChangeCourse = this.handleChangeCourse.bind(this)
+    this.handleChangeMonth = this.handleChangeMonth.bind(this)
   }
 
   componentDidMount() {
-    this.fetchCourses()
+    const { month } = this.state
+    this.fetchCourses(month.clone())
   }
 
   componentDidUpdate(oldProps) {
     if (oldProps.selectedLocation !== this.props.selectedLocation) {
-      this.fetchCourses()
+      const { month } = this.state
+      this.setState({ isLoading: true })
+      this.fetchCourses(month.clone())
     }
   }
 
-  async fetchCourses() {
+  async fetchCourses(month) {
     const { selectedLocation } = this.props
     const courseType = this.state.courseType || selectedLocation.courses[0]
     const schoolCourses = await fetchWidgetCourses(
       selectedLocation.id,
-      '2018-01-01',
-      '2018-12-31'
+      month
+        .subtract(1, 'month')
+        .startOf('month')
+        .format('YYYY-MM-DD'),
+      month
+        .add(2, 'month')
+        .endOf('month')
+        .format('YYYY-MM-DD')
     )
 
     this.setAvailableCourses(schoolCourses, courseType)
@@ -63,7 +77,8 @@ class BookingOptions extends React.Component {
     this.setState({
       schoolCourses,
       availableCourses,
-      courseType
+      courseType,
+      isLoading: false
     })
   }
 
@@ -88,13 +103,19 @@ class BookingOptions extends React.Component {
     })
   }
 
+  handleChangeMonth(month) {
+    this.setState({ month })
+    this.fetchCourses(month.clone())
+  }
+
   render() {
     const { widget, selectedLocation, locations, onChangeLocation } = this.props
     const {
       courseType,
       availableCourses,
       selectedDate,
-      selectedCourse
+      selectedCourse,
+      isLoading
     } = this.state
     const selectedCourses = getSchoolCoursesByDate(
       selectedDate,
@@ -123,6 +144,8 @@ class BookingOptions extends React.Component {
           date={selectedDate}
           courses={availableCourses}
           onChangeDate={this.handleChangeDate}
+          onChangeMonth={this.handleChangeMonth}
+          isLoading={isLoading}
         />
 
         <hr />

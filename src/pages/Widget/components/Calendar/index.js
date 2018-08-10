@@ -3,6 +3,8 @@ import moment from 'moment'
 import { SingleDatePicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
 
+import Loading from 'components/Loading'
+
 import styles from './Calendar.scss'
 
 moment.updateLocale('en', {
@@ -27,7 +29,11 @@ const isDayBlocked = (day, courses) => {
 }
 
 class Calendar extends React.Component {
-  shouldComponentUpdate({ date, courses }) {
+  shouldComponentUpdate({ date, courses, isLoading }) {
+    if (this.props.isLoading !== isLoading) {
+      return true
+    }
+
     if (this.props.date !== date) {
       return true
     }
@@ -47,21 +53,30 @@ class Calendar extends React.Component {
   }
 
   render() {
-    const { date, courses, onChangeDate } = this.props
+    const { date, courses, onChangeDate, onChangeMonth, isLoading } = this.props
 
     return (
-      <SingleDatePicker
-        numberOfMonths={1}
-        renderDayContents={day => renderDayContents(day, 120)}
-        onDateChange={onChangeDate}
-        date={date}
-        daySize={48}
-        onFocusChange={() => {}}
-        keepOpenOnDateSelect={true}
-        hideKeyboardShortcutsPanel={true}
-        focused={true}
-        isDayBlocked={day => isDayBlocked(day, courses)}
-      />
+      <div className={styles.calendar}>
+        <SingleDatePicker
+          numberOfMonths={1}
+          renderDayContents={day => renderDayContents(day, 120)}
+          onDateChange={onChangeDate}
+          date={date}
+          daySize={48}
+          onFocusChange={() => {}}
+          keepOpenOnDateSelect={true}
+          hideKeyboardShortcutsPanel={true}
+          focused={true}
+          isDayBlocked={day => isDayBlocked(day, courses)}
+          onNextMonthClick={onChangeMonth}
+          onPrevMonthClick={onChangeMonth}
+        />
+        {isLoading ? (
+          <div className={styles.spinner}>
+            <Loading loading={true} />
+          </div>
+        ) : null}
+      </div>
     )
   }
 }

@@ -1,3 +1,20 @@
+.calendar {
+  position: relative;
+}
+
+.spinner {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 9000;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.spinner div {
+  margin-top: 40%;
+}
+
 .day {
   font-size: 14px;
   min-height: 32px;
