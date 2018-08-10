@@ -1,5 +1,4 @@
 import React from 'react'
-import { Route } from 'react-router-dom'
 
 import styles from './MobileContainer.scss'
 import MobileDetails from 'pages/Widget/components/MobileDetails'
