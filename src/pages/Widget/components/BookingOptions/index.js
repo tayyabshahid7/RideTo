@@ -4,6 +4,7 @@ import moment from 'moment'
 import Calendar from 'pages/Widget/components/Calendar'
 import CourseSelect from 'pages/Widget/components/CourseSelect'
 import MinimalSelect from 'components/MinimalSelect'
+import BookingOption from 'pages/Widget/components/BookingOption'
 import { fetchWidgetCourses } from 'services/course'
 
 import styles from './BookingOptions.scss'
@@ -102,24 +103,20 @@ class BookingOptions extends React.Component {
 
     return (
       <div className={styles.bookingOptions}>
-        <div className={styles.training}>
-          <h4>Training</h4>
-          <MinimalSelect
-            options={selectedLocation.courses}
-            selected={courseType.id}
-            onChange={this.handleChangeCourseType}
-          />
-        </div>
+        <BookingOption
+          label="Training:"
+          options={selectedLocation.courses}
+          selected={courseType.id}
+          onChange={this.handleChangeCourseType}
+        />
 
-        <div className={styles.locations}>
-          <h4>Location</h4>
-          <MinimalSelect
-            options={locations}
-            labelField="address_1"
-            selected={selectedLocation.id}
-            onChange={onChangeLocation}
-          />
-        </div>
+        <BookingOption
+          label="Location:"
+          options={locations}
+          labelField="address_1"
+          selected={selectedLocation.id}
+          onChange={onChangeLocation}
+        />
 
         <Calendar
           color={widget.calendar_color}
