@@ -14,7 +14,7 @@ class CalendarComponent extends Component {
     const { viewMode } = this.props.calendar
     const { handleCustomEvent } = this.props
     return (
-      <div>
+      <div className={styles.overview}>
         <div>Calendar View</div>
         <div>
           <span
@@ -62,7 +62,7 @@ class CalendarComponent extends Component {
           calendar={calendar}
           handleCustomEvent={handleCustomEvent}
         />
-        <Loading loading={calendar.loading}>
+        <Loading loading={calendar.loading} className={styles.calendarWrapper}>
           {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
             <CalendarWeekView
               days={days}

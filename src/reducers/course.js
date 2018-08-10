@@ -4,6 +4,7 @@ import {
   UPDATE_CALENDAR_SETTING,
   COURSES_FETCH,
   DELETE_COURSE,
+  CREATE_SCHOOL_ORDER,
   REQUEST,
   SUCCESS,
   FAILURE
@@ -14,6 +15,7 @@ const initialState = {
   single: {
     course: null,
     loading: false,
+    saving: false,
     error: null
   },
   day: {
@@ -39,9 +41,15 @@ export const course = (state = initialState, action) => {
   let calendarCourses
   switch (action.type) {
     case SINGLE_COURSE_FETCH[REQUEST]:
+      if (action.reset) {
+        return {
+          ...state,
+          single: { loading: true, course: null, error: null }
+        }
+      }
       return {
         ...state,
-        single: { loading: true, course: null, error: null }
+        single: { ...state.single, loading: true }
       }
     case SINGLE_COURSE_FETCH[SUCCESS]:
       return {
@@ -133,6 +141,21 @@ export const course = (state = initialState, action) => {
           loading: false,
           error: action.error
         }
+      }
+    case CREATE_SCHOOL_ORDER[REQUEST]:
+      return {
+        ...state,
+        single: { ...state.single, saving: true }
+      }
+    case CREATE_SCHOOL_ORDER[SUCCESS]:
+      return {
+        ...state,
+        single: { ...state.single, saving: true }
+      }
+    case CREATE_SCHOOL_ORDER[FAILURE]:
+      return {
+        ...state,
+        single: { ...state.single, saving: true }
       }
     default:
       return state

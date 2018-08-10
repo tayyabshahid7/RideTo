@@ -3,6 +3,16 @@
   display: flex;
   flex-direction: column;
   padding-top: 20px;
+  flex: 1 1 auto;
+}
+
+.calendarWrapper {
+  overflow: hidden;
+  display: flex;
+  margin-right: -17px;
+}
+.overview {
+  flex: 0 0 60px;
 }
 
 .calendarTypeInactive {

@@ -173,9 +173,11 @@ class CalendarPage extends Component {
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
       <div className={styles.container}>
-        <SchoolSelect />
-        <Row>
-          <Col xs="8">
+        <Row className="h-100">
+          <Col xs="8" className={styles.calendarColumn}>
+            <div className={styles.schoolWrapper}>
+              <SchoolSelect />
+            </div>
             <CalendarComponent
               days={days}
               calendar={calendar}

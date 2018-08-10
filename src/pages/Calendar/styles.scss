@@ -5,8 +5,19 @@
 }
 
 .rightPanel {
-  position: fixed !important;
   background: white;
   right: 0px;
   padding-top: 20px;
+  height: 100%;
+  display: flex;
+}
+
+.calendarColumn {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.schoolWrapper {
+  flex: 0 0 50px;
 }

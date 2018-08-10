@@ -31,3 +31,5 @@ export const UPDATE_CALENDAR_SETTING = 'UPDATE_CALENDAR_SETTING'
 export const DAY_COURSES_FETCH = createRequestTypes('DAY_COURSES_FETCH')
 export const SINGLE_COURSE_FETCH = createRequestTypes('SINGLE_COURSE_FETCH')
 export const DELETE_COURSE = createRequestTypes('DELETE_COURSE')
+
+export const CREATE_SCHOOL_ORDER = createRequestTypes('CREATE_SCHOOL_ORDER')

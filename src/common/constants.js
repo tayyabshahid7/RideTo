@@ -15,3 +15,15 @@ export const BIKE_HIRE = {
   AUTO: 'auto',
   NO: 'no'
 }
+
+export const RIDING_EXPERIENCE = {
+  CYCLING: 'Cycling experience',
+  ONROAD_MOTORCYCLING: 'On road motorcycling',
+  OFFROAD_MOTORCYCLING: 'Off road motorcycling'
+}
+
+export const PAYMENT_STATUS = {
+  RECEIVED: 'received',
+  PAID: 'paid',
+  DENIED: 'denied'
+}
