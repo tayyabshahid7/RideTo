@@ -3,11 +3,24 @@ import { Route } from 'react-router-dom'
 
 import styles from './MobileContainer.scss'
 import MobileDetails from 'pages/Widget/components/MobileDetails'
+import BookingOptions from 'pages/Widget/components/BookingOptions'
 
 class MobileContainer extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      page: 'details'
+    }
+  }
+
+  handleNav(page) {
+    this.setState({ page })
+  }
+
   render() {
-    const { match, widget, locations } = this.props
-    const url = `${match.url}mobile`
+    const { widget, locations, selectedLocation, onChangeLocation } = this.props
+    const { page } = this.state
 
     return (
       <div className={styles.mobileContainer}>
@@ -15,17 +28,21 @@ class MobileContainer extends React.Component {
           <img className={styles.logo} src={widget.logo} />
         </h1>
 
-        <Route
-          exact
-          path="/widget/:slug"
-          render={routeProps => <MobileDetails widget={widget} url={url} />}
-        />
+        {page === 'details' ? (
+          <MobileDetails
+            widget={widget}
+            onContinue={() => this.handleNav('options')}
+          />
+        ) : null}
 
-        <Route
-          exact
-          path="/widget/:slug/mobile"
-          render={routeProps => <h2>BOOKING!!</h2>}
-        />
+        {page === 'options' ? (
+          <BookingOptions
+            widget={widget}
+            selectedLocation={selectedLocation}
+            locations={locations}
+            onChangeLocation={onChangeLocation}
+          />
+        ) : null}
       </div>
     )
   }
