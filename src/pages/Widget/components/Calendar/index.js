@@ -26,39 +26,21 @@ const isDayBlocked = (day, courses) => {
   return courses.filter(({ date }) => date === formatted).length === 0
 }
 
-class Calendar extends React.Component {
-  componentDidUpdate() {
-    const { color } = this.props
-    const els = document.getElementsByClassName('CalendarDay__default')
-    for (let i = 0; i < els.length; i++) {
-      if (!els[i].classList.contains('CalendarDay__blocked_calendar')) {
-        els[i].style.backgroundColor = 'initial'
-        els[i].style.borderColor = '#E4E7E7'
-      }
-      if (els[i].classList.contains('CalendarDay__selected')) {
-        els[i].style.backgroundColor = color
-        els[i].style.borderColor = color
-      }
-    }
-  }
-
-  render() {
-    const { date, courses, color, onChangeDate } = this.props
-    return (
-      <SingleDatePicker
-        numberOfMonths={1}
-        renderDayContents={day => renderDayContents(day, 120)}
-        onDateChange={onChangeDate}
-        date={date}
-        daySize={48}
-        onFocusChange={() => {}}
-        keepOpenOnDateSelect={true}
-        hideKeyboardShortcutsPanel={true}
-        focused={true}
-        isDayBlocked={day => isDayBlocked(day, courses)}
-      />
-    )
-  }
+const Calendar = ({ date, courses, onChangeDate }) => {
+  return (
+    <SingleDatePicker
+      numberOfMonths={1}
+      renderDayContents={day => renderDayContents(day, 120)}
+      onDateChange={onChangeDate}
+      date={date}
+      daySize={48}
+      onFocusChange={() => {}}
+      keepOpenOnDateSelect={true}
+      hideKeyboardShortcutsPanel={true}
+      focused={true}
+      isDayBlocked={day => isDayBlocked(day, courses)}
+    />
+  )
 }
 
 export default Calendar
