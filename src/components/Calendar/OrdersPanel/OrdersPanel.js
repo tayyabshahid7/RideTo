@@ -8,6 +8,7 @@ import AddOrderItem from './AddOrderItem'
 import { Button } from 'reactstrap'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import Loading from 'components/Loading'
+import { BIKE_HIRE } from 'common/constants'
 
 class OrdersPanel extends React.Component {
   constructor(props) {
@@ -24,7 +25,25 @@ class OrdersPanel extends React.Component {
   }
 
   handleNewOrder(order) {
-    const { createSchoolOrder, schoolId } = this.props
+    const { createSchoolOrder, schoolId, course } = this.props
+    if (order.bike_hire === BIKE_HIRE.MANUAL) {
+      let manualOrdersCount = course.orders.filter(
+        order1 => order1.bike_hire === BIKE_HIRE.MANUAL
+      ).length
+      if (course.manual_bikes - manualOrdersCount <= 0) {
+        alert('Manual bike not available')
+        return
+      }
+    } else if (order.bike_hire === BIKE_HIRE.AUTO) {
+      let automaticOrdersCount = course.orders.filter(
+        order1 => order1.bike_hire === BIKE_HIRE.AUTO
+      ).length
+      if (course.auto_bikes - automaticOrdersCount <= 0) {
+        alert('Automatic bike not available')
+        return
+      }
+    }
+
     let response = createSchoolOrder({ schoolId, order })
     return response
   }
@@ -64,6 +83,14 @@ class OrdersPanel extends React.Component {
     const dateStr = moment(course.date, 'YYYY-MM-DD').format('dddd Do MMMM')
     const backLink = `/calendar/${course.date}`
     const availableSpaces = course.spaces - course.orders.length
+
+    let manualOrdersCount = course.orders.filter(
+      order => order.bike_hire === BIKE_HIRE.MANUAL
+    ).length
+    let automaticOrdersCount = course.orders.filter(
+      order => order.bike_hire === BIKE_HIRE.AUTO
+    ).length
+
     return (
       <div className={styles.ordersPanel}>
         <h3>
@@ -86,8 +113,8 @@ class OrdersPanel extends React.Component {
             <div className={styles.scrollContent}>
               <div>
                 Bikes available on the course:
-                <div>Manual: {course.manual_bikes}</div>
-                <div>Automatic: {course.auto_bikes}</div>
+                <div>Manual: {course.manual_bikes - manualOrdersCount}</div>
+                <div>Automatic: {course.auto_bikes - automaticOrdersCount}</div>
               </div>
               <div className={styles.orders}>
                 {course.orders.map((order, index) => (
