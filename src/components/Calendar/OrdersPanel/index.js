@@ -48,9 +48,9 @@ class OrdersPanelContainer extends React.Component {
     }
     return (
       <OrdersPanel
+        {...rest}
         course={course}
         deleteCourse={this.handleDeleteCourse.bind(this)}
-        {...rest}
       />
     )
   }
