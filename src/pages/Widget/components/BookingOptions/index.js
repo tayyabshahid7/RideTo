@@ -1,27 +1,17 @@
 import React from 'react'
-import { SingleDatePicker } from 'react-dates'
-import 'react-dates/lib/css/_datepicker.css'
+import moment from 'moment'
 
+import Calendar from 'pages/Widget/components/Calendar'
+import CourseSelect from 'pages/Widget/components/CourseSelect'
 import MinimalSelect from 'components/MinimalSelect'
 import { fetchWidgetCourses } from 'services/course'
 
 import styles from './BookingOptions.scss'
 
-const renderDayContents = (day, price) => {
-  return (
-    <div className={styles.day}>
-      <div className={styles.dayDate}>{day.format('DD')}</div>
-      <strong className={styles.dayPrice}>{`£${price}`}</strong>
-    </div>
-  )
-}
+const getSchoolCoursesByDate = (selectedDate, courses) => {
+  const formatted = selectedDate.format('YYYY-MM-DD')
 
-const getAvailableDates = schoolCourses => {
-  return schoolCourses.map(schoolCourse => schoolCourse.date)
-}
-
-const isDayBlocked = (day, availableDates) => {
-  return availableDates.indexOf(day.format('YYYY-MM-DD')) === -1
+  return courses.filter(({ date }) => date === formatted)
 }
 
 class BookingOptions extends React.Component {
@@ -31,12 +21,15 @@ class BookingOptions extends React.Component {
 
     this.state = {
       courseType: selectedLocation.courses[0],
-      availableDates: [],
       schoolCourses: [],
-      availableCourses: []
+      availableCourses: [],
+      selectedCourse: null,
+      selectedDate: moment()
     }
 
     this.handleChangeCourseType = this.handleChangeCourseType.bind(this)
+    this.handleChangeDate = this.handleChangeDate.bind(this)
+    this.handleChangeCourse = this.handleChangeCourse.bind(this)
   }
 
   componentDidMount() {
@@ -69,7 +62,6 @@ class BookingOptions extends React.Component {
     this.setState({
       schoolCourses,
       availableCourses,
-      availableDates: getAvailableDates(availableCourses),
       courseType
     })
   }
@@ -83,26 +75,33 @@ class BookingOptions extends React.Component {
     this.setAvailableCourses(this.state.schoolCourses, courseType)
   }
 
+  handleChangeDate(selectedDate) {
+    this.setState({
+      selectedDate
+    })
+  }
+
+  handleChangeCourse(selectedCourse) {
+    this.setState({
+      selectedCourse
+    })
+  }
+
   render() {
-    const { selectedLocation, locations, onChangeLocation } = this.props
-    const { courseType, availableDates } = this.state
+    const { widget, selectedLocation, locations, onChangeLocation } = this.props
+    const {
+      courseType,
+      availableCourses,
+      selectedDate,
+      selectedCourse
+    } = this.state
+    const selectedCourses = getSchoolCoursesByDate(
+      selectedDate,
+      availableCourses
+    )
 
     return (
       <div className={styles.bookingOptions}>
-        <SingleDatePicker
-          numberOfMonths={1}
-          renderDayContents={day => renderDayContents(day, 120)}
-          onDateChange={day => {
-            console.log(day)
-          }}
-          daySize={48}
-          onFocusChange={() => {}}
-          keepOpenOnDateSelect={true}
-          hideKeyboardShortcutsPanel={true}
-          focused={true}
-          isDayBlocked={day => isDayBlocked(day, availableDates)}
-        />
-
         <div className={styles.training}>
           <h4>Training</h4>
           <MinimalSelect
@@ -121,6 +120,23 @@ class BookingOptions extends React.Component {
             onChange={onChangeLocation}
           />
         </div>
+
+        <Calendar
+          date={selectedDate}
+          courses={availableCourses}
+          onChangeDate={this.handleChangeDate}
+        />
+
+        <hr />
+
+        {selectedCourses.length ? (
+          <CourseSelect
+            courses={selectedCourses}
+            selectedCourse={selectedCourse}
+            color={widget.button_color}
+            onChangeCourse={this.handleChangeCourse}
+          />
+        ) : null}
       </div>
     )
   }
