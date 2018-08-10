@@ -1,9 +1,9 @@
 import React from 'react'
-import styles from './styles.scss'
+import styles from './MinimalSelect.scss'
 
-const SchoolSelect = ({
+const MinimalSelect = ({
   selected,
-  schools,
+  options,
   onChange,
   labelField = 'name',
   valueField = 'id'
@@ -18,16 +18,16 @@ const SchoolSelect = ({
           e.target.options[e.target.selectedIndex].innerText
         )
       }>
-      {schools.map(school => (
+      {options.map(opt => (
         <option
-          key={school[valueField]}
-          value={school[valueField]}
-          name={school[labelField]}>
-          {school[labelField]}
+          key={opt[valueField]}
+          value={opt[valueField]}
+          name={opt[labelField]}>
+          {opt[labelField]}
         </option>
       ))}
     </select>
   )
 }
 
-export default SchoolSelect
+export default MinimalSelect

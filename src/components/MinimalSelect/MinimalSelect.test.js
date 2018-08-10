@@ -1,7 +1,7 @@
 import React from 'react'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
-import SchoolSelect from './SchoolSelect'
+import MinimalSelect from './index'
 
 Enzyme.configure({ adapter: new Adapter() })
 
@@ -11,7 +11,9 @@ const SCHOOLS = [
 ]
 
 it('Renders select', () => {
-  const wrapper = mount(<SchoolSelect schools={SCHOOLS} onChange={jest.fn()} />)
+  const wrapper = mount(
+    <MinimalSelect options={SCHOOLS} onChange={jest.fn()} />
+  )
 
   const option = wrapper.find('option').first()
   expect(option.text()).toBe(SCHOOLS[0].name)
@@ -19,7 +21,7 @@ it('Renders select', () => {
 
 it('Selects correct option', () => {
   const wrapper = mount(
-    <SchoolSelect selected={2} schools={SCHOOLS} onChange={jest.fn()} />
+    <MinimalSelect selected={2} options={SCHOOLS} onChange={jest.fn()} />
   )
 
   const select = wrapper.find('select').first()
@@ -29,7 +31,7 @@ it('Selects correct option', () => {
 it('Fires change event', () => {
   const onChange = jest.fn()
   const wrapper = mount(
-    <SchoolSelect selected={2} schools={SCHOOLS} onChange={onChange} />
+    <MinimalSelect selected={2} options={SCHOOLS} onChange={onChange} />
   )
 
   const select = wrapper.find('select').first()

@@ -3,7 +3,7 @@ import React from 'react'
 import { DayPicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
 
-import SchoolSelect from 'components/SchoolSelect/SchoolSelect'
+import MinimalSelect from 'components/MinimalSelect'
 import { fetchWidgetCourses } from 'services/course'
 
 import styles from './BookingOptions.scss'
@@ -13,8 +13,11 @@ class BookingOptions extends React.Component {
     super(props)
 
     this.state = {
-      courses: []
+      courses: [],
+      selectedCourse: {}
     }
+
+    this.handleChangeCourse = this.handleChangeCourse.bind(this)
   }
 
   componentDidMount() {
@@ -38,8 +41,18 @@ class BookingOptions extends React.Component {
     this.setState({ courses })
   }
 
+  handleChangeCourse(courseId) {
+    const { selectedLocation } = this.props
+    const selectedCourse = selectedLocation.courses.filter(
+      ({ id }) => id === parseInt(courseId, 10)
+    )[0]
+
+    this.setState({ selectedCourse })
+  }
+
   render() {
     const { selectedLocation, locations, onChangeLocation } = this.props
+    const { selectedCourse } = this.state
 
     return (
       <div className={styles.bookingOptions}>
@@ -53,11 +66,17 @@ class BookingOptions extends React.Component {
           onFocusChange={() => {}}
         />
 
-        <SchoolSelect
-          schools={locations}
+        <MinimalSelect
+          options={locations}
           labelField="address_1"
           selected={selectedLocation.id}
           onChange={onChangeLocation}
+        />
+
+        <MinimalSelect
+          options={selectedLocation.courses}
+          selected={selectedCourse.id}
+          onChange={this.handleChangeCourse}
         />
       </div>
     )
