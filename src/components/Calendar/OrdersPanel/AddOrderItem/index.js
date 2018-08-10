@@ -37,9 +37,7 @@ class AddOrderItem extends React.Component {
     const { onSave, onCancel } = this.props
     const { order } = this.state
     event.preventDefault()
-    console.log('HALA handleSave', order)
     let response = await onSave(order)
-    console.log('HALA Response', response)
     if (response) {
       // Then Success
       onCancel()

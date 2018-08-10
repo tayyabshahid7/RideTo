@@ -112,7 +112,6 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
       })
     )
   } catch (error) {
-    console.log('Error', error)
     dispatch({ type: CREATE_SCHOOL_ORDER[FAILURE], error })
     return false
   }

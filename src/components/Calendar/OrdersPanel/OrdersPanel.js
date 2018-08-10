@@ -24,7 +24,6 @@ class OrdersPanel extends React.Component {
   }
 
   handleNewOrder(order) {
-    console.log('New order', order)
     const { createSchoolOrder, schoolId } = this.props
     let response = createSchoolOrder({ schoolId, order })
     return response
