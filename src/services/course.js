@@ -29,6 +29,18 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
   return response
 }
 
+export const fetchWidgetCourses = async (schoolId, startDate, endDate) => {
+  const path = `school/${schoolId}/widget/course`
+  const params = {
+    sdate: startDate,
+    edate: endDate
+  }
+
+  const response = await get(path, params)
+
+  return response.results
+}
+
 export const fetchDayCourses = async (schoolId, date) => {
   // TODO: Update this once API is ready
   const path = `school/${schoolId}/course/day`

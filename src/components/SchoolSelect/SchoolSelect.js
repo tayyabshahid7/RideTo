@@ -1,7 +1,13 @@
 import React from 'react'
 import styles from './styles.scss'
 
-const SchoolSelect = ({ selected, schools, onChange, valueField = 'id' }) => {
+const SchoolSelect = ({
+  selected,
+  schools,
+  onChange,
+  labelField = 'name',
+  valueField = 'id'
+}) => {
   return (
     <select
       className={styles.minimal}
@@ -16,8 +22,8 @@ const SchoolSelect = ({ selected, schools, onChange, valueField = 'id' }) => {
         <option
           key={school[valueField]}
           value={school[valueField]}
-          name={school.name}>
-          {school.name}
+          name={school[labelField]}>
+          {school[labelField]}
         </option>
       ))}
     </select>
