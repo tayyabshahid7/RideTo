@@ -122,6 +122,7 @@ class BookingOptions extends React.Component {
         </div>
 
         <Calendar
+          color={widget.calendar_color}
           date={selectedDate}
           courses={availableCourses}
           onChangeDate={this.handleChangeDate}

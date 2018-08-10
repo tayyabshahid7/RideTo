@@ -7,14 +7,15 @@ const CourseTime = ({ time, selected, color, onClick }) => {
     backgroundColor: color,
     color: 'white'
   }
+  const displayTime = time.slice(0, 5)
 
   return time === selected ? (
     <div className={styles.courseTime} style={overrides}>
-      {time}
+      {displayTime}
     </div>
   ) : (
     <div className={styles.courseTime} onClick={onClick}>
-      {time}
+      {displayTime}
     </div>
   )
 }

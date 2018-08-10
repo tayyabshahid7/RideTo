@@ -6,7 +6,7 @@ import CourseTime from './index'
 Enzyme.configure({ adapter: new Adapter() })
 
 it('Renders time', () => {
-  const wrapper = mount(<CourseTime time="12:00" />)
+  const wrapper = mount(<CourseTime time="12:00:30" />)
 
   expect(wrapper.text()).toBe('12:00')
 })
