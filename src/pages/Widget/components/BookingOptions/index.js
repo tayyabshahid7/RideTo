@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 
 import Calendar from 'pages/Widget/components/Calendar'
+import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
 import CourseSelect from 'pages/Widget/components/CourseSelect'
 import BookingOption from 'pages/Widget/components/BookingOption'
 import { fetchWidgetCourses } from 'services/course'
@@ -92,8 +93,14 @@ class BookingOptions extends React.Component {
   }
 
   handleChangeDate(selectedDate) {
+    const selectedCourses = getSchoolCoursesByDate(
+      selectedDate,
+      this.state.availableCourses
+    )
+
     this.setState({
-      selectedDate
+      selectedDate,
+      selectedCourse: selectedCourses[0]
     })
   }
 
@@ -151,12 +158,19 @@ class BookingOptions extends React.Component {
         <hr />
 
         {selectedCourses.length ? (
-          <CourseSelect
-            courses={selectedCourses}
-            selectedCourse={selectedCourse}
-            color={widget.button_color}
-            onChangeCourse={this.handleChangeCourse}
-          />
+          <React.Fragment>
+            <CourseSelect
+              date={selectedDate}
+              courses={selectedCourses}
+              selectedCourse={selectedCourse}
+              color={widget.button_color}
+              onChangeCourse={this.handleChangeCourse}
+            />
+
+            <hr />
+
+            <MotorbikeOptions />
+          </React.Fragment>
         ) : null}
       </div>
     )

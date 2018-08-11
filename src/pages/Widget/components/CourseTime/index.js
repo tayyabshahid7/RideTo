@@ -1,13 +1,15 @@
 import React from 'react'
+import moment from 'moment'
 
 import styles from './CourseTime.scss'
 
 const CourseTime = ({ time, selected, color, onClick }) => {
   const overrides = {
     backgroundColor: color,
+    borderColor: color,
     color: 'white'
   }
-  const displayTime = time.slice(0, 5)
+  const displayTime = moment(time, 'h:mm:ss').format('h:mm a')
 
   return time === selected ? (
     <div className={styles.courseTime} style={overrides}>

@@ -5,6 +5,12 @@
 .times {
   display: flex;
   align-items: center;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.finishTime {
+  text-transform: uppercase;
 }
 
 .label {
