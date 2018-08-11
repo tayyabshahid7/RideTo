@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import { Link } from 'react-router-dom'
 
 import Calendar from 'pages/Widget/components/Calendar'
 import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
@@ -29,7 +30,7 @@ class BookingOptions extends React.Component {
       availableCourses: [],
       selectedCourse: null,
       selectedDate: null,
-      selectedBikeHire: 'auto',
+      selectedBikeHire: null,
       month: moment().startOf('month'),
       isLoading: true
     }
@@ -74,7 +75,9 @@ class BookingOptions extends React.Component {
 
   setAvailableCourses(schoolCourses, courseType) {
     const availableCourses = schoolCourses.filter(
-      ({ course_type }) => course_type.id === courseType.id
+      ({ course_type, order_count, spaces }) => {
+        return course_type.id === courseType.id && order_count < spaces
+      }
     )
 
     this.setState({
@@ -181,6 +184,10 @@ class BookingOptions extends React.Component {
               course={selectedCourse}
               onChange={this.handleSelectBikeHire}
             />
+
+            <hr />
+
+            <Link to="/widget/test/payment">Continue</Link>
           </React.Fragment>
         ) : null}
       </div>

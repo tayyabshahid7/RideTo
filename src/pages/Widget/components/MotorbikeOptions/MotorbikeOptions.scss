@@ -3,3 +3,11 @@
 
 .option {
 }
+
+.motorbikeOptions input:disabled + label {
+  color: #aaaaaa;
+}
+
+.full {
+  color: #f86b6b;
+}
