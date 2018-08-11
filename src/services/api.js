@@ -205,3 +205,11 @@ export const patch = async (path, data) => {
     return { results: [] }
   }
 }
+
+export const parseQueryString = queryString => {
+  return queryString.split('&').reduce((data, current) => {
+    const bits = current.split('=')
+    data[bits[0]] = decodeURIComponent(bits[1])
+    return data
+  }, {})
+}

@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import 'react-dates/initialize'
 
+import { parseQueryString } from 'services/api'
 import WidgetContainer from 'pages/Widget/WidgetContainer'
 import MobileContainer from 'pages/Widget/MobileContainer'
 
@@ -19,12 +20,16 @@ class Widget extends React.Component {
 
   getContainer(routeProps) {
     const { match, history } = routeProps
-    const { slug, locationId } = match.params
-    const onChangeLocation = locationId => {
-      history.push(`/widget/${slug}/${locationId}`)
+    const { slug } = match.params
+    const onChangeLocation = locId => {
+      history.push(`/widget/${slug}/?location=${locId}`)
     }
-    const selectedLocation = locationId
-      ? this.locations.filter(({ id }) => id === parseInt(locationId, 10))[0]
+    const query = parseQueryString(window.location.search.slice(1))
+    console.log(query)
+    const selectedLocation = query.location
+      ? this.locations.filter(
+          ({ id }) => id === parseInt(query.location, 10)
+        )[0]
       : this.locations[0]
 
     return isMobile() ? (
@@ -51,7 +56,13 @@ class Widget extends React.Component {
       <Router>
         <div>
           <Route
-            path="/widget/:slug/:locationId?"
+            path="/widget/:slug/payment/:courseId"
+            render={routeProps => <h1>PAYMENT</h1>}
+          />
+
+          <Route
+            exact
+            path="/widget/:slug"
             render={routeProps => this.getContainer(routeProps)}
           />
         </div>
