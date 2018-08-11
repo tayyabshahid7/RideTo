@@ -29,6 +29,7 @@ class BookingOptions extends React.Component {
       availableCourses: [],
       selectedCourse: null,
       selectedDate: null,
+      selectedBikeHire: 'auto',
       month: moment().startOf('month'),
       isLoading: true
     }
@@ -37,6 +38,7 @@ class BookingOptions extends React.Component {
     this.handleChangeDate = this.handleChangeDate.bind(this)
     this.handleChangeCourse = this.handleChangeCourse.bind(this)
     this.handleChangeMonth = this.handleChangeMonth.bind(this)
+    this.handleSelectBikeHire = this.handleSelectBikeHire.bind(this)
   }
 
   componentDidMount() {
@@ -115,6 +117,10 @@ class BookingOptions extends React.Component {
     this.fetchCourses(month.clone())
   }
 
+  handleSelectBikeHire(selectedBikeHire) {
+    this.setState({ selectedBikeHire })
+  }
+
   render() {
     const { widget, selectedLocation, locations, onChangeLocation } = this.props
     const {
@@ -122,6 +128,7 @@ class BookingOptions extends React.Component {
       availableCourses,
       selectedDate,
       selectedCourse,
+      selectedBikeHire,
       isLoading
     } = this.state
     const selectedCourses = getSchoolCoursesByDate(
@@ -169,7 +176,11 @@ class BookingOptions extends React.Component {
 
             <hr />
 
-            <MotorbikeOptions />
+            <MotorbikeOptions
+              selected={selectedBikeHire}
+              course={selectedCourse}
+              onChange={this.handleSelectBikeHire}
+            />
           </React.Fragment>
         ) : null}
       </div>
