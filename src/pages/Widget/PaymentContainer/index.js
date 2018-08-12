@@ -5,6 +5,7 @@ import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
 import { fetchWidgetSingleCourse } from 'services/course'
+import { createStripeToken } from 'services/booking'
 import { parseQueryString } from 'services/api'
 
 import styles from './PaymentContainer.scss'
@@ -22,8 +23,12 @@ class PaymentContainer extends React.Component {
     this.state = {
       course: null,
       supplier: null,
-      hire: query.hire || null
+      hire: query.hire || null,
+      details: {}
     }
+
+    this.handlePayment = this.handlePayment.bind(this)
+    this.handleChangeDetails = this.handleChangeDetails.bind(this)
   }
 
   async componentDidMount() {
@@ -41,14 +46,27 @@ class PaymentContainer extends React.Component {
     })
   }
 
+  handlePayment(stripe) {
+    const { details } = this.state
+    createStripeToken(stripe, details.card_name)
+  }
+
+  handleChangeDetails(details) {
+    console.log(details)
+    this.setState({ details })
+  }
+
   render() {
-    const { course, supplier } = this.state
+    const { course, supplier, details } = this.state
 
     return (
       <div className={styles.paymentContainer}>
         <div className={styles.paymentDetails}>
           <h3>Contact Details</h3>
-          <CustomerDetailsForm />
+          <CustomerDetailsForm
+            details={details}
+            onChange={this.handleChangeDetails}
+          />
 
           <StripeProvider apiKey={this.stripePublicKey}>
             <div className="example">
@@ -58,7 +76,11 @@ class PaymentContainer extends React.Component {
                 Stripe.
               </div>
               <Elements>
-                <CheckoutForm />
+                <CheckoutForm
+                  details={details}
+                  onChange={this.handleChangeDetails}
+                  onSubmit={this.handlePayment}
+                />
               </Elements>
             </div>
           </StripeProvider>
