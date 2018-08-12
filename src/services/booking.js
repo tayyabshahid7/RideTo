@@ -1,6 +1,9 @@
-export const createBooking = async (path, params) => {}
+import { post } from 'services/api'
 
 export const createStripeToken = async (stripe, name) => {
-  const response = await stripe.createToken({ name })
-  console.log(response)
+  return await stripe.createToken({ name })
+}
+
+export const createOrder = async data => {
+  return await post('orders', data)
 }

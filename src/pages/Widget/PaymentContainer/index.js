@@ -5,7 +5,7 @@ import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
 import { fetchWidgetSingleCourse } from 'services/course'
-import { createStripeToken } from 'services/booking'
+import { createOrder, createStripeToken } from 'services/booking'
 import { parseQueryString } from 'services/api'
 
 import styles from './PaymentContainer.scss'
@@ -24,7 +24,15 @@ class PaymentContainer extends React.Component {
       course: null,
       supplier: null,
       hire: query.hire || null,
-      details: {}
+      details: {
+        current_licence: 'None',
+        email: 'stuart.quin@gmail.com',
+        first_name: 'Stuart',
+        last_name: 'Quin',
+        phone: '123123123123123',
+        riding_experience: 'Bike',
+        user_birthdate: '08/01/1987'
+      }
     }
 
     this.handlePayment = this.handlePayment.bind(this)
@@ -46,14 +54,43 @@ class PaymentContainer extends React.Component {
     })
   }
 
-  handlePayment(stripe) {
-    const { details } = this.state
-    createStripeToken(stripe, details.card_name)
+  handleChangeDetails(details) {
+    this.setState({ details })
   }
 
-  handleChangeDetails(details) {
-    console.log(details)
-    this.setState({ details })
+  async handlePayment(stripe) {
+    const { details } = this.state
+    const response = await createStripeToken(stripe, details.card_name)
+
+    if (response.error) {
+      console.log(response.error)
+    } else {
+      const { token } = response
+      this.createOrder(token)
+    }
+  }
+
+  async createOrder(token) {
+    const { course, supplier, details } = this.state
+    const data = {
+      ...details,
+      token: token.id,
+      expected_price: this.getTotalPrice(),
+      name: `${details.first_name} ${details.last_name}`,
+      user_date: course.date,
+      selected_licence: course.course_type.name,
+      supplier: supplier.id,
+      email_optin: false,
+      accept_equipment_responsibility: true, // TODO Needs to be removed
+      bike_hire: this.state.hire
+    }
+    const response = await createOrder(data)
+    console.log(response)
+  }
+
+  getTotalPrice() {
+    // TODO Need to do pricing
+    return 100
   }
 
   render() {
