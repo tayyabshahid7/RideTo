@@ -18,7 +18,13 @@ class MobileContainer extends React.Component {
   }
 
   render() {
-    const { widget, locations, selectedLocation, onChangeLocation } = this.props
+    const {
+      widget,
+      slug,
+      suppliers,
+      selectedSupplier,
+      onChangeSupplier
+    } = this.props
     const { page } = this.state
 
     return (
@@ -37,9 +43,10 @@ class MobileContainer extends React.Component {
         {page === 'options' ? (
           <BookingOptions
             widget={widget}
-            selectedLocation={selectedLocation}
-            locations={locations}
-            onChangeLocation={onChangeLocation}
+            slug={slug}
+            selectedSupplier={selectedSupplier}
+            suppliers={suppliers}
+            onChangeSupplier={onChangeSupplier}
           />
         ) : null}
       </div>

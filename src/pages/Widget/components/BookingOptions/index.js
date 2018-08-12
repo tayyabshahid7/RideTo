@@ -22,10 +22,10 @@ const getSchoolCoursesByDate = (selectedDate, courses) => {
 class BookingOptions extends React.Component {
   constructor(props) {
     super(props)
-    const { selectedLocation } = props
+    const { selectedSupplier } = props
 
     this.state = {
-      courseType: selectedLocation.courses[0],
+      courseType: selectedSupplier.courses[0],
       schoolCourses: [],
       availableCourses: [],
       selectedCourse: null,
@@ -48,7 +48,7 @@ class BookingOptions extends React.Component {
   }
 
   componentDidUpdate(oldProps) {
-    if (oldProps.selectedLocation !== this.props.selectedLocation) {
+    if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       const { month } = this.state
       this.setState({ isLoading: true })
       this.fetchCourses(month.clone())
@@ -56,10 +56,10 @@ class BookingOptions extends React.Component {
   }
 
   async fetchCourses(month) {
-    const { selectedLocation } = this.props
-    const courseType = this.state.courseType || selectedLocation.courses[0]
+    const { selectedSupplier } = this.props
+    const courseType = this.state.courseType || selectedSupplier.courses[0]
     const schoolCourses = await fetchWidgetCourses(
-      selectedLocation.id,
+      selectedSupplier.id,
       month
         .subtract(1, 'month')
         .startOf('month')
@@ -89,8 +89,8 @@ class BookingOptions extends React.Component {
   }
 
   handleChangeCourseType(courseTypeId) {
-    const { selectedLocation } = this.props
-    const courseType = selectedLocation.courses.filter(
+    const { selectedSupplier } = this.props
+    const courseType = selectedSupplier.courses.filter(
       ({ id }) => id === parseInt(courseTypeId, 10)
     )[0]
 
@@ -128,9 +128,9 @@ class BookingOptions extends React.Component {
     const {
       widget,
       slug,
-      selectedLocation,
-      locations,
-      onChangeLocation
+      selectedSupplier,
+      suppliers,
+      onChangeSupplier
     } = this.props
     const {
       courseType,
@@ -152,17 +152,17 @@ class BookingOptions extends React.Component {
       <div className={styles.bookingOptions}>
         <BookingOption
           label="Training:"
-          options={selectedLocation.courses}
+          options={selectedSupplier.courses}
           selected={courseType.id}
           onChange={this.handleChangeCourseType}
         />
 
         <BookingOption
           label="Location:"
-          options={locations}
+          options={suppliers}
           labelField="address_1"
-          selected={selectedLocation.id}
-          onChange={onChangeLocation}
+          selected={selectedSupplier.id}
+          onChange={onChangeSupplier}
         />
 
         <Calendar

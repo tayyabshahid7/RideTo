@@ -18,39 +18,39 @@ class Widget extends React.Component {
     super(props)
 
     this.widget = window.RIDE_TO_DATA.widget_initial
-    this.locations = window.RIDE_TO_DATA.widget_locations
+    this.suppliers = window.RIDE_TO_DATA.widget_locations
   }
 
   getContainer(routeProps) {
     const { match, history } = routeProps
     const { slug } = match.params
-    const onChangeLocation = locId => {
-      history.push(`/widget/${slug}/?location=${locId}`)
+    const onChangeSupplier = id => {
+      history.push(`/widget/${slug}/?supplier=${id}`)
     }
     const query = parseQueryString(window.location.search.slice(1))
-    const selectedLocation = query.location
-      ? this.locations.filter(
-          ({ id }) => id === parseInt(query.location, 10)
+    const selectedSupplier = query.supplier
+      ? this.suppliers.filter(
+          ({ id }) => id === parseInt(query.supplier, 10)
         )[0]
-      : this.locations[0]
+      : this.suppliers[0]
 
     return isMobile() ? (
       <MobileContainer
         {...routeProps}
-        locations={this.locations}
+        suppliers={this.suppliers}
         widget={this.widget}
         slug={slug}
-        selectedLocation={selectedLocation}
-        onChangeLocation={onChangeLocation}
+        selectedSupplier={selectedSupplier}
+        onChangeSupplier={onChangeSupplier}
       />
     ) : (
       <WidgetContainer
         {...routeProps}
-        locations={this.locations}
+        suppliers={this.suppliers}
         widget={this.widget}
         slug={slug}
-        selectedLocation={selectedLocation}
-        onChangeLocation={onChangeLocation}
+        selectedSupplier={selectedSupplier}
+        onChangeSupplier={onChangeSupplier}
       />
     )
   }

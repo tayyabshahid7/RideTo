@@ -13,11 +13,11 @@ class WidgetContainer extends React.Component {
     const {
       widget,
       slug,
-      locations,
-      selectedLocation,
-      onChangeLocation
+      suppliers,
+      selectedSupplier,
+      onChangeSupplier
     } = this.props
-    const address = getAddress(selectedLocation)
+    const address = getAddress(selectedSupplier)
 
     return (
       <div className={styles.widgetContainer}>
@@ -25,9 +25,9 @@ class WidgetContainer extends React.Component {
         <BookingOptions
           widget={widget}
           slug={slug}
-          selectedLocation={selectedLocation}
-          locations={locations}
-          onChangeLocation={onChangeLocation}
+          selectedSupplier={selectedSupplier}
+          suppliers={suppliers}
+          onChangeSupplier={onChangeSupplier}
         />
       </div>
     )
