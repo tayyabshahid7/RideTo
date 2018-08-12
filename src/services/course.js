@@ -62,6 +62,13 @@ export const fetchSingleCourse = async (schoolId, courseId) => {
   return response
 }
 
+export const fetchWidgetSingleCourse = async (schoolId, courseId) => {
+  const path = `school/${schoolId}/widget/course/${courseId}`
+  const response = await get(path, {})
+
+  return response
+}
+
 export const deleteSingleCourse = async (schoolId, courseId) => {
   const path = `school/${schoolId}/course/${courseId}`
 

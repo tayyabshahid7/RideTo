@@ -145,7 +145,7 @@ class BookingOptions extends React.Component {
       availableCourses
     )
     const url = selectedCourse
-      ? `/widget/${slug}/payment/${selectedCourse.id}&hire=${selectedBikeHire}`
+      ? `/widget/${slug}/payment/${selectedCourse.id}?hire=${selectedBikeHire}`
       : null
 
     return (
