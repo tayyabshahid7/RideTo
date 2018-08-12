@@ -1,6 +1,6 @@
 import React from 'react'
 
-import TextField from 'pages/Widget/components/TextField'
+import LabelField from 'pages/Widget/components/LabelField'
 
 class CustomerDetailsForm extends React.Component {
   constructor(props) {
@@ -13,7 +13,9 @@ class CustomerDetailsForm extends React.Component {
     this.handleChangeDetails = this.handleChangeDetails.bind(this)
   }
 
-  handleChangeDetails(name, value) {
+  handleChangeDetails({ target }) {
+    const { name, value } = target
+    console.log(target)
     const details = {
       ...this.state.details,
       [name]: value
@@ -26,57 +28,67 @@ class CustomerDetailsForm extends React.Component {
 
     return (
       <div>
-        <TextField
-          label="First Name"
-          name="first_name"
-          value={details.first_name}
-          onChange={this.handleChangeDetails}
-        />
+        <LabelField label="First Name" name="first_name">
+          <input
+            id="first_name"
+            type="text"
+            value={details.first_name}
+            onChange={this.handleChangeDetails}
+          />
+        </LabelField>
 
-        <TextField
-          label="Surname"
-          name="last_name"
-          value={details.last_name}
-          onChange={this.handleChangeDetails}
-        />
+        <LabelField label="Surname" name="last_name">
+          <input
+            id="last_name"
+            type="text"
+            value={details.last_name}
+            onChange={this.handleChangeDetails}
+          />
+        </LabelField>
 
-        <TextField
-          label="Date of Birth"
-          name="user_birthdate"
-          placeholder="DD/MM/YYYY"
-          value={details.user_birthdate}
-          onChange={this.handleChangeDetails}
-        />
+        <LabelField label="Date of Birth" name="user_birthdate">
+          <input
+            id="user_birthdate"
+            type="text"
+            placeholder="DD/MM/YYYY"
+            value={details.user_birthdate}
+            onChange={this.handleChangeDetails}
+          />
+        </LabelField>
 
-        <TextField
-          label="Phone Number"
-          name="phone"
-          type="phone"
-          value={details.phone}
-          onChange={this.handleChangeDetails}
-        />
+        <LabelField label="Phone" name="phone">
+          <input
+            id="phone"
+            type="text"
+            value={details.phone}
+            onChange={this.handleChangeDetails}
+          />
+        </LabelField>
 
-        <TextField
-          label="Email"
-          name="email"
-          type="email"
-          value={details.email}
-          onChange={this.handleChangeDetails}
-        />
+        <LabelField label="Email" name="email">
+          <input
+            id="email"
+            type="email"
+            value={details.email}
+            onChange={this.handleChangeDetails}
+          />
+        </LabelField>
 
-        <TextField
-          label="Current Licence"
-          name="current_licence"
-          value={details.current_licence}
-          onChange={this.handleChangeDetails}
-        />
+        <LabelField label="Current Licence" name="current_licence">
+          <input
+            id="current_licence"
+            value={details.current_licence}
+            onChange={this.handleChangeDetails}
+          />
+        </LabelField>
 
-        <TextField
-          label="Riding Experience"
-          name="riding_experience"
-          value={details.riding_experience}
-          onChange={this.handleChangeDetails}
-        />
+        <LabelField label="Riding Experience" name="riding_experience">
+          <input
+            id="riding_experience"
+            value={details.riding_experience}
+            onChange={this.handleChangeDetails}
+          />
+        </LabelField>
       </div>
     )
   }
