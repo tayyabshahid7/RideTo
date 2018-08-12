@@ -10,7 +10,13 @@ const getAddress = loc => {
 
 class WidgetContainer extends React.Component {
   render() {
-    const { widget, locations, selectedLocation, onChangeLocation } = this.props
+    const {
+      widget,
+      slug,
+      locations,
+      selectedLocation,
+      onChangeLocation
+    } = this.props
     const address = getAddress(selectedLocation)
 
     return (
@@ -18,6 +24,7 @@ class WidgetContainer extends React.Component {
         <Details widget={widget} address={address} />
         <BookingOptions
           widget={widget}
+          slug={slug}
           selectedLocation={selectedLocation}
           locations={locations}
           onChangeLocation={onChangeLocation}

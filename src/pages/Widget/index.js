@@ -5,6 +5,9 @@ import 'react-dates/initialize'
 import { parseQueryString } from 'services/api'
 import WidgetContainer from 'pages/Widget/WidgetContainer'
 import MobileContainer from 'pages/Widget/MobileContainer'
+import PaymentContainer from 'pages/Widget/PaymentContainer'
+
+import styles from './Widget.scss'
 
 const isMobile = () => {
   return window.innerWidth < 768 || window.screen.width < 768
@@ -25,7 +28,6 @@ class Widget extends React.Component {
       history.push(`/widget/${slug}/?location=${locId}`)
     }
     const query = parseQueryString(window.location.search.slice(1))
-    console.log(query)
     const selectedLocation = query.location
       ? this.locations.filter(
           ({ id }) => id === parseInt(query.location, 10)
@@ -37,6 +39,7 @@ class Widget extends React.Component {
         {...routeProps}
         locations={this.locations}
         widget={this.widget}
+        slug={slug}
         selectedLocation={selectedLocation}
         onChangeLocation={onChangeLocation}
       />
@@ -45,6 +48,7 @@ class Widget extends React.Component {
         {...routeProps}
         locations={this.locations}
         widget={this.widget}
+        slug={slug}
         selectedLocation={selectedLocation}
         onChangeLocation={onChangeLocation}
       />
@@ -54,10 +58,10 @@ class Widget extends React.Component {
   render() {
     return (
       <Router>
-        <div>
+        <div className={styles.widget}>
           <Route
             path="/widget/:slug/payment/:courseId"
-            render={routeProps => <h1>PAYMENT</h1>}
+            component={PaymentContainer}
           />
 
           <Route

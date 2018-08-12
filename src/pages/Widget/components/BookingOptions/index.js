@@ -125,7 +125,13 @@ class BookingOptions extends React.Component {
   }
 
   render() {
-    const { widget, selectedLocation, locations, onChangeLocation } = this.props
+    const {
+      widget,
+      slug,
+      selectedLocation,
+      locations,
+      onChangeLocation
+    } = this.props
     const {
       courseType,
       availableCourses,
@@ -138,6 +144,9 @@ class BookingOptions extends React.Component {
       selectedDate,
       availableCourses
     )
+    const url = selectedCourse
+      ? `/widget/${slug}/payment/${selectedCourse.id}&hire=${selectedBikeHire}`
+      : null
 
     return (
       <div className={styles.bookingOptions}>
@@ -167,7 +176,7 @@ class BookingOptions extends React.Component {
 
         <hr />
 
-        {selectedCourses.length ? (
+        {selectedCourse ? (
           <React.Fragment>
             <CourseSelect
               date={selectedDate}
@@ -187,7 +196,7 @@ class BookingOptions extends React.Component {
 
             <hr />
 
-            <Link to="/widget/test/payment">Continue</Link>
+            <Link to={url}>Continue</Link>
           </React.Fragment>
         ) : null}
       </div>
