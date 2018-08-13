@@ -8,7 +8,7 @@ import { WEEK_VIEW_START_TIME } from 'common/constants'
 
 const CalendarWeekCourse = ({ course, position, barCount, history }) => {
   const availableSpaces = course.spaces - course.orders.length
-  let height = `${(course.duration / 3600) * 100}px` // TODO: This should be replaced by calculating height by duration
+  let height = `${(course.duration / 60) * 100}px` // Duration is in mins
   let top = `${((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100}px`
   let left = `${(100 / barCount) * position}%`
   let width = `${100 / barCount}%`

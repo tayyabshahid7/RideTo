@@ -45,9 +45,8 @@ class CalendarWeekView extends Component {
           secondsForDay: parseInt(
             new Date(`${date} ${course.time}`) / 1000 - baseDate / 1000,
             10
-          ),
-          duration: 2 * 60 * 60
-        } // Right now make duraton 1 hour
+          )
+        }
       })
 
       let barMap = []
@@ -61,7 +60,7 @@ class CalendarWeekView extends Component {
           let j
           for (j = 0; j < barMap.length; j++) {
             if (
-              barMap[j].secondsForDay + barMap[j].duration <
+              barMap[j].secondsForDay + barMap[j].duration * 60 <
               course.secondsForDay
             ) {
               barMap.splice(j, 1, course)
