@@ -45,14 +45,8 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
   : {}
 
 const entries = {
-  app: [require.resolve('./polyfills'), paths.appIndexJs]
-}
-
-if (process.env.APP) {
-  entries[process.env.APP] = [
-    require.resolve('./polyfills'),
-    paths[process.env.APP]
-  ]
+  app: [require.resolve('./polyfills'), paths.appIndexJs],
+  widget: [require.resolve('./polyfills'), paths.widget]
 }
 
 // This is the production configuration.
