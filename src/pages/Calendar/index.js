@@ -82,9 +82,16 @@ class CalendarPage extends Component {
     }
     return dates.map(date => {
       let dateInString = moment(date).format('YYYY-MM-DD')
-      let coursesForDate = courses.filter(
-        course => course.date === dateInString
-      )
+      let coursesForDate = courses
+        .filter(course => course.date === dateInString)
+        .sort((a, b) => {
+          if (a.time > b.time) {
+            return 1
+          } else if (a.time === b.time) {
+            return 0
+          }
+          return -1
+        })
       return { date, courses: coursesForDate }
     })
   }
@@ -171,6 +178,7 @@ class CalendarPage extends Component {
   render() {
     const { calendar, history } = this.props
     let days = this.generateDaysDataFromCalendar(calendar)
+    console.log('HALA days', days)
     return (
       <div className={styles.container}>
         <Row className="h-100">

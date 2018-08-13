@@ -49,9 +49,6 @@ class CalendarWeekView extends Component {
           duration: 2 * 60 * 60
         } // Right now make duraton 1 hour
       })
-      dayObj.courses = dayObj.courses.sort((a, b) => {
-        return a.secondsForDay - b.secondsForDay
-      })
 
       let barMap = []
       let coursePositions = []
