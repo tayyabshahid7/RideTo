@@ -56,7 +56,7 @@ describe('fetchCourses', () => {
     const results = [{ id: 5 }]
 
     api.get = jest.fn(() => {
-      return { results }
+      return results
     })
 
     fetchCourses(1, '2018-01-01', '2018-01-30').then(res => {
