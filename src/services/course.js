@@ -26,7 +26,7 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
 
   const response = await get(path, params)
 
-  return response.results
+  return response
 }
 
 export const fetchDayCourses = async (schoolId, date) => {
