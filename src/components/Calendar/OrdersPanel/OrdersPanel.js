@@ -58,6 +58,7 @@ class OrdersPanel extends React.Component {
 
   handleDeleteCourse() {
     let { deleteCourse } = this.props
+    this.setState({ showDeleteCourseConfirmModal: false })
     deleteCourse()
   }
 
@@ -67,6 +68,13 @@ class OrdersPanel extends React.Component {
 
   handleRemoveSpace() {
     // Remove the space here
+    const { updateCourse, schoolId, course } = this.props
+    this.setState({ showConfirmModal: false })
+    updateCourse({
+      schoolId,
+      courseId: course.id,
+      data: { spaces: course.spaces - 1 }
+    })
   }
 
   closeConfirmModal() {
@@ -107,7 +115,7 @@ class OrdersPanel extends React.Component {
             </Button>
           )}
         </div>
-        <Loading loading={loading}>
+        <Loading loading={loading || saving}>
           <h4>Orders</h4>
           <div className={styles.scrollContainer}>
             <div className={styles.scrollContent}>

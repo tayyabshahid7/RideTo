@@ -5,6 +5,7 @@ import {
   COURSES_FETCH,
   DELETE_COURSE,
   CREATE_SCHOOL_ORDER,
+  UPDATE_SCHOOL_COURSE,
   REQUEST,
   SUCCESS,
   FAILURE
@@ -159,17 +160,46 @@ export const course = (state = initialState, action) => {
     case CREATE_SCHOOL_ORDER[REQUEST]:
       return {
         ...state,
-        single: { ...state.single, saving: true }
+        single: { ...state.single, saving: true, error: null }
       }
     case CREATE_SCHOOL_ORDER[SUCCESS]:
       return {
         ...state,
-        single: { ...state.single, saving: true }
+        single: { ...state.single, saving: false }
       }
     case CREATE_SCHOOL_ORDER[FAILURE]:
       return {
         ...state,
-        single: { ...state.single, saving: true }
+        single: { ...state.single, saving: false, error: action.error }
+      }
+    case UPDATE_SCHOOL_COURSE[REQUEST]:
+      return {
+        ...state,
+        single: { ...state.single, saving: true, error: null }
+      }
+    case UPDATE_SCHOOL_COURSE[SUCCESS]:
+      dayCourses = state.day.courses.map(
+        course =>
+          course.id !== action.data.course.id
+            ? course
+            : { ...action.data.course }
+      )
+      calendarCourses = state.calendar.courses.map(
+        course =>
+          course.id !== action.data.course.id
+            ? course
+            : { ...action.data.course }
+      )
+      return {
+        ...state,
+        single: { saving: false, course: action.data.course, error: null },
+        day: { ...state.day, courses: dayCourses },
+        calendar: { ...state.calendar, courses: calendarCourses }
+      }
+    case UPDATE_SCHOOL_COURSE[FAILURE]:
+      return {
+        ...state,
+        single: { ...state.single, saving: false, error: action.error }
       }
     default:
       return state

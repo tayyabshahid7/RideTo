@@ -43,7 +43,7 @@ const CalendarWeekCourse = ({ course, position, barCount, history }) => {
       </span>
       <div>
         {course.orders.map(order => (
-          <div className={styles.order}>
+          <div className={styles.order} key={order.friendly_id}>
             <span>#{order.friendly_id}</span>
             <span>{order.bike_hire}</span>
             <span>{order.user_name}</span>

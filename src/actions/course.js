@@ -2,7 +2,8 @@ import {
   fetchSingleCourse,
   fetchCourses,
   deleteSingleCourse,
-  addSchoolOrder
+  addSchoolOrder,
+  updateSchoolCourse
 } from 'services/course'
 import {
   DAY_COURSES_FETCH,
@@ -11,6 +12,7 @@ import {
   COURSES_FETCH,
   UPDATE_CALENDAR_SETTING,
   CREATE_SCHOOL_ORDER,
+  UPDATE_SCHOOL_COURSE,
   REQUEST,
   SUCCESS,
   FAILURE
@@ -101,7 +103,7 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     dispatch({
       type: CREATE_SCHOOL_ORDER[SUCCESS],
       data: {
-        response
+        course: response
       }
     })
     dispatch(
@@ -116,4 +118,21 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     return false
   }
   return true
+}
+
+export const updateCourse = ({
+  schoolId,
+  courseId,
+  data
+}) => async dispatch => {
+  dispatch({ type: UPDATE_SCHOOL_COURSE[REQUEST] })
+  try {
+    let response = await updateSchoolCourse(schoolId, courseId, data)
+    dispatch({
+      type: UPDATE_SCHOOL_COURSE[SUCCESS],
+      data: { course: response }
+    })
+  } catch (error) {
+    dispatch({ type: UPDATE_SCHOOL_COURSE[FAILURE], error })
+  }
 }

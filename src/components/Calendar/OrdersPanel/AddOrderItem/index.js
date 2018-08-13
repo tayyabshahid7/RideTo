@@ -60,131 +60,131 @@ class AddOrderItem extends React.Component {
 
     return (
       <div className={styles.container}>
-        <Loading loading={saving}>
-          <Form onSubmit={this.handleSave.bind(this)}>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="user_first_name"
-                  value={user_first_name}
-                  label="First Name"
-                  className="form-group"
-                  type="text"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-              <Col>
-                <InputTextGroup
-                  name="user_last_name"
-                  value={user_last_name}
-                  label="Surname"
-                  className="form-group"
-                  type="text"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="user_phone"
-                  value={user_phone}
-                  label="Mobile"
-                  className="form-group"
-                  type="text"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-              <Col>
-                <InputTextGroup
-                  name="user_email"
-                  value={user_email}
-                  label="Email"
-                  className="form-group"
-                  type="email"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="user_birthdate"
-                  value={user_birthdate}
-                  label="Birthdate"
-                  className="form-group"
-                  type="date"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
-                  required
-                />
-              </Col>
-              <Col />
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="user_driving_licence_number"
-                  value={user_driving_licence_number}
-                  label="License"
-                  className="form-group"
-                  type="text"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-              <Col>
-                <InputSelectGroup
-                  name="payment_status"
-                  value={payment_status}
-                  label="Payment Status"
-                  valueArray={info.paymentStatus}
-                  noSelectOption
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputSelectGroup
-                  name="riding_experience"
-                  value={riding_experience}
-                  label="Riding Experience"
-                  valueArray={info.ridingExperiences}
-                  noSelectOption
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-              <Col>
-                <InputSelectGroup
-                  name="bike_hire"
-                  value={bike_hire}
-                  label="Bike Hire"
-                  valueArray={BikeHires}
-                  noSelectOption
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col className="mt-3 text-right">
-                <Button type="submit" color="primary" className="mr-2">
-                  Save
-                </Button>
-                <Button color="" onClick={onCancel}>
-                  Cancel
-                </Button>
-              </Col>
-            </Row>
-          </Form>
-        </Loading>
+        {/* <Loading loading={saving}> */}
+        <Form onSubmit={this.handleSave.bind(this)}>
+          <Row>
+            <Col>
+              <InputTextGroup
+                name="user_first_name"
+                value={user_first_name}
+                label="First Name"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+            </Col>
+            <Col>
+              <InputTextGroup
+                name="user_last_name"
+                value={user_last_name}
+                label="Surname"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <InputTextGroup
+                name="user_phone"
+                value={user_phone}
+                label="Mobile"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+            </Col>
+            <Col>
+              <InputTextGroup
+                name="user_email"
+                value={user_email}
+                label="Email"
+                className="form-group"
+                type="email"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <InputTextGroup
+                name="user_birthdate"
+                value={user_birthdate}
+                label="Birthdate"
+                className="form-group"
+                type="date"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
+                required
+              />
+            </Col>
+            <Col />
+          </Row>
+          <Row>
+            <Col>
+              <InputTextGroup
+                name="user_driving_licence_number"
+                value={user_driving_licence_number}
+                label="License"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+            </Col>
+            <Col>
+              <InputSelectGroup
+                name="payment_status"
+                value={payment_status}
+                label="Payment Status"
+                valueArray={info.paymentStatus}
+                noSelectOption
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <InputSelectGroup
+                name="riding_experience"
+                value={riding_experience}
+                label="Riding Experience"
+                valueArray={info.ridingExperiences}
+                noSelectOption
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+            </Col>
+            <Col>
+              <InputSelectGroup
+                name="bike_hire"
+                value={bike_hire}
+                label="Bike Hire"
+                valueArray={BikeHires}
+                noSelectOption
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col className="mt-3 text-right">
+              <Button type="submit" color="primary" className="mr-2">
+                Save
+              </Button>
+              <Button color="" onClick={onCancel}>
+                Cancel
+              </Button>
+            </Col>
+          </Row>
+        </Form>
+        {/* </Loading> */}
       </div>
     )
   }

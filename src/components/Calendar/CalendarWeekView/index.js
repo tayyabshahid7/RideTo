@@ -110,6 +110,7 @@ class CalendarWeekView extends Component {
                       position={day.coursePositions[index]}
                       barCount={day.barCount}
                       history={history}
+                      key={index}
                     />
                   ))}
               </ul>
