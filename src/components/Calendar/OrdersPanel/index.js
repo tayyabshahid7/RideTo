@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import {
   getSingleCourse,
   deleteCourse,
-  createSchoolOrder
+  createSchoolOrder,
+  updateCourse
 } from 'actions/course'
 import OrdersPanel from './OrdersPanel'
 
@@ -72,7 +73,8 @@ const mapDispatchToProps = dispatch =>
     {
       getSingleCourse,
       deleteCourse,
-      createSchoolOrder
+      createSchoolOrder,
+      updateCourse
     },
     dispatch
   )
