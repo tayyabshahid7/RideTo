@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
@@ -8,13 +9,13 @@ const CalendarDayCellCourse = ({ course }) => {
   return (
     <div className={styles.container}>
       <div className={styles.courseDescription}>
-        {course.course_type.name} | {course.time}
+        {course.course_type.name} | {course.time.substring(0, 5)}
       </div>
       <div
         className={classnames(
           styles.courseSpace,
-          availableSpaces === 1 && styles.oneSpace,
-          availableSpaces === 0 && styles.full
+          availableSpaces === 1 && 'text-warning',
+          availableSpaces === 0 && 'text-danger'
         )}>
         {getCourseSpaceText(course)}
       </div>

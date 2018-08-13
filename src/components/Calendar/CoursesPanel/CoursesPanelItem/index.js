@@ -1,20 +1,33 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 
 import { getCourseSpaceText } from 'services/course'
+import { BikeHires, getTitleFor } from 'common/info'
 
 import styles from './CoursesPanelItem.scss'
 
 const CoursesPanelItem = ({ course, date }) => {
+  let availableSpaces = course.spaces - course.orders.length
   return (
     <div className={styles.coursesPanelItem}>
-      <div className={styles.time}>{course.time}</div>
+      <div className={styles.time}>{course.time.substring(0, 5)}</div>
       <div className={styles.content}>
         <div className={styles.heading}>
           <div className={styles.title}>
-            {course.course_type.name} | {getCourseSpaceText(course)}
+            {course.course_type.name} |{' '}
+            <span
+              className={
+                availableSpaces === 0
+                  ? 'text-danger'
+                  : availableSpaces === 1
+                    ? 'text-warning'
+                    : ''
+              }>
+              {getCourseSpaceText(course)}
+            </span>
           </div>
-          <Link to={`/calendar/${date}/orders/${course.id}`}>
+          <Link to={`/calendar/${date}/courses/${course.id}`}>
             Edit / Add Order
           </Link>
         </div>
@@ -27,8 +40,8 @@ const CoursesPanelItem = ({ course, date }) => {
                   <strong>#{order.friendly_id}</strong>
                 </td>
                 <td>{order.user_name}</td>
+                <td>{getTitleFor(BikeHires, order.bike_hire)}</td>
                 <td>{order.user_phone}</td>
-                <td>{order.bike_hire}</td>
               </tr>
             ))}
           </tbody>

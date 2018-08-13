@@ -23,7 +23,7 @@ class Orders extends Component {
       page: 1,
       ordering: null,
       search: null,
-      dateFilter: getDateFilters()[0],
+      dateFilter: getDateFilters()[3],
       confirmedOrders: {
         results: []
       }

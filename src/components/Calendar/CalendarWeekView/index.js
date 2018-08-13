@@ -49,9 +49,6 @@ class CalendarWeekView extends Component {
           duration: 2 * 60 * 60
         } // Right now make duraton 1 hour
       })
-      dayObj.courses = dayObj.courses.sort((a, b) => {
-        return a.secondsForDay - b.secondsForDay
-      })
 
       let barMap = []
       let coursePositions = []
@@ -62,7 +59,6 @@ class CalendarWeekView extends Component {
           coursePositions.push(0)
         } else {
           let j
-          console.log(barMap, course)
           for (j = 0; j < barMap.length; j++) {
             if (
               barMap[j].secondsForDay + barMap[j].duration <
@@ -87,7 +83,7 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { days } = this.props
+    const { days, history } = this.props
     let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.events}>
@@ -110,6 +106,8 @@ class CalendarWeekView extends Component {
                       course={course}
                       position={day.coursePositions[index]}
                       barCount={day.barCount}
+                      history={history}
+                      key={index}
                     />
                   ))}
               </ul>

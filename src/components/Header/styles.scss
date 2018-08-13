@@ -3,6 +3,9 @@
   align-items: center;
   width: 100%;
   border-bottom: 1px solid grey;
+  flex: 0 0 50px;
+  background: white;
+  z-index: 10;
 }
 
 .image {

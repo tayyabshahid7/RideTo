@@ -1,7 +1,14 @@
 .container {
+  // overflow: auto;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
   a {
-    color: #8e352e;
+    // color: #8e352e;
     text-decoration: none;
+    &:hover {
+      text-decoration: none;
+    }
   }
 
   ul {
@@ -15,7 +22,7 @@
     list-style-type: none;
     // display: inline-block;
     // width: 13.1%;
-    text-align: center;
+    // text-align: center;
     margin-bottom: 4px;
     font-size: 12px;
     // color: #777;
@@ -27,4 +34,10 @@
     margin-right: -1px;
     margin-bottom: -1px;
   }
+}
+
+.daysContainer {
+  overflow: hidden;
+  margin-right: -15px;
+  display: flex;
 }

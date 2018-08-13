@@ -10,3 +10,20 @@ export const WORK_HOURS = 12
 
 // export const COLOR_RED_1 = '#fa0e0e'
 // export const COLOR_YELLOW_1 = '#fa840e'
+export const BIKE_HIRE = {
+  MANUAL: 'manual',
+  AUTO: 'auto',
+  NO: 'no'
+}
+
+export const RIDING_EXPERIENCE = {
+  CYCLING: 'Cycling experience',
+  ONROAD_MOTORCYCLING: 'On road motorcycling',
+  OFFROAD_MOTORCYCLING: 'Off road motorcycling'
+}
+
+export const PAYMENT_STATUS = {
+  RECEIVED: 'received',
+  PAID: 'paid',
+  DENIED: 'denied'
+}

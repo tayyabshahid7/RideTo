@@ -44,6 +44,11 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
     { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {}
 
+const entries = {
+  app: [require.resolve('./polyfills'), paths.appIndexJs],
+  widget: [require.resolve('./polyfills'), paths.widget]
+}
+
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -54,7 +59,7 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), paths.appIndexJs],
+  entry: entries,
   output: {
     // The build folder.
     path: paths.appBuild,

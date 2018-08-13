@@ -147,3 +147,92 @@ export const get = async (path, params) => {
     return { results: [] }
   }
 }
+
+export const post = async (path, data) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`
+    }
+  }
+  const url = `${BASE_URL}api/${path}`
+
+  try {
+    const response = await axios.post(url, data, config)
+    return response.data
+  } catch (error) {
+    // Auth failures dump out of app
+    if (error.response.status === 403) {
+      window.location.href = '/login'
+    }
+
+    return { results: [] }
+  }
+}
+
+export const destroy = async (path, params) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`
+    },
+    params: params
+  }
+  const url = `${BASE_URL}api/${path}`
+
+  try {
+    const response = await axios.delete(url, config)
+    return response.data
+  } catch (error) {
+    // Auth failures dump out of app
+    if (error.response.status === 403) {
+      window.location.href = '/login'
+    }
+
+    return { results: [] }
+  }
+}
+
+export const put = async (path, data) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`
+    }
+  }
+  const url = `${BASE_URL}api/${path}`
+
+  try {
+    const response = await axios.put(url, data, config)
+    return response.data
+  } catch (error) {
+    // Auth failures dump out of app
+    if (error.response.status === 403) {
+      window.location.href = '/login'
+    }
+
+    return { results: [] }
+  }
+}
+
+export const patch = async (path, data) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${getToken()}`
+    }
+  }
+  const url = `${BASE_URL}api/${path}`
+
+  try {
+    const response = await axios.patch(url, data, config)
+    return response.data
+  } catch (error) {
+    // Auth failures dump out of app
+    if (error.response.status === 403) {
+      window.location.href = '/login'
+    }
+
+    return { results: [] }
+  }
+}

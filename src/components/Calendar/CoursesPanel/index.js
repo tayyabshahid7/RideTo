@@ -1,43 +1,63 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import moment from 'moment'
+import { getDayCourses } from 'actions/course'
+import CoursesPanel from './CoursesPanel'
+// import { getCoursesOnDay } from 'services/course'
 
-import { getCoursesOnDay } from 'services/course'
-import CoursesPanelItem from './CoursesPanelItem'
+class CoursesPanelContainer extends React.Component {
+  componentDidMount() {
+    this.loadCourses()
+  }
 
-import styles from './CoursesPanel.scss'
+  componentDidUpdate(prevProps) {
+    if (prevProps.match.params.date !== this.props.match.params.date) {
+      this.loadCourses()
+    }
+  }
 
-class CoursesPanel extends React.Component {
-  render() {
-    const { days, match } = this.props
+  loadCourses() {
+    const { getDayCourses, match, schoolId } = this.props
     const {
       params: { date }
     } = match
-    const title = moment(date, 'YYYY-MM-DD').format('dddd Do MMMM YYYY')
-    const courses = getCoursesOnDay(days, date)
+    getDayCourses({ schoolId, date })
+  }
 
+  render() {
+    const { courses, loading, match } = this.props
+    const {
+      params: { date }
+    } = match
+    if (loading) {
+      return <div>Loading...</div>
+    }
     return (
-      <div className={styles.coursesPanel}>
-        <h3>{title}</h3>
-
-        <div className={styles.courses}>
-          {courses.map(course => (
-            <CoursesPanelItem key={course.time} date={date} course={course} />
-          ))}
-        </div>
-      </div>
+      <CoursesPanel
+        date={date}
+        courses={courses.sort((a, b) => a.time > b.time)}
+      />
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    schoolId: state.auth.schoolId,
+    courses: state.course.day.courses,
+    loading: state.course.day.loading
+  }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getDayCourses
+    },
+    dispatch
+  )
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(CoursesPanel)
+)(CoursesPanelContainer)

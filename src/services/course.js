@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { get } from 'services/api'
+import { get, destroy, post, put, patch } from 'services/api'
 import { s } from 'utils/helper'
 
 export const getCourseSpaceText = course => {
@@ -26,5 +26,45 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
 
   const response = await get(path, params)
 
+  return response
+}
+
+export const fetchDayCourses = async (schoolId, date) => {
+  // TODO: Update this once API is ready
+  const path = `school/${schoolId}/course/day`
+  const params = {
+    date: date
+  }
+
+  const response = await get(path, params)
+
   return response.results
+}
+
+export const fetchSingleCourse = async (schoolId, courseId) => {
+  const path = `school/${schoolId}/course/${courseId}`
+
+  const response = await get(path, {})
+
+  return response
+}
+
+export const deleteSingleCourse = async (schoolId, courseId) => {
+  const path = `school/${schoolId}/course/${courseId}`
+
+  const response = await destroy(path, {})
+
+  return response
+}
+
+export const addSchoolOrder = async (schoolId, order) => {
+  const path = `school/${schoolId}/course/order`
+  const response = await post(path, order)
+  return response
+}
+
+export const updateSchoolCourse = async (schoolId, courseId, data) => {
+  const path = `school/${schoolId}/course/${courseId}`
+  const response = await patch(path, data)
+  return response
 }

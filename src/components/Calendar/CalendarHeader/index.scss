@@ -3,6 +3,7 @@ $h: 60px;
   display: flex;
   height: $h;
   line-height: $h;
+  flex: 0 0 $h;
 }
 .prev {
   width: 40px;
