@@ -7,44 +7,21 @@ import BookingOptions from 'pages/Widget/components/BookingOptions'
 class MobileContainer extends React.Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      page: 'details'
-    }
+    this.widget = window.RIDE_TO_DATA.widget_initial
+    this.handleNav = this.handleNav.bind(this)
   }
 
   handleNav(page) {
-    this.setState({ page })
+    const { match, history } = this.props
+    const { slug } = match.params
+
+    history.push(`/widget/${slug}/details`)
   }
 
   render() {
-    const {
-      widget,
-      slug,
-      suppliers,
-      selectedSupplier,
-      onChangeSupplier
-    } = this.props
-    const { page } = this.state
-
     return (
       <div className={styles.mobileContainer}>
-        {page === 'details' ? (
-          <MobileDetails
-            widget={widget}
-            onContinue={() => this.handleNav('options')}
-          />
-        ) : null}
-
-        {page === 'options' ? (
-          <BookingOptions
-            widget={widget}
-            slug={slug}
-            selectedSupplier={selectedSupplier}
-            suppliers={suppliers}
-            onChangeSupplier={onChangeSupplier}
-          />
-        ) : null}
+        <MobileDetails widget={this.widget} onContinue={this.handleNav} />
       </div>
     )
   }

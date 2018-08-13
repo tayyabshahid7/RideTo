@@ -26,7 +26,7 @@ class Widget extends React.Component {
     const { match, history } = routeProps
     const { slug } = match.params
     const onChangeSupplier = id => {
-      history.push(`/widget/${slug}/?supplier=${id}`)
+      history.push(`/widget/${slug}/details?supplier=${id}`)
     }
     const query = parseQueryString(window.location.search.slice(1))
     const selectedSupplier = query.supplier
@@ -51,7 +51,6 @@ class Widget extends React.Component {
         widget={this.widget}
         slug={slug}
         selectedSupplier={selectedSupplier}
-        onChangeSupplier={onChangeSupplier}
       />
     )
   }
@@ -75,6 +74,12 @@ class Widget extends React.Component {
             exact
             path="/widget/:slug"
             render={routeProps => this.getContainer(routeProps)}
+          />
+
+          <Route
+            exact
+            path="/widget/:slug/details"
+            render={routeProps => <WidgetContainer {...routeProps} />}
           />
 
           <Route
