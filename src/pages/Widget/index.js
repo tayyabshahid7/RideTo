@@ -60,6 +60,12 @@ class Widget extends React.Component {
     return (
       <Router>
         <div className={styles.widget}>
+          <div className={styles.header}>
+            <h1 className={styles.heading}>
+              <img className={styles.logo} src={this.widget.logo} />
+            </h1>
+          </div>
+
           <Route
             path="/widget/:slug/payment/:courseId"
             component={PaymentContainer}

@@ -29,10 +29,6 @@ class MobileContainer extends React.Component {
 
     return (
       <div className={styles.mobileContainer}>
-        <h1 className={styles.heading}>
-          <img className={styles.logo} src={widget.logo} />
-        </h1>
-
         {page === 'details' ? (
           <MobileDetails
             widget={widget}

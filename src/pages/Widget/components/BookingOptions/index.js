@@ -196,7 +196,13 @@ class BookingOptions extends React.Component {
 
             <hr />
 
-            <Link to={url}>Continue</Link>
+            <div className={styles.totalPrice}>Total Price: £TODO</div>
+
+            <hr />
+
+            <Link to={url} className="WidgetBtn">
+              Book Now
+            </Link>
           </React.Fragment>
         ) : null}
       </div>

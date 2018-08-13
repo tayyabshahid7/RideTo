@@ -62,7 +62,7 @@ class Calendar extends React.Component {
           renderDayContents={day => renderDayContents(day, 120)}
           onDateChange={onChangeDate}
           date={date}
-          daySize={48}
+          daySize={40}
           onFocusChange={() => {}}
           keepOpenOnDateSelect={true}
           hideKeyboardShortcutsPanel={true}

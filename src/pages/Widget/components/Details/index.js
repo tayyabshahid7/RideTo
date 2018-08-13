@@ -5,10 +5,6 @@ import styles from './Details.scss'
 const Details = ({ widget, address = '' }) => {
   return (
     <div className={styles.details}>
-      <h1 className={styles.heading}>
-        <img className={styles.logo} src={widget.logo} />
-      </h1>
-
       <div className={styles.intro}>{widget.intro}</div>
 
       <div className={styles.block}>

@@ -1,3 +1,28 @@
 .bookingOptions {
-  font-family: Arial, Helvetica, sans-serif;
+  padding: 24px;
+  background: white;
+}
+
+.bookingOptions hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cacccd;
+  padding: 0;
+
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.totalPrice {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .bookingOptions {
+    max-width: 325px;
+    width: 325px;
+  }
 }
