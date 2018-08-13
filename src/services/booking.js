@@ -5,5 +5,5 @@ export const createStripeToken = async (stripe, name) => {
 }
 
 export const createOrder = async data => {
-  return await post('orders', data)
+  return await post('orders', data, false)
 }

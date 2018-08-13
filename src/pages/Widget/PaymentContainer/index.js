@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import { Elements, StripeProvider } from 'react-stripe-elements'
 
 import CheckoutForm from 'pages/Widget/components/CheckoutForm'
@@ -9,6 +10,12 @@ import { createOrder, createStripeToken } from 'services/booking'
 import { parseQueryString } from 'services/api'
 
 import styles from './PaymentContainer.scss'
+
+// Map course type names to LICENCE_TYPES
+const LICENCE_TYPES = {
+  'CBT Training': 'LICENCE_CBT',
+  'CBT Training Renewal': 'LICENCE_CBT_RENEWAL'
+}
 
 class PaymentContainer extends React.Component {
   constructor(props) {
@@ -72,17 +79,25 @@ class PaymentContainer extends React.Component {
 
   async createOrder(token) {
     const { course, supplier, details } = this.state
+    const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
       ...details,
+      user_birthdate: birthdate.format('YYYY-MM-DD'),
+      user_age: moment().diff(birthdate, 'years'),
+      current_licences: [details.current_licence],
       token: token.id,
       expected_price: this.getTotalPrice(),
       name: `${details.first_name} ${details.last_name}`,
       user_date: course.date,
-      selected_licence: course.course_type.name,
+      selected_licence: LICENCE_TYPES[course.course_type.name],
+      addons: [],
       supplier: supplier.id,
       email_optin: false,
       accept_equipment_responsibility: true, // TODO Needs to be removed
-      bike_hire: this.state.hire
+      bike_hire: this.state.hire,
+      source: 'WIDGET',
+      rider_type: 'RIDER_TYPE_SOCIAL',
+      voucher_code: ''
     }
     const response = await createOrder(data)
     console.log(response)
@@ -90,7 +105,7 @@ class PaymentContainer extends React.Component {
 
   getTotalPrice() {
     // TODO Need to do pricing
-    return 100
+    return 100 * 100
   }
 
   render() {

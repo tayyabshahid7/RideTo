@@ -117,13 +117,16 @@ export const get = async (path, params) => {
   }
 }
 
-export const post = async (path, data) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${getToken()}`
-    }
+export const post = async (path, data, auth = true) => {
+  const headers = {
+    'Content-Type': 'application/json'
   }
+
+  if (auth) {
+    headers.Authorization = `Bearer ${getToken()}`
+  }
+
+  const config = { headers }
   const url = `${BASE_URL}api/${path}`
 
   try {
