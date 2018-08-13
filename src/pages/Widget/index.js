@@ -6,6 +6,7 @@ import { parseQueryString } from 'services/api'
 import WidgetContainer from 'pages/Widget/WidgetContainer'
 import MobileContainer from 'pages/Widget/MobileContainer'
 import PaymentContainer from 'pages/Widget/PaymentContainer'
+import ConfirmationContainer from 'pages/Widget/ConfirmationContainer'
 
 import styles from './Widget.scss'
 
@@ -68,6 +69,12 @@ class Widget extends React.Component {
             exact
             path="/widget/:slug"
             render={routeProps => this.getContainer(routeProps)}
+          />
+
+          <Route
+            exact
+            path="/widget/:slug/confirmation"
+            component={ConfirmationContainer}
           />
         </div>
       </Router>

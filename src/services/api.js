@@ -161,7 +161,7 @@ export const destroy = async (path, params) => {
       window.location.href = '/login'
     }
 
-    return { results: [] }
+    throw error
   }
 }
 

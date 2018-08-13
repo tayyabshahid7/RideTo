@@ -31,6 +31,7 @@ class PaymentContainer extends React.Component {
       course: null,
       supplier: null,
       hire: query.hire || null,
+      errors: {},
       details: {
         current_licence: 'None',
         email: 'stuart.quin@gmail.com',
@@ -61,8 +62,14 @@ class PaymentContainer extends React.Component {
     })
   }
 
-  handleChangeDetails(details) {
-    this.setState({ details })
+  handleChangeDetails(details, errors = {}) {
+    this.setState({
+      details,
+      errors: {
+        ...this.state.errors,
+        ...errors
+      }
+    })
   }
 
   async handlePayment(stripe) {
@@ -78,6 +85,8 @@ class PaymentContainer extends React.Component {
   }
 
   async createOrder(token) {
+    const { match, history } = this.props
+    const { slug } = match.params
     const { course, supplier, details } = this.state
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
@@ -99,8 +108,22 @@ class PaymentContainer extends React.Component {
       rider_type: 'RIDER_TYPE_SOCIAL',
       voucher_code: ''
     }
-    const response = await createOrder(data)
-    console.log(response)
+
+    try {
+      const response = await createOrder(data)
+
+      if (response) {
+        history.push(`/widget/${slug}/confirmation?supplier=${supplier.id}`)
+      }
+    } catch (error) {
+      if (error.response && error.response.data) {
+        this.handleErrors(error.response.data)
+      }
+    }
+  }
+
+  handleErrors(errors) {
+    this.setState({ errors })
   }
 
   getTotalPrice() {
@@ -109,7 +132,7 @@ class PaymentContainer extends React.Component {
   }
 
   render() {
-    const { course, supplier, details } = this.state
+    const { course, supplier, details, errors } = this.state
 
     return (
       <div className={styles.paymentContainer}>
@@ -117,6 +140,7 @@ class PaymentContainer extends React.Component {
           <h3>Contact Details</h3>
           <CustomerDetailsForm
             details={details}
+            errors={errors}
             onChange={this.handleChangeDetails}
           />
 
