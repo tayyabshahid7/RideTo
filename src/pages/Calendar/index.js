@@ -178,7 +178,6 @@ class CalendarPage extends Component {
   render() {
     const { calendar, history } = this.props
     let days = this.generateDaysDataFromCalendar(calendar)
-    console.log('HALA days', days)
     return (
       <div className={styles.container}>
         <Row className="h-100">
