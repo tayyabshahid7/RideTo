@@ -19,6 +19,12 @@ const getSchoolCoursesByDate = (selectedDate, courses) => {
   return courses.filter(({ date }) => date === formatted)
 }
 
+const getEarliestDate = courses => {
+  const dates = courses.map(({ date }) => date).sort()
+
+  return dates.length ? moment(dates[0], 'YYYY-MM-DD') : null
+}
+
 class BookingOptions extends React.Component {
   constructor(props) {
     super(props)
@@ -65,7 +71,7 @@ class BookingOptions extends React.Component {
         .startOf('month')
         .format('YYYY-MM-DD'),
       month
-        .add(2, 'month')
+        .add(3, 'month')
         .endOf('month')
         .format('YYYY-MM-DD')
     )
@@ -79,9 +85,16 @@ class BookingOptions extends React.Component {
         return course_type.id === courseType.id && order_count < spaces
       }
     )
+    const selectedDate = getEarliestDate(availableCourses)
+    const selectedCourses = getSchoolCoursesByDate(
+      selectedDate,
+      availableCourses
+    )
 
     this.setState({
       schoolCourses,
+      selectedDate,
+      selectedCourse: selectedCourses[0],
       availableCourses,
       courseType,
       isLoading: false
@@ -147,6 +160,10 @@ class BookingOptions extends React.Component {
     const url = selectedCourse
       ? `/widget/${slug}/payment/${selectedCourse.id}?hire=${selectedBikeHire}`
       : null
+
+    if (!courseType) {
+      return <div className={styles.bookingOptions}>No Course Found</div>
+    }
 
     return (
       <div className={styles.bookingOptions}>

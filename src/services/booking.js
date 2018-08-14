@@ -7,3 +7,9 @@ export const createStripeToken = async (stripe, name) => {
 export const createOrder = async data => {
   return await post('orders', data, false)
 }
+
+export const getInitialSuppliers = () => {
+  return window.RIDE_TO_DATA.widget_locations.filter(
+    ({ courses }) => courses.length
+  )
+}

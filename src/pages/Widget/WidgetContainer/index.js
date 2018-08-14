@@ -4,6 +4,7 @@ import BookingOptions from 'pages/Widget/components/BookingOptions'
 import Details from 'pages/Widget/components/Details'
 import styles from './WidgetContainer.scss'
 import { parseQueryString } from 'services/api'
+import { getInitialSuppliers } from 'services/booking'
 
 const getAddress = loc => {
   return `${loc.address_1}, ${loc.town}, ${loc.postcode}`
@@ -14,7 +15,7 @@ class WidgetContainer extends React.Component {
     super(props)
 
     this.widget = window.RIDE_TO_DATA.widget_initial
-    this.suppliers = window.RIDE_TO_DATA.widget_locations
+    this.suppliers = getInitialSuppliers()
 
     this.handleChangeSupplier = this.handleChangeSupplier.bind(this)
   }

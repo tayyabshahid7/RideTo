@@ -6,7 +6,11 @@ import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
 import { fetchWidgetSingleCourse } from 'services/course'
-import { createOrder, createStripeToken } from 'services/booking'
+import {
+  createOrder,
+  createStripeToken,
+  getInitialSuppliers
+} from 'services/booking'
 import { parseQueryString } from 'services/api'
 
 import styles from './PaymentContainer.scss'
@@ -23,7 +27,7 @@ class PaymentContainer extends React.Component {
 
     this.stripePublicKey = window.RIDE_TO_DATA.stripe_public_key
     this.widget = window.RIDE_TO_DATA.widget_initial
-    this.suppliers = window.RIDE_TO_DATA.widget_locations
+    this.suppliers = getInitialSuppliers()
 
     const query = parseQueryString(window.location.search.slice(1))
 

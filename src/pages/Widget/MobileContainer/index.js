@@ -2,7 +2,6 @@ import React from 'react'
 
 import styles from './MobileContainer.scss'
 import MobileDetails from 'pages/Widget/components/MobileDetails'
-import BookingOptions from 'pages/Widget/components/BookingOptions'
 
 class MobileContainer extends React.Component {
   constructor(props) {
