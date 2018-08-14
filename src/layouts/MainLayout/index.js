@@ -1,12 +1,11 @@
 import React from 'react'
 import { Switch, Route } from 'react-router'
-import NavigationBar from '../../components/NavigationBar'
-import Dashboard from '../Dashboard/container'
-import Orders from '../Orders/container'
-import Calendar from '../Calendar'
-import Footer from '../../components/Footer'
+import NavigationBar from 'components/NavigationBar'
+import Dashboard from 'pages/Dashboard/container'
+import Orders from 'pages/Orders/container'
+import Calendar from 'pages/Calendar'
+import Footer from 'components/Footer'
 import styles from './styles.scss'
-import classnames from 'classnames'
 
 const MainLayout = ({ history }) => {
   return (

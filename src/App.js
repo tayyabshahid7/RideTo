@@ -6,7 +6,7 @@ import 'font-awesome/css/font-awesome.css'
 import { Switch, Route } from 'react-router'
 import { ConnectedRouter } from 'connected-react-router'
 import Login from './pages/Login'
-import MainLayout from './pages/MainLayout'
+import MainLayout from './layouts/MainLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 import history from './history1'
 

@@ -1,7 +1,7 @@
 import SchoolSelect from './SchoolSelect'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { changeSchool } from 'actions/authActions'
+import { changeSchool } from 'store/auth'
 
 const mapStateToProps = (state, ownProps) => {
   return {

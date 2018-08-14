@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import SchoolSelect from 'components/SchoolSelect'
 import PaginationLinks from 'components/PaginationLinks'
 import { fetchSchoolOrders, getDateFilters } from 'services/order'
-import { changeSchool } from 'actions/authActions'
+import { changeSchool } from 'store/auth'
 
 import ConfirmedOrders from '../components/ConfirmedOrders'
 import OrderFilters from '../components/OrderFilters'

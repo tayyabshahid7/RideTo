@@ -1,20 +1,25 @@
 import { fetchSchoolOrders } from 'services/order'
-import * as types from 'actionTypes'
+import { LOGOUT, RESET } from './common'
+
+export const GET_SCHOOL_ORDERS_REQUEST = 'GET_SCHOOL_ORDERS_REQUEST'
+export const GET_SCHOOL_ORDERS_SUCCESS = 'GET_SCHOOL_ORDERS_SUCCESS'
+export const GET_SCHOOL_ORDERS_ERROR = 'GET_SCHOOL_ORDERS_ERROR'
+export const ORDERS_CHANGE_PAGE = 'ORDERS_CHANGE_PAGE'
 
 const getSchoolOrdersRequest = () => ({
-  type: types.GET_SCHOOL_ORDERS_REQUEST
+  type: GET_SCHOOL_ORDERS_REQUEST
 })
 const getSchoolOrdersSuccess = data => ({
-  type: types.GET_SCHOOL_ORDERS_SUCCESS,
+  type: GET_SCHOOL_ORDERS_SUCCESS,
   data
 })
 const getSchoolOrdersError = error => ({
-  type: types.GET_SCHOOL_ORDERS_ERROR,
+  type: GET_SCHOOL_ORDERS_ERROR,
   error
 })
 
-export const changePage = page => ({ type: types.ORDERS_CHANGE_PAGE, page })
-export const ordersReducerReset = () => ({ type: types.RESET })
+export const changePage = page => ({ type: ORDERS_CHANGE_PAGE, page })
+export const ordersReducerReset = () => ({ type: RESET })
 
 export const getSchoolOrders = (
   schoolId,
@@ -57,4 +62,44 @@ export const getSchoolOrders = (
   }
 
   // }
+}
+
+const initialState = {
+  loading: false,
+  error: null,
+  confirmedOrders: null,
+  page: 1
+}
+
+export default function reducer(state = initialState, action) {
+  switch (action.type) {
+    case GET_SCHOOL_ORDERS_REQUEST:
+      return {
+        ...state,
+        loading: true
+      }
+    case GET_SCHOOL_ORDERS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.error
+      }
+    case GET_SCHOOL_ORDERS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        confirmedOrders: action.data
+      }
+    case ORDERS_CHANGE_PAGE:
+      return {
+        ...state,
+        page: action.page
+      }
+    case LOGOUT:
+    case RESET:
+      return { ...initialState }
+    default:
+      return state
+  }
 }
