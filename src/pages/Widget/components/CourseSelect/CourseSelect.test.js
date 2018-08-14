@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import CourseSelect from './index'
@@ -12,8 +13,9 @@ const COURSES = [
 ]
 
 it('Renders Times', () => {
+  const date = moment()
   const wrapper = mount(
-    <CourseSelect courses={COURSES} onChangeCourse={jest.fn()} />
+    <CourseSelect date={date} courses={COURSES} onChangeCourse={jest.fn()} />
   )
 
   expect(
@@ -21,27 +23,29 @@ it('Renders Times', () => {
       .find('.courseTime')
       .at(0)
       .text()
-  ).toBe(COURSES[0].time)
+  ).toBe('9:00 am')
   expect(
     wrapper
       .find('.courseTime')
       .at(1)
       .text()
-  ).toBe(COURSES[1].time)
+  ).toBe('12:00 pm')
   expect(
     wrapper
       .find('.courseTime')
       .at(2)
       .text()
-  ).toBe(COURSES[2].time)
+  ).toBe('3:00 pm')
 })
 
 it('Triggers change on click', () => {
   const onClick = jest.fn()
+  const date = moment()
   const wrapper = mount(
     <CourseSelect
+      date={date}
       courses={COURSES}
-      selectedCourse={{ id: 2, time: '12:00' }}
+      selectedCourse={{ id: 2, time: '12:00:00' }}
       onChangeCourse={onClick}
     />
   )
