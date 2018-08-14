@@ -54,7 +54,7 @@ it('Renders Course title', () => {
   )
 
   const title = wrapper.find('h3')
-  expect(title.text()).toBe('08:00:00 CBT Training Wednesday 25th July')
+  expect(title.text()).toBe('08:00 CBT Training Wednesday 25th July')
 })
 
 it('Renders orders and space list', () => {

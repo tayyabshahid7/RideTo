@@ -40,7 +40,7 @@ it('Renders Course title and link', () => {
 
   expect(wrapper.text()).toContain('CBT Training | 2 spaces available')
   expect(wrapper.find('a').prop('href')).toContain(
-    '/calendar/2018-01-01/orders/1'
+    '/calendar/2018-01-01/courses/1'
   )
 })
 
