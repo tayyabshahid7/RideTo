@@ -6,7 +6,7 @@ import {
   deleteCourse,
   createSchoolOrder,
   updateCourse
-} from 'actions/course'
+} from 'store/course'
 import OrdersPanel from './OrdersPanel'
 
 class OrdersPanelContainer extends React.Component {

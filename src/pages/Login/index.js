@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { login } from '../../actions/authActions'
+import { login } from 'store/auth'
 import Header from '../../components/Header'
 import logo from 'assets/images/scooter.png'
 import { isAuthenticated } from 'services/auth'
