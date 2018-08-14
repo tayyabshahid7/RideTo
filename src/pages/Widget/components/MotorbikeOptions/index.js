@@ -1,5 +1,6 @@
 import React from 'react'
 
+import Checkbox from 'components/Checkbox'
 import styles from './MotorbikeOptions.scss'
 
 const MotorbikeOptions = ({ selected, course, onChange }) => {
@@ -11,33 +12,21 @@ const MotorbikeOptions = ({ selected, course, onChange }) => {
     <div className={styles.motorbikeOptions}>
       <h4>Bike Hire (Included)</h4>
 
-      <div>
-        <input
-          type="checkbox"
-          checked={selected === 'auto'}
-          onChange={() => onChange(selected === 'auto' ? null : 'auto')}
-          disabled={isAutoFull}
-          id="autoCheck"
-        />
-        <label htmlFor="autoCheck">
-          Automatic Scooter
-          {isAutoFull ? fullText : null}
-        </label>
-      </div>
+      <Checkbox
+        checked={selected === 'auto'}
+        onChange={() => onChange(selected === 'auto' ? null : 'auto')}
+        disabled={isAutoFull}>
+        Automatic Scooter
+        {isAutoFull ? fullText : null}
+      </Checkbox>
 
-      <div>
-        <input
-          type="checkbox"
-          checked={selected === 'manual'}
-          onChange={() => onChange(selected === 'manual' ? null : 'manual')}
-          disabled={isManualFull}
-          id="manualCheck"
-        />
-        <label htmlFor="manualCheck">
-          Manual Motorcycle
-          {isManualFull ? fullText : null}
-        </label>
-      </div>
+      <Checkbox
+        checked={selected === 'manual'}
+        onChange={() => onChange(selected === 'manual' ? null : 'manual')}
+        disabled={isManualFull}>
+        Manual Motorcycle
+        {isManualFull ? fullText : null}
+      </Checkbox>
     </div>
   )
 }

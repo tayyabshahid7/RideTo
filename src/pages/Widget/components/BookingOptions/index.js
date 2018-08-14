@@ -95,6 +95,7 @@ class BookingOptions extends React.Component {
       schoolCourses,
       selectedDate,
       selectedCourse: selectedCourses[0],
+      selectedBikeHire: null,
       availableCourses,
       courseType,
       isLoading: false
@@ -118,13 +119,15 @@ class BookingOptions extends React.Component {
 
     this.setState({
       selectedDate,
-      selectedCourse: selectedCourses[0]
+      selectedCourse: selectedCourses[0],
+      selectedBikeHire: null
     })
   }
 
   handleChangeCourse(selectedCourse) {
     this.setState({
-      selectedCourse
+      selectedCourse,
+      selectedBikeHire: null
     })
   }
 
