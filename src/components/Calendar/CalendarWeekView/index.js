@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
 import { WORK_HOURS, WEEK_VIEW_START_TIME } from '../../../common/constants'
@@ -82,13 +83,19 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { days, history } = this.props
+    const { days, history, calendar } = this.props
     let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.events}>
         <ul>
           {daysInfo.map((day, index) => (
-            <li className={styles.eventsGroup} key={index}>
+            <li
+              className={classnames(
+                styles.eventsGroup,
+                calendar.selectedDate ===
+                  moment(day.date).format('YYYY-MM-DD') && 'bg-highlight'
+              )}
+              key={index}>
               <div className={styles.topInfo}>
                 <Link to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}>
                   <span>

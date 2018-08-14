@@ -1,13 +1,18 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getDayCourses } from 'store/course'
+import { getDayCourses, unsetSelectedDate } from 'store/course'
 import CoursesPanel from './CoursesPanel'
 // import { getCoursesOnDay } from 'services/course'
 
 class CoursesPanelContainer extends React.Component {
   componentDidMount() {
     this.loadCourses()
+  }
+
+  componentWillUnmount() {
+    const { unsetSelectedDate } = this.props
+    unsetSelectedDate()
   }
 
   componentDidUpdate(prevProps) {
@@ -52,7 +57,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getDayCourses
+      getDayCourses,
+      unsetSelectedDate
     },
     dispatch
   )
