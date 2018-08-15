@@ -59,7 +59,9 @@ const CheckoutForm = ({ details, stripe, onChange, onSubmit }) => {
         />
       </div>
 
-      <button onClick={() => onSubmit(stripe)}>Confirm and Pay</button>
+      <button className="WidgetBtn" onClick={() => onSubmit(stripe)}>
+        Confirm and Pay
+      </button>
     </div>
   )
 }

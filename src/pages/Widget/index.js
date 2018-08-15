@@ -21,20 +21,10 @@ class Widget extends React.Component {
   }
 
   getContainer(routeProps) {
-    const { match, history } = routeProps
-    const { slug } = match.params
-    const onChangeSupplier = id => {
-      history.push(`/widget/${slug}/details?supplier=${id}`)
-    }
-
     return isMobile() ? (
-      <MobileContainer
-        {...routeProps}
-        widget={this.widget}
-        onChangeSupplier={onChangeSupplier}
-      />
+      <MobileContainer {...routeProps} />
     ) : (
-      <WidgetContainer {...routeProps} widget={this.widget} />
+      <WidgetContainer {...routeProps} />
     )
   }
 
