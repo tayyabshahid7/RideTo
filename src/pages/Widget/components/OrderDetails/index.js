@@ -3,8 +3,17 @@ import moment from 'moment'
 
 import styles from './OrderDetails.scss'
 import { getStartInTime } from 'services/widget'
+import Loading from 'components/Loading'
 
-const OrderDetails = ({ course, supplier }) => {
+const OrderDetails = ({ course, supplier, isLoading }) => {
+  if (isLoading) {
+    return (
+      <div className={styles.loading}>
+        <Loading loading={true} />
+      </div>
+    )
+  }
+
   const dateStr = `${course.date}T${course.time}`
   const startTime = moment(dateStr, 'YYYY-MM-DDTh:mm:ss')
   const startIn = getStartInTime(moment(), startTime)

@@ -5,6 +5,7 @@ import { Elements, StripeProvider } from 'react-stripe-elements'
 import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
+import BookingSummary from 'pages/Widget/components/BookingSummary'
 import { fetchWidgetSingleCourse } from 'services/course'
 import {
   createOrder,
@@ -128,10 +129,17 @@ class PaymentContainer extends React.Component {
   }
 
   render() {
-    const { course, supplier, details, errors } = this.state
+    const { course, supplier, details, errors, hire } = this.state
+    const isLoading = !Boolean(course) || !Boolean(supplier)
 
     return (
       <div className={styles.paymentContainer}>
+        <BookingSummary
+          course={course}
+          supplier={supplier}
+          hire={hire}
+          isLoading={isLoading}
+        />
         <div className={styles.paymentDetails}>
           <h3>Contact Details</h3>
           <CustomerDetailsForm
@@ -159,11 +167,11 @@ class PaymentContainer extends React.Component {
         </div>
 
         <div className={styles.orderDetails}>
-          {course && supplier ? (
-            <OrderDetails course={course} supplier={supplier} />
-          ) : (
-            <div>Loading</div>
-          )}
+          <OrderDetails
+            course={course}
+            supplier={supplier}
+            isLoading={isLoading}
+          />
         </div>
       </div>
     )
