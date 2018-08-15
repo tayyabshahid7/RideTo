@@ -20,14 +20,14 @@ export const getAddress = loc => {
 
 export const getStartInTime = (now, startTime) => {
   const days = startTime.diff(now, 'days')
-  const daysStr = days === 1 ? '1 day, ' : days > 1 ? `${days} days, ` : ''
-
   const hours = startTime.diff(now, 'hours') % 24.0
-  const hoursStr =
-    hours === 1 ? '1 hour, ' : hours > 1 ? `${hours} hours, ` : ''
-
   const minutes = startTime.diff(now, 'minutes') % 60.0
-  const minutesStr = `${minutes} minutes`
 
-  return `${daysStr}${hoursStr}${minutesStr}`
+  return [
+    days === 1 ? '1 day' : days > 1 ? `${days} days` : '',
+    hours === 1 ? '1 hour' : hours > 1 ? `${hours} hours` : '',
+    minutes ? `${minutes} minutes` : ''
+  ]
+    .filter(s => s)
+    .join(', ')
 }
