@@ -20,11 +20,12 @@ class CalendarPage extends Component {
   componentDidUpdate(prevProps) {
     const { schoolId, calendar } = this.props
     if (
-      schoolId !== prevProps.schoolId ||
-      calendar.month !== prevProps.calendar.month ||
-      calendar.year !== prevProps.calendar.year ||
-      calendar.day !== prevProps.calendar.day ||
-      calendar.viewMode !== prevProps.calendar.viewMode
+      (schoolId !== prevProps.schoolId ||
+        calendar.month !== prevProps.calendar.month ||
+        calendar.year !== prevProps.calendar.year ||
+        calendar.day !== prevProps.calendar.day ||
+        calendar.viewMode !== prevProps.calendar.viewMode) &&
+      !calendar.silent
     ) {
       this.loadCourses()
     }
@@ -175,7 +176,7 @@ class CalendarPage extends Component {
   }
 
   render() {
-    const { calendar, history } = this.props
+    const { calendar, history, selectedDate } = this.props
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
       <div className={styles.container}>
@@ -195,14 +196,12 @@ class CalendarPage extends Component {
             <Route
               exact
               path="/calendar/:date"
-              render={routeProps => (
-                <CoursesPanel {...routeProps} days={days} />
-              )}
+              render={routeProps => <CoursesPanel {...routeProps} />}
             />
             <Route
               exact
               path="/calendar/:date/courses/:courseId"
-              render={routeProps => <OrdersPanel {...routeProps} days={days} />}
+              render={routeProps => <OrdersPanel {...routeProps} />}
             />
           </Col>
         </Row>
@@ -215,6 +214,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     schoolId: state.auth.schoolId,
     calendar: state.course.calendar
+    // selectedDate: state.course.day.date
   }
 }
 

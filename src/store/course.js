@@ -15,6 +15,7 @@ const FETCH_SINGLE = createRequestTypes('rideto/course/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/course/DELETE')
 const UPDATE = createRequestTypes('rideto/course/UPDATE')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
+const UNSET_DAY = 'rideto/course/UNSET/DAY'
 
 export const getSingleCourse = ({
   schoolId,
@@ -93,6 +94,10 @@ export const updateCalendarSetting = data => async dispatch => {
   dispatch({ type: UPDATE_CALENDAR_SETTING, data })
 }
 
+export const unsetSelectedDate = data => async dispatch => {
+  dispatch({ type: UNSET_DAY })
+}
+
 export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
   dispatch({ type: CREATE_ORDER[REQUEST] })
 
@@ -156,13 +161,16 @@ const initialState = {
     day: new Date().getDate(),
     error: null,
     viewMode: CALENDAR_VIEW.MONTH,
-    rightPanelMode: null
+    rightPanelMode: null,
+    selectedDate: null,
+    silent: false // This is to tell whether should re-load calendar. false: re-load, true: not reload
   }
 }
 
 export default function reducer(state = initialState, action) {
   let dayCourses
   let calendarCourses
+  let dt
   switch (action.type) {
     case FETCH_SINGLE[REQUEST]:
       if (action.reset) {
@@ -192,7 +200,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { loading: false, course: action.data.course, error: null },
         day: { ...state.day, courses: dayCourses },
-        calendar: { ...state.calendar, courses: calendarCourses }
+        calendar: {
+          ...state.calendar,
+          courses: calendarCourses,
+          selectedDate: action.data.course.date
+        }
       }
     case FETCH_SINGLE[FAILURE]:
       return {
@@ -218,12 +230,21 @@ export default function reducer(state = initialState, action) {
         calendar: { ...state.calendar, courses: calendarCourses }
       }
     case FETCH_FOR_DAY[REQUEST]:
+      dt = new Date(action.date)
       return {
         ...state,
         day: {
           courses: [],
           date: action.date,
           loading: true
+        },
+        calendar: {
+          ...state.calendar,
+          selectedDate: action.date,
+          year: dt.getFullYear(),
+          month: dt.getMonth(),
+          day: dt.getDate(),
+          silent: state.calendar.month === dt.getMonth()
         }
       }
     case FETCH_FOR_DAY[SUCCESS]:
@@ -250,7 +271,8 @@ export default function reducer(state = initialState, action) {
         ...state,
         calendar: {
           ...state.calendar,
-          ...action.data
+          ...action.data,
+          silent: false
         }
       }
     case FETCH_ALL[REQUEST]:
@@ -323,6 +345,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
+      }
+    case UNSET_DAY:
+      return {
+        ...state,
+        calendar: { ...state.calendar, selectedDate: null }
       }
     default:
       return state

@@ -7,12 +7,13 @@ import styles from './index.scss'
 
 const CalendarDayCell = ({ day, calendar, history }) => {
   const dateStr = moment(day.date).format('YYYY-MM-DD')
-
+  let selectedDay = dateStr === calendar.selectedDate
   return (
     <li
       className={classnames(
         styles.container,
-        day.date.getMonth() !== calendar.month ? styles.otherMonth : ''
+        day.date.getMonth() !== calendar.month ? styles.otherMonth : '',
+        selectedDay && 'bg-highlight'
       )}
       onClick={() => history.push(`/calendar/${dateStr}`)}>
       {/* <Link className={styles.dayLink} to={`/calendar/${dateStr}`}> */}

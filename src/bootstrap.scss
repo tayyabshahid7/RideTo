@@ -9,6 +9,7 @@ $dark: #434343;
 $grey: #434343;
 $danger: #fa0e0e;
 $warning: #fa840e;
+$highlight: #ddf9f3;
 
 $theme-colors: (
   'light': $light,
@@ -21,7 +22,8 @@ $theme-colors: (
   'warning': $warning,
   'danger': $danger,
   'grey': $grey,
-  'white': $white
+  'white': $white,
+  'highlight': $highlight
 );
 
 @import '~bootstrap/scss/bootstrap';
