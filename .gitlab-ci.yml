@@ -1,14 +1,27 @@
 image: node:latest
 
+stages:
+  - test
+  - deploy
+
 cache:
   paths:
   - node_modules/
-
-stages:
-  - test
 
 test:
   stage: test
   script:
   - yarn
   - CI=true yarn test
+
+deploy_widget_staging:
+  stage: deploy
+  script:
+    - APP=widget REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
+    - APP=widget ./scripts/deploy.sh
+  environment:
+    name: staging
+    url: https://bike-tests-staging.herokuapp.com
+  only:
+  - staging
+  - PRODEV-61-booking-widget
