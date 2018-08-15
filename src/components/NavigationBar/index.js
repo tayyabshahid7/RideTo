@@ -3,7 +3,6 @@ import { NavLink } from 'react-router-dom'
 import Header from '../Header'
 import UserMenu from '../UserMenu'
 import styles from './styles.scss'
-import classnames from 'classnames'
 
 let NavigationBar = ({ history }) => {
   return (
