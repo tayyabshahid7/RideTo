@@ -1,6 +1,7 @@
 import React from 'react'
 
 import LabelField from 'pages/Widget/components/LabelField'
+import styles from './CustomerDetailsForm.scss'
 
 const handleChange = (event, details, errors, onChange) => {
   const { id, value } = event.target
@@ -8,11 +9,17 @@ const handleChange = (event, details, errors, onChange) => {
 }
 
 const CustomerDetailsForm = ({ details, errors, onChange }) => {
+  const labelStyle = {
+    marginTop: '16px',
+    marginBottom: '16px'
+  }
+
   return (
-    <div>
+    <div className={styles.customerDetailsForm}>
       <LabelField
         label="First Name"
         name="first_name"
+        style={labelStyle}
         error={errors.first_name}>
         <input
           id="first_name"
@@ -22,7 +29,11 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         />
       </LabelField>
 
-      <LabelField label="Surname" name="last_name" error={errors.last_name}>
+      <LabelField
+        label="Surname"
+        name="last_name"
+        error={errors.last_name}
+        style={labelStyle}>
         <input
           id="last_name"
           type="text"
@@ -34,7 +45,8 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
       <LabelField
         label="Date of Birth"
         name="user_birthdate"
-        error={errors.user_birthdate}>
+        error={errors.user_birthdate}
+        style={labelStyle}>
         <input
           id="user_birthdate"
           type="text"
@@ -44,7 +56,11 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         />
       </LabelField>
 
-      <LabelField label="Phone" name="phone" error={errors.phone}>
+      <LabelField
+        label="Phone"
+        name="phone"
+        error={errors.phone}
+        style={labelStyle}>
         <input
           id="phone"
           type="text"
@@ -53,7 +69,11 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         />
       </LabelField>
 
-      <LabelField label="Email" name="email" error={errors.email}>
+      <LabelField
+        label="Email"
+        name="email"
+        error={errors.email}
+        style={labelStyle}>
         <input
           id="email"
           type="email"
@@ -62,7 +82,10 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         />
       </LabelField>
 
-      <LabelField label="Current Licence" name="current_licence">
+      <LabelField
+        label="Current Licence"
+        name="current_licence"
+        style={labelStyle}>
         <input
           id="current_licence"
           value={details.current_licence || ''}
@@ -70,7 +93,10 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         />
       </LabelField>
 
-      <LabelField label="Riding Experience" name="riding_experience">
+      <LabelField
+        label="Riding Experience"
+        name="riding_experience"
+        style={labelStyle}>
         <input
           id="riding_experience"
           value={details.riding_experience || ''}

@@ -36,7 +36,7 @@
 
 /*Outer box of the fake checkbox*/
 .checkbox label::before {
-  height: 18px;
+  height: 100%;
   width: 18px;
 
   background-color: white;
@@ -64,4 +64,28 @@
 
 .checkbox input[type='checkbox']:checked + label::after {
   content: '';
+}
+
+.large {
+  height: 32px;
+}
+
+.large label {
+  padding-left: 48px;
+}
+
+.large label::after {
+  height: 12px;
+  width: 20px;
+  top: 8px;
+  left: 6px;
+  border-width: 3px;
+}
+
+.large label::before {
+  width: 32px;
+}
+
+.large input[type='checkbox'] {
+  width: 32px;
 }

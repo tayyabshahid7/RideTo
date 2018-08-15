@@ -2,11 +2,18 @@ import React from 'react'
 
 import styles from './Checkbox.scss'
 
-const Checkbox = ({ checked, children, disabled, onChange }) => {
+const Checkbox = ({
+  checked,
+  children,
+  disabled,
+  size = 'small',
+  onChange
+}) => {
   const id = `checkbox_${Math.floor(Math.random() * 10000)}`
+  const className = `${styles.checkbox} ${styles[size]}`
 
   return (
-    <div className={styles.checkbox}>
+    <div className={className}>
       <input
         type="checkbox"
         id={id}

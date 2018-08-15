@@ -36,15 +36,7 @@ class PaymentContainer extends React.Component {
       supplier: null,
       hire: query.hire || null,
       errors: {},
-      details: {
-        current_licence: 'None',
-        email: 'stuart.quin@gmail.com',
-        first_name: 'Stuart',
-        last_name: 'Quin',
-        phone: '123123123123123',
-        riding_experience: 'Bike',
-        user_birthdate: '08/01/1987'
-      }
+      details: {}
     }
 
     this.handlePayment = this.handlePayment.bind(this)
@@ -149,9 +141,9 @@ class PaymentContainer extends React.Component {
           />
 
           <StripeProvider apiKey={this.stripePublicKey}>
-            <div className="example">
+            <div>
               <h3>Payment Details</h3>
-              <div>
+              <div className={styles.cardSecure}>
                 Your card details are stored with our secure payment provider
                 Stripe.
               </div>

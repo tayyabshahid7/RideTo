@@ -1,19 +1,17 @@
 import React from 'react'
 
 import styles from './AcceptTerms.scss'
+import Checkbox from 'components/Checkbox'
 
 const AcceptTerms = ({ accepted, onChange }) => {
   return (
     <div className={styles.acceptTerms}>
-      <input
-        type="checkbox"
-        id="accept_terms"
-        value={accepted}
-        onChange={() => onChange(!accepted)}
-      />
-      <label htmlFor="accept_terms">
+      <Checkbox
+        checked={Boolean(accepted)}
+        size="large"
+        onChange={() => onChange(!accepted)}>
         I can confirm that I have read and agreed to the terms and conditions.
-      </label>
+      </Checkbox>
     </div>
   )
 }
