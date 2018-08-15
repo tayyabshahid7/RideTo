@@ -4,7 +4,7 @@ import BookingOptions from 'pages/Widget/components/BookingOptions'
 import Details from 'pages/Widget/components/Details'
 import styles from './WidgetContainer.scss'
 import { parseQueryString } from 'services/api'
-import { getInitialSuppliers, getAddress } from 'services/booking'
+import { getInitialSuppliers, getAddress } from 'services/widget'
 
 class WidgetContainer extends React.Component {
   constructor(props) {

@@ -10,7 +10,7 @@ import {
   createOrder,
   createStripeToken,
   getInitialSuppliers
-} from 'services/booking'
+} from 'services/widget'
 import { parseQueryString } from 'services/api'
 
 import styles from './PaymentContainer.scss'

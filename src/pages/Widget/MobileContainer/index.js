@@ -3,7 +3,7 @@ import React from 'react'
 import styles from './MobileContainer.scss'
 import BookingOption from 'pages/Widget/components/BookingOption'
 import { parseQueryString } from 'services/api'
-import { getInitialSuppliers, getAddress } from 'services/booking'
+import { getInitialSuppliers, getAddress } from 'services/widget'
 
 class MobileContainer extends React.Component {
   constructor(props) {

@@ -1,0 +1,58 @@
+.orderDetails {
+  padding: 16px;
+  background: white;
+}
+
+.orderDetails h3 {
+  text-transform: uppercase;
+}
+
+.bookingOptions hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #cacccd;
+  padding: 0;
+
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.starts {
+  color: #f86b6b;
+  margin-bottom: 16px;
+  margin-top: 16px;
+  font-size: 18px;
+}
+
+.checklist {
+  margin: 0;
+  padding: 0;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  list-style: none;
+}
+
+.checklist li {
+  padding-left: 28px;
+  position: relative;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+
+.checklist li:after {
+  position: absolute;
+  content: '';
+  display: inline-block;
+  height: 5px;
+  width: 9px;
+  border-left: 2px solid;
+  border-bottom: 2px solid;
+  -webkit-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  left: 5px;
+  top: 6px;
+  border-color: #2dceac;
+}
