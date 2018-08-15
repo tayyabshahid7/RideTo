@@ -2,11 +2,13 @@ image: node:latest
 
 stages:
   - test
+  - build
   - deploy
 
 cache:
   paths:
   - node_modules/
+  - build/
 
 test:
   stage: test
@@ -14,11 +16,27 @@ test:
   - yarn
   - CI=true yarn test
 
-deploy_widget_staging:
-  stage: deploy
+build_staging:
+  stage: build
   script:
-    - APP=widget REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
-    - APP=widget ./scripts/deploy.sh
+  - APP=widget REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
+  environment:
+    name: staging
+    url: https://bike-tests-staging.herokuapp.com
+  only:
+  - staging
+  - PRODEV-61-booking-widget
+  artifacts:
+    paths:
+    - build/
+
+deploy_staging:
+  image: "python:latest"
+  stage: deploy
+  before_script:
+  - pip install awscli
+  script:
+  - APP=widget ./scripts/deploy.sh
   environment:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
