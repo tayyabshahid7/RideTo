@@ -46,6 +46,8 @@ class BookingOptions extends React.Component {
     this.handleChangeCourse = this.handleChangeCourse.bind(this)
     this.handleChangeMonth = this.handleChangeMonth.bind(this)
     this.handleSelectBikeHire = this.handleSelectBikeHire.bind(this)
+
+    window.document.body.scrollIntoView()
   }
 
   componentDidMount() {

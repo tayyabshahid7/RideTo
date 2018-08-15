@@ -12,7 +12,7 @@ const BookingOption = ({
 }) => {
   return (
     <div className={styles.bookingOption}>
-      <span className={styles.label}>{label}</span>
+      {label ? <span className={styles.label}>{label}</span> : null}
       <MinimalSelect
         options={options}
         labelField={labelField}

@@ -13,3 +13,7 @@ export const getInitialSuppliers = () => {
     ({ courses }) => courses.length
   )
 }
+
+export const getAddress = loc => {
+  return `${loc.address_1}, ${loc.town}, ${loc.postcode}`
+}
