@@ -4,7 +4,6 @@ import { Button, Row, Col, Form } from 'reactstrap'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires } from 'common/info'
-import Loading from 'components/Loading'
 
 class AddOrderItem extends React.Component {
   constructor(props) {
@@ -45,7 +44,7 @@ class AddOrderItem extends React.Component {
   }
 
   render() {
-    let { onCancel, info, saving } = this.props
+    let { onCancel, info } = this.props
     const {
       user_first_name,
       user_last_name,

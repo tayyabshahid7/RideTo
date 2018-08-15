@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { get, destroy, post, put, patch } from 'services/api'
+import { get, destroy, post, patch } from 'services/api'
 import { s } from 'utils/helper'
 
 export const getCourseSpaceText = course => {

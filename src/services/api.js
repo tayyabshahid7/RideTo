@@ -29,37 +29,6 @@ export const apiRequest = (
   })
 }
 
-function headerForRequest(headers = {}) {
-  const _headers = {
-    ...headers,
-    'Content-Type': 'application/json'
-  }
-  let token = getToken()
-  if (token) {
-    _headers['Authorization'] = `Bearer ${token}`
-  }
-  return _headers
-}
-
-async function sendGetRequest(relativeUrl, headers = {}) {
-  const url = `${BASE_URL}${relativeUrl}`
-  return axios({
-    method: 'GET',
-    url,
-    headers: headerForRequest(headers)
-  })
-}
-
-async function sendPostRequest(relativeUrl, formData, headers = {}) {
-  const url = `${BASE_URL}${relativeUrl}`
-  return axios({
-    method: 'POST',
-    url,
-    headers: headerForRequest(headers),
-    data: formData
-  })
-}
-
 export const apiRequestLogin = (email, password) => {
   const config = {
     headers: { 'Content-Type': 'application/json' },

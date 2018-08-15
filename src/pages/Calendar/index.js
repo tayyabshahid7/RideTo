@@ -176,7 +176,7 @@ class CalendarPage extends Component {
   }
 
   render() {
-    const { calendar, history, selectedDate } = this.props
+    const { calendar, history } = this.props
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
       <div className={styles.container}>

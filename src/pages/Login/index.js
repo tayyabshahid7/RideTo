@@ -5,7 +5,6 @@ import Header from '../../components/Header'
 import logo from 'assets/images/scooter.png'
 import { isAuthenticated } from 'services/auth'
 import styles from './styles.scss'
-import classnames from 'classnames'
 
 class Login extends Component {
   constructor(props) {

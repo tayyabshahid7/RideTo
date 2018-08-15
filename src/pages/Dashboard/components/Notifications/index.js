@@ -4,7 +4,7 @@ import SchoolSelect from 'components/SchoolSelect'
 
 class Notifications extends Component {
   render() {
-    const { schoolId, schoolName, schools, changeSchool } = this.props
+    const { schoolId, schools, changeSchool } = this.props
     return (
       <div className={styles.container}>
         <h1>Notifications</h1>
