@@ -6,6 +6,8 @@ import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
+import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseComponent'
+import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
 import { getCourses, updateCalendarSetting } from 'store/course'
@@ -202,6 +204,16 @@ class CalendarPage extends Component {
               exact
               path="/calendar/:date/courses/:courseId"
               render={routeProps => <OrdersPanel {...routeProps} />}
+            />
+            <Route
+              exact
+              path="/calendar/course/create"
+              render={routeProps => <AddCourseComponent {...routeProps} />}
+            />
+            <Route
+              exact
+              path="/calendar/course/edit/:courseId"
+              render={routeProps => <EditCourseComponent {...routeProps} />}
             />
           </Col>
         </Row>

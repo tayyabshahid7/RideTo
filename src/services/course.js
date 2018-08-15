@@ -88,3 +88,15 @@ export const updateSchoolCourse = async (schoolId, courseId, data) => {
   const response = await patch(path, data)
   return response
 }
+
+export const createSchoolCourse = async (schoolId, data) => {
+  const path = `school/${schoolId}/course`
+  const response = await post(path, data)
+  return response
+}
+
+export const getCourseTypes = async () => {
+  const path = `course/type`
+  const response = await get(path)
+  return response
+}
