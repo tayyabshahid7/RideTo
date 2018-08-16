@@ -1,0 +1,25 @@
+.paymentContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.paymentDetails {
+  color: #707070;
+}
+
+.paymentContainer h3 {
+  text-align: center;
+}
+
+.orderDetails {
+  margin-left: 32px;
+}
+
+@media (max-width: 768px) {
+  .orderDetails {
+    display: none;
+  }
+}

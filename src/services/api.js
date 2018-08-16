@@ -117,13 +117,16 @@ export const get = async (path, params) => {
   }
 }
 
-export const post = async (path, data) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${getToken()}`
-    }
+export const post = async (path, data, auth = true) => {
+  const headers = {
+    'Content-Type': 'application/json'
   }
+
+  if (auth) {
+    headers.Authorization = `Bearer ${getToken()}`
+  }
+
+  const config = { headers }
   const url = `${BASE_URL}api/${path}`
 
   try {
@@ -158,7 +161,7 @@ export const destroy = async (path, params) => {
       window.location.href = '/login'
     }
 
-    return { results: [] }
+    throw error
   }
 }
 
@@ -204,4 +207,12 @@ export const patch = async (path, data) => {
 
     return { results: [] }
   }
+}
+
+export const parseQueryString = queryString => {
+  return queryString.split('&').reduce((data, current) => {
+    const bits = current.split('=')
+    data[bits[0]] = decodeURIComponent(bits[1])
+    return data
+  }, {})
 }

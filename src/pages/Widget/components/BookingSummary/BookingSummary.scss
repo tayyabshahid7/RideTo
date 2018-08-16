@@ -1,0 +1,38 @@
+.bookingSummary {
+  background: white;
+  color: #707070;
+  width: 100%;
+  min-height: 132px;
+  display: none;
+}
+
+.loading {
+  padding-top: 60px;
+  min-height: 72px;
+  background: white;
+  width: 100%;
+  display: none;
+}
+
+.bikeHire,
+.startTime,
+.courseType,
+.address {
+  height: 32px;
+  padding-left: 32px;
+  padding-right: 32px;
+  display: flex;
+  align-items: center;
+  border-bottom: solid 1px #cacccd;
+}
+
+.bikeHire {
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .bookingSummary,
+  .loading {
+    display: block;
+  }
+}

@@ -1,5 +1,3 @@
-'use strict'
-
 const path = require('path')
 const fs = require('fs')
 const url = require('url')
@@ -45,7 +43,7 @@ module.exports = {
   dotenv: resolveApp('.env'),
   appBuild: resolveApp('build'),
   appPublic: resolveApp('public'),
-  appHtml: resolveApp('public/index.html'),
+  appHtml: resolveApp(`public/${index}.html`),
   appIndexJs: resolveApp(`src/${index}.js`),
   widget: resolveApp(`src/widget.js`),
   appPackageJson: resolveApp('package.json'),

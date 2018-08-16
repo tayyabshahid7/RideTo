@@ -1,0 +1,21 @@
+.details {
+  flex-grow: 1;
+  max-width: 700px;
+  margin-right: 32px;
+}
+
+.intro {
+  padding: 24px;
+  background: white;
+  border: solid 1px #cacccd;
+}
+
+@media (max-width: 768px) {
+  .details {
+    display: none;
+  }
+
+  .intro {
+    padding: 12px;
+  }
+}
