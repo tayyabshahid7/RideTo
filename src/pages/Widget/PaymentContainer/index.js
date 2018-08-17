@@ -158,6 +158,7 @@ class PaymentContainer extends React.Component {
               <Elements>
                 <CheckoutForm
                   details={details}
+                  errors={errors}
                   onChange={this.handleChangeDetails}
                   onSubmit={this.handlePayment}
                 />
