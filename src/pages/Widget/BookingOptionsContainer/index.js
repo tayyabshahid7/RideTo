@@ -8,7 +8,7 @@ import CourseSelect from 'pages/Widget/components/CourseSelect'
 import BookingOption from 'pages/Widget/components/BookingOption'
 import { fetchWidgetCourses } from 'services/course'
 
-import styles from './BookingOptions.scss'
+import styles from './BookingOptionsContainer.scss'
 
 const getSchoolCoursesByDate = (selectedDate, courses) => {
   if (!selectedDate) {
@@ -25,7 +25,7 @@ const getEarliestDate = courses => {
   return dates.length ? moment(dates[0], 'YYYY-MM-DD') : null
 }
 
-class BookingOptions extends React.Component {
+class BookingOptionsContainer extends React.Component {
   constructor(props) {
     super(props)
     const { selectedSupplier } = props
@@ -232,4 +232,4 @@ class BookingOptions extends React.Component {
   }
 }
 
-export default BookingOptions
+export default BookingOptionsContainer
