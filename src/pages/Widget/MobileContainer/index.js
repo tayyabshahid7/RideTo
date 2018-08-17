@@ -61,6 +61,18 @@ class MobileContainer extends React.Component {
             <h3 className={styles.subHeading}>Requirements</h3>
             {this.widget.requirements}
           </div>
+
+          <div className={styles.block}>
+            <h3 className={styles.subHeading}>Cancellations</h3>
+            {this.widget.cancellation}
+          </div>
+
+          <div className={styles.block}>
+            You can also view the terms{' '}
+            <strong>
+              <a href={this.widget.terms}>here.</a>
+            </strong>
+          </div>
         </div>
 
         <div className={styles.actions}>
