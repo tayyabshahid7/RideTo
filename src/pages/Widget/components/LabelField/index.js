@@ -12,7 +12,7 @@ const LabelField = ({ label, name, error, children, style = {} }) => {
       <label htmlFor={name}>{label}</label>
       {children}
 
-      <span>{error}</span>
+      {error && <span className={styles.message}>{error}</span>}
     </div>
   )
 }

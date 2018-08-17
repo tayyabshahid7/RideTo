@@ -6,7 +6,8 @@ import DateInput from 'components/DateInput'
 import MinimalSelect from 'components/MinimalSelect'
 import styles from './CustomerDetailsForm.scss'
 
-const BIRTHDATE_ERROR = 'Please enter valid date'
+const BIRTHDATE_ERROR =
+  'Please enter the date in the format DD/MM/YYYY. You MUST be at least 16 years old on the selected training date.'
 const RIDING_EXPERIENCE = [
   'Cycling',
   'Off road motorcycling',
