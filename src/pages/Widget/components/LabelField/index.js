@@ -11,6 +11,8 @@ const LabelField = ({ label, name, error, children, style = {} }) => {
     <div className={className} style={style}>
       <label htmlFor={name}>{label}</label>
       {children}
+
+      <span>{error}</span>
     </div>
   )
 }

@@ -1,10 +1,14 @@
 import React from 'react'
+import moment from 'moment'
 
 import LabelField from 'pages/Widget/components/LabelField'
+import DateInput from 'components/DateInput'
 import styles from './CustomerDetailsForm.scss'
 
+const BIRTHDATE_ERROR = 'Please enter valid date'
 const handleChange = (event, details, errors, onChange) => {
   const { id, value } = event.target
+  console.log('handleChange', id, value)
   onChange({ ...details, [id]: value }, { ...errors, [id]: null })
 }
 
@@ -47,12 +51,17 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         name="user_birthdate"
         error={errors.user_birthdate}
         style={labelStyle}>
-        <input
+        <DateInput
           id="user_birthdate"
-          type="text"
-          placeholder="DD/MM/YYYY"
+          minYears={16}
+          today={moment()}
           value={details.user_birthdate || ''}
-          onChange={event => handleChange(event, details, errors, onChange)}
+          onChange={(id, value) => {
+            onChange({ ...details, [id]: value }, { ...errors, [id]: null })
+          }}
+          onError={id => {
+            onChange(details, { ...errors, [id]: BIRTHDATE_ERROR })
+          }}
         />
       </LabelField>
 
