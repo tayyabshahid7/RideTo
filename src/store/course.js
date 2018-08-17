@@ -128,16 +128,23 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
 export const updateCourse = ({
   schoolId,
   courseId,
-  data
+  data,
+  fullUpdate = false
 }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolCourse(schoolId, courseId, data)
+    let response = await updateSchoolCourse(
+      schoolId,
+      courseId,
+      data,
+      fullUpdate
+    )
     dispatch({
       type: UPDATE[SUCCESS],
       data: { course: response }
     })
   } catch (error) {
+    console.log('Error', error)
     dispatch({ type: UPDATE[FAILURE], error })
   }
 }
@@ -151,6 +158,7 @@ export const createCourse = ({ schoolId, data }) => async dispatch => {
       data: { course: response }
     })
   } catch (error) {
+    console.log('Error', error)
     dispatch({ type: CREATE[FAILURE], error })
   }
 }

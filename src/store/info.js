@@ -4,16 +4,17 @@ import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 const GET_COURSE_TYPES = createRequestTypes('rideto/info/GET/COURSE_TYPES')
 
-export const loadCourseTypes = () => async dispatch => {
+export const loadCourseTypes = ({ schoolId }) => async dispatch => {
   dispatch({ type: GET_COURSE_TYPES[REQUEST] })
 
   try {
-    const courseTypes = await getCourseTypes()
+    const courseTypes = await getCourseTypes(schoolId)
     dispatch({
       type: GET_COURSE_TYPES[SUCCESS],
       data: courseTypes
     })
   } catch (error) {
+    console.log('Error', error)
     dispatch({ type: GET_COURSE_TYPES[FAILURE], error })
   }
 }

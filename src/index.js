@@ -7,6 +7,8 @@ import App from './App'
 import throttle from 'lodash/throttle'
 import configureStore from './store'
 import { saveState, loadState } from './services/localStorage'
+// import { removeToken } from 'services/auth'
+// removeToken()
 
 const persistedState = loadState()
 const store = configureStore(persistedState)

@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { get, destroy, post, patch } from 'services/api'
+import { get, destroy, post, put, patch } from 'services/api'
 import { s } from 'utils/helper'
 
 export const getCourseSpaceText = course => {
@@ -83,9 +83,19 @@ export const addSchoolOrder = async (schoolId, order) => {
   return response
 }
 
-export const updateSchoolCourse = async (schoolId, courseId, data) => {
+export const updateSchoolCourse = async (
+  schoolId,
+  courseId,
+  data,
+  fullUpdate = false
+) => {
   const path = `school/${schoolId}/course/${courseId}`
-  const response = await patch(path, data)
+  let response
+  if (fullUpdate) {
+    response = await put(path, data)
+  } else {
+    response = await patch(path, data)
+  }
   return response
 }
 
@@ -95,8 +105,8 @@ export const createSchoolCourse = async (schoolId, data) => {
   return response
 }
 
-export const getCourseTypes = async () => {
-  const path = `course/type`
+export const getCourseTypes = async schoolId => {
+  const path = `school/${schoolId}/course/type`
   const response = await get(path)
   return response
 }
