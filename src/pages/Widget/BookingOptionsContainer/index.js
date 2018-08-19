@@ -68,12 +68,9 @@ class BookingOptionsContainer extends React.Component {
     const courseType = this.state.courseType || selectedSupplier.courses[0]
     const schoolCourses = await fetchWidgetCourses(
       selectedSupplier.id,
+      month.startOf('month').format('YYYY-MM-DD'),
       month
-        .subtract(1, 'month')
-        .startOf('month')
-        .format('YYYY-MM-DD'),
-      month
-        .add(3, 'month')
+        .add(6, 'month')
         .endOf('month')
         .format('YYYY-MM-DD')
     )
@@ -133,9 +130,9 @@ class BookingOptionsContainer extends React.Component {
     })
   }
 
-  handleChangeMonth(month) {
+  handleChangeMonth(date) {
+    const month = date.startOf('month')
     this.setState({ month })
-    this.fetchCourses(month.clone())
   }
 
   handleSelectBikeHire(selectedBikeHire) {
