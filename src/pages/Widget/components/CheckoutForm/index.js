@@ -48,7 +48,7 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
         <div className={styles.payWith}>
           <span>Pay With:</span>
           <div className={styles.cardImages}>
-            {CARD_IMAGES.map(src => <img src={src} alt="" />)}
+            {CARD_IMAGES.map(src => <img key={src} src={src} alt="" />)}
           </div>
         </div>
 

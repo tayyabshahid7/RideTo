@@ -1,10 +1,13 @@
 .orderDetails {
-  padding: 16px;
+  padding: 16px 24px;
   background: white;
 }
 
-.orderDetails h3 {
+.heading {
+  font-size: 0.9em;
+  text-align: left;
   text-transform: uppercase;
+  margin: 0;
 }
 
 .bookingOptions hr {
@@ -18,17 +21,14 @@
   margin-bottom: 16px;
 }
 
-.starts {
-  color: #f86b6b;
-  margin-bottom: 16px;
+.includes {
   margin-top: 16px;
-  font-size: 18px;
 }
 
 .checklist {
   margin: 0;
   padding: 0;
-  margin-top: 16px;
+  margin-top: 4px;
   margin-bottom: 16px;
   list-style: none;
 }

@@ -174,7 +174,7 @@ class PaymentContainer extends React.Component {
           isLoading={isLoading}
         />
         <div className={styles.paymentDetails}>
-          <h3>Contact Details</h3>
+          <h3 className={styles.heading}>Contact Details</h3>
           <CustomerDetailsForm
             details={details}
             errors={errors}
@@ -183,7 +183,7 @@ class PaymentContainer extends React.Component {
 
           <StripeProvider apiKey={this.stripePublicKey}>
             <div>
-              <h3>Payment Details</h3>
+              <h3 className={styles.heading}>Payment Details</h3>
               <div className={styles.cardSecure}>
                 Your card details are stored with our secure payment provider
                 Stripe.
