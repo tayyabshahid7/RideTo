@@ -26,10 +26,18 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
   return (
     <div className={styles.checkForm}>
       <div className={styles.paymentFields}>
-        <LabelField label="Card Number" name="card_number" style={labelStyle}>
+        <LabelField
+          label="Card Number"
+          name="card_number"
+          style={labelStyle}
+          error={errors.card_number}>
           <CardNumberElement />
         </LabelField>
-        <LabelField label="Name On Card" name="Card name" style={labelStyle}>
+        <LabelField
+          label="Name On Card"
+          name="card_name"
+          style={labelStyle}
+          error={errors.card_name}>
           <input
             id="card_name"
             type="text"
@@ -37,16 +45,25 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
             onChange={event => handleChange(event, details, onChange)}
           />
         </LabelField>
-        <LabelField label="Expiry Date" name="card_expiry" style={labelStyle}>
+        <LabelField
+          label="Expiry Date"
+          name="card_expiry"
+          style={labelStyle}
+          error={errors.card_expiry}>
           <CardExpiryElement />
         </LabelField>
-        <LabelField label="CVC/CV2" name="card_cvc" style={labelStyle}>
+        <LabelField
+          label="CVC/CV2"
+          name="card_cvc"
+          style={labelStyle}
+          error={errors.card_cvc}>
           <CardCVCElement />
         </LabelField>
         <LabelField
           label="Billing Postcode"
-          name="card_postcode"
-          style={labelStyle}>
+          name="card_zip"
+          style={labelStyle}
+          error={errors.card_zip}>
           <PostalCodeElement />
         </LabelField>
       </div>

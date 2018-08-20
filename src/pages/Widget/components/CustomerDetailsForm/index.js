@@ -37,7 +37,6 @@ const CURRENT_LICENCES = [
 
 const handleChange = (event, details, errors, onChange) => {
   const { id, value } = event.target
-  console.log('handleChange', id, value)
   onChange({ ...details, [id]: value }, { ...errors, [id]: null })
 }
 

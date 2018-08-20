@@ -22,6 +22,15 @@ const LICENCE_TYPES = {
   'CBT Training Renewal': 'LICENCE_CBT_RENEWAL'
 }
 
+const getStripeError = error => {
+  const field = error.code.split('_').slice(-1)[0]
+  const errorId = `card_${field}`
+
+  return {
+    [errorId]: error.message
+  }
+}
+
 class PaymentContainer extends React.Component {
   constructor(props) {
     super(props)
@@ -69,12 +78,36 @@ class PaymentContainer extends React.Component {
     })
   }
 
+  validateDetails(details) {
+    if (!details.card_name) {
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          card_name: 'This field is required.'
+        }
+      })
+      return false
+    }
+
+    return true
+  }
+
   async handlePayment(stripe) {
     const { details } = this.state
+    if (!this.validateDetails(details)) {
+      return
+    }
+
+    this.setState({ errors: {} })
     const response = await createStripeToken(stripe, details.card_name)
 
     if (response.error) {
-      console.log(response.error)
+      this.setState({
+        errors: {
+          ...this.state.errors,
+          ...getStripeError(response.error)
+        }
+      })
     } else {
       const { token } = response
       this.createOrder(token)
