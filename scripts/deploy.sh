@@ -14,6 +14,9 @@ fi
 
 echo "Deploying $APP"
 
+mkdir -p $JS_DIRECTORY
+mkdir -p $CSS_DIRECTORY
+
 cp ${JS_DIRECTORY}/${APP}.*.js ${JS_DIRECTORY}/${APP}.js
 cp ${JS_DIRECTORY}/${APP}.*.js.map ${JS_DIRECTORY}/${APP}.js.map
 cp ${CSS_DIRECTORY}/${APP}.*.css ${CSS_DIRECTORY}/${APP}.css
