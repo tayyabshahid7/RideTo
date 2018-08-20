@@ -9,8 +9,21 @@ import {
 
 import LabelField from 'pages/Widget/components/LabelField'
 import AcceptTerms from 'pages/Widget/components/AcceptTerms'
+import cardVisa from 'assets/images/card-visa.jpg'
+import cardAmex from 'assets/images/card-amex.jpg'
+import cardElectron from 'assets/images/card-electron.png'
+import cardMastercard from 'assets/images/card-mastercard.jpg'
+import cardMaestro from 'assets/images/card-maestro.png'
 
 import styles from './CheckoutForm.scss'
+
+const CARD_IMAGES = [
+  cardVisa,
+  cardAmex,
+  cardElectron,
+  cardMastercard,
+  cardMaestro
+]
 
 const handleChange = (event, details, onChange) => {
   const { id, value } = event.target
@@ -32,6 +45,13 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
   return (
     <div className={styles.checkForm}>
       <div className={styles.paymentFields}>
+        <div className={styles.payWith}>
+          <span>Pay With:</span>
+          <div className={styles.cardImages}>
+            {CARD_IMAGES.map(src => <img src={src} alt="" />)}
+          </div>
+        </div>
+
         <LabelField
           label="Card Number"
           name="card_number"

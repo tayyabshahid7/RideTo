@@ -23,3 +23,26 @@
   display: flex;
   justify-content: space-between;
 }
+
+.payWith {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardImages {
+  display: flex;
+  align-items: center;
+}
+
+.cardImages img {
+  margin-left: 2px;
+  margin-right: 2px;
+  width: 42px;
+}
+
+@media (max-width: 768px) {
+  .cardImages img {
+    width: 36px;
+  }
+}
