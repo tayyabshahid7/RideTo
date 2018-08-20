@@ -8,6 +8,12 @@ export const POST_METHOD = 'POST'
 export const GET_METHOD = 'GET'
 export const BASE_URL = process.env.REACT_APP_REST_API_BASE_URL //see .env files
 
+const getCSRFToken = () => {
+  const el = document.querySelector('input[name=csrfmiddlewaretoken]')
+  return el ? el.value : null
+}
+const CSRF_TOKEN = getCSRFToken()
+
 export const apiRequest = (
   url,
   params = null,
@@ -124,6 +130,10 @@ export const post = async (path, data, auth = true) => {
 
   if (auth) {
     headers.Authorization = `Bearer ${getToken()}`
+  }
+
+  if (CSRF_TOKEN) {
+    headers['X-CSRFToken'] = CSRF_TOKEN
   }
 
   const config = { headers }
