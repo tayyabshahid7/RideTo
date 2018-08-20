@@ -17,7 +17,7 @@ const handleChange = (event, details, onChange) => {
   onChange({ ...details, [id]: value })
 }
 
-const CheckoutForm = ({ details, stripe, onChange, onSubmit }) => {
+const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
   const labelStyle = {
     marginTop: '16px',
     marginBottom: '16px'
@@ -51,10 +51,16 @@ const CheckoutForm = ({ details, stripe, onChange, onSubmit }) => {
         </LabelField>
       </div>
 
+      <div className={styles.total}>
+        <span>Total to pay:</span>
+        <span>£TOTAL TODO</span>
+      </div>
+
       <div className={styles.terms}>
         <h3>Terms</h3>
         <AcceptTerms
           accepted={details.accept_terms}
+          error={errors.accept_terms}
           onChange={accept_terms => onChange({ ...details, accept_terms })}
         />
       </div>

@@ -1,0 +1,138 @@
+[
+  {
+    "id": 1,
+    "course_type": {
+      "id": 1,
+      "name": "CBT Training"
+    },
+    "date": "2018-07-27",
+    "order_count": 0,
+    "auto_count": 0,
+    "manual_count": 0,
+    "time": "06:00:00",
+    "duration": null,
+    "spaces": 4,
+    "auto_bikes": 4,
+    "manual_bikes": 4,
+    "supplier": 988
+  },
+  {
+    "id": 7,
+    "course_type": {
+      "id": 1,
+      "name": "CBT Training"
+    },
+    "date": "2018-07-27",
+    "order_count": 0,
+    "auto_count": 0,
+    "manual_count": 0,
+    "time": "09:00:00",
+    "duration": null,
+    "spaces": 4,
+    "auto_bikes": 4,
+    "manual_bikes": 4,
+    "supplier": 988
+  },
+  {
+    "id": 83,
+    "course_type": {
+      "id": 1,
+      "name": "CBT Training"
+    },
+    "date": "2018-08-14",
+    "order_count": 0,
+    "auto_count": 0,
+    "manual_count": 0,
+    "time": "08:00:00",
+    "duration": 480,
+    "spaces": 4,
+    "auto_bikes": 4,
+    "manual_bikes": 4,
+    "supplier": 988
+  },
+  {
+    "id": 84,
+    "course_type": {
+      "id": 1,
+      "name": "CBT Training"
+    },
+    "date": "2018-08-15",
+    "order_count": 0,
+    "auto_count": 0,
+    "manual_count": 0,
+    "time": "08:00:00",
+    "duration": 480,
+    "spaces": 4,
+    "auto_bikes": 4,
+    "manual_bikes": 4,
+    "supplier": 988
+  },
+  {
+    "id": 85,
+    "course_type": {
+      "id": 1,
+      "name": "CBT Training"
+    },
+    "date": "2018-08-16",
+    "order_count": 0,
+    "auto_count": 0,
+    "manual_count": 0,
+    "time": "08:00:00",
+    "duration": 480,
+    "spaces": 4,
+    "auto_bikes": 4,
+    "manual_bikes": 4,
+    "supplier": 988
+  },
+  {
+    "id": 86,
+    "course_type": {
+      "id": 1,
+      "name": "CBT Training"
+    },
+    "date": "2018-08-17",
+    "order_count": 0,
+    "auto_count": 0,
+    "manual_count": 0,
+    "time": "08:00:00",
+    "duration": 480,
+    "spaces": 4,
+    "auto_bikes": 4,
+    "manual_bikes": 4,
+    "supplier": 988
+  },
+  {
+    "id": 89,
+    "course_type": {
+      "id": 1,
+      "name": "CBT Training"
+    },
+    "date": "2018-08-20",
+    "order_count": 0,
+    "auto_count": 0,
+    "manual_count": 0,
+    "time": "08:00:00",
+    "duration": 480,
+    "spaces": 4,
+    "auto_bikes": 4,
+    "manual_bikes": 4,
+    "supplier": 988
+  },
+  {
+    "id": 90,
+    "course_type": {
+      "id": 1,
+      "name": "CBT Training"
+    },
+    "date": "2018-08-21",
+    "order_count": 0,
+    "auto_count": 0,
+    "manual_count": 0,
+    "time": "08:00:00",
+    "duration": 480,
+    "spaces": 4,
+    "auto_bikes": 4,
+    "manual_bikes": 4,
+    "supplier": 988
+  }
+]

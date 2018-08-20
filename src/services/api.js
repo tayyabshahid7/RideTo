@@ -138,7 +138,7 @@ export const post = async (path, data, auth = true) => {
       window.location.href = '/login'
     }
 
-    return { results: [] }
+    throw error
   }
 }
 

@@ -1,2 +1,20 @@
 .confirmationContainer {
+  padding: 32px;
+  text-align: center;
+  min-width: 400px;
+  width: 400px;
+  background: white;
+  color: #707070;
+  font-size: 24px;
+  margin-top: 64px;
+}
+
+.thanks {
+  margin-bottom: 16px;
+}
+
+.confirmationContainer h2 {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 16px;
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import BookingOptions from 'pages/Widget/components/BookingOptions'
+import BookingOptionsContainer from 'pages/Widget/BookingOptionsContainer'
 import Details from 'pages/Widget/components/Details'
 import styles from './WidgetContainer.scss'
 import { parseQueryString } from 'services/api'
@@ -36,7 +36,7 @@ class WidgetContainer extends React.Component {
     return (
       <div className={styles.widgetContainer}>
         <Details widget={this.widget} address={address} />
-        <BookingOptions
+        <BookingOptionsContainer
           widget={this.widget}
           slug={slug}
           selectedSupplier={selectedSupplier}

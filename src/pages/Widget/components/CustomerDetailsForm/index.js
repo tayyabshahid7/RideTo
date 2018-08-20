@@ -1,10 +1,43 @@
 import React from 'react'
+import moment from 'moment'
 
 import LabelField from 'pages/Widget/components/LabelField'
+import DateInput from 'components/DateInput'
+import MinimalSelect from 'components/MinimalSelect'
 import styles from './CustomerDetailsForm.scss'
+
+const BIRTHDATE_ERROR =
+  'Please enter the date in the format DD/MM/YYYY. You MUST be at least 16 years old on the selected training date.'
+const RIDING_EXPERIENCE = [
+  'Cycling',
+  'Off road motorcycling',
+  'On road motorcycling'
+].map(opt => {
+  return { name: opt, id: opt }
+})
+
+const CURRENT_LICENCES = [
+  {
+    id: 'CURRENT_LICENCES_PROVISIONAL_LICENCE',
+    name: 'UK Provisional Licence'
+  },
+  {
+    id: 'CURRENT_LICENCES_DRIVING_LICENCE',
+    name: 'UK Driving Licence'
+  },
+  {
+    id: 'CURRENT_LICENCES_CBT',
+    name: 'CBT Certificate'
+  },
+  {
+    id: 'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE',
+    name: 'EU Licence (with UK counterpart licence number)'
+  }
+]
 
 const handleChange = (event, details, errors, onChange) => {
   const { id, value } = event.target
+  console.log('handleChange', id, value)
   onChange({ ...details, [id]: value }, { ...errors, [id]: null })
 }
 
@@ -13,7 +46,6 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
     marginTop: '16px',
     marginBottom: '16px'
   }
-
   return (
     <div className={styles.customerDetailsForm}>
       <LabelField
@@ -47,12 +79,17 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         name="user_birthdate"
         error={errors.user_birthdate}
         style={labelStyle}>
-        <input
+        <DateInput
           id="user_birthdate"
-          type="text"
-          placeholder="DD/MM/YYYY"
+          minYears={16}
+          today={moment()}
           value={details.user_birthdate || ''}
-          onChange={event => handleChange(event, details, errors, onChange)}
+          onChange={(id, value) => {
+            onChange({ ...details, [id]: value }, { ...errors, [id]: null })
+          }}
+          onError={id => {
+            onChange(details, { ...errors, [id]: BIRTHDATE_ERROR })
+          }}
         />
       </LabelField>
 
@@ -86,10 +123,12 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         label="Current Licence"
         name="current_licence"
         style={labelStyle}>
-        <input
-          id="current_licence"
-          value={details.current_licence || ''}
-          onChange={event => handleChange(event, details, errors, onChange)}
+        <MinimalSelect
+          options={CURRENT_LICENCES}
+          selected={details.current_licence}
+          onChange={value => {
+            onChange({ ...details, current_licence: value }, errors)
+          }}
         />
       </LabelField>
 
@@ -97,10 +136,12 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         label="Riding Experience"
         name="riding_experience"
         style={labelStyle}>
-        <input
-          id="riding_experience"
-          value={details.riding_experience || ''}
-          onChange={event => handleChange(event, details, errors, onChange)}
+        <MinimalSelect
+          options={RIDING_EXPERIENCE}
+          selected={details.riding_experience}
+          onChange={value => {
+            onChange({ ...details, riding_experience: value }, errors)
+          }}
         />
       </LabelField>
     </div>
