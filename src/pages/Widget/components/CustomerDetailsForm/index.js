@@ -45,6 +45,14 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
     marginTop: '16px',
     marginBottom: '16px'
   }
+
+  const emptyOption = {
+    id: null,
+    name: 'Select...'
+  }
+  const currentLicenceOptions = [emptyOption].concat(CURRENT_LICENCES)
+  const ridingExperienceOptions = [emptyOption].concat(RIDING_EXPERIENCE)
+
   return (
     <div className={styles.customerDetailsForm}>
       <LabelField
@@ -121,9 +129,10 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
       <LabelField
         label="Current Licence"
         name="current_licence"
-        style={labelStyle}>
+        style={labelStyle}
+        error={errors.current_licence}>
         <MinimalSelect
-          options={CURRENT_LICENCES}
+          options={currentLicenceOptions}
           selected={details.current_licence}
           onChange={value => {
             onChange({ ...details, current_licence: value }, errors)
@@ -134,9 +143,10 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
       <LabelField
         label="Riding Experience"
         name="riding_experience"
-        style={labelStyle}>
+        style={labelStyle}
+        error={errors.riding_experience}>
         <MinimalSelect
-          options={RIDING_EXPERIENCE}
+          options={ridingExperienceOptions}
           selected={details.riding_experience}
           onChange={value => {
             onChange({ ...details, riding_experience: value }, errors)

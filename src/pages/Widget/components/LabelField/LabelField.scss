@@ -26,11 +26,18 @@
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
+.textField :global(.StripeElement) {
+  padding-top: 12px;
+  padding-bottom: 0;
+}
+
 .textField select {
   height: 42px;
 }
 
-.error input {
+.error input,
+.error select,
+.error :global(.StripeElement) {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #fc0900;
 }
 

@@ -21,6 +21,8 @@ const MinimalSelect = ({
       {options.map(opt => (
         <option
           key={opt[valueField]}
+          disabled={!opt[valueField]}
+          selected={!opt[valueField]}
           value={opt[valueField]}
           name={opt[labelField]}>
           {opt[labelField]}

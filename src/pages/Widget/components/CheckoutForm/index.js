@@ -22,11 +22,9 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
     marginTop: '16px',
     marginBottom: '16px'
   }
-
   const inputStyle = {
     base: {
-      fontSize: '24px',
-      lineHeight: '1.25',
+      fontSize: '18px',
       letterSpacing: '0.035rem'
     }
   }
@@ -49,6 +47,7 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
           <input
             id="card_name"
             type="text"
+            placeholder="Name as appears on card"
             value={details.card_name || ''}
             onChange={event => handleChange(event, details, onChange)}
           />
@@ -58,21 +57,21 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
           name="card_expiry"
           style={labelStyle}
           error={errors.card_expiry}>
-          <CardExpiryElement />
+          <CardExpiryElement style={inputStyle} />
         </LabelField>
         <LabelField
           label="CVC/CV2"
           name="card_cvc"
           style={labelStyle}
           error={errors.card_cvc}>
-          <CardCVCElement />
+          <CardCVCElement style={inputStyle} />
         </LabelField>
         <LabelField
           label="Billing Postcode"
           name="card_zip"
           style={labelStyle}
           error={errors.card_zip}>
-          <PostalCodeElement />
+          <PostalCodeElement style={inputStyle} />
         </LabelField>
       </div>
 
