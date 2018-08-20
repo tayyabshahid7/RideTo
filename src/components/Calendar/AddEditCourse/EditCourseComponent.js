@@ -25,7 +25,12 @@ class EditCourseComponent extends Component {
 
   onSave(data) {
     const { schoolId, updateCourse, match } = this.props
-    updateCourse({ schoolId, courseId: match.params.courseId, data })
+    updateCourse({
+      schoolId,
+      courseId: match.params.courseId,
+      data: { ...data, supplier: schoolId.toString() },
+      fullUpdate: true
+    })
   }
 
   render() {

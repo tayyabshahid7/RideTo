@@ -85,9 +85,16 @@ class CourseForm extends React.Component {
   }
 
   handleSave(event) {
-    const { onSubmit } = this.props
-    const { course } = this.state
     event.preventDefault()
+    const { onSubmit } = this.props
+    const {
+      course: { instructor_id, ...course }
+    } = this.state
+    if (instructor_id !== '') {
+      course.instructor_id = instructor_id
+    } else {
+      // course.instructor_id = 0
+    }
     onSubmit(course)
   }
 
@@ -219,7 +226,6 @@ class CourseForm extends React.Component {
                   }))}
                   noSelectOption
                   onChange={this.handleChangeRawEvent.bind(this)}
-                  required
                 />
               </Col>
               {/* <Col>
