@@ -5,22 +5,27 @@
   padding-left: 16px;
   padding-right: 16px;
 
-  margin-bottom: 32px;
+  margin-bottom: 64px;
+  color: #707070;
 }
 
 .paymentDetails {
-  color: #707070;
   max-width: 420px;
-  padding-top: 16px;
 }
 
 .heading {
   text-align: center;
   margin: 0;
+  margin-bottom: 16px;
 }
 
 .orderDetails {
   margin-left: 32px;
+}
+
+.cardSecure {
+  text-align: center;
+  margin-bottom: 16px;
 }
 
 @media (max-width: 768px) {

@@ -102,11 +102,6 @@ const CheckoutForm = ({
         </LabelField>
       </div>
 
-      <div className={styles.total}>
-        <span>Total to pay:</span>
-        <span>£TOTAL TODO</span>
-      </div>
-
       <div className={styles.terms}>
         <h3>Terms</h3>
         <AcceptTerms
@@ -116,12 +111,12 @@ const CheckoutForm = ({
         />
       </div>
 
-      <button
+      <a
         className={`WidgetBtn ${styles.checkoutBtn}`}
         disabled={isSaving}
         onClick={() => onSubmit(stripe)}>
         Confirm and Pay
-      </button>
+      </a>
     </div>
   )
 }

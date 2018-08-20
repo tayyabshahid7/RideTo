@@ -1,12 +1,25 @@
-.orderDetails {
+.orderDetails,
+.price {
+  margin-top: 16px;
+  margin-bottom: 16px;
   padding: 16px 24px;
   background: white;
+  line-height: 1.25;
+}
+
+.addressDetails {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.price {
+  font-weight: bold;
+  text-align: center;
 }
 
 .heading {
   font-size: 0.9em;
   text-align: left;
-  text-transform: uppercase;
   margin: 0;
 }
 

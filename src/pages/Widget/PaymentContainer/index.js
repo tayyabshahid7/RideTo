@@ -51,6 +51,8 @@ class PaymentContainer extends React.Component {
 
     this.handlePayment = this.handlePayment.bind(this)
     this.handleChangeDetails = this.handleChangeDetails.bind(this)
+
+    window.document.body.scrollIntoView()
   }
 
   async componentDidMount() {
@@ -119,6 +121,7 @@ class PaymentContainer extends React.Component {
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
       ...details,
+      school_course_id: course.id,
       user_birthdate: birthdate.format('YYYY-MM-DD'),
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
@@ -146,6 +149,7 @@ class PaymentContainer extends React.Component {
     } catch (error) {
       if (error.response && error.response.data) {
         this.handleErrors(error.response.data)
+        window.document.body.scrollIntoView()
       }
     }
   }
@@ -200,6 +204,7 @@ class PaymentContainer extends React.Component {
         </div>
 
         <div className={styles.orderDetails}>
+          <h3 className={styles.heading}>Your Training</h3>
           <OrderDetails
             course={course}
             supplier={supplier}
