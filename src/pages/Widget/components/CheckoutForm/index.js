@@ -30,7 +30,14 @@ const handleChange = (event, details, onChange) => {
   onChange({ ...details, [id]: value })
 }
 
-const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
+const CheckoutForm = ({
+  details,
+  errors,
+  stripe,
+  isSaving,
+  onChange,
+  onSubmit
+}) => {
   const labelStyle = {
     marginTop: '16px',
     marginBottom: '16px'
@@ -109,7 +116,10 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
         />
       </div>
 
-      <button className="WidgetBtn" onClick={() => onSubmit(stripe)}>
+      <button
+        className={`WidgetBtn ${styles.checkoutBtn}`}
+        disabled={isSaving}
+        onClick={() => onSubmit(stripe)}>
         Confirm and Pay
       </button>
     </div>

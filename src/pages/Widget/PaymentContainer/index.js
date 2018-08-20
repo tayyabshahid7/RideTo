@@ -98,15 +98,13 @@ class PaymentContainer extends React.Component {
       return
     }
 
-    this.setState({ errors: {} })
+    this.setState({ errors: {}, isSaving: true })
     const response = await createStripeToken(stripe, details.card_name)
 
     if (response.error) {
-      this.setState({
-        errors: {
-          ...this.state.errors,
-          ...getStripeError(response.error)
-        }
+      this.handleErrors({
+        ...this.state.errors,
+        ...getStripeError(response.error)
       })
     } else {
       const { token } = response
@@ -153,7 +151,7 @@ class PaymentContainer extends React.Component {
   }
 
   handleErrors(errors) {
-    this.setState({ errors })
+    this.setState({ errors, isSaving: false })
   }
 
   getTotalPrice() {
@@ -162,7 +160,7 @@ class PaymentContainer extends React.Component {
   }
 
   render() {
-    const { course, supplier, details, errors, hire } = this.state
+    const { course, supplier, details, errors, hire, isSaving } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
 
     return (
@@ -192,6 +190,7 @@ class PaymentContainer extends React.Component {
                 <CheckoutForm
                   details={details}
                   errors={errors}
+                  isSaving={isSaving}
                   onChange={this.handleChangeDetails}
                   onSubmit={this.handlePayment}
                 />

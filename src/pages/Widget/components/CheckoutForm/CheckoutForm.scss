@@ -41,6 +41,11 @@
   width: 42px;
 }
 
+.checkoutBtn:disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
 @media (max-width: 768px) {
   .cardImages img {
     width: 36px;
