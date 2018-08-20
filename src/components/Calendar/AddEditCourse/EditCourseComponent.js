@@ -37,7 +37,8 @@ class EditCourseComponent extends Component {
       history,
       loading,
       course,
-      schoolId
+      schoolId,
+      instructors
     } = this.props
 
     if (loading) {
@@ -58,6 +59,7 @@ class EditCourseComponent extends Component {
           loadCourseTypes={loadCourseTypes}
           history={history}
           schoolId={schoolId}
+          instructors={instructors}
         />
       </div>
     )
@@ -71,6 +73,7 @@ const mapStateToProps = (state, ownProps) => {
     loading: state.course.single.loading,
     course: state.course.single.course,
     saving: state.course.single.saving,
+    instructors: state.instructor.instructors,
     info: state.info
   }
 }

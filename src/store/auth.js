@@ -3,6 +3,7 @@ import { clearState } from '../services/localStorage'
 import { apiRequestLogin } from 'services/api'
 import { getPendingOrders } from 'store/dashboard'
 import { getSchoolOrders } from 'store/orders'
+import { getInstructors } from 'store/instructor'
 import { LOGOUT, RESET } from './common'
 
 const CHANGE_SCHOOL = 'rideto/auth/CHANGE_SCHOOL'
@@ -23,6 +24,7 @@ export const changeSchool = (schoolId, schoolName) => {
     dispatch(getPendingOrders(schoolId))
     dispatch(getSchoolOrders(schoolId))
     dispatch(changeSchoolRequest({ id: schoolId, name: schoolName }))
+    dispatch(getInstructors(schoolId))
   }
 }
 

@@ -32,7 +32,8 @@ class AddCourseComponent extends Component {
       loadCourseTypes,
       location,
       history,
-      schoolId
+      schoolId,
+      instructors
     } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
@@ -47,6 +48,7 @@ class AddCourseComponent extends Component {
           loadCourseTypes={loadCourseTypes}
           history={history}
           schoolId={schoolId}
+          instructors={instructors}
         />
       </div>
     )
@@ -59,6 +61,7 @@ const mapStateToProps = (state, ownProps) => {
     schools: state.auth.user.suppliers,
     saving: state.course.single.saving,
     course: state.course.single.course,
+    instructors: state.instructor.instructors,
     error: state.course.single.error,
     info: state.info
   }

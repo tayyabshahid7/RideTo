@@ -11,12 +11,14 @@ import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseCom
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
 import { getCourses, updateCalendarSetting } from 'store/course'
+import { getInstructors } from 'store/instructor'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 import SchoolSelect from 'components/SchoolSelect'
 
 class CalendarPage extends Component {
   componentDidMount() {
     this.loadCourses()
+    this.loadInstructors()
   }
 
   componentDidUpdate(prevProps) {
@@ -31,6 +33,11 @@ class CalendarPage extends Component {
     ) {
       this.loadCourses()
     }
+  }
+
+  loadInstructors() {
+    const { getInstructors, schoolId } = this.props
+    getInstructors(schoolId)
   }
 
   loadCourses() {
@@ -234,6 +241,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getCourses,
+      getInstructors,
       updateCalendarSetting
     },
     dispatch

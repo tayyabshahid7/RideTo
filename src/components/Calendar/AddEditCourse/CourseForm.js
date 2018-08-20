@@ -13,10 +13,12 @@ class CourseForm extends React.Component {
     super(props)
     const course = {
       course_type_id: '',
+      instructor_id: '',
       date: '',
       time: '',
       spaces: '',
       duration: '',
+      notes: '',
       auto_bikes: '',
       manual_bikes: ''
     }
@@ -29,14 +31,23 @@ class CourseForm extends React.Component {
           'time',
           'spaces',
           'duration',
+          'instructor_id',
           'auto_bikes',
-          'manual_bikes'
+          'manual_bikes',
+          'notes'
         )
       )
       course.course_type_id =
         typeof this.props.course.course_type === 'string'
           ? this.props.course.course_type
           : this.props.course.course_type.id
+
+      if (this.props.course.instructor) {
+        course.instructor_id =
+          typeof this.props.course.instructor === 'string'
+            ? this.props.course.instructor
+            : this.props.course.instructor.id
+      }
     } else if (this.props.date) {
       course.date = this.props.date
     }
@@ -92,13 +103,15 @@ class CourseForm extends React.Component {
   }
 
   render() {
-    let { info, saving } = this.props
+    let { info, saving, instructors } = this.props
     const {
       course_type_id,
+      instructor_id,
       date,
       time,
       spaces,
       duration,
+      notes,
       auto_bikes,
       manual_bikes
     } = this.state.course
@@ -194,39 +207,41 @@ class CourseForm extends React.Component {
                 />
               </Col>
             </Row>
-            {/* <Row>
-            <Col>
-              <InputTextGroup
-                name="trainer_id"
-                value={trainer_id}
-                label="Instructor"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
-                required
-              />
-            </Col>
-            <Col>
+            <Row>
+              <Col>
+                <InputSelectGroup
+                  name="instructor_id"
+                  value={instructor_id}
+                  label="Instructor"
+                  valueArray={instructors.map(instructor => ({
+                    value: instructor.id,
+                    title: `${instructor.first_name} ${instructor.last_name}`
+                  }))}
+                  noSelectOption
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  required
+                />
+              </Col>
+              {/* <Col>
               <InputTextGroup
                 name="price"
                 value={price}
                 label="Payout Per Booking"
                 disabled
               />
-            </Col>
-          </Row> */}
-            {/* <Row>
-            <Col>
-              <InputTextGroup
-                name="notes"
-                value={notes}
-                label="Notes"
-                type="textarea"
-                onChange={this.handleChangeRawEvent.bind(this)}
-                required
-              />
-            </Col>
-          </Row> */}
+            </Col> */}
+            </Row>
+            <Row>
+              <Col>
+                <InputTextGroup
+                  name="notes"
+                  value={notes}
+                  label="Notes"
+                  type="textarea"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+              </Col>
+            </Row>
             <Row>
               <Col className="mt-3 text-right">
                 <Button type="submit" color="primary" className="mr-2">

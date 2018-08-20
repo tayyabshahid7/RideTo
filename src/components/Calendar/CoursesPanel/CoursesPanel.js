@@ -17,7 +17,7 @@ class CoursesPanel extends React.Component {
         <div className={styles.scrollContainer}>
           <div className={styles.scrollContent}>
             {courses.map(course => (
-              <CoursesPanelItem key={course.time} date={date} course={course} />
+              <CoursesPanelItem key={course.id} date={date} course={course} />
             ))}
             <div className="text-center">
               <Link to={`/calendar/courses/create?date=${date}`}>
