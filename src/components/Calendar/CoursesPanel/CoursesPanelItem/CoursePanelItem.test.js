@@ -39,9 +39,18 @@ it('Renders Course title and link', () => {
   )
 
   expect(wrapper.text()).toContain('CBT Training | 2 spaces available')
-  expect(wrapper.find('a').prop('href')).toContain(
-    '/calendar/2018-01-01/courses/1'
-  )
+  expect(
+    wrapper
+      .find('a')
+      .at(0)
+      .prop('href')
+  ).toContain('/calendar/2018-01-01/courses/1/edit')
+  expect(
+    wrapper
+      .find('a')
+      .at(1)
+      .prop('href')
+  ).toContain('/calendar/2018-01-01/courses/1')
 })
 
 it('Renders orders list', () => {
