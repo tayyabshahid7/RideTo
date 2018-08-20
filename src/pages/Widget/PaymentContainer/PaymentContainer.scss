@@ -4,16 +4,19 @@
   justify-content: center;
   padding-left: 16px;
   padding-right: 16px;
+
+  margin-bottom: 32px;
 }
 
 .paymentDetails {
-  width: 490px;
-  max-width: 490px;
   color: #707070;
+  max-width: 420px;
+  padding-top: 16px;
 }
 
-.paymentContainer h3 {
+.heading {
   text-align: center;
+  margin: 0;
 }
 
 .orderDetails {
@@ -23,5 +26,9 @@
 @media (max-width: 768px) {
   .orderDetails {
     display: none;
+  }
+
+  .paymentDetails {
+    max-width: auto;
   }
 }
