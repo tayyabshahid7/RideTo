@@ -23,6 +23,14 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
     marginBottom: '16px'
   }
 
+  const inputStyle = {
+    base: {
+      fontSize: '24px',
+      lineHeight: '1.25',
+      letterSpacing: '0.035rem'
+    }
+  }
+
   return (
     <div className={styles.checkForm}>
       <div className={styles.paymentFields}>
@@ -31,7 +39,7 @@ const CheckoutForm = ({ details, errors, stripe, onChange, onSubmit }) => {
           name="card_number"
           style={labelStyle}
           error={errors.card_number}>
-          <CardNumberElement />
+          <CardNumberElement style={inputStyle} />
         </LabelField>
         <LabelField
           label="Name On Card"
