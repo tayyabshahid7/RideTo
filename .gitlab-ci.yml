@@ -15,6 +15,9 @@ test:
   script:
   - yarn
   - CI=true yarn test
+  only:
+  - staging
+  - master
 
 build_staging:
   stage: build
@@ -25,7 +28,6 @@ build_staging:
     url: https://bike-tests-staging.herokuapp.com
   only:
   - staging
-  - PRODEV-61-booking-widget
   artifacts:
     paths:
     - build/
@@ -42,4 +44,3 @@ deploy_staging:
     url: https://bike-tests-staging.herokuapp.com
   only:
   - staging
-  - PRODEV-61-booking-widget
