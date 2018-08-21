@@ -19,6 +19,10 @@ const OrderDetails = ({ course, supplier, isLoading }) => {
   return (
     <React.Fragment>
       <div className={styles.orderDetails}>
+        <div className={styles.school}>
+          {course.course_type.name} {supplier.town}
+        </div>
+
         <div className={styles.date}>
           <div>
             Start: <strong>{startTime.format('h:mm a')}</strong>
@@ -27,9 +31,6 @@ const OrderDetails = ({ course, supplier, isLoading }) => {
         </div>
 
         <div className={styles.addressDetails}>
-          <div>
-            {course.course_type.name} {supplier.town}
-          </div>
           <div>
             {supplier.address_1} {supplier.town} {supplier.postcode}
           </div>
