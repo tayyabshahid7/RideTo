@@ -9,6 +9,8 @@ import BookingSummary from 'pages/Widget/components/BookingSummary'
 import { fetchWidgetSingleCourse } from 'services/course'
 import {
   createOrder,
+  getTotalOrderPrice,
+  asPoundSterling,
   createStripeToken,
   getInitialSuppliers
 } from 'services/widget'
@@ -118,7 +120,7 @@ class PaymentContainer extends React.Component {
   async createOrder(token) {
     const { match, history } = this.props
     const { slug } = match.params
-    const { course, supplier, details } = this.state
+    const { course, supplier, details, hire } = this.state
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
       ...details,
@@ -127,7 +129,7 @@ class PaymentContainer extends React.Component {
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
       token: token.id,
-      expected_price: this.getTotalPrice(),
+      expected_price: getTotalOrderPrice(course, hire),
       name: `${details.first_name} ${details.last_name}`,
       user_date: course.date,
       selected_licence: LICENCE_TYPES[course.course_type.name],
@@ -135,7 +137,7 @@ class PaymentContainer extends React.Component {
       supplier: supplier.id,
       email_optin: false,
       accept_equipment_responsibility: true, // TODO Needs to be removed
-      bike_hire: this.state.hire,
+      bike_hire: hire,
       source: 'WIDGET',
       rider_type: 'RIDER_TYPE_SOCIAL',
       voucher_code: ''
@@ -163,11 +165,6 @@ class PaymentContainer extends React.Component {
 
   handleErrors(errors) {
     this.setState({ errors, isSaving: false })
-  }
-
-  getTotalPrice() {
-    // TODO Need to do pricing
-    return 100 * 100
   }
 
   render() {
@@ -216,6 +213,7 @@ class PaymentContainer extends React.Component {
           <OrderDetails
             course={course}
             supplier={supplier}
+            hire={hire}
             isLoading={isLoading}
           />
         </div>

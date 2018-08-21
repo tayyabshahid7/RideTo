@@ -41,6 +41,14 @@
   margin-bottom: 16px;
 }
 
+.price {
+  font-weight: bold;
+  text-align: center;
+  background: white;
+  margin-top: 16px;
+  padding: 12px;
+}
+
 @media (max-width: 768px) {
   .bookingSummary,
   .loading {

@@ -2,7 +2,7 @@ import { post } from 'services/api'
 
 const MOTORBIKE_LABELS = {
   no: 'Own Bike',
-  auto: 'Autmoatic Bike Hire',
+  auto: 'Automatic Bike Hire',
   manual: 'Manual Bike Hire'
 }
 
@@ -40,4 +40,15 @@ export const getStartInTime = (now, startTime) => {
 
 export const getMotorbikeLabel = bikeHire => {
   return MOTORBIKE_LABELS[bikeHire]
+}
+
+export const getTotalOrderPrice = (course, bikeHire) => {
+  const { pricing } = course
+  return bikeHire && bikeHire !== 'no'
+    ? pricing.price + pricing.bike_hire_cost
+    : pricing.price
+}
+
+export const asPoundSterling = pennies => {
+  return `£${Math.floor(pennies / 100.0)}`
 }

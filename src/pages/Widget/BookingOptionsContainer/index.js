@@ -7,6 +7,7 @@ import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
 import CourseSelect from 'pages/Widget/components/CourseSelect'
 import BookingOption from 'pages/Widget/components/BookingOption'
 import { fetchWidgetCourses } from 'services/course'
+import { getTotalOrderPrice, asPoundSterling } from 'services/widget'
 
 import styles from './BookingOptionsContainer.scss'
 
@@ -139,6 +140,17 @@ class BookingOptionsContainer extends React.Component {
     this.setState({ selectedBikeHire })
   }
 
+  getTotalPrice() {
+    const { selectedCourse, selectedBikeHire } = this.state
+    if (selectedCourse && selectedCourse.pricing) {
+      return asPoundSterling(
+        getTotalOrderPrice(selectedCourse, selectedBikeHire)
+      )
+    }
+
+    return ' - '
+  }
+
   render() {
     const {
       widget,
@@ -215,7 +227,9 @@ class BookingOptionsContainer extends React.Component {
 
             <hr />
 
-            <div className={styles.totalPrice}>Total Price: £TODO</div>
+            <div className={styles.totalPrice}>
+              Total Price: {this.getTotalPrice()}
+            </div>
 
             <hr />
 

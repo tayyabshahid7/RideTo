@@ -3,8 +3,9 @@ import moment from 'moment'
 
 import styles from './OrderDetails.scss'
 import Loading from 'components/Loading'
+import { getTotalOrderPrice, asPoundSterling } from 'services/widget'
 
-const OrderDetails = ({ course, supplier, isLoading }) => {
+const OrderDetails = ({ course, hire, supplier, isLoading }) => {
   if (isLoading) {
     return (
       <div className={styles.loading}>
@@ -15,6 +16,7 @@ const OrderDetails = ({ course, supplier, isLoading }) => {
 
   const dateStr = `${course.date}T${course.time}`
   const startTime = moment(dateStr, 'YYYY-MM-DDTh:mm:ss')
+  const displayPrice = asPoundSterling(getTotalOrderPrice(course, hire))
 
   return (
     <React.Fragment>
@@ -44,7 +46,7 @@ const OrderDetails = ({ course, supplier, isLoading }) => {
           </ul>
         </div>
       </div>
-      <div className={styles.price}>Total: £TODO</div>
+      <div className={styles.price}>Total: {displayPrice}</div>
     </React.Fragment>
   )
 }
