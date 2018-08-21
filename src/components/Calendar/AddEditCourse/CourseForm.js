@@ -93,7 +93,7 @@ class CourseForm extends React.Component {
     if (instructor_id !== '') {
       course.instructor_id = instructor_id
     } else {
-      // course.instructor_id = 0
+      course.instructor_id = null
     }
     onSubmit(course)
   }
