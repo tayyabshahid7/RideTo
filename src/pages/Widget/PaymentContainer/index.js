@@ -193,6 +193,7 @@ class PaymentContainer extends React.Component {
               </div>
               <Elements>
                 <CheckoutForm
+                  widget={this.widget}
                   details={details}
                   errors={errors}
                   isSaving={isSaving}

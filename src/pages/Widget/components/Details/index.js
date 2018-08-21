@@ -3,6 +3,10 @@ import React from 'react'
 import styles from './Details.scss'
 
 const Details = ({ widget, address = '' }) => {
+  const style = {
+    color: widget.button_color
+  }
+
   return (
     <div className={styles.details}>
       <div className={styles.intro}>{widget.intro}</div>
@@ -29,7 +33,9 @@ const Details = ({ widget, address = '' }) => {
       <div className={styles.block}>
         You can also view the terms{' '}
         <strong>
-          <a href={widget.terms}>here.</a>
+          <a style={style} href={widget.terms} target="_blank">
+            here.
+          </a>
         </strong>
       </div>
     </div>

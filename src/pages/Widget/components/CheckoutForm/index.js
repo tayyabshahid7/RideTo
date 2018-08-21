@@ -31,6 +31,7 @@ const handleChange = (event, details, onChange) => {
 }
 
 const CheckoutForm = ({
+  widget,
   details,
   errors,
   stripe,
@@ -109,6 +110,7 @@ const CheckoutForm = ({
         <h3>Terms</h3>
         <AcceptTerms
           accepted={details.accept_terms}
+          widget={widget}
           error={errors.accept_terms}
           onChange={accept_terms => onChange({ ...details, accept_terms })}
         />
