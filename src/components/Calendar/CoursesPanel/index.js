@@ -10,10 +10,10 @@ class CoursesPanelContainer extends React.Component {
     this.loadCourses()
   }
 
-  componentWillUnmount() {
-    const { unsetSelectedDate } = this.props
-    unsetSelectedDate()
-  }
+  // componentWillUnmount() {
+  //   const { unsetSelectedDate } = this.props
+  //   unsetSelectedDate()
+  // }
 
   componentDidUpdate(prevProps) {
     if (prevProps.match.params.date !== this.props.match.params.date) {

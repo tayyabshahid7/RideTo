@@ -118,8 +118,7 @@ export const get = async (path, params) => {
     if (error.response.status === 403) {
       window.location.href = '/login'
     }
-
-    return { results: [] }
+    throw error
   }
 }
 
@@ -144,10 +143,6 @@ export const post = async (path, data, auth = true) => {
     return response.data
   } catch (error) {
     // Auth failures dump out of app
-    if (error.response.status === 403) {
-      window.location.href = '/login'
-    }
-
     throw error
   }
 }
@@ -170,7 +165,6 @@ export const destroy = async (path, params) => {
     if (error.response.status === 403) {
       window.location.href = '/login'
     }
-
     throw error
   }
 }
@@ -192,8 +186,7 @@ export const put = async (path, data) => {
     if (error.response.status === 403) {
       window.location.href = '/login'
     }
-
-    return { results: [] }
+    throw error
   }
 }
 
@@ -211,11 +204,10 @@ export const patch = async (path, data) => {
     return response.data
   } catch (error) {
     // Auth failures dump out of app
-    if (error.response.status === 403) {
-      window.location.href = '/login'
-    }
-
-    return { results: [] }
+    // if (error.response.status === 403) {
+    //   window.location.href = '/login'
+    // }
+    throw error
   }
 }
 

@@ -3,7 +3,8 @@ import {
   fetchCourses,
   deleteSingleCourse,
   addSchoolOrder,
-  updateSchoolCourse
+  updateSchoolCourse,
+  createSchoolCourse
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -14,6 +15,7 @@ const FETCH_FOR_DAY = createRequestTypes('rideto/course/FETCH/DAY')
 const FETCH_SINGLE = createRequestTypes('rideto/course/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/course/DELETE')
 const UPDATE = createRequestTypes('rideto/course/UPDATE')
+const CREATE = createRequestTypes('rideto/course/CREATE')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
 
@@ -126,17 +128,38 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
 export const updateCourse = ({
   schoolId,
   courseId,
-  data
+  data,
+  fullUpdate = false
 }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolCourse(schoolId, courseId, data)
+    let response = await updateSchoolCourse(
+      schoolId,
+      courseId,
+      data,
+      fullUpdate
+    )
     dispatch({
       type: UPDATE[SUCCESS],
       data: { course: response }
     })
   } catch (error) {
+    console.log('Error', error)
     dispatch({ type: UPDATE[FAILURE], error })
+  }
+}
+
+export const createCourse = ({ schoolId, data }) => async dispatch => {
+  dispatch({ type: CREATE[REQUEST] })
+  try {
+    let response = await createSchoolCourse(schoolId, data)
+    dispatch({
+      type: CREATE[SUCCESS],
+      data: { course: response }
+    })
+  } catch (error) {
+    console.log('Error', error)
+    dispatch({ type: CREATE[FAILURE], error })
   }
 }
 
@@ -342,6 +365,28 @@ export default function reducer(state = initialState, action) {
         calendar: { ...state.calendar, courses: calendarCourses }
       }
     case UPDATE[FAILURE]:
+      return {
+        ...state,
+        single: { ...state.single, saving: false, error: action.error }
+      }
+    case CREATE[REQUEST]:
+      return {
+        ...state,
+        single: { course: null, saving: true, error: null }
+      }
+    case CREATE[SUCCESS]:
+      dayCourses =
+        action.data.course.date === state.day.date
+          ? [action.data.course, ...state.day.courses]
+          : state.day.courses
+      calendarCourses = [action.data.course, ...state.calendar.courses]
+      return {
+        ...state,
+        single: { saving: false, course: action.data.course, error: null },
+        day: { ...state.day, courses: dayCourses },
+        calendar: { ...state.calendar, courses: calendarCourses }
+      }
+    case CREATE[FAILURE]:
       return {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
