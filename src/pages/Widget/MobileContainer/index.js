@@ -36,6 +36,9 @@ class MobileContainer extends React.Component {
         )[0]
       : this.suppliers[0]
     const address = getAddress(selectedSupplier)
+    const style = {
+      color: this.widget.button_color
+    }
 
     return (
       <div className={styles.mobileContainer}>
@@ -70,7 +73,9 @@ class MobileContainer extends React.Component {
           <div className={styles.block}>
             You can also view the terms{' '}
             <strong>
-              <a href={this.widget.terms}>here.</a>
+              <a style={style} href={this.widget.terms} target="_blank">
+                here.
+              </a>
             </strong>
           </div>
         </div>

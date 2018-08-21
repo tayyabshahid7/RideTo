@@ -31,6 +31,7 @@ const handleChange = (event, details, onChange) => {
 }
 
 const CheckoutForm = ({
+  widget,
   details,
   errors,
   stripe,
@@ -48,6 +49,9 @@ const CheckoutForm = ({
       letterSpacing: '0.035rem'
     }
   }
+  const btnClass = isSaving
+    ? `WidgetBtn ${styles.checkoutBtn} ${styles.disabled}`
+    : `WidgetBtn ${styles.checkoutBtn}`
 
   return (
     <div className={styles.checkForm}>
@@ -102,26 +106,28 @@ const CheckoutForm = ({
         </LabelField>
       </div>
 
-      <div className={styles.total}>
-        <span>Total to pay:</span>
-        <span>£TOTAL TODO</span>
-      </div>
-
       <div className={styles.terms}>
         <h3>Terms</h3>
         <AcceptTerms
           accepted={details.accept_terms}
+          widget={widget}
           error={errors.accept_terms}
           onChange={accept_terms => onChange({ ...details, accept_terms })}
         />
       </div>
 
-      <button
-        className={`WidgetBtn ${styles.checkoutBtn}`}
+      {errors.paymentError && (
+        <div className={styles.paymentError}>
+          <strong>{errors.paymentError}</strong>
+        </div>
+      )}
+
+      <a
+        className={btnClass}
         disabled={isSaving}
         onClick={() => onSubmit(stripe)}>
         Confirm and Pay
-      </button>
+      </a>
     </div>
   )
 }

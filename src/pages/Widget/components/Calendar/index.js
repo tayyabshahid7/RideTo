@@ -4,6 +4,7 @@ import { SingleDatePicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
 
 import Loading from 'components/Loading'
+import { asPoundSterling } from 'services/widget'
 
 import styles from './Calendar.scss'
 
@@ -13,11 +14,16 @@ moment.updateLocale('en', {
   }
 })
 
-const renderDayContents = (day, price) => {
+const renderDayContents = (day, courses) => {
+  const dateStr = day.format('YYYY-MM-DD')
+  const course = courses.filter(c => c.date === dateStr)[0]
+  const price =
+    course && course.pricing ? asPoundSterling(course.pricing.price) : ''
+
   return (
     <div className={styles.day}>
       <div className={styles.dayDate}>{day.format('DD')}</div>
-      <strong className={styles.dayPrice}>{`£${price}`}</strong>
+      <strong className={styles.dayPrice}>{price}</strong>
     </div>
   )
 }
@@ -63,7 +69,7 @@ class Calendar extends React.Component {
       <div className={styles.calendar}>
         <SingleDatePicker
           numberOfMonths={1}
-          renderDayContents={day => renderDayContents(day, 120)}
+          renderDayContents={day => renderDayContents(day, courses)}
           onDateChange={onChangeDate}
           date={date}
           daySize={40}

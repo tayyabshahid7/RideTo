@@ -9,6 +9,8 @@ import BookingSummary from 'pages/Widget/components/BookingSummary'
 import { fetchWidgetSingleCourse } from 'services/course'
 import {
   createOrder,
+  getTotalOrderPrice,
+  asPoundSterling,
   createStripeToken,
   getInitialSuppliers
 } from 'services/widget'
@@ -44,6 +46,7 @@ class PaymentContainer extends React.Component {
     this.state = {
       course: null,
       supplier: null,
+      isSaving: false,
       hire: query.hire || null,
       errors: {},
       details: {}
@@ -51,6 +54,8 @@ class PaymentContainer extends React.Component {
 
     this.handlePayment = this.handlePayment.bind(this)
     this.handleChangeDetails = this.handleChangeDetails.bind(this)
+
+    window.document.body.scrollIntoView()
   }
 
   async componentDidMount() {
@@ -115,15 +120,16 @@ class PaymentContainer extends React.Component {
   async createOrder(token) {
     const { match, history } = this.props
     const { slug } = match.params
-    const { course, supplier, details } = this.state
+    const { course, supplier, details, hire } = this.state
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
       ...details,
+      school_course_id: course.id,
       user_birthdate: birthdate.format('YYYY-MM-DD'),
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
       token: token.id,
-      expected_price: this.getTotalPrice(),
+      expected_price: getTotalOrderPrice(course, hire),
       name: `${details.first_name} ${details.last_name}`,
       user_date: course.date,
       selected_licence: LICENCE_TYPES[course.course_type.name],
@@ -131,7 +137,7 @@ class PaymentContainer extends React.Component {
       supplier: supplier.id,
       email_optin: false,
       accept_equipment_responsibility: true, // TODO Needs to be removed
-      bike_hire: this.state.hire,
+      bike_hire: hire,
       source: 'WIDGET',
       rider_type: 'RIDER_TYPE_SOCIAL',
       voucher_code: ''
@@ -145,18 +151,20 @@ class PaymentContainer extends React.Component {
       }
     } catch (error) {
       if (error.response && error.response.data) {
-        this.handleErrors(error.response.data)
+        const { data } = error.response
+
+        if (data.message) {
+          this.handleErrors({ paymentError: data.message })
+        } else {
+          this.handleErrors(data)
+          window.document.body.scrollIntoView()
+        }
       }
     }
   }
 
   handleErrors(errors) {
     this.setState({ errors, isSaving: false })
-  }
-
-  getTotalPrice() {
-    // TODO Need to do pricing
-    return 100 * 100
   }
 
   render() {
@@ -188,6 +196,7 @@ class PaymentContainer extends React.Component {
               </div>
               <Elements>
                 <CheckoutForm
+                  widget={this.widget}
                   details={details}
                   errors={errors}
                   isSaving={isSaving}
@@ -200,9 +209,11 @@ class PaymentContainer extends React.Component {
         </div>
 
         <div className={styles.orderDetails}>
+          <h3 className={styles.heading}>Your Training</h3>
           <OrderDetails
             course={course}
             supplier={supplier}
+            hire={hire}
             isLoading={isLoading}
           />
         </div>
