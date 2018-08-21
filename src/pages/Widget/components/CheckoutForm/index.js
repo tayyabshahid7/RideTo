@@ -48,6 +48,9 @@ const CheckoutForm = ({
       letterSpacing: '0.035rem'
     }
   }
+  const btnClass = isSaving
+    ? `WidgetBtn ${styles.checkoutBtn} ${styles.disabled}`
+    : `WidgetBtn ${styles.checkoutBtn}`
 
   return (
     <div className={styles.checkForm}>
@@ -112,7 +115,7 @@ const CheckoutForm = ({
       </div>
 
       <a
-        className={`WidgetBtn ${styles.checkoutBtn}`}
+        className={btnClass}
         disabled={isSaving}
         onClick={() => onSubmit(stripe)}>
         Confirm and Pay

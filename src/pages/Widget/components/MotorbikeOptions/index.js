@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { getMotorbikeLabel } from 'services/widget'
 import Checkbox from 'components/Checkbox'
 import styles from './MotorbikeOptions.scss'
 
@@ -13,14 +14,14 @@ const MotorbikeOptions = ({ selected, course, onChange }) => {
       <h4>Bike Hire (Included)</h4>
 
       <Checkbox checked={selected === 'no'} onChange={() => onChange('no')}>
-        No
+        {getMotorbikeLabel('no')}
       </Checkbox>
 
       <Checkbox
         checked={selected === 'auto'}
         onChange={() => onChange(selected === 'auto' ? 'no' : 'auto')}
         disabled={isAutoFull}>
-        Automatic Scooter
+        {getMotorbikeLabel('auto')}
         {isAutoFull ? fullText : null}
       </Checkbox>
 
@@ -28,7 +29,7 @@ const MotorbikeOptions = ({ selected, course, onChange }) => {
         checked={selected === 'manual'}
         onChange={() => onChange(selected === 'manual' ? 'no' : 'manual')}
         disabled={isManualFull}>
-        Manual Motorcycle
+        {getMotorbikeLabel('manual')}
         {isManualFull ? fullText : null}
       </Checkbox>
     </div>

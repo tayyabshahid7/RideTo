@@ -1,5 +1,11 @@
 import { post } from 'services/api'
 
+const MOTORBIKE_LABELS = {
+  no: 'Own Bike',
+  auto: 'Autmoatic Bike Hire',
+  manual: 'Manual Bike Hire'
+}
+
 export const createStripeToken = async (stripe, name) => {
   return await stripe.createToken({ name })
 }
@@ -30,4 +36,8 @@ export const getStartInTime = (now, startTime) => {
   ]
     .filter(s => s)
     .join(', ')
+}
+
+export const getMotorbikeLabel = bikeHire => {
+  return MOTORBIKE_LABELS[bikeHire]
 }

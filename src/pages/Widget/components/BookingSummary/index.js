@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 
+import { getMotorbikeLabel } from 'services/widget'
 import styles from './BookingSummary.scss'
 import Loading from 'components/Loading'
 
@@ -18,14 +19,17 @@ const BookingSummary = ({ supplier, course, hire, isLoading }) => {
 
   return (
     <div className={styles.bookingSummary}>
-      <div className={styles.address}>
-        {supplier.address_1} {supplier.postcode}
+      <h3 className={styles.heading}>Your Training</h3>
+      <div className={styles.details}>
+        <div className={styles.address}>
+          {supplier.address_1} {supplier.postcode}
+        </div>
+        <div className={styles.courseType}>{course.course_type.name}</div>
+        <div className={styles.startTime}>
+          {startTime.format('dddd MMMM Do YYYY h:mm a')}
+        </div>
+        <div className={styles.bikeHire}>{getMotorbikeLabel(hire)}</div>
       </div>
-      <div className={styles.courseType}>{course.course_type.name}</div>
-      <div className={styles.startTime}>
-        {startTime.format('dddd MMMM Do YYYY h:mm a')}
-      </div>
-      <div className={styles.bikeHire}>Bike hire: {hire}</div>
     </div>
   )
 }

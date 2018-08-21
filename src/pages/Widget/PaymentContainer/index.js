@@ -44,6 +44,7 @@ class PaymentContainer extends React.Component {
     this.state = {
       course: null,
       supplier: null,
+      isSaving: false,
       hire: query.hire || null,
       errors: {},
       details: {}
