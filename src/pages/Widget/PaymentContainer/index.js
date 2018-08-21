@@ -10,7 +10,6 @@ import { fetchWidgetSingleCourse } from 'services/course'
 import {
   createOrder,
   getTotalOrderPrice,
-  asPoundSterling,
   createStripeToken,
   getInitialSuppliers
 } from 'services/widget'
