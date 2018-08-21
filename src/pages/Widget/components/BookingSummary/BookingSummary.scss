@@ -1,9 +1,13 @@
 .bookingSummary {
   background: white;
   color: #707070;
-  width: 100%;
   min-height: 132px;
   display: none;
+
+  max-width: 420px;
+  width: 100%;
+
+  margin-bottom: 16px;
 }
 
 .loading {
