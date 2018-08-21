@@ -149,8 +149,14 @@ class PaymentContainer extends React.Component {
       }
     } catch (error) {
       if (error.response && error.response.data) {
-        this.handleErrors(error.response.data)
-        window.document.body.scrollIntoView()
+        const { data } = error.response
+
+        if (data.message) {
+          this.handleErrors({ paymentError: data.message })
+        } else {
+          this.handleErrors(data)
+          window.document.body.scrollIntoView()
+        }
       }
     }
   }

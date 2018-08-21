@@ -116,6 +116,12 @@ const CheckoutForm = ({
         />
       </div>
 
+      {errors.paymentError && (
+        <div className={styles.paymentError}>
+          <strong>{errors.paymentError}</strong>
+        </div>
+      )}
+
       <a
         className={btnClass}
         disabled={isSaving}
