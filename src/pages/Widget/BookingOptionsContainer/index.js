@@ -178,6 +178,7 @@ class BookingOptionsContainer extends React.Component {
     if (!courseType) {
       return <div className={styles.bookingOptions}>No Course Found</div>
     }
+    const ownBike = courseType.name === 'CBT Training Renewal'
 
     return (
       <div className={styles.bookingOptions}>
@@ -220,6 +221,7 @@ class BookingOptionsContainer extends React.Component {
             <hr />
 
             <MotorbikeOptions
+              ownBike={ownBike}
               selected={selectedBikeHire}
               course={selectedCourse}
               onChange={this.handleSelectBikeHire}

@@ -8,7 +8,7 @@ import {
 } from 'react-stripe-elements'
 
 import LabelField from 'pages/Widget/components/LabelField'
-import AcceptTerms from 'pages/Widget/components/AcceptTerms'
+import AcceptCheckbox from 'pages/Widget/components/AcceptCheckbox'
 import cardVisa from 'assets/images/card-visa.jpg'
 import cardAmex from 'assets/images/card-amex.jpg'
 import cardElectron from 'assets/images/card-electron.png'
@@ -108,12 +108,29 @@ const CheckoutForm = ({
 
       <div className={styles.terms}>
         <h3>Terms</h3>
-        <AcceptTerms
+
+        <AcceptCheckbox
           accepted={details.accept_terms}
-          widget={widget}
           error={errors.accept_terms}
-          onChange={accept_terms => onChange({ ...details, accept_terms })}
-        />
+          onChange={accept_terms => onChange({ ...details, accept_terms })}>
+          <div>
+            I can confirm that I have read and agreed to the requirements and{' '}
+            <a
+              style={{ color: widget.button_color }}
+              href={widget.terms}
+              target="_blank">
+              terms and conditions.
+            </a>
+          </div>
+        </AcceptCheckbox>
+
+        <AcceptCheckbox
+          accepted={details.email_optin}
+          onChange={email_optin => onChange({ ...details, email_optin })}>
+          <div>
+            Add me to the mailing list for the latest news and special offers
+          </div>
+        </AcceptCheckbox>
       </div>
 
       {errors.paymentError && (

@@ -5,7 +5,8 @@
 }
 
 .motorbikeOptions input:disabled + label {
-  color: #aaaaaa;
+  opacity: 0.75;
+  cursor: default;
 }
 
 .full {

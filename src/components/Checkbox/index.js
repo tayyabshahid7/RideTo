@@ -7,13 +7,14 @@ const Checkbox = ({
   children,
   disabled,
   size = 'small',
+  extraClass = '',
   error,
   onChange
 }) => {
   const id = `checkbox_${Math.floor(Math.random() * 10000)}`
   const className = error
-    ? `${styles.checkbox} ${styles[size]} ${styles.error}`
-    : `${styles.checkbox} ${styles[size]}`
+    ? `${styles.checkbox} ${extraClass} ${styles[size]} ${styles.error}`
+    : `${styles.checkbox} ${extraClass} ${styles[size]}`
 
   return (
     <div className={className}>
