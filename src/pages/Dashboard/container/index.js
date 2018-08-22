@@ -40,12 +40,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div className={styles.container}>
-        <Notifications
-          schoolName={this.props.schoolName}
-          schoolId={this.props.schoolId}
-          schools={this.props.user.suppliers}
-          changeSchool={this.props.changeSchool}
-        />
+        <Notifications />
         <Loading loading={this.props.loading}>
           {this.props.pendingOrders &&
           this.props.pendingOrders.results.length > 0 ? (
