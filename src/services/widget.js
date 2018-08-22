@@ -52,3 +52,7 @@ export const getTotalOrderPrice = (course, bikeHire) => {
 export const asPoundSterling = pennies => {
   return `£${Math.floor(pennies / 100.0)}`
 }
+
+export const showOwnBikeHire = courseType => {
+  return courseType.name === 'CBT Training Renewal'
+}

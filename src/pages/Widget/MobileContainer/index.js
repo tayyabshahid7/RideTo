@@ -62,7 +62,9 @@ class MobileContainer extends React.Component {
 
           <div className={styles.block}>
             <h3 className={styles.subHeading}>Requirements</h3>
-            {this.widget.requirements}
+            <div
+              dangerouslySetInnerHTML={{ __html: this.widget.requirements }}
+            />
           </div>
 
           <div className={styles.block}>
