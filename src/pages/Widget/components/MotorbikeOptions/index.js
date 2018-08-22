@@ -25,7 +25,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
       <Checkbox
         checked={selected === 'auto'}
         extraClass="WidgetCheckbox"
-        onChange={() => onChange(selected === 'auto' ? 'no' : 'auto')}
+        onChange={() => onChange('auto')}
         disabled={isAutoFull}>
         {getMotorbikeLabel('auto')}
         {isAutoFull ? fullText : null}
@@ -34,7 +34,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
       <Checkbox
         checked={selected === 'manual'}
         extraClass="WidgetCheckbox"
-        onChange={() => onChange(selected === 'manual' ? 'no' : 'manual')}
+        onChange={() => onChange('manual')}
         disabled={isManualFull}>
         {getMotorbikeLabel('manual')}
         {isManualFull ? fullText : null}

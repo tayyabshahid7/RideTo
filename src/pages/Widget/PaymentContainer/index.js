@@ -23,6 +23,17 @@ const LICENCE_TYPES = {
   'CBT Training Renewal': 'LICENCE_CBT_RENEWAL'
 }
 
+const REQUIRED_FIELDS = [
+  'first_name',
+  'last_name',
+  'phone',
+  'user_birthdate',
+  'email',
+  'current_licence',
+  'riding_experience',
+  'card_name'
+]
+
 const getStripeError = error => {
   const field = error.code.split('_').slice(-1)[0]
   const errorId = `card_${field}`
@@ -83,11 +94,18 @@ class PaymentContainer extends React.Component {
   }
 
   validateDetails(details) {
-    if (!details.card_name) {
+    const errors = {}
+    REQUIRED_FIELDS.forEach(field => {
+      if (!details[field]) {
+        errors[field] = 'This field is required.'
+      }
+    })
+
+    if (Object.keys(errors).length) {
       this.setState({
         errors: {
           ...this.state.errors,
-          card_name: 'This field is required.'
+          ...errors
         }
       })
       return false

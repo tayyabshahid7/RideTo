@@ -7,7 +7,11 @@ import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
 import CourseSelect from 'pages/Widget/components/CourseSelect'
 import BookingOption from 'pages/Widget/components/BookingOption'
 import { fetchWidgetCourses } from 'services/course'
-import { getTotalOrderPrice, asPoundSterling } from 'services/widget'
+import {
+  showOwnBikeHire,
+  getTotalOrderPrice,
+  asPoundSterling
+} from 'services/widget'
 
 import styles from './BookingOptionsContainer.scss'
 
@@ -95,7 +99,7 @@ class BookingOptionsContainer extends React.Component {
       schoolCourses,
       selectedDate,
       selectedCourse: selectedCourses[0],
-      selectedBikeHire: 'no',
+      selectedBikeHire: showOwnBikeHire(courseType) ? 'no' : 'auto',
       availableCourses,
       courseType,
       isLoading: false
@@ -120,14 +124,14 @@ class BookingOptionsContainer extends React.Component {
     this.setState({
       selectedDate,
       selectedCourse: selectedCourses[0],
-      selectedBikeHire: 'no'
+      selectedBikeHire: showOwnBikeHire(this.state.courseType) ? 'no' : 'auto'
     })
   }
 
   handleChangeCourse(selectedCourse) {
     this.setState({
       selectedCourse,
-      selectedBikeHire: 'no'
+      selectedBikeHire: showOwnBikeHire(this.state.courseType) ? 'no' : 'auto'
     })
   }
 
@@ -178,7 +182,6 @@ class BookingOptionsContainer extends React.Component {
     if (!courseType) {
       return <div className={styles.bookingOptions}>No Course Found</div>
     }
-    const ownBike = courseType.name === 'CBT Training Renewal'
 
     return (
       <div className={styles.bookingOptions}>
@@ -221,7 +224,7 @@ class BookingOptionsContainer extends React.Component {
             <hr />
 
             <MotorbikeOptions
-              ownBike={ownBike}
+              ownBike={showOwnBikeHire(courseType)}
               selected={selectedBikeHire}
               course={selectedCourse}
               onChange={this.handleSelectBikeHire}

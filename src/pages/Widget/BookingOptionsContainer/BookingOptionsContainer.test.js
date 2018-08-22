@@ -63,7 +63,7 @@ describe('Initial Render', () => {
   })
 
   it('Renders Booking link', () => {
-    const expected = `/widget/${slug}/payment/${courses[0].id}?hire=no`
+    const expected = `/widget/${slug}/payment/${courses[0].id}?hire=auto`
 
     expect(wrapper.find('Link').prop('to')).toBe(expected)
   })
@@ -81,7 +81,7 @@ describe('Change Date', () => {
     wrapper.setState({})
     expect(wrapper.state('selectedCourse').date).toBe('2018-08-14')
 
-    const expected = `/widget/${slug}/payment/83?hire=no`
+    const expected = `/widget/${slug}/payment/83?hire=auto`
     expect(wrapper.find('Link').prop('to')).toBe(expected)
   })
 })
