@@ -13,10 +13,11 @@ const AcceptTerms = ({ accepted, widget, onChange, error }) => {
       <Checkbox
         checked={Boolean(accepted)}
         error={error}
+        extraClass="WidgetCheckbox"
         size="large"
         onChange={() => onChange(!accepted)}>
         <div>
-          I can confirm that I have read and agreed to the{' '}
+          I can confirm that I have read and agreed to the requirements and{' '}
           <a style={style} href={widget.terms} target="_blank">
             terms and conditions.
           </a>

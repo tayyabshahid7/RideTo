@@ -20,7 +20,7 @@ const Details = ({ widget, address = '' }) => {
 
       <div className={styles.block}>
         <h3 className={styles.subHeading}>Requirements</h3>
-        {widget.requirements}
+        <div dangerouslySetInnerHTML={{ __html: widget.requirements }} />
       </div>
 
       <hr />
@@ -31,10 +31,10 @@ const Details = ({ widget, address = '' }) => {
       </div>
 
       <div className={styles.block}>
-        You can also view the terms{' '}
+        I can confirm that I have read and agreed to the requirements and{' '}
         <strong>
           <a style={style} href={widget.terms} target="_blank">
-            here.
+            terms and conditions
           </a>
         </strong>
       </div>

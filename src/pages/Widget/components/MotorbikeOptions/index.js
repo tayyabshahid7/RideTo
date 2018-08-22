@@ -13,12 +13,16 @@ const MotorbikeOptions = ({ selected, course, onChange }) => {
     <div className={styles.motorbikeOptions}>
       <h4>Bike Hire (Included)</h4>
 
-      <Checkbox checked={selected === 'no'} onChange={() => onChange('no')}>
+      <Checkbox
+        checked={selected === 'no'}
+        extraClass="WidgetCheckbox"
+        onChange={() => onChange('no')}>
         {getMotorbikeLabel('no')}
       </Checkbox>
 
       <Checkbox
         checked={selected === 'auto'}
+        extraClass="WidgetCheckbox"
         onChange={() => onChange(selected === 'auto' ? 'no' : 'auto')}
         disabled={isAutoFull}>
         {getMotorbikeLabel('auto')}
@@ -27,6 +31,7 @@ const MotorbikeOptions = ({ selected, course, onChange }) => {
 
       <Checkbox
         checked={selected === 'manual'}
+        extraClass="WidgetCheckbox"
         onChange={() => onChange(selected === 'manual' ? 'no' : 'manual')}
         disabled={isManualFull}>
         {getMotorbikeLabel('manual')}
