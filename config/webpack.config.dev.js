@@ -111,10 +111,7 @@ module.exports = {
           {
             options: {
               formatter: eslintFormatter,
-              eslintPath: require.resolve('eslint'),
-              rules: {
-                'no-unused-vars': 'error'
-              }
+              eslintPath: require.resolve('eslint')
             },
             loader: require.resolve('eslint-loader')
           }
