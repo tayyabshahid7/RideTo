@@ -70,7 +70,7 @@
 }
 
 .large {
-  height: 32px;
+  height: 36px;
 }
 
 .large label {
@@ -79,9 +79,9 @@
 
 .large label::after {
   border-width: 3px;
-  height: 10px;
-  width: 19px;
-  top: 7px;
+  height: 12px;
+  width: 20px;
+  top: 8px;
   left: 6px;
 }
 
@@ -92,5 +92,5 @@
 }
 
 .large input[type='checkbox'] {
-  width: 32px;
+  width: 36px;
 }

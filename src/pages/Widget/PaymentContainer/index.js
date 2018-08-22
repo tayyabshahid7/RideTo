@@ -132,11 +132,10 @@ class PaymentContainer extends React.Component {
       name: `${details.first_name} ${details.last_name}`,
       user_date: course.date,
       selected_licence: LICENCE_TYPES[course.course_type.name],
-      addons: [],
       supplier: supplier.id,
-      email_optin: false,
-      accept_equipment_responsibility: true, // TODO Needs to be removed
       bike_hire: hire,
+      addons: [],
+      accept_equipment_responsibility: true, // TODO Needs to be removed
       source: 'WIDGET',
       rider_type: 'RIDER_TYPE_SOCIAL',
       voucher_code: ''
