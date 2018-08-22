@@ -123,6 +123,7 @@ class PaymentContainer extends React.Component {
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
       ...details,
+      email_optin: details.email_optin || false,
       school_course_id: course.id,
       user_birthdate: birthdate.format('YYYY-MM-DD'),
       user_age: moment().diff(birthdate, 'years'),
