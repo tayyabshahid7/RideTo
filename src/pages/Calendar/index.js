@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
@@ -14,6 +15,7 @@ import { getCourses, updateCalendarSetting } from 'store/course'
 import { getInstructors } from 'store/instructor'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 import SchoolSelect from 'components/SchoolSelect'
+import commonStyles from '../styles.scss'
 
 class CalendarPage extends Component {
   componentDidMount() {
@@ -190,7 +192,12 @@ class CalendarPage extends Component {
     return (
       <div className={styles.container}>
         <Row className="h-100">
-          <Col xs="8" className={styles.calendarColumn}>
+          <Col
+            xs="8"
+            className={classnames(
+              styles.calendarColumn,
+              commonStyles.mainContent
+            )}>
             <div className={styles.schoolWrapper}>
               <SchoolSelect />
             </div>
