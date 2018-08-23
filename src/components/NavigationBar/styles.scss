@@ -5,16 +5,25 @@
 
 .navLinks {
   width: 85%;
+  display: flex;
+  height: 50px;
+  line-height: 50px;
+  align-items: center;
 }
 
 .authMenu {
   width: 15%;
+  display: flex;
+  align-items: center;
 }
 .navLink {
   margin: 0 1rem;
   color: #95989a;
   text-decoration: none;
   font-weight: bold;
+  &:hover {
+    text-decoration: unset;
+  }
 }
 
 .activeNavLink {
