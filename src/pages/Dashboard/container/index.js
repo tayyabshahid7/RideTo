@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { getPendingOrders } from 'store/dashboard'
 import { changeSchool } from 'store/auth'
@@ -8,6 +9,7 @@ import PendinOrdersTable from '../components/PendingOrdersTable'
 import PaginationLinks from 'components/PaginationLinks'
 import Loading from 'components/Loading'
 import styles from './styles.scss'
+import commonStyles from '../../styles.scss'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -39,7 +41,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div className={classnames(styles.container, commonStyles.mainContent)}>
         <Notifications />
         <Loading loading={this.props.loading}>
           {this.props.pendingOrders &&

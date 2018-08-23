@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import SchoolSelect from 'components/SchoolSelect'
 import PaginationLinks from 'components/PaginationLinks'
 import { fetchSchoolOrders, getDateFilters } from 'services/order'
@@ -9,6 +10,7 @@ import { changeSchool } from 'store/auth'
 import ConfirmedOrders from '../components/ConfirmedOrders'
 import OrderFilters from '../components/OrderFilters'
 import styles from './styles.scss'
+import commonStyles from '../../styles.scss'
 
 class Orders extends Component {
   constructor(props) {
@@ -80,7 +82,11 @@ class Orders extends Component {
 
     return (
       <div className={styles.container}>
-        <div className={styles.ordersContainer}>
+        <div
+          className={classnames(
+            styles.ordersContainer,
+            commonStyles.mainContent
+          )}>
           <h1>Orders</h1>
           <SchoolSelect
             selected={schoolId}
