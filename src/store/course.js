@@ -4,7 +4,8 @@ import {
   deleteSingleCourse,
   addSchoolOrder,
   updateSchoolCourse,
-  createSchoolCourse
+  createSchoolCourse,
+  getPricingForCourse
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -13,6 +14,8 @@ const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
 const FETCH_FOR_DAY = createRequestTypes('rideto/course/FETCH/DAY')
 const FETCH_SINGLE = createRequestTypes('rideto/course/FETCH/SINGLE')
+const FETCH_PRICE = createRequestTypes('rideto/course/FETCH/PRICE')
+const RESET_PRICE = 'rideto/course/RESET/PRICE'
 const DELETE = createRequestTypes('rideto/course/DELETE')
 const UPDATE = createRequestTypes('rideto/course/UPDATE')
 const CREATE = createRequestTypes('rideto/course/CREATE')
@@ -163,6 +166,31 @@ export const createCourse = ({ schoolId, data }) => async dispatch => {
   }
 }
 
+export const fetchPrice = ({
+  schoolId,
+  course_type,
+  datetime
+}) => async dispatch => {
+  dispatch({
+    type: FETCH_PRICE[REQUEST],
+    data: { schoolId, course_type, datetime }
+  })
+  try {
+    let response = await getPricingForCourse(schoolId, course_type, datetime)
+    dispatch({
+      type: FETCH_PRICE[SUCCESS],
+      data: response
+    })
+  } catch (error) {
+    console.log('Error', error)
+    dispatch({ type: FETCH_PRICE[FAILURE], error })
+  }
+}
+
+export const resetPrice = data => async dispatch => {
+  dispatch({ type: RESET_PRICE })
+}
+
 const initialState = {
   single: {
     course: null,
@@ -175,6 +203,13 @@ const initialState = {
     loading: false,
     date: null,
     error: null
+  },
+  pricing: {
+    info: null,
+    course_type: null,
+    loading: false,
+    schoolId: null,
+    datetime: null
   },
   calendar: {
     courses: [],
@@ -395,6 +430,32 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         calendar: { ...state.calendar, selectedDate: null }
+      }
+    case RESET_PRICE:
+      return {
+        ...state,
+        pricing: {
+          info: null,
+          course_type: null,
+          loading: false,
+          schoolId: null,
+          datetime: null
+        }
+      }
+    case FETCH_PRICE[REQUEST]:
+      return {
+        ...state,
+        pricing: { ...action.data, loading: true, info: null }
+      }
+    case FETCH_PRICE[SUCCESS]:
+      return {
+        ...state,
+        pricing: { ...state.pricing, loading: false, info: action.data }
+      }
+    case FETCH_PRICE[FAILURE]:
+      return {
+        ...state,
+        pricing: { ...state.pricing, loading: false }
       }
     default:
       return state

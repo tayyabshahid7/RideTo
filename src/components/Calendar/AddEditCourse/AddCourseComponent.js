@@ -4,10 +4,15 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import styles from './styles.scss'
 import CourseForm from './CourseForm'
-import { createCourse } from 'store/course'
+import { createCourse, fetchPrice, resetPrice } from 'store/course'
 import { loadCourseTypes } from 'store/info'
 
 class AddCourseComponent extends Component {
+  componentDidMount() {
+    const { resetPrice } = this.props
+    resetPrice()
+  }
+
   componentDidUpdate(prevProps) {
     const { saving, course, history, error } = this.props
     if (prevProps.saving === true && saving === false) {
@@ -25,31 +30,12 @@ class AddCourseComponent extends Component {
   }
 
   render() {
-    let {
-      schools,
-      saving,
-      info,
-      loadCourseTypes,
-      location,
-      history,
-      schoolId,
-      instructors
-    } = this.props
+    let { course, location, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
     return (
       <div className={styles.addCourse}>
-        <CourseForm
-          schools={schools}
-          saving={saving}
-          info={info}
-          date={date}
-          onSubmit={this.onSave.bind(this)}
-          loadCourseTypes={loadCourseTypes}
-          history={history}
-          schoolId={schoolId}
-          instructors={instructors}
-        />
+        <CourseForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
       </div>
     )
   }
@@ -63,6 +49,7 @@ const mapStateToProps = (state, ownProps) => {
     course: state.course.single.course,
     instructors: state.instructor.instructors,
     error: state.course.single.error,
+    pricing: state.course.pricing,
     info: state.info
   }
 }
@@ -71,7 +58,9 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       createCourse,
-      loadCourseTypes
+      loadCourseTypes,
+      fetchPrice,
+      resetPrice
     },
     dispatch
   )

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
 import CourseForm from './CourseForm'
-import { getSingleCourse, updateCourse } from 'store/course'
+import { getSingleCourse, updateCourse, fetchPrice } from 'store/course'
 import { loadCourseTypes } from 'store/info'
 
 class EditCourseComponent extends Component {
@@ -34,17 +34,7 @@ class EditCourseComponent extends Component {
   }
 
   render() {
-    let {
-      schools,
-      saving,
-      info,
-      loadCourseTypes,
-      history,
-      loading,
-      course,
-      schoolId,
-      instructors
-    } = this.props
+    let { loading, course } = this.props
 
     if (loading) {
       return <div>Loading...</div>
@@ -55,17 +45,7 @@ class EditCourseComponent extends Component {
 
     return (
       <div className={styles.addCourse}>
-        <CourseForm
-          schools={schools}
-          course={course}
-          saving={saving}
-          info={info}
-          onSubmit={this.onSave.bind(this)}
-          loadCourseTypes={loadCourseTypes}
-          history={history}
-          schoolId={schoolId}
-          instructors={instructors}
-        />
+        <CourseForm {...this.props} onSubmit={this.onSave.bind(this)} />
       </div>
     )
   }
@@ -79,6 +59,7 @@ const mapStateToProps = (state, ownProps) => {
     course: state.course.single.course,
     saving: state.course.single.saving,
     instructors: state.instructor.instructors,
+    pricing: state.course.pricing,
     info: state.info
   }
 }
@@ -88,7 +69,8 @@ const mapDispatchToProps = dispatch =>
     {
       getSingleCourse,
       updateCourse,
-      loadCourseTypes
+      loadCourseTypes,
+      fetchPrice
     },
     dispatch
   )

@@ -110,3 +110,9 @@ export const getCourseTypes = async schoolId => {
   const response = await get(path)
   return response
 }
+
+export const getPricingForCourse = async (schoolId, course_type, datetime) => {
+  const path = `school/${schoolId}/pricing`
+  const response = await get(path, { course_type, datetime })
+  return response
+}
