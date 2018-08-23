@@ -4,7 +4,7 @@ import { Button, Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
-import { DAY_FORMAT2 } from 'common/constants'
+import { DAY_FORMAT2, DAY_FORMAT3 } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 
@@ -63,6 +63,26 @@ class CourseForm extends React.Component {
     ) {
       this.props.loadCourseTypes({ schoolId: this.props.schoolId })
     }
+    this.loadPricing()
+  }
+
+  componentDidUpdate() {
+    this.loadPricing()
+  }
+
+  loadPricing() {
+    const { fetchPrice, schoolId, pricing } = this.props
+    const { course_type_id, date, time } = this.state.course
+    if (course_type_id && date && time) {
+      let datetime = moment(new Date(`${date} ${time}`)).format(DAY_FORMAT3)
+      if (
+        pricing.schoolId !== schoolId ||
+        pricing.course_type !== course_type_id ||
+        pricing.datetime !== datetime
+      ) {
+        fetchPrice({ course_type: course_type_id, schoolId, datetime })
+      }
+    }
   }
 
   handleChangeRawEvent(event) {
@@ -110,7 +130,7 @@ class CourseForm extends React.Component {
   }
 
   render() {
-    let { info, saving, instructors } = this.props
+    let { info, saving, instructors, pricing } = this.props
     const {
       course_type_id,
       instructor_id,
@@ -228,14 +248,20 @@ class CourseForm extends React.Component {
                   onChange={this.handleChangeRawEvent.bind(this)}
                 />
               </Col>
-              {/* <Col>
-              <InputTextGroup
-                name="price"
-                value={price}
-                label="Payout Per Booking"
-                disabled
-              />
-            </Col> */}
+              <Col>
+                <InputTextGroup
+                  name="price"
+                  value={
+                    pricing.loading
+                      ? '...'
+                      : pricing.info
+                        ? `£${(pricing.info.payout / 100.0).toFixed(2)}`
+                        : ''
+                  }
+                  label="Payout Per Booking"
+                  disabled
+                />
+              </Col>
             </Row>
             <Row>
               <Col>
