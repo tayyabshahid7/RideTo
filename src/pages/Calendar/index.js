@@ -14,7 +14,6 @@ import { Col, Row } from 'reactstrap'
 import { getCourses, updateCalendarSetting } from 'store/course'
 import { getInstructors } from 'store/instructor'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
-import SchoolSelect from 'components/SchoolSelect'
 import commonStyles from '../styles.scss'
 
 class CalendarPage extends Component {
@@ -198,9 +197,6 @@ class CalendarPage extends Component {
               styles.calendarColumn,
               commonStyles.mainContent
             )}>
-            <div className={styles.schoolWrapper}>
-              <SchoolSelect />
-            </div>
             <CalendarComponent
               days={days}
               calendar={calendar}
