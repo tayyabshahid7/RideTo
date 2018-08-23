@@ -1,4 +1,4 @@
-$h: 60px;
+$h: 50px;
 .container {
   display: flex;
   height: $h;
@@ -11,6 +11,7 @@ $h: 60px;
 .title {
   flex-grow: 1;
   text-align: center;
+  font-size: 1.5rem;
 }
 .next {
   width: 40px;

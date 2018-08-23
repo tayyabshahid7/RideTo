@@ -9,9 +9,7 @@ const CalendarHeader = ({ calendar, handleCustomEvent }) => (
       <i className="fa fa-angle-left" />
     </div>
     <div className={styles.title}>
-      <h1>
-        {moment(new Date(calendar.year, calendar.month, 1)).format('MMMM YYYY')}
-      </h1>
+      {moment(new Date(calendar.year, calendar.month, 1)).format('MMMM YYYY')}
     </div>
     <div className={styles.next} onClick={() => handleCustomEvent('next')}>
       <i className="fa fa-angle-right" />
