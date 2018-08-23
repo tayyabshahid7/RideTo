@@ -94,7 +94,7 @@ class Orders extends Component {
             onChange={changeSchool}
           />
           <div className={styles.orderFilters}>
-            <h2>Sort by training date</h2>
+            <div className={styles.sortByTraining}>Sort by training date</div>
             <OrderFilters
               filters={getDateFilters()}
               selectedFilter={dateFilter}
