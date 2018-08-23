@@ -147,7 +147,6 @@ export const updateCourse = ({
       data: { course: response }
     })
   } catch (error) {
-    console.log('Error', error)
     dispatch({ type: UPDATE[FAILURE], error })
   }
 }
@@ -161,7 +160,6 @@ export const createCourse = ({ schoolId, data }) => async dispatch => {
       data: { course: response }
     })
   } catch (error) {
-    console.log('Error', error)
     dispatch({ type: CREATE[FAILURE], error })
   }
 }
@@ -182,7 +180,6 @@ export const fetchPrice = ({
       data: response
     })
   } catch (error) {
-    console.log('Error', error)
     dispatch({ type: FETCH_PRICE[FAILURE], error })
   }
 }
