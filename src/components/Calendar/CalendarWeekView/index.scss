@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow-y: scroll;
   margin-right: -15px;
   li {
     list-style: none;
@@ -12,14 +11,28 @@
     color: #666;
   }
 }
+
+.weekDays {
+  flex: 0 0 50px;
+  margin-left: 50px;
+  margin-right: 15px;
+}
+
+.weekviewContent {
+  flex: 1 1 auto;
+  overflow-y: scroll;
+  display: flex;
+}
+
 .timeline {
   display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
+  // position: absolute;
+  flex: 0 0 50px;
+  // top: 0;
+  // left: 0;
   height: 100%;
   width: 100%;
-  padding-top: 50px;
+  // padding-top: 50px;
   li {
     position: relative;
     height: 50px;
@@ -46,6 +59,7 @@
 .events {
   position: relative;
   z-index: 1;
+  flex: 1 1 auto;
 }
 
 .eventsGroup {
@@ -186,8 +200,8 @@
 @media only screen and (min-width: 1000px) {
   .events {
     /* 60px is the .timeline element width */
-    width: calc(100% - 60px);
-    margin-left: 60px;
+    // width:calc(100% - 60px);
+    // margin-left: 60px;
   }
 }
 
