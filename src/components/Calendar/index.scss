@@ -30,6 +30,16 @@
   color: #fa840e !important;
 }
 
+.rightButtons {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  select {
+    align-self: flex-end;
+    margin-bottom: 8px;
+  }
+}
+
 /* ============================
               Mobile Responsiveness
  ============================*/

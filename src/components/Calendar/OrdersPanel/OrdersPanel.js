@@ -101,9 +101,9 @@ class OrdersPanel extends React.Component {
 
     return (
       <div className={styles.ordersPanel}>
-        <h3>
+        <div className={styles.title}>
           {course.time.substring(0, 5)} {course.course_type.name} {dateStr}
-        </h3>
+        </div>
         <div>
           <Link to={backLink}>&laquo; Back to day view</Link>
           {course.orders.length === 0 && (

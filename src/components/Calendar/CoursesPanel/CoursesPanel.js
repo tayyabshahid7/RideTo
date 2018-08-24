@@ -13,7 +13,7 @@ class CoursesPanel extends React.Component {
     const title = moment(date, 'YYYY-MM-DD').format(DAY_FORMAT2)
     return (
       <div className={styles.coursesPanel}>
-        <h3>{title}</h3>
+        <div className={styles.title}>{title}</div>
         <div className={styles.scrollContainer}>
           <div className={styles.scrollContent}>
             {courses.map(course => (

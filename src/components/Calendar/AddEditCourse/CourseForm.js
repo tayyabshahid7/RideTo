@@ -126,7 +126,7 @@ class CourseForm extends React.Component {
     } else if (date) {
       title = moment(new Date(date)).format(DAY_FORMAT2)
     }
-    return <h3>{title}</h3>
+    return <div className={styles.title}>{title}</div>
   }
 
   render() {

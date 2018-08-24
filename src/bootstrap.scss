@@ -6,7 +6,7 @@ $light: #ffffff;
 $white: #ffffff;
 $black: #000000;
 $dark: #434343;
-$grey: #434343;
+$grey: #707070;
 $danger: #fa0e0e;
 $warning: #fa840e;
 $highlight: #ddf9f3;
@@ -27,3 +27,7 @@ $theme-colors: (
 );
 
 @import '~bootstrap/scss/bootstrap';
+
+.btn-primary {
+  color: white;
+}

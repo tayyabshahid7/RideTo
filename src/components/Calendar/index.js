@@ -9,6 +9,7 @@ import styles from './index.scss'
 import { CALENDAR_VIEW } from '../../common/constants'
 import CalendarWeekView from './CalendarWeekView'
 import Loading from 'components/Loading'
+import SchoolSelect from 'components/SchoolSelect'
 
 class CalendarComponent extends Component {
   renderOverview() {
@@ -54,7 +55,8 @@ class CalendarComponent extends Component {
               </span>
             </div>
           </Col>
-          <Col className="text-right">
+          <Col className={styles.rightButtons}>
+            <SchoolSelect className="Test" />
             <Link to={`/calendar/courses/create`}>
               <Button color="primary">Add Course</Button>
             </Link>

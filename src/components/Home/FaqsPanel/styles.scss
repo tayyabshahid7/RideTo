@@ -1,0 +1,17 @@
+.container {
+}
+.questionAnswer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.answer {
+  padding: 8px;
+}
+
+.title {
+  font-size: 20px;
+  font-size: bold;
+  margin-bottom: 32px;
+}
