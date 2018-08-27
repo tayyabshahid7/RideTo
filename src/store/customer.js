@@ -34,8 +34,27 @@ actions.fetchCustomers = (...args) => dispatch => {
 }
 
 selectors.getItems = ({ results, items }) => {
-  console.log(results, items)
   return results.map(id => items[id])
+}
+
+const isFetching = (state = false, action) => {
+  switch (action.type) {
+    case FETCH:
+      return true
+    case FETCH_SUCCESS:
+      return false
+    default:
+      return state
+  }
+}
+
+const total = (state = 0, action) => {
+  switch (action.type) {
+    case FETCH_SUCCESS:
+      return action.result.count
+    default:
+      return state
+  }
 }
 
 const results = (state = [], action) => {
@@ -66,5 +85,7 @@ const items = (state = {}, action) => {
 
 export default combineReducers({
   items,
-  results
+  results,
+  total,
+  isFetching
 })
