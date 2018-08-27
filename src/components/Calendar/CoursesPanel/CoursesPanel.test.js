@@ -64,7 +64,7 @@ it('Renders Course title', () => {
     </MemoryRouter>
   )
 
-  const title = wrapper.find('h3')
+  const title = wrapper.find('.coursesPanel > .title')
   expect(title.text()).toBe('Monday 1st January 2018')
 })
 
