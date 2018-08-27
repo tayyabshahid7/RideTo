@@ -36,7 +36,7 @@ class SearchField extends React.Component {
             onChange={this.handleChangeValue}
             onKeyPress={this.handleKeyPress}
           />
-          <InputGroupAddon addonType="prepend">
+          <InputGroupAddon addonType="append">
             <Button
               color="primary"
               onClick={() => onSearch(value)}
