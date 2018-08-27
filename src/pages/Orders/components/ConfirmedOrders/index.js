@@ -4,6 +4,7 @@ import Loading from 'components/Loading'
 import styles from './styles.scss'
 import commonStyles from 'pages/styles.scss'
 import Header from 'components/DataTable/Header'
+import Cell from 'components/DataTable/Cell'
 
 class ConfirmedOrders extends Component {
   constructor(props) {
@@ -96,7 +97,7 @@ class ConfirmedOrders extends Component {
                       }}>
                       Course
                     </Header>
-                    <th>Bike Hire</th>
+                    <Header>Bike Hire</Header>
                     <Header
                       column="user_name"
                       ordering={user_name || ''}
@@ -105,48 +106,48 @@ class ConfirmedOrders extends Component {
                       }}>
                       Rider Name
                     </Header>
-                    <th>Mobile #</th>
-                    <th>Status</th>
+                    <Header>Mobile #</Header>
+                    <Header>Status</Header>
                   </tr>
                 </thead>
                 <tbody>
                   {this.props.confirmedOrders.results.map(order => (
                     <tr key={order.friendly_id}>
-                      <td>{order.friendly_id}</td>
-                      <td>
+                      <Cell>{order.friendly_id}</Cell>
+                      <Cell>
                         {this._checkCancelledOrRejected(order)
                           ? order.user_date
                           : order.start_time}
-                      </td>
-                      <td>
+                      </Cell>
+                      <Cell>
                         {order.selected_licence === 'LICENCE_CBT'
                           ? 'CBT Training '
                           : 'CBT Renewal'}
-                      </td>
-                      <td>
+                      </Cell>
+                      <Cell>
                         {order.bike_hire === 'auto'
                           ? 'Automatic'
                           : order.bike_hire === 'manual'
                             ? 'Manual'
                             : 'None'}
-                      </td>
-                      <td>
+                      </Cell>
+                      <Cell>
                         {this._checkCancelledOrRejected(order)
                           ? '-'
                           : order.user_name}
-                      </td>
-                      <td>
+                      </Cell>
+                      <Cell>
                         {this._checkCancelledOrRejected(order)
                           ? '-'
                           : order.user_phone}
-                      </td>
-                      <td>
+                      </Cell>
+                      <Cell>
                         {order.cancelled
                           ? 'Cancelled'
                           : order.booking_status === 'SCHOOL_CONFIRMED_BOOK'
                             ? 'Confirmed'
                             : 'Rejected'}
-                      </td>
+                      </Cell>
                     </tr>
                   ))}
                 </tbody>

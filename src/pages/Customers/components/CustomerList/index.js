@@ -2,6 +2,7 @@ import React from 'react'
 
 import commonStyles from 'pages/styles.scss'
 import Header from 'components/DataTable/Header'
+import Cell from 'components/DataTable/Cell'
 import Loading from 'components/Loading'
 
 const getDisplaySource = source => {
@@ -26,18 +27,18 @@ class CustomerList extends React.Component {
               <Header column="source" ordering={ordering} onSort={onSort}>
                 Source
               </Header>
-              <th>Latest Activity</th>
+              <Header>Latest Activity</Header>
             </tr>
           </thead>
           <tbody>
             {customers.map(customer => (
               <tr key={customer.id}>
-                <td>
+                <Cell>
                   {customer.first_name} {customer.last_name}
-                </td>
-                <td>{customer.phone}</td>
-                <td>{getDisplaySource(customer.source)}</td>
-                <td>{customer.updated_at}</td>
+                </Cell>
+                <Cell>{customer.phone}</Cell>
+                <Cell>{getDisplaySource(customer.source)}</Cell>
+                <Cell>{customer.updated_at}</Cell>
               </tr>
             ))}
           </tbody>

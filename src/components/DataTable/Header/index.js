@@ -20,10 +20,11 @@ class Header extends React.Component {
   }
 
   render() {
-    const { children, column, ordering = '' } = this.props
+    const { children, column = '', ordering = '' } = this.props
     const direction = ordering.startsWith('-') ? 'asc' : 'desc'
+
     const className =
-      ordering.slice(-column.length) === column
+      column && ordering.slice(-column.length) === column
         ? `${styles.header} ${styles[direction]}`
         : styles.header
 
