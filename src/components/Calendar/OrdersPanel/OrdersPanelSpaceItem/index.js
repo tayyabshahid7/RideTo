@@ -6,7 +6,7 @@ const OrdersPanelSpaceItem = ({ onAdd, onRemove }) => {
   return (
     <div className={styles.container}>
       <span className={styles.info}>Available</span>
-      <Button color="primary" onClick={onAdd} className="mr-1">
+      <Button color="primary" onClick={onAdd} className="mr-1 btn-padding-md">
         Add
       </Button>
       <Button color="" onClick={onRemove}>

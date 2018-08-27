@@ -19,7 +19,7 @@ const CalendarDayCell = ({ day, calendar, history }) => {
       <div className={styles.date}>{day.date.getDate()}</div>
       {day.courses &&
         day.courses.length > 0 && (
-          <div>
+          <div className={styles.courseContainer}>
             <CalendarDaycellCourse course={day.courses[0]} />
             {day.courses.length > 1 && (
               <CalendarDaycellCourse course={day.courses[1]} />

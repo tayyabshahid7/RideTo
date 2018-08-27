@@ -190,9 +190,9 @@ class CalendarPage extends Component {
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
       <div className={styles.container}>
-        <Row className="h-100">
+        <Row className={styles.content}>
           <Col
-            xs="8"
+            lg="8"
             className={classnames(
               styles.calendarColumn,
               commonStyles.mainContent
@@ -204,7 +204,7 @@ class CalendarPage extends Component {
               history={history}
             />
           </Col>
-          <Col xs="4" className={styles.rightPanel}>
+          <Col lg="4" className={styles.rightPanel}>
             <Route
               exact
               path="/calendar/:date"

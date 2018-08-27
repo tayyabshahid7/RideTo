@@ -47,7 +47,7 @@ class Dashboard extends Component {
         <Loading loading={this.props.loading}>
           <Row>
             <Col
-              xs="8"
+              lg="8"
               className={classnames(
                 styles.leftColumn,
                 commonStyles.mainContent
@@ -74,7 +74,7 @@ class Dashboard extends Component {
                 </div>
               )}
             </Col>
-            <Col xs="4" className={styles.rightPanel}>
+            <Col lg="4" className={styles.rightPanel}>
               <FaqsPanel />
             </Col>
           </Row>

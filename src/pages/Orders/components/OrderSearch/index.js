@@ -37,7 +37,10 @@ class OrderSearch extends React.Component {
             onKeyPress={this.handleKeyPress}
           />
           <InputGroupAddon addonType="prepend">
-            <Button color="primary" onClick={() => onSearch(value)}>
+            <Button
+              color="primary"
+              onClick={() => onSearch(value)}
+              className="btn-padding-md">
               Search
             </Button>
           </InputGroupAddon>

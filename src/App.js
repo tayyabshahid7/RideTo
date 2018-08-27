@@ -9,7 +9,7 @@ import Login from './pages/Login'
 import MainLayout from './layouts/MainLayout'
 import ProtectedRoute from './components/ProtectedRoute'
 import history from './history1'
-
+import 'bootstrap'
 import './bootstrap.scss'
 import styles from './App.scss'
 
