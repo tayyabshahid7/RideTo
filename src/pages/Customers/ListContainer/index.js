@@ -1,9 +1,13 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Button } from 'reactstrap'
 
 import commonStyles from 'pages/styles.scss'
+import styles from './ListContainer.scss'
 import CustomerList from 'pages/Customers/components/CustomerList'
+import SearchField from 'components/SearchField'
 import PaginationLinks from 'components/PaginationLinks'
 import { actions, selectors } from 'store/customer'
 
@@ -12,11 +16,13 @@ class CustomerListContainer extends React.Component {
     super(props)
 
     this.state = {
-      ordering: '-updated_at'
+      ordering: '-updated_at',
+      search: null
     }
 
     this.handleSort = this.handleSort.bind(this)
     this.handleChangePage = this.handleChangePage.bind(this)
+    this.handleSearch = this.handleSearch.bind(this)
   }
 
   componentDidMount() {
@@ -24,8 +30,8 @@ class CustomerListContainer extends React.Component {
   }
 
   fetchCustomers() {
-    const { ordering, page } = this.state
-    this.props.fetchCustomers({ ordering, page })
+    const { ordering, page, search } = this.state
+    this.props.fetchCustomers({ ordering, page, search })
   }
 
   handleSort(ordering) {
@@ -36,13 +42,30 @@ class CustomerListContainer extends React.Component {
     this.setState({ page, loading: true }, () => this.fetchCustomers())
   }
 
+  handleSearch(search) {
+    this.setState({ search, loading: true }, () => {
+      this.fetchCustomers()
+    })
+  }
+
   render() {
     const { customers, total, isFetching } = this.props
     const { ordering, page } = this.state
 
     return (
       <div className={commonStyles.mainContent}>
-        <h1>Customers</h1>
+        <h1>Customer Information</h1>
+        <div className={styles.heading}>
+          <div className={styles.search}>
+            <SearchField
+              onSearch={this.handleSearch}
+              placeholder="Search by Name, Order, Phone"
+            />
+          </div>
+          <Button color="primary" tag={Link} to="/customer/new">
+            Create Customer
+          </Button>
+        </div>
         <CustomerList
           customers={customers}
           ordering={ordering}

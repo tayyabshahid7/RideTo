@@ -1,0 +1,11 @@
+.heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+
+  .search {
+    flex-grow: 1;
+    margin-right: 32px;
+  }
+}

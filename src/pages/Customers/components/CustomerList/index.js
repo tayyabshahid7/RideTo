@@ -1,6 +1,5 @@
 import React from 'react'
 
-import styles from './CustomerList.scss'
 import commonStyles from 'pages/styles.scss'
 import Header from 'components/DataTable/Header'
 import Loading from 'components/Loading'
