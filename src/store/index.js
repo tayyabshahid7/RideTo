@@ -5,6 +5,7 @@ import auth from './auth'
 import course from './course'
 import info from './info'
 import instructor from './instructor'
+import customer from './customer'
 
 const appReducer = combineReducers({
   auth,
@@ -12,6 +13,7 @@ const appReducer = combineReducers({
   info,
   course,
   orders,
-  instructor
+  instructor,
+  customer
 })
 export default appReducer

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Loading from 'components/Loading'
+
 import styles from './styles.scss'
+import commonStyles from 'pages/styles.scss'
 
 class ConfirmedOrders extends Component {
   constructor(props) {
@@ -81,7 +83,7 @@ class ConfirmedOrders extends Component {
         {
           <div>
             <Loading loading={this.props.loading}>
-              <table>
+              <table className={commonStyles.dataTable}>
                 <thead>
                   <tr>
                     <th

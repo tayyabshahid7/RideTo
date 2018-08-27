@@ -11,3 +11,12 @@ export function createRequestTypes(base) {
     return acc
   }, {})
 }
+
+export const normalize = (items, idField = 'id') => {
+  return items.reduce((normalized, item) => {
+    return {
+      ...normalized,
+      [item[idField]]: item
+    }
+  }, {})
+}
