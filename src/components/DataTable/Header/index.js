@@ -11,6 +11,9 @@ class Header extends React.Component {
 
   handleSort(event) {
     const { column, ordering, onSort } = this.props
+    if (!onSort) {
+      return
+    }
 
     if (ordering === column) {
       onSort(`-${column}`, event.shiftKey)
@@ -22,7 +25,6 @@ class Header extends React.Component {
   render() {
     const { children, column = '', ordering = '' } = this.props
     const direction = ordering.startsWith('-') ? 'asc' : 'desc'
-
     const className =
       column && ordering.slice(-column.length) === column
         ? `${styles.header} ${styles[direction]}`

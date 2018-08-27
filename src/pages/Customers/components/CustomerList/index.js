@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import commonStyles from 'pages/styles.scss'
 import Header from 'components/DataTable/Header'
@@ -7,14 +8,6 @@ import Loading from 'components/Loading'
 
 const getDisplaySource = ({ source }) => {
   return source === 'RIDETO' ? 'RideTo' : 'Direct'
-}
-
-const getDispalyOrder = ({ source, orders = [] }) => {
-  const order = orders[0]
-
-  return source === 'RIDETO'
-    ? `#${order.friendly_id}`
-    : `DIRECT #${order.friendly_id}`
 }
 
 class CustomerList extends React.Component {
@@ -42,11 +35,13 @@ class CustomerList extends React.Component {
             {customers.map(customer => (
               <tr key={customer.id}>
                 <Cell>
-                  {customer.first_name} {customer.last_name}
+                  <Link to={`/customer/${customer.id}`}>
+                    {customer.first_name} {customer.last_name}
+                  </Link>
                 </Cell>
                 <Cell>{customer.phone}</Cell>
                 <Cell>{getDisplaySource(customer)}</Cell>
-                <Cell>{getDispalyOrder(customer)}</Cell>
+                <Cell>{customer.orders[0] || ''}</Cell>
               </tr>
             ))}
           </tbody>
