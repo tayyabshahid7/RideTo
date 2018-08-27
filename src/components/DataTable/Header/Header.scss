@@ -1,2 +1,9 @@
 .header {
+  &.asc::after {
+    content: '⬇';
+  }
+
+  &.desc::after {
+    content: '⬆';
+  }
 }

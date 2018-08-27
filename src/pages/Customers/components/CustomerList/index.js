@@ -10,37 +10,21 @@ const getDisplaySource = source => {
 }
 
 class CustomerList extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.handleSort = this.handleSort.bind(this)
-  }
-
-  handleSort(column) {
-    const { ordering = '', onSort } = this.props
-
-    if (ordering === column) {
-      return onSort(`-${column}`)
-    } else {
-      return onSort(column)
-    }
-  }
-
   render() {
-    const { customers, isLoading } = this.props
+    const { customers, ordering, isLoading, onSort } = this.props
 
     return (
       <Loading loading={isLoading}>
         <table className={commonStyles.dataTable}>
           <thead>
             <tr>
-              <Header name="last_name" onSort={this.handleSort}>
+              <Header column="last_name" ordering={ordering} onSort={onSort}>
                 Name
               </Header>
-              <Header name="phone" onSort={this.handleSort}>
+              <Header column="phone" ordering={ordering} onSort={onSort}>
                 Phone
               </Header>
-              <Header name="source" onSort={this.handleSort}>
+              <Header column="source" ordering={ordering} onSort={onSort}>
                 Source
               </Header>
               <th>Latest Activity</th>
