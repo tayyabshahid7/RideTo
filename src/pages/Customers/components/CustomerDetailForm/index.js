@@ -1,33 +1,16 @@
 import React from 'react'
 import moment from 'moment'
-import {
-  Button,
-  Label,
-  Row,
-  Col,
-  Input,
-  InputGroup,
-  InputGroupAddon,
-  InputGroupText,
-  FormGroup
-} from 'reactstrap'
-import InputTextGroup from 'components/Forms/InputTextGroup'
-import Checkbox from 'components/Checkbox'
+import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
 import styles from './CustomerDetailForm.scss'
+import Checkbox from 'components/Checkbox'
+import InputTextGroup from 'components/Forms/InputTextGroup'
+import AgeInput from 'components/AgeInput'
 import MinimalSelect from 'components/MinimalSelect'
 import {
   getRidingExperienceOptions,
   getCurrentLicenceOptions
 } from 'services/customer'
-
-const getAge = birthdate => {
-  const age = birthdate
-    ? moment().diff(moment(birthdate, 'YYYY-MM-DD'), 'years')
-    : '-'
-
-  return `${age} Years`
-}
 
 class CustomerDetailForm extends React.Component {
   constructor(props) {
@@ -61,19 +44,14 @@ class CustomerDetailForm extends React.Component {
             />
           </Col>
           <Col>
-            <InputTextGroup label="Birth Date" className="form-group">
-              <InputGroup>
-                <Input
-                  name="birthdate"
-                  value={editable.birthdate || ''}
-                  type="date"
-                  onChange={this.handleChange}
-                />
-                <InputGroupAddon addonType="append">
-                  <InputGroupText>{getAge(editable.birthdate)}</InputGroupText>
-                </InputGroupAddon>
-              </InputGroup>
-            </InputTextGroup>
+            <FormGroup>
+              <Label>Birth Date</Label>
+              <AgeInput
+                name="birthdate"
+                value={editable.birthdate || ''}
+                onChange={this.handleChange}
+              />
+            </FormGroup>
           </Col>
         </Row>
         <Row>
