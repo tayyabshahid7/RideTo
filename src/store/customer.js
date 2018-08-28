@@ -51,6 +51,24 @@ actions.fetchCustomer = (...args) => dispatch => {
   }
 }
 
+actions.saveCustomer = (...args) => dispatch => {
+  dispatch({ type: SAVE })
+
+  try {
+    return customerService.saveCustomer(...args).then(res => {
+      dispatch({
+        type: SAVE_SUCCESS,
+        result: { results: [res] }
+      })
+    })
+  } catch (error) {
+    dispatch({
+      type: ERROR,
+      error
+    })
+  }
+}
+
 selectors.getItems = ({ results, items }) => {
   return results.map(id => items[id])
 }
@@ -98,7 +116,7 @@ const items = (state = {}, action) => {
     case SAVE_SUCCESS:
       return {
         ...state,
-        [action.item.id]: action.item
+        ...normalize(action.result.results)
       }
     default:
       return state

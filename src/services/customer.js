@@ -1,4 +1,4 @@
-import { get } from 'services/api'
+import { get, post, put } from 'services/api'
 
 export const fetchCustomers = async (params = {}) => {
   const path = `school/customer`
@@ -12,4 +12,12 @@ export const fetchCustomer = async (id, params = {}) => {
   const response = await get(path, params)
 
   return response
+}
+
+export const saveCustomer = async customer => {
+  const { id } = customer
+  const path = id ? `school/customer/${id}` : `school/customer`
+  const method = id ? put : post
+
+  return await method(path, customer)
 }

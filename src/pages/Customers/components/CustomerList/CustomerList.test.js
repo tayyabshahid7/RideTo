@@ -16,7 +16,7 @@ it('Renders rows', () => {
 
 it('Renders link to customers', () => {
   const wrapper = shallow(<CustomerList customers={customers} />)
-  const expected = `/customer/${customers[0].id}`
+  const expected = `/customers/${customers[0].id}`
 
   expect(
     wrapper
