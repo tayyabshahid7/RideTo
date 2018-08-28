@@ -16,6 +16,7 @@ class DetailFormContainer extends React.Component {
 
     this.handleSaveCustomer = this.handleSaveCustomer.bind(this)
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
   }
 
   componentDidMount() {
@@ -38,6 +39,10 @@ class DetailFormContainer extends React.Component {
     this.setState({ editable })
   }
 
+  handleCancel() {
+    this.setState({ editable: { ...this.props.customer } })
+  }
+
   render() {
     const { editable } = this.state
 
@@ -50,6 +55,7 @@ class DetailFormContainer extends React.Component {
           editable={editable}
           onChange={this.handleChangeCustomer}
           onSave={this.handleSaveCustomer}
+          onCancel={this.handleCancel}
         />
       </div>
     )

@@ -45,7 +45,7 @@ class CustomerDetailForm extends React.Component {
   }
 
   render() {
-    const { editable, onChange, onSave } = this.props
+    const { editable, onChange, onSave, onCancel } = this.props
 
     return (
       <div>
@@ -177,7 +177,9 @@ class CustomerDetailForm extends React.Component {
             <Button color="primary" onClick={onSave}>
               Save
             </Button>
-            <Button color="outline">Cancel</Button>
+            <Button color="outline" onClick={onCancel}>
+              Cancel
+            </Button>
           </Col>
         </Row>
       </div>
