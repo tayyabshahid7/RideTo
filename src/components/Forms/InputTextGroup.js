@@ -9,18 +9,23 @@ const InputTextGroup = ({
   inputClass = '',
   className = '',
   inputType = 'text',
+  children = null,
   ...rest
 }) => (
   <div className={className}>
     <label className="control-label">{label}</label>
-    <Input
-      type={inputType}
-      name={name}
-      className={`form-control ${inputClass}`}
-      onChange={onChange}
-      value={value}
-      {...rest}
-    />
+    {children ? (
+      children
+    ) : (
+      <Input
+        type={inputType}
+        name={name}
+        className={`form-control ${inputClass}`}
+        onChange={onChange}
+        value={value}
+        {...rest}
+      />
+    )}
   </div>
 )
 

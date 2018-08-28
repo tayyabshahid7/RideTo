@@ -47,7 +47,7 @@ const mapStateToProps = (state, props) => {
   const { id } = props
 
   return {
-    customer: selectors.getItem(state.customer, id)
+    customer: selectors.getItem(state.customer, id) || {}
   }
 }
 
