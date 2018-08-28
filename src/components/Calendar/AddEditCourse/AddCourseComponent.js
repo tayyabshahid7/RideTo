@@ -14,7 +14,19 @@ class AddCourseComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, course, history, error } = this.props
+    const { saving, course, history, error, location, schoolId } = this.props
+
+    if (schoolId !== prevProps.schoolId) {
+      let parsed = queryString.parse(location.search)
+      let date = parsed.date
+      if (date) {
+        history.push(`/calendar/${date}`)
+      } else {
+        history.push(`/calendar`)
+      }
+      return
+    }
+
     if (prevProps.saving === true && saving === false) {
       if (course) {
         history.push(`/calendar/${course.date}`)

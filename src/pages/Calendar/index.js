@@ -25,12 +25,12 @@ class CalendarPage extends Component {
   componentDidUpdate(prevProps) {
     const { schoolId, calendar } = this.props
     if (
-      (schoolId !== prevProps.schoolId ||
-        calendar.month !== prevProps.calendar.month ||
+      schoolId !== prevProps.schoolId ||
+      ((calendar.month !== prevProps.calendar.month ||
         calendar.year !== prevProps.calendar.year ||
         calendar.day !== prevProps.calendar.day ||
         calendar.viewMode !== prevProps.calendar.viewMode) &&
-      !calendar.silent
+        !calendar.silent)
     ) {
       this.loadCourses()
     }

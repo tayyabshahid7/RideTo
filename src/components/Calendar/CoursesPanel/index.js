@@ -16,7 +16,10 @@ class CoursesPanelContainer extends React.Component {
   // }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.match.params.date !== this.props.match.params.date) {
+    if (
+      this.props.schoolId !== prevProps.schoolId ||
+      prevProps.match.params.date !== this.props.match.params.date
+    ) {
       this.loadCourses()
     }
   }

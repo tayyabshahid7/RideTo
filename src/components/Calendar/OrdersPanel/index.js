@@ -15,6 +15,10 @@ class OrdersPanelContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
+    if (this.props.schoolId !== prevProps.schoolId) {
+      this.props.history.push(`/calendar/${this.props.course.date}`)
+      return
+    }
     if (prevProps.match.params.courseId !== this.props.match.params.courseId) {
       this.loadCourse()
     }
