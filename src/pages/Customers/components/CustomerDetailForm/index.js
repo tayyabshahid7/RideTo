@@ -15,6 +15,11 @@ import InputTextGroup from 'components/Forms/InputTextGroup'
 import Checkbox from 'components/Checkbox'
 
 import styles from './CustomerDetailForm.scss'
+import MinimalSelect from 'components/MinimalSelect'
+import {
+  getRidingExperienceOptions,
+  getCurrentLicenceOptions
+} from 'services/customer'
 
 const getAge = birthdate => {
   const age = birthdate
@@ -40,7 +45,7 @@ class CustomerDetailForm extends React.Component {
   }
 
   render() {
-    const { editable, onSave } = this.props
+    const { editable, onChange, onSave } = this.props
 
     return (
       <div>
@@ -72,17 +77,19 @@ class CustomerDetailForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col>
-            <InputTextGroup
-              name="current_licence"
-              value={editable.current_licence || ''}
-              label="Licence Held"
-              className="form-group"
-              type="text"
-              onChange={this.handleChange}
-            />
+          <Col sm="6">
+            <div className="form-group">
+              <Label for="current_licence">Current Licence</Label>
+              <MinimalSelect
+                options={getCurrentLicenceOptions()}
+                selected={editable.current_licence}
+                onChange={value =>
+                  onChange({ ...editable, current_licence: value })
+                }
+              />
+            </div>
           </Col>
-          <Col>
+          <Col sm="6">
             <InputTextGroup
               name="licence_number"
               value={editable.licence_number || ''}
@@ -104,15 +111,17 @@ class CustomerDetailForm extends React.Component {
               onChange={this.handleChange}
             />
           </Col>
-          <Col>
-            <InputTextGroup
-              name="riding_experience"
-              value={editable.riding_experience || ''}
-              label="Riding Experience"
-              className="form-group"
-              type="text"
-              onChange={this.handleChange}
-            />
+          <Col sm="6">
+            <div className="form-group">
+              <Label for="current_licence">Riding Experience</Label>
+              <MinimalSelect
+                options={getRidingExperienceOptions()}
+                selected={editable.riding_experience}
+                onChange={value =>
+                  onChange({ ...editable, riding_experience: value })
+                }
+              />
+            </div>
           </Col>
         </Row>
         <Row>
