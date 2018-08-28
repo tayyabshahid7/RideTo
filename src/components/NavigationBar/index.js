@@ -61,7 +61,8 @@ let NavigationBar = ({ history }) => {
             </NavLink>
           </li>
         </ul>
-        <form class={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
+        <form
+          className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
           <UserMenu history={history} />
         </form>
       </div>
