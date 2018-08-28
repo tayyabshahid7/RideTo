@@ -1,0 +1,33 @@
+.details {
+  flex-grow: 1;
+  max-width: 700px;
+  margin-right: 32px;
+
+  padding: 16px 24px;
+  background: white;
+}
+
+.details hr {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-top: 1px solid #cacccd;
+}
+
+.block {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.intro {
+}
+
+@media (max-width: 768px) {
+  .details {
+    display: none;
+  }
+
+  .intro {
+    padding: 12px;
+  }
+}

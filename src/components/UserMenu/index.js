@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { logout, changeSchool } from '../../actions/authActions'
+import { logout, changeSchool } from 'store/auth'
 import styles from './styles.scss'
 
 import SchoolSelect from 'components/SchoolSelect'

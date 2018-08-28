@@ -1,21 +1,45 @@
 .container {
   display: flex;
+  align-items: center;
   width: 100%;
+  border-bottom: 1px solid grey;
+  flex: 0 0 50px;
+  background: white;
+  z-index: 10;
+  position: fixed;
+  // display: flex;
+  // width: 100%;
 }
 
 .navLinks {
   width: 85%;
+  display: flex;
+  height: 50px;
+  line-height: 50px;
+  align-items: center;
 }
-
+.logoImage {
+  // width: 120px;
+  height: 40px;
+  fill: #2cceac;
+}
+.darkLogo {
+  fill: white;
+  width: 200px;
+}
 .authMenu {
   width: 15%;
+  display: flex;
+  align-items: center;
 }
 .navLink {
   margin: 0 1rem;
   color: #95989a;
   text-decoration: none;
-  text-transform: uppercase;
   font-weight: bold;
+  &:hover {
+    text-decoration: unset;
+  }
 }
 
 .activeNavLink {

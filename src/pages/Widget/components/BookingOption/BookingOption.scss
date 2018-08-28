@@ -1,0 +1,15 @@
+.bookingOption {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.bookingOption select {
+  flex-grow: 1;
+  max-width: 72%;
+}
+
+.label {
+  font-weight: bold;
+  min-width: 90px;
+}

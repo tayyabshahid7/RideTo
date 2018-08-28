@@ -15,11 +15,11 @@ const FILTERS = [
     name: 'This Week',
     getStartDate: () =>
       moment()
-        .startOf('week')
+        .startOf('isoWeek')
         .format(DATE_FORMAT),
     getEndDate: () =>
       moment()
-        .endOf('week')
+        .endOf('isoWeek')
         .format(DATE_FORMAT)
   },
   {

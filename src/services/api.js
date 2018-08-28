@@ -8,6 +8,12 @@ export const POST_METHOD = 'POST'
 export const GET_METHOD = 'GET'
 export const BASE_URL = process.env.REACT_APP_REST_API_BASE_URL //see .env files
 
+const getCSRFToken = () => {
+  const el = document.querySelector('input[name=csrfmiddlewaretoken]')
+  return el ? el.value : null
+}
+const CSRF_TOKEN = getCSRFToken()
+
 export const apiRequest = (
   url,
   params = null,
@@ -26,37 +32,6 @@ export const apiRequest = (
     method,
     params,
     data
-  })
-}
-
-function headerForRequest(headers = {}) {
-  const _headers = {
-    ...headers,
-    'Content-Type': 'application/json'
-  }
-  let token = getToken()
-  if (token) {
-    _headers['Authorization'] = `Bearer ${token}`
-  }
-  return _headers
-}
-
-async function sendGetRequest(relativeUrl, headers = {}) {
-  const url = `${BASE_URL}${relativeUrl}`
-  return axios({
-    method: 'GET',
-    url,
-    headers: headerForRequest(headers)
-  })
-}
-
-async function sendPostRequest(relativeUrl, formData, headers = {}) {
-  const url = `${BASE_URL}${relativeUrl}`
-  return axios({
-    method: 'POST',
-    url,
-    headers: headerForRequest(headers),
-    data: formData
   })
 }
 
@@ -143,18 +118,24 @@ export const get = async (path, params) => {
     if (error.response.status === 403) {
       window.location.href = '/login'
     }
-
-    return { results: [] }
+    throw error
   }
 }
 
-export const post = async (path, data) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${getToken()}`
-    }
+export const post = async (path, data, auth = true) => {
+  const headers = {
+    'Content-Type': 'application/json'
   }
+
+  if (auth) {
+    headers.Authorization = `Bearer ${getToken()}`
+  }
+
+  if (CSRF_TOKEN) {
+    headers['X-CSRFToken'] = CSRF_TOKEN
+  }
+
+  const config = { headers }
   const url = `${BASE_URL}api/${path}`
 
   try {
@@ -162,11 +143,7 @@ export const post = async (path, data) => {
     return response.data
   } catch (error) {
     // Auth failures dump out of app
-    if (error.response.status === 403) {
-      window.location.href = '/login'
-    }
-
-    return { results: [] }
+    throw error
   }
 }
 
@@ -188,8 +165,7 @@ export const destroy = async (path, params) => {
     if (error.response.status === 403) {
       window.location.href = '/login'
     }
-
-    return { results: [] }
+    throw error
   }
 }
 
@@ -210,8 +186,7 @@ export const put = async (path, data) => {
     if (error.response.status === 403) {
       window.location.href = '/login'
     }
-
-    return { results: [] }
+    throw error
   }
 }
 
@@ -229,10 +204,17 @@ export const patch = async (path, data) => {
     return response.data
   } catch (error) {
     // Auth failures dump out of app
-    if (error.response.status === 403) {
-      window.location.href = '/login'
-    }
-
-    return { results: [] }
+    // if (error.response.status === 403) {
+    //   window.location.href = '/login'
+    // }
+    throw error
   }
+}
+
+export const parseQueryString = queryString => {
+  return queryString.split('&').reduce((data, current) => {
+    const bits = current.split('=')
+    data[bits[0]] = decodeURIComponent(bits[1])
+    return data
+  }, {})
 }

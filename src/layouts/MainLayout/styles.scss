@@ -1,0 +1,19 @@
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 56px;
+}
+
+.bgBlack {
+  background-color: black;
+}
+
+.bodyContainer {
+  // width: 70%;
+  // border-right: 1px solid;
+  padding: 20px;
+  flex: 1 1 auto;
+  display: flex;
+  overflow: auto;
+}

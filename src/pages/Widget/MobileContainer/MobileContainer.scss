@@ -1,0 +1,30 @@
+.mobileContainer {
+  width: 340px;
+}
+
+.intro {
+  background: white;
+  padding: 16px;
+}
+
+.mobileDetails {
+  padding: 16px;
+  margin-bottom: 56px;
+}
+
+.location select {
+  max-width: 100%;
+  width: 100%;
+}
+
+.location label {
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.actions {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "id": 521,
+    "name": "BLT Motorcycle Training",
+    "address_1": "Cockmannings Lane",
+    "address_2": "",
+    "town": "Orpington",
+    "postcode": "BR5 4HF",
+    "courses": [
+      {
+        "id": 1,
+        "name": "CBT Training"
+      },
+      {
+        "id": 2,
+        "name": "CBT Training Renewal"
+      }
+    ]
+  },
+  {
+    "id": 522,
+    "name": "BLT Motorcycle Training",
+    "address_1": "Lakeside Complex",
+    "address_2": "Belvedere Road",
+    "town": "Thamesmead",
+    "postcode": "SE2 9AN",
+    "courses": [
+      {
+        "id": 1,
+        "name": "CBT Training"
+      }
+    ]
+  }
+]

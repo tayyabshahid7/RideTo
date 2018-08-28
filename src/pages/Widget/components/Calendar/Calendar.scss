@@ -1,0 +1,66 @@
+.calendar {
+  position: relative;
+  min-height: 300px;
+}
+
+.noCourses {
+  min-height: 300px;
+  height: 360px;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.spinner {
+  width: 100%;
+  position: absolute;
+  top: 0;
+  z-index: 9000;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.spinner div {
+  margin-top: 40%;
+}
+
+.day {
+  font-size: 14px;
+  min-height: 32px;
+  text-align: right;
+
+  display: flex;
+  flex-direction: column;
+
+  padding-right: 4px;
+}
+
+.dayPrice {
+  font-size: 14px;
+}
+
+:global(.CalendarDay__blocked_out_of_range) .dayPrice,
+:global(.CalendarDay__blocked_calendar) .dayPrice {
+  display: none;
+}
+
+:global(.DayPicker) {
+  border: none;
+  box-shadow: none;
+}
+
+:global(.SingleDatePicker) {
+  width: 100%;
+}
+
+:global(.SingleDatePicker_picker) {
+  position: initial;
+  display: flex;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+:global(.SingleDatePickerInput) {
+  display: none;
+}

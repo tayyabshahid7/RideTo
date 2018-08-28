@@ -1,0 +1,50 @@
+.checkoutForm {
+  color: #707070;
+}
+
+.paymentFields {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 16px 16px;
+  background: white;
+}
+
+.terms {
+  text-align: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.payWith {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardImages {
+  display: flex;
+  align-items: center;
+}
+
+.cardImages img {
+  margin-left: 2px;
+  margin-right: 2px;
+  width: 42px;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.paymentError {
+  color: #f86b6b;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .cardImages img {
+    width: 36px;
+  }
+}

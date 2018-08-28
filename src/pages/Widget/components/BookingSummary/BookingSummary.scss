@@ -1,0 +1,57 @@
+.bookingSummary {
+  display: none;
+  max-width: 420px;
+  width: 100%;
+  margin-bottom: 16px;
+  color: #707070;
+}
+
+.details {
+  background: white;
+  min-height: 132px;
+}
+
+.loading {
+  padding-top: 60px;
+  min-height: 72px;
+  background: white;
+  width: 100%;
+  display: none;
+}
+
+.bikeHire,
+.startTime,
+.courseType,
+.address {
+  height: 32px;
+  padding-left: 16px;
+  padding-right: 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: solid 1px #cacccd;
+}
+
+.bikeHire {
+  border: none;
+}
+
+.heading {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+.price {
+  font-weight: bold;
+  text-align: center;
+  background: white;
+  margin-top: 16px;
+  padding: 12px;
+}
+
+@media (max-width: 768px) {
+  .bookingSummary,
+  .loading {
+    display: block;
+  }
+}

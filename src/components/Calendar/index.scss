@@ -30,26 +30,16 @@
   color: #fa840e !important;
 }
 
+.rightButtons {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  select {
+    align-self: flex-end;
+    margin-bottom: 8px;
+  }
+}
+
 /* ============================
               Mobile Responsiveness
  ============================*/
-
-@media (max-width: 768px) {
-  .container {
-    // .weekdays, .other-month {
-    //   display: none;
-    // }
-
-    li {
-      height: auto !important;
-      border: 1px solid #ededed;
-      width: 100%;
-      padding: 10px;
-      margin-bottom: -1px;
-    }
-
-    // .date {
-    //   float: none;
-    // }
-  }
-}

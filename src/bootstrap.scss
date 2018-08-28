@@ -1,19 +1,20 @@
-$primary: #2cceac !default;
+$primary: #2cceac;
 $secondary: #2c4fd3;
 $info: #5bb5cb;
 
 $light: #ffffff;
 $white: #ffffff;
 $black: #000000;
-$dark: #434343;
-$grey: #434343;
+$dark: #434343 !default;
+$grey: #707070;
 $danger: #fa0e0e;
 $warning: #fa840e;
-
+$highlight: #ddf9f3;
+$body-color: $dark;
 $theme-colors: (
   'light': $light,
   'dark': $dark,
-  'default': $black,
+  'default': $dark,
   'primary': $primary,
   'secondary': $secondary,
   'info': $info,
@@ -21,7 +22,17 @@ $theme-colors: (
   'warning': $warning,
   'danger': $danger,
   'grey': $grey,
-  'white': $white
+  'white': $white,
+  'highlight': $highlight
 );
 
 @import '~bootstrap/scss/bootstrap';
+
+.btn-primary {
+  color: white;
+}
+
+.btn-padding-md {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+}

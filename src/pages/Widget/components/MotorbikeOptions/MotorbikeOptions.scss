@@ -1,0 +1,14 @@
+.motorbikeOptions {
+}
+
+.option {
+}
+
+.motorbikeOptions input:disabled + label {
+  opacity: 0.75;
+  cursor: default;
+}
+
+.full {
+  color: #f86b6b;
+}

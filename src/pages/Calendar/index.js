@@ -2,33 +2,43 @@ import React, { Component } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
-// import { changeSchool } from 'actions/authActions'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
+import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseComponent'
+import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
-import { getCourses, updateCalendarSetting } from 'actions/course'
+import { getCourses, updateCalendarSetting } from 'store/course'
+import { getInstructors } from 'store/instructor'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
-import SchoolSelect from 'components/SchoolSelect'
+import commonStyles from '../styles.scss'
 
 class CalendarPage extends Component {
   componentDidMount() {
     this.loadCourses()
+    this.loadInstructors()
   }
 
   componentDidUpdate(prevProps) {
     const { schoolId, calendar } = this.props
     if (
-      schoolId !== prevProps.schoolId ||
-      calendar.month !== prevProps.calendar.month ||
-      calendar.year !== prevProps.calendar.year ||
-      calendar.day !== prevProps.calendar.day ||
-      calendar.viewMode !== prevProps.calendar.viewMode
+      (schoolId !== prevProps.schoolId ||
+        calendar.month !== prevProps.calendar.month ||
+        calendar.year !== prevProps.calendar.year ||
+        calendar.day !== prevProps.calendar.day ||
+        calendar.viewMode !== prevProps.calendar.viewMode) &&
+      !calendar.silent
     ) {
       this.loadCourses()
     }
+  }
+
+  loadInstructors() {
+    const { getInstructors, schoolId } = this.props
+    getInstructors(schoolId)
   }
 
   loadCourses() {
@@ -180,11 +190,13 @@ class CalendarPage extends Component {
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
       <div className={styles.container}>
-        <Row className="h-100">
-          <Col xs="8" className={styles.calendarColumn}>
-            <div className={styles.schoolWrapper}>
-              <SchoolSelect />
-            </div>
+        <Row className={styles.content}>
+          <Col
+            lg="8"
+            className={classnames(
+              styles.calendarColumn,
+              commonStyles.mainContent
+            )}>
             <CalendarComponent
               days={days}
               calendar={calendar}
@@ -192,18 +204,26 @@ class CalendarPage extends Component {
               history={history}
             />
           </Col>
-          <Col xs="4" className={styles.rightPanel}>
+          <Col lg="4" className={styles.rightPanel}>
             <Route
               exact
               path="/calendar/:date"
-              render={routeProps => (
-                <CoursesPanel {...routeProps} days={days} />
-              )}
+              render={routeProps => <CoursesPanel {...routeProps} />}
             />
             <Route
               exact
               path="/calendar/:date/courses/:courseId"
-              render={routeProps => <OrdersPanel {...routeProps} days={days} />}
+              render={routeProps => <OrdersPanel {...routeProps} />}
+            />
+            <Route
+              exact
+              path="/calendar/courses/create"
+              render={routeProps => <AddCourseComponent {...routeProps} />}
+            />
+            <Route
+              exact
+              path="/calendar/:date/courses/:courseId/edit"
+              render={routeProps => <EditCourseComponent {...routeProps} />}
             />
           </Col>
         </Row>
@@ -216,6 +236,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     schoolId: state.auth.schoolId,
     calendar: state.course.calendar
+    // selectedDate: state.course.day.date
   }
 }
 
@@ -223,6 +244,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getCourses,
+      getInstructors,
       updateCalendarSetting
     },
     dispatch

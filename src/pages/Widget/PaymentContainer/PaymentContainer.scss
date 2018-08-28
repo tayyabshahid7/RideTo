@@ -1,0 +1,39 @@
+.paymentContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 16px;
+
+  margin-bottom: 64px;
+  color: #707070;
+}
+
+.paymentDetails {
+  max-width: 420px;
+}
+
+.heading {
+  text-align: center;
+  margin: 0;
+  margin-bottom: 16px;
+}
+
+.orderDetails {
+  margin-left: 32px;
+}
+
+.cardSecure {
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 768px) {
+  .orderDetails {
+    display: none;
+  }
+
+  .paymentDetails {
+    max-width: auto;
+  }
+}

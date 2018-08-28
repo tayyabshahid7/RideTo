@@ -1,13 +1,17 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
-import { getPendingOrders } from 'actions/dashboard'
-import { changeSchool } from 'actions/authActions'
+import { Col, Row } from 'reactstrap'
+import { getPendingOrders } from 'store/dashboard'
+import { changeSchool } from 'store/auth'
 import Notifications from '../components/Notifications'
 import PendinOrdersTable from '../components/PendingOrdersTable'
 import PaginationLinks from 'components/PaginationLinks'
 import Loading from 'components/Loading'
+import FaqsPanel from 'components/Home/FaqsPanel'
 import styles from './styles.scss'
+import commonStyles from '../../styles.scss'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -39,32 +43,41 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
-        <Notifications
-          schoolName={this.props.schoolName}
-          schoolId={this.props.schoolId}
-          schools={this.props.user.suppliers}
-          changeSchool={this.props.changeSchool}
-        />
+      <div className={classnames(styles.container)}>
         <Loading loading={this.props.loading}>
-          {this.props.pendingOrders &&
-          this.props.pendingOrders.results.length > 0 ? (
-            <div className={styles.main}>
-              <PendinOrdersTable
-                orders={this.props.pendingOrders.results}
-                sortingChange={this.handleSorting}
-              />
-              <PaginationLinks
-                currentPage={this.props.page}
-                count={this.props.pendingOrders.count}
-                pageSize={20}
-                rowName={'orders'}
-                onPageChange={this.handleChangePage}
-              />
-            </div>
-          ) : (
-            <div className={styles.noResults}>ʘ‿ʘ Everything up to date!</div>
-          )}
+          <Row>
+            <Col
+              lg="8"
+              className={classnames(
+                styles.leftColumn,
+                commonStyles.mainContent
+              )}>
+              <Notifications />
+              {this.props.pendingOrders &&
+              this.props.pendingOrders.results.length > 0 ? (
+                <div className={styles.main}>
+                  <PendinOrdersTable
+                    orders={this.props.pendingOrders.results}
+                    sortingChange={this.handleSorting}
+                  />
+                  <PaginationLinks
+                    currentPage={this.props.page}
+                    count={this.props.pendingOrders.count}
+                    pageSize={20}
+                    rowName={'orders'}
+                    onPageChange={this.handleChangePage}
+                  />
+                </div>
+              ) : (
+                <div className={styles.noResults}>
+                  ʘ‿ʘ Everything up to date!
+                </div>
+              )}
+            </Col>
+            <Col lg="4" className={styles.rightPanel}>
+              <FaqsPanel />
+            </Col>
+          </Row>
         </Loading>
       </div>
     )

@@ -74,15 +74,7 @@ class ConfirmedOrders extends Component {
   }
 
   render() {
-    const {
-      friendly_id,
-      start_time,
-      bike_hire,
-      user_name,
-      user_phone,
-      booking_status,
-      selected_licence
-    } = this.state
+    const { friendly_id, start_time, user_name, selected_licence } = this.state
 
     return (
       <div className={styles.container}>

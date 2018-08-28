@@ -31,3 +31,22 @@ export const PaymentStatus = [
   { value: PAYMENT_STATUS.PAID, title: 'Paid' },
   { value: PAYMENT_STATUS.DENIED, title: 'Denied' }
 ]
+
+export const Faqs = [
+  {
+    question: 'Where do I find payment information?',
+    answer: 'Here’s an answer we can control on the admin panel..'
+  },
+  {
+    question: 'How do I confirm an order?',
+    answer: 'Here’s an answer we can control on the admin panel..'
+  },
+  {
+    question: 'How can I change bikes?',
+    answer: 'Here’s an answer we can control on the admin panel..'
+  },
+  {
+    question: 'I have another question!',
+    answer: 'Here’s an answer we can control on the admin panel..'
+  }
+]

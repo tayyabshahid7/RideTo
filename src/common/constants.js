@@ -5,6 +5,10 @@ export const CALENDAR_VIEW = {
 
 export const DATE_FORMAT = 'YYYY-MM-DD'
 
+export const DAY_FORMAT1 = 'dddd Do MMMM'
+export const DAY_FORMAT2 = 'dddd Do MMMM YYYY'
+export const DAY_FORMAT3 = 'YYYY-MM-DDThh:mm'
+
 export const WEEK_VIEW_START_TIME = 60 * 60 * 7 // 9 AM
 export const WORK_HOURS = 12
 

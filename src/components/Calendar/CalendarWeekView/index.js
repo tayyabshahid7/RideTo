@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
 import { WORK_HOURS, WEEK_VIEW_START_TIME } from '../../../common/constants'
@@ -20,6 +21,35 @@ class CalendarWeekView extends Component {
                   )
                 ).format('HH:mm')}
               </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
+  renderWeekdays() {
+    const { days, calendar } = this.props
+    let daysInfo = this.evaluateData(days)
+    return (
+      <div className={styles.weekDays}>
+        <ul>
+          {daysInfo.map((day, index) => (
+            <li
+              className={classnames(
+                styles.eventsGroup,
+                calendar.selectedDate ===
+                  moment(day.date).format('YYYY-MM-DD') && 'bg-highlight'
+              )}
+              key={index}>
+              <div className={styles.topInfo}>
+                <Link to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}>
+                  <span>
+                    {this.showMonth(day)}
+                    {moment(day.date).format('ddd D')}
+                  </span>
+                </Link>
+              </div>
             </li>
           ))}
         </ul>
@@ -82,21 +112,27 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { days, history } = this.props
+    const { days, history, calendar } = this.props
     let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.events}>
         <ul>
           {daysInfo.map((day, index) => (
-            <li className={styles.eventsGroup} key={index}>
-              <div className={styles.topInfo}>
+            <li
+              className={classnames(
+                styles.eventsGroup,
+                calendar.selectedDate ===
+                  moment(day.date).format('YYYY-MM-DD') && 'bg-highlight'
+              )}
+              key={index}>
+              {/* <div className={styles.topInfo}>
                 <Link to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}>
                   <span>
                     {this.showMonth(day)}
                     {moment(day.date).format('ddd D')}
                   </span>
                 </Link>
-              </div>
+              </div> */}
               <ul>
                 {day.courses &&
                   day.courses.length > 0 &&
@@ -120,8 +156,11 @@ class CalendarWeekView extends Component {
   render() {
     return (
       <div className={styles.container}>
-        {this.renderTimeline()}
-        {this.renderDays()}
+        {this.renderWeekdays()}
+        <div className={styles.weekviewContent}>
+          {this.renderTimeline()}
+          {this.renderDays()}
+        </div>
       </div>
     )
   }
