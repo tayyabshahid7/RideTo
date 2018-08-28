@@ -13,7 +13,17 @@ class EditCourseComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, course, history, error } = this.props
+    const { saving, course, history, error, schoolId } = this.props
+
+    if (schoolId !== prevProps.schoolId) {
+      if (course) {
+        history.push(`/calendar/${course.date}`)
+      } else {
+        history.push(`/calendar`)
+      }
+      return
+    }
+
     if (prevProps.saving === true && saving === false) {
       if (course) {
         history.push(`/calendar/${course.date}`)
