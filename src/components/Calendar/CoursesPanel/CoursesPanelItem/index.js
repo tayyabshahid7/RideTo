@@ -36,7 +36,7 @@ const CoursesPanelItem = ({ course, date }) => {
             {course.orders.map(order => (
               <tr className={styles.order} key={order.friendly_id}>
                 <td>
-                  <strong>#{order.friendly_id}</strong>
+                  <strong>{order.direct_friendly_id}</strong>
                 </td>
                 <td>{order.user_name}</td>
                 <td>{getTitleFor(BikeHires, order.bike_hire)}</td>

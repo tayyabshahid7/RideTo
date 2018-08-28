@@ -8,7 +8,7 @@ const OrdersPanelItem = ({ order }) => {
   return (
     <div className={styles.container} key={order.friendly_id}>
       <div className={styles.col}>
-        <strong>#{order.friendly_id}</strong>
+        <strong>{order.direct_friendly_id}</strong>
       </div>
       <div className={styles.col}>{order.user_name}</div>
       <div className={styles.col}>
