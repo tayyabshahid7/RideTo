@@ -17,6 +17,7 @@ const OrderDetails = ({ course, hire, supplier, isLoading }) => {
   const dateStr = `${course.date}T${course.time}`
   const startTime = moment(dateStr, 'YYYY-MM-DDTh:mm:ss')
   const displayPrice = asPoundSterling(getTotalOrderPrice(course, hire))
+  const isBikeHire = hire === 'auto' || hire === 'manual'
 
   return (
     <React.Fragment>
@@ -41,7 +42,7 @@ const OrderDetails = ({ course, hire, supplier, isLoading }) => {
         <div className={styles.includes}>
           <h3 className={styles.heading}>Includes</h3>
           <ul className={styles.checklist}>
-            <li>Bike and helmet hire (Manual Motorcycle)</li>
+            {isBikeHire && <li>Bike and helmet hire (Manual Motorcycle)</li>}
             <li>Insurance</li>
           </ul>
         </div>
