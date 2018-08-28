@@ -52,7 +52,7 @@ class DetailFormContainer extends React.Component {
           {editable.first_name} {editable.last_name}
         </h3>
         <CustomerDetailForm
-          editable={editable}
+          customer={editable}
           onChange={this.handleChangeCustomer}
           onSave={this.handleSaveCustomer}
           onCancel={this.handleCancel}

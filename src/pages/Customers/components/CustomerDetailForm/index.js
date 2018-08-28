@@ -1,5 +1,4 @@
 import React from 'react'
-import moment from 'moment'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
 import styles from './CustomerDetailForm.scss'
@@ -20,15 +19,15 @@ class CustomerDetailForm extends React.Component {
   }
 
   handleChange({ target }) {
-    const { editable, onChange } = this.props
+    const { customer, onChange } = this.props
     const { name } = target
     const value = target.type === 'checkbox' ? target.checked : target.value
 
-    onChange({ ...editable, [name]: value })
+    onChange({ ...customer, [name]: value })
   }
 
   render() {
-    const { editable, onChange, onSave, onCancel } = this.props
+    const { customer, onChange, onSave, onCancel } = this.props
 
     return (
       <div>
@@ -36,7 +35,7 @@ class CustomerDetailForm extends React.Component {
           <Col>
             <InputTextGroup
               name="phone"
-              value={editable.phone || ''}
+              value={customer.phone || ''}
               label="Phone"
               className="form-group"
               type="phone"
@@ -48,7 +47,7 @@ class CustomerDetailForm extends React.Component {
               <Label>Birth Date</Label>
               <AgeInput
                 name="birthdate"
-                value={editable.birthdate || ''}
+                value={customer.birthdate || ''}
                 onChange={this.handleChange}
               />
             </FormGroup>
@@ -60,9 +59,9 @@ class CustomerDetailForm extends React.Component {
               <Label for="current_licence">Current Licence</Label>
               <MinimalSelect
                 options={getCurrentLicenceOptions()}
-                selected={editable.current_licence}
+                selected={customer.current_licence}
                 onChange={value =>
-                  onChange({ ...editable, current_licence: value })
+                  onChange({ ...customer, current_licence: value })
                 }
               />
             </div>
@@ -70,7 +69,7 @@ class CustomerDetailForm extends React.Component {
           <Col sm="6">
             <InputTextGroup
               name="licence_number"
-              value={editable.licence_number || ''}
+              value={customer.licence_number || ''}
               label="Licence Number"
               className="form-group"
               type="text"
@@ -82,7 +81,7 @@ class CustomerDetailForm extends React.Component {
           <Col>
             <InputTextGroup
               name="national_insurance_number"
-              value={editable.national_insurance_number || ''}
+              value={customer.national_insurance_number || ''}
               label="National Insurance"
               className="form-group"
               type="text"
@@ -94,9 +93,9 @@ class CustomerDetailForm extends React.Component {
               <Label for="current_licence">Riding Experience</Label>
               <MinimalSelect
                 options={getRidingExperienceOptions()}
-                selected={editable.riding_experience}
+                selected={customer.riding_experience}
                 onChange={value =>
-                  onChange({ ...editable, riding_experience: value })
+                  onChange({ ...customer, riding_experience: value })
                 }
               />
             </div>
@@ -106,7 +105,7 @@ class CustomerDetailForm extends React.Component {
           <Col>
             <InputTextGroup
               name="email"
-              value={editable.email || ''}
+              value={customer.email || ''}
               label="Email"
               className="form-group"
               type="text"
@@ -116,7 +115,7 @@ class CustomerDetailForm extends React.Component {
           <Col>
             <InputTextGroup
               name="cbt_passed_date"
-              value={editable.cbt_passed_date || ''}
+              value={customer.cbt_passed_date || ''}
               label="CBT Passed Date"
               className="form-group"
               type="date"
@@ -131,7 +130,7 @@ class CustomerDetailForm extends React.Component {
               <Checkbox
                 id="email_optin"
                 name="email_optin"
-                checked={editable.email_optin || false}
+                checked={customer.email_optin || false}
                 onChange={this.handleChange}
               />
             </div>
@@ -144,7 +143,7 @@ class CustomerDetailForm extends React.Component {
               <Input
                 type="textarea"
                 name="notes"
-                value={editable.notes || ''}
+                value={customer.notes || ''}
                 onChange={this.handleChange}
               />
             </FormGroup>
