@@ -33,8 +33,30 @@ actions.fetchCustomers = (...args) => dispatch => {
   }
 }
 
+actions.fetchCustomer = (...args) => dispatch => {
+  dispatch({ type: FETCH })
+
+  try {
+    return customerService.fetchCustomer(...args).then(res => {
+      dispatch({
+        type: FETCH_SUCCESS,
+        result: { results: [res] }
+      })
+    })
+  } catch (error) {
+    dispatch({
+      type: ERROR,
+      error
+    })
+  }
+}
+
 selectors.getItems = ({ results, items }) => {
   return results.map(id => items[id])
+}
+
+selectors.getItem = ({ results, items }, id) => {
+  return items[id]
 }
 
 const isFetching = (state = false, action) => {
