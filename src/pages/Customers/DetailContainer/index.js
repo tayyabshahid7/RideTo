@@ -6,7 +6,7 @@ import DetailFormContainer from 'pages/Customers/DetailFormContainer'
 
 class CustomerDetailContainer extends React.Component {
   render() {
-    const { match } = this.props
+    const { match, history } = this.props
     const { id } = match.params
 
     return (
@@ -15,7 +15,7 @@ class CustomerDetailContainer extends React.Component {
 
         <Row>
           <Col>
-            <DetailFormContainer id={id} />
+            <DetailFormContainer id={id} history={history} />
           </Col>
           <Col>
             <h2>Orders</h2>

@@ -28,23 +28,19 @@ class CustomerDetailForm extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      editable: props.customer || {}
-    }
     this.handleChange = this.handleChange.bind(this)
   }
 
   handleChange({ target }) {
-    const { editable } = this.state
+    const { editable, onChange } = this.props
     const { name } = target
     const value = target.type === 'checkbox' ? target.checked : target.value
 
-    this.setState({ editable: { ...editable, [name]: value } })
+    onChange({ ...editable, [name]: value })
   }
 
   render() {
-    const { onSave } = this.props
-    const { editable } = this.state
+    const { editable, onSave } = this.props
 
     return (
       <div>
@@ -161,7 +157,7 @@ class CustomerDetailForm extends React.Component {
               <Input
                 type="textarea"
                 name="notes"
-                value={editable.notes}
+                value={editable.notes || ''}
                 onChange={this.handleChange}
               />
             </FormGroup>
@@ -169,7 +165,7 @@ class CustomerDetailForm extends React.Component {
         </Row>
         <Row>
           <Col className={styles.actions}>
-            <Button color="primary" onClick={() => onSave(editable)}>
+            <Button color="primary" onClick={onSave}>
               Save
             </Button>
             <Button color="outline">Cancel</Button>

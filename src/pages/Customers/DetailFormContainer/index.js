@@ -10,27 +10,45 @@ class DetailFormContainer extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      editable: props.customer ? { ...props.customer } : {}
+    }
+
     this.handleSaveCustomer = this.handleSaveCustomer.bind(this)
+    this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
   }
 
   componentDidMount() {
     this.props.fetchCustomer(this.props.id)
   }
 
-  handleSaveCustomer(edited) {
-    this.props.saveCustomer(edited)
+  componentDidUpdate(prevProps) {
+    const { customer } = this.props
+
+    if (prevProps.customer.id !== customer.id) {
+      this.setState({ editable: { ...customer } })
+    }
+  }
+
+  handleSaveCustomer() {
+    this.props.saveCustomer(this.state.editable, this.props.history)
+  }
+
+  handleChangeCustomer(editable) {
+    this.setState({ editable })
   }
 
   render() {
-    const { customer } = this.props
+    const { editable } = this.state
 
     return (
       <div className={commonStyles.mainContent}>
         <h3>
-          {customer.first_name} {customer.last_name}
+          {editable.first_name} {editable.last_name}
         </h3>
         <CustomerDetailForm
-          customer={customer}
+          editable={editable}
+          onChange={this.handleChangeCustomer}
           onSave={this.handleSaveCustomer}
         />
       </div>

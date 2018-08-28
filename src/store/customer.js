@@ -51,14 +51,18 @@ actions.fetchCustomer = (...args) => dispatch => {
   }
 }
 
-actions.saveCustomer = (...args) => dispatch => {
+actions.saveCustomer = (customer, history) => dispatch => {
   dispatch({ type: SAVE })
 
   try {
-    return customerService.saveCustomer(...args).then(res => {
+    return customerService.saveCustomer(customer).then(result => {
+      if (!customer.id && result.id) {
+        history.push(`/customers/${result.id}`)
+      }
+
       dispatch({
         type: SAVE_SUCCESS,
-        result: { results: [res] }
+        result
       })
     })
   } catch (error) {
@@ -106,6 +110,19 @@ const results = (state = [], action) => {
   }
 }
 
+const result = (state = null, action) => {
+  switch (action.type) {
+    case FETCH:
+      return null
+    case SAVE:
+      return null
+    case SAVE_SUCCESS:
+      return action.result.id
+    default:
+      return state
+  }
+}
+
 const items = (state = {}, action) => {
   switch (action.type) {
     case FETCH_SUCCESS:
@@ -116,7 +133,7 @@ const items = (state = {}, action) => {
     case SAVE_SUCCESS:
       return {
         ...state,
-        ...normalize(action.result.results)
+        ...normalize([action.result])
       }
     default:
       return state
@@ -126,6 +143,7 @@ const items = (state = {}, action) => {
 export default combineReducers({
   items,
   results,
+  result,
   total,
   isFetching
 })
