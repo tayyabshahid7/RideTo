@@ -4,36 +4,14 @@ import moment from 'moment'
 import LabelField from 'pages/Widget/components/LabelField'
 import DateInput from 'components/DateInput'
 import MinimalSelect from 'components/MinimalSelect'
+import {
+  getRidingExperienceOptions,
+  getCurrentLicenceOptions
+} from 'services/customer'
 import styles from './CustomerDetailsForm.scss'
 
 const BIRTHDATE_ERROR =
   'Please enter the date in the format DD/MM/YYYY. You MUST be at least 16 years old on the selected training date.'
-const RIDING_EXPERIENCE = [
-  'Cycling',
-  'Off road motorcycling',
-  'On road motorcycling'
-].map(opt => {
-  return { name: opt, id: opt }
-})
-
-const CURRENT_LICENCES = [
-  {
-    id: 'CURRENT_LICENCES_PROVISIONAL_LICENCE',
-    name: 'UK Provisional Licence'
-  },
-  {
-    id: 'CURRENT_LICENCES_DRIVING_LICENCE',
-    name: 'UK Driving Licence'
-  },
-  {
-    id: 'CURRENT_LICENCES_CBT',
-    name: 'CBT Certificate'
-  },
-  {
-    id: 'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE',
-    name: 'EU Licence (with UK counterpart licence number)'
-  }
-]
 
 const handleChange = (event, details, errors, onChange) => {
   const { id, value } = event.target
@@ -50,8 +28,10 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
     id: null,
     name: 'Select...'
   }
-  const currentLicenceOptions = [emptyOption].concat(CURRENT_LICENCES)
-  const ridingExperienceOptions = [emptyOption].concat(RIDING_EXPERIENCE)
+  const currentLicenceOptions = [emptyOption].concat(getCurrentLicenceOptions())
+  const ridingExperienceOptions = [emptyOption].concat(
+    getRidingExperienceOptions()
+  )
 
   return (
     <div className={styles.customerDetailsForm}>

@@ -1,0 +1,17 @@
+.header {
+  text-align: left;
+  position: sticky;
+  top: 0px;
+  padding: 16px;
+  background-color: #f6f6f6;
+  border-bottom: 1px solid #acacac;
+  cursor: pointer;
+
+  &.asc::after {
+    content: '⬇';
+  }
+
+  &.desc::after {
+    content: '⬆';
+  }
+}

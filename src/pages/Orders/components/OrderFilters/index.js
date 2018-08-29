@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './OrderFilters.scss'
 
-import OrderSearch from 'pages/Orders/components/OrderSearch'
+import SearchField from 'components/SearchField'
 
 const OrderFilters = ({ filters, selectedFilter, onDateFilter, onSearch }) => {
   const selected = selectedFilter || {}
@@ -25,7 +25,7 @@ const OrderFilters = ({ filters, selectedFilter, onDateFilter, onSearch }) => {
         })}
       </div>
 
-      <OrderSearch onSearch={onSearch} />
+      <SearchField onSearch={onSearch} placeholder="Search Rider or Order ID" />
     </div>
   )
 }

@@ -52,8 +52,17 @@ let NavigationBar = ({ history }) => {
               Calendar
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              className={styles.navLink}
+              activeClassName={styles.activeNavLink}
+              to="/customers">
+              Customers
+            </NavLink>
+          </li>
         </ul>
-        <form class={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
+        <form
+          className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
           <UserMenu history={history} />
         </form>
       </div>
