@@ -58,22 +58,22 @@ const fetchSingle = (moduleName, fetchFn) => (...args) => dispatch => {
   }
 }
 
-const items = moduleName => (state = {}, action) => {
+const items = (moduleName, idField = 'id') => (state = {}, action) => {
   switch (action.type) {
     case constant(moduleName, 'FETCH_SUCCESS'):
       return {
         ...state,
-        ...normalize(action.result.results)
+        ...normalize(action.result.results, idField)
       }
     case constant(moduleName, 'FETCH_SINGLE_SUCCESS'):
       return {
         ...state,
-        ...normalize([action.result])
+        ...normalize([action.result], idField)
       }
     case constant(moduleName, 'SAVE_SUCCESS'):
       return {
         ...state,
-        ...normalize([action.result])
+        ...normalize([action.result], idField)
       }
     default:
       return state

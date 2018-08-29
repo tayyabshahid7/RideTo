@@ -3,6 +3,7 @@ import { Row, Col } from 'reactstrap'
 
 import commonStyles from 'pages/styles.scss'
 import DetailFormContainer from 'pages/Customers/DetailFormContainer'
+import OrderListContainer from 'pages/Customers/OrderListContainer'
 
 class CustomerDetailContainer extends React.Component {
   render() {
@@ -18,7 +19,7 @@ class CustomerDetailContainer extends React.Component {
             <DetailFormContainer id={id} history={history} />
           </Col>
           <Col>
-            <h2>Orders</h2>
+            <OrderListContainer id={id} />
           </Col>
         </Row>
       </div>

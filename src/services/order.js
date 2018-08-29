@@ -50,3 +50,56 @@ export const fetchSchoolOrders = async (schoolId, params = {}) => {
 
   return response
 }
+
+export const fetchOrders = async (params = {}) => {
+  const path = 'o/'
+  const response = await get(path, params)
+
+  return response
+}
+
+export const getBikeHireOptions = () => {
+  return {
+    no: 'Own Bike',
+    auto: 'Automatic Bike Hire',
+    manual: 'Manual Bike Hire'
+  }
+}
+
+export const getPaymentOptions = () => {
+  return [
+    {
+      id: 'received',
+      name: 'Received'
+    },
+    {
+      id: 'paid',
+      name: 'Paid'
+    },
+    {
+      id: 'denied',
+      name: 'Denied'
+    },
+    {
+      id: 'pending',
+      name: 'Pending'
+    }
+  ]
+}
+
+export const getTrainingStatusOptions = () => {
+  return [
+    {
+      id: 'NON_START',
+      name: 'Non-start'
+    },
+    {
+      id: 'NON_COMPLETION',
+      name: 'Non-completion'
+    },
+    {
+      id: 'COMPLETED',
+      name: 'Completed'
+    }
+  ]
+}

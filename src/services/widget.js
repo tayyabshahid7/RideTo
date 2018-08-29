@@ -1,10 +1,5 @@
 import { post } from 'services/api'
-
-const MOTORBIKE_LABELS = {
-  no: 'Own Bike',
-  auto: 'Automatic Bike Hire',
-  manual: 'Manual Bike Hire'
-}
+import { getBikeHireOptions } from 'services/order'
 
 export const createStripeToken = async (stripe, name) => {
   return await stripe.createToken({ name })
@@ -39,7 +34,7 @@ export const getStartInTime = (now, startTime) => {
 }
 
 export const getMotorbikeLabel = bikeHire => {
-  return MOTORBIKE_LABELS[bikeHire]
+  return getBikeHireOptions()[bikeHire]
 }
 
 export const getTotalOrderPrice = (course, bikeHire) => {

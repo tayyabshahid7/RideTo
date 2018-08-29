@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux'
 import dashboard from './dashboard'
 import orders from './orders'
+import order from './order'
 import auth from './auth'
 import course from './course'
 import info from './info'
 import instructor from './instructor'
 import customer from './customer'
+import supplier from './supplier'
 
 const appReducer = combineReducers({
   auth,
@@ -14,6 +16,8 @@ const appReducer = combineReducers({
   course,
   orders,
   instructor,
-  customer
+  customer,
+  order,
+  supplier
 })
 export default appReducer

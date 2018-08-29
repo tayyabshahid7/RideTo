@@ -1,0 +1,12 @@
+.select {
+  display: block;
+  min-width: 100%;
+}
+
+.link {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
