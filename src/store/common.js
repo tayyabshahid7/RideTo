@@ -58,6 +58,24 @@ const fetchSingle = (moduleName, fetchFn) => (...args) => dispatch => {
   }
 }
 
+const save = (moduleName, saveFn) => (...args) => dispatch => {
+  dispatch({ type: constant(moduleName, 'SAVE') })
+
+  try {
+    return saveFn(...args).then(result => {
+      dispatch({
+        type: constant(moduleName, 'SAVE_SUCCESS'),
+        result
+      })
+    })
+  } catch (error) {
+    dispatch({
+      type: constant(moduleName, 'ERROR'),
+      error
+    })
+  }
+}
+
 const items = (moduleName, idField = 'id') => (state = {}, action) => {
   switch (action.type) {
     case constant(moduleName, 'FETCH_SUCCESS'):
@@ -116,6 +134,7 @@ export default {
   constant,
   fetch,
   fetchSingle,
+  save,
   items,
   results,
   isFetchingItems,

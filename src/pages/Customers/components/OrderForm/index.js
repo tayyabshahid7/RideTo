@@ -37,7 +37,7 @@ class OrderForm extends React.Component {
   }
 
   render() {
-    const { suppliers } = this.props
+    const { suppliers, onSave, onCancel } = this.props
     const { editable } = this.state
     const selectedSupplier = suppliers.find(
       ({ id }) => id === editable.supplier
@@ -152,6 +152,16 @@ class OrderForm extends React.Component {
                 onChange={this.handleChange}
               />
             </FormGroup>
+          </Col>
+        </Row>
+        <Row>
+          <Col className={styles.actions}>
+            <Button color="primary" onClick={() => onSave(editable)}>
+              Save
+            </Button>
+            <Button color="outline" onClick={onCancel}>
+              Cancel
+            </Button>
           </Col>
         </Row>
       </div>

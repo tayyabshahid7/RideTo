@@ -15,6 +15,7 @@ export const actions = {}
 export const selectors = {}
 
 actions.fetchOrders = common.fetch(MODULE, orderService.fetchOrders)
+actions.saveOrder = common.save(MODULE, orderService.saveOrder)
 
 selectors.getOrdersByCustomer = ({ items }, customerId) => {
   return Object.keys(items)

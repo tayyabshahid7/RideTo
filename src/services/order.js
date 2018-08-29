@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { get } from 'services/api'
+import { get, put, post } from 'services/api'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 const FILTERS = [
@@ -56,6 +56,14 @@ export const fetchOrders = async (params = {}) => {
   const response = await get(path, params)
 
   return response
+}
+
+export const saveOrder = async order => {
+  const { id } = order
+  const path = id ? `o/${id}` : `o/`
+  const method = id ? put : post
+
+  return await method(path, order)
 }
 
 export const getBikeHireOptions = () => {

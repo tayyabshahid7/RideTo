@@ -13,6 +13,12 @@ class OrderListContainer extends React.Component {
 
     this.props.fetchOrders({ customer: parseInt(id, 10) })
     this.props.fetchSuppliers()
+
+    this.handleSave = this.handleSave.bind(this)
+  }
+
+  handleSave(order) {
+    this.props.saveOrder(order)
   }
 
   render() {
@@ -25,6 +31,7 @@ class OrderListContainer extends React.Component {
             key={order.friendly_id}
             order={order}
             suppliers={suppliers}
+            onSave={this.handleSave}
           />
         ))}
       </div>
