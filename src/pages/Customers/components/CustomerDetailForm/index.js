@@ -55,16 +55,17 @@ class CustomerDetailForm extends React.Component {
         </Row>
         <Row>
           <Col sm="6">
-            <div className="form-group">
+            <FormGroup>
               <Label for="current_licence">Current Licence</Label>
               <MinimalSelect
+                className={styles.select}
                 options={getCurrentLicenceOptions()}
                 selected={customer.current_licence}
                 onChange={value =>
                   onChange({ ...customer, current_licence: value })
                 }
               />
-            </div>
+            </FormGroup>
           </Col>
           <Col sm="6">
             <InputTextGroup
@@ -89,16 +90,17 @@ class CustomerDetailForm extends React.Component {
             />
           </Col>
           <Col sm="6">
-            <div className="form-group">
+            <FormGroup>
               <Label for="current_licence">Riding Experience</Label>
               <MinimalSelect
+                className={styles.select}
                 options={getRidingExperienceOptions()}
                 selected={customer.riding_experience}
                 onChange={value =>
                   onChange({ ...customer, riding_experience: value })
                 }
               />
-            </div>
+            </FormGroup>
           </Col>
         </Row>
         <Row>
