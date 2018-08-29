@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux'
+import { push } from 'connected-react-router'
 
 import common from 'store/common'
 import * as customerService from 'services/customer'
@@ -32,7 +33,7 @@ actions.saveCustomer = (customer, history) => dispatch => {
   try {
     return customerService.saveCustomer(customer).then(result => {
       if (!customer.id && result.id) {
-        history.push(`/customers/${result.id}`)
+        dispatch(push(`/customers/${result.id}`))
       }
 
       dispatch({
