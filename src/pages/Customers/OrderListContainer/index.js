@@ -1,11 +1,12 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Col } from 'reactstrap'
 
 import * as orderModule from 'store/order'
 import * as supplierModule from 'store/supplier'
-
 import OrderForm from 'pages/Customers/components/OrderForm'
+import styles from './OrderListContainer.scss'
 
 class OrderListContainer extends React.Component {
   componentDidMount() {
@@ -22,19 +23,21 @@ class OrderListContainer extends React.Component {
   }
 
   render() {
-    const { orders, suppliers } = this.props
+    const { orders, suppliers, isSaving } = this.props
 
     return (
-      <div>
+      <Col className={styles.orderListContainer}>
+        <h3>Training</h3>
         {orders.map(order => (
           <OrderForm
             key={order.friendly_id}
             order={order}
             suppliers={suppliers}
             onSave={this.handleSave}
+            isSaving={isSaving}
           />
         ))}
-      </div>
+      </Col>
     )
   }
 }
@@ -44,6 +47,7 @@ const mapStateToProps = (state, props) => {
 
   return {
     orders: orderModule.selectors.getOrdersByCustomer(state.order, id),
+    isSaving: state.order.isSaving,
     suppliers: supplierModule.selectors.getItems(state.supplier)
   }
 }

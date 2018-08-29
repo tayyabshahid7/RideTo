@@ -1,0 +1,6 @@
+.orderListContainer {
+  overflow-y: auto;
+  max-height: 800px;
+  max-height: calc(100vh - 230px);
+  padding: 16px;
+}

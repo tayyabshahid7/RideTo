@@ -22,30 +22,50 @@ class OrderForm extends React.Component {
     super(props)
 
     this.state = {
-      editable: props.order
+      editable: { ...props.order },
+      isChanged: false
     }
-
     this.handleChange = this.handleChange.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
   }
 
-  handleChange({ target }) {
-    const { editable } = this.state
-    const { name } = target
-    const value = target.type === 'checkbox' ? target.checked : target.value
+  componentDidUpdate(prevProps) {
+    if (prevProps.order !== this.props.order) {
+      this.setState({
+        editable: { ...this.props.order },
+        isChanged: false
+      })
+    }
+  }
 
-    this.setState({ editable: { ...editable, [name]: value } })
+  handleChange(name, value) {
+    const { editable } = this.state
+
+    this.setState({
+      editable: { ...editable, [name]: value },
+      isChanged: true
+    })
+  }
+
+  handleCancel() {
+    this.setState({
+      editable: { ...this.props.order },
+      isChanged: false
+    })
   }
 
   render() {
-    const { suppliers, onSave, onCancel } = this.props
-    const { editable } = this.state
+    const { suppliers, isSaving, onSave } = this.props
+    const { editable, isChanged } = this.state
     const selectedSupplier = suppliers.find(
       ({ id }) => id === editable.supplier
     )
     const courses = selectedSupplier ? selectedSupplier.courses : []
+    const isDisabled = !isChanged || isSaving
 
     return (
-      <div>
+      <div className={styles.orderForm}>
+        <h4>Order: #{editable.friendly_id}</h4>
         <Row>
           <Col>
             <FormGroup>
@@ -54,13 +74,8 @@ class OrderForm extends React.Component {
                 className={styles.select}
                 options={suppliers}
                 selected={editable.supplier || ''}
-                onChange={supplier => {
-                  this.setState({
-                    editable: {
-                      ...editable,
-                      supplier: parseInt(supplier, 10)
-                    }
-                  })
+                onChange={value => {
+                  this.handleChange('supplier', parseInt(value, 10))
                 }}
               />
             </FormGroup>
@@ -73,8 +88,8 @@ class OrderForm extends React.Component {
                 options={courses}
                 valueField="constant"
                 selected={editable.selected_licence || ''}
-                onChange={selected_licence => {
-                  this.setState({ editable: { ...editable, selected_licence } })
+                onChange={value => {
+                  this.handleChange('selected_licence', value)
                 }}
               />
             </FormGroup>
@@ -88,7 +103,9 @@ class OrderForm extends React.Component {
               label="Training Date"
               className="form-group"
               type="date"
-              onChange={this.handleChange}
+              onChange={({ target }) =>
+                this.handleChange(target.name, target.value)
+              }
             />
           </Col>
           <Col>
@@ -98,8 +115,8 @@ class OrderForm extends React.Component {
                 className={styles.select}
                 options={BIKE_HIRE_OPTIONS}
                 selected={editable.bike_hire || ''}
-                onChange={bike_hire => {
-                  this.setState({ editable: { ...editable, bike_hire } })
+                onChange={value => {
+                  this.handleChange('bike_hire', value)
                 }}
               />
             </FormGroup>
@@ -113,8 +130,8 @@ class OrderForm extends React.Component {
                 className={styles.select}
                 options={getPaymentOptions()}
                 selected={editable.status || ''}
-                onChange={status => {
-                  this.setState({ editable: { ...editable, status } })
+                onChange={value => {
+                  this.handleChange('status', value)
                 }}
               />
             </FormGroup>
@@ -126,8 +143,8 @@ class OrderForm extends React.Component {
                 className={styles.select}
                 options={getTrainingStatusOptions()}
                 selected={editable.training_status || ''}
-                onChange={training_status => {
-                  this.setState({ editable: { ...editable, training_status } })
+                onChange={value => {
+                  this.handleChange('training_status', value)
                 }}
               />
             </FormGroup>
@@ -149,17 +166,25 @@ class OrderForm extends React.Component {
                 type="text"
                 value={editable.payout}
                 name="payout"
-                onChange={this.handleChange}
+                onChange={({ target }) =>
+                  this.handleChange(target.name, target.value)
+                }
               />
             </FormGroup>
           </Col>
         </Row>
         <Row>
           <Col className={styles.actions}>
-            <Button color="primary" onClick={() => onSave(editable)}>
+            <Button
+              disabled={isDisabled}
+              color="primary"
+              onClick={() => onSave(editable)}>
               Save
             </Button>
-            <Button color="outline" onClick={onCancel}>
+            <Button
+              color="outline"
+              disabled={isDisabled}
+              onClick={this.handleCancel}>
               Cancel
             </Button>
           </Col>

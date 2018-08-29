@@ -57,23 +57,11 @@ selectors.getItem = ({ results, items }, id) => {
   return items[id]
 }
 
-const result = (state = null, action) => {
-  switch (action.type) {
-    case FETCH:
-      return null
-    case SAVE:
-      return null
-    case SAVE_SUCCESS:
-      return action.result.id
-    default:
-      return state
-  }
-}
-
 export default combineReducers({
   items: common.items(MODULE),
   results: common.results(MODULE),
-  result,
+  result: common.result(MODULE),
   total: common.total(MODULE),
-  isFetching: common.isFetchingItems(MODULE)
+  isFetching: common.isFetchingItems(MODULE),
+  isSaving: common.isSaving(MODULE)
 })

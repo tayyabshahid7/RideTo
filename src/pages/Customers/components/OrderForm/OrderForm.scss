@@ -1,4 +1,11 @@
-.select {
+.orderForm {
+  border-bottom: solid 1px #b7b7b7;
+  margin-bottom: 16px;
+  margin-top: 16px;
+  padding-bottom: 16px;
+}
+
+select {
   display: block;
   min-width: 100%;
 }
@@ -9,4 +16,13 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions button {
+  margin-left: 8px;
 }

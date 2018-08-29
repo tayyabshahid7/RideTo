@@ -104,15 +104,56 @@ const isFetchingItems = moduleName => (state = false, action) => {
       return true
     case constant(moduleName, 'FETCH_SUCCESS'):
       return false
+    case constant(moduleName, 'ERROR'):
+      return false
     default:
       return state
   }
 }
 
-const results = moduleName => (state = [], action) => {
+const isSaving = moduleName => (state = false, action) => {
+  switch (action.type) {
+    case constant(moduleName, 'SAVE'):
+      return true
+    case constant(moduleName, 'SAVE_SUCCESS'):
+      return false
+    case constant(moduleName, 'ERROR'):
+      return false
+    default:
+      return state
+  }
+}
+
+const results = (moduleName, idField = 'id') => (state = [], action) => {
   switch (action.type) {
     case constant(moduleName, 'FETCH_SUCCESS'):
-      return action.result.results.map(r => r.id)
+      return action.result.results.map(r => r[idField])
+    default:
+      return state
+  }
+}
+
+const result = (moduleName, idField = 'id') => (state = null, action) => {
+  switch (action.type) {
+    case constant(moduleName, 'FETCH'):
+      return null
+    case constant(moduleName, 'SAVE'):
+      return null
+    case constant(moduleName, 'SAVE_SUCCESS'):
+      return action.result[idField]
+    default:
+      return state
+  }
+}
+
+const error = moduleName => (state = null, action) => {
+  switch (action.type) {
+    case constant(moduleName, 'FETCH_SUCCESS'):
+      return null
+    case constant(moduleName, 'SAVE_SUCCESS'):
+      return null
+    case constant(moduleName, 'ERROR'):
+      return action.error
     default:
       return state
   }
@@ -137,6 +178,9 @@ export default {
   save,
   items,
   results,
+  result,
+  error,
   isFetchingItems,
+  isSaving,
   total
 }

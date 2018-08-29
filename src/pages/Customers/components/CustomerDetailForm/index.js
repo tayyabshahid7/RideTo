@@ -27,7 +27,7 @@ class CustomerDetailForm extends React.Component {
   }
 
   render() {
-    const { customer, onChange, onSave, onCancel } = this.props
+    const { customer, onChange, isDisabled, onSave, onCancel } = this.props
 
     return (
       <div>
@@ -173,10 +173,10 @@ class CustomerDetailForm extends React.Component {
         </Row>
         <Row>
           <Col className={styles.actions}>
-            <Button color="primary" onClick={onSave}>
+            <Button color="primary" onClick={onSave} disabled={isDisabled}>
               Save
             </Button>
-            <Button color="outline" onClick={onCancel}>
+            <Button color="outline" onClick={onCancel} disabled={isDisabled}>
               Cancel
             </Button>
           </Col>

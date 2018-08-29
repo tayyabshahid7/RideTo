@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Button } from 'reactstrap'
+import { Col, Container, Row, Button } from 'reactstrap'
 
 import commonStyles from 'pages/styles.scss'
 import styles from './ListContainer.scss'
@@ -53,7 +53,7 @@ class CustomerListContainer extends React.Component {
     const { ordering, page } = this.state
 
     return (
-      <div className={commonStyles.mainContent}>
+      <Container>
         <h1>Customer Information</h1>
         <div className={styles.heading}>
           <div className={styles.search}>
@@ -66,21 +66,26 @@ class CustomerListContainer extends React.Component {
             Create Customer
           </Button>
         </div>
-        <CustomerList
-          customers={customers}
-          ordering={ordering}
-          onSort={this.handleSort}
-          isLoading={isFetching}
-        />
 
-        <PaginationLinks
-          currentPage={page}
-          count={total}
-          pageSize={15}
-          rowName={'orders'}
-          onPageChange={this.handleChangePage}
-        />
-      </div>
+        <Row>
+          <Col>
+            <CustomerList
+              customers={customers}
+              ordering={ordering}
+              onSort={this.handleSort}
+              isLoading={isFetching}
+            />
+
+            <PaginationLinks
+              currentPage={page}
+              count={total}
+              pageSize={15}
+              rowName={'orders'}
+              onPageChange={this.handleChangePage}
+            />
+          </Col>
+        </Row>
+      </Container>
     )
   }
 }

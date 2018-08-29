@@ -1,9 +1,9 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Col } from 'reactstrap'
 
 import { actions, selectors } from 'store/customer'
-import commonStyles from 'pages/styles.scss'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
 
 class DetailFormContainer extends React.Component {
@@ -11,7 +11,8 @@ class DetailFormContainer extends React.Component {
     super(props)
 
     this.state = {
-      editable: props.customer ? { ...props.customer } : {}
+      editable: props.customer ? { ...props.customer } : {},
+      isChanged: false
     }
 
     this.handleSaveCustomer = this.handleSaveCustomer.bind(this)
@@ -26,8 +27,11 @@ class DetailFormContainer extends React.Component {
   componentDidUpdate(prevProps) {
     const { customer } = this.props
 
-    if (prevProps.customer.id !== customer.id) {
-      this.setState({ editable: { ...customer } })
+    if (prevProps.customer !== customer) {
+      this.setState({
+        editable: { ...customer },
+        isChanged: false
+      })
     }
   }
 
@@ -36,28 +40,34 @@ class DetailFormContainer extends React.Component {
   }
 
   handleChangeCustomer(editable) {
-    this.setState({ editable })
+    this.setState({ editable, isChanged: true })
   }
 
   handleCancel() {
-    this.setState({ editable: { ...this.props.customer } })
+    this.setState({
+      editable: { ...this.props.customer },
+      isChanged: false
+    })
   }
 
   render() {
-    const { editable } = this.state
+    const { isSaving } = this.props
+    const { editable, isChanged } = this.state
+    const isDisabled = !isChanged || isSaving
 
     return (
-      <div className={commonStyles.mainContent}>
+      <Col>
         <h3>
           {editable.first_name} {editable.last_name}
         </h3>
         <CustomerDetailForm
           customer={editable}
+          isDisabled={isDisabled}
           onChange={this.handleChangeCustomer}
           onSave={this.handleSaveCustomer}
           onCancel={this.handleCancel}
         />
-      </div>
+      </Col>
     )
   }
 }
