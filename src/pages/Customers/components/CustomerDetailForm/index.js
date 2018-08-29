@@ -34,6 +34,26 @@ class CustomerDetailForm extends React.Component {
         <Row>
           <Col>
             <InputTextGroup
+              name="first_name"
+              value={customer.first_name || ''}
+              label="First Name"
+              className="form-group"
+              onChange={this.handleChange}
+            />
+          </Col>
+          <Col>
+            <InputTextGroup
+              name="last_name"
+              value={customer.last_name || ''}
+              label="Last Name"
+              className="form-group"
+              onChange={this.handleChange}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <InputTextGroup
               name="phone"
               value={customer.phone || ''}
               label="Phone"
@@ -60,7 +80,7 @@ class CustomerDetailForm extends React.Component {
               <MinimalSelect
                 className={styles.select}
                 options={getCurrentLicenceOptions()}
-                selected={customer.current_licence}
+                selected={customer.current_licence || ''}
                 onChange={value =>
                   onChange({ ...customer, current_licence: value })
                 }
@@ -95,7 +115,7 @@ class CustomerDetailForm extends React.Component {
               <MinimalSelect
                 className={styles.select}
                 options={getRidingExperienceOptions()}
-                selected={customer.riding_experience}
+                selected={customer.riding_experience || ''}
                 onChange={value =>
                   onChange({ ...customer, riding_experience: value })
                 }

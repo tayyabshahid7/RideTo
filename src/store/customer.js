@@ -40,7 +40,7 @@ actions.fetchCustomer = (...args) => dispatch => {
     return customerService.fetchCustomer(...args).then(res => {
       dispatch({
         type: FETCH_SUCCESS,
-        result: { results: [res] }
+        result: { results: [res], count: 1 }
       })
     })
   } catch (error) {
