@@ -1,55 +1,30 @@
 import { combineReducers } from 'redux'
 
-import { normalize } from 'store/common'
+import common from 'store/common'
 import * as customerService from 'services/customer'
 
 const MODULE = 'customer'
 
-export const FETCH = `rideto/${MODULE}/FETCH`
-export const FETCH_SUCCESS = `rideto/${MODULE}/FETCH_SUCCESS`
-export const SAVE = `rideto/${MODULE}/SAVE`
-export const SAVE_SUCCESS = `rideto/${MODULE}/SAVE_SUCCESS`
-export const ERROR = `rideto/${MODULE}/ERROR`
+export const FETCH = common.constant(MODULE, 'FETCH')
+export const FETCH_SUCCESS = common.constant(MODULE, 'FETCH_SUCCESS')
+export const FETCH_SINGLE = common.constant(MODULE, 'FETCH_SINGLE')
+export const FETCH_SINGLE_SUCCESS = common.constant(
+  MODULE,
+  'FETCH_SINGLE_SUCCESS'
+)
+export const SAVE = common.constant(MODULE, 'SAVE')
+export const SAVE_SUCCESS = common.constant(MODULE, 'SAVE_SUCCESS')
+export const ERROR = common.constant(MODULE, 'ERROR')
 
 export const actions = {}
 export const selectors = {}
 
 // Actions
-actions.fetchCustomers = (...args) => dispatch => {
-  dispatch({ type: FETCH })
-
-  try {
-    return customerService.fetchCustomers(...args).then(res => {
-      dispatch({
-        type: FETCH_SUCCESS,
-        result: res || {}
-      })
-    })
-  } catch (error) {
-    dispatch({
-      type: ERROR,
-      error
-    })
-  }
-}
-
-actions.fetchCustomer = (...args) => dispatch => {
-  dispatch({ type: FETCH })
-
-  try {
-    return customerService.fetchCustomer(...args).then(res => {
-      dispatch({
-        type: FETCH_SUCCESS,
-        result: { results: [res], count: 1 }
-      })
-    })
-  } catch (error) {
-    dispatch({
-      type: ERROR,
-      error
-    })
-  }
-}
+actions.fetchCustomers = common.fetch(MODULE, customerService.fetchCustomers)
+actions.fetchCustomer = common.fetchSingle(
+  MODULE,
+  customerService.fetchCustomer
+)
 
 actions.saveCustomer = (customer, history) => dispatch => {
   dispatch({ type: SAVE })
@@ -81,35 +56,6 @@ selectors.getItem = ({ results, items }, id) => {
   return items[id]
 }
 
-const isFetching = (state = false, action) => {
-  switch (action.type) {
-    case FETCH:
-      return true
-    case FETCH_SUCCESS:
-      return false
-    default:
-      return state
-  }
-}
-
-const total = (state = 0, action) => {
-  switch (action.type) {
-    case FETCH_SUCCESS:
-      return action.result.count
-    default:
-      return state
-  }
-}
-
-const results = (state = [], action) => {
-  switch (action.type) {
-    case FETCH_SUCCESS:
-      return action.result.results.map(r => r.id)
-    default:
-      return state
-  }
-}
-
 const result = (state = null, action) => {
   switch (action.type) {
     case FETCH:
@@ -123,27 +69,10 @@ const result = (state = null, action) => {
   }
 }
 
-const items = (state = {}, action) => {
-  switch (action.type) {
-    case FETCH_SUCCESS:
-      return {
-        ...state,
-        ...normalize(action.result.results)
-      }
-    case SAVE_SUCCESS:
-      return {
-        ...state,
-        ...normalize([action.result])
-      }
-    default:
-      return state
-  }
-}
-
 export default combineReducers({
-  items,
-  results,
+  items: common.items(MODULE),
+  results: common.results(MODULE),
   result,
-  total,
-  isFetching
+  total: common.total(MODULE),
+  isFetching: common.isFetchingItems(MODULE)
 })
