@@ -58,6 +58,13 @@ export const fetchOrders = async (params = {}) => {
   return response
 }
 
+export const sendConfirmation = async order => {
+  const path = `o/${order.id}/send_confirmation`
+  const response = await post(path)
+
+  return response
+}
+
 export const saveOrder = async order => {
   const { id } = order
   const path = id ? `o/${id}` : `o/`

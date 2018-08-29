@@ -7,6 +7,7 @@ import {
   getBikeHireOptions,
   getPaymentOptions,
   getTrainingStatusOptions,
+  sendConfirmation,
   isRideTo
 } from 'services/order'
 import styles from './OrderForm.scss'
@@ -36,9 +37,11 @@ class OrderForm extends React.Component {
 
     this.state = {
       editable: { ...props.order },
-      isChanged: false
+      isChanged: false,
+      isSending: false
     }
     this.handleCancel = this.handleCancel.bind(this)
+    this.handleConfirmation = this.handleConfirmation.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -84,9 +87,16 @@ class OrderForm extends React.Component {
     })
   }
 
+  async handleConfirmation() {
+    const { editable } = this.state
+    this.setState({ isSending: true })
+    await sendConfirmation(editable)
+    this.setState({ isSending: false })
+  }
+
   render() {
     const { suppliers, isSaving, onSave } = this.props
-    const { editable, isChanged } = this.state
+    const { editable, isChanged, isSending } = this.state
     const selectedSupplier = suppliers.find(
       ({ id }) => id === editable.supplier
     )
@@ -222,6 +232,16 @@ class OrderForm extends React.Component {
           </Col>
         </Row>
         <Row>
+          <Col>
+            <Button
+              disabled={isSending}
+              color="outline"
+              onClick={this.handleConfirmation}>
+              Send Confirmation
+            </Button>
+          </Col>
+        </Row>
+        <Row>
           <Col className={styles.actions}>
             <Button
               disabled={isDisabled}
@@ -230,7 +250,7 @@ class OrderForm extends React.Component {
               Save
             </Button>
             <Button
-              color="outline"
+              color="link"
               disabled={isDisabled}
               onClick={this.handleCancel}>
               Cancel
