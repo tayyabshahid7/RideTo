@@ -62,7 +62,7 @@ class CustomerListContainer extends React.Component {
               placeholder="Search by Name, Order, Phone"
             />
           </div>
-          <Button color="primary" tag={Link} to="/customer/new">
+          <Button color="primary" tag={Link} to="/customers/create">
             Create Customer
           </Button>
         </div>

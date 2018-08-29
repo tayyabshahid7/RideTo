@@ -1,28 +1,44 @@
 import { combineReducers } from 'redux'
+import { push } from 'connected-react-router'
 
-import { normalize } from 'store/common'
+import common from 'store/common'
 import * as customerService from 'services/customer'
 
 const MODULE = 'customer'
 
-export const FETCH = `rideto/${MODULE}/FETCH`
-export const FETCH_SUCCESS = `rideto/${MODULE}/FETCH_SUCCESS`
-export const SAVE = `rideto/${MODULE}/SAVE`
-export const SAVE_SUCCESS = `rideto/${MODULE}/SAVE_SUCCESS`
-export const ERROR = `rideto/${MODULE}/ERROR`
+export const FETCH = common.constant(MODULE, 'FETCH')
+export const FETCH_SUCCESS = common.constant(MODULE, 'FETCH_SUCCESS')
+export const FETCH_SINGLE = common.constant(MODULE, 'FETCH_SINGLE')
+export const FETCH_SINGLE_SUCCESS = common.constant(
+  MODULE,
+  'FETCH_SINGLE_SUCCESS'
+)
+export const SAVE = common.constant(MODULE, 'SAVE')
+export const SAVE_SUCCESS = common.constant(MODULE, 'SAVE_SUCCESS')
+export const ERROR = common.constant(MODULE, 'ERROR')
 
 export const actions = {}
 export const selectors = {}
 
 // Actions
-actions.fetchCustomers = (...args) => dispatch => {
-  dispatch({ type: FETCH })
+actions.fetchCustomers = common.fetch(MODULE, customerService.fetchCustomers)
+actions.fetchCustomer = common.fetchSingle(
+  MODULE,
+  customerService.fetchCustomer
+)
+
+actions.saveCustomer = (customer, history) => dispatch => {
+  dispatch({ type: SAVE })
 
   try {
-    return customerService.fetchCustomers(...args).then(res => {
+    return customerService.saveCustomer(customer).then(result => {
+      if (!customer.id && result.id) {
+        dispatch(push(`/customers/${result.id}`))
+      }
+
       dispatch({
-        type: FETCH_SUCCESS,
-        result: res || {}
+        type: SAVE_SUCCESS,
+        result
       })
     })
   } catch (error) {
@@ -37,55 +53,27 @@ selectors.getItems = ({ results, items }) => {
   return results.map(id => items[id])
 }
 
-const isFetching = (state = false, action) => {
+selectors.getItem = ({ results, items }, id) => {
+  return items[id]
+}
+
+const result = (state = null, action) => {
   switch (action.type) {
     case FETCH:
-      return true
-    case FETCH_SUCCESS:
-      return false
-    default:
-      return state
-  }
-}
-
-const total = (state = 0, action) => {
-  switch (action.type) {
-    case FETCH_SUCCESS:
-      return action.result.count
-    default:
-      return state
-  }
-}
-
-const results = (state = [], action) => {
-  switch (action.type) {
-    case FETCH_SUCCESS:
-      return action.result.results.map(r => r.id)
-    default:
-      return state
-  }
-}
-
-const items = (state = {}, action) => {
-  switch (action.type) {
-    case FETCH_SUCCESS:
-      return {
-        ...state,
-        ...normalize(action.result.results)
-      }
+      return null
+    case SAVE:
+      return null
     case SAVE_SUCCESS:
-      return {
-        ...state,
-        [action.item.id]: action.item
-      }
+      return action.result.id
     default:
       return state
   }
 }
 
 export default combineReducers({
-  items,
-  results,
-  total,
-  isFetching
+  items: common.items(MODULE),
+  results: common.results(MODULE),
+  result,
+  total: common.total(MODULE),
+  isFetching: common.isFetchingItems(MODULE)
 })

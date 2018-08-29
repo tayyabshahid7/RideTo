@@ -32,7 +32,7 @@ const CustomerList = ({ customers, ordering, isLoading, onSort }) => {
           {customers.map(customer => (
             <tr key={customer.id}>
               <Cell>
-                <Link to={`/customer/${customer.id}`}>
+                <Link to={`/customers/${customer.id}`}>
                   {customer.first_name} {customer.last_name}
                 </Link>
               </Cell>
