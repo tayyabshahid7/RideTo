@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Col, Container, Row, Button } from 'reactstrap'
 
-import commonStyles from 'pages/styles.scss'
 import styles from './ListContainer.scss'
 import CustomerList from 'pages/Customers/components/CustomerList'
 import SearchField from 'components/SearchField'

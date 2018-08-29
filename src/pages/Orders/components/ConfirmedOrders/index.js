@@ -1,10 +1,17 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 import Loading from 'components/Loading'
 
 import styles from './styles.scss'
 import commonStyles from 'pages/styles.scss'
 import Header from 'components/DataTable/Header'
 import Cell from 'components/DataTable/Cell'
+
+const getDate = startTime => {
+  if (startTime) {
+    return moment(new Date(startTime)).format('YYYY-MM-DD')
+  }
+}
 
 class ConfirmedOrders extends Component {
   constructor(props) {
@@ -117,7 +124,7 @@ class ConfirmedOrders extends Component {
                       <Cell>
                         {this._checkCancelledOrRejected(order)
                           ? order.user_date
-                          : order.start_time}
+                          : getDate(order.start_time)}
                       </Cell>
                       <Cell>
                         {order.selected_licence === 'LICENCE_CBT'

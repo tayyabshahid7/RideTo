@@ -1,4 +1,5 @@
 import React from 'react'
+import moment from 'moment'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
 import MinimalSelect from 'components/MinimalSelect'
@@ -17,6 +18,18 @@ const BIKE_HIRE_OPTIONS = Object.keys(getBikeHireOptions()).map(id => {
   }
 })
 
+const getTime = startTime => {
+  if (startTime) {
+    return moment(new Date(startTime)).format('HH:mm')
+  }
+}
+
+const getDate = startTime => {
+  if (startTime) {
+    return moment(new Date(startTime)).format('YYYY-MM-DD')
+  }
+}
+
 class OrderForm extends React.Component {
   constructor(props) {
     super(props)
@@ -25,7 +38,6 @@ class OrderForm extends React.Component {
       editable: { ...props.order },
       isChanged: false
     }
-    this.handleChange = this.handleChange.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
   }
 
@@ -45,6 +57,24 @@ class OrderForm extends React.Component {
       editable: { ...editable, [name]: value },
       isChanged: true
     })
+  }
+
+  handleChangeStartTime(value) {
+    const { editable } = this.state
+    const date = new Date(editable.start_time)
+    const [hours, minutes] = value.split(':')
+
+    date.setHours(hours)
+    date.setMinutes(minutes)
+
+    this.handleChange('start_time', date.toISOString())
+  }
+
+  handleChangeStartDate(value) {
+    const { editable } = this.state
+    const date = editable.start_time || new Date().toISOString()
+
+    this.handleChange('start_time', `${value}${date.slice(10)}`)
   }
 
   handleCancel() {
@@ -98,21 +128,33 @@ class OrderForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col>
+          <Col sm="4">
             <FormGroup>
               <Label>Training Date</Label>
               <Input
-                name="start_time"
                 type="date"
                 disabled={isRideTo(editable)}
-                value={editable.start_time || ''}
+                value={getDate(editable.start_time) || ''}
                 onChange={({ target }) =>
-                  this.handleChange(target.name, target.value)
+                  this.handleChangeStartDate(target.value)
                 }
               />
             </FormGroup>
           </Col>
-          <Col>
+          <Col sm="4">
+            <FormGroup>
+              <Label>Training Time</Label>
+              <Input
+                type="time"
+                disabled={isRideTo(editable)}
+                value={getTime(editable.start_time) || ''}
+                onChange={({ target }) =>
+                  this.handleChangeStartTime(target.value)
+                }
+              />
+            </FormGroup>
+          </Col>
+          <Col sm="4">
             <FormGroup>
               <Label>Bike Hire</Label>
               <MinimalSelect

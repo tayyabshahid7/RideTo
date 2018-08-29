@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
 
+import styles from './DetailFormContainer.scss'
 import { actions, selectors } from 'store/customer'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
 
@@ -56,7 +57,7 @@ class DetailFormContainer extends React.Component {
     const isDisabled = !isChanged || isSaving
 
     return (
-      <Col>
+      <Col className={styles.detailFormContainer}>
         <h3>
           {editable.first_name} {editable.last_name}
         </h3>
