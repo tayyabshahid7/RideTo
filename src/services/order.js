@@ -66,6 +66,10 @@ export const saveOrder = async order => {
   return await method(path, order)
 }
 
+export const isRideTo = order => {
+  return order.source === 'RIDETO'
+}
+
 export const getBikeHireOptions = () => {
   return {
     no: 'Own Bike',

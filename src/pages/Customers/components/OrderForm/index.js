@@ -1,12 +1,12 @@
 import React from 'react'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
-import InputTextGroup from 'components/Forms/InputTextGroup'
 import MinimalSelect from 'components/MinimalSelect'
 import {
   getBikeHireOptions,
   getPaymentOptions,
-  getTrainingStatusOptions
+  getTrainingStatusOptions,
+  isRideTo
 } from 'services/order'
 import styles from './OrderForm.scss'
 
@@ -67,11 +67,12 @@ class OrderForm extends React.Component {
       <div className={styles.orderForm}>
         <h4>Order: #{editable.friendly_id}</h4>
         <Row>
-          <Col>
+          <Col sm="6">
             <FormGroup>
               <Label>Training Site</Label>
               <MinimalSelect
                 className={styles.select}
+                disabled={isRideTo(editable)}
                 options={suppliers}
                 selected={editable.supplier || ''}
                 onChange={value => {
@@ -80,11 +81,12 @@ class OrderForm extends React.Component {
               />
             </FormGroup>
           </Col>
-          <Col>
+          <Col sm="6">
             <FormGroup>
               <Label>Training</Label>
               <MinimalSelect
                 className={styles.select}
+                disabled={isRideTo(editable)}
                 options={courses}
                 valueField="constant"
                 selected={editable.selected_licence || ''}
@@ -97,16 +99,18 @@ class OrderForm extends React.Component {
         </Row>
         <Row>
           <Col>
-            <InputTextGroup
-              name="start_time"
-              value={editable.start_time || ''}
-              label="Training Date"
-              className="form-group"
-              type="date"
-              onChange={({ target }) =>
-                this.handleChange(target.name, target.value)
-              }
-            />
+            <FormGroup>
+              <Label>Training Date</Label>
+              <Input
+                name="start_time"
+                type="date"
+                disabled={isRideTo(editable)}
+                value={editable.start_time || ''}
+                onChange={({ target }) =>
+                  this.handleChange(target.name, target.value)
+                }
+              />
+            </FormGroup>
           </Col>
           <Col>
             <FormGroup>
@@ -129,6 +133,7 @@ class OrderForm extends React.Component {
               <MinimalSelect
                 className={styles.select}
                 options={getPaymentOptions()}
+                disabled={isRideTo(editable)}
                 selected={editable.status || ''}
                 onChange={value => {
                   this.handleChange('status', value)
@@ -164,6 +169,7 @@ class OrderForm extends React.Component {
               <Label>Amount Paid</Label>
               <Input
                 type="text"
+                disabled={isRideTo(editable)}
                 value={editable.payout}
                 name="payout"
                 onChange={({ target }) =>
