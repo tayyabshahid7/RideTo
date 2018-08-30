@@ -3,6 +3,7 @@ import {
   fetchCourses,
   deleteSingleCourse,
   addSchoolOrder,
+  fetchSchoolOrder,
   updateSchoolCourse,
   createSchoolCourse,
   getPricingForCourse
@@ -20,6 +21,7 @@ const DELETE = createRequestTypes('rideto/course/DELETE')
 const UPDATE = createRequestTypes('rideto/course/UPDATE')
 const CREATE = createRequestTypes('rideto/course/CREATE')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
+const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
 
 export const getSingleCourse = ({
@@ -128,6 +130,27 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
   return true
 }
 
+export const getSchoolOrder = ({ schoolId, friendly_id }) => async dispatch => {
+  dispatch({ type: UPDATE_ORDER[REQUEST] })
+  try {
+    const response = await fetchSchoolOrder(schoolId, friendly_id)
+    dispatch({
+      type: UPDATE_ORDER[SUCCESS],
+      data: { order: response }
+    })
+    dispatch(
+      getSingleCourse({
+        schoolId,
+        courseId: response.school_course_id
+      })
+    )
+  } catch (error) {
+    dispatch({ type: UPDATE_ORDER[FAILURE], error })
+    return false
+  }
+  return true
+}
+
 export const updateCourse = ({
   schoolId,
   courseId,
@@ -219,6 +242,11 @@ const initialState = {
     rightPanelMode: null,
     selectedDate: null,
     silent: false // This is to tell whether should re-load calendar. false: re-load, true: not reload
+  },
+  orderEditForm: {
+    order: null,
+    loading: false,
+    error: null
   }
 }
 
@@ -453,6 +481,25 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         pricing: { ...state.pricing, loading: false }
+      }
+    case UPDATE_ORDER[REQUEST]:
+      return {
+        ...state,
+        orderEditForm: { ...state.editedOrder, loading: true, error: null }
+      }
+    case UPDATE_ORDER[SUCCESS]:
+      return {
+        ...state,
+        orderEditForm: { order: action.data.order, loading: false, error: null }
+      }
+    case UPDATE_ORDER[FAILURE]:
+      return {
+        ...state,
+        orderEditForm: {
+          ...state.orderEditForm,
+          loading: false,
+          error: action.error
+        }
       }
     default:
       return state
