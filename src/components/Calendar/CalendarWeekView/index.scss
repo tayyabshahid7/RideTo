@@ -66,29 +66,6 @@
   flex: 1 1 auto;
 }
 
-.eventsGroup {
-  margin-bottom: 30px;
-  > ul {
-    position: relative;
-    padding: 0 5%;
-    /* force its children to stay on one line */
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    overflow-x: scroll;
-    -webkit-overflow-scrolling: touch;
-    &::after {
-      /* never visible - used to add a right padding to .events-group > ul */
-      display: inline-block;
-      content: '-';
-      width: 1px;
-      height: 100%;
-      opacity: 0;
-      color: transparent;
-    }
-  }
-}
-
 .topInfo {
   width: 100%;
   padding: 0 5%;
@@ -129,7 +106,7 @@
   float: left;
   width: 100%;
 }
-.eventsGroup {
+.weekDaysHeader {
   width: 14%;
   float: left;
   border: 1px solid #eaeaea;
@@ -138,13 +115,38 @@
   &:not(:first-of-type) {
     border-left-width: 0;
   }
+}
+.eventsGroup {
+  width: 14%;
+  float: left;
+  border: 1px solid #eaeaea;
+  /* reset style */
+  margin-bottom: 0;
+  padding: 2px;
+  &:not(:first-of-type) {
+    border-left-width: 0;
+  }
   > ul {
     height: 1200px;
     /* reset style */
+    position: relative;
+    /* force its children to stay on one line */
+    // display: -webkit-box;
+    // display: -ms-flexbox;
+    // display: flex;
     display: block;
     overflow: visible;
     padding: 0;
+    // overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
     &::after {
+      // display: inline-block;
+      // content: '-';
+      width: 1px;
+      height: 100%;
+      opacity: 0;
+      color: transparent;
+
       clear: both;
       content: '';
       display: block;
@@ -155,6 +157,23 @@
     }
   }
 }
+
+// .eventsGroup {
+//   > ul {
+//     display: flex;
+//     overflow-x: scroll;
+//     -webkit-overflow-scrolling: touch;
+//     &::after {
+//       /* never visible - used to add a right padding to .events-group > ul */
+//       display: inline-block;
+//       content: '-';
+//       width: 1px;
+//       height: 100%;
+//       opacity: 0;
+//       color: transparent;
+//     }
+//   }
+// }
 
 .topInfo {
   /* vertically center its content */

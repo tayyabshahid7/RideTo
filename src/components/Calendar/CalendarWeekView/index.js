@@ -4,7 +4,12 @@ import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
-import { WORK_HOURS, WEEK_VIEW_START_TIME } from '../../../common/constants'
+import {
+  WORK_HOURS,
+  WEEK_VIEW_START_TIME,
+  SINGLE_DAY_IN_SECONDS
+} from 'common/constants'
+import { secondsForDayAndDurationForEvent } from 'utils/helper'
 
 class CalendarWeekView extends Component {
   renderTimeline() {
@@ -37,7 +42,7 @@ class CalendarWeekView extends Component {
           {daysInfo.map((day, index) => (
             <li
               className={classnames(
-                styles.eventsGroup,
+                styles.weekDaysHeader,
                 calendar.selectedDate ===
                   moment(day.date).format('YYYY-MM-DD') && 'bg-highlight'
               )}
@@ -69,15 +74,23 @@ class CalendarWeekView extends Component {
     let baseDate = new Date('2000-01-01 00:00:00')
     let results = days.map(day => {
       let dayObj = { ...day }
-      dayObj.courses = dayObj.courses.map(course => {
-        return {
-          ...course,
-          secondsForDay: parseInt(
-            new Date(`${date} ${course.time}`) / 1000 - baseDate / 1000,
-            10
-          )
-        }
-      })
+      dayObj.courses = [
+        ...dayObj.courses.map(course => {
+          return {
+            ...course,
+            secondsForDay: parseInt(
+              new Date(`${date} ${course.time}`) / 1000 - baseDate / 1000,
+              10
+            )
+          }
+        }),
+        ...dayObj.events.map(event => {
+          return {
+            ...event,
+            ...secondsForDayAndDurationForEvent(event, dayObj.date)
+          }
+        })
+      ]
 
       let barMap = []
       let coursePositions = []

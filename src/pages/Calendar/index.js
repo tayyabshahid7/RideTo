@@ -9,16 +9,19 @@ import CoursesPanel from 'components/Calendar/CoursesPanel'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
 import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseComponent'
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
+import AddEventComponent from 'components/Calendar/AddEditEvent/AddEventComponent'
+import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventComponent'
 import styles from './styles.scss'
 import { Col, Row } from 'reactstrap'
 import { getCourses, updateCalendarSetting } from 'store/course'
+import { getEvents } from 'store/event'
 import { getInstructors } from 'store/instructor'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 import commonStyles from '../styles.scss'
 
 class CalendarPage extends Component {
   componentDidMount() {
-    this.loadCourses()
+    this.loadData()
     this.loadInstructors()
   }
 
@@ -32,13 +35,29 @@ class CalendarPage extends Component {
         calendar.viewMode !== prevProps.calendar.viewMode) &&
         !calendar.silent)
     ) {
-      this.loadCourses()
+      this.loadData()
     }
   }
 
   loadInstructors() {
     const { getInstructors, schoolId } = this.props
     getInstructors(schoolId)
+  }
+
+  loadData() {
+    this.loadCourses()
+    this.loadEvents()
+  }
+
+  loadEvents() {
+    const { getEvents, schoolId, calendar } = this.props
+    const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+
+    getEvents({
+      schoolId,
+      firstDate: moment(firstDate).format(DATE_FORMAT),
+      lastDate: moment(lastDate).format(DATE_FORMAT)
+    })
   }
 
   loadCourses() {
@@ -83,7 +102,8 @@ class CalendarPage extends Component {
     return { firstDate: firstDateInWeekCalendar, lastDate: date }
   }
 
-  generateDaysDataFromCalendar({ courses, ...calendar }) {
+  generateDaysDataFromCalendar({ courses, ...calendar }, eventCalendar) {
+    const { events } = eventCalendar
     let dates = []
     if (calendar.viewMode === CALENDAR_VIEW.MONTH) {
       dates = this.generateCalendarDaysForMonth(calendar)
@@ -92,6 +112,10 @@ class CalendarPage extends Component {
     }
     return dates.map(date => {
       let dateInString = moment(date).format('YYYY-MM-DD')
+
+      let oneDayLater = new Date(date)
+      oneDayLater.setDate(oneDayLater.getDate() + 1)
+
       let coursesForDate = courses
         .filter(course => course.date === dateInString)
         .sort((a, b) => {
@@ -102,7 +126,12 @@ class CalendarPage extends Component {
           }
           return -1
         })
-      return { date, courses: coursesForDate }
+      let eventsForDate = events.filter(
+        event =>
+          new Date(event.start_time) < oneDayLater &&
+          new Date(event.end_time) > date
+      )
+      return { date, courses: coursesForDate, events: eventsForDate }
     })
   }
 
@@ -186,8 +215,8 @@ class CalendarPage extends Component {
   }
 
   render() {
-    const { calendar, history } = this.props
-    let days = this.generateDaysDataFromCalendar(calendar)
+    const { calendar, eventCalendar, history } = this.props
+    let days = this.generateDaysDataFromCalendar(calendar, eventCalendar)
     return (
       <div className={styles.container}>
         <Row className={styles.content}>
@@ -200,6 +229,7 @@ class CalendarPage extends Component {
             <CalendarComponent
               days={days}
               calendar={calendar}
+              eventCalendar={eventCalendar}
               handleCustomEvent={this.handleCustomEvent.bind(this)}
               history={history}
             />
@@ -225,6 +255,16 @@ class CalendarPage extends Component {
               path="/calendar/:date/courses/:courseId/edit"
               render={routeProps => <EditCourseComponent {...routeProps} />}
             />
+            <Route
+              exact
+              path="/calendar/events/create"
+              render={routeProps => <AddEventComponent {...routeProps} />}
+            />
+            <Route
+              exact
+              path="/calendar/events/:eventId/edit"
+              render={routeProps => <EditEventComponent {...routeProps} />}
+            />
           </Col>
         </Row>
       </div>
@@ -235,7 +275,8 @@ class CalendarPage extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     schoolId: state.auth.schoolId,
-    calendar: state.course.calendar
+    calendar: state.course.calendar,
+    eventCalendar: state.event.calendar
     // selectedDate: state.course.day.date
   }
 }
@@ -244,6 +285,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getCourses,
+      getEvents,
       getInstructors,
       updateCalendarSetting
     },
