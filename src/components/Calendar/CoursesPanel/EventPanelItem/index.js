@@ -11,7 +11,7 @@ const EventPanelItem = ({ event, date }) => {
       </div>
       <div className={styles.content}>
         <div className={styles.heading}>
-          <div className={styles.title}>{event.name} | </div>
+          <div className={styles.title}>{event.name}</div>
           <Link to={`/calendar/events/${event.id}/edit`}>Edit</Link>
         </div>
       </div>

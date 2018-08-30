@@ -22,7 +22,7 @@ it('Renders Event title and link', () => {
     </MemoryRouter>
   )
 
-  expect(wrapper.text()).toContain('Event 1 |')
+  expect(wrapper.text()).toContain('Event 1')
   expect(
     wrapper
       .find('a')
