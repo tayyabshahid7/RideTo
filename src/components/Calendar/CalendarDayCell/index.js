@@ -17,15 +17,25 @@ const CalendarDayCell = ({ day, calendar, history }) => {
       onClick={() => history.push(`/calendar/${dateStr}`)}>
       {/* <Link className={styles.dayLink} to={`/calendar/${dateStr}`}> */}
       <div className={styles.date}>{day.date.getDate()}</div>
-      {day.courses &&
-        day.courses.length > 0 && (
+      {(day.courses || day.events) &&
+        day.courses.length + day.events.length > 0 && (
           <div className={styles.courseContainer}>
-            <CalendarDaycellCourse course={day.courses[0]} />
-            {day.courses.length > 1 && (
-              <CalendarDaycellCourse course={day.courses[1]} />
+            {day.courses.length > 0 ? (
+              <CalendarDaycellCourse course={day.courses[0]} />
+            ) : (
+              <CalendarDaycellCourse event={day.events[0]} date={dateStr} />
             )}
-            {day.courses.length > 2 && (
-              <div>{day.courses.length - 2} more...</div>
+            {day.courses.length + day.events.length > 1 &&
+              (day.courses.length > 1 ? (
+                <CalendarDaycellCourse course={day.courses[1]} />
+              ) : (
+                <CalendarDaycellCourse
+                  event={day.events[1 - day.courses.length]}
+                  date={dateStr}
+                />
+              ))}
+            {day.courses.length + day.events.length > 2 && (
+              <div>{day.courses.length + day.events.length - 2} more...</div>
             )}
           </div>
         )}

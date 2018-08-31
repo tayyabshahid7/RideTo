@@ -2,8 +2,18 @@ import React from 'react'
 import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
+import { getStarTimeForEventForDate } from 'utils/helper'
 
-const CalendarDayCellCourse = ({ course }) => {
+const CalendarDayCellCourse = ({ course, event, date }) => {
+  if (event) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.courseDescription}>
+          {event.name} | {getStarTimeForEventForDate(event, date)}
+        </div>
+      </div>
+    )
+  }
   const availableSpaces = course.spaces - course.orders.length
   return (
     <div className={styles.container}>

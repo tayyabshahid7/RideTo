@@ -4,12 +4,13 @@ import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
 import CoursesPanelItem from './CoursesPanelItem'
+import EventPanelItem from './EventPanelItem'
 import styles from './CoursesPanel.scss'
 import { DAY_FORMAT2 } from '../../../common/constants'
 
 class CoursesPanel extends React.Component {
   render() {
-    let { courses, date } = this.props
+    let { courses, date, events = [] } = this.props
     const title = moment(date, 'YYYY-MM-DD').format(DAY_FORMAT2)
     return (
       <div className={styles.coursesPanel}>
@@ -22,6 +23,15 @@ class CoursesPanel extends React.Component {
             <div className="text-center">
               <Link to={`/calendar/courses/create?date=${date}`}>
                 <Button color="primary">Add Course</Button>
+              </Link>
+            </div>
+            <hr />
+            {events.map(event => (
+              <EventPanelItem key={event.id} date={date} event={event} />
+            ))}
+            <div className="text-center">
+              <Link to={`/calendar/events/create?date=${date}`}>
+                <Button color="primary">Add Event</Button>
               </Link>
             </div>
           </div>
