@@ -5,6 +5,7 @@ const MinimalSelect = ({
   selected,
   options,
   onChange,
+  disabled = false,
   className = ``,
   labelField = 'name',
   valueField = 'id'
@@ -14,6 +15,7 @@ const MinimalSelect = ({
   return (
     <select
       className={overrideClass}
+      disabled={disabled}
       value={selected}
       onChange={e =>
         onChange(
