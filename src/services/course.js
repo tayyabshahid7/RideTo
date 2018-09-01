@@ -83,9 +83,15 @@ export const addSchoolOrder = async (schoolId, order) => {
   return response
 }
 
-export const fetchSchoolOrder = async (schoolId, friendly_id) => {
-  const path = `school/${schoolId}/course/order/${friendly_id}`
+export const fetchSchoolOrder = async (schoolId, friendlyId) => {
+  const path = `school/${schoolId}/course/order/${friendlyId}`
   const response = await get(path, {})
+  return response
+}
+
+export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
+  const path = `school/${schoolId}/course/order/${friendlyId}`
+  const response = await put(path, order)
   return response
 }
 

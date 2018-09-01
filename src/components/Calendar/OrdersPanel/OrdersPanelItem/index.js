@@ -6,7 +6,7 @@ import { BikeHires, getTitleFor } from 'common/info'
 
 import styles from './style.scss'
 
-const OrdersPanelItem = ({ order, onEdit }) => {
+const OrdersPanelItem = ({ order, onEdit, showEditButton }) => {
   return (
     <div className={styles.container} key={order.friendly_id}>
       <div className={styles.col}>
@@ -17,9 +17,14 @@ const OrdersPanelItem = ({ order, onEdit }) => {
         {getTitleFor(BikeHires, order.bike_hire)}
       </div>
       <div className={styles.col}>{order.user_phone}</div>
-      <Button color="primary" onClick={onEdit} className="mr-1 btn-padding-sm">
-        Edit
-      </Button>
+      {showEditButton && (
+        <Button
+          color="primary"
+          onClick={onEdit}
+          className="mr-1 btn-padding-sm">
+          Edit
+        </Button>
+      )}
     </div>
   )
 }

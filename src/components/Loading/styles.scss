@@ -3,6 +3,7 @@ We set the element we are applying our loading mask to relative
 */
 .loadingMask {
   position: relative;
+  min-height: 50px;
 }
 
 /*

@@ -5,7 +5,6 @@ import {
   getSingleCourse,
   deleteCourse,
   createSchoolOrder,
-  getSchoolOrder,
   updateSchoolOrder,
   updateCourse
 } from 'store/course'
@@ -78,7 +77,6 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getSingleCourse,
-      getSchoolOrder,
       deleteCourse,
       createSchoolOrder,
       updateSchoolOrder,

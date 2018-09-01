@@ -5,7 +5,7 @@ import OrdersPanelItem from './OrdersPanelItem'
 import styles from './OrdersPanel.scss'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 import AddOrderItem from './AddOrderItem'
-import EditOrderItem from './EditOrderItem'
+import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import { Button } from 'reactstrap'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import Loading from 'components/Loading'
@@ -19,7 +19,7 @@ class OrdersPanel extends React.Component {
       showDeleteCourseConfirmModal: false,
       addOrderIndex: -1,
       editOrderIndex: -1,
-      orderEditForm: this.props.orderEditForm
+      showEditButton: true
     }
   }
 
@@ -27,11 +27,8 @@ class OrdersPanel extends React.Component {
     this.setState({ addOrderIndex: index })
   }
 
-  handleEdit(index, friendly_id) {
-    const { getSchoolOrder, schoolId } = this.props
-    getSchoolOrder(schoolId, friendly_id)
-
-    this.setState({ editOrderIndex: index })
+  handleShowEditForm(index) {
+    this.setState({ editOrderIndex: index, showEditButton: false })
   }
 
   handleNewOrder(order) {
@@ -55,12 +52,6 @@ class OrdersPanel extends React.Component {
     }
 
     let response = createSchoolOrder({ schoolId, order })
-    return response
-  }
-
-  handleEditOrder(order) {
-    const { updateSchoolOrder, schoolId } = this.props
-    let response = updateSchoolOrder({ schoolId, order })
     return response
   }
 
@@ -103,7 +94,8 @@ class OrdersPanel extends React.Component {
       showConfirmModal,
       showDeleteCourseConfirmModal,
       addOrderIndex,
-      editOrderIndex
+      editOrderIndex,
+      showEditButton
     } = this.state
     const dateStr = moment(course.date, 'YYYY-MM-DD').format('dddd Do MMMM')
     const backLink = `/calendar/${course.date}`
@@ -142,29 +134,28 @@ class OrdersPanel extends React.Component {
                 <div>Automatic: {course.auto_bikes - automaticOrdersCount}</div>
               </div>
               <div className={styles.orders}>
-                {course.orders.map(
-                  (order, index) =>
-                    editOrderIndex === index ? (
-                      <Loading loading={this.state.orderEditForm === null}>
-                        <EditOrderItem
-                          onCancel={() => this.setState({ editOrderIndex: -1 })}
-                          info={info}
-                          course={course}
-                          onSave={this.handleEditOrder.bind(this)}
-                          key={index}
-                          saving={saving}
-                          order={this.state.orderEditForm}
-                        />
-                      </Loading>
-                    ) : (
-                      <OrdersPanelItem
-                        order={order}
-                        onEdit={() => this.handleEdit(index, order.friendly_id)}
-                        onRemove={this.handleRemoveClick.bind(this)}
-                        key={index}
+                {course.orders.map((order, index) => (
+                  <React.Fragment key={index}>
+                    <OrdersPanelItem
+                      order={order}
+                      onEdit={() => this.handleShowEditForm(index)}
+                      onRemove={this.handleRemoveClick.bind(this)}
+                      showEditButton={order.is_manual_order && showEditButton}
+                    />
+                    {editOrderIndex === index && (
+                      <EditOrderFormContainer
+                        updateCourse={this.props.updateCourse}
+                        onCancel={() =>
+                          this.setState({
+                            editOrderIndex: -1,
+                            showEditButton: true
+                          })
+                        }
+                        friendlyId={order.friendly_id}
                       />
-                    )
-                )}
+                    )}
+                  </React.Fragment>
+                ))}
                 {Array.apply(null, Array(availableSpaces)).map(
                   (val, index) =>
                     addOrderIndex === index ? (

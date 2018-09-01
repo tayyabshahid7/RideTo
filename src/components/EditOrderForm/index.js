@@ -1,16 +1,19 @@
 import React from 'react'
 import styles from './styles.scss'
-import { Button, Row, Col, Form } from 'reactstrap'
+import { Button, Row, Col, Form, FormGroup, Label } from 'reactstrap'
+import AgeInput from 'components/AgeInput'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires } from 'common/info'
 
-class EditOrderItem extends React.Component {
+class EditOrderForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      ...this.props.order
+      order: props.order ? props.order : {}
     }
+
+    this.handleChangeRawEvent = this.handleChangeRawEvent.bind(this)
   }
 
   handleChangeRawEvent(event) {
@@ -26,7 +29,7 @@ class EditOrderItem extends React.Component {
     event.preventDefault()
     let response = await onSave(order)
     if (response) {
-      onCancel() //close form
+      onCancel() // close the form on success
     }
   }
 
@@ -43,7 +46,7 @@ class EditOrderItem extends React.Component {
       user_driving_licence_number,
       user_email,
       direct_friendly_id
-    } = this.state
+    } = this.state.order
 
     return (
       <div className={styles.container}>
@@ -62,7 +65,7 @@ class EditOrderItem extends React.Component {
                 label="First Name"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -73,7 +76,7 @@ class EditOrderItem extends React.Component {
                 label="Surname"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -86,7 +89,7 @@ class EditOrderItem extends React.Component {
                 label="Mobile"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -97,25 +100,22 @@ class EditOrderItem extends React.Component {
                 label="Email"
                 className="form-group"
                 type="email"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
           </Row>
           <Row>
             <Col>
-              <InputTextGroup
-                name="user_birthdate"
-                value={user_birthdate}
-                label="Birthdate"
-                className="form-group"
-                type="date"
-                onChange={this.handleChangeRawEvent.bind(this)}
-                // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
-                required
-              />
+              <FormGroup>
+                <Label>Birth Date</Label>
+                <AgeInput
+                  name="user_birthdate"
+                  value={user_birthdate}
+                  onChange={this.handleChangeRawEvent}
+                />
+              </FormGroup>
             </Col>
-            <Col />
           </Row>
           <Row>
             <Col>
@@ -125,7 +125,7 @@ class EditOrderItem extends React.Component {
                 label="License"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -136,7 +136,7 @@ class EditOrderItem extends React.Component {
                 label="Payment Status"
                 valueArray={info.paymentStatus}
                 noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -149,7 +149,7 @@ class EditOrderItem extends React.Component {
                 label="Riding Experience"
                 valueArray={info.ridingExperiences}
                 noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -160,7 +160,7 @@ class EditOrderItem extends React.Component {
                 label="Bike Hire"
                 valueArray={BikeHires}
                 noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -182,4 +182,4 @@ class EditOrderItem extends React.Component {
   }
 }
 
-export default EditOrderItem
+export default EditOrderForm
