@@ -41,7 +41,7 @@ class EditOrderForm extends React.Component {
       user_phone,
       bike_hire,
       riding_experience,
-      status: payment_status,
+      status, //payment status
       user_birthdate,
       user_driving_licence_number,
       user_email,
@@ -90,7 +90,6 @@ class EditOrderForm extends React.Component {
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent}
-                required
               />
             </Col>
             <Col>
@@ -126,13 +125,12 @@ class EditOrderForm extends React.Component {
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent}
-                required
               />
             </Col>
             <Col>
               <InputSelectGroup
-                name="payment_status"
-                value={payment_status}
+                name="status"
+                value={status}
                 label="Payment Status"
                 valueArray={info.paymentStatus}
                 noSelectOption
@@ -150,7 +148,6 @@ class EditOrderForm extends React.Component {
                 valueArray={info.ridingExperiences}
                 noSelectOption
                 onChange={this.handleChangeRawEvent}
-                required
               />
             </Col>
             <Col>
@@ -161,7 +158,6 @@ class EditOrderForm extends React.Component {
                 valueArray={BikeHires}
                 noSelectOption
                 onChange={this.handleChangeRawEvent}
-                required
               />
             </Col>
           </Row>

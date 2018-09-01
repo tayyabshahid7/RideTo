@@ -94,7 +94,6 @@ class AddOrderItem extends React.Component {
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required
               />
             </Col>
             <Col>
@@ -133,7 +132,6 @@ class AddOrderItem extends React.Component {
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required
               />
             </Col>
             <Col>
@@ -157,7 +155,6 @@ class AddOrderItem extends React.Component {
                 valueArray={info.ridingExperiences}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required
               />
             </Col>
             <Col>
@@ -168,7 +165,6 @@ class AddOrderItem extends React.Component {
                 valueArray={BikeHires}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required
               />
             </Col>
           </Row>
