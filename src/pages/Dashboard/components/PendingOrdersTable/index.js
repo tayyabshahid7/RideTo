@@ -69,7 +69,7 @@ class FilteredTable extends Component {
               <th
                 className={
                   friendly_id &&
-                  (friendly_id.startsWith('-') ? styles.asc : styles.desc)
+                  (friendly_id.indexOf('-') === 0 ? styles.asc : styles.desc)
                 }
                 name="friendly_id"
                 onClick={e => this.handleSort(e)}>
@@ -78,7 +78,7 @@ class FilteredTable extends Component {
               <th
                 className={
                   user_date &&
-                  (user_date.startsWith('-') ? styles.asc : styles.desc)
+                  (user_date.indexOf('-') === 0 ? styles.asc : styles.desc)
                 }
                 name="user_date"
                 onClick={e => this.handleSort(e)}>
@@ -87,7 +87,7 @@ class FilteredTable extends Component {
               <th
                 className={
                   bike_hire &&
-                  (bike_hire.startsWith('-') ? styles.asc : styles.desc)
+                  (bike_hire.indexOf('-') === 0 ? styles.asc : styles.desc)
                 }
                 name="bike_hire"
                 onClick={e => this.handleSort(e)}>
