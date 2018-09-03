@@ -8,7 +8,7 @@
 
   flex-wrap: wrap;
   flex: 1 1 auto;
-  overflow: auto;
+  overflow-y: hidden;
   // padding-right: 15px;
 
   &::-webkit-scrollbar {
