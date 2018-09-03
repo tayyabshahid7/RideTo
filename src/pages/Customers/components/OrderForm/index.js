@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
@@ -86,8 +85,6 @@ class OrderForm extends React.Component {
     )
     const courses = selectedSupplier ? selectedSupplier.courses : []
     const isDisabled = !isChanged || isSaving
-    const date = moment(editable.start_time, 'YYYY-MM-DD').format('YYYY-MM-DD')
-    const calendarLink = `/calendar/${date}`
 
     return (
       <div className={styles.orderForm}>
