@@ -37,6 +37,7 @@ export const login = (email, password) => {
       const response = await apiRequestLogin(email, password)
 
       if (response.status === 200) {
+        saveState({ auth: { user: response.data.user } })
         dispatch(loginSuccess(response.data))
       } else {
         throw response
@@ -111,7 +112,6 @@ export default function reducer(state = initialState, action) {
         schoolName: action.data.user.suppliers[0].name,
         user: action.data.user
       }
-      saveState(updated)
       return updated
     case LOGOUT:
       clearState()
