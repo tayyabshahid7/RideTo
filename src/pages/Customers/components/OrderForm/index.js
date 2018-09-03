@@ -224,9 +224,6 @@ class OrderForm extends React.Component {
           </Row>
           <Row>
             <Col className={styles.actions}>
-              <Link to={calendarLink} target="_blank">
-                View Calendar
-              </Link>
               <Button
                 disabled={isDisabled}
                 color="primary"
