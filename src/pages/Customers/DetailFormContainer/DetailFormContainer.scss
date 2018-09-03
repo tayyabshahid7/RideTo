@@ -1,3 +1,13 @@
 .detailFormContainer {
   border-right: solid 1px black;
 }
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.customerInfo {
+  text-align: right;
+}
