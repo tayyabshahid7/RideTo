@@ -1,6 +1,5 @@
-import { setToken, removeToken } from 'services/auth'
+import { requestToken, removeToken } from 'services/auth'
 import { saveState, clearState } from 'services/localStorage'
-import { apiRequestLogin } from 'services/api'
 import { getPendingOrders } from 'store/dashboard'
 import { getSchoolOrders } from 'store/orders'
 import { getInstructors } from 'store/instructor'
@@ -34,13 +33,11 @@ export const login = (email, password) => {
   return async dispatch => {
     dispatch(loginRequest())
     try {
-      const response = await apiRequestLogin(email, password)
+      const response = await requestToken(email, password)
 
       if (response.status === 200) {
-        saveState({ auth: { user: response.data.user } })
-        dispatch(loginSuccess(response.data))
-      } else {
-        throw response
+        saveState({ auth: { user: response.user } })
+        dispatch(loginSuccess(response))
       }
     } catch (error) {
       let errorMessage = 'Unexpected error'
@@ -102,8 +99,7 @@ export default function reducer(state = initialState, action) {
         error: action.error
       }
     case LOGIN_SUCCESS:
-      setToken(action.data.token)
-      const updated = {
+      return {
         ...state,
         loading: false,
         loggedIn: true,
@@ -112,7 +108,6 @@ export default function reducer(state = initialState, action) {
         schoolName: action.data.user.suppliers[0].name,
         user: action.data.user
       }
-      return updated
     case LOGOUT:
       clearState()
       removeToken()

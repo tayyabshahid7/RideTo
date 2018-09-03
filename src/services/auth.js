@@ -1,7 +1,26 @@
+import { post } from 'services/api'
+
+const EXPIRE_THRESHOLD = 5 * 60 // seconds
+
 const _decodeJWT = token => {
   const base64Url = token.split('.')[1]
   const base64 = base64Url.replace('-', '+').replace('_', '/')
   return JSON.parse(window.atob(base64))
+}
+
+const setToken = token => {
+  window.localStorage.setItem('token', token)
+}
+
+const isTokenExpired = token => {
+  try {
+    const decoded = _decodeJWT(token)
+    if (decoded.exp < Date.now() / 1000) {
+      return true
+    } else return false
+  } catch (err) {
+    return false
+  }
 }
 
 export const getUserProfile = token => {
@@ -12,24 +31,26 @@ export const getToken = () => {
   return localStorage.getItem('token')
 }
 
-export const setToken = token => {
-  localStorage.setItem('token', token)
-}
-
 export const removeToken = () => {
   localStorage.removeItem('token')
 }
 
-const isTokenExpired = token => {
-  try {
-    const decoded = _decodeJWT(token)
-    if (decoded.exp < Date.now() / 1000) {
-      // Checking if token is expired.
-      return true
-    } else return false
-  } catch (err) {
-    return false
-  }
+export const isTokenExpiring = token => {
+  const decoded = _decodeJWT(token)
+  const timeLeft = decoded.exp - Date.now() / 1000
+  return timeLeft > 0 && timeLeft < EXPIRE_THRESHOLD
+}
+
+export const requestToken = async (email, password) => {
+  const response = await post('users/login/', { email, password }, false)
+  setToken(response.token)
+  return response
+}
+
+export const refreshToken = async token => {
+  const response = await post('users/refresh/', { token }, false)
+  setToken(response.token)
+  return response.token
 }
 
 export const isAuthenticated = () => {

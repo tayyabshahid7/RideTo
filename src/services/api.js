@@ -1,7 +1,6 @@
 import axios from 'axios'
-import { getToken } from './auth'
+import { refreshToken, getToken, isTokenExpiring } from './auth'
 
-export const LOGIN_REQUEST_URL = 'api/users/login/'
 export const TOKEN_REFRESH_URL = 'api/users/refresh/'
 export const VERIFY_TOKEN_REQUEST_URL = 'api/users/verify/'
 export const POST_METHOD = 'POST'
@@ -13,15 +12,6 @@ const getCSRFToken = () => {
   return el ? el.value : null
 }
 const CSRF_TOKEN = getCSRFToken()
-
-export const apiRequestLogin = (email, password) => {
-  const config = {
-    headers: { 'Content-Type': 'application/json' },
-    baseURL: BASE_URL
-  }
-  const data = { email: email, password: password }
-  return axios.post(LOGIN_REQUEST_URL, data, config).catch(error => error)
-}
 
 export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
   const config = {
@@ -39,11 +29,17 @@ export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
 }
 
 const request = async (method, path, params, data = null, auth = true) => {
+  const existingToken = getToken()
+  const token =
+    auth && isTokenExpiring(existingToken)
+      ? await refreshToken(existingToken)
+      : existingToken
+
   const headers = {
     'Content-Type': 'application/json'
   }
   if (auth) {
-    headers.Authorization = `Bearer ${getToken()}`
+    headers.Authorization = `Bearer ${token}`
   }
   if (CSRF_TOKEN) {
     headers['X-CSRFToken'] = CSRF_TOKEN
