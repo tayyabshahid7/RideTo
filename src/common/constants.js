@@ -29,7 +29,6 @@ export const RIDING_EXPERIENCE = {
 }
 
 export const PAYMENT_STATUS = {
-  RECEIVED: 'received',
   PAID: 'paid',
-  DENIED: 'denied'
+  PENDING: 'pending'
 }

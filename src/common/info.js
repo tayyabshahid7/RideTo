@@ -27,9 +27,8 @@ export const RidingExperiences = [
 ]
 
 export const PaymentStatus = [
-  { value: PAYMENT_STATUS.RECEIVED, title: 'Received' },
   { value: PAYMENT_STATUS.PAID, title: 'Paid' },
-  { value: PAYMENT_STATUS.DENIED, title: 'Denied' }
+  { value: PAYMENT_STATUS.PENDING, title: 'Payment Outstanding' }
 ]
 
 export const Faqs = [
