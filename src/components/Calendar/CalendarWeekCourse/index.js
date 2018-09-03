@@ -3,7 +3,6 @@ import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS } from 'common/constants'
-import { getStarTimeForEventForDate } from 'utils/helper'
 
 const CalendarWeekCourse = ({ course, position, barCount, history }) => {
   let height = (course.duration / 60) * 100 // Duration is in mins
