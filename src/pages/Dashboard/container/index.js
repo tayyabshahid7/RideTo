@@ -90,8 +90,8 @@ const mapStateToProps = (state, ownProps) => {
     schoolId: state.auth.schoolId,
     schoolName: state.auth.schoolName,
     pendingOrders: state.dashboard.pendingOrders,
-    page: state.orders.page,
-    loading: state.orders.loading
+    page: state.dashboard.page,
+    loading: state.dashboard.loading
   }
 }
 
