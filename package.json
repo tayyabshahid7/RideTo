@@ -111,6 +111,7 @@
       "^json(.*)$": "<rootDir>/src/json$1",
       "^common(.*)$": "<rootDir>/src/common$1",
       "^utils(.*)$": "<rootDir>/src/utils$1",
+      "^store(.*)$": "<rootDir>/src/store$1",
       "\\.(css|scss)$": "identity-obj-proxy"
     },
     "moduleFileExtensions": [
