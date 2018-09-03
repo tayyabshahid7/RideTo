@@ -4,11 +4,7 @@ import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
-import {
-  WORK_HOURS,
-  WEEK_VIEW_START_TIME,
-  SINGLE_DAY_IN_SECONDS
-} from 'common/constants'
+import { WORK_HOURS, WEEK_VIEW_START_TIME } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 
 class CalendarWeekView extends Component {
