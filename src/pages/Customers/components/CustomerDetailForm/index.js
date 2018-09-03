@@ -176,7 +176,7 @@ class CustomerDetailForm extends React.Component {
             <Button color="primary" onClick={onSave} disabled={isDisabled}>
               Save
             </Button>
-            <Button color="outline" onClick={onCancel} disabled={isDisabled}>
+            <Button color="link" onClick={onCancel} disabled={isDisabled}>
               Cancel
             </Button>
           </Col>
