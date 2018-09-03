@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import moment from 'moment'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
@@ -63,24 +64,6 @@ class OrderForm extends React.Component {
     })
   }
 
-  handleChangeStartTime(value) {
-    const { editable } = this.state
-    const date = new Date(editable.start_time)
-    const [hours, minutes] = value.split(':')
-
-    date.setHours(hours)
-    date.setMinutes(minutes)
-
-    this.handleChange('start_time', date.toISOString())
-  }
-
-  handleChangeStartDate(value) {
-    const { editable } = this.state
-    const date = editable.start_time || new Date().toISOString()
-
-    this.handleChange('start_time', `${value}${date.slice(10)}`)
-  }
-
   handleCancel() {
     this.setState({
       editable: { ...this.props.order },
@@ -103,6 +86,8 @@ class OrderForm extends React.Component {
     )
     const courses = selectedSupplier ? selectedSupplier.courses : []
     const isDisabled = !isChanged || isSaving
+    const date = moment(editable.start_time, 'YYYY-MM-DD').format('YYYY-MM-DD')
+    const calendarLink = `/calendar/${date}`
 
     return (
       <div className={styles.orderForm}>
@@ -145,11 +130,8 @@ class OrderForm extends React.Component {
                 <Label>Training Date</Label>
                 <Input
                   type="date"
-                  disabled={isRideTo(editable)}
+                  disabled={true}
                   value={getDate(editable.start_time) || ''}
-                  onChange={({ target }) =>
-                    this.handleChangeStartDate(target.value)
-                  }
                 />
               </FormGroup>
             </Col>
@@ -158,11 +140,8 @@ class OrderForm extends React.Component {
                 <Label>Training Time</Label>
                 <Input
                   type="time"
-                  disabled={isRideTo(editable)}
+                  disabled={true}
                   value={getTime(editable.start_time) || ''}
-                  onChange={({ target }) =>
-                    this.handleChangeStartTime(target.value)
-                  }
                 />
               </FormGroup>
             </Col>
@@ -234,7 +213,7 @@ class OrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <Button
                 disabled={isSending}
                 color="outline"
@@ -245,6 +224,9 @@ class OrderForm extends React.Component {
           </Row>
           <Row>
             <Col className={styles.actions}>
+              <Link to={calendarLink} target="_blank">
+                View Calendar
+              </Link>
               <Button
                 disabled={isDisabled}
                 color="primary"
