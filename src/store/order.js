@@ -15,7 +15,15 @@ export const actions = {}
 export const selectors = {}
 
 actions.fetchOrders = common.fetch(MODULE, orderService.fetchOrders)
+actions.fetchSupplierOrders = common.fetch(
+  MODULE,
+  orderService.fetchSupplierOrders
+)
 actions.saveOrder = common.save(MODULE, orderService.saveOrder)
+
+selectors.getItems = ({ results, items }) => {
+  return results.map(id => items[id])
+}
 
 selectors.getOrdersByCustomer = ({ items }, customerId) => {
   return Object.keys(items)
@@ -26,5 +34,8 @@ selectors.getOrdersByCustomer = ({ items }, customerId) => {
 export default combineReducers({
   items: common.items(MODULE, 'friendly_id'),
   isSaving: common.isSaving(MODULE),
-  result: common.result(MODULE, 'friendly_id')
+  total: common.total(MODULE),
+  isFetching: common.isFetchingItems(MODULE),
+  result: common.result(MODULE, 'friendly_id'),
+  results: common.results(MODULE, 'friendly_id')
 })

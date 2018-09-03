@@ -118,7 +118,7 @@ class ConfirmedOrders extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.confirmedOrders.results.map(order => (
+                  {this.props.confirmedOrders.map(order => (
                     <tr key={order.friendly_id}>
                       <Cell>{order.friendly_id}</Cell>
                       <Cell>

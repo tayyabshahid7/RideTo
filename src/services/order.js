@@ -44,7 +44,7 @@ export const getDateFilters = () => {
   return FILTERS
 }
 
-export const fetchSchoolOrders = async (schoolId, params = {}) => {
+export const fetchSupplierOrders = async (schoolId, params = {}) => {
   const path = `o/${schoolId}/confirmed/`
   const response = await get(path, params)
 
