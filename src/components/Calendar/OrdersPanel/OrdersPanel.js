@@ -5,6 +5,7 @@ import OrdersPanelItem from './OrdersPanelItem'
 import styles from './OrdersPanel.scss'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 import AddOrderItem from './AddOrderItem'
+import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import { Button } from 'reactstrap'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import Loading from 'components/Loading'
@@ -16,12 +17,18 @@ class OrdersPanel extends React.Component {
     this.state = {
       showConfirmModal: false,
       showDeleteCourseConfirmModal: false,
-      addOrderIndex: -1
+      addOrderIndex: -1,
+      editOrderIndex: -1,
+      showEditButton: true
     }
   }
 
   handleAdd(index) {
     this.setState({ addOrderIndex: index })
+  }
+
+  handleShowEditForm(index) {
+    this.setState({ editOrderIndex: index, showEditButton: false })
   }
 
   handleNewOrder(order) {
@@ -86,7 +93,9 @@ class OrdersPanel extends React.Component {
     const {
       showConfirmModal,
       showDeleteCourseConfirmModal,
-      addOrderIndex
+      addOrderIndex,
+      editOrderIndex,
+      showEditButton
     } = this.state
     const dateStr = moment(course.date, 'YYYY-MM-DD').format('dddd Do MMMM')
     const backLink = `/calendar/${course.date}`
@@ -126,7 +135,26 @@ class OrdersPanel extends React.Component {
               </div>
               <div className={styles.orders}>
                 {course.orders.map((order, index) => (
-                  <OrdersPanelItem order={order} key={index} />
+                  <React.Fragment key={index}>
+                    <OrdersPanelItem
+                      order={order}
+                      onEdit={() => this.handleShowEditForm(index)}
+                      onRemove={this.handleRemoveClick.bind(this)}
+                      showEditButton={order.is_manual_order && showEditButton}
+                    />
+                    {editOrderIndex === index && (
+                      <EditOrderFormContainer
+                        updateCourse={this.props.updateCourse}
+                        onCancel={() =>
+                          this.setState({
+                            editOrderIndex: -1,
+                            showEditButton: true
+                          })
+                        }
+                        friendlyId={order.friendly_id}
+                      />
+                    )}
+                  </React.Fragment>
                 ))}
                 {Array.apply(null, Array(availableSpaces)).map(
                   (val, index) =>

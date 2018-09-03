@@ -3,6 +3,8 @@ import {
   fetchCourses,
   deleteSingleCourse,
   addSchoolOrder,
+  fetchSchoolOrder,
+  updateSchoolOrder,
   updateSchoolCourse,
   createSchoolCourse,
   getPricingForCourse
@@ -20,6 +22,8 @@ const DELETE = createRequestTypes('rideto/course/DELETE')
 const UPDATE = createRequestTypes('rideto/course/UPDATE')
 const CREATE = createRequestTypes('rideto/course/CREATE')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
+const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
+const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
 
 export const getSingleCourse = ({
@@ -128,6 +132,40 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
   return true
 }
 
+export const getSchoolOrder = ({ schoolId, friendlyId }) => async dispatch => {
+  dispatch({ type: FETCH_ORDER[REQUEST] })
+  try {
+    const response = await fetchSchoolOrder(schoolId, friendlyId)
+    dispatch({
+      type: FETCH_ORDER[SUCCESS],
+      data: { order: response }
+    })
+  } catch (error) {
+    dispatch({ type: FETCH_ORDER[FAILURE], error })
+    return false
+  }
+  return true
+}
+
+export const updateOrder = ({
+  schoolId,
+  friendlyId,
+  order
+}) => async dispatch => {
+  dispatch({ type: UPDATE_ORDER[REQUEST] })
+  try {
+    const response = await updateSchoolOrder(schoolId, friendlyId, order)
+    dispatch({
+      type: UPDATE_ORDER[SUCCESS],
+      data: { order: response }
+    })
+  } catch (error) {
+    dispatch({ type: UPDATE_ORDER[FAILURE], error })
+    return false
+  }
+  return true
+}
+
 export const updateCourse = ({
   schoolId,
   courseId,
@@ -219,6 +257,11 @@ const initialState = {
     rightPanelMode: null,
     selectedDate: null,
     silent: false // This is to tell whether should re-load calendar. false: re-load, true: not reload
+  },
+  orderEditForm: {
+    order: null,
+    loading: false,
+    error: null
   }
 }
 
@@ -453,6 +496,44 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         pricing: { ...state.pricing, loading: false }
+      }
+    case FETCH_ORDER[REQUEST]:
+      return {
+        ...state,
+        orderEditForm: { order: null, loading: true, error: null }
+      }
+    case FETCH_ORDER[SUCCESS]:
+      return {
+        ...state,
+        orderEditForm: { order: action.data.order, loading: false, error: null }
+      }
+    case FETCH_ORDER[FAILURE]:
+      return {
+        ...state,
+        orderEditForm: {
+          ...state.orderEditForm,
+          loading: false,
+          error: action.error
+        }
+      }
+    case UPDATE_ORDER[REQUEST]:
+      return {
+        ...state,
+        orderEditForm: { ...state.orderEditForm, loading: true, error: null }
+      }
+    case UPDATE_ORDER[SUCCESS]:
+      return {
+        ...state,
+        orderEditForm: { order: action.data.order, loading: false, error: null }
+      }
+    case UPDATE_ORDER[FAILURE]:
+      return {
+        ...state,
+        orderEditForm: {
+          ...state.orderEditForm,
+          loading: false,
+          error: action.error
+        }
       }
     default:
       return state

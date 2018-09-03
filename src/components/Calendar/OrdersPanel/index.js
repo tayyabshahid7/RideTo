@@ -5,6 +5,7 @@ import {
   getSingleCourse,
   deleteCourse,
   createSchoolOrder,
+  updateSchoolOrder,
   updateCourse
 } from 'store/course'
 import OrdersPanel from './OrdersPanel'
@@ -78,6 +79,7 @@ const mapDispatchToProps = dispatch =>
       getSingleCourse,
       deleteCourse,
       createSchoolOrder,
+      updateSchoolOrder,
       updateCourse
     },
     dispatch

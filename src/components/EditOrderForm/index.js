@@ -1,28 +1,19 @@
 import React from 'react'
 import styles from './styles.scss'
-import { Button, Row, Col, Form } from 'reactstrap'
+import { Button, Row, Col, Form, FormGroup, Label } from 'reactstrap'
+import AgeInput from 'components/AgeInput'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires } from 'common/info'
 
-class AddOrderItem extends React.Component {
+class EditOrderForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      order: {
-        school_course_id: this.props.course.id,
-        user_birthdate: '',
-        user_driving_licence_number: '',
-        user_email: '',
-        user_first_name: '',
-        user_last_name: '',
-        user_phone: '',
-        bike_hire: '',
-        payment_status: '',
-        riding_experience: '',
-        start_time: ''
-      }
+      order: props.order ? props.order : {}
     }
+
+    this.handleChangeRawEvent = this.handleChangeRawEvent.bind(this)
   }
 
   handleChangeRawEvent(event) {
@@ -38,8 +29,7 @@ class AddOrderItem extends React.Component {
     event.preventDefault()
     let response = await onSave(order)
     if (response) {
-      // Then Success
-      onCancel()
+      onCancel() // close the form on success
     }
   }
 
@@ -51,16 +41,22 @@ class AddOrderItem extends React.Component {
       user_phone,
       bike_hire,
       riding_experience,
-      payment_status,
+      status, //payment status
       user_birthdate,
       user_driving_licence_number,
-      user_email
-    } = this.state
+      user_email,
+      direct_friendly_id
+    } = this.state.order
 
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave.bind(this)}>
+          <Row>
+            <Col>
+              <h4>EDIT {direct_friendly_id}</h4>
+            </Col>
+          </Row>
           <Row>
             <Col>
               <InputTextGroup
@@ -69,7 +65,7 @@ class AddOrderItem extends React.Component {
                 label="First Name"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -80,7 +76,7 @@ class AddOrderItem extends React.Component {
                 label="Surname"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -93,7 +89,7 @@ class AddOrderItem extends React.Component {
                 label="Mobile"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
             </Col>
             <Col>
@@ -103,25 +99,22 @@ class AddOrderItem extends React.Component {
                 label="Email"
                 className="form-group"
                 type="email"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
           </Row>
           <Row>
             <Col>
-              <InputTextGroup
-                name="user_birthdate"
-                value={user_birthdate}
-                label="Birthdate"
-                className="form-group"
-                type="date"
-                onChange={this.handleChangeRawEvent.bind(this)}
-                // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
-                required
-              />
+              <FormGroup>
+                <Label>Birth Date</Label>
+                <AgeInput
+                  name="user_birthdate"
+                  value={user_birthdate}
+                  onChange={this.handleChangeRawEvent}
+                />
+              </FormGroup>
             </Col>
-            <Col />
           </Row>
           <Row>
             <Col>
@@ -131,17 +124,17 @@ class AddOrderItem extends React.Component {
                 label="License"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
             </Col>
             <Col>
               <InputSelectGroup
-                name="payment_status"
-                value={payment_status}
+                name="status"
+                value={status}
                 label="Payment Status"
                 valueArray={info.paymentStatus}
                 noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
             </Col>
@@ -154,7 +147,7 @@ class AddOrderItem extends React.Component {
                 label="Riding Experience"
                 valueArray={info.ridingExperiences}
                 noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
             </Col>
             <Col>
@@ -164,7 +157,7 @@ class AddOrderItem extends React.Component {
                 label="Bike Hire"
                 valueArray={BikeHires}
                 noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
             </Col>
           </Row>
@@ -185,4 +178,4 @@ class AddOrderItem extends React.Component {
   }
 }
 
-export default AddOrderItem
+export default EditOrderForm
