@@ -6,6 +6,7 @@ import { Col } from 'reactstrap'
 import styles from './DetailFormContainer.scss'
 import { actions, selectors } from 'store/customer'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
+import Loading from 'components/Loading'
 
 class DetailFormContainer extends React.Component {
   constructor(props) {
@@ -61,13 +62,15 @@ class DetailFormContainer extends React.Component {
         <h3>
           {editable.first_name} {editable.last_name}
         </h3>
-        <CustomerDetailForm
-          customer={editable}
-          isDisabled={isDisabled}
-          onChange={this.handleChangeCustomer}
-          onSave={this.handleSaveCustomer}
-          onCancel={this.handleCancel}
-        />
+        <Loading loading={isSaving}>
+          <CustomerDetailForm
+            customer={editable}
+            isDisabled={isDisabled}
+            onChange={this.handleChangeCustomer}
+            onSave={this.handleSaveCustomer}
+            onCancel={this.handleCancel}
+          />
+        </Loading>
       </Col>
     )
   }
@@ -75,9 +78,11 @@ class DetailFormContainer extends React.Component {
 
 const mapStateToProps = (state, props) => {
   const { id } = props
+  const { customer } = state
 
   return {
-    customer: selectors.getItem(state.customer, id) || {}
+    customer: selectors.getItem(customer, id) || {},
+    isSaving: customer.isSaving
   }
 }
 
