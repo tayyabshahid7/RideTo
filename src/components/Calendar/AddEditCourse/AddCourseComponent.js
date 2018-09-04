@@ -52,7 +52,7 @@ class AddCourseComponent extends Component {
     const backLink = `/calendar/${date}`
     return (
       <div className={styles.addCourse}>
-        <DateHeading date={moment(date)}>
+        <DateHeading date={moment(date)} title={date ? null : 'Add Course'}>
           <Link to={backLink}>&laquo; Back</Link>
         </DateHeading>
         <CourseForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
