@@ -13,7 +13,7 @@
   padding-left: 16px;
   height: 100%;
   display: flex;
-  border-left: 1px solid $grey;
+  border-left: 1px solid var(--light-grey-color);
   width: 480px;
 
   @media (max-width: 992px) {
