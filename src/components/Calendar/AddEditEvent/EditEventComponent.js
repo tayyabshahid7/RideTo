@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import styles from './styles.scss'
 import EventForm from './EventForm'
 import { getSingleEvent, updateEvent, fetchPrice } from 'store/event'
 import { loadEventTypes } from 'store/info'
@@ -59,11 +58,7 @@ class EditEventComponent extends Component {
       return <div>Event Not Found</div>
     }
 
-    return (
-      <div className={styles.addEvent}>
-        <EventForm {...this.props} onSubmit={this.onSave.bind(this)} />
-      </div>
-    )
+    return <EventForm {...this.props} onSubmit={this.onSave.bind(this)} />
   }
 }
 

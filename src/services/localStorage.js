@@ -2,12 +2,12 @@ export const loadState = () => {
   try {
     const serializedState = localStorage.getItem('state')
     if (serializedState === null) {
-      return undefined
+      return {}
     }
     return JSON.parse(serializedState)
   } catch (err) {
     console.log('There was a problem getting the state from local storage')
-    return undefined
+    return {}
   }
 }
 

@@ -1,4 +1,3 @@
-import moment from 'moment'
 import {
   fetchSingleEvent,
   fetchEvents,
@@ -7,7 +6,6 @@ import {
   createSchoolEvent
 } from 'services/event'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
-import { DATE_FORMAT } from '../common/constants'
 
 const FETCH_ALL = createRequestTypes('rideto/event/FETCH/ALL')
 const FETCH_FOR_DAY = createRequestTypes('rideto/event/FETCH/DAY')
@@ -40,14 +38,7 @@ export const getDayEvents = ({ schoolId, date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {
-    let dayLater = new Date(date)
-    dayLater.setDate(dayLater.getDate() + 1)
-
-    const events = await fetchEvents(
-      schoolId,
-      date,
-      moment(dayLater).format(DATE_FORMAT)
-    )
+    const events = await fetchEvents(schoolId, date, date)
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],

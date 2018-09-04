@@ -34,11 +34,8 @@ export const login = (email, password) => {
     dispatch(loginRequest())
     try {
       const response = await requestToken(email, password)
-
-      if (response.status === 200) {
-        saveState({ auth: { user: response.user } })
-        dispatch(loginSuccess(response))
-      }
+      saveState({ auth: { user: response.user } })
+      dispatch(loginSuccess(response))
     } catch (error) {
       let errorMessage = 'Unexpected error'
       if (error.response) {

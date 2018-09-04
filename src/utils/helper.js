@@ -17,7 +17,7 @@ export function s(number) {
 export function getStarTimeForEventForDate(event, date) {
   let eventDate = moment(new Date(event.start_time)).format(DATE_FORMAT)
   if (eventDate === date) {
-    return moment(new Date(event.start_time)).format('hh:mm')
+    return moment(new Date(event.start_time)).format('HH:mm')
   }
   return WEEK_VIEW_START_TIME_STRING
 }
