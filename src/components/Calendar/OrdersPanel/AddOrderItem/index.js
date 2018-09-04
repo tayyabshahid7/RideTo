@@ -72,7 +72,7 @@ class AddOrderItem extends React.Component {
               <InputTextGroup
                 name="user_first_name"
                 value={user_first_name}
-                label="First Name"
+                label="First Name *"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -83,7 +83,7 @@ class AddOrderItem extends React.Component {
               <InputTextGroup
                 name="user_last_name"
                 value={user_last_name}
-                label="Surname"
+                label="Surname *"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -106,7 +106,7 @@ class AddOrderItem extends React.Component {
               <InputTextGroup
                 name="user_email"
                 value={user_email}
-                label="Email"
+                label="Email *"
                 className="form-group"
                 type="email"
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -119,7 +119,7 @@ class AddOrderItem extends React.Component {
               <InputTextGroup
                 name="user_birthdate"
                 value={user_birthdate}
-                label="Birthdate"
+                label="Birthdate *"
                 className="form-group"
                 type="date"
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -144,7 +144,7 @@ class AddOrderItem extends React.Component {
               <InputSelectGroup
                 name="payment_status"
                 value={payment_status}
-                label="Payment Status"
+                label="Payment Status *"
                 valueArray={info.paymentStatus}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
