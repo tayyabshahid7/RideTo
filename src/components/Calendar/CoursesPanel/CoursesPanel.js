@@ -34,6 +34,7 @@ class CoursesPanel extends React.Component {
             <Button
               tag={Link}
               to={`/calendar/events/create?date=${date}`}
+              outline
               color="primary">
               Add Event
             </Button>
