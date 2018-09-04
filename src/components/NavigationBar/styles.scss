@@ -12,7 +12,8 @@
 .logoImage {
   // width: 120px;
   height: 40px;
-  fill: #2cceac;
+  fill: var(--primary-color);
+  padding: 5px 10px;
 }
 .darkLogo {
   fill: white;
@@ -24,15 +25,18 @@
   align-items: center;
 }
 .navLink {
-  margin: 0 1rem;
+  margin: 0 1.2rem;
   color: #95989a;
   text-decoration: none;
   font-weight: bold;
+  padding: 20px 0px;
   &:hover {
     text-decoration: unset;
   }
 }
 
-.activeNavLink {
-  border-bottom: 2px solid #2cceac;
+@media (min-width: 768px) {
+  .activeNavLink {
+    border-bottom: 2px solid #2cceac;
+  }
 }
