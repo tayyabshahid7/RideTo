@@ -6,7 +6,7 @@ import { Col } from 'reactstrap'
 
 import styles from './DetailFormContainer.scss'
 import { actions, selectors } from 'store/customer'
-import { getCustomerType } from 'services/customer'
+import { getCustomerType, getEmptyCustomer } from 'services/customer'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
 import Loading from 'components/Loading'
 
@@ -19,7 +19,7 @@ class DetailFormContainer extends React.Component {
     super(props)
 
     this.state = {
-      editable: props.customer ? { ...props.customer } : {},
+      editable: props.customer,
       isChanged: false
     }
 
@@ -29,7 +29,9 @@ class DetailFormContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchCustomer(this.props.id)
+    if (this.props.id !== 'create') {
+      this.props.fetchCustomer(this.props.id)
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -73,9 +75,12 @@ class DetailFormContainer extends React.Component {
             <div className={styles.source}>
               {getCustomerType(editable.source)}
             </div>
-            <div className={styles.updatedAt}>
-              Last updated: {getLastUpdated(editable.updated_at)}
-            </div>
+
+            {editable.updated_at && (
+              <div className={styles.updatedAt}>
+                Last updated: {getLastUpdated(editable.updated_at)}
+              </div>
+            )}
           </div>
         </div>
         <Loading loading={isSaving}>
@@ -97,7 +102,7 @@ const mapStateToProps = (state, props) => {
   const { customer } = state
 
   return {
-    customer: selectors.getItem(customer, id) || {},
+    customer: selectors.getItem(customer, id) || getEmptyCustomer('DASHBOARD'),
     isSaving: customer.isSaving
   }
 }

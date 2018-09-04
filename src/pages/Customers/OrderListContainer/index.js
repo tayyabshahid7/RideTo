@@ -12,7 +12,9 @@ class OrderListContainer extends React.Component {
   componentDidMount() {
     const { id } = this.props
 
-    this.props.fetchOrders({ customer: parseInt(id, 10) })
+    if (id !== 'create') {
+      this.props.fetchOrders({ customer: parseInt(id, 10) })
+    }
     this.props.fetchSuppliers()
 
     this.handleSave = this.handleSave.bind(this)

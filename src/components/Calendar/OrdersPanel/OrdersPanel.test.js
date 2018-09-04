@@ -3,8 +3,8 @@ import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import { MemoryRouter } from 'react-router-dom'
 
-import OrdersPanel from './index.js'
-import CoursesPanelItem from './OrdersPanelItem'
+import OrdersPanel from './index'
+import CoursesPanelItem from '../OrdersPanelItem'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 
 Enzyme.configure({ adapter: new Adapter() })

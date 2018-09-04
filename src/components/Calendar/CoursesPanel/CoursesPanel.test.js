@@ -1,5 +1,5 @@
 import React from 'react'
-import Enzyme, { mount } from 'enzyme'
+import Enzyme, { shallow, mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -56,17 +56,6 @@ const COURSES = [
     supplier: 697
   }
 ]
-
-it('Renders Course title', () => {
-  const wrapper = mount(
-    <MemoryRouter>
-      <CoursesPanel courses={COURSES} date="2018-01-01" />
-    </MemoryRouter>
-  )
-
-  const title = wrapper.find('.coursesPanel > .title')
-  expect(title.text()).toBe('Monday 1st January 2018')
-})
 
 it('Renders courses list', () => {
   const wrapper = mount(

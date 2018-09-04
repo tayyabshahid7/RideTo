@@ -27,24 +27,23 @@ actions.fetchCustomer = common.fetchSingle(
   customerService.fetchCustomer
 )
 
-actions.saveCustomer = (customer, history) => dispatch => {
+actions.saveCustomer = (customer, history) => async dispatch => {
   dispatch({ type: SAVE })
 
   try {
-    return customerService.saveCustomer(customer).then(result => {
-      if (!customer.id && result.id) {
-        dispatch(push(`/customers/${result.id}`))
-      }
+    const result = await customerService.saveCustomer(customer)
+    if (!customer.id && result.id) {
+      dispatch(push(`/customers/${result.id}`))
+    }
 
-      dispatch({
-        type: SAVE_SUCCESS,
-        result
-      })
+    dispatch({
+      type: SAVE_SUCCESS,
+      result
     })
   } catch (error) {
     dispatch({
       type: ERROR,
-      error
+      error: error.response
     })
   }
 }
@@ -63,5 +62,6 @@ export default combineReducers({
   result: common.result(MODULE),
   total: common.total(MODULE),
   isFetching: common.isFetchingItems(MODULE),
-  isSaving: common.isSaving(MODULE)
+  isSaving: common.isSaving(MODULE),
+  error: common.error(MODULE)
 })
