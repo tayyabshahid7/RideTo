@@ -38,7 +38,7 @@ it('Renders Course title and link', () => {
     </MemoryRouter>
   )
 
-  expect(wrapper.text()).toContain('CBT Training | 2 spaces available')
+  expect(wrapper.text()).toContain('08:00')
   expect(
     wrapper
       .find('a')
@@ -60,6 +60,6 @@ it('Renders orders list', () => {
     </MemoryRouter>
   )
 
-  const rows = wrapper.find('tr')
+  const rows = wrapper.find('OrdersPanelItem')
   expect(rows).toHaveLength(COURSE.orders.length)
 })
