@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
+import { Form, Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
 import styles from './CustomerDetailForm.scss'
 import Checkbox from 'components/Checkbox'
@@ -30,7 +30,7 @@ class CustomerDetailForm extends React.Component {
     const { customer, onChange, isDisabled, onSave, onCancel } = this.props
 
     return (
-      <div>
+      <Form onSubmit={onSave}>
         <Row>
           <Col>
             <InputTextGroup
@@ -39,6 +39,7 @@ class CustomerDetailForm extends React.Component {
               label="First Name"
               className="form-group"
               onChange={this.handleChange}
+              required
             />
           </Col>
           <Col>
@@ -48,6 +49,7 @@ class CustomerDetailForm extends React.Component {
               label="Last Name"
               className="form-group"
               onChange={this.handleChange}
+              required
             />
           </Col>
         </Row>
@@ -130,7 +132,8 @@ class CustomerDetailForm extends React.Component {
               value={customer.email || ''}
               label="Email"
               className="form-group"
-              type="text"
+              type="email"
+              required
               onChange={this.handleChange}
             />
           </Col>
@@ -173,7 +176,7 @@ class CustomerDetailForm extends React.Component {
         </Row>
         <Row>
           <Col className={styles.actions}>
-            <Button color="primary" onClick={onSave} disabled={isDisabled}>
+            <Button type="submit" color="primary" disabled={isDisabled}>
               Save
             </Button>
             <Button color="link" onClick={onCancel} disabled={isDisabled}>
@@ -181,7 +184,7 @@ class CustomerDetailForm extends React.Component {
             </Button>
           </Col>
         </Row>
-      </div>
+      </Form>
     )
   }
 }
