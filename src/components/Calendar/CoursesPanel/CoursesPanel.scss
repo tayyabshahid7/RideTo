@@ -3,20 +3,29 @@
   flex-direction: column;
   width: 100%;
 }
+
 .title {
-  text-align: center;
-  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--grey-color);
   border-bottom: solid 1px var(--light-grey-color);
-  padding-left: 32px;
-  padding-right: 32px;
-  padding-bottom: 16px;
+  font-size: 15px;
+  font-weight: bold;
+
   margin-bottom: 16px;
 }
+
+.courses {
+  border-bottom: solid 1px var(--light-grey-color);
+}
+
 .scrollContainer {
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
+
 .scrollContent {
   overflow-y: scroll;
   margin-right: -15px;

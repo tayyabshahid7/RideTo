@@ -6,6 +6,7 @@ const Loading = props => {
   return (
     <div
       className={classnames(
+        styles.loading,
         props.loading && styles.loadingMask,
         props.className
       )}>
