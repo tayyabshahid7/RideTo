@@ -6,7 +6,6 @@ class Notifications extends Component {
     return (
       <div className={styles.container}>
         <h1>Notifications</h1>
-        <h2>Pending Orders</h2>
       </div>
     )
   }

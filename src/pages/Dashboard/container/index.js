@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { Col, Row } from 'reactstrap'
 import { getPendingOrders } from 'store/dashboard'
 import { changeSchool } from 'store/auth'
-import Notifications from '../components/Notifications'
+// import Notifications from '../components/Notifications'
 import PendinOrdersTable from '../components/PendingOrdersTable'
 import PaginationLinks from 'components/PaginationLinks'
 import Loading from 'components/Loading'
@@ -52,7 +52,7 @@ class Dashboard extends Component {
                 styles.leftColumn,
                 commonStyles.mainContent
               )}>
-              <Notifications />
+              <h2>Pending Orders</h2>
               {this.props.pendingOrders &&
               this.props.pendingOrders.results.length > 0 ? (
                 <div className={styles.main}>

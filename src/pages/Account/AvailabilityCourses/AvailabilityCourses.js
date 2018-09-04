@@ -58,7 +58,7 @@ class AvailabilityCourses extends React.Component {
               </div>
               <div className="col-6">
                 <input type="checkbox" checked={day !== 'F'} readOnly />{' '}
-                <label for="ml-1">{day === 'F' ? 'Closed' : ''}</label>
+                <label htmlFor="ml-1">{day === 'F' ? 'Closed' : ''}</label>
               </div>
             </div>
           ))}
