@@ -8,15 +8,7 @@
 }
 
 .date {
-  text-align: center;
-  // margin-bottom: 5px;
-  // padding: 4px;
   color: #707070;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  float: right;
-  line-height: 32px;
 }
 
 .otherMonth {
@@ -30,6 +22,10 @@
   color: #666;
 }
 
+.more {
+  margin-top: 12px;
+}
+
 @media (max-width: 768px) {
   .otherMonth {
     display: none;
@@ -41,23 +37,3 @@
     display: none;
   }
 }
-
-// @media (max-width: 768px) {
-//   .container {
-//     // .weekdays, .other-month {
-//     //   display: none;
-//     // }
-
-//     li {
-//       height: auto !important;
-//       border: 1px solid #ededed;
-//       // width: 100%;
-//       padding: 10px;
-//       margin-bottom: -1px;
-//     }
-
-//     // .date {
-//     //   float: none;
-//     // }
-//   }
-// }

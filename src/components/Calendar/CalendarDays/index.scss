@@ -1,4 +1,6 @@
-.container {
+@import '../../../bootstrap';
+
+.calendarDays {
   // display: flex;
   list-style: none;
   // padding: 0;
@@ -8,8 +10,7 @@
 
   flex-wrap: wrap;
   flex: 1 1 auto;
-  overflow: auto;
-  // padding-right: 15px;
+  overflow-y: auto;
 
   &::-webkit-scrollbar {
     display: none;
@@ -19,11 +20,7 @@
   li {
     height: 180px;
     list-style-type: none;
-    // display: inline-block;
-    // width: 13.1%;
-    // text-align: center;
     margin-bottom: 4px;
-    // color: #777;
 
     width: 14.342%;
     padding: 5px;
@@ -35,7 +32,7 @@
   }
 }
 @media (min-width: 1200px) {
-  .container {
+  .calendarDays {
     font-size: 12px;
   }
 }

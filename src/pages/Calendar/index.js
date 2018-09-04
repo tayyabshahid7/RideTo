@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
@@ -12,12 +11,10 @@ import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseCom
 import AddEventComponent from 'components/Calendar/AddEditEvent/AddEventComponent'
 import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventComponent'
 import styles from './styles.scss'
-import { Col, Row } from 'reactstrap'
 import { getCourses, updateCalendarSetting } from 'store/course'
 import { getEvents } from 'store/event'
 import { getInstructors } from 'store/instructor'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
-import commonStyles from '../styles.scss'
 
 class CalendarPage extends Component {
   componentDidMount() {
@@ -218,66 +215,60 @@ class CalendarPage extends Component {
     const { calendar, eventCalendar, history } = this.props
     let days = this.generateDaysDataFromCalendar(calendar, eventCalendar)
     return (
-      <div className={styles.container}>
-        <Row className={styles.content}>
-          <Col
-            lg="8"
-            className={classnames(
-              styles.calendarColumn,
-              commonStyles.mainContent
-            )}>
-            <CalendarComponent
-              days={days}
-              calendar={calendar}
-              eventCalendar={eventCalendar}
-              handleCustomEvent={this.handleCustomEvent.bind(this)}
-              history={history}
-            />
-          </Col>
-          <Col lg="4" className={styles.rightPanel}>
-            <Route
-              exact
-              path="/calendar/:date"
-              render={routeProps => <CoursesPanel {...routeProps} />}
-            />
-            <Route
-              exact
-              path="/calendar/:date/courses/:courseId"
-              render={routeProps => <OrdersPanel {...routeProps} />}
-            />
-            <Route
-              exact
-              path="/calendar/courses/create"
-              render={routeProps => <AddCourseComponent {...routeProps} />}
-            />
-            <Route
-              exact
-              path="/calendar/:date/courses/:courseId/edit"
-              render={routeProps => <EditCourseComponent {...routeProps} />}
-            />
-            <Route
-              exact
-              path="/calendar/events/create"
-              render={routeProps => <AddEventComponent {...routeProps} />}
-            />
-            <Route
-              exact
-              path="/calendar/events/:eventId/edit"
-              render={routeProps => <EditEventComponent {...routeProps} />}
-            />
-          </Col>
-        </Row>
+      <div className={styles.calendar}>
+        <div className={styles.calendarColumn}>
+          <CalendarComponent
+            days={days}
+            calendar={calendar}
+            eventCalendar={eventCalendar}
+            handleCustomEvent={this.handleCustomEvent.bind(this)}
+            history={history}
+          />
+        </div>
+        <div className={styles.rightPanel}>
+          <Route
+            exact
+            path="/calendar/:date"
+            render={routeProps => <CoursesPanel {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/courses/:courseId"
+            render={routeProps => <OrdersPanel {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/courses/create"
+            render={routeProps => <AddCourseComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/courses/:courseId/edit"
+            render={routeProps => <EditCourseComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/events/create"
+            render={routeProps => <AddEventComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/events/:eventId/edit"
+            render={routeProps => <EditEventComponent {...routeProps} />}
+          />
+        </div>
       </div>
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const { auth, course, event } = state
+
   return {
-    schoolId: state.auth.schoolId,
-    calendar: state.course.calendar,
-    eventCalendar: state.event.calendar
-    // selectedDate: state.course.day.date
+    schoolId: auth.schoolId || auth.user.suppliers[0].id,
+    calendar: course.calendar,
+    eventCalendar: event.calendar
   }
 }
 
