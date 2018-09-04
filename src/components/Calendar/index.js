@@ -19,6 +19,7 @@ class CalendarComponent extends Component {
       <div className={styles.overview}>
         <Row>
           <Col>
+
             <SchoolSelect className="Test" />
             <div>
               <span

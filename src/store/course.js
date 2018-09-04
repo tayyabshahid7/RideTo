@@ -12,6 +12,7 @@ import {
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
+import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
@@ -27,6 +28,7 @@ const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
 const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
 const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
+const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 
 export const getSingleCourse = ({
   schoolId,
@@ -107,6 +109,10 @@ export const updateCalendarSetting = data => async dispatch => {
 
 export const unsetSelectedDate = data => async dispatch => {
   dispatch({ type: UNSET_DAY })
+}
+
+export const unsetSelectedCourse = data => async dispatch => {
+  dispatch({ type: UNSET_SELECTED_COURSE })
 }
 
 export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
@@ -270,11 +276,12 @@ const initialState = {
     viewMode: CALENDAR_VIEW.MONTH,
     rightPanelMode: null,
     selectedDate: null,
+    selectedCourse: null,
     silent: false // This is to tell whether should re-load calendar. false: re-load, true: not reload
   },
   orderEditForm: {
     order: null,
-    loading: false,
+    loading: false
   },
   bulk: {
     saving: false,
@@ -318,13 +325,27 @@ export default function reducer(state = initialState, action) {
         calendar: {
           ...state.calendar,
           courses: calendarCourses,
-          selectedDate: action.data.course.date
+          selectedDate: action.data.course.date,
+          selectedCourse: `course-${action.data.course.id}`
         }
       }
     case FETCH_SINGLE[FAILURE]:
       return {
         ...state,
-        single: { loading: false, course: null, error: action.error }
+        single: {
+          loading: false,
+          course: null,
+          error: action.error,
+          selectedCourse: null
+        }
+      }
+    case FETCH_SINGLE_EVENT[SUCCESS]:
+      return {
+        ...state,
+        calendar: {
+          ...state.calendar,
+          selectedCourse: `event-${action.data.event.id}`
+        }
       }
     case DELETE[REQUEST]:
       return {
@@ -502,6 +523,11 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         calendar: { ...state.calendar, selectedDate: null }
+      }
+    case UNSET_SELECTED_COURSE:
+      return {
+        ...state,
+        calendar: { ...state.calendar, selectedCourse: null }
       }
     case RESET_PRICE:
       return {

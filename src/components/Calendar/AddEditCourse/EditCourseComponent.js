@@ -10,7 +10,8 @@ import {
   updateSchoolOrder,
   getSingleCourse,
   updateCourse,
-  fetchPrice
+  fetchPrice,
+  unsetSelectedCourse
 } from 'store/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
 import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
@@ -32,7 +33,7 @@ class EditCourseComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { course, history, schoolId } = this.props
+    const { course, history, schoolId, match, getSingleCourse } = this.props
 
     if (schoolId !== prevProps.schoolId) {
       if (course) {
@@ -42,6 +43,14 @@ class EditCourseComponent extends Component {
       }
       return
     }
+    if (prevProps.match.params.courseId !== match.params.courseId) {
+      getSingleCourse({ schoolId, courseId: match.params.courseId })
+    }
+  }
+
+  componentWillUnmount() {
+    const { unsetSelectedCourse } = this.props
+    unsetSelectedCourse()
   }
 
   onSave(data) {
@@ -147,7 +156,8 @@ const mapDispatchToProps = dispatch =>
       loadCourseTypes,
       createSchoolOrder,
       updateSchoolOrder,
-      fetchPrice
+      fetchPrice,
+      unsetSelectedCourse
     },
     dispatch
   )
