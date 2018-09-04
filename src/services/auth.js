@@ -1,4 +1,4 @@
-import { post } from 'services/api'
+import { post, put } from 'services/api'
 
 const EXPIRE_THRESHOLD = 5 * 60 // seconds
 
@@ -56,4 +56,12 @@ export const refreshToken = async token => {
 export const isAuthenticated = () => {
   const token = getToken()
   return !!token && !isTokenExpired(token)
+}
+
+export const updatePassword = async ({ old_password, new_password }) => {
+  const response = await put('users/password-reset/', {
+    old_password,
+    new_password
+  })
+  return response
 }

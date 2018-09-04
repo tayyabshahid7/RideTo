@@ -1,13 +1,25 @@
-import { requestToken, removeToken } from 'services/auth'
+import {
+  requestToken,
+  removeToken,
+  updatePassword as updatePasswordApi
+} from 'services/auth'
 import { saveState, clearState } from 'services/localStorage'
 import { getPendingOrders } from 'store/dashboard'
 import { getInstructors } from 'store/instructor'
-import { LOGOUT, RESET } from './common'
+import {
+  LOGOUT,
+  RESET,
+  REQUEST,
+  SUCCESS,
+  FAILURE,
+  createRequestTypes
+} from './common'
 
 const CHANGE_SCHOOL = 'rideto/auth/CHANGE_SCHOOL'
 const LOGIN_REQUEST = 'rideto/auth/LOGIN_REQUEST'
 const LOGIN_ERROR = 'rideto/auth/LOGIN_ERROR'
 const LOGIN_SUCCESS = 'rideto/auth/LOGIN_SUCCESS'
+const UPDATE_PASSWORD = createRequestTypes('UPDATE_PASSWORD')
 // const LOGOUT = 'rideto/auth/LOGOUT'
 // const RESET = 'rideto/auth/RESET'
 
@@ -63,13 +75,26 @@ export const login = (email, password) => {
 
 export const logout = () => ({ type: LOGOUT })
 
+export const updatePassword = data => async dispatch => {
+  dispatch({ type: UPDATE_PASSWORD[REQUEST] })
+  try {
+    await updatePasswordApi(data)
+    dispatch({
+      type: UPDATE_PASSWORD[SUCCESS]
+    })
+  } catch (error) {
+    dispatch({ type: UPDATE_PASSWORD[FAILURE], error })
+  }
+}
+
 const initialState = {
   loading: false,
   loggedIn: false,
   schoolId: null,
   schoolName: null,
   error: null,
-  user: null
+  user: null,
+  saving: false
 }
 
 export default function reducer(state = initialState, action) {
@@ -102,6 +127,23 @@ export default function reducer(state = initialState, action) {
         schoolId: action.data.user.suppliers[0].id,
         schoolName: action.data.user.suppliers[0].name,
         user: action.data.user
+      }
+    case UPDATE_PASSWORD[REQUEST]:
+      return {
+        ...state,
+        saving: true,
+        error: null
+      }
+    case UPDATE_PASSWORD[SUCCESS]:
+      return {
+        ...state,
+        saving: false
+      }
+    case UPDATE_PASSWORD[FAILURE]:
+      return {
+        ...state,
+        saving: false,
+        error: action.error
       }
     case LOGOUT:
       clearState()
