@@ -51,10 +51,10 @@ class Dashboard extends Component {
                 styles.leftColumn,
                 commonStyles.mainContent
               )}>
+              <h2>Pending Orders</h2>
               {this.props.pendingOrders &&
               this.props.pendingOrders.results.length > 0 ? (
                 <div className={styles.main}>
-                  <h2>Pending Orders</h2>
                   <PendinOrdersTable
                     orders={this.props.pendingOrders.results}
                     sortingChange={this.handleSorting}
