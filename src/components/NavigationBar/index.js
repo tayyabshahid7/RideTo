@@ -60,6 +60,14 @@ let NavigationBar = ({ history }) => {
               Customers
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              className={styles.navLink}
+              activeClassName={styles.activeNavLink}
+              to="/account">
+              Account
+            </NavLink>
+          </li>
         </ul>
         <form
           className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>

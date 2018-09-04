@@ -139,3 +139,9 @@ export const getShortCourseType = courseType => {
       return 'CBT'
   }
 }
+
+export const createBulkSchoolCourse = async (schoolId, data) => {
+  const path = `school/${schoolId}/course/bulk`
+  const response = await post(path, data)
+  return response
+}

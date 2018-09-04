@@ -7,6 +7,7 @@ import {
   updateSchoolOrder,
   updateSchoolCourse,
   createSchoolCourse,
+  createBulkSchoolCourse,
   getPricingForCourse
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
@@ -21,6 +22,7 @@ const RESET_PRICE = 'rideto/course/RESET/PRICE'
 const DELETE = createRequestTypes('rideto/course/DELETE')
 const UPDATE = createRequestTypes('rideto/course/UPDATE')
 const CREATE = createRequestTypes('rideto/course/CREATE')
+const CREATE_BULK = createRequestTypes('rideto/course/CREATE_BULK')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
 const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
 const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
@@ -202,6 +204,18 @@ export const createCourse = ({ schoolId, data }) => async dispatch => {
   }
 }
 
+export const createBulkCourse = ({ schoolId, data }) => async dispatch => {
+  dispatch({ type: CREATE_BULK[REQUEST] })
+  try {
+    await createBulkSchoolCourse(schoolId, data)
+    dispatch({
+      type: CREATE_BULK[SUCCESS]
+    })
+  } catch (error) {
+    dispatch({ type: CREATE_BULK[FAILURE], error })
+  }
+}
+
 export const fetchPrice = ({
   schoolId,
   course_type,
@@ -261,6 +275,9 @@ const initialState = {
   orderEditForm: {
     order: null,
     loading: false,
+  },
+  bulk: {
+    saving: false,
     error: null
   }
 }
@@ -414,6 +431,21 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
+      }
+    case CREATE_BULK[REQUEST]:
+      return {
+        ...state,
+        bulk: { ...state.bulk, saving: true }
+      }
+    case CREATE_BULK[SUCCESS]:
+      return {
+        ...state,
+        bulk: { ...state.bulk, saving: false }
+      }
+    case CREATE_BULK[FAILURE]:
+      return {
+        ...state,
+        bulk: { ...state.bulk, saving: false, error: action.error }
       }
     case UPDATE[REQUEST]:
       return {
