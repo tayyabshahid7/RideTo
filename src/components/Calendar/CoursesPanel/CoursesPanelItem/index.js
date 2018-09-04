@@ -1,51 +1,51 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import classnames from 'classnames'
+import { Button } from 'reactstrap'
 
-import { getCourseSpaceText } from 'services/course'
-import { BikeHires, getTitleFor } from 'common/info'
+import { getShortCourseType } from 'services/course'
+import OrdersPanelItem from 'components/Calendar/OrdersPanelItem'
 
 import styles from './CoursesPanelItem.scss'
 
 const CoursesPanelItem = ({ course, date }) => {
-  let availableSpaces = course.spaces - course.orders.length
+  const name = getShortCourseType(course.course_type)
+  const availableSpaces = course.spaces - course.orders.length
+  const className = classnames(
+    styles.course,
+    availableSpaces === 1 && styles.warning,
+    availableSpaces <= 0 && styles.danger
+  )
+  const addLink = `/calendar/${date}/courses/${course.id}/order/0`
+
   return (
     <div className={styles.coursesPanelItem}>
-      <div className={styles.time}>{course.time.substring(0, 5)}</div>
-      <div className={styles.content}>
-        <div className={styles.heading}>
-          <div className={styles.title}>
-            {course.course_type.name} |{' '}
-            <span
-              className={
-                availableSpaces === 0
-                  ? 'text-danger'
-                  : availableSpaces === 1
-                    ? 'text-warning'
-                    : ''
-              }>
-              {getCourseSpaceText(course)}
-            </span>
-          </div>
-          <Link to={`/calendar/${date}/courses/${course.id}/edit`}>Edit</Link>
-          /
-          <Link to={`/calendar/${date}/courses/${course.id}`}>Add Order</Link>
+      <div className={styles.heading}>
+        <div className={className}>
+          {course.time} | {name}
         </div>
-
-        <table className={styles.orders}>
-          <tbody>
-            {course.orders.map(order => (
-              <tr className={styles.order} key={order.friendly_id}>
-                <td>
-                  <strong>{order.direct_friendly_id}</strong>
-                </td>
-                <td>{order.user_name}</td>
-                <td>{getTitleFor(BikeHires, order.bike_hire)}</td>
-                <td>{order.user_phone}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Button
+          tag={Link}
+          outline
+          color="primary"
+          to={`/calendar/${date}/courses/${course.id}/edit`}>
+          Edit
+        </Button>
       </div>
+
+      {course.notes && <div className={styles.notes}>{course.notes}</div>}
+
+      {course.orders.map(order => (
+        <OrdersPanelItem key={order.id} order={order} />
+      ))}
+
+      {availableSpaces > 0 && (
+        <div className={styles.actions}>
+          <Button tag={Link} outline color="primary" to={addLink}>
+            Add Order
+          </Button>
+        </div>
+      )}
     </div>
   )
 }

@@ -2,6 +2,7 @@ import moment from 'moment'
 import {
   DATE_FORMAT,
   WEEK_VIEW_START_TIME_STRING,
+  DAY_FORMAT3,
   WEEK_VIEW_START_TIME,
   SINGLE_DAY_IN_SECONDS,
   WORK_HOURS
@@ -41,4 +42,8 @@ export function secondsForDayAndDurationForEvent(event, date) {
   }
 
   return { secondsForDay, duration: endTime - secondsForDay }
+}
+
+export const getTime = dateTime => {
+  return dateTime ? moment(dateTime, DAY_FORMAT3).format('HH:mm') : ''
 }

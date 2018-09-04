@@ -29,6 +29,15 @@ const loginSuccess = data => ({ type: LOGIN_SUCCESS, data })
 
 const changeSchoolRequest = school => ({ type: CHANGE_SCHOOL, school })
 
+const persistAuthState = (state, newState) => {
+  const auth = {
+    user: state.user,
+    schoolId: state.schoolId,
+    ...newState
+  }
+  saveState({ auth })
+}
+
 export const changeSchool = (schoolId, schoolName) => {
   return async dispatch => {
     dispatch(getPendingOrders(schoolId))
@@ -44,7 +53,6 @@ export const login = (email, password) => {
     dispatch(loginRequest())
     try {
       const response = await requestToken(email, password)
-      saveState({ auth: { user: response.user } })
       dispatch(loginSuccess(response))
     } catch (error) {
       let errorMessage = 'Unexpected error'
@@ -100,6 +108,9 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case CHANGE_SCHOOL:
+      persistAuthState(state, {
+        schoolId: action.school.id
+      })
       return {
         ...state,
         schoolId: action.school.id,
@@ -119,6 +130,11 @@ export default function reducer(state = initialState, action) {
         error: action.error
       }
     case LOGIN_SUCCESS:
+      clearState()
+      persistAuthState(state, {
+        user: action.data.user,
+        schoolId: action.data.user.suppliers[0].id
+      })
       return {
         ...state,
         loading: false,

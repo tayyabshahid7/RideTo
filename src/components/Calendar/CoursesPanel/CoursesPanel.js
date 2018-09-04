@@ -1,40 +1,48 @@
 import React from 'react'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
 import CoursesPanelItem from './CoursesPanelItem'
 import EventPanelItem from './EventPanelItem'
 import styles from './CoursesPanel.scss'
-import { DAY_FORMAT2 } from '../../../common/constants'
 
 class CoursesPanel extends React.Component {
   render() {
-    let { courses, date, events = [] } = this.props
-    const title = moment(date, 'YYYY-MM-DD').format(DAY_FORMAT2)
+    const { courses, date, events = [] } = this.props
+
     return (
       <div className={styles.coursesPanel}>
-        <div className={styles.title}>{title}</div>
-        <div className={styles.scrollContainer}>
-          <div className={styles.scrollContent}>
-            {courses.map(course => (
-              <CoursesPanelItem key={course.id} date={date} course={course} />
-            ))}
-            <div className="text-center">
-              <Link to={`/calendar/courses/create?date=${date}`}>
-                <Button color="primary">Add Course</Button>
-              </Link>
-            </div>
-            <hr />
-            {events.map(event => (
-              <EventPanelItem key={event.id} date={date} event={event} />
-            ))}
-            <div className="text-center">
-              <Link to={`/calendar/events/create?date=${date}`}>
-                <Button color="primary">Add Event</Button>
-              </Link>
-            </div>
+        <div className={styles.courses}>
+          <div className={styles.title}>
+            Courses
+            <Button
+              tag={Link}
+              to={`/calendar/courses/create?date=${date}`}
+              color="primary">
+              Add Course
+            </Button>
           </div>
+
+          {courses.map(course => (
+            <CoursesPanelItem key={course.id} date={date} course={course} />
+          ))}
+        </div>
+
+        <div className={styles.events}>
+          <div className={styles.title}>
+            Events
+            <Button
+              tag={Link}
+              to={`/calendar/events/create?date=${date}`}
+              outline
+              color="primary">
+              Add Event
+            </Button>
+          </div>
+
+          {events.map(event => (
+            <EventPanelItem key={event.id} date={date} event={event} />
+          ))}
         </div>
       </div>
     )

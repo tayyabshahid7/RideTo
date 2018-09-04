@@ -1,10 +1,13 @@
 import React from 'react'
+import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+
 import { getDayCourses } from 'store/course'
 import { getDayEvents } from 'store/event'
+import Loading from 'components/Loading'
+import DateHeading from 'components/Calendar/DateHeading'
 import CoursesPanel from './CoursesPanel'
-// import { getCoursesOnDay } from 'services/course'
 
 class CoursesPanelContainer extends React.Component {
   componentDidMount() {
@@ -34,15 +37,16 @@ class CoursesPanelContainer extends React.Component {
     const {
       params: { date }
     } = match
-    if (loading) {
-      return <div>Loading...</div>
-    }
+
     return (
-      <CoursesPanel
-        date={date}
-        courses={courses.sort((a, b) => a.time > b.time)}
-        events={events.sort((a, b) => a.start_time > b.start_time)}
-      />
+      <Loading loading={loading}>
+        <DateHeading date={moment(date, 'YYYY-MM-DD')} />
+        <CoursesPanel
+          date={date}
+          courses={courses.sort((a, b) => a.time > b.time)}
+          events={events.sort((a, b) => a.start_time > b.start_time)}
+        />
+      </Loading>
     )
   }
 }

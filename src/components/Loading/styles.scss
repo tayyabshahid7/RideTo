@@ -6,6 +6,10 @@ We set the element we are applying our loading mask to relative
   min-height: 50px;
 }
 
+.loading {
+  width: 100%;
+}
+
 /*
 Because we set .loadingMask relative, we can span our ::before
 element over the whole parent element

@@ -7,9 +7,7 @@ import { DAY_FORMAT2, DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 
-const getTime = dateTime => {
-  return dateTime ? moment(dateTime, DAY_FORMAT3).format('HH:mm') : ''
-}
+import { getTime } from 'utils/helper'
 
 class EventForm extends React.Component {
   constructor(props) {
