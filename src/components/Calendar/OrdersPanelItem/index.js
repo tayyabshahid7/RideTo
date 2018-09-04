@@ -16,14 +16,13 @@ const OrdersPanelItem = ({ order, onEdit, showEditButton = false }) => {
       <div className={styles.col}>
         {getTitleFor(BikeHires, order.bike_hire)}
       </div>
-      {showEditButton && (
-        <Button
-          color="primary"
-          onClick={onEdit}
-          className="mr-1 btn-padding-sm">
-          Edit
-        </Button>
-      )}
+      <div className={styles.actions}>
+        {showEditButton && (
+          <Button color="link" onClick={onEdit} className="mr-1 btn-padding-sm">
+            Edit
+          </Button>
+        )}
+      </div>
     </div>
   )
 }

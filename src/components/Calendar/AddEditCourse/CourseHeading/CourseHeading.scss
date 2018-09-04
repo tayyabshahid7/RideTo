@@ -1,3 +1,5 @@
+@import '../../../../bootstrap';
+
 .courseHeading {
   display: flex;
   justify-content: space-between;
@@ -9,7 +11,10 @@
 
   display: flex;
   align-items: center;
-  padding-left: 8px;
+
+  color: $grey;
+  border: solid 1px $grey;
+  padding: 4px 8px;
 }
 
 .actions {
