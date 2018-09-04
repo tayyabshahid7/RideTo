@@ -6,6 +6,7 @@ import Orders from 'pages/Orders/container'
 import CustomerListContainer from 'pages/Customers/ListContainer'
 import CustomerDetailContainer from 'pages/Customers/DetailContainer'
 import Calendar from 'pages/Calendar'
+import Account from 'pages/Account'
 import Footer from 'components/Footer'
 import styles from './styles.scss'
 
@@ -23,6 +24,7 @@ const MainLayout = ({ history }) => {
             component={CustomerDetailContainer}
             exact
           />
+          <Route path="/account" component={Account} />
           <Route exact path="/" component={Dashboard} />
         </Switch>
       </div>
