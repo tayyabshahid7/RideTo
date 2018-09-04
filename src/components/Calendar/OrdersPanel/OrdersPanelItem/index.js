@@ -12,11 +12,10 @@ const OrdersPanelItem = ({ order, onEdit, showEditButton }) => {
       <div className={styles.col}>
         <strong>{order.direct_friendly_id}</strong>
       </div>
-      <div className={styles.col}>{order.user_name}</div>
+      <div className={styles.name}>{order.user_name}</div>
       <div className={styles.col}>
         {getTitleFor(BikeHires, order.bike_hire)}
       </div>
-      <div className={styles.col}>{order.user_phone}</div>
       {showEditButton && (
         <Button
           color="primary"

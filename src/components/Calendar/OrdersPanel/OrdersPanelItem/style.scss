@@ -1,10 +1,21 @@
 .container {
-  border: 1px solid black;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+
   padding: 5px;
   margin-bottom: 10px;
+
+  background-color: #f0f0f0;
+  white-space: now;
 }
+
 .col {
-  flex: 1 1 100px;
+  margin-right: 8px;
+}
+
+.name {
+  flex-grow: 1;
+  text-align: left;
+  margin-right: 8px;
 }
