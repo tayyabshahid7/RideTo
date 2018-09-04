@@ -59,3 +59,9 @@ export const getCustomerType = source => {
       return 'Direct'
   }
 }
+
+export const getEmptyCustomer = source => {
+  return {
+    source
+  }
+}
