@@ -62,7 +62,7 @@ class EditOrderForm extends React.Component {
               <InputTextGroup
                 name="user_first_name"
                 value={user_first_name}
-                label="First Name"
+                label="First Name *"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent}
@@ -73,7 +73,7 @@ class EditOrderForm extends React.Component {
               <InputTextGroup
                 name="user_last_name"
                 value={user_last_name}
-                label="Surname"
+                label="Surname *"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent}
@@ -96,7 +96,7 @@ class EditOrderForm extends React.Component {
               <InputTextGroup
                 name="user_email"
                 value={user_email}
-                label="Email"
+                label="Email *"
                 className="form-group"
                 type="email"
                 onChange={this.handleChangeRawEvent}
@@ -107,7 +107,7 @@ class EditOrderForm extends React.Component {
           <Row>
             <Col>
               <FormGroup>
-                <Label>Birth Date</Label>
+                <Label>Birth Date *</Label>
                 <AgeInput
                   name="user_birthdate"
                   value={user_birthdate}
