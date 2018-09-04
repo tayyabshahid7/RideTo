@@ -92,18 +92,6 @@ class CourseForm extends React.Component {
     this.setState({ course })
   }
 
-  handleCancel(event) {
-    event.preventDefault()
-    const { date, history, course } = this.props
-    if (date) {
-      history.push(`/calendar/${date}`)
-    } else if (course) {
-      history.push(`/calendar/${course.date}`)
-    } else {
-      history.push(`/calendar`)
-    }
-  }
-
   handleSave(event) {
     event.preventDefault()
     const { onSubmit } = this.props
@@ -116,17 +104,6 @@ class CourseForm extends React.Component {
       course.instructor_id = null
     }
     onSubmit(course)
-  }
-
-  renderTitle() {
-    const { course, date } = this.props
-    let title = 'Add New Course'
-    if (course) {
-      title = moment(new Date(course.date)).format(DAY_FORMAT2)
-    } else if (date) {
-      title = moment(new Date(date)).format(DAY_FORMAT2)
-    }
-    return <div className={styles.title}>{title}</div>
   }
 
   render() {
@@ -144,7 +121,6 @@ class CourseForm extends React.Component {
     } = this.state.course
     return (
       <div className={styles.container}>
-        {this.renderTitle()}
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
@@ -278,12 +254,6 @@ class CourseForm extends React.Component {
               <Col className="mt-3 text-right">
                 <Button type="submit" color="primary" className="mr-2">
                   Save
-                </Button>
-                <Button
-                  type="button"
-                  color=""
-                  onClick={this.handleCancel.bind(this)}>
-                  Cancel
                 </Button>
               </Col>
             </Row>

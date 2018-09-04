@@ -9,9 +9,6 @@ const OrdersPanelSpaceItem = ({ onAdd, onRemove }) => {
       <Button color="primary" onClick={onAdd} className="mr-1 btn-padding-md">
         Add
       </Button>
-      <Button color="" onClick={onRemove}>
-        Remove
-      </Button>
     </div>
   )
 }
