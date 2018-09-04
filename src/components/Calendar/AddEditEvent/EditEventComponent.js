@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import EventForm from './EventForm'
 import { getSingleEvent, updateEvent, fetchPrice } from 'store/event'
+import { unsetSelectedCourse } from 'store/course'
 import { loadEventTypes } from 'store/info'
 import { DATE_FORMAT } from '../../../common/constants'
 
@@ -11,6 +12,11 @@ class EditEventComponent extends Component {
   componentDidMount() {
     const { getSingleEvent, schoolId, match } = this.props
     getSingleEvent({ schoolId, eventId: match.params.eventId })
+  }
+
+  componentWillUnmount() {
+    const { unsetSelectedCourse } = this.props
+    unsetSelectedCourse()
   }
 
   componentDidUpdate(prevProps) {
@@ -81,7 +87,8 @@ const mapDispatchToProps = dispatch =>
       getSingleEvent,
       updateEvent,
       loadEventTypes,
-      fetchPrice
+      fetchPrice,
+      unsetSelectedCourse
     },
     dispatch
   )

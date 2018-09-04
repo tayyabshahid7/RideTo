@@ -4,7 +4,13 @@ import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS } from 'common/constants'
 
-const CalendarWeekCourse = ({ course, position, barCount, history }) => {
+const CalendarWeekCourse = ({
+  course,
+  position,
+  barCount,
+  history,
+  calendar
+}) => {
   let height = (course.duration / 60) * 100 // Duration is in mins
   let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
   if (top < 0) {
@@ -30,7 +36,10 @@ const CalendarWeekCourse = ({ course, position, barCount, history }) => {
     // Then it is event
     return (
       <li
-        className={classnames(styles.singleEvent)}
+        className={classnames(
+          styles.singleEvent,
+          calendar.selectedCourse === `event-${course.id}` && 'border-primary'
+        )}
         style={style}
         onClick={() => history.push(`/calendar/events/${course.id}/edit`)}>
         <span className={styles.eventName}>{course.name} |</span>
@@ -44,11 +53,12 @@ const CalendarWeekCourse = ({ course, position, barCount, history }) => {
       className={classnames(
         styles.singleEvent,
         availableSpaces === 1 && 'border-warning',
-        availableSpaces === 0 && 'border-danger'
+        availableSpaces === 0 && 'border-danger',
+        calendar.selectedCourse === `course-${course.id}` && 'border-primary'
       )}
       style={style}
       onClick={() =>
-        history.push(`/calendar/${course.date}/courses/${course.id}`)
+        history.push(`/calendar/${course.date}/courses/${course.id}/edit`)
       }>
       <span className={styles.eventName}>
         {course.course_type.name} | {course.time.substring(0, 5)}

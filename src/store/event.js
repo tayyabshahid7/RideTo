@@ -9,7 +9,7 @@ import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 const FETCH_ALL = createRequestTypes('rideto/event/FETCH/ALL')
 const FETCH_FOR_DAY = createRequestTypes('rideto/event/FETCH/DAY')
-const FETCH_SINGLE = createRequestTypes('rideto/event/FETCH/SINGLE')
+export const FETCH_SINGLE = createRequestTypes('rideto/event/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/event/DELETE')
 const UPDATE = createRequestTypes('rideto/event/UPDATE')
 const CREATE = createRequestTypes('rideto/event/CREATE')
