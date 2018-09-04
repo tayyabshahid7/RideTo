@@ -28,7 +28,7 @@ const Checkbox = ({
         onChange={onChange}
         disabled={disabled}
       />
-      <label htmlFor={id}>{children}</label>
+      <label htmlFor={checkboxId}>{children}</label>
     </div>
   )
 }
