@@ -51,7 +51,7 @@ class OrdersPanel extends React.Component {
   render() {
     let { course, info, saving, loading } = this.props
     const { addOrderIndex, editOrderIndex, showEditButton } = this.state
-    const availableSpaces = course.spaces - course.orders.length
+    const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
 
     return (
       <div className={styles.ordersPanel}>
