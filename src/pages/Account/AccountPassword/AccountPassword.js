@@ -94,7 +94,9 @@ class AccountPassword extends React.Component {
                 />
               </Col>
             </Row>
-            <Button type="submit">Update Password</Button>
+            <Button color="primary" type="submit">
+              Update Password
+            </Button>
           </form>
         </Col>
       </Row>

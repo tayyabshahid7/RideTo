@@ -21,6 +21,7 @@ class AvailabilityCourses extends React.Component {
         <div>Set default courses for your calendar</div>
         <div>
           <Button
+            color="primary"
             onClick={() => this.setState({ showCreateBulkCourseForm: true })}>
             New Course
           </Button>
