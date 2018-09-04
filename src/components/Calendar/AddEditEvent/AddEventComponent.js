@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
-import styles from './styles.scss'
 import EventForm from './EventForm'
 import { createEvent } from 'store/event'
 
@@ -44,11 +43,7 @@ class AddEventComponent extends Component {
     let { event, location, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
-    return (
-      <div className={styles.addEvent}>
-        <EventForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
-      </div>
-    )
+    return <EventForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
   }
 }
 

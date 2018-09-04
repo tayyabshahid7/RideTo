@@ -7,6 +7,10 @@ import { DAY_FORMAT2, DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 
+const getTime = dateTime => {
+  return dateTime ? moment(dateTime, DAY_FORMAT3).format('HH:mm') : ''
+}
+
 class EventForm extends React.Component {
   constructor(props) {
     super(props)
@@ -26,8 +30,21 @@ class EventForm extends React.Component {
     } else if (this.props.date) {
       event.date = this.props.date
     }
+
     this.state = {
-      event: event
+      event: event,
+      startTime: getTime(event.start_time),
+      endTime: getTime(event.end_time)
+    }
+  }
+
+  getStartDate(event) {
+    if (this.props.date) {
+      return this.props.date
+    }
+
+    if (event.start_time) {
+      return moment(event.start_time, DAY_FORMAT3).format(DATE_FORMAT)
     }
   }
 
@@ -36,6 +53,12 @@ class EventForm extends React.Component {
     let { event } = this.state
     event[name] = e.target.value
     this.setState({ event })
+  }
+
+  handleChangeTime(field, value) {
+    this.setState({
+      [field]: value
+    })
   }
 
   handleCancel(e) {
@@ -55,7 +78,18 @@ class EventForm extends React.Component {
   handleSave(e) {
     e.preventDefault()
     const { onSubmit } = this.props
-    const { event } = this.state
+    const date = this.getStartDate(this.state.event)
+    const event = {
+      ...this.state.event,
+      start_time: moment(
+        `${date} ${this.state.startTime}`,
+        'YYYY-MM-DD HH:mm'
+      ).format(),
+      end_time: moment(
+        `${date} ${this.state.endTime}`,
+        'YYYY-MM-DD HH:mm'
+      ).format()
+    }
     onSubmit(event)
   }
 
@@ -72,7 +106,9 @@ class EventForm extends React.Component {
 
   render() {
     let { saving } = this.props
-    const { name, start_time, end_time, notes } = this.state.event
+    const { startTime, endTime } = this.state
+    const { name, notes } = this.state.event
+
     return (
       <div className={styles.container}>
         {this.renderTitle()}
@@ -94,37 +130,30 @@ class EventForm extends React.Component {
             <Row>
               <Col>
                 <InputTextGroup
-                  name="start_time"
-                  value={start_time}
+                  name="startTime"
+                  value={startTime}
                   label="Start Time"
                   className="form-group"
-                  type="datetime-local"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  type="time"
+                  onChange={({ target }) =>
+                    this.handleChangeTime('startTime', target.value)
+                  }
                   required
                 />
               </Col>
               <Col>
                 <InputTextGroup
-                  name="end_time"
-                  value={end_time}
+                  name="endTime"
+                  value={endTime}
                   label="End Time"
                   className="form-group"
-                  type="datetime-local"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  type="time"
+                  onChange={({ target }) =>
+                    this.handleChangeTime('endTime', target.value)
+                  }
                   required
                 />
               </Col>
-              {/* <Col>
-                <InputTextGroup
-                  name="duration"
-                  value={duration}
-                  label="Duration"
-                  className="form-group"
-                  type="number"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col> */}
             </Row>
             <Row>
               <Col>
