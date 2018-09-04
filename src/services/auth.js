@@ -36,6 +36,9 @@ export const removeToken = () => {
 }
 
 export const isTokenExpiring = token => {
+  if (!token) {
+    return false
+  }
   const decoded = _decodeJWT(token)
   const timeLeft = decoded.exp - Date.now() / 1000
   return timeLeft > 0 && timeLeft < EXPIRE_THRESHOLD
