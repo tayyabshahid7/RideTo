@@ -273,11 +273,12 @@ class CalendarPage extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const { auth, course, event } = state
+
   return {
-    schoolId: state.auth.schoolId,
-    calendar: state.course.calendar,
-    eventCalendar: state.event.calendar
-    // selectedDate: state.course.day.date
+    schoolId: auth.schoolId || auth.user.suppliers[0].id,
+    calendar: course.calendar,
+    eventCalendar: event.calendar
   }
 }
 
