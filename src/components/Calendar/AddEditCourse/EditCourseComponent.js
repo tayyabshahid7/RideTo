@@ -1,12 +1,31 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
 import CourseForm from './CourseForm'
-import { getSingleCourse, updateCourse, fetchPrice } from 'store/course'
+import {
+  createSchoolOrder,
+  updateSchoolOrder,
+  getSingleCourse,
+  updateCourse,
+  fetchPrice
+} from 'store/course'
+import OrdersPanel from 'components/Calendar/OrdersPanel'
+import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
+import DateHeading from 'components/Calendar/DateHeading'
+import ConfirmModal from 'components/Modals/ConfirmModal'
 import { loadCourseTypes } from 'store/info'
 
 class EditCourseComponent extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showDeleteCourseConfirmModal: false
+    }
+  }
+
   componentDidMount() {
     const { getSingleCourse, schoolId, match } = this.props
     getSingleCourse({ schoolId, courseId: match.params.courseId })
@@ -23,14 +42,6 @@ class EditCourseComponent extends Component {
       }
       return
     }
-
-    if (prevProps.saving === true && saving === false) {
-      if (course) {
-        history.push(`/calendar/${course.date}`)
-      } else {
-        console.log('Error', error)
-      }
-    }
   }
 
   onSave(data) {
@@ -43,8 +54,32 @@ class EditCourseComponent extends Component {
     })
   }
 
+  handleRemoveCourseClick() {
+    this.setState({ showDeleteCourseConfirmModal: true })
+  }
+
+  handleDeleteCourse() {
+    let { deleteCourse } = this.props
+    this.setState({ showDeleteCourseConfirmModal: false })
+    deleteCourse()
+  }
+
+  closeDeleteCourseConfirmModal() {
+    this.setState({ showDeleteCourseConfirmModal: false })
+  }
+
   render() {
-    let { loading, course } = this.props
+    const {
+      loading,
+      saving,
+      schoolId,
+      course,
+      info,
+      createSchoolOrder,
+      updateSchoolOrder,
+      updateCourse
+    } = this.props
+    const { showDeleteCourseConfirmModal } = this.state
 
     if (loading) {
       return <div>Loading...</div>
@@ -52,10 +87,37 @@ class EditCourseComponent extends Component {
     if (!course) {
       return <div>Course Not Found</div>
     }
+    const backLink = `/calendar/${course.date}`
 
     return (
       <div className={styles.addCourse}>
+        <DateHeading date={moment(course.date)}>
+          <Link to={backLink}>&laquo; Back</Link>
+        </DateHeading>
+        <CourseHeading
+          course={course}
+          onRemove={this.handleRemoveCourseClick.bind(this)}
+        />
         <CourseForm {...this.props} onSubmit={this.onSave.bind(this)} />
+        <h4>Orders</h4>
+        <OrdersPanel
+          course={course}
+          info={info}
+          createSchoolOrder={createSchoolOrder}
+          updateSchoolOrder={updateSchoolOrder}
+          updateCourse={updateCourse}
+          loading={loading}
+          schoolId={schoolId}
+          saving={saving}
+        />
+        {showDeleteCourseConfirmModal && (
+          <ConfirmModal
+            onClose={this.closeDeleteCourseConfirmModal.bind(this)}
+            showModal={true}
+            onDelete={this.handleDeleteCourse.bind(this)}
+            message={`Are you sure to delete the course?`}
+          />
+        )}
       </div>
     )
   }
@@ -80,6 +142,8 @@ const mapDispatchToProps = dispatch =>
       getSingleCourse,
       updateCourse,
       loadCourseTypes,
+      createSchoolOrder,
+      updateSchoolOrder,
       fetchPrice
     },
     dispatch
