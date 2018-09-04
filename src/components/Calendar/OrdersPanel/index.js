@@ -1,9 +1,9 @@
 import React from 'react'
-import OrdersPanelItem from './OrdersPanelItem'
 import styles from './OrdersPanel.scss'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 import AddOrderItem from './AddOrderItem'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
+import OrdersPanelItem from 'components/Calendar/OrdersPanelItem'
 import Loading from 'components/Loading'
 import { BIKE_HIRE } from 'common/constants'
 
@@ -11,14 +11,13 @@ class OrdersPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      addOrderIndex: -1,
-      editOrderIndex: -1,
-      showEditButton: true
+      showEditButton: true,
+      orderIndex: null
     }
   }
 
   handleAdd(index) {
-    this.setState({ addOrderIndex: index })
+    this.setState({ orderIndex: index })
   }
 
   handleShowEditForm(index) {
@@ -49,9 +48,13 @@ class OrdersPanel extends React.Component {
   }
 
   render() {
-    let { course, info, saving, loading } = this.props
-    const { addOrderIndex, editOrderIndex, showEditButton } = this.state
+    const { course, info, saving, loading } = this.props
+    const { editOrderIndex, showEditButton } = this.state
     const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
+    const activeOrder =
+      this.state.orderIndex !== null
+        ? this.state.orderIndex
+        : this.props.orderIndex
 
     return (
       <div className={styles.ordersPanel}>
@@ -82,9 +85,9 @@ class OrdersPanel extends React.Component {
                 ))}
                 {Array.apply(null, Array(availableSpaces)).map(
                   (val, index) =>
-                    addOrderIndex === index ? (
+                    activeOrder === index ? (
                       <AddOrderItem
-                        onCancel={() => this.setState({ addOrderIndex: -1 })}
+                        onCancel={() => this.setState({ orderIndex: -1 })}
                         info={info}
                         course={course}
                         onSave={this.handleNewOrder.bind(this)}

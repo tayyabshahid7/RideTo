@@ -23,6 +23,12 @@ class AddOrderItem extends React.Component {
         start_time: ''
       }
     }
+
+    this.scrollIntoView = React.createRef()
+  }
+
+  componentDidMount() {
+    this.scrollIntoView.current.scrollIntoView()
   }
 
   handleChangeRawEvent(event) {
@@ -178,6 +184,7 @@ class AddOrderItem extends React.Component {
               </Button>
             </Col>
           </Row>
+          <div ref={this.scrollIntoView} />
         </Form>
         {/* </Loading> */}
       </div>

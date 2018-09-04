@@ -1,12 +1,10 @@
 import React from 'react'
-import moment from 'moment'
 import { Link } from 'react-router-dom'
 import { Button } from 'reactstrap'
 
 import CoursesPanelItem from './CoursesPanelItem'
 import EventPanelItem from './EventPanelItem'
 import styles from './CoursesPanel.scss'
-import { DAY_FORMAT2 } from '../../../common/constants'
 
 class CoursesPanel extends React.Component {
   render() {

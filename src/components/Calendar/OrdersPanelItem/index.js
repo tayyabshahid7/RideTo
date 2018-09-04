@@ -6,7 +6,7 @@ import { BikeHires, getTitleFor } from 'common/info'
 
 import styles from './style.scss'
 
-const OrdersPanelItem = ({ order, onEdit, showEditButton }) => {
+const OrdersPanelItem = ({ order, onEdit, showEditButton = false }) => {
   return (
     <div className={styles.container} key={order.friendly_id}>
       <div className={styles.col}>
