@@ -1,7 +1,6 @@
 import { requestToken, removeToken } from 'services/auth'
 import { saveState, clearState } from 'services/localStorage'
 import { getPendingOrders } from 'store/dashboard'
-import { getSchoolOrders } from 'store/orders'
 import { getInstructors } from 'store/instructor'
 import { LOGOUT, RESET } from './common'
 
@@ -21,7 +20,6 @@ const changeSchoolRequest = school => ({ type: CHANGE_SCHOOL, school })
 export const changeSchool = (schoolId, schoolName) => {
   return async dispatch => {
     dispatch(getPendingOrders(schoolId))
-    dispatch(getSchoolOrders(schoolId))
     dispatch(changeSchoolRequest({ id: schoolId, name: schoolName }))
     dispatch(getInstructors(schoolId))
   }

@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux'
 import dashboard from './dashboard'
-import orders from './orders'
 import order from './order'
 import auth from './auth'
 import course from './course'
@@ -16,7 +15,6 @@ const appReducer = combineReducers({
   info,
   course,
   event,
-  orders,
   instructor,
   customer,
   order,

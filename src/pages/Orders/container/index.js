@@ -4,11 +4,12 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import SchoolSelect from 'components/SchoolSelect'
 import PaginationLinks from 'components/PaginationLinks'
-import { fetchSchoolOrders, getDateFilters } from 'services/order'
+import { getDateFilters } from 'services/order'
 import { changeSchool } from 'store/auth'
+import * as orderModule from 'store/order'
 
-import ConfirmedOrders from '../components/ConfirmedOrders'
-import OrderFilters from '../components/OrderFilters'
+import ConfirmedOrders from 'pages/Orders/components/ConfirmedOrders'
+import OrderFilters from 'pages/Orders/components/OrderFilters'
 import styles from './styles.scss'
 import commonStyles from '../../styles.scss'
 
@@ -21,64 +22,63 @@ class Orders extends Component {
     this.handleSearch = this.handleSearch.bind(this)
 
     this.state = {
-      loading: false,
       page: 1,
       ordering: null,
       search: null,
-      dateFilter: getDateFilters()[3],
-      confirmedOrders: {
-        results: []
-      }
+      dateFilter: getDateFilters()[3]
     }
   }
 
-  async componentDidMount() {
-    this.fetchOrders()
-  }
-
-  async componentDidUpdate(oldProps) {
-    if (oldProps.schoolId !== this.props.schoolId) {
+  componentDidUpdate(oldProps) {
+    if (oldProps.supplierId !== this.props.supplierId) {
       this.fetchOrders()
     }
   }
 
-  async fetchOrders() {
-    const { schoolId } = this.props
+  componentDidMount() {
+    this.fetchOrders()
+  }
+
+  fetchOrders() {
+    const { supplierId } = this.props
     const { dateFilter, search, ordering, page } = this.state
     const sdate = dateFilter.getStartDate()
     const edate = dateFilter.getEndDate()
     const params = { sdate, edate, search, page, ordering }
-    const orders = await fetchSchoolOrders(schoolId, params)
 
-    this.setState({
-      confirmedOrders: orders,
-      loading: false
-    })
+    this.props.fetchSupplierOrders(supplierId, params)
   }
 
   handleChangePage(page) {
-    this.setState({ page, loading: true }, () => this.fetchOrders())
+    this.setState({ page }, () => this.fetchOrders())
   }
 
   handleSorting(ordering) {
-    this.setState({ ordering, loading: true }, () => this.fetchOrders())
+    this.setState({ ordering }, () => this.fetchOrders())
   }
 
   handleDateFilter(dateFilter) {
-    this.setState({ dateFilter, loading: true }, () => {
+    this.setState({ dateFilter }, () => {
       this.fetchOrders()
     })
   }
 
   handleSearch(search) {
-    this.setState({ search, loading: true }, () => {
+    this.setState({ search }, () => {
       this.fetchOrders()
     })
   }
 
   render() {
-    const { schoolId, user, changeSchool } = this.props
-    const { confirmedOrders, dateFilter, page, loading } = this.state
+    const {
+      orders,
+      total,
+      supplierId,
+      user,
+      changeSchool,
+      isFetching
+    } = this.props
+    const { dateFilter, page } = this.state
 
     return (
       <div className={styles.container}>
@@ -89,7 +89,7 @@ class Orders extends Component {
           )}>
           <h1>Orders</h1>
           <SchoolSelect
-            selected={schoolId}
+            selected={supplierId}
             schools={user.suppliers}
             onChange={changeSchool}
           />
@@ -102,16 +102,16 @@ class Orders extends Component {
               onSearch={this.handleSearch}
             />
           </div>
-          {confirmedOrders.results.length > 0 ? (
+          {orders.length > 0 ? (
             <React.Fragment>
               <ConfirmedOrders
-                loading={loading}
-                confirmedOrders={confirmedOrders}
+                loading={isFetching}
+                confirmedOrders={orders}
                 sortingChange={this.handleSorting}
               />
               <PaginationLinks
                 currentPage={page}
-                count={confirmedOrders.count}
+                count={total}
                 pageSize={15}
                 rowName={'orders'}
                 onPageChange={this.handleChangePage}
@@ -129,18 +129,24 @@ class Orders extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const supplierId = parseInt(state.auth.schoolId, 10)
+  const { total, isFetching } = state.order
+
   return {
+    supplierId,
+    total,
+    isFetching,
     user: state.auth.user,
-    schoolId: state.auth.schoolId,
     schoolName: state.auth.schoolName,
-    page: state.orders.page
+    orders: orderModule.selectors.getItems(state.order)
   }
 }
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      changeSchool
+      changeSchool,
+      ...orderModule.actions
     },
     dispatch
   )
