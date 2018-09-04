@@ -4,9 +4,7 @@ import { Button, Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
-import { DAY_FORMAT2, DAY_FORMAT3 } from 'common/constants'
 import Loading from 'components/Loading'
-import pick from 'lodash/pick'
 
 class CreateBulkCourse extends React.Component {
   constructor(props) {

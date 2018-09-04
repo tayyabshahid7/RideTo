@@ -37,16 +37,19 @@ const CalendarDayCell = ({ day, calendar, history }) => {
   const items = getDayItems(day, dateStr)
   const selectedDay = dateStr === calendar.selectedDate
   const more = items.length - 3
+  const isOtherMonthDate = day.date.getMonth() !== calendar.month
 
   return (
     <li
-      className={classnames(
-        styles.container,
-        day.date.getMonth() !== calendar.month ? styles.otherMonth : '',
-        selectedDay && 'bg-highlight'
-      )}
+      className={classnames(styles.container, selectedDay && 'bg-highlight')}
       onClick={() => history.push(`/calendar/${dateStr}`)}>
-      <div className={styles.date}>{day.date.getDate()}</div>
+      <div
+        className={classnames(
+          isOtherMonthDate && styles.otherMonthDate,
+          styles.date
+        )}>
+        {day.date.getDate()}
+      </div>
 
       {items
         .slice(0, 3)
