@@ -10,6 +10,7 @@ let NavigationBar = ({ history }) => {
   return (
     <nav
       className={classnames(
+        styles.navigationBar,
         'navbar navbar-expand-md navbar-light bg-light fixed-top'
       )}>
       <div className={classnames(styles.image)}>

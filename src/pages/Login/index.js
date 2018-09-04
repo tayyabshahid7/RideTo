@@ -42,7 +42,7 @@ class Login extends Component {
         <div className={styles.main}>
           <div className={styles.loginFormContainer}>
             <div className={styles.formTitle}>
-              <div>Partner schools dashboard</div>
+              <div>Partner school dashboard</div>
             </div>
             <form className={styles.loginForm} onSubmit={this.handleFormSubmit}>
               <input
@@ -50,6 +50,7 @@ class Login extends Component {
                 autoComplete="email"
                 ref={this.emailInput}
                 name="email"
+                placeholder="Username"
               />
               <br />
               <input
@@ -57,6 +58,7 @@ class Login extends Component {
                 autoComplete="current-password"
                 ref={this.passwordInput}
                 name="password"
+                placeholder="Password"
               />
               <br />
               <button type="submit">Login</button>
