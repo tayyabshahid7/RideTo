@@ -1,8 +1,9 @@
-.container {
+@import '../../bootstrap';
+
+.calendar {
   width: 100%;
-  .row {
-    display: flex;
-  }
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .rightPanel {
@@ -11,13 +12,26 @@
   padding-top: 20px;
   height: 100%;
   display: flex;
-  border-left: 1px solid lightgray;
+  border-left: 1px solid $grey;
+  width: 480px;
+
+  @media (max-width: 992px) {
+    width: 100%;
+    padding-top: 16px;
+    border: none;
+  }
 }
 
 .calendarColumn {
-  height: 100%;
+  padding-right: 16px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  width: 640px;
+
+  @media (max-width: 992px) {
+    padding-right: 0;
+  }
 }
 
 .schoolWrapper {
@@ -29,14 +43,3 @@
     height: 100%;
   }
 }
-
-// @media (max-width: 767.98px) {
-//   .mainContent {
-//     padding: 0px 16px !important;
-//   }
-// }
-// @media (max-width: 575.98px) {
-//   .mainContent {
-//     padding: 0px 8px !important;
-//   }
-// }
