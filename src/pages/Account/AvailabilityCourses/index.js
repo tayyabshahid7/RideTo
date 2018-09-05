@@ -9,6 +9,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     schoolId: state.auth.schoolId,
     saving: state.course.bulk.saving,
+    error: state.course.bulk.error,
     info: state.info,
     schools: state.auth.user.suppliers,
     instructors: state.instructor.instructors

@@ -17,7 +17,7 @@ class AvailabilityCourses extends React.Component {
   renderCreateCourse() {
     return (
       <div>
-        <h3>Create Course</h3>
+        <h3>Bulk create course</h3>
         <div>Set default courses for your calendar</div>
         <div>
           <Button
@@ -79,7 +79,10 @@ class AvailabilityCourses extends React.Component {
       loadCourseTypes,
       instructors,
       schoolId,
-      getInstructors
+      getInstructors,
+      history,
+      saving,
+      error
     } = this.props
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
@@ -99,12 +102,15 @@ class AvailabilityCourses extends React.Component {
             <CreateBulkCourse
               onSubmit={this.handleCreateBulkCourse.bind(this)}
               info={info}
+              history={history}
               instructors={instructors}
               loadCourseTypes={loadCourseTypes}
               schoolId={schoolId}
               getInstructors={getInstructors}
               available_days={available_days}
               handleCancel={this.handleCancel.bind(this)}
+              saving={saving}
+              error={error}
             />
           </Col>
         )}
