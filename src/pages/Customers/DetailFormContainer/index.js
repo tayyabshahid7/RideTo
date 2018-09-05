@@ -68,7 +68,7 @@ class DetailFormContainer extends React.Component {
     return (
       <Col sm="6" className={styles.detailFormContainer}>
         <div className={styles.heading}>
-          <h3>
+          <h3 className={styles.customerName}>
             {editable.first_name} {editable.last_name}
           </h3>
           <div className={styles.customerInfo}>

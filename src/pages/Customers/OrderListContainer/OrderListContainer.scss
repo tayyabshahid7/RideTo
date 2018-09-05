@@ -3,4 +3,11 @@
   max-height: 800px;
   max-height: calc(100vh - 230px);
   padding: 16px;
+  padding-top: 0;
+  color: var(--grey-color);
+}
+
+.title {
+  font-size: 25px;
+  font-weight: bold;
 }
