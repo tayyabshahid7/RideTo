@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { Col, Row, Button } from 'reactstrap'
+import classnames from 'classnames'
 
 import styles from './styles.scss'
 import { DAY_FORMAT3 } from 'common/constants'
@@ -181,7 +182,7 @@ class CourseForm extends React.Component {
               </Button>
             </div>
 
-            <div className={`${styles.form} ${formClass}`}>
+            <div className={classnames(styles.form, formClass)}>
               <Row className={styles.formRow}>
                 <Col sm="4" className={styles.formGroup}>
                   <label>Spaces:</label>
