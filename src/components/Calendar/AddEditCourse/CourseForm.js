@@ -86,8 +86,27 @@ class CourseForm extends React.Component {
     }
   }
 
+  getFinishTime(time, duration) {
+    return moment(time, 'HH:mm')
+      .add(duration, 'minute')
+      .format('HH:mm')
+  }
+
   handleToggleEdit() {
     this.props.onSetEditable(!this.props.isEditable)
+  }
+
+  handleChangeFinishTime({ target }) {
+    const { value } = target
+    const { course } = this.state
+    const duration = moment(value, 'HH:mm').diff(
+      moment(course.time, 'HH:mm'),
+      'minute'
+    )
+
+    this.setState({
+      course: { ...course, duration }
+    })
   }
 
   handleChangeRawEvent(event) {
@@ -129,6 +148,8 @@ class CourseForm extends React.Component {
       auto_bikes,
       manual_bikes
     } = this.state.course
+
+    const finishTime = this.getFinishTime(time, duration)
 
     return (
       <div className={styles.container}>
@@ -230,14 +251,16 @@ class CourseForm extends React.Component {
                   />
                 </div>
                 <div className={styles.formGroup}>
-                  <label>Duration:</label>
+                  <label>Finish Time:</label>
                   <input
+                    name="finish_time"
                     className={styles.inputDate}
-                    name="duration"
-                    value={duration}
-                    type="number"
+                    value={finishTime.slice(0, 5)}
+                    label="Finish Time"
+                    step="60"
+                    type="time"
                     disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
+                    onChange={this.handleChangeFinishTime.bind(this)}
                     required
                   />
                 </div>
