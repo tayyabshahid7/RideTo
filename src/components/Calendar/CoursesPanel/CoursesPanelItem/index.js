@@ -17,6 +17,8 @@ const CoursesPanelItem = ({ course, date }) => {
     availableSpaces <= 0 && styles.danger
   )
   const addLink = `/calendar/${date}/courses/${course.id}/edit`
+  const { notes = '' } = course
+  const truncated = notes.length > 200 ? `${notes}...` : notes
 
   return (
     <div className={styles.coursesPanelItem}>
@@ -25,7 +27,7 @@ const CoursesPanelItem = ({ course, date }) => {
           <div>
             {course.time} | {name}
           </div>
-          {course.notes && <div className={styles.notes}>{course.notes}</div>}
+          {notes && <div className={styles.notes}>{truncated}</div>}
         </div>
         <Button
           tag={Link}
