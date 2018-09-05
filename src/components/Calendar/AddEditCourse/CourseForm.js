@@ -5,6 +5,7 @@ import { Button } from 'reactstrap'
 import styles from './styles.scss'
 import { DAY_FORMAT3 } from 'common/constants'
 import Loading from 'components/Loading'
+import Input from 'components/Forms/Input'
 import pick from 'lodash/pick'
 
 class CourseForm extends React.Component {
@@ -183,7 +184,7 @@ class CourseForm extends React.Component {
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label>Spaces:</label>
-                  <input
+                  <Input
                     className={styles.inputNumber}
                     name="spaces"
                     value={spaces || ''}
@@ -195,7 +196,7 @@ class CourseForm extends React.Component {
                 </div>
                 <div className={styles.formGroup}>
                   <label>Automatic:</label>
-                  <input
+                  <Input
                     className={styles.inputNumber}
                     name="auto_bikes"
                     value={auto_bikes || ''}
@@ -207,7 +208,7 @@ class CourseForm extends React.Component {
                 </div>
                 <div className={styles.formGroup}>
                   <label>Manual:</label>
-                  <input
+                  <Input
                     className={styles.inputNumber}
                     name="manual_bikes"
                     value={manual_bikes || ''}
@@ -224,7 +225,7 @@ class CourseForm extends React.Component {
                   !this.props.date && (
                     <div className={styles.formGroup}>
                       <label>Date:</label>
-                      <input
+                      <Input
                         name="date"
                         value={date || ''}
                         type="date"
@@ -238,7 +239,7 @@ class CourseForm extends React.Component {
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label>Start Time:</label>
-                  <input
+                  <Input
                     name="time"
                     className={styles.inputDate}
                     value={time.slice(0, 5)}
@@ -252,7 +253,7 @@ class CourseForm extends React.Component {
                 </div>
                 <div className={styles.formGroup}>
                   <label>Finish Time:</label>
-                  <input
+                  <Input
                     name="finish_time"
                     className={styles.inputDate}
                     value={finishTime.slice(0, 5)}
@@ -286,7 +287,7 @@ class CourseForm extends React.Component {
               <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label>Payout Per Booking:</label>
-                  <input
+                  <Input
                     name="price"
                     value={
                       pricing.loading
