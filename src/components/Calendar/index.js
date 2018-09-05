@@ -19,9 +19,8 @@ class CalendarComponent extends Component {
       <div className={styles.overview}>
         <Row>
           <Col>
-
             <SchoolSelect className="Test" />
-            <div>
+            <div className={styles.changeCalendarWrapper}>
               <span
                 className={
                   viewMode === CALENDAR_VIEW.MONTH
@@ -57,7 +56,9 @@ class CalendarComponent extends Component {
             </div>
           </Col>
           <Col className={styles.rightButtons}>
-            <Link to={`/calendar/courses/create`}>
+            <Link
+              to={`/calendar/courses/create`}
+              className={styles.addCourseBtn}>
               <Button color="primary">Add Course</Button>
             </Link>
           </Col>
