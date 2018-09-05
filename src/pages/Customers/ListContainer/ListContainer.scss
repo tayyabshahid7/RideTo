@@ -1,3 +1,8 @@
+.listContainer {
+  width: 100%;
+  padding: 0px 64px !important;
+}
+
 .heading {
   display: flex;
   align-items: center;
@@ -7,5 +12,6 @@
   .search {
     flex-grow: 1;
     margin-right: 32px;
+    max-width: 450px;
   }
 }
