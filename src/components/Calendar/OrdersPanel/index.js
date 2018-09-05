@@ -56,50 +56,46 @@ class OrdersPanel extends React.Component {
     return (
       <div className={styles.ordersPanel}>
         <Loading loading={loading || saving}>
-          <div className={styles.scrollContainer}>
-            <div className={styles.scrollContent}>
-              <div className={styles.orders}>
-                {course.orders.map((order, index) => (
-                  <React.Fragment key={index}>
-                    <OrdersPanelItem
-                      order={order}
-                      onEdit={() => this.handleShowEditForm(index)}
-                      showEditButton={order.is_manual_order && showEditButton}
-                    />
-                    {editOrderIndex === index && (
-                      <EditOrderFormContainer
-                        updateCourse={this.props.updateCourse}
-                        onCancel={() =>
-                          this.setState({
-                            editOrderIndex: -1,
-                            showEditButton: true
-                          })
-                        }
-                        friendlyId={order.friendly_id}
-                      />
-                    )}
-                  </React.Fragment>
-                ))}
-                {Array.apply(null, Array(availableSpaces)).map(
-                  (val, index) =>
-                    orderIndex === index ? (
-                      <AddOrderItem
-                        onCancel={() => this.setState({ orderIndex: -1 })}
-                        info={info}
-                        course={course}
-                        onSave={this.handleNewOrder.bind(this)}
-                        key={index}
-                        saving={saving}
-                      />
-                    ) : (
-                      <OrdersPanelSpaceItem
-                        onAdd={() => this.handleAdd(index)}
-                        key={index}
-                      />
-                    )
+          <div className={styles.orders}>
+            {course.orders.map((order, index) => (
+              <React.Fragment key={index}>
+                <OrdersPanelItem
+                  order={order}
+                  onEdit={() => this.handleShowEditForm(index)}
+                  showEditButton={order.is_manual_order && showEditButton}
+                />
+                {editOrderIndex === index && (
+                  <EditOrderFormContainer
+                    updateCourse={this.props.updateCourse}
+                    onCancel={() =>
+                      this.setState({
+                        editOrderIndex: -1,
+                        showEditButton: true
+                      })
+                    }
+                    friendlyId={order.friendly_id}
+                  />
                 )}
-              </div>
-            </div>
+              </React.Fragment>
+            ))}
+            {Array.apply(null, Array(availableSpaces)).map(
+              (val, index) =>
+                orderIndex === index ? (
+                  <AddOrderItem
+                    onCancel={() => this.setState({ orderIndex: -1 })}
+                    info={info}
+                    course={course}
+                    onSave={this.handleNewOrder.bind(this)}
+                    key={index}
+                    saving={saving}
+                  />
+                ) : (
+                  <OrdersPanelSpaceItem
+                    onAdd={() => this.handleAdd(index)}
+                    key={index}
+                  />
+                )
+            )}
           </div>
         </Loading>
       </div>
