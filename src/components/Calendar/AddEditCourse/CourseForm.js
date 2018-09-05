@@ -1,9 +1,8 @@
 import React from 'react'
 import moment from 'moment'
-import { Button, Row, Col, Form } from 'reactstrap'
+import { Button } from 'reactstrap'
+
 import styles from './styles.scss'
-import InputTextGroup from 'components/Forms/InputTextGroup'
-import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { DAY_FORMAT3 } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
@@ -52,8 +51,11 @@ class CourseForm extends React.Component {
       course.date = this.props.date
     }
     this.state = {
+      isEditable: false,
       course: course
     }
+
+    this.handleToggleEdit = this.handleToggleEdit.bind(this)
   }
 
   componentDidMount() {
@@ -85,6 +87,12 @@ class CourseForm extends React.Component {
     }
   }
 
+  handleToggleEdit() {
+    this.setState({
+      isEditable: !this.state.isEditable
+    })
+  }
+
   handleChangeRawEvent(event) {
     let name = event.target.name
     let { course } = this.state
@@ -104,160 +112,193 @@ class CourseForm extends React.Component {
       course.instructor_id = null
     }
     onSubmit(course)
+    this.handleToggleEdit()
   }
 
   render() {
     let { info, saving, instructors, pricing } = this.props
+    const { isEditable } = this.state
     const {
       course_type_id,
       instructor_id,
       date,
-      time,
+      time = '',
       spaces,
       duration,
       notes,
       auto_bikes,
       manual_bikes
     } = this.state.course
+
     return (
       <div className={styles.container}>
         <Loading loading={saving}>
-          <Form onSubmit={this.handleSave.bind(this)}>
-            <Row>
-              <Col>
-                <InputSelectGroup
-                  name="course_type_id"
-                  value={course_type_id}
-                  label=""
-                  valueArray={info.courseTypes.map(courseType => ({
-                    value: courseType.id,
-                    title: courseType.name
-                  }))}
-                  noSelectOption
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="spaces"
-                  value={spaces}
-                  label="Spaces"
-                  className="form-group"
-                  type="number"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-              <Col>
-                <InputTextGroup
-                  name="auto_bikes"
-                  value={auto_bikes}
-                  label="Automatic"
-                  className="form-group"
-                  type="number"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-              <Col>
-                <InputTextGroup
-                  name="manual_bikes"
-                  value={manual_bikes}
-                  label="Manual"
-                  className="form-group"
-                  type="number"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-            </Row>
-            <Row>
-              {!this.props.course &&
-                !this.props.date && (
-                  <Col>
-                    <InputTextGroup
-                      name="date"
-                      value={date}
-                      label="Date"
-                      className="form-group"
-                      type="date"
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      required
-                    />
-                  </Col>
-                )}
-              <Col>
-                <InputTextGroup
-                  name="time"
-                  value={time}
-                  label="Start Time"
-                  className="form-group"
-                  type="time"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-              <Col>
-                <InputTextGroup
-                  name="duration"
-                  value={duration}
-                  label="Duration"
-                  className="form-group"
-                  type="number"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputSelectGroup
-                  name="instructor_id"
-                  value={instructor_id}
-                  label="Instructor"
-                  valueArray={instructors.map(instructor => ({
-                    value: instructor.id,
-                    title: `${instructor.first_name} ${instructor.last_name}`
-                  }))}
-                  noSelectOption
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-              <Col>
-                <InputTextGroup
-                  name="price"
-                  value={
-                    pricing.loading
-                      ? '...'
-                      : pricing.info
-                        ? `£${(pricing.info.payout / 100.0).toFixed(2)}`
-                        : ''
-                  }
-                  label="Payout Per Booking"
-                  disabled
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="notes"
-                  value={notes}
-                  label="Notes"
-                  type="textarea"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col className="mt-3 text-right">
-                <Button type="submit" color="primary" className="mr-2">
-                  Save
-                </Button>
-              </Col>
-            </Row>
-          </Form>
+          <form onSubmit={this.handleSave.bind(this)}>
+            <div className={styles.formRow}>
+              <select
+                className={styles.formSelect}
+                name="course_type_id"
+                value={course_type_id}
+                disabled={!isEditable}
+                onChange={this.handleChangeRawEvent.bind(this)}>
+                {info.courseTypes.map(courseType => (
+                  <option key={courseType.id} value={courseType.id}>
+                    {courseType.name}
+                  </option>
+                ))}
+              </select>
+              <Button
+                className={styles.editCourse}
+                onClick={this.handleToggleEdit}
+                disabled={isEditable}
+                color="primary"
+                outline>
+                Edit Course
+              </Button>
+            </div>
+
+            <div className={styles.grey}>
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label>Spaces:</label>
+                  <input
+                    className={styles.inputNumber}
+                    name="spaces"
+                    value={spaces || ''}
+                    type="number"
+                    disabled={!isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    required
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Automatic:</label>
+                  <input
+                    className={styles.inputNumber}
+                    name="auto_bikes"
+                    value={auto_bikes || ''}
+                    type="number"
+                    disabled={!isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Manual:</label>
+                  <input
+                    className={styles.inputNumber}
+                    name="manual_bikes"
+                    value={manual_bikes || ''}
+                    type="number"
+                    disabled={!isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formRow}>
+                {!this.props.course &&
+                  !this.props.date && (
+                    <div className={styles.formGroup}>
+                      <label>Date:</label>
+                      <input
+                        name="date"
+                        value={date || ''}
+                        type="date"
+                        disabled={!isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        required
+                      />
+                    </div>
+                  )}
+                <div className={styles.formGroup}>
+                  <label>Start Time:</label>
+                  <input
+                    name="time"
+                    className={styles.inputDate}
+                    value={time.slice(0, 5)}
+                    label="Start Time"
+                    step="60"
+                    type="time"
+                    disabled={!isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    required
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Duration:</label>
+                  <input
+                    className={styles.inputDate}
+                    name="duration"
+                    value={duration}
+                    type="number"
+                    disabled={!isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label>Instructor:</label>
+                  <select
+                    className={styles.formSelect}
+                    name="instructor_id"
+                    value={instructor_id}
+                    disabled={!isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}>
+                    {instructors.map(instructor => (
+                      <option key={instructor.id} value={instructor.id}>
+                        {instructor.first_name} {instructor.last_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className={styles.formRow}>
+                <div className={styles.formGroup}>
+                  <label>Payout Per Booking:</label>
+                  <input
+                    name="price"
+                    value={
+                      pricing.loading
+                        ? '...'
+                        : pricing.info
+                          ? `£${(pricing.info.payout / 100.0).toFixed(2)}`
+                          : ''
+                    }
+                    disabled
+                  />
+                </div>
+              </div>
+
+              <div className={styles.formRow}>
+                <div className={styles.notes}>
+                  <label>Notes:</label>
+                  <textarea
+                    name="notes"
+                    value={notes}
+                    type="textarea"
+                    disabled={!isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                  />
+                </div>
+              </div>
+
+              {isEditable && (
+                <div className={styles.formRow}>
+                  <div className={styles.actions}>
+                    <Button type="submit" color="primary" className="mr-2">
+                      Save
+                    </Button>
+                    <Button color="link" onClick={this.handleToggleEdit}>
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </form>
         </Loading>
       </div>
     )

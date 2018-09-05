@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { bindActionCreators } from 'redux'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
 import CourseForm from './CourseForm'
@@ -98,18 +97,16 @@ class EditCourseComponent extends Component {
     if (!course) {
       return <div>Course Not Found</div>
     }
-    const backLink = `/calendar/${course.date}`
 
     return (
       <div className={styles.addCourse}>
-        <DateHeading date={moment(course.date)}>
-          <Link to={backLink}>&laquo; Back</Link>
-        </DateHeading>
+        <DateHeading date={moment(course.date)} />
         <CourseHeading
           course={course}
           onRemove={this.handleRemoveCourseClick.bind(this)}
         />
         <CourseForm {...this.props} onSubmit={this.onSave.bind(this)} />
+
         <h4>Orders</h4>
         <OrdersPanel
           orderIndex={parseInt(orderIndex, 10)}
