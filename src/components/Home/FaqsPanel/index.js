@@ -6,7 +6,7 @@ import styles from './styles.scss'
 class FaqsPanel extends React.Component {
   render() {
     return (
-      <div className={styles.container}>
+      <React.Fragment>
         <div className={classnames(styles.title, 'text-grey')}>FAQs</div>
         {Faqs.map((faq, index) => (
           <div className={styles.questionAnswer} key={index}>
@@ -18,7 +18,7 @@ class FaqsPanel extends React.Component {
             </div>
           </div>
         ))}
-      </div>
+      </React.Fragment>
     )
   }
 }
