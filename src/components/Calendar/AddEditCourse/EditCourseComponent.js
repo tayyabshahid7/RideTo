@@ -61,6 +61,7 @@ class EditCourseComponent extends Component {
       data: { ...data, supplier: schoolId.toString() },
       fullUpdate: true
     })
+    this.setState({ isEditable: false })
   }
 
   handleRemoveCourseClick() {

@@ -24,6 +24,7 @@ class AddCourseComponent extends Component {
     if (schoolId !== prevProps.schoolId) {
       let parsed = queryString.parse(location.search)
       let date = parsed.date
+      console.log('UPDATE', date)
       if (date) {
         history.push(`/calendar/${date}`)
       } else {
@@ -47,8 +48,12 @@ class AddCourseComponent extends Component {
   }
 
   handleSetEditable(isEditable, date) {
+    const { course } = this.props
+
     if (!isEditable) {
-      this.props.history.push(`/calendar/${date}`)
+      const link =
+        course && course.date ? `/calendar/${course.date}` : `/calendar/${date}`
+      this.props.history.push(link)
     }
   }
 

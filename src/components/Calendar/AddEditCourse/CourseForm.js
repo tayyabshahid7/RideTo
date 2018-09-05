@@ -99,7 +99,7 @@ class CourseForm extends React.Component {
 
   handleSave(event) {
     event.preventDefault()
-    const { onSubmit } = this.props
+    const { onSubmit, info } = this.props
     const {
       course: { instructor_id, ...course }
     } = this.state
@@ -108,8 +108,12 @@ class CourseForm extends React.Component {
     } else {
       course.instructor_id = null
     }
+
+    if (!course.course_type_id) {
+      course.course_type_id = info.courseTypes[0].id
+    }
+
     onSubmit(course)
-    this.handleToggleEdit()
   }
 
   render() {
