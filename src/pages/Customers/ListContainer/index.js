@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Col, Container, Row, Button } from 'reactstrap'
+import { Button } from 'reactstrap'
 
 import styles from './ListContainer.scss'
 import CustomerList from 'pages/Customers/components/CustomerList'
@@ -52,7 +52,7 @@ class CustomerListContainer extends React.Component {
     const { ordering, page } = this.state
 
     return (
-      <Container>
+      <div className={styles.listContainer}>
         <h1>Customer Information</h1>
         <div className={styles.heading}>
           <div className={styles.search}>
@@ -65,26 +65,23 @@ class CustomerListContainer extends React.Component {
             Create Customer
           </Button>
         </div>
+        <div>
+          <CustomerList
+            customers={customers}
+            ordering={ordering}
+            onSort={this.handleSort}
+            isLoading={isFetching}
+          />
 
-        <Row>
-          <Col>
-            <CustomerList
-              customers={customers}
-              ordering={ordering}
-              onSort={this.handleSort}
-              isLoading={isFetching}
-            />
-
-            <PaginationLinks
-              currentPage={page}
-              count={total}
-              pageSize={15}
-              rowName={'orders'}
-              onPageChange={this.handleChangePage}
-            />
-          </Col>
-        </Row>
-      </Container>
+          <PaginationLinks
+            currentPage={page}
+            count={total}
+            pageSize={15}
+            rowName={'orders'}
+            onPageChange={this.handleChangePage}
+          />
+        </div>
+      </div>
     )
   }
 }
