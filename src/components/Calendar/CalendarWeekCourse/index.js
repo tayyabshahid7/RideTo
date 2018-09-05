@@ -3,6 +3,7 @@ import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS } from 'common/constants'
+import { getShortCourseType } from 'services/course'
 
 const CalendarWeekCourse = ({
   course,
@@ -61,7 +62,7 @@ const CalendarWeekCourse = ({
         history.push(`/calendar/${course.date}/courses/${course.id}/edit`)
       }>
       <span className={styles.eventName}>
-        {course.course_type.name} | {course.time.substring(0, 5)}
+        {course.time.substring(0, 5)} | {getShortCourseType(course.course_type)}
       </span>
       <span
         className={classnames(
