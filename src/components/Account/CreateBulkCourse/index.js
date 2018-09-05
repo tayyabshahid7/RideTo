@@ -45,6 +45,18 @@ class CreateBulkCourse extends React.Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const { saving, error, history } = this.props
+    if (prevProps.saving && !saving) {
+      if (error) {
+        alert('Failed to create bulk course')
+      } else {
+        const { start_date } = this.state.course
+        history.push(`/calendar/${start_date}`)
+      }
+    }
+  }
+
   handleChangeRawEvent(event) {
     let name = event.target.name
     let { course } = this.state
@@ -80,8 +92,8 @@ class CreateBulkCourse extends React.Component {
       available_days: available_days.join(''),
       supplier: schoolId.toString()
     }
-    let duration = moment(`2000/1/1 ${end_time}`).diff(
-      moment(`2000/1/1 ${time}`),
+    let duration = moment(`2000-01-01 ${end_time}`).diff(
+      moment(`2000-01-01 ${time}`),
       'minutes'
     )
     if (duration < 0) {
