@@ -8,6 +8,7 @@ export const DATE_FORMAT = 'YYYY-MM-DD'
 export const DAY_FORMAT1 = 'dddd Do MMMM'
 export const DAY_FORMAT2 = 'dddd Do MMMM YYYY'
 export const DAY_FORMAT3 = 'YYYY-MM-DDTHH:mm'
+export const DAY_FORMAT4 = 'YYYY-MM-DDTHH:mm:ssZ'
 
 export const WEEK_VIEW_START_TIME = 60 * 60 * 7 // 9 AM
 export const WEEK_VIEW_START_TIME_STRING = '07:00'

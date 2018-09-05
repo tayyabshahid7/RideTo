@@ -3,7 +3,7 @@ import { Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 
 import styles from './EventPanelItem.scss'
-import { getTime } from 'utils/helper'
+import { getTimeFromDateTime } from 'utils/helper'
 
 const EventPanelItem = ({ event, date }) => {
   const { notes = '' } = event
@@ -14,7 +14,8 @@ const EventPanelItem = ({ event, date }) => {
       <div className={styles.heading}>
         <div className={styles.title}>
           <div className={styles.time}>
-            {getTime(event.start_time)} - {getTime(event.end_time)}
+            {getTimeFromDateTime(event.start_time)} -{' '}
+            {getTimeFromDateTime(event.end_time)}
           </div>
           <div className={styles.name}>{event.name}</div>
           {notes && <div className={styles.notes}>{truncated}</div>}
