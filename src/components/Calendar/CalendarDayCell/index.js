@@ -41,7 +41,7 @@ const CalendarDayCell = ({ day, calendar, history }) => {
 
   return (
     <li
-      className={classnames(styles.container, selectedDay && 'bg-highlight')}
+      className={classnames(styles.container, selectedDay && 'bg-primary')}
       onClick={() => history.push(`/calendar/${dateStr}`)}>
       <div
         className={classnames(
