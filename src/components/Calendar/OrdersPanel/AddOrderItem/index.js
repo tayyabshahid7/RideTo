@@ -68,7 +68,7 @@ class AddOrderItem extends React.Component {
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave.bind(this)}>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_first_name"
                 value={user_first_name}
@@ -79,7 +79,7 @@ class AddOrderItem extends React.Component {
                 required
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_last_name"
                 value={user_last_name}
@@ -92,7 +92,7 @@ class AddOrderItem extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_phone"
                 value={user_phone}
@@ -102,7 +102,7 @@ class AddOrderItem extends React.Component {
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_email"
                 value={user_email}
@@ -115,7 +115,7 @@ class AddOrderItem extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_birthdate"
                 value={user_birthdate}
@@ -127,10 +127,10 @@ class AddOrderItem extends React.Component {
                 required
               />
             </Col>
-            <Col />
+            <Col sm="6" />
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_driving_licence_number"
                 value={user_driving_licence_number}
@@ -140,7 +140,7 @@ class AddOrderItem extends React.Component {
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="payment_status"
                 value={payment_status}
@@ -153,7 +153,7 @@ class AddOrderItem extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="riding_experience"
                 value={riding_experience}
@@ -163,7 +163,7 @@ class AddOrderItem extends React.Component {
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="bike_hire"
                 value={bike_hire}

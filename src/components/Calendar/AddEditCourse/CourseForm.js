@@ -1,6 +1,7 @@
 import React from 'react'
 import moment from 'moment'
-import { Button } from 'reactstrap'
+import { Col, Row, Button } from 'reactstrap'
+import classnames from 'classnames'
 
 import styles from './styles.scss'
 import { DAY_FORMAT3 } from 'common/constants'
@@ -151,6 +152,7 @@ class CourseForm extends React.Component {
     } = this.state.course
 
     const finishTime = this.getFinishTime(time, duration)
+    const formClass = isEditable ? styles.grey : ''
 
     return (
       <div className={styles.container}>
@@ -158,7 +160,7 @@ class CourseForm extends React.Component {
           <form onSubmit={this.handleSave.bind(this)}>
             <div className={styles.formRow}>
               <select
-                className={styles.formSelect}
+                className={styles.courseTypeSelect}
                 name="course_type_id"
                 value={course_type_id}
                 disabled={!isEditable}
@@ -180,9 +182,9 @@ class CourseForm extends React.Component {
               </Button>
             </div>
 
-            <div className={styles.grey}>
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
+            <div className={classnames(styles.form, formClass)}>
+              <Row className={styles.formRow}>
+                <Col sm="4" className={styles.formGroup}>
                   <label>Spaces:</label>
                   <Input
                     className={styles.inputNumber}
@@ -193,8 +195,8 @@ class CourseForm extends React.Component {
                     onChange={this.handleChangeRawEvent.bind(this)}
                     required
                   />
-                </div>
-                <div className={styles.formGroup}>
+                </Col>
+                <Col sm="4" className={styles.formGroup}>
                   <label>Automatic:</label>
                   <Input
                     className={styles.inputNumber}
@@ -205,8 +207,8 @@ class CourseForm extends React.Component {
                     onChange={this.handleChangeRawEvent.bind(this)}
                     required
                   />
-                </div>
-                <div className={styles.formGroup}>
+                </Col>
+                <Col sm="4" className={styles.formGroup}>
                   <label>Manual:</label>
                   <Input
                     className={styles.inputNumber}
@@ -217,13 +219,13 @@ class CourseForm extends React.Component {
                     onChange={this.handleChangeRawEvent.bind(this)}
                     required
                   />
-                </div>
-              </div>
+                </Col>
+              </Row>
 
-              <div className={styles.formRow}>
-                {!this.props.course &&
-                  !this.props.date && (
-                    <div className={styles.formGroup}>
+              {!this.props.course &&
+                !this.props.date && (
+                  <Row className={styles.formRow}>
+                    <Col className={styles.formGroup}>
                       <label>Date:</label>
                       <Input
                         name="date"
@@ -233,11 +235,12 @@ class CourseForm extends React.Component {
                         onChange={this.handleChangeRawEvent.bind(this)}
                         required
                       />
-                    </div>
-                  )}
-              </div>
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
+                    </Col>
+                  </Row>
+                )}
+
+              <Row className={styles.formRow}>
+                <Col sm="6" className={styles.formGroup}>
                   <label>Start Time:</label>
                   <Input
                     name="time"
@@ -250,8 +253,8 @@ class CourseForm extends React.Component {
                     onChange={this.handleChangeRawEvent.bind(this)}
                     required
                   />
-                </div>
-                <div className={styles.formGroup}>
+                </Col>
+                <Col sm="6" className={styles.formGroup}>
                   <label>Finish Time:</label>
                   <Input
                     name="finish_time"
@@ -264,11 +267,11 @@ class CourseForm extends React.Component {
                     onChange={this.handleChangeFinishTime.bind(this)}
                     required
                   />
-                </div>
-              </div>
+                </Col>
+              </Row>
 
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
+              <Row className={styles.formRow}>
+                <Col className={styles.formGroup}>
                   <label>Instructor:</label>
                   <select
                     className={styles.formSelect}
@@ -282,10 +285,10 @@ class CourseForm extends React.Component {
                       </option>
                     ))}
                   </select>
-                </div>
-              </div>
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
+                </Col>
+              </Row>
+              <Row className={styles.formRow}>
+                <Col className={styles.formGroup}>
                   <label>Payout Per Booking:</label>
                   <Input
                     name="price"
@@ -298,8 +301,8 @@ class CourseForm extends React.Component {
                     }
                     disabled
                   />
-                </div>
-              </div>
+                </Col>
+              </Row>
 
               <div className={styles.formRow}>
                 <div className={styles.notes}>

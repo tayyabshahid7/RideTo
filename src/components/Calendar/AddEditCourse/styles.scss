@@ -19,7 +19,6 @@
 }
 
 .inputNumber {
-  width: 48px;
 }
 
 .formRow {
@@ -42,28 +41,34 @@
 }
 
 .inputDate {
-  width: 96px;
 }
 
 .formGroup {
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
 .formGroup label {
   font-size: 15px;
   margin: 0;
-  margin-right: 4px;
+}
+
+.form {
+  padding: 8px;
 }
 
 .grey {
-  padding: 4px 6px;
   background: var(--light-grey-color);
 }
 
 .formSelect {
-  min-width: 298px;
-  width: 298px;
+  border-radius: 0;
+  padding: 8px 4px;
+}
+
+.courseTypeSelect {
+  width: 297px;
+  min-width: 297px;
   border-radius: 0;
   padding: 8px 4px;
 }
