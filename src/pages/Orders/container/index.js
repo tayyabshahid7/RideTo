@@ -88,11 +88,13 @@ class Orders extends Component {
             commonStyles.mainContent
           )}>
           <h1>Orders</h1>
-          <SchoolSelect
-            selected={supplierId}
-            schools={user.suppliers}
-            onChange={changeSchool}
-          />
+          <div style={{ maxWidth: '400px' }}>
+            <SchoolSelect
+              selected={supplierId}
+              schools={user.suppliers}
+              onChange={changeSchool}
+            />
+          </div>
           <div className={styles.orderFilters}>
             <div className={styles.sortByTraining}>Sort by training date</div>
             <OrderFilters
