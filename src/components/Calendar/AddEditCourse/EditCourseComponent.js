@@ -10,7 +10,8 @@ import {
   getSingleCourse,
   updateCourse,
   fetchPrice,
-  unsetSelectedCourse
+  unsetSelectedCourse,
+  deleteCourse
 } from 'store/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
 import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
@@ -69,9 +70,9 @@ class EditCourseComponent extends Component {
   }
 
   handleDeleteCourse() {
-    let { deleteCourse } = this.props
+    const { course, schoolId, deleteCourse } = this.props
     this.setState({ showDeleteCourseConfirmModal: false })
-    deleteCourse()
+    deleteCourse({ schoolId, courseId: course.id })
   }
 
   closeDeleteCourseConfirmModal() {
@@ -113,7 +114,7 @@ class EditCourseComponent extends Component {
           onSubmit={this.onSave.bind(this)}
         />
 
-        <h4>Orders</h4>
+        <h4 className={styles.heading}>Orders</h4>
 
         <OrdersPanel
           course={course}
@@ -160,6 +161,7 @@ const mapDispatchToProps = dispatch =>
       createSchoolOrder,
       updateSchoolOrder,
       fetchPrice,
+      deleteCourse,
       unsetSelectedCourse
     },
     dispatch
