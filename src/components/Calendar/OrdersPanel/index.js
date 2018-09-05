@@ -12,7 +12,8 @@ class OrdersPanel extends React.Component {
     super(props)
     this.state = {
       showEditButton: true,
-      orderIndex: null
+      orderIndex: -1,
+      editOrderIndex: -1
     }
   }
 
@@ -49,12 +50,8 @@ class OrdersPanel extends React.Component {
 
   render() {
     const { course, info, saving, loading } = this.props
-    const { editOrderIndex, showEditButton } = this.state
+    const { orderIndex, editOrderIndex, showEditButton } = this.state
     const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
-    const activeOrder =
-      this.state.orderIndex !== null
-        ? this.state.orderIndex
-        : this.props.orderIndex
 
     return (
       <div className={styles.ordersPanel}>
@@ -85,7 +82,7 @@ class OrdersPanel extends React.Component {
                 ))}
                 {Array.apply(null, Array(availableSpaces)).map(
                   (val, index) =>
-                    activeOrder === index ? (
+                    orderIndex === index ? (
                       <AddOrderItem
                         onCancel={() => this.setState({ orderIndex: -1 })}
                         info={info}

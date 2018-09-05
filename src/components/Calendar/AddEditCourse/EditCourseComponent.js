@@ -85,11 +85,9 @@ class EditCourseComponent extends Component {
       info,
       createSchoolOrder,
       updateSchoolOrder,
-      updateCourse,
-      match
+      updateCourse
     } = this.props
     const { showDeleteCourseConfirmModal } = this.state
-    const { orderIndex } = match.params
 
     if (loading) {
       return <div>Loading...</div>
@@ -108,8 +106,8 @@ class EditCourseComponent extends Component {
         <CourseForm {...this.props} onSubmit={this.onSave.bind(this)} />
 
         <h4>Orders</h4>
+
         <OrdersPanel
-          orderIndex={parseInt(orderIndex, 10)}
           course={course}
           info={info}
           createSchoolOrder={createSchoolOrder}

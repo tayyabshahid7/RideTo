@@ -16,7 +16,7 @@ const CoursesPanelItem = ({ course, date }) => {
     availableSpaces === 1 && styles.warning,
     availableSpaces <= 0 && styles.danger
   )
-  const addLink = `/calendar/${date}/courses/${course.id}/order/0`
+  const addLink = `/calendar/${date}/courses/${course.id}/edit`
 
   return (
     <div className={styles.coursesPanelItem}>
