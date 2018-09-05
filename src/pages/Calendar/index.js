@@ -242,11 +242,6 @@ class CalendarPage extends Component {
           />
           <Route
             exact
-            path="/calendar/:date/courses/:courseId/order/:orderIndex"
-            render={routeProps => <EditCourseComponent {...routeProps} />}
-          />
-          <Route
-            exact
             path="/calendar/events/create"
             render={routeProps => <AddEventComponent {...routeProps} />}
           />

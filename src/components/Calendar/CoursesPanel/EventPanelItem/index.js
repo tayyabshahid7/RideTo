@@ -6,11 +6,18 @@ import styles from './EventPanelItem.scss'
 import { getTime } from 'utils/helper'
 
 const EventPanelItem = ({ event, date }) => {
+  const { notes = '' } = event
+  const truncated = notes.length > 200 ? `${notes}...` : notes
+
   return (
     <div className={styles.eventsPanelItem}>
       <div className={styles.heading}>
         <div className={styles.title}>
-          {getTime(event.start_time)} - {getTime(event.end_time)} | {event.name}
+          <div className={styles.time}>
+            {getTime(event.start_time)} - {getTime(event.end_time)}
+          </div>
+          <div className={styles.name}>{event.name}</div>
+          {notes && <div className={styles.notes}>{truncated}</div>}
         </div>
         <Button
           tag={Link}
@@ -20,8 +27,6 @@ const EventPanelItem = ({ event, date }) => {
           Edit
         </Button>
       </div>
-
-      {event.notes && <div className={styles.notes}>{event.notes}</div>}
     </div>
   )
 }

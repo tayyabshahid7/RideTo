@@ -1,5 +1,7 @@
 import React from 'react'
-import { Input } from 'reactstrap'
+import Input from 'components/Forms/Input'
+
+import styles from './InputTextGroup.scss'
 
 const InputTextGroup = ({
   name,
@@ -20,7 +22,7 @@ const InputTextGroup = ({
       <Input
         type={inputType}
         name={name}
-        className={`form-control ${inputClass}`}
+        className={`${styles.input} ${inputClass}`}
         onChange={onChange}
         value={value}
         {...rest}

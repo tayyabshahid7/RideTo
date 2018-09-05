@@ -5,23 +5,31 @@
 .heading {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 8px;
 }
 
 .notes {
   font-size: 11px;
   margin-bottom: 8px;
+  margin-top: 8px;
   color: #707070;
+  line-height: 1;
 }
 
 .title {
   flex-grow: 1;
 
-  border: solid 1px var(--grey-color);
+  border: solid 1px var(--dark-color);
   color: var(--grey-color);
-  padding: 12px 16px;
   margin-right: 16px;
+
+  padding: 0;
+  padding-left: 4px;
+}
+
+.name {
+  line-height: 1;
 }
 
 .orders td {

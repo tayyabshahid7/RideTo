@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { bindActionCreators } from 'redux'
-import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
 import CourseForm from './CourseForm'
@@ -11,7 +10,8 @@ import {
   getSingleCourse,
   updateCourse,
   fetchPrice,
-  unsetSelectedCourse
+  unsetSelectedCourse,
+  deleteCourse
 } from 'store/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
 import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
@@ -23,7 +23,8 @@ class EditCourseComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showDeleteCourseConfirmModal: false
+      showDeleteCourseConfirmModal: false,
+      isEditable: false
     }
   }
 
@@ -61,6 +62,7 @@ class EditCourseComponent extends Component {
       data: { ...data, supplier: schoolId.toString() },
       fullUpdate: true
     })
+    this.setState({ isEditable: false })
   }
 
   handleRemoveCourseClick() {
@@ -68,9 +70,9 @@ class EditCourseComponent extends Component {
   }
 
   handleDeleteCourse() {
-    let { deleteCourse } = this.props
+    const { course, schoolId, deleteCourse } = this.props
     this.setState({ showDeleteCourseConfirmModal: false })
-    deleteCourse()
+    deleteCourse({ schoolId, courseId: course.id })
   }
 
   closeDeleteCourseConfirmModal() {
@@ -86,11 +88,9 @@ class EditCourseComponent extends Component {
       info,
       createSchoolOrder,
       updateSchoolOrder,
-      updateCourse,
-      match
+      updateCourse
     } = this.props
-    const { showDeleteCourseConfirmModal } = this.state
-    const { orderIndex } = match.params
+    const { isEditable, showDeleteCourseConfirmModal } = this.state
 
     if (loading) {
       return <div>Loading...</div>
@@ -98,21 +98,25 @@ class EditCourseComponent extends Component {
     if (!course) {
       return <div>Course Not Found</div>
     }
-    const backLink = `/calendar/${course.date}`
 
     return (
       <div className={styles.addCourse}>
-        <DateHeading date={moment(course.date)}>
-          <Link to={backLink}>&laquo; Back</Link>
-        </DateHeading>
+        <DateHeading date={moment(course.date)} />
         <CourseHeading
           course={course}
           onRemove={this.handleRemoveCourseClick.bind(this)}
         />
-        <CourseForm {...this.props} onSubmit={this.onSave.bind(this)} />
-        <h4>Orders</h4>
+
+        <CourseForm
+          {...this.props}
+          isEditable={isEditable}
+          onSetEditable={isEditable => this.setState({ isEditable })}
+          onSubmit={this.onSave.bind(this)}
+        />
+
+        <h4 className={styles.heading}>Orders</h4>
+
         <OrdersPanel
-          orderIndex={parseInt(orderIndex, 10)}
           course={course}
           info={info}
           createSchoolOrder={createSchoolOrder}
@@ -157,6 +161,7 @@ const mapDispatchToProps = dispatch =>
       createSchoolOrder,
       updateSchoolOrder,
       fetchPrice,
+      deleteCourse,
       unsetSelectedCourse
     },
     dispatch

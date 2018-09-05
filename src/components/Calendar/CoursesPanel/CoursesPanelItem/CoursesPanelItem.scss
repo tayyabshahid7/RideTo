@@ -5,23 +5,26 @@
 .heading {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 8px;
 }
 
 .course {
   color: var(---grey-color);
-  border: solid 1px var(--grey-color);
+  border: solid 1px var(--dark-color);
 
   flex-grow: 1;
   margin-right: 16px;
-  padding: 4px 8px;
+  padding: 0;
+  padding-left: 4px;
+  line-height: 37px;
 }
 
 .notes {
   font-size: 11px;
   margin-bottom: 8px;
   color: var(--grey-color);
+  line-height: 1;
 }
 
 .warning {

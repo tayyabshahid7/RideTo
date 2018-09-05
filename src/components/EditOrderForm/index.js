@@ -58,7 +58,7 @@ class EditOrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_first_name"
                 value={user_first_name}
@@ -69,7 +69,7 @@ class EditOrderForm extends React.Component {
                 required
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_last_name"
                 value={user_last_name}
@@ -82,7 +82,7 @@ class EditOrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_phone"
                 value={user_phone}
@@ -92,7 +92,7 @@ class EditOrderForm extends React.Component {
                 onChange={this.handleChangeRawEvent}
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_email"
                 value={user_email}
@@ -117,7 +117,7 @@ class EditOrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_driving_licence_number"
                 value={user_driving_licence_number}
@@ -127,7 +127,7 @@ class EditOrderForm extends React.Component {
                 onChange={this.handleChangeRawEvent}
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="status"
                 value={status}
@@ -140,7 +140,7 @@ class EditOrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="riding_experience"
                 value={riding_experience}
@@ -150,7 +150,7 @@ class EditOrderForm extends React.Component {
                 onChange={this.handleChangeRawEvent}
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="bike_hire"
                 value={bike_hire}

@@ -16,13 +16,18 @@ const CoursesPanelItem = ({ course, date }) => {
     availableSpaces === 1 && styles.warning,
     availableSpaces <= 0 && styles.danger
   )
-  const addLink = `/calendar/${date}/courses/${course.id}/order/0`
+  const addLink = `/calendar/${date}/courses/${course.id}/edit`
+  const { notes = '' } = course
+  const truncated = notes.length > 200 ? `${notes}...` : notes
 
   return (
     <div className={styles.coursesPanelItem}>
       <div className={styles.heading}>
         <div className={className}>
-          {course.time} | {name}
+          <div>
+            {course.time} | {name}
+          </div>
+          {notes && <div className={styles.notes}>{truncated}</div>}
         </div>
         <Button
           tag={Link}
@@ -32,8 +37,6 @@ const CoursesPanelItem = ({ course, date }) => {
           Edit
         </Button>
       </div>
-
-      {course.notes && <div className={styles.notes}>{course.notes}</div>}
 
       {course.orders.map(order => (
         <OrdersPanelItem key={order.id} order={order} />
