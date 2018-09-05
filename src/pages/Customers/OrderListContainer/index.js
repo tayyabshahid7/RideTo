@@ -29,7 +29,7 @@ class OrderListContainer extends React.Component {
 
     return (
       <Col className={styles.orderListContainer}>
-        <h3>Training</h3>
+        <h3 className={styles.title}>Training</h3>
         {orders.map(order => (
           <OrderForm
             key={order.friendly_id}

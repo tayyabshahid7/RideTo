@@ -213,7 +213,8 @@ class OrderForm extends React.Component {
             <Col sm="6">
               <Button
                 disabled={isSending}
-                color="outline"
+                color="link"
+                outline
                 onClick={this.handleConfirmation}>
                 Send Confirmation
               </Button>
