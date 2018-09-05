@@ -5,7 +5,8 @@ import {
   DAY_FORMAT3,
   WEEK_VIEW_START_TIME,
   SINGLE_DAY_IN_SECONDS,
-  WORK_HOURS
+  WORK_HOURS,
+  DAY_FORMAT4
 } from 'common/constants'
 
 export function s(number) {
@@ -46,4 +47,8 @@ export function secondsForDayAndDurationForEvent(event, date) {
 
 export const getTime = dateTime => {
   return dateTime ? moment(dateTime, DAY_FORMAT3).format('HH:mm') : ''
+}
+
+export const getTimeFromDateTime = dateTime => {
+  return dateTime ? moment(dateTime, DAY_FORMAT4).format('HH:mm') : ''
 }

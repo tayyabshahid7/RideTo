@@ -7,7 +7,7 @@ import { DAY_FORMAT2, DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 
-import { getTime } from 'utils/helper'
+import { getTimeFromDateTime } from 'utils/helper'
 
 class EventForm extends React.Component {
   constructor(props) {
@@ -31,8 +31,8 @@ class EventForm extends React.Component {
 
     this.state = {
       event: event,
-      startTime: getTime(event.start_time),
-      endTime: getTime(event.end_time)
+      startTime: getTimeFromDateTime(event.start_time),
+      endTime: getTimeFromDateTime(event.end_time)
     }
   }
 
