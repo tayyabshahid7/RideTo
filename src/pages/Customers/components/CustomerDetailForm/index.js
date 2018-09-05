@@ -4,6 +4,7 @@ import { Form, Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 import styles from './CustomerDetailForm.scss'
 import Checkbox from 'components/Checkbox'
 import InputTextGroup from 'components/Forms/InputTextGroup'
+import ConfirmModal from 'components/Modals/ConfirmModal'
 import AgeInput from 'components/AgeInput'
 import MinimalSelect from 'components/MinimalSelect'
 import {
@@ -15,7 +16,13 @@ class CustomerDetailForm extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      showConfirmModal: false
+    }
+
     this.handleChange = this.handleChange.bind(this)
+    this.handleToggleModal = this.handleToggleModal.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleChange({ target }) {
@@ -26,11 +33,23 @@ class CustomerDetailForm extends React.Component {
     onChange({ ...customer, [name]: value })
   }
 
+  handleToggleModal() {
+    this.setState({ showConfirmModal: !this.state.showConfirmModal })
+  }
+
+  handleSubmit(event) {
+    const { onSave } = this.props
+    event.preventDefault()
+    onSave()
+  }
+
   render() {
-    const { customer, onChange, isDisabled, onSave, onCancel } = this.props
+    const { showConfirmModal } = this.state
+    const { customer, onChange, onDelete, isDisabled, onCancel } = this.props
+    const { orders = [] } = customer
 
     return (
-      <Form onSubmit={onSave}>
+      <Form onSubmit={this.handleSubmit}>
         <Row>
           <Col>
             <InputTextGroup
@@ -175,7 +194,23 @@ class CustomerDetailForm extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col className={styles.actions}>
+          <Col sm="6">
+            {orders.length === 0 && (
+              <React.Fragment>
+                <Button color="danger" onClick={this.handleToggleModal}>
+                  Remove Customer
+                </Button>
+
+                <ConfirmModal
+                  onClose={this.handleToggleModal}
+                  showModal={showConfirmModal}
+                  onDelete={onDelete}
+                  message={`Are you sure to remove this customer?`}
+                />
+              </React.Fragment>
+            )}
+          </Col>
+          <Col sm="6" className={styles.actions}>
             <Button type="submit" color="primary" disabled={isDisabled}>
               Save
             </Button>
