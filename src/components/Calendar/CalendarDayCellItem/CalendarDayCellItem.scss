@@ -2,7 +2,7 @@
 
 .calendarDayCellItem {
   color: $grey;
-  border: solid 1px $grey;
+  border: solid 1px var(--dark-color);
   margin-top: 12px;
   white-space: nowrap;
   text-overflow: ellipsis;
