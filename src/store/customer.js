@@ -15,6 +15,8 @@ export const FETCH_SINGLE_SUCCESS = common.constant(
 )
 export const SAVE = common.constant(MODULE, 'SAVE')
 export const SAVE_SUCCESS = common.constant(MODULE, 'SAVE_SUCCESS')
+export const DESTROY = common.constant(MODULE, 'DESTROY')
+export const DESTROY_SUCCESS = common.constant(MODULE, 'DESTROY_SUCCESS')
 export const ERROR = common.constant(MODULE, 'ERROR')
 
 export const actions = {}
@@ -25,6 +27,11 @@ actions.fetchCustomers = common.fetch(MODULE, customerService.fetchCustomers)
 actions.fetchCustomer = common.fetchSingle(
   MODULE,
   customerService.fetchCustomer
+)
+
+actions.destroyCustomer = common.destroy(
+  MODULE,
+  customerService.destroyCustomer
 )
 
 actions.saveCustomer = (customer, history) => async dispatch => {
@@ -52,7 +59,7 @@ selectors.getItems = ({ results, items }) => {
   return results.map(id => items[id])
 }
 
-selectors.getItem = ({ results, items }, id) => {
+selectors.getItem = ({ items }, id) => {
   return items[id]
 }
 

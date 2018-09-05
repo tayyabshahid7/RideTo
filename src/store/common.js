@@ -2,6 +2,13 @@ export const REQUEST = 'REQUEST'
 export const SUCCESS = 'SUCCESS'
 export const FAILURE = 'FAILURE'
 
+const deleteKey = (normalized, key) => {
+  const data = { ...normalized }
+  delete data[key]
+
+  return data
+}
+
 export function createRequestTypes(base) {
   return [REQUEST, SUCCESS, FAILURE].reduce((acc, type) => {
     acc[type] = `${base}_${type}`
@@ -19,7 +26,7 @@ export const normalize = (items, idField = 'id') => {
 }
 
 const constant = (moduleName, name) => {
-  return `riderto/${moduleName}/${name}`
+  return `rideto/${moduleName}/${name}`
 }
 
 const fetch = (moduleName, fetchFn) => (...args) => dispatch => {
@@ -49,6 +56,23 @@ const fetchSingle = (moduleName, fetchFn) => (...args) => dispatch => {
         type: constant(moduleName, 'FETCH_SINGLE_SUCCESS'),
         result
       })
+    })
+  } catch (error) {
+    dispatch({
+      type: constant(moduleName, 'ERROR'),
+      error
+    })
+  }
+}
+
+const destroy = (moduleName, destroyFn) => id => async dispatch => {
+  dispatch({ type: constant(moduleName, 'DESTROY') })
+
+  try {
+    await destroyFn(id)
+    dispatch({
+      type: constant(moduleName, 'DESTROY_SUCCESS'),
+      result: id
     })
   } catch (error) {
     dispatch({
@@ -93,6 +117,8 @@ const items = (moduleName, idField = 'id') => (state = {}, action) => {
         ...state,
         ...normalize([action.result], idField)
       }
+    case constant(moduleName, 'DESTROY_SUCCESS'):
+      return deleteKey(state, action.result)
     default:
       return state
   }
@@ -115,7 +141,11 @@ const isSaving = moduleName => (state = false, action) => {
   switch (action.type) {
     case constant(moduleName, 'SAVE'):
       return true
+    case constant(moduleName, 'DESTROY'):
+      return true
     case constant(moduleName, 'SAVE_SUCCESS'):
+      return false
+    case constant(moduleName, 'DESTROY_SUCCESS'):
       return false
     case constant(moduleName, 'ERROR'):
       return false
@@ -128,6 +158,8 @@ const results = (moduleName, idField = 'id') => (state = [], action) => {
   switch (action.type) {
     case constant(moduleName, 'FETCH_SUCCESS'):
       return action.result.results.map(r => r[idField])
+    case constant(moduleName, 'DESTROY_SUCCESS'):
+      return []
     default:
       return state
   }
@@ -141,6 +173,8 @@ const result = (moduleName, idField = 'id') => (state = null, action) => {
       return null
     case constant(moduleName, 'SAVE_SUCCESS'):
       return action.result[idField]
+    case constant(moduleName, 'DESTROY_SUCCESS'):
+      return null
     default:
       return state
   }
@@ -152,8 +186,10 @@ const error = moduleName => (state = null, action) => {
       return null
     case constant(moduleName, 'SAVE_SUCCESS'):
       return null
+    case constant(moduleName, 'DESTROY_SUCCESS'):
+      return null
     case constant(moduleName, 'ERROR'):
-      return action.error
+      return action.error || null
     default:
       return state
   }
@@ -182,5 +218,6 @@ export default {
   error,
   isFetchingItems,
   isSaving,
+  destroy,
   total
 }

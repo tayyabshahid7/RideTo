@@ -19,12 +19,13 @@ class DetailFormContainer extends React.Component {
     super(props)
 
     this.state = {
-      editable: props.customer,
+      editable: props.customer || getEmptyCustomer('DASHBOARD'),
       isChanged: false
     }
 
     this.handleSaveCustomer = this.handleSaveCustomer.bind(this)
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
+    this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
   }
 
@@ -36,13 +37,23 @@ class DetailFormContainer extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { customer } = this.props
+    const prev = prevProps.customer
 
-    if (prevProps.customer !== customer) {
+    if (prev !== customer) {
+      if (!customer) {
+        this.props.history.push('/customers')
+      }
+
       this.setState({
         editable: { ...customer },
         isChanged: false
       })
     }
+  }
+
+  handleDeleteCustomer() {
+    const { customer } = this.props
+    this.props.destroyCustomer(customer.id)
   }
 
   handleSaveCustomer() {
@@ -90,6 +101,7 @@ class DetailFormContainer extends React.Component {
             onChange={this.handleChangeCustomer}
             onSave={this.handleSaveCustomer}
             onCancel={this.handleCancel}
+            onDelete={this.handleDeleteCustomer}
           />
         </Loading>
       </Col>
@@ -102,7 +114,7 @@ const mapStateToProps = (state, props) => {
   const { customer } = state
 
   return {
-    customer: selectors.getItem(customer, id) || getEmptyCustomer('DASHBOARD'),
+    customer: selectors.getItem(customer, id),
     isSaving: customer.isSaving
   }
 }
