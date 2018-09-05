@@ -7,11 +7,47 @@ import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 class AvailabilityCourses extends React.Component {
   constructor(props) {
     super(props)
+    let available_days = ['T', 'T', 'T', 'T', 'T', 'F', 'F']
+    if (this.props.settings.default_open_days) {
+      available_days = this.props.settings.default_open_days.split('')
+    }
     this.state = {
       showCreateBulkCourseForm: false,
-      available_days: ['T', 'T', 'T', 'T', 'T', 'F', 'F']
+      available_days
     }
     this.handleAvailableDaysChange = this.handleAvailableDaysChange.bind(this)
+  }
+
+  componentDidUpdate(prevProps) {
+    const { settingsSaving, settingsError } = this.props
+    if (prevProps.settingsSaving && !settingsSaving) {
+      if (settingsError) {
+        alert('Failed to save settings')
+      } else {
+        alert('Settings have been successfully updated')
+      }
+    }
+  }
+
+  handleAvailableDaysChange(index) {
+    let { available_days } = this.state
+    available_days[index] = available_days[index] === 'F' ? 'T' : 'F'
+    this.setState({ available_days })
+  }
+
+  handleCancel() {
+    this.setState({ showCreateBulkCourseForm: false })
+  }
+
+  handleSaveDefaultDays() {
+    const { updateSettings, settings } = this.props
+    const { available_days } = this.state
+    updateSettings({ ...settings, default_open_days: available_days.join('') })
+  }
+
+  handleCreateBulkCourse(data) {
+    const { createBulkCourse, schoolId } = this.props
+    createBulkCourse({ schoolId, data })
   }
 
   renderCreateCourse() {
@@ -30,18 +66,9 @@ class AvailabilityCourses extends React.Component {
     )
   }
 
-  handleAvailableDaysChange(index) {
-    let { available_days } = this.state
-    available_days[index] = available_days[index] === 'F' ? 'T' : 'F'
-    this.setState({ available_days })
-  }
-
-  handleCancel() {
-    this.setState({ showCreateBulkCourseForm: false })
-  }
-
   renderDefaultDays() {
     const { available_days } = this.state
+    const { settingsSaving } = this.props
     return (
       <div className={styles.defaultDays}>
         <div className={styles.subtitle}>Default Days</div>
@@ -58,34 +85,33 @@ class AvailabilityCourses extends React.Component {
                   .format('dddd')}`}:
               </div>
               <div className="col-6">
-                <div class="custom-control custom-checkbox">
+                <div className="custom-control custom-checkbox">
                   <input
                     type="checkbox"
-                    class="custom-control-input"
+                    className="custom-control-input"
                     id={`customCheck${index}`}
                     checked={day !== 'F'}
                     readOnly
                   />
                   <label
-                    class={`custom-control-label ${
+                    className={`custom-control-label ${
                       day === 'F' ? '' : 'text-white'
                     }`}>
                     {day === 'F' ? 'Closed' : 'Open'}
                   </label>
                 </div>
-                {/* <input type="checkbox" checked={day !== 'F'} readOnly />{' '}
-                <label htmlFor="ml-1">{day === 'F' ? 'Closed' : ''}</label> */}
               </div>
             </div>
           ))}
         </div>
+        <Button
+          color="primary mt-2"
+          onClick={this.handleSaveDefaultDays.bind(this)}
+          disabled={settingsSaving}>
+          Save
+        </Button>
       </div>
     )
-  }
-
-  handleCreateBulkCourse(data) {
-    const { createBulkCourse, schoolId } = this.props
-    createBulkCourse({ schoolId, data })
   }
 
   render() {
