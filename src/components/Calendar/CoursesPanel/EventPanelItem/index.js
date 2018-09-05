@@ -10,7 +10,11 @@ const EventPanelItem = ({ event, date }) => {
     <div className={styles.eventsPanelItem}>
       <div className={styles.heading}>
         <div className={styles.title}>
-          {getTime(event.start_time)} - {getTime(event.end_time)} | {event.name}
+          <div>
+            {getTime(event.start_time)} - {getTime(event.end_time)} |{' '}
+            {event.name}
+          </div>
+          {event.notes && <div className={styles.notes}>{event.notes}</div>}
         </div>
         <Button
           tag={Link}
@@ -20,8 +24,6 @@ const EventPanelItem = ({ event, date }) => {
           Edit
         </Button>
       </div>
-
-      {event.notes && <div className={styles.notes}>{event.notes}</div>}
     </div>
   )
 }

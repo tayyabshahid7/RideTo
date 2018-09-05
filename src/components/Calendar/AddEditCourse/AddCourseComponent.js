@@ -14,6 +14,8 @@ class AddCourseComponent extends Component {
   componentDidMount() {
     const { resetPrice } = this.props
     resetPrice()
+
+    this.handleSetEditable = this.handleSetEditable.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -44,18 +46,27 @@ class AddCourseComponent extends Component {
     createCourse({ schoolId, data: { ...data, supplier: schoolId.toString() } })
   }
 
+  handleSetEditable(isEditable, date) {
+    if (!isEditable) {
+      this.props.history.push(`/calendar/${date}`)
+    }
+  }
+
   render() {
     let { course, location, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
 
-    const backLink = `/calendar/${date}`
     return (
       <div className={styles.addCourse}>
-        <DateHeading date={moment(date)} title={date ? null : 'Add Course'}>
-          <Link to={backLink}>&laquo; Back</Link>
-        </DateHeading>
-        <CourseForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
+        <DateHeading date={moment(date)} title={date ? null : 'Add Course'} />
+        <CourseForm
+          {...rest}
+          isEditable={true}
+          date={date}
+          onSubmit={this.onSave.bind(this)}
+          onSetEditable={isEditable => this.handleSetEditable(isEditable, date)}
+        />
       </div>
     )
   }

@@ -22,7 +22,8 @@ class EditCourseComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showDeleteCourseConfirmModal: false
+      showDeleteCourseConfirmModal: false,
+      isEditable: false
     }
   }
 
@@ -87,7 +88,7 @@ class EditCourseComponent extends Component {
       updateSchoolOrder,
       updateCourse
     } = this.props
-    const { showDeleteCourseConfirmModal } = this.state
+    const { isEditable, showDeleteCourseConfirmModal } = this.state
 
     if (loading) {
       return <div>Loading...</div>
@@ -103,7 +104,13 @@ class EditCourseComponent extends Component {
           course={course}
           onRemove={this.handleRemoveCourseClick.bind(this)}
         />
-        <CourseForm {...this.props} onSubmit={this.onSave.bind(this)} />
+
+        <CourseForm
+          {...this.props}
+          isEditable={isEditable}
+          onSetEditable={isEditable => this.setState({ isEditable })}
+          onSubmit={this.onSave.bind(this)}
+        />
 
         <h4>Orders</h4>
 

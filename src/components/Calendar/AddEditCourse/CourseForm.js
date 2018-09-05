@@ -51,7 +51,6 @@ class CourseForm extends React.Component {
       course.date = this.props.date
     }
     this.state = {
-      isEditable: false,
       course: course
     }
 
@@ -88,9 +87,7 @@ class CourseForm extends React.Component {
   }
 
   handleToggleEdit() {
-    this.setState({
-      isEditable: !this.state.isEditable
-    })
+    this.props.onSetEditable(!this.props.isEditable)
   }
 
   handleChangeRawEvent(event) {
@@ -116,8 +113,7 @@ class CourseForm extends React.Component {
   }
 
   render() {
-    let { info, saving, instructors, pricing } = this.props
-    const { isEditable } = this.state
+    const { isEditable, info, saving, instructors, pricing } = this.props
     const {
       course_type_id,
       instructor_id,
@@ -140,6 +136,7 @@ class CourseForm extends React.Component {
                 name="course_type_id"
                 value={course_type_id}
                 disabled={!isEditable}
+                required
                 onChange={this.handleChangeRawEvent.bind(this)}>
                 {info.courseTypes.map(courseType => (
                   <option key={courseType.id} value={courseType.id}>
@@ -180,6 +177,7 @@ class CourseForm extends React.Component {
                     type="number"
                     disabled={!isEditable}
                     onChange={this.handleChangeRawEvent.bind(this)}
+                    required
                   />
                 </div>
                 <div className={styles.formGroup}>
@@ -191,6 +189,7 @@ class CourseForm extends React.Component {
                     type="number"
                     disabled={!isEditable}
                     onChange={this.handleChangeRawEvent.bind(this)}
+                    required
                   />
                 </div>
               </div>
@@ -210,6 +209,8 @@ class CourseForm extends React.Component {
                       />
                     </div>
                   )}
+              </div>
+              <div className={styles.formRow}>
                 <div className={styles.formGroup}>
                   <label>Start Time:</label>
                   <input

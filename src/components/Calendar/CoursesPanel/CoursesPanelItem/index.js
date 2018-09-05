@@ -22,7 +22,10 @@ const CoursesPanelItem = ({ course, date }) => {
     <div className={styles.coursesPanelItem}>
       <div className={styles.heading}>
         <div className={className}>
-          {course.time} | {name}
+          <div>
+            {course.time} | {name}
+          </div>
+          {course.notes && <div className={styles.notes}>{course.notes}</div>}
         </div>
         <Button
           tag={Link}
@@ -32,8 +35,6 @@ const CoursesPanelItem = ({ course, date }) => {
           Edit
         </Button>
       </div>
-
-      {course.notes && <div className={styles.notes}>{course.notes}</div>}
 
       {course.orders.map(order => (
         <OrdersPanelItem key={order.id} order={order} />
