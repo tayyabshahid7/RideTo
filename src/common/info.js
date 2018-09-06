@@ -34,18 +34,19 @@ export const PaymentStatus = [
 export const Faqs = [
   {
     question: 'Where do I find payment information?',
-    answer: 'Here’s an answer we can control on the admin panel..'
+    answer: 'Payment information is still all stored in your Stripe account.'
   },
   {
     question: 'How do I confirm an order?',
-    answer: 'Here’s an answer we can control on the admin panel..'
+    answer:
+      'Any outstanding orders will appear under pending orders on this page. Just click respond.'
   },
   {
     question: 'How can I change bikes?',
-    answer: 'Here’s an answer we can control on the admin panel..'
+    answer: 'On the calendar, click create course and complete the fields.'
   },
   {
     question: 'I have another question!',
-    answer: 'Here’s an answer we can control on the admin panel..'
+    answer: 'Email james@rideto.com'
   }
 ]
