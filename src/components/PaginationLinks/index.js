@@ -6,7 +6,8 @@ const PaginationLinks = ({
   count = 0,
   pageSize = 1,
   rowName = '',
-  onPageChange = null
+  onPageChange = null,
+  showFirstLast = false
 }) => {
   let last = Math.ceil(parseInt(count, 10) / parseInt(pageSize, 10))
   let first = 1
@@ -23,18 +24,20 @@ const PaginationLinks = ({
   return (
     <div className={styles.container}>
       <div className={styles.infoText}>
-        Showing form {fromRow} to {toRow} of {count} {rowName}
+        Showing {fromRow} to {toRow} of {count} {rowName}
       </div>
       <div className={styles.paginationButtons}>
-        <button
-          type="button"
-          page={first}
-          disabled={currentPage === first}
-          onClick={e =>
-            onPageChange(parseInt(e.target.getAttribute('page'), 10))
-          }>
-          First
-        </button>
+        {showFirstLast && (
+          <button
+            type="button"
+            page={first}
+            disabled={currentPage === first}
+            onClick={e =>
+              onPageChange(parseInt(e.target.getAttribute('page'), 10))
+            }>
+            First
+          </button>
+        )}
         <button
           type="button"
           page={previous}
@@ -56,15 +59,17 @@ const PaginationLinks = ({
           }>
           Next
         </button>
-        <button
-          type="button"
-          page={last}
-          disabled={currentPage === last}
-          onClick={e =>
-            onPageChange(parseInt(e.target.getAttribute('page'), 10))
-          }>
-          Last
-        </button>
+        {showFirstLast && (
+          <button
+            type="button"
+            page={last}
+            disabled={currentPage === last}
+            onClick={e =>
+              onPageChange(parseInt(e.target.getAttribute('page'), 10))
+            }>
+            Last
+          </button>
+        )}
       </div>
     </div>
   )

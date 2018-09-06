@@ -11,6 +11,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 import history from './history1'
 import 'bootstrap'
 import './bootstrap.scss'
+import './constants.scss'
 import styles from './App.scss'
 
 class App extends Component {

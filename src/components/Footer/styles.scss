@@ -1,6 +1,8 @@
 .container {
   width: 100%;
   padding: 10px 15px;
-  border-top: 1px solid;
+  border-top: 1px solid var(--light-grey-color);
+  color: var(--light-grey-color);
   flex: 0 0 50px;
+  font-size: 10px;
 }

@@ -28,6 +28,10 @@ $theme-colors: (
 
 @import '~bootstrap/scss/bootstrap';
 
+.btn {
+  border-radius: 0px;
+}
+
 .btn-primary {
   color: white;
 }

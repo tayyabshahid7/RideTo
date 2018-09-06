@@ -1,14 +1,5 @@
-.container {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  border-bottom: 1px solid grey;
-  flex: 0 0 50px;
-  background: white;
-  z-index: 10;
-  position: fixed;
-  // display: flex;
-  // width: 100%;
+.navigationBar {
+  border-bottom: 1px solid var(--light-grey-color);
 }
 
 .navLinks {
@@ -19,9 +10,9 @@
   align-items: center;
 }
 .logoImage {
-  // width: 120px;
   height: 40px;
-  fill: #2cceac;
+  fill: var(--primary-color);
+  padding: 5px 10px;
 }
 .darkLogo {
   fill: white;
@@ -33,15 +24,17 @@
   align-items: center;
 }
 .navLink {
-  margin: 0 1rem;
-  color: #95989a;
+  margin: 0 1.2rem;
+  color: var(--dark-color);
   text-decoration: none;
-  font-weight: bold;
+  padding: 20px 0px;
   &:hover {
     text-decoration: unset;
   }
 }
 
-.activeNavLink {
-  border-bottom: 2px solid #2cceac;
+@media (min-width: 768px) {
+  .activeNavLink {
+    border-bottom: 2px solid #2cceac;
+  }
 }

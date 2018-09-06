@@ -10,6 +10,7 @@ let NavigationBar = ({ history }) => {
   return (
     <nav
       className={classnames(
+        styles.navigationBar,
         'navbar navbar-expand-md navbar-light bg-light fixed-top'
       )}>
       <div className={classnames(styles.image)}>
@@ -52,8 +53,25 @@ let NavigationBar = ({ history }) => {
               Calendar
             </NavLink>
           </li>
+          <li className="nav-item">
+            <NavLink
+              className={styles.navLink}
+              activeClassName={styles.activeNavLink}
+              to="/customers">
+              Customers
+            </NavLink>
+          </li>
+          <li className="nav-item">
+            <NavLink
+              className={styles.navLink}
+              activeClassName={styles.activeNavLink}
+              to="/account">
+              Account
+            </NavLink>
+          </li>
         </ul>
-        <form class={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
+        <form
+          className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
           <UserMenu history={history} />
         </form>
       </div>

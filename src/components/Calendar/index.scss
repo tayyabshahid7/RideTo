@@ -1,5 +1,6 @@
 .container {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   padding-top: 20px;
@@ -40,6 +41,14 @@
   }
 }
 
+.addCourseBtn {
+  margin-top: 2px;
+}
+
+.changeCalendarWrapper {
+  margin-top: 25px;
+  font-size: 15px;
+}
 /* ============================
               Mobile Responsiveness
  ============================*/

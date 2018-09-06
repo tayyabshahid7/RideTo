@@ -1,0 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.addEvent {
+}
+.title {
+  text-align: center;
+  font-size: 1.5rem;
+  border-bottom: solid 1px var(--light-grey-color);
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+}

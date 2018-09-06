@@ -1,0 +1,20 @@
+@import '../../../bootstrap';
+
+.calendarDayCellItem {
+  color: $grey;
+  border: solid 1px var(--dark-color);
+  margin-top: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  line-height: 28px;
+  padding-left: 4px;
+}
+
+.warning {
+  border: solid 1px $warning;
+}
+
+.danger {
+  border: solid 1px $danger;
+}

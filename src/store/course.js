@@ -3,12 +3,16 @@ import {
   fetchCourses,
   deleteSingleCourse,
   addSchoolOrder,
+  fetchSchoolOrder,
+  updateSchoolOrder,
   updateSchoolCourse,
   createSchoolCourse,
+  createBulkSchoolCourse,
   getPricingForCourse
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
+import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
@@ -19,8 +23,12 @@ const RESET_PRICE = 'rideto/course/RESET/PRICE'
 const DELETE = createRequestTypes('rideto/course/DELETE')
 const UPDATE = createRequestTypes('rideto/course/UPDATE')
 const CREATE = createRequestTypes('rideto/course/CREATE')
+const CREATE_BULK = createRequestTypes('rideto/course/CREATE_BULK')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
+const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
+const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
+const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 
 export const getSingleCourse = ({
   schoolId,
@@ -103,6 +111,10 @@ export const unsetSelectedDate = data => async dispatch => {
   dispatch({ type: UNSET_DAY })
 }
 
+export const unsetSelectedCourse = data => async dispatch => {
+  dispatch({ type: UNSET_SELECTED_COURSE })
+}
+
 export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
   dispatch({ type: CREATE_ORDER[REQUEST] })
 
@@ -123,6 +135,40 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     )
   } catch (error) {
     dispatch({ type: CREATE_ORDER[FAILURE], error })
+    return false
+  }
+  return true
+}
+
+export const getSchoolOrder = ({ schoolId, friendlyId }) => async dispatch => {
+  dispatch({ type: FETCH_ORDER[REQUEST] })
+  try {
+    const response = await fetchSchoolOrder(schoolId, friendlyId)
+    dispatch({
+      type: FETCH_ORDER[SUCCESS],
+      data: { order: response }
+    })
+  } catch (error) {
+    dispatch({ type: FETCH_ORDER[FAILURE], error })
+    return false
+  }
+  return true
+}
+
+export const updateOrder = ({
+  schoolId,
+  friendlyId,
+  order
+}) => async dispatch => {
+  dispatch({ type: UPDATE_ORDER[REQUEST] })
+  try {
+    const response = await updateSchoolOrder(schoolId, friendlyId, order)
+    dispatch({
+      type: UPDATE_ORDER[SUCCESS],
+      data: { order: response }
+    })
+  } catch (error) {
+    dispatch({ type: UPDATE_ORDER[FAILURE], error })
     return false
   }
   return true
@@ -161,6 +207,18 @@ export const createCourse = ({ schoolId, data }) => async dispatch => {
     })
   } catch (error) {
     dispatch({ type: CREATE[FAILURE], error })
+  }
+}
+
+export const createBulkCourse = ({ schoolId, data }) => async dispatch => {
+  dispatch({ type: CREATE_BULK[REQUEST] })
+  try {
+    await createBulkSchoolCourse(schoolId, data)
+    dispatch({
+      type: CREATE_BULK[SUCCESS]
+    })
+  } catch (error) {
+    dispatch({ type: CREATE_BULK[FAILURE], error })
   }
 }
 
@@ -218,7 +276,16 @@ const initialState = {
     viewMode: CALENDAR_VIEW.MONTH,
     rightPanelMode: null,
     selectedDate: null,
+    selectedCourse: null,
     silent: false // This is to tell whether should re-load calendar. false: re-load, true: not reload
+  },
+  orderEditForm: {
+    order: null,
+    loading: false
+  },
+  bulk: {
+    saving: false,
+    error: null
   }
 }
 
@@ -258,13 +325,27 @@ export default function reducer(state = initialState, action) {
         calendar: {
           ...state.calendar,
           courses: calendarCourses,
-          selectedDate: action.data.course.date
+          selectedDate: action.data.course.date,
+          selectedCourse: `course-${action.data.course.id}`
         }
       }
     case FETCH_SINGLE[FAILURE]:
       return {
         ...state,
-        single: { loading: false, course: null, error: action.error }
+        single: {
+          loading: false,
+          course: null,
+          error: action.error,
+          selectedCourse: null
+        }
+      }
+    case FETCH_SINGLE_EVENT[SUCCESS]:
+      return {
+        ...state,
+        calendar: {
+          ...state.calendar,
+          selectedCourse: `event-${action.data.event.id}`
+        }
       }
     case DELETE[REQUEST]:
       return {
@@ -372,6 +453,21 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
       }
+    case CREATE_BULK[REQUEST]:
+      return {
+        ...state,
+        bulk: { ...state.bulk, saving: true }
+      }
+    case CREATE_BULK[SUCCESS]:
+      return {
+        ...state,
+        bulk: { ...state.bulk, saving: false }
+      }
+    case CREATE_BULK[FAILURE]:
+      return {
+        ...state,
+        bulk: { ...state.bulk, saving: false, error: action.error }
+      }
     case UPDATE[REQUEST]:
       return {
         ...state,
@@ -428,6 +524,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         calendar: { ...state.calendar, selectedDate: null }
       }
+    case UNSET_SELECTED_COURSE:
+      return {
+        ...state,
+        calendar: { ...state.calendar, selectedCourse: null }
+      }
     case RESET_PRICE:
       return {
         ...state,
@@ -453,6 +554,44 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         pricing: { ...state.pricing, loading: false }
+      }
+    case FETCH_ORDER[REQUEST]:
+      return {
+        ...state,
+        orderEditForm: { order: null, loading: true, error: null }
+      }
+    case FETCH_ORDER[SUCCESS]:
+      return {
+        ...state,
+        orderEditForm: { order: action.data.order, loading: false, error: null }
+      }
+    case FETCH_ORDER[FAILURE]:
+      return {
+        ...state,
+        orderEditForm: {
+          ...state.orderEditForm,
+          loading: false,
+          error: action.error
+        }
+      }
+    case UPDATE_ORDER[REQUEST]:
+      return {
+        ...state,
+        orderEditForm: { ...state.orderEditForm, loading: true, error: null }
+      }
+    case UPDATE_ORDER[SUCCESS]:
+      return {
+        ...state,
+        orderEditForm: { order: action.data.order, loading: false, error: null }
+      }
+    case UPDATE_ORDER[FAILURE]:
+      return {
+        ...state,
+        orderEditForm: {
+          ...state.orderEditForm,
+          loading: false,
+          error: action.error
+        }
       }
     default:
       return state

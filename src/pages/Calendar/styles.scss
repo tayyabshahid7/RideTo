@@ -1,23 +1,42 @@
-.container {
+.calendar {
   width: 100%;
-  .row {
-    display: flex;
-  }
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .rightPanel {
   background: white;
   right: 0px;
-  padding-top: 20px;
-  height: 100%;
+  padding: 16px;
   display: flex;
-  border-left: 1px solid lightgray;
+  border-left: 1px solid var(--light-grey-color);
+
+  width: 480px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @media (max-width: 992px) {
+    width: 100%;
+    height: auto;
+    padding-left: 0;
+    padding-right: 0;
+    border: none;
+  }
 }
 
 .calendarColumn {
-  height: 100%;
+  padding-right: 16px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+  width: 640px;
+  height: 100%;
+
+  @media (max-width: 992px) {
+    padding-right: 0;
+    height: auto;
+  }
 }
 
 .schoolWrapper {
@@ -29,14 +48,3 @@
     height: 100%;
   }
 }
-
-// @media (max-width: 767.98px) {
-//   .mainContent {
-//     padding: 0px 16px !important;
-//   }
-// }
-// @media (max-width: 575.98px) {
-//   .mainContent {
-//     padding: 0px 8px !important;
-//   }
-// }

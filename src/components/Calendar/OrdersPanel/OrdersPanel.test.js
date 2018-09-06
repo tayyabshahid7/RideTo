@@ -3,8 +3,8 @@ import Enzyme, { mount } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import { MemoryRouter } from 'react-router-dom'
 
-import OrdersPanel from './OrdersPanel'
-import CoursesPanelItem from './OrdersPanelItem'
+import OrdersPanel from './index'
+import CoursesPanelItem from '../OrdersPanelItem'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 
 Enzyme.configure({ adapter: new Adapter() })
@@ -46,17 +46,6 @@ const COURSE2 = {
   supplier: 697
 }
 
-it('Renders Course title', () => {
-  const wrapper = mount(
-    <MemoryRouter>
-      <OrdersPanel course={COURSE1} />
-    </MemoryRouter>
-  )
-
-  const title = wrapper.find('.ordersPanel > .title')
-  expect(title.text()).toBe('08:00 CBT Training Wednesday 25th July')
-})
-
 it('Renders orders and space list', () => {
   const wrapper = mount(
     <MemoryRouter>
@@ -68,14 +57,4 @@ it('Renders orders and space list', () => {
   expect(rows).toHaveLength(COURSE1.orders.length)
   const rows1 = wrapper.find(OrdersPanelSpaceItem)
   expect(rows1).toHaveLength(COURSE1.spaces - COURSE1.orders.length)
-})
-
-it('Renders remove course button when there are no orders', () => {
-  const wrapper = mount(
-    <MemoryRouter>
-      <OrdersPanel course={COURSE2} />
-    </MemoryRouter>
-  )
-  const removeCourseButton = wrapper.find('.btn-remove-course')
-  expect(removeCourseButton.exists()).toBe(true)
 })

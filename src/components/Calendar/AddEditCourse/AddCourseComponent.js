@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
+import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import queryString from 'query-string'
 import styles from './styles.scss'
 import CourseForm from './CourseForm'
+import DateHeading from 'components/Calendar/DateHeading'
 import { createCourse, fetchPrice, resetPrice } from 'store/course'
 import { loadCourseTypes } from 'store/info'
 
@@ -11,10 +13,25 @@ class AddCourseComponent extends Component {
   componentDidMount() {
     const { resetPrice } = this.props
     resetPrice()
+
+    this.handleSetEditable = this.handleSetEditable.bind(this)
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, course, history, error } = this.props
+    const { saving, course, history, error, location, schoolId } = this.props
+
+    if (schoolId !== prevProps.schoolId) {
+      let parsed = queryString.parse(location.search)
+      let date = parsed.date
+      console.log('UPDATE', date)
+      if (date) {
+        history.push(`/calendar/${date}`)
+      } else {
+        history.push(`/calendar`)
+      }
+      return
+    }
+
     if (prevProps.saving === true && saving === false) {
       if (course) {
         history.push(`/calendar/${course.date}`)
@@ -29,13 +46,31 @@ class AddCourseComponent extends Component {
     createCourse({ schoolId, data: { ...data, supplier: schoolId.toString() } })
   }
 
+  handleSetEditable(isEditable, date) {
+    const { course } = this.props
+
+    if (!isEditable) {
+      const link =
+        course && course.date ? `/calendar/${course.date}` : `/calendar/${date}`
+      this.props.history.push(link)
+    }
+  }
+
   render() {
     let { course, location, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
+
     return (
       <div className={styles.addCourse}>
-        <CourseForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
+        <DateHeading date={moment(date)} title={date ? null : 'Add Course'} />
+        <CourseForm
+          {...rest}
+          isEditable={true}
+          date={date}
+          onSubmit={this.onSave.bind(this)}
+          onSetEditable={isEditable => this.handleSetEditable(isEditable, date)}
+        />
       </div>
     )
   }

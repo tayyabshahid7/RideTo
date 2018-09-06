@@ -3,14 +3,91 @@
   flex-direction: column;
   width: 100%;
 }
+
 .addCourse {
+  width: 100%;
 }
+
 .title {
   text-align: center;
   font-size: 1.5rem;
-  border-bottom: solid 1px black;
+  border-bottom: solid 1px var(--light-grey-color);
   padding-left: 32px;
   padding-right: 32px;
   padding-bottom: 16px;
   margin-bottom: 16px;
+}
+
+.inputNumber {
+}
+
+.formRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  margin-bottom: 12px;
+}
+
+.notes {
+  width: 100%;
+  display: block;
+  flex-grow: 1;
+}
+
+.notes textarea {
+  width: 100%;
+  display: block;
+}
+
+.inputDate {
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  font-size: 15px;
+  margin: 0;
+}
+
+.form {
+  padding: 8px;
+}
+
+.grey {
+  background: var(--light-grey-color);
+}
+
+.formSelect {
+  border-radius: 0;
+  padding: 8px 4px;
+}
+
+.courseTypeSelect {
+  height: 38px;
+  width: 282px;
+  min-width: 282px;
+  border-radius: 0;
+  padding: 8px 4px;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.editCourse {
+  flex-grow: 1;
+  margin-left: 8px;
+}
+
+.heading {
+  font-size: 15px;
+  margin-top: 16px;
+  font-weight: bold;
+  color: var(--grey-color);
 }

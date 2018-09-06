@@ -4,7 +4,7 @@ import CalendarDayCell from '../CalendarDayCell'
 import styles from './index.scss'
 
 const CalendarDays = ({ days, calendar, history }) => (
-  <ul className={styles.container}>
+  <ul className={styles.calendarDays}>
     {days.map((day, index) => (
       <CalendarDayCell
         day={day}

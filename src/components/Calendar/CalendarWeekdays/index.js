@@ -3,14 +3,14 @@ import React from 'react'
 import styles from './index.scss'
 
 const CalendarWeekdays = () => (
-  <ul className={styles.container}>
-    <li>Mon</li>
-    <li>Tue</li>
-    <li>Wed</li>
-    <li>Thu</li>
-    <li>Fri</li>
-    <li>Sat</li>
-    <li>Sun</li>
+  <ul className={styles.calendarWeekdays}>
+    <li>Mo</li>
+    <li>Tu</li>
+    <li>We</li>
+    <li>Th</li>
+    <li>Fr</li>
+    <li>Sa</li>
+    <li>Su</li>
   </ul>
 )
 

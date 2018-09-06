@@ -1,5 +1,4 @@
 .container {
-  min-height: 650px;
   overflow-x: auto;
 
   table {
@@ -43,18 +42,19 @@
 .respondLink {
   color: white;
   background-color: #2cceac;
-  border-radius: 3px;
   padding: 5px;
   text-decoration: none;
 
   &:hover {
-    background: #009c7b;
+    background: white;
+    color: #2cceac;
+    text-decoration: none;
   }
 }
 
 .noResults {
   margin: auto;
-  widt: 100%;
+  width: 100%;
   padding: 50px 0;
   color: grey;
   text-align: center;

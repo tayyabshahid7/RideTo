@@ -1,0 +1,23 @@
+.detailFormContainer {
+  color: var(--grey-color);
+  border-right: 1px solid #b7b7b7;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.customerName {
+  font-size: 25px;
+  font-weight: bold;
+}
+
+.source {
+  font-size: 25px;
+}
+
+.customerInfo {
+  text-align: right;
+}

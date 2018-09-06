@@ -2,34 +2,67 @@ import React from 'react'
 import { getCourseSpaceText } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
-import { WEEK_VIEW_START_TIME } from 'common/constants'
+import { WEEK_VIEW_START_TIME, WORK_HOURS } from 'common/constants'
+import { getShortCourseType } from 'services/course'
 
-const CalendarWeekCourse = ({ course, position, barCount, history }) => {
-  const availableSpaces = course.spaces - course.orders.length
-  let height = `${(course.duration / 60) * 100}px` // Duration is in mins
-  let top = `${((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100}px`
+const CalendarWeekCourse = ({
+  course,
+  position,
+  barCount,
+  history,
+  calendar
+}) => {
+  let height = (course.duration / 60) * 100 // Duration is in mins
+  let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
+  if (top < 0) {
+    top = 0
+  }
+  if (top + height > WORK_HOURS * 100) {
+    height = WORK_HOURS * 100 - top
+    if (height < 0) {
+      return null
+    }
+  }
   let left = `${(100 / barCount) * position}%`
   let width = `${100 / barCount}%`
   // let borderColor = 'black'
   let style = {
-    height,
-    top,
+    height: `${height}px`,
+    top: `${top}px`,
     left,
     width
   }
+
+  if (!course.course_type) {
+    // Then it is event
+    return (
+      <li
+        className={classnames(
+          styles.singleEvent,
+          calendar.selectedCourse === `event-${course.id}` && 'border-primary'
+        )}
+        style={style}
+        onClick={() => history.push(`/calendar/events/${course.id}/edit`)}>
+        <span className={styles.eventName}>{course.name} |</span>
+      </li>
+    )
+  }
+
+  const availableSpaces = course.spaces - course.orders.length
   return (
     <li
       className={classnames(
         styles.singleEvent,
         availableSpaces === 1 && 'border-warning',
-        availableSpaces === 0 && 'border-danger'
+        availableSpaces === 0 && 'border-danger',
+        calendar.selectedCourse === `course-${course.id}` && 'border-primary'
       )}
       style={style}
       onClick={() =>
-        history.push(`/calendar/${course.date}/courses/${course.id}`)
+        history.push(`/calendar/${course.date}/courses/${course.id}/edit`)
       }>
       <span className={styles.eventName}>
-        {course.course_type.name} | {course.time.substring(0, 5)}
+        {course.time.substring(0, 5)} | {getShortCourseType(course.course_type)}
       </span>
       <span
         className={classnames(

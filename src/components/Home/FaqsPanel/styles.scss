@@ -1,5 +1,3 @@
-.container {
-}
 .questionAnswer {
   display: flex;
   flex-direction: column;
@@ -8,9 +6,11 @@
 
 .answer {
   padding: 8px;
+  width: 100%;
 }
 
 .title {
+  width: 100%;
   font-size: 20px;
   font-size: bold;
   margin-bottom: 32px;

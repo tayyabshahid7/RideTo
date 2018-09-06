@@ -1,0 +1,23 @@
+.grey {
+  padding: 32px;
+  background-color: var(--light-grey-color);
+}
+
+.heading {
+  padding-left: 32px;
+  font-size: 30px;
+  font-weight: bold;
+  color: var(--grey-color);
+}
+
+@media (max-width: 992px) {
+  .grey {
+    padding: 0;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .heading {
+    padding-left: 16px;
+  }
+}

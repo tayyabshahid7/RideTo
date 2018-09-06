@@ -1,0 +1,46 @@
+.eventsPanelItem {
+  margin-bottom: 24px;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.notes {
+  font-size: 11px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  color: #707070;
+  line-height: 1;
+}
+
+.title {
+  flex-grow: 1;
+
+  border: solid 1px var(--dark-color);
+  color: var(--grey-color);
+  margin-right: 16px;
+
+  padding: 0;
+  padding-left: 4px;
+}
+
+.name {
+  line-height: 1;
+}
+
+.orders td {
+  padding: 8px;
+}
+
+.orders td:last-child {
+  margin-right: 0;
+}
+
+.order {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}

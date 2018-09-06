@@ -23,6 +23,12 @@ class AddOrderItem extends React.Component {
         start_time: ''
       }
     }
+
+    this.scrollIntoView = React.createRef()
+  }
+
+  componentDidMount() {
+    this.scrollIntoView.current.scrollIntoView()
   }
 
   handleChangeRawEvent(event) {
@@ -62,22 +68,22 @@ class AddOrderItem extends React.Component {
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave.bind(this)}>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_first_name"
                 value={user_first_name}
-                label="First Name"
+                label="First Name *"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
                 required
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_last_name"
                 value={user_last_name}
-                label="Surname"
+                label="Surname *"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -86,7 +92,7 @@ class AddOrderItem extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_phone"
                 value={user_phone}
@@ -94,14 +100,13 @@ class AddOrderItem extends React.Component {
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_email"
                 value={user_email}
-                label="Email"
+                label="Email *"
                 className="form-group"
                 type="email"
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -110,11 +115,11 @@ class AddOrderItem extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_birthdate"
                 value={user_birthdate}
-                label="Birthdate"
+                label="Birthdate *"
                 className="form-group"
                 type="date"
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -122,10 +127,10 @@ class AddOrderItem extends React.Component {
                 required
               />
             </Col>
-            <Col />
+            <Col sm="6" />
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputTextGroup
                 name="user_driving_licence_number"
                 value={user_driving_licence_number}
@@ -133,14 +138,13 @@ class AddOrderItem extends React.Component {
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="payment_status"
                 value={payment_status}
-                label="Payment Status"
+                label="Payment Status *"
                 valueArray={info.paymentStatus}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -149,7 +153,7 @@ class AddOrderItem extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="riding_experience"
                 value={riding_experience}
@@ -157,10 +161,9 @@ class AddOrderItem extends React.Component {
                 valueArray={info.ridingExperiences}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required
               />
             </Col>
-            <Col>
+            <Col sm="6">
               <InputSelectGroup
                 name="bike_hire"
                 value={bike_hire}
@@ -168,7 +171,6 @@ class AddOrderItem extends React.Component {
                 valueArray={BikeHires}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required
               />
             </Col>
           </Row>
@@ -182,6 +184,7 @@ class AddOrderItem extends React.Component {
               </Button>
             </Col>
           </Row>
+          <div ref={this.scrollIntoView} />
         </Form>
         {/* </Loading> */}
       </div>
