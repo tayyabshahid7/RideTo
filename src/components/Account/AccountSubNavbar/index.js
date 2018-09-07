@@ -24,6 +24,14 @@ let AccountSubNavbar = ({ history }) => {
             Account
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink
+            className={styles.navLink}
+            activeClassName={styles.activeNavLink}
+            to="/account/widget-settings">
+            Booking Widget
+          </NavLink>
+        </li>
       </ul>
     </div>
   )

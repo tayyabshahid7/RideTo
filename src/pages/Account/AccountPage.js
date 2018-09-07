@@ -3,6 +3,7 @@ import { Route } from 'react-router'
 import AccountSubNavbar from 'components/Account/AccountSubNavbar'
 import AvailabilityCourses from './AvailabilityCourses'
 import AccountPassword from './AccountPassword'
+import BookingWidgetSettings from './BookingWidgetSettings'
 import styles from './styles.scss'
 
 class AccountPage extends Component {
@@ -30,6 +31,11 @@ class AccountPage extends Component {
             exact
             path="/account/account"
             render={routeProps => <AccountPassword {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/account/widget-settings"
+            render={routeProps => <BookingWidgetSettings {...routeProps} />}
           />
         </div>
       </div>

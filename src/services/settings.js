@@ -12,3 +12,15 @@ export const saveSettings = async (params = {}) => {
 
   return response
 }
+
+export const getWidgetSettings = async () => {
+  const path = `school/settings/widget/`
+  const response = await get(path)
+  return response
+}
+
+export const saveWidgetSettings = async (params = {}) => {
+  const path = `school/settings/widget/`
+  const response = await put(path, params)
+  return response
+}
