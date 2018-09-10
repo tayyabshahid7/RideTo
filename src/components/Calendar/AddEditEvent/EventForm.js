@@ -5,6 +5,7 @@ import styles from './styles.scss'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import { DAY_FORMAT2, DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
 import Loading from 'components/Loading'
+import DateHeading from 'components/Calendar/DateHeading'
 import pick from 'lodash/pick'
 
 import { getTimeFromDateTime } from 'utils/helper'
@@ -94,12 +95,18 @@ class EventForm extends React.Component {
   renderTitle() {
     const { event, date } = this.props
     let title = 'Add New Event'
+    let backLink = '/calendar'
+
     if (event) {
       title = moment(new Date(event.start_time)).format(DAY_FORMAT2)
+      backLink = `/calendar/${moment(new Date(event.start_time)).format(
+        DATE_FORMAT
+      )}`
     } else if (date) {
       title = moment(new Date(date)).format(DAY_FORMAT2)
+      backLink = `/calendar/${date}`
     }
-    return <div className={styles.title}>{title}</div>
+    return <DateHeading date={moment(date)} title={title} backLink={backLink} />
   }
 
   render() {

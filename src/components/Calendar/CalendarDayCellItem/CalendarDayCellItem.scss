@@ -18,3 +18,27 @@
 .danger {
   border: solid 1px $danger;
 }
+
+@media (max-width: 768px) {
+  .calendarDayCellItem {
+    width: 8px;
+    min-width: 8px;
+    height: 8px;
+    border-radius: 4px;
+    background: var(--dark-color);
+    margin-right: 4px;
+    // border: transparent;
+  }
+
+  .warning {
+    background: $warning;
+  }
+
+  .danger {
+    border: $danger;
+  }
+
+  .courseContainer {
+    flex-direction: column;
+  }
+}

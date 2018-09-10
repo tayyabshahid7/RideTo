@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import { Row, Col, Button } from 'reactstrap'
 import CalendarMonthView from './CalendarMonthView'
 import CalendarHeader from './CalendarHeader'
@@ -16,7 +17,7 @@ class CalendarComponent extends Component {
     const { viewMode } = this.props.calendar
     const { handleCustomEvent } = this.props
     return (
-      <div className={styles.overview}>
+      <div className={classnames(styles.overview)}>
         <Row>
           <Col>
             <SchoolSelect className="Test" />
@@ -67,9 +68,19 @@ class CalendarComponent extends Component {
     )
   }
   render() {
-    let { days, calendar, handleCustomEvent, history } = this.props
+    let {
+      days,
+      calendar,
+      handleCustomEvent,
+      history,
+      calendarPath
+    } = this.props
     return (
-      <div className={styles.container}>
+      <div
+        className={classnames(
+          styles.container,
+          !calendarPath && styles.noCalendarPath
+        )}>
         {this.renderOverview()}
         <CalendarHeader
           calendar={calendar}

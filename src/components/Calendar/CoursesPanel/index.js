@@ -40,7 +40,7 @@ class CoursesPanelContainer extends React.Component {
 
     return (
       <Loading loading={loading}>
-        <DateHeading date={moment(date, 'YYYY-MM-DD')} />
+        <DateHeading date={moment(date, 'YYYY-MM-DD')} backLink={`/calendar`} />
         <CoursesPanel
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}

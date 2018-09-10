@@ -211,8 +211,9 @@ class CalendarPage extends Component {
   }
 
   render() {
-    const { calendar, eventCalendar, history } = this.props
+    const { calendar, eventCalendar, history, location } = this.props
     let days = this.generateDaysDataFromCalendar(calendar, eventCalendar)
+    let calendarPath = location.pathname === '/calendar'
     return (
       <div className={styles.calendar}>
         <div className={styles.calendarColumn}>
@@ -222,6 +223,7 @@ class CalendarPage extends Component {
             eventCalendar={eventCalendar}
             handleCustomEvent={this.handleCustomEvent.bind(this)}
             history={history}
+            calendarPath={calendarPath}
           />
         </div>
         <div className={styles.rightPanel}>
