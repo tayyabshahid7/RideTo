@@ -146,15 +146,17 @@ class CustomerDetailForm extends React.Component {
         </Row>
         <Row>
           <Col>
-            <InputTextGroup
-              name="email"
-              value={customer.email || ''}
-              label="Email"
-              className="form-group"
-              type="email"
-              required
-              onChange={this.handleChange}
-            />
+            {customer.rideto_email !== null && (
+              <InputTextGroup
+                name="rideto_email"
+                value={customer.rideto_email || ''}
+                label="Email"
+                className="form-group"
+                type="email"
+                required
+                onChange={this.handleChange}
+              />
+            )}
           </Col>
           <Col>
             <InputTextGroup
