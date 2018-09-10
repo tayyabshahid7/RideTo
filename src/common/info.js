@@ -1,4 +1,4 @@
-import { BIKE_HIRE, RIDING_EXPERIENCE, PAYMENT_STATUS } from './constants'
+import { BIKE_HIRE, RIDING_EXPERIENCE } from './constants'
 
 export const BikeHires = [
   { value: BIKE_HIRE.MANUAL, title: 'Manual' },
@@ -24,11 +24,6 @@ export const RidingExperiences = [
     value: RIDING_EXPERIENCE.OFFROAD_MOTORCYCLING,
     title: RIDING_EXPERIENCE.OFFROAD_MOTORCYCLING
   }
-]
-
-export const PaymentStatus = [
-  { value: PAYMENT_STATUS.PAID, title: 'Paid' },
-  { value: PAYMENT_STATUS.PENDING, title: 'Payment Outstanding' }
 ]
 
 export const Faqs = [

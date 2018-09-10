@@ -18,8 +18,11 @@ export const saveCustomer = async customer => {
   const { id } = customer
   const path = id ? `school/customer/${id}` : `school/customer`
   const method = id ? patch : post
+  const data = customer.rideto_email
+    ? { ...customer, email: customer.rideto_email }
+    : { ...customer }
 
-  return await method(path, customer)
+  return await method(path, data)
 }
 
 export const destroyCustomer = async id => {

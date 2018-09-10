@@ -38,10 +38,17 @@ const CalendarDayCell = ({ day, calendar, history }) => {
   const selectedDay = dateStr === calendar.selectedDate
   const more = items.length - 3
   const isOtherMonthDate = day.date.getMonth() !== calendar.month
-
+  const isAxisDate =
+    calendar.year === day.date.getFullYear() &&
+    calendar.month === day.date.getMonth() &&
+    calendar.day === day.date.getDate()
   return (
     <li
-      className={classnames(styles.container, selectedDay && 'bg-primary')}
+      className={classnames(
+        styles.container,
+        selectedDay && 'bg-primary',
+        isAxisDate && 'axis-date'
+      )}
       onClick={() => history.push(`/calendar/${dateStr}`)}>
       <div
         className={classnames(

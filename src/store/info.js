@@ -1,4 +1,4 @@
-import { RidingExperiences, PaymentStatus } from 'common/info'
+import { RidingExperiences } from 'common/info'
 import { getCourseTypes } from 'services/course'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
@@ -21,7 +21,6 @@ export const loadCourseTypes = ({ schoolId }) => async dispatch => {
 
 const initialState = {
   ridingExperiences: RidingExperiences,
-  paymentStatus: PaymentStatus,
   courseTypes: []
 }
 
