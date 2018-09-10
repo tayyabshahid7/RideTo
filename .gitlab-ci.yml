@@ -34,7 +34,7 @@ build_staging:
 build_master:
   stage: build
   script:
-  - REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL yarn build
+  - APPS=widget,rideto REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL yarn build
   environment:
     name: production
     url: https://rideto.com/
