@@ -44,10 +44,10 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
     { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {}
 
-const entries = {
-  app: [require.resolve('./polyfills'), paths.appIndexJs],
-  widget: [require.resolve('./polyfills'), paths.widget]
-}
+const entries = {}
+Object.keys(paths.entries).forEach(entry => {
+  entries[entry] = [require.resolve('./polyfills'), paths.entries[entry]]
+})
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
