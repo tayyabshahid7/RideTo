@@ -4,6 +4,7 @@ import { Button, Row, Col, Form } from 'reactstrap'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires } from 'common/info'
+import { getPaymentOptions } from 'services/order'
 
 class AddOrderItem extends React.Component {
   constructor(props) {
@@ -145,10 +146,12 @@ class AddOrderItem extends React.Component {
                 name="payment_status"
                 value={payment_status}
                 label="Payment Status *"
-                valueArray={info.paymentStatus}
+                valueArray={getPaymentOptions()}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
                 required
+                valueField="id"
+                titleField="name"
               />
             </Col>
           </Row>

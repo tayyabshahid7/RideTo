@@ -5,6 +5,7 @@ import AgeInput from 'components/AgeInput'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires } from 'common/info'
+import { getPaymentOptions } from 'services/order'
 
 class EditOrderForm extends React.Component {
   constructor(props) {
@@ -132,10 +133,12 @@ class EditOrderForm extends React.Component {
                 name="status"
                 value={status}
                 label="Payment Status"
-                valueArray={info.paymentStatus}
+                valueArray={getPaymentOptions()}
                 noSelectOption
                 onChange={this.handleChangeRawEvent}
                 required
+                valueField="id"
+                titleField="name"
               />
             </Col>
           </Row>

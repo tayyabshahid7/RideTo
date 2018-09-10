@@ -88,20 +88,12 @@ export const getBikeHireOptions = () => {
 export const getPaymentOptions = () => {
   return [
     {
-      id: 'received',
-      name: 'Received'
-    },
-    {
       id: 'paid',
       name: 'Paid'
     },
     {
-      id: 'denied',
-      name: 'Denied'
-    },
-    {
       id: 'pending',
-      name: 'Pending'
+      name: 'Payment Outstanding'
     }
   ]
 }

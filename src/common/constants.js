@@ -28,8 +28,3 @@ export const RIDING_EXPERIENCE = {
   ONROAD_MOTORCYCLING: 'On road motorcycling',
   OFFROAD_MOTORCYCLING: 'Off road motorcycling'
 }
-
-export const PAYMENT_STATUS = {
-  PAID: 'paid',
-  PENDING: 'pending'
-}
