@@ -17,9 +17,9 @@ echo "Deploying $APP"
 mkdir -p $JS_DIRECTORY
 mkdir -p $CSS_DIRECTORY
 
-cp ${JS_DIRECTORY}/${APP}.*.js ${JS_DIRECTORY}/${APP}.js
-cp ${JS_DIRECTORY}/${APP}.*.js.map ${JS_DIRECTORY}/${APP}.js.map
-cp ${CSS_DIRECTORY}/${APP}.*.css ${CSS_DIRECTORY}/${APP}.css
+mv ${JS_DIRECTORY}/${APP}.*.js.map ${JS_DIRECTORY}/${APP}.js.map
+mv ${JS_DIRECTORY}/${APP}.*.js ${JS_DIRECTORY}/${APP}.js
+mv ${CSS_DIRECTORY}/${APP}.*.css ${CSS_DIRECTORY}/${APP}.css
 
 aws s3 sync ${JS_DIRECTORY} s3://${AWS_S3_BUCKET}/client/${APP}/js --cache-control max-age=691200
 aws s3 sync ${CSS_DIRECTORY} s3://${AWS_S3_BUCKET}/client/${APP}/css --cache-control max-age=691200
