@@ -68,19 +68,9 @@ class CalendarComponent extends Component {
     )
   }
   render() {
-    let {
-      days,
-      calendar,
-      handleCustomEvent,
-      history,
-      calendarPath
-    } = this.props
+    let { days, calendar, handleCustomEvent, history } = this.props
     return (
-      <div
-        className={classnames(
-          styles.container,
-          !calendarPath && styles.noCalendarPath
-        )}>
+      <div className={classnames(styles.container)}>
         {this.renderOverview()}
         <CalendarHeader
           calendar={calendar}
