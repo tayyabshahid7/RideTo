@@ -19,8 +19,7 @@
   @media (max-width: 992px) {
     width: 100%;
     height: auto;
-    padding-left: 0;
-    padding-right: 0;
+    padding: 0;
     border: none;
   }
 }
@@ -46,5 +45,11 @@
 @media (min-width: 992px) {
   .content {
     height: 100%;
+  }
+}
+
+@media (max-width: 992px) {
+  .noCalendarPath {
+    display: none;
   }
 }

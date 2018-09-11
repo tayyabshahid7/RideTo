@@ -1,7 +1,10 @@
 .navigationBar {
   border-bottom: 1px solid var(--light-grey-color);
+  text-align: center;
 }
-
+.navItem {
+  margin: 10px 0px;
+}
 .navLinks {
   width: 85%;
   display: flex;
@@ -19,7 +22,7 @@
   width: 200px;
 }
 .authMenu {
-  width: 15%;
+  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -27,7 +30,6 @@
   margin: 0 1.2rem;
   color: var(--dark-color);
   text-decoration: none;
-  padding: 20px 0px;
   &:hover {
     text-decoration: unset;
   }
@@ -36,5 +38,23 @@
 @media (min-width: 768px) {
   .activeNavLink {
     border-bottom: 2px solid #2cceac;
+  }
+  .navigationBar {
+    text-align: left;
+  }
+  .navItem {
+    margin: 0px;
+  }
+  .navLink {
+    // margin: 0 1.2rem;
+    // color: var(--dark-color);
+    // text-decoration: none;
+    padding: 20px 0px;
+    // &:hover {
+    //   text-decoration: unset;
+    // }
+  }
+  .authMenu {
+    width: 250px;
   }
 }

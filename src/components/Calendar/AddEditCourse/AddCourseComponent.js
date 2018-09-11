@@ -60,10 +60,15 @@ class AddCourseComponent extends Component {
     let { course, location, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
+    let backLink = date === '' ? '/calendar' : `/calendar/${date}`
 
     return (
       <div className={styles.addCourse}>
-        <DateHeading date={moment(date)} title={date ? null : 'Add Course'} />
+        <DateHeading
+          date={moment(date)}
+          title={date ? null : 'Add Course'}
+          backLink={backLink}
+        />
         <CourseForm
           {...rest}
           isEditable={true}
