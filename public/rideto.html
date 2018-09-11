@@ -6,6 +6,8 @@
     <meta name="theme-color" content="#000000">
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
     <title>RideTo.com</title>
 
     <style></style>
@@ -15,5 +17,38 @@
       You need to enable JavaScript to run this app.
     </noscript>
     <div id="rideto-root"></div>
+    <div id="rideto-home-course-slider"></div>
+
+    <script type="text/javascript">
+window.RIDETO_PAGE_HOME = {
+  carouselSlides: [
+  {
+    image: 'http://localhost:8000/static/images/home-carousel-image-3.jpg',
+    title: 'DAS',
+    link: '/'
+  },
+    {
+    image: 'http://localhost:8000/static/images/home-carousel-image-1.jpg',
+    title: 'Introduction to Motorcycling',
+    link: '/'
+  },
+  {
+    image: 'http://localhost:8000/static/images/home-carousel-image-2.jpg',
+    title: 'Full Licence',
+    link: '/'
+  },
+  {
+    image: 'http://localhost:8000/static/images/home-carousel-image-3.jpg',
+    title: 'Beginners Package',
+    link: '/'
+  },
+  {
+    image: 'http://localhost:8000/static/images/home-carousel-image-2.jpg',
+    title: 'Others Licence',
+    link: '/'
+  },
+  ]
+}
+    </script>
   </body>
 </html>

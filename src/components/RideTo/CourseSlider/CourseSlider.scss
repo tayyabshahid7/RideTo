@@ -1,0 +1,37 @@
+.dot {
+  width: 30px;
+  height: 4px;
+  background: darkgrey;
+  display: block;
+  cursor: pointer;
+
+  margin-left: 8px;
+  margin-right: 8px;
+
+  &.active {
+    background: grey;
+  }
+}
+
+.dots {
+  position: absolute;
+  top: 0;
+  margin-top: -32px;
+  list-style: none;
+  text-align: center;
+}
+
+.dots li {
+  position: relative;
+  display: inline-block;
+
+  &:global(.slick-active) {
+    .dot {
+      background: grey;
+    }
+  }
+}
+
+.slider {
+  margin-top: 32px;
+}
