@@ -62,7 +62,7 @@ class FilteredTable extends Component {
     const { friendly_id, user_date, bike_hire } = this.state
     return (
       <div className={styles.container}>
-        <table>
+        <table className="table table-responsive-md">
           <thead>
             <tr>
               <th />

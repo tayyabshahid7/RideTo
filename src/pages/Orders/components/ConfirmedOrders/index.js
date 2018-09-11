@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import classnames from 'classnames'
 import Loading from 'components/Loading'
 
 import styles from './styles.scss'
@@ -73,7 +74,11 @@ class ConfirmedOrders extends Component {
         {
           <div>
             <Loading loading={this.props.loading}>
-              <table className={commonStyles.dataTable}>
+              <table
+                className={classnames(
+                  commonStyles.dataTable,
+                  'table table-responsive-md'
+                )}>
                 <thead>
                   <tr>
                     <Header
