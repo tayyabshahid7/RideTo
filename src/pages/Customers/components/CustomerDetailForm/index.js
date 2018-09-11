@@ -8,6 +8,7 @@ import ConfirmModal from 'components/Modals/ConfirmModal'
 import AgeInput from 'components/AgeInput'
 import MinimalSelect from 'components/MinimalSelect'
 import {
+  isRideTo,
   getRidingExperienceOptions,
   getCurrentLicenceOptions
 } from 'services/customer'
@@ -146,7 +147,16 @@ class CustomerDetailForm extends React.Component {
         </Row>
         <Row>
           <Col>
-            {customer.rideto_email !== null && (
+            {isRideTo(customer) ? (
+              <InputTextGroup
+                name="rideto_email"
+                value=""
+                label="Email"
+                className="form-group"
+                type="email"
+                disabled
+              />
+            ) : (
               <InputTextGroup
                 name="rideto_email"
                 value={customer.rideto_email || ''}
