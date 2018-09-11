@@ -73,3 +73,7 @@ export const getEmptyCustomer = source => {
     source
   }
 }
+
+export const isRideTo = ({ source }) => {
+  return source === 'RIDETO'
+}
