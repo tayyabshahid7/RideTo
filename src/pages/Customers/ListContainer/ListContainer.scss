@@ -8,10 +8,16 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 32px;
-
+  flex-wrap: wrap;
   .search {
     flex-grow: 1;
     margin-right: 32px;
     max-width: 450px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .listContainer {
+    padding: 0px 0px !important;
   }
 }
