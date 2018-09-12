@@ -1,6 +1,8 @@
 import { combineReducers } from 'redux'
 import { push } from 'connected-react-router'
 
+import * as notificationModule from './notification'
+
 import common from 'store/common'
 import * as customerService from 'services/customer'
 
@@ -43,11 +45,25 @@ actions.saveCustomer = (customer, history) => async dispatch => {
       dispatch(push(`/customers/${result.id}`))
     }
 
+    notificationModule.actions.showNotification(
+      'Success',
+      'Customer Saved',
+      'success',
+      0
+    )(dispatch)
+
     dispatch({
       type: SAVE_SUCCESS,
       result
     })
   } catch (error) {
+    notificationModule.actions.showNotification(
+      'Error',
+      'Failed to save Customer',
+      'danger',
+      0
+    )(dispatch)
+
     dispatch({
       type: ERROR,
       error: error.response
