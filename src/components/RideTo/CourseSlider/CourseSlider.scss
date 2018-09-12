@@ -78,7 +78,7 @@
   transition: transform 0.2s ease-in-out;
 
   &:hover {
-    transform: translateY(-12px);
+    transform: scale3d(1.05, 1.05, 1.05);
   }
 
   .title {
