@@ -48,8 +48,7 @@ actions.saveCustomer = (customer, history) => async dispatch => {
     notificationModule.actions.showNotification(
       'Success',
       'Customer Saved',
-      'success',
-      0
+      'success'
     )(dispatch)
 
     dispatch({
@@ -60,8 +59,7 @@ actions.saveCustomer = (customer, history) => async dispatch => {
     notificationModule.actions.showNotification(
       'Error',
       'Failed to save Customer',
-      'danger',
-      0
+      'danger'
     )(dispatch)
 
     dispatch({

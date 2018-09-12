@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-// import * as notificationModule from 'store/notification'
+import * as notificationModule from 'store/notification'
 import styles from './NotificationContainer.scss'
 import Notification from 'pages/Notifications/components/Notification'
 
@@ -12,12 +12,16 @@ class NotificationContainer extends React.Component {
   }
 
   render() {
-    const { notifications } = this.props
+    const { notifications, dismissNotification } = this.props
 
     return (
       <div className={styles.notificationContainer}>
         {notifications.map(notification => (
-          <Notification notification={notification} />
+          <Notification
+            key={notification.id}
+            notification={notification}
+            onClick={() => dismissNotification(notification.id)}
+          />
         ))}
       </div>
     )
@@ -25,7 +29,6 @@ class NotificationContainer extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  console.log(props, state)
   return {
     notifications: state.notification.items
   }
@@ -33,5 +36,11 @@ const mapStateToProps = (state, props) => {
 
 export default connect(
   mapStateToProps,
-  dispatch => bindActionCreators({}, dispatch)
+  dispatch =>
+    bindActionCreators(
+      {
+        ...notificationModule.actions
+      },
+      dispatch
+    )
 )(NotificationContainer)
