@@ -2,6 +2,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import AccountPassword from './AccountPassword'
 import { updatePassword } from 'store/auth'
+import { actions as notificationActions } from 'store/notification'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -13,7 +14,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      updatePassword
+      updatePassword,
+      showNotification: notificationActions.showNotification
     },
     dispatch
   )

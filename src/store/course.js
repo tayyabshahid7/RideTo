@@ -224,10 +224,12 @@ export const createBulkCourse = ({ schoolId, data }) => async dispatch => {
   dispatch({ type: CREATE_BULK[REQUEST] })
   try {
     await createBulkSchoolCourse(schoolId, data)
+    notificationActions.dispatchSuccess(dispatch, 'Bulk Courses added')
     dispatch({
       type: CREATE_BULK[SUCCESS]
     })
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to add Bulk Courses')
     dispatch({ type: CREATE_BULK[FAILURE], error })
   }
 }
