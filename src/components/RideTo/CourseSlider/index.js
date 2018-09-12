@@ -46,12 +46,13 @@ const CourseSlider = () => {
   return (
     <Slider {...settings}>
       {slides.map(slide => (
-        <div>
+        <a href={slide.link}>
           <div
             className={styles.slide}
-            style={{ backgroundImage: `url(${slide.image})` }}
-          />
-        </div>
+            style={{ backgroundImage: `url(${slide.image})` }}>
+            <div className={styles.title}>{slide.title}</div>
+          </div>
+        </a>
       ))}
     </Slider>
   )

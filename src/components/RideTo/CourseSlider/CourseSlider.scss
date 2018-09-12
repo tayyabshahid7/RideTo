@@ -1,3 +1,8 @@
+:global {
+  @import '~slick-carousel/slick/slick';
+  @import './slick-theme';
+}
+
 .dot {
   width: 30px;
   height: 4px;
@@ -36,8 +41,6 @@
 
 .slider {
   padding-top: 32px;
-  height: 400px;
-  overflow: hidden;
 
   :global(.slick-prev) {
     left: 0;
@@ -47,14 +50,40 @@
     z-index: 1;
     right: 0;
   }
+  :global(.slick-list) {
+    overflow: visible;
+  }
+
+  :global(.slick-slide) {
+    display: block;
+
+    a {
+      text-decoration: none;
+    }
+  }
 }
 
 .slide {
-  height: 400px;
+  height: 440px;
   width: 100%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  display: flex;
+  align-items: flex-end;
+
+  color: white;
+  text-transform: uppercase;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-12px);
+  }
+
+  .title {
+    padding: 16px;
+  }
 }
 
 .arrow {
