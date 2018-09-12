@@ -34,6 +34,14 @@ actions.showNotification = (
   }
 }
 
+actions.dispatchSuccess = (dispatch, content = '', duration = 3000) => {
+  actions.showNotification('Success', content, 'success', duration)(dispatch)
+}
+
+actions.dispatchError = (dispatch, content = '', duration = 3000) => {
+  actions.showNotification('Error', content, 'danger', duration)(dispatch)
+}
+
 actions.dismissNotification = id => {
   return {
     type: DISMISS,

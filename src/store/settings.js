@@ -5,6 +5,7 @@ import {
   saveWidgetSettings
 } from 'services/settings'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
+import { actions as notificationActions } from './notification'
 
 const FETCH_SETTING = createRequestTypes('rideto/settings/FETCH')
 const UPDATE_SETTING = createRequestTypes('rideto/settings/UPDATE')
@@ -36,6 +37,7 @@ export const updateSettings = data => async dispatch => {
   try {
     const settings = await saveSettings(data)
 
+    notificationActions.dispatchSuccess(dispatch, 'Settings saved')
     dispatch({
       type: UPDATE_SETTING[SUCCESS],
       data: {
@@ -43,6 +45,7 @@ export const updateSettings = data => async dispatch => {
       }
     })
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to save settings')
     dispatch({ type: UPDATE_SETTING[FAILURE], error })
   }
 }

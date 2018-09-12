@@ -18,17 +18,6 @@ class AvailabilityCourses extends React.Component {
     this.handleAvailableDaysChange = this.handleAvailableDaysChange.bind(this)
   }
 
-  componentDidUpdate(prevProps) {
-    const { settingsSaving, settingsError } = this.props
-    if (prevProps.settingsSaving && !settingsSaving) {
-      if (settingsError) {
-        alert('Failed to save settings')
-      } else {
-        alert('Settings have been successfully updated')
-      }
-    }
-  }
-
   handleAvailableDaysChange(index) {
     let { available_days } = this.state
     available_days[index] = available_days[index] === 'F' ? 'T' : 'F'
