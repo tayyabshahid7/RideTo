@@ -21,7 +21,7 @@ test:
 build_staging:
   stage: build
   script:
-  - APP=widget REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
+  - REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
   environment:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
@@ -34,7 +34,7 @@ build_staging:
 build_master:
   stage: build
   script:
-  - APP=widget REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL yarn build
+  - REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL yarn build
   environment:
     name: production
     url: https://rideto.com/
@@ -50,7 +50,7 @@ deploy_staging:
   before_script:
   - pip install awscli
   script:
-  - APP=widget ./scripts/deploy.sh
+  - APP=widget,rideto ./scripts/deploy.sh
   environment:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
@@ -63,7 +63,7 @@ deploy_master:
   before_script:
   - pip install awscli
   script:
-  - APP=widget ./scripts/deploy.sh
+  - APP=widget,rideto ./scripts/deploy.sh
   environment:
     name: production
     url: https://rideto.com
