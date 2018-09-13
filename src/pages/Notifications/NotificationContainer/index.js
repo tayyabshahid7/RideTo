@@ -7,10 +7,6 @@ import styles from './NotificationContainer.scss'
 import Notification from 'pages/Notifications/components/Notification'
 
 class NotificationContainer extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     const { notifications, dismissNotification } = this.props
 

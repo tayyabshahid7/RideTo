@@ -8,9 +8,15 @@ import { WORK_HOURS, WEEK_VIEW_START_TIME } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 
 class CalendarWeekView extends Component {
+  listenScrollEvent(event) {
+    if (this.refs.timelineDiv) {
+      this.refs.timelineDiv.style.top = `-${event.target.scrollTop}px`
+    }
+  }
+
   renderTimeline() {
     return (
-      <div className={styles.timeline}>
+      <div className={styles.timeline} ref="timelineDiv">
         <ul>
           {Array.apply(null, { length: WORK_HOURS * 2 }).map((val, index) => (
             <li key={index}>
@@ -34,7 +40,7 @@ class CalendarWeekView extends Component {
     let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.weekDays}>
-        <ul>
+        <ul className={styles.daysContainer}>
           {daysInfo.map((day, index) => (
             <li
               className={classnames(
@@ -45,8 +51,12 @@ class CalendarWeekView extends Component {
               key={index}>
               <div className={styles.topInfo}>
                 <Link to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}>
-                  <span>
-                    {this.showMonth(day)}
+                  <span className={styles.mobileVisible}>
+                    {moment(day.date).format('D')}
+                    <br />
+                    {moment(day.date).format('ddd')}
+                  </span>
+                  <span className={styles.desktopVisible}>
                     {moment(day.date).format('ddd D')}
                   </span>
                 </Link>
@@ -125,7 +135,7 @@ class CalendarWeekView extends Component {
     let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.events}>
-        <ul>
+        <ul className={styles.eventsContainer}>
           {daysInfo.map((day, index) => (
             <li
               className={classnames(
@@ -166,10 +176,14 @@ class CalendarWeekView extends Component {
   render() {
     return (
       <div className={styles.container}>
-        {this.renderWeekdays()}
-        <div className={styles.weekviewContent}>
-          {this.renderTimeline()}
-          {this.renderDays()}
+        <div className={styles.timelineWrapper}>{this.renderTimeline()}</div>
+        <div className={styles.mainContent}>
+          {this.renderWeekdays()}
+          <div
+            className={styles.weekviewContent}
+            onScroll={this.listenScrollEvent.bind(this)}>
+            {this.renderDays()}
+          </div>
         </div>
       </div>
     )
