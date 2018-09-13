@@ -7,6 +7,8 @@ import {
 } from 'services/event'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
+import { actions as notificationActions } from './notification'
+
 const FETCH_ALL = createRequestTypes('rideto/event/FETCH/ALL')
 const FETCH_FOR_DAY = createRequestTypes('rideto/event/FETCH/DAY')
 export const FETCH_SINGLE = createRequestTypes('rideto/event/FETCH/SINGLE')
@@ -56,6 +58,7 @@ export const deleteEvent = ({ schoolId, eventId }) => async dispatch => {
 
   try {
     await deleteSingleEvent(schoolId, eventId)
+    notificationActions.dispatchSuccess(dispatch, 'Event deleted')
     dispatch({
       type: DELETE[SUCCESS],
       data: {
@@ -63,6 +66,7 @@ export const deleteEvent = ({ schoolId, eventId }) => async dispatch => {
       }
     })
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to delete Event')
     dispatch({ type: DELETE[FAILURE], error })
   }
 }
@@ -100,7 +104,9 @@ export const updateEvent = ({
       type: UPDATE[SUCCESS],
       data: { event: response }
     })
+    notificationActions.dispatchSuccess(dispatch, 'Event saved')
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to save Event')
     dispatch({ type: UPDATE[FAILURE], error })
   }
 }
@@ -113,7 +119,9 @@ export const createEvent = ({ schoolId, data }) => async dispatch => {
       type: CREATE[SUCCESS],
       data: { event: response }
     })
+    notificationActions.dispatchSuccess(dispatch, 'Event added')
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to add Event')
     dispatch({ type: CREATE[FAILURE], error })
   }
 }

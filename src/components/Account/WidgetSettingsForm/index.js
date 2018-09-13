@@ -23,17 +23,6 @@ class WidgetSettingsForm extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
-    const { saving, error } = this.props
-    if (prevProps.saving && !saving) {
-      if (error) {
-        alert('Failed to update booking widget settings')
-      } else {
-        alert('Booking widget settings have been successfully updated')
-      }
-    }
-  }
-
   handleChangeRawEvent(event) {
     let name = event.target.name
     let { settings } = this.state

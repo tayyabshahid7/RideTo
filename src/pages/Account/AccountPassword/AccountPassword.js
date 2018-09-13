@@ -16,7 +16,7 @@ class AccountPassword extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, error } = this.props
+    const { saving, error, showNotification } = this.props
     if (prevProps.saving && !saving) {
       if (!error) {
         this.setState({
@@ -24,9 +24,9 @@ class AccountPassword extends React.Component {
           old_password: '',
           new_password_copy: ''
         })
-        alert(`Password has been updated successfully`)
+        showNotification('Success', 'Password has been updated', 'success')
       } else {
-        alert(`${error}`)
+        showNotification('Error', error, 'danger')
       }
     }
   }
@@ -37,10 +37,10 @@ class AccountPassword extends React.Component {
 
   handleFormSubmit(event) {
     event.preventDefault()
-    const { updatePassword } = this.props
+    const { updatePassword, showNotification } = this.props
     const { new_password, old_password, new_password_copy } = this.state
     if (new_password !== new_password_copy) {
-      alert('Password does not match')
+      showNotification('Error', 'Password does not match', 'danger')
       return
     }
     updatePassword({ new_password, old_password })
