@@ -9,7 +9,6 @@ import { secondsForDayAndDurationForEvent } from 'utils/helper'
 
 class CalendarWeekView extends Component {
   listenScrollEvent(event) {
-    console.log('listenScrollEvent', event)
     if (this.refs.timelineDiv) {
       this.refs.timelineDiv.style.top = `-${event.target.scrollTop}px`
     }
