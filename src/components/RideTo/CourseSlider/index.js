@@ -1,7 +1,7 @@
 import React from 'react'
-import Slider from 'react-slick'
 import classnames from 'classnames'
 
+import RideToSlider from 'components/RideToSlider'
 import { getStaticData } from 'services/page'
 import styles from './CourseSlider.scss'
 
@@ -52,7 +52,7 @@ const CourseSlider = () => {
   const slides = staticData.carouselSlides
 
   return (
-    <Slider {...settings}>
+    <RideToSlider settings={settings}>
       {slides.map(slide => (
         <a href={slide.link}>
           <div
@@ -62,7 +62,7 @@ const CourseSlider = () => {
           </div>
         </a>
       ))}
-    </Slider>
+    </RideToSlider>
   )
 }
 
