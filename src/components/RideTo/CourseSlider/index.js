@@ -37,7 +37,15 @@ const CourseSlider = () => {
     centerMode: true,
     centerPadding: '64px',
     nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />
+    prevArrow: <PrevArrow />,
+    responsive: [
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1
+        }
+      }
+    ]
   }
 
   const staticData = getStaticData('RIDETO_PAGE_HOME')
