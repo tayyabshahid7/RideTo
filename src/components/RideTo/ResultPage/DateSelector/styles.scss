@@ -1,0 +1,67 @@
+.dateSelector {
+  display: flex;
+  max-width: 100%;
+  width: 1232px;
+}
+
+.prev {
+  flex: 0 0 60px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 32px;
+  color: var(--primary-color);
+}
+
+.dates {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.next {
+  flex: 0 0 60px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 32px;
+  color: var(--primary-color);
+}
+
+.month {
+  flex: 0 0 24px;
+  opacity: 0.5;
+  color: var(--dark-color);
+  font-size: 10px;
+  line-height: 24px;
+}
+
+.dateWrapper {
+  width: 80px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dateComponent {
+  flex: 0 0 80px;
+  width: 80px;
+  text-transform: uppercase;
+  height: 80px;
+  border: 1px solid var(--dark-color);
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  display: flex;
+  text-align: center;
+  color: var(--dark-color);
+}
+
+.active {
+  background: var(--dark-color);
+  color: white;
+  border: none;
+}
+
+.disabled {
+  opacity: 0.5;
+}

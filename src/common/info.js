@@ -1,4 +1,4 @@
-import { BIKE_HIRE, RIDING_EXPERIENCE } from './constants'
+import { BIKE_HIRE, RIDING_EXPERIENCE, SORTBY } from './constants'
 
 export const BikeHires = [
   { value: BIKE_HIRE.MANUAL, title: 'Manual' },
@@ -44,4 +44,9 @@ export const Faqs = [
     question: 'I have another question!',
     answer: 'Email james@rideto.com'
   }
+]
+
+export const SortByOptions = [
+  { value: SORTBY.DISTANCE, title: 'Sort by Distance' },
+  { value: SORTBY.PRICE_UP_DOWN, title: 'Sort by Price Up to Down' }
 ]
