@@ -60,7 +60,7 @@ class CourseTypeSelection extends React.Component {
         </Row>
         <Row>
           {filteredCourseTypes.map(courseType => (
-            <Col sm="4">
+            <Col sm="4" key={courseType.name}>
               <CourseTypeItem courseType={courseType} />
             </Col>
           ))}

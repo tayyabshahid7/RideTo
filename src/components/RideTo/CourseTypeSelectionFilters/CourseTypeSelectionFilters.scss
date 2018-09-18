@@ -1,6 +1,23 @@
-.courseTypeSelectionFilters {
+.courseTypeSelectionFiltersDesktop {
   display: flex;
   justify-content: flex-end;
+  font-family: RiftSoft-Medium, ProximaNovaBold, ProximaNova, Helvetica, Arial,
+    sans-serif;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.courseTypeSelectionFiltersMobile {
+  font-family: RiftSoft-Medium, ProximaNovaBold, ProximaNova, Helvetica, Arial,
+    sans-serif;
+  display: none;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
 
 .filter {
@@ -11,4 +28,11 @@
   color: #141414;
   background: #ededed;
   text-transform: uppercase;
+}
+
+.select {
+  width: 100%;
+  background: #ededed;
+  padding: 16px;
+  border: none;
 }
