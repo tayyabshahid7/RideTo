@@ -37,11 +37,11 @@ class ResultPageContainer extends Component {
         subtitle: 'Brixton, London'
       },
       {
-        title: 'Postcode',
+        title: 'Course',
         subtitle: 'Compulsory Basic Training'
       },
       {
-        title: 'Postcode',
+        title: 'Date & Location',
         subtitle: 'Choose a Date & Location',
         active: true
       },

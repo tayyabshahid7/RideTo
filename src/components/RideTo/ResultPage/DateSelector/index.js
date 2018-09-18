@@ -48,7 +48,7 @@ class DateSelector extends Component {
               activeDate={date}
               showMonth={index === 0}
               handleSetDate={handleSetDate}
-              kye={index}
+              key={index}
             />
           ))}
         </div>

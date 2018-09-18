@@ -88,7 +88,7 @@ class ResultPage extends Component {
                 DAY_FORMAT1
               )}`}</div>
               {courses.map(course => (
-                <CourseItem course={course} className="mt-3" />
+                <CourseItem course={course} className="mt-3" key={course.id} />
               ))}
             </div>
             <div className={styles.mapPanel}>
@@ -105,7 +105,8 @@ class ResultPage extends Component {
                       <DropdownItem
                         onClick={() =>
                           handeUpdateOption({ sortByOption: sortOption.value })
-                        }>
+                        }
+                        key={sortOption.value}>
                         {sortOption.title.toUpperCase()}
                       </DropdownItem>
                     ))}
