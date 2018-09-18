@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import classnames from 'classnames'
 import { SINGLE_DAY_IN_SECONDS } from 'common/constants'
 import styles from './styles.scss'
 import DateItem from './DateItem'
@@ -30,9 +31,9 @@ class DateSelector extends Component {
 
   render() {
     const { startDate, daysCount } = this.state
-    const { date, handleSetDate } = this.props
+    const { date, handleSetDate, className } = this.props
     return (
-      <div className={styles.dateSelector}>
+      <div className={classnames(styles.dateSelector, className)}>
         <div className={styles.prev} onClick={this.handleClickPrev.bind(this)}>
           <i className="fa fa-angle-left" aria-hidden="true" />
         </div>

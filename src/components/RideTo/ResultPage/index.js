@@ -16,6 +16,7 @@ class ResultPageContainer extends Component {
     }
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
+    this.handleNavClick = this.handleNavClick.bind(this)
   }
 
   handleSetDate(date) {
@@ -26,8 +27,29 @@ class ResultPageContainer extends Component {
     this.setState({ ...data })
   }
 
+  handleNavClick(index) {}
+
   render() {
     const { date, sortByOption } = this.state
+    let navigation = [
+      {
+        title: 'Postcode',
+        subtitle: 'Brixton, London'
+      },
+      {
+        title: 'Postcode',
+        subtitle: 'Compulsory Basic Training'
+      },
+      {
+        title: 'Postcode',
+        subtitle: 'Choose a Date & Location',
+        active: true
+      },
+      {
+        title: 'Extras',
+        disabled: true
+      }
+    ]
     return (
       <ResultPage
         location={this.location}
@@ -37,6 +59,8 @@ class ResultPageContainer extends Component {
         sortByOption={sortByOption}
         handleSetDate={this.handleSetDate}
         handeUpdateOption={this.handeUpdateOption}
+        navigation={navigation}
+        handleNavClick={this.handleNavClick}
       />
     )
   }

@@ -11,6 +11,7 @@ import { SortByOptions, getTitleFor } from 'common/info'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
+import NavigationComponent from 'components/RideTo/NavigationComponent'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -61,12 +62,22 @@ class ResultPage extends Component {
       date,
       handleSetDate,
       handeUpdateOption,
-      sortByOption
+      sortByOption,
+      navigation,
+      handleNavClick
     } = this.props
     const { dropdownOpen } = this.state
     return (
       <div className={styles.container}>
-        <DateSelector date={date} handleSetDate={handleSetDate} />
+        <NavigationComponent
+          navigation={navigation}
+          onNavClick={handleNavClick}
+        />
+        <DateSelector
+          date={date}
+          handleSetDate={handleSetDate}
+          className={styles.dateSelector}
+        />
         <div className={styles.contentWrapper}>
           <div className={styles.mainContent}>
             <div className={styles.coursesPanel}>
