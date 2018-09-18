@@ -23,14 +23,12 @@ class CourseMenuItem extends React.Component {
     if (event.target === event.currentTarget) {
       this.setState({ visible: !this.state.visible })
     }
-    return false
   }
 
   handleHideSlider(event) {
     event.preventDefault()
     event.stopPropagation()
     this.setState({ visible: false })
-    return false
   }
 
   render() {

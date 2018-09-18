@@ -40,7 +40,7 @@ const getStars = count => {
 }
 
 const ReviewSlider = () => {
-  const staticData = getStaticData('RIDETO_PAGE_HOME')
+  const staticData = getStaticData('RIDETO_PAGE')
   const settings = {
     customPaging: i => {
       return (
@@ -85,8 +85,6 @@ const ReviewSlider = () => {
       </div>
     </a>
   ))
-
-  console.log(slides)
 
   return (
     <div className={styles.reviewSlider}>

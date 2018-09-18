@@ -48,7 +48,7 @@ const CourseSlider = () => {
     ]
   }
 
-  const staticData = getStaticData('RIDETO_PAGE_HOME')
+  const staticData = getStaticData('RIDETO_PAGE')
   const slides = staticData.carouselSlides
 
   return (
