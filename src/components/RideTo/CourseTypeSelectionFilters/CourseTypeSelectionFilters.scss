@@ -1,8 +1,7 @@
 .courseTypeSelectionFiltersDesktop {
   display: flex;
   justify-content: flex-end;
-  font-family: RiftSoft-Medium, ProximaNovaBold, ProximaNova, Helvetica, Arial,
-    sans-serif;
+  font-family: var(--font-rift);
 
   @media (max-width: 768px) {
     display: none;
@@ -10,8 +9,7 @@
 }
 
 .courseTypeSelectionFiltersMobile {
-  font-family: RiftSoft-Medium, ProximaNovaBold, ProximaNova, Helvetica, Arial,
-    sans-serif;
+  font-family: var(--font-rift);
   display: none;
   width: 100%;
 

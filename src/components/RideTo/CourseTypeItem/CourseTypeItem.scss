@@ -39,7 +39,7 @@
 }
 
 .description {
-  font-family: ProximaNovaBold, ProximaNova, Helvetica, Arial, sans-serif;
+  font-family: var(--font-proxima);
   opacity: 0.5;
   color: #141414;
   font-size: 14px;
@@ -75,12 +75,11 @@
   font-size: 14px;
   line-height: 24px;
   text-decoration: underline;
-  font-family: ProximaNovaBold, ProximaNova, Helvetica, Arial, sans-serif;
+  font-family: var(--font-proxima);
 }
 
 .courseTypeItem {
-  font-family: RiftSoft-Medium, ProximaNovaBold, ProximaNova, Helvetica, Arial,
-    sans-serif;
+  font-family: var(--font-rift);
 
   -webkit-box-shadow: 0px 4px 10px 0px rgba(170, 170, 170, 1);
   -moz-box-shadow: 0px 4px 10px 0px rgba(170, 170, 170, 1);
