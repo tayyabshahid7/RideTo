@@ -1,0 +1,154 @@
+.backgroundImg {
+  height: 360px;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  padding-bottom: 120px;
+}
+
+.content {
+  display: flex;
+  align-items: flex-end;
+  height: 216px;
+  margin-top: -216px;
+}
+
+.expandedInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  flex-grow: 1;
+  background: white;
+  transition: height 0.2s ease-in-out;
+  height: 120px;
+
+  padding: 20px 32px;
+}
+
+.info {
+  overflow: hidden;
+  height: 52px;
+  transition: height 0.2s ease-in-out;
+
+  h5 {
+    height: 52px;
+  }
+}
+
+.description {
+  font-family: ProximaNovaBold, ProximaNova, Helvetica, Arial, sans-serif;
+  opacity: 0.5;
+  color: #141414;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.cta {
+  min-width: 96px;
+  height: 120px;
+
+  background: white;
+  color: var(--primary-color);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+}
+
+.ctaText {
+  font-size: 20px;
+  font-weight: bold;
+  line-height: 24px;
+  text-align: center;
+  display: none;
+}
+
+.details {
+  opacity: 0.5;
+  color: #141414;
+  font-size: 14px;
+  line-height: 24px;
+  text-decoration: underline;
+  font-family: ProximaNovaBold, ProximaNova, Helvetica, Arial, sans-serif;
+}
+
+.courseTypeItem {
+  font-family: RiftSoft-Medium, ProximaNovaBold, ProximaNova, Helvetica, Arial,
+    sans-serif;
+
+  -webkit-box-shadow: 0px 4px 10px 0px rgba(170, 170, 170, 1);
+  -moz-box-shadow: 0px 4px 10px 0px rgba(170, 170, 170, 1);
+  box-shadow: 0px 4px 10px 0px rgba(170, 170, 170, 1);
+
+  @media (min-width: 768px) {
+    &:hover {
+      .expandedInfo {
+        height: 216px;
+      }
+
+      .info {
+        height: 160px;
+      }
+
+      .cta {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      .ctaText {
+        display: block;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 32px;
+    box-shadow: none;
+
+    .backgroundImg {
+      height: 200px;
+      padding-bottom: 0;
+    }
+    .content {
+      margin-top: 0;
+      flex-direction: column;
+    }
+
+    .expandedInfo {
+      padding: 20px 24px;
+      height: auto;
+    }
+
+    .info {
+      height: auto;
+      h5 {
+        height: 24px;
+        font-size: 20px;
+      }
+    }
+
+    .cta {
+      width: 100%;
+      background: var(--primary-color);
+      color: white;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      padding-left: 24px;
+      padding-right: 24px;
+
+      height: 48px;
+    }
+
+    .ctaText {
+      display: block;
+    }
+  }
+}
