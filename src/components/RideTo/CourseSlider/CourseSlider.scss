@@ -1,8 +1,3 @@
-:global {
-  @import '~slick-carousel/slick/slick';
-  @import './slick-theme';
-}
-
 .dot {
   width: 30px;
   height: 4px;
@@ -49,9 +44,6 @@
   :global(.slick-next) {
     z-index: 1;
     right: 0;
-  }
-  :global(.slick-list) {
-    overflow: visible;
   }
 
   :global(.slick-slide) {
