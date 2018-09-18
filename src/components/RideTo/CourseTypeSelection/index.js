@@ -6,6 +6,8 @@ import { fetchCoursesTypes, getFilters } from 'services/course-type'
 import CourseTypeItem from 'components/RideTo/CourseTypeItem'
 import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFilters'
 
+import styles from './CourseTypeSelection.scss'
+
 class CourseTypeSelection extends React.Component {
   constructor(props) {
     super(props)
@@ -48,9 +50,11 @@ class CourseTypeSelection extends React.Component {
 
     return (
       <Container>
-        <h2>CourseTypeSelection</h2>
-        <Row>
-          <Col sm="12">
+        <Row className={styles.filters}>
+          <Col sm="6">
+            <h2 className={styles.heading}>Choose Course</h2>
+          </Col>
+          <Col sm="6">
             <CourseTypeSelectionFilters
               filters={this.filters}
               selected={selectedFilter}

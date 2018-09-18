@@ -19,14 +19,17 @@ const CourseTypeSelectionFilters = ({ filters, selected, onSelect }) => {
   return (
     <React.Fragment>
       <div className={styles.courseTypeSelectionFiltersDesktop}>
-        {filters.map(filter => (
-          <div
-            key={filter.tag}
-            className={styles.filter}
-            onClick={() => handleToggleFilter(filter, selected, onSelect)}>
-            {filter.name}
-          </div>
-        ))}
+        <div className={styles.subTitle}>Filter Courses</div>
+        <div className={styles.filters}>
+          {filters.map(filter => (
+            <div
+              key={filter.tag}
+              className={styles.filter}
+              onClick={() => handleToggleFilter(filter, selected, onSelect)}>
+              {filter.name}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={styles.courseTypeSelectionFiltersMobile}>

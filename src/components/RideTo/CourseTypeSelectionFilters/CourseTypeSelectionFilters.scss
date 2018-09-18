@@ -1,11 +1,17 @@
 .courseTypeSelectionFiltersDesktop {
   display: flex;
   justify-content: flex-end;
+  align-items: flex-end;
   font-family: var(--font-rift);
+  flex-direction: column;
 
   @media (max-width: 768px) {
     display: none;
   }
+}
+
+.filters {
+  display: flex;
 }
 
 .courseTypeSelectionFiltersMobile {
