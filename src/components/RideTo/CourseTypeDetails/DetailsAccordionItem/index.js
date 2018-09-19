@@ -20,7 +20,10 @@ const DetailsAccordionItem = ({ title, content, isOpen, onToggle }) => {
           )}
         </div>
       </div>
-      <div className={contentClassName}>{content}</div>
+      <div
+        className={contentClassName}
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   )
 }

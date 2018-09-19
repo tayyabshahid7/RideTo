@@ -2,6 +2,8 @@ import React from 'react'
 
 import styles from './CourseTypeDetails.scss'
 import DetailsAccordionItem from './DetailsAccordionItem'
+import Button from 'components/RideTo/Button'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 
 class CourseTypeDetails extends React.Component {
   constructor(props) {
@@ -28,7 +30,7 @@ class CourseTypeDetails extends React.Component {
   }
 
   render() {
-    const { courseType } = this.props
+    const { courseType, url } = this.props
     const { opened } = this.state
     const { details } = courseType
 
@@ -52,7 +54,42 @@ class CourseTypeDetails extends React.Component {
             isOpen={opened.indexOf('included') > -1}
             onToggle={isOpen => this.handleToggleAccordion('included', isOpen)}
           />
+          <DetailsAccordionItem
+            title="What can I ride after?"
+            content={details.ride_after}
+            isOpen={opened.indexOf('ride_after') > -1}
+            onToggle={isOpen =>
+              this.handleToggleAccordion('ride_after', isOpen)
+            }
+          />
+          <DetailsAccordionItem
+            title="Requirements"
+            content={details.requirements}
+            isOpen={opened.indexOf('requirements') > -1}
+            onToggle={isOpen =>
+              this.handleToggleAccordion('requirements', isOpen)
+            }
+          />
+          <DetailsAccordionItem
+            title="Training FAQs"
+            content={details.faqs}
+            isOpen={opened.indexOf('faqs') > -1}
+            onToggle={isOpen => this.handleToggleAccordion('faqs', isOpen)}
+          />
+          <DetailsAccordionItem
+            title="Cancellation Policy"
+            content={details.cancellation}
+            isOpen={opened.indexOf('cancellation') > -1}
+            onToggle={isOpen =>
+              this.handleToggleAccordion('cancellation', isOpen)
+            }
+          />
         </div>
+
+        <Button href={url} className={styles.action}>
+          <span>Book Now</span>
+          <img src={ButtonArrowWhite} />
+        </Button>
       </div>
     )
   }

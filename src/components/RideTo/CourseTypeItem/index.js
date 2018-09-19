@@ -2,15 +2,14 @@ import React from 'react'
 
 import styles from './CourseTypeItem.scss'
 
-const CourseTypeItem = ({ courseType, postcode, onClickDetails }) => {
-  const { details, constant } = courseType
+const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
+  const { details } = courseType
 
   if (!details) {
     return null
   }
 
   const bgImg = { backgroundImage: `url(${details.image})` }
-  const url = `/course-location/?postcode=${postcode}&courseType=${constant}`
 
   return (
     <div className={styles.courseTypeItem}>

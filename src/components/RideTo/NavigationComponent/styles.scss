@@ -1,8 +1,11 @@
 .container {
   display: flex;
+  flex-wrap: wrap;
   width: 100%;
+  max-width: 100%;
   background: white;
 }
+
 .itemContainer {
   display: flex;
   flex-direction: column;

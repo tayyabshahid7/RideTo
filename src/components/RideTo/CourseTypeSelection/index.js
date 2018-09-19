@@ -11,6 +11,10 @@ import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 
 import styles from './CourseTypeSelection.scss'
 
+const getBookUrl = ({ constant }, postcode) => {
+  return `/course-location/?postcode=${postcode}&courseType=${constant}`
+}
+
 class CourseTypeSelection extends React.Component {
   constructor(props) {
     super(props)
@@ -118,7 +122,7 @@ class CourseTypeSelection extends React.Component {
                 <CourseTypeItem
                   courseType={courseType}
                   onClickDetails={this.handleDetails}
-                  postcode={postcode}
+                  url={getBookUrl(courseType, postcode)}
                 />
               </Col>
             ))}
@@ -129,7 +133,10 @@ class CourseTypeSelection extends React.Component {
           headingImage={detailsImage}
           onDismiss={() => this.handleDetails(null)}>
           {selectedCourseType && (
-            <CourseTypeDetails courseType={selectedCourseType} />
+            <CourseTypeDetails
+              courseType={selectedCourseType}
+              url={getBookUrl(selectedCourseType, postcode)}
+            />
           )}
         </SidePanel>
       </React.Fragment>

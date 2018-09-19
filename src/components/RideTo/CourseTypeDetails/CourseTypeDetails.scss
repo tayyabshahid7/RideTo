@@ -1,6 +1,7 @@
 .courseTypeDetails {
   color: #141414;
   font-family: var(--font-rift);
+  padding-bottom: 64px;
 }
 
 .description {
@@ -17,4 +18,16 @@
 
   margin-top: 28px;
   margin-bottom: 28px;
+}
+
+.action {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+
+  img {
+    margin-left: 16px;
+    height: 20px;
+  }
 }
