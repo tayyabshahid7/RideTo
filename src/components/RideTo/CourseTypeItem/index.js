@@ -2,14 +2,15 @@ import React from 'react'
 
 import styles from './CourseTypeItem.scss'
 
-const CourseTypeItem = ({ courseType }) => {
-  const { details } = courseType
+const CourseTypeItem = ({ courseType, postcode }) => {
+  const { details, constant } = courseType
 
   if (!details) {
     return null
   }
 
   const bgImg = { backgroundImage: `url(${details.image})` }
+  const url = `/course-location/?postcode=${postcode}&courseType=${constant}`
 
   return (
     <div className={styles.courseTypeItem}>
@@ -21,14 +22,12 @@ const CourseTypeItem = ({ courseType }) => {
             <h5>{courseType.name}</h5>
             <div className={styles.description}>{details.description}</div>
           </div>
-          <a href="#" className={styles.details}>
-            Details
-          </a>
+          <a className={styles.details}>Details</a>
         </div>
-        <div className={styles.cta}>
+        <a className={styles.cta} href={url}>
           <div className={styles.ctaText}>Choose</div>
           <div className={styles.ctaIcon}>→</div>
-        </div>
+        </a>
       </div>
     </div>
   )

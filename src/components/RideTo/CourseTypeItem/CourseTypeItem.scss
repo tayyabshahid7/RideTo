@@ -59,6 +59,10 @@
   align-items: center;
 
   cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .ctaText {
