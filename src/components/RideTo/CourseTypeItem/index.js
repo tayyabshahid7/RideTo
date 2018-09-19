@@ -2,7 +2,7 @@ import React from 'react'
 
 import styles from './CourseTypeItem.scss'
 
-const CourseTypeItem = ({ courseType, postcode }) => {
+const CourseTypeItem = ({ courseType, postcode, onClickDetails }) => {
   const { details, constant } = courseType
 
   if (!details) {
@@ -22,7 +22,11 @@ const CourseTypeItem = ({ courseType, postcode }) => {
             <h5>{courseType.name}</h5>
             <div className={styles.description}>{details.description}</div>
           </div>
-          <a className={styles.details}>Details</a>
+          <a
+            className={styles.details}
+            onClick={() => onClickDetails(courseType)}>
+            Details
+          </a>
         </div>
         <a className={styles.cta} href={url}>
           <div className={styles.ctaText}>Choose</div>
