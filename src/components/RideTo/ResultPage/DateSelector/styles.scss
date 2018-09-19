@@ -34,26 +34,30 @@
   color: var(--dark-color);
   font-size: 10px;
   line-height: 24px;
+  font-family: var(--font-proxima);
+  text-transform: uppercase;
 }
 
 .dateWrapper {
-  width: 80px;
+  width: 94px;
   display: flex;
   flex-direction: column;
 }
 
 .dateComponent {
   flex: 0 0 80px;
-  width: 80px;
+  width: 94px;
   text-transform: uppercase;
   height: 80px;
   border: 1px solid var(--dark-color);
   justify-content: center;
   align-items: center;
   font-size: 24px;
+  line-height: 24px;
   display: flex;
   text-align: center;
   color: var(--dark-color);
+  font-family: var(--font-rift);
 }
 
 .active {

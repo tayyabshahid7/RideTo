@@ -31,10 +31,15 @@
   font-size: 20px;
   font-weight: 500;
   text-transform: uppercase;
+  font-family: var(--font-rift);
+  line-height: 24px;
 }
 
 .place {
   font-size: 14px;
+  font-family: var(--font-proxima);
+  line-height: 16px;
+  margin-top: 16px;
 }
 
 .price {
@@ -43,6 +48,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  font-family: var(--font-rift);
+  line-height: 24px;
+  font-size: 20px;
+  font-weight: bold;
   &:hover {
     color: white;
     background: var(--primary-color);
@@ -52,4 +61,6 @@
 .extraInfo {
   display: flex;
   font-size: 14px;
+  font-family: var(--font-proxima);
+  line-height: 24px;
 }

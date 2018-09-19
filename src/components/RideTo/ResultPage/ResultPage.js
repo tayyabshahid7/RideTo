@@ -6,7 +6,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
-import { DAY_FORMAT1 } from 'common/constants'
+import { DAY_FORMAT5 } from 'common/constants'
 import { SortByOptions, getTitleFor } from 'common/info'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
@@ -86,7 +86,7 @@ class ResultPage extends Component {
                 className={
                   styles.subTitle
                 }>{`${courseType} in ${location} on ${moment(date).format(
-                DAY_FORMAT1
+                DAY_FORMAT5
               )}`}</div>
               {courses.map(course => (
                 <CourseItem course={course} className="mt-3" key={course.id} />
