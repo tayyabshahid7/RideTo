@@ -1,2 +1,20 @@
 .courseTypeDetails {
+  color: #141414;
+  font-family: var(--font-rift);
+}
+
+.description {
+  font-family: var(--font-proxima);
+  font-size: 14px;
+}
+
+.divider {
+  width: 32px;
+  margin: 0;
+  border: 1px solid #979797;
+  background: #979797;
+  opacity: 0.2;
+
+  margin-top: 28px;
+  margin-bottom: 28px;
 }

@@ -37,6 +37,15 @@
   height: 216px;
   background-size: cover;
   background-position: center;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 24px;
+
+  img {
+    cursor: pointer;
+  }
 }
 
 .content {
