@@ -28,3 +28,10 @@ export const RIDING_EXPERIENCE = {
   ONROAD_MOTORCYCLING: 'On road motorcycling',
   OFFROAD_MOTORCYCLING: 'Off road motorcycling'
 }
+
+export const SORTBY = {
+  DISTANCE: 'sort-by-distance',
+  PRICE_UP_DOWN: 'sort-by-price-up-down'
+}
+
+export const MAPBOX_KEY = process.env.REACT_APP_MAPBOX_KEY
