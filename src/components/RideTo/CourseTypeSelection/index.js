@@ -6,8 +6,14 @@ import { fetchCoursesTypes, getFilters } from 'services/course-type'
 import CourseTypeItem from 'components/RideTo/CourseTypeItem'
 import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFilters'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
+import SidePanel from 'components/RideTo/SidePanel'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 
 import styles from './CourseTypeSelection.scss'
+
+const getBookUrl = ({ constant }, postcode) => {
+  return `/course-location/?postcode=${postcode}&courseType=${constant}`
+}
 
 class CourseTypeSelection extends React.Component {
   constructor(props) {
@@ -20,7 +26,8 @@ class CourseTypeSelection extends React.Component {
     this.state = {
       filteredCourseTypes: [],
       selectedFilter: null,
-      postcode: qs.postcode || ''
+      postcode: qs.postcode || '',
+      selectedCourseType: null
     }
 
     this.navigation = [
@@ -46,6 +53,7 @@ class CourseTypeSelection extends React.Component {
 
     this.handleSelectFilter = this.handleSelectFilter.bind(this)
     this.handleNavigation = this.handleNavigation.bind(this)
+    this.handleDetails = this.handleDetails.bind(this)
   }
 
   async componentDidMount() {
@@ -73,8 +81,21 @@ class CourseTypeSelection extends React.Component {
 
   handleNavigation(index) {}
 
+  handleDetails(selectedCourseType) {
+    this.setState({
+      selectedCourseType,
+      detailsImage: selectedCourseType ? selectedCourseType.details.image : null
+    })
+  }
+
   render() {
-    const { postcode, filteredCourseTypes, selectedFilter } = this.state
+    const {
+      postcode,
+      filteredCourseTypes,
+      selectedFilter,
+      selectedCourseType,
+      detailsImage
+    } = this.state
 
     return (
       <React.Fragment>
@@ -98,11 +119,26 @@ class CourseTypeSelection extends React.Component {
           <Row>
             {filteredCourseTypes.map(courseType => (
               <Col sm="4" key={courseType.name}>
-                <CourseTypeItem courseType={courseType} postcode={postcode} />
+                <CourseTypeItem
+                  courseType={courseType}
+                  onClickDetails={this.handleDetails}
+                  url={getBookUrl(courseType, postcode)}
+                />
               </Col>
             ))}
           </Row>
         </Container>
+        <SidePanel
+          visible={selectedCourseType !== null}
+          headingImage={detailsImage}
+          onDismiss={() => this.handleDetails(null)}>
+          {selectedCourseType && (
+            <CourseTypeDetails
+              courseType={selectedCourseType}
+              url={getBookUrl(selectedCourseType, postcode)}
+            />
+          )}
+        </SidePanel>
       </React.Fragment>
     )
   }

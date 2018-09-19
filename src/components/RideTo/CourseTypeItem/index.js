@@ -1,16 +1,18 @@
 import React from 'react'
 
 import styles from './CourseTypeItem.scss'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
+import Info from 'assets/images/rideto/Info.svg'
 
-const CourseTypeItem = ({ courseType, postcode }) => {
-  const { details, constant } = courseType
+const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
+  const { details } = courseType
 
   if (!details) {
     return null
   }
 
   const bgImg = { backgroundImage: `url(${details.image})` }
-  const url = `/course-location/?postcode=${postcode}&courseType=${constant}`
 
   return (
     <div className={styles.courseTypeItem}>
@@ -22,11 +24,16 @@ const CourseTypeItem = ({ courseType, postcode }) => {
             <h5>{courseType.name}</h5>
             <div className={styles.description}>{details.description}</div>
           </div>
-          <a className={styles.details}>Details</a>
+          <div
+            className={styles.details}
+            onClick={() => onClickDetails(courseType)}>
+            <img src={Info} alt="Info" />Details
+          </div>
         </div>
         <a className={styles.cta} href={url}>
           <div className={styles.ctaText}>Choose</div>
-          <div className={styles.ctaIcon}>→</div>
+          <img className={styles.ctaIcon} src={ArrowRight} />
+          <img className={styles.ctaIconHover} src={ButtonArrowWhite} />
         </a>
       </div>
     </div>
