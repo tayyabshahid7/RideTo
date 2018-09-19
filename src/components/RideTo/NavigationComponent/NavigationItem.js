@@ -15,7 +15,8 @@ const NavigationItem = ({
       className={classnames(
         styles.itemContainer,
         showLeftBorder && styles.leftBorder,
-        active && styles.active
+        active && styles.active,
+        disabled && styles.disabled
       )}
       onClick={() => {
         if (!disabled) {
