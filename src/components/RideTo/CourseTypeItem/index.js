@@ -1,6 +1,9 @@
 import React from 'react'
 
 import styles from './CourseTypeItem.scss'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
+import Info from 'assets/images/rideto/Info.svg'
 
 const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
   const { details } = courseType
@@ -21,15 +24,16 @@ const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
             <h5>{courseType.name}</h5>
             <div className={styles.description}>{details.description}</div>
           </div>
-          <a
+          <div
             className={styles.details}
             onClick={() => onClickDetails(courseType)}>
-            Details
-          </a>
+            <img src={Info} alt="Info" />Details
+          </div>
         </div>
         <a className={styles.cta} href={url}>
           <div className={styles.ctaText}>Choose</div>
-          <div className={styles.ctaIcon}>→</div>
+          <img className={styles.ctaIcon} src={ArrowRight} />
+          <img className={styles.ctaIconHover} src={ButtonArrowWhite} />
         </a>
       </div>
     </div>

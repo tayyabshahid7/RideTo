@@ -60,8 +60,11 @@
 
   cursor: pointer;
 
-  &:hover {
-    text-decoration: none;
+  box-shadow: inset 1px 0 0 0 rgba(44, 206, 172, 0.1);
+  text-decoration: none;
+
+  .ctaIconHover {
+    display: none;
   }
 }
 
@@ -80,6 +83,11 @@
   line-height: 24px;
   text-decoration: underline;
   font-family: var(--font-proxima);
+  cursor: pointer;
+
+  img {
+    margin-right: 4px;
+  }
 }
 
 .courseTypeItem {
@@ -102,9 +110,18 @@
       .cta {
         background: var(--primary-color);
         color: white;
+        text-decoration: none;
       }
 
       .ctaText {
+        display: block;
+      }
+
+      .ctaIcon {
+        display: none;
+      }
+
+      .ctaIconHover {
         display: block;
       }
     }
