@@ -8,10 +8,11 @@ import {
 } from 'reactstrap'
 import { DAY_FORMAT1 } from 'common/constants'
 import { SortByOptions, getTitleFor } from 'common/info'
+import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
-import NavigationComponent from 'components/RideTo/NavigationComponent'
+// import MapComponent from './MapComponent'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -113,7 +114,9 @@ class ResultPage extends Component {
                   </DropdownMenu>
                 </ButtonDropdown>
               </div>
-              <div className={styles.mapWrapper} />
+              <div className={styles.mapWrapper}>
+                {/* <MapComponent courses={courses}/> */}
+              </div>
             </div>
           </div>
         </div>
