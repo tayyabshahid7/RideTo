@@ -1,0 +1,13 @@
+.detailsAccordionItem {
+}
+
+.content {
+  transition: max-height 0.2s ease-in-out;
+  height: auto;
+  max-height: 0;
+  overflow: hidden;
+}
+
+.open {
+  max-height: 200px;
+}

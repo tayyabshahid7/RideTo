@@ -5,7 +5,7 @@ import styles from './SidePanel.scss'
 
 class SidePanel extends React.Component {
   render() {
-    const { visible, headingImage, onDismiss } = this.props
+    const { children, visible, headingImage, onDismiss } = this.props
     const headingStyle = { backgroundImage: `url(${headingImage})` }
     const className = classnames(
       styles.sidePanelWrapper,
@@ -17,6 +17,7 @@ class SidePanel extends React.Component {
         <div className={styles.overlay} onClick={onDismiss} />
         <div className={styles.sidePanel}>
           <div className={styles.headingImage} style={headingStyle} />
+          <div className={styles.content}>{children}</div>
         </div>
       </div>
     )

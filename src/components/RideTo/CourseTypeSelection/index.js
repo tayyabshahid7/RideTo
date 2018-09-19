@@ -7,6 +7,7 @@ import CourseTypeItem from 'components/RideTo/CourseTypeItem'
 import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFilters'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import SidePanel from 'components/RideTo/SidePanel'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 
 import styles from './CourseTypeSelection.scss'
 
@@ -126,8 +127,11 @@ class CourseTypeSelection extends React.Component {
         <SidePanel
           visible={selectedCourseType !== null}
           headingImage={detailsImage}
-          onDismiss={() => this.handleDetails(null)}
-        />
+          onDismiss={() => this.handleDetails(null)}>
+          {selectedCourseType && (
+            <CourseTypeDetails courseType={selectedCourseType} />
+          )}
+        </SidePanel>
       </React.Fragment>
     )
   }
