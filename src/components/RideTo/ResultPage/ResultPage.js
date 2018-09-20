@@ -12,7 +12,7 @@ import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
-// import MapComponent from './MapComponent'
+import MapComponent from './MapComponent'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -65,7 +65,8 @@ class ResultPage extends Component {
       handeUpdateOption,
       sortByOption,
       navigation,
-      handleNavClick
+      handleNavClick,
+      userLocation
     } = this.props
     const { dropdownOpen } = this.state
     return (
@@ -114,9 +115,11 @@ class ResultPage extends Component {
                   </DropdownMenu>
                 </ButtonDropdown>
               </div>
-              <div className={styles.mapWrapper}>
-                {/* <MapComponent courses={courses}/> */}
-              </div>
+              <MapComponent
+                className={styles.mapWrapper}
+                courses={courses}
+                userLocation={userLocation}
+              />
             </div>
           </div>
         </div>

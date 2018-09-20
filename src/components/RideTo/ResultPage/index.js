@@ -12,7 +12,11 @@ class ResultPageContainer extends Component {
     this.courseType = 'Compulsory Basic Training (CBT)'
     this.state = {
       date: moment(new Date()).format(DATE_FORMAT),
-      sortByOption: SORTBY.DISTANCE
+      sortByOption: SORTBY.DISTANCE,
+      userLocation: {
+        lat: 51.711712,
+        lng: -0.327693
+      }
     }
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
@@ -30,7 +34,7 @@ class ResultPageContainer extends Component {
   handleNavClick(index) {}
 
   render() {
-    const { date, sortByOption } = this.state
+    const { date, sortByOption, userLocation } = this.state
     let navigation = [
       {
         title: 'Postcode',
@@ -61,6 +65,7 @@ class ResultPageContainer extends Component {
         handeUpdateOption={this.handeUpdateOption}
         navigation={navigation}
         handleNavClick={this.handleNavClick}
+        userLocation={userLocation}
       />
     )
   }

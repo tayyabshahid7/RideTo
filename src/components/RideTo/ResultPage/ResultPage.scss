@@ -21,10 +21,13 @@
 
 .mapPanel {
   flex: 0 0 448px;
+  display: flex;
+  flex-direction: column;
 }
 
 .buttonsWrapper {
   text-align: right;
+  margin-bottom: 32px;
 }
 
 .sortButton {
@@ -41,6 +44,8 @@
 
 .mapWrapper {
   background: lightgray;
+  flex: 1 1 auto;
+  margin-left: 20px;
 }
 
 .subTitle {
@@ -49,6 +54,7 @@
   font-weight: bold;
   font-family: var(--font-rift);
   line-height: 29px;
+  margin-bottom: 50px;
 }
 
 .dateSelector {

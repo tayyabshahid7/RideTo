@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="23px" viewBox="0 0 23 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>7007971C-E7E7-47E9-A8F7-1E78974DF552</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Course-03" transform="translate(-400.000000, -633.000000)">
+            <g id="Group-16" transform="translate(280.000000, 536.000000)">
+                <g id="Group-8">
+                    <g id="Features" transform="translate(41.000000, 97.000000)">
+                        <g id="Icons/Class" transform="translate(79.000000, 0.000000)">
+                            <rect id="Background" x="0" y="0" width="23" height="23"></rect>
+                            <path d="M6.5,22.5 L6.5,7.5" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <circle id="Oval" stroke="#141414" stroke-linecap="round" stroke-linejoin="round" cx="3.5" cy="2.5" r="2"></circle>
+                            <path d="M0.5,22.5 L0.5,9.5 C0.5,8.3954305 1.3954305,7.5 2.5,7.5 L14.5,7.5" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <polyline id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round" points="9.5 2.5 22.5 2.5 22.5 15.5 10.5 15.5"></polyline>
+                            <path d="M16.5,15.5 L19.5,22.5" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

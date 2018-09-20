@@ -46,21 +46,58 @@
   flex: 0 0 112px;
   color: var(--primary-color);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   font-family: var(--font-rift);
   line-height: 24px;
   font-size: 20px;
   font-weight: bold;
+  stroke: var(--primary-color);
   &:hover {
     color: white;
+    stroke: white;
     background: var(--primary-color);
   }
 }
 
+.arrowIcon {
+  margin-top: 12px;
+}
+
 .extraInfo {
   display: flex;
+  align-items: center;
   font-size: 14px;
   font-family: var(--font-proxima);
   line-height: 24px;
+}
+
+.detail {
+  text-decoration: underline;
+}
+
+.mileIcon {
+  margin-right: 6px;
+  stroke: var(--dark-color);
+  fill: var(--dark-color);
+}
+
+.detailIcon {
+  margin-left: 14px;
+  margin-right: 6px;
+  stroke: var(--dark-color);
+  fill: var(--dark-color);
+}
+
+.starComponent {
+  margin-left: 14px;
+  margin-right: 6px;
+}
+
+.icons {
+  margin-top: 12px;
+  img {
+    margin-right: 16px;
+  }
 }
