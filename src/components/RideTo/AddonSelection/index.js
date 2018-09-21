@@ -14,7 +14,8 @@ class AddonSelection extends React.Component {
 
     this.state = {
       addons: [],
-      postcode: qs.postcode || ''
+      postcode: qs.postcode || '',
+      selectedAddons: []
     }
 
     this.navigation = [
@@ -36,6 +37,9 @@ class AddonSelection extends React.Component {
         active: true
       }
     ]
+
+    this.handleAddAddon = this.handleAddAddon.bind(this)
+    this.handleRemoveAddon = this.handleRemoveAddon.bind(this)
   }
 
   async componentDidMount() {
@@ -47,9 +51,20 @@ class AddonSelection extends React.Component {
     })
   }
 
+  handleAddAddon(addon) {
+    this.setState({
+      selectedAddons: this.state.selectedAddons.concat([addon])
+    })
+  }
+
+  handleRemoveAddon(addon) {
+    this.setState({
+      selectedAddons: this.state.selectedAddons.filter(a => a !== addon)
+    })
+  }
+
   render() {
-    const { addons } = this.state
-    console.log(addons)
+    const { addons, selectedAddons } = this.state
     return (
       <React.Fragment>
         <NavigationComponent
@@ -65,7 +80,12 @@ class AddonSelection extends React.Component {
           <Row>
             {addons.map(addon => (
               <Col sm="4">
-                <AddonSelectionItem addon={addon} />
+                <AddonSelectionItem
+                  addon={addon}
+                  isAdded={selectedAddons.indexOf(addon) > -1}
+                  onAdd={this.handleAddAddon}
+                  onRemove={this.handleRemoveAddon}
+                />
               </Col>
             ))}
           </Row>

@@ -1,7 +1,12 @@
 import React from 'react'
+import classnames from 'classnames'
 
 import Info from 'assets/images/rideto/Info.svg'
+import Add from 'assets/images/rideto/Add.svg'
+import Added from 'assets/images/rideto/Added.svg'
+import Remove from 'assets/images/rideto/Remove.svg'
 import AddonSizes from './AddonSizes'
+import AddonImageSlider from './AddonImageSlider'
 import styles from './AddonSelectionItem.scss'
 
 class AddonSelectionItem extends React.Component {
@@ -20,14 +25,23 @@ class AddonSelectionItem extends React.Component {
   }
 
   render() {
-    const { addon } = this.props
+    const { addon, isAdded, onAdd, onRemove } = this.props
     const { selectedSize } = this.state
     const { images, sizes } = addon
-    const bgImg = { backgroundImage: `url(${images[0]})` }
+    const isDiscount =
+      addon.full_price &&
+      addon.discount_price &&
+      addon.full_price > addon.discount_price
+    const price = addon.discount_price || addon.full_price
+    const ctaClassName = classnames(styles.cta, isAdded && styles.added)
+    const icon = isAdded ? Added : Add
+    const onClick = isAdded ? onRemove : onAdd
 
     return (
       <div className={styles.addonSelectionItem}>
-        <div className={styles.backgroundImg} style={bgImg} />
+        <div className={styles.image}>
+          <AddonImageSlider images={images} />
+        </div>
 
         <div className={styles.content}>
           <div className={styles.info}>
@@ -47,7 +61,16 @@ class AddonSelectionItem extends React.Component {
               <div className={styles.description}>{addon.description}</div>
             )}
           </div>
-          <a className={styles.cta} />
+          <div className={ctaClassName} onClick={() => onClick(addon)}>
+            {isDiscount && (
+              <div className={styles.fullPrice}>£{addon.full_price}</div>
+            )}
+            <div className={styles.price}>£{price}</div>
+            <div className={styles.action}>
+              <img className={styles.remove} src={Remove} alt="" />
+              <img className={styles.icon} src={icon} alt="" />
+            </div>
+          </div>
         </div>
       </div>
     )

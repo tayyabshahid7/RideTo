@@ -27,3 +27,8 @@
   background: var(--dark-color);
   color: white;
 }
+
+.disabled {
+  cursor: initial;
+  opacity: 0.25;
+}

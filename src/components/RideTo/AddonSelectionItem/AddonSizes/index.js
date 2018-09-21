@@ -10,9 +10,10 @@ const AddonSizes = ({ sizes, selected, onClick }) => {
         <div
           key={size.code}
           title={size.name}
-          onClick={() => onClick(size)}
+          onClick={() => size.quantity && onClick(size)}
           className={classnames(
             styles.size,
+            size.quantity === 0 && styles.disabled,
             selected === size && styles.selected
           )}>
           {size.code}
