@@ -3,6 +3,7 @@ import classnames from 'classnames'
 
 import Info from 'assets/images/rideto/Info.svg'
 import Add from 'assets/images/rideto/Add.svg'
+import AddWhite from 'assets/images/rideto/AddWhite.svg'
 import Added from 'assets/images/rideto/Added.svg'
 import Remove from 'assets/images/rideto/Remove.svg'
 import AddonSizes from './AddonSizes'
@@ -62,13 +63,24 @@ class AddonSelectionItem extends React.Component {
             )}
           </div>
           <div className={ctaClassName} onClick={() => onClick(addon)}>
-            {isDiscount && (
-              <div className={styles.fullPrice}>£{addon.full_price}</div>
-            )}
-            <div className={styles.price}>£{price}</div>
+            <div className={styles.prices}>
+              {isDiscount && (
+                <div className={styles.fullPrice}>£{addon.full_price}</div>
+              )}
+              <div className={styles.price}>£{price}</div>
+            </div>
             <div className={styles.action}>
               <img className={styles.remove} src={Remove} alt="" />
-              <img className={styles.icon} src={icon} alt="" />
+              <img
+                className={classnames(styles.icon, styles.desktopIcon)}
+                src={icon}
+                alt=""
+              />
+              <img
+                className={classnames(styles.icon, styles.mobileIcon)}
+                src={AddWhite}
+                alt=""
+              />
             </div>
           </div>
         </div>
