@@ -6,6 +6,7 @@ import CourseMenuItem from 'components/RideTo/CourseMenuItem'
 import CourseTypeSelection from 'components/RideTo/CourseTypeSelection'
 import ReviewSlider from 'components/RideTo/ReviewSlider'
 import ResultPage from 'components/RideTo/ResultPage'
+import AddonSelection from 'components/RideTo/AddonSelection'
 
 import { setVersionInfo } from 'services/version'
 // import 'bootstrap'
@@ -44,4 +45,9 @@ mountComponent(
 mountComponent(
   <CourseTypeSelection />,
   document.getElementById('rideto-course-type-selection')
+)
+
+mountComponent(
+  <AddonSelection />,
+  document.getElementById('rideto-addon-selection')
 )
