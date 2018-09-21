@@ -44,7 +44,7 @@ class AddonSelection extends React.Component {
 
   async componentDidMount() {
     // TODO need real values
-    const result = await fetchCourseTypeAddons(123, 123)
+    const result = await fetchCourseTypeAddons(988, 'LICENCE_CBT')
 
     this.setState({
       addons: result.results

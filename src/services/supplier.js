@@ -7,9 +7,9 @@ export const fetchSuppliers = async (params = {}) => {
   return response
 }
 
-export const fetchCourseTypeAddons = async (supplierId, courseTypeId) => {
+export const fetchCourseTypeAddons = async (supplierId, courseType) => {
   const path = `suppliers/${supplierId}/addons`
-  const response = await get(path, { courseTypeId }, false)
+  const response = await get(path, { course_type: courseType }, false)
 
   return response
 }
