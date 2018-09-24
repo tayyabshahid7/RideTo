@@ -36,7 +36,7 @@ const AddonImageSlider = ({ images }) => {
 
   return (
     <RideToSlider settings={settings}>
-      {images.map(image => <img src={image} alt="" />)}
+      {images.map(image => <img key={image} src={image} alt="" />)}
     </RideToSlider>
   )
 }

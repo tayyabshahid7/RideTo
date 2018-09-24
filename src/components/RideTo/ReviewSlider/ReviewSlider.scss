@@ -21,10 +21,16 @@
   color: #141414;
   font-size: 16px;
   font-weight: 500;
+
+  font-family: var(--font-proxima);
 }
 
 .author {
+  font-family: var(--font-rift);
   text-transform: uppercase;
+  font-size: 18px;
+
+  margin-top: 12px;
 }
 
 .quote {
@@ -32,6 +38,7 @@
   height: 80px;
   overflow: hidden;
   margin-bottom: 24px;
+  font-size: 14px;
 
   @media (max-width: 768px) {
     height: 76px;
@@ -169,5 +176,5 @@
   display: block;
   width: 32px;
   height: 32px;
-  margin-left: 32px;
+  margin-left: 16px;
 }

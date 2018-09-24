@@ -19,3 +19,15 @@
     padding-left: 16px;
   }
 }
+
+.action {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+
+  img {
+    margin-left: 16px;
+    height: 20px;
+  }
+}

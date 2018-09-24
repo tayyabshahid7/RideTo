@@ -57,7 +57,8 @@ class AddonSelection extends React.Component {
 
   handleAddAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.concat([addon])
+      selectedAddons: this.state.selectedAddons.concat([addon]),
+      detailsAddon: null
     })
   }
 
@@ -107,7 +108,9 @@ class AddonSelection extends React.Component {
           visible={detailsAddon !== null}
           headingImage={detailsImage}
           onDismiss={() => this.handleDetails(null)}>
-          {detailsAddon && <AddonDetails addon={detailsAddon} />}
+          {detailsAddon && (
+            <AddonDetails addon={detailsAddon} onAdd={this.handleAddAddon} />
+          )}
         </SidePanel>
       </React.Fragment>
     )
