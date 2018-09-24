@@ -1,18 +1,21 @@
 import React from 'react'
 import classnames from 'classnames'
 
+import StarsComponent from 'components/RideTo/StarsComponent'
 import RideToSlider from 'components/RideToSlider'
+import ArrowSlideLeft from 'assets/images/rideto/ArrowSlideLeft.svg'
+import ArrowSlideRight from 'assets/images/rideto/ArrowSlideRight.svg'
 import styles from './ReviewSlider.scss'
 
 import { getStaticData } from 'services/page'
-
-const STAR_RANGE = [0, 1, 2, 3, 4]
 
 const NextArrow = ({ onClick }) => (
   <div
     className={classnames(styles.overlay, styles.nextArrow)}
     onClick={onClick}>
-    <div className={styles.arrow}>{'>'}</div>
+    <div className={styles.arrow}>
+      <img src={ArrowSlideRight} alt="" />
+    </div>
   </div>
 )
 
@@ -20,24 +23,11 @@ const PrevArrow = ({ onClick }) => (
   <div
     className={classnames(styles.overlay, styles.prevArrow)}
     onClick={onClick}>
-    <div className={styles.arrow}>{'<'}</div>
+    <div className={styles.arrow}>
+      <img src={ArrowSlideLeft} alt="" />
+    </div>
   </div>
 )
-
-const getStars = count => {
-  return (
-    <div className={styles.stars}>
-      {STAR_RANGE.map(
-        index =>
-          index < count ? (
-            <span className={styles.filledStar}>*</span>
-          ) : (
-            <span className={styles.emptyStar}>*</span>
-          )
-      )}
-    </div>
-  )
-}
 
 const ReviewSlider = () => {
   const staticData = getStaticData('RIDETO_PAGE')
@@ -72,18 +62,16 @@ const ReviewSlider = () => {
   }
 
   const slides = staticData.reviews.map(review => (
-    <a key={review.index}>
-      <div className={styles.wrapper}>
-        <div className={styles.slide}>
-          <img src={review.pic} className={styles.img} alt="Rider" />
-          <div className={styles.content}>
-            <h5 className={styles.author}>{review.author}</h5>
-            <div className={styles.quote}>{review.quote}</div>
-            {getStars(review.star)}
-          </div>
+    <div className={styles.wrapper} key={review.index}>
+      <div className={styles.slide}>
+        <img src={review.pic} className={styles.img} alt="Rider" />
+        <div className={styles.content}>
+          <h5 className={styles.author}>{review.author}</h5>
+          <div className={styles.quote}>{review.quote}</div>
+          <StarsComponent rating={review.star} />
         </div>
       </div>
-    </a>
+    </div>
   ))
 
   return (

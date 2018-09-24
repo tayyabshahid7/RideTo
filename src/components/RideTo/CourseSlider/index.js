@@ -3,17 +3,19 @@ import classnames from 'classnames'
 
 import RideToSlider from 'components/RideToSlider'
 import { getStaticData } from 'services/page'
+import ArrowSlideLeft from 'assets/images/rideto/ArrowSlideLeft.svg'
+import ArrowSlideRight from 'assets/images/rideto/ArrowSlideRight.svg'
 import styles from './CourseSlider.scss'
 
 const NextArrow = ({ onClick }) => (
   <div className={classnames(styles.arrow, styles.nextArrow)} onClick={onClick}>
-    {'>'}
+    <img src={ArrowSlideRight} alt="" />
   </div>
 )
 
 const PrevArrow = ({ onClick }) => (
   <div className={classnames(styles.arrow, styles.prevArrow)} onClick={onClick}>
-    {'<'}
+    <img src={ArrowSlideLeft} alt="" />
   </div>
 )
 
@@ -42,7 +44,9 @@ const CourseSlider = () => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1
+          slidesToShow: 1,
+          infinite: false,
+          centerPadding: '12px'
         }
       }
     ]
