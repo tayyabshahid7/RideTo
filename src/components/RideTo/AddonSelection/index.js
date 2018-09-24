@@ -64,7 +64,8 @@ class AddonSelection extends React.Component {
 
   handleRemoveAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.filter(a => a !== addon)
+      selectedAddons: this.state.selectedAddons.filter(a => a !== addon),
+      detailsAddon: null
     })
   }
 
@@ -109,7 +110,12 @@ class AddonSelection extends React.Component {
           headingImage={detailsImage}
           onDismiss={() => this.handleDetails(null)}>
           {detailsAddon && (
-            <AddonDetails addon={detailsAddon} onAdd={this.handleAddAddon} />
+            <AddonDetails
+              isAdded={selectedAddons.indexOf(detailsAddon) > -1}
+              addon={detailsAddon}
+              onAdd={this.handleAddAddon}
+              onRemove={this.handleRemoveAddon}
+            />
           )}
         </SidePanel>
       </React.Fragment>
