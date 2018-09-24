@@ -5,6 +5,8 @@ import { parseQueryString } from 'services/api'
 import { fetchCourseTypeAddons } from 'services/supplier'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
+import SidePanel from 'components/RideTo/SidePanel'
+import AddonDetails from 'components/RideTo/AddonDetails'
 import styles from './AddonSelection.scss'
 
 class AddonSelection extends React.Component {
@@ -15,7 +17,8 @@ class AddonSelection extends React.Component {
     this.state = {
       addons: [],
       postcode: qs.postcode || '',
-      selectedAddons: []
+      selectedAddons: [],
+      detailsAddon: null
     }
 
     this.navigation = [
@@ -40,6 +43,7 @@ class AddonSelection extends React.Component {
 
     this.handleAddAddon = this.handleAddAddon.bind(this)
     this.handleRemoveAddon = this.handleRemoveAddon.bind(this)
+    this.handleDetails = this.handleDetails.bind(this)
   }
 
   async componentDidMount() {
@@ -53,18 +57,28 @@ class AddonSelection extends React.Component {
 
   handleAddAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.concat([addon])
+      selectedAddons: this.state.selectedAddons.concat([addon]),
+      detailsAddon: null
     })
   }
 
   handleRemoveAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.filter(a => a !== addon)
+      selectedAddons: this.state.selectedAddons.filter(a => a !== addon),
+      detailsAddon: null
+    })
+  }
+
+  handleDetails(detailsAddon) {
+    this.setState({
+      detailsAddon
     })
   }
 
   render() {
-    const { addons, selectedAddons } = this.state
+    const { detailsAddon, addons, selectedAddons } = this.state
+    const detailsImage = detailsAddon ? detailsAddon.images[0] : null
+
     return (
       <React.Fragment>
         <NavigationComponent
@@ -85,11 +99,25 @@ class AddonSelection extends React.Component {
                   isAdded={selectedAddons.indexOf(addon) > -1}
                   onAdd={this.handleAddAddon}
                   onRemove={this.handleRemoveAddon}
+                  onDetails={this.handleDetails}
                 />
               </Col>
             ))}
           </Row>
         </Container>
+        <SidePanel
+          visible={detailsAddon !== null}
+          headingImage={detailsImage}
+          onDismiss={() => this.handleDetails(null)}>
+          {detailsAddon && (
+            <AddonDetails
+              isAdded={selectedAddons.indexOf(detailsAddon) > -1}
+              addon={detailsAddon}
+              onAdd={this.handleAddAddon}
+              onRemove={this.handleRemoveAddon}
+            />
+          )}
+        </SidePanel>
       </React.Fragment>
     )
   }
