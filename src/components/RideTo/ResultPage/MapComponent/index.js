@@ -32,9 +32,19 @@ class MapComponent extends Component {
     this.updateViewport = this.updateViewport.bind(this)
     this.renderMarker = this.renderMarker.bind(this)
     this.renderPin = this.renderPin.bind(this)
+    this.updateDimensions = this.updateDimensions.bind(this)
   }
 
   componentDidMount() {
+    this.updateDimensions()
+    window.addEventListener('resize', this.updateDimensions)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions)
+  }
+
+  updateDimensions() {
     const { viewport } = this.state
     this.setState({
       viewport: {

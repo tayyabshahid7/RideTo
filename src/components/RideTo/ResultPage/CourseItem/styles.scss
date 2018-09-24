@@ -2,10 +2,18 @@
   display: flex;
   height: 200px;
   background: white;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: 450px;
+  }
 }
 
 .photo {
   flex: 0 0 136px;
+  @media (max-width: 768px) {
+    flex: 0 0 200px;
+  }
 }
 
 .image {
@@ -20,6 +28,9 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 28px 30px;
+  @media (max-width: 768px) {
+    padding: 20px 24px;
+  }
 }
 
 .upperSection {
@@ -59,10 +70,22 @@
     stroke: white;
     background: var(--primary-color);
   }
+  @media (max-width: 768px) {
+    flex: 0 0 48px;
+    color: white;
+    stroke: white;
+    background: var(--primary-color);
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
 }
 
 .arrowIcon {
   margin-top: 12px;
+  @media (max-width: 768px) {
+    margin-top: 0px;
+  }
 }
 
 .extraInfo {

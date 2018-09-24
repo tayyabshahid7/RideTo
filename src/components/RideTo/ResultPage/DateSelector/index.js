@@ -11,6 +11,26 @@ class DateSelector extends Component {
       startDate: new Date(this.props.date),
       daysCount: 12
     }
+    this.updateDimensions = this.updateDimensions.bind(this)
+  }
+
+  componentDidMount() {
+    this.updateDimensions()
+    window.addEventListener('resize', this.updateDimensions)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateDimensions)
+  }
+
+  updateDimensions() {
+    let daysCount = parseInt(
+      (this.refs.dateSelectorContainer.offsetWidth - 120) / 94,
+      10
+    )
+    this.setState({
+      daysCount
+    })
   }
 
   handleClickPrev() {
@@ -33,7 +53,9 @@ class DateSelector extends Component {
     const { startDate, daysCount } = this.state
     const { date, handleSetDate, className } = this.props
     return (
-      <div className={classnames(styles.dateSelector, className)}>
+      <div
+        className={classnames(styles.dateSelector, className)}
+        ref="dateSelectorContainer">
         <div className={styles.prev} onClick={this.handleClickPrev.bind(this)}>
           <i className="fa fa-angle-left" aria-hidden="true" />
         </div>

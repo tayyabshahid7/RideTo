@@ -1,17 +1,20 @@
 import React from 'react'
 import moment from 'moment'
+import classnames from 'classnames'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 
-class CourseAvailabilityComponent extends React.Component {
+class DateSelectorModal extends React.Component {
   constructor(props) {
     super(props)
-    let date = new Date()
+    let date = new Date(this.props.date)
     this.state = {
       calendar: {
         year: date.getFullYear(),
         month: date.getMonth(),
-        selectedDate: null,
+        selectedDate: this.props.date,
         selectedTime: null
       }
     }
@@ -30,27 +33,27 @@ class CourseAvailabilityComponent extends React.Component {
     return firstDateInMonthCalendar
   }
 
-  generateDaysDataFromCalendar(course, calendar) {
+  generateDaysDataFromCalendar(calendar) {
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
     return dates.map(date => {
-      let momentDate = moment(date)
-      let dateInString = momentDate.format('YYYY-MM-DD')
+      // let momentDate = moment(date)
+      // let dateInString = momentDate.format('YYYY-MM-DD')
       let disabled = false
       let invisible = date.getMonth() !== calendar.month
-      if (
-        course.excluded_days &&
-        course.excluded_days.includes(momentDate.format('dddd'))
-      ) {
-        disabled = true
-      }
+      // if (
+      //   course.excluded_days &&
+      //   course.excluded_days.includes(momentDate.format('dddd'))
+      // ) {
+      //   disabled = true
+      // }
 
-      if (
-        course.excluded_dates &&
-        course.excluded_dates.includes(dateInString)
-      ) {
-        disabled = true
-      }
+      // if (
+      //   course.excluded_dates &&
+      //   course.excluded_dates.includes(dateInString)
+      // ) {
+      //   disabled = true
+      // }
 
       return { date, disabled, invisible }
     })
@@ -108,23 +111,35 @@ class CourseAvailabilityComponent extends React.Component {
   }
 
   render() {
-    const { course } = this.props
+    const { isOpen, onClose, onSelect } = this.props
     const { calendar } = this.state
-    let days = this.generateDaysDataFromCalendar(course, calendar)
+    let days = this.generateDaysDataFromCalendar(calendar)
     return (
-      <div className={styles.content}>
-        <AvailabilityCalendar
-          days={days}
-          calendar={calendar}
-          handleDateSelect={this.handleDateSelect.bind(this)}
-          handlePrevMonth={this.handlePrevMonth.bind(this)}
-          handleNextMonth={this.handleNextMonth.bind(this)}
-          handleTimeSelect={this.handleTimeSelect.bind(this)}
-          showDateTime={true}
-        />
-      </div>
+      <Modal
+        isOpen={isOpen}
+        toggle={onClose}
+        size={'md'}
+        className={styles.mobileFull}>
+        <ModalHeader toggle={onClose} />
+        <ModalBody>
+          <AvailabilityCalendar
+            days={days}
+            calendar={calendar}
+            handleDateSelect={this.handleDateSelect.bind(this)}
+            handlePrevMonth={this.handlePrevMonth.bind(this)}
+            handleNextMonth={this.handleNextMonth.bind(this)}
+            handleTimeSelect={this.handleTimeSelect.bind(this)}
+          />
+        </ModalBody>
+        <button
+          className={classnames('btn btn-primary', styles.selectDate)}
+          onClick={() => onSelect(calendar.selectedDate)}>
+          <span>Choose Date</span>
+          <img src={ButtonArrowWhite} alt="arrow" />
+        </button>
+      </Modal>
     )
   }
 }
 
-export default CourseAvailabilityComponent
+export default DateSelectorModal

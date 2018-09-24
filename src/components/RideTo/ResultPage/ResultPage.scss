@@ -10,20 +10,27 @@
   margin-top: 120px;
   padding: 0px 30px;
   display: flex;
-  width: auto !important;
+  // width: auto !important;
   // justify-content: center;
 }
 
 .mainContent {
-  width: 1112px;
-  max-width: 100%;
+  max-width: 1112px;
+  width: 100%;
   display: flex;
+  margin: 0 auto;
+  flex-wrap: wrap;
 }
 
 .mapPanel {
   flex: 0 0 448px;
   display: flex;
   flex-direction: column;
+  max-width: 100%;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .coursesPanel {
@@ -45,6 +52,15 @@
   font-family: var(--font-rift);
   font-weight: 500 !important;
   border: none !important;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    display: flex !important;
+    padding: 0px 24px !important;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+  }
 }
 
 .mapWrapper {
@@ -64,6 +80,27 @@
 
 .dateSelector {
   margin-top: 56px;
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.mobileButtons {
+  display: none;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.dateSelectorMobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: #14141410;
 }
 
 .noPadding {

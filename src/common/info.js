@@ -48,5 +48,7 @@ export const Faqs = [
 
 export const SortByOptions = [
   { value: SORTBY.DISTANCE, title: 'Sort by Distance' },
-  { value: SORTBY.PRICE_UP_DOWN, title: 'Sort by Price Up to Down' }
+  { value: SORTBY.PRICE_DOWN_UP, title: 'Sort by Price Asc' },
+  { value: SORTBY.PRICE_UP_DOWN, title: 'Sort by Price Desc' },
+  { value: SORTBY.RATING, title: 'Sort by Rating' }
 ]

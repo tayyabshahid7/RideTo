@@ -31,8 +31,8 @@ class ResultPageContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { date } = this.state
-    if (date !== prevState.date) {
+    const { date, sortByOption } = this.state
+    if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
       this.loadData()
     }
   }
@@ -43,11 +43,14 @@ class ResultPageContainer extends Component {
 
   async loadCourses() {
     try {
+      const { date, sortByOption } = this.state
       this.setState({ loading: true })
       let response = await fetchRidetoCourses({
         course_type: 'LICENCE_CBT',
         postcode: 'w4 2rd',
-        radius_miles: 15
+        radius_miles: 15,
+        date,
+        ordering: sortByOption
       })
       if (response.results) {
         this.setState({ courses: response.results, loading: false })
@@ -64,6 +67,7 @@ class ResultPageContainer extends Component {
   }
 
   handeUpdateOption(data) {
+    console.log('Data - ', data, this.state)
     this.setState({ ...data })
   }
 

@@ -31,8 +31,10 @@ export const RIDING_EXPERIENCE = {
 }
 
 export const SORTBY = {
-  DISTANCE: 'sort-by-distance',
-  PRICE_UP_DOWN: 'sort-by-price-up-down'
+  DISTANCE: 'distance',
+  PRICE_DOWN_UP: 'price',
+  PRICE_UP_DOWN: '-price',
+  RATING: 'rating'
 }
 
 export const MAPBOX_KEY = process.env.REACT_APP_MAPBOX_KEY

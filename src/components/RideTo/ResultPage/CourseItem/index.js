@@ -22,9 +22,21 @@ class CourseItem extends Component {
               {course.place}, {course.postcode}
             </div>
             <div className={styles.icons}>
-              <img src={FeatureIcons['Approved']} alt="feature" />
-              <img src={FeatureIcons['Bike']} alt="feature" />
-              <img src={FeatureIcons['Helmet']} alt="feature" />
+              {course.mciac_approved && (
+                <img src={FeatureIcons['Approved']} alt="feature" />
+              )}
+              {course.bike_hire && (
+                <img src={FeatureIcons['Bike']} alt="feature" />
+              )}
+              {course.helmet_hire && (
+                <img src={FeatureIcons['Helmet']} alt="feature" />
+              )}
+              {course.on_site_cafe && (
+                <img src={FeatureIcons['Cafe']} alt="feature" />
+              )}
+              {course.indoor_classroom && (
+                <img src={FeatureIcons['Class']} alt="feature" />
+              )}
             </div>
           </div>
           <div className={styles.extraInfo}>
