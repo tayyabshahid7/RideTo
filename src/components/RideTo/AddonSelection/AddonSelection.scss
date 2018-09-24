@@ -1,0 +1,21 @@
+.addonSelection {
+}
+
+.heading {
+  font-family: var(--font-rift);
+  font-size: 24px;
+  line-height: 48px;
+  font-weight: bold;
+  padding: 0;
+  margin: 0;
+
+  text-transform: uppercase;
+
+  margin-top: 88px;
+}
+
+@media (max-width: 768px) {
+  .heading {
+    margin-top: 44px;
+  }
+}
