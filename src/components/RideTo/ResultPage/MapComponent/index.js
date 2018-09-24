@@ -3,7 +3,10 @@ import classnames from 'classnames'
 import MapGL, { Marker, NavigationControl } from 'react-map-gl'
 import styles from './styles.scss'
 import { MAPBOX_KEY } from 'common/constants'
+import { IconMapPin, IconUser } from 'assets/icons'
+import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+mapboxgl.accessToken = MAPBOX_KEY
 
 const navStyle = {
   position: 'absolute',
@@ -15,20 +18,31 @@ const navStyle = {
 class MapComponent extends Component {
   constructor(props) {
     super(props)
+    const { userLocation, courses } = this.props
+    let location = userLocation ? userLocation : courses[0]
     this.state = {
       viewport: {
-        latitude: 45.0523,
-        longitude: 63.234,
-        zoom: 9,
-        bearing: 0,
-        pitch: 0,
-        width: 400, // widthPx || mapDivContainer.offsetWidth,
-        height: 800 // heightPx || height,
+        width: 400,
+        height: 400,
+        latitude: location.lat,
+        longitude: location.lng,
+        zoom: 8
       }
     }
     this.updateViewport = this.updateViewport.bind(this)
     this.renderMarker = this.renderMarker.bind(this)
     this.renderPin = this.renderPin.bind(this)
+  }
+
+  componentDidMount() {
+    const { viewport } = this.state
+    this.setState({
+      viewport: {
+        ...viewport,
+        height: this.refs.mapContainer.offsetHeight,
+        width: this.refs.mapContainer.offsetWidth
+      }
+    })
   }
 
   updateViewport(viewport) {
@@ -49,24 +63,35 @@ class MapComponent extends Component {
   renderPin(course) {
     return (
       <div id={`course-${course.id}`} className={styles.coursePin}>
-        {course.price}
+        <IconMapPin className={styles.mapPinBg} />
+        <span className={styles.pinPrice}>
+          £{parseInt(course.price / 100, 10)}
+        </span>
       </div>
     )
   }
 
   render() {
-    const { courses, className } = this.props
+    const { courses, className, userLocation } = this.props
     const { viewport } = this.state
     return (
-      <div className={classnames(styles.container, className)}>
+      <div
+        className={classnames(styles.container, className)}
+        ref="mapContainer">
         <MapGL
           {...viewport}
           mapStyle="mapbox://styles/mapbox/streets-v9"
-          onViewportChange={this.updateViewport}
-          mapboxApiAccessToken={MAPBOX_KEY}>
-          <div />
+          mapboxApiAccessToken={MAPBOX_KEY}
+          onViewportChange={viewport => this.setState({ viewport })}>
+          {userLocation && (
+            <Marker longitude={userLocation.lng} latitude={userLocation.lat}>
+              <div id={`user-pin`} className={styles.coursePin}>
+                <IconMapPin className={styles.mapPinBg} />
+                <IconUser className={styles.userIcon} />
+              </div>
+            </Marker>
+          )}
           {courses && courses.map(this.renderMarker)}
-          {/* {this._renderPopup()} */}
           <div className="nav" style={navStyle}>
             <NavigationControl onViewportChange={this.updateViewport} />
           </div>

@@ -32,8 +32,12 @@ const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
         </div>
         <a className={styles.cta} href={url}>
           <div className={styles.ctaText}>Choose</div>
-          <img className={styles.ctaIcon} src={ArrowRight} />
-          <img className={styles.ctaIconHover} src={ButtonArrowWhite} />
+          <img className={styles.ctaIcon} src={ArrowRight} alt="right-arrow" />
+          <img
+            className={styles.ctaIconHover}
+            src={ButtonArrowWhite}
+            alt="arrow-white"
+          />
         </a>
       </div>
     </div>

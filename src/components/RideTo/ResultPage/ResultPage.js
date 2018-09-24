@@ -6,13 +6,18 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
-import { DAY_FORMAT1 } from 'common/constants'
+import { DAY_FORMAT5 } from 'common/constants'
 import { SortByOptions, getTitleFor } from 'common/info'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
-// import MapComponent from './MapComponent'
+import MapComponent from './MapComponent'
+import SidePanel from 'components/RideTo/SidePanel'
+import CourseDetailPanel from './CourseDetailPanel'
+import RideToButton from 'components/RideTo/Button'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import Loading from 'components/Loading'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -20,39 +25,20 @@ class ResultPage extends Component {
 
     this.toggle = this.toggle.bind(this)
     this.state = {
-      dropdownOpen: false
+      dropdownOpen: false,
+      selectedCourse: null,
+      loading: false
     }
   }
 
-  componentDidMount() {
-    this.loadData()
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    const { date } = this.props
-    if (date !== prevProps.date) {
-      this.loadData()
-    }
-  }
-
-  loadData() {
-    this.loadCourses()
+  handleDetailClick(course) {
+    this.setState({ selectedCourse: course })
   }
 
   toggle() {
     this.setState({
       dropdownOpen: !this.state.dropdownOpen
     })
-  }
-
-  loadCourses() {
-    // const { getCourses, schoolId, calendar } = this.props
-    // const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
-    // getCourses({
-    //   schoolId,
-    //   firstDate: moment(firstDate).format(DATE_FORMAT),
-    //   lastDate: moment(lastDate).format(DATE_FORMAT)
-    // })
   }
 
   render() {
@@ -65,9 +51,11 @@ class ResultPage extends Component {
       handeUpdateOption,
       sortByOption,
       navigation,
-      handleNavClick
+      handleNavClick,
+      loading,
+      userLocation
     } = this.props
-    const { dropdownOpen } = this.state
+    const { dropdownOpen, selectedCourse } = this.state
     return (
       <div className={styles.container}>
         <NavigationComponent
@@ -79,17 +67,23 @@ class ResultPage extends Component {
           handleSetDate={handleSetDate}
           className={styles.dateSelector}
         />
-        <div className={styles.contentWrapper}>
+        <Loading loading={loading} className={styles.contentWrapper}>
+          {/* <div className={styles.contentWrapper}> */}
           <div className={styles.mainContent}>
             <div className={styles.coursesPanel}>
               <div
                 className={
                   styles.subTitle
                 }>{`${courseType} in ${location} on ${moment(date).format(
-                DAY_FORMAT1
+                DAY_FORMAT5
               )}`}</div>
               {courses.map(course => (
-                <CourseItem course={course} className="mt-3" key={course.id} />
+                <CourseItem
+                  course={course}
+                  className="mt-3"
+                  key={course.id}
+                  handleDetailClick={this.handleDetailClick.bind(this)}
+                />
               ))}
             </div>
             <div className={styles.mapPanel}>
@@ -114,12 +108,35 @@ class ResultPage extends Component {
                   </DropdownMenu>
                 </ButtonDropdown>
               </div>
-              <div className={styles.mapWrapper}>
-                {/* <MapComponent courses={courses}/> */}
-              </div>
+              {courses.length > 0 && (
+                <MapComponent
+                  className={styles.mapWrapper}
+                  courses={courses}
+                  userLocation={userLocation}
+                />
+              )}
             </div>
           </div>
-        </div>
+          {/* </div> */}
+        </Loading>
+        <SidePanel
+          className={styles.noPadding}
+          visible={selectedCourse !== null}
+          headingImage={selectedCourse ? selectedCourse.image : ''}
+          onDismiss={() => this.setState({ selectedCourse: null })}
+          footer={
+            <RideToButton className={styles.action}>
+              <span>Book Now</span>
+              <img src={ButtonArrowWhite} alt="arrow" />
+            </RideToButton>
+          }>
+          {selectedCourse && (
+            <CourseDetailPanel
+              course={selectedCourse}
+              userLocation={userLocation}
+            />
+          )}
+        </SidePanel>
       </div>
     )
   }

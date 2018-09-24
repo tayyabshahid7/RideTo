@@ -1,0 +1,7 @@
+export { default as IconArrowLeft } from './IconArrowLeft'
+export { default as IconArrowRight } from './IconArrowRight'
+export { default as IconDistance } from './IconDistance'
+export { default as IconInfo } from './IconInfo'
+export { default as IconMapPin } from './IconMapPin'
+export { default as IconRideToLogo } from './IconRideToLogo'
+export { default as IconUser } from './IconUser'

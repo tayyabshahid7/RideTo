@@ -7,8 +7,8 @@
 }
 
 .sidePanel {
-  width: 100px;
-  height: 100px;
+  // width: 100px;
+  // height: 100px;
   position: fixed;
   background: white;
   top: 0;
@@ -16,6 +16,7 @@
   height: 100%;
   z-index: 2;
   width: 488px;
+  overflow-y: auto;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -56,12 +57,19 @@
   }
 }
 
-.content {
-  padding: 50px 60px;
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: inherit;
+  z-index: 2;
+}
 
+.content {
+  // padding: 50px 60px;
+  padding-bottom: 74px;
   @media (max-width: 768px) {
     height: calc(100% - 168px);
-    padding: 32px;
+    // padding: 32px;
     overflow-y: auto;
   }
 }

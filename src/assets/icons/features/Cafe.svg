@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="23px" height="23px" viewBox="0 0 23 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>3EBB21E6-0907-4383-A3A4-E15A0E582AA0</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Course-03" transform="translate(-440.000000, -633.000000)">
+            <g id="Group-16" transform="translate(280.000000, 536.000000)">
+                <g id="Group-8">
+                    <g id="Features" transform="translate(41.000000, 97.000000)">
+                        <g id="Icons/Cafe" transform="translate(119.000000, 0.000000)">
+                            <rect id="Background" x="0" y="0" width="23" height="24"></rect>
+                            <path d="M9.5,0.5 L9.5,2.5" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M4.5,1.5 L4.5,3.5" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M14.5,1.5 L14.5,3.5" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M18.5,7.5 L22.5,7.5 L22.5,11.5 C22.5,12.6 21.6,13.5 20.5,13.5 L18,13.5" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M9.5,19.5 C4.5,19.5 0.5,15.5 0.5,10.5 L0.5,7.5 L18.5,7.5 L18.5,10.5 C18.5,15.5 14.5,19.5 9.5,19.5 Z" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                            <path d="M0.5,22.5 L18.5,22.5" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
