@@ -1,3 +1,4 @@
+export { default as IconArrowLeft } from './IconArrowLeft'
 export { default as IconArrowRight } from './IconArrowRight'
 export { default as IconDistance } from './IconDistance'
 export { default as IconInfo } from './IconInfo'

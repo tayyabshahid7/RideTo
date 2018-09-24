@@ -7,8 +7,6 @@ import { IconMapPin, IconUser } from 'assets/icons'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 mapboxgl.accessToken = MAPBOX_KEY
-// import mapboxgl from 'mapbox-gl/dist/mapbox-gl'
-// import 'mapbox-gl/dist/mapbox-gl'
 
 const navStyle = {
   position: 'absolute',
@@ -20,23 +18,14 @@ const navStyle = {
 class MapComponent extends Component {
   constructor(props) {
     super(props)
+    const { userLocation, courses } = this.props
+    let location = userLocation ? userLocation : courses[0]
     this.state = {
-      // viewport: {
-      //   latitude: 45.0523,
-      //   longitude: 63.234,
-      //   zoom: 9,
-      //   bearing: 0,
-      //   pitch: 0,
-      //   width: 400, // widthPx || mapDivContainer.offsetWidth,
-      //   height: 800 // heightPx || height,
-      // }
       viewport: {
         width: 400,
         height: 400,
-        // width: '100%',
-        // height: '100%',
-        latitude: this.props.courses[0].lat,
-        longitude: this.props.courses[0].lng,
+        latitude: location.lat,
+        longitude: location.lng,
         zoom: 8
       }
     }
@@ -46,11 +35,6 @@ class MapComponent extends Component {
   }
 
   componentDidMount() {
-    //   const map = new mapboxgl.Map({
-    //     container: 'map-div',
-    //     style: 'mapbox://styles/mapbox/streets-v9'
-    // });
-    console.log('Map Container', this.refs)
     const { viewport } = this.state
     this.setState({
       viewport: {
@@ -62,8 +46,7 @@ class MapComponent extends Component {
   }
 
   updateViewport(viewport) {
-    console.log('Viewport', viewport)
-    // this.setState({ viewport })
+    this.setState({ viewport })
   }
 
   renderMarker(course, index) {

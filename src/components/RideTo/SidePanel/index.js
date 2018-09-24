@@ -6,7 +6,7 @@ import closeImg from 'assets/images/rideto/CloseWhite.svg'
 
 class SidePanel extends React.Component {
   render() {
-    const { children, visible, headingImage, onDismiss } = this.props
+    const { children, visible, headingImage, onDismiss, footer } = this.props
     const headingStyle = { backgroundImage: `url(${headingImage})` }
     const className = classnames(
       styles.sidePanelWrapper,
@@ -21,6 +21,7 @@ class SidePanel extends React.Component {
             <img src={closeImg} alt="Close" onClick={onDismiss} />
           </div>
           <div className={styles.content}>{children}</div>
+          {footer && <div className={styles.footer}>{footer}</div>}
         </div>
       </div>
     )

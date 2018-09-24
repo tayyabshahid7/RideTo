@@ -88,7 +88,7 @@ class CourseTypeDetails extends React.Component {
 
         <Button href={url} className={styles.action}>
           <span>Book Now</span>
-          <img src={ButtonArrowWhite} />
+          <img src={ButtonArrowWhite} alt="arrow" />
         </Button>
       </div>
     )

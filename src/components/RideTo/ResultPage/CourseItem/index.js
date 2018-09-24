@@ -9,7 +9,7 @@ class CourseItem extends Component {
   handleDetailClick() {}
 
   render() {
-    const { course, className } = this.props
+    const { course, className, handleDetailClick } = this.props
     return (
       <div className={classnames(styles.container, className)}>
         <div className={styles.photo}>
@@ -32,7 +32,7 @@ class CourseItem extends Component {
             {course.distance_miles.toFixed(2)}mi
             <IconInfo className={styles.detailIcon} />{' '}
             <span
-              onClick={this.handleDetailClick.bind(this)}
+              onClick={() => handleDetailClick(course)}
               className={styles.detail}>
               Details
             </span>

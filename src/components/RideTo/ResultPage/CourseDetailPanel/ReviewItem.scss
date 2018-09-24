@@ -1,0 +1,22 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: var(--font-rift);
+}
+
+.starWrapper {
+  margin-top: 5px;
+}
+
+.desc {
+  margin-top: 18px;
+  font-size: 14px;
+  line-height: 20px;
+  font-family: var(--font-proxima);
+}
