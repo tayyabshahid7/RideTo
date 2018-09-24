@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import CalendarDayCell from './CalendarDayCell'
 import styles from './CalendarContent.scss'
 
-class CalendarMonthView extends Component {
+class CalendarContent extends Component {
   renderWeekdays() {
     return (
       <ul className={styles.calendarWeekdays}>
@@ -43,4 +43,4 @@ class CalendarMonthView extends Component {
   }
 }
 
-export default CalendarMonthView
+export default CalendarContent
