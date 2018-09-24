@@ -26,7 +26,7 @@ class AddonSelectionItem extends React.Component {
   }
 
   render() {
-    const { addon, isAdded, onAdd, onRemove } = this.props
+    const { addon, isAdded, onAdd, onRemove, onDetails } = this.props
     const { selectedSize } = this.state
     const { images, sizes } = addon
     const isDiscount =
@@ -54,7 +54,9 @@ class AddonSelectionItem extends React.Component {
                   selected={selectedSize}
                   onClick={this.handleSelectSize}
                 />
-                <div className={styles.details}>
+                <div
+                  className={styles.details}
+                  onClick={() => onDetails(addon)}>
                   <img src={Info} alt="Info" />Details
                 </div>
               </div>
