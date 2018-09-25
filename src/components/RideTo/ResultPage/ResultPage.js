@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import {
-  ButtonDropdown,
+  UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
@@ -15,19 +15,20 @@ import CourseItem from './CourseItem'
 import MapComponent from './MapComponent'
 import SidePanel from 'components/RideTo/SidePanel'
 import CourseDetailPanel from './CourseDetailPanel'
+import DateSelectorModal from './DateSelectorModal'
 import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
+import { IconCalendar } from 'assets/icons'
 
 class ResultPage extends Component {
   constructor(props) {
     super(props)
 
-    this.toggle = this.toggle.bind(this)
     this.state = {
-      dropdownOpen: false,
       selectedCourse: null,
-      loading: false
+      loading: false,
+      showDateSelectorModal: false
     }
   }
 
@@ -35,27 +36,62 @@ class ResultPage extends Component {
     this.setState({ selectedCourse: course })
   }
 
-  toggle() {
-    this.setState({
-      dropdownOpen: !this.state.dropdownOpen
-    })
+  onSelectDate(date) {
+    const { handleSetDate } = this.props
+    handleSetDate(date)
+    this.setState({ showDateSelectorModal: false })
+  }
+
+  renderSortByDropdown() {
+    const { handeUpdateOption, sortByOption } = this.props
+    return (
+      <UncontrolledDropdown>
+        <DropdownToggle caret color="lightgrey" className={styles.sortButton}>
+          {getTitleFor(SortByOptions, sortByOption).toUpperCase()}
+        </DropdownToggle>
+        <DropdownMenu>
+          {SortByOptions.map(sortOption => (
+            <DropdownItem
+              onClick={() =>
+                handeUpdateOption({ sortByOption: sortOption.value })
+              }
+              key={sortOption.value}>
+              {sortOption.title.toUpperCase()}
+            </DropdownItem>
+          ))}
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    )
+  }
+
+  renderMobileDateSelectorButton() {
+    const { date } = this.props
+
+    return (
+      <div
+        className={styles.dateSelectorMobile}
+        onClick={() => this.setState({ showDateSelectorModal: true })}>
+        <span>{moment(date).format(DAY_FORMAT5)}</span>
+        <span>
+          <IconCalendar />
+        </span>
+      </div>
+    )
   }
 
   render() {
     const {
       courses,
       courseType,
-      location,
+      postcode,
       date,
       handleSetDate,
-      handeUpdateOption,
-      sortByOption,
       navigation,
       handleNavClick,
       loading,
       userLocation
     } = this.props
-    const { dropdownOpen, selectedCourse } = this.state
+    const { selectedCourse, showDateSelectorModal } = this.state
     return (
       <div className={styles.container}>
         <NavigationComponent
@@ -67,6 +103,10 @@ class ResultPage extends Component {
           handleSetDate={handleSetDate}
           className={styles.dateSelector}
         />
+        <div className={styles.mobileButtons}>
+          {this.renderMobileDateSelectorButton()}
+          {this.renderSortByDropdown()}
+        </div>
         <Loading loading={loading} className={styles.contentWrapper}>
           {/* <div className={styles.contentWrapper}> */}
           <div className={styles.mainContent}>
@@ -74,7 +114,7 @@ class ResultPage extends Component {
               <div
                 className={
                   styles.subTitle
-                }>{`${courseType} in ${location} on ${moment(date).format(
+                }>{`${courseType} in ${postcode} on ${moment(date).format(
                 DAY_FORMAT5
               )}`}</div>
               {courses.map(course => (
@@ -88,25 +128,7 @@ class ResultPage extends Component {
             </div>
             <div className={styles.mapPanel}>
               <div className={styles.buttonsWrapper}>
-                <ButtonDropdown isOpen={dropdownOpen} toggle={this.toggle}>
-                  <DropdownToggle
-                    caret
-                    color="lightgrey"
-                    className={styles.sortButton}>
-                    {getTitleFor(SortByOptions, sortByOption).toUpperCase()}
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    {SortByOptions.map(sortOption => (
-                      <DropdownItem
-                        onClick={() =>
-                          handeUpdateOption({ sortByOption: sortOption.value })
-                        }
-                        key={sortOption.value}>
-                        {sortOption.title.toUpperCase()}
-                      </DropdownItem>
-                    ))}
-                  </DropdownMenu>
-                </ButtonDropdown>
+                {this.renderSortByDropdown()}
               </div>
               {courses.length > 0 && (
                 <MapComponent
@@ -137,6 +159,14 @@ class ResultPage extends Component {
             />
           )}
         </SidePanel>
+        {showDateSelectorModal && (
+          <DateSelectorModal
+            isOpen={true}
+            onClose={() => this.setState({ showDateSelectorModal: false })}
+            date={date}
+            onSelect={this.onSelectDate.bind(this)}
+          />
+        )}
       </div>
     )
   }

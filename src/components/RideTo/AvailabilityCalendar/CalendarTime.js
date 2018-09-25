@@ -8,7 +8,7 @@ const CalendarTime = ({ calendar, times, handleTimeSelect }) => {
     <div className={styles.container}>
       {times.map((tm, index) => (
         <button
-          kye={index}
+          key={index}
           className={classnames(
             styles.btn,
             calendar.selectedTime === tm && styles.activeBtn

@@ -13,7 +13,8 @@ class AvailabilityCalendar extends Component {
       handleNextMonth,
       handlePrevMonth,
       handleDateSelect,
-      handleTimeSelect
+      handleTimeSelect,
+      showDateTime
     } = this.props
     return (
       <div className={classnames(styles.container)}>
@@ -22,18 +23,20 @@ class AvailabilityCalendar extends Component {
           handlePrevMonth={handlePrevMonth}
           handleNextMonth={handleNextMonth}
         />
-        <div className={styles.subtitle}>Choose a date</div>
+        {showDateTime && <div className={styles.subtitle}>Choose a date</div>}
         <CalendarContent
           days={days}
           calendar={calendar}
           handleDateSelect={handleDateSelect}
         />
-        <div className={styles.subtitle}>Choose a time</div>
-        <CalendarTime
-          calendar={calendar}
-          times={['07:00', '11:00']}
-          handleTimeSelect={handleTimeSelect}
-        />
+        {showDateTime && <div className={styles.subtitle}>Choose a time</div>}
+        {showDateTime && (
+          <CalendarTime
+            calendar={calendar}
+            times={['07:00', '11:00']}
+            handleTimeSelect={handleTimeSelect}
+          />
+        )}
       </div>
     )
   }
