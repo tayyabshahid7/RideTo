@@ -83,7 +83,7 @@ class ResultPage extends Component {
     const {
       courses,
       courseType,
-      location,
+      postcode,
       date,
       handleSetDate,
       navigation,
@@ -114,7 +114,7 @@ class ResultPage extends Component {
               <div
                 className={
                   styles.subTitle
-                }>{`${courseType} in ${location} on ${moment(date).format(
+                }>{`${courseType} in ${postcode} on ${moment(date).format(
                 DAY_FORMAT5
               )}`}</div>
               {courses.map(course => (

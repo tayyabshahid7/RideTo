@@ -20,7 +20,7 @@ class DateSelectorModal extends React.Component {
     }
   }
 
-  getFirstAndLastDate({ year, month }) {
+  getFirstDate({ year, month }) {
     let oneDay = 1000 * 60 * 60 * 24
     let firstDay = new Date(year, month, 1)
     let dayOne = firstDay.getDay()
@@ -37,30 +37,15 @@ class DateSelectorModal extends React.Component {
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
     return dates.map(date => {
-      // let momentDate = moment(date)
-      // let dateInString = momentDate.format('YYYY-MM-DD')
       let disabled = false
       let invisible = date.getMonth() !== calendar.month
-      // if (
-      //   course.excluded_days &&
-      //   course.excluded_days.includes(momentDate.format('dddd'))
-      // ) {
-      //   disabled = true
-      // }
-
-      // if (
-      //   course.excluded_dates &&
-      //   course.excluded_dates.includes(dateInString)
-      // ) {
-      //   disabled = true
-      // }
 
       return { date, disabled, invisible }
     })
   }
 
   generateCalendarDaysForMonth({ year, month }) {
-    let firstDate = this.getFirstAndLastDate({
+    let firstDate = this.getFirstDate({
       year,
       month
     })

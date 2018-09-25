@@ -4,13 +4,15 @@ import { DATE_FORMAT } from 'common/constants'
 import ResultPage from './ResultPage'
 // import SampleData from './SampleData.json'
 import { SORTBY } from 'common/constants'
-import { fetchRidetoCourses } from 'services/course'
+import { fetchRidetoCourses, getCourseTitle } from 'services/course'
+import { parseQueryString } from 'services/api'
 
 class ResultPageContainer extends Component {
   constructor(props) {
     super(props)
-    this.location = 'Brixton'
-    this.courseType = 'Compulsory Basic Training (CBT)'
+
+    const qs = parseQueryString(window.location.search.slice(1))
+
     this.state = {
       date: moment(new Date()).format(DATE_FORMAT),
       sortByOption: SORTBY.DISTANCE,
@@ -18,9 +20,33 @@ class ResultPageContainer extends Component {
         lat: 51.711712,
         lng: -0.327693
       },
+      postcode: qs.postcode || '',
+      courseType: qs.courseType || '',
       courses: [],
       loading: false
     }
+
+    this.navigation = [
+      {
+        title: 'Postcode',
+        subtitle: this.state.postcode
+      },
+      {
+        title: 'Course',
+        subtitle: getCourseTitle(this.state.courseType),
+        active: true
+      },
+      {
+        title: 'Date & Location',
+        subtitle: 'Choose a Date & Location',
+        disabled: true
+      },
+      {
+        title: 'Extras',
+        disabled: true
+      }
+    ]
+
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
     this.handleNavClick = this.handleNavClick.bind(this)
@@ -43,11 +69,11 @@ class ResultPageContainer extends Component {
 
   async loadCourses() {
     try {
-      const { date, sortByOption } = this.state
+      const { date, sortByOption, courseType, postcode } = this.state
       this.setState({ loading: true })
       let response = await fetchRidetoCourses({
-        course_type: 'LICENCE_CBT',
-        postcode: 'w4 2rd',
+        course_type: courseType,
+        postcode: postcode,
         radius_miles: 15,
         date,
         ordering: sortByOption
@@ -67,44 +93,33 @@ class ResultPageContainer extends Component {
   }
 
   handeUpdateOption(data) {
-    console.log('Data - ', data, this.state)
     this.setState({ ...data })
   }
 
   handleNavClick(index) {}
 
   render() {
-    const { date, sortByOption, userLocation, courses, loading } = this.state
-    let navigation = [
-      {
-        title: 'Postcode',
-        subtitle: 'Brixton, London'
-      },
-      {
-        title: 'Course',
-        subtitle: 'Compulsory Basic Training'
-      },
-      {
-        title: 'Date & Location',
-        subtitle: 'Choose a Date & Location',
-        active: true
-      },
-      {
-        title: 'Extras',
-        disabled: true
-      }
-    ]
+    const {
+      date,
+      sortByOption,
+      userLocation,
+      courses,
+      loading,
+      courseType,
+      postcode
+    } = this.state
+
     return (
       <ResultPage
-        location={this.location}
-        courseType={this.courseType}
+        postcode={postcode}
+        courseType={courseType}
         courses={courses}
         loading={loading}
         date={date}
         sortByOption={sortByOption}
         handleSetDate={this.handleSetDate}
         handeUpdateOption={this.handeUpdateOption}
-        navigation={navigation}
+        navigation={this.navigation}
         handleNavClick={this.handleNavClick}
         userLocation={userLocation}
       />
