@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styles from './styles.scss'
 import NavigationItem from './NavigationItem'
 import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'

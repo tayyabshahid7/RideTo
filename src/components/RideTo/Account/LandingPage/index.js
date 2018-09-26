@@ -12,7 +12,12 @@ class LandingPage extends React.Component {
     this.navigation = [
       {
         title: 'Sign up to RideTo',
-        subtitle: 'If you already have an account you can log in'
+        subtitle: (
+          <div className={styles.navigation}>
+            If you already have an account you can{' '}
+            <Link to="/account/login">log in</Link>
+          </div>
+        )
       }
     ]
 

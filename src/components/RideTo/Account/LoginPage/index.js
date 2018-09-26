@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Input from 'components/RideTo/Input'
@@ -13,7 +14,12 @@ class LoginPage extends React.Component {
     this.navigation = [
       {
         title: 'Log In To RideTo',
-        subtitle: "If you don't have an account you can sign up"
+        subtitle: (
+          <div className={styles.navigation}>
+            If you don’t have an account you can{' '}
+            <Link to="/account/signup">sign up</Link>
+          </div>
+        )
       }
     ]
 
@@ -25,10 +31,12 @@ class LoginPage extends React.Component {
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleBack = this.handleBack.bind(this)
   }
 
   handleBack() {
-    console.log('back')
+    const { history } = this.props
+    history.goBack()
   }
 
   handleChange({ target }) {
@@ -58,7 +66,6 @@ class LoginPage extends React.Component {
         <NavigationComponent
           navigation={this.navigation}
           onNavBack={this.handleBack}
-          onNavClick={this.handleNavigation}
         />
         <div className={styles.loginPage}>
           <h2 className={styles.heading}>Log In to RideTo</h2>
@@ -85,7 +92,7 @@ class LoginPage extends React.Component {
               <div className={styles.error}>{errors.password}</div>
             )}
             <div className={styles.subtext}>
-              <a href="#">Forgot Password</a>
+              <Link to="/account/forgot">Forgot password</Link>
             </div>
 
             <button type="submit" className={styles.login}>

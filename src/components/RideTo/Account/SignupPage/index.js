@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import Checkbox from 'components/Checkbox'
 import Input from 'components/RideTo/Input'
@@ -11,13 +12,19 @@ class SignupPage extends React.Component {
   constructor(props) {
     super(props)
 
+    this.navigation = [
+      {
+        title: 'Sign up to RideTo',
+        subtitle: (
+          <div className={styles.navigation}>
+            If you already have an account you can{' '}
+            <Link to="/account/login">log in</Link>
+          </div>
+        )
+      }
+    ]
+
     this.state = {
-      navigation: [
-        {
-          title: 'Sign up to RideTo',
-          subtitle: 'If you already have an account you can log in'
-        }
-      ],
       first_name: '',
       last_name: '',
       email: '',
@@ -28,12 +35,14 @@ class SignupPage extends React.Component {
     }
 
     this.handleChange = this.handleChange.bind(this)
+    this.handleBack = this.handleBack.bind(this)
     this.handleCheck = this.handleCheck.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleBack() {
-    console.log('back')
+    const { history } = this.props
+    history.goBack()
   }
 
   handleChange({ target }) {
@@ -93,7 +102,6 @@ class SignupPage extends React.Component {
 
   render() {
     const {
-      navigation,
       last_name,
       first_name,
       email,
@@ -106,9 +114,8 @@ class SignupPage extends React.Component {
     return (
       <React.Fragment>
         <NavigationComponent
-          navigation={navigation}
+          navigation={this.navigation}
           onNavBack={this.handleBack}
-          onNavClick={this.handleNavigation}
         />
         <div className={styles.signupPage}>
           <h2 className={styles.heading}>sign up to rideto</h2>
