@@ -4,6 +4,7 @@ import Checkbox from 'components/Checkbox'
 import Input from 'components/RideTo/Input'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import { saveUser } from 'services/user'
 import styles from './SignupPage.scss'
 
 class SignupPage extends React.Component {
@@ -17,15 +18,18 @@ class SignupPage extends React.Component {
           subtitle: 'If you already have an account you can log in'
         }
       ],
-      name: '',
+      first_name: '',
+      last_name: '',
       email: '',
       password: '',
+      errors: {},
       terms: false,
       newsletter: false
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleCheck = this.handleCheck.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   handleBack() {
@@ -35,19 +39,69 @@ class SignupPage extends React.Component {
   handleChange({ target }) {
     const { name, value } = target
     this.setState({
-      [name]: value
+      [name]: value,
+      errors: {
+        ...this.state.errors,
+        [name]: false
+      }
     })
   }
 
   handleCheck({ target }) {
     const { name, checked } = target
     this.setState({
-      [name]: checked
+      [name]: checked,
+      errors: {
+        ...this.state.errors,
+        [name]: false
+      }
     })
   }
 
+  async handleSubmit(event) {
+    event.preventDefault()
+    const { terms, first_name, last_name, email, password } = this.state
+
+    if (!terms) {
+      this.setState({ errors: { terms: true } })
+      return
+    }
+
+    try {
+      const user = await saveUser({ first_name, last_name, email, password })
+      console.log(user)
+    } catch (error) {
+      const { response } = error
+      if (response) {
+        const { data } = response
+        const errors = Object.keys(data).reduce((errors, key) => {
+          return {
+            ...errors,
+            [key]: data[key][0]
+          }
+        }, {})
+
+        this.setState({
+          errors: {
+            ...this.state.errors,
+            ...errors
+          }
+        })
+      }
+    }
+  }
+
   render() {
-    const { navigation, name, email, password, terms, newsletter } = this.state
+    const {
+      navigation,
+      last_name,
+      first_name,
+      email,
+      password,
+      terms,
+      newsletter,
+      errors
+    } = this.state
 
     return (
       <React.Fragment>
@@ -58,15 +112,29 @@ class SignupPage extends React.Component {
         />
         <div className={styles.signupPage}>
           <h2 className={styles.heading}>sign up to rideto</h2>
-          <form className={styles.form}>
+          <form className={styles.form} onSubmit={this.handleSubmit}>
             <Input
-              placeholder="Name"
-              name="name"
-              value={name}
+              placeholder="First Name"
+              name="first_name"
+              value={first_name}
               className={styles.input}
               onChange={this.handleChange}
               required
             />
+            {errors.first_name && (
+              <div className={styles.error}>{errors.first_name}</div>
+            )}
+            <Input
+              placeholder="Last Name"
+              name="last_name"
+              value={last_name}
+              className={styles.input}
+              onChange={this.handleChange}
+              required
+            />
+            {errors.last_name && (
+              <div className={styles.error}>{errors.last_name}</div>
+            )}
             <Input
               placeholder="Email"
               name="email"
@@ -76,6 +144,7 @@ class SignupPage extends React.Component {
               onChange={this.handleChange}
               required
             />
+            {errors.email && <div className={styles.error}>{errors.email}</div>}
             <Input
               placeholder="Password"
               name="password"
@@ -95,6 +164,7 @@ class SignupPage extends React.Component {
               extraClass={styles.checkbox}
               onChange={this.handleCheck}
               size="large"
+              error={errors.terms}
               checked={terms}
               name="terms">
               I confirm I have read and accept RideTo’s terms & conditions and
