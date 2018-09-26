@@ -9,6 +9,15 @@
   padding-bottom: 144px;
 
   background-color: #f8f8f8;
+
+  @media (max-width: 768px) {
+    text-align: left;
+    align-items: flex-start;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
 }
 
 .heading {
@@ -24,10 +33,18 @@
 
   text-transform: uppercase;
   text-align: left;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .form {
   width: 536px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
 
 .input {
@@ -40,6 +57,11 @@
   margin-bottom: 24px;
   font-family: var(--font-proxima);
   font-size: 15px;
+
+  @media (max-width: 768px) {
+    height: 64px;
+    margin-top: 32px;
+  }
 }
 
 .subtext {
@@ -83,12 +105,18 @@
   }
 
   @media (max-width: 768px) {
+    margin-top: 40px;
+    width: 100%;
     padding: 16px 32px;
     justify-content: space-between;
   }
 }
 
 .navigation {
+  @media (max-width: 768px) {
+    display: none;
+  }
+
   a {
     color: var(--grey-color);
     text-decoration: underline;

@@ -45,12 +45,10 @@ class LandingPage extends React.Component {
         />
         <div className={styles.landingPage}>
           <h2 className={styles.heading}>Hi, you look new here</h2>
-          <div className={styles.actions}>
-            <Link to="/account/signup" className={styles.email}>
-              <img src={Envelope} alt="" />
-              <span>Sign Up With Email</span>
-            </Link>
-          </div>
+          <Link to="/account/signup" className={styles.email}>
+            <img src={Envelope} alt="" />
+            <span>Sign Up With Email</span>
+          </Link>
           <div className={styles.subaction}>
             Already have an account? <Link to="/account/login">Login</Link>
           </div>

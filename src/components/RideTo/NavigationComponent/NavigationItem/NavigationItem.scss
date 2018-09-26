@@ -31,6 +31,11 @@
 
 .fullWidth {
   flex-grow: 1;
+
+  @media (max-width: 768px) {
+    flex-grow: initial;
+    width: auto;
+  }
 }
 
 .title {
