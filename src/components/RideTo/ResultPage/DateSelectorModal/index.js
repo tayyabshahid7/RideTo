@@ -5,6 +5,7 @@ import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import { DATE_FORMAT } from 'common/constants'
 
 class DateSelectorModal extends React.Component {
   constructor(props) {
@@ -14,8 +15,7 @@ class DateSelectorModal extends React.Component {
       calendar: {
         year: date.getFullYear(),
         month: date.getMonth(),
-        selectedDate: this.props.date,
-        selectedTime: null
+        selectedDate: this.props.date
       }
     }
   }
@@ -36,10 +36,15 @@ class DateSelectorModal extends React.Component {
   generateDaysDataFromCalendar(calendar) {
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
+    let todate = moment().format(DATE_FORMAT)
     return dates.map(date => {
       let disabled = false
+      let momentDate = moment(date)
       let invisible = date.getMonth() !== calendar.month
-
+      let dateInString = momentDate.format(DATE_FORMAT)
+      if (dateInString < todate) {
+        disabled = true
+      }
       return { date, disabled, invisible }
     })
   }
@@ -90,11 +95,6 @@ class DateSelectorModal extends React.Component {
     this.setState({ calendar: { ...calendar, selectedDate } })
   }
 
-  handleTimeSelect(selectedTime) {
-    const { calendar } = this.state
-    this.setState({ calendar: { ...calendar, selectedTime } })
-  }
-
   render() {
     const { isOpen, onClose, onSelect } = this.props
     const { calendar } = this.state
@@ -113,7 +113,7 @@ class DateSelectorModal extends React.Component {
             handleDateSelect={this.handleDateSelect.bind(this)}
             handlePrevMonth={this.handlePrevMonth.bind(this)}
             handleNextMonth={this.handleNextMonth.bind(this)}
-            handleTimeSelect={this.handleTimeSelect.bind(this)}
+            disablePreviousDates
           />
         </ModalBody>
         <button

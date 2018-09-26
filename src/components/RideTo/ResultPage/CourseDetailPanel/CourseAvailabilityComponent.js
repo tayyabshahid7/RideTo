@@ -2,19 +2,48 @@ import React from 'react'
 import moment from 'moment'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
+import { fetchWidgetCourses } from 'services/course'
+import { DATE_FORMAT } from 'common/constants'
 
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
     super(props)
-    let date = new Date()
+    let date = new Date(this.props.date) || new Date()
     this.state = {
       calendar: {
         year: date.getFullYear(),
         month: date.getMonth(),
-        selectedDate: null,
-        selectedTime: null
-      }
+        selectedDate: moment(date).format(DATE_FORMAT),
+        selectedCourse: null
+      },
+      courses: []
     }
+  }
+
+  componentDidMount() {
+    this.loadCourses()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      prevState.calendar.year !== this.state.calendar.year ||
+      prevState.calendar.month !== this.state.calendar.month
+    ) {
+      this.loadCourses()
+    }
+  }
+
+  async loadCourses() {
+    const { year, month } = this.state.calendar
+    const { course } = this.props
+    let momentDate = moment(new Date(year, month, 1))
+
+    const courses = await fetchWidgetCourses(
+      course.id,
+      momentDate.format('YYYY-MM-DD'),
+      momentDate.endOf('month').format('YYYY-MM-DD')
+    )
+    this.setState({ courses })
   }
 
   getFirstAndLastDate({ year, month }) {
@@ -31,13 +60,16 @@ class CourseAvailabilityComponent extends React.Component {
   }
 
   generateDaysDataFromCalendar(course, calendar) {
+    const { courses } = this.state
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
+    let todate = moment().format(DATE_FORMAT)
     return dates.map(date => {
       let momentDate = moment(date)
       let dateInString = momentDate.format('YYYY-MM-DD')
       let disabled = false
       let invisible = date.getMonth() !== calendar.month
+      let dayCourses = courses.filter(course => course.date === dateInString)
       if (
         course.excluded_days &&
         course.excluded_days.includes(momentDate.format('dddd'))
@@ -52,7 +84,11 @@ class CourseAvailabilityComponent extends React.Component {
         disabled = true
       }
 
-      return { date, disabled, invisible }
+      if (dateInString < todate) {
+        disabled = true
+      }
+
+      return { date, disabled, invisible, courses: dayCourses }
     })
   }
 
@@ -99,17 +135,19 @@ class CourseAvailabilityComponent extends React.Component {
 
   handleDateSelect(selectedDate) {
     const { calendar } = this.state
-    this.setState({ calendar: { ...calendar, selectedDate } })
+    let selectedCourse =
+      calendar.selectedDate === selectedDate ? calendar.selectedCourse : null
+    this.setState({ calendar: { ...calendar, selectedDate, selectedCourse } })
   }
 
-  handleTimeSelect(selectedTime) {
+  handleTimeSelect(selectedCourse) {
     const { calendar } = this.state
-    this.setState({ calendar: { ...calendar, selectedTime } })
+    this.setState({ calendar: { ...calendar, selectedCourse } })
   }
 
   render() {
     const { course } = this.props
-    const { calendar } = this.state
+    const { calendar, courses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
     return (
       <div className={styles.content}>
@@ -121,6 +159,8 @@ class CourseAvailabilityComponent extends React.Component {
           handleNextMonth={this.handleNextMonth.bind(this)}
           handleTimeSelect={this.handleTimeSelect.bind(this)}
           showDateTime={true}
+          courses={courses}
+          disablePreviousDates
         />
       </div>
     )

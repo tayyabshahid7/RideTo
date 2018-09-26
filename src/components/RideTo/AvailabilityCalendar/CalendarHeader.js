@@ -1,21 +1,43 @@
 import React from 'react'
 import moment from 'moment'
+import classnames from 'classnames'
 import styles from './CalendarHeader.scss'
 import { IconArrowRight, IconArrowLeft } from 'assets/icons'
 // import classnames from 'classnames'
 
-const CalendarHeader = ({ calendar, handlePrevMonth, handleNextMonth }) => (
-  <div className={styles.container}>
-    <div className={styles.title}>
-      {moment(new Date(calendar.year, calendar.month, 1)).format('MMMM YYYY')}
+const CalendarHeader = ({
+  calendar,
+  handlePrevMonth,
+  handleNextMonth,
+  disablePreviousDates
+}) => {
+  let todate = new Date()
+  let currentMonth = todate.getMonth()
+  let currentYear = todate.getFullYear()
+  let prevDisabled =
+    disablePreviousDates &&
+    calendar.year === currentYear &&
+    calendar.month === currentMonth
+  return (
+    <div className={styles.container}>
+      <div className={styles.title}>
+        {moment(new Date(calendar.year, calendar.month, 1)).format('MMMM YYYY')}
+      </div>
+      <div
+        className={classnames(styles.prev, prevDisabled && styles.disabled)}
+        onClick={() => !prevDisabled && handlePrevMonth()}>
+        <IconArrowLeft
+          className={classnames(
+            styles.icon,
+            prevDisabled && styles.disabledIcon
+          )}
+        />
+      </div>
+      <div className={styles.next} onClick={handleNextMonth}>
+        <IconArrowRight className={styles.icon} />
+      </div>
     </div>
-    <div className={styles.prev} onClick={handlePrevMonth}>
-      <IconArrowLeft className={styles.icon} />
-    </div>
-    <div className={styles.next} onClick={handleNextMonth}>
-      <IconArrowRight className={styles.icon} />
-    </div>
-  </div>
-)
+  )
+}
 
 export default CalendarHeader

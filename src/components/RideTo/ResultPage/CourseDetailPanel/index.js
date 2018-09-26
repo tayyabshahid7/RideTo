@@ -9,10 +9,10 @@ import CourseInformationComponent from './CourseInformationComponent'
 class CourseDetailPanel extends React.Component {
   constructor(props) {
     super(props)
-
+    const { initialTab } = this.props
     this.state = {
       opened: [],
-      activeTab: '1'
+      activeTab: initialTab || '1'
     }
 
     this.toggle = this.toggle.bind(this)
@@ -27,7 +27,7 @@ class CourseDetailPanel extends React.Component {
   }
 
   render() {
-    const { course } = this.props
+    const { course, date } = this.props
     const { activeTab } = this.state
 
     return (
@@ -63,7 +63,9 @@ class CourseDetailPanel extends React.Component {
           <MapComponent className={styles.mapWrapper} courses={[course]} />
         )}
         {activeTab === '2' && <CourseReviewsComponent course={course} />}
-        {activeTab === '3' && <CourseAvailabilityComponent course={course} />}
+        {activeTab === '3' && (
+          <CourseAvailabilityComponent course={course} date={date} />
+        )}
       </div>
     )
   }

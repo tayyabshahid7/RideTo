@@ -28,12 +28,18 @@ class ResultPage extends Component {
     this.state = {
       selectedCourse: null,
       loading: false,
-      showDateSelectorModal: false
+      showDateSelectorModal: false,
+      initialTab: '1'
     }
+    this.onBookNow = this.onBookNow.bind(this)
   }
 
   handleDetailClick(course) {
-    this.setState({ selectedCourse: course })
+    this.setState({ selectedCourse: course, initialTab: '1' })
+  }
+
+  handlePriceClick(course) {
+    this.setState({ selectedCourse: course, initialTab: '3' })
   }
 
   onSelectDate(date) {
@@ -41,6 +47,8 @@ class ResultPage extends Component {
     handleSetDate(date)
     this.setState({ showDateSelectorModal: false })
   }
+
+  onBookNow() {}
 
   renderSortByDropdown() {
     const { handeUpdateOption, sortByOption } = this.props
@@ -91,7 +99,7 @@ class ResultPage extends Component {
       loading,
       userLocation
     } = this.props
-    const { selectedCourse, showDateSelectorModal } = this.state
+    const { selectedCourse, showDateSelectorModal, initialTab } = this.state
     return (
       <div className={styles.container}>
         <NavigationComponent
@@ -123,6 +131,7 @@ class ResultPage extends Component {
                   className="mt-3"
                   key={course.id}
                   handleDetailClick={this.handleDetailClick.bind(this)}
+                  handlePriceClick={this.handlePriceClick.bind(this)}
                 />
               ))}
             </div>
@@ -147,7 +156,7 @@ class ResultPage extends Component {
           headingImage={selectedCourse ? selectedCourse.image : ''}
           onDismiss={() => this.setState({ selectedCourse: null })}
           footer={
-            <RideToButton className={styles.action}>
+            <RideToButton className={styles.action} onClick={this.onBookNow}>
               <span>Book Now</span>
               <img src={ButtonArrowWhite} alt="arrow" />
             </RideToButton>
@@ -156,6 +165,8 @@ class ResultPage extends Component {
             <CourseDetailPanel
               course={selectedCourse}
               userLocation={userLocation}
+              initialTab={initialTab}
+              date={date}
             />
           )}
         </SidePanel>
