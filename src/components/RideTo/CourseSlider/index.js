@@ -53,7 +53,7 @@ const CourseSlider = () => {
   }
 
   const staticData = getStaticData('RIDETO_PAGE')
-  const slides = staticData.carouselSlides
+  const slides = staticData.courseTypes
 
   return (
     <RideToSlider settings={settings}>
@@ -61,8 +61,8 @@ const CourseSlider = () => {
         <a href={slide.link}>
           <div
             className={styles.slide}
-            style={{ backgroundImage: `url(${slide.image})` }}>
-            <div className={styles.title}>{slide.title}</div>
+            style={{ backgroundImage: `url(${slide.details.image})` }}>
+            <div className={styles.title}>{slide.name}</div>
           </div>
         </a>
       ))}
