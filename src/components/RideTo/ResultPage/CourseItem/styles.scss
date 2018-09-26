@@ -120,7 +120,35 @@
 
 .icons {
   margin-top: 12px;
-  img {
+  display: flex;
+  div {
     margin-right: 16px;
   }
+}
+
+.tooltip {
+  text-align: left !important;
+  display: flex;
+  // justify-content: flex-start;
+  // align-items: flex-start;
+  flex-direction: column;
+  padding: 20px 20px 20px 25px !important;
+  border-radius: 0 !important;
+}
+
+.tooltipTitle {
+  font-family: var(--font-rift);
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: bold;
+  // padding: 20px 20px 0px 20px @!;
+}
+
+.tooltipInfo {
+  font-family: var(--font-proxima);
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0.75;
+  margin-top: 10px;
+  // padding: 0px 20px 20px 20px;
 }

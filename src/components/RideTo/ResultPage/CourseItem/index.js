@@ -1,12 +1,35 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
+import { UncontrolledTooltip } from 'reactstrap'
 import styles from './styles.scss'
 import StarsComponent from 'components/RideTo/StarsComponent'
 import { IconArrowRight, IconInfo, IconDistance } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
+import { getFeatureInfo } from 'services/course'
 
 class CourseItem extends Component {
   handleDetailClick() {}
+
+  renderIcon(feature) {
+    const { course } = this.props
+    let featureInfo = getFeatureInfo(feature)
+    return (
+      <div>
+        <img
+          src={FeatureIcons[featureInfo.icon]}
+          alt="feature"
+          id={`feature-icon-${course.id}-${feature}`}
+        />
+        <UncontrolledTooltip
+          placement="top"
+          target={`feature-icon-${course.id}-${feature}`}
+          innerClassName={styles.tooltip}>
+          <div className={styles.tooltipTitle}>{featureInfo.title}</div>
+          <div className={styles.tooltipInfo}>{featureInfo.description}</div>
+        </UncontrolledTooltip>
+      </div>
+    )
+  }
 
   render() {
     const {
@@ -27,21 +50,12 @@ class CourseItem extends Component {
               {course.place}, {course.postcode}
             </div>
             <div className={styles.icons}>
-              {course.mciac_approved && (
-                <img src={FeatureIcons['Approved']} alt="feature" />
-              )}
-              {course.bike_hire && (
-                <img src={FeatureIcons['Bike']} alt="feature" />
-              )}
-              {course.helmet_hire && (
-                <img src={FeatureIcons['Helmet']} alt="feature" />
-              )}
-              {course.on_site_cafe && (
-                <img src={FeatureIcons['Cafe']} alt="feature" />
-              )}
-              {course.indoor_classroom && (
-                <img src={FeatureIcons['Class']} alt="feature" />
-              )}
+              {course.mciac_approved && this.renderIcon('mciac_approved')}
+              {course.bike_hire && this.renderIcon('bike_hire')}
+              {course.helmet_hire && this.renderIcon('helmet_hire')}
+              {course.on_site_cafe && this.renderIcon('on_site_cafe')}
+              {course.indoor_classroom && this.renderIcon('indoor_classroom')}
+              {course.instant_book && this.renderIcon('instant_book')}
             </div>
           </div>
           <div className={styles.extraInfo}>

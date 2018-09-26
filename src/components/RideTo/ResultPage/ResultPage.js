@@ -48,7 +48,16 @@ class ResultPage extends Component {
     this.setState({ showDateSelectorModal: false })
   }
 
-  onBookNow() {}
+  onBookNow() {
+    const { selectedCourse } = this.state
+    const { postcode, courseType, date } = this.props
+    if (!selectedCourse) {
+      return
+    }
+    window.location = `/course-addons?postcode=${postcode}&courseType=${courseType}&supplierId=${
+      selectedCourse.id
+    }&date=${date}`
+  }
 
   renderSortByDropdown() {
     const { handeUpdateOption, sortByOption } = this.props
