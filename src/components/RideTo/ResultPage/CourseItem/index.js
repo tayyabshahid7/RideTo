@@ -9,7 +9,12 @@ class CourseItem extends Component {
   handleDetailClick() {}
 
   render() {
-    const { course, className, handleDetailClick } = this.props
+    const {
+      course,
+      className,
+      handleDetailClick,
+      handlePriceClick
+    } = this.props
     return (
       <div className={classnames(styles.container, className)}>
         <div className={styles.photo}>
@@ -59,7 +64,7 @@ class CourseItem extends Component {
             </span>
           </div>
         </div>
-        <div className={styles.price}>
+        <div className={styles.price} onClick={() => handlePriceClick(course)}>
           <div>£{parseInt(course.price / 100.0, 10)}</div>
           <IconArrowRight className={styles.arrowIcon} />
         </div>

@@ -1,20 +1,22 @@
 import React from 'react'
-import moment from 'moment'
+// import moment from 'moment'
 import classnames from 'classnames'
 import styles from './CalendarTime.scss'
 
-const CalendarTime = ({ calendar, times, handleTimeSelect }) => {
+const CalendarTime = ({ calendar, courses, handleTimeSelect }) => {
   return (
     <div className={styles.container}>
-      {times.map((tm, index) => (
+      {courses.map((course, index) => (
         <button
           key={index}
           className={classnames(
             styles.btn,
-            calendar.selectedTime === tm && styles.activeBtn
+            calendar.selectedCourse &&
+              calendar.selectedCourse.id === course.id &&
+              styles.activeBtn
           )}
-          onClick={() => handleTimeSelect(tm)}>
-          {moment(`2000-01-01 ${tm}`).format('Ha')}
+          onClick={() => handleTimeSelect(course)}>
+          {course.time.substring(0, 5)}
         </button>
       ))}
     </div>
