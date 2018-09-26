@@ -25,6 +25,18 @@
   }
 }
 
+.backItem {
+  width: 108px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-right: 1px solid #f8f8f8;
+
+  cursor: pointer;
+}
+
 .leftBorder {
   border-left: 1px solid #97979729;
 }

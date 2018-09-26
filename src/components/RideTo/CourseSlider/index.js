@@ -60,6 +60,7 @@ const CourseSlider = () => {
       {slides.map(slide => (
         <a href={slide.link}>
           <div
+            key={slide.id}
             className={styles.slide}
             style={{ backgroundImage: `url(${slide.details.image})` }}>
             <div className={styles.title}>{slide.name}</div>
