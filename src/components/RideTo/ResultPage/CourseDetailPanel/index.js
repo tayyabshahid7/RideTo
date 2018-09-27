@@ -27,7 +27,7 @@ class CourseDetailPanel extends React.Component {
   }
 
   render() {
-    const { course, date } = this.props
+    const { course, date, instantCourse, onSelectInstantCourse } = this.props
     const { activeTab } = this.state
 
     return (
@@ -64,7 +64,12 @@ class CourseDetailPanel extends React.Component {
         )}
         {activeTab === '2' && <CourseReviewsComponent course={course} />}
         {activeTab === '3' && (
-          <CourseAvailabilityComponent course={course} date={date} />
+          <CourseAvailabilityComponent
+            course={course}
+            date={date}
+            onSelectInstantCourse={onSelectInstantCourse}
+            instantCourse={instantCourse}
+          />
         )}
       </div>
     )

@@ -13,8 +13,7 @@ class CourseAvailabilityComponent extends React.Component {
       calendar: {
         year: date.getFullYear(),
         month: date.getMonth(),
-        selectedDate: moment(date).format(DATE_FORMAT),
-        selectedCourse: null
+        selectedDate: moment(date).format(DATE_FORMAT)
       },
       courses: []
     }
@@ -135,25 +134,27 @@ class CourseAvailabilityComponent extends React.Component {
 
   handleDateSelect(selectedDate) {
     const { calendar } = this.state
+    const { onSelectInstantCourse } = this.props
     let selectedCourse =
       calendar.selectedDate === selectedDate ? calendar.selectedCourse : null
-    this.setState({ calendar: { ...calendar, selectedDate, selectedCourse } })
+    this.setState({ calendar: { ...calendar, selectedDate } })
+    onSelectInstantCourse(selectedCourse)
   }
 
   handleTimeSelect(selectedCourse) {
-    const { calendar } = this.state
-    this.setState({ calendar: { ...calendar, selectedCourse } })
+    const { onSelectInstantCourse } = this.props
+    onSelectInstantCourse(selectedCourse)
   }
 
   render() {
-    const { course } = this.props
+    const { course, instantCourse } = this.props
     const { calendar, courses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
     return (
       <div className={styles.content}>
         <AvailabilityCalendar
           days={days}
-          calendar={calendar}
+          calendar={{ ...calendar, selectedCourse: instantCourse }}
           handleDateSelect={this.handleDateSelect.bind(this)}
           handlePrevMonth={this.handlePrevMonth.bind(this)}
           handleNextMonth={this.handleNextMonth.bind(this)}

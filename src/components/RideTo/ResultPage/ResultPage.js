@@ -29,7 +29,8 @@ class ResultPage extends Component {
       selectedCourse: null,
       loading: false,
       showDateSelectorModal: false,
-      initialTab: '1'
+      initialTab: '1',
+      instantCourse: null
     }
     this.onBookNow = this.onBookNow.bind(this)
   }
@@ -39,7 +40,14 @@ class ResultPage extends Component {
   }
 
   handlePriceClick(course) {
-    this.setState({ selectedCourse: course, initialTab: '3' })
+    const { postcode, courseType, date } = this.props
+    if (course.instant_book) {
+      this.setState({ selectedCourse: course, initialTab: '3' })
+    } else {
+      window.location = `/course-addons?postcode=${postcode}&courseType=${courseType}&supplierId=${
+        course.id
+      }&date=${date}`
+    }
   }
 
   onSelectDate(date) {
@@ -48,15 +56,27 @@ class ResultPage extends Component {
     this.setState({ showDateSelectorModal: false })
   }
 
+  onSelectInstantCourse(instantCourse) {
+    this.setState({ instantCourse })
+  }
+
   onBookNow() {
-    const { selectedCourse } = this.state
+    const { selectedCourse, instantCourse } = this.state
     const { postcode, courseType, date } = this.props
     if (!selectedCourse) {
       return
     }
-    window.location = `/course-addons?postcode=${postcode}&courseType=${courseType}&supplierId=${
-      selectedCourse.id
-    }&date=${date}`
+    if (selectedCourse.instant_book) {
+      if (instantCourse) {
+        window.location = `/course-addons?postcode=${postcode}&courseType=${courseType}&courseId=${
+          instantCourse.id
+        }&date=${instantCourse.date}`
+      }
+    } else {
+      window.location = `/course-addons?postcode=${postcode}&courseType=${courseType}&supplierId=${
+        selectedCourse.id
+      }&date=${date}`
+    }
   }
 
   renderSortByDropdown() {
@@ -108,7 +128,12 @@ class ResultPage extends Component {
       loading,
       userLocation
     } = this.props
-    const { selectedCourse, showDateSelectorModal, initialTab } = this.state
+    const {
+      selectedCourse,
+      showDateSelectorModal,
+      initialTab,
+      instantCourse
+    } = this.state
     return (
       <div className={styles.container}>
         <NavigationComponent
@@ -176,6 +201,8 @@ class ResultPage extends Component {
               userLocation={userLocation}
               initialTab={initialTab}
               date={date}
+              instantCourse={instantCourse}
+              onSelectInstantCourse={this.onSelectInstantCourse.bind(this)}
             />
           )}
         </SidePanel>
