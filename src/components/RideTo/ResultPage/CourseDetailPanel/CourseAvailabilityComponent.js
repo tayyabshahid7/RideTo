@@ -90,6 +90,10 @@ class CourseAvailabilityComponent extends React.Component {
         disabled = true
       }
 
+      if (course.instant_book && dayCourses.length === 0) {
+        disabled = true
+      }
+
       return { date, disabled, invisible, courses: dayCourses }
     })
   }

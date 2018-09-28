@@ -15,10 +15,11 @@ const NavigationItem = ({
       className={classnames(
         styles.navigationItem,
         active && styles.active,
+        !active && !disabled && styles.clickable,
         fullWidth && styles.fullWidth
       )}
       onClick={() => {
-        if (!disabled) {
+        if (!disabled && !active) {
           onClick()
         }
       }}>

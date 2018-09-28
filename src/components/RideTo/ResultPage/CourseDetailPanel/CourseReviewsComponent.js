@@ -12,7 +12,9 @@ class CourseReviewComponent extends React.Component {
           {course.number_of_reviews} Reviews
         </div>
         <div className={styles.reviews}>
-          {course.ratings.map(review => <ReviewItem review={review} />)}
+          {course.ratings.map((review, index) => (
+            <ReviewItem review={review} key={index} />
+          ))}
         </div>
       </div>
     )

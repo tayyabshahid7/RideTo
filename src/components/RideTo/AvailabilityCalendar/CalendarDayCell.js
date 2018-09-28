@@ -12,10 +12,11 @@ const CalendarDayCell = ({ day, calendar, handleDateSelect }) => {
         styles.container,
         selectedDay && styles.selectedDate,
         day.disabled && styles.disabledDate,
-        day.invisible && styles.invisibleDate
+        day.invisible && styles.invisibleDate,
+        !day.invisible && !day.disabled && !selectedDay && styles.clickable
       )}
       onClick={() => {
-        if (!day.disabled && !day.invisible) {
+        if (!day.disabled && !day.invisible && !selectedDay) {
           handleDateSelect(dateStr)
         }
       }}>

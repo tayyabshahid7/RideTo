@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from 'reactstrap'
 import moment from 'moment'
 
 import { parseQueryString } from 'services/api'
-import { fetchCourseTypeAddons } from 'services/supplier'
+import { fetchCourseTypeAddons, fetchSingleSupplier } from 'services/supplier'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
 import SidePanel from 'components/RideTo/SidePanel'
@@ -21,8 +21,10 @@ class AddonSelection extends React.Component {
       addons: [],
       postcode: qs.postcode || '',
       courseType: qs.courseType || '',
+      qs: qs || {},
       selectedAddons: [],
-      detailsAddon: null
+      detailsAddon: null,
+      supplier: null
     }
 
     let step3Params = [`date=${qs.date}`]
@@ -62,13 +64,33 @@ class AddonSelection extends React.Component {
     this.handleContinue = this.handleContinue.bind(this)
   }
 
+  loadData() {
+    // this.loadSupplier()
+    this.loadAddOns()
+  }
+
+  async loadSupplier() {
+    const { qs } = this.state
+    if (qs.supplierId) {
+      let response = await fetchSingleSupplier(qs.supplierId, false)
+      this.setState({ supplier: response.result })
+    }
+  }
+
+  async loadAddOns() {
+    const { qs } = this.state
+    if (qs.supplierId) {
+      const result = await fetchCourseTypeAddons(qs.supplierId, qs.courseType)
+
+      this.setState({
+        addons: result.results
+      })
+    }
+  }
+
   async componentDidMount() {
     // TODO need real values
-    const result = await fetchCourseTypeAddons(988, 'LICENCE_CBT')
-
-    this.setState({
-      addons: result.results
-    })
+    this.loadData()
   }
 
   handleAddAddon(addon) {
