@@ -14,7 +14,8 @@
   min-height: 100%;
   z-index: 2;
   width: 488px;
-
+  overflow-y: auto;
+  height: 100vh;
   @media (max-width: 768px) {
     width: 100%;
   }
@@ -64,12 +65,12 @@
 .content {
   // padding: 50px 60px;
   padding-bottom: 74px;
-  max-height: calc(100vh - 240px);
-  overflow-y: auto;
+  // max-height: calc(100vh - 240px);
+  // overflow-y: auto;
 
   @media (max-width: 768px) {
-    height: calc(100% - 168px);
+    // height: calc(100% - 168px);
     // padding: 32px;
-    overflow-y: auto;
+    // overflow-y: auto;
   }
 }

@@ -29,17 +29,18 @@ class ResultPageContainer extends Component {
     this.navigation = [
       {
         title: 'Postcode',
-        subtitle: this.state.postcode
+        subtitle: this.state.postcode,
+        queryValue: `postcode=${this.state.postcode}`
       },
       {
         title: 'Course',
         subtitle: getCourseTitle(this.state.courseType),
-        active: true
+        queryValue: `courseType=${this.state.courseType}`
       },
       {
         title: 'Date & Location',
         subtitle: 'Choose a Date & Location',
-        disabled: true
+        active: true
       },
       {
         title: 'Extras',
@@ -49,7 +50,6 @@ class ResultPageContainer extends Component {
 
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
-    this.handleNavClick = this.handleNavClick.bind(this)
   }
 
   componentDidMount() {
@@ -96,8 +96,6 @@ class ResultPageContainer extends Component {
     this.setState({ ...data })
   }
 
-  handleNavClick(index) {}
-
   render() {
     const {
       date,
@@ -120,7 +118,6 @@ class ResultPageContainer extends Component {
         handleSetDate={this.handleSetDate}
         handeUpdateOption={this.handeUpdateOption}
         navigation={this.navigation}
-        handleNavClick={this.handleNavClick}
         userLocation={userLocation}
       />
     )

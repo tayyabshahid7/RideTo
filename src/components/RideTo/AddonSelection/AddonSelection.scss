@@ -14,6 +14,34 @@
   margin-top: 88px;
 }
 
+.checkoutButton {
+  text-transform: uppercase;
+  height: 49px;
+  width: 249px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-rift);
+  font-size: 20px !important;
+  line-height: 24px !important;
+  font-weight: bold !important;
+}
+
+.checkoutWrapper {
+  margin-top: 100px;
+  margin-bottom: 32px;
+}
+
+.checkoutContent {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.arrowIcon {
+  margin-left: 17px;
+  stroke: white;
+}
+
 @media (max-width: 768px) {
   .heading {
     margin-top: 44px;

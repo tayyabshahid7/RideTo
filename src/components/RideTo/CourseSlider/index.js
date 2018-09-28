@@ -53,7 +53,7 @@ const CourseSlider = () => {
   }
 
   const staticData = getStaticData('RIDETO_PAGE')
-  const slides = staticData.courseTypes
+  const slides = staticData.courseTypes || []
 
   return (
     <RideToSlider settings={settings}>

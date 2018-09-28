@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { get, destroy, post, put, patch } from 'services/api'
 import { s } from 'utils/helper'
+import { Features } from 'common/info'
 
 export const getCourseSpaceText = course => {
   const availableSpaces = course.spaces - course.orders.length
@@ -167,4 +168,9 @@ export const createBulkSchoolCourse = async (schoolId, data) => {
   const path = `school/${schoolId}/course/bulk`
   const response = await post(path, data)
   return response
+}
+
+export const getFeatureInfo = featureName => {
+  let feature = Features.find(f => f.value === featureName)
+  return feature || {}
 }
