@@ -12,8 +12,7 @@ class CourseAvailabilityComponent extends React.Component {
     this.state = {
       calendar: {
         year: date.getFullYear(),
-        month: date.getMonth(),
-        selectedDate: moment(date).format(DATE_FORMAT)
+        month: date.getMonth()
       },
       courses: []
     }
@@ -24,6 +23,10 @@ class CourseAvailabilityComponent extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { course } = this.props
+    if (!course.instant_book) {
+      return
+    }
     if (
       prevState.calendar.year !== this.state.calendar.year ||
       prevState.calendar.month !== this.state.calendar.month
@@ -132,34 +135,39 @@ class CourseAvailabilityComponent extends React.Component {
     this.setState({ calendar: { ...calendar, month, year } })
   }
 
-  handleDateSelect(selectedDate) {
+  handleDateSelect(instantDate) {
     const { calendar } = this.state
-    const { onSelectInstantCourse } = this.props
-    let selectedCourse =
-      calendar.selectedDate === selectedDate ? calendar.selectedCourse : null
-    this.setState({ calendar: { ...calendar, selectedDate } })
-    onSelectInstantCourse(selectedCourse)
+    const { onUpdate } = this.props
+    let instantCourse =
+      this.props.instantDate === instantDate ? this.props.instantCourse : null
+    this.setState({ calendar: { ...calendar } })
+    onUpdate({ instantCourse, instantDate })
   }
 
-  handleTimeSelect(selectedCourse) {
-    const { onSelectInstantCourse } = this.props
-    onSelectInstantCourse(selectedCourse)
+  handleTimeSelect(instantCourse) {
+    const { onUpdate } = this.props
+    onUpdate({ instantCourse })
   }
 
   render() {
-    const { course, instantCourse } = this.props
+    const { course, instantCourse, instantDate } = this.props
     const { calendar, courses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
     return (
       <div className={styles.content}>
         <AvailabilityCalendar
           days={days}
-          calendar={{ ...calendar, selectedCourse: instantCourse }}
+          calendar={{
+            ...calendar,
+            selectedCourse: instantCourse,
+            selectedDate: instantDate
+          }}
           handleDateSelect={this.handleDateSelect.bind(this)}
           handlePrevMonth={this.handlePrevMonth.bind(this)}
           handleNextMonth={this.handleNextMonth.bind(this)}
           handleTimeSelect={this.handleTimeSelect.bind(this)}
-          showDateTime={true}
+          showTime={!!course.instant_book}
+          showChooseDate={true}
           courses={courses}
           disablePreviousDates
         />

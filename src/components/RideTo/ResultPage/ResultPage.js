@@ -30,21 +30,30 @@ class ResultPage extends Component {
       loading: false,
       showDateSelectorModal: false,
       initialTab: '1',
-      instantCourse: null
+      instantCourse: null,
+      instantDate: null
     }
     this.onBookNow = this.onBookNow.bind(this)
   }
 
   handleDetailClick(course) {
-    this.setState({ selectedCourse: course, initialTab: '1' })
+    this.setState({
+      selectedCourse: course,
+      initialTab: '1',
+      instantDate: this.props.date
+    })
   }
 
   handlePriceClick(course) {
     const { postcode, courseType, date } = this.props
     if (course.instant_book) {
-      this.setState({ selectedCourse: course, initialTab: '3' })
+      this.setState({
+        selectedCourse: course,
+        initialTab: '3',
+        instantDate: this.props.date
+      })
     } else {
-      window.location = `/course-addons?postcode=${postcode}&courseType=${courseType}&supplierId=${
+      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&supplierId=${
         course.id
       }&date=${date}`
     }
@@ -56,26 +65,26 @@ class ResultPage extends Component {
     this.setState({ showDateSelectorModal: false })
   }
 
-  onSelectInstantCourse(instantCourse) {
-    this.setState({ instantCourse })
+  onUpdate(data) {
+    this.setState({ ...data })
   }
 
   onBookNow() {
-    const { selectedCourse, instantCourse } = this.state
-    const { postcode, courseType, date } = this.props
+    const { selectedCourse, instantCourse, instantDate } = this.state
+    const { postcode, courseType } = this.props
     if (!selectedCourse) {
       return
     }
     if (selectedCourse.instant_book) {
       if (instantCourse) {
-        window.location = `/course-addons?postcode=${postcode}&courseType=${courseType}&courseId=${
+        window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&courseId=${
           instantCourse.id
         }&date=${instantCourse.date}`
       }
     } else {
-      window.location = `/course-addons?postcode=${postcode}&courseType=${courseType}&supplierId=${
+      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&supplierId=${
         selectedCourse.id
-      }&date=${date}`
+      }&date=${instantDate}`
     }
   }
 
@@ -124,7 +133,6 @@ class ResultPage extends Component {
       date,
       handleSetDate,
       navigation,
-      handleNavClick,
       loading,
       userLocation
     } = this.props
@@ -132,14 +140,12 @@ class ResultPage extends Component {
       selectedCourse,
       showDateSelectorModal,
       initialTab,
-      instantCourse
+      instantCourse,
+      instantDate
     } = this.state
     return (
       <div className={styles.container}>
-        <NavigationComponent
-          navigation={navigation}
-          onNavClick={handleNavClick}
-        />
+        <NavigationComponent navigation={navigation} />
         <DateSelector
           date={date}
           handleSetDate={handleSetDate}
@@ -202,7 +208,8 @@ class ResultPage extends Component {
               initialTab={initialTab}
               date={date}
               instantCourse={instantCourse}
-              onSelectInstantCourse={this.onSelectInstantCourse.bind(this)}
+              instantDate={instantDate}
+              onUpdate={this.onUpdate.bind(this)}
             />
           )}
         </SidePanel>

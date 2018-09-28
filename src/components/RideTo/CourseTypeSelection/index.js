@@ -52,7 +52,6 @@ class CourseTypeSelection extends React.Component {
     ]
 
     this.handleSelectFilter = this.handleSelectFilter.bind(this)
-    this.handleNavigation = this.handleNavigation.bind(this)
     this.handleDetails = this.handleDetails.bind(this)
   }
 
@@ -79,8 +78,6 @@ class CourseTypeSelection extends React.Component {
     })
   }
 
-  handleNavigation(index) {}
-
   handleDetails(selectedCourseType) {
     this.setState({
       selectedCourseType,
@@ -99,10 +96,7 @@ class CourseTypeSelection extends React.Component {
 
     return (
       <React.Fragment>
-        <NavigationComponent
-          navigation={this.navigation}
-          onNavClick={this.handleNavigation}
-        />
+        <NavigationComponent navigation={this.navigation} />
         <Container>
           <Row className={styles.filters}>
             <Col sm="6">
