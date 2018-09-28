@@ -77,8 +77,7 @@ class SignupPage extends React.Component {
     }
 
     try {
-      const user = await saveUser({ first_name, last_name, email, password })
-      console.log(user)
+      await saveUser({ first_name, last_name, email, password })
     } catch (error) {
       const { response } = error
       if (response) {

@@ -5,7 +5,6 @@ import styles from './Input.scss'
 
 const Input = props => {
   const className = classnames(styles.input, props.className)
-  console.log('Input')
 
   return <input {...props} className={className} />
 }

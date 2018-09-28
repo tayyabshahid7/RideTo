@@ -54,8 +54,7 @@ class LoginPage extends React.Component {
     event.preventDefault()
     const { email, password } = this.state
 
-    const user = await loginUser({ email, password })
-    console.log(user)
+    await loginUser({ email, password })
   }
 
   render() {

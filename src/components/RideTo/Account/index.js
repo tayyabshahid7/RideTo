@@ -6,7 +6,6 @@ import LandingPage from 'components/RideTo/Account/LandingPage'
 import LoginPage from 'components/RideTo/Account/LoginPage'
 
 const Account = () => {
-  console.log('Account')
   return (
     <BrowserRouter>
       <div>
