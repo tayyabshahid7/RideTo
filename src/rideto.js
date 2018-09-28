@@ -7,6 +7,7 @@ import CourseTypeSelection from 'components/RideTo/CourseTypeSelection'
 import ReviewSlider from 'components/RideTo/ReviewSlider'
 import ResultPage from 'components/RideTo/ResultPage'
 import AddonSelection from 'components/RideTo/AddonSelection'
+import Account from 'components/RideTo/Account'
 
 import { setVersionInfo } from 'services/version'
 // import 'bootstrap'
@@ -24,6 +25,8 @@ const mountComponent = (component, el) => {
     ReactDOM.render(component, el)
   }
 }
+
+mountComponent(<Account />, document.getElementById('rideto-account-page'))
 
 mountComponent(
   <CourseSlider />,

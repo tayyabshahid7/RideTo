@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styles from './styles.scss'
 import NavigationItem from './NavigationItem'
+import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
 
-class NavigationComponent extends Component {
-  onNavClick(navIndex) {
+class NavigationComponent extends React.Component {
+  handleNavClick(navIndex) {
     const { navigation } = this.props
     let navItem = navigation[navIndex]
     if (navItem.disabled || navItem.active) {
@@ -27,13 +28,19 @@ class NavigationComponent extends Component {
   }
 
   render() {
-    const { navigation } = this.props
+    const { navigation, onNavBack } = this.props
     return (
       <div className={styles.container}>
+        {onNavBack && (
+          <div className={styles.backItem} onClick={onNavBack}>
+            <img src={ArrowLeft} alt="" />
+          </div>
+        )}
+
         {navigation.map((naviItem, index) => (
           <NavigationItem
             {...naviItem}
-            onClick={() => this.onNavClick(index)}
+            onClick={() => this.handleNavClick(index)}
             key={naviItem.title}
             showLeftBorder={index !== 0}
           />

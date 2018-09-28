@@ -1,21 +1,21 @@
 import React from 'react'
 import classnames from 'classnames'
-import styles from './styles.scss'
+import styles from './NavigationItem.scss'
 
 const NavigationItem = ({
   title,
   subtitle,
   active = false,
   disabled = false,
-  onClick,
-  showLeftBorder
+  fullWidth = false,
+  onClick
 }) => {
   return (
     <div
       className={classnames(
-        styles.itemContainer,
-        showLeftBorder && styles.leftBorder,
-        active && styles.active
+        styles.navigationItem,
+        active && styles.active,
+        fullWidth && styles.fullWidth
       )}
       onClick={() => {
         if (!disabled) {
