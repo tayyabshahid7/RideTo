@@ -65,6 +65,7 @@
   font-size: 20px;
   font-weight: bold;
   stroke: var(--primary-color);
+  cursor: pointer;
   &:hover {
     color: white;
     stroke: white;
@@ -98,6 +99,7 @@
 
 .detail {
   text-decoration: underline;
+  cursor: pointer;
 }
 
 .mileIcon {

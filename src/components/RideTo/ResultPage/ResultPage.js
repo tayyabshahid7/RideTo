@@ -6,6 +6,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
+import classnames from 'classnames'
 import { DAY_FORMAT5 } from 'common/constants'
 import { SortByOptions, getTitleFor } from 'common/info'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
@@ -79,7 +80,7 @@ class ResultPage extends Component {
       if (instantCourse) {
         window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&courseId=${
           instantCourse.id
-        }&date=${instantCourse.date}`
+        }&supplierId=${selectedCourse.id}&date=${instantDate}`
       }
     } else {
       window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&supplierId=${
@@ -143,6 +144,9 @@ class ResultPage extends Component {
       instantCourse,
       instantDate
     } = this.state
+
+    let bookNowDisabled =
+      selectedCourse && selectedCourse.instant_book && !instantCourse
     return (
       <div className={styles.container}>
         <NavigationComponent navigation={navigation} />
@@ -196,7 +200,12 @@ class ResultPage extends Component {
           headingImage={selectedCourse ? selectedCourse.image : ''}
           onDismiss={() => this.setState({ selectedCourse: null })}
           footer={
-            <RideToButton className={styles.action} onClick={this.onBookNow}>
+            <RideToButton
+              className={classnames(
+                styles.action,
+                bookNowDisabled && styles.bookNowDisabled
+              )}
+              onClick={() => !bookNowDisabled && this.onBookNow()}>
               <span>Book Now</span>
               <img src={ButtonArrowWhite} alt="arrow" />
             </RideToButton>

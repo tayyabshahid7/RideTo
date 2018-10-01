@@ -13,3 +13,11 @@ export const fetchCourseTypeAddons = async (supplierId, courseType) => {
 
   return response
 }
+
+export const fetchSingleSupplier = async (supplierId, auth = true) => {
+  const path = `suppliers/${supplierId}`
+
+  const response = await get(path, {}, auth)
+
+  return response
+}
