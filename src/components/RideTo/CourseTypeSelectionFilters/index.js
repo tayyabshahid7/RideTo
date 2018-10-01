@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 
 import styles from './CourseTypeSelectionFilters.scss'
 
@@ -24,7 +25,10 @@ const CourseTypeSelectionFilters = ({ filters, selected, onSelect }) => {
           {filters.map(filter => (
             <div
               key={filter.tag}
-              className={styles.filter}
+              className={classnames(
+                styles.filter,
+                selected === filter && styles.selected
+              )}
               onClick={() => handleToggleFilter(filter, selected, onSelect)}>
               {filter.name}
             </div>

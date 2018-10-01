@@ -9,6 +9,8 @@ import NavigationComponent from 'components/RideTo/NavigationComponent'
 import SidePanel from 'components/RideTo/SidePanel'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { fetchLocationInfoWithPostCode } from 'services/misc'
+import Button from 'components/RideTo/Button'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 
 import styles from './CourseTypeSelection.scss'
 
@@ -112,6 +114,15 @@ class CourseTypeSelection extends React.Component {
       navigation
     } = this.state
 
+    const footer = selectedCourseType ? (
+      <Button
+        href={getBookUrl(selectedCourseType, postcode)}
+        className={styles.action}>
+        <span>Book Now</span>
+        <img src={ButtonArrowWhite} alt="arrow" />
+      </Button>
+    ) : null
+
     return (
       <React.Fragment>
         <NavigationComponent navigation={navigation} />
@@ -141,14 +152,12 @@ class CourseTypeSelection extends React.Component {
           </Row>
         </Container>
         <SidePanel
+          footer={footer}
           visible={selectedCourseType !== null}
           headingImage={detailsImage}
           onDismiss={() => this.handleDetails(null)}>
           {selectedCourseType && (
-            <CourseTypeDetails
-              courseType={selectedCourseType}
-              url={getBookUrl(selectedCourseType, postcode)}
-            />
+            <CourseTypeDetails courseType={selectedCourseType} />
           )}
         </SidePanel>
       </React.Fragment>
