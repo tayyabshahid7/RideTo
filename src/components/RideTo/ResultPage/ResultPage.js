@@ -32,7 +32,8 @@ class ResultPage extends Component {
       showDateSelectorModal: false,
       initialTab: '1',
       instantCourse: null,
-      instantDate: null
+      instantDate: null,
+      bike_hire: null
     }
     this.onBookNow = this.onBookNow.bind(this)
   }
@@ -46,18 +47,11 @@ class ResultPage extends Component {
   }
 
   handlePriceClick(course) {
-    const { postcode, courseType, date } = this.props
-    if (course.instant_book) {
-      this.setState({
-        selectedCourse: course,
-        initialTab: '3',
-        instantDate: this.props.date
-      })
-    } else {
-      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&supplierId=${
-        course.id
-      }&date=${date}`
-    }
+    this.setState({
+      selectedCourse: course,
+      initialTab: '3',
+      instantDate: this.props.date
+    })
   }
 
   onSelectDate(date) {
@@ -71,19 +65,19 @@ class ResultPage extends Component {
   }
 
   onBookNow() {
-    const { selectedCourse, instantCourse, instantDate } = this.state
+    const { selectedCourse, instantCourse, instantDate, bike_hire } = this.state
     const { postcode, courseType } = this.props
     if (!selectedCourse) {
       return
     }
     if (selectedCourse.instant_book) {
       if (instantCourse) {
-        window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&courseId=${
+        window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&courseId=${
           instantCourse.id
         }&supplierId=${selectedCourse.id}&date=${instantDate}`
       }
     } else {
-      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&supplierId=${
+      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
         selectedCourse.id
       }&date=${instantDate}`
     }
@@ -142,11 +136,16 @@ class ResultPage extends Component {
       showDateSelectorModal,
       initialTab,
       instantCourse,
-      instantDate
+      instantDate,
+      bike_hire
     } = this.state
 
-    let bookNowDisabled =
-      selectedCourse && selectedCourse.instant_book && !instantCourse
+    let bookNowDisabled = false
+    if (selectedCourse) {
+      bookNowDisabled =
+        (selectedCourse.instant_book && !instantCourse) || !bike_hire
+    }
+
     return (
       <div className={styles.container}>
         <NavigationComponent navigation={navigation} />
@@ -218,6 +217,7 @@ class ResultPage extends Component {
               date={date}
               instantCourse={instantCourse}
               instantDate={instantDate}
+              bike_hire={bike_hire}
               onUpdate={this.onUpdate.bind(this)}
             />
           )}
