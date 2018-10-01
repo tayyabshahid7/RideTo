@@ -11,21 +11,12 @@ import AddonDetails from 'components/RideTo/AddonDetails'
 import styles from './AddonSelection.scss'
 import { getCourseTitle } from 'services/course'
 import { IconArrowRight } from 'assets/icons'
+import { fetchLocationInfoWithPostCode } from 'services/misc'
 
 class AddonSelection extends React.Component {
   constructor(props) {
     super(props)
     const qs = parseQueryString(window.location.search.slice(1))
-
-    this.state = {
-      addons: [],
-      postcode: qs.postcode || '',
-      courseType: qs.courseType || '',
-      qs: qs || {},
-      selectedAddons: [],
-      detailsAddon: null,
-      supplier: null
-    }
 
     let step3Params = [`date=${qs.date}`]
     if (qs.courseId) {
@@ -38,13 +29,13 @@ class AddonSelection extends React.Component {
     this.navigation = [
       {
         title: 'Postcode',
-        subtitle: this.state.postcode,
-        queryValue: `postcode=${this.state.postcode}`
+        subtitle: qs.postcode ? qs.postcode.toUpperCase() : '',
+        queryValue: `postcode=${qs.postcode}`
       },
       {
         title: 'Course',
-        subtitle: getCourseTitle(this.state.courseType),
-        queryValue: `courseType=${this.state.courseType}`
+        subtitle: getCourseTitle(qs.courseType),
+        queryValue: `courseType=${qs.courseType}`
       },
       {
         title: 'Date & Location',
@@ -57,6 +48,17 @@ class AddonSelection extends React.Component {
         active: true
       }
     ]
+
+    this.state = {
+      addons: [],
+      postcode: qs.postcode || '',
+      courseType: qs.courseType || '',
+      qs: qs || {},
+      selectedAddons: [],
+      detailsAddon: null,
+      supplier: null,
+      navigation: this.navigation
+    }
 
     this.handleAddAddon = this.handleAddAddon.bind(this)
     this.handleRemoveAddon = this.handleRemoveAddon.bind(this)
@@ -88,9 +90,22 @@ class AddonSelection extends React.Component {
     }
   }
 
+  async loadPlaceInfo() {
+    const { postcode, navigation } = this.state
+    if (postcode) {
+      let response = await fetchLocationInfoWithPostCode(postcode)
+      if (response && response.result) {
+        navigation[0].subtitle = `${response.result.admin_district}, ${
+          response.result.region
+        } ${postcode.toUpperCase()}`
+      }
+      this.setState({ navigation })
+    }
+  }
+
   async componentDidMount() {
-    // TODO need real values
     this.loadData()
+    this.loadPlaceInfo()
   }
 
   handleAddAddon(addon) {
@@ -122,12 +137,12 @@ class AddonSelection extends React.Component {
   }
 
   render() {
-    const { detailsAddon, addons, selectedAddons } = this.state
+    const { detailsAddon, addons, selectedAddons, navigation } = this.state
     const detailsImage = detailsAddon ? detailsAddon.images[0] : null
 
     return (
       <React.Fragment>
-        <NavigationComponent navigation={this.navigation} />
+        <NavigationComponent navigation={navigation} />
         <Container>
           <Row>
             <Col sm="12">
