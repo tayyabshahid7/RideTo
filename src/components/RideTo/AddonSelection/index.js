@@ -18,7 +18,7 @@ class AddonSelection extends React.Component {
     super(props)
     const qs = parseQueryString(window.location.search.slice(1))
 
-    let step3Params = [`date=${qs.date}`]
+    let step3Params = [`date=${qs.date}`, `bike_hire=${qs.bike_hire}`]
     if (qs.courseId) {
       step3Params.push(`courseId=${qs.courseId}`)
     }
