@@ -40,9 +40,9 @@ class NavigationComponent extends React.Component {
         {navigation.map((naviItem, index) => (
           <NavigationItem
             {...naviItem}
+            fullWidth={navigation.length === 1}
             onClick={() => this.handleNavClick(index)}
             key={naviItem.title}
-            showLeftBorder={index !== 0}
           />
         ))}
       </div>
