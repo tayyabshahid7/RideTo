@@ -3,12 +3,26 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import EventForm from './EventForm'
-import { getSingleEvent, updateEvent, fetchPrice } from 'store/event'
+import ConfirmModal from 'components/Modals/ConfirmModal'
+import {
+  getSingleEvent,
+  updateEvent,
+  deleteEvent,
+  fetchPrice
+} from 'store/event'
 import { unsetSelectedCourse } from 'store/course'
 import { loadEventTypes } from 'store/info'
 import { DATE_FORMAT } from '../../../common/constants'
 
 class EditEventComponent extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      showDeleteConfirmModal: false
+    }
+  }
+
   componentDidMount() {
     const { getSingleEvent, schoolId, match } = this.props
     getSingleEvent({ schoolId, eventId: match.params.eventId })
@@ -21,6 +35,15 @@ class EditEventComponent extends Component {
 
   componentDidUpdate(prevProps) {
     const { saving, event, history, error, schoolId } = this.props
+
+    if (prevProps.event && !event) {
+      const date = moment(new Date(prevProps.event.start_time)).format(
+        DATE_FORMAT
+      )
+
+      history.push(`/calendar/${date}`)
+      return
+    }
 
     if (schoolId !== prevProps.schoolId) {
       if (event) {
@@ -54,8 +77,23 @@ class EditEventComponent extends Component {
     })
   }
 
+  handleRemove() {
+    const { schoolId, match } = this.props
+    this.props.deleteEvent({
+      schoolId,
+      eventId: parseInt(match.params.eventId, 10)
+    })
+  }
+
+  handleToggleDeleteModal() {
+    this.setState({
+      showDeleteConfirmModal: !this.state.showDeleteConfirmModal
+    })
+  }
+
   render() {
     let { loading, event } = this.props
+    const { showDeleteConfirmModal } = this.state
 
     if (loading) {
       return <div>Loading...</div>
@@ -64,7 +102,23 @@ class EditEventComponent extends Component {
       return <div>Event Not Found</div>
     }
 
-    return <EventForm {...this.props} onSubmit={this.onSave.bind(this)} />
+    return (
+      <React.Fragment>
+        <EventForm
+          {...this.props}
+          onSubmit={this.onSave.bind(this)}
+          onRemove={this.handleToggleDeleteModal.bind(this)}
+        />
+        {showDeleteConfirmModal && (
+          <ConfirmModal
+            onClose={this.handleToggleDeleteModal.bind(this)}
+            showModal={true}
+            onDelete={this.handleRemove.bind(this)}
+            message={`Are you sure to delete the event?`}
+          />
+        )}
+      </React.Fragment>
+    )
   }
 }
 
@@ -86,6 +140,7 @@ const mapDispatchToProps = dispatch =>
     {
       getSingleEvent,
       updateEvent,
+      deleteEvent,
       loadEventTypes,
       fetchPrice,
       unsetSelectedCourse
