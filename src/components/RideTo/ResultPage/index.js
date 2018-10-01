@@ -7,23 +7,26 @@ import { SORTBY } from 'common/constants'
 import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 import { parseQueryString } from 'services/api'
 import { fetchLocationInfoWithPostCode } from 'services/misc'
+import { getStaticData } from 'services/page'
 
 class ResultPageContainer extends Component {
   constructor(props) {
     super(props)
-
+    const staticData = getStaticData('RIDETO_PAGE')
     const qs = parseQueryString(window.location.search.slice(1))
+    const postcode = staticData.postcode || qs.postcode || ''
+    const courseType = staticData.courseType || qs.courseType || ''
 
     this.navigation = [
       {
         title: 'Postcode',
-        subtitle: qs.postcode ? qs.postcode.toUpperCase() : '',
-        queryValue: `postcode=${qs.postcode}`
+        subtitle: postcode.toUpperCase(),
+        queryValue: `postcode=${postcode}`
       },
       {
         title: 'Course',
-        subtitle: getCourseTitle(qs.courseType),
-        queryValue: `courseType=${qs.courseType}`
+        subtitle: getCourseTitle(courseType),
+        queryValue: `courseType=${courseType}`
       },
       {
         title: 'Date & Location',
@@ -43,8 +46,8 @@ class ResultPageContainer extends Component {
         lat: 51.711712,
         lng: -0.327693
       },
-      postcode: qs.postcode || '',
-      courseType: qs.courseType || '',
+      postcode,
+      courseType,
       courses: [],
       loading: false,
       navigation: this.navigation
