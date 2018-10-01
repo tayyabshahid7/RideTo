@@ -91,7 +91,7 @@ class LoginPage extends React.Component {
               <div className={styles.error}>{errors.password}</div>
             )}
             <div className={styles.subtext}>
-              <Link to="/account/forgot">Forgot password</Link>
+              <a href="/users/forgot/">Forgot password</a>
             </div>
 
             <button type="submit" className={styles.login}>

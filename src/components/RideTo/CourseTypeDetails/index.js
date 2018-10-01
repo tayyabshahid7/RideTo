@@ -2,8 +2,6 @@ import React from 'react'
 
 import styles from './CourseTypeDetails.scss'
 import DetailsAccordionItem from './DetailsAccordionItem'
-import Button from 'components/RideTo/Button'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 
 class CourseTypeDetails extends React.Component {
   constructor(props) {
@@ -30,7 +28,7 @@ class CourseTypeDetails extends React.Component {
   }
 
   render() {
-    const { courseType, url } = this.props
+    const { courseType } = this.props
     const { opened } = this.state
     const { details } = courseType
 
@@ -85,11 +83,6 @@ class CourseTypeDetails extends React.Component {
             }
           />
         </div>
-
-        <Button href={url} className={styles.action}>
-          <span>Book Now</span>
-          <img src={ButtonArrowWhite} alt="arrow" />
-        </Button>
       </div>
     )
   }
