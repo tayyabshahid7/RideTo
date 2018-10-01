@@ -2,8 +2,10 @@ import React from 'react'
 import moment from 'moment'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
+import Checkbox from 'components/Checkbox'
 import { fetchWidgetCourses } from 'services/course'
 import { DATE_FORMAT } from 'common/constants'
+import { getMotorbikeLabel } from 'services/widget'
 
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
@@ -153,10 +155,28 @@ class CourseAvailabilityComponent extends React.Component {
     onUpdate({ instantCourse })
   }
 
+  handleChangeRawEvent(event) {
+    const { onUpdate } = this.props
+    onUpdate({ [event.target.name]: event.target.value })
+  }
+
   render() {
-    const { course, instantCourse, instantDate } = this.props
+    const {
+      course,
+      instantCourse,
+      instantDate,
+      bike_hire,
+      onUpdate
+    } = this.props
     const { calendar, courses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
+
+    const fullText = <span className={styles.full}> - Fully Booked</span>
+    const isAutoFull =
+      instantCourse && instantCourse.auto_count === instantCourse.auto_bikes
+    const isManualFull =
+      instantCourse && instantCourse.manual_count === instantCourse.manual_bikes
+
     return (
       <div className={styles.content}>
         <AvailabilityCalendar
@@ -175,6 +195,36 @@ class CourseAvailabilityComponent extends React.Component {
           courses={courses}
           disablePreviousDates
         />
+        <div className={styles.bikeHireWrapper}>
+          <label className={styles.subtitle}>Bike Hire (Included)</label>
+
+          {course.course_type === 'LICENCE_CBT_RENEWAL' && (
+            <Checkbox
+              checked={bike_hire === 'no'}
+              extraClass="WidgetCheckbox"
+              onChange={() => onUpdate({ bike_hire: 'no' })}>
+              {getMotorbikeLabel('no')}
+            </Checkbox>
+          )}
+
+          <Checkbox
+            checked={bike_hire === 'auto'}
+            extraClass="WidgetCheckbox"
+            onChange={() => onUpdate({ bike_hire: 'auto' })}
+            disabled={isAutoFull}>
+            {getMotorbikeLabel('auto')}
+            {isAutoFull ? fullText : null}
+          </Checkbox>
+
+          <Checkbox
+            checked={bike_hire === 'manual'}
+            extraClass="WidgetCheckbox"
+            onChange={() => onUpdate({ bike_hire: 'manual' })}
+            disabled={isManualFull}>
+            {getMotorbikeLabel('manual')}
+            {isManualFull ? fullText : null}
+          </Checkbox>
+        </div>
       </div>
     )
   }

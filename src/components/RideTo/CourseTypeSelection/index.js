@@ -8,6 +8,7 @@ import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFil
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import SidePanel from 'components/RideTo/SidePanel'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import { fetchLocationInfoWithPostCode } from 'services/misc'
 
 import styles from './CourseTypeSelection.scss'
 
@@ -23,17 +24,11 @@ class CourseTypeSelection extends React.Component {
 
     this.filters = getFilters()
     this.courseTypes = []
-    this.state = {
-      filteredCourseTypes: [],
-      selectedFilter: null,
-      postcode: qs.postcode || '',
-      selectedCourseType: null
-    }
 
     this.navigation = [
       {
         title: 'Postcode',
-        subtitle: this.state.postcode
+        subtitle: qs.postcode ? qs.postcode.toUpperCase() : ''
       },
       {
         title: 'Course',
@@ -51,18 +46,40 @@ class CourseTypeSelection extends React.Component {
       }
     ]
 
+    this.state = {
+      filteredCourseTypes: [],
+      selectedFilter: null,
+      postcode: qs.postcode || '',
+      selectedCourseType: null,
+      navigation: this.navigation
+    }
+
     this.handleSelectFilter = this.handleSelectFilter.bind(this)
     this.handleDetails = this.handleDetails.bind(this)
   }
 
   async componentDidMount() {
     const { postcode } = this.state
+    this.loadPlaceInfo()
     const result = await fetchCoursesTypes(postcode || '')
     this.courseTypes = result.results
 
     this.setState({
       filteredCourseTypes: this.courseTypes
     })
+  }
+
+  async loadPlaceInfo() {
+    const { postcode, navigation } = this.state
+    if (postcode) {
+      let response = await fetchLocationInfoWithPostCode(postcode)
+      if (response && response.result) {
+        navigation[0].subtitle = `${response.result.admin_district}, ${
+          response.result.region
+        } ${postcode.toUpperCase()}`
+      }
+      this.setState({ navigation })
+    }
   }
 
   handleSelectFilter(selectedFilter) {
@@ -91,12 +108,13 @@ class CourseTypeSelection extends React.Component {
       filteredCourseTypes,
       selectedFilter,
       selectedCourseType,
-      detailsImage
+      detailsImage,
+      navigation
     } = this.state
 
     return (
       <React.Fragment>
-        <NavigationComponent navigation={this.navigation} />
+        <NavigationComponent navigation={navigation} />
         <Container>
           <Row className={styles.filters}>
             <Col sm="6">

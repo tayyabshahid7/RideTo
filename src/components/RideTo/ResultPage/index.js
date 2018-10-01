@@ -6,6 +6,7 @@ import ResultPage from './ResultPage'
 import { SORTBY } from 'common/constants'
 import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 import { parseQueryString } from 'services/api'
+import { fetchLocationInfoWithPostCode } from 'services/misc'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -13,29 +14,16 @@ class ResultPageContainer extends Component {
 
     const qs = parseQueryString(window.location.search.slice(1))
 
-    this.state = {
-      date: moment(new Date()).format(DATE_FORMAT),
-      sortByOption: SORTBY.DISTANCE,
-      userLocation: {
-        lat: 51.711712,
-        lng: -0.327693
-      },
-      postcode: qs.postcode || '',
-      courseType: qs.courseType || '',
-      courses: [],
-      loading: false
-    }
-
     this.navigation = [
       {
         title: 'Postcode',
-        subtitle: this.state.postcode,
-        queryValue: `postcode=${this.state.postcode}`
+        subtitle: qs.postcode ? qs.postcode.toUpperCase() : '',
+        queryValue: `postcode=${qs.postcode}`
       },
       {
         title: 'Course',
-        subtitle: getCourseTitle(this.state.courseType),
-        queryValue: `courseType=${this.state.courseType}`
+        subtitle: getCourseTitle(qs.courseType),
+        queryValue: `courseType=${qs.courseType}`
       },
       {
         title: 'Date & Location',
@@ -48,12 +36,27 @@ class ResultPageContainer extends Component {
       }
     ]
 
+    this.state = {
+      date: moment(new Date()).format(DATE_FORMAT),
+      sortByOption: SORTBY.DISTANCE,
+      userLocation: {
+        lat: 51.711712,
+        lng: -0.327693
+      },
+      postcode: qs.postcode || '',
+      courseType: qs.courseType || '',
+      courses: [],
+      loading: false,
+      navigation: this.navigation
+    }
+
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
   }
 
   componentDidMount() {
     this.loadData()
+    this.loadPlaceInfo()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -65,6 +68,19 @@ class ResultPageContainer extends Component {
 
   loadData() {
     this.loadCourses()
+  }
+
+  async loadPlaceInfo() {
+    const { postcode, navigation } = this.state
+    if (postcode) {
+      let response = await fetchLocationInfoWithPostCode(postcode)
+      if (response && response.result) {
+        navigation[0].subtitle = `${response.result.admin_district}, ${
+          response.result.region
+        } ${postcode.toUpperCase()}`
+      }
+      this.setState({ navigation })
+    }
   }
 
   async loadCourses() {
@@ -104,7 +120,8 @@ class ResultPageContainer extends Component {
       courses,
       loading,
       courseType,
-      postcode
+      postcode,
+      navigation
     } = this.state
 
     return (
@@ -117,7 +134,7 @@ class ResultPageContainer extends Component {
         sortByOption={sortByOption}
         handleSetDate={this.handleSetDate}
         handeUpdateOption={this.handeUpdateOption}
-        navigation={this.navigation}
+        navigation={navigation}
         userLocation={userLocation}
       />
     )
