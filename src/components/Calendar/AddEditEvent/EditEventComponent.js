@@ -42,6 +42,7 @@ class EditEventComponent extends Component {
       )
 
       history.push(`/calendar/${date}`)
+      return
     }
 
     if (schoolId !== prevProps.schoolId) {
