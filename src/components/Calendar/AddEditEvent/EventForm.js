@@ -103,7 +103,7 @@ class EventForm extends React.Component {
   }
 
   render() {
-    let { saving } = this.props
+    const { saving, onRemove } = this.props
     const { startTime, endTime } = this.state
     const { name, notes } = this.state.event
 
@@ -111,6 +111,15 @@ class EventForm extends React.Component {
       <div className={styles.container}>
         {this.renderTitle()}
         <Loading loading={saving}>
+          {this.props.event && (
+            <Row>
+              <Col className={styles.actions}>
+                <Button onClick={onRemove} color="danger">
+                  Remove Event
+                </Button>
+              </Col>
+            </Row>
+          )}
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
               <Col>

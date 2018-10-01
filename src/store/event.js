@@ -187,6 +187,7 @@ export default function reducer(state = initialState, action) {
       calendarEvents = state.calendar.events.filter(
         event => event.id !== action.data.eventId
       )
+
       return {
         ...state,
         single: { loading: false, event: null, error: null },
