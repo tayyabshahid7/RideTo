@@ -64,13 +64,13 @@ export const Features = [
   {
     value: 'bike_hire',
     icon: 'Bike',
-    title: 'Bike Hire',
+    title: 'Bike Hire Included',
     description: 'Bike Hire description'
   },
   {
     value: 'helmet_hire',
     icon: 'Helmet',
-    title: 'Helmet Hire',
+    title: 'Helmet & Gloves Provided',
     description: 'Helemt hire description.'
   },
   {
