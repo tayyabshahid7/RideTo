@@ -65,7 +65,9 @@ class AddonSelectionItem extends React.Component {
               <div className={styles.description}>{addon.description}</div>
             )}
           </div>
-          <div className={ctaClassName} onClick={() => onClick(addon)}>
+          <div
+            className={ctaClassName}
+            onClick={() => onClick(addon, selectedSize)}>
             <div className={styles.prices}>
               {isDiscount && (
                 <div className={styles.fullPrice}>£{addon.full_price}</div>

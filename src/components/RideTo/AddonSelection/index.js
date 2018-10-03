@@ -3,7 +3,7 @@ import { Container, Row, Col, Button } from 'reactstrap'
 import moment from 'moment'
 
 import { parseQueryString } from 'services/api'
-import { fetchCourseTypeAddons, fetchSingleSupplier } from 'services/supplier'
+import { getSupplier, getAddons } from 'services/page'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
 import SidePanel from 'components/RideTo/SidePanel'
@@ -50,7 +50,7 @@ class AddonSelection extends React.Component {
     ]
 
     this.state = {
-      addons: [],
+      addons: getAddons(),
       postcode: qs.postcode || '',
       courseType: qs.courseType || '',
       qs: qs || {},
@@ -64,30 +64,6 @@ class AddonSelection extends React.Component {
     this.handleRemoveAddon = this.handleRemoveAddon.bind(this)
     this.handleDetails = this.handleDetails.bind(this)
     this.handleContinue = this.handleContinue.bind(this)
-  }
-
-  loadData() {
-    // this.loadSupplier()
-    this.loadAddOns()
-  }
-
-  async loadSupplier() {
-    const { qs } = this.state
-    if (qs.supplierId) {
-      let response = await fetchSingleSupplier(qs.supplierId, false)
-      this.setState({ supplier: response.result })
-    }
-  }
-
-  async loadAddOns() {
-    const { qs } = this.state
-    if (qs.supplierId) {
-      const result = await fetchCourseTypeAddons(qs.supplierId, qs.courseType)
-
-      this.setState({
-        addons: result.results
-      })
-    }
   }
 
   async loadPlaceInfo() {
@@ -108,16 +84,23 @@ class AddonSelection extends React.Component {
     this.loadPlaceInfo()
   }
 
-  handleAddAddon(addon) {
+  handleAddAddon(addon, selectedSize) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.concat([addon]),
+      selectedAddons: this.state.selectedAddons.concat([
+        {
+          addon,
+          selectedSize
+        }
+      ]),
       detailsAddon: null
     })
   }
 
   handleRemoveAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.filter(a => a !== addon),
+      selectedAddons: this.state.selectedAddons.filter(
+        item => item.addon !== addon
+      ),
       detailsAddon: null
     })
   }
@@ -127,7 +110,12 @@ class AddonSelection extends React.Component {
     let addOns = this.state.selectedAddons.map(addOn => addOn.id).join(',')
     sessionStorage.setItem('checkout-data-query', window.location.search)
     sessionStorage.setItem('checkout-data-add-ons', addOns)
-    window.location = '/account'
+
+    // TODO we need to go through account flow first...
+    // window.location = '/account'
+    const supplier = getSupplier()
+    const url = `/${supplier.slug}/checkout`
+    window.location.href = url
   }
 
   handleDetails(detailsAddon) {
@@ -136,8 +124,14 @@ class AddonSelection extends React.Component {
     })
   }
 
+  isAddonSelected(addon) {
+    const { selectedAddons } = this.state
+
+    return selectedAddons.filter(item => item.addon === addon).length > 0
+  }
+
   render() {
-    const { detailsAddon, addons, selectedAddons, navigation } = this.state
+    const { detailsAddon, addons, navigation } = this.state
     const detailsImage = detailsAddon ? detailsAddon.images[0] : null
 
     return (
@@ -154,7 +148,7 @@ class AddonSelection extends React.Component {
               <Col sm="4">
                 <AddonSelectionItem
                   addon={addon}
-                  isAdded={selectedAddons.indexOf(addon) > -1}
+                  isAdded={this.isAddonSelected(addon)}
                   onAdd={this.handleAddAddon}
                   onRemove={this.handleRemoveAddon}
                   onDetails={this.handleDetails}
@@ -180,7 +174,7 @@ class AddonSelection extends React.Component {
           onDismiss={() => this.handleDetails(null)}>
           {detailsAddon && (
             <AddonDetails
-              isAdded={selectedAddons.indexOf(detailsAddon) > -1}
+              isAdded={this.isAddonSelected(detailsAddon)}
               addon={detailsAddon}
               onAdd={this.handleAddAddon}
               onRemove={this.handleRemoveAddon}

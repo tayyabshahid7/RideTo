@@ -3,3 +3,13 @@ export const getStaticData = pageId => {
     return window[pageId]
   }
 }
+
+export const getAddons = () => {
+  const staticData = getStaticData('RIDETO_PAGE')
+  return staticData.checkout.addons
+}
+
+export const getSupplier = () => {
+  const staticData = getStaticData('RIDETO_PAGE')
+  return staticData.checkout.supplier
+}
