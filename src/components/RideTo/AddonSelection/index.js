@@ -64,6 +64,7 @@ class AddonSelection extends React.Component {
     this.handleRemoveAddon = this.handleRemoveAddon.bind(this)
     this.handleDetails = this.handleDetails.bind(this)
     this.handleContinue = this.handleContinue.bind(this)
+    this.handleSizeUpdate = this.handleSizeUpdate.bind(this)
   }
 
   async loadPlaceInfo() {
@@ -80,7 +81,6 @@ class AddonSelection extends React.Component {
   }
 
   async componentDidMount() {
-    this.loadData()
     this.loadPlaceInfo()
   }
 
@@ -105,17 +105,32 @@ class AddonSelection extends React.Component {
     })
   }
 
+  handleSizeUpdate(addon, selectedSize) {
+    addon.selectedSize = selectedSize
+    this.setState({ addons: this.state.addons })
+  }
+
   handleContinue() {
-    // Save all data to local storage then redirect to login or account page
-    let addOns = this.state.selectedAddons.map(addOn => addOn.id).join(',')
-    sessionStorage.setItem('checkout-data-query', window.location.search)
-    sessionStorage.setItem('checkout-data-add-ons', addOns)
 
     // TODO we need to go through account flow first...
     // window.location = '/account'
     const supplier = getSupplier()
     const url = `/${supplier.slug}/checkout`
     window.location.href = url
+    const { qs, selectedAddons } = this.state
+    let addons = selectedAddons.map(addon => {
+      return {
+        id: addon.id,
+        selectedSize: addon.selectedSize,
+        price: addon.discount_price || addon.full_price,
+        name: addon.name
+      }
+    })
+
+    let checkoutData = { ...qs, addons }
+
+    sessionStorage.setItem('checkout-data', JSON.stringify(checkoutData))
+    window.location = '/account'
   }
 
   handleDetails(detailsAddon) {
@@ -151,6 +166,7 @@ class AddonSelection extends React.Component {
                   isAdded={this.isAddonSelected(addon)}
                   onAdd={this.handleAddAddon}
                   onRemove={this.handleRemoveAddon}
+                  onSizeUpdate={this.handleSizeUpdate}
                   onDetails={this.handleDetails}
                 />
               </Col>

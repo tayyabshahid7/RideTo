@@ -1,4 +1,4 @@
-import { BIKE_HIRE, RIDING_EXPERIENCE, SORTBY } from './constants'
+import { BIKE_HIRE, RIDING_EXPERIENCE, SORTBY, RIDER_TYPE } from './constants'
 
 export const BikeHires = [
   { value: BIKE_HIRE.MANUAL, title: 'Manual' },
@@ -91,5 +91,20 @@ export const Features = [
     title: 'Instant Booking',
     description:
       "This site has an instant booking, so you're order will be instantly confirmed. Non-instant book sites require confirmation from the instructor first."
+  }
+]
+
+export const RiderTypes = [
+  {
+    value: RIDER_TYPE.SOCIAL,
+    title: 'Social Rider'
+  },
+  {
+    value: RIDER_TYPE.CAREER,
+    title: 'Career Rider'
+  },
+  {
+    value: RIDER_TYPE.COMMUTER,
+    title: 'Commuter Rider'
   }
 ]

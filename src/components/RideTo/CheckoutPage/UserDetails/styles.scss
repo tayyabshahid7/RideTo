@@ -1,0 +1,105 @@
+.container {
+  max-width: 95%;
+  width: 480px;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 29px;
+  font-family: var(--font-rift);
+  font-weight: bold;
+  margin-top: 32px;
+}
+
+.input {
+  margin-top: 16px;
+  // padding: 0;
+}
+
+.subtext {
+  text-align: left;
+  font-size: 12px;
+  color: var(--grey-color);
+  margin-top: 4px;
+  // margin-bottom: 40px;
+}
+
+.rowItem {
+  margin-top: 24px;
+}
+
+.radiobox {
+  margin-top: 16px;
+  text-align: left;
+  line-height: 1;
+  margin-bottom: 24px;
+  font-family: var(--font-proxima);
+  font-size: 15px;
+}
+
+.checkoutForm {
+  color: #707070;
+}
+
+.paymentFields {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  // padding: 16px 16px;
+  // background: white;
+}
+
+.terms {
+  text-align: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.payWith {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardImages {
+  display: flex;
+  align-items: center;
+}
+
+.cardImages img {
+  margin-left: 2px;
+  margin-right: 2px;
+  width: 42px;
+}
+
+.disabled {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.paymentError {
+  color: #f86b6b;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.cardElementWrapper {
+  height: 48px;
+  // display: flex;
+  // align-items: center;
+  padding: 16px 16px;
+  background: white;
+  margin-top: 16px;
+}
+
+.actionDiv {
+  font-size: 15px;
+  font-family: var(--font-proxima);
+  line-break: 24px;
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .cardImages img {
+    width: 36px;
+  }
+}

@@ -38,3 +38,9 @@ export const SORTBY = {
 }
 
 export const MAPBOX_KEY = process.env.REACT_APP_MAPBOX_KEY
+
+export const RIDER_TYPE = {
+  SOCIAL: 'RIDER_TYPE_SOCIAL',
+  CAREER: 'RIDER_TYPE_CAREER',
+  COMMUTER: 'RIDER_TYPE_COMMUTER'
+}

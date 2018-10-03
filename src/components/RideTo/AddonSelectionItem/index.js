@@ -13,23 +13,17 @@ import styles from './AddonSelectionItem.scss'
 class AddonSelectionItem extends React.Component {
   constructor(props) {
     super(props)
-    const { addon } = props
-
-    this.state = {
-      selectedSize: addon.sizes.filter(({ quantity }) => quantity > 0)[0]
-    }
-
     this.handleSelectSize = this.handleSelectSize.bind(this)
   }
 
   handleSelectSize(selectedSize) {
-    this.setState({ selectedSize })
+    const { onSizeUpdate, addon } = this.props
+    onSizeUpdate(addon, selectedSize)
   }
 
   render() {
     const { addon, isAdded, onAdd, onRemove, onDetails } = this.props
-    const { selectedSize } = this.state
-    const { images, sizes } = addon
+    const { images, sizes, selectedSize } = addon
     const isDiscount =
       addon.full_price &&
       addon.discount_price &&

@@ -8,6 +8,7 @@ import ReviewSlider from 'components/RideTo/ReviewSlider'
 import ResultPage from 'components/RideTo/ResultPage'
 import AddonSelection from 'components/RideTo/AddonSelection'
 import Account from 'components/RideTo/Account'
+import CheckoutPage from 'components/RideTo/CheckoutPage'
 
 import { setVersionInfo } from 'services/version'
 // import 'bootstrap'
@@ -53,4 +54,9 @@ mountComponent(
 mountComponent(
   <AddonSelection />,
   document.getElementById('rideto-addon-selection')
+)
+
+mountComponent(
+  <CheckoutPage />,
+  document.getElementById('rideto-checkout-page')
 )

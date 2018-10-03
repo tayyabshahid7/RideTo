@@ -7,6 +7,7 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
     <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
     <title>RideTo.com</title>
+    <script src="https://js.stripe.com/v3/"></script>
 
     <style></style>
   </head>
@@ -16,6 +17,7 @@
     </noscript>
     <div id="rideto-root"></div>
     <div id="rideto-account-page"></div>
+    <div id="rideto-checkout-page"></div>
     <div id="rideto-course-type-selection"></div>
     <div id="rideto-home-course-slider"></div>
     <div id="rideto-resultspage-root"></div>
@@ -61,6 +63,9 @@ window.RIDETO_PAGE = {
   },
   ]
 }
+window.RIDE_TO_DATA = {
+  "stripe_public_key": "pk_test_Mjn39pDHN7ZWIwCVVTMzPrls",
+};
     </script>
   </body>
 </html>
