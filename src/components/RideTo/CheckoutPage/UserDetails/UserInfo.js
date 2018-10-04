@@ -1,4 +1,5 @@
 import React from 'react'
+import classnames from 'classnames'
 import { RidingExperiences, RiderTypes } from 'common/info'
 import Input from 'components/RideTo/Input'
 import Select from 'components/RideTo/Select'
@@ -106,7 +107,10 @@ const UserInfo = ({
           <Input
             placeholder="Postcode"
             name="postcode"
-            className={styles.input}
+            className={classnames(
+              styles.input,
+              postcodeLookingup && styles.disabled
+            )}
             onKeyUp={event =>
               event.key === 'Enter' && onPostalCodeSubmit(event.target.value)
             }

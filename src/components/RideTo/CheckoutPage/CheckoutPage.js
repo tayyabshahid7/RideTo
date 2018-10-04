@@ -8,6 +8,7 @@ import OrderSummary from './OrderSummary'
 import { fetchAddressWithPostcode } from 'services/misc'
 import { createOrder, createStripeToken } from 'services/widget'
 import { getPrice } from 'services/course'
+import AddressSelectModal from 'components/RideTo/AddressSelectModal'
 
 const getStripeError = error => {
   const field = error.code.split('_').slice(-1)[0]
@@ -61,7 +62,9 @@ class CheckoutPage extends Component {
         address: {},
         billingAddress: {}
       },
-      saving: false
+      saving: false,
+      showAddressSelectorModal: false,
+      postcode: ''
     }
     this.handleChange = this.handleChange.bind(this)
     this.onUpdate = this.onUpdate.bind(this)
@@ -114,10 +117,12 @@ class CheckoutPage extends Component {
     try {
       this.setState({ postcodeLookingup: true })
       let response = await fetchAddressWithPostcode({ postcode })
-      if (response && response.addresses) {
+      if (response && response.addresses && response.addresses.length > 0) {
         this.setState({
           postcodeLookingup: false,
-          addresses: response.addresses
+          showAddressSelectorModal: true,
+          addresses: response.addresses,
+          postcode
         })
       } else {
         this.setState({ postcodeLookingup: false })
@@ -126,6 +131,27 @@ class CheckoutPage extends Component {
       console.log('Error - ', error)
       this.setState({ postcodeLookingup: false })
     }
+  }
+
+  handleSelectAddress(addressString) {
+    // "Line1,Line2,Line3,Line4,Locality,Town/City,County"
+    const { postcode, details } = this.state
+    let parts = addressString.split(',')
+    let address = {
+      address_1: parts[0].trim(),
+      address_2: parts[1].trim(),
+      town: parts[5].trim(),
+      county: parts[6].trim(),
+      postcode: postcode.trim()
+    }
+
+    details.address = address
+
+    this.setState({
+      details,
+      showAddressSelectorModal: false,
+      manualAddress: true
+    })
   }
 
   validateDetails(details) {
@@ -269,7 +295,9 @@ class CheckoutPage extends Component {
       postcodeLookingup,
       coursePrice,
       errors,
-      saving
+      saving,
+      showAddressSelectorModal,
+      addresses
     } = this.state
 
     return (
@@ -295,6 +323,16 @@ class CheckoutPage extends Component {
             saving={saving}
           />
         </div>
+        {showAddressSelectorModal && (
+          <AddressSelectModal
+            addresses={addresses}
+            isOpen={true}
+            closeModal={() =>
+              this.setState({ showAddressSelectorModal: false })
+            }
+            onSelect={this.handleSelectAddress.bind(this)}
+          />
+        )}
       </div>
     )
   }
