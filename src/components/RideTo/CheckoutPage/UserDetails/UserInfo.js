@@ -7,10 +7,10 @@ import styles from './styles.scss'
 import { getCurrentLicenceOptions } from 'services/customer'
 
 const UserInfo = ({
-  user,
+  details,
   manualAddress,
   errors = {},
-  onUserChange,
+  onDetailChange,
   onChange,
   onPostalCodeSubmit,
   postcodeLookingup
@@ -18,7 +18,10 @@ const UserInfo = ({
   const currentLicenceOptions = getCurrentLicenceOptions()
   const handleChange = event => {
     const { name, value } = event.target
-    onUserChange({ [name]: value })
+    onDetailChange(name, value)
+  }
+  const handleAddressChange = (name, value) => {
+    onDetailChange(`address.${name}`, value)
   }
 
   return (
@@ -27,60 +30,75 @@ const UserInfo = ({
       <div className={styles.row}>
         <Input
           placeholder="Date Of Birth"
-          name="dob"
-          value={user.dob}
+          name="user_birthdate"
+          value={details.user_birthdate}
           className={styles.input}
           onChange={handleChange}
           required
         />
-        <div className={styles.subtext}>DD/MM/YY</div>
-        {errors.dob && <div className={styles.error}>{errors.dob}</div>}
+        <div className={styles.subtext}>DD/MM/YYYY</div>
+        {errors.user_birthdate && (
+          <div className={styles.error}>{errors.user_birthdate}</div>
+        )}
         <Input
           placeholder="Telephone Number"
           name="phone"
-          value={user.phone}
+          value={details.phone}
           className={styles.input}
           onChange={handleChange}
           required
         />
-        {errors.dob && <div className={styles.error}>{errors.dob}</div>}
+        {errors.phone && <div className={styles.error}>{errors.phone}</div>}
         <Select
-          value={user.current_licences}
-          name="current_licences"
+          value={details.current_licence}
+          name="current_licence"
           className={styles.input}
           onChange={handleChange}>
           <option>Current License</option>
           {currentLicenceOptions.map(licenseOption => (
-            <option value={licenseOption.id}>{licenseOption.name}</option>
+            <option value={licenseOption.id} key={licenseOption.id}>
+              {licenseOption.name}
+            </option>
           ))}
         </Select>
         <div className={styles.subtext}>current licenses</div>
+        {errors.current_licence && (
+          <div className={styles.error}>{errors.current_licence}</div>
+        )}
         <Select
-          value={user.riding_experience}
+          value={details.riding_experience}
           name="riding_experience"
           className={styles.input}
           onChange={handleChange}
           required>
           <option>Riding Experience</option>
           {RidingExperiences.map(ridingExperience => (
-            <option value={ridingExperience.value}>
+            <option value={ridingExperience.value} key={ridingExperience.value}>
               {ridingExperience.title}
             </option>
           ))}
         </Select>
         <div className={styles.subtext}>riding experience</div>
+        {errors.riding_experience && (
+          <div className={styles.error}>{errors.riding_experience}</div>
+        )}
         <Select
-          value={user.rider_type}
+          value={details.rider_type}
           name="rider_type"
           className={styles.input}
           onChange={handleChange}
           required>
           <option>Rider Type</option>
           {RiderTypes.map(riderType => (
-            <option value={riderType.value}>{riderType.title}</option>
+            <option value={riderType.value} key={riderType.value}>
+              {riderType.title}
+            </option>
           ))}
         </Select>
         <div className={styles.subtext}>rider type</div>
+        {errors.rider_type && (
+          <div className={styles.error}>{errors.rider_type}</div>
+        )}
       </div>
       <div className={styles.title}>Delivery Address</div>
       {!manualAddress && (
@@ -103,7 +121,11 @@ const UserInfo = ({
       )}
       {manualAddress && (
         <div className={styles.row}>
-          <AddressForm address={user} onChange={onUserChange} />
+          <AddressForm
+            address={details.address}
+            onChange={handleAddressChange}
+            errors={errors.address}
+          />
         </div>
       )}
     </div>

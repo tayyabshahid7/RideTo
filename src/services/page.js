@@ -13,3 +13,8 @@ export const getSupplier = () => {
   const staticData = getStaticData('RIDETO_PAGE')
   return staticData.checkout.supplier
 }
+
+export const getCurrentUser = () => {
+  const staticData = getStaticData('RIDETO_PAGE')
+  return staticData.user
+}

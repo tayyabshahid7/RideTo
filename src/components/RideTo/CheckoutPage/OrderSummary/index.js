@@ -9,9 +9,9 @@ import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
 
 class OrderSummary extends Component {
-  renderRow(title, content, priceHighlight = false) {
+  renderRow(title, content, index, priceHighlight = false) {
     return (
-      <div className={styles.rowItem}>
+      <div className={styles.rowItem} key={index}>
         <div className={styles.subtitle}>{title}</div>
         <div
           className={classnames(
@@ -25,43 +25,44 @@ class OrderSummary extends Component {
   }
 
   renderCourseInformation() {
-    const { checkoutData } = this.props
-    const { courseType, date, postcode } = checkoutData
+    const { checkoutData, supplier } = this.props
+    const { courseType, date } = checkoutData
     return (
       <div className={styles.rowContainer}>
         {this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
-        {this.renderRow('Location', postcode)}
+        {this.renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
       </div>
     )
   }
 
   renderPrices() {
-    const { checkoutData } = this.props
+    const { checkoutData, coursePrice } = this.props
     const { addons } = checkoutData
-    let price = 0
+    let price = parseFloat(coursePrice / 100)
     addons.forEach(addon => {
       price += parseFloat(addon.price)
     })
     return (
       <div className={styles.rowContainer}>
-        {addons.map(addon =>
+        {addons.map((addon, index) =>
           this.renderRow(
             addon.selectedSize
-              ? `${addon.name} (${addon.selectedSize})`
+              ? `${addon.name} (${addon.selectedSize.code})`
               : addon.name,
-            `£${addon.price}`
+            `£${addon.price}`,
+            index
           )
         )}
-        {this.renderRow('Order Total', `£${price.toFixed(2)}`, true)}
+        {this.renderRow('Order Total', `£${price.toFixed(2)}`, 100, true)}
       </div>
     )
   }
 
   render() {
-    const { onSubmit } = this.props
+    const { onSubmit, saving } = this.props
 
-    let confirmDisabled = false
+    let confirmDisabled = saving
 
     return (
       <div className={styles.container}>
@@ -100,7 +101,7 @@ class OrderSummary extends Component {
               Cancel within 3 working days to get a full refund on your booking
             </div>
             <a
-              href="https://www.google.com"
+              href="https://www.rideto.com/terms#cancellations"
               className={styles.guarantee2}
               target="_blank"
               rel="noopener noreferrer">

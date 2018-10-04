@@ -3,6 +3,7 @@ import moment from 'moment'
 import { DATE_FORMAT } from 'common/constants'
 import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
+import { getSupplier, getCurrentUser } from 'services/page'
 
 class CheckoutPageContainer extends Component {
   constructor(props) {
@@ -13,9 +14,13 @@ class CheckoutPageContainer extends Component {
       console.log('Error', error)
       // window.location = '/'
     }
+    const supplier = getSupplier()
+    const currentUser = getCurrentUser()
     this.state = {
       loading: false,
-      checkoutData: this.checkoutData || { addons: [] }
+      checkoutData: this.checkoutData || { addons: [] },
+      supplier,
+      currentUser
     }
 
     this.stripePublicKey = window.RIDE_TO_DATA.stripe_public_key
@@ -23,21 +28,6 @@ class CheckoutPageContainer extends Component {
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
   }
-
-  loadData() {}
-
-  // async loadPlaceInfo() {
-  //   const { postcode, navigation } = this.state
-  //   if (postcode) {
-  //     let response = await fetchLocationInfoWithPostCode(postcode)
-  //     if (response && response.result) {
-  //       navigation[0].subtitle = `${response.result.admin_district}, ${
-  //         response.result.region
-  //       } ${postcode.toUpperCase()}`
-  //     }
-  //     this.setState({ navigation })
-  //   }
-  // }
 
   handleSetDate(date) {
     this.setState({ date: moment(date).format(DATE_FORMAT) })
@@ -48,12 +38,17 @@ class CheckoutPageContainer extends Component {
   }
 
   render() {
-    const { checkoutData, loading } = this.state
+    const { checkoutData, loading, supplier, currentUser } = this.state
 
     return (
       <StripeProvider apiKey={this.stripePublicKey}>
         <Elements>
-          <CheckoutPage checkoutData={checkoutData} loading={loading} />
+          <CheckoutPage
+            checkoutData={checkoutData}
+            loading={loading}
+            supplier={supplier}
+            currentUser={currentUser}
+          />
         </Elements>
       </StripeProvider>
     )

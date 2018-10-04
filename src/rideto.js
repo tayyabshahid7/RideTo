@@ -56,7 +56,4 @@ mountComponent(
   document.getElementById('rideto-addon-selection')
 )
 
-mountComponent(
-  <CheckoutPage />,
-  document.getElementById('rideto-checkout-page')
-)
+mountComponent(<CheckoutPage />, document.getElementById('rideto-checkout'))

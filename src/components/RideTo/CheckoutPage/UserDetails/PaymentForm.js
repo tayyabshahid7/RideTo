@@ -12,16 +12,21 @@ import { Row, Col } from 'reactstrap'
 import AddressForm from 'components/AddressForm'
 import styles from './styles.scss'
 
-const PaymentForm = ({ payment, errors = {}, onPaymentChange }) => {
+const PaymentForm = ({ details, errors = {}, onDetailChange }) => {
   const inputStyle = {
     base: {
       fontSize: '15px',
-      lineHiehgt: '24px',
       fontFamily: 'ProximaNova',
-      color: '#141414',
-      height: '48px',
-      padding: '11px 16px'
+      color: '#141414'
     }
+  }
+
+  const handleChange = event => {
+    const { name, value } = event.target
+    onDetailChange(name, value)
+  }
+  const handleAddressChange = (name, value) => {
+    onDetailChange(`billingAddress.${name}`, value)
   }
 
   return (
@@ -35,9 +40,9 @@ const PaymentForm = ({ payment, errors = {}, onPaymentChange }) => {
         <Input
           placeholder="Cardholder Name"
           name="card_name"
-          value={payment.card_name}
+          value={details.card_name}
           className={styles.input}
-          onChange={onPaymentChange}
+          onChange={handleChange}
           required
         />
         <Row>
@@ -58,25 +63,27 @@ const PaymentForm = ({ payment, errors = {}, onPaymentChange }) => {
       <div className={styles.rowItem}>
         <Radiobox
           extraClass={styles.radiobox}
-          onChange={() => onPaymentChange({ sameAddress: true })}
-          error={errors.terms}
-          checked={payment.sameAddress}
+          onChange={() => onDetailChange('sameAddress', true)}
+          checked={details.sameAddress}
           name="sameAddress">
           Same as delivery address
         </Radiobox>
         <Radiobox
           extraClass={styles.radiobox}
-          onChange={() => onPaymentChange({ sameAddress: false })}
-          error={errors.terms}
-          checked={!payment.sameAddress}
+          onChange={() => onDetailChange('sameAddress', false)}
+          checked={!details.sameAddress}
           name="sameAddress">
           Use a different billing address
         </Radiobox>
-        {!payment.sameAddress && (
+        {!details.sameAddress && (
           <div className={styles.title}>Billing Address</div>
         )}
-        {!payment.sameAddress && (
-          <AddressForm address={payment} onChange={onPaymentChange} />
+        {!details.sameAddress && (
+          <AddressForm
+            address={details.billingAddress}
+            onChange={handleAddressChange}
+            errors={errors.billingAddress}
+          />
         )}
       </div>
 

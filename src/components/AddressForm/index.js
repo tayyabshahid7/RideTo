@@ -2,10 +2,10 @@ import React from 'react'
 import Input from 'components/RideTo/Input'
 import styles from './styles.scss'
 
-const AddressForm = ({ address, onChange }) => {
+const AddressForm = ({ address, onChange, errors = {} }) => {
   const handleChange = event => {
     const { name, value } = event.target
-    onChange({ [name]: value })
+    onChange(name, value)
   }
 
   return (
@@ -19,6 +19,9 @@ const AddressForm = ({ address, onChange }) => {
           onChange={handleChange}
           required
         />
+        {errors.address_1 && (
+          <div className={styles.error}>{errors.address_1}</div>
+        )}
         <Input
           placeholder="Address 2"
           name="address_2"
@@ -26,13 +29,17 @@ const AddressForm = ({ address, onChange }) => {
           className={styles.input}
           onChange={handleChange}
         />
+        {errors.address_2 && (
+          <div className={styles.error}>{errors.address_2}</div>
+        )}
         <Input
           placeholder="Town/City"
-          name="city"
-          value={address.city}
+          name="town"
+          value={address.town}
           className={styles.input}
           onChange={handleChange}
         />
+        {errors.town && <div className={styles.error}>{errors.town}</div>}
         <Input
           placeholder="County"
           name="county"
@@ -40,6 +47,7 @@ const AddressForm = ({ address, onChange }) => {
           className={styles.input}
           onChange={handleChange}
         />
+        {errors.county && <div className={styles.error}>{errors.county}</div>}
         <Input
           placeholder="Postcode"
           name="postcode"
@@ -47,6 +55,9 @@ const AddressForm = ({ address, onChange }) => {
           className={styles.input}
           onChange={handleChange}
         />
+        {errors.postcode && (
+          <div className={styles.error}>{errors.postcode}</div>
+        )}
       </div>
     </div>
   )

@@ -76,6 +76,11 @@
   cursor: wait;
 }
 
+.error {
+  color: var(--danger-color);
+  font-size: 12px;
+}
+
 .paymentError {
   color: #f86b6b;
   text-align: center;

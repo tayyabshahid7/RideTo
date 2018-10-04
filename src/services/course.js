@@ -138,6 +138,15 @@ export const getPricingForCourse = async (schoolId, course_type, datetime) => {
   return response
 }
 
+export const getPrice = async ({ supplierId, date, course_type, courseId }) => {
+  const path = courseId
+    ? `school/${supplierId}/widget/course/${courseId}`
+    : 'get-price'
+  const params = courseId ? {} : { course_type, date, supplier_id: supplierId }
+  const response = await get(path, params, false)
+  return response
+}
+
 export const getShortCourseType = courseType => {
   switch (courseType.constant) {
     case 'LICENCE_CBT':

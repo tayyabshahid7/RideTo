@@ -49,6 +49,13 @@ class AddonSelection extends React.Component {
       }
     ]
 
+    let addons = getAddons()
+    addons.forEach(addon => {
+      if (addon.sizes && addon.sizes.length > 0) {
+        addon.selectedSize = addon.sizes[0]
+      }
+    })
+
     this.state = {
       addons: getAddons(),
       postcode: qs.postcode || '',
@@ -84,23 +91,16 @@ class AddonSelection extends React.Component {
     this.loadPlaceInfo()
   }
 
-  handleAddAddon(addon, selectedSize) {
+  handleAddAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.concat([
-        {
-          addon,
-          selectedSize
-        }
-      ]),
+      selectedAddons: this.state.selectedAddons.concat([addon]),
       detailsAddon: null
     })
   }
 
   handleRemoveAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.filter(
-        item => item.addon !== addon
-      ),
+      selectedAddons: this.state.selectedAddons.filter(item => item !== addon),
       detailsAddon: null
     })
   }
@@ -111,7 +111,6 @@ class AddonSelection extends React.Component {
   }
 
   handleContinue() {
-
     // TODO we need to go through account flow first...
     // window.location = '/account'
     const supplier = getSupplier()
@@ -142,7 +141,7 @@ class AddonSelection extends React.Component {
   isAddonSelected(addon) {
     const { selectedAddons } = this.state
 
-    return selectedAddons.filter(item => item.addon === addon).length > 0
+    return selectedAddons.filter(item => item === addon).length > 0
   }
 
   render() {
