@@ -327,9 +327,7 @@ class CheckoutPage extends Component {
           <AddressSelectModal
             addresses={addresses}
             isOpen={true}
-            closeModal={() =>
-              this.setState({ showAddressSelectorModal: false })
-            }
+            onClose={() => this.setState({ showAddressSelectorModal: false })}
             onSelect={this.handleSelectAddress.bind(this)}
           />
         )}
