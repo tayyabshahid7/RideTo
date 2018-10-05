@@ -60,9 +60,9 @@ class OrderSummary extends Component {
   }
 
   render() {
-    const { onSubmit, saving } = this.props
+    const { onSubmit, saving, validStep } = this.props
 
-    let confirmDisabled = saving
+    let confirmDisabled = validStep < 4 || saving
 
     return (
       <div className={styles.container}>
