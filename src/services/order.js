@@ -114,3 +114,9 @@ export const getTrainingStatusOptions = () => {
     }
   ]
 }
+
+export const getExpectedPrice = (coursePrice, addons = []) => {
+  return (
+    coursePrice + addons.reduce((total, { price }) => (total += price * 100), 0)
+  )
+}
