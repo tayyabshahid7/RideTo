@@ -8,6 +8,8 @@ import OrderSummary from './OrderSummary'
 import { fetchAddressWithPostcode } from 'services/misc'
 import { createOrder, createStripeToken } from 'services/widget'
 import { getPrice } from 'services/course'
+import { isInstantBook } from 'services/page'
+import { getExpectedPrice } from 'services/order'
 import AddressSelectModal from 'components/RideTo/AddressSelectModal'
 
 const getStripeError = error => {
@@ -234,11 +236,7 @@ class CheckoutPage extends Component {
       bike_hire,
       courseId
     } = checkoutData
-    let price = coursePrice
-    addons.forEach(addon => {
-      price += parseFloat(addon.price)
-    })
-    let addonIds = addons.map(addon => {
+    const addonIds = addons.map(addon => {
       let ad = { addon_id: addon.id }
       if (addon.selectedSize) {
         ad.size_id = addon.selectedSize.id
@@ -246,6 +244,7 @@ class CheckoutPage extends Component {
       return ad
     })
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
+
     const data = {
       ...details,
       ...pick(currentUser, ['first_name', 'last_name', 'email']),
@@ -255,7 +254,7 @@ class CheckoutPage extends Component {
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
       token: token.id,
-      expected_price: price,
+      expected_price: getExpectedPrice(coursePrice, addons),
       name: `${this.state.details.card_name}`,
       user_date: date,
       selected_licence: courseType,
@@ -263,6 +262,7 @@ class CheckoutPage extends Component {
       bike_hire: bike_hire,
       addons: addonIds,
       accept_terms: true,
+      source: isInstantBook() ? 'RIDETO_INSTANT' : 'RIDETO',
       accept_equipment_responsibility: true, // TODO Needs to be removed
       voucher_code: ''
     }
