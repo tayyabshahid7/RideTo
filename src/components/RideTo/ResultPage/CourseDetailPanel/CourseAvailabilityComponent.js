@@ -196,7 +196,7 @@ class CourseAvailabilityComponent extends React.Component {
           disablePreviousDates
         />
         <div className={styles.bikeHireWrapper}>
-          <label className={styles.subtitle}>Bike Hire (Included)</label>
+          <label className={styles.subtitle1}>Choose A Bike to Hire</label>
 
           {course.course_type === 'LICENCE_CBT_RENEWAL' && (
             <Checkbox
@@ -207,6 +207,16 @@ class CourseAvailabilityComponent extends React.Component {
             </Checkbox>
           )}
 
+          {/* <button
+            className={classnames(
+              styles.btn,
+              bike_hire === 'auto' && styles.activeBtn
+            )}
+            onClick={() => onUpdate({ bike_hire: 'auto' })}
+            disabled={isAutoFull}>
+            {getMotorbikeLabel('auto')}
+            {isAutoFull ? fullText : null}
+          </button> */}
           <Checkbox
             checked={bike_hire === 'auto'}
             extraClass="WidgetCheckbox"

@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
 import styles from './CalendarHeader.scss'
-import { IconArrowRight, IconArrowLeft } from 'assets/icons'
+import { IconArrowSlideLeft, IconArrowSlideRight } from 'assets/icons'
 // import classnames from 'classnames'
 
 const CalendarHeader = ({
@@ -20,21 +20,20 @@ const CalendarHeader = ({
     calendar.month === currentMonth
   return (
     <div className={styles.container}>
-      <div className={styles.title}>
-        {moment(new Date(calendar.year, calendar.month, 1)).format('MMMM YYYY')}
-      </div>
+      <div className={styles.title}>Choose a date</div>
       <div
         className={classnames(styles.prev, prevDisabled && styles.disabled)}
         onClick={() => !prevDisabled && handlePrevMonth()}>
-        <IconArrowLeft
+        <IconArrowSlideLeft
           className={classnames(
             styles.icon,
             prevDisabled && styles.disabledIcon
           )}
         />
       </div>
+      {moment(new Date(calendar.year, calendar.month, 1)).format('MMMM YYYY')}
       <div className={styles.next} onClick={handleNextMonth}>
-        <IconArrowRight className={styles.icon} />
+        <IconArrowSlideRight className={styles.icon} />
       </div>
     </div>
   )
