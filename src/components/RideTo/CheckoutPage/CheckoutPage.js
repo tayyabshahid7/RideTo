@@ -30,6 +30,14 @@ const REQUIRED_FIELDS = [
   'card_name'
 ]
 
+const REQUIRED_FIELDS_STEP1 = [
+  'user_birthdate',
+  'phone',
+  'current_licence',
+  'riding_experience',
+  'rider_type'
+]
+
 const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'county', 'postcode']
 
 class CheckoutPage extends Component {
@@ -54,7 +62,11 @@ class CheckoutPage extends Component {
         address: { ...emptyAddress },
         card_name: '',
         sameAddress: true,
-        billingAddress: { ...emptyAddress }
+        billingAddress: { ...emptyAddress },
+        card_number: false,
+        cvv: false,
+        expiry_date: false,
+        postcode: ''
       },
       coursePrice: 0,
       manualAddress: false,
@@ -66,7 +78,7 @@ class CheckoutPage extends Component {
       },
       saving: false,
       showAddressSelectorModal: false,
-      postcode: ''
+      validStep: 0
     }
     this.handleChange = this.handleChange.bind(this)
     this.onUpdate = this.onUpdate.bind(this)
@@ -112,19 +124,21 @@ class CheckoutPage extends Component {
     let { details, errors } = this.state
     set(details, path, value)
     set(errors, path, null)
-    this.setState({ details, errors })
+    let validStep = this.getValidatedStep(details)
+    this.setState({ details, errors, validStep })
   }
 
   async handlePostalcodeSubmit(postcode) {
     try {
       this.setState({ postcodeLookingup: true })
-      let response = await fetchAddressWithPostcode({ postcode })
+      let response = await fetchAddressWithPostcode({
+        postcode: postcode.trim()
+      })
       if (response && response.addresses && response.addresses.length > 0) {
         this.setState({
           postcodeLookingup: false,
           showAddressSelectorModal: true,
-          addresses: response.addresses,
-          postcode
+          addresses: response.addresses
         })
       } else {
         this.setState({ postcodeLookingup: false })
@@ -137,14 +151,14 @@ class CheckoutPage extends Component {
 
   handleSelectAddress(addressString) {
     // "Line1,Line2,Line3,Line4,Locality,Town/City,County"
-    const { postcode, details } = this.state
+    const { details } = this.state
     let parts = addressString.split(',')
     let address = {
       address_1: parts[0].trim(),
       address_2: parts[1].trim(),
       town: parts[5].trim(),
       county: parts[6].trim(),
-      postcode: postcode.trim()
+      postcode: details.postcode.trim()
     }
 
     details.address = address
@@ -154,6 +168,50 @@ class CheckoutPage extends Component {
       showAddressSelectorModal: false,
       manualAddress: true
     })
+  }
+
+  getValidatedStep(details) {
+    let hasError = false
+    REQUIRED_FIELDS_STEP1.forEach(field => {
+      if (!details[field]) {
+        hasError = true
+      }
+    })
+
+    if (hasError) {
+      return 0
+    }
+
+    REQUIRED_ADDRESS_FIELDS.forEach(field => {
+      if (!details.address[field]) {
+        hasError = true
+      }
+    })
+
+    if (hasError) {
+      return 1
+    }
+
+    if (
+      !details['card_name'] ||
+      !details.card_number ||
+      !details.cvv ||
+      !details.expiry_date
+    ) {
+      return 2
+    }
+
+    if (!details.sameAddress) {
+      REQUIRED_ADDRESS_FIELDS.forEach(field => {
+        if (!details.billingAddress[field]) {
+          hasError = true
+        }
+      })
+      if (hasError) {
+        return 3
+      }
+    }
+    return 4
   }
 
   validateDetails(details) {
@@ -297,7 +355,8 @@ class CheckoutPage extends Component {
       errors,
       saving,
       showAddressSelectorModal,
-      addresses
+      addresses,
+      validStep
     } = this.state
 
     return (
@@ -313,6 +372,7 @@ class CheckoutPage extends Component {
             manualAddress={manualAddress}
             onPostalCodeSubmit={this.handlePostalcodeSubmit}
             postcodeLookingup={postcodeLookingup}
+            validStep={validStep}
           />
         </div>
         <div className={styles.rightPanel}>
@@ -321,6 +381,7 @@ class CheckoutPage extends Component {
             coursePrice={coursePrice}
             onSubmit={this.handlePayment}
             saving={saving}
+            validStep={validStep}
           />
         </div>
         {showAddressSelectorModal && (

@@ -8,11 +8,11 @@
   line-height: 29px;
   font-family: var(--font-rift);
   font-weight: bold;
-  margin-top: 32px;
+  // margin-top: 32px;
 }
 
 .input {
-  margin-top: 16px;
+  margin-top: 24px;
   // padding: 0;
 }
 
@@ -25,11 +25,12 @@
 }
 
 .rowItem {
-  margin-top: 24px;
+  margin-top: 8px;
+  margin-bottom: 32px;
 }
 
 .radiobox {
-  margin-top: 16px;
+  margin-top: 24px;
   text-align: left;
   line-height: 1;
   margin-bottom: 24px;
@@ -39,13 +40,6 @@
 
 .checkoutForm {
   color: #707070;
-}
-
-.paymentFields {
-  margin-top: 16px;
-  margin-bottom: 16px;
-  // padding: 16px 16px;
-  // background: white;
 }
 
 .terms {
@@ -71,9 +65,18 @@
   width: 42px;
 }
 
-.disabled {
+.waiting {
   opacity: 0.5;
   cursor: wait;
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.disabledTitle {
+  opacity: 0.5;
+  margin-bottom: 32px;
 }
 
 .error {
