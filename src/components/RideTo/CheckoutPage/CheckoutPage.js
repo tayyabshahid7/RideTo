@@ -141,11 +141,15 @@ class CheckoutPage extends Component {
           addresses: response.addresses
         })
       } else {
-        this.setState({ postcodeLookingup: false })
+        let { errors } = this.state
+        errors.postcode = 'No address has been found with postal code'
+        this.setState({ postcodeLookingup: false, errors })
       }
     } catch (error) {
       console.log('Error - ', error)
-      this.setState({ postcodeLookingup: false })
+      let { errors } = this.state
+      errors.postcode = `${error}`
+      this.setState({ postcodeLookingup: false, errors })
     }
   }
 
