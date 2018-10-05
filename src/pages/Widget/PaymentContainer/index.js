@@ -121,7 +121,9 @@ class PaymentContainer extends React.Component {
     }
 
     this.setState({ errors: {}, isSaving: true })
-    const response = await createStripeToken(stripe, details.card_name)
+    const response = await createStripeToken(stripe, {
+      name: details.card_name
+    })
 
     if (response.error) {
       this.handleErrors({

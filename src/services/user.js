@@ -1,4 +1,4 @@
-import { post } from 'services/api'
+import { get, post } from 'services/api'
 
 export const saveUser = async user => {
   const path = 'users/signup/'
@@ -6,8 +6,6 @@ export const saveUser = async user => {
   return await post(path, { ...user })
 }
 
-export const loginUser = async user => {
-  const path = 'users/login/'
-
-  return await post(path, { ...user })
+export const fetchUser = async () => {
+  return await get('users/')
 }

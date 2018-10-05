@@ -1,8 +1,8 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
 
-export const createStripeToken = async (stripe, name) => {
-  return await stripe.createToken({ name })
+export const createStripeToken = async (stripe, data) => {
+  return await stripe.createToken({ ...data })
 }
 
 export const createOrder = async data => {

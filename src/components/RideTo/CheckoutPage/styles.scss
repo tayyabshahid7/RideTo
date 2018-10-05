@@ -1,0 +1,29 @@
+.container {
+  display: flex;
+}
+
+.leftPanel {
+  flex: 1 1 480px;
+  display: flex;
+  justify-content: center;
+  padding: 80px 0px 40px 0px;
+}
+
+.rightPanel {
+  flex: 0 1 528px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .leftPanel {
+    flex: 1 1 auto;
+  }
+
+  .rightPanel {
+    flex: 1 1 auto;
+  }
+}

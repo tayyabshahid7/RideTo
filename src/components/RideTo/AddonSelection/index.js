@@ -49,6 +49,13 @@ class AddonSelection extends React.Component {
       }
     ]
 
+    let addons = getAddons()
+    addons.forEach(addon => {
+      if (addon.sizes && addon.sizes.length > 0) {
+        addon.selectedSize = addon.sizes[0]
+      }
+    })
+
     this.state = {
       addons: getAddons(),
       postcode: qs.postcode || '',
@@ -64,6 +71,7 @@ class AddonSelection extends React.Component {
     this.handleRemoveAddon = this.handleRemoveAddon.bind(this)
     this.handleDetails = this.handleDetails.bind(this)
     this.handleContinue = this.handleContinue.bind(this)
+    this.handleSizeUpdate = this.handleSizeUpdate.bind(this)
   }
 
   async loadPlaceInfo() {
@@ -80,42 +88,46 @@ class AddonSelection extends React.Component {
   }
 
   async componentDidMount() {
-    this.loadData()
     this.loadPlaceInfo()
   }
 
-  handleAddAddon(addon, selectedSize) {
+  handleAddAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.concat([
-        {
-          addon,
-          selectedSize
-        }
-      ]),
+      selectedAddons: this.state.selectedAddons.concat([addon]),
       detailsAddon: null
     })
   }
 
   handleRemoveAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.filter(
-        item => item.addon !== addon
-      ),
+      selectedAddons: this.state.selectedAddons.filter(item => item !== addon),
       detailsAddon: null
     })
   }
 
-  handleContinue() {
-    // Save all data to local storage then redirect to login or account page
-    let addOns = this.state.selectedAddons.map(addOn => addOn.id).join(',')
-    sessionStorage.setItem('checkout-data-query', window.location.search)
-    sessionStorage.setItem('checkout-data-add-ons', addOns)
+  handleSizeUpdate(addon, selectedSize) {
+    addon.selectedSize = selectedSize
+    this.setState({ addons: this.state.addons })
+  }
 
+  handleContinue() {
     // TODO we need to go through account flow first...
-    // window.location = '/account'
     const supplier = getSupplier()
     const url = `/${supplier.slug}/checkout`
-    window.location.href = url
+    const { qs, selectedAddons } = this.state
+    let addons = selectedAddons.map(addon => {
+      return {
+        id: addon.id,
+        selectedSize: addon.selectedSize,
+        price: addon.discount_price || addon.full_price,
+        name: addon.name
+      }
+    })
+
+    let checkoutData = { ...qs, addons }
+
+    sessionStorage.setItem('checkout-data', JSON.stringify(checkoutData))
+    window.location = `/account?next=${url}`
   }
 
   handleDetails(detailsAddon) {
@@ -127,7 +139,7 @@ class AddonSelection extends React.Component {
   isAddonSelected(addon) {
     const { selectedAddons } = this.state
 
-    return selectedAddons.filter(item => item.addon === addon).length > 0
+    return selectedAddons.filter(item => item === addon).length > 0
   }
 
   render() {
@@ -151,6 +163,7 @@ class AddonSelection extends React.Component {
                   isAdded={this.isAddonSelected(addon)}
                   onAdd={this.handleAddAddon}
                   onRemove={this.handleRemoveAddon}
+                  onSizeUpdate={this.handleSizeUpdate}
                   onDetails={this.handleDetails}
                 />
               </Col>
