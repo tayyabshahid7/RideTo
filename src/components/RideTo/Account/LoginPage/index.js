@@ -54,7 +54,21 @@ class LoginPage extends React.Component {
     event.preventDefault()
     const { email, password } = this.state
 
-    await requestToken(email, password)
+    try {
+      await requestToken(email, password)
+      const next = JSON.parse(sessionStorage.getItem('login-next'))
+
+      window.location.href = next
+    } catch (error) {
+      const { response } = error
+      if (response.data) {
+        this.setState({
+          errors: {
+            email: 'Unable to log in with provided credentials.'
+          }
+        })
+      }
+    }
   }
 
   render() {
