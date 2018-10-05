@@ -78,6 +78,8 @@ class SignupPage extends React.Component {
 
     try {
       await saveUser({ first_name, last_name, email, password })
+      const next = JSON.parse(sessionStorage.getItem('login-next'))
+      window.location.href = next
     } catch (error) {
       const { response } = error
       if (response) {
@@ -168,6 +170,16 @@ class SignupPage extends React.Component {
 
             <Checkbox
               extraClass={styles.checkbox}
+              size="large"
+              onChange={this.handleCheck}
+              checked={newsletter}
+              name="newsletter">
+              Join the RideTo community newsletter to be invited to weekly ride
+              outs, events and special offers.
+            </Checkbox>
+
+            <Checkbox
+              extraClass={styles.checkbox}
               onChange={this.handleCheck}
               size="large"
               error={errors.terms}
@@ -175,16 +187,6 @@ class SignupPage extends React.Component {
               name="terms">
               I confirm I have read and accept RideTo’s terms & conditions and
               agree to RideTo’s condition of use & sale.
-            </Checkbox>
-
-            <Checkbox
-              extraClass={styles.checkbox}
-              size="large"
-              onChange={this.handleCheck}
-              checked={newsletter}
-              name="newsletter">
-              Join the RideTo community newsletter to be invited to weekly ride
-              outs, events and special offers.
             </Checkbox>
 
             <button type="submit" className={styles.signup}>

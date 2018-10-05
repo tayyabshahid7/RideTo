@@ -11,6 +11,7 @@ import AddonDetails from 'components/RideTo/AddonDetails'
 import styles from './AddonSelection.scss'
 import { getCourseTitle } from 'services/course'
 import { IconArrowRight } from 'assets/icons'
+import { verifyToken, getToken } from 'services/auth'
 import { fetchLocationInfoWithPostCode } from 'services/misc'
 
 class AddonSelection extends React.Component {
@@ -110,10 +111,11 @@ class AddonSelection extends React.Component {
     this.setState({ addons: this.state.addons })
   }
 
-  handleContinue() {
+  async handleContinue() {
     // TODO we need to go through account flow first...
     const supplier = getSupplier()
-    const url = `/${supplier.slug}/checkout`
+    const next = `/${supplier.slug}/checkout`
+    const token = getToken()
     const { qs, selectedAddons } = this.state
     let addons = selectedAddons.map(addon => {
       return {
@@ -125,9 +127,20 @@ class AddonSelection extends React.Component {
     })
 
     let checkoutData = { ...qs, addons }
-
     sessionStorage.setItem('checkout-data', JSON.stringify(checkoutData))
-    window.location = `/account?next=${url}`
+    sessionStorage.setItem('login-next', JSON.stringify(next))
+
+    if (token) {
+      try {
+        await verifyToken(token)
+        window.location = next
+      } catch (error) {
+        console.error(error)
+        window.location = `/account?next=${next}`
+      }
+    } else {
+      window.location = `/account?next=${next}`
+    }
   }
 
   handleDetails(detailsAddon) {

@@ -31,6 +31,11 @@ export const getToken = () => {
   return localStorage.getItem('token')
 }
 
+export const verifyToken = async token => {
+  const response = await post('users/verify/', { token }, false)
+  return response
+}
+
 export const removeToken = () => {
   localStorage.removeItem('token')
 }
