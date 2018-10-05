@@ -3,7 +3,8 @@ import moment from 'moment'
 import { DATE_FORMAT } from 'common/constants'
 import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
-import { getSupplier, getCurrentUser } from 'services/page'
+import { getSupplier } from 'services/page'
+import { fetchUser } from 'services/user'
 
 class CheckoutPageContainer extends Component {
   constructor(props) {
@@ -15,18 +16,22 @@ class CheckoutPageContainer extends Component {
       // window.location = '/'
     }
     const supplier = getSupplier()
-    const currentUser = getCurrentUser()
     this.state = {
       loading: false,
       checkoutData: this.checkoutData || { addons: [] },
       supplier,
-      currentUser
+      currentUser: null
     }
 
-    this.stripePublicKey = window.RIDE_TO_DATA.stripe_public_key
+    this.stripePublicKey = window.RIDETO_PAGE.stripe_key
 
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
+  }
+
+  async componentDidMount() {
+    const currentUser = await fetchUser()
+    this.setState({ currentUser })
   }
 
   handleSetDate(date) {

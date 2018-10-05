@@ -112,10 +112,8 @@ class AddonSelection extends React.Component {
 
   handleContinue() {
     // TODO we need to go through account flow first...
-    // window.location = '/account'
     const supplier = getSupplier()
     const url = `/${supplier.slug}/checkout`
-    window.location.href = url
     const { qs, selectedAddons } = this.state
     let addons = selectedAddons.map(addon => {
       return {
@@ -129,7 +127,7 @@ class AddonSelection extends React.Component {
     let checkoutData = { ...qs, addons }
 
     sessionStorage.setItem('checkout-data', JSON.stringify(checkoutData))
-    window.location = '/account'
+    window.location = `/account?next=${url}`
   }
 
   handleDetails(detailsAddon) {

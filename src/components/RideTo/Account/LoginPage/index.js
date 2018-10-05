@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Input from 'components/RideTo/Input'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
-import { loginUser } from 'services/user'
+import { requestToken } from 'services/auth'
 import styles from './LoginPage.scss'
 
 class LoginPage extends React.Component {
@@ -54,7 +54,7 @@ class LoginPage extends React.Component {
     event.preventDefault()
     const { email, password } = this.state
 
-    await loginUser({ email, password })
+    await requestToken(email, password)
   }
 
   render() {
