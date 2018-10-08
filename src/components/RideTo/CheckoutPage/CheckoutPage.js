@@ -104,8 +104,7 @@ class CheckoutPage extends Component {
         date,
         course_type: courseType
       })
-      let price = courseId ? response.pricing.price : response.price
-      this.setState({ coursePrice: price })
+      this.setState({ coursePrice: response.price })
     } catch (error) {
       console.log('Error', error)
     }
