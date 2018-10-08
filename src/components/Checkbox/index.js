@@ -27,6 +27,7 @@ const Checkbox = ({
         checked={checked}
         onChange={onChange}
         disabled={disabled}
+        readOnly={!onChange}
       />
       <label htmlFor={checkboxId}>{children}</label>
     </div>

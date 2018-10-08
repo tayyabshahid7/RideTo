@@ -5,8 +5,8 @@ export const createStripeToken = async (stripe, data) => {
   return await stripe.createToken({ ...data })
 }
 
-export const createOrder = async data => {
-  return await post('orders', data, false)
+export const createOrder = async (data, auth = false) => {
+  return await post('orders', data, auth)
 }
 
 export const getInitialSuppliers = () => {
