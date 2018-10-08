@@ -60,7 +60,7 @@ class OrderSummary extends Component {
   }
 
   render() {
-    const { onSubmit, saving, validStep } = this.props
+    const { onSubmit, saving, validStep, instantBook } = this.props
 
     let confirmDisabled = validStep < 4 || saving
 
@@ -85,11 +85,13 @@ class OrderSummary extends Component {
             terms &amp; conditions and agree to RideTo's condition of use &
             sale.
           </p>
-          <p>
-            You won't be charged until your booking is confirmed, we'll just
-            reserve the amount on your card. Bookings require confirmation from
-            the instructor, usually within 3 working hours.
-          </p>
+          {!instantBook && (
+            <p>
+              You won't be charged until your booking is confirmed, we'll just
+              reserve the amount on your card. Bookings require confirmation
+              from the instructor, usually within 3 working hours.
+            </p>
+          )}
         </div>
         <hr className={styles.hr} />
         <div className={styles.guaranteeInfo}>

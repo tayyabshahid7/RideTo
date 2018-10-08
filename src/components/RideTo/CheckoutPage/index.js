@@ -3,7 +3,7 @@ import moment from 'moment'
 import { DATE_FORMAT } from 'common/constants'
 import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
-import { getSupplier } from 'services/page'
+import { getSupplier, isInstantBook } from 'services/page'
 import { fetchUser } from 'services/user'
 
 class CheckoutPageContainer extends Component {
@@ -20,6 +20,7 @@ class CheckoutPageContainer extends Component {
       loading: false,
       checkoutData: this.checkoutData || { addons: [] },
       supplier,
+      instantBook: isInstantBook(),
       currentUser: null
     }
 
@@ -43,7 +44,13 @@ class CheckoutPageContainer extends Component {
   }
 
   render() {
-    const { checkoutData, loading, supplier, currentUser } = this.state
+    const {
+      checkoutData,
+      loading,
+      supplier,
+      currentUser,
+      instantBook
+    } = this.state
 
     return (
       <StripeProvider apiKey={this.stripePublicKey}>
@@ -53,6 +60,7 @@ class CheckoutPageContainer extends Component {
             loading={loading}
             supplier={supplier}
             currentUser={currentUser}
+            instantBook={instantBook}
           />
         </Elements>
       </StripeProvider>
