@@ -91,6 +91,7 @@ class MapComponent extends Component {
         <MapGL
           {...viewport}
           mapStyle="mapbox://styles/mapbox/streets-v9"
+          zoom={10}
           mapboxApiAccessToken={MAPBOX_KEY}
           onViewportChange={viewport => this.setState({ viewport })}>
           {userLocation && (
