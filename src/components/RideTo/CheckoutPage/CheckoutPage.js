@@ -282,7 +282,7 @@ class CheckoutPage extends Component {
   }
 
   async createOrder(token) {
-    const { history, checkoutData, currentUser } = this.props
+    const { checkoutData, currentUser } = this.props
     const { coursePrice } = this.state
     const details = omit(this.state.details, [
       'card_name',
@@ -332,7 +332,7 @@ class CheckoutPage extends Component {
       const response = await createOrder(data, true)
       this.setState({ saving: false })
       if (response) {
-        history.push(`/`)
+        window.location.href = `/account/dashboard/${response.id}`
       }
     } catch (error) {
       this.setState({ saving: false })

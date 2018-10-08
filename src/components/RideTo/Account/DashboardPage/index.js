@@ -5,13 +5,14 @@ import SidePanel from 'components/RideTo/SidePanel'
 import BookingCompleteBanner from 'components/RideTo/Account/BookingCompleteBanner'
 import OrderDetails from 'components/RideTo/Account/OrderDetails'
 import DashboardChecklist from 'components/RideTo/Account/DashboardChecklist'
+import DashboardAdvice from 'components/RideTo/Account/DashboardAdvice'
 import { fetchOrder, getChecklist } from 'services/user'
+import { getDashboardAdvice } from 'services/page'
 import styles from './DashboardPage.scss'
 
 class DashboardPage extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
 
     this.state = {
       recentOrder: null,
@@ -52,6 +53,9 @@ class DashboardPage extends React.Component {
           <Row>
             <Col sm="4">
               <DashboardChecklist items={getChecklist()} />
+            </Col>
+            <Col sm="8">
+              <DashboardAdvice items={getDashboardAdvice()} />
             </Col>
           </Row>
         </Container>
