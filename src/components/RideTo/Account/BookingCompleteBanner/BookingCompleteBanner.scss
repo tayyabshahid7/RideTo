@@ -1,0 +1,37 @@
+.bookingCompleteBanner {
+  background: var(--primary-color);
+  color: white;
+
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.heading {
+  .title {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: var(--font-rift);
+  }
+
+  .subTitle {
+    font-size: 15px;
+    font-family: var(--font-proxima);
+  }
+
+  img {
+    margin-right: 35px;
+  }
+}
+
+.viewBtn {
+  padding: 16px 32px;
+  background: white;
+  color: var(--primary-color) !important;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  img {
+    margin-left: 8px;
+  }
+}

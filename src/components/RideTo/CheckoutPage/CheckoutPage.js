@@ -329,7 +329,7 @@ class CheckoutPage extends Component {
     }
 
     try {
-      const response = await createOrder(data)
+      const response = await createOrder(data, true)
       this.setState({ saving: false })
       if (response) {
         history.push(`/`)
