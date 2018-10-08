@@ -128,7 +128,8 @@ class ResultPage extends Component {
       date,
       handleSetDate,
       navigation,
-      loading
+      loading,
+      userLocation
     } = this.props
     const {
       selectedCourse,
@@ -181,7 +182,11 @@ class ResultPage extends Component {
                 {this.renderSortByDropdown()}
               </div>
               {courses.length > 0 && (
-                <MapComponent className={styles.mapWrapper} courses={courses} />
+                <MapComponent
+                  className={styles.mapWrapper}
+                  courses={courses}
+                  userLocation={userLocation}
+                />
               )}
             </div>
           </div>
