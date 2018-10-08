@@ -6,11 +6,12 @@
   flex: 1 1 480px;
   display: flex;
   justify-content: center;
-  padding: 80px 0px 40px 0px;
+  padding: 80px 3px 40px 30px;
 }
 
 .rightPanel {
   flex: 0 1 528px;
+  padding: 80px 80px 40px 80px;
 }
 
 @media (max-width: 768px) {
@@ -25,5 +26,10 @@
 
   .rightPanel {
     flex: 1 1 auto;
+  }
+
+  .leftPanel,
+  .rightPanel {
+    padding: 40px 30px;
   }
 }

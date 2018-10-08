@@ -101,4 +101,37 @@
 
 .bikeHireWrapper {
   margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  height: 35px;
+  width: 174px;
+  border: 1px solid black;
+  font-size: 15px;
+  line-height: 18px;
+  font-family: var(--font-proxima);
+}
+
+.bikeHireBtn {
+  height: 35px;
+  width: 100%;
+  border: 1px solid black;
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 18px;
+  font-family: var(--font-proxima);
+}
+
+.activeBtn {
+  background: var(--dark-color);
+  color: white;
+  &:hover {
+    background: var(--dark-color);
+    outline: none;
+  }
+  &:focus {
+    outline: none;
+  }
 }

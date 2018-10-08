@@ -1,8 +1,8 @@
 import React from 'react'
 import moment from 'moment'
+import classnames from 'classnames'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
-import Checkbox from 'components/Checkbox'
 import { fetchWidgetCourses } from 'services/course'
 import { DATE_FORMAT } from 'common/constants'
 import { getMotorbikeLabel } from 'services/widget'
@@ -199,41 +199,35 @@ class CourseAvailabilityComponent extends React.Component {
           <label className={styles.subtitle1}>Choose A Bike to Hire</label>
 
           {course.course_type === 'LICENCE_CBT_RENEWAL' && (
-            <Checkbox
-              checked={bike_hire === 'no'}
-              extraClass="WidgetCheckbox"
-              onChange={() => onUpdate({ bike_hire: 'no' })}>
+            <button
+              className={classnames(
+                styles.bikeHireBtn,
+                bike_hire === 'no' && styles.activeBtn
+              )}
+              onClick={() => onUpdate({ bike_hire: 'no' })}>
               {getMotorbikeLabel('no')}
-            </Checkbox>
+            </button>
           )}
-
-          {/* <button
+          <button
             className={classnames(
-              styles.btn,
+              styles.bikeHireBtn,
               bike_hire === 'auto' && styles.activeBtn
             )}
             onClick={() => onUpdate({ bike_hire: 'auto' })}
             disabled={isAutoFull}>
             {getMotorbikeLabel('auto')}
             {isAutoFull ? fullText : null}
-          </button> */}
-          <Checkbox
-            checked={bike_hire === 'auto'}
-            extraClass="WidgetCheckbox"
-            onChange={() => onUpdate({ bike_hire: 'auto' })}
-            disabled={isAutoFull}>
-            {getMotorbikeLabel('auto')}
-            {isAutoFull ? fullText : null}
-          </Checkbox>
-
-          <Checkbox
-            checked={bike_hire === 'manual'}
-            extraClass="WidgetCheckbox"
-            onChange={() => onUpdate({ bike_hire: 'manual' })}
+          </button>
+          <button
+            className={classnames(
+              styles.bikeHireBtn,
+              bike_hire === 'manual' && styles.activeBtn
+            )}
+            onClick={() => onUpdate({ bike_hire: 'manual' })}
             disabled={isManualFull}>
             {getMotorbikeLabel('manual')}
             {isManualFull ? fullText : null}
-          </Checkbox>
+          </button>
         </div>
       </div>
     )
