@@ -5,8 +5,8 @@ import ResultPage from './ResultPage'
 // import SampleData from './SampleData.json'
 import { SORTBY } from 'common/constants'
 import { fetchRidetoCourses, getCourseTitle } from 'services/course'
+import { fetchSearchLocation } from 'services/geolocation'
 import { parseQueryString } from 'services/api'
-import { fetchLocationInfoWithPostCode } from 'services/misc'
 import { getStaticData } from 'services/page'
 
 class ResultPageContainer extends Component {
@@ -57,9 +57,11 @@ class ResultPageContainer extends Component {
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.loadData()
-    this.loadPlaceInfo()
+
+    const userLocation = await fetchSearchLocation(this.state.postcode)
+    this.setState({ userLocation })
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -71,19 +73,6 @@ class ResultPageContainer extends Component {
 
   loadData() {
     this.loadCourses()
-  }
-
-  async loadPlaceInfo() {
-    const { postcode, navigation } = this.state
-    if (postcode) {
-      let response = await fetchLocationInfoWithPostCode(postcode)
-      if (response && response.result) {
-        navigation[0].subtitle = `${response.result.admin_district}, ${
-          response.result.region
-        } ${postcode.toUpperCase()}`
-      }
-      this.setState({ navigation })
-    }
   }
 
   async loadCourses() {

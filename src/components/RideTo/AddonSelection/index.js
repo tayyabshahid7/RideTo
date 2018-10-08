@@ -12,7 +12,6 @@ import styles from './AddonSelection.scss'
 import { getCourseTitle } from 'services/course'
 import { IconArrowRight } from 'assets/icons'
 import { verifyToken, getToken } from 'services/auth'
-import { fetchLocationInfoWithPostCode } from 'services/misc'
 
 class AddonSelection extends React.Component {
   constructor(props) {
@@ -73,23 +72,6 @@ class AddonSelection extends React.Component {
     this.handleDetails = this.handleDetails.bind(this)
     this.handleContinue = this.handleContinue.bind(this)
     this.handleSizeUpdate = this.handleSizeUpdate.bind(this)
-  }
-
-  async loadPlaceInfo() {
-    const { postcode, navigation } = this.state
-    if (postcode) {
-      let response = await fetchLocationInfoWithPostCode(postcode)
-      if (response && response.result) {
-        navigation[0].subtitle = `${response.result.admin_district}, ${
-          response.result.region
-        } ${postcode.toUpperCase()}`
-      }
-      this.setState({ navigation })
-    }
-  }
-
-  async componentDidMount() {
-    this.loadPlaceInfo()
   }
 
   handleAddAddon(addon) {
