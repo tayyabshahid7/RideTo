@@ -21,6 +21,7 @@ import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
 import { IconCalendar } from 'assets/icons'
+import { getCourseTitle } from 'services/course'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -128,7 +129,8 @@ class ResultPage extends Component {
       date,
       handleSetDate,
       navigation,
-      loading
+      loading,
+      userLocation
     } = this.props
     const {
       selectedCourse,
@@ -138,6 +140,7 @@ class ResultPage extends Component {
       instantDate,
       bike_hire
     } = this.state
+    const courseTitle = getCourseTitle(courseType)
 
     let bookNowDisabled = false
     if (selectedCourse) {
@@ -163,7 +166,7 @@ class ResultPage extends Component {
               <div
                 className={
                   styles.subTitle
-                }>{`${courseType} in ${postcode} on ${moment(date).format(
+                }>{`${courseTitle} in ${postcode} on ${moment(date).format(
                 DAY_FORMAT5
               )}`}</div>
               {courses.map(course => (
@@ -181,7 +184,11 @@ class ResultPage extends Component {
                 {this.renderSortByDropdown()}
               </div>
               {courses.length > 0 && (
-                <MapComponent className={styles.mapWrapper} courses={courses} />
+                <MapComponent
+                  className={styles.mapWrapper}
+                  courses={courses}
+                  userLocation={userLocation}
+                />
               )}
             </div>
           </div>

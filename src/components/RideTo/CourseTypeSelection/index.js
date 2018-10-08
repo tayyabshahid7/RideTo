@@ -8,7 +8,6 @@ import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFil
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import SidePanel from 'components/RideTo/SidePanel'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
-import { fetchLocationInfoWithPostCode } from 'services/misc'
 import Button from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 
@@ -62,26 +61,12 @@ class CourseTypeSelection extends React.Component {
 
   async componentDidMount() {
     const { postcode } = this.state
-    this.loadPlaceInfo()
     const result = await fetchCoursesTypes(postcode || '')
     this.courseTypes = result.results
 
     this.setState({
       filteredCourseTypes: this.courseTypes
     })
-  }
-
-  async loadPlaceInfo() {
-    const { postcode, navigation } = this.state
-    if (postcode) {
-      let response = await fetchLocationInfoWithPostCode(postcode)
-      if (response && response.result) {
-        navigation[0].subtitle = `${response.result.admin_district}, ${
-          response.result.region
-        } ${postcode.toUpperCase()}`
-      }
-      this.setState({ navigation })
-    }
   }
 
   handleSelectFilter(selectedFilter) {
