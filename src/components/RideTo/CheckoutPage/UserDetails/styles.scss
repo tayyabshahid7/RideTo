@@ -1,5 +1,4 @@
 .container {
-  max-width: 95%;
   width: 480px;
 }
 
@@ -107,6 +106,10 @@
 }
 
 @media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    width: 100%;
+  }
   .cardImages img {
     width: 36px;
   }
