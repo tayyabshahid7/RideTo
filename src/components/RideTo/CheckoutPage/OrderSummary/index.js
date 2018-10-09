@@ -9,6 +9,7 @@ import Input from 'components/RideTo/Input'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
+import { getExpectedPrice } from 'services/order'
 import { Button } from 'reactstrap'
 
 class OrderSummary extends Component {
@@ -48,12 +49,9 @@ class OrderSummary extends Component {
   }
 
   renderPrices() {
-    const { checkoutData, coursePrice, discount } = this.props
+    const { checkoutData, priceInfo } = this.props
     const { addons } = checkoutData
-    let price = parseFloat(coursePrice / 100)
-    addons.forEach(addon => {
-      price += parseFloat(addon.price)
-    })
+    let price = getExpectedPrice(priceInfo, addons, checkoutData)
     return (
       <div className={styles.rowContainer}>
         {addons.map((addon, index) =>
@@ -65,10 +63,19 @@ class OrderSummary extends Component {
             index
           )
         )}
-        {discount
-          ? this.renderRow('Discount', `£${(discount / 100.0).toFixed(2)}`, 200)
+        {priceInfo.discount
+          ? this.renderRow(
+              'Discount',
+              `£${(priceInfo.discount / 100.0).toFixed(2)}`,
+              200
+            )
           : ''}
-        {this.renderRow('Order Total', `£${price.toFixed(2)}`, 100, true)}
+        {this.renderRow(
+          'Order Total',
+          `£${(price / 100).toFixed(2)}`,
+          100,
+          true
+        )}
       </div>
     )
   }
