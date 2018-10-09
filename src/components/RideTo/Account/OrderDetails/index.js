@@ -1,7 +1,10 @@
 import React from 'react'
 import moment from 'moment'
+
 import MapComponent from 'components/RideTo/MapComponent'
 import { getCourseTitle } from 'services/course'
+import { saveSupplierRating } from 'services/supplier'
+import DashboardReview from 'components/RideTo/Account/DashboardReview'
 
 import styles from './OrderDetails.scss'
 
@@ -15,8 +18,29 @@ const renderRow = (title, content, index) => {
 }
 
 class OrderDetails extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      reviewSubmitted: false
+    }
+
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  async handleSubmit(rating) {
+    const { order } = this.props
+    const { supplier } = order
+    await saveSupplierRating(supplier.id, rating)
+
+    this.setState({
+      reviewSubmitted: true
+    })
+  }
+
   render() {
     const { order } = this.props
+    const { reviewSubmitted } = this.state
     const { supplier } = order
     const marker = {
       id: 1,
@@ -37,6 +61,11 @@ class OrderDetails extends React.Component {
             {renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
             {renderRow('Status', order.status)}
           </div>
+
+          {order.training_status === 'COMPLETED' &&
+            !reviewSubmitted && (
+              <DashboardReview order={order} onSubmit={this.handleSubmit} />
+            )}
         </div>
 
         <div className={styles.map}>

@@ -1,0 +1,44 @@
+.dashboardReview {
+  margin-top: 24px;
+
+  h5,
+  h6 {
+    font-family: var(--font-rift);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  h6 {
+    font-size: 18px;
+  }
+
+  textarea {
+    width: 100%;
+  }
+
+  .action {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .rating {
+    font-size: 18px;
+    font-weight: 500;
+    font-family: var(--font-rift);
+    line-height: inherit;
+    text-transform: uppercase;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 12px;
+  }
+
+  .submit {
+    width: 200px;
+    padding: 12px;
+  }
+}
