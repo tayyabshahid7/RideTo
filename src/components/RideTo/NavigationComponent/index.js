@@ -4,10 +4,10 @@ import NavigationItem from './NavigationItem'
 import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
 
 class NavigationComponent extends React.Component {
-  handleNavClick(navIndex) {
+  handleNavClick(navIndex, fullWidth) {
     const { navigation } = this.props
     let navItem = navigation[navIndex]
-    if (navItem.disabled || navItem.active) {
+    if (fullWidth || navItem.disabled || navItem.active) {
       return
     }
     let url = '/'
@@ -29,6 +29,8 @@ class NavigationComponent extends React.Component {
 
   render() {
     const { navigation, onNavBack } = this.props
+    const fullWidth = navigation.length === 1
+
     return (
       <div className={styles.container}>
         {onNavBack && (
@@ -40,8 +42,8 @@ class NavigationComponent extends React.Component {
         {navigation.map((naviItem, index) => (
           <NavigationItem
             {...naviItem}
-            fullWidth={navigation.length === 1}
-            onClick={() => this.handleNavClick(index)}
+            fullWidth={fullWidth}
+            onClick={() => this.handleNavClick(index, fullWidth)}
             key={naviItem.title}
           />
         ))}
