@@ -49,8 +49,12 @@ deploy_staging:
   stage: deploy
   before_script:
   - pip install awscli
+  variables:
+    AWS_CLOUDFRONT_ID: $STAGING_AWS_CLOUDFRONT_ID
+    AWS_S3_BUCKET: $STAGING_AWS_S3_BUCKET
+    APPS: widget,rideto
   script:
-  - AWS_CLOUDFRONT_ID=$STAGING_AWS_CLOUDFRONT_ID AWS_S3_BUCKET=$STAGING_AWS_S3_BUCKET APPS=widget,rideto ./scripts/deploy.sh
+  - ./scripts/deploy.sh
   environment:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
@@ -62,8 +66,12 @@ deploy_master:
   stage: deploy
   before_script:
   - pip install awscli
+  variables:
+    AWS_CLOUDFRONT_ID: $PRODUCTION_AWS_CLOUDFRONT_ID
+    AWS_S3_BUCKET: $PRODUCTION_AWS_S3_BUCKET
+    APPS: widget,rideto
   script:
-  - AWS_CLOUDFRONT_ID=$PRODUCTION_AWS_CLOUDFRONT_ID AWS_S3_BUCKET=$PRODUCTION_AWS_S3_BUCKET APPS=widget,rideto ./scripts/deploy.sh
+  - ./scripts/deploy.sh
   environment:
     name: production
     url: https://rideto.com
