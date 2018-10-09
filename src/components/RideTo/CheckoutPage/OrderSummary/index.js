@@ -4,11 +4,22 @@ import moment from 'moment'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
+import Checkbox from 'components/Checkbox'
+import Input from 'components/RideTo/Input'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
+import { Button } from 'reactstrap'
 
 class OrderSummary extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      showPromo: false
+    }
+  }
+
   renderRow(title, content, index, priceHighlight = false) {
     return (
       <div className={styles.rowItem} key={index}>
@@ -37,7 +48,7 @@ class OrderSummary extends Component {
   }
 
   renderPrices() {
-    const { checkoutData, coursePrice } = this.props
+    const { checkoutData, coursePrice, discount } = this.props
     const { addons } = checkoutData
     let price = parseFloat(coursePrice / 100)
     addons.forEach(addon => {
@@ -54,15 +65,29 @@ class OrderSummary extends Component {
             index
           )
         )}
+        {discount
+          ? this.renderRow('Discount', `£${(discount / 100.0).toFixed(2)}`, 200)
+          : ''}
         {this.renderRow('Order Total', `£${price.toFixed(2)}`, 100, true)}
       </div>
     )
   }
 
   render() {
-    const { onSubmit, saving, validStep } = this.props
-
-    let confirmDisabled = validStep < 4 || saving
+    const {
+      onSubmit,
+      saving,
+      validStep,
+      instantBook,
+      voucher_code,
+      handleVoucherApply,
+      onChange,
+      loadingPrice,
+      details,
+      onDetailChange
+    } = this.props
+    const { showPromo } = this.state
+    let confirmDisabled = validStep < 3 || saving || !details.accept_terms
 
     return (
       <div className={styles.container}>
@@ -70,6 +95,25 @@ class OrderSummary extends Component {
         {this.renderCourseInformation()}
         <hr />
         {this.renderPrices()}
+        <div className={styles.acceptTerms}>
+          <Checkbox
+            checked={details.accept_terms}
+            extraClass="WidgetCheckbox"
+            size="large"
+            onChange={event =>
+              onDetailChange('accept_terms', event.target.checked)
+            }>
+            <div>
+              I can confirm that I have read and agreed to the requirements and{' '}
+              <a
+                href="https://www.rideto.com/terms"
+                rel="noopener noreferrer"
+                target="_blank">
+                terms and conditions.
+              </a>
+            </div>
+          </Checkbox>
+        </div>
         <RideToButton
           className={classnames(
             styles.action,
@@ -79,17 +123,48 @@ class OrderSummary extends Component {
           <span>Confirm And Pay</span>
           <img src={ButtonArrowWhite} alt="arrow" />
         </RideToButton>
+        <div className={styles.promoWrapper}>
+          {showPromo ? (
+            <div className={styles.promoContainer}>
+              <Input
+                placeholder="Promo code"
+                name="voucher_code"
+                value={voucher_code}
+                className={styles.promoInput}
+                onChange={event =>
+                  onChange({ voucher_code: event.target.value })
+                }
+                required
+              />
+              <Button
+                color="primary"
+                className={styles.applyBtn}
+                disabled={voucher_code === '' || loadingPrice}
+                onClick={handleVoucherApply}>
+                Apply
+              </Button>
+            </div>
+          ) : (
+            <div
+              className={styles.promoAction}
+              onClick={() => this.setState({ showPromo: true })}>
+              I have a promo code
+            </div>
+          )}
+        </div>
         <div className={styles.information}>
           <p>
             By placing your oder you confirm you have read and accept RideTo's
             terms &amp; conditions and agree to RideTo's condition of use &
             sale.
           </p>
-          <p>
-            You won't be charged until your booking is confirmed, we'll just
-            reserve the amount on your card. Bookings require confirmation from
-            the instructor, usually within 3 working hours.
-          </p>
+          {!instantBook && (
+            <p>
+              You won't be charged until your booking is confirmed, we'll just
+              reserve the amount on your card. Bookings require confirmation
+              from the instructor, usually within 3 working hours.
+            </p>
+          )}
         </div>
         <hr className={styles.hr} />
         <div className={styles.guaranteeInfo}>
