@@ -30,7 +30,7 @@ const mountComponent = (component, el) => {
 mountComponent(<Account />, document.getElementById('rideto-account-page'))
 
 mountComponent(
-  <CourseSlider />,
+  <CourseSlider sidepanel={true} />,
   document.getElementById('rideto-home-course-slider')
 )
 
