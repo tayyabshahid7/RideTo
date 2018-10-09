@@ -330,7 +330,7 @@ class CheckoutPage extends Component {
       bike_hire: bike_hire,
       addons: addonIds,
       source: isInstantBook() ? 'RIDETO_INSTANT' : 'RIDETO',
-      accept_equipment_responsibility: true // TODO Needs to be removed
+      accept_equipment_responsibility: true
     }
 
     try {
