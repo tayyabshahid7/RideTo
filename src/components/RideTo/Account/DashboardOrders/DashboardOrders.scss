@@ -1,0 +1,28 @@
+.dashboardOrders {
+  h4 {
+    font-family: var(--font-rift);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+}
+
+.order {
+  margin-bottom: 32px;
+  cursor: pointer;
+
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+    font-family: var(--font-rift);
+  }
+
+  .subTitle {
+    font-size: 15px;
+    font-family: var(--font-proxima);
+  }
+
+  .review {
+    padding: 12px;
+  }
+}

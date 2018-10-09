@@ -6,7 +6,8 @@ import BookingCompleteBanner from 'components/RideTo/Account/BookingCompleteBann
 import OrderDetails from 'components/RideTo/Account/OrderDetails'
 import DashboardChecklist from 'components/RideTo/Account/DashboardChecklist'
 import DashboardAdvice from 'components/RideTo/Account/DashboardAdvice'
-import { fetchOrder, getChecklist } from 'services/user'
+import DashboardOrders from 'components/RideTo/Account/DashboardOrders'
+import { fetchOrder, fetchOrders, getChecklist } from 'services/user'
 import { getDashboardAdvice } from 'services/page'
 import styles from './DashboardPage.scss'
 
@@ -26,11 +27,19 @@ class DashboardPage extends React.Component {
   async componentDidMount() {
     const { match } = this.props
     const { orderId } = match.params
+    const orders = fetchOrders()
 
     if (orderId) {
-      const recentOrder = await fetchOrder(orderId)
-      this.setState({ recentOrder })
+      const recentOrder = fetchOrder(orderId)
+      this.setState({
+        recentOrder: await recentOrder
+      })
     }
+
+    const result = await orders
+    this.setState({
+      orders: result.results
+    })
   }
 
   handleDetails(selectedOrder) {
@@ -38,7 +47,7 @@ class DashboardPage extends React.Component {
   }
 
   render() {
-    const { recentOrder, selectedOrder } = this.state
+    const { recentOrder, selectedOrder, orders } = this.state
     const headingImage = selectedOrder ? selectedOrder.supplier.image : ''
 
     return (
@@ -53,6 +62,7 @@ class DashboardPage extends React.Component {
           <Row>
             <Col sm="4">
               <DashboardChecklist items={getChecklist()} />
+              <DashboardOrders orders={orders} onDetails={this.handleDetails} />
             </Col>
             <Col sm="8">
               <DashboardAdvice items={getDashboardAdvice()} />
