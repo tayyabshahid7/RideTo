@@ -66,9 +66,11 @@ class CheckoutPage extends Component {
         card_number: false,
         cvv: false,
         expiry_date: false,
-        postcode: ''
+        postcode: '',
+        voucher_code: ''
       },
       coursePrice: 0,
+      discount: 0,
       manualAddress: false,
       postcodeLookingup: false,
       addresses: [],
@@ -78,13 +80,16 @@ class CheckoutPage extends Component {
       },
       saving: false,
       showAddressSelectorModal: false,
-      validStep: 0
+      validStep: 0,
+      voucher_code: '',
+      loadingPrice: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.onUpdate = this.onUpdate.bind(this)
     this.handlePostalcodeSubmit = this.handlePostalcodeSubmit.bind(this)
     this.handlePayment = this.handlePayment.bind(this)
     this.handleValueChange = this.handleValueChange.bind(this)
+    this.handleVoucherApply = this.handleVoucherApply.bind(this)
   }
 
   onUpdate(data) {
@@ -95,19 +100,39 @@ class CheckoutPage extends Component {
     this.loadPrice()
   }
 
-  async loadPrice() {
+  async loadPrice(voucher_code) {
     try {
       const { supplierId, courseId, date, courseType } = this.props.checkoutData
-      let response = await getPrice({
+      const { details } = this.state
+      let params = {
         supplierId,
         courseId,
         date,
-        course_type: courseType
+        course_type: courseType,
+        voucher_code
+      }
+      this.setState({ loadingPrice: true })
+      let response = await getPrice(params)
+      if (voucher_code && response.discount) {
+        details.voucher_code = voucher_code
+      } else {
+        details.voucher_code = ''
+      }
+      this.setState({
+        coursePrice: response.price,
+        discount: response.discount,
+        loadingPrice: false,
+        details
       })
-      this.setState({ coursePrice: response.price })
     } catch (error) {
+      this.setState({ loadingPrice: false })
       console.log('Error', error)
     }
+  }
+
+  handleVoucherApply() {
+    const { voucher_code } = this.state
+    this.loadPrice(voucher_code)
   }
 
   handleErrors(errors) {
@@ -324,8 +349,7 @@ class CheckoutPage extends Component {
       addons: addonIds,
       accept_terms: true,
       source: isInstantBook() ? 'RIDETO_INSTANT' : 'RIDETO',
-      accept_equipment_responsibility: true, // TODO Needs to be removed
-      voucher_code: ''
+      accept_equipment_responsibility: true // TODO Needs to be removed
     }
 
     try {
@@ -359,7 +383,10 @@ class CheckoutPage extends Component {
       saving,
       showAddressSelectorModal,
       addresses,
-      validStep
+      validStep,
+      voucher_code,
+      loadingPrice,
+      discount
     } = this.state
 
     return (
@@ -382,9 +409,14 @@ class CheckoutPage extends Component {
           <OrderSummary
             {...this.props}
             coursePrice={coursePrice}
+            discount={discount}
             onSubmit={this.handlePayment}
             saving={saving}
             validStep={validStep}
+            onChange={this.onUpdate}
+            voucher_code={voucher_code}
+            handleVoucherApply={this.handleVoucherApply}
+            loadingPrice={loadingPrice}
           />
         </div>
         {showAddressSelectorModal && (
