@@ -50,8 +50,8 @@ deploy_staging:
   before_script:
   - pip install awscli
   variables:
-    AWS_CLOUDFRONT_ID: $STAGING_AWS_CLOUDFRONT_ID
-    AWS_S3_BUCKET: $STAGING_AWS_S3_BUCKET
+    AWS_CLOUDFRONT_ID: E8ZUC9YWATM4A
+    AWS_S3_BUCKET: bike-tests-staging
     APPS: widget,rideto
   script:
   - ./scripts/deploy.sh
@@ -67,8 +67,8 @@ deploy_master:
   before_script:
   - pip install awscli
   variables:
-    AWS_CLOUDFRONT_ID: $PRODUCTION_AWS_CLOUDFRONT_ID
-    AWS_S3_BUCKET: $PRODUCTION_AWS_S3_BUCKET
+    AWS_CLOUDFRONT_ID: EHLGMCG8HAANI
+    AWS_S3_BUCKET: bike-tests
     APPS: widget,rideto
   script:
   - ./scripts/deploy.sh
