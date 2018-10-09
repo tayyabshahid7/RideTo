@@ -48,7 +48,6 @@ class CheckoutPage extends Component {
       address_1: '',
       address_2: '',
       town: '',
-      county: '',
       postcode: ''
     }
 
@@ -185,7 +184,6 @@ class CheckoutPage extends Component {
       address_1: parts[0].trim(),
       address_2: parts[1].trim(),
       town: parts[5].trim(),
-      county: parts[6].trim(),
       postcode: details.postcode.trim()
     }
 
@@ -268,17 +266,8 @@ class CheckoutPage extends Component {
 
     this.setState({ errors: {}, saving: true })
     try {
-      let address = details.sameAddress
-        ? details.address
-        : details.billingAddress
       const response = await createStripeToken(stripe, {
-        name: details.card_name,
-        address_line1: address.address_1,
-        address_line2: address.address_2,
-        address_city: address.town,
-        address_state: address.county,
-        address_zip: address.postcode,
-        address_country: 'GB'
+        name: details.card_name
       })
 
       if (response.error) {

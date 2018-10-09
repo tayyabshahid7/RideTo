@@ -41,14 +41,6 @@ const AddressForm = ({ address, onChange, errors = {} }) => {
         />
         {errors.town && <div className={styles.error}>{errors.town}</div>}
         <Input
-          placeholder="County"
-          name="county"
-          value={address.county}
-          className={styles.input}
-          onChange={handleChange}
-        />
-        {errors.county && <div className={styles.error}>{errors.county}</div>}
-        <Input
           placeholder="Postcode"
           name="postcode"
           value={address.postcode}
