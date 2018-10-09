@@ -66,7 +66,8 @@ class CheckoutPage extends Component {
         cvv: false,
         expiry_date: false,
         postcode: '',
-        voucher_code: ''
+        voucher_code: '',
+        accept_terms: false
       },
       coursePrice: 0,
       discount: 0,
@@ -326,7 +327,6 @@ class CheckoutPage extends Component {
       supplier: supplierId,
       bike_hire: bike_hire,
       addons: addonIds,
-      accept_terms: true,
       source: isInstantBook() ? 'RIDETO_INSTANT' : 'RIDETO',
       accept_equipment_responsibility: true // TODO Needs to be removed
     }
@@ -387,12 +387,14 @@ class CheckoutPage extends Component {
         <div className={styles.rightPanel}>
           <OrderSummary
             {...this.props}
+            details={details}
             coursePrice={coursePrice}
             discount={discount}
             onSubmit={this.handlePayment}
             saving={saving}
             validStep={validStep}
             onChange={this.onUpdate}
+            onDetailChange={this.handleValueChange}
             voucher_code={voucher_code}
             handleVoucherApply={this.handleVoucherApply}
             loadingPrice={loadingPrice}

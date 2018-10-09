@@ -4,6 +4,7 @@ import moment from 'moment'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
+import Checkbox from 'components/Checkbox'
 import Input from 'components/RideTo/Input'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
@@ -81,10 +82,12 @@ class OrderSummary extends Component {
       voucher_code,
       handleVoucherApply,
       onChange,
-      loadingPrice
+      loadingPrice,
+      details,
+      onDetailChange
     } = this.props
     const { showPromo } = this.state
-    let confirmDisabled = validStep < 3 || saving
+    let confirmDisabled = validStep < 3 || saving || !details.accept_terms
 
     return (
       <div className={styles.container}>
@@ -92,6 +95,25 @@ class OrderSummary extends Component {
         {this.renderCourseInformation()}
         <hr />
         {this.renderPrices()}
+        <div className={styles.acceptTerms}>
+          <Checkbox
+            checked={details.accept_terms}
+            extraClass="WidgetCheckbox"
+            size="large"
+            onChange={event =>
+              onDetailChange('accept_terms', event.target.checked)
+            }>
+            <div>
+              I can confirm that I have read and agreed to the requirements and{' '}
+              <a
+                href="https://www.rideto.com/terms"
+                rel="noopener noreferrer"
+                target="_blank">
+                terms and conditions.
+              </a>
+            </div>
+          </Checkbox>
+        </div>
         <RideToButton
           className={classnames(
             styles.action,
