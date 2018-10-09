@@ -74,6 +74,8 @@
   text-transform: uppercase;
   transition: transform 0.2s ease-in-out;
 
+  cursor: pointer;
+
   &:hover {
     transform: scale3d(1.05, 1.05, 1.05);
   }

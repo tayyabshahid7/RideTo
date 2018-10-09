@@ -5,6 +5,18 @@ import styles from './SidePanel.scss'
 import closeImg from 'assets/images/rideto/CloseWhite.svg'
 
 class SidePanel extends React.Component {
+  componentDidUpdate(prevProps) {
+    const { visible } = this.props
+
+    if (prevProps.visible !== visible) {
+      if (visible) {
+        window.document.body.style = 'overflow: hidden'
+      } else {
+        window.document.body.style = 'overflow: initial'
+      }
+    }
+  }
+
   render() {
     const { children, visible, headingImage, onDismiss, footer } = this.props
     const headingStyle = { backgroundImage: `url(${headingImage})` }

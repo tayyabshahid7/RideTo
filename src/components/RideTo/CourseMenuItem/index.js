@@ -47,7 +47,7 @@ class CourseMenuItem extends React.Component {
         <div className={styles.courseMenu}>
           <div className={overlay} onClick={this.handleHideSlider} />
           <div className={slider}>
-            <CourseSlider />
+            <CourseSlider sidepanel={true} />,
           </div>
         </div>
       </div>
