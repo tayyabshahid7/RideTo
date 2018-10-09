@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import Button from 'components/RideTo/Button'
 import { getCourseTitle } from 'services/course'
+import { showReview } from 'services/order'
 import styles from './DashboardOrders.scss'
 
 const DashboardOrderItem = ({ order, onDetails }) => {
@@ -26,7 +27,7 @@ const DashboardOrderItem = ({ order, onDetails }) => {
         {supplier.town}, {supplier.postcode}
       </div>
 
-      {order.training_status === 'COMPLETED' && (
+      {showReview(order) && (
         <Button className={styles.review}>
           <span>Write Review</span>
         </Button>

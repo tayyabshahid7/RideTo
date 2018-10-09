@@ -4,6 +4,7 @@ import moment from 'moment'
 import MapComponent from 'components/RideTo/MapComponent'
 import { getCourseTitle } from 'services/course'
 import { saveSupplierRating } from 'services/supplier'
+import { showReview } from 'services/order'
 import DashboardReview from 'components/RideTo/Account/DashboardReview'
 
 import styles from './OrderDetails.scss'
@@ -62,7 +63,7 @@ class OrderDetails extends React.Component {
             {renderRow('Status', order.status)}
           </div>
 
-          {order.training_status === 'COMPLETED' &&
+          {showReview(order) &&
             !reviewSubmitted && (
               <DashboardReview order={order} onSubmit={this.handleSubmit} />
             )}
