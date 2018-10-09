@@ -74,11 +74,9 @@ class MapComponent extends Component {
     return (
       <div id={`course-${course.id}`} className={styles.coursePin}>
         <IconMapPin className={styles.mapPinBg} />
-        {course.price && (
-          <span className={styles.pinPrice}>
-            £{parseInt(course.price / 100, 10)}
-          </span>
-        )}
+        <span className={styles.pinPrice}>
+          {course.price ? `£${parseInt(course.price / 100, 10)}` : '-'}
+        </span>
       </div>
     )
   }

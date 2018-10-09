@@ -14,6 +14,7 @@ import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
 import MapComponent from 'components/RideTo/MapComponent'
+import CourseItemNonPartner from './CourseItemNonPartner'
 import SidePanel from 'components/RideTo/SidePanel'
 import CourseDetailPanel from './CourseDetailPanel'
 import DateSelectorModal from './DateSelectorModal'
@@ -163,21 +164,29 @@ class ResultPage extends Component {
         <Loading loading={loading} className={styles.contentWrapper}>
           <div className={styles.mainContent}>
             <div className={styles.coursesPanel}>
-              <div
-                className={
-                  styles.subTitle
-                }>{`${courseTitle} in ${postcode} on ${moment(date).format(
-                DAY_FORMAT5
-              )}`}</div>
-              {courses.map(course => (
-                <CourseItem
-                  course={course}
-                  className="mt-3"
-                  key={course.id}
-                  handleDetailClick={this.handleDetailClick.bind(this)}
-                  handlePriceClick={this.handlePriceClick.bind(this)}
-                />
-              ))}
+              <div className={styles.subTitle}>
+                {`${courseTitle} in ${postcode} on ${moment(date).format(
+                  DAY_FORMAT5
+                )}`}
+              </div>
+              {courses.map(
+                course =>
+                  course.is_partner ? (
+                    <CourseItem
+                      course={course}
+                      className="mt-3"
+                      key={course.id}
+                      handleDetailClick={this.handleDetailClick.bind(this)}
+                      handlePriceClick={this.handlePriceClick.bind(this)}
+                    />
+                  ) : (
+                    <CourseItemNonPartner
+                      course={course}
+                      className="mt-3"
+                      key={course.id}
+                    />
+                  )
+              )}
             </div>
             <div className={styles.mapPanel}>
               <div className={styles.buttonsWrapper}>
