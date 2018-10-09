@@ -1,9 +1,12 @@
 import { get, post } from 'services/api'
+import { requestToken } from 'services/auth'
 
 export const saveUser = async user => {
   const path = 'users/signup/'
+  const { email, password } = user
+  await post(path, { ...user }, false)
 
-  return await post(path, { ...user }, false)
+  return await requestToken(email, password)
 }
 
 export const fetchUser = async () => {

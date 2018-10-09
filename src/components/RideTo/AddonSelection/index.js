@@ -52,7 +52,7 @@ class AddonSelection extends React.Component {
     let addons = getAddons()
     addons.forEach(addon => {
       if (addon.sizes && addon.sizes.length > 0) {
-        addon.selectedSize = addon.sizes[0]
+        addon.selectedSize = addon.sizes.filter(({ quantity }) => quantity)[0]
       }
     })
 
