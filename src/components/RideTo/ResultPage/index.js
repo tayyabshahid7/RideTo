@@ -87,7 +87,11 @@ class ResultPageContainer extends Component {
         ordering: sortByOption
       })
       if (response.results) {
-        this.setState({ courses: response.results, loading: false })
+        this.setState({
+          courses: response.results,
+          isPartnerResults: response.isPartnerResults,
+          loading: false
+        })
       } else {
         this.setState({ courses: [], loading: false })
       }
