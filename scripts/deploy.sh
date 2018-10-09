@@ -20,6 +20,8 @@ fi
 DEPLOY_APPS=(${APPS//,/ })
 CDN_PATHS=""
 
+
+
 for i in "${!DEPLOY_APPS[@]}"
 do
     APP="${DEPLOY_APPS[i]}"
@@ -27,6 +29,11 @@ do
     APP_CSS_DIR=${BUILD_JS_DIR}/${APP}
 
     echo "Deploying $APP"
+    echo ""
+    echo "  Cloudfront ID: $AWS_CLOUDFRONT_ID"
+    echo "  Bucket: $AWS_S3_BUCKET"
+    echo ""
+
     mkdir -p $APP_JS_DIR
     mkdir -p $APP_CSS_DIR
 
