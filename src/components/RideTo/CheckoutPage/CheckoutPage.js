@@ -38,7 +38,7 @@ const REQUIRED_FIELDS_STEP1 = [
   'rider_type'
 ]
 
-const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'county', 'postcode']
+const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
 
 class CheckoutPage extends Component {
   constructor(props) {
@@ -224,22 +224,12 @@ class CheckoutPage extends Component {
       !details['card_name'] ||
       !details.card_number ||
       !details.cvv ||
+      !details.card_zip ||
       !details.expiry_date
     ) {
       return 2
     }
-
-    if (!details.sameAddress) {
-      REQUIRED_ADDRESS_FIELDS.forEach(field => {
-        if (!details.billingAddress[field]) {
-          hasError = true
-        }
-      })
-      if (hasError) {
-        return 3
-      }
-    }
-    return 4
+    return 3
   }
 
   validateDetails(details) {

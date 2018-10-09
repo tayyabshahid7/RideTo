@@ -84,7 +84,7 @@ class OrderSummary extends Component {
       loadingPrice
     } = this.props
     const { showPromo } = this.state
-    let confirmDisabled = validStep < 4 || saving
+    let confirmDisabled = validStep < 3 || saving
 
     return (
       <div className={styles.container}>

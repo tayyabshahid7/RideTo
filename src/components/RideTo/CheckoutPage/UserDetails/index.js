@@ -3,11 +3,11 @@ import classnames from 'classnames'
 import {
   CardNumberElement,
   CardExpiryElement,
-  CardCVCElement
+  CardCVCElement,
+  PostalCodeElement
 } from 'react-stripe-elements'
 import { Row, Col } from 'reactstrap'
 import Input from 'components/RideTo/Input'
-import Radiobox from 'components/Radiobox'
 import AddressForm from 'components/AddressForm'
 import { RidingExperiences, RiderTypes } from 'common/info'
 import Select from 'components/RideTo/Select'
@@ -191,7 +191,7 @@ class UserDetails extends Component {
   }
 
   renderPaymentForm() {
-    const { details, errors = {}, onDetailChange, validStep } = this.props
+    const { details, errors = {}, validStep } = this.props
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -251,41 +251,14 @@ class UserDetails extends Component {
                 </div>
               </Col>
             </Row>
-          </div>
-        )}
-        <div
-          className={classnames(
-            styles.title,
-            validStep < 3 && styles.disabledTitle
-          )}>
-          Billing Details
-        </div>
-        {validStep >= 3 && (
-          <div className={styles.rowItem}>
-            <Radiobox
-              extraClass={styles.radiobox}
-              onChange={() => onDetailChange('sameAddress', true)}
-              checked={details.sameAddress}
-              name="sameAddress">
-              Same as delivery address
-            </Radiobox>
-            <Radiobox
-              extraClass={styles.radiobox}
-              onChange={() => onDetailChange('sameAddress', false)}
-              checked={!details.sameAddress}
-              name="sameAddress">
-              Use a different billing address
-            </Radiobox>
-            {!details.sameAddress && (
-              <div className={styles.title}>Billing Address</div>
-            )}
-            {!details.sameAddress && (
-              <AddressForm
-                address={details.billingAddress}
-                onChange={this.handleBillingAddressChange}
-                errors={errors.billingAddress}
+            <div className={styles.cardElementWrapper}>
+              <PostalCodeElement
+                style={inputStyle}
+                onChange={element =>
+                  this.stripeElementChange(element, 'card_zip')
+                }
               />
-            )}
+            </div>
           </div>
         )}
         {errors.paymentError && (
