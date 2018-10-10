@@ -69,8 +69,11 @@ class CheckoutPage extends Component {
         voucher_code: '',
         accept_terms: false
       },
-      coursePrice: 0,
-      discount: 0,
+      priceInfo: {
+        price: 0,
+        discount: 0,
+        bike_hire_cost: 0
+      },
       manualAddress: false,
       postcodeLookingup: false,
       addresses: [],
@@ -119,8 +122,7 @@ class CheckoutPage extends Component {
         details.voucher_code = ''
       }
       this.setState({
-        coursePrice: response.price,
-        discount: response.discount,
+        priceInfo: { ...response },
         loadingPrice: false,
         details
       })
@@ -288,7 +290,7 @@ class CheckoutPage extends Component {
 
   async createOrder(token) {
     const { checkoutData, currentUser } = this.props
-    const { coursePrice } = this.state
+    const { priceInfo } = this.state
     const details = omit(this.state.details, [
       'card_name',
       'billingAddress',
@@ -320,7 +322,7 @@ class CheckoutPage extends Component {
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
       token: token.id,
-      expected_price: getExpectedPrice(coursePrice, addons),
+      expected_price: getExpectedPrice(priceInfo, addons, checkoutData),
       name: `${this.state.details.card_name}`,
       user_date: date,
       selected_licence: courseType,
@@ -328,7 +330,7 @@ class CheckoutPage extends Component {
       bike_hire: bike_hire,
       addons: addonIds,
       source: isInstantBook() ? 'RIDETO_INSTANT' : 'RIDETO',
-      accept_equipment_responsibility: true // TODO Needs to be removed
+      accept_equipment_responsibility: true
     }
 
     try {
@@ -357,15 +359,14 @@ class CheckoutPage extends Component {
       details,
       manualAddress,
       postcodeLookingup,
-      coursePrice,
+      priceInfo,
       errors,
       saving,
       showAddressSelectorModal,
       addresses,
       validStep,
       voucher_code,
-      loadingPrice,
-      discount
+      loadingPrice
     } = this.state
 
     return (
@@ -388,8 +389,7 @@ class CheckoutPage extends Component {
           <OrderSummary
             {...this.props}
             details={details}
-            coursePrice={coursePrice}
-            discount={discount}
+            priceInfo={priceInfo}
             onSubmit={this.handlePayment}
             saving={saving}
             validStep={validStep}

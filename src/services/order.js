@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { get, put, post } from 'services/api'
+import { BIKE_HIRE } from 'common/constants'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 const FILTERS = [
@@ -115,8 +116,17 @@ export const getTrainingStatusOptions = () => {
   ]
 }
 
-export const getExpectedPrice = (coursePrice, addons = []) => {
+export const getExpectedPrice = (priceInfo, addons = [], checkoutData = {}) => {
   return (
-    coursePrice + addons.reduce((total, { price }) => (total += price * 100), 0)
+    priceInfo.price +
+    addons.reduce((total, { price }) => (total += price * 100), 0) +
+    (shouldAddBikeHire(checkoutData) ? priceInfo.bike_hire_cost : 0)
   )
+}
+
+export const shouldAddBikeHire = ({ courseType, bike_hire }) => {
+  if (courseType === 'LICENCE_CBT_RENEWAL' && bike_hire !== BIKE_HIRE.NO) {
+    return true
+  }
+  return false
 }
