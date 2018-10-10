@@ -58,7 +58,11 @@ class LoginPage extends React.Component {
       await requestToken(email, password)
       const next = JSON.parse(sessionStorage.getItem('login-next'))
 
-      window.location.href = next
+      if (next) {
+        window.location.href = next
+      } else {
+        window.location.href = '/account/dashboard'
+      }
     } catch (error) {
       const { response } = error
       if (response.data) {

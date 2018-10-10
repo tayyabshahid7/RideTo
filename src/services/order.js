@@ -130,3 +130,11 @@ export const shouldAddBikeHire = ({ courseType, bike_hire }) => {
   }
   return false
 }
+
+export const showReview = order => {
+  return (
+    order.training_status === 'COMPLETED' &&
+    order.supplierrating_set &&
+    order.supplierrating_set.length === 0
+  )
+}
