@@ -19,7 +19,6 @@ class DashboardReview extends React.Component {
   }
 
   handleChangeRating(rating) {
-    console.log('ChangeRating', rating)
     this.setState({ rating })
   }
 

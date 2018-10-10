@@ -27,16 +27,21 @@ class DashboardPage extends React.Component {
   async componentDidMount() {
     const { match } = this.props
     const { orderId } = match.params
-    const orders = fetchOrders()
-
     if (orderId) {
-      const recentOrder = fetchOrder(orderId)
-      this.setState({
-        recentOrder: await recentOrder
-      })
+      this.loadSingleOrder(orderId)
     }
+    this.loadOrders()
+  }
 
-    const result = await orders
+  async loadSingleOrder(orderId) {
+    const recentOrder = await fetchOrder(orderId)
+    this.setState({
+      recentOrder
+    })
+  }
+
+  async loadOrders() {
+    const result = await fetchOrders()
     this.setState({
       orders: result.results
     })
