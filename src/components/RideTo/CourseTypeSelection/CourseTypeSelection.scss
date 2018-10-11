@@ -1,17 +1,30 @@
+// .heading {
+//   font-family: var(--font-rift-bold);
+//   font-size: 24px;
+//   line-height: 48px;
+//   padding: 0;
+//   margin: 0;
+//   text-transform: uppercase;
+//   margin-top: 24px;
+// }
+
 .heading {
-  font-family: var(--font-rift);
+  font-family: var(--font-rift-bold);
+  height: 29px;
   font-size: 24px;
-  line-height: 48px;
-  font-weight: bold;
-  padding: 0;
-  margin: 0;
+  line-height: 29px;
+  margin: 0px;
+  align-self: center;
+}
 
-  text-transform: uppercase;
-
-  margin-top: 24px;
+.filtersTitle {
+  font-size: 14px;
+  margin-top: 48px;
+  margin-bottom: 8px;
+  padding-left: 0px !important;
 }
 
 .filters {
-  margin-top: 58px;
+  align-items: center;
   margin-bottom: 40px;
 }

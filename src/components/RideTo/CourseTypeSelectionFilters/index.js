@@ -20,7 +20,6 @@ const CourseTypeSelectionFilters = ({ filters, selected, onSelect }) => {
   return (
     <React.Fragment>
       <div className={styles.courseTypeSelectionFiltersDesktop}>
-        <div className={styles.subTitle}>Filter Courses</div>
         <div className={styles.filters}>
           {filters.map(filter => (
             <div
