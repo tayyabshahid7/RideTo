@@ -114,7 +114,7 @@ class CourseTypeSelection extends React.Component {
         <Container>
           <Row className={styles.filters}>
             <Col sm="6">
-              <h2 className={styles.heading}>Choose Course</h2>
+              <h2 className={styles.heading}>Choose a Course</h2>
             </Col>
             <Col sm="6">
               <CourseTypeSelectionFilters
