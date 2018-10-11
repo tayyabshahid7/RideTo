@@ -34,7 +34,7 @@ class CourseTypeDetails extends React.Component {
 
     return (
       <div className={styles.courseTypeDetails}>
-        <h5>{courseType.name}</h5>
+        <div className={styles.title}>{courseType.name}</div>
         <div className={styles.description}>{details.description}</div>
 
         <hr className={styles.divider} />
