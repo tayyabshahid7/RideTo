@@ -50,14 +50,16 @@
   cursor: pointer;
 
   .fullPrice {
+    font-family: var(--font-proxima);
+    font-size: 20px;
     text-decoration: line-through;
-    color: var(--primary-color);
-    font-weight: bold;
+    color: #d0021b;
   }
 
   .price {
-    color: #d0021b;
-    font-weight: bold;
+    font-family: var(--font-proxima);
+    font-size: 20px;
+    color: var(--primary-color);
   }
 
   .remove {
@@ -165,7 +167,7 @@
 .addonSelectionItem {
   background: white;
   font-family: var(--font-rift);
-  box-shadow: 0px 12px 10px 0px var(--light-grey-color);
+  box-shadow: 0px 7px 15px -3px var(--light-grey-color);
 
   @media (max-width: 768px) {
     margin-bottom: 32px;
