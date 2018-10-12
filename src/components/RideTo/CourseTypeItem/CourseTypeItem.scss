@@ -92,7 +92,13 @@
 
 .courseTypeItem {
   font-family: var(--font-rift);
-  box-shadow: 0px 12px 10px 0px #dddddd;
+  box-shadow: 0px 7px 20px -8px #00000061;
+
+  &:hover {
+    h5 {
+      height: 20px;
+    }
+  }
 
   @media (min-width: 768px) {
     &:hover {
