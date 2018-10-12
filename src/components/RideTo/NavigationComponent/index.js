@@ -45,6 +45,7 @@ class NavigationComponent extends React.Component {
             fullWidth={fullWidth}
             onClick={() => this.handleNavClick(index, fullWidth)}
             key={naviItem.title}
+            className={naviItem.last && styles.hiddenOnMobile}
           />
         ))}
       </div>

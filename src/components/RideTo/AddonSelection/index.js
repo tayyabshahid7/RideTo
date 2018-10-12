@@ -30,22 +30,26 @@ class AddonSelection extends React.Component {
       {
         title: 'Postcode',
         subtitle: qs.postcode ? qs.postcode.toUpperCase() : '',
-        queryValue: `postcode=${qs.postcode}`
+        queryValue: `postcode=${qs.postcode}`,
+        last: false
       },
       {
         title: 'Course',
         subtitle: getCourseTitle(qs.courseType),
-        queryValue: `courseType=${qs.courseType}`
+        queryValue: `courseType=${qs.courseType}`,
+        last: false
       },
       {
         title: 'Date & Location',
         subtitle: `${moment(qs.date).format('ddd D, MMMM')}`,
-        queryValue: step3Params.join('&')
+        queryValue: step3Params.join('&'),
+        last: false
       },
       {
         title: 'Extras',
         subtitle: 'Choose Extras below',
-        active: true
+        active: true,
+        last: true
       }
     ]
 

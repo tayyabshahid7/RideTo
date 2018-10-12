@@ -8,11 +8,13 @@ const NavigationItem = ({
   active = false,
   disabled = false,
   fullWidth = false,
-  onClick
+  onClick,
+  className
 }) => {
   return (
     <div
       className={classnames(
+        className,
         styles.navigationItem,
         active && styles.active,
         disabled && styles.disabledItem,
