@@ -185,8 +185,13 @@ class SignupPage extends React.Component {
               error={errors.terms}
               checked={terms}
               name="terms">
-              I confirm I have read and accept RideTo’s terms & conditions and
-              agree to RideTo’s condition of use & sale.
+              <span>
+                I confirm I have read and accept RideTo’s{' '}
+                <a classnAME={styles.termsLink} href="/terms">
+                  terms & conditions
+                </a>{' '}
+                and agree to RideTo’s condition of use & sale.
+              </span>
             </Checkbox>
 
             <button type="submit" className={styles.signup}>
