@@ -40,7 +40,7 @@ class AddonSelection extends React.Component {
         last: false
       },
       {
-        title: 'Date & Location',
+        title: 'Date',
         subtitle: `${moment(qs.date).format('ddd D, MMMM')}`,
         queryValue: step3Params.join('&'),
         last: false
