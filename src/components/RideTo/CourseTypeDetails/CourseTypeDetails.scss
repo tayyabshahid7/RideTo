@@ -9,9 +9,19 @@
   }
 }
 
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  font-family: var(--font-rift);
+  color: var(--dark-color);
+  line-height: 24px;
+}
+
 .description {
+  margin-top: 16px;
   font-family: var(--font-proxima);
-  font-size: 14px;
+  font-size: 15px;
+  line-height: 24px;
 }
 
 .divider {
