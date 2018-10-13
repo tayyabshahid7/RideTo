@@ -6,6 +6,7 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
+import { Container, Row, Col } from 'reactstrap'
 import classnames from 'classnames'
 import { DAY_FORMAT5 } from 'common/constants'
 import { SortByOptions, getTitleFor } from 'common/info'
@@ -22,7 +23,7 @@ import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
 import { IconCalendar } from 'assets/icons'
-import { getCourseTitle } from 'services/course'
+// import { getCourseTitle } from 'services/course'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -32,7 +33,7 @@ class ResultPage extends Component {
       selectedCourse: null,
       loading: false,
       showDateSelectorModal: false,
-      initialTab: '1',
+      activeTab: '1',
       instantCourse: null,
       instantDate: null,
       bike_hire: null
@@ -43,7 +44,7 @@ class ResultPage extends Component {
   handleDetailClick(course) {
     this.setState({
       selectedCourse: course,
-      initialTab: '1',
+      activeTab: '1',
       instantDate: this.props.date
     })
   }
@@ -51,7 +52,15 @@ class ResultPage extends Component {
   handlePriceClick(course) {
     this.setState({
       selectedCourse: course,
-      initialTab: '3',
+      activeTab: '3',
+      instantDate: this.props.date
+    })
+  }
+
+  handleReviewClick(course) {
+    this.setState({
+      selectedCourse: course,
+      activeTab: '2',
       instantDate: this.props.date
     })
   }
@@ -125,8 +134,8 @@ class ResultPage extends Component {
   render() {
     const {
       courses,
-      courseType,
-      postcode,
+      // courseType,
+      // postcode,
       date,
       handleSetDate,
       navigation,
@@ -136,12 +145,12 @@ class ResultPage extends Component {
     const {
       selectedCourse,
       showDateSelectorModal,
-      initialTab,
+      activeTab,
       instantCourse,
       instantDate,
       bike_hire
     } = this.state
-    const courseTitle = getCourseTitle(courseType)
+    // const courseTitle = getCourseTitle(courseType)
 
     let bookNowDisabled = false
     if (selectedCourse) {
@@ -152,56 +161,69 @@ class ResultPage extends Component {
     return (
       <div className={styles.container}>
         <NavigationComponent navigation={navigation} />
-        <DateSelector
-          date={date}
-          handleSetDate={handleSetDate}
-          className={styles.dateSelector}
-        />
-        <div className={styles.mobileButtons}>
-          {this.renderMobileDateSelectorButton()}
-          {this.renderSortByDropdown()}
-        </div>
-        <Loading loading={loading} className={styles.contentWrapper}>
-          <div className={styles.mainContent}>
-            <div className={styles.coursesPanel}>
-              <div className={styles.subTitle}>
-                {`${courseTitle} in ${postcode} on ${moment(date).format(
-                  DAY_FORMAT5
-                )}`}
-              </div>
-              {courses.map(
-                course =>
-                  course.is_partner ? (
-                    <CourseItem
-                      course={course}
-                      className="mt-3"
-                      key={course.id}
-                      handleDetailClick={this.handleDetailClick.bind(this)}
-                      handlePriceClick={this.handlePriceClick.bind(this)}
-                    />
-                  ) : (
-                    <CourseItemNonPartner
-                      course={course}
-                      className="mt-3"
-                      key={course.id}
-                    />
-                  )
-              )}
-            </div>
-            <div className={styles.mapPanel}>
-              <div className={styles.buttonsWrapper}>
+        <Container className={styles.pageContainer}>
+          <Row>
+            <Col sm="6">
+              <div className={styles.heading}>Choose a Date</div>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <DateSelector
+                date={date}
+                handleSetDate={handleSetDate}
+                className={styles.dateSelector}
+              />
+              <div className={styles.mobileButtons}>
+                {this.renderMobileDateSelectorButton()}
                 {this.renderSortByDropdown()}
               </div>
-              {courses.length > 0 && (
-                <MapComponent
-                  className={styles.mapWrapper}
-                  courses={courses}
-                  userLocation={userLocation}
-                />
-              )}
-            </div>
-          </div>
-        </Loading>
+              <Loading loading={loading} className={styles.contentWrapper}>
+                <div className={styles.mainContent}>
+                  <div className={styles.coursesPanel}>
+                    <div className={styles.subTitle}>Choose a location</div>
+                    {courses.map(
+                      course =>
+                        course.is_partner ? (
+                          <CourseItem
+                            course={course}
+                            className={styles.courseSpacing}
+                            key={course.id}
+                            handleDetailClick={this.handleDetailClick.bind(
+                              this
+                            )}
+                            handlePriceClick={this.handlePriceClick.bind(this)}
+                            handleReviewClick={this.handleReviewClick.bind(
+                              this
+                            )}
+                          />
+                        ) : (
+                          <CourseItemNonPartner
+                            course={course}
+                            className="mt-3"
+                            key={course.id}
+                          />
+                        )
+                    )}
+                  </div>
+                  <div className={styles.mapPanel}>
+                    <div className={styles.buttonsWrapper}>
+                      {this.renderSortByDropdown()}
+                    </div>
+                    {courses.length > 0 && (
+                      <MapComponent
+                        className={styles.mapWrapper}
+                        courses={courses}
+                        userLocation={userLocation}
+                      />
+                    )}
+                  </div>
+                </div>
+              </Loading>
+            </Col>
+          </Row>
+        </Container>
+
         <SidePanel
           className={styles.noPadding}
           visible={selectedCourse !== null}
@@ -210,10 +232,18 @@ class ResultPage extends Component {
           footer={
             <RideToButton
               className={classnames(
-                styles.action,
-                bookNowDisabled && styles.bookNowDisabled
+                styles.action
+                // bookNowDisabled && styles.bookNowDisabled
               )}
-              onClick={() => !bookNowDisabled && this.onBookNow()}>
+              onClick={() => {
+                if (this.state.activeTab !== '3') {
+                  this.setState({ activeTab: '3' })
+                } else {
+                  if (!bookNowDisabled) {
+                    this.onBookNow()
+                  }
+                }
+              }}>
               <span>Book Now</span>
               <img src={ButtonArrowWhite} alt="arrow" />
             </RideToButton>
@@ -221,7 +251,8 @@ class ResultPage extends Component {
           {selectedCourse && (
             <CourseDetailPanel
               course={selectedCourse}
-              initialTab={initialTab}
+              activeTab={activeTab}
+              onChangeTab={tab => this.setState({ activeTab: tab })}
               date={date}
               instantCourse={instantCourse}
               instantDate={instantDate}

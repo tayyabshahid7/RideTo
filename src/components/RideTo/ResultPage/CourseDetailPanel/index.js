@@ -9,20 +9,17 @@ import CourseInformationComponent from './CourseInformationComponent'
 class CourseDetailPanel extends React.Component {
   constructor(props) {
     super(props)
-    const { initialTab } = this.props
     this.state = {
-      opened: [],
-      activeTab: initialTab || '1'
+      opened: []
     }
 
     this.toggle = this.toggle.bind(this)
   }
 
   toggle(tab) {
-    if (this.state.activeTab !== tab) {
-      this.setState({
-        activeTab: tab
-      })
+    const { activeTab, onChangeTab } = this.props
+    if (activeTab !== tab) {
+      onChangeTab(tab)
     }
   }
 
@@ -33,9 +30,9 @@ class CourseDetailPanel extends React.Component {
       instantCourse,
       instantDate,
       onUpdate,
-      bike_hire
+      bike_hire,
+      activeTab
     } = this.props
-    const { activeTab } = this.state
 
     return (
       <div className={styles.courseDetails}>

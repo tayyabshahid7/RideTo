@@ -48,7 +48,7 @@ const ReviewSlider = () => {
     slidesToShow: 3,
     slidesToScroll: 1,
     centerMode: true,
-    centerPadding: '64px',
+    centerPadding: '24px',
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
     responsive: [

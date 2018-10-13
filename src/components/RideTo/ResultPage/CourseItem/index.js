@@ -36,7 +36,8 @@ class CourseItem extends Component {
       course,
       className,
       handleDetailClick,
-      handlePriceClick
+      handlePriceClick,
+      handleReviewClick
     } = this.props
     return (
       <div className={classnames(styles.container, className)}>
@@ -72,7 +73,7 @@ class CourseItem extends Component {
               className={styles.starComponent}
             />
             <span
-              onClick={this.handleDetailClick.bind(this)}
+              onClick={() => handleReviewClick(course)}
               className={styles.detail}>
               {course.number_of_reviews}
             </span>
