@@ -5,12 +5,13 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
-    height: 450px;
+    height: 400px;
   }
 }
 
 .photo {
   width: 136px;
+  position: relative;
   @media (max-width: 768px) {
     width: 100%;
     height: 200px;
@@ -61,10 +62,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: var(--font-rift);
+  font-family: var(--font-proxima);
   line-height: 24px;
   font-size: 20px;
-  font-weight: bold;
+  // font-weight: bold;
   stroke: var(--primary-color);
   box-shadow: inset 1px 0 0 0 rgba(44, 206, 172, 0.1);
   cursor: pointer;
@@ -74,13 +75,33 @@
     background: var(--primary-color);
   }
   @media (max-width: 768px) {
-    flex: 0 0 48px;
+    display: none;
+    // flex: 0 0 48px;
+    // color: white;
+    // stroke: white;
+    // background: var(--primary-color);
+    // flex-direction: row;
+    // justify-content: space-between;
+    // padding: 0 24px;
+  }
+}
+
+.priceMobile {
+  display: none !important;
+  @media (max-width: 768px) {
+    display: flex !important;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    max-width: 136px;
     color: white;
     stroke: white;
     background: var(--primary-color);
     flex-direction: row;
     justify-content: space-between;
     padding: 0 24px;
+    height: 56px;
+    box-shadow: none;
   }
 }
 
@@ -88,6 +109,7 @@
   margin-top: 12px;
   @media (max-width: 768px) {
     margin-top: 0px;
+    margin-left: 16px;
   }
 }
 

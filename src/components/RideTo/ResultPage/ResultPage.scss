@@ -8,21 +8,47 @@
 
 .pageContainer {
   padding-top: 88px;
+
+  @media (max-width: 768px) {
+    padding-top: 40px;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
 }
 
-.heading {
+.headingDesktop {
   font-family: var(--font-rift-bold);
   height: 29px;
   font-size: 24px;
   line-height: 29px;
   margin: 0px;
   align-self: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.headingMobile {
+  font-family: var(--font-rift-bold);
+  height: 29px;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0px;
+  align-self: center;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
 }
 
 .contentWrapper {
   margin-top: 56px;
-  padding: 0px 30px;
+  padding: 0px;
   display: flex;
+  @media (max-width: 768px) {
+    margin-top: 32px;
+  }
   // width: auto !important;
   // justify-content: center;
 }
@@ -94,6 +120,9 @@
   font-family: var(--font-rift-bold);
   line-height: 29px;
   margin-bottom: 50px;
+  @media (max-width: 768px) {
+    display: none !important;
+  }
 }
 
 .dateSelector {
@@ -107,7 +136,7 @@
   display: none;
   @media (max-width: 768px) {
     width: 100%;
-    padding: 20px 24px;
+    padding: 20px 0px;
     display: flex;
     flex-direction: column;
   }

@@ -164,7 +164,10 @@ class ResultPage extends Component {
         <Container className={styles.pageContainer}>
           <Row>
             <Col sm="6">
-              <div className={styles.heading}>Choose a Date</div>
+              <div className={styles.headingDesktop}>Choose a Date</div>
+              <div className={styles.headingMobile}>
+                Choose a Date &amp; Location
+              </div>
             </Col>
           </Row>
           <Row>

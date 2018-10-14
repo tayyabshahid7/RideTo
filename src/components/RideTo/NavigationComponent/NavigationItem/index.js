@@ -15,6 +15,7 @@ const NavigationItem = ({
       className={classnames(
         styles.navigationItem,
         active && styles.active,
+        disabled && styles.disabledItem,
         !active && !disabled && styles.clickable,
         fullWidth && styles.fullWidth
       )}
