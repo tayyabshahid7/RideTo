@@ -8,13 +8,17 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import { saveUser } from 'services/user'
 import styles from './SignupPage.scss'
 
+const isMobile = () => {
+  return window.innerWidth < 768 || window.screen.width < 768
+}
+
 class SignupPage extends React.Component {
   constructor(props) {
     super(props)
 
     this.navigation = [
       {
-        title: 'Sign up to RideTo',
+        title: isMobile() ? 'Go Back' : 'Checkout',
         subtitle: (
           <div className={styles.navigation}>
             If you already have an account you can{' '}
@@ -119,7 +123,7 @@ class SignupPage extends React.Component {
           onNavBack={this.handleBack}
         />
         <div className={styles.signupPage}>
-          <h2 className={styles.heading}>sign up to rideto</h2>
+          <h2 className={styles.heading}>Create an Account & Checkout</h2>
           <form className={styles.form} onSubmit={this.handleSubmit}>
             <Input
               placeholder="First Name"
@@ -165,8 +169,24 @@ class SignupPage extends React.Component {
             />
 
             <div className={styles.subtext}>
-              At least six characters, including a letter and a number
+              Min. six characters including 1 letter and 1 number
             </div>
+
+            <Checkbox
+              extraClass={styles.checkbox}
+              onChange={this.handleCheck}
+              size="large"
+              error={errors.terms}
+              checked={terms}
+              name="terms">
+              <span>
+                I confirm I have read and accept RideTo’s{' '}
+                <a classnAME={styles.termsLink} href="/terms">
+                  terms & conditions
+                </a>{' '}
+                and agree to RideTo’s condition of use & sale.
+              </span>
+            </Checkbox>
 
             <Checkbox
               extraClass={styles.checkbox}
@@ -178,19 +198,8 @@ class SignupPage extends React.Component {
               outs, events and special offers.
             </Checkbox>
 
-            <Checkbox
-              extraClass={styles.checkbox}
-              onChange={this.handleCheck}
-              size="large"
-              error={errors.terms}
-              checked={terms}
-              name="terms">
-              I confirm I have read and accept RideTo’s terms & conditions and
-              agree to RideTo’s condition of use & sale.
-            </Checkbox>
-
             <button type="submit" className={styles.signup}>
-              <span>Create Account</span>
+              <span>Continue to Checkout</span>
               <img src={ButtonArrowWhite} alt="" />
             </button>
           </form>

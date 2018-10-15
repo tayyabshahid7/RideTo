@@ -10,10 +10,16 @@ import styles from './LoginPage.scss'
 class LoginPage extends React.Component {
   constructor(props) {
     super(props)
+    const nextUrl = JSON.parse(sessionStorage.getItem('login-next'))
+
+    let isCheckoutNext = false
+    if (nextUrl) {
+      isCheckoutNext = nextUrl.includes('checkout')
+    }
 
     this.navigation = [
       {
-        title: 'Log In To RideTo',
+        title: isCheckoutNext ? 'Checkout' : 'Log In To RideTo',
         subtitle: (
           <div className={styles.navigation}>
             If you don’t have an account you can{' '}
@@ -26,7 +32,10 @@ class LoginPage extends React.Component {
     this.state = {
       email: '',
       password: '',
-      errors: {}
+      errors: {},
+      loginButtonText: isCheckoutNext
+        ? 'Continue to Checkout'
+        : 'Log In To RideTo'
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -76,7 +85,7 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    const { email, password, errors } = this.state
+    const { email, password, errors, loginButtonText } = this.state
 
     return (
       <React.Fragment>
@@ -109,11 +118,13 @@ class LoginPage extends React.Component {
               <div className={styles.error}>{errors.password}</div>
             )}
             <div className={styles.subtext}>
-              <a href="/users/forgot/">Forgot password</a>
+              <a href="/users/forgot/" className={styles.forgotPassword}>
+                Forgot Password
+              </a>
             </div>
 
             <button type="submit" className={styles.login}>
-              <span>Next</span>
+              <span>{loginButtonText}</span>
               <img src={ButtonArrowWhite} alt="" />
             </button>
           </form>

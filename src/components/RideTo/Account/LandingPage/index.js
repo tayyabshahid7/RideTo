@@ -5,13 +5,17 @@ import NavigationComponent from 'components/RideTo/NavigationComponent'
 import Envelope from 'assets/images/rideto/Envelope.svg'
 import styles from './LandingPage.scss'
 
+const isMobile = () => {
+  return window.innerWidth < 768 || window.screen.width < 768
+}
+
 class LandingPage extends React.Component {
   constructor(props) {
     super(props)
 
     this.navigation = [
       {
-        title: 'Sign up to RideTo',
+        title: isMobile() ? 'Go Back' : 'Sign up to RideTo',
         subtitle: (
           <div className={styles.navigation}>
             If you already have an account you can{' '}
