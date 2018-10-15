@@ -235,8 +235,8 @@ class ResultPage extends Component {
           footer={
             <RideToButton
               className={classnames(
-                styles.action
-                // bookNowDisabled && styles.bookNowDisabled
+                styles.action,
+                bookNowDisabled && styles.bookNowDisabled
               )}
               onClick={() => {
                 if (this.state.activeTab !== '3') {

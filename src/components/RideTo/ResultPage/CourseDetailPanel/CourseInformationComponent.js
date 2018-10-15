@@ -21,7 +21,9 @@ class CourseDetailPanel extends React.Component {
 
     return (
       <div className={styles.content}>
-        <div className={styles.subtitle}>{course.name}</div>
+        <div className={styles.subtitle}>
+          {course.location_slug.replace('-', ' ')}
+        </div>
         <div className={styles.desc}>{course.rideto_opinion}</div>
         <div className={styles.hostedLogo}>
           <img src={course.hosted_logo} alt="feature" />

@@ -41,9 +41,8 @@
 
 .subtitle {
   font-size: 24px;
-  font-weight: bold;
   line-height: 29px;
-  font-family: var(--font-rift);
+  font-family: var(--font-rift-bold);
 }
 
 .subtitle1 {
@@ -52,7 +51,6 @@
   line-height: 24px;
   font-weight: 500;
   font-family: var(--font-rift);
-  margin-top: 40px;
 }
 
 .location {
@@ -120,7 +118,7 @@
 }
 
 .bikeHireBtn {
-  height: 35px;
+  height: 48px;
   width: 100%;
   cursor: pointer;
   background: white;
