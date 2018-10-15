@@ -33,7 +33,10 @@
 }
 
 .content {
-  padding: 50px 60px;
+  padding: 45px 60px;
+  @media (max-width: 768px) {
+    padding: 30px 32px;
+  }
 }
 
 .subtitle {
@@ -68,8 +71,10 @@
 .hostedLogo {
   margin-top: 24px;
   img {
-    max-width: 100px;
-    height: auto;
+    height: 30px;
+    width: auto;
+    // max-width: 100px;
+    // height: auto;
   }
 }
 

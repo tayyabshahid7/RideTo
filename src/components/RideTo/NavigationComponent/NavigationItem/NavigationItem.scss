@@ -16,7 +16,7 @@
     justify-content: space-between;
 
     width: 100%;
-    padding: 16px;
+    padding: 16px 32px;
 
     border-bottom: 1px solid #f8f8f8;
   }
@@ -24,8 +24,11 @@
 
 .active {
   // box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.2);
-  @media (min-width: 768px) {
-    box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.2);
+  // @media (min-width: 768px) {
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+  // }
+  @media (max-width: 768px) {
+    display: none;
   }
 }
 
@@ -57,7 +60,9 @@
 
 .disabled {
   opacity: 0.25;
+}
 
+.disabledItem {
   @media (max-width: 768px) {
     display: none;
   }

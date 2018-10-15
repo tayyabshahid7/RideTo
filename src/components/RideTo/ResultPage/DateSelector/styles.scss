@@ -1,7 +1,10 @@
 .dateSelector {
   display: flex;
-  max-width: 100%;
-  width: 1232px;
+  // max-width: 100%;
+  // width: 1232px;
+  max-width: calc(100% + 120px);
+  width: 1202px;
+  margin-left: -60px;
 }
 
 .prev {

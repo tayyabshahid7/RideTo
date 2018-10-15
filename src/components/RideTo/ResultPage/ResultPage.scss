@@ -6,10 +6,49 @@
   background: #c2c2c220;
 }
 
+.pageContainer {
+  padding-top: 88px;
+
+  @media (max-width: 768px) {
+    padding-top: 40px;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+.headingDesktop {
+  font-family: var(--font-rift-bold);
+  height: 29px;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0px;
+  align-self: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.headingMobile {
+  font-family: var(--font-rift-bold);
+  height: 29px;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0px;
+  align-self: center;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
 .contentWrapper {
-  margin-top: 120px;
-  padding: 0px 30px;
+  margin-top: 56px;
+  padding: 0px;
   display: flex;
+  @media (max-width: 768px) {
+    margin-top: 32px;
+  }
   // width: auto !important;
   // justify-content: center;
 }
@@ -56,6 +95,7 @@
   font-family: var(--font-rift);
   font-weight: 500 !important;
   border: none !important;
+  letter-spacing: 0.5px;
 
   @media (max-width: 768px) {
     width: 100%;
@@ -77,14 +117,16 @@
 .subTitle {
   text-transform: uppercase;
   font-size: 24px;
-  font-weight: bold;
-  font-family: var(--font-rift);
+  font-family: var(--font-rift-bold);
   line-height: 29px;
   margin-bottom: 50px;
+  @media (max-width: 768px) {
+    display: none !important;
+  }
 }
 
 .dateSelector {
-  margin-top: 56px;
+  margin-top: 20px;
   @media (max-width: 768px) {
     display: none !important;
   }
@@ -94,7 +136,7 @@
   display: none;
   @media (max-width: 768px) {
     width: 100%;
-    padding: 20px 24px;
+    padding: 20px 0px;
     display: flex;
     flex-direction: column;
   }
@@ -114,6 +156,9 @@
 
 .action {
   width: inherit;
+  justify-content: space-between;
+  padding-left: 62px;
+  padding-right: 62px;
   img {
     margin-left: 16px;
   }
@@ -121,4 +166,9 @@
 
 .bookNowDisabled {
   background: var(--light-grey-color);
+}
+
+.courseSpacing {
+  margin-bottom: 24px;
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
 }

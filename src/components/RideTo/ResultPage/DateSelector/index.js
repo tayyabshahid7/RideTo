@@ -8,7 +8,7 @@ class DateSelector extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      startDate: new Date(this.props.date),
+      startDate: new Date(),
       daysCount: 12
     }
     this.updateDimensions = this.updateDimensions.bind(this)

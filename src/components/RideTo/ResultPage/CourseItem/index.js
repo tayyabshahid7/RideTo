@@ -36,12 +36,17 @@ class CourseItem extends Component {
       course,
       className,
       handleDetailClick,
-      handlePriceClick
+      handlePriceClick,
+      handleReviewClick
     } = this.props
     return (
       <div className={classnames(styles.container, className)}>
-        <div className={styles.photo}>
+        <div className={styles.photo} onClick={() => handlePriceClick(course)}>
           <img src={course.image} className={styles.image} alt="logo" />
+          <div className={classnames(styles.price, styles.priceMobile)}>
+            <div>£{parseInt(course.price / 100.0, 10)}</div>
+            <IconArrowRight className={styles.arrowIcon} />
+          </div>
         </div>
         <div className={styles.info}>
           <div className={styles.upperSection}>
@@ -72,7 +77,7 @@ class CourseItem extends Component {
               className={styles.starComponent}
             />
             <span
-              onClick={this.handleDetailClick.bind(this)}
+              onClick={() => handleReviewClick(course)}
               className={styles.detail}>
               {course.number_of_reviews}
             </span>
