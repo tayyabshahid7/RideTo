@@ -8,4 +8,7 @@
   color: var(--dark-color);
   font-family: var(--font-proxima);
   font-size: 15px;
+  &::placeholder {
+    color: var(--placeholder-color);
+  }
 }

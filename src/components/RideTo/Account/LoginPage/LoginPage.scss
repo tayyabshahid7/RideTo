@@ -51,10 +51,18 @@
 
 .subtext {
   text-align: left;
-  font-size: 12px;
+  font-size: 15px;
   color: var(--grey-color);
-  margin-top: 4px;
+  margin-top: 15px;
   margin-bottom: 40px;
+
+  .forgotPassword {
+    color: var(--grey-color);
+    text-decoration: underline;
+    &:hover {
+      color: var(--dark-color);
+    }
+  }
 }
 
 .login {
@@ -64,7 +72,7 @@
   color: white !important;
   background-color: var(--primary-color);
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 
   padding: 12px 32px;
