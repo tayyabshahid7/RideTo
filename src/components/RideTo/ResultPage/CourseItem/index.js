@@ -50,7 +50,9 @@ class CourseItem extends Component {
         </div>
         <div className={styles.info}>
           <div className={styles.upperSection}>
-            <div className={styles.courseName}>{course.name}</div>
+            <div className={styles.courseName}>
+              {course.location_slug.replace('-', ' ')}
+            </div>
             <div className={styles.place}>
               {course.place}, {course.postcode}
             </div>
