@@ -39,7 +39,7 @@ const CourseTypeSelectionFilters = ({ filters, selected, onSelect }) => {
         <select
           className={styles.select}
           onChange={event => handleSelectFilter(event, filters, onSelect)}>
-          <option value={null}>Select Filter</option>
+          <option value={null}>Filter Courses</option>
           {filters.map(filter => (
             <option
               key={filter.tag}
