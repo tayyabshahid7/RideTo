@@ -62,7 +62,12 @@ class MapComponent extends Component {
   renderMarker(course, index) {
     if (course.lng && course.lat) {
       return (
-        <Marker key={course.id} longitude={course.lng} latitude={course.lat}>
+        <Marker
+          key={course.id}
+          longitude={course.lng}
+          latitude={course.lat}
+          offsetLeft={-25}
+          offsetTop={-64}>
           {this.renderPin(course)}
         </Marker>
       )
@@ -95,7 +100,11 @@ class MapComponent extends Component {
           mapboxApiAccessToken={MAPBOX_KEY}
           onViewportChange={viewport => this.setState({ viewport })}>
           {userLocation && (
-            <Marker longitude={userLocation.lng} latitude={userLocation.lat}>
+            <Marker
+              longitude={userLocation.lng}
+              latitude={userLocation.lat}
+              offsetLeft={-25}
+              offsetTop={-64}>
               <div id={`user-pin`} className={styles.coursePin}>
                 <IconMapPin className={styles.mapPinBg} />
                 <IconUser className={styles.userIcon} />
