@@ -100,7 +100,7 @@ class UserDetails extends Component {
               </option>
             ))}
           </Select>
-          <div className={styles.subtext}>current licenses</div>
+          <div className={styles.subtext}>Select the license you have</div>
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
@@ -119,7 +119,7 @@ class UserDetails extends Component {
               </option>
             ))}
           </Select>
-          <div className={styles.subtext}>riding experience</div>
+          <div className={styles.subtext} />
           {errors.riding_experience && (
             <div className={styles.error}>{errors.riding_experience}</div>
           )}
@@ -136,7 +136,7 @@ class UserDetails extends Component {
               </option>
             ))}
           </Select>
-          <div className={styles.subtext}>rider type</div>
+          <div className={styles.subtext}>Why you are learning to ride</div>
           {errors.rider_type && (
             <div className={styles.error}>{errors.rider_type}</div>
           )}
