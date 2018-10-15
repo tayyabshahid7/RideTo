@@ -16,7 +16,9 @@ const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
 
   return (
     <div className={styles.courseTypeItem}>
-      <div className={styles.backgroundImg} style={bgImg} />
+      <a href={url}>
+        <div className={styles.backgroundImg} style={bgImg} />
+      </a>
 
       <div className={styles.content}>
         <div className={styles.expandedInfo}>
