@@ -111,7 +111,7 @@ class CourseTypeSelection extends React.Component {
     return (
       <React.Fragment>
         <NavigationComponent navigation={navigation} />
-        <Container>
+        <Container className={styles.container}>
           <Row>
             <Col sm={{ size: 12, offset: 8 }} className={styles.filtersTitle}>
               Filter Courses
