@@ -11,6 +11,7 @@ export const fetchCoursesTypes = async postCode => {
 
 export const getFilters = () => {
   return [
+    { tag: 'ALL', name: 'All' },
     { tag: 'BEGINNER', name: 'Beginner' },
     { tag: 'ADVANCED', name: 'Experienced' },
     { tag: 'CBT', name: 'CBT' },

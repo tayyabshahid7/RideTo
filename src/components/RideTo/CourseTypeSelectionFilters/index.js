@@ -5,7 +5,7 @@ import styles from './CourseTypeSelectionFilters.scss'
 
 const handleToggleFilter = (filter, selected, onSelect) => {
   if (selected && filter.tag === selected.tag) {
-    return onSelect(null)
+    return onSelect({ tag: 'ALL', name: 'All' })
   }
 
   return onSelect(filter)
@@ -26,7 +26,7 @@ const CourseTypeSelectionFilters = ({ filters, selected, onSelect }) => {
               key={filter.tag}
               className={classnames(
                 styles.filter,
-                selected === filter && styles.selected
+                selected && selected.tag === filter.tag && styles.selected
               )}
               onClick={() => handleToggleFilter(filter, selected, onSelect)}>
               {filter.name}

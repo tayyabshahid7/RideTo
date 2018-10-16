@@ -49,7 +49,7 @@ class CourseTypeSelection extends React.Component {
 
     this.state = {
       filteredCourseTypes: [],
-      selectedFilter: null,
+      selectedFilter: { tag: 'ALL', name: 'All' },
       postcode: qs.postcode || '',
       selectedCourseType: null,
       navigation: this.navigation
@@ -70,11 +70,12 @@ class CourseTypeSelection extends React.Component {
   }
 
   handleSelectFilter(selectedFilter) {
-    const filteredCourseTypes = selectedFilter
-      ? this.courseTypes.filter(
-          ({ tags }) => tags.indexOf(selectedFilter.tag) > -1
-        )
-      : this.courseTypes
+    const filteredCourseTypes =
+      selectedFilter && selectedFilter.tag !== 'ALL'
+        ? this.courseTypes.filter(
+            ({ tags }) => tags.indexOf(selectedFilter.tag) > -1
+          )
+        : this.courseTypes
 
     this.setState({
       selectedFilter,
