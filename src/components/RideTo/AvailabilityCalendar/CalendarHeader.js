@@ -31,7 +31,9 @@ const CalendarHeader = ({
           )}
         />
       </div>
-      {moment(new Date(calendar.year, calendar.month, 1)).format('MMMM YYYY')}
+      <div className={styles.monthYear}>
+        {moment(new Date(calendar.year, calendar.month, 1)).format('MMMM YYYY')}
+      </div>
       <div className={styles.next} onClick={handleNextMonth}>
         <IconArrowSlideRight className={styles.icon} />
       </div>

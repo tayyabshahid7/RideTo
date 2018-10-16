@@ -124,7 +124,7 @@ class CourseAvailabilityComponent extends React.Component {
     let month = calendar.month - 1
     let year = calendar.year
     if (month < 0) {
-      month = 0
+      month = 11
       year = year - 1
     }
     this.setState({ calendar: { ...calendar, month, year } })
@@ -135,7 +135,7 @@ class CourseAvailabilityComponent extends React.Component {
     let month = calendar.month + 1
     let year = calendar.year
     if (month > 11) {
-      month = 11
+      month = 0
       year = year + 1
     }
     this.setState({ calendar: { ...calendar, month, year } })
