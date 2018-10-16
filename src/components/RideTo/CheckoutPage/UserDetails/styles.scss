@@ -125,3 +125,19 @@
     url('http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png')
     no-repeat calc(100% - 24px) center;
 }
+
+.postcodeSearchButton {
+  font-size: 15px;
+  width: 40%;
+  padding: 5px;
+  justify-content: center;
+}
+
+.findPostcodeInput {
+  width: 60%;
+}
+
+.searchPostcodeInput {
+  display: flex;
+  height: 48px;
+}

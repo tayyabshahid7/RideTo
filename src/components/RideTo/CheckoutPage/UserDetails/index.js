@@ -9,6 +9,7 @@ import {
 import { Row, Col } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
+import Button from 'components/RideTo/Button'
 import Input from 'components/RideTo/Input'
 import AddressForm from 'components/AddressForm'
 import { RidingExperiences, RiderTypes } from 'common/info'
@@ -23,6 +24,7 @@ class UserDetails extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
     this.handleBillingAddressChange = this.handleBillingAddressChange.bind(this)
+    this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
   }
 
@@ -40,6 +42,12 @@ class UserDetails extends Component {
   handleBillingAddressChange(name, value) {
     const { onDetailChange } = this.props
     onDetailChange(`billingAddress.${name}`, value)
+  }
+
+  handleSearchPostcode() {
+    const { postcode } = this.props.details
+
+    this.props.onPostalCodeSubmit(postcode)
   }
 
   stripeElementChange(element, name) {
@@ -165,20 +173,30 @@ class UserDetails extends Component {
         {!manualAddress &&
           validStep >= 1 && (
             <div className={styles.rowItem}>
-              <Input
-                placeholder="Postcode"
-                name="postcode"
-                onChange={this.handleChange}
+              <div
                 className={classnames(
                   styles.input,
+                  styles.searchPostcodeInput,
                   postcodeLookingup && styles.waiting
-                )}
-                onKeyUp={event =>
-                  event.key === 'Enter' &&
-                  onPostalCodeSubmit(event.target.value)
-                }
-                disabled={postcodeLookingup}
-              />
+                )}>
+                <Input
+                  id="postcodeSearch"
+                  placeholder="Postcode"
+                  name="postcode"
+                  className={styles.findPostcodeInput}
+                  onChange={this.handleChange}
+                  onKeyUp={event =>
+                    event.key === 'Enter' &&
+                    onPostalCodeSubmit(event.target.value)
+                  }
+                  disabled={postcodeLookingup}
+                />
+                <Button
+                  className={styles.postcodeSearchButton}
+                  onClick={this.handleSearchPostcode}>
+                  Search Address
+                </Button>
+              </div>
               {errors.postcode &&
                 !postcodeLookingup && (
                   <div className={styles.error}>{errors.postcode}</div>
