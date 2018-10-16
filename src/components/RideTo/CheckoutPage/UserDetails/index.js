@@ -227,7 +227,7 @@ class UserDetails extends Component {
     const inputStyle = {
       base: {
         fontSize: '15px',
-        fontFamily: 'ProximaNova',
+        fontFamily: 'var(--font-proxima)',
         color: '#141414'
       }
     }
