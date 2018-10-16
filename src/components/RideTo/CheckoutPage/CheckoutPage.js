@@ -409,6 +409,7 @@ class CheckoutPage extends Component {
         <div className={styles.rightPanel}>
           <OrderSummary
             {...this.props}
+            errors={errors}
             details={details}
             priceInfo={priceInfo}
             onSubmit={this.handlePayment}

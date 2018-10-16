@@ -91,7 +91,8 @@ class OrderSummary extends Component {
       onChange,
       loadingPrice,
       details,
-      onDetailChange
+      onDetailChange,
+      errors = {}
     } = this.props
     const { showPromo } = this.state
     let confirmDisabled = validStep < 3 || saving || !details.accept_terms
@@ -121,6 +122,11 @@ class OrderSummary extends Component {
             </div>
           </Checkbox>
         </div>
+        {errors.paymentError && (
+          <div className={styles.paymentError}>
+            <strong>{errors.paymentError}</strong>
+          </div>
+        )}
         <RideToButton
           className={classnames(
             styles.action,

@@ -223,7 +223,7 @@ class UserDetails extends Component {
   }
 
   renderPaymentForm() {
-    const { details, errors = {}, validStep } = this.props
+    const { details, validStep } = this.props
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -291,11 +291,6 @@ class UserDetails extends Component {
                 }
               />
             </div>
-          </div>
-        )}
-        {errors.paymentError && (
-          <div className={styles.paymentError}>
-            <strong>{errors.paymentError}</strong>
           </div>
         )}
       </div>
