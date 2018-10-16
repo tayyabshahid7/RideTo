@@ -233,6 +233,19 @@ class CheckoutPage extends Component {
     return 3
   }
 
+  isValidDate(dateString) {
+    const minYears = 16
+    const trainingDate = moment(this.props.checkoutData.date, 'YYYY-MM-DD')
+    const date = moment(dateString, 'DD/MM/YYYY')
+    const isComplete = dateString.slice(-1) !== '_'
+
+    if (isComplete && minYears && trainingDate) {
+      return trainingDate.diff(date, 'years') >= minYears
+    }
+
+    return isComplete || date.isValid()
+  }
+
   validateDetails(details) {
     const errors = { address: {}, billingAddress: {} }
     let hasError = false
@@ -253,6 +266,13 @@ class CheckoutPage extends Component {
         hasError = true
       }
     })
+
+    if (!this.isValidDate(details.user_birthdate)) {
+      errors['user_birthdate'] =
+        'You must be at least 16 years old to do your training. (On the selected date of training)'
+      hasError = true
+    }
+
     this.setState({
       errors: errors
     })

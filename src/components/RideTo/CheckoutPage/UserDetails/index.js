@@ -7,6 +7,7 @@ import {
   PostalCodeElement
 } from 'react-stripe-elements'
 import { Row, Col } from 'reactstrap'
+import DateInput from 'components/RideTo/DateInput'
 import Input from 'components/RideTo/Input'
 import AddressForm from 'components/AddressForm'
 import { RidingExperiences, RiderTypes } from 'common/info'
@@ -67,11 +68,12 @@ class UserDetails extends Component {
       <div className={styles.container}>
         <div className={styles.title}>Your Details</div>
         <div className={styles.rowItem}>
-          <Input
-            placeholder="Date Of Birth"
+          <DateInput
+            placeholder="Date of Birth"
+            id="user_birthdate"
             name="user_birthdate"
+            minyears={16}
             value={details.user_birthdate}
-            className={styles.input}
             onChange={this.handleChange}
             required
           />
