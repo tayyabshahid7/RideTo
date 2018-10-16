@@ -164,7 +164,8 @@ class CheckoutPage extends Component {
         this.setState({
           postcodeLookingup: false,
           showAddressSelectorModal: true,
-          addresses: response.addresses
+          addresses: response.addresses,
+          validStep: 3
         })
       } else {
         let { errors } = this.state
