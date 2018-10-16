@@ -8,6 +8,7 @@ import {
 } from 'react-stripe-elements'
 import { Row, Col } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
+import PhoneInput from 'components/RideTo/PhoneInput'
 import Input from 'components/RideTo/Input'
 import AddressForm from 'components/AddressForm'
 import { RidingExperiences, RiderTypes } from 'common/info'
@@ -81,11 +82,10 @@ class UserDetails extends Component {
           {errors.user_birthdate && (
             <div className={styles.error}>{errors.user_birthdate}</div>
           )}
-          <Input
+          <PhoneInput
             placeholder="Telephone Number"
             name="phone"
             value={details.phone}
-            className={styles.input}
             onChange={this.handleChange}
             required
           />
