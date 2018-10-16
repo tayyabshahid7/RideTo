@@ -114,3 +114,14 @@
     width: 36px;
   }
 }
+
+.selectElement select {
+  width: 100%;
+  height: 48px;
+  appearance: none;
+  padding: 2px 24px 2px 24px;
+  border: none;
+  background: white
+    url('http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png')
+    no-repeat calc(100% - 24px) center;
+}

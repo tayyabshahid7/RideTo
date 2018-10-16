@@ -7,7 +7,7 @@ const Select = ({ children, ...props }) => {
   const className = classnames(styles.select, props.className)
 
   return (
-    <select {...props} className={className}>
+    <select {...props} className={classnames(className, styles.select)}>
       {children}
     </select>
   )

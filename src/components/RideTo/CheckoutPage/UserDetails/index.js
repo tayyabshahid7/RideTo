@@ -90,54 +90,66 @@ class UserDetails extends Component {
             required
           />
           {errors.phone && <div className={styles.error}>{errors.phone}</div>}
-          <Select
-            value={details.current_licence}
-            name="current_licence"
-            className={styles.input}
-            onChange={this.handleChange}>
-            <option value="">Current License</option>
-            {currentLicenceOptions.map(licenseOption => (
-              <option value={licenseOption.id} key={licenseOption.id}>
-                {licenseOption.name}
+          <div class={styles.selectElement}>
+            <Select
+              value={details.current_licence}
+              name="current_licence"
+              className={styles.input}
+              onChange={this.handleChange}>
+              <option value="" hidden disabled>
+                Current License
               </option>
-            ))}
-          </Select>
+              {currentLicenceOptions.map(licenseOption => (
+                <option value={licenseOption.id} key={licenseOption.id}>
+                  {licenseOption.name}
+                </option>
+              ))}
+            </Select>
+          </div>
           <div className={styles.subtext}>Select the license you have</div>
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
-          <Select
-            value={details.riding_experience}
-            name="riding_experience"
-            className={styles.input}
-            onChange={this.handleChange}
-            required>
-            <option value="">Riding Experience</option>
-            {RidingExperiences.map(ridingExperience => (
-              <option
-                value={ridingExperience.value}
-                key={ridingExperience.value}>
-                {ridingExperience.title}
+          <div class={styles.selectElement}>
+            <Select
+              value={details.riding_experience}
+              name="riding_experience"
+              className={styles.input}
+              onChange={this.handleChange}
+              required>
+              <option value="" hidden disabled>
+                Riding Experience
               </option>
-            ))}
-          </Select>
+              {RidingExperiences.map(ridingExperience => (
+                <option
+                  value={ridingExperience.value}
+                  key={ridingExperience.value}>
+                  {ridingExperience.title}
+                </option>
+              ))}
+            </Select>
+          </div>
           <div className={styles.subtext} />
           {errors.riding_experience && (
             <div className={styles.error}>{errors.riding_experience}</div>
           )}
-          <Select
-            value={details.rider_type}
-            name="rider_type"
-            className={styles.input}
-            onChange={this.handleChange}
-            required>
-            <option value="">Rider Type</option>
-            {RiderTypes.map(riderType => (
-              <option value={riderType.value} key={riderType.value}>
-                {riderType.title}
+          <div class={styles.selectElement}>
+            <Select
+              value={details.rider_type}
+              name="rider_type"
+              className={styles.input}
+              onChange={this.handleChange}
+              required>
+              <option value="" hidden disabled>
+                Rider Type
               </option>
-            ))}
-          </Select>
+              {RiderTypes.map(riderType => (
+                <option value={riderType.value} key={riderType.value}>
+                  {riderType.title}
+                </option>
+              ))}
+            </Select>
+          </div>
           <div className={styles.subtext}>Why you are learning to ride</div>
           {errors.rider_type && (
             <div className={styles.error}>{errors.rider_type}</div>

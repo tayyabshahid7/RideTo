@@ -97,14 +97,14 @@ export const Features = [
 export const RiderTypes = [
   {
     value: RIDER_TYPE.SOCIAL,
-    title: 'Social Rider'
+    title: 'Social'
   },
   {
     value: RIDER_TYPE.CAREER,
-    title: 'Career Rider'
+    title: 'Delivery Work'
   },
   {
     value: RIDER_TYPE.COMMUTER,
-    title: 'Commuter Rider'
+    title: 'Commuting'
   }
 ]
