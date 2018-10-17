@@ -67,9 +67,11 @@ class UserDetails extends Component {
       errors = {},
       onChange,
       onPostalCodeSubmit,
-      postcodeLookingup
+      postcodeLookingup,
+      checkoutData: { addons }
     } = this.props
 
+    console.log(addons.length)
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
@@ -97,7 +99,7 @@ class UserDetails extends Component {
             required
           />
           {errors.phone && <div className={styles.error}>{errors.phone}</div>}
-          <div class={styles.selectElement}>
+          <div className={styles.selectElement}>
             <Select
               value={details.current_licence}
               name="current_licence"
@@ -117,7 +119,7 @@ class UserDetails extends Component {
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
-          <div class={styles.selectElement}>
+          <div className={styles.selectElement}>
             <Select
               value={details.riding_experience}
               name="riding_experience"
@@ -140,7 +142,7 @@ class UserDetails extends Component {
           {errors.riding_experience && (
             <div className={styles.error}>{errors.riding_experience}</div>
           )}
-          <div class={styles.selectElement}>
+          <div className={styles.selectElement}>
             <Select
               value={details.rider_type}
               name="rider_type"
@@ -162,52 +164,56 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.rider_type}</div>
           )}
         </div>
-        <div className={styles.title}>Delivery Address</div>
-        {!manualAddress && (
-          <div className={styles.rowItem}>
-            <div
-              className={classnames(
-                styles.input,
-                styles.searchPostcodeInput,
-                postcodeLookingup && styles.waiting
-              )}>
-              <Input
-                id="postcodeSearch"
-                placeholder="Postcode"
-                name="postcode"
-                className={styles.findPostcodeInput}
-                onChange={this.handleChange}
-                onKeyUp={event =>
-                  event.key === 'Enter' &&
-                  onPostalCodeSubmit(event.target.value)
-                }
-                disabled={postcodeLookingup}
-              />
-              <Button
-                className={styles.postcodeSearchButton}
-                onClick={this.handleSearchPostcode}>
-                Search Address
-              </Button>
-            </div>
-            {errors.postcode &&
-              !postcodeLookingup && (
-                <div className={styles.error}>{errors.postcode}</div>
-              )}
-            <div
-              className={styles.actionDiv}
-              onClick={() => onChange({ manualAddress: true })}>
-              Enter address manually
-            </div>
-          </div>
-        )}
-        {manualAddress && (
-          <div className={styles.rowItem}>
-            <AddressForm
-              address={details.address}
-              onChange={this.handleAddressChange}
-              errors={errors.address}
-            />
-          </div>
+        {addons.length > 0 && (
+          <React.Fragment>
+            <div className={styles.title}>Delivery Address</div>
+            {!manualAddress && (
+              <div className={styles.rowItem}>
+                <div
+                  className={classnames(
+                    styles.input,
+                    styles.searchPostcodeInput,
+                    postcodeLookingup && styles.waiting
+                  )}>
+                  <Input
+                    id="postcodeSearch"
+                    placeholder="Postcode"
+                    name="postcode"
+                    className={styles.findPostcodeInput}
+                    onChange={this.handleChange}
+                    onKeyUp={event =>
+                      event.key === 'Enter' &&
+                      onPostalCodeSubmit(event.target.value)
+                    }
+                    disabled={postcodeLookingup}
+                  />
+                  <Button
+                    className={styles.postcodeSearchButton}
+                    onClick={this.handleSearchPostcode}>
+                    Search Address
+                  </Button>
+                </div>
+                {errors.postcode &&
+                  !postcodeLookingup && (
+                    <div className={styles.error}>{errors.postcode}</div>
+                  )}
+                <div
+                  className={styles.actionDiv}
+                  onClick={() => onChange({ manualAddress: true })}>
+                  Enter address manually
+                </div>
+              </div>
+            )}
+            {manualAddress && (
+              <div className={styles.rowItem}>
+                <AddressForm
+                  address={details.address}
+                  onChange={this.handleAddressChange}
+                  errors={errors.address}
+                />
+              </div>
+            )}
+          </React.Fragment>
         )}
       </div>
     )

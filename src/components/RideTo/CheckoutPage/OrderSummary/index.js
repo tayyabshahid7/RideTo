@@ -84,7 +84,6 @@ class OrderSummary extends Component {
     const {
       onSubmit,
       saving,
-      validStep,
       instantBook,
       voucher_code,
       handleVoucherApply,
@@ -95,7 +94,7 @@ class OrderSummary extends Component {
       errors = {}
     } = this.props
     const { showPromo } = this.state
-    let confirmDisabled = validStep < 3 || saving || !details.accept_terms
+    let confirmDisabled = saving || !details.accept_terms
 
     return (
       <div className={styles.container}>

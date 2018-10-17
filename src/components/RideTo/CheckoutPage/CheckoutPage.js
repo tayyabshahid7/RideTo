@@ -38,6 +38,12 @@ const REQUIRED_FIELDS_STEP1 = [
   'rider_type'
 ]
 
+const NO_ADDONS_ADDRESS = {
+  address_1: 'no',
+  town: 'no',
+  postcode: 'no'
+}
+
 const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
 
 class CheckoutPage extends Component {
@@ -283,7 +289,15 @@ class CheckoutPage extends Component {
 
   async handlePayment() {
     const { details } = this.state
-    const { stripe } = this.props
+    const {
+      stripe,
+      checkoutData: { addons }
+    } = this.props
+
+    if (addons.length <= 0) {
+      details.address = NO_ADDONS_ADDRESS
+    }
+
     if (!this.validateDetails(details)) {
       return
     }
