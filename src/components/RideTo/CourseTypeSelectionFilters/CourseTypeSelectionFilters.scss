@@ -31,9 +31,8 @@
   appearance: none;
   padding: 2px 24px 2px 24px;
   border: none;
-  background: #ededed
-    url('http://cdn1.iconfinder.com/data/icons/cc_mono_icon_set/blacks/16x16/br_down.png')
-    no-repeat calc(100% - 24px) center;
+  background: #ededed url('assets/icons/dropdownLine.svg') no-repeat
+    calc(100% - 24px) center;
 }
 
 .filter {
