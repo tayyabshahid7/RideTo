@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 import NavigationItem from './NavigationItem'
+import NavigationItemPostcode from './NavigationItemPostcode'
 import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
 
 class NavigationComponent extends React.Component {
@@ -27,6 +28,10 @@ class NavigationComponent extends React.Component {
     window.location = `${url}?${params.join('&')}`
   }
 
+  handleNavPostcodeClick(postcode) {
+    this.props.onPostcodeChange(postcode)
+  }
+
   render() {
     const { navigation, onNavBack } = this.props
     const fullWidth = navigation.length === 1
@@ -39,15 +44,26 @@ class NavigationComponent extends React.Component {
           </div>
         )}
 
-        {navigation.map((naviItem, index) => (
-          <NavigationItem
-            {...naviItem}
-            fullWidth={fullWidth}
-            onClick={() => this.handleNavClick(index, fullWidth)}
-            key={naviItem.title}
-            className={naviItem.last && styles.hiddenOnMobile}
-          />
-        ))}
+        {navigation.map(
+          (naviItem, index) =>
+            index === 0 ? (
+              <NavigationItemPostcode
+                {...naviItem}
+                fullWidth={fullWidth}
+                onPostcodeUpdate={postcode =>
+                  this.handleNavPostcodeClick(postcode)
+                }
+                key={naviItem.title}
+              />
+            ) : (
+              <NavigationItem
+                {...naviItem}
+                fullWidth={fullWidth}
+                onClick={() => this.handleNavClick(index, fullWidth)}
+                key={naviItem.title}
+              />
+            )
+        )}
       </div>
     )
   }

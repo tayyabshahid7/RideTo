@@ -23,7 +23,7 @@ import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
 import { IconCalendar } from 'assets/icons'
-// import { getCourseTitle } from 'services/course'
+import { parseQueryString } from 'services/api'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -39,6 +39,7 @@ class ResultPage extends Component {
       bike_hire: null
     }
     this.onBookNow = this.onBookNow.bind(this)
+    this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
   }
 
   handleDetailClick(course) {
@@ -63,6 +64,17 @@ class ResultPage extends Component {
       activeTab: '2',
       instantDate: this.props.date
     })
+  }
+
+  handlePostcodeChange(newPostcode) {
+    const qs = parseQueryString(window.location.search.slice(1))
+    const actualPostcode = qs.postcode ? qs.postcode.toUpperCase() : ''
+    const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
+    if (actualPostcode !== newPostcode) {
+      window.location = `${
+        window.location.pathname
+      }?postcode=${newPostcode}&courseType=${courseType}`
+    }
   }
 
   onSelectDate(date) {
@@ -160,7 +172,12 @@ class ResultPage extends Component {
 
     return (
       <div className={styles.container}>
-        <NavigationComponent navigation={navigation} />
+        <NavigationComponent
+          onPostcodeChange={postcode => {
+            this.handlePostcodeChange(postcode)
+          }}
+          navigation={navigation}
+        />
         <Container className={styles.pageContainer}>
           <Row>
             <Col sm="6">

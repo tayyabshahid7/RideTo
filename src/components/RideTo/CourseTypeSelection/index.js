@@ -57,6 +57,7 @@ class CourseTypeSelection extends React.Component {
 
     this.handleSelectFilter = this.handleSelectFilter.bind(this)
     this.handleDetails = this.handleDetails.bind(this)
+    this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
   }
 
   async componentDidMount() {
@@ -67,6 +68,14 @@ class CourseTypeSelection extends React.Component {
     this.setState({
       filteredCourseTypes: this.courseTypes
     })
+  }
+
+  handlePostcodeChange(newPostcode) {
+    const qs = parseQueryString(window.location.search.slice(1))
+    const actualPostcode = qs.postcode ? qs.postcode.toUpperCase() : ''
+    if (actualPostcode !== newPostcode) {
+      window.location = `${window.location.pathname}?postcode=${newPostcode}`
+    }
   }
 
   handleSelectFilter(selectedFilter) {
@@ -111,7 +120,12 @@ class CourseTypeSelection extends React.Component {
 
     return (
       <React.Fragment>
-        <NavigationComponent navigation={navigation} />
+        <NavigationComponent
+          onPostcodeChange={postcode => {
+            this.handlePostcodeChange(postcode)
+          }}
+          navigation={navigation}
+        />
         <Container className={styles.container}>
           <Row>
             <Col sm={{ size: 12, offset: 8 }} className={styles.filtersTitle}>
