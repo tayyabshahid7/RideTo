@@ -37,13 +37,20 @@ class OrderSummary extends Component {
   }
 
   renderCourseInformation() {
-    const { checkoutData, supplier } = this.props
+    const { checkoutData, supplier, priceInfo } = this.props
     const { addons, courseType, date } = checkoutData
     return (
       <div className={styles.rowContainer}>
         {this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
+        {priceInfo.price
+          ? this.renderRow(
+              'Training',
+              `£${(priceInfo.price / 100.0).toFixed(2)}`,
+              100
+            )
+          : ''}
         {addons.map((addon, index) =>
           this.renderRow(
             addon.selectedSize
