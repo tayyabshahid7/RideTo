@@ -5,11 +5,16 @@ import styles from './DetailsAccordionItem.scss'
 import expandImg from 'assets/images/rideto/Expand.svg'
 import closeImg from 'assets/images/rideto/CloseDark.svg'
 
-const DetailsAccordionItem = ({ title, content, isOpen, onToggle }) => {
+const DetailsAccordionItem = ({
+  title,
+  content,
+  isOpen,
+  onToggle,
+  className
+}) => {
   const contentClassName = classnames(styles.content, isOpen && styles.open)
-
   return (
-    <div className={styles.detailsAccordionItem}>
+    <div className={classnames(styles.detailsAccordionItem, className)}>
       <div className={styles.heading} onClick={() => onToggle(!isOpen)}>
         <div className={styles.title}>{title}</div>
         <div className={styles.action}>

@@ -9,6 +9,7 @@ import ResultPage from 'components/RideTo/ResultPage'
 import AddonSelection from 'components/RideTo/AddonSelection'
 import Account from 'components/RideTo/Account'
 import CheckoutPage from 'components/RideTo/CheckoutPage'
+import FooterLinks from 'components/RideTo/FooterLinks'
 
 import { setVersionInfo } from 'services/version'
 // import 'bootstrap'
@@ -57,3 +58,8 @@ mountComponent(
 )
 
 mountComponent(<CheckoutPage />, document.getElementById('rideto-checkout'))
+
+mountComponent(
+  <FooterLinks />,
+  document.getElementById('rideto-mobile-footer-links')
+)

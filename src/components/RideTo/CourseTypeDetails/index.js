@@ -1,7 +1,7 @@
 import React from 'react'
 
 import styles from './CourseTypeDetails.scss'
-import DetailsAccordionItem from './DetailsAccordionItem'
+import DetailsAccordionItem from 'components/RideTo/DetailsAccordionItem'
 import SummaryIcons from './SummaryIcons'
 
 class CourseTypeDetails extends React.Component {
