@@ -22,12 +22,38 @@
   margin-top: 4px;
 }
 
+.rowContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
 .rowItem {
   margin-top: 8px;
   margin-bottom: 32px;
   &:last-of-type {
     margin-bottom: 18px;
   }
+}
+
+.rowItemOrderSummary {
+  display: flex;
+  justify-content: space-between;
+  line-height: 40px;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: var(--font-rift);
+  line-height: inherit;
+}
+
+.highlightedPrice {
+  font-size: 20px;
+  color: var(--red-color);
+  font-family: var(--font-proxima);
+  line-height: 24px;
 }
 
 .radiobox {
@@ -135,4 +161,10 @@
 .searchPostcodeInput {
   display: flex;
   height: 48px;
+}
+
+.hiddenOnDesktop {
+  @media (min-width: 769px) {
+    display: none;
+  }
 }

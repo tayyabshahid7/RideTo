@@ -38,12 +38,25 @@ class OrderSummary extends Component {
 
   renderCourseInformation() {
     const { checkoutData, supplier } = this.props
-    const { courseType, date } = checkoutData
+    const { addons, courseType, date } = checkoutData
     return (
       <div className={styles.rowContainer}>
         {this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
+        {addons.map((addon, index) =>
+          this.renderRow(
+            addon.selectedSize
+              ? `${addon.name} ${
+                  addon.selectedSize.code === 'ALL'
+                    ? ''
+                    : '(' + addon.selectedSize.code + ')'
+                }`
+              : addon.name,
+            `£${addon.price}`,
+            index
+          )
+        )}
       </div>
     )
   }
@@ -54,19 +67,10 @@ class OrderSummary extends Component {
     let price = getExpectedPrice(priceInfo, addons, checkoutData)
     return (
       <div className={styles.rowContainer}>
-        {addons.map((addon, index) =>
-          this.renderRow(
-            addon.selectedSize
-              ? `${addon.name} (${addon.selectedSize.code})`
-              : addon.name,
-            `£${addon.price}`,
-            index
-          )
-        )}
         {priceInfo.discount
           ? this.renderRow(
               'Discount',
-              `£${(priceInfo.discount / 100.0).toFixed(2)}`,
+              `- £${(priceInfo.discount / 100.0).toFixed(2)}`,
               200
             )
           : ''}
@@ -98,9 +102,11 @@ class OrderSummary extends Component {
 
     return (
       <div className={styles.container}>
-        <div className={styles.title}>Order Summary</div>
-        {this.renderCourseInformation()}
-        <hr />
+        <div className={styles.hiddenOnMobile}>
+          <div className={styles.title}>Order Summary</div>
+          {this.renderCourseInformation()}
+          <hr />
+        </div>
         {this.renderPrices()}
         <div className={styles.acceptTerms}>
           <Checkbox

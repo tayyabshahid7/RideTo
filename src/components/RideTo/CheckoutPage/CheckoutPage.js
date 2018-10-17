@@ -411,6 +411,7 @@ class CheckoutPage extends Component {
             {...this.props}
             details={details}
             errors={errors}
+            priceInfo={priceInfo}
             onDetailChange={this.handleValueChange}
             onPaymentChange={this.handleOnPaymentChange}
             onChange={this.onUpdate}
