@@ -67,8 +67,7 @@ class UserDetails extends Component {
       errors = {},
       onChange,
       onPostalCodeSubmit,
-      postcodeLookingup,
-      validStep
+      postcodeLookingup
     } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
@@ -163,67 +162,59 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.rider_type}</div>
           )}
         </div>
-        <div
-          className={classnames(
-            styles.title,
-            validStep < 1 && styles.disabledTitle
-          )}>
-          Delivery Address
-        </div>
-        {!manualAddress &&
-          validStep >= 1 && (
-            <div className={styles.rowItem}>
-              <div
-                className={classnames(
-                  styles.input,
-                  styles.searchPostcodeInput,
-                  postcodeLookingup && styles.waiting
-                )}>
-                <Input
-                  id="postcodeSearch"
-                  placeholder="Postcode"
-                  name="postcode"
-                  className={styles.findPostcodeInput}
-                  onChange={this.handleChange}
-                  onKeyUp={event =>
-                    event.key === 'Enter' &&
-                    onPostalCodeSubmit(event.target.value)
-                  }
-                  disabled={postcodeLookingup}
-                />
-                <Button
-                  className={styles.postcodeSearchButton}
-                  onClick={this.handleSearchPostcode}>
-                  Search Address
-                </Button>
-              </div>
-              {errors.postcode &&
-                !postcodeLookingup && (
-                  <div className={styles.error}>{errors.postcode}</div>
-                )}
-              <div
-                className={styles.actionDiv}
-                onClick={() => onChange({ manualAddress: true })}>
-                Enter address manually
-              </div>
-            </div>
-          )}
-        {validStep >= 1 &&
-          manualAddress && (
-            <div className={styles.rowItem}>
-              <AddressForm
-                address={details.address}
-                onChange={this.handleAddressChange}
-                errors={errors.address}
+        <div className={styles.title}>Delivery Address</div>
+        {!manualAddress && (
+          <div className={styles.rowItem}>
+            <div
+              className={classnames(
+                styles.input,
+                styles.searchPostcodeInput,
+                postcodeLookingup && styles.waiting
+              )}>
+              <Input
+                id="postcodeSearch"
+                placeholder="Postcode"
+                name="postcode"
+                className={styles.findPostcodeInput}
+                onChange={this.handleChange}
+                onKeyUp={event =>
+                  event.key === 'Enter' &&
+                  onPostalCodeSubmit(event.target.value)
+                }
+                disabled={postcodeLookingup}
               />
+              <Button
+                className={styles.postcodeSearchButton}
+                onClick={this.handleSearchPostcode}>
+                Search Address
+              </Button>
             </div>
-          )}
+            {errors.postcode &&
+              !postcodeLookingup && (
+                <div className={styles.error}>{errors.postcode}</div>
+              )}
+            <div
+              className={styles.actionDiv}
+              onClick={() => onChange({ manualAddress: true })}>
+              Enter address manually
+            </div>
+          </div>
+        )}
+        {manualAddress && (
+          <div className={styles.rowItem}>
+            <AddressForm
+              address={details.address}
+              onChange={this.handleAddressChange}
+              errors={errors.address}
+            />
+          </div>
+        )}
       </div>
     )
   }
 
   renderPaymentForm() {
-    const { details, validStep } = this.props
+    const { details } = this.props
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -233,66 +224,56 @@ class UserDetails extends Component {
     }
     return (
       <div className={styles.checkForm}>
-        <div
-          className={classnames(
-            styles.title,
-            validStep < 2 && styles.disabledTitle
-          )}>
-          Payment Details
-        </div>
-        {validStep >= 2 && (
-          <div className={styles.rowItem}>
-            <div className={styles.cardElementWrapper}>
-              <CardNumberElement
-                style={inputStyle}
-                onChange={element =>
-                  this.stripeElementChange(element, 'card_number')
-                }
-              />
-            </div>
-            <Input
-              placeholder="Cardholder Name"
-              name="card_name"
-              value={details.card_name}
-              className={styles.input}
-              onChange={this.handleChange}
-              required
+        <div className={styles.title}>Payment Details</div>
+        <div className={styles.rowItem}>
+          <div className={styles.cardElementWrapper}>
+            <CardNumberElement
+              style={inputStyle}
+              onChange={element =>
+                this.stripeElementChange(element, 'card_number')
+              }
             />
-            <Row>
-              <Col>
-                <div className={styles.cardElementWrapper}>
-                  <CardExpiryElement
-                    style={inputStyle}
-                    placeholder="Expiry Date"
-                    onChange={element =>
-                      this.stripeElementChange(element, 'expiry_date')
-                    }
-                  />
-                </div>
-                <div className={styles.subtext}>MM/YY</div>
-              </Col>
-              <Col>
-                <div className={styles.cardElementWrapper}>
-                  <CardCVCElement
-                    style={inputStyle}
-                    placeholder="CVV/CV2"
-                    onChange={element =>
-                      this.stripeElementChange(element, 'cvv')
-                    }
-                  />
-                </div>
-              </Col>
-            </Row>
-            <div className={styles.cardElementWrapper}>
-              <PostalCodeElement
-                style={inputStyle}
-                onChange={element =>
-                  this.stripeElementChange(element, 'card_zip')
-                }
-              />
-            </div>
           </div>
-        )}
+          <Input
+            placeholder="Cardholder Name"
+            name="card_name"
+            value={details.card_name}
+            className={styles.input}
+            onChange={this.handleChange}
+            required
+          />
+          <Row>
+            <Col>
+              <div className={styles.cardElementWrapper}>
+                <CardExpiryElement
+                  style={inputStyle}
+                  placeholder="Expiry Date"
+                  onChange={element =>
+                    this.stripeElementChange(element, 'expiry_date')
+                  }
+                />
+              </div>
+              <div className={styles.subtext}>MM/YY</div>
+            </Col>
+            <Col>
+              <div className={styles.cardElementWrapper}>
+                <CardCVCElement
+                  style={inputStyle}
+                  placeholder="CVV/CV2"
+                  onChange={element => this.stripeElementChange(element, 'cvv')}
+                />
+              </div>
+            </Col>
+          </Row>
+          <div className={styles.cardElementWrapper}>
+            <PostalCodeElement
+              style={inputStyle}
+              onChange={element =>
+                this.stripeElementChange(element, 'card_zip')
+              }
+            />
+          </div>
+        </div>
       </div>
     )
   }
