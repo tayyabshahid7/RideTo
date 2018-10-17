@@ -9,8 +9,9 @@ const DashboardChecklist = ({ items }) => {
     <div className={styles.dashboardChecklist}>
       <h4>My Checklist</h4>
 
-      {items.map(item => (
+      {items.map((item, index) => (
         <div
+          key={index}
           className={classnames(styles.item, item.checked && styles.checked)}>
           <a href={item.href} target="_blank">
             <Checkbox

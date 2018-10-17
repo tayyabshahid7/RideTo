@@ -40,8 +40,8 @@ const DashboardOrders = ({ orders, onDetails }) => {
   return (
     <div className={styles.dashboardOrders}>
       <h4>My Orders</h4>
-      {orders.map(order => (
-        <DashboardOrderItem order={order} onDetails={onDetails} />
+      {orders.map((order, index) => (
+        <DashboardOrderItem key={index} order={order} onDetails={onDetails} />
       ))}
     </div>
   )
