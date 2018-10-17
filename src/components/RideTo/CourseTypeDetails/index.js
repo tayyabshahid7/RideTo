@@ -2,6 +2,7 @@ import React from 'react'
 
 import styles from './CourseTypeDetails.scss'
 import DetailsAccordionItem from './DetailsAccordionItem'
+import SummaryIcons from './SummaryIcons'
 
 class CourseTypeDetails extends React.Component {
   constructor(props) {
@@ -30,12 +31,13 @@ class CourseTypeDetails extends React.Component {
   render() {
     const { courseType } = this.props
     const { opened } = this.state
-    const { details } = courseType
+    const { details, tags } = courseType
 
     return (
       <div className={styles.courseTypeDetails}>
         <div className={styles.title}>{courseType.name}</div>
         <div className={styles.description}>{details.description}</div>
+        <SummaryIcons tags={tags} />
 
         <hr className={styles.divider} />
 

@@ -18,3 +18,7 @@ export const getFilters = () => {
     { tag: 'FULL', name: 'Full Licence' }
   ]
 }
+
+export const getFiltersTag = () => {
+  return ['ALL', 'BEGINNER', 'ADVANCED', 'CBT', 'FULL']
+}
