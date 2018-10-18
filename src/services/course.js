@@ -38,12 +38,18 @@ export const fetchRidetoCourses = async params => {
   return response
 }
 
-export const fetchWidgetCourses = async (schoolId, startDate, endDate) => {
+export const fetchWidgetCourses = async (
+  schoolId,
+  startDate,
+  endDate,
+  courseType
+) => {
   const path = `school/${schoolId}/widget/course`
   const params = {
     sdate: startDate,
     edate: endDate,
-    ordering: 'time'
+    ordering: 'time',
+    course_type: courseType
   }
 
   const response = await get(path, params)

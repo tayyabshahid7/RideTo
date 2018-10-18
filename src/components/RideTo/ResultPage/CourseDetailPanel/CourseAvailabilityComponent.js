@@ -6,6 +6,7 @@ import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import { fetchWidgetCourses } from 'services/course'
 import { DATE_FORMAT } from 'common/constants'
 import { getMotorbikeLabel } from 'services/widget'
+import { parseQueryString } from 'services/api'
 
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
@@ -41,11 +42,14 @@ class CourseAvailabilityComponent extends React.Component {
     const { year, month } = this.state.calendar
     const { course } = this.props
     let momentDate = moment(new Date(year, month, 1))
+    const qs = parseQueryString(window.location.search.slice(1))
+    const courseType = qs.courseType
 
     const courses = await fetchWidgetCourses(
       course.id,
       momentDate.format('YYYY-MM-DD'),
-      momentDate.endOf('month').format('YYYY-MM-DD')
+      momentDate.endOf('month').format('YYYY-MM-DD'),
+      courseType
     )
     this.setState({ courses })
   }
