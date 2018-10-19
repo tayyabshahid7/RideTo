@@ -43,6 +43,12 @@
   text-transform: uppercase;
 }
 
+.disabled {
+  opacity: 0.5;
+  text-decoration: line-through;
+  cursor: not-allowed !important;
+}
+
 .dateWrapper {
   width: 94px;
   display: flex;
@@ -74,8 +80,4 @@
 
 .today {
   border: 1px solid var(--primary-color);
-}
-
-.disabled {
-  opacity: 0.5;
 }

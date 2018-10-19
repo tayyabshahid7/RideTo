@@ -146,7 +146,7 @@ class ResultPage extends Component {
   render() {
     const {
       courses,
-      // courseType,
+      courseType,
       // postcode,
       date,
       handleSetDate,
@@ -193,6 +193,7 @@ class ResultPage extends Component {
                 date={date}
                 handleSetDate={handleSetDate}
                 className={styles.dateSelector}
+                courseType={courseType}
               />
               <div className={styles.mobileButtons}>
                 {this.renderMobileDateSelectorButton()}

@@ -196,3 +196,19 @@ export const getFeatureInfo = featureName => {
   let feature = Features.find(f => f.value === featureName)
   return feature || {}
 }
+
+export const fetchAvailableCoursesDates = async (
+  startDate,
+  endDate,
+  courseType
+) => {
+  const path = 'courses/avialable-dates/'
+  const params = {
+    sdate: startDate,
+    edate: endDate,
+    course_type: courseType
+  }
+  const response = await get(path, params)
+
+  return response
+}

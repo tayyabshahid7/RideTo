@@ -4,18 +4,26 @@ import classnames from 'classnames'
 import styles from './styles.scss'
 import { DATE_FORMAT } from 'common/constants'
 
-const DateItem = ({ showMonth, date, activeDate, handleSetDate }) => {
+const DateItem = ({
+  showMonth,
+  date,
+  activeDate,
+  handleSetDate,
+  availableDates
+}) => {
   let momentDate = moment(date)
-  let isSelectedDate = momentDate.format(DATE_FORMAT) === activeDate
-  let isToday = momentDate.format(DATE_FORMAT) === moment().format(DATE_FORMAT)
-  let disabled =
+  const isSelectedDate = momentDate.format(DATE_FORMAT) === activeDate
+  const isToday =
+    momentDate.format(DATE_FORMAT) === moment().format(DATE_FORMAT)
+  const isDisabledDate =
+    availableDates && !availableDates.includes(momentDate.format(DATE_FORMAT))
+  const disabled =
     momentDate <=
-    moment()
-      .hour(17)
-      .minute(30)
+      moment()
+        .hour(17)
+        .minute(30) || isDisabledDate
   return (
-    <div
-      className={classnames(styles.dateWrapper, disabled && styles.disabled)}>
+    <div className={styles.dateWrapper}>
       <span className={styles.month}>
         {showMonth || date.getDate() === 1 ? momentDate.format('MMMM') : ' '}
       </span>
@@ -23,7 +31,8 @@ const DateItem = ({ showMonth, date, activeDate, handleSetDate }) => {
         className={classnames(
           isToday && styles.today,
           styles.dateComponent,
-          isSelectedDate && styles.active
+          isSelectedDate && styles.active,
+          disabled && styles.disabled
         )}
         onClick={() => !disabled && handleSetDate(date)}>
         {momentDate.format('ddd')}
