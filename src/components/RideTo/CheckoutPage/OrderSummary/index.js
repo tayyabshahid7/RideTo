@@ -44,10 +44,10 @@ class OrderSummary extends Component {
         {this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
-        {priceInfo.price
+        {priceInfo.training_price
           ? this.renderRow(
               'Training',
-              `£${(priceInfo.price / 100.0).toFixed(2)}`,
+              `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
               100
             )
           : ''}
