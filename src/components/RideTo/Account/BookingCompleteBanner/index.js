@@ -11,10 +11,14 @@ import { getCourseTitle } from 'services/course'
 const BookingCompleteBanner = ({ order, onDetails }) => {
   const courseTitle = getCourseTitle(order.selected_licence)
   const date = moment(order.user_date, 'DD/MM/YYYY').format('dddd Do MMMM')
-  const time = order.start_time ? `at ${order.start_time}` : ''
+  const startTime = moment(order.start_time)
+  const time =
+    order.start_time && order.source === 'RIDETO_INSTANT'
+      ? `at ${startTime.format('hh:mm A')}`
+      : ''
   const subTitle = `${courseTitle} on ${date} ${time}`
   const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the ammount on your card. Booking require confirmation from the instructor, usually within 3 working hours.`
-  const showDisclaimer = order.booking_status !== 'SCHOOL_CONFIRMED_BOOK'
+  const showDisclaimer = order.source !== 'RIDETO_INSTANT'
   return (
     <div className={styles.bookingCompleteBanner}>
       <Container>
