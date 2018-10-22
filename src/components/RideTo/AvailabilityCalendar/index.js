@@ -15,8 +15,9 @@ class AvailabilityCalendar extends Component {
       handlePrevMonth,
       handleDateSelect,
       handleTimeSelect,
-      showTime,
-      disablePreviousDates
+      isInstantBook,
+      disablePreviousDates,
+      nonInstantStartTime
     } = this.props
     return (
       <div className={classnames(styles.container)}>
@@ -31,8 +32,11 @@ class AvailabilityCalendar extends Component {
           calendar={calendar}
           handleDateSelect={handleDateSelect}
         />
-        {showTime && <div className={styles.subtitle}>Choose a time</div>}
-        {showTime &&
+        <div className={styles.subtitle}>
+          {isInstantBook ? 'Choose a time' : 'Training time:'}
+        </div>
+
+        {isInstantBook ? (
           calendar.selectedDate && (
             <CalendarTime
               calendar={calendar}
@@ -41,7 +45,12 @@ class AvailabilityCalendar extends Component {
               )}
               handleTimeSelect={handleTimeSelect}
             />
-          )}
+          )
+        ) : (
+          <button className={classnames(styles.btn, styles.activeBtn)}>
+            {nonInstantStartTime.substring(0, 5)}
+          </button>
+        )}
       </div>
     )
   }
