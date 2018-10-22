@@ -208,7 +208,8 @@ export const fetchAvailableCoursesDates = async (
     edate: endDate,
     course_type: courseType
   }
-  const response = await get(path, params)
+  const authRequired = false
+  const response = await get(path, params, authRequired)
 
   return response
 }
