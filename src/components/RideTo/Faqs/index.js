@@ -46,7 +46,9 @@ export class Faqs extends Component {
                 Our lines are open 8am-7pm Monday to Friday and 9am-4pm Saturday
                 to Sunday.
               </div>
-              <Button className={styles.arrowButton}>
+              <Button
+                className={styles.arrowButton}
+                onClick={() => (window.location = '/contact')}>
                 <span> Contact Us</span>
                 <img src={ArrowRight} alt="button arrow" />
               </Button>
