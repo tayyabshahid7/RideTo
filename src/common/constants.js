@@ -34,7 +34,7 @@ export const SORTBY = {
   DISTANCE: 'distance',
   PRICE_DOWN_UP: 'price',
   PRICE_UP_DOWN: '-price',
-  RATING: 'rating'
+  RATING: '-rating'
 }
 
 export const MAPBOX_KEY = process.env.REACT_APP_MAPBOX_KEY
