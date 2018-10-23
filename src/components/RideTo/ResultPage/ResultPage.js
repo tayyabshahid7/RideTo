@@ -7,7 +7,6 @@ import {
   DropdownItem
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
-import classnames from 'classnames'
 import { DAY_FORMAT5 } from 'common/constants'
 import { SortByOptions, getTitleFor } from 'common/info'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
@@ -252,16 +251,18 @@ class ResultPage extends Component {
           onDismiss={() => this.setState({ selectedCourse: null })}
           footer={
             <RideToButton
-              className={classnames(
-                styles.action,
-                bookNowDisabled && styles.bookNowDisabled
-              )}
+              className={styles.action}
               onClick={() => {
                 if (this.state.activeTab !== '3') {
                   this.setState({ activeTab: '3' })
                 } else {
                   if (!bookNowDisabled) {
                     this.onBookNow()
+                  } else {
+                    let bikeTypeDiv = document.getElementById('choose-bike')
+                    bikeTypeDiv.classList.remove('highlight-required')
+                    bikeTypeDiv.scrollIntoView()
+                    bikeTypeDiv.classList.add('highlight-required')
                   }
                 }
               }}>

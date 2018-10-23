@@ -201,7 +201,9 @@ class CourseAvailabilityComponent extends React.Component {
           disablePreviousDates
         />
         <div className={styles.bikeHireWrapper}>
-          <label className={styles.subtitle1}>Choose A Bike to Hire</label>
+          <label id="choose-bike" className={styles.subtitle1}>
+            Choose A Bike to Hire
+          </label>
 
           {course.course_type === 'LICENCE_CBT_RENEWAL' && (
             <button
