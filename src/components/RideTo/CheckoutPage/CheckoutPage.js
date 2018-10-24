@@ -383,11 +383,17 @@ class CheckoutPage extends Component {
       }
     } catch (error) {
       this.setState({ saving: false })
+
       if (error.response && error.response.data) {
         const { data } = error.response
 
         if (data.message) {
           this.handleErrors({ paymentError: data.message })
+        } else if (error.response.status === 403) {
+          this.handleErrors({
+            paymentError: 'Your session has expired. Redirecting to login...'
+          })
+          window.location = '/account/login' // Session expired or user not logged in
         } else {
           this.handleErrors(data)
           window.document.body.scrollIntoView()
