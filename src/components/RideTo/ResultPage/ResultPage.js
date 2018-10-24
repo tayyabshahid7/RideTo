@@ -70,9 +70,7 @@ class ResultPage extends Component {
     const actualPostcode = qs.postcode ? qs.postcode.toUpperCase() : ''
     const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     if (actualPostcode !== newPostcode) {
-      window.location = `${
-        window.location.pathname
-      }?postcode=${newPostcode}&courseType=${courseType}`
+      window.location = `/course-location/?postcode=${newPostcode}&courseType=${courseType}`
     }
   }
 
