@@ -6,6 +6,7 @@ import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
 import Checkbox from 'components/Checkbox'
 import Input from 'components/RideTo/Input'
+import Loading from 'components/Loading'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
@@ -139,15 +140,17 @@ class OrderSummary extends Component {
             <strong>{errors.paymentError}</strong>
           </div>
         )}
-        <RideToButton
-          className={classnames(
-            styles.action,
-            confirmDisabled && styles.confirmDisabled
-          )}
-          onClick={() => !confirmDisabled && onSubmit()}>
-          <span>Confirm And Pay</span>
-          <img src={ButtonArrowWhite} alt="arrow" />
-        </RideToButton>
+        <Loading loading={saving}>
+          <RideToButton
+            className={classnames(
+              styles.action,
+              confirmDisabled && styles.confirmDisabled
+            )}
+            onClick={() => !confirmDisabled && onSubmit()}>
+            <span>Confirm And Pay</span>
+            <img src={ButtonArrowWhite} alt="arrow" />
+          </RideToButton>
+        </Loading>
         <div className={styles.promoWrapper}>
           {showPromo ? (
             <div className={styles.promoContainer}>

@@ -370,9 +370,10 @@ class CheckoutPage extends Component {
 
     try {
       const response = await createOrder(data, true)
-      this.setState({ saving: false })
       if (response) {
         window.location.href = `/account/dashboard/${response.id}`
+      } else {
+        this.setState({ saving: false })
       }
     } catch (error) {
       this.setState({ saving: false })
