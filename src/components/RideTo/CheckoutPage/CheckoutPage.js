@@ -11,6 +11,7 @@ import { getPrice } from 'services/course'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import AddressSelectModal from 'components/RideTo/AddressSelectModal'
+import { PHONE_NUMBER_LENGHT } from 'common/constants'
 
 const getStripeError = error => {
   const field = error.code.split('_').slice(-1)[0]
@@ -273,6 +274,11 @@ class CheckoutPage extends Component {
         hasError = true
       }
     })
+
+    if (details.phone.replace('_', '').length !== PHONE_NUMBER_LENGHT) {
+      errors['phone'] = 'Invalid phone number'
+      hasError = true
+    }
 
     if (!this.isValidDate(details.user_birthdate)) {
       errors['user_birthdate'] =

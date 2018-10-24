@@ -120,7 +120,6 @@ class UserDetails extends Component {
       checkoutData: { addons }
     } = this.props
 
-    console.log(addons.length)
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
