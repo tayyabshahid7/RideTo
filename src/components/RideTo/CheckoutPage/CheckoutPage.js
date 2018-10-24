@@ -358,7 +358,7 @@ class CheckoutPage extends Component {
       current_licences: [details.current_licence],
       token: token.id,
       expected_price: getExpectedPrice(priceInfo, addons, checkoutData),
-      name: `${this.state.details.card_name}`,
+      name: currentUser.first_name + ' ' + currentUser.last_name,
       user_date: date,
       selected_licence: courseType,
       supplier: supplierId,
