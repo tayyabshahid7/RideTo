@@ -1,0 +1,68 @@
+.overlay {
+  position: fixed;
+  top: 90px;
+  right: 15px;
+  width: 176px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 10px 0 rgba(20, 20, 20, 0.1);
+  z-index: 1;
+  text-transform: none;
+  text-decoration: none;
+  padding: 20px 25px;
+  font-family: var(--font-stack);
+  font-size: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  a {
+    color: #2c2c2c;
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .divider {
+    margin: 10px 0;
+    height: 1px;
+    width: 128px;
+    opacity: 0.1;
+    background-color: #141414;
+  }
+
+  .navLinks {
+    a {
+      padding-bottom: 10px;
+    }
+  }
+
+  .logoutLink {
+    color: #8c8c8c !important;
+    &:hover {
+      color: black;
+    }
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.mobileUserLinks {
+  a {
+    color: white;
+    padding-bottom: 45px;
+    display: block;
+  }
+}
+
+.hiddenOnMobile {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.hiddenOnDesktop {
+  @media (min-width: 769px) {
+    display: none;
+  }
+}

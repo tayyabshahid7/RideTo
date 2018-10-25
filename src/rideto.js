@@ -11,6 +11,7 @@ import Account from 'components/RideTo/Account'
 import CheckoutPage from 'components/RideTo/CheckoutPage'
 import FooterLinks from 'components/RideTo/FooterLinks'
 import Faqs from 'components/RideTo/Faqs'
+import UserMenuItem from 'components/RideTo/UserMenuItem'
 
 import { setVersionInfo } from 'services/version'
 // import 'bootstrap'
@@ -47,6 +48,8 @@ mountComponent(
   <CourseMenuItem />,
   document.getElementById('rideto-home-course-menu')
 )
+
+mountComponent(<UserMenuItem />, document.getElementById('rideto-nav-account'))
 
 mountComponent(
   <CourseTypeSelection />,
