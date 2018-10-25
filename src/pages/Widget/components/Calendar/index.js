@@ -30,8 +30,17 @@ const renderDayContents = (day, courses) => {
 
 const isDayBlocked = (day, courses) => {
   const formatted = day.format('YYYY-MM-DD')
-
-  return courses.filter(({ date }) => date === formatted).length === 0
+  if (
+    moment().hour() >= 18 &&
+    day.format('YYYY-MM-DD') ===
+      moment()
+        .add(1, 'day')
+        .format('YYYY-MM-DD')
+  ) {
+    return true
+  } else {
+    return courses.filter(({ date }) => date === formatted).length === 0
+  }
 }
 
 class Calendar extends React.Component {
