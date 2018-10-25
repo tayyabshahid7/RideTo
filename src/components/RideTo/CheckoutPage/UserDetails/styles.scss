@@ -111,6 +111,11 @@
   font-size: 12px;
 }
 
+.inputError {
+  border: 1px solid var(--danger-color) !important;
+  box-shadow: 0px 0px 10px -2px var(--danger-color) !important;
+}
+
 .cardElementWrapper {
   height: 48px;
   // display: flex;
@@ -121,10 +126,12 @@
 }
 
 .actionDiv {
+  margin-top: 10px;
   font-size: 15px;
   font-family: var(--font-proxima);
   line-break: 24px;
   text-decoration: underline;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -160,7 +167,6 @@
 
 .searchPostcodeInput {
   display: flex;
-  height: 48px;
 }
 
 .hiddenOnDesktop {

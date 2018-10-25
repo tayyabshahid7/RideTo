@@ -131,32 +131,39 @@ class UserDetails extends Component {
         </div>
         <div className={styles.title}>Your Details</div>
         <div className={styles.rowItem}>
-          <DateInput
-            placeholder="Date of Birth"
-            id="user_birthdate"
-            name="user_birthdate"
-            minyears={16}
-            value={details.user_birthdate}
-            onChange={this.handleChange}
-            required
-          />
+          <div className={errors.user_birthdate && styles.inputError}>
+            <DateInput
+              placeholder="Date of Birth"
+              id="user_birthdate"
+              name="user_birthdate"
+              minyears={16}
+              value={details.user_birthdate}
+              onChange={this.handleChange}
+              required
+            />
+          </div>
           <div className={styles.subtext}>DD/MM/YYYY</div>
           {errors.user_birthdate && (
             <div className={styles.error}>{errors.user_birthdate}</div>
           )}
-          <PhoneInput
-            placeholder="Telephone Number"
-            name="phone"
-            value={details.phone}
-            onChange={this.handleChange}
-            required
-          />
+          <div className={errors.phone && styles.inputError}>
+            <PhoneInput
+              placeholder="Telephone Number"
+              name="phone"
+              value={details.phone}
+              onChange={this.handleChange}
+              required
+            />
+          </div>
           {errors.phone && <div className={styles.error}>{errors.phone}</div>}
           <div className={styles.selectElement}>
             <Select
               value={details.current_licence}
               name="current_licence"
-              className={styles.input}
+              className={classnames(
+                styles.input,
+                errors.current_licence && styles.inputError
+              )}
               onChange={this.handleChange}>
               <option value="" hidden disabled>
                 Current License
@@ -176,7 +183,10 @@ class UserDetails extends Component {
             <Select
               value={details.riding_experience}
               name="riding_experience"
-              className={styles.input}
+              className={classnames(
+                styles.input,
+                errors.riding_experience && styles.inputError
+              )}
               onChange={this.handleChange}
               required>
               <option value="" hidden disabled>
@@ -199,7 +209,10 @@ class UserDetails extends Component {
             <Select
               value={details.rider_type}
               name="rider_type"
-              className={styles.input}
+              className={classnames(
+                styles.input,
+                errors.rider_type && styles.inputError
+              )}
               onChange={this.handleChange}
               required>
               <option value="" hidden disabled>
@@ -226,7 +239,8 @@ class UserDetails extends Component {
                   className={classnames(
                     styles.input,
                     styles.searchPostcodeInput,
-                    postcodeLookingup && styles.waiting
+                    postcodeLookingup && styles.waiting,
+                    errors.postcode && styles.inputError
                   )}>
                   <Input
                     id="postcodeSearch"
@@ -239,6 +253,7 @@ class UserDetails extends Component {
                       onPostalCodeSubmit(event.target.value)
                     }
                     disabled={postcodeLookingup}
+                    required
                   />
                   <Button
                     className={styles.postcodeSearchButton}
@@ -273,7 +288,7 @@ class UserDetails extends Component {
   }
 
   renderPaymentForm() {
-    const { details } = this.props
+    const { details, errors = {} } = this.props
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -285,9 +300,14 @@ class UserDetails extends Component {
       <div className={styles.checkForm}>
         <div className={styles.title}>Payment Details</div>
         <div className={styles.rowItem}>
-          <div className={styles.cardElementWrapper}>
+          <div
+            className={classnames(
+              styles.cardElementWrapper,
+              errors.card_number && styles.inputError
+            )}>
             <CardNumberElement
               style={inputStyle}
+              required
               onChange={element =>
                 this.stripeElementChange(element, 'card_number')
               }
@@ -297,15 +317,23 @@ class UserDetails extends Component {
             placeholder="Cardholder Name"
             name="card_name"
             value={details.card_name}
-            className={styles.input}
+            className={classnames(
+              styles.input,
+              errors.card_name && styles.inputError
+            )}
             onChange={this.handleChange}
             required
           />
           <Row>
             <Col>
-              <div className={styles.cardElementWrapper}>
+              <div
+                className={classnames(
+                  styles.cardElementWrapper,
+                  errors.expiry_date && styles.inputError
+                )}>
                 <CardExpiryElement
                   style={inputStyle}
+                  required
                   placeholder="Expiry Date"
                   onChange={element =>
                     this.stripeElementChange(element, 'expiry_date')
@@ -315,8 +343,13 @@ class UserDetails extends Component {
               <div className={styles.subtext}>MM/YY</div>
             </Col>
             <Col>
-              <div className={styles.cardElementWrapper}>
+              <div
+                className={classnames(
+                  styles.cardElementWrapper,
+                  errors.cvv && styles.inputError
+                )}>
                 <CardCVCElement
+                  required
                   style={inputStyle}
                   placeholder="CVV/CV2"
                   onChange={element => this.stripeElementChange(element, 'cvv')}
@@ -324,8 +357,13 @@ class UserDetails extends Component {
               </div>
             </Col>
           </Row>
-          <div className={styles.cardElementWrapper}>
+          <div
+            className={classnames(
+              styles.cardElementWrapper,
+              errors.card_zip && styles.inputError
+            )}>
             <PostalCodeElement
+              required
               style={inputStyle}
               onChange={element =>
                 this.stripeElementChange(element, 'card_zip')

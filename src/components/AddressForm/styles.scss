@@ -16,3 +16,8 @@
   color: var(--danger-color);
   font-size: 12px;
 }
+
+.inputError {
+  border: 1px solid var(--danger-color) !important;
+  box-shadow: 0px 0px 10px -2px var(--danger-color) !important;
+}

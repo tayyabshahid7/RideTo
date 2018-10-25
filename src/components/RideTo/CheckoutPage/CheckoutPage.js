@@ -28,7 +28,12 @@ const REQUIRED_FIELDS = [
   'current_licence',
   'riding_experience',
   'rider_type',
-  'card_name'
+  'card_name',
+  'postcode',
+  'card_number',
+  'cvv',
+  'card_zip',
+  'expiry_date'
 ]
 
 const REQUIRED_FIELDS_STEP1 = [
@@ -264,16 +269,18 @@ class CheckoutPage extends Component {
       }
     })
 
-    REQUIRED_ADDRESS_FIELDS.forEach(field => {
-      if (!details.address[field]) {
-        errors.address[field] = 'This field is required.'
-        hasError = true
-      }
-      if (!details.sameAddress && !details.billingAddress[field]) {
-        errors.billingAddress[field] = 'This field is required.'
-        hasError = true
-      }
-    })
+    if (this.state.manualAddress) {
+      REQUIRED_ADDRESS_FIELDS.forEach(field => {
+        if (!details.address[field]) {
+          errors.address[field] = 'This field is required.'
+          hasError = true
+        }
+        if (!details.sameAddress && !details.billingAddress[field]) {
+          errors.billingAddress[field] = 'This field is required.'
+          hasError = true
+        }
+      })
+    }
 
     if (details.phone.replace('_', '').length !== PHONE_NUMBER_LENGHT) {
       errors['phone'] = 'Invalid phone number'
