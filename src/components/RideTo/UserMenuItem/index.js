@@ -12,7 +12,6 @@ class UserMenuItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      text: null,
       user: null,
       menuOpen: false
     }
@@ -24,11 +23,7 @@ class UserMenuItem extends React.Component {
   componentDidMount() {
     if (isAuthenticated()) {
       const user = getUserProfile(getToken())
-      sessionStorage.setItem('login-next', JSON.stringify('/account/login'))
-      this.setState({ text: 'Logout', user: user })
-    } else {
-      this.setState({ text: 'Login' })
-      sessionStorage.setItem('login-next', JSON.stringify('/account/dashboard'))
+      this.setState({ user: user })
     }
   }
 
@@ -37,17 +32,18 @@ class UserMenuItem extends React.Component {
   }
 
   handleLogout() {
-    this.setState({ menuOpen: false, user: null, text: '' })
+    this.setState({ menuOpen: false, user: null })
     removeToken()
+    sessionStorage.removeItem('login-next')
     window.location = '/'
   }
 
   render() {
-    const { menuOpen, text, user } = this.state
+    const { menuOpen, user } = this.state
     return (
       <React.Fragment>
         {!user ? (
-          <a href="/account/login">{text}</a>
+          <a href="/account/login">Login</a>
         ) : (
           <div>
             <div
