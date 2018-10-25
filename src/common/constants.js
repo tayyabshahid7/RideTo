@@ -45,4 +45,4 @@ export const RIDER_TYPE = {
   COMMUTER: 'RIDER_TYPE_COMMUTER'
 }
 
-export const PHONE_NUMBER_LENGHT = 13
+export const PHONE_NUMBER_LENGTH = 13

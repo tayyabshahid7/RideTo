@@ -11,7 +11,7 @@ import { getPrice } from 'services/course'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import AddressSelectModal from 'components/RideTo/AddressSelectModal'
-import { PHONE_NUMBER_LENGHT } from 'common/constants'
+import { PHONE_NUMBER_LENGTH } from 'common/constants'
 
 const getStripeError = error => {
   const field = error.code.split('_').slice(-1)[0]
@@ -29,7 +29,6 @@ const REQUIRED_FIELDS = [
   'riding_experience',
   'rider_type',
   'card_name',
-  'postcode',
   'card_number',
   'cvv',
   'card_zip',
@@ -260,8 +259,17 @@ class CheckoutPage extends Component {
   }
 
   validateDetails(details) {
+    const currentUser = this.props.currentUser
+    const addonsCount = this.props.checkoutData.addons.length
     const errors = { address: {}, billingAddress: {} }
     let hasError = false
+
+    if (!currentUser) {
+      window.location = '/account/login'
+      hasError = true
+      return
+    }
+
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
         errors[field] = 'This field is required.'
@@ -269,20 +277,31 @@ class CheckoutPage extends Component {
       }
     })
 
-    if (this.state.manualAddress) {
-      REQUIRED_ADDRESS_FIELDS.forEach(field => {
-        if (!details.address[field]) {
-          errors.address[field] = 'This field is required.'
-          hasError = true
-        }
-        if (!details.sameAddress && !details.billingAddress[field]) {
-          errors.billingAddress[field] = 'This field is required.'
-          hasError = true
-        }
-      })
+    // Check delivery address only if there are addons
+    if (addonsCount > 0) {
+      // Check postcode serach field only if
+      // manual address form is not open
+      if (!details['postcode']) {
+        errors['postcode'] = 'This field is required.'
+        hasError = true
+      }
+
+      // Check Address form only if address form is open
+      if (this.state.manualAddress) {
+        REQUIRED_ADDRESS_FIELDS.forEach(field => {
+          if (!details.address[field]) {
+            errors.address[field] = 'This field is required.'
+            hasError = true
+          }
+          if (!details.sameAddress && !details.billingAddress[field]) {
+            errors.billingAddress[field] = 'This field is required.'
+            hasError = true
+          }
+        })
+      }
     }
 
-    if (details.phone.replace('_', '').length !== PHONE_NUMBER_LENGHT) {
+    if (details.phone.replace('_', '').length !== PHONE_NUMBER_LENGTH) {
       errors['phone'] = 'Invalid phone number'
       hasError = true
     }
