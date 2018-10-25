@@ -270,6 +270,7 @@ class ResultPage extends Component {
           }>
           {selectedCourse && (
             <CourseDetailPanel
+              courseType={courseType}
               course={selectedCourse}
               activeTab={activeTab}
               onChangeTab={tab => this.setState({ activeTab: tab })}

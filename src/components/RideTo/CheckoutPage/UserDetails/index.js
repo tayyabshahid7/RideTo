@@ -79,7 +79,7 @@ class UserDetails extends Component {
 
   renderCourseInformation() {
     const { checkoutData, supplier, priceInfo } = this.props
-    const { addons, courseType, date } = checkoutData
+    const { addons, courseType, date, bike_hire } = checkoutData
     return (
       <div className={styles.rowContainer}>
         {this.renderRow('Course', getCourseTitle(courseType))}
@@ -89,6 +89,13 @@ class UserDetails extends Component {
           ? this.renderRow(
               'Training',
               `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
+              100
+            )
+          : ''}
+        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no'
+          ? this.renderRow(
+              'Bike Hire',
+              `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
               100
             )
           : ''}

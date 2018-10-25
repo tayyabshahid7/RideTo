@@ -6,7 +6,6 @@ import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import { fetchWidgetCourses } from 'services/course'
 import { DATE_FORMAT } from 'common/constants'
 import { getMotorbikeLabel } from 'services/widget'
-import { parseQueryString } from 'services/api'
 
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
@@ -40,10 +39,8 @@ class CourseAvailabilityComponent extends React.Component {
 
   async loadCourses() {
     const { year, month } = this.state.calendar
-    const { course } = this.props
+    const { course, courseType } = this.props
     let momentDate = moment(new Date(year, month, 1))
-    const qs = parseQueryString(window.location.search.slice(1))
-    const courseType = qs.courseType
 
     const courses = await fetchWidgetCourses(
       course.id,
@@ -170,7 +167,8 @@ class CourseAvailabilityComponent extends React.Component {
       instantCourse,
       instantDate,
       bike_hire,
-      onUpdate
+      onUpdate,
+      courseType
     } = this.props
     const { calendar, courses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
@@ -180,6 +178,8 @@ class CourseAvailabilityComponent extends React.Component {
       instantCourse && instantCourse.auto_count === instantCourse.auto_bikes
     const isManualFull =
       instantCourse && instantCourse.manual_count === instantCourse.manual_bikes
+
+    const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
 
     return (
       <div className={styles.content}>
@@ -205,7 +205,7 @@ class CourseAvailabilityComponent extends React.Component {
             Choose A Bike to Hire
           </label>
 
-          {course.course_type === 'LICENCE_CBT_RENEWAL' && (
+          {isCbtRenewal && (
             <button
               className={classnames(
                 styles.bikeHireBtn,
@@ -215,6 +215,12 @@ class CourseAvailabilityComponent extends React.Component {
               {getMotorbikeLabel('no')}
             </button>
           )}
+          {bike_hire === 'no' && (
+            <div className={styles.ownBikeDisclaimer}>
+              You must bring a valid CBT Certificate, Insurance Documents, Tax
+              and MOT if you wish to train on your own bike.
+            </div>
+          )}
           <button
             className={classnames(
               styles.bikeHireBtn,
@@ -222,7 +228,8 @@ class CourseAvailabilityComponent extends React.Component {
             )}
             onClick={() => onUpdate({ bike_hire: 'auto' })}
             disabled={isAutoFull}>
-            {getMotorbikeLabel('auto')}
+            {getMotorbikeLabel('auto')}{' '}
+            {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
             {isAutoFull ? fullText : null}
           </button>
           <button
@@ -232,7 +239,8 @@ class CourseAvailabilityComponent extends React.Component {
             )}
             onClick={() => onUpdate({ bike_hire: 'manual' })}
             disabled={isManualFull}>
-            {getMotorbikeLabel('manual')}
+            {getMotorbikeLabel('manual')}{' '}
+            {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
             {isManualFull ? fullText : null}
           </button>
         </div>

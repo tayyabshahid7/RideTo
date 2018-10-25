@@ -31,7 +31,8 @@ class CourseDetailPanel extends React.Component {
       instantDate,
       onUpdate,
       bike_hire,
-      activeTab
+      activeTab,
+      courseType
     } = this.props
 
     return (
@@ -70,6 +71,7 @@ class CourseDetailPanel extends React.Component {
         {activeTab === '3' && (
           <CourseAvailabilityComponent
             course={course}
+            courseType={courseType}
             date={date}
             instantCourse={instantCourse}
             instantDate={instantDate}

@@ -141,3 +141,12 @@
     outline: none;
   }
 }
+
+.ownBikeDisclaimer {
+  margin-top: 10px;
+  color: var(--danger-color);
+  font-size: 15px;
+  font-family: var(--font-proxima);
+  text-align: justify;
+  line-height: normal;
+}
