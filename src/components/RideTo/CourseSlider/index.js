@@ -87,8 +87,8 @@ class CourseSlider extends React.Component {
     return (
       <React.Fragment>
         <RideToSlider settings={settings}>
-          {slides.map(slide => (
-            <a onClick={() => this.handleDetails(slide)}>
+          {slides.map((slide, index) => (
+            <a key={index} onClick={() => this.handleDetails(slide)}>
               <div
                 key={slide.id}
                 className={styles.slide}

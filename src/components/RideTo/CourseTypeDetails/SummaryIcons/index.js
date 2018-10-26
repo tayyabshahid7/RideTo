@@ -42,7 +42,7 @@ const filters = getFiltersTag()
 
 const SummaryIcons = ({ tags }) => {
   return (
-    <div class={styles.container}>
+    <div className={styles.container}>
       {tags.map(tag => {
         return (
           !filters.includes(tag) && (
