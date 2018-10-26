@@ -3,6 +3,7 @@ import moment from 'moment'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
+import Loading from 'components/Loading'
 import { fetchWidgetCourses } from 'services/course'
 import { DATE_FORMAT } from 'common/constants'
 import { getMotorbikeLabel } from 'services/widget'
@@ -16,11 +17,13 @@ class CourseAvailabilityComponent extends React.Component {
         year: date.getFullYear(),
         month: date.getMonth()
       },
-      courses: []
+      courses: [],
+      loadingCourses: false
     }
   }
 
   componentDidMount() {
+    this.setState({ loadingCourses: true })
     this.loadCourses()
   }
 
@@ -33,6 +36,7 @@ class CourseAvailabilityComponent extends React.Component {
       prevState.calendar.year !== this.state.calendar.year ||
       prevState.calendar.month !== this.state.calendar.month
     ) {
+      this.setState({ loadingCourses: true })
       this.loadCourses()
     }
   }
@@ -48,7 +52,7 @@ class CourseAvailabilityComponent extends React.Component {
       momentDate.endOf('month').format('YYYY-MM-DD'),
       courseType
     )
-    this.setState({ courses })
+    this.setState({ courses, loadingCourses: false })
   }
 
   getFirstAndLastDate({ year, month }) {
@@ -170,7 +174,7 @@ class CourseAvailabilityComponent extends React.Component {
       onUpdate,
       courseType
     } = this.props
-    const { calendar, courses } = this.state
+    const { calendar, courses, loadingCourses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
 
     const fullText = <span className={styles.full}> - Fully Booked</span>
@@ -182,69 +186,71 @@ class CourseAvailabilityComponent extends React.Component {
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
 
     return (
-      <div className={styles.content}>
-        <AvailabilityCalendar
-          days={days}
-          calendar={{
-            ...calendar,
-            selectedCourse: instantCourse,
-            selectedDate: instantDate
-          }}
-          handleDateSelect={this.handleDateSelect.bind(this)}
-          handlePrevMonth={this.handlePrevMonth.bind(this)}
-          handleNextMonth={this.handleNextMonth.bind(this)}
-          handleTimeSelect={this.handleTimeSelect.bind(this)}
-          isInstantBook={!!course.instant_book}
-          nonInstantStartTime={course.startTime}
-          showChooseDate={true}
-          courses={courses}
-          disablePreviousDates
-        />
-        <div className={styles.bikeHireWrapper}>
-          <label id="choose-bike" className={styles.subtitle1}>
-            Choose A Bike to Hire
-          </label>
+      <Loading loading={loadingCourses}>
+        <div className={styles.content}>
+          <AvailabilityCalendar
+            days={days}
+            calendar={{
+              ...calendar,
+              selectedCourse: instantCourse,
+              selectedDate: instantDate
+            }}
+            handleDateSelect={this.handleDateSelect.bind(this)}
+            handlePrevMonth={this.handlePrevMonth.bind(this)}
+            handleNextMonth={this.handleNextMonth.bind(this)}
+            handleTimeSelect={this.handleTimeSelect.bind(this)}
+            isInstantBook={!!course.instant_book}
+            nonInstantStartTime={course.startTime}
+            showChooseDate={true}
+            courses={courses}
+            disablePreviousDates
+          />
+          <div className={styles.bikeHireWrapper}>
+            <label id="choose-bike" className={styles.subtitle1}>
+              Choose A Bike to Hire
+            </label>
 
-          {isCbtRenewal && (
+            {isCbtRenewal && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  bike_hire === 'no' && styles.activeBtn
+                )}
+                onClick={() => onUpdate({ bike_hire: 'no' })}>
+                {getMotorbikeLabel('no')}
+              </button>
+            )}
+            {bike_hire === 'no' && (
+              <div className={styles.ownBikeDisclaimer}>
+                You must bring a valid CBT Certificate, Insurance Documents, Tax
+                and MOT if you wish to train on your own bike.
+              </div>
+            )}
             <button
               className={classnames(
                 styles.bikeHireBtn,
-                bike_hire === 'no' && styles.activeBtn
+                bike_hire === 'auto' && styles.activeBtn
               )}
-              onClick={() => onUpdate({ bike_hire: 'no' })}>
-              {getMotorbikeLabel('no')}
+              onClick={() => onUpdate({ bike_hire: 'auto' })}
+              disabled={isAutoFull}>
+              {getMotorbikeLabel('auto')}{' '}
+              {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+              {isAutoFull ? fullText : null}
             </button>
-          )}
-          {bike_hire === 'no' && (
-            <div className={styles.ownBikeDisclaimer}>
-              You must bring a valid CBT Certificate, Insurance Documents, Tax
-              and MOT if you wish to train on your own bike.
-            </div>
-          )}
-          <button
-            className={classnames(
-              styles.bikeHireBtn,
-              bike_hire === 'auto' && styles.activeBtn
-            )}
-            onClick={() => onUpdate({ bike_hire: 'auto' })}
-            disabled={isAutoFull}>
-            {getMotorbikeLabel('auto')}{' '}
-            {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-            {isAutoFull ? fullText : null}
-          </button>
-          <button
-            className={classnames(
-              styles.bikeHireBtn,
-              bike_hire === 'manual' && styles.activeBtn
-            )}
-            onClick={() => onUpdate({ bike_hire: 'manual' })}
-            disabled={isManualFull}>
-            {getMotorbikeLabel('manual')}{' '}
-            {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-            {isManualFull ? fullText : null}
-          </button>
+            <button
+              className={classnames(
+                styles.bikeHireBtn,
+                bike_hire === 'manual' && styles.activeBtn
+              )}
+              onClick={() => onUpdate({ bike_hire: 'manual' })}
+              disabled={isManualFull}>
+              {getMotorbikeLabel('manual')}{' '}
+              {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+              {isManualFull ? fullText : null}
+            </button>
+          </div>
         </div>
-      </div>
+      </Loading>
     )
   }
 }
