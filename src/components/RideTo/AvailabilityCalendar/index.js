@@ -17,7 +17,8 @@ class AvailabilityCalendar extends Component {
       handleTimeSelect,
       isInstantBook,
       disablePreviousDates,
-      nonInstantStartTime
+      nonInstantStartTime,
+      showTrainingTime = true
     } = this.props
     return (
       <div className={classnames(styles.container)}>
@@ -32,24 +33,28 @@ class AvailabilityCalendar extends Component {
           calendar={calendar}
           handleDateSelect={handleDateSelect}
         />
-        <div className={styles.subtitle}>
-          {isInstantBook ? 'Choose a time' : 'Training time:'}
-        </div>
+        {showTrainingTime && (
+          <React.Fragment>
+            <div className={styles.subtitle}>
+              {isInstantBook ? 'Choose a time' : 'Training time:'}
+            </div>
 
-        {isInstantBook ? (
-          calendar.selectedDate && (
-            <CalendarTime
-              calendar={calendar}
-              courses={courses.filter(
-                course => course.date === calendar.selectedDate
-              )}
-              handleTimeSelect={handleTimeSelect}
-            />
-          )
-        ) : (
-          <button className={classnames(styles.btn, styles.activeBtn)}>
-            {nonInstantStartTime.substring(0, 5)}
-          </button>
+            {isInstantBook ? (
+              calendar.selectedDate && (
+                <CalendarTime
+                  calendar={calendar}
+                  courses={courses.filter(
+                    course => course.date === calendar.selectedDate
+                  )}
+                  handleTimeSelect={handleTimeSelect}
+                />
+              )
+            ) : (
+              <button className={classnames(styles.btn, styles.activeBtn)}>
+                {nonInstantStartTime && nonInstantStartTime.substring(0, 5)}
+              </button>
+            )}
+          </React.Fragment>
         )}
       </div>
     )
