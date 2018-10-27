@@ -141,6 +141,27 @@ class OrderSummary extends Component {
               </a>
             </div>
           </Checkbox>
+          <div className={styles.terms}>
+            <ul>
+              <li>
+                I will be able to present a valid Full UK Drivers Licence or
+                Provisional licence (with Category A entitlement)
+              </li>
+              <li>Or full EU licence with UK counterpart licence number</li>
+              <li>
+                I’m able to read a registration plate at a distance of 20 meters
+              </li>
+              <li>
+                I’m able to speak and understand English and understand the
+                Highway Code to a good level
+              </li>
+              <li>I’m able to ride an adult size bicycle</li>
+              <li>
+                I’ll wear suitable clothing including sturdy trousers (e.g.
+                jeans) and boots
+              </li>
+            </ul>
+          </div>
         </div>
         {errors.paymentError && (
           <div className={styles.paymentError}>
