@@ -7,6 +7,7 @@ import NavigationComponent from 'components/RideTo/NavigationComponent'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import { saveUser } from 'services/user'
 import styles from './SignupPage.scss'
+import classnames from 'classnames'
 
 const isMobile = () => {
   return window.innerWidth < 768 || window.screen.width < 768
@@ -74,6 +75,12 @@ class SignupPage extends React.Component {
   async handleSubmit(event) {
     event.preventDefault()
     const { terms, first_name, last_name, email, password } = this.state
+    const pattern = /(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Za-z]).*$/
+
+    if (!password.match(pattern)) {
+      this.setState({ errors: { password: true } })
+      return
+    }
 
     if (!terms) {
       this.setState({ errors: { terms: true } })
@@ -129,7 +136,10 @@ class SignupPage extends React.Component {
               placeholder="First Name"
               name="first_name"
               value={first_name}
-              className={styles.input}
+              className={classnames(
+                styles.input,
+                errors.first_name && styles.inputError
+              )}
               onChange={this.handleChange}
               required
             />
@@ -140,7 +150,10 @@ class SignupPage extends React.Component {
               placeholder="Last Name"
               name="last_name"
               value={last_name}
-              className={styles.input}
+              className={classnames(
+                styles.input,
+                errors.last_name && styles.inputError
+              )}
               onChange={this.handleChange}
               required
             />
@@ -152,7 +165,10 @@ class SignupPage extends React.Component {
               name="email"
               value={email}
               type="email"
-              className={styles.input}
+              className={classnames(
+                styles.input,
+                errors.email && styles.inputError
+              )}
               onChange={this.handleChange}
               required
             />
@@ -162,13 +178,18 @@ class SignupPage extends React.Component {
               name="password"
               value={password}
               type="password"
-              className={styles.input}
+              className={classnames(
+                styles.input,
+                errors.password && styles.inputError
+              )}
               onChange={this.handleChange}
-              pattern="(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Za-z]).*$"
               required
             />
-
-            <div className={styles.subtext}>
+            <div
+              className={classnames(
+                styles.subtext,
+                errors.password && styles.error
+              )}>
               Min. six characters including 1 letter and 1 number
             </div>
 
