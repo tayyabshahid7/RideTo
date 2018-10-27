@@ -5,6 +5,9 @@
     text-transform: uppercase;
     margin-bottom: 28px;
   }
+  a:hover {
+    text-decoration: none;
+  }
 }
 
 .item {
@@ -13,11 +16,16 @@
   box-shadow: 0px 12px 10px 0px var(--light-grey-color);
   background: white;
   padding: 40px;
+  color: var(--dark-color);
 
   text-transform: uppercase;
   margin-bottom: 32px;
 
   cursor: pointer;
+
+  &:hover {
+    color: var(--primary-color) !important;
+  }
 }
 
 .image {
@@ -25,15 +33,12 @@
   min-height: 168px;
   display: block;
   width: 100%;
+  object-fit: none;
 }
 
 .title {
   font-size: 20px;
-  font-family: var(--font-rift);
-  font-weight: bold;
-  text-transform: uppercase;
-  color: var(--dark-color);
-
+  font-family: var(--font-rift-bold);
   display: flex;
   justify-content: space-between;
 }

@@ -8,7 +8,7 @@ const DashboardAdvice = ({ items }) => {
     <div className={styles.dashboardAdvice}>
       <h4>Latest Advice and Guides</h4>
       {items.map(item => (
-        <a href={item.path} className={styles.item} key={item.id}>
+        <a href={`/blog/${item.slug}`} className={styles.item} key={item.id}>
           <img className={styles.image} src={item.image} alt="" />
           <div className={styles.title}>
             {item.title}
