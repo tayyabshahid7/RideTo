@@ -371,6 +371,7 @@ class UserDetails extends Component {
             )}>
             <PostalCodeElement
               required
+              placeholder="Billing Postcode"
               style={inputStyle}
               onChange={element =>
                 this.stripeElementChange(element, 'card_zip')
