@@ -229,7 +229,7 @@ class OrderSummary extends Component {
           </div>
           <div className={styles.guarenteeContent}>
             <div className={styles.guarantee1}>
-              Cancel within 3 working days to get a full refund on your booking
+              Cancel with 3 working days notice to get a full refund.
             </div>
             <a
               href="https://www.rideto.com/terms#cancellations"
