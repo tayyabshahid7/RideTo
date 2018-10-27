@@ -57,7 +57,10 @@ class UserMenuItem extends React.Component {
                 styles.hiddenOnDesktop
               )}>
               <a href="/account/dashboard">Dashboard</a>
-              <a onClick={this.handleLogout}>Logout</a>
+              <div className={styles.divider} />
+              <a className={styles.logoutLink} onClick={this.handleLogout}>
+                Logout
+              </a>
             </div>
             {menuOpen && (
               <div className={styles.overlay}>

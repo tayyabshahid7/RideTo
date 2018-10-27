@@ -21,24 +21,9 @@
     }
   }
 
-  .divider {
-    margin: 10px 0;
-    height: 1px;
-    width: 128px;
-    opacity: 0.1;
-    background-color: #141414;
-  }
-
   .navLinks {
     a {
       padding-bottom: 10px;
-    }
-  }
-
-  .logoutLink {
-    color: #8c8c8c !important;
-    &:hover {
-      color: black;
     }
   }
 
@@ -50,7 +35,6 @@
 .mobileUserLinks {
   a {
     color: white;
-    padding-bottom: 45px;
     display: block;
   }
 }
@@ -64,5 +48,32 @@
 .hiddenOnDesktop {
   @media (min-width: 769px) {
     display: none;
+  }
+}
+
+.divider {
+  margin: 10px 0;
+  height: 1px;
+  width: 128px;
+  opacity: 0.1;
+  background-color: #141414;
+
+  @media (max-width: 768px) {
+    width: 248px;
+    background-color: white;
+    height: 2px;
+    margin: 30px 0;
+  }
+}
+
+.logoutLink {
+  color: #898989 !important;
+  &:hover {
+    color: black;
+  }
+  @media (max-width: 768px) {
+    &:hover {
+      color: white;
+    }
   }
 }
