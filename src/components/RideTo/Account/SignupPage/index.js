@@ -181,7 +181,7 @@ class SignupPage extends React.Component {
               name="terms">
               <span>
                 I confirm I have read and accept RideTo’s{' '}
-                <a classnAME={styles.termsLink} href="/terms">
+                <a classnAME={styles.termsLink} href="/terms" target="_blank">
                   terms & conditions
                 </a>{' '}
                 and agree to RideTo’s condition of use & sale.
