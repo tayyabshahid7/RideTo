@@ -35,14 +35,6 @@ const REQUIRED_FIELDS = [
   'expiry_date'
 ]
 
-const REQUIRED_FIELDS_STEP1 = [
-  'user_birthdate',
-  'phone',
-  'current_licence',
-  'riding_experience',
-  'rider_type'
-]
-
 const NO_ADDONS_ADDRESS = {
   address_1: 'no',
   town: 'no',
@@ -90,11 +82,11 @@ class CheckoutPage extends Component {
       addresses: [],
       errors: {
         address: {},
-        billingAddress: {}
+        billingAddress: {},
+        divId: false
       },
       saving: false,
       showAddressSelectorModal: false,
-      validStep: 0,
       voucher_code: '',
       loadingPrice: false
     }
@@ -159,10 +151,10 @@ class CheckoutPage extends Component {
 
   handleValueChange(path, value) {
     let { details, errors } = this.state
+    errors.divId = false
     set(details, path, value)
     set(errors, path, null)
-    let validStep = this.getValidatedStep(details)
-    this.setState({ details, errors, validStep })
+    this.setState({ details, errors })
   }
 
   async handlePostalcodeSubmit(postcode) {
@@ -175,8 +167,7 @@ class CheckoutPage extends Component {
         this.setState({
           postcodeLookingup: false,
           showAddressSelectorModal: true,
-          addresses: response.addresses,
-          validStep: 3
+          addresses: response.addresses
         })
       } else {
         let { errors } = this.state
@@ -211,40 +202,6 @@ class CheckoutPage extends Component {
     })
   }
 
-  getValidatedStep(details) {
-    let hasError = false
-    REQUIRED_FIELDS_STEP1.forEach(field => {
-      if (!details[field]) {
-        hasError = true
-      }
-    })
-
-    if (hasError) {
-      return 0
-    }
-
-    REQUIRED_ADDRESS_FIELDS.forEach(field => {
-      if (!details.address[field]) {
-        hasError = true
-      }
-    })
-
-    if (hasError) {
-      return 1
-    }
-
-    if (
-      !details['card_name'] ||
-      !details.card_number ||
-      !details.cvv ||
-      !details.card_zip ||
-      !details.expiry_date
-    ) {
-      return 2
-    }
-    return 3
-  }
-
   isValidDate(dateString) {
     const minYears = 16
     const trainingDate = moment(this.props.checkoutData.date, 'YYYY-MM-DD')
@@ -258,10 +215,29 @@ class CheckoutPage extends Component {
     return isComplete || date.isValid()
   }
 
+  getErrorDivId(field) {
+    switch (field) {
+      case 'user_birthdate':
+      case 'phone':
+      case 'current_licence':
+      case 'riding_experience':
+      case 'rider_type':
+        return 'checkout-your-details'
+      case 'card_name':
+      case 'card_number':
+      case 'cvv':
+      case 'card_zip':
+      case 'expiry_date':
+        return 'checkout-payment-details'
+      default:
+        break
+    }
+  }
+
   validateDetails(details) {
     const currentUser = this.props.currentUser
     const addonsCount = this.props.checkoutData.addons.length
-    const errors = { address: {}, billingAddress: {} }
+    const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
 
     if (!currentUser) {
@@ -273,6 +249,7 @@ class CheckoutPage extends Component {
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
         errors[field] = 'This field is required.'
+        if (!errors.divId) errors.divId = this.getErrorDivId(field)
         hasError = true
       }
     })
@@ -281,8 +258,9 @@ class CheckoutPage extends Component {
     if (addonsCount > 0) {
       // Check postcode serach field only if
       // manual address form is not open
-      if (!details['postcode']) {
+      if (!details['postcode'] && !this.state.manualAddress) {
         errors['postcode'] = 'This field is required.'
+        if (!errors.divId) errors.divId = 'checkout-delivery-address'
         hasError = true
       }
 
@@ -291,10 +269,12 @@ class CheckoutPage extends Component {
         REQUIRED_ADDRESS_FIELDS.forEach(field => {
           if (!details.address[field]) {
             errors.address[field] = 'This field is required.'
+            if (!errors.divId) errors.divId = 'checkout-delivery-address'
             hasError = true
           }
           if (!details.sameAddress && !details.billingAddress[field]) {
             errors.billingAddress[field] = 'This field is required.'
+            if (!errors.divId) errors.divId = 'checkout-delivery-address'
             hasError = true
           }
         })
@@ -303,12 +283,14 @@ class CheckoutPage extends Component {
 
     if (details.phone.replace('_', '').length !== PHONE_NUMBER_LENGTH) {
       errors['phone'] = 'Invalid phone number'
+      if (!errors.divId) errors.divId = this.getErrorDivId('phone')
       hasError = true
     }
 
     if (!this.isValidDate(details.user_birthdate)) {
       errors['user_birthdate'] =
         'You must be at least 16 years old to do your training. (On the selected date of training)'
+      if (!errors.divId) errors.divId = this.getErrorDivId('user_birthdate')
       hasError = true
     }
 
@@ -438,7 +420,6 @@ class CheckoutPage extends Component {
       saving,
       showAddressSelectorModal,
       addresses,
-      validStep,
       voucher_code,
       loadingPrice
     } = this.state
@@ -457,7 +438,6 @@ class CheckoutPage extends Component {
             manualAddress={manualAddress}
             onPostalCodeSubmit={this.handlePostalcodeSubmit}
             postcodeLookingup={postcodeLookingup}
-            validStep={validStep}
           />
         </div>
         <div className={styles.rightPanel}>
@@ -468,7 +448,6 @@ class CheckoutPage extends Component {
             priceInfo={priceInfo}
             onSubmit={this.handlePayment}
             saving={saving}
-            validStep={validStep}
             onChange={this.onUpdate}
             onDetailChange={this.handleValueChange}
             voucher_code={voucher_code}

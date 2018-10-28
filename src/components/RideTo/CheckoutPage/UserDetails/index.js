@@ -136,7 +136,9 @@ class UserDetails extends Component {
           {this.renderCourseInformation()}
           <hr />
         </div>
-        <div className={styles.title}>Your Details</div>
+        <div id="checkout-your-details" className={styles.title}>
+          Your Details
+        </div>
         <div className={styles.rowItem}>
           <div className={errors.user_birthdate && styles.inputError}>
             <DateInput
@@ -239,7 +241,9 @@ class UserDetails extends Component {
         </div>
         {addons.length > 0 && (
           <React.Fragment>
-            <div className={styles.title}>Delivery Address</div>
+            <div id="checkout-delivery-address" className={styles.title}>
+              Delivery Address
+            </div>
             {!manualAddress && (
               <div className={styles.rowItem}>
                 <div
@@ -305,7 +309,9 @@ class UserDetails extends Component {
     }
     return (
       <div className={styles.checkForm}>
-        <div className={styles.title}>Payment Details</div>
+        <div id="checkout-payment-details" className={styles.title}>
+          Payment Details
+        </div>
         <div className={styles.rowItem}>
           <div
             className={classnames(

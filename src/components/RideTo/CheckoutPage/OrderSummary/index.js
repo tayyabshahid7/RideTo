@@ -22,6 +22,13 @@ class OrderSummary extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const { errors } = this.props
+    if (errors.divId) {
+      document.getElementById(errors.divId).scrollIntoView()
+    }
+  }
+
   renderRow(title, content, index, priceHighlight = false) {
     return (
       <div className={styles.rowItem} key={index}>
