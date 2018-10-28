@@ -64,7 +64,7 @@
 .mapPanel {
   position: sticky;
   top: 16px;
-  height: 600px;
+  height: 800px;
 
   flex: 0 0 448px;
   display: flex;
@@ -111,7 +111,8 @@
   background: lightgray;
   flex: 1 1 auto;
   margin-left: 20px;
-  height: 500px;
+  height: 700px;
+  margin-bottom: 20px;
 }
 
 .subTitle {

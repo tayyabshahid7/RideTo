@@ -23,7 +23,7 @@ class MapComponent extends Component {
     this.state = {
       viewport: {
         width: 400,
-        height: 400,
+        height: 700,
         latitude: location.lat,
         longitude: location.lng,
         zoom: 8
