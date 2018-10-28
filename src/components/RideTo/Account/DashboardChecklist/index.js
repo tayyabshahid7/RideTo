@@ -13,15 +13,15 @@ const DashboardChecklist = ({ items }) => {
         <div
           key={index}
           className={classnames(styles.item, item.checked && styles.checked)}>
-          <a href={item.href} target="_blank">
-            <Checkbox
-              extraClass={styles.checkbox}
-              size="large"
-              checked={item.checked}
-              name={item.text}>
+          <Checkbox
+            extraClass={styles.checkbox}
+            size="large"
+            checked={item.checked}
+            name={item.text}>
+            <a href={item.href} target="_blank" className={styles.checkLinks}>
               {item.text}
-            </Checkbox>
-          </a>
+            </a>
+          </Checkbox>
         </div>
       ))}
     </div>

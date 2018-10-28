@@ -34,3 +34,12 @@
     }
   }
 }
+
+.checkLinks {
+  color: var(--dark-color);
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+    color: var(--primary-color);
+  }
+}

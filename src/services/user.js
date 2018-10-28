@@ -33,17 +33,17 @@ export const getChecklist = () => {
     },
     {
       text: 'Get a Bike Quote',
-      href: '/bikes',
+      href: 'https://www.rideto.com/bike-sales',
       checked: false
     },
     {
       text: 'Get an Insurance Quote',
-      href: '/insurance',
+      href: 'http://www.lexhaminsurance.co.uk/?aff=LEX6327',
       checked: false
     },
     {
       text: 'Shop Helmet & Gloves',
-      href: '/',
+      href: 'https://www.sportsbikeshop.co.uk/#/23639,0,0',
       checked: false
     }
   ]
