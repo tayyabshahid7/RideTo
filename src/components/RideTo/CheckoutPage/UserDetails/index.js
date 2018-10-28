@@ -173,7 +173,7 @@ class UserDetails extends Component {
               )}
               onChange={this.handleChange}>
               <option value="" hidden disabled>
-                Current License
+                Current Licence
               </option>
               {currentLicenceOptions.map(licenseOption => (
                 <option value={licenseOption.id} key={licenseOption.id}>
@@ -182,7 +182,7 @@ class UserDetails extends Component {
               ))}
             </Select>
           </div>
-          <div className={styles.subtext}>Select the license you have</div>
+          <div className={styles.subtext}>Select the licence you have</div>
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
