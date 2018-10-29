@@ -9,7 +9,8 @@ class NavigationItemPostcode extends Component {
 
     this.state = {
       postcode: this.props.subtitle,
-      editable: false
+      editable: false,
+      error: false
     }
 
     this.handleClick = this.handleClick.bind(this)
@@ -18,11 +19,19 @@ class NavigationItemPostcode extends Component {
   }
 
   handleChange(event) {
-    this.setState({ postcode: event.target.value })
+    const newPostcode = event.target.value
+    if (newPostcode.length > 0) {
+      this.setState({ postcode: newPostcode, error: false })
+    } else {
+      this.setState({ postcode: newPostcode, error: true })
+    }
   }
 
   handleClick() {
-    if (this.props.subtitle !== this.state.postcode) {
+    if (this.state.postcode.length <= 0) {
+      this.setState({ error: true })
+      return
+    } else if (this.props.subtitle !== this.state.postcode) {
       this.props.onPostcodeUpdate(this.state.postcode)
     } else {
       this.setState({ editable: false })
@@ -40,7 +49,7 @@ class NavigationItemPostcode extends Component {
   render() {
     const { title, fullWidth = false, className } = this.props
 
-    const { postcode, editable } = this.state
+    const { postcode, editable, error } = this.state
 
     return (
       <div
@@ -57,9 +66,11 @@ class NavigationItemPostcode extends Component {
           {editable ? (
             <React.Fragment>
               <input
+                className={classnames(error && styles.inputError)}
                 type="text"
                 onChange={this.handleChange}
                 value={postcode}
+                required
               />
               <Button
                 className={styles.updateButton}
