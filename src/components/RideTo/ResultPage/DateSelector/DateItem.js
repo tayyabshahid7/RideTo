@@ -15,13 +15,21 @@ const DateItem = ({
   const isSelectedDate = momentDate.format(DATE_FORMAT) === activeDate
   const isToday =
     momentDate.format(DATE_FORMAT) === moment().format(DATE_FORMAT)
+  const isTomorrow =
+    momentDate.format(DATE_FORMAT) ===
+    moment()
+      .add(1, 'day')
+      .format(DATE_FORMAT)
   const isDisabledDate =
     availableDates && !availableDates.includes(momentDate.format(DATE_FORMAT))
-  const disabled =
-    momentDate <=
+  const isForTomorrowAfterAllowedHour =
+    isTomorrow &&
+    momentDate >
       moment()
+        .add(1, 'day')
         .hour(17)
-        .minute(30) || isDisabledDate
+        .minute(30)
+  const disabled = isToday || isDisabledDate || isForTomorrowAfterAllowedHour
   return (
     <div className={styles.dateWrapper}>
       <span className={styles.month}>
