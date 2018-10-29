@@ -10,6 +10,25 @@ import { getFeatureInfo } from 'services/course'
 class CourseItem extends Component {
   handleDetailClick() {}
 
+  highlightPinOnMap(event) {
+    const idElement = event.currentTarget.id
+    const pinWrapper = document.getElementById(`${idElement.substring(5)}`)
+    if (pinWrapper) {
+      const mapPin = pinWrapper.getElementsByTagName('svg')[0]
+      mapPin.classList.remove(styles.mapPinHighlight)
+      mapPin.classList.add(styles.mapPinHighlight)
+    }
+  }
+
+  removeHighlight(event) {
+    const idElement = event.currentTarget.id
+    const pinWrapper = document.getElementById(`${idElement.substring(5)}`)
+    if (pinWrapper) {
+      const mapPin = pinWrapper.getElementsByTagName('svg')[0]
+      mapPin.classList.remove(styles.mapPinHighlight)
+    }
+  }
+
   renderIcon(feature) {
     const { course } = this.props
     let featureInfo = getFeatureInfo(feature)
@@ -37,10 +56,15 @@ class CourseItem extends Component {
       className,
       handleDetailClick,
       handlePriceClick,
-      handleReviewClick
+      handleReviewClick,
+      id
     } = this.props
     return (
-      <div className={classnames(styles.container, className)}>
+      <div
+        id={id}
+        onMouseEnter={this.highlightPinOnMap}
+        onMouseLeave={this.removeHighlight}
+        className={classnames(styles.container, className)}>
         <div className={styles.photo} onClick={() => handlePriceClick(course)}>
           <img src={course.image} className={styles.image} alt="logo" />
           <div className={classnames(styles.price, styles.priceMobile)}>

@@ -37,3 +37,19 @@
   text-align: center;
   pointer-events: none;
 }
+
+.highlightCard {
+  animation: cardHighlight 2000ms ease-out;
+}
+
+@keyframes cardHighlight {
+  0% {
+    background-color: initial;
+  }
+  50% {
+    background-color: rgba(44, 206, 172, 0.5);
+  }
+  100% {
+    background-color: initial;
+  }
+}

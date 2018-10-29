@@ -33,6 +33,7 @@ class MapComponent extends Component {
     this.renderMarker = this.renderMarker.bind(this)
     this.renderPin = this.renderPin.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
+    this.highlightResultCard = this.highlightResultCard.bind(this)
   }
 
   componentDidMount() {
@@ -75,9 +76,20 @@ class MapComponent extends Component {
     return null
   }
 
+  highlightResultCard(event) {
+    const idElement = event.currentTarget.id
+    const resultCard = document.getElementById(`card-${idElement}`)
+    resultCard.classList.remove(styles.highlightCard)
+    window.scrollTo({ top: resultCard.offsetTop, behavior: 'smooth' })
+    resultCard.classList.add(styles.highlightCard)
+  }
+
   renderPin(course) {
     return (
-      <div id={`course-${course.id}`} className={styles.coursePin}>
+      <div
+        id={`course-${course.id}`}
+        onClick={this.highlightResultCard}
+        className={styles.coursePin}>
         <IconMapPin className={styles.mapPinBg} />
         <span className={styles.pinPrice}>
           {course.price ? `£${parseInt(course.price / 100, 10)}` : '-'}
@@ -96,7 +108,6 @@ class MapComponent extends Component {
         <MapGL
           {...viewport}
           mapStyle="mapbox://styles/mapbox/streets-v9"
-          // zoom={10}
           mapboxApiAccessToken={MAPBOX_KEY}
           onViewportChange={viewport => this.setState({ viewport })}>
           {userLocation && (

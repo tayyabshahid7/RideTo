@@ -204,6 +204,7 @@ class ResultPage extends Component {
                       course =>
                         course.is_partner ? (
                           <CourseItem
+                            id={`card-course-${course.id}`}
                             course={course}
                             className={styles.courseSpacing}
                             key={course.id}
