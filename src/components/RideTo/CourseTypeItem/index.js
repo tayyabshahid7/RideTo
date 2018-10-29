@@ -2,7 +2,7 @@ import React from 'react'
 
 import styles from './CourseTypeItem.scss'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
-import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
+import ArrowRight from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Info from 'assets/images/rideto/Info.svg'
 
 const CourseTypeItem = ({ courseType, url, onClickDetails }) => {

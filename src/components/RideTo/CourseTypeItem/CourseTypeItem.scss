@@ -10,8 +10,10 @@
 .content {
   display: flex;
   align-items: flex-end;
-  height: 216px;
   margin-top: -216px;
+  @media (min-width: 768px) {
+    height: 216px;
+  }
 }
 
 .expandedInfo {
@@ -144,7 +146,7 @@
 
     .expandedInfo {
       padding: 20px 24px;
-      height: auto;
+      height: 170px;
       width: 100%;
     }
 
@@ -168,7 +170,7 @@
       padding-left: 24px;
       padding-right: 24px;
 
-      height: 48px;
+      height: 70px;
     }
 
     .ctaText {
