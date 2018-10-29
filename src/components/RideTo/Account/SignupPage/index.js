@@ -130,7 +130,7 @@ class SignupPage extends React.Component {
           onNavBack={this.handleBack}
         />
         <div className={styles.signupPage}>
-          <h2 className={styles.heading}>Create an Account & Checkout</h2>
+          <h2 className={styles.heading}>Create Account & Checkout</h2>
           <form className={styles.form} onSubmit={this.handleSubmit}>
             <Input
               placeholder="First Name"
