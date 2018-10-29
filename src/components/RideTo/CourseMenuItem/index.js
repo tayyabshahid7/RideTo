@@ -1,6 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
-
+import { getStaticData } from 'services/page'
 import CourseSlider from 'components/RideTo/CourseSlider'
 import styles from './CourseMenuItem.scss'
 
@@ -9,11 +9,13 @@ class CourseMenuItem extends React.Component {
     super(props)
 
     this.state = {
-      visible: false
+      courseCardsVisible: false,
+      courseLinksVisible: false
     }
 
     this.handleShowSlider = this.handleShowSlider.bind(this)
     this.handleHideSlider = this.handleHideSlider.bind(this)
+    this.handleToggleCourseLinks = this.handleToggleCourseLinks.bind(this)
   }
 
   handleShowSlider(event) {
@@ -21,7 +23,7 @@ class CourseMenuItem extends React.Component {
     event.stopPropagation()
 
     if (event.target === event.currentTarget) {
-      if (!this.state.visible) {
+      if (!this.state.courseCardsVisible) {
         window.document.body.setAttribute(
           'style',
           'height:100%;overflow:hidden'
@@ -29,7 +31,7 @@ class CourseMenuItem extends React.Component {
       } else {
         window.document.body.setAttribute('style', '')
       }
-      this.setState({ visible: !this.state.visible })
+      this.setState({ courseCardsVisible: !this.state.courseCardsVisible })
     }
   }
 
@@ -37,29 +39,58 @@ class CourseMenuItem extends React.Component {
     event.preventDefault()
     event.stopPropagation()
     window.document.body.setAttribute('style', '')
-    this.setState({ visible: false })
+    this.setState({ courseCardsVisible: false })
+  }
+
+  handleToggleCourseLinks() {
+    this.setState({ courseLinksVisible: !this.state.courseLinksVisible })
   }
 
   render() {
+    const { courseLinksVisible, courseCardsVisible } = this.state
+
     const overlay = classnames(
       styles.overlay,
-      this.state.visible ? styles.visible : null
+      courseCardsVisible ? styles.visible : null
     )
     const slider = classnames(
       styles.slider,
-      this.state.visible ? styles.visible : null
+      courseCardsVisible ? styles.visible : null
     )
 
+    const courseTypes = getStaticData('RIDETO_PAGE').courseTypes || []
+
     return (
-      <div onClick={this.handleShowSlider} className={styles.courseMenuItem}>
-        COURSES
-        <div className={styles.courseMenu}>
-          <div className={overlay} onClick={this.handleHideSlider} />
-          <div className={slider}>
-            <CourseSlider sidepanel={true} />,
+      <React.Fragment>
+        <div
+          onClick={this.handleToggleCourseLinks}
+          className={classnames(styles.courseMenuItem, styles.hiddenOnDesktop)}>
+          COURSES
+        </div>
+        {courseLinksVisible && (
+          <div className={styles.courseMenuSubItem}>
+            {courseTypes.map((courseType, index) => (
+              <a
+                key={index}
+                href={courseType.details.landing_page_url}
+                className={styles.courseMenuSublink}>
+                {courseType.name}
+              </a>
+            ))}
+          </div>
+        )}
+        <div
+          onClick={this.handleShowSlider}
+          className={classnames(styles.courseMenuItem, styles.hiddenOnMobile)}>
+          COURSES
+          <div className={styles.courseMenu}>
+            <div className={overlay} onClick={this.handleHideSlider} />
+            <div className={slider}>
+              <CourseSlider sidepanel={false} />,
+            </div>
           </div>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }

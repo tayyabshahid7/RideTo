@@ -42,7 +42,7 @@ class CourseSlider extends React.Component {
           : null
       })
     } else {
-      window.location.href = selectedCourseType.link
+      window.location.href = selectedCourseType.details.landing_page_url
     }
   }
 

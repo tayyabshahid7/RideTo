@@ -40,3 +40,27 @@
     display: none !important;
   }
 }
+
+.courseMenuSubItem {
+  padding-top: 20px;
+  padding-left: 20px;
+  color: #818181;
+  a.courseMenuSublink {
+    display: block;
+    padding: 6px 0;
+    color: #818181;
+    font-size: 16px;
+  }
+}
+
+.hiddenOnMobile {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.hiddenOnDesktop {
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
