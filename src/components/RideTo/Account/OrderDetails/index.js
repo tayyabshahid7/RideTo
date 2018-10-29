@@ -39,6 +39,16 @@ class OrderDetails extends React.Component {
     })
   }
 
+  getFriendlyStatus(status) {
+    if (status === 'WAITING_SCHOOL_CONFIRMATION') {
+      return 'Pending Instructor Confirmation'
+    } else if (status === 'SCHOOL_REJECTED_BOOK') {
+      return 'Date Unavailable'
+    } else if (status === 'SCHOOL_CONFIRMED_BOOK') {
+      return 'Booking Confirmed'
+    }
+  }
+
   render() {
     const { order } = this.props
     const { reviewSubmitted } = this.state
@@ -60,7 +70,7 @@ class OrderDetails extends React.Component {
             {renderRow('Course', courseTitle)}
             {renderRow('Date & Time', date.format('ddd D, MMMM'))}
             {renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
-            {renderRow('Status', order.status)}
+            {renderRow('Status', this.getFriendlyStatus(order.booking_status))}
           </div>
 
           {showReview(order) &&
