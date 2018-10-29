@@ -21,6 +21,14 @@ class CourseMenuItem extends React.Component {
     event.stopPropagation()
 
     if (event.target === event.currentTarget) {
+      if (!this.state.visible) {
+        window.document.body.setAttribute(
+          'style',
+          'height:100%;overflow:hidden'
+        )
+      } else {
+        window.document.body.setAttribute('style', '')
+      }
       this.setState({ visible: !this.state.visible })
     }
   }
@@ -28,6 +36,7 @@ class CourseMenuItem extends React.Component {
   handleHideSlider(event) {
     event.preventDefault()
     event.stopPropagation()
+    window.document.body.setAttribute('style', '')
     this.setState({ visible: false })
   }
 

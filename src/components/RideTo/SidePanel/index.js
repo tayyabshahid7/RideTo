@@ -10,9 +10,12 @@ class SidePanel extends React.Component {
 
     if (prevProps.visible !== visible) {
       if (visible) {
-        window.document.body.style = 'overflow:hidden'
+        window.document.body.setAttribute(
+          'style',
+          'height:100%;overflow:hidden'
+        )
       } else {
-        window.document.body.style = ''
+        window.document.body.setAttribute('style', '')
       }
     }
   }
