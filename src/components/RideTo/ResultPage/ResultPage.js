@@ -197,47 +197,57 @@ class ResultPage extends Component {
                 {this.renderSortByDropdown()}
               </div>
               <Loading loading={loading} className={styles.contentWrapper}>
-                <div className={styles.mainContent}>
-                  <div className={styles.coursesPanel}>
-                    <div className={styles.subTitle}>Choose a location</div>
-                    {courses.map(
-                      course =>
-                        course.is_partner ? (
-                          <CourseItem
-                            id={`card-course-${course.id}`}
-                            course={course}
-                            className={styles.courseSpacing}
-                            key={course.id}
-                            handleDetailClick={this.handleDetailClick.bind(
-                              this
-                            )}
-                            handlePriceClick={this.handlePriceClick.bind(this)}
-                            handleReviewClick={this.handleReviewClick.bind(
-                              this
-                            )}
-                          />
-                        ) : (
-                          <CourseItemNonPartner
-                            course={course}
-                            className="mt-3"
-                            key={course.id}
-                          />
-                        )
-                    )}
-                  </div>
-                  <div className={styles.mapPanel}>
-                    <div className={styles.buttonsWrapper}>
-                      {this.renderSortByDropdown()}
+                {courses.length > 0 ? (
+                  <div className={styles.mainContent}>
+                    <div className={styles.coursesPanel}>
+                      <div className={styles.subTitle}>Choose a location</div>
+                      {courses.map(
+                        course =>
+                          course.is_partner ? (
+                            <CourseItem
+                              id={`card-course-${course.id}`}
+                              course={course}
+                              className={styles.courseSpacing}
+                              key={course.id}
+                              handleDetailClick={this.handleDetailClick.bind(
+                                this
+                              )}
+                              handlePriceClick={this.handlePriceClick.bind(
+                                this
+                              )}
+                              handleReviewClick={this.handleReviewClick.bind(
+                                this
+                              )}
+                            />
+                          ) : (
+                            <CourseItemNonPartner
+                              course={course}
+                              className="mt-3"
+                              key={course.id}
+                            />
+                          )
+                      )}
                     </div>
-                    {courses.length > 0 && (
-                      <MapComponent
-                        className={styles.mapWrapper}
-                        courses={courses}
-                        userLocation={userLocation}
-                      />
-                    )}
+                    <div className={styles.mapPanel}>
+                      <div className={styles.buttonsWrapper}>
+                        {this.renderSortByDropdown()}
+                      </div>
+                      {courses.length > 0 && (
+                        <MapComponent
+                          className={styles.mapWrapper}
+                          courses={courses}
+                          userLocation={userLocation}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  !loading && (
+                    <div className={styles.noResults}>
+                      No results, please try another date.
+                    </div>
+                  )
+                )}
               </Loading>
             </Col>
           </Row>

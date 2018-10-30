@@ -4,13 +4,7 @@ import classnames from 'classnames'
 import styles from './styles.scss'
 import { DATE_FORMAT } from 'common/constants'
 
-const DateItem = ({
-  showMonth,
-  date,
-  activeDate,
-  handleSetDate,
-  availableDates
-}) => {
+const DateItem = ({ showMonth, date, activeDate, handleSetDate }) => {
   let momentDate = moment(date)
   const isSelectedDate = momentDate.format(DATE_FORMAT) === activeDate
   const isToday =
@@ -20,8 +14,6 @@ const DateItem = ({
     moment()
       .add(1, 'day')
       .format(DATE_FORMAT)
-  const isDisabledDate =
-    availableDates && !availableDates.includes(momentDate.format(DATE_FORMAT))
   const isForTomorrowAfterAllowedHour =
     isTomorrow &&
     momentDate >
@@ -29,7 +21,7 @@ const DateItem = ({
         .add(1, 'day')
         .hour(17)
         .minute(30)
-  const disabled = isToday || isDisabledDate || isForTomorrowAfterAllowedHour
+  const disabled = isToday || isForTomorrowAfterAllowedHour
   return (
     <div className={styles.dateWrapper}>
       <span className={styles.month}>
