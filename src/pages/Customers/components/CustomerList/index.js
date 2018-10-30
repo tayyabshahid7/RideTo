@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import classnames from 'classnames'
 
 import commonStyles from 'pages/styles.scss'
 import Header from 'components/DataTable/Header'
@@ -13,7 +14,11 @@ const getDisplaySource = ({ source }) => {
 const CustomerList = ({ customers, ordering, isLoading, onSort }) => {
   return (
     <Loading loading={isLoading}>
-      <table className={commonStyles.dataTable}>
+      <table
+        className={classnames(
+          commonStyles.dataTable,
+          'table table-responsive-sm'
+        )}>
         <thead>
           <tr>
             <Header column="last_name" ordering={ordering} onSort={onSort}>

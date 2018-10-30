@@ -1,0 +1,157 @@
+.container {
+  display: flex;
+  height: 200px;
+  background: white;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    height: 450px;
+  }
+}
+
+.photo {
+  flex: 0 0 136px;
+  @media (max-width: 768px) {
+    flex: 0 0 200px;
+  }
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.info {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 28px 30px;
+  @media (max-width: 768px) {
+    padding: 20px 24px;
+  }
+}
+
+.upperSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.courseName {
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  font-family: var(--font-rift);
+  line-height: 24px;
+}
+
+.place {
+  font-size: 14px;
+  font-family: var(--font-proxima);
+  line-height: 16px;
+  margin-top: 16px;
+}
+
+.contactSchool {
+  flex: 0 0 112px;
+  color: var(--primary-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-rift);
+  line-height: 24px;
+  font-size: 20px;
+  font-weight: bold;
+  stroke: var(--primary-color);
+  cursor: pointer;
+  text-align: center;
+  &:hover {
+    color: white;
+    stroke: white;
+    background: var(--primary-color);
+  }
+  @media (max-width: 768px) {
+    flex: 0 0 48px;
+    color: white;
+    stroke: white;
+    background: var(--primary-color);
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 24px;
+  }
+}
+
+.arrowIcon {
+  margin-top: 12px;
+  @media (max-width: 768px) {
+    margin-top: 0px;
+  }
+}
+
+.extraInfo {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-family: var(--font-proxima);
+  line-height: 24px;
+}
+
+.detail {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.mileIcon {
+  margin-right: 6px;
+  stroke: var(--dark-color);
+  fill: var(--dark-color);
+}
+
+.detailIcon {
+  margin-left: 14px;
+  margin-right: 6px;
+  stroke: var(--dark-color);
+  fill: var(--dark-color);
+}
+
+.starComponent {
+  margin-left: 14px;
+  margin-right: 6px;
+}
+
+.icons {
+  margin-top: 12px;
+  display: flex;
+  div {
+    margin-right: 16px;
+  }
+}
+
+.tooltip {
+  text-align: left !important;
+  display: flex;
+  // justify-content: flex-start;
+  // align-items: flex-start;
+  flex-direction: column;
+  padding: 20px 20px 20px 25px !important;
+  border-radius: 0 !important;
+}
+
+.tooltipTitle {
+  font-family: var(--font-rift);
+  font-size: 14px;
+  line-height: 17px;
+  font-weight: bold;
+  // padding: 20px 20px 0px 20px @!;
+}
+
+.tooltipInfo {
+  font-family: var(--font-proxima);
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 0.75;
+  margin-top: 10px;
+  // padding: 0px 20px 20px 20px;
+}

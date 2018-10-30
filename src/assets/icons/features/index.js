@@ -1,0 +1,6 @@
+export { default as Approved } from './Approved.svg'
+export { default as Bike } from './Bike.svg'
+export { default as Cafe } from './Cafe.svg'
+export { default as Class } from './Class.svg'
+export { default as Helmet } from './Helmet.svg'
+export { default as Instant } from './Instant.svg'

@@ -1,0 +1,66 @@
+.addonSelection {
+}
+
+.heading {
+  font-family: var(--font-rift-bold);
+  font-size: 24px;
+  padding: 0;
+  margin: 0;
+  margin-top: 88px;
+  margin-bottom: 43px;
+}
+
+.checkoutButton {
+  text-transform: uppercase;
+  height: 49px;
+  width: 249px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-rift);
+  font-size: 20px !important;
+  line-height: 24px !important;
+  font-weight: bold !important;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    background: none !important;
+    color: var(--primary-color) !important;
+    display: flex !important;
+    justify-content: space-between;
+    padding: 0 24px !important;
+
+    .arrowIcon {
+      stroke: var(--primary-color);
+    }
+  }
+}
+
+.checkoutWrapper {
+  margin-top: 100px;
+  margin-bottom: 32px;
+  @media (max-width: 768px) {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+}
+
+.checkoutContent {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.arrowIcon {
+  margin-left: 17px;
+  stroke: white;
+  @media (max-width: 768px) {
+    stroke: var(--primary-color);
+  }
+}
+
+@media (max-width: 768px) {
+  .heading {
+    margin-top: 44px;
+    margin-bottom: 35px;
+  }
+}

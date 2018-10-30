@@ -5,6 +5,7 @@ import Dashboard from 'pages/Dashboard/container'
 import Orders from 'pages/Orders/container'
 import CustomerListContainer from 'pages/Customers/ListContainer'
 import CustomerDetailContainer from 'pages/Customers/DetailContainer'
+import NotificationContainer from 'pages/Notifications/NotificationContainer'
 import Calendar from 'pages/Calendar'
 import Account from 'pages/Account'
 import Footer from 'components/Footer'
@@ -28,6 +29,7 @@ const MainLayout = ({ history }) => {
           <Route exact path="/" component={Dashboard} />
         </Switch>
       </div>
+      <NotificationContainer />
       <Footer />
     </div>
   )

@@ -1,0 +1,154 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 16px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 29px;
+  font-family: var(--font-rift);
+}
+
+.rowContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.rowItem {
+  display: flex;
+  justify-content: space-between;
+  line-height: 40px;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: var(--font-rift);
+  line-height: inherit;
+}
+
+.content {
+  font-size: 15px;
+  line-height: inherit;
+  font-family: var(--font-proxima);
+}
+
+.redHighlight {
+  color: var(--danger-color);
+  font-size: 20px;
+  line-height: 24px;
+  font-family: var(--font-proxima);
+}
+
+.information {
+  font-size: 12px;
+  line-height: 16px;
+  font-family: var(--font-proxima);
+  opacity: 0.5;
+  margin-top: 36px;
+}
+
+.guaranteeInfo {
+  display: flex;
+  height: 80px;
+}
+
+.confirmDisabled {
+  opacity: 0.5;
+}
+
+.guaranteeLogo {
+  flex: 0 0 80px;
+}
+
+.guarenteeContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin-left: 16px;
+}
+
+.guarantee1 {
+  font-size: 14px;
+  font-family: var(--font-proxima);
+  line-height: 20px;
+}
+
+.guarantee2 {
+  font-size: 12px;
+  font-family: var(--font-proxima);
+  line-height: 24px;
+  color: var(--dark-color);
+  text-decoration: underline;
+}
+
+.action {
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  width: inherit;
+}
+
+.hr {
+  width: 100%;
+}
+
+.highlightedPrice {
+  font-size: 20px;
+  color: var(--red-color);
+  font-family: var(--font-proxima);
+  line-height: 24px;
+}
+
+.promoAction {
+  cursor: pointer;
+  color: var(--primary-color);
+}
+
+.promoWrapper {
+  margin-top: 16px;
+}
+
+.promoContainer {
+  display: flex;
+}
+
+.applyBtn {
+  flex: 0 0 100px;
+}
+
+.promoInput {
+  flex: 1 1 auto;
+}
+
+.acceptTerms {
+  margin-top: 32px;
+  margin-bottom: 32px;
+  text-align: left;
+  font-size: 15px;
+}
+
+.paymentError {
+  color: #f86b6b;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.hiddenOnMobile {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.terms {
+  ul {
+    margin: 0;
+  }
+  font-size: 12px;
+  margin-top: 30px;
+  margin-left: 23px;
+}

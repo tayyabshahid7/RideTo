@@ -57,12 +57,13 @@ const CalendarDayCell = ({ day, calendar, history }) => {
         )}>
         {day.date.getDate()}
       </div>
+      <div className={styles.courseContainer}>
+        {items
+          .slice(0, 3)
+          .map(item => <CalendarDayCellItem key={item.id} item={item} />)}
 
-      {items
-        .slice(0, 3)
-        .map(item => <CalendarDayCellItem key={item.id} item={item} />)}
-
-      {more > 0 && <div className={styles.more}>{more} more...</div>}
+        {more > 0 && <div className={styles.more}>{more} more...</div>}
+      </div>
     </li>
   )
 }

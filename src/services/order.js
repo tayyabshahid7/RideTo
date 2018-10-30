@@ -1,5 +1,6 @@
 import moment from 'moment'
 import { get, put, post } from 'services/api'
+import { BIKE_HIRE } from 'common/constants'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 const FILTERS = [
@@ -73,8 +74,8 @@ export const saveOrder = async order => {
   return await method(path, order)
 }
 
-export const isRideTo = order => {
-  return order.source === 'RIDETO'
+export const isRideTo = ({ source }) => {
+  return source === 'RIDETO'
 }
 
 export const getBikeHireOptions = () => {
@@ -113,4 +114,27 @@ export const getTrainingStatusOptions = () => {
       name: 'Completed'
     }
   ]
+}
+
+export const getExpectedPrice = (priceInfo, addons = [], checkoutData = {}) => {
+  return (
+    priceInfo.price +
+    addons.reduce((total, { price }) => (total += price * 100), 0) +
+    (shouldAddBikeHire(checkoutData) ? priceInfo.bike_hire_cost : 0)
+  )
+}
+
+export const shouldAddBikeHire = ({ courseType, bike_hire }) => {
+  if (courseType === 'LICENCE_CBT_RENEWAL' && bike_hire !== BIKE_HIRE.NO) {
+    return true
+  }
+  return false
+}
+
+export const showReview = order => {
+  return (
+    order.training_status === 'COMPLETED' &&
+    order.supplierrating_set &&
+    order.supplierrating_set.length === 0
+  )
 }

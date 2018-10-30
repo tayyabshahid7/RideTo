@@ -1,0 +1,24 @@
+/**ProximaNova**/
+
+@font-face {
+  font-family: 'ProximaNova';
+  src: url('./webfonts/ProximaNovaAltRegular-webfont.eot');
+  src: url('./webfonts/ProximaNovaAltRegular-webfont.eot?#iefix')
+      format('embedded-opentype'),
+    url('./webfonts/ProximaNovaAltRegular-webfont.woff') format('woff'),
+    url('./webfonts/ProximaNovaAltRegular-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ProximaNovaBold';
+  src: url('./webfonts/ProximaNovaAltBold-webfont.eot');
+  src: url('./webfonts/ProximaNovaAltBold-webfont.eot?#iefix')
+      format('embedded-opentype'),
+    url('./webfonts/ProximaNovaAltBold-webfont.woff2') format('woff2'),
+    url('./webfonts/ProximaNovaAltBold-webfont.woff') format('woff'),
+    url('./webfonts/ProximaNovaAltBold-webfont.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

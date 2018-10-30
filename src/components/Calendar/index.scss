@@ -10,6 +10,7 @@
 .calendarWrapper {
   overflow: hidden;
   display: flex;
+  position: relative;
   // margin-right: -17px;
 }
 .overview {
@@ -49,6 +50,13 @@
   margin-top: 25px;
   font-size: 15px;
 }
+
 /* ============================
               Mobile Responsiveness
  ============================*/
+
+@media (max-width: 768px) {
+  .noCalendarPath {
+    display: none;
+  }
+}

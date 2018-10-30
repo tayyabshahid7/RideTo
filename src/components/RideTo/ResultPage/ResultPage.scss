@@ -1,0 +1,181 @@
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  background: #c2c2c220;
+}
+
+.pageContainer {
+  padding-top: 88px;
+
+  @media (max-width: 768px) {
+    padding-top: 40px;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+.headingDesktop {
+  font-family: var(--font-rift-bold);
+  height: 29px;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0px;
+  align-self: center;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.headingMobile {
+  font-family: var(--font-rift-bold);
+  height: 29px;
+  font-size: 24px;
+  line-height: 29px;
+  margin: 0px;
+  align-self: center;
+  display: none;
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.contentWrapper {
+  margin-top: 56px;
+  padding: 0px;
+  display: flex;
+  @media (max-width: 768px) {
+    margin-top: 32px;
+  }
+  // width: auto !important;
+  // justify-content: center;
+}
+
+.mainContent {
+  max-width: 1112px;
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.mapPanel {
+  position: sticky;
+  top: 16px;
+  height: 800px;
+
+  flex: 0 0 448px;
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.coursesPanel {
+  flex: 1 1 auto;
+}
+
+.buttonsWrapper {
+  text-align: right;
+  margin-bottom: 32px;
+}
+
+.sortButton {
+  background-color: #14141410 !important;
+  height: 48px;
+  // width: 184px;
+  color: var(--dark-color) !important;
+  font-size: 16px !important;
+  line-height: 24px !important;
+  font-family: var(--font-rift);
+  font-weight: 500 !important;
+  border: none !important;
+  letter-spacing: 0.5px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    display: flex !important;
+    padding: 0px 24px !important;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+  }
+}
+
+.mapWrapper {
+  background: lightgray;
+  flex: 1 1 auto;
+  margin-left: 20px;
+  height: 700px;
+  margin-bottom: 20px;
+}
+
+.subTitle {
+  text-transform: uppercase;
+  font-size: 24px;
+  font-family: var(--font-rift-bold);
+  line-height: 29px;
+  margin-bottom: 50px;
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.dateSelector {
+  margin-top: 20px;
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.mobileButtons {
+  display: none;
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 20px 0px;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.dateSelectorMobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background: #14141410;
+}
+
+.noPadding {
+  padding: 0 !important;
+}
+
+.action {
+  width: inherit;
+  justify-content: space-between;
+  padding-left: 62px;
+  padding-right: 62px;
+  img {
+    margin-left: 16px;
+  }
+}
+
+.bookNowDisabled {
+  background: var(--light-grey-color);
+}
+
+.courseSpacing {
+  margin-bottom: 24px;
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+}
+
+.noResults {
+  min-height: 400px;
+  font-family: var(--font-proxima);
+  font-size: 20px;
+}

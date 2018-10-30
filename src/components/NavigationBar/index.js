@@ -28,7 +28,7 @@ let NavigationBar = ({ history }) => {
       </button>
       <div className="collapse navbar-collapse" id="navbarCollapse">
         <ul className="navbar-nav mr-auto">
-          <li className="nav-item active">
+          <li className={classnames('nav-item', styles.navItem)}>
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
@@ -37,7 +37,7 @@ let NavigationBar = ({ history }) => {
               Home
             </NavLink>
           </li>
-          <li className="nav-item">
+          <li className={classnames('nav-item', styles.navItem)}>
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
@@ -45,7 +45,7 @@ let NavigationBar = ({ history }) => {
               Orders
             </NavLink>
           </li>
-          <li className="nav-item">
+          <li className={classnames('nav-item', styles.navItem)}>
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
@@ -53,7 +53,7 @@ let NavigationBar = ({ history }) => {
               Calendar
             </NavLink>
           </li>
-          <li className="nav-item">
+          <li className={classnames('nav-item', styles.navItem)}>
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
@@ -61,7 +61,7 @@ let NavigationBar = ({ history }) => {
               Customers
             </NavLink>
           </li>
-          <li className="nav-item">
+          <li className={classnames('nav-item', styles.navItem)}>
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}

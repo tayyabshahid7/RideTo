@@ -1,0 +1,38 @@
+.addonDetails {
+  color: #141414;
+  font-family: var(--font-rift);
+  padding: 50px 60px;
+  padding-bottom: 64px;
+
+  @media (max-width: 768px) {
+    padding: 32px;
+  }
+}
+
+.description {
+  font-family: var(--font-proxima);
+  font-size: 14px;
+
+  ul {
+    margin-top: 16px;
+    padding: 0;
+    padding-left: 16px;
+  }
+}
+
+.action {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+
+  img {
+    margin-left: 16px;
+    height: 20px;
+  }
+}
+
+.remove {
+  background: #141414;
+  color: white;
+}

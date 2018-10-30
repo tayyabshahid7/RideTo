@@ -1,0 +1,98 @@
+import React from 'react'
+import classnames from 'classnames'
+import { getStaticData } from 'services/page'
+import CourseSlider from 'components/RideTo/CourseSlider'
+import styles from './CourseMenuItem.scss'
+
+class CourseMenuItem extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      courseCardsVisible: false,
+      courseLinksVisible: false
+    }
+
+    this.handleShowSlider = this.handleShowSlider.bind(this)
+    this.handleHideSlider = this.handleHideSlider.bind(this)
+    this.handleToggleCourseLinks = this.handleToggleCourseLinks.bind(this)
+  }
+
+  handleShowSlider(event) {
+    event.preventDefault()
+    event.stopPropagation()
+
+    if (event.target === event.currentTarget) {
+      if (!this.state.courseCardsVisible) {
+        window.document.body.setAttribute(
+          'style',
+          'height:100%;overflow:hidden'
+        )
+      } else {
+        window.document.body.setAttribute('style', '')
+      }
+      this.setState({ courseCardsVisible: !this.state.courseCardsVisible })
+    }
+  }
+
+  handleHideSlider(event) {
+    event.preventDefault()
+    event.stopPropagation()
+    window.document.body.setAttribute('style', '')
+    this.setState({ courseCardsVisible: false })
+  }
+
+  handleToggleCourseLinks() {
+    this.setState({ courseLinksVisible: !this.state.courseLinksVisible })
+  }
+
+  render() {
+    const { courseLinksVisible, courseCardsVisible } = this.state
+
+    const overlay = classnames(
+      styles.overlay,
+      courseCardsVisible ? styles.visible : null
+    )
+    const slider = classnames(
+      styles.slider,
+      courseCardsVisible ? styles.visible : null
+    )
+
+    const courseTypes = getStaticData('RIDETO_PAGE').courseTypes || []
+
+    return (
+      <React.Fragment>
+        <div
+          onClick={this.handleToggleCourseLinks}
+          className={classnames(styles.courseMenuItem, styles.hiddenOnDesktop)}>
+          COURSES
+        </div>
+        {courseLinksVisible && (
+          <div className={styles.courseMenuSubItem}>
+            {courseTypes.map((courseType, index) => (
+              <a
+                key={index}
+                href={courseType.details.landing_page_url}
+                className={styles.courseMenuSublink}>
+                {courseType.name}
+              </a>
+            ))}
+          </div>
+        )}
+        <div
+          onClick={this.handleShowSlider}
+          className={classnames(styles.courseMenuItem, styles.hiddenOnMobile)}>
+          COURSES
+          <div className={styles.courseMenu}>
+            <div className={overlay} onClick={this.handleHideSlider} />
+            <div className={slider}>
+              <CourseSlider sidepanel={false} />,
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    )
+  }
+}
+
+export default CourseMenuItem

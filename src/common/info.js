@@ -1,4 +1,4 @@
-import { BIKE_HIRE, RIDING_EXPERIENCE } from './constants'
+import { BIKE_HIRE, RIDING_EXPERIENCE, SORTBY, RIDER_TYPE } from './constants'
 
 export const BikeHires = [
   { value: BIKE_HIRE.MANUAL, title: 'Manual' },
@@ -43,5 +43,68 @@ export const Faqs = [
   {
     question: 'I have another question!',
     answer: 'Email james@rideto.com'
+  }
+]
+
+export const SortByOptions = [
+  { value: SORTBY.DISTANCE, title: 'Sort by Distance' },
+  { value: SORTBY.PRICE_DOWN_UP, title: 'Sort by Price' },
+  // { value: SORTBY.PRICE_UP_DOWN, title: 'Sort by Price Desc' },
+  { value: SORTBY.RATING, title: 'Sort by Rating' }
+]
+
+export const Features = [
+  {
+    value: 'mciac_approved',
+    icon: 'Approved',
+    title: 'MCIAC APPROVED',
+    description:
+      'By choosing an MCIAC accredited training school you can be sure that the standards of training and customer service you receive will be amongst the best on offer.'
+  },
+  {
+    value: 'bike_hire',
+    icon: 'Bike',
+    title: 'Bike Hire Included',
+    description: null
+  },
+  {
+    value: 'helmet_hire',
+    icon: 'Helmet',
+    title: 'Helmet & Gloves Provided',
+    description: null
+  },
+  {
+    value: 'on_site_cafe',
+    icon: 'Cafe',
+    title: 'On Site Cafe',
+    description: null
+  },
+  {
+    value: 'indoor_classroom',
+    icon: 'Class',
+    title: 'Indoor Classroom',
+    description: null
+  },
+  {
+    value: 'instant_book',
+    icon: 'Instant',
+    title: 'Instant Booking',
+    description:
+      "This site has an instant booking, so you're order will be instantly confirmed. Non-instant book sites require confirmation from the instructor first."
+  }
+]
+
+export const RiderTypes = [
+  {
+    value: RIDER_TYPE.SOCIAL,
+    title: 'Social'
+  },
+  {
+    value: RIDER_TYPE.CAREER,
+    title: 'Delivery Work'
+  },
+  {
+    value: RIDER_TYPE.COMMUTER,
+    title: 'Commuting'
   }
 ]

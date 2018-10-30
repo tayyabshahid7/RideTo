@@ -1,0 +1,30 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 100%;
+  background: white;
+  height: 88px;
+
+  @media (max-width: 768px) {
+    height: auto;
+  }
+}
+
+.backItem {
+  width: 108px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-right: 1px solid #f8f8f8;
+
+  cursor: pointer;
+}
+
+.hiddenOnMobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
+}

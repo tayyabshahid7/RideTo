@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
@@ -211,17 +212,23 @@ class CalendarPage extends Component {
   }
 
   render() {
-    const { calendar, eventCalendar, history } = this.props
+    const { calendar, eventCalendar, history, location } = this.props
     let days = this.generateDaysDataFromCalendar(calendar, eventCalendar)
+    let calendarPath = location.pathname === '/calendar'
     return (
       <div className={styles.calendar}>
-        <div className={styles.calendarColumn}>
+        <div
+          className={classnames(
+            styles.calendarColumn,
+            !calendarPath && styles.noCalendarPath
+          )}>
           <CalendarComponent
             days={days}
             calendar={calendar}
             eventCalendar={eventCalendar}
             handleCustomEvent={this.handleCustomEvent.bind(this)}
             history={history}
+            calendarPath={calendarPath}
           />
         </div>
         <div className={styles.rightPanel}>

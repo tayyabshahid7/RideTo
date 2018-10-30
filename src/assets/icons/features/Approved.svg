@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="21px" viewBox="0 0 21 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>B5577FC2-3384-47B9-8F94-C599930670B3</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Course-03" transform="translate(-479.000000, -634.000000)">
+            <g id="Group-16" transform="translate(280.000000, 536.000000)">
+                <g id="Group-8">
+                    <g id="Features" transform="translate(41.000000, 97.000000)">
+                        <g id="Icons/Approved" transform="translate(158.000000, 1.000000)">
+                            <rect id="Background" x="0" y="0" width="21" height="21"></rect>
+                            <path d="M10.5,0.5 L10.5,20.5" id="Shape" stroke="#141414"></path>
+                            <path d="M19.404,10.5 L1.596,10.5" id="Shape" stroke="#141414"></path>
+                            <path d="M10.5,0.5 C7.5,2.5 3.5,3.5 0.5,3.5 C0.5,10.5 3.5,17.5 10.5,20.5 C17.5,17.5 20.5,10.5 20.5,3.5 C17.5,3.5 13.5,2.5 10.5,0.5 Z" id="Shape" stroke="#141414" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -48,9 +48,7 @@ class CreateBulkCourse extends React.Component {
   componentDidUpdate(prevProps) {
     const { saving, error, history } = this.props
     if (prevProps.saving && !saving) {
-      if (error) {
-        alert('Failed to create bulk course')
-      } else {
+      if (!error) {
         const { start_date } = this.state.course
         history.push(`/calendar/${start_date}`)
       }

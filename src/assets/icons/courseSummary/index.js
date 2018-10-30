@@ -1,0 +1,8 @@
+export { default as idealBegginers } from './idealBegginers.svg'
+export { default as backToBiking } from './backToBiking.svg'
+export { default as fullLicence } from './fullLicence.svg'
+export { default as cbt } from './cbt.svg'
+export { default as multiDate } from './multiDate.svg'
+export { default as oneDayCourse } from './oneDayCourse.svg'
+export { default as ridetoExperience } from './ridetoExperience.svg'
+export { default as experiencedRiders } from './experiencedRiders.svg'

@@ -1,0 +1,55 @@
+.coursePin {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  height: 64px;
+  width: 50px;
+}
+
+.mapPinBg {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  fill: black;
+  &:hover {
+    fill: var(--primary-color);
+  }
+}
+
+.userIcon {
+  position: absolute;
+  top: 15px;
+  stroke: white;
+}
+
+.pinPrice {
+  color: white;
+  position: absolute;
+  width: 100%;
+  top: 15px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-proxima);
+  line-height: 17px;
+  text-align: center;
+  pointer-events: none;
+}
+
+.highlightCard {
+  animation: cardHighlight 2000ms ease-out;
+}
+
+@keyframes cardHighlight {
+  0% {
+    background-color: initial;
+  }
+  50% {
+    background-color: rgba(44, 206, 172, 0.5);
+  }
+  100% {
+    background-color: initial;
+  }
+}

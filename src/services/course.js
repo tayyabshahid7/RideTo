@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { get, destroy, post, put, patch } from 'services/api'
 import { s } from 'utils/helper'
+import { Features } from 'common/info'
 
 export const getCourseSpaceText = course => {
   const availableSpaces = course.spaces - course.orders.length
@@ -29,12 +30,26 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
   return response
 }
 
-export const fetchWidgetCourses = async (schoolId, startDate, endDate) => {
+export const fetchRidetoCourses = async params => {
+  const path = `courses/`
+
+  const response = await get(path, params, false)
+
+  return response
+}
+
+export const fetchWidgetCourses = async (
+  schoolId,
+  startDate,
+  endDate,
+  courseType
+) => {
   const path = `school/${schoolId}/widget/course`
   const params = {
     sdate: startDate,
     edate: endDate,
-    ordering: 'time'
+    ordering: 'time',
+    course_type: courseType
   }
 
   const response = await get(path, params)
@@ -129,19 +144,72 @@ export const getPricingForCourse = async (schoolId, course_type, datetime) => {
   return response
 }
 
+export const getPrice = async ({
+  supplierId,
+  date,
+  course_type,
+  courseId,
+  voucher_code = null
+}) => {
+  const path = 'get-price'
+  let params = courseId
+    ? { course_id: courseId }
+    : { course_type, date, supplier_id: supplierId }
+  if (voucher_code) params.voucher_code = voucher_code
+  const response = await get(path, params, false)
+  return response
+}
+
 export const getShortCourseType = courseType => {
   switch (courseType.constant) {
     case 'LICENCE_CBT':
       return 'CBT'
     case 'LICENCE_CBT_RENEWAL':
       return 'Renewal'
+    case 'INTRO_TO_MOTORCYCLING':
+      return 'ITM'
     default:
       return 'CBT'
+  }
+}
+
+export const getCourseTitle = courseTypeConstant => {
+  switch (courseTypeConstant) {
+    case 'LICENCE_CBT':
+      return 'CBT Training'
+    case 'LICENCE_CBT_RENEWAL':
+      return 'CBT Renewal'
+    case 'INTRO_TO_MOTORCYCLING':
+      return 'ITM Training'
+    default:
+      return 'CBT Training'
   }
 }
 
 export const createBulkSchoolCourse = async (schoolId, data) => {
   const path = `school/${schoolId}/course/bulk`
   const response = await post(path, data)
+  return response
+}
+
+export const getFeatureInfo = featureName => {
+  let feature = Features.find(f => f.value === featureName)
+  return feature || {}
+}
+
+export const fetchAvailableCoursesDates = async (
+  startDate,
+  endDate,
+  courseType
+) => {
+  const path = 'courses/avialable-dates/'
+  const params = {
+    sdate: startDate,
+    edate: endDate,
+    course_type: courseType
+  }
+  const authRequired = false
+  const response = await get(path, params, authRequired)
+
   return response
 }

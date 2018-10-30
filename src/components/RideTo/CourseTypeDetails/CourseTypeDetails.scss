@@ -1,0 +1,49 @@
+.courseTypeDetails {
+  cursor: auto;
+  color: #141414;
+  font-family: var(--font-rift);
+  padding: 50px 60px;
+  padding-bottom: 64px;
+  @media (max-width: 768px) {
+    padding: 32px;
+  }
+}
+
+.title {
+  font-size: 24px;
+  font-family: var(--font-rift-bold);
+  color: var(--dark-color);
+  line-height: 24px;
+  font-weight: normal;
+}
+
+.description {
+  margin-top: 16px;
+  font-family: var(--font-proxima);
+  font-size: 15px;
+  line-height: 24px;
+  text-transform: none;
+  font-weight: normal;
+}
+
+.divider {
+  width: 32px;
+  margin: 0;
+  border: 1px solid #979797;
+  background: #979797;
+  opacity: 0.2;
+  margin-top: 28px;
+  margin-bottom: 28px;
+}
+
+.action {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+
+  img {
+    margin-left: 16px;
+    height: 20px;
+  }
+}

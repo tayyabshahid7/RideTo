@@ -1,0 +1,26 @@
+.slider {
+  :global(.slick-slide) {
+    display: block;
+  }
+}
+
+.prevArrow {
+  position: absolute;
+  top: 45%;
+  z-index: 1;
+  left: 24px;
+  cursor: pointer;
+}
+
+.nextArrow {
+  position: absolute;
+  top: 45%;
+  z-index: 1;
+  right: 24px;
+  cursor: pointer;
+}
+
+.addonImage {
+  height: 235px;
+  object-fit: contain;
+}

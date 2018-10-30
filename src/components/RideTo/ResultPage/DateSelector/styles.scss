@@ -1,0 +1,83 @@
+.dateSelector {
+  display: flex;
+  // max-width: 100%;
+  // width: 1232px;
+  max-width: calc(100% + 120px);
+  width: 1202px;
+  margin-left: -60px;
+}
+
+.prev {
+  flex: 0 0 60px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  font-size: 32px;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.dates {
+  flex: 1 1 auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+.next {
+  flex: 0 0 60px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 32px;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+.month {
+  flex: 0 0 24px;
+  opacity: 0.5;
+  color: var(--dark-color);
+  font-size: 10px;
+  line-height: 24px;
+  font-family: var(--font-proxima);
+  text-transform: uppercase;
+}
+
+.disabled {
+  opacity: 0.3;
+  text-decoration: line-through;
+  cursor: not-allowed !important;
+}
+
+.dateWrapper {
+  width: 94px;
+  display: flex;
+  flex-direction: column;
+}
+
+.dateComponent {
+  flex: 0 0 80px;
+  width: 94px;
+  text-transform: uppercase;
+  height: 80px;
+  border: 1px solid var(--dark-color);
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+  line-height: 24px;
+  display: flex;
+  text-align: center;
+  color: var(--dark-color);
+  font-family: var(--font-rift);
+  cursor: pointer;
+}
+
+.active {
+  background: var(--dark-color);
+  color: white;
+  border: none;
+}
+
+.today {
+  border: 1px solid var(--primary-color);
+}

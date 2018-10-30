@@ -1,0 +1,28 @@
+.mobileFull {
+  // &.modal-dialog {
+  @media (max-width: 768px) {
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100%;
+  }
+  // }
+  > div {
+    @media (max-width: 768px) {
+      border: none;
+      border-radius: 0;
+      height: 100%;
+    }
+  }
+}
+
+.selectDate {
+  width: 100%;
+  flex: 0 0 50px;
+  padding: 0 24px !important;
+  text-transform: uppercase;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-rift);
+  font-size: 20px !important;
+}

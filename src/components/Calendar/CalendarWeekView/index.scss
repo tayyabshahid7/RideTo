@@ -1,8 +1,9 @@
 .container {
   flex: 1 1 auto;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   position: relative;
+  overflow-x: scroll;
   // margin-right: -15px;
   li {
     list-style: none;
@@ -11,23 +12,41 @@
     color: #666;
   }
 }
-
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow-x: scroll;
+}
 .weekDays {
   flex: 0 0 50px;
-  margin-left: 50px;
+  width: fit-content;
+  // margin-left: 50px;
   // margin-right: 15px;
 }
-
+.timelineWrapper {
+  position: relative;
+  margin-top: 50px;
+  overflow: hidden;
+  flex: 0 0 50px;
+}
 .weekviewContent {
   flex: 1 1 auto;
   overflow-y: scroll;
+  width: fit-content;
 
   &::-webkit-scrollbar {
     display: none;
   }
   display: flex;
 }
-
+.mobileVisible {
+  line-height: 25px;
+  display: none;
+}
+.desktopVisible {
+  display: block;
+}
 .timeline {
   display: block;
   // position: absolute;
@@ -35,7 +54,8 @@
   // top: 0;
   // left: 0;
   height: 100%;
-  width: 100%;
+  width: 50px; //100%;
+  position: absolute;
   // padding-top: 50px;
   li {
     position: relative;
@@ -103,12 +123,20 @@
   }
 }
 
+.daysContainer {
+  display: flex;
+  margin-bottom: 0;
+}
+.eventsContainer {
+  display: flex;
+}
 .events {
   float: left;
   width: 100%;
 }
 .weekDaysHeader {
   width: 14%;
+  min-width: 250px;
   float: left;
   border: 1px solid #eaeaea;
   /* reset style */
@@ -124,6 +152,7 @@
   /* reset style */
   margin-bottom: 0;
   padding: 2px;
+  min-width: 250px;
   &:not(:first-of-type) {
     border-left-width: 0;
   }
@@ -253,4 +282,25 @@
 .singleEvent[data-event='event-1'] {
   /* this is used to set a background color for the event and the modal window */
   background: #577f92;
+}
+
+@media (max-width: 768px) {
+  .weekDays {
+    width: 100%;
+  }
+  .weekviewContent {
+    width: 100%;
+  }
+  .weekDaysHeader {
+    min-width: 0px;
+  }
+  .eventsGroup {
+    min-width: 0px;
+  }
+  .mobileVisible {
+    display: block;
+  }
+  .desktopVisible {
+    display: none;
+  }
 }

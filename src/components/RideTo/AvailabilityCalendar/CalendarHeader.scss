@@ -1,0 +1,39 @@
+.container {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.title {
+  text-transform: uppercase;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
+  font-family: var(--font-rift);
+  flex: 1 1 auto;
+}
+
+.monthYear {
+  min-width: 115px;
+  text-align: center;
+}
+
+.prev {
+  flex: 0 0 12px;
+  margin-right: 16px;
+  cursor: pointer;
+}
+
+.next {
+  flex: 0 0 12px;
+  margin-left: 16px;
+  cursor: pointer;
+}
+
+.icon {
+  stroke: var(--dark-color);
+}
+
+.disabledIcon {
+  opacity: 0.25;
+  cursor: auto;
+}

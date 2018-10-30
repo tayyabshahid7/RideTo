@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import classnames from 'classnames'
 import Loading from 'components/Loading'
 
 import styles from './styles.scss'
 import commonStyles from 'pages/styles.scss'
 import Header from 'components/DataTable/Header'
 import Cell from 'components/DataTable/Cell'
+import { getCourseTitle } from 'services/course'
 
 const getDate = startTime => {
   if (startTime) {
@@ -73,7 +75,11 @@ class ConfirmedOrders extends Component {
         {
           <div>
             <Loading loading={this.props.loading}>
-              <table className={commonStyles.dataTable}>
+              <table
+                className={classnames(
+                  commonStyles.dataTable,
+                  'table table-responsive-md'
+                )}>
                 <thead>
                   <tr>
                     <Header
@@ -126,11 +132,7 @@ class ConfirmedOrders extends Component {
                           ? order.user_date
                           : getDate(order.start_time)}
                       </Cell>
-                      <Cell>
-                        {order.selected_licence === 'LICENCE_CBT'
-                          ? 'CBT Training '
-                          : 'CBT Renewal'}
-                      </Cell>
+                      <Cell>{getCourseTitle(order.selected_licence)}</Cell>
                       <Cell>
                         {order.bike_hire === 'auto'
                           ? 'Automatic'

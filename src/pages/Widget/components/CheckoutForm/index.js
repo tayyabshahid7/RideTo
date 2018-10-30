@@ -52,6 +52,9 @@ const CheckoutForm = ({
   const btnClass = isSaving
     ? `WidgetBtn ${styles.checkoutBtn} ${styles.disabled}`
     : `WidgetBtn ${styles.checkoutBtn}`
+  const optinLabel =
+    widget.email_optin_label ||
+    'Add me to the mailing list for the latest news and special offers'
 
   return (
     <div className={styles.checkForm}>
@@ -127,9 +130,7 @@ const CheckoutForm = ({
         <AcceptCheckbox
           accepted={details.email_optin}
           onChange={email_optin => onChange({ ...details, email_optin })}>
-          <div>
-            Add me to the mailing list for the latest news and special offers
-          </div>
+          <div>{optinLabel}</div>
         </AcceptCheckbox>
       </div>
 

@@ -1,0 +1,45 @@
+.calendarWeekdays {
+  list-style: none;
+  margin: 0;
+  width: 100%;
+  display: flex;
+  height: 40px;
+  flex: 0 0 40px;
+  padding: 0;
+  font-family: var(--font-rift);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  li {
+    color: #14141440;
+    list-style-type: none;
+    margin-bottom: 4px;
+
+    width: 14.342%;
+    box-sizing: border-box;
+    margin-right: -1px;
+    margin-bottom: -1px;
+
+    text-align: center;
+    padding: 10px 6px;
+  }
+}
+
+.calendarDays {
+  // display: flex;
+  list-style: none;
+  // padding: 0;
+  margin: 0;
+  width: 100%;
+  display: flex;
+
+  flex-wrap: wrap;
+  flex: 1 1 auto;
+  overflow-y: visible;
+  padding: 0;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  font-size: 15px;
+  font-family: var(--font-proxima);
+}

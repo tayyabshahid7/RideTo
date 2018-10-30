@@ -1,0 +1,38 @@
+.orderDetails {
+}
+
+.description {
+  font-family: var(--font-proxima);
+  font-size: 14px;
+  padding: 50px 60px;
+  padding-bottom: 64px;
+
+  h4,
+  h5 {
+    color: #141414;
+    font-family: var(--font-rift);
+  }
+
+  .subtitle {
+    font-size: 18px;
+    font-weight: 500;
+    font-family: var(--font-rift);
+    line-height: inherit;
+  }
+
+  .rowItem {
+    display: flex;
+    justify-content: space-between;
+    line-height: 40px;
+  }
+
+  .content {
+    font-size: 15px;
+    line-height: inherit;
+    font-family: var(--font-proxima);
+  }
+}
+
+.map {
+  height: 240px;
+}

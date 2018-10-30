@@ -1,0 +1,176 @@
+.container {
+  width: 480px;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 29px;
+  font-family: var(--font-rift);
+  font-weight: bold;
+  // margin-top: 32px;
+}
+
+.input {
+  margin-top: 24px;
+  // padding: 0;
+}
+
+.subtext {
+  text-align: left;
+  font-size: 12px;
+  color: var(--grey-color);
+  margin-top: 4px;
+}
+
+.rowContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.rowItem {
+  margin-top: 8px;
+  margin-bottom: 32px;
+  &:last-of-type {
+    margin-bottom: 18px;
+  }
+}
+
+.rowItemOrderSummary {
+  display: flex;
+  justify-content: space-between;
+  line-height: 40px;
+}
+
+.subtitle {
+  font-size: 18px;
+  font-weight: 500;
+  font-family: var(--font-rift);
+  line-height: inherit;
+}
+
+.highlightedPrice {
+  font-size: 20px;
+  color: var(--red-color);
+  font-family: var(--font-proxima);
+  line-height: 24px;
+}
+
+.radiobox {
+  margin-top: 24px;
+  text-align: left;
+  line-height: 1;
+  margin-bottom: 24px;
+  font-family: var(--font-proxima);
+  font-size: 15px;
+}
+
+.checkoutForm {
+  color: #707070;
+}
+
+.terms {
+  text-align: center;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.payWith {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cardImages {
+  display: flex;
+  align-items: center;
+}
+
+.cardImages img {
+  margin-left: 2px;
+  margin-right: 2px;
+  width: 42px;
+}
+
+.waiting {
+  opacity: 0.5;
+  cursor: wait;
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+.disabledTitle {
+  opacity: 0.5;
+  margin-bottom: 32px;
+}
+
+.error {
+  color: var(--danger-color);
+  font-size: 12px;
+}
+
+.inputError {
+  border: 1px solid var(--danger-color) !important;
+  box-shadow: 0px 0px 10px -2px var(--danger-color) !important;
+}
+
+.cardElementWrapper {
+  height: 48px;
+  // display: flex;
+  // align-items: center;
+  padding: 16px 16px;
+  background: white;
+  margin-top: 16px;
+}
+
+.actionDiv {
+  margin-top: 10px;
+  font-size: 15px;
+  font-family: var(--font-proxima);
+  line-break: 24px;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .container {
+    max-width: 100%;
+    width: 100%;
+  }
+  .cardImages img {
+    width: 36px;
+  }
+}
+
+.selectElement select {
+  width: 100%;
+  height: 48px;
+  appearance: none;
+  padding: 2px 24px 2px 24px;
+  border: none;
+  background: white url('assets/icons/dropdownLine.svg') no-repeat
+    calc(100% - 24px) center;
+}
+
+.postcodeSearchButton {
+  font-size: 15px;
+  width: 40%;
+  padding: 5px;
+  justify-content: center;
+}
+
+.findPostcodeInput {
+  width: 60%;
+}
+
+.searchPostcodeInput {
+  display: flex;
+}
+
+.hiddenOnDesktop {
+  @media (min-width: 769px) {
+    display: none;
+  }
+}

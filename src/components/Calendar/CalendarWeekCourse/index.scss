@@ -1,32 +1,24 @@
 .singleEvent {
   position: absolute;
-  background: white;
-  /* force them to stay on one line */
-  // -ms-flex-negative: 0;
-  // flex-shrink: 0;
-  float: left;
-  // height: 150px;
-  // width: 70%;
-  // max-width: 300px;
-  // box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.2);
-  // margin-right: 20px;
-  -webkit-transition: opacity 0.2s, background 0.2s;
-  transition: opacity 0.2s, background 0.2s;
-  border: 1px solid black;
-  font-size: 0.8rem;
+  // background: white;
+  // float: left;
+  // -webkit-transition: opacity 0.2s, background 0.2s;
+  // transition: opacity 0.2s, background 0.2s;
+  // border: 1px solid black;
+  // font-size: 0.8rem;
 
   z-index: 3;
-  /* top position and height will be set using js */
-  // width: calc(100% + 2px);
-  left: -1px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
-  /* reset style */
-  -ms-flex-negative: 1;
+  // /* top position and height will be set using js */
+  // // width: calc(100% + 2px);
+  // left: -1px;
+  // box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+  // /* reset style */
+  // -ms-flex-negative: 1;
   flex-shrink: 1;
-  // height: auto;
-  // max-width: none;
-  margin-right: 0;
-  overflow: hidden;
+  // // height: auto;
+  // // max-width: none;
+  // margin-right: 0;
+  // overflow: hidden;
 
   padding: 3px;
 
@@ -39,6 +31,47 @@
   visibility: hidden;
 }
 
+.content {
+  background: white;
+  float: left;
+  -webkit-transition: opacity 0.2s, background 0.2s;
+  transition: opacity 0.2s, background 0.2s;
+  border: 1px solid var(--grey-color);
+  font-size: 0.8rem;
+
+  // z-index: 3;
+  /* top position and height will be set using js */
+  // width: calc(100% + 2px);
+  // left: -1px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
+  /* reset style */
+  -ms-flex-negative: 1;
+  // flex-shrink: 1;
+  // height: auto;
+  // max-width: none;
+  margin-right: 0;
+  overflow: hidden;
+  word-break: break-all;
+  padding: 3px;
+  width: 100%;
+  height: 100%;
+}
+
+.warning {
+  border: 1px solid var(--warning-color);
+}
+.danger {
+  border: 1px solid var(--danger-color);
+}
+.primary {
+  border: 1px solid var(--primary-color);
+}
+.textWarning {
+  color: var(--warning-color);
+}
+.textDanger {
+  color: var(--danger-color);
+}
 .eventName,
 .eventDate {
   display: block;
@@ -62,4 +95,30 @@
 .order {
   display: flex;
   flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .content {
+    background: var(--grey-color);
+    border-radius: 10px;
+    > span {
+      display: none;
+    }
+    > div {
+      display: none;
+    }
+  }
+  .warning {
+    background: var(--warning-color);
+  }
+  .danger {
+    background: var(--danger-color);
+  }
+  .primary {
+    background: var(--primary-color);
+  }
+
+  // .courseContainer {
+  //   flex-direction: column;
+  // }
 }

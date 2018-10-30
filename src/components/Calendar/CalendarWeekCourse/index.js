@@ -37,13 +37,16 @@ const CalendarWeekCourse = ({
     // Then it is event
     return (
       <li
-        className={classnames(
-          styles.singleEvent,
-          calendar.selectedCourse === `event-${course.id}` && 'border-primary'
-        )}
+        className={styles.singleEvent}
         style={style}
         onClick={() => history.push(`/calendar/events/${course.id}/edit`)}>
-        <span className={styles.eventName}>{course.name} |</span>
+        <div
+          className={classnames(
+            styles.content,
+            calendar.selectedCourse === `event-${course.id}` && styles.primary
+          )}>
+          <span className={styles.eventName}>{course.name} |</span>
+        </div>
       </li>
     )
   }
@@ -51,35 +54,39 @@ const CalendarWeekCourse = ({
   const availableSpaces = course.spaces - course.orders.length
   return (
     <li
-      className={classnames(
-        styles.singleEvent,
-        availableSpaces === 1 && 'border-warning',
-        availableSpaces === 0 && 'border-danger',
-        calendar.selectedCourse === `course-${course.id}` && 'border-primary'
-      )}
+      className={styles.singleEvent}
       style={style}
       onClick={() =>
         history.push(`/calendar/${course.date}/courses/${course.id}/edit`)
       }>
-      <span className={styles.eventName}>
-        {course.time.substring(0, 5)} | {getShortCourseType(course.course_type)}
-      </span>
-      <span
+      <div
         className={classnames(
-          styles.courseSpace,
-          availableSpaces === 1 && 'text-warning',
-          availableSpaces === 0 && 'text-danger'
+          styles.content,
+          availableSpaces === 1 && styles.warning,
+          availableSpaces === 0 && styles.danger,
+          calendar.selectedCourse === `course-${course.id}` && styles.primary
         )}>
-        {getCourseSpaceText(course)}
-      </span>
-      <div>
-        {course.orders.map(order => (
-          <div className={styles.order} key={order.friendly_id}>
-            <span>#{order.friendly_id}</span>
-            <span>{order.bike_hire}</span>
-            <span>{order.user_name}</span>
-          </div>
-        ))}
+        <span className={styles.eventName}>
+          {course.time.substring(0, 5)} |{' '}
+          {getShortCourseType(course.course_type)}
+        </span>
+        <span
+          className={classnames(
+            styles.courseSpace,
+            availableSpaces === 1 && styles.textWarning,
+            availableSpaces === 0 && styles.textDanger
+          )}>
+          {getCourseSpaceText(course)}
+        </span>
+        <div>
+          {course.orders.map(order => (
+            <div className={styles.order} key={order.friendly_id}>
+              <span>#{order.friendly_id}</span>
+              <span>{order.bike_hire}</span>
+              <span>{order.user_name}</span>
+            </div>
+          ))}
+        </div>
       </div>
     </li>
   )

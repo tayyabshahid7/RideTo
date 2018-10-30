@@ -60,8 +60,8 @@ const request = async (method, path, params, data = null, auth = true) => {
   }
 }
 
-export const get = async (path, params) => {
-  return await request('get', path, params)
+export const get = async (path, params, auth = true) => {
+  return await request('get', path, params, null, auth)
 }
 
 export const post = async (path, data, auth = true) => {

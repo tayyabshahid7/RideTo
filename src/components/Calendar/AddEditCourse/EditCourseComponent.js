@@ -101,7 +101,10 @@ class EditCourseComponent extends Component {
 
     return (
       <div className={styles.addCourse}>
-        <DateHeading date={moment(course.date)} />
+        <DateHeading
+          date={moment(course.date)}
+          backLink={`/calendar/${course.date}`}
+        />
         <CourseHeading
           course={course}
           onRemove={this.handleRemoveCourseClick.bind(this)}

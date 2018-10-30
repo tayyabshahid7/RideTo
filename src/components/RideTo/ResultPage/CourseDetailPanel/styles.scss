@@ -1,0 +1,152 @@
+.courseDetails {
+  font-family: var(--font-rift);
+  // padding-bottom: 64px;
+}
+
+.tab {
+  height: 40px;
+  display: flex;
+}
+
+.tabItem {
+  background: #14141410;
+  line-height: 40px;
+  text-align: center;
+  flex: 1 1 33.33%;
+  cursor: pointer;
+}
+
+.active {
+  background: white;
+}
+
+.action {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  left: 0;
+
+  img {
+    margin-left: 16px;
+    height: 20px;
+  }
+}
+
+.content {
+  padding: 45px 60px;
+  @media (max-width: 768px) {
+    padding: 30px 32px;
+  }
+}
+
+.subtitle {
+  font-size: 24px;
+  line-height: 29px;
+  font-family: var(--font-rift-bold);
+}
+
+.subtitle1 {
+  text-transform: uppercase;
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 500;
+  font-family: var(--font-rift);
+}
+
+.location {
+  font-size: 14px;
+  line-height: 24px;
+  font-family: var(--font-proxima);
+}
+
+.desc {
+  font-size: 14px;
+  line-height: 20px;
+  font-family: var(--font-proxima);
+  margin-top: 24px;
+}
+
+.hostedLogo {
+  margin-top: 24px;
+  img {
+    height: 30px;
+    width: auto;
+    // max-width: 100px;
+    // height: auto;
+  }
+}
+
+.mapWrapper {
+  height: 240px;
+}
+
+.features {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.feature {
+  display: flex;
+  height: 40px;
+}
+
+.featureIcon {
+  flex: 0 0 25px;
+}
+
+.featureText {
+  margin-left: 16px;
+  font-size: 14px;
+  line-height: 40px;
+  font-family: var(--font-proxima);
+}
+
+.bikeHireWrapper {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+.btn {
+  height: 35px;
+  width: 174px;
+  border: 1px solid black;
+  font-size: 15px;
+  line-height: 18px;
+  font-family: var(--font-proxima);
+}
+
+.bikeHireBtn {
+  height: 48px;
+  width: 100%;
+  cursor: pointer;
+  background: white;
+  border: 1px solid black;
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 18px;
+  font-family: var(--font-proxima);
+  cursor: pointer;
+}
+
+.activeBtn {
+  background: var(--dark-color);
+  color: white;
+  &:hover {
+    background: var(--dark-color);
+    outline: none;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.ownBikeDisclaimer {
+  margin-top: 10px;
+  color: var(--danger-color);
+  font-size: 15px;
+  font-family: var(--font-proxima);
+  text-align: justify;
+  line-height: normal;
+}

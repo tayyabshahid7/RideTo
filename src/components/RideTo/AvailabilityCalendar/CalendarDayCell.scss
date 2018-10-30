@@ -1,0 +1,39 @@
+.container {
+  height: 53px;
+  list-style-type: none;
+  margin-bottom: 4px;
+
+  width: 14.342%;
+  box-sizing: border-box;
+  border: 1px solid var(--dark-color);
+  margin-right: -1px;
+  margin-bottom: -1px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    background: var(--light-grey-color);
+  }
+}
+
+.selectedDate {
+  background: var(--dark-color);
+  color: white;
+  &:hover {
+    background: var(--dark-color);
+  }
+}
+
+.disabledDate {
+  opacity: 0.5;
+  border: none;
+  text-decoration: line-through;
+}
+
+.invisibleDate {
+  opacity: 0;
+}
+
+.clickable {
+  cursor: pointer;
+}

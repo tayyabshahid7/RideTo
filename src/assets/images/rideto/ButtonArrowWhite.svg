@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="29px" height="18px" viewBox="0 0 29 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>DC25C33C-BDEA-4A6B-9D23-1F6515A4828E</title>
+    <desc>Created with sketchtool.</desc>
+    <defs></defs>
+    <g id="Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Course-06a" transform="translate(-752.000000, -752.000000)">
+            <g id="Group-8" transform="translate(432.000000, 736.000000)">
+                <g id="Group" transform="translate(190.000000, 11.000000)">
+                    <g id="Icons/ButtonArrowWhite" transform="translate(130.000000, 4.000000)">
+                        <rect id="Background" x="0" y="0" width="29" height="20"></rect>
+                        <path d="M1,10 L28,10" id="Shape" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <polyline id="Shape" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round" points="19 1 28 10 19 19"></polyline>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

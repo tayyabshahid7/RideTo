@@ -1,0 +1,39 @@
+.content {
+  transition: max-height 0.2s ease-in-out;
+  height: auto;
+  max-height: 0;
+  overflow: hidden;
+
+  font-size: 14px;
+  font-family: var(--font-proxima);
+  opacity: 0.6;
+  color: #141414;
+  text-align: justify;
+  font-weight: normal;
+  text-transform: none;
+  white-space: pre-wrap;
+}
+
+.open {
+  max-height: 600px;
+}
+
+.action img {
+  width: 16px;
+  height: 16px;
+}
+
+.heading {
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 40px;
+  font-weight: 500;
+  font-family: var(--font-rift);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title {
+  padding-right: 10px;
+}

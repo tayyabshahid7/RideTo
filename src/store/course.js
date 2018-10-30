@@ -13,6 +13,7 @@ import {
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
+import { actions as notificationActions } from './notification'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
@@ -72,6 +73,7 @@ export const deleteCourse = ({ schoolId, courseId }) => async dispatch => {
 
   try {
     await deleteSingleCourse(schoolId, courseId)
+    notificationActions.dispatchSuccess(dispatch, 'Course deleted')
     dispatch({
       type: DELETE[SUCCESS],
       data: {
@@ -126,6 +128,7 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
         course: response
       }
     })
+    notificationActions.dispatchSuccess(dispatch, 'Order added')
     dispatch(
       getSingleCourse({
         schoolId,
@@ -134,6 +137,7 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
       })
     )
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to add Order')
     dispatch({ type: CREATE_ORDER[FAILURE], error })
     return false
   }
@@ -163,11 +167,13 @@ export const updateOrder = ({
   dispatch({ type: UPDATE_ORDER[REQUEST] })
   try {
     const response = await updateSchoolOrder(schoolId, friendlyId, order)
+    notificationActions.dispatchSuccess(dispatch, 'Order saved')
     dispatch({
       type: UPDATE_ORDER[SUCCESS],
       data: { order: response }
     })
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to save Order')
     dispatch({ type: UPDATE_ORDER[FAILURE], error })
     return false
   }
@@ -188,11 +194,13 @@ export const updateCourse = ({
       data,
       fullUpdate
     )
+    notificationActions.dispatchSuccess(dispatch, 'Course saved')
     dispatch({
       type: UPDATE[SUCCESS],
       data: { course: response }
     })
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to save Course')
     dispatch({ type: UPDATE[FAILURE], error })
   }
 }
@@ -201,11 +209,13 @@ export const createCourse = ({ schoolId, data }) => async dispatch => {
   dispatch({ type: CREATE[REQUEST] })
   try {
     let response = await createSchoolCourse(schoolId, data)
+    notificationActions.dispatchSuccess(dispatch, 'Course added')
     dispatch({
       type: CREATE[SUCCESS],
       data: { course: response }
     })
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to add Course')
     dispatch({ type: CREATE[FAILURE], error })
   }
 }
@@ -214,10 +224,12 @@ export const createBulkCourse = ({ schoolId, data }) => async dispatch => {
   dispatch({ type: CREATE_BULK[REQUEST] })
   try {
     await createBulkSchoolCourse(schoolId, data)
+    notificationActions.dispatchSuccess(dispatch, 'Bulk Courses added')
     dispatch({
       type: CREATE_BULK[SUCCESS]
     })
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to add Bulk Courses')
     dispatch({ type: CREATE_BULK[FAILURE], error })
   }
 }
