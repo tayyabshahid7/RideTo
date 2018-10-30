@@ -72,12 +72,11 @@ class FooterLinks extends Component {
         <DetailsAccordionItem
           title="Courses"
           content={`<div class="footer--links">
-              <a href="/">CBT Training</a>
-              <a href="/">Introduction to Motorcycling</a>
-              <a href="/">Beginner Package</a>
-              <a href="/">Full Motorcycle License</a>
-              <a href="/">Gear Conversion Course</a>
-              <a href="/">121 CBT Training</a>
+              <a href="/cbt-training">CBT Training</a>
+              <a href="/introduction-to-motorcycling">Introduction to Motorcycling</a>
+              <a href="/full-motorbike-licence">Full Motorcycle License</a>
+              <a href="/gear-conversion-course">Gear Conversion Course</a>
+              <a href="/121-cbt-training">121 CBT Training</a>
             </div>`}
           isOpen={opened.indexOf('courses') > -1}
           onToggle={isOpen => this.handleToggleAccordion('courses', isOpen)}
