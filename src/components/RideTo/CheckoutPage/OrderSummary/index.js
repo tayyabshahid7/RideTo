@@ -106,13 +106,6 @@ class OrderSummary extends Component {
     )
   }
 
-  handleTermsClick() {
-    let bikeTypeDiv = document.getElementById('terms-conditions-section')
-    bikeTypeDiv.classList.remove('highlight-required')
-    bikeTypeDiv.scrollIntoView()
-    bikeTypeDiv.classList.add('highlight-required')
-  }
-
   render() {
     const {
       onSubmit,
@@ -147,7 +140,10 @@ class OrderSummary extends Component {
             }>
             <div>
               I can confirm that I have read and agreed to the requirements and{' '}
-              <a onClick={this.handleTermsClick} href="#terms-conditions">
+              <a
+                href="https://www.rideto.com/terms"
+                rel="noopener noreferrer"
+                target="_blank">
                 terms and conditions.
               </a>
             </div>
@@ -219,26 +215,15 @@ class OrderSummary extends Component {
             </div>
           )}
         </div>
-        <div id="terms-conditions-section" className={styles.information}>
-          <p>
-            By placing your oder you confirm you have read and accept
-            RideTo's&nbsp;
-            <a
-              href="https://www.rideto.com/terms"
-              rel="noopener noreferrer"
-              target="_blank">
-              <b>terms &amp; conditions</b>
-            </a>
-            &nbsp;and agree to RideTo's condition of use & sale.
-          </p>
-          {!instantBook && (
+        {!instantBook && (
+          <div id="terms-conditions-section" className={styles.information}>
             <p>
               You won't be charged until your booking is confirmed, we'll just
               reserve the amount on your card. Bookings require confirmation
               from the instructor, usually within 3 working hours.
             </p>
-          )}
-        </div>
+          </div>
+        )}
         <hr className={styles.hr} />
         <div className={styles.guaranteeInfo}>
           <div className={styles.guaranteeLogo}>
