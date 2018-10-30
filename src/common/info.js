@@ -65,25 +65,25 @@ export const Features = [
     value: 'bike_hire',
     icon: 'Bike',
     title: 'Bike Hire Included',
-    description: 'Bike Hire description'
+    description: null
   },
   {
     value: 'helmet_hire',
     icon: 'Helmet',
     title: 'Helmet & Gloves Provided',
-    description: 'Helemt hire description.'
+    description: null
   },
   {
     value: 'on_site_cafe',
     icon: 'Cafe',
     title: 'On Site Cafe',
-    description: 'Onsite Cafe Description'
+    description: null
   },
   {
     value: 'indoor_classroom',
     icon: 'Class',
     title: 'Indoor Classroom',
-    description: 'Indoor classroom description.'
+    description: null
   },
   {
     value: 'instant_book',
