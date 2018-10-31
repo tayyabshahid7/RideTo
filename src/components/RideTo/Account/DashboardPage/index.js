@@ -61,13 +61,13 @@ class DashboardPage extends React.Component {
     window.dataLayer.push({
       transactionId: order.friendly_id,
       transactionAffiliation: `RideTo - ${order.source}`,
-      transactionTotal: order.amount,
+      transactionTotal: order.amount / 100, // amount is returned in pence
       transactionProducts: [
         {
           sku: order.friendly_id,
           name: order.selected_licence,
           category: order.supplier.name,
-          price: order.amount,
+          price: order.amount / 100,
           quantity: 1
         }
       ],
