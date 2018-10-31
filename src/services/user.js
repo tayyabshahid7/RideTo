@@ -9,8 +9,8 @@ export const saveUser = async user => {
   return await requestToken(email, password)
 }
 
-export const fetchUser = async () => {
-  return await get('users/')
+export const fetchUser = async username => {
+  return await get(`users/${username}`)
 }
 
 export const fetchOrders = async () => {
