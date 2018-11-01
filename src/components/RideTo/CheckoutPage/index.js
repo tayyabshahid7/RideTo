@@ -4,6 +4,7 @@ import { DATE_FORMAT } from 'common/constants'
 import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
 import { getSupplier, isInstantBook } from 'services/page'
+import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { fetchUser } from 'services/user'
 
 class CheckoutPageContainer extends Component {
@@ -13,7 +14,6 @@ class CheckoutPageContainer extends Component {
       this.checkoutData = JSON.parse(sessionStorage.getItem('checkout-data'))
     } catch (error) {
       console.log('Error', error)
-      // window.location = '/'
     }
     const supplier = getSupplier()
     this.state = {
@@ -25,14 +25,26 @@ class CheckoutPageContainer extends Component {
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
-
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
   }
 
   async componentDidMount() {
-    const currentUser = await fetchUser()
-    this.setState({ currentUser })
+    const userAuthenticated = isAuthenticated()
+    if (userAuthenticated) {
+      const user = getUserProfile(getToken())
+      if (user) {
+        const currentUser = await fetchUser(user.username)
+        this.setState({ currentUser })
+        return
+      }
+    }
+
+    if (!userAuthenticated) {
+      const { supplier } = this.state
+      const next = `/${supplier.slug}/checkout`
+      window.location = `/account/login?next=${next}`
+    }
   }
 
   handleSetDate(date) {

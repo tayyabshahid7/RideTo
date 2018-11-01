@@ -46,7 +46,7 @@ class NavigationComponent extends React.Component {
 
         {navigation.map(
           (naviItem, index) =>
-            index === 0 ? (
+            index === 0 && naviItem.title === 'postcode' ? (
               <NavigationItemPostcode
                 {...naviItem}
                 fullWidth={fullWidth}
