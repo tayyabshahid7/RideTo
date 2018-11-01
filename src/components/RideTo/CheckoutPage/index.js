@@ -4,7 +4,7 @@ import { DATE_FORMAT } from 'common/constants'
 import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
 import { getSupplier, isInstantBook } from 'services/page'
-import { getUserProfile, getToken } from 'services/auth'
+import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { fetchUser } from 'services/user'
 
 class CheckoutPageContainer extends Component {
@@ -30,11 +30,17 @@ class CheckoutPageContainer extends Component {
   }
 
   async componentDidMount() {
-    const user = getUserProfile(getToken())
-    if (user) {
-      const currentUser = await fetchUser(user.username)
-      this.setState({ currentUser })
-    } else {
+    const userAuthenticated = isAuthenticated()
+    if (userAuthenticated) {
+      const user = getUserProfile(getToken())
+      if (user) {
+        const currentUser = await fetchUser(user.username)
+        this.setState({ currentUser })
+        return
+      }
+    }
+
+    if (!userAuthenticated) {
       const { supplier } = this.state
       const next = `/${supplier.slug}/checkout`
       window.location = `/account/login?next=${next}`
