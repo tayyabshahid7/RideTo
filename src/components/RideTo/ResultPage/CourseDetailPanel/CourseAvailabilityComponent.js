@@ -68,7 +68,7 @@ class CourseAvailabilityComponent extends React.Component {
     return firstDateInMonthCalendar
   }
 
-  generateDaysDataFromCalendar(course, calendar) {
+  generateDaysDataFromCalendar(courseLocation, calendar) {
     const { courses } = this.state
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
@@ -78,17 +78,19 @@ class CourseAvailabilityComponent extends React.Component {
       let dateInString = momentDate.format('YYYY-MM-DD')
       let disabled = false
       let invisible = date.getMonth() !== calendar.month
-      let dayCourses = courses.filter(course => course.date === dateInString)
+      let dayCourses = courses.filter(
+        courseLocation => courseLocation.date === dateInString
+      )
       if (
-        course.excluded_days &&
-        course.excluded_days.includes(momentDate.format('dddd'))
+        courseLocation.excluded_days &&
+        courseLocation.excluded_days.includes(momentDate.format('dddd'))
       ) {
         disabled = true
       }
 
       if (
-        course.excluded_dates &&
-        course.excluded_dates.includes(dateInString)
+        courseLocation.excluded_dates &&
+        courseLocation.excluded_dates.includes(dateInString)
       ) {
         disabled = true
       }
@@ -97,8 +99,15 @@ class CourseAvailabilityComponent extends React.Component {
         disabled = true
       }
 
-      if (course.instant_book && dayCourses.length === 0) {
-        disabled = true
+      if (courseLocation.instant_book) {
+        for (let i = dayCourses.length - 1; i >= 0; i--) {
+          if (dayCourses[i].order_count >= dayCourses[i].spaces) {
+            dayCourses.splice(i, 1)
+          }
+        }
+        if (dayCourses.length === 0) {
+          disabled = true
+        }
       }
 
       return { date, disabled, invisible, courses: dayCourses }
