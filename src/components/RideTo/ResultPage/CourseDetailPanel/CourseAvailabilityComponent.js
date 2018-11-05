@@ -244,28 +244,32 @@ class CourseAvailabilityComponent extends React.Component {
                 and MOT if you wish to train on your own bike.
               </div>
             )}
-            <button
-              className={classnames(
-                styles.bikeHireBtn,
-                bike_hire === 'auto' && styles.activeBtn
-              )}
-              onClick={() => onUpdate({ bike_hire: 'auto' })}
-              disabled={isAutoFull}>
-              {getMotorbikeLabel('auto')}{' '}
-              {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-              {isAutoFull ? fullText : null}
-            </button>
-            <button
-              className={classnames(
-                styles.bikeHireBtn,
-                bike_hire === 'manual' && styles.activeBtn
-              )}
-              onClick={() => onUpdate({ bike_hire: 'manual' })}
-              disabled={isManualFull}>
-              {getMotorbikeLabel('manual')}{' '}
-              {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-              {isManualFull ? fullText : null}
-            </button>
+            {course.has_auto_bikes && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  bike_hire === 'auto' && styles.activeBtn
+                )}
+                onClick={() => onUpdate({ bike_hire: 'auto' })}
+                disabled={isAutoFull}>
+                {getMotorbikeLabel('auto')}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {isAutoFull ? fullText : null}
+              </button>
+            )}
+            {course.has_manual_bikes && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  bike_hire === 'manual' && styles.activeBtn
+                )}
+                onClick={() => onUpdate({ bike_hire: 'manual' })}
+                disabled={isManualFull}>
+                {getMotorbikeLabel('manual')}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {isManualFull ? fullText : null}
+              </button>
+            )}
           </div>
         </div>
       </Loading>
