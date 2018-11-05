@@ -281,7 +281,10 @@ class CheckoutPage extends Component {
       }
     }
 
-    if (details.phone.replace('_', '').length !== PHONE_NUMBER_LENGTH) {
+    if (
+      details.phone.replace('_', '').length !== PHONE_NUMBER_LENGTH &&
+      !!details.phone.match(/^\+44\d{10}$/)
+    ) {
       errors['phone'] = 'Invalid phone number'
       if (!errors.divId) errors.divId = this.getErrorDivId('phone')
       hasError = true
