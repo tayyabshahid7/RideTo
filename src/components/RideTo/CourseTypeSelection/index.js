@@ -10,6 +10,7 @@ import SidePanel from 'components/RideTo/SidePanel'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import Button from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import classnames from 'classnames'
 
 import styles from './CourseTypeSelection.scss'
 
@@ -109,10 +110,20 @@ class CourseTypeSelection extends React.Component {
       navigation
     } = this.state
 
+    const typeformUrl = 'https://rideto.typeform.com/to/oXgXKP'
+
     const footer = selectedCourseType ? (
       <Button
-        href={getBookUrl(selectedCourseType, postcode)}
-        className={styles.action}>
+        target={'_blank'}
+        className={classnames(
+          styles.action,
+          selectedCourseType.constant === 'FULL_LICENCE' && 'typeform-share'
+        )}
+        href={
+          selectedCourseType.constant === 'FULL_LICENCE'
+            ? typeformUrl
+            : getBookUrl(selectedCourseType, postcode)
+        }>
         <span>Book Now</span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </Button>
@@ -128,7 +139,7 @@ class CourseTypeSelection extends React.Component {
         />
         <Container className={styles.container}>
           <Row>
-            <Col sm={{ size: 12, offset: 8 }} className={styles.filtersTitle}>
+            <Col sm={{ size: 4, offset: 8 }} className={styles.filtersTitle}>
               Filter Courses
             </Col>
           </Row>
@@ -148,9 +159,15 @@ class CourseTypeSelection extends React.Component {
             {filteredCourseTypes.map(courseType => (
               <Col sm="4" key={courseType.name}>
                 <CourseTypeItem
+                  isFullLicence={courseType.constant === 'FULL_LICENCE'}
+                  postcode={postcode}
                   courseType={courseType}
                   onClickDetails={this.handleDetails}
-                  url={getBookUrl(courseType, postcode)}
+                  url={
+                    courseType.constant === 'FULL_LICENCE'
+                      ? typeformUrl
+                      : getBookUrl(courseType, postcode)
+                  }
                 />
               </Col>
             ))}

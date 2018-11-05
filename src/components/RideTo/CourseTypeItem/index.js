@@ -4,8 +4,14 @@ import styles from './CourseTypeItem.scss'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import ArrowRight from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Info from 'assets/images/rideto/Info.svg'
+import classnames from 'classnames'
 
-const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
+const CourseTypeItem = ({
+  courseType,
+  url,
+  onClickDetails,
+  isFullLicence = false
+}) => {
   const { details } = courseType
 
   if (!details) {
@@ -16,7 +22,7 @@ const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
 
   return (
     <div className={styles.courseTypeItem}>
-      <a href={url}>
+      <a href={url} className={isFullLicence ? 'typeform-share' : null}>
         <div className={styles.backgroundImg} style={bgImg} />
       </a>
 
@@ -32,7 +38,9 @@ const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
             <img src={Info} alt="Info" />Details
           </div>
         </div>
-        <a className={styles.cta} href={url}>
+        <a
+          className={classnames(styles.cta, isFullLicence && 'typeform-share')}
+          href={url}>
           <div className={styles.ctaText}>Choose</div>
           <img className={styles.ctaIcon} src={ArrowRight} alt="right-arrow" />
           <img
@@ -42,6 +50,25 @@ const CourseTypeItem = ({ courseType, url, onClickDetails }) => {
           />
         </a>
       </div>
+      {//Add typeform popup script
+      isFullLicence &&
+        (function() {
+          var js,
+            q,
+            d = document,
+            gi = d.getElementById,
+            ce = d.createElement,
+            gt = d.getElementsByTagName,
+            id = 'typef_orm_share',
+            b = 'https://embed.typeform.com/'
+          if (!gi.call(d, id)) {
+            js = ce.call(d, 'script')
+            js.id = id
+            js.src = b + 'embed.js'
+            q = gt.call(d, 'script')[0]
+            q.parentNode.insertBefore(js, q)
+          }
+        })()}
     </div>
   )
 }
