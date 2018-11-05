@@ -72,7 +72,11 @@ class CourseAvailabilityComponent extends React.Component {
     const { courses } = this.state
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
-    let todate = moment().format(DATE_FORMAT)
+    let today = moment()
+    let tomorrow = moment()
+      .add(1, 'days')
+      .hour(18)
+      .minutes(0)
     return dates.map(date => {
       let momentDate = moment(date)
       let dateInString = momentDate.format('YYYY-MM-DD')
@@ -95,7 +99,12 @@ class CourseAvailabilityComponent extends React.Component {
         disabled = true
       }
 
-      if (dateInString < todate) {
+      if (dateInString <= today.format(DATE_FORMAT)) {
+        disabled = true
+      } else if (
+        momentDate.date() === tomorrow.date() &&
+        today.add(1, 'days') > tomorrow
+      ) {
         disabled = true
       }
 
