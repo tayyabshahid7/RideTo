@@ -150,8 +150,21 @@ class AddonSelection extends React.Component {
         <NavigationComponent navigation={navigation} />
         <Container>
           <Row>
-            <Col sm="12">
+            <Col sm="6">
               <h2 className={styles.heading}>Choose Extras</h2>
+              <div className={styles.subHeading}>
+                Optional purchases to get on the road faster (not required for
+                training).
+              </div>
+            </Col>
+            <Col sm="6" className={styles.checkoutButtonTop}>
+              <Button
+                color="primary"
+                className={styles.checkoutButton}
+                onClick={this.handleContinue}>
+                <span>Continue To Checkout</span>
+                <IconArrowRight className={styles.arrowIcon} />
+              </Button>
             </Col>
           </Row>
           <Row>

@@ -72,7 +72,11 @@ class CourseAvailabilityComponent extends React.Component {
     const { courses } = this.state
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
-    let todate = moment().format(DATE_FORMAT)
+    let today = moment()
+    let tomorrow = moment()
+      .add(1, 'days')
+      .hour(18)
+      .minutes(0)
     return dates.map(date => {
       let momentDate = moment(date)
       let dateInString = momentDate.format('YYYY-MM-DD')
@@ -95,7 +99,12 @@ class CourseAvailabilityComponent extends React.Component {
         disabled = true
       }
 
-      if (dateInString < todate) {
+      if (dateInString <= today.format(DATE_FORMAT)) {
+        disabled = true
+      } else if (
+        momentDate.date() === tomorrow.date() &&
+        today.add(1, 'days') > tomorrow
+      ) {
         disabled = true
       }
 
@@ -235,28 +244,32 @@ class CourseAvailabilityComponent extends React.Component {
                 and MOT if you wish to train on your own bike.
               </div>
             )}
-            <button
-              className={classnames(
-                styles.bikeHireBtn,
-                bike_hire === 'auto' && styles.activeBtn
-              )}
-              onClick={() => onUpdate({ bike_hire: 'auto' })}
-              disabled={isAutoFull}>
-              {getMotorbikeLabel('auto')}{' '}
-              {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-              {isAutoFull ? fullText : null}
-            </button>
-            <button
-              className={classnames(
-                styles.bikeHireBtn,
-                bike_hire === 'manual' && styles.activeBtn
-              )}
-              onClick={() => onUpdate({ bike_hire: 'manual' })}
-              disabled={isManualFull}>
-              {getMotorbikeLabel('manual')}{' '}
-              {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-              {isManualFull ? fullText : null}
-            </button>
+            {course.has_auto_bikes && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  bike_hire === 'auto' && styles.activeBtn
+                )}
+                onClick={() => onUpdate({ bike_hire: 'auto' })}
+                disabled={isAutoFull}>
+                {getMotorbikeLabel('auto')}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {isAutoFull ? fullText : null}
+              </button>
+            )}
+            {course.has_manual_bikes && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  bike_hire === 'manual' && styles.activeBtn
+                )}
+                onClick={() => onUpdate({ bike_hire: 'manual' })}
+                disabled={isManualFull}>
+                {getMotorbikeLabel('manual')}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {isManualFull ? fullText : null}
+              </button>
+            )}
           </div>
         </div>
       </Loading>
