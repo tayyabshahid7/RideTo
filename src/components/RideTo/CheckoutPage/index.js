@@ -4,8 +4,6 @@ import { DATE_FORMAT } from 'common/constants'
 import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
 import { getSupplier, isInstantBook } from 'services/page'
-import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
-import { fetchUser } from 'services/user'
 
 class CheckoutPageContainer extends Component {
   constructor(props) {
@@ -16,35 +14,17 @@ class CheckoutPageContainer extends Component {
       console.log('Error', error)
     }
     const supplier = getSupplier()
+
     this.state = {
       loading: false,
       checkoutData: this.checkoutData || { addons: [] },
       supplier,
-      instantBook: isInstantBook(),
-      currentUser: null
+      instantBook: isInstantBook()
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
-  }
-
-  async componentDidMount() {
-    const userAuthenticated = isAuthenticated()
-    if (userAuthenticated) {
-      const user = getUserProfile(getToken())
-      if (user) {
-        const currentUser = await fetchUser(user.username)
-        this.setState({ currentUser })
-        return
-      }
-    }
-
-    if (!userAuthenticated) {
-      const { supplier } = this.state
-      const next = `/${supplier.slug}/checkout`
-      window.location = `/account/login?next=${next}`
-    }
   }
 
   handleSetDate(date) {
@@ -56,13 +36,7 @@ class CheckoutPageContainer extends Component {
   }
 
   render() {
-    const {
-      checkoutData,
-      loading,
-      supplier,
-      currentUser,
-      instantBook
-    } = this.state
+    const { checkoutData, loading, supplier, instantBook } = this.state
 
     return (
       <StripeProvider apiKey={this.stripePublicKey}>
@@ -71,7 +45,6 @@ class CheckoutPageContainer extends Component {
             checkoutData={checkoutData}
             loading={loading}
             supplier={supplier}
-            currentUser={currentUser}
             instantBook={instantBook}
           />
         </Elements>

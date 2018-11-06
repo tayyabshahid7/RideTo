@@ -140,9 +140,50 @@ class UserDetails extends Component {
           Your Details
         </div>
         <div className={styles.rowItem}>
-          <div className={errors.user_birthdate && styles.inputError}>
+          <Input
+            placeholder="First name"
+            name="first_name"
+            value={details.first_name}
+            className={classnames(
+              styles.input,
+              errors.first_name && styles.inputError
+            )}
+            onChange={this.handleChange}
+          />
+          {errors.first_name && (
+            <div className={styles.error}>{errors.first_name}</div>
+          )}
+          <Input
+            placeholder="Last name"
+            name="last_name"
+            value={details.last_name}
+            className={classnames(
+              styles.input,
+              errors.last_name && styles.inputError
+            )}
+            onChange={this.handleChange}
+          />
+          {errors.last_name && (
+            <div className={styles.error}>{errors.last_name}</div>
+          )}
+          <Input
+            placeholder="E-mail address"
+            name="email"
+            value={details.email}
+            className={classnames(
+              styles.input,
+              errors.email && styles.inputError
+            )}
+            onChange={this.handleChange}
+          />
+          {errors.email && <div className={styles.error}>{errors.email}</div>}
+          <div
+            className={classnames(
+              errors.user_birthdate && styles.inputError,
+              styles.input
+            )}>
             <DateInput
-              placeholder="Date of Birth"
+              placeholder="Date of Birth (DD/MM/YYYY)"
               id="user_birthdate"
               name="user_birthdate"
               minyears={16}

@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { injectStripe } from 'react-stripe-elements'
 import moment from 'moment'
-import { omit, set, pick } from 'lodash'
+import { omit, set } from 'lodash'
 import styles from './styles.scss'
 import UserDetails from './UserDetails'
 import OrderSummary from './OrderSummary'
 import { fetchAddressWithPostcode } from 'services/misc'
 import { createOrder, createStripeToken } from 'services/widget'
 import { getPrice } from 'services/course'
+import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
+import { fetchUser } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import AddressSelectModal from 'components/RideTo/AddressSelectModal'
@@ -31,7 +33,10 @@ const REQUIRED_FIELDS = [
   'card_number',
   'cvv',
   'card_zip',
-  'expiry_date'
+  'expiry_date',
+  'first_name',
+  'last_name',
+  'email'
 ]
 
 const NO_ADDONS_ADDRESS = {
@@ -101,8 +106,21 @@ class CheckoutPage extends Component {
     this.setState({ ...data })
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.loadPrice()
+    const userAuthenticated = isAuthenticated()
+    if (userAuthenticated) {
+      const user = getUserProfile(getToken())
+      if (user) {
+        const userDetails = await fetchUser(user.username)
+        this.setState({
+          details: {
+            ...this.state.details,
+            ...userDetails
+          }
+        })
+      }
+    }
   }
 
   async loadPrice(voucher_code) {
@@ -221,6 +239,9 @@ class CheckoutPage extends Component {
       case 'current_licence':
       case 'riding_experience':
       case 'rider_type':
+      case 'first_name':
+      case 'last_name':
+      case 'email':
         return 'checkout-your-details'
       case 'card_name':
       case 'card_number':
@@ -234,16 +255,9 @@ class CheckoutPage extends Component {
   }
 
   validateDetails(details) {
-    const currentUser = this.props.currentUser
     const addonsCount = this.props.checkoutData.addons.length
     const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
-
-    if (!currentUser) {
-      window.location = '/account/login'
-      hasError = true
-      return
-    }
 
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
@@ -337,7 +351,7 @@ class CheckoutPage extends Component {
   }
 
   async createOrder(token) {
-    const { checkoutData, currentUser } = this.props
+    const { checkoutData } = this.props
     const { priceInfo } = this.state
     const details = omit(this.state.details, [
       'card_name',
@@ -363,7 +377,6 @@ class CheckoutPage extends Component {
 
     const data = {
       ...details,
-      ...pick(currentUser, ['first_name', 'last_name', 'email']),
       email_optin: details.email_optin || false,
       school_course_id: courseId,
       user_birthdate: birthdate.format('YYYY-MM-DD'),
@@ -371,7 +384,7 @@ class CheckoutPage extends Component {
       current_licences: [details.current_licence],
       token: token.id,
       expected_price: getExpectedPrice(priceInfo, addons, checkoutData),
-      name: currentUser.first_name + ' ' + currentUser.last_name,
+      name: `${details.first_name} ${details.last_name}`,
       user_date: date,
       selected_licence: courseType,
       supplier: supplierId,
