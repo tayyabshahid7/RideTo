@@ -14,8 +14,22 @@ import classnames from 'classnames'
 
 import styles from './CourseTypeSelection.scss'
 
-const getBookUrl = ({ constant }, postcode) => {
-  return `/course-location/?postcode=${postcode}&courseType=${constant}`
+const getBookUrl = (courseType, postcode) => {
+  if (courseType === 'FULL_LICENCE') {
+    return 'https://rideto.typeform.com/to/oXgXKP'
+  } else if (courseType === 'TFL_ONE_ON_ONE') {
+    return 'https://rideto.typeform.com/to/axybpw'
+  } else {
+    return `/course-location/?postcode=${postcode}&courseType=${courseType}`
+  }
+}
+
+const isTypeform = courseType => {
+  if (courseType === 'FULL_LICENCE' || courseType === 'TFL_ONE_ON_ONE') {
+    return true
+  } else {
+    return false
+  }
 }
 
 class CourseTypeSelection extends React.Component {
@@ -110,20 +124,14 @@ class CourseTypeSelection extends React.Component {
       navigation
     } = this.state
 
-    const typeformUrl = 'https://rideto.typeform.com/to/oXgXKP'
-
     const footer = selectedCourseType ? (
       <Button
         target={'_blank'}
         className={classnames(
           styles.action,
-          selectedCourseType.constant === 'FULL_LICENCE' && 'typeform-share'
+          isTypeform(selectedCourseType.constant) && 'typeform-share'
         )}
-        href={
-          selectedCourseType.constant === 'FULL_LICENCE'
-            ? typeformUrl
-            : getBookUrl(selectedCourseType, postcode)
-        }>
+        href={getBookUrl(selectedCourseType.constant, postcode)}>
         <span>Book Now</span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </Button>
@@ -159,15 +167,11 @@ class CourseTypeSelection extends React.Component {
             {filteredCourseTypes.map(courseType => (
               <Col sm="4" key={courseType.name}>
                 <CourseTypeItem
-                  isFullLicence={courseType.constant === 'FULL_LICENCE'}
+                  isTypeform={isTypeform(courseType.constant)}
                   postcode={postcode}
                   courseType={courseType}
                   onClickDetails={this.handleDetails}
-                  url={
-                    courseType.constant === 'FULL_LICENCE'
-                      ? typeformUrl
-                      : getBookUrl(courseType, postcode)
-                  }
+                  url={getBookUrl(courseType.constant, postcode)}
                 />
               </Col>
             ))}
