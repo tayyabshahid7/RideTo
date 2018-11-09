@@ -59,7 +59,6 @@ class UserDetails extends Component {
     } else {
       onDetailChange(name, false)
     }
-    // this.checkEmptyStripeElements();
   }
 
   renderRow(title, content, index, priceHighlight = false) {

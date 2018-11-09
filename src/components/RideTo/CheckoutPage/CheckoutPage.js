@@ -60,6 +60,9 @@ class CheckoutPage extends Component {
 
     this.state = {
       details: {
+        first_name: '',
+        last_name: '',
+        email: '',
         user_birthdate: '',
         phone: '',
         current_licence: '',
@@ -107,18 +110,24 @@ class CheckoutPage extends Component {
   }
 
   async componentDidMount() {
-    this.loadPrice()
+    await this.loadPrice() // need to wait since checkUser also sets state of details
+    this.checkUser()
+  }
+
+  async checkUser() {
     const userAuthenticated = isAuthenticated()
     if (userAuthenticated) {
       const user = getUserProfile(getToken())
       if (user) {
         const userDetails = await fetchUser(user.username)
-        this.setState({
-          details: {
-            ...this.state.details,
-            ...userDetails
-          }
-        })
+        const details = { ...this.state.details, ...userDetails }
+        const errors = {
+          ...this.state.errors,
+          first_name: null,
+          last_name: null,
+          email: null
+        }
+        this.setState({ details, errors })
       }
     }
   }
@@ -259,6 +268,7 @@ class CheckoutPage extends Component {
     const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
 
+    //Check if all required fields
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
         errors[field] = 'This field is required.'
@@ -314,6 +324,37 @@ class CheckoutPage extends Component {
     return !hasError
   }
 
+  async checkEmail(email) {
+    const userAuthenticated = isAuthenticated()
+    if (userAuthenticated) {
+      const user = getUserProfile(getToken())
+      if (user.email === email) {
+        return { error: false, errorMessage: '' }
+      } else {
+        return {
+          error: true,
+          errorMessage:
+            'You are already logged in with other email. Try using that email'
+        }
+      }
+    } else {
+      try {
+        const userDetails = await fetchUser(email)
+        if (userDetails.error) {
+          return { error: false, errorMessage: '' }
+        } else {
+          return {
+            error: true,
+            errorMessage:
+              'There is a registered user with this email. Login to continue'
+          }
+        }
+      } catch (error) {
+        return { error: false, errorMessage: '' }
+      }
+    }
+  }
+
   async handlePayment() {
     const { details } = this.state
     const {
@@ -323,6 +364,13 @@ class CheckoutPage extends Component {
 
     if (addons.length <= 0) {
       details.address = NO_ADDONS_ADDRESS
+    }
+
+    //Check if email already exists or user logged in
+    const result = await this.checkEmail(details.email)
+    if (result.error) {
+      this.setState({ errors: { email: result.errorMessage } })
+      return
     }
 
     if (!this.validateDetails(details)) {
@@ -397,7 +445,9 @@ class CheckoutPage extends Component {
     try {
       const response = await createOrder(data, true)
       if (response) {
-        window.location.href = `/account/dashboard/${response.id}`
+        const { order, token } = response
+        localStorage.setItem('token', JSON.stringify(token))
+        window.location.href = `/account/dashboard/${order.id}`
       } else {
         this.setState({ saving: false })
       }

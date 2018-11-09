@@ -8,6 +8,7 @@ import DashboardChecklist from 'components/RideTo/Account/DashboardChecklist'
 import DashboardAdvice from 'components/RideTo/Account/DashboardAdvice'
 import DashboardOrders from 'components/RideTo/Account/DashboardOrders'
 import { fetchOrder, fetchOrders, getChecklist } from 'services/user'
+import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { getDashboardAdvice } from 'services/page'
 import styles from './DashboardPage.scss'
 
@@ -26,12 +27,19 @@ class DashboardPage extends React.Component {
   }
 
   async componentDidMount() {
-    const { match } = this.props
-    const { orderId } = match.params
+    const { params } = this.props.match
+    const { orderId } = params
     if (orderId) {
       this.loadSingleOrder(orderId)
+      const next = `/account/dashboard/${orderId}`
+      sessionStorage.setItem('login-next', JSON.stringify(next))
     }
-    this.loadOrders()
+    if (isAuthenticated()) {
+      const user = getUserProfile(getToken())
+      if (user) {
+        this.loadOrders(user.username)
+      }
+    }
   }
 
   async loadSingleOrder(orderId) {
@@ -44,8 +52,8 @@ class DashboardPage extends React.Component {
     )
   }
 
-  async loadOrders() {
-    const result = await fetchOrders()
+  async loadOrders(username) {
+    const result = await fetchOrders(username)
     this.setState({
       orders: result.results
     })
@@ -91,7 +99,12 @@ class DashboardPage extends React.Component {
           <Row>
             <Col sm="4">
               <DashboardChecklist items={getChecklist()} />
-              <DashboardOrders orders={orders} onDetails={this.handleDetails} />
+              {orders.length > 0 && (
+                <DashboardOrders
+                  orders={orders}
+                  onDetails={this.handleDetails}
+                />
+              )}
             </Col>
             <Col sm="8">
               <DashboardAdvice items={getDashboardAdvice()} />

@@ -13,8 +13,8 @@ export const fetchUser = async username => {
   return await get(`users/${username}`)
 }
 
-export const fetchOrders = async () => {
-  return await get('users/order/')
+export const fetchOrders = async username => {
+  return await get(`users/order`, { username })
 }
 
 export const fetchOrder = async orderId => {
