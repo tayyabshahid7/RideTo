@@ -369,7 +369,12 @@ class CheckoutPage extends Component {
     //Check if email already exists or user logged in
     const result = await this.checkEmail(details.email)
     if (result.error) {
-      this.setState({ errors: { email: result.errorMessage } })
+      this.setState({
+        errors: {
+          email: result.errorMessage,
+          divId: this.getErrorDivId('email')
+        }
+      })
       return
     }
 
