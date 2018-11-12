@@ -110,11 +110,11 @@ class CheckoutPage extends Component {
   }
 
   async componentDidMount() {
-    await this.loadPrice() // need to wait since checkUser also sets state of details
-    this.checkUser()
+    await this.loadPrice() // need to wait since getLoggedInUserDetails also sets state of details
+    this.getLoggedInUserDetails()
   }
 
-  async checkUser() {
+  async getLoggedInUserDetails() {
     const userAuthenticated = isAuthenticated()
     if (userAuthenticated) {
       const user = getUserProfile(getToken())
@@ -443,10 +443,12 @@ class CheckoutPage extends Component {
     }
 
     try {
-      const response = await createOrder(data, true)
+      const response = await createOrder(data)
       if (response) {
         const { order, token } = response
-        localStorage.setItem('token', JSON.stringify(token))
+        if (token !== false) {
+          localStorage.setItem('token', JSON.stringify(token))
+        }
         window.location.href = `/account/dashboard/${order.id}`
       } else {
         this.setState({ saving: false })

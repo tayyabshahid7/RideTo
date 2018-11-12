@@ -10,7 +10,7 @@ export const saveUser = async user => {
 }
 
 export const fetchUser = async username => {
-  return await get(`users/${username}`)
+  return await get(`users/${username}`, {}, false)
 }
 
 export const fetchOrders = async username => {
