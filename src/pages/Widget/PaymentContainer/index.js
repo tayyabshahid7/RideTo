@@ -202,6 +202,7 @@ class PaymentContainer extends React.Component {
           <h3 className={styles.heading}>Contact Details</h3>
           <CustomerDetailsForm
             details={details}
+            trainingDate={course && course.date}
             errors={errors}
             onChange={this.handleChangeDetails}
           />

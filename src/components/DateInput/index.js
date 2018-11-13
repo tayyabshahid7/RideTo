@@ -21,11 +21,16 @@ class DateInput extends React.Component {
   }
 
   isValid(value) {
-    const { today, minYears } = this.props
+    const { today, minYears, trainingDate } = this.props
     const date = moment(value, 'DD/MM/YYYY')
     const isComplete = value.slice(-1) !== '_'
 
-    if (isComplete && minYears && today) {
+    if (trainingDate) {
+      const dateOfTraining = moment(trainingDate, 'YYYY-MM-DD')
+      if (isComplete && minYears) {
+        return dateOfTraining.diff(date, 'years') >= minYears
+      }
+    } else if (isComplete && minYears && today) {
       return today.diff(date, 'years') > minYears
     }
 

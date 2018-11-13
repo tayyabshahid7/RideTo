@@ -16,6 +16,7 @@ const isTokenExpired = token => {
   try {
     const decoded = _decodeJWT(token)
     if (decoded.exp < Date.now() / 1000) {
+      window.localStorage.removeItem('token')
       return true
     } else return false
   } catch (err) {
