@@ -10,7 +10,7 @@ const CourseTypeItem = ({
   courseType,
   url,
   onClickDetails,
-  isFullLicence = false
+  isTypeform = false
 }) => {
   const { details } = courseType
 
@@ -22,7 +22,7 @@ const CourseTypeItem = ({
 
   return (
     <div className={styles.courseTypeItem}>
-      <a href={url} className={isFullLicence ? 'typeform-share' : null}>
+      <a href={url} className={isTypeform ? 'typeform-share' : null}>
         <div className={styles.backgroundImg} style={bgImg} />
       </a>
 
@@ -35,11 +35,12 @@ const CourseTypeItem = ({
           <div
             className={styles.details}
             onClick={() => onClickDetails(courseType)}>
-            <img src={Info} alt="Info" />Details
+            <img src={Info} alt="Info" />
+            Details
           </div>
         </div>
         <a
-          className={classnames(styles.cta, isFullLicence && 'typeform-share')}
+          className={classnames(styles.cta, isTypeform && 'typeform-share')}
           href={url}>
           <div className={styles.ctaText}>Choose</div>
           <img className={styles.ctaIcon} src={ArrowRight} alt="right-arrow" />
@@ -51,7 +52,7 @@ const CourseTypeItem = ({
         </a>
       </div>
       {//Add typeform popup script
-      isFullLicence &&
+      isTypeform &&
         (function() {
           var js,
             q,

@@ -18,7 +18,7 @@ const handleChange = (event, details, errors, onChange) => {
   onChange({ ...details, [id]: value }, { ...errors, [id]: null })
 }
 
-const CustomerDetailsForm = ({ details, errors, onChange }) => {
+const CustomerDetailsForm = ({ details, errors, onChange, trainingDate }) => {
   const labelStyle = {
     marginTop: '16px',
     marginBottom: '16px'
@@ -67,6 +67,7 @@ const CustomerDetailsForm = ({ details, errors, onChange }) => {
         error={errors.user_birthdate}
         style={labelStyle}>
         <DateInput
+          trainingDate={trainingDate}
           id="user_birthdate"
           minYears={16}
           today={moment()}

@@ -1,7 +1,6 @@
 import React from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import moment from 'moment'
-
 import { parseQueryString } from 'services/api'
 import { getSupplier, getAddons } from 'services/page'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
@@ -11,7 +10,6 @@ import AddonDetails from 'components/RideTo/AddonDetails'
 import styles from './AddonSelection.scss'
 import { getCourseTitle } from 'services/course'
 import { IconArrowRight } from 'assets/icons'
-import { verifyToken, getToken } from 'services/auth'
 
 class AddonSelection extends React.Component {
   constructor(props) {
@@ -98,10 +96,8 @@ class AddonSelection extends React.Component {
   }
 
   async handleContinue() {
-    // TODO we need to go through account flow first...
     const supplier = getSupplier()
     const next = `/${supplier.slug}/checkout`
-    const token = getToken()
     const { qs, selectedAddons } = this.state
     let addons = selectedAddons.map(addon => {
       return {
@@ -115,18 +111,7 @@ class AddonSelection extends React.Component {
     let checkoutData = { ...qs, addons }
     sessionStorage.setItem('checkout-data', JSON.stringify(checkoutData))
     sessionStorage.setItem('login-next', JSON.stringify(next))
-
-    if (token) {
-      try {
-        await verifyToken(token)
-        window.location = next
-      } catch (error) {
-        console.error(error)
-        window.location = `/account?next=${next}`
-      }
-    } else {
-      window.location = `/account?next=${next}`
-    }
+    window.location = next
   }
 
   handleDetails(detailsAddon) {

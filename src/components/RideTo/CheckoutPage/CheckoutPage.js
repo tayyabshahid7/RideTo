@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import { injectStripe } from 'react-stripe-elements'
 import moment from 'moment'
-import { omit, set, pick } from 'lodash'
+import { omit, set } from 'lodash'
 import styles from './styles.scss'
 import UserDetails from './UserDetails'
 import OrderSummary from './OrderSummary'
 import { fetchAddressWithPostcode } from 'services/misc'
 import { createOrder, createStripeToken } from 'services/widget'
 import { getPrice } from 'services/course'
+import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
+import { fetchUser } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import AddressSelectModal from 'components/RideTo/AddressSelectModal'
@@ -31,7 +33,10 @@ const REQUIRED_FIELDS = [
   'card_number',
   'cvv',
   'card_zip',
-  'expiry_date'
+  'expiry_date',
+  'first_name',
+  'last_name',
+  'email'
 ]
 
 const NO_ADDONS_ADDRESS = {
@@ -55,6 +60,9 @@ class CheckoutPage extends Component {
 
     this.state = {
       details: {
+        first_name: '',
+        last_name: '',
+        email: '',
         user_birthdate: '',
         phone: '',
         current_licence: '',
@@ -101,8 +109,27 @@ class CheckoutPage extends Component {
     this.setState({ ...data })
   }
 
-  componentDidMount() {
-    this.loadPrice()
+  async componentDidMount() {
+    await this.loadPrice() // need to wait since getLoggedInUserDetails also sets state of details
+    this.getLoggedInUserDetails()
+  }
+
+  async getLoggedInUserDetails() {
+    const userAuthenticated = isAuthenticated()
+    if (userAuthenticated) {
+      const user = getUserProfile(getToken())
+      if (user) {
+        const userDetails = await fetchUser(user.username)
+        const details = { ...this.state.details, ...userDetails }
+        const errors = {
+          ...this.state.errors,
+          first_name: null,
+          last_name: null,
+          email: null
+        }
+        this.setState({ details, errors })
+      }
+    }
   }
 
   async loadPrice(voucher_code) {
@@ -221,6 +248,9 @@ class CheckoutPage extends Component {
       case 'current_licence':
       case 'riding_experience':
       case 'rider_type':
+      case 'first_name':
+      case 'last_name':
+      case 'email':
         return 'checkout-your-details'
       case 'card_name':
       case 'card_number':
@@ -234,17 +264,11 @@ class CheckoutPage extends Component {
   }
 
   validateDetails(details) {
-    const currentUser = this.props.currentUser
     const addonsCount = this.props.checkoutData.addons.length
     const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
 
-    if (!currentUser) {
-      window.location = '/account/login'
-      hasError = true
-      return
-    }
-
+    //Check if all required fields
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
         errors[field] = 'This field is required.'
@@ -300,6 +324,37 @@ class CheckoutPage extends Component {
     return !hasError
   }
 
+  async checkEmail(email) {
+    const userAuthenticated = isAuthenticated()
+    if (userAuthenticated) {
+      const user = getUserProfile(getToken())
+      if (user.email === email) {
+        return { error: false, errorMessage: '' }
+      } else {
+        return {
+          error: true,
+          errorMessage:
+            'You are already logged in with other email. Try using that email'
+        }
+      }
+    } else {
+      try {
+        const userDetails = await fetchUser(email)
+        if (userDetails.error) {
+          return { error: false, errorMessage: '' }
+        } else {
+          return {
+            error: true,
+            errorMessage:
+              'There is a registered user with this email. Login to continue'
+          }
+        }
+      } catch (error) {
+        return { error: false, errorMessage: '' }
+      }
+    }
+  }
+
   async handlePayment() {
     const { details } = this.state
     const {
@@ -309,6 +364,18 @@ class CheckoutPage extends Component {
 
     if (addons.length <= 0) {
       details.address = NO_ADDONS_ADDRESS
+    }
+
+    //Check if email already exists or user logged in
+    const result = await this.checkEmail(details.email)
+    if (result.error) {
+      this.setState({
+        errors: {
+          email: result.errorMessage,
+          divId: this.getErrorDivId('email')
+        }
+      })
+      return
     }
 
     if (!this.validateDetails(details)) {
@@ -337,7 +404,7 @@ class CheckoutPage extends Component {
   }
 
   async createOrder(token) {
-    const { checkoutData, currentUser } = this.props
+    const { checkoutData } = this.props
     const { priceInfo } = this.state
     const details = omit(this.state.details, [
       'card_name',
@@ -363,7 +430,6 @@ class CheckoutPage extends Component {
 
     const data = {
       ...details,
-      ...pick(currentUser, ['first_name', 'last_name', 'email']),
       email_optin: details.email_optin || false,
       school_course_id: courseId,
       user_birthdate: birthdate.format('YYYY-MM-DD'),
@@ -371,7 +437,7 @@ class CheckoutPage extends Component {
       current_licences: [details.current_licence],
       token: token.id,
       expected_price: getExpectedPrice(priceInfo, addons, checkoutData),
-      name: currentUser.first_name + ' ' + currentUser.last_name,
+      name: `${details.first_name} ${details.last_name}`,
       user_date: date,
       selected_licence: courseType,
       supplier: supplierId,
@@ -382,9 +448,13 @@ class CheckoutPage extends Component {
     }
 
     try {
-      const response = await createOrder(data, true)
+      const response = await createOrder(data)
       if (response) {
-        window.location.href = `/account/dashboard/${response.id}`
+        const { order, token } = response
+        if (token !== false) {
+          localStorage.setItem('token', JSON.stringify(token))
+        }
+        window.location.href = `/account/dashboard/${order.id}`
       } else {
         this.setState({ saving: false })
       }

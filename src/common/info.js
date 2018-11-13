@@ -90,7 +90,7 @@ export const Features = [
     icon: 'Instant',
     title: 'Instant Booking',
     description:
-      "This site has an instant booking, so you're order will be instantly confirmed. Non-instant book sites require confirmation from the instructor first."
+      'This site has instant booking, so your order will be booked on checkout. Non-instant sites require confirmation from the instructor.'
   }
 ]
 
