@@ -195,7 +195,11 @@ class UserDetails extends Component {
           {errors.user_birthdate && (
             <div className={styles.error}>{errors.user_birthdate}</div>
           )}
-          <div className={errors.phone && styles.inputError}>
+          <div
+            className={classnames(
+              styles.input,
+              errors.phone && styles.inputError
+            )}>
             <PhoneInput
               placeholder="Telephone Number"
               name="phone"
