@@ -36,14 +36,11 @@
 
   @media (max-width: 768px) {
     width: 100%;
-    background: none !important;
-    color: var(--primary-color) !important;
     display: flex !important;
     justify-content: space-between;
     padding: 0 24px !important;
-
     .arrowIcon {
-      stroke: var(--primary-color);
+      stroke: white;
     }
   }
 }
