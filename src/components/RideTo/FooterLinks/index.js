@@ -74,7 +74,7 @@ class FooterLinks extends Component {
           content={`<div class="footer--links">
               <a href="/cbt-training">CBT Training</a>
               <a href="/introduction-to-motorcycling">Introduction to Motorcycling</a>
-              <a href="/full-motorbike-licence">Full Motorcycle License</a>
+              <a href="/motorcycle-license">Full Motorcycle License</a>
               <a href="/gear-conversion-course">Gear Conversion Course</a>
               <a href="/121-cbt-training">121 CBT Training</a>
             </div>`}
