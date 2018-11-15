@@ -64,7 +64,11 @@ export const refreshToken = async token => {
 
 export const isAuthenticated = () => {
   const token = getToken()
-  return !!token && !isTokenExpired(token)
+  if (token === null) {
+    window.localStorage.removeItem('token')
+    return false
+  }
+  return !isTokenExpired(token)
 }
 
 export const updatePassword = async ({ old_password, new_password }) => {

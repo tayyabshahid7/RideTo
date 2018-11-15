@@ -1,3 +1,36 @@
+To install everything needed for development
+
+yarn install
+
+
+To run the different apps:
+
+
+
+
+yarn start - runs the shcools dashboard
+
+APP=rideto yarn start  - runs the rideto main front end
+
+APP=widget yarn start  - runs the widget front end for schools
+
+
+
+Don forget to set the env variables on .env.local file  on the root folder.
+You need to create the .env.local file as this file will only be used on your local machine for dev purposes
+
+Normally you will need the following env vars:
+
+REACT_APP_REST_API_BASE_URL=http://localhost:8000/
+STRIPE_WIDGET_SECRET_KEY=[stripe TEST secret key]
+STRIPE_WIDGET_PUBLIC_KEY=[stripe TEST public key]
+REACT_APP_MAPBOX_KEY=[your mapbox public key] <-- you can get this key by registering on the mapbox site
+
+
+
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
