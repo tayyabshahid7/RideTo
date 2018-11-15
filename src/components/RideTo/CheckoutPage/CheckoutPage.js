@@ -395,7 +395,7 @@ class CheckoutPage extends Component {
         })
       } else {
         const { token } = response
-        this.createOrder(token)
+        this.submitOrder(token)
       }
     } catch (error) {
       console.log('Error', error)
@@ -403,7 +403,7 @@ class CheckoutPage extends Component {
     }
   }
 
-  async createOrder(token) {
+  async submitOrder(stripeToken) {
     const { checkoutData } = this.props
     const { priceInfo } = this.state
     const details = omit(this.state.details, [
@@ -435,7 +435,7 @@ class CheckoutPage extends Component {
       user_birthdate: birthdate.format('YYYY-MM-DD'),
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
-      token: token.id,
+      token: stripeToken.id,
       expected_price: getExpectedPrice(priceInfo, addons, checkoutData),
       name: `${details.first_name} ${details.last_name}`,
       user_date: date,
@@ -450,9 +450,9 @@ class CheckoutPage extends Component {
     try {
       const response = await createOrder(data)
       if (response) {
-        const { order, token } = response
-        if (token !== false) {
-          localStorage.setItem('token', JSON.stringify(token))
+        const { order, token: userToken } = response
+        if (userToken !== null) {
+          window.localStorage.setItem('token', JSON.stringify(userToken))
         }
         window.location.href = `/account/dashboard/${order.id}`
       } else {

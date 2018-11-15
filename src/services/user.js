@@ -18,7 +18,7 @@ export const fetchOrders = async username => {
 }
 
 export const fetchOrder = async orderId => {
-  return await get(`users/order/${orderId}`)
+  return await get(`users/order/${orderId}`, {}, false)
 }
 
 export const getChecklist = () => {
