@@ -4,8 +4,27 @@ import styles from './styles.scss'
 import { IconDistance } from 'assets/icons'
 
 class CourseItemNonPartner extends Component {
+  highlightPinOnMap(event) {
+    const idElement = event.currentTarget.id
+    const pinWrapper = document.getElementById(`${idElement.substring(5)}`)
+    if (pinWrapper) {
+      const mapPin = pinWrapper.getElementsByTagName('svg')[0]
+      mapPin.classList.remove(styles.mapPinHighlight)
+      mapPin.classList.add(styles.mapPinHighlight)
+    }
+  }
+
+  removeHighlight(event) {
+    const idElement = event.currentTarget.id
+    const pinWrapper = document.getElementById(`${idElement.substring(5)}`)
+    if (pinWrapper) {
+      const mapPin = pinWrapper.getElementsByTagName('svg')[0]
+      mapPin.classList.remove(styles.mapPinHighlight)
+    }
+  }
+
   render() {
-    const { course, className } = this.props
+    const { course, className, id } = this.props
 
     const mailBody = `Hi ${
       course.name
@@ -19,7 +38,11 @@ class CourseItemNonPartner extends Component {
       encodeURIComponent(mailBody)
 
     return (
-      <div className={classnames(styles.container, className)}>
+      <div
+        id={id}
+        onMouseEnter={this.highlightPinOnMap}
+        onMouseLeave={this.removeHighlight}
+        className={classnames(styles.container, className)}>
         <div className={styles.info}>
           <div className={styles.upperSection}>
             <div className={styles.courseName}>{course.name}</div>
@@ -29,7 +52,8 @@ class CourseItemNonPartner extends Component {
           </div>
           <div className={styles.extraInfo}>
             <IconDistance className={styles.mileIcon} />{' '}
-            {course.distance_miles.toFixed(2)}mi
+            {course.distance_miles.toFixed(2)}
+            mi
           </div>
         </div>
         <div

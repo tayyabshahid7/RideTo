@@ -60,7 +60,7 @@ class MapComponent extends Component {
     this.setState({ viewport })
   }
 
-  renderMarker(course, index) {
+  renderMarker(course, index, available = true) {
     if (course.lng && course.lat) {
       return (
         <Marker
@@ -69,7 +69,7 @@ class MapComponent extends Component {
           latitude={course.lat}
           offsetLeft={-25}
           offsetTop={-64}>
-          {this.renderPin(course)}
+          {this.renderPin(course, available)}
         </Marker>
       )
     }
@@ -84,13 +84,18 @@ class MapComponent extends Component {
     resultCard.classList.add(styles.highlightCard)
   }
 
-  renderPin(course) {
+  renderPin(course, available) {
     return (
       <div
         id={`course-${course.id}`}
         onClick={this.highlightResultCard}
         className={styles.coursePin}>
-        <IconMapPin className={styles.mapPinBg} />
+        <IconMapPin
+          className={classnames(
+            styles.mapPinBg,
+            !available && styles.mapPinBgUnavailable
+          )}
+        />
         <span className={styles.pinPrice}>
           {course.price ? `£${parseInt(course.price / 100, 10)}` : '-'}
         </span>
@@ -99,8 +104,9 @@ class MapComponent extends Component {
   }
 
   render() {
-    const { courses, className, userLocation } = this.props
+    const { courses = null, className, userLocation } = this.props
     const { viewport } = this.state
+    const { available, unavailable } = courses
     return (
       <div
         className={classnames(styles.container, className)}
@@ -122,7 +128,14 @@ class MapComponent extends Component {
               </div>
             </Marker>
           )}
-          {courses && courses.map(this.renderMarker)}
+          {available && available.map(this.renderMarker)}
+          {unavailable &&
+            unavailable.map((course, index) =>
+              this.renderMarker(course, index, false)
+            )}
+          {available === undefined &&
+            unavailable === undefined &&
+            courses.map(this.renderMarker)}
           <div className="nav" style={navStyle}>
             <NavigationControl onViewportChange={this.updateViewport} />
           </div>

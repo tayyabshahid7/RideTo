@@ -57,6 +57,7 @@ class CourseItem extends Component {
       handleDetailClick,
       handlePriceClick,
       handleReviewClick,
+      unavaiableDate = false,
       id
     } = this.props
     return (
@@ -91,7 +92,8 @@ class CourseItem extends Component {
           </div>
           <div className={styles.extraInfo}>
             <IconDistance className={styles.mileIcon} />{' '}
-            {course.distance_miles.toFixed(2)}mi
+            {course.distance_miles.toFixed(2)}
+            mi
             <IconInfo className={styles.detailIcon} />{' '}
             <span
               onClick={() => handleDetailClick(course)}
@@ -109,7 +111,12 @@ class CourseItem extends Component {
             </span>
           </div>
         </div>
-        <div className={styles.price} onClick={() => handlePriceClick(course)}>
+        <div
+          className={classnames(
+            styles.price,
+            unavaiableDate && styles.priceDateUnavailable
+          )}
+          onClick={() => handlePriceClick(course)}>
           <div>£{parseInt(course.price / 100.0, 10)}</div>
           <IconArrowRight className={styles.arrowIcon} />
         </div>

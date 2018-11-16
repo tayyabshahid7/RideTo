@@ -50,7 +50,7 @@ class ResultPageContainer extends Component {
       },
       postcode,
       courseType,
-      courses: [],
+      courses: null,
       loading: false,
       navigation: this.navigation
     }
@@ -88,14 +88,13 @@ class ResultPageContainer extends Component {
         date,
         ordering: sortByOption
       })
-      if (response.results) {
+      if (response) {
         this.setState({
-          courses: response.results,
-          isPartnerResults: response.isPartnerResults,
+          courses: response,
           loading: false
         })
       } else {
-        this.setState({ courses: [], loading: false })
+        this.setState({ courses: null, loading: false })
       }
     } catch (error) {
       this.setState({ loading: false })

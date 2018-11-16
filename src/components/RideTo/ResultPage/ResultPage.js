@@ -140,6 +140,30 @@ class ResultPage extends Component {
     )
   }
 
+  renderRidetoButton(bookNowDisabled) {
+    return (
+      <RideToButton
+        className={styles.action}
+        onClick={() => {
+          if (this.state.activeTab !== '3') {
+            this.setState({ activeTab: '3' })
+          } else {
+            if (!bookNowDisabled) {
+              this.onBookNow()
+            } else {
+              let bikeTypeDiv = document.getElementById('choose-bike')
+              bikeTypeDiv.classList.remove('highlight-required')
+              bikeTypeDiv.scrollIntoView()
+              bikeTypeDiv.classList.add('highlight-required')
+            }
+          }
+        }}>
+        <span>Book Now</span>
+        <img src={ButtonArrowWhite} alt="arrow" />
+      </RideToButton>
+    )
+  }
+
   render() {
     const {
       courses,
@@ -197,42 +221,77 @@ class ResultPage extends Component {
                 {this.renderSortByDropdown()}
               </div>
               <Loading loading={loading} className={styles.contentWrapper}>
-                {courses.length > 0 ? (
+                {courses ? (
                   <div className={styles.mainContent}>
                     <div className={styles.coursesPanel}>
-                      <div className={styles.subTitle}>Choose a location</div>
-                      {courses.map(
-                        course =>
-                          course.is_partner ? (
-                            <CourseItem
-                              id={`card-course-${course.id}`}
-                              course={course}
-                              className={styles.courseSpacing}
-                              key={course.id}
-                              handleDetailClick={this.handleDetailClick.bind(
-                                this
-                              )}
-                              handlePriceClick={this.handlePriceClick.bind(
-                                this
-                              )}
-                              handleReviewClick={this.handleReviewClick.bind(
-                                this
-                              )}
-                            />
-                          ) : (
-                            <CourseItemNonPartner
-                              course={course}
-                              className="mt-3"
-                              key={course.id}
-                            />
-                          )
+                      {courses.available.length > 0 && (
+                        <React.Fragment>
+                          <div className={styles.subTitle}>
+                            Choose a location
+                          </div>
+                          {courses.available.map(
+                            course =>
+                              course.is_partner && (
+                                <CourseItem
+                                  id={`card-course-${course.id}`}
+                                  course={course}
+                                  className={styles.courseSpacing}
+                                  key={course.id}
+                                  handleDetailClick={this.handleDetailClick.bind(
+                                    this
+                                  )}
+                                  handlePriceClick={this.handlePriceClick.bind(
+                                    this
+                                  )}
+                                  handleReviewClick={this.handleReviewClick.bind(
+                                    this
+                                  )}
+                                />
+                              )
+                          )}
+                        </React.Fragment>
+                      )}
+                      {courses.unavailable.length > 0 && (
+                        <React.Fragment>
+                          <div className={styles.subTitle}>
+                            Available on other dates
+                          </div>
+                          {courses.unavailable.map(
+                            course =>
+                              course.is_partner ? (
+                                <CourseItem
+                                  id={`card-course-${course.id}`}
+                                  unavaiableDate={true}
+                                  course={course}
+                                  className={styles.courseSpacing}
+                                  key={course.id}
+                                  handleDetailClick={this.handleDetailClick.bind(
+                                    this
+                                  )}
+                                  handlePriceClick={this.handlePriceClick.bind(
+                                    this
+                                  )}
+                                  handleReviewClick={this.handleReviewClick.bind(
+                                    this
+                                  )}
+                                />
+                              ) : (
+                                <CourseItemNonPartner
+                                  id={`card-course-${course.id}`}
+                                  course={course}
+                                  className="mt-3"
+                                  key={course.id}
+                                />
+                              )
+                          )}
+                        </React.Fragment>
                       )}
                     </div>
                     <div className={styles.mapPanel}>
                       <div className={styles.buttonsWrapper}>
                         {this.renderSortByDropdown()}
                       </div>
-                      {courses.length > 0 && (
+                      {courses && (
                         <MapComponent
                           className={styles.mapWrapper}
                           courses={courses}
@@ -258,27 +317,7 @@ class ResultPage extends Component {
           visible={selectedCourse !== null}
           headingImage={selectedCourse ? selectedCourse.image : ''}
           onDismiss={() => this.setState({ selectedCourse: null })}
-          footer={
-            <RideToButton
-              className={styles.action}
-              onClick={() => {
-                if (this.state.activeTab !== '3') {
-                  this.setState({ activeTab: '3' })
-                } else {
-                  if (!bookNowDisabled) {
-                    this.onBookNow()
-                  } else {
-                    let bikeTypeDiv = document.getElementById('choose-bike')
-                    bikeTypeDiv.classList.remove('highlight-required')
-                    bikeTypeDiv.scrollIntoView()
-                    bikeTypeDiv.classList.add('highlight-required')
-                  }
-                }
-              }}>
-              <span>Book Now</span>
-              <img src={ButtonArrowWhite} alt="arrow" />
-            </RideToButton>
-          }>
+          footer={this.renderRidetoButton(bookNowDisabled)}>
           {selectedCourse && (
             <CourseDetailPanel
               courseType={courseType}
