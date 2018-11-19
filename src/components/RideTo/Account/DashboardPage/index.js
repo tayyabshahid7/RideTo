@@ -32,7 +32,7 @@ class DashboardPage extends React.Component {
     if (orderId) {
       this.loadSingleOrder(orderId)
       const next = `/account/dashboard/${orderId}`
-      sessionStorage.setItem('login-next', JSON.stringify(next))
+      window.sessionStorage.setItem('login-next', JSON.stringify(next))
     }
     if (isAuthenticated()) {
       const user = getUserProfile(getToken())
