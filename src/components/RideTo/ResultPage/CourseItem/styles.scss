@@ -77,13 +77,16 @@
   }
   @media (max-width: 768px) {
     display: none;
-    // flex: 0 0 48px;
-    // color: white;
-    // stroke: white;
-    // background: var(--primary-color);
-    // flex-direction: row;
-    // justify-content: space-between;
-    // padding: 0 24px;
+  }
+}
+
+.priceDateUnavailable {
+  color: var(--grey-color);
+  stroke: var(--grey-color);
+  &:hover {
+    background: var(--grey-color);
+    stroke: white;
+    color: white;
   }
 }
 

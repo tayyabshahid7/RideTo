@@ -23,8 +23,10 @@ class CourseAvailabilityComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ loadingCourses: true })
-    this.loadCourses()
+    if (this.props.course.instant_book) {
+      this.setState({ loadingCourses: true })
+      this.loadCourses()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
