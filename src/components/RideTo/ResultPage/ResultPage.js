@@ -140,7 +140,7 @@ class ResultPage extends Component {
     )
   }
 
-  renderRidetoButton(bookNowDisabled) {
+  renderRidetoButton(bookNowDisabled, instantDate, bike_hire) {
     return (
       <RideToButton
         className={styles.action}
@@ -151,10 +151,17 @@ class ResultPage extends Component {
             if (!bookNowDisabled) {
               this.onBookNow()
             } else {
-              let bikeTypeDiv = document.getElementById('choose-bike')
-              bikeTypeDiv.classList.remove('highlight-required')
-              bikeTypeDiv.scrollIntoView()
-              bikeTypeDiv.classList.add('highlight-required')
+              if (!instantDate) {
+                let chooseDateDiv = document.getElementById('choose-date')
+                chooseDateDiv.classList.remove('highlight-required')
+                chooseDateDiv.scrollIntoView()
+                chooseDateDiv.classList.add('highlight-required')
+              } else if (!bike_hire) {
+                let bikeTypeDiv = document.getElementById('choose-bike')
+                bikeTypeDiv.classList.remove('highlight-required')
+                bikeTypeDiv.scrollIntoView()
+                bikeTypeDiv.classList.add('highlight-required')
+              }
             }
           }
         }}>
@@ -188,7 +195,9 @@ class ResultPage extends Component {
     let bookNowDisabled = false
     if (selectedCourse) {
       bookNowDisabled =
-        (selectedCourse.instant_book && !instantCourse) || !bike_hire
+        (selectedCourse.instant_book && !instantCourse) ||
+        !bike_hire ||
+        !instantDate
     }
 
     return (
@@ -317,7 +326,11 @@ class ResultPage extends Component {
           visible={selectedCourse !== null}
           headingImage={selectedCourse ? selectedCourse.image : ''}
           onDismiss={() => this.setState({ selectedCourse: null })}
-          footer={this.renderRidetoButton(bookNowDisabled)}>
+          footer={this.renderRidetoButton(
+            bookNowDisabled,
+            instantDate,
+            bike_hire
+          )}>
           {selectedCourse && (
             <CourseDetailPanel
               courseType={courseType}
