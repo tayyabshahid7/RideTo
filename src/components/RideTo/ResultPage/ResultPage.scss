@@ -121,9 +121,6 @@
   font-family: var(--font-rift-bold);
   line-height: 29px;
   margin-bottom: 50px;
-  @media (max-width: 768px) {
-    display: none !important;
-  }
 }
 
 .dateSelector {
@@ -178,4 +175,10 @@
   min-height: 400px;
   font-family: var(--font-proxima);
   font-size: 20px;
+}
+
+.hiddenOnMobile {
+  @media (max-width: 768px) {
+    display: none !important;
+  }
 }

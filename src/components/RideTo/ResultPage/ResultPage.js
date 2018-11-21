@@ -23,6 +23,7 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
 import { IconCalendar } from 'assets/icons'
 import { parseQueryString } from 'services/api'
+import classnames from 'classnames'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -235,7 +236,11 @@ class ResultPage extends Component {
                     <div className={styles.coursesPanel}>
                       {courses.available.length > 0 && (
                         <React.Fragment>
-                          <div className={styles.subTitle}>
+                          <div
+                            className={classnames(
+                              styles.subTitle,
+                              styles.hiddenOnMobile
+                            )}>
                             Choose a location
                           </div>
                           {courses.available.map(

@@ -68,7 +68,12 @@ class CourseItem extends Component {
         className={classnames(styles.container, className)}>
         <div className={styles.photo} onClick={() => handlePriceClick(course)}>
           <img src={course.image} className={styles.image} alt="logo" />
-          <div className={classnames(styles.price, styles.priceMobile)}>
+          <div
+            className={classnames(
+              styles.price,
+              styles.priceMobile,
+              unavaiableDate && styles.priceDateUnavailableMobile
+            )}>
             <div>£{parseInt(course.price / 100.0, 10)}</div>
             <IconArrowRight className={styles.arrowIcon} />
           </div>

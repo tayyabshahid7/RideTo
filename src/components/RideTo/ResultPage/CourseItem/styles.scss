@@ -109,6 +109,12 @@
   }
 }
 
+.priceDateUnavailableMobile {
+  background: var(--grey-color);
+  stroke: white;
+  color: white;
+}
+
 .arrowIcon {
   margin-top: 12px;
   @media (max-width: 768px) {
