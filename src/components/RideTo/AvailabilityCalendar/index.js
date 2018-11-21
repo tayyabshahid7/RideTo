@@ -7,6 +7,13 @@ import CalendarTime from './CalendarTime'
 import moment from 'moment'
 
 class AvailabilityCalendar extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      dateAlreadyChecked: false
+    }
+  }
+
   componentDidMount() {
     const {
       calendar: { selectedDate },
@@ -30,14 +37,13 @@ class AvailabilityCalendar extends Component {
       isInstantBook,
       courses
     } = this.props
+
     // For instant booking calendars
-    if (
-      courses &&
-      selectedDate &&
-      courses.length > 0 &&
-      this.isSelectedDateDisabled(selectedDate, days)
-    ) {
-      this.setFirstAvailableDate(days, isInstantBook)
+    if (isInstantBook && courses.length > 0 && !this.state.dateAlreadyChecked) {
+      if (this.isSelectedDateDisabled(selectedDate, days)) {
+        this.setFirstAvailableDate(days, isInstantBook)
+      }
+      this.setState({ dateAlreadyChecked: true })
     }
   }
 
