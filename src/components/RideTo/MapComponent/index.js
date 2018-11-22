@@ -128,11 +128,11 @@ class MapComponent extends Component {
               </div>
             </Marker>
           )}
-          {available && available.map(this.renderMarker)}
           {unavailable &&
             unavailable.map((course, index) =>
               this.renderMarker(course, index, false)
             )}
+          {available && available.map(this.renderMarker)}
           {available === undefined &&
             unavailable === undefined &&
             courses.map(this.renderMarker)}
