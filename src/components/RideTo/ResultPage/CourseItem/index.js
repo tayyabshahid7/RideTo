@@ -17,6 +17,7 @@ class CourseItem extends Component {
       const mapPin = pinWrapper.getElementsByTagName('svg')[0]
       mapPin.classList.remove(styles.mapPinHighlight)
       mapPin.classList.add(styles.mapPinHighlight)
+      pinWrapper.parentElement.classList.add(styles.markerTop)
     }
   }
 
@@ -26,6 +27,7 @@ class CourseItem extends Component {
     if (pinWrapper) {
       const mapPin = pinWrapper.getElementsByTagName('svg')[0]
       mapPin.classList.remove(styles.mapPinHighlight)
+      pinWrapper.parentElement.classList.remove(styles.markerTop)
     }
   }
 

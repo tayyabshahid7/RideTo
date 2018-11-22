@@ -192,3 +192,7 @@
 .mapPinHighlight {
   fill: var(--primary-color) !important;
 }
+
+.markerTop {
+  z-index: 100;
+}

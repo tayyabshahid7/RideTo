@@ -65,6 +65,7 @@ class MapComponent extends Component {
       return (
         <Marker
           key={course.id}
+          className={styles.mapMarker}
           longitude={course.lng}
           latitude={course.lat}
           offsetLeft={-25}

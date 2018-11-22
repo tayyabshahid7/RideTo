@@ -19,6 +19,10 @@
   }
 }
 
+.mapMarker:hover {
+  z-index: 100;
+}
+
 .mapPinBgUnavailable {
   fill: var(--grey-color);
 }
