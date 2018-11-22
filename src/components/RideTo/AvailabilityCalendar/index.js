@@ -4,8 +4,76 @@ import CalendarHeader from './CalendarHeader'
 import styles from './index.scss'
 import CalendarContent from './CalendarContent'
 import CalendarTime from './CalendarTime'
+import moment from 'moment'
 
 class AvailabilityCalendar extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      dateAlreadyChecked: false
+    }
+  }
+
+  componentDidMount() {
+    const {
+      calendar: { selectedDate },
+      days,
+      isInstantBook
+    } = this.props
+    // For non instant booking calendars
+    if (
+      !isInstantBook &&
+      selectedDate &&
+      this.isSelectedDateDisabled(selectedDate, days)
+    ) {
+      this.setFirstAvailableDate(days, isInstantBook)
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const {
+      calendar: { selectedDate },
+      days,
+      isInstantBook,
+      courses
+    } = this.props
+
+    // For instant booking calendars
+    if (isInstantBook && courses.length > 0 && !this.state.dateAlreadyChecked) {
+      if (this.isSelectedDateDisabled(selectedDate, days)) {
+        this.setFirstAvailableDate(days, isInstantBook)
+      }
+      this.setState({ dateAlreadyChecked: true })
+    }
+  }
+
+  setFirstAvailableDate(days, isInstantBook) {
+    for (let i = 0; days && i < days.length; i++) {
+      if (!days[i].disabled) {
+        if (!isInstantBook) {
+          const availableDate = moment(days[i].date).format('YYYY-MM-DD')
+          this.props.handleDateSelect(availableDate)
+          return
+        } else if (days[i].courses.length > 0) {
+          const availableDate = moment(days[i].date).format('YYYY-MM-DD')
+          this.props.handleDateSelect(availableDate)
+          return
+        }
+      }
+    }
+    this.props.handleDateSelect(null)
+  }
+
+  isSelectedDateDisabled(date, days) {
+    const selectedDate = moment(date)
+    for (let i = 0; i < days.length; i++) {
+      if (days[i].disabled && days[i].date.getDate() === selectedDate.date()) {
+        return true
+      }
+    }
+    return false
+  }
+
   render() {
     let {
       days,

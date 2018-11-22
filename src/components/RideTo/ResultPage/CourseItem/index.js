@@ -17,6 +17,7 @@ class CourseItem extends Component {
       const mapPin = pinWrapper.getElementsByTagName('svg')[0]
       mapPin.classList.remove(styles.mapPinHighlight)
       mapPin.classList.add(styles.mapPinHighlight)
+      pinWrapper.parentElement.classList.add(styles.markerTop)
     }
   }
 
@@ -26,6 +27,7 @@ class CourseItem extends Component {
     if (pinWrapper) {
       const mapPin = pinWrapper.getElementsByTagName('svg')[0]
       mapPin.classList.remove(styles.mapPinHighlight)
+      pinWrapper.parentElement.classList.remove(styles.markerTop)
     }
   }
 
@@ -57,6 +59,7 @@ class CourseItem extends Component {
       handleDetailClick,
       handlePriceClick,
       handleReviewClick,
+      unavaiableDate = false,
       id
     } = this.props
     return (
@@ -67,7 +70,12 @@ class CourseItem extends Component {
         className={classnames(styles.container, className)}>
         <div className={styles.photo} onClick={() => handlePriceClick(course)}>
           <img src={course.image} className={styles.image} alt="logo" />
-          <div className={classnames(styles.price, styles.priceMobile)}>
+          <div
+            className={classnames(
+              styles.price,
+              styles.priceMobile,
+              unavaiableDate && styles.priceDateUnavailableMobile
+            )}>
             <div>£{parseInt(course.price / 100.0, 10)}</div>
             <IconArrowRight className={styles.arrowIcon} />
           </div>
@@ -91,7 +99,8 @@ class CourseItem extends Component {
           </div>
           <div className={styles.extraInfo}>
             <IconDistance className={styles.mileIcon} />{' '}
-            {course.distance_miles.toFixed(2)}mi
+            {course.distance_miles.toFixed(2)}
+            mi
             <IconInfo className={styles.detailIcon} />{' '}
             <span
               onClick={() => handleDetailClick(course)}
@@ -109,7 +118,12 @@ class CourseItem extends Component {
             </span>
           </div>
         </div>
-        <div className={styles.price} onClick={() => handlePriceClick(course)}>
+        <div
+          className={classnames(
+            styles.price,
+            unavaiableDate && styles.priceDateUnavailable
+          )}
+          onClick={() => handlePriceClick(course)}>
           <div>£{parseInt(course.price / 100.0, 10)}</div>
           <IconArrowRight className={styles.arrowIcon} />
         </div>

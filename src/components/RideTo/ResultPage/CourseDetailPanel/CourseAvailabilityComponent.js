@@ -23,8 +23,9 @@ class CourseAvailabilityComponent extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ loadingCourses: true })
-    this.loadCourses()
+    if (this.props.course.instant_book) {
+      this.setState({ loadingCourses: true }, () => this.loadCourses())
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -36,8 +37,7 @@ class CourseAvailabilityComponent extends React.Component {
       prevState.calendar.year !== this.state.calendar.year ||
       prevState.calendar.month !== this.state.calendar.month
     ) {
-      this.setState({ loadingCourses: true })
-      this.loadCourses()
+      this.setState({ loadingCourses: true }, () => this.loadCourses())
     }
   }
 

@@ -81,8 +81,8 @@ export const isRideTo = ({ source }) => {
 export const getBikeHireOptions = () => {
   return {
     no: 'Own Bike',
-    auto: 'Automatic Bike Hire',
-    manual: 'Manual Bike Hire'
+    auto: 'Automatic Scooter',
+    manual: 'Manual 125cc Motorcycle'
   }
 }
 

@@ -20,7 +20,9 @@ const CalendarHeader = ({
     calendar.month === currentMonth
   return (
     <div className={styles.container}>
-      <div className={styles.title}>Choose a date</div>
+      <div id={'choose-date'} className={styles.title}>
+        Choose a date
+      </div>
       <div
         className={classnames(styles.prev, prevDisabled && styles.disabled)}
         onClick={() => !prevDisabled && handlePrevMonth()}>
