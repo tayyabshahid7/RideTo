@@ -172,6 +172,19 @@ class ResultPage extends Component {
     )
   }
 
+  checkPartnerResults(courses) {
+    if (courses) {
+      const availableCourses = courses.available.filter(
+        course => course.is_partner
+      )
+      const unavailableCourses = courses.unavailable.filter(
+        course => course.is_partner
+      )
+      return availableCourses.length > 0 || unavailableCourses.length > 0
+    }
+    return true
+  }
+
   render() {
     const {
       courses,
@@ -201,6 +214,8 @@ class ResultPage extends Component {
         !instantDate
     }
 
+    const hasPartnerResults = this.checkPartnerResults(courses)
+
     return (
       <div className={styles.container}>
         <NavigationComponent
@@ -210,26 +225,38 @@ class ResultPage extends Component {
           navigation={navigation}
         />
         <Container className={styles.pageContainer}>
-          <Row>
-            <Col sm="6">
-              <div className={styles.headingDesktop}>Choose a Date</div>
-              <div className={styles.headingMobile}>
-                Choose a Date &amp; Location
-              </div>
-            </Col>
-          </Row>
+          {hasPartnerResults && (
+            <Row>
+              <Col sm="6">
+                <div className={styles.headingDesktop}>Choose a Date</div>
+                <div className={styles.headingMobile}>
+                  Choose a Date &amp; Location
+                </div>
+              </Col>
+            </Row>
+          )}
           <Row>
             <Col>
-              <DateSelector
-                date={date}
-                handleSetDate={handleSetDate}
-                className={styles.dateSelector}
-                courseType={courseType}
-              />
-              <div className={styles.mobileButtons}>
-                {this.renderMobileDateSelectorButton()}
-                {this.renderSortByDropdown()}
-              </div>
+              {hasPartnerResults ? (
+                <React.Fragment>
+                  <DateSelector
+                    date={date}
+                    handleSetDate={handleSetDate}
+                    className={styles.dateSelector}
+                    courseType={courseType}
+                  />
+                  <div className={styles.mobileButtons}>
+                    {this.renderMobileDateSelectorButton()}
+                    {this.renderSortByDropdown()}
+                  </div>
+                </React.Fragment>
+              ) : (
+                <div className={styles.nonParnetResultMessage}>
+                  We don't have any partner schools to book with in your area,
+                  however feel free to use our directory to contact a school
+                  near you.
+                </div>
+              )}
               <Loading loading={loading} className={styles.contentWrapper}>
                 {courses ? (
                   <div className={styles.mainContent}>
@@ -267,9 +294,11 @@ class ResultPage extends Component {
                       )}
                       {courses.unavailable.length > 0 && (
                         <React.Fragment>
-                          <div className={styles.subTitle}>
-                            Available on other dates
-                          </div>
+                          {hasPartnerResults && (
+                            <div className={styles.subTitle}>
+                              Available on other dates
+                            </div>
+                          )}
                           {courses.unavailable.map(
                             course =>
                               course.is_partner ? (
@@ -302,9 +331,11 @@ class ResultPage extends Component {
                       )}
                     </div>
                     <div className={styles.mapPanel}>
-                      <div className={styles.buttonsWrapper}>
-                        {this.renderSortByDropdown()}
-                      </div>
+                      {hasPartnerResults && (
+                        <div className={styles.buttonsWrapper}>
+                          {this.renderSortByDropdown()}
+                        </div>
+                      )}
                       {courses && (
                         <MapComponent
                           className={styles.mapWrapper}

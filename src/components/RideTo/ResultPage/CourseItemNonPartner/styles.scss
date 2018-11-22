@@ -5,14 +5,7 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
-    height: 450px;
-  }
-}
-
-.photo {
-  flex: 0 0 136px;
-  @media (max-width: 768px) {
-    flex: 0 0 200px;
+    height: 200px;
   }
 }
 
