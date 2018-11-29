@@ -1,4 +1,4 @@
-To install everything needed for development
+﻿To install everything needed for development
 
 yarn install
 
@@ -21,6 +21,7 @@ You need to create the .env.local file as this file will only be used on your lo
 
 Normally you will need the following env vars:
 
+FRONT_END_BASE_URL=http://localhost:3000/
 REACT_APP_REST_API_BASE_URL=http://localhost:8000/
 STRIPE_WIDGET_SECRET_KEY=[stripe TEST secret key]
 STRIPE_WIDGET_PUBLIC_KEY=[stripe TEST public key]
