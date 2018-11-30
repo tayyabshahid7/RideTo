@@ -37,8 +37,9 @@ do
     mkdir -p $APP_JS_DIR
     mkdir -p $APP_CSS_DIR
 
-    mv ${BUILD_JS_DIR}/${APP}.*.js.map ${APP_JS_DIR}/${APP}.js.map
-    mv ${BUILD_JS_DIR}/*.js ${APP_JS_DIR}/
+    # mv ${BUILD_JS_DIR}/${APP}.*.js.map ${APP_JS_DIR}/${APP}.js.map
+    mv ${BUILD_JS_DIR}/${APP}.js ${APP_JS_DIR}/
+    mv ${BUILD_JS_DIR}/${APP}.*.js ${APP_JS_DIR}/
     mv ${BUILD_CSS_DIR}/*.css ${APP_CSS_DIR}/
 
     if [ $? -eq 0 ]
