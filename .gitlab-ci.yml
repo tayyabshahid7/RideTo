@@ -53,6 +53,7 @@ deploy_staging:
     AWS_CLOUDFRONT_ID: E8ZUC9YWATM4A
     AWS_S3_BUCKET: bike-tests-staging
     APPS: widget,rideto
+    PUBLIC_URL: $STAGING_AWS_CDN
   script:
   - ./scripts/deploy.sh
   environment:
@@ -70,6 +71,7 @@ deploy_master:
     AWS_CLOUDFRONT_ID: EHLGMCG8HAANI
     AWS_S3_BUCKET: bike-tests
     APPS: widget,rideto
+    PUBLIC_URL: $PRODUCTION_AWS_CDN
   script:
   - ./scripts/deploy.sh
   environment:
