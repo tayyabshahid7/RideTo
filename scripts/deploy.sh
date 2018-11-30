@@ -24,9 +24,9 @@ echo "  Cloudfront ID: $AWS_CLOUDFRONT_ID"
 echo "  Bucket: $AWS_S3_BUCKET"
 echo ""
 
-aws s3 sync ${BUILD_JS_DIR} s3://${AWS_S3_BUCKET}/client/js --cache-control max-age=691200
-aws s3 sync ${BUILD_CSS_DIR} s3://${AWS_S3_BUCKET}/client/css --cache-control max-age=691200
-CDN_PATHS="$CDN_PATHS /client/*"
+aws s3 sync ${BUILD_JS_DIR} s3://${AWS_S3_BUCKET}/static/js --cache-control max-age=691200
+aws s3 sync ${BUILD_CSS_DIR} s3://${AWS_S3_BUCKET}/static/css --cache-control max-age=691200
+CDN_PATHS="$CDN_PATHS /static/*"
 
 if [ "${CDN_PATHS}" ]; then
     echo "Invalidate Cloudfront: $CDN_PATHS"
