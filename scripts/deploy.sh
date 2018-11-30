@@ -1,6 +1,6 @@
 #!/bin/bash
-BUILD_JS_DIR=build/static/js
-BUILD_CSS_DIR=build/static/css
+BUILD_JS_DIR=build/client/js
+BUILD_CSS_DIR=build/client/css
 
 if [ -z ${APPS} ]; then
     echo "APPS not specified, supply a comma seperated list of apps to deploy"
