@@ -11,14 +11,16 @@ const getClientEnvironment = require('./env')
 const paths = require('./paths')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
-// In development, we always serve from the root. This makes config easier.
-const publicPath = '/'
+// In development, we set localhost:3000 to allow dynamic imports
+const publicPath = process.env.FRONT_END_BASE_URL || 'http://localhost:3000/'
 // `publicUrl` is just like `publicPath`, but we will provide it to our app
 // as %PUBLIC_URL% in `index.html` and `process.env.PUBLIC_URL` in JavaScript.
 // Omit trailing slash as %PUBLIC_PATH%/xyz looks better than %PUBLIC_PATH%xyz.
 const publicUrl = ''
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl)
+
+const index = process.env.APP || 'index'
 
 // This is the development configuration.
 // It is focused on developer experience and fast rebuilds.
@@ -56,9 +58,9 @@ module.exports = {
     // This does not produce a real file. It's just the virtual path that is
     // served by WebpackDevServer in development. This is the JS bundle
     // containing code from all our entry points, and the Webpack runtime.
-    filename: 'static/js/bundle.js',
+    filename: `client/js/${index}.js`,
     // There are also additional JS chunk files if you use code splitting.
-    chunkFilename: 'static/js/[name].chunk.js',
+    chunkFilename: `client/js/${index}.[name].chunk.js`,
     // This is the URL that app is served from. We use "/" in development.
     publicPath: publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
@@ -296,12 +298,12 @@ module.exports = {
     // solution that requires the user to opt into importing specific locales.
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      Popper: 'popper.js'
-    })
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+    // new webpack.ProvidePlugin({
+    //   $: 'jquery',
+    //   // jQuery: 'jquery',
+    //   Popper: 'popper.js'
+    // })
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
