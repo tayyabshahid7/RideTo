@@ -159,6 +159,8 @@ export const getSchoolOrder = ({ schoolId, friendlyId }) => async dispatch => {
   return true
 }
 
+export { updateSchoolOrder }
+
 export const updateOrder = ({
   schoolId,
   friendlyId,
@@ -318,17 +320,11 @@ export default function reducer(state = initialState, action) {
         single: { ...state.single, loading: true }
       }
     case FETCH_SINGLE[SUCCESS]:
-      dayCourses = state.day.courses.map(
-        course =>
-          course.id !== action.data.course.id
-            ? course
-            : { ...action.data.course }
+      dayCourses = state.day.courses.map(course =>
+        course.id !== action.data.course.id ? course : { ...action.data.course }
       )
-      calendarCourses = state.calendar.courses.map(
-        course =>
-          course.id !== action.data.course.id
-            ? course
-            : { ...action.data.course }
+      calendarCourses = state.calendar.courses.map(course =>
+        course.id !== action.data.course.id ? course : { ...action.data.course }
       )
       return {
         ...state,
@@ -486,17 +482,11 @@ export default function reducer(state = initialState, action) {
         single: { ...state.single, saving: true, error: null }
       }
     case UPDATE[SUCCESS]:
-      dayCourses = state.day.courses.map(
-        course =>
-          course.id !== action.data.course.id
-            ? course
-            : { ...action.data.course }
+      dayCourses = state.day.courses.map(course =>
+        course.id !== action.data.course.id ? course : { ...action.data.course }
       )
-      calendarCourses = state.calendar.courses.map(
-        course =>
-          course.id !== action.data.course.id
-            ? course
-            : { ...action.data.course }
+      calendarCourses = state.calendar.courses.map(course =>
+        course.id !== action.data.course.id ? course : { ...action.data.course }
       )
       return {
         ...state,
