@@ -10,7 +10,7 @@ import Loading from 'components/Loading'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
-import { getExpectedPrice } from 'services/order'
+import { getExpectedPrice, getBikeHireDetail } from 'services/order'
 import { Button } from 'reactstrap'
 
 class OrderSummary extends Component {
@@ -50,6 +50,7 @@ class OrderSummary extends Component {
     return (
       <div className={styles.rowContainer}>
         {this.renderRow('Course', getCourseTitle(courseType))}
+        {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
         {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
         {priceInfo.training_price
@@ -61,7 +62,7 @@ class OrderSummary extends Component {
           : ''}
         {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no'
           ? this.renderRow(
-              'Bike Hire',
+              'Bike Hire Cost',
               `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
               100
             )
