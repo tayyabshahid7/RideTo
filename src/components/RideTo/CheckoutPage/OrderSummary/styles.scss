@@ -25,6 +25,7 @@
 }
 
 .subtitle {
+  min-width: 95px;
   font-size: 18px;
   font-weight: 500;
   font-family: var(--font-rift);
@@ -32,9 +33,11 @@
 }
 
 .content {
+  padding-top: 11px;
+  text-align: right;
   font-size: 15px;
-  line-height: inherit;
   font-family: var(--font-proxima);
+  line-height: normal;
 }
 
 .redHighlight {
