@@ -41,10 +41,6 @@ export const getCurrentLicenceOptions = () => {
       name: 'UK Driving Licence'
     },
     {
-      id: 'CURRENT_LICENCES_CBT',
-      name: 'CBT Certificate'
-    },
-    {
       id: 'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE',
       name: 'EU Licence (with UK counterpart licence number)'
     }
