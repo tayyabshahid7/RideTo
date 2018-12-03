@@ -83,12 +83,14 @@ class CourseMenuItem extends React.Component {
           onClick={this.handleShowSlider}
           className={classnames(styles.courseMenuItem, styles.hiddenOnMobile)}>
           COURSES
-          <div className={styles.courseMenu}>
-            <div className={overlay} onClick={this.handleHideSlider} />
-            <div className={slider}>
-              <CourseSlider sidepanel={false} />,
+          {courseCardsVisible && (
+            <div className={styles.courseMenu}>
+              <div className={overlay} onClick={this.handleHideSlider} />
+              <div className={slider}>
+                <CourseSlider sidepanel={false} />,
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </React.Fragment>
     )
