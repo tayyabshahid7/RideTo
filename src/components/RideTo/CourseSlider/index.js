@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import RideToSlider from 'components/RideToSlider'
+import LazySlide from './LazySlide'
 import { getStaticData } from 'services/page'
 import ArrowSlideLeft from 'assets/images/rideto/ArrowSlideLeft.svg'
 import ArrowSlideRight from 'assets/images/rideto/ArrowSlideRight.svg'
@@ -89,12 +90,7 @@ class CourseSlider extends React.Component {
         <RideToSlider settings={settings}>
           {slides.map((slide, index) => (
             <button key={index} onClick={() => this.handleDetails(slide)}>
-              <div
-                key={slide.id}
-                className={styles.slide}
-                style={{ backgroundImage: `url(${slide.details.image})` }}>
-                <div className={styles.title}>{slide.name}</div>
-              </div>
+              <LazySlide slide={slide} styles={styles} />
             </button>
           ))}
         </RideToSlider>
