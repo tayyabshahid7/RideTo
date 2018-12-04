@@ -11,9 +11,9 @@ const Button = ({ children, href, className, onClick, target = null }) => {
       {children}
     </a>
   ) : (
-    <a onClick={onClick} className={classes}>
+    <button onClick={onClick} className={classes}>
       {children}
-    </a>
+    </button>
   )
 }
 

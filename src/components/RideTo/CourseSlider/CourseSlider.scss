@@ -60,6 +60,13 @@ $break-point-mobile-425: 425px;
       text-decoration: none;
     }
   }
+
+  button {
+    appearance: none;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
 }
 
 .slide {

@@ -58,9 +58,9 @@ class UserMenuItem extends React.Component {
               )}>
               <a href="/account/dashboard">Dashboard</a>
               <div className={styles.divider} />
-              <a className={styles.logoutLink} onClick={this.handleLogout}>
+              <button className={styles.logoutLink} onClick={this.handleLogout}>
                 Logout
-              </a>
+              </button>
             </div>
             {menuOpen && (
               <div className={styles.overlay}>
@@ -69,9 +69,11 @@ class UserMenuItem extends React.Component {
                 </div>
                 <div>
                   <div className={styles.divider} />
-                  <a className={styles.logoutLink} onClick={this.handleLogout}>
+                  <button
+                    className={styles.logoutLink}
+                    onClick={this.handleLogout}>
                     Logout
-                  </a>
+                  </button>
                 </div>
               </div>
             )}

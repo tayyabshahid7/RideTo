@@ -105,7 +105,8 @@ class FilteredTable extends Component {
                   <a
                     className={styles.respondLink}
                     href={`${order.school_confirm_url}`}
-                    target="_blank">
+                    target="_blank"
+                    rel="noopener noreferrer">
                     Respond
                   </a>
                 </td>
@@ -115,8 +116,8 @@ class FilteredTable extends Component {
                   {order.bike_hire === 'auto'
                     ? 'Automatic'
                     : order.bike_hire === 'manual'
-                      ? 'Manual'
-                      : 'None'}
+                    ? 'Manual'
+                    : 'None'}
                 </td>
                 <td>{order.location}</td>
               </tr>

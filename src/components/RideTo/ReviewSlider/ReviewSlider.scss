@@ -166,6 +166,13 @@
   position: relative;
   display: inline-block;
 
+  button {
+    appearance: none;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+
   &:global(.slick-active) {
     .dot {
       background: grey;

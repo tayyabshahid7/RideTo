@@ -34,9 +34,9 @@ const ReviewSlider = () => {
   const settings = {
     customPaging: i => {
       return (
-        <a>
+        <button>
           <div className={styles.dot} />
-        </a>
+        </button>
       )
     },
     className: styles.slider,
