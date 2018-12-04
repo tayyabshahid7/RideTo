@@ -427,5 +427,9 @@ module.exports = {
     net: 'empty',
     tls: 'empty',
     child_process: 'empty'
+  },
+  // Todo: Remove this for better performance
+  performance: {
+    hints: false
   }
 }
