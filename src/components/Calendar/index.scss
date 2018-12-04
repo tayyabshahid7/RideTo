@@ -19,10 +19,13 @@
 
 .calendarTypeInactive,
 .calendarTypeActive {
-  appearance: none;
-  padding: 0;
-  background: transparent;
-  border: 0;
+  button {
+    color: inherit;
+    appearance: none;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
 }
 
 .calendarTypeInactive {
@@ -30,7 +33,10 @@
 }
 .calendarTypeActive {
   color: #2cceac;
-  cursor: pointer;
+
+  button {
+    cursor: pointer;
+  }
 }
 
 .full {

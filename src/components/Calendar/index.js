@@ -37,7 +37,7 @@ class CalendarComponent extends Component {
                   View Week
                 </button>
               </span>{' '}
-              |
+              |{' '}
               <span
                 className={
                   viewMode === CALENDAR_VIEW.WEEK
