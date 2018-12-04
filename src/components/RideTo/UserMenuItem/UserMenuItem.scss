@@ -67,7 +67,11 @@
 }
 
 .logoutLink {
+  appearance: none;
+  padding: 0;
   color: #898989 !important;
+  background: transparent;
+  border: 0;
   &:hover {
     color: black;
   }

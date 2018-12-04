@@ -62,7 +62,9 @@ const CheckoutForm = ({
         <div className={styles.payWith}>
           <span>Pay With:</span>
           <div className={styles.cardImages}>
-            {CARD_IMAGES.map(src => <img key={src} src={src} alt="" />)}
+            {CARD_IMAGES.map(src => (
+              <img key={src} src={src} alt="" />
+            ))}
           </div>
         </div>
 
@@ -121,7 +123,8 @@ const CheckoutForm = ({
             <a
               style={{ color: widget.button_color }}
               href={widget.terms}
-              target="_blank">
+              target="_blank"
+              rel="noopener noreferrer">
               terms and conditions.
             </a>
           </div>
@@ -140,12 +143,12 @@ const CheckoutForm = ({
         </div>
       )}
 
-      <a
+      <button
         className={btnClass}
         disabled={isSaving}
         onClick={() => onSubmit(stripe)}>
         Confirm and Pay
-      </a>
+      </button>
     </div>
   )
 }

@@ -18,7 +18,11 @@ const DashboardChecklist = ({ items }) => {
             size="large"
             checked={item.checked}
             name={item.text}>
-            <a href={item.href} target="_blank" className={styles.checkLinks}>
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.checkLinks}>
               {item.text}
             </a>
           </Checkbox>

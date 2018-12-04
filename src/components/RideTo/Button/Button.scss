@@ -1,12 +1,14 @@
 .button {
+  appearance: none;
   cursor: pointer;
   color: white !important;
   background-color: var(--primary-color);
   display: flex;
   justify-content: center;
   align-items: center;
+  border: 0;
 
-  padding: 22px 32px;
+  padding: 13px 32px;
 
   font-size: 20px;
   font-family: var(--font-rift);
@@ -17,7 +19,7 @@
   }
 
   @media (max-width: 768px) {
-    padding: 16px 32px;
+    padding: 13px 32px;
     justify-content: space-between;
   }
 }

@@ -52,9 +52,9 @@ class CourseSlider extends React.Component {
     const settings = {
       customPaging: i => {
         return (
-          <a>
+          <button>
             <div className={styles.dot} />
-          </a>
+          </button>
         )
       },
       dotsClass: styles.dots,
@@ -88,14 +88,14 @@ class CourseSlider extends React.Component {
       <React.Fragment>
         <RideToSlider settings={settings}>
           {slides.map((slide, index) => (
-            <a key={index} onClick={() => this.handleDetails(slide)}>
+            <button key={index} onClick={() => this.handleDetails(slide)}>
               <div
                 key={slide.id}
                 className={styles.slide}
                 style={{ backgroundImage: `url(${slide.details.image})` }}>
                 <div className={styles.title}>{slide.name}</div>
               </div>
-            </a>
+            </button>
           ))}
         </RideToSlider>
         {sidepanel && (
