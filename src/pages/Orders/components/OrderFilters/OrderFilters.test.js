@@ -20,7 +20,7 @@ it('Renders Filters', () => {
     <OrderFilters filters={FILTERS} selectedFilter={FILTERS[1]} />
   )
 
-  const filter = wrapper.find('a').at(1)
+  const filter = wrapper.find('button').at(1)
   expect(filter.text()).toBe(FILTERS[1].name)
   expect(filter.hasClass('active')).toBe(true)
 })
@@ -32,7 +32,7 @@ it('Fires DateFilter event', () => {
   )
 
   wrapper
-    .find('a')
+    .find('button')
     .first()
     .simulate('click')
 
