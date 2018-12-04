@@ -10,8 +10,13 @@
 }
 
 .filter {
+  appearance: none;
+  padding-top: 0;
   padding-right: 8px;
+  padding-bottom: 0;
   padding-left: 8px;
+  background-color: transparent;
+  border: 0;
   border-right: solid 1px black;
   cursor: pointer;
 }

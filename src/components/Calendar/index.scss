@@ -17,12 +17,26 @@
   flex: 0 0 60px;
 }
 
+.calendarTypeInactive,
+.calendarTypeActive {
+  button {
+    color: inherit;
+    appearance: none;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+}
+
 .calendarTypeInactive {
   color: grey;
 }
 .calendarTypeActive {
   color: #2cceac;
-  cursor: pointer;
+
+  button {
+    cursor: pointer;
+  }
 }
 
 .full {

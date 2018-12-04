@@ -28,23 +28,23 @@ class CalendarComponent extends Component {
                     ? styles.calendarTypeActive
                     : styles.calendarTypeInactive
                 }>
-                <a
+                <button
                   onClick={() =>
                     handleCustomEvent('change-calendar-setting', {
                       viewMode: CALENDAR_VIEW.WEEK
                     })
                   }>
                   View Week
-                </a>
+                </button>
               </span>{' '}
-              |
+              |{' '}
               <span
                 className={
                   viewMode === CALENDAR_VIEW.WEEK
                     ? styles.calendarTypeActive
                     : styles.calendarTypeInactive
                 }>
-                <a
+                <button
                   onClick={() =>
                     handleCustomEvent('change-calendar-setting', {
                       viewMode: CALENDAR_VIEW.MONTH
@@ -52,7 +52,7 @@ class CalendarComponent extends Component {
                   }>
                   {' '}
                   View Month
-                </a>
+                </button>
               </span>
             </div>
           </Col>
