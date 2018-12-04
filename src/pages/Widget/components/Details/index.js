@@ -33,7 +33,11 @@ const Details = ({ widget, address = '' }) => {
       <div className={styles.block}>
         I can confirm that I have read and agreed to the requirements and{' '}
         <strong>
-          <a style={style} href={widget.terms} target="_blank">
+          <a
+            style={style}
+            href={widget.terms}
+            target="_blank"
+            rel="noopener noreferrer">
             terms and conditions
           </a>
         </strong>

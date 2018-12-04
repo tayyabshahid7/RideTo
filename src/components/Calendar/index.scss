@@ -17,6 +17,14 @@
   flex: 0 0 60px;
 }
 
+.calendarTypeInactive,
+.calendarTypeActive {
+  appearance: none;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
 .calendarTypeInactive {
   color: grey;
 }

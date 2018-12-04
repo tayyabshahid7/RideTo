@@ -33,18 +33,18 @@ const COURSE1 = {
   supplier: 697
 }
 
-const COURSE2 = {
-  id: 2,
-  course_type: {
-    id: 2,
-    name: 'CBT Training'
-  },
-  date: '2018-07-25',
-  time: '09:00:00',
-  spaces: 2,
-  orders: [],
-  supplier: 697
-}
+// const COURSE2 = {
+//   id: 2,
+//   course_type: {
+//     id: 2,
+//     name: 'CBT Training'
+//   },
+//   date: '2018-07-25',
+//   time: '09:00:00',
+//   spaces: 2,
+//   orders: [],
+//   supplier: 697
+// }
 
 it('Renders orders and space list', () => {
   const wrapper = mount(
