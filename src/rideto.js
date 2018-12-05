@@ -4,13 +4,9 @@ import ReactDOM from 'react-dom'
 import loadable from '@loadable/component'
 
 import { setVersionInfo } from 'services/version'
-// import 'bootstrap'
-import 'font-awesome/css/font-awesome.css'
 import 'bootstrap'
 import './rideto_bootstrap.scss'
 import './rideto_constants.scss'
-// import './scss/fonts/RiftSoftMedium.scss'
-// import './scss/fonts/ProximaNova.scss'
 
 setVersionInfo()
 
