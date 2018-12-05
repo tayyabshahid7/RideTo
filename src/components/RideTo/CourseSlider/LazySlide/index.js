@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import 'intersection-observer'
 
-class Image extends Component {
+class LazySlide extends Component {
   constructor(props) {
     super(props)
 
@@ -13,17 +13,27 @@ class Image extends Component {
   }
 
   componentDidMount() {
-    const observer = new IntersectionObserver(this.intersectionObserverCallback)
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0
+    }
+    const observer = new IntersectionObserver(
+      this.intersectionObserverCallback,
+      options
+    )
 
     observer.observe(this.image.current)
   }
 
   intersectionObserverCallback = (entries, observer) => {
     entries.forEach(entry => {
-      this.setState({
-        isVisible: true
-      })
-      observer.unobserve(entry.target)
+      if (entry.isIntersecting) {
+        this.setState({
+          isVisible: true
+        })
+        observer.unobserve(entry.target)
+      }
     })
   }
 
@@ -45,4 +55,4 @@ class Image extends Component {
   }
 }
 
-export default Image
+export default LazySlide
