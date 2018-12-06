@@ -58,3 +58,9 @@ export const BANK_HOLIDAYS = [
   '26-12-2019',
   '01-01-2020'
 ]
+
+export const COURSE_TYPES = [
+  { value: 'INTRO_TO_MOTORCYCLING', name: 'Introduction to motorcycling' },
+  { value: 'LICENCE_CBT', name: 'CBT Training' },
+  { value: 'LICENCE_CBT_RENEWAL', name: 'CBT Training Renewal' }
+]

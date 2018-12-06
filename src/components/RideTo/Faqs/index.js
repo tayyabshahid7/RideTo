@@ -57,7 +57,7 @@ export class Faqs extends Component {
                 <img src={ArrowRight} alt="button arrow" />
               </Button>
             </div>
-            <div class={styles.images}>
+            <div className={styles.images}>
               <img
                 src="/static/images/home-carousel-image-3.jpg"
                 className={classnames(styles.getStartedImage, styles.right)}
