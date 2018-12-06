@@ -31,15 +31,14 @@ class CalendarContent extends Component {
 
     if (day.disabled) return null
     if (isInstantBook) {
-      return day.courses[0].pricing.price / 100
+      return Math.trunc(day.courses[0].pricing.price / 100)
     }
     if (this.isBankHoliday(moment(day.date).format('DD-MM-YYYY'))) {
-      return nonInstantPrices.bank_holiday
+      return Math.trunc(nonInstantPrices.bank_holiday)
     } else if (day.date.getDay() === 6 || day.date.getDay() === 0) {
-      // saturdary and sunday
-      return nonInstantPrices.weekend
+      return Math.trunc(nonInstantPrices.weekend)
     } else {
-      return nonInstantPrices.weekday
+      return Math.trunc(nonInstantPrices.weekday)
     }
   }
 
