@@ -199,7 +199,7 @@ class ResultPage extends Component {
     const {
       courses,
       courseType,
-      // postcode,
+      postcode,
       date,
       handleSetDate,
       navigation,
@@ -235,6 +235,7 @@ class ResultPage extends Component {
           onCourseChange={course => {
             this.handleCourseChange(course)
           }}
+          postcode={postcode}
           courseType={courseType}
           navigation={navigation}
         />

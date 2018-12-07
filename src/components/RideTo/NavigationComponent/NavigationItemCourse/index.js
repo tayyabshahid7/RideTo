@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
 import styles from './NavigationItemCourse.scss'
-import Button from 'components/RideTo/Button'
-import { COURSE_TYPES } from 'common/constants'
+import { AVAILABLE_COURSE_TYPES } from 'common/constants'
 
 class NavigationItemCourse extends Component {
   constructor(props) {
@@ -10,29 +9,24 @@ class NavigationItemCourse extends Component {
 
     this.state = {
       courseType: this.props.courseType,
-      editable: false,
-      error: false
+      subtitle: this.props.subtitle,
+      editable: false
     }
 
     this.handleClick = this.handleClick.bind(this)
-    this.handleChange = this.handleChange.bind(this)
     this.handleToggleEditable = this.handleToggleEditable.bind(this)
   }
 
-  handleChange(event) {
-    const newCourseType = event.target.value
-    this.setState({ courseType: newCourseType })
-
-    // if (newCourseType.length > 0) {
-    //   this.setState({ courseType: newCourseType, error: false })
-    // } else {
-    //   this.setState({ courseType: newCourseType, error: true })
-    // }
-  }
-
-  handleClick() {
-    if (this.props.courseType !== this.state.courseType) {
-      this.props.onCourseUpdate(this.state.courseType)
+  handleClick(selectedCourseType) {
+    if (selectedCourseType.constant !== this.state.courseType) {
+      this.setState(
+        {
+          courseType: selectedCourseType.constant,
+          subtitle: selectedCourseType.name,
+          editable: false
+        },
+        () => this.props.onCourseUpdate(selectedCourseType.constant)
+      )
     } else {
       this.setState({ editable: false })
     }
@@ -40,19 +34,25 @@ class NavigationItemCourse extends Component {
 
   handleToggleEditable() {
     const currentPage = window.location.pathname
-
     if (
       !this.state.editable &&
       !['/course-addons/', '/course-type-selection'].includes(currentPage)
     ) {
       this.setState({ editable: true })
+    } else {
+      this.setState({ editable: false })
     }
   }
 
   render() {
-    const { title, fullWidth = false, className, subtitle } = this.props
-
-    const { courseType, editable, error } = this.state
+    const {
+      title,
+      fullWidth = false,
+      className,
+      courseTypesOptions
+    } = this.props
+    const { courseType, editable, subtitle } = this.state
+    console.log(this.props)
 
     return (
       <div
@@ -67,25 +67,27 @@ class NavigationItemCourse extends Component {
         <div
           className={classnames(styles.subtitle, editable && styles.editable)}>
           {editable ? (
-            <React.Fragment>
-              <select
-                name="coruse_type"
-                defaultValue={courseType}
-                onChange={this.handleChange}
-                className={classnames(error && styles.inputError)}
-                required>
-                {COURSE_TYPES.map((course_type, index) => (
-                  <option key={index} value={course_type.value}>
-                    {course_type.name}
-                  </option>
-                ))}
-              </select>
-              <Button
-                className={styles.updateButton}
-                onClick={this.handleClick}>
-                Update
-              </Button>
-            </React.Fragment>
+            <div className={styles.courseTypeSelector}>
+              <div
+                onClick={this.handleToggleEditable}
+                className={styles.closeButton}>
+                Close
+              </div>
+              {courseTypesOptions.map(
+                (course_type, index) =>
+                  AVAILABLE_COURSE_TYPES.includes(course_type.constant) && (
+                    <div
+                      key={index}
+                      className={classnames(
+                        styles.selectCourseOption,
+                        course_type.constant === courseType && styles.selected
+                      )}
+                      onClick={() => this.handleClick(course_type)}>
+                      {course_type.name}
+                    </div>
+                  )
+              )}
+            </div>
           ) : (
             subtitle
           )}

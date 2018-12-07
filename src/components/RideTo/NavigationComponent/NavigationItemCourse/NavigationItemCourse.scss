@@ -98,3 +98,35 @@
     padding: 10px !important;
   }
 }
+
+.courseTypeSelector {
+  z-index: 1;
+  width: 100%;
+  background-color: white;
+  border: none;
+  padding: 10px;
+  height: fit-content;
+  box-shadow: 0px 2px 8px -3px var(--grey-color);
+  @media (max-width: 450px) {
+    width: 250px;
+  }
+}
+
+.selected {
+  font-weight: bold;
+}
+
+.selectCourseOption {
+  background-color: white;
+  padding: 3px;
+  border: none;
+  &:hover {
+    background-color: var(--primary-color);
+    color: white;
+  }
+}
+
+.closeButton {
+  border: none;
+  text-align: right;
+}
