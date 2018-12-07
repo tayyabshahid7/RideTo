@@ -93,8 +93,8 @@
 .updateButton {
   justify-content: center !important;
   cursor: pointer;
-  padding: 20px 30px !important;
+  padding: 0 20px;
   @media (max-width: 768px) {
-    padding: 10px !important;
+    padding: 0 10px;
   }
 }
