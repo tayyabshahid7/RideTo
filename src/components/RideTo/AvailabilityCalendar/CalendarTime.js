@@ -3,6 +3,14 @@ import classnames from 'classnames'
 import styles from './CalendarTime.scss'
 
 class CalendarTime extends Component {
+  componentDidUpdate(prevProps) {
+    const { courses, handleTimeSelect } = this.props
+
+    if (courses.length !== prevProps.courses.length && courses.length === 1) {
+      handleTimeSelect(courses[0])
+    }
+  }
+
   render() {
     const { calendar, courses, handleTimeSelect } = this.props
 
