@@ -20,9 +20,8 @@ const CalendarDayCell = ({ day, price, calendar, handleDateSelect }) => {
           handleDateSelect(dateStr)
         }
       }}>
-      {day.date.getDate()}
-      <br />
-      {price && `£${price}`}
+      <span>{day.date.getDate()}</span>
+      <b>{price && `£${price}`}</b>
     </li>
   )
 }
