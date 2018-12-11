@@ -151,7 +151,7 @@ class ResultPage extends Component {
     )
   }
 
-  renderRidetoButton(bookNowDisabled, instantDate, bike_hire) {
+  renderRidetoButton(bookNowDisabled, instantDate, instantCourse, bike_hire) {
     return (
       <RideToButton
         className={styles.action}
@@ -162,11 +162,20 @@ class ResultPage extends Component {
             if (!bookNowDisabled) {
               this.onBookNow()
             } else {
+              let chooseTimeDiv = document.getElementById(
+                'choose-time-validate'
+              )
+
               if (!instantDate) {
                 let chooseDateDiv = document.getElementById('choose-date')
                 chooseDateDiv.classList.remove('highlight-required')
                 chooseDateDiv.scrollIntoView()
                 chooseDateDiv.classList.add('highlight-required')
+              }
+              if (!instantCourse && chooseTimeDiv) {
+                chooseTimeDiv.classList.remove('highlight-required')
+                chooseTimeDiv.scrollIntoView()
+                chooseTimeDiv.classList.add('highlight-required')
               } else if (!bike_hire) {
                 let bikeTypeDiv = document.getElementById('choose-bike')
                 bikeTypeDiv.classList.remove('highlight-required')
@@ -375,10 +384,13 @@ class ResultPage extends Component {
           className={styles.noPadding}
           visible={selectedCourse !== null}
           headingImage={selectedCourse ? selectedCourse.image : ''}
-          onDismiss={() => this.setState({ selectedCourse: null })}
+          onDismiss={() =>
+            this.setState({ selectedCourse: null, instantCourse: null })
+          }
           footer={this.renderRidetoButton(
             bookNowDisabled,
             instantDate,
+            instantCourse,
             bike_hire
           )}>
           {selectedCourse && (
