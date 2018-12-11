@@ -77,7 +77,8 @@ class CheckoutPage extends Component {
         expiry_date: false,
         postcode: '',
         voucher_code: '',
-        accept_terms: false
+        accept_terms: false,
+        email_optin: false
       },
       priceInfo: {
         price: 0,
@@ -430,7 +431,7 @@ class CheckoutPage extends Component {
 
     const data = {
       ...details,
-      email_optin: details.email_optin || false,
+      // email_optin: details.email_optin || false,
       school_course_id: courseId,
       user_birthdate: birthdate.format('YYYY-MM-DD'),
       user_age: moment().diff(birthdate, 'years'),
