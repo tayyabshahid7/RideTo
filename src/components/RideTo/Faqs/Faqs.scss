@@ -10,6 +10,11 @@
       flex-direction: column;
       justify-content: center;
       margin-top: 30px;
+
+      @media (max-width: 768px) {
+        align-items: center;
+        text-align: center;
+      }
     }
 
     @media (max-width: 425px) {
@@ -29,9 +34,19 @@
 }
 
 .container {
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+
   @media (max-width: 425px) {
     padding-left: 32px !important;
     padding-right: 32px !important;
+  }
+}
+
+.images {
+  @media (max-width: 768px) {
+    display: none;
   }
 }
 
@@ -99,10 +114,18 @@
   font-family: var(--font-rift-bold);
   border: 1px solid var(--primary-color);
   color: var(--primary-color) !important;
-  height: 56px;
   width: 50%;
   justify-content: space-between;
-  padding: 22px;
+
+  @media (max-width: 768px) {
+    justify-content: center !important;
+  }
+
+  img {
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
 }
 
 .hiddenOnMobile {

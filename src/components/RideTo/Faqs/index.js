@@ -20,7 +20,7 @@ export class Faqs extends Component {
     const { sidePanelVisible } = this.state
     return (
       <Fragment>
-        <div className={classnames(styles.faqsResults, styles.hiddenOnMobile)}>
+        <div className={classnames(styles.faqsResults)}>
           <div
             className={classnames(
               'container',
@@ -57,7 +57,7 @@ export class Faqs extends Component {
                 <img src={ArrowRight} alt="button arrow" />
               </Button>
             </div>
-            <div>
+            <div className={styles.images}>
               <img
                 src="/static/images/home-carousel-image-3.jpg"
                 className={classnames(styles.getStartedImage, styles.right)}

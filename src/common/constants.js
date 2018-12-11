@@ -44,3 +44,23 @@ export const RIDER_TYPE = {
   CAREER: 'RIDER_TYPE_CAREER',
   COMMUTER: 'RIDER_TYPE_COMMUTER'
 }
+
+export const BANK_HOLIDAYS = [
+  '25-12-2018',
+  '26-12-2018',
+  '01-01-2019',
+  '19-04-2019',
+  '22-04-2019',
+  '06-05-2019',
+  '27-05-2019',
+  '26-08-2019',
+  '25-12-2019',
+  '26-12-2019',
+  '01-01-2020'
+]
+
+export const AVAILABLE_COURSE_TYPES = [
+  'INTRO_TO_MOTORCYCLING',
+  'LICENCE_CBT',
+  'LICENCE_CBT_RENEWAL'
+]

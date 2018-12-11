@@ -3,7 +3,7 @@ import moment from 'moment'
 import classnames from 'classnames'
 import styles from './CalendarDayCell.scss'
 
-const CalendarDayCell = ({ day, calendar, handleDateSelect }) => {
+const CalendarDayCell = ({ day, price, calendar, handleDateSelect }) => {
   const dateStr = moment(day.date).format('YYYY-MM-DD')
   const selectedDay = calendar.selectedDate === dateStr
   return (
@@ -20,7 +20,8 @@ const CalendarDayCell = ({ day, calendar, handleDateSelect }) => {
           handleDateSelect(dateStr)
         }
       }}>
-      {day.date.getDate()}
+      <span>{day.date.getDate()}</span>
+      <b>{price && `£${price}`}</b>
     </li>
   )
 }

@@ -15,12 +15,12 @@ const OrderFilters = ({ filters, selectedFilter, onDateFilter, onSearch }) => {
               : styles.filter
 
           return (
-            <a
+            <button
               key={filter.name}
               className={className}
               onClick={() => onDateFilter(filter)}>
               {filter.name}
-            </a>
+            </button>
           )
         })}
       </div>

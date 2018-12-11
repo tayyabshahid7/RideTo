@@ -17,6 +17,7 @@ import { RidingExperiences, RiderTypes } from 'common/info'
 import Select from 'components/RideTo/Select'
 import { getCurrentLicenceOptions } from 'services/customer'
 import { getCourseTitle } from 'services/course'
+import { getBikeHireDetail } from 'services/order'
 import styles from './styles.scss'
 
 class UserDetails extends Component {
@@ -82,6 +83,7 @@ class UserDetails extends Component {
     return (
       <div className={styles.rowContainer}>
         {this.renderRow('Course', getCourseTitle(courseType))}
+        {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
         {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
         {priceInfo.training_price
@@ -93,7 +95,7 @@ class UserDetails extends Component {
           : ''}
         {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no'
           ? this.renderRow(
-              'Bike Hire',
+              'Bike Hire Cost',
               `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
               100
             )

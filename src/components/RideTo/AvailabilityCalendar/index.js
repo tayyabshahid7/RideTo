@@ -10,7 +10,8 @@ class AvailabilityCalendar extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dateAlreadyChecked: false
+      dateAlreadyChecked: false,
+      bankHolidays: null
     }
   }
 
@@ -86,6 +87,7 @@ class AvailabilityCalendar extends Component {
       isInstantBook,
       disablePreviousDates,
       nonInstantStartTime,
+      nonInstantPrices,
       showTrainingTime = true
     } = this.props
     return (
@@ -97,6 +99,8 @@ class AvailabilityCalendar extends Component {
           disablePreviousDates={disablePreviousDates}
         />
         <CalendarContent
+          isInstantBook={isInstantBook}
+          nonInstantPrices={nonInstantPrices}
           days={days}
           calendar={calendar}
           handleDateSelect={handleDateSelect}

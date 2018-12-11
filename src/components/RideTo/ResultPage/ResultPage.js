@@ -40,6 +40,7 @@ class ResultPage extends Component {
     }
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
+    this.handleCourseChange = this.handleCourseChange.bind(this)
   }
 
   handleDetailClick(course) {
@@ -72,6 +73,15 @@ class ResultPage extends Component {
     const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     if (actualPostcode !== newPostcode) {
       window.location = `/course-location/?postcode=${newPostcode}&courseType=${courseType}`
+    }
+  }
+
+  handleCourseChange(newCourseType) {
+    const qs = parseQueryString(window.location.search.slice(1))
+    const postcode = qs.postcode ? qs.postcode.toUpperCase() : ''
+    const actualCourseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
+    if (actualCourseType !== newCourseType) {
+      window.location = `/course-location/?postcode=${postcode}&courseType=${newCourseType}`
     }
   }
 
@@ -189,7 +199,7 @@ class ResultPage extends Component {
     const {
       courses,
       courseType,
-      // postcode,
+      postcode,
       date,
       handleSetDate,
       navigation,
@@ -222,6 +232,11 @@ class ResultPage extends Component {
           onPostcodeChange={postcode => {
             this.handlePostcodeChange(postcode)
           }}
+          onCourseChange={course => {
+            this.handleCourseChange(course)
+          }}
+          postcode={postcode}
+          courseType={courseType}
           navigation={navigation}
         />
         <Container className={styles.pageContainer}>
@@ -299,33 +314,32 @@ class ResultPage extends Component {
                               Available on other dates
                             </div>
                           )}
-                          {courses.unavailable.map(
-                            course =>
-                              course.is_partner ? (
-                                <CourseItem
-                                  id={`card-course-${course.id}`}
-                                  unavaiableDate={true}
-                                  course={course}
-                                  className={styles.courseSpacing}
-                                  key={course.id}
-                                  handleDetailClick={this.handleDetailClick.bind(
-                                    this
-                                  )}
-                                  handlePriceClick={this.handlePriceClick.bind(
-                                    this
-                                  )}
-                                  handleReviewClick={this.handleReviewClick.bind(
-                                    this
-                                  )}
-                                />
-                              ) : (
-                                <CourseItemNonPartner
-                                  id={`card-course-${course.id}`}
-                                  course={course}
-                                  className="mt-3"
-                                  key={course.id}
-                                />
-                              )
+                          {courses.unavailable.map(course =>
+                            course.is_partner ? (
+                              <CourseItem
+                                id={`card-course-${course.id}`}
+                                unavaiableDate={true}
+                                course={course}
+                                className={styles.courseSpacing}
+                                key={course.id}
+                                handleDetailClick={this.handleDetailClick.bind(
+                                  this
+                                )}
+                                handlePriceClick={this.handlePriceClick.bind(
+                                  this
+                                )}
+                                handleReviewClick={this.handleReviewClick.bind(
+                                  this
+                                )}
+                              />
+                            ) : (
+                              <CourseItemNonPartner
+                                id={`card-course-${course.id}`}
+                                course={course}
+                                className="mt-3"
+                                key={course.id}
+                              />
+                            )
                           )}
                         </React.Fragment>
                       )}

@@ -218,6 +218,7 @@ class CourseAvailabilityComponent extends React.Component {
             handleNextMonth={this.handleNextMonth.bind(this)}
             handleTimeSelect={this.handleTimeSelect.bind(this)}
             isInstantBook={!!course.instant_book}
+            nonInstantPrices={course.week_prices}
             nonInstantStartTime={course.startTime}
             showChooseDate={true}
             courses={courses}

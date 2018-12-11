@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import RideToSlider from 'components/RideToSlider'
+import LazySlide from './LazySlide'
 import { getStaticData } from 'services/page'
 import ArrowSlideLeft from 'assets/images/rideto/ArrowSlideLeft.svg'
 import ArrowSlideRight from 'assets/images/rideto/ArrowSlideRight.svg'
@@ -52,9 +53,9 @@ class CourseSlider extends React.Component {
     const settings = {
       customPaging: i => {
         return (
-          <a>
+          <button>
             <div className={styles.dot} />
-          </a>
+          </button>
         )
       },
       dotsClass: styles.dots,
@@ -88,14 +89,9 @@ class CourseSlider extends React.Component {
       <React.Fragment>
         <RideToSlider settings={settings}>
           {slides.map((slide, index) => (
-            <a key={index} onClick={() => this.handleDetails(slide)}>
-              <div
-                key={slide.id}
-                className={styles.slide}
-                style={{ backgroundImage: `url(${slide.details.image})` }}>
-                <div className={styles.title}>{slide.name}</div>
-              </div>
-            </a>
+            <button key={index} onClick={() => this.handleDetails(slide)}>
+              <LazySlide slide={slide} styles={styles} />
+            </button>
           ))}
         </RideToSlider>
         {sidepanel && (

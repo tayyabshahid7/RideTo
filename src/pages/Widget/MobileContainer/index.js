@@ -75,7 +75,11 @@ class MobileContainer extends React.Component {
           <div className={styles.block}>
             You can also view the terms{' '}
             <strong>
-              <a style={style} href={this.widget.terms} target="_blank">
+              <a
+                style={style}
+                href={this.widget.terms}
+                target="_blank"
+                rel="noopener noreferrer">
                 here.
               </a>
             </strong>
@@ -83,11 +87,11 @@ class MobileContainer extends React.Component {
         </div>
 
         <div className={styles.actions}>
-          <a
+          <button
             className="WidgetBtn"
             onClick={() => this.handleNav(selectedSupplier.id)}>
             Continue
-          </a>
+          </button>
         </div>
       </div>
     )

@@ -4,14 +4,8 @@ import { connect } from 'react-redux'
 import moment from 'moment'
 import EventForm from './EventForm'
 import ConfirmModal from 'components/Modals/ConfirmModal'
-import {
-  getSingleEvent,
-  updateEvent,
-  deleteEvent,
-  fetchPrice
-} from 'store/event'
+import { getSingleEvent, updateEvent, deleteEvent } from 'store/event'
 import { unsetSelectedCourse } from 'store/course'
-import { loadEventTypes } from 'store/info'
 import { DATE_FORMAT } from '../../../common/constants'
 
 class EditEventComponent extends Component {
@@ -141,8 +135,6 @@ const mapDispatchToProps = dispatch =>
       getSingleEvent,
       updateEvent,
       deleteEvent,
-      loadEventTypes,
-      fetchPrice,
       unsetSelectedCourse
     },
     dispatch

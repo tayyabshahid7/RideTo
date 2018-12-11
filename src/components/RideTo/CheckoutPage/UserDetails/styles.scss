@@ -43,10 +43,17 @@
 }
 
 .subtitle {
+  min-width: 95px;
   font-size: 18px;
   font-weight: 500;
   font-family: var(--font-rift);
   line-height: inherit;
+}
+
+.content {
+  padding-top: 10px;
+  text-align: right;
+  line-height: normal;
 }
 
 .highlightedPrice {
