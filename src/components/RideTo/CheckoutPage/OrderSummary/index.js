@@ -171,6 +171,20 @@ class OrderSummary extends Component {
             </ul>
           </div>
         </div>
+        <div className={styles.acceptTerms}>
+          <Checkbox
+            checked={details.email_optin}
+            extraClass="WidgetCheckbox"
+            size="large"
+            onChange={event =>
+              onDetailChange('email_optin', event.target.checked)
+            }>
+            <div>
+              Join the RideTo community newsletter to be invited to weekly ride
+              outs, events and special offers.
+            </div>
+          </Checkbox>
+        </div>
         {errors.paymentError && (
           <div className={styles.paymentError}>
             <strong>{errors.paymentError}</strong>
