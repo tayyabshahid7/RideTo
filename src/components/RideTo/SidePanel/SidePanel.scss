@@ -14,8 +14,10 @@
   min-height: 100%;
   z-index: 2;
   width: 488px;
-  overflow-y: auto;
-  height: 100vh;
+  overflow-y: scroll;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+
   @media (max-width: 768px) {
     width: 100%;
   }
