@@ -4,11 +4,15 @@ import ReactDOM from 'react-dom'
 import loadable from '@loadable/component'
 
 import { setVersionInfo } from 'services/version'
+import menuToggle from 'menuToggle'
 import 'bootstrap'
 import './rideto_bootstrap.scss'
 import './rideto_constants.scss'
 
 setVersionInfo()
+
+// JS to handle clicking of burger menu
+menuToggle()
 
 const AsyncComponent = loadable(props =>
   import(`components/RideTo/${props.module}`)
