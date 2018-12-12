@@ -160,6 +160,10 @@
   img {
     margin-left: 16px;
   }
+
+  @media (max-width: 768px) {
+    padding: 22px 32px;
+  }
 }
 
 .bookNowDisabled {
