@@ -1,23 +1,34 @@
 import React from 'react'
 import classnames from 'classnames'
+import {
+  disableBodyScroll,
+  enableBodyScroll,
+  clearAllBodyScrollLocks
+} from 'body-scroll-lock'
 
 import styles from './SidePanel.scss'
 import closeImg from 'assets/images/rideto/CloseWhite.svg'
 
 class SidePanel extends React.Component {
+  constructor(props) {
+    super(props)
+    this.sidePanel = React.createRef()
+  }
+
   componentDidUpdate(prevProps) {
     const { visible } = this.props
 
     if (prevProps.visible !== visible) {
       if (visible) {
-        window.document.body.setAttribute(
-          'style',
-          'height:100%;overflow:hidden'
-        )
+        disableBodyScroll(this.sidePanel.current)
       } else {
-        window.document.body.setAttribute('style', '')
+        enableBodyScroll(this.sidePanel.current)
       }
     }
+  }
+
+  componentWillUnmount() {
+    clearAllBodyScrollLocks()
   }
 
   render() {
@@ -31,7 +42,7 @@ class SidePanel extends React.Component {
     return (
       <div className={className}>
         <div className={styles.overlay} onClick={onDismiss} />
-        <div className={styles.sidePanel}>
+        <div className={styles.sidePanel} ref={this.sidePanel}>
           <div className={styles.headingImage} style={headingStyle}>
             <img src={closeImg} alt="Close" onClick={onDismiss} />
           </div>
