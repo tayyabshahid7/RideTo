@@ -13,13 +13,15 @@
   font-size: 20px;
   font-family: var(--font-rift);
 
-  &:hover {
-    color: white;
-    text-decoration: none;
-  }
-
   @media (max-width: 768px) {
     padding: 13px 32px;
     justify-content: space-between;
+  }
+}
+
+@media (hover: hover) {
+  a.button:hover {
+    color: white;
+    text-decoration: none;
   }
 }
