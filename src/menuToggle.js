@@ -14,13 +14,15 @@ function hideMenu() {
 }
 
 function menuToggle() {
-  button.addEventListener('click', () => {
-    if (!button.classList.contains('active')) {
-      showMenu()
-    } else {
-      hideMenu()
-    }
-  })
+  if (button) {
+    button.addEventListener('click', () => {
+      if (!button.classList.contains('active')) {
+        showMenu()
+      } else {
+        hideMenu()
+      }
+    })
+  }
 }
 
 export default menuToggle
