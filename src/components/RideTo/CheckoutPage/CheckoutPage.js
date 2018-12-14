@@ -96,14 +96,17 @@ class CheckoutPage extends Component {
       saving: false,
       showAddressSelectorModal: false,
       voucher_code: '',
-      loadingPrice: false
+      loadingPrice: false,
+      showMap: false
     }
+
     this.handleChange = this.handleChange.bind(this)
     this.onUpdate = this.onUpdate.bind(this)
     this.handlePostalcodeSubmit = this.handlePostalcodeSubmit.bind(this)
     this.handlePayment = this.handlePayment.bind(this)
     this.handleValueChange = this.handleValueChange.bind(this)
     this.handleVoucherApply = this.handleVoucherApply.bind(this)
+    this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
   }
 
   onUpdate(data) {
@@ -227,6 +230,12 @@ class CheckoutPage extends Component {
       showAddressSelectorModal: false,
       manualAddress: true
     })
+  }
+
+  handleMapButtonClick() {
+    this.setState(prevState => ({
+      showMap: !prevState.showMap
+    }))
   }
 
   isValidDate(dateString) {
@@ -491,7 +500,8 @@ class CheckoutPage extends Component {
       showAddressSelectorModal,
       addresses,
       voucher_code,
-      loadingPrice
+      loadingPrice,
+      showMap
     } = this.state
 
     return (
@@ -508,6 +518,8 @@ class CheckoutPage extends Component {
             manualAddress={manualAddress}
             onPostalCodeSubmit={this.handlePostalcodeSubmit}
             postcodeLookingup={postcodeLookingup}
+            showMap={showMap}
+            handleMapButtonClick={this.handleMapButtonClick}
           />
         </div>
         <div className={styles.rightPanel}>
@@ -523,6 +535,8 @@ class CheckoutPage extends Component {
             voucher_code={voucher_code}
             handleVoucherApply={this.handleVoucherApply}
             loadingPrice={loadingPrice}
+            showMap={showMap}
+            handleMapButtonClick={this.handleMapButtonClick}
           />
         </div>
         {showAddressSelectorModal && (
