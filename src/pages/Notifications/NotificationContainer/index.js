@@ -10,17 +10,21 @@ class NotificationContainer extends React.Component {
   render() {
     const { notifications, dismissNotification } = this.props
 
-    return (
-      <div className={styles.notificationContainer}>
-        {notifications.map(notification => (
-          <Notification
-            key={notification.id}
-            notification={notification}
-            onClick={() => dismissNotification(notification.id)}
-          />
-        ))}
-      </div>
-    )
+    if (notifications.length) {
+      return (
+        <div className={styles.notificationContainer}>
+          {notifications.map(notification => (
+            <Notification
+              key={notification.id}
+              notification={notification}
+              onClick={() => dismissNotification(notification.id)}
+            />
+          ))}
+        </div>
+      )
+    }
+
+    return null
   }
 }
 
