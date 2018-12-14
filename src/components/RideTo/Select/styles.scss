@@ -8,4 +8,12 @@
   font-family: var(--font-proxima);
   font-size: 15px;
   line-height: 24px;
+
+  option:not(:first-child) {
+    color: var(--dark-color);
+  }
+}
+
+.placeholder {
+  color: var(--placeholder-color);
 }
