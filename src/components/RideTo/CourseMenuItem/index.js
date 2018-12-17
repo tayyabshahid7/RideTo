@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { Suspense } from 'react'
+import { lazy } from '@loadable/component'
 import classnames from 'classnames'
 import { getStaticData } from 'services/page'
-import CourseSlider from 'components/RideTo/CourseSlider'
 import styles from './CourseMenuItem.scss'
+
+const CourseSlider = lazy(() => import('components/RideTo/CourseSlider'))
 
 class CourseMenuItem extends React.Component {
   constructor(props) {
@@ -87,7 +89,9 @@ class CourseMenuItem extends React.Component {
             <div className={styles.courseMenu}>
               <div className={overlay} onClick={this.handleHideSlider} />
               <div className={slider}>
-                <CourseSlider sidepanel={false} />,
+                <Suspense fallback={<div>Loading...</div>}>
+                  <CourseSlider sidepanel={false} />
+                </Suspense>
               </div>
             </div>
           )}
