@@ -1,8 +1,4 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-
-import loadable from '@loadable/component'
-
+import lazyMountComponent from 'utils/lazyMountComponent'
 import { setVersionInfo } from 'services/version'
 import menuToggle from 'menuToggle'
 import 'bootstrap'
@@ -14,36 +10,26 @@ setVersionInfo()
 // JS to handle clicking of burger menu
 menuToggle()
 
-const AsyncComponent = loadable(props =>
-  import(`components/RideTo/${props.module}`)
-)
+lazyMountComponent('Account', 'rideto-account-page')
 
-const mountComponent = (module, el, props) => {
-  const container = document.getElementById(el)
+lazyMountComponent('CourseSlider', 'rideto-home-course-slider', {
+  sidepanel: true
+})
 
-  if (container) {
-    ReactDOM.render(<AsyncComponent module={module} {...props} />, container)
-  }
-}
+lazyMountComponent('ResultPage', 'rideto-resultspage-root')
 
-mountComponent('Account', 'rideto-account-page')
+lazyMountComponent('ReviewSlider', 'rideto-home-reviews')
 
-mountComponent('CourseSlider', 'rideto-home-course-slider', { sidepanel: true })
+lazyMountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
-mountComponent('ResultPage', 'rideto-resultspage-root')
+lazyMountComponent('UserMenuItem', 'rideto-nav-account')
 
-mountComponent('ReviewSlider', 'rideto-home-reviews')
+lazyMountComponent('CourseTypeSelection', 'rideto-course-type-selection')
 
-mountComponent('CourseMenuItem', 'rideto-home-course-menu')
+lazyMountComponent('AddonSelection', 'rideto-addon-selection')
 
-mountComponent('UserMenuItem', 'rideto-nav-account')
+lazyMountComponent('CheckoutPage', 'rideto-checkout')
 
-mountComponent('CourseTypeSelection', 'rideto-course-type-selection')
+lazyMountComponent('FooterLinks', 'rideto-mobile-footer-links')
 
-mountComponent('AddonSelection', 'rideto-addon-selection')
-
-mountComponent('CheckoutPage', 'rideto-checkout')
-
-mountComponent('FooterLinks', 'rideto-mobile-footer-links')
-
-mountComponent('Faqs', 'rideto-faqs')
+lazyMountComponent('Faqs', 'rideto-faqs')
