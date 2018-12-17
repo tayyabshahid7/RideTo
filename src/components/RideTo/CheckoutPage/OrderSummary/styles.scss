@@ -155,3 +155,18 @@
   margin-top: 30px;
   margin-left: 23px;
 }
+
+.mapButton {
+  appearance: none;
+  display: inline;
+  padding: 0;
+  color: var(--primary-color);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+
+  &:hover {
+    color: #1f8f77;
+    text-decoration: underline;
+  }
+}
