@@ -27,6 +27,7 @@ class CreateBulkCourse extends React.Component {
       course: course,
       useDefaultDays: false
     }
+    this.getSchoolName = this.getSchoolName.bind(this)
   }
 
   componentDidMount() {
@@ -115,8 +116,15 @@ class CreateBulkCourse extends React.Component {
     onSubmit({ school_course, repeat })
   }
 
+  getSchoolName(schoolId) {
+    const { schools } = this.props
+    for (var i = schools.length - 1; i >= 0; i--) {
+      if (schools[i].id === parseInt(schoolId)) return schools[i].name
+    }
+  }
+
   render() {
-    let { info, saving, instructors } = this.props
+    let { schoolId, info, saving, instructors } = this.props
     const {
       course_type_id,
       instructor_id,
@@ -131,7 +139,9 @@ class CreateBulkCourse extends React.Component {
     } = this.state.course
     return (
       <div className={styles.container}>
-        <div className={styles.title}>Create default course</div>
+        <div className={styles.title}>
+          Create default course for <b>{this.getSchoolName(schoolId)}</b>
+        </div>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
@@ -245,20 +255,6 @@ class CreateBulkCourse extends React.Component {
                   onChange={this.handleChangeRawEvent.bind(this)}
                 />
               </Col>
-              {/* <Col>
-                <InputTextGroup
-                  name="price"
-                  value={
-                    pricing.loading
-                      ? '...'
-                      : pricing.info
-                        ? `£${(pricing.info.payout / 100.0).toFixed(2)}`
-                        : ''
-                  }
-                  label="Payout Per Booking"
-                  disabled
-                />
-              </Col> */}
             </Row>
             <Row>
               <Col>
