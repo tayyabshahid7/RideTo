@@ -71,7 +71,8 @@ class AvailabilityCourses extends React.Component {
               <div className="col-6">
                 {`${moment()
                   .isoWeekday(index + 1)
-                  .format('dddd')}`}:
+                  .format('dddd')}`}
+                :
               </div>
               <div className="col-6">
                 <div className="custom-control custom-checkbox">
@@ -109,6 +110,7 @@ class AvailabilityCourses extends React.Component {
       loadCourseTypes,
       instructors,
       schoolId,
+      schools,
       getInstructors,
       history,
       saving,
@@ -136,6 +138,7 @@ class AvailabilityCourses extends React.Component {
               instructors={instructors}
               loadCourseTypes={loadCourseTypes}
               schoolId={schoolId}
+              schools={schools}
               getInstructors={getInstructors}
               available_days={available_days}
               handleCancel={this.handleCancel.bind(this)}
