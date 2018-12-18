@@ -33,12 +33,15 @@ class CalendarContent extends Component {
     if (isInstantBook) {
       return Math.trunc(day.courses[0].pricing.price / 100)
     }
-    if (this.isBankHoliday(moment(day.date).format('DD-MM-YYYY'))) {
-      return Math.trunc(nonInstantPrices.bank_holiday)
-    } else if (day.date.getDay() === 6 || day.date.getDay() === 0) {
-      return Math.trunc(nonInstantPrices.weekend)
-    } else {
-      return Math.trunc(nonInstantPrices.weekday)
+
+    if (nonInstantPrices) {
+      if (this.isBankHoliday(moment(day.date).format('DD-MM-YYYY'))) {
+        return Math.trunc(nonInstantPrices.bank_holiday)
+      } else if (day.date.getDay() === 6 || day.date.getDay() === 0) {
+        return Math.trunc(nonInstantPrices.weekend)
+      } else {
+        return Math.trunc(nonInstantPrices.weekday)
+      }
     }
   }
 
