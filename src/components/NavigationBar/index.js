@@ -1,6 +1,5 @@
 import React from 'react'
 import { Link, NavLink } from 'react-router-dom'
-import $ from 'jquery'
 // import Header from '../Header'
 import UserMenu from '../UserMenu'
 import classnames from 'classnames'
@@ -15,11 +14,7 @@ let NavigationBar = ({ history }) => {
         'navbar navbar-expand-md navbar-light bg-light fixed-top'
       )}>
       <div className={classnames(styles.image)}>
-        <Link
-          to="/"
-          onClick={() => {
-            $('#navbarCollapse').collapse('hide')
-          }}>
+        <Link to="/">
           <IconRideToLogo className={classnames(styles.logoImage)} />
         </Link>
       </div>
@@ -40,10 +35,7 @@ let NavigationBar = ({ history }) => {
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
               exact
-              to="/"
-              onClick={() => {
-                $('#navbarCollapse').collapse('hide')
-              }}>
+              to="/">
               Home
             </NavLink>
           </li>
@@ -51,10 +43,7 @@ let NavigationBar = ({ history }) => {
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
-              to="/orders"
-              onClick={() => {
-                $('#navbarCollapse').collapse('hide')
-              }}>
+              to="/orders">
               Orders
             </NavLink>
           </li>
@@ -62,10 +51,7 @@ let NavigationBar = ({ history }) => {
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
-              to="/calendar"
-              onClick={() => {
-                $('#navbarCollapse').collapse('hide')
-              }}>
+              to="/calendar">
               Calendar
             </NavLink>
           </li>
@@ -73,10 +59,7 @@ let NavigationBar = ({ history }) => {
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
-              to="/customers"
-              onClick={() => {
-                $('#navbarCollapse').collapse('hide')
-              }}>
+              to="/customers">
               Customers
             </NavLink>
           </li>
@@ -84,10 +67,7 @@ let NavigationBar = ({ history }) => {
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
-              to="/account"
-              onClick={() => {
-                $('#navbarCollapse').collapse('hide')
-              }}>
+              to="/account">
               Account
             </NavLink>
           </li>

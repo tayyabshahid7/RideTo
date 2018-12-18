@@ -8,6 +8,7 @@ import { ConnectedRouter } from 'connected-react-router'
 import Login from './pages/Login'
 import MainLayout from './layouts/MainLayout'
 import ProtectedRoute from './components/ProtectedRoute'
+import ScrollToTop from './components/ScrollToTop'
 import history from './history1'
 import 'bootstrap'
 import './bootstrap.scss'
@@ -18,12 +19,14 @@ class App extends Component {
   render() {
     return (
       <ConnectedRouter history={history}>
-        <div className={styles.App}>
-          <Switch>
-            <Route exact path="/login" component={Login} />
-            <ProtectedRoute path="/" component={MainLayout} />
-          </Switch>
-        </div>
+        <ScrollToTop>
+          <div className={styles.App}>
+            <Switch>
+              <Route exact path="/login" component={Login} />
+              <ProtectedRoute path="/" component={MainLayout} />
+            </Switch>
+          </div>
+        </ScrollToTop>
       </ConnectedRouter>
     )
   }
