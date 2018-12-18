@@ -20,7 +20,6 @@ const lazyMountComponent = (module, el, props) => {
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          console.log(`render ${el}`)
           ReactDOM.render(
             <AsyncComponent module={module} {...props} />,
             container

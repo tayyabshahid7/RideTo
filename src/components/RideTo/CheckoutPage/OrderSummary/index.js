@@ -54,8 +54,8 @@ class OrderSummary extends Component {
       handleMapButtonClick
     } = this.props
     const { addons, courseType, date, bike_hire } = checkoutData
-    const lat = parseInt(window.RIDETO_PAGE.checkout.supplier.latitude)
-    const lng = parseInt(window.RIDETO_PAGE.checkout.supplier.longitude)
+    const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
+    const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
 
     return (
       <div className={styles.rowContainer}>
