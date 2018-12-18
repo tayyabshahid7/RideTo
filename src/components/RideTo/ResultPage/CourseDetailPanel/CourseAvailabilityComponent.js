@@ -196,6 +196,14 @@ class CourseAvailabilityComponent extends React.Component {
     let days = this.generateDaysDataFromCalendar(course, calendar)
 
     const fullText = <span className={styles.full}> - Fully Booked</span>
+    const manualText = (
+      <span className={styles.manualInfo}>
+        Please note: If you haven’t ridden a manual (geared) bike before and
+        expect to complete the CBT training in one day, you may find you need
+        additional training to complete your CBT. If your not sure, call us on
+        02036039652 to talk to a member of our friendly team.
+      </span>
+    )
     const isAutoFull =
       instantCourse && instantCourse.auto_count === instantCourse.auto_bikes
     const isManualFull =
@@ -271,6 +279,7 @@ class CourseAvailabilityComponent extends React.Component {
                 {isManualFull ? fullText : null}
               </button>
             )}
+            {bike_hire === 'manual' && manualText}
           </div>
         </div>
       </Loading>
