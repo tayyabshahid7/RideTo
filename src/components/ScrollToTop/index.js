@@ -6,12 +6,15 @@ class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
       const bodyContainer = document.getElementById('body-container')
+      const navBar = $('#navbarCollapse')
 
       if (bodyContainer) {
         bodyContainer.scrollTo(0, 0)
       }
 
-      $('#navbarCollapse').collapse('hide')
+      if (navBar) {
+        navBar.collapse('hide')
+      }
     }
   }
 
