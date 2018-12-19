@@ -15,7 +15,7 @@ const MainLayout = ({ history }) => {
   return (
     <div className={styles.container}>
       <NavigationBar history={history} />
-      <div className={styles.bodyContainer}>
+      <div className={styles.bodyContainer} id="body-container">
         <Switch>
           <Route path="/orders" component={Orders} />
           <Route path="/calendar" component={Calendar} />

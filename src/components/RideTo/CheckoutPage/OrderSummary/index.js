@@ -4,6 +4,7 @@ import moment from 'moment'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
+import MapComponent from 'components/RideTo/MapComponent'
 import Checkbox from 'components/Checkbox'
 import Input from 'components/RideTo/Input'
 import Loading from 'components/Loading'
@@ -45,14 +46,36 @@ class OrderSummary extends Component {
   }
 
   renderCourseInformation() {
-    const { checkoutData, supplier, priceInfo } = this.props
+    const {
+      checkoutData,
+      supplier,
+      priceInfo,
+      showMap,
+      handleMapButtonClick
+    } = this.props
     const { addons, courseType, date, bike_hire } = checkoutData
+    const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
+    const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
+
     return (
       <div className={styles.rowContainer}>
         {this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
         {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
-        {this.renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
+        {this.renderRow(
+          'Location',
+          <button className={styles.mapButton} onClick={handleMapButtonClick}>
+            {`${supplier.town}, ${supplier.postcode}`}
+          </button>
+        )}
+        {showMap && (
+          <MapComponent
+            userLocation={{ lat, lng }}
+            width={'auto'}
+            height={200}
+            checkout
+          />
+        )}
         {priceInfo.training_price
           ? this.renderRow(
               'Training',
@@ -170,6 +193,20 @@ class OrderSummary extends Component {
               </li>
             </ul>
           </div>
+        </div>
+        <div className={styles.acceptTerms}>
+          <Checkbox
+            checked={details.email_optin}
+            extraClass="WidgetCheckbox"
+            size="large"
+            onChange={event =>
+              onDetailChange('email_optin', event.target.checked)
+            }>
+            <div>
+              Join the RideTo community newsletter to be invited to weekly ride
+              outs, events and special offers.
+            </div>
+          </Checkbox>
         </div>
         {errors.paymentError && (
           <div className={styles.paymentError}>

@@ -107,7 +107,9 @@ class AvailabilityCalendar extends Component {
         />
         {showTrainingTime && (
           <React.Fragment>
-            <div className={styles.subtitle}>
+            <div
+              id={isInstantBook ? 'choose-time-validate' : ''}
+              className={styles.subtitle}>
               {isInstantBook ? 'Choose a time' : 'Training time:'}
             </div>
 

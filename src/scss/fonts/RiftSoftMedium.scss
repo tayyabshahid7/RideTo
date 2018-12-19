@@ -30,6 +30,7 @@
     url('./webfonts/RiftSoft-Medium.woff2') format('woff2'),
     url('./webfonts/RiftSoft-Medium.woff') format('woff'),
     url('./webfonts/RiftSoft-Medium.ttf') format('truetype');
+  font-display: auto;
 }
 @font-face {
   font-family: 'Rift-DemiItalic';
@@ -38,6 +39,7 @@
     url('./webfonts/Rift-DemiItalic.woff2') format('woff2'),
     url('./webfonts/Rift-DemiItalic.woff') format('woff'),
     url('./webfonts/Rift-DemiItalic.ttf') format('truetype');
+  font-display: auto;
 }
 @font-face {
   font-family: 'Rift-Bold';
@@ -46,4 +48,5 @@
     url('./webfonts/Rift-Bold.woff2') format('woff2'),
     url('./webfonts/Rift-Bold.woff') format('woff'),
     url('./webfonts/Rift-Bold.ttf') format('truetype');
+  font-display: auto;
 }

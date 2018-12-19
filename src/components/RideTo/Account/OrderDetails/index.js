@@ -73,14 +73,13 @@ class OrderDetails extends React.Component {
             {renderRow('Status', this.getFriendlyStatus(order.booking_status))}
           </div>
 
-          {showReview(order) &&
-            !reviewSubmitted && (
-              <DashboardReview order={order} onSubmit={this.handleSubmit} />
-            )}
+          {showReview(order) && !reviewSubmitted && (
+            <DashboardReview order={order} onSubmit={this.handleSubmit} />
+          )}
         </div>
 
         <div className={styles.map}>
-          <MapComponent courses={[marker]} />
+          <MapComponent courses={[marker]} width="auto" height={240} />
         </div>
       </div>
     )

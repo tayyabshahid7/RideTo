@@ -6,6 +6,11 @@
   flex: 0 0 50px;
   background: white;
   z-index: 10;
+
+  @media (max-width: 768px) {
+    flex: 0 0 auto;
+    padding-bottom: 1rem;
+  }
 }
 
 .navLinks {
@@ -24,6 +29,10 @@
   // font-weight: bold;
   &:hover {
     text-decoration: unset;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0;
   }
 }
 

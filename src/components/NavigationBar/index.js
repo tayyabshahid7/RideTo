@@ -1,5 +1,5 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 // import Header from '../Header'
 import UserMenu from '../UserMenu'
 import classnames from 'classnames'
@@ -14,7 +14,9 @@ let NavigationBar = ({ history }) => {
         'navbar navbar-expand-md navbar-light bg-light fixed-top'
       )}>
       <div className={classnames(styles.image)}>
-        <IconRideToLogo className={classnames(styles.logoImage)} />
+        <Link to="/">
+          <IconRideToLogo className={classnames(styles.logoImage)} />
+        </Link>
       </div>
       <button
         className="navbar-toggler"

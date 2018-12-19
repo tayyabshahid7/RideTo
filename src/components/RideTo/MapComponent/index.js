@@ -18,12 +18,12 @@ const navStyle = {
 class MapComponent extends Component {
   constructor(props) {
     super(props)
-    const { userLocation, courses } = this.props
+    const { userLocation, courses, width = 400, height = 700 } = this.props
     let location = userLocation ? userLocation : courses[0]
     this.state = {
       viewport: {
-        width: 400,
-        height: 700,
+        width,
+        height,
         latitude: location.lat,
         longitude: location.lng,
         zoom: 8
@@ -105,9 +105,10 @@ class MapComponent extends Component {
   }
 
   render() {
-    const { courses = null, className, userLocation } = this.props
+    const { courses = {}, className, userLocation, checkout } = this.props
     const { viewport } = this.state
     const { available, unavailable } = courses
+
     return (
       <div
         className={classnames(styles.container, className)}
@@ -136,6 +137,7 @@ class MapComponent extends Component {
           {available && available.map(this.renderMarker)}
           {available === undefined &&
             unavailable === undefined &&
+            !checkout &&
             courses.map(this.renderMarker)}
           <div className="nav" style={navStyle}>
             <NavigationControl onViewportChange={this.updateViewport} />

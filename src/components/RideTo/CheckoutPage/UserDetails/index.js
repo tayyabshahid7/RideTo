@@ -10,6 +10,7 @@ import {
 import { Row, Col } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
+import MapComponent from 'components/RideTo/MapComponent'
 import Button from 'components/RideTo/Button'
 import Input from 'components/RideTo/Input'
 import AddressForm from 'components/AddressForm'
@@ -78,14 +79,36 @@ class UserDetails extends Component {
   }
 
   renderCourseInformation() {
-    const { checkoutData, supplier, priceInfo } = this.props
+    const {
+      checkoutData,
+      supplier,
+      priceInfo,
+      showMap,
+      handleMapButtonClick
+    } = this.props
     const { addons, courseType, date, bike_hire } = checkoutData
+    const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
+    const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
+
     return (
       <div className={styles.rowContainer}>
         {this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
         {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
-        {this.renderRow('Location', `${supplier.town}, ${supplier.postcode}`)}
+        {this.renderRow(
+          'Location',
+          <button className={styles.mapButton} onClick={handleMapButtonClick}>
+            {`${supplier.town}, ${supplier.postcode}`}
+          </button>
+        )}
+        {showMap && (
+          <MapComponent
+            userLocation={{ lat, lng }}
+            width={'auto'}
+            height={200}
+            checkout
+          />
+        )}
         {priceInfo.training_price
           ? this.renderRow(
               'Training',
@@ -318,10 +341,9 @@ class UserDetails extends Component {
                     Search Address
                   </Button>
                 </div>
-                {errors.postcode &&
-                  !postcodeLookingup && (
-                    <div className={styles.error}>{errors.postcode}</div>
-                  )}
+                {errors.postcode && !postcodeLookingup && (
+                  <div className={styles.error}>{errors.postcode}</div>
+                )}
                 <div
                   className={styles.actionDiv}
                   onClick={() => onChange({ manualAddress: true })}>
