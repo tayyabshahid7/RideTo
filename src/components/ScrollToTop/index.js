@@ -5,8 +5,13 @@ import $ from 'jquery'
 class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
     if (this.props.location !== prevProps.location) {
+      const bodyContainer = document.getElementById('body-container')
+
+      if (bodyContainer) {
+        bodyContainer.scrollTo(0, 0)
+      }
+
       $('#navbarCollapse').collapse('hide')
-      document.getElementById('body-container').scrollTo(0, 0)
     }
   }
 
