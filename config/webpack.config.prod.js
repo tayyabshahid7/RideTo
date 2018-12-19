@@ -188,7 +188,6 @@ module.exports = {
                       loader: require.resolve('css-loader'),
                       options: {
                         importLoaders: 1,
-                        minimize: true,
                         modules: true,
                         sourceMap: shouldUseSourceMap
                       }
@@ -209,7 +208,8 @@ module.exports = {
                               'not ie < 9' // React doesn't support IE8 anyway
                             ],
                             flexbox: 'no-2009'
-                          })
+                          }),
+                          require('cssnano')
                         ]
                       }
                     },
@@ -240,7 +240,6 @@ module.exports = {
                       loader: require.resolve('css-loader'),
                       options: {
                         importLoaders: 1,
-                        minimize: true,
                         sourceMap: shouldUseSourceMap
                       }
                     },
@@ -258,7 +257,8 @@ module.exports = {
                               'not ie < 9' // React doesn't support IE8 anyway
                             ],
                             flexbox: 'no-2009'
-                          })
+                          }),
+                          require('cssnano')
                         ]
                       }
                     },
@@ -287,7 +287,6 @@ module.exports = {
                       loader: require.resolve('css-loader'),
                       options: {
                         importLoaders: 1,
-                        minimize: true,
                         sourceMap: shouldUseSourceMap
                       }
                     },
@@ -307,7 +306,8 @@ module.exports = {
                               'not ie < 9' // React doesn't support IE8 anyway
                             ],
                             flexbox: 'no-2009'
-                          })
+                          }),
+                          require('cssnano')
                         ]
                       }
                     }
