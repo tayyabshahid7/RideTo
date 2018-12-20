@@ -168,6 +168,8 @@ export const getShortCourseType = courseType => {
       return 'Renewal'
     case 'INTRO_TO_MOTORCYCLING':
       return 'ITM'
+    case 'FULL_LICENCE':
+      return 'Full'
     default:
       return 'CBT'
   }
@@ -181,6 +183,8 @@ export const getCourseTitle = courseTypeConstant => {
       return 'CBT Renewal'
     case 'INTRO_TO_MOTORCYCLING':
       return 'ITM Training'
+    case 'FULL_LICENCE':
+      return 'Full Licence'
     default:
       return 'CBT Training'
   }
