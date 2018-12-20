@@ -43,14 +43,8 @@
 }
 
 .contentWrapper {
-  margin-top: 56px;
   padding: 0px;
   display: flex;
-  @media (max-width: 768px) {
-    margin-top: 32px;
-  }
-  // width: auto !important;
-  // justify-content: center;
 }
 
 .mainContent {
@@ -125,8 +119,10 @@
 
 .dateSelector {
   margin-top: 20px;
+  margin-bottom: 56px;
   @media (max-width: 768px) {
     display: none !important;
+    margin-top: 32px;
   }
 }
 
