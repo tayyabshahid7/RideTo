@@ -115,22 +115,27 @@ class ResultPage extends Component {
   }
 
   renderSortByDropdown() {
-    const { handeUpdateOption, sortByOption } = this.props
+    const { handeUpdateOption, sortByOption, courseType } = this.props
     return (
       <UncontrolledDropdown>
         <DropdownToggle caret color="lightgrey" className={styles.sortButton}>
           {getTitleFor(SortByOptions, sortByOption).toUpperCase()}
         </DropdownToggle>
         <DropdownMenu>
-          {SortByOptions.map(sortOption => (
-            <DropdownItem
-              onClick={() =>
-                handeUpdateOption({ sortByOption: sortOption.value })
-              }
-              key={sortOption.value}>
-              {sortOption.title.toUpperCase()}
-            </DropdownItem>
-          ))}
+          {SortByOptions.map(sortOption => {
+            if (courseType === 'FULL_LICENCE' && sortOption.value === 'price') {
+              return false
+            }
+            return (
+              <DropdownItem
+                onClick={() =>
+                  handeUpdateOption({ sortByOption: sortOption.value })
+                }
+                key={sortOption.value}>
+                {sortOption.title.toUpperCase()}
+              </DropdownItem>
+            )
+          })}
         </DropdownMenu>
       </UncontrolledDropdown>
     )
@@ -234,6 +239,7 @@ class ResultPage extends Component {
     }
 
     const hasPartnerResults = this.checkPartnerResults(courses)
+    const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.container}>
@@ -252,10 +258,16 @@ class ResultPage extends Component {
           {hasPartnerResults && (
             <Row>
               <Col sm="6">
-                <div className={styles.headingDesktop}>Choose a Date</div>
-                <div className={styles.headingMobile}>
-                  Choose a Date &amp; Location
-                </div>
+                {!isFullLicence ? (
+                  <React.Fragment>
+                    <div className={styles.headingDesktop}>Choose a Date</div>
+                    <div className={styles.headingMobile}>
+                      Choose a Date &amp; Location
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  <div className={styles.headingMobile}>Choose a Location</div>
+                )}
               </Col>
             </Row>
           )}
@@ -263,14 +275,16 @@ class ResultPage extends Component {
             <Col>
               {hasPartnerResults ? (
                 <React.Fragment>
-                  <DateSelector
-                    date={date}
-                    handleSetDate={handleSetDate}
-                    className={styles.dateSelector}
-                    courseType={courseType}
-                  />
+                  {!isFullLicence && (
+                    <DateSelector
+                      date={date}
+                      handleSetDate={handleSetDate}
+                      className={styles.dateSelector}
+                      courseType={courseType}
+                    />
+                  )}
                   <div className={styles.mobileButtons}>
-                    {this.renderMobileDateSelectorButton()}
+                    {!isFullLicence && this.renderMobileDateSelectorButton()}
                     {this.renderSortByDropdown()}
                   </div>
                 </React.Fragment>
