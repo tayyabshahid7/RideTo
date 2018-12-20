@@ -29,8 +29,11 @@ class ResultPageContainer extends Component {
         queryValue: `courseType=${courseType}`
       },
       {
-        title: 'Date & Location',
-        subtitle: 'Choose a Date & Location',
+        title: courseType !== 'FULL_LICENCE' ? 'Date & Location' : 'Location',
+        subtitle:
+          courseType !== 'FULL_LICENCE'
+            ? 'Choose a Date & Location'
+            : 'Choose a Location',
         active: true
       },
       {
