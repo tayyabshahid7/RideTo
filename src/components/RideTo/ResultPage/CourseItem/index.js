@@ -74,9 +74,14 @@ class CourseItem extends Component {
             className={classnames(
               styles.price,
               styles.priceMobile,
-              unavaiableDate && styles.priceDateUnavailableMobile
+              unavaiableDate && styles.priceDateUnavailableMobile,
+              !course.price && styles.selectLocation
             )}>
-            <div>£{parseInt(course.price / 100.0, 10)}</div>
+            <div>
+              {course.price
+                ? `£${parseInt(course.price / 100.0, 10)}`
+                : 'Select Location'}
+            </div>
             <IconArrowRight className={styles.arrowIcon} />
           </div>
         </div>
@@ -124,7 +129,11 @@ class CourseItem extends Component {
             unavaiableDate && styles.priceDateUnavailable
           )}
           onClick={() => handlePriceClick(course)}>
-          <div>£{parseInt(course.price / 100.0, 10)}</div>
+          <div>
+            {course.price
+              ? `£${parseInt(course.price / 100.0, 10)}`
+              : 'Select Location'}
+          </div>
           <IconArrowRight className={styles.arrowIcon} />
         </div>
       </div>
