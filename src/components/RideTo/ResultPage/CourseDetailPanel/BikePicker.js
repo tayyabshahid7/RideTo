@@ -11,7 +11,8 @@ function BikePicker({
   isAutoFull,
   isManualFull,
   has_auto_bikes,
-  has_manual_bikes
+  has_manual_bikes,
+  isFullLicence
 }) {
   const fullText = <span className={styles.full}> - Fully Booked</span>
   const manualText = (
@@ -26,7 +27,7 @@ function BikePicker({
   return (
     <div className={styles.bikeHireWrapper}>
       <label id="choose-bike" className={styles.subtitle1}>
-        Choose A Bike to Hire
+        {!isFullLicence ? 'Choose A Bike to Hire' : 'Type of Bike'}
       </label>
 
       {isCbtRenewal && (

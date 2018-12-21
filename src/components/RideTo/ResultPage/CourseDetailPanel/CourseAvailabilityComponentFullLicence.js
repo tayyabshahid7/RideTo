@@ -11,6 +11,7 @@ class CourseAvailabilityComponent extends Component {
         <p>pick some stuff</p>
 
         <BikePicker
+          isFullLicence
           bike_hire={bike_hire}
           onUpdate={onUpdate}
           course={course}
