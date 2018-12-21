@@ -4,6 +4,7 @@ import styles from './styles.scss'
 import MapComponent from 'components/RideTo/MapComponent'
 import CourseReviewsComponent from './CourseReviewsComponent'
 import CourseAvailabilityComponent from './CourseAvailabilityComponent'
+import CourseAvailabilityComponentFullLicence from './CourseAvailabilityComponentFullLicence'
 import CourseInformationComponent from './CourseInformationComponent'
 
 class CourseDetailPanel extends React.Component {
@@ -68,13 +69,19 @@ class CourseDetailPanel extends React.Component {
           <MapComponent className={styles.mapWrapper} courses={[course]} />
         )}
         {activeTab === '2' && <CourseReviewsComponent course={course} />}
-        {activeTab === '3' && (
+        {activeTab === '3' && courseType !== 'FULL_LICENCE' ? (
           <CourseAvailabilityComponent
             course={course}
             courseType={courseType}
             date={date}
             instantCourse={instantCourse}
             instantDate={instantDate}
+            bike_hire={bike_hire}
+            onUpdate={onUpdate}
+          />
+        ) : (
+          <CourseAvailabilityComponentFullLicence
+            course={course}
             bike_hire={bike_hire}
             onUpdate={onUpdate}
           />
