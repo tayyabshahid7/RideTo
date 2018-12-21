@@ -102,10 +102,20 @@
   font-family: var(--font-proxima);
 }
 
-.bikeHireWrapper {
+.bikeHireWrapper,
+.licenceWrapper {
   margin-top: 24px;
   display: flex;
   flex-direction: column;
+}
+
+.bikeButtons {
+  display: flex;
+  justify-content: space-between;
+
+  .bikeHireBtn {
+    width: 49%;
+  }
 }
 
 .btn {
@@ -117,7 +127,8 @@
   font-family: var(--font-proxima);
 }
 
-.bikeHireBtn {
+.bikeHireBtn,
+.licenceBtn {
   height: 48px;
   width: 100%;
   cursor: pointer;
@@ -128,6 +139,27 @@
   line-height: 18px;
   font-family: var(--font-proxima);
   cursor: pointer;
+}
+
+.licenceBtnType {
+  width: 45px;
+  padding-right: 6px;
+  margin-right: 6px;
+  font-size: 30px;
+  line-height: 40px;
+  text-align: center;
+  border-right: 1px solid #000;
+}
+
+.licenceBtn {
+  display: flex;
+  align-items: center;
+}
+
+.licenceBtnInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
 }
 
 .activeBtn {

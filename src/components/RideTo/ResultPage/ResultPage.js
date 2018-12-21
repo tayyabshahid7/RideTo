@@ -36,7 +36,8 @@ class ResultPage extends Component {
       activeTab: '1',
       instantCourse: null,
       instantDate: null,
-      bike_hire: null
+      bike_hire: null,
+      selectedLicenceType: null
     }
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
@@ -226,7 +227,8 @@ class ResultPage extends Component {
       activeTab,
       instantCourse,
       instantDate,
-      bike_hire
+      bike_hire,
+      selectedLicenceType
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -418,6 +420,7 @@ class ResultPage extends Component {
               instantDate={instantDate}
               bike_hire={bike_hire}
               onUpdate={this.onUpdate.bind(this)}
+              selectedLicenceType={selectedLicenceType}
             />
           )}
         </SidePanel>

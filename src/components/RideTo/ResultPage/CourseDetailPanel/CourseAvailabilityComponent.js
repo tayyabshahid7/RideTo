@@ -199,6 +199,7 @@ class CourseAvailabilityComponent extends React.Component {
     const isManualFull =
       instantCourse && instantCourse.manual_count === instantCourse.manual_bikes
 
+    const isCbt = courseType === 'LICENCE_CBT'
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
 
     return (
@@ -223,6 +224,7 @@ class CourseAvailabilityComponent extends React.Component {
             disablePreviousDates
           />
           <BikePicker
+            isCbt={isCbt}
             isCbtRenewal={isCbtRenewal}
             bike_hire={bike_hire}
             onUpdate={onUpdate}
