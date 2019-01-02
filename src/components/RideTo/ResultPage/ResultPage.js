@@ -37,7 +37,8 @@ class ResultPage extends Component {
       instantCourse: null,
       instantDate: null,
       bike_hire: null,
-      selectedLicenceType: null
+      selectedLicenceType: null,
+      selectedPackageDays: ''
     }
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
@@ -228,7 +229,8 @@ class ResultPage extends Component {
       instantCourse,
       instantDate,
       bike_hire,
-      selectedLicenceType
+      selectedLicenceType,
+      selectedPackageDays
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -421,6 +423,7 @@ class ResultPage extends Component {
               bike_hire={bike_hire}
               onUpdate={this.onUpdate.bind(this)}
               selectedLicenceType={selectedLicenceType}
+              selectedPackageDays={selectedPackageDays}
             />
           )}
         </SidePanel>

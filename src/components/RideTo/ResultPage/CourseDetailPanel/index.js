@@ -34,7 +34,8 @@ class CourseDetailPanel extends React.Component {
       bike_hire,
       activeTab,
       courseType,
-      selectedLicenceType
+      selectedLicenceType,
+      selectedPackageDays
     } = this.props
 
     return (
@@ -86,6 +87,7 @@ class CourseDetailPanel extends React.Component {
             bike_hire={bike_hire}
             onUpdate={onUpdate}
             selectedLicenceType={selectedLicenceType}
+            selectedPackageDays={selectedPackageDays}
           />
         )}
       </div>

@@ -9,7 +9,6 @@ function LicencePicker({ selectedLicenceType, onUpdate }) {
         Licence Type
       </label>
       <div>
-        {/* @ TODO FRONTEND PRODEV-850 Check these details */}
         <LicenceButton
           type="A1"
           age="17+"
@@ -26,8 +25,8 @@ function LicencePicker({ selectedLicenceType, onUpdate }) {
         />
         <LicenceButton
           type="A"
-          age="19+"
-          size="up to 400cc"
+          age="24+"
+          size="all"
           selectedLicenceType={selectedLicenceType}
           onUpdate={onUpdate}
         />
