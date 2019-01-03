@@ -38,8 +38,12 @@ class ResultPage extends Component {
       instantDate: null,
       bike_hire: null,
       selectedLicenceType: null,
-      selectedPackageDays: ''
+      selectedPackageDays: '',
+      selectedPackageDates: []
     }
+
+    this.onSelectPackage = this.onSelectPackage.bind(this)
+    this.onSelectPackageDate = this.onSelectPackageDate.bind(this)
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
     this.handleCourseChange = this.handleCourseChange.bind(this)
@@ -91,6 +95,59 @@ class ResultPage extends Component {
     const { handleSetDate } = this.props
     handleSetDate(date)
     this.setState({ showDateSelectorModal: false })
+  }
+
+  onSelectPackage(days) {
+    let dates = [
+      { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
+      { id: 'mod1Test', title: 'Module 1 Test', date: '' },
+      { id: 'mod2training1', title: 'Module 2 Training', date: '' },
+      { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+    ]
+
+    if (days === '5') {
+      dates = [
+        { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
+        { id: 'mod1Test', title: 'Module 1 Test', date: '' },
+        { id: 'mod2training1', title: 'Module 2 Training', date: '' },
+        { id: 'mod2training2', title: 'Module 2 Training', date: '' },
+        { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+      ]
+    }
+
+    if (days === '6') {
+      dates = [
+        { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
+        { id: 'mod1Training2', title: 'Module 1 Training', date: '' },
+        { id: 'mod1Test', title: 'Module 1 Test', date: '' },
+        { id: 'mod2training1', title: 'Module 2 Training', date: '' },
+        { id: 'mod2training2', title: 'Module 2 Training', date: '' },
+        { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+      ]
+    }
+
+    this.setState({ selectedPackageDays: days, selectedPackageDates: dates })
+  }
+
+  onSelectPackageDate(index, selectedDate) {
+    const newDates = [...this.state.selectedPackageDates]
+
+    if (
+      newDates[index + 1] &&
+      newDates[index + 1].date !== '' &&
+      !window.confirm('Changing this will unset subsequent dates')
+    ) {
+      return
+    }
+
+    newDates[index].date = selectedDate
+    newDates.forEach((date, i) => {
+      return i > index ? (date.date = '') : null
+    })
+
+    this.setState({
+      selectedPackageDates: newDates
+    })
   }
 
   onUpdate(data) {
@@ -230,7 +287,8 @@ class ResultPage extends Component {
       instantDate,
       bike_hire,
       selectedLicenceType,
-      selectedPackageDays
+      selectedPackageDays,
+      selectedPackageDates
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -422,8 +480,11 @@ class ResultPage extends Component {
               instantDate={instantDate}
               bike_hire={bike_hire}
               onUpdate={this.onUpdate.bind(this)}
+              onSelectPackage={this.onSelectPackage}
+              onSelectPackageDate={this.onSelectPackageDate}
               selectedLicenceType={selectedLicenceType}
               selectedPackageDays={selectedPackageDays}
+              selectedPackageDates={selectedPackageDates}
             />
           )}
         </SidePanel>

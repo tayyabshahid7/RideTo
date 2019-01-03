@@ -3,6 +3,7 @@ import styles from './styles.scss'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
+import FullLicenceDatePicker from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicenceDatePicker'
 
 class CourseAvailabilityComponent extends Component {
   render() {
@@ -11,7 +12,10 @@ class CourseAvailabilityComponent extends Component {
       course,
       bike_hire,
       selectedLicenceType,
-      selectedPackageDays
+      selectedPackageDays,
+      onSelectPackage,
+      onSelectPackageDate,
+      selectedPackageDates
     } = this.props
 
     return (
@@ -36,8 +40,19 @@ class CourseAvailabilityComponent extends Component {
           bike_hire={bike_hire}
           selectedLicenceType={selectedLicenceType}
           selectedPackageDays={selectedPackageDays}
-          onUpdate={onUpdate}
+          onSelectPackage={onSelectPackage}
         />
+        {selectedPackageDates.map((date, index) => (
+          <FullLicenceDatePicker
+            key={date.id}
+            date={date}
+            index={index}
+            showCalendar={
+              selectedPackageDates.findIndex(date => date.date === '') === index
+            }
+            onSelectPackageDate={onSelectPackageDate}
+          />
+        ))}
       </div>
     )
   }

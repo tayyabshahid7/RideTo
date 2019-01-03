@@ -198,6 +198,7 @@
 }
 
 select.packageSelect {
+  padding: 14px 16px;
   margin-top: 16px;
   border: 1px solid #000;
 
@@ -206,4 +207,50 @@ select.packageSelect {
     border: 1px solid var(--placeholder-color);
     opacity: 1;
   }
+}
+
+.datePickerHeader {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+
+  span {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+    font-size: 1.25rem;
+    line-height: 1.4;
+    text-align: center;
+    background-color: #14141420;
+    border-radius: 50%;
+  }
+
+  h5 {
+    margin-bottom: 0;
+  }
+}
+
+.dateSelected,
+.noDateSelected {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 12px;
+  font-family: var(--font-proxima);
+  border: 1px solid #000;
+}
+
+.noDateSelected {
+  color: var(--placeholder-color);
+  background-color: #14141410;
+  border: 1px solid var(--placeholder-color);
+  opacity: 1;
+}
+
+.changeButton {
+  appearance: none;
+  text-decoration: underline;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
 }

@@ -9,7 +9,8 @@ const CalendarHeader = ({
   calendar,
   handlePrevMonth,
   handleNextMonth,
-  disablePreviousDates
+  disablePreviousDates,
+  showLabel = true
 }) => {
   let todate = new Date()
   let currentMonth = todate.getMonth()
@@ -21,7 +22,7 @@ const CalendarHeader = ({
   return (
     <div className={styles.container}>
       <div id={'choose-date'} className={styles.title}>
-        Choose a date
+        {showLabel && 'Choose a date'}
       </div>
       <div
         className={classnames(styles.prev, prevDisabled && styles.disabled)}

@@ -10,9 +10,9 @@ class PackagePicker extends Component {
   }
 
   handleChange(event) {
-    const { onUpdate } = this.props
+    const { onSelectPackage } = this.props
 
-    onUpdate({ selectedPackageDays: event.target.value })
+    onSelectPackage(event.target.value)
   }
 
   render() {
@@ -32,7 +32,7 @@ class PackagePicker extends Component {
             required
             disabled={!(bike_hire && selectedLicenceType)}>
             <option value="" hidden disabled>
-              Select Training Package
+              Select Package
             </option>
             <option value="4">4 Days Training Package</option>
             <option value="5">5 Days Training Package</option>
