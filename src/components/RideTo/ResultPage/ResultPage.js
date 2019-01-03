@@ -490,7 +490,14 @@ class ResultPage extends Component {
           visible={selectedCourse !== null}
           headingImage={selectedCourse ? selectedCourse.image : ''}
           onDismiss={() =>
-            this.setState({ selectedCourse: null, instantCourse: null })
+            this.setState({
+              selectedCourse: null,
+              instantCourse: null,
+              bike_hire: null,
+              selectedLicenceType: null,
+              selectedPackageDays: '',
+              selectedPackageDates: []
+            })
           }
           footer={this.renderRidetoButton(
             bookNowDisabled,
