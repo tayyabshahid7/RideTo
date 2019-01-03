@@ -54,7 +54,13 @@ function BikePicker({
               styles.bikeHireBtn,
               bike_hire === 'auto' && styles.activeBtn
             )}
-            onClick={() => onUpdate({ bike_hire: 'auto' })}
+            onClick={() =>
+              onUpdate({
+                bike_hire: 'auto',
+                selectedPackageDays: '',
+                selectedPackageDates: []
+              })
+            }
             disabled={isAutoFull}>
             {getMotorbikeLabel('auto')}{' '}
             {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
@@ -67,7 +73,13 @@ function BikePicker({
               styles.bikeHireBtn,
               bike_hire === 'manual' && styles.activeBtn
             )}
-            onClick={() => onUpdate({ bike_hire: 'manual' })}
+            onClick={() =>
+              onUpdate({
+                bike_hire: 'manual',
+                selectedPackageDays: '',
+                selectedPackageDates: []
+              })
+            }
             disabled={isManualFull}>
             {getMotorbikeLabel('manual')}{' '}
             {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}

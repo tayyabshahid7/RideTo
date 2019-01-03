@@ -9,7 +9,13 @@ function Button({ type, age, size, onUpdate, selectedLicenceType }) {
         styles.licenceBtn,
         selectedLicenceType === type && styles.activeBtn
       )}
-      onClick={() => onUpdate({ selectedLicenceType: type })}>
+      onClick={() =>
+        onUpdate({
+          selectedLicenceType: type,
+          selectedPackageDays: '',
+          selectedPackageDates: []
+        })
+      }>
       <span className={styles.licenceBtnType}>{type}</span>
       <span className={styles.licenceBtnInfo}>
         <span>Age: {age}</span>

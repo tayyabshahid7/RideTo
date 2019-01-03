@@ -42,7 +42,8 @@ class ResultPage extends Component {
       selectedPackageDates: []
     }
 
-    this.isPackageDatesSelected = this.isPackageDatesSelected.bind(this)
+    this.isAllPackageDatesSelected = this.isAllPackageDatesSelected.bind(this)
+    this.isAnyPackageDatesSelected = this.isAnyPackageDatesSelected.bind(this)
     this.onSelectPackage = this.onSelectPackage.bind(this)
     this.onSelectPackageDate = this.onSelectPackageDate.bind(this)
     this.onBookNow = this.onBookNow.bind(this)
@@ -127,7 +128,7 @@ class ResultPage extends Component {
       ]
     }
 
-    this.setState({ selectedPackageDays: days, selectedPackageDates: dates })
+    this.onUpdate({ selectedPackageDays: days, selectedPackageDates: dates })
   }
 
   onSelectPackageDate(index, selectedDate) {
@@ -152,6 +153,19 @@ class ResultPage extends Component {
   }
 
   onUpdate(data) {
+    const { courseType } = this.props
+
+    if (
+      courseType === 'FULL_LICENCE' &&
+      (data.hasOwnProperty('bike_hire') ||
+        data.hasOwnProperty('selectedLicenceType') ||
+        data.hasOwnProperty('selectedPackageDays')) &&
+      this.isAnyPackageDatesSelected() &&
+      !window.confirm('Changing this will unset any dates')
+    ) {
+      return
+    }
+
     this.setState({ ...data })
   }
 
@@ -230,7 +244,7 @@ class ResultPage extends Component {
           bookNowDisabled && ifullLicence && styles.bookNowDisabled
         )}
         onClick={() => {
-          this.isPackageDatesSelected()
+          this.isAllPackageDatesSelected()
           if (this.state.activeTab !== '3') {
             this.setState({ activeTab: '3' })
           } else {
@@ -279,7 +293,7 @@ class ResultPage extends Component {
     return true
   }
 
-  isPackageDatesSelected() {
+  isAllPackageDatesSelected() {
     const { selectedPackageDates } = this.state
     const packageSelected = selectedPackageDates.length
     const allDatesSelected = selectedPackageDates.every(date => {
@@ -287,6 +301,12 @@ class ResultPage extends Component {
     })
 
     return packageSelected && allDatesSelected
+  }
+
+  isAnyPackageDatesSelected() {
+    const { selectedPackageDates } = this.state
+
+    return selectedPackageDates.some(date => date.date !== '')
   }
 
   render() {
@@ -328,7 +348,7 @@ class ResultPage extends Component {
       bookNowDisabled = true
     }
 
-    if (this.isPackageDatesSelected()) {
+    if (this.isAllPackageDatesSelected()) {
       bookNowDisabled = false
     }
 
