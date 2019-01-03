@@ -42,6 +42,7 @@ class ResultPage extends Component {
       selectedPackageDates: []
     }
 
+    this.isPackageDatesSelected = this.isPackageDatesSelected.bind(this)
     this.onSelectPackage = this.onSelectPackage.bind(this)
     this.onSelectPackageDate = this.onSelectPackageDate.bind(this)
     this.onBookNow = this.onBookNow.bind(this)
@@ -215,11 +216,21 @@ class ResultPage extends Component {
     )
   }
 
-  renderRidetoButton(bookNowDisabled, instantDate, instantCourse, bike_hire) {
+  renderRidetoButton(
+    bookNowDisabled,
+    instantDate,
+    instantCourse,
+    bike_hire,
+    ifullLicence
+  ) {
     return (
       <RideToButton
-        className={styles.action}
+        className={classnames(
+          styles.action,
+          bookNowDisabled && ifullLicence && styles.bookNowDisabled
+        )}
         onClick={() => {
+          this.isPackageDatesSelected()
           if (this.state.activeTab !== '3') {
             this.setState({ activeTab: '3' })
           } else {
@@ -268,6 +279,16 @@ class ResultPage extends Component {
     return true
   }
 
+  isPackageDatesSelected() {
+    const { selectedPackageDates } = this.state
+    const packageSelected = selectedPackageDates.length
+    const allDatesSelected = selectedPackageDates.every(date => {
+      return date.date !== ''
+    })
+
+    return packageSelected && allDatesSelected
+  }
+
   render() {
     const {
       courses,
@@ -302,6 +323,14 @@ class ResultPage extends Component {
 
     const hasPartnerResults = this.checkPartnerResults(courses)
     const isFullLicence = courseType === 'FULL_LICENCE'
+
+    if (isFullLicence) {
+      bookNowDisabled = true
+    }
+
+    if (this.isPackageDatesSelected()) {
+      bookNowDisabled = false
+    }
 
     return (
       <div className={styles.container}>
@@ -467,7 +496,8 @@ class ResultPage extends Component {
             bookNowDisabled,
             instantDate,
             instantCourse,
-            bike_hire
+            bike_hire,
+            isFullLicence
           )}>
           {selectedCourse && (
             <CourseDetailPanel

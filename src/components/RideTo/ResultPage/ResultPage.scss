@@ -163,7 +163,9 @@
 }
 
 .bookNowDisabled {
+  color: inherit;
   background: var(--light-grey-color);
+  pointer-events: none;
 }
 
 .courseSpacing {
