@@ -103,7 +103,7 @@ class ResultPage extends Component {
     let dates = [
       { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
       { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-      { id: 'mod2training1', title: 'Module 2 Training', date: '' },
+      { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
       { id: 'mod2Test', title: 'Module 2 Test', date: '' }
     ]
 
@@ -111,7 +111,7 @@ class ResultPage extends Component {
       dates = [
         { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
         { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-        { id: 'mod2training1', title: 'Module 2 Training', date: '' },
+        { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
         { id: 'mod2training2', title: 'Module 2 Training', date: '' },
         { id: 'mod2Test', title: 'Module 2 Test', date: '' }
       ]
@@ -122,7 +122,7 @@ class ResultPage extends Component {
         { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
         { id: 'mod1Training2', title: 'Module 1 Training', date: '' },
         { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-        { id: 'mod2training1', title: 'Module 2 Training', date: '' },
+        { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
         { id: 'mod2training2', title: 'Module 2 Training', date: '' },
         { id: 'mod2Test', title: 'Module 2 Test', date: '' }
       ]

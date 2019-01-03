@@ -33,6 +33,23 @@ class FullLicenceDatePicker extends Component {
   }
 
   generateDaysDataFromCalendar(calendar) {
+    const { selectedPackageDates: selectedDates, date: datePicker } = this.props
+    // @ TODO FRONT END PRODEV-850 Improve this
+    const mod1Training1 = selectedDates.find(
+      selectedDate => selectedDate.id === 'mod1Training1'
+    )
+    const mod1Training2 = selectedDates.find(
+      selectedDate => selectedDate.id === 'mod1Training2'
+    )
+    const mod1Test = selectedDates.find(
+      selectedDate => selectedDate.id === 'mod1Test'
+    )
+    const mod2Training1 = selectedDates.find(
+      selectedDate => selectedDate.id === 'mod2Training1'
+    )
+    const mod2Training2 = selectedDates.find(
+      selectedDate => selectedDate.id === 'mod2Training2'
+    )
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
     let todate = moment().format(DATE_FORMAT)
@@ -41,9 +58,71 @@ class FullLicenceDatePicker extends Component {
       let momentDate = moment(date)
       let invisible = date.getMonth() !== calendar.month
       let dateInString = momentDate.format(DATE_FORMAT)
+
+      // Date is earlier than today
       if (dateInString < todate) {
         disabled = true
       }
+
+      // Date has already been selected for something else
+      if (
+        selectedDates.some(selectedDate => selectedDate.date === dateInString)
+      ) {
+        disabled = true
+      }
+
+      // Mod 1 training day 2 is after day 1
+      if (datePicker.id === 'mod1Training2') {
+        if (dateInString < mod1Training1.date) {
+          disabled = true
+        }
+      }
+
+      // Mod 1 test is after mod 1 training
+      if (datePicker.id === 'mod1Test') {
+        if (dateInString < mod1Training1.date) {
+          disabled = true
+        }
+        if (mod1Training2 && dateInString < mod1Training2.date) {
+          disabled = true
+        }
+      }
+
+      // Mod 2 training is after mod 1 test
+      if (datePicker.id === 'mod2Training1') {
+        if (dateInString < mod1Test.date) {
+          disabled = true
+        }
+      }
+
+      // Mod 2 training day 2 is after day 1
+      if (datePicker.id === 'mod2Training2') {
+        if (dateInString < mod2Training1.date) {
+          disabled = true
+        }
+      }
+
+      // Mod 2 test is after mod 2 training
+      if (datePicker.id === 'mod2Test') {
+        if (dateInString < mod2Training1.date) {
+          disabled = true
+        }
+        if (mod2Training2 && dateInString < mod2Training2.date) {
+          disabled = true
+        }
+      }
+
+      // Mod 2 test is at least 12 days after mod 1 test
+      if (datePicker.id === 'mod2Test') {
+        const daysAfterMod1Test = moment(mod1Test.date, DATE_FORMAT)
+          .add(12, 'days')
+          .format(DATE_FORMAT)
+
+        if (dateInString < daysAfterMod1Test) {
+          disabled = true
+        }
+      }
+
       return { date, disabled, invisible }
     })
   }

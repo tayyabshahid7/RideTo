@@ -6,6 +6,8 @@ import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/Packag
 import FullLicenceDatePicker from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicenceDatePicker'
 
 class CourseAvailabilityComponent extends Component {
+  checkErrors
+
   render() {
     const {
       onUpdate,
@@ -50,6 +52,7 @@ class CourseAvailabilityComponent extends Component {
             showCalendar={
               selectedPackageDates.findIndex(date => date.date === '') === index
             }
+            selectedPackageDates={selectedPackageDates}
             onSelectPackageDate={onSelectPackageDate}
           />
         ))}
