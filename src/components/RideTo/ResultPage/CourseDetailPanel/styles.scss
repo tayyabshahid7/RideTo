@@ -234,6 +234,7 @@ select.packageSelect {
 .noDateSelected {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   margin-top: 20px;
   padding: 12px;
   font-family: var(--font-proxima);
@@ -245,6 +246,23 @@ select.packageSelect {
   background-color: #14141410;
   border: 1px solid var(--placeholder-color);
   opacity: 1;
+}
+
+.selectedInfo {
+  display: flex;
+  align-items: center;
+}
+
+.checked {
+  height: 18px;
+  width: 18px;
+  margin-right: 10px;
+  background-color: #141414;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #fff;
+  text-align: center;
+  border-radius: 50%;
 }
 
 .changeButton {

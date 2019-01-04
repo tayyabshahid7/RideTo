@@ -221,13 +221,16 @@ class FullLicenceDatePicker extends Component {
 
       return (
         <div className={styles.dateSelected}>
-          <span>
-            {new Date(date.date).toLocaleDateString('en-GB', {
-              weekday: 'long',
-              day: 'numeric',
-              month: 'long'
-            })}
-          </span>
+          <div className={styles.selectedInfo}>
+            <span className={styles.checked}>✓</span>
+            <span>
+              {new Date(date.date).toLocaleDateString('en-GB', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long'
+              })}
+            </span>
+          </div>
           <button
             className={styles.changeButton}
             onClick={this.handleChangeClick}>
