@@ -170,7 +170,13 @@ class ResultPage extends Component {
   }
 
   onBookNow() {
-    const { selectedCourse, instantCourse, instantDate, bike_hire } = this.state
+    const {
+      selectedCourse,
+      instantCourse,
+      instantDate,
+      bike_hire,
+      selectedPackageDates
+    } = this.state
     const { postcode, courseType } = this.props
     if (!selectedCourse) {
       return
@@ -181,6 +187,16 @@ class ResultPage extends Component {
           instantCourse.id
         }&supplierId=${selectedCourse.id}&date=${instantDate}`
       }
+    } else if (courseType === 'FULL_LICENCE') {
+      const serializedDates = selectedPackageDates
+        .map(date => {
+          return `&${date.id}Date=${date.date}`
+        })
+        .join('')
+
+      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
+        selectedCourse.id
+      }${serializedDates}`
     } else {
       window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
         selectedCourse.id
