@@ -74,27 +74,28 @@ class OrdersPanel extends React.Component {
                       })
                     }
                     friendlyId={order.friendly_id}
+                    courseId={course.id}
+                    courseSpaces={course.spaces}
                   />
                 )}
               </React.Fragment>
             ))}
-            {Array.apply(null, Array(availableSpaces)).map(
-              (val, index) =>
-                orderIndex === index ? (
-                  <AddOrderItem
-                    onCancel={() => this.setState({ orderIndex: -1 })}
-                    info={info}
-                    course={course}
-                    onSave={this.handleNewOrder.bind(this)}
-                    key={index}
-                    saving={saving}
-                  />
-                ) : (
-                  <OrdersPanelSpaceItem
-                    onAdd={() => this.handleAdd(index)}
-                    key={index}
-                  />
-                )
+            {Array.apply(null, Array(availableSpaces)).map((val, index) =>
+              orderIndex === index ? (
+                <AddOrderItem
+                  onCancel={() => this.setState({ orderIndex: -1 })}
+                  info={info}
+                  course={course}
+                  onSave={this.handleNewOrder.bind(this)}
+                  key={index}
+                  saving={saving}
+                />
+              ) : (
+                <OrdersPanelSpaceItem
+                  onAdd={() => this.handleAdd(index)}
+                  key={index}
+                />
+              )
             )}
           </div>
         </Loading>

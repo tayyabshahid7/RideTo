@@ -58,8 +58,6 @@ const mapStateToProps = (state, props) => {
     order: state.course.orderEditForm.order,
     loading: state.course.orderEditForm.loading,
     schoolId: state.auth.schoolId,
-    courseId: state.course.single.course.id,
-    courseSpaces: state.course.single.course.spaces,
     info: state.info
   }
 }
