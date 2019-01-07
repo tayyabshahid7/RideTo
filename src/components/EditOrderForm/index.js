@@ -55,7 +55,12 @@ class EditOrderForm extends React.Component {
         <Form onSubmit={this.handleSave.bind(this)}>
           <Row>
             <Col>
-              <h4>EDIT {direct_friendly_id}</h4>
+              <div className={styles.header}>
+                <h4>EDIT {direct_friendly_id}</h4>
+                <Button type="submit" color="primary">
+                  Change Training Date
+                </Button>
+              </div>
             </Col>
           </Row>
           <Row>
