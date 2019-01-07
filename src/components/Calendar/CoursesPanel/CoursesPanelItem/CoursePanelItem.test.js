@@ -5,6 +5,9 @@ import { MemoryRouter } from 'react-router-dom'
 
 import CoursesPanelItem from './index'
 
+import { Provider } from 'react-redux'
+import configureStore from '../../../../store'
+
 Enzyme.configure({ adapter: new Adapter() })
 
 const COURSE = {
@@ -32,32 +35,31 @@ const COURSE = {
 }
 
 it('Renders Course title and link', () => {
+  const store = configureStore()
+
   const wrapper = mount(
-    <MemoryRouter>
-      <CoursesPanelItem course={COURSE} date="2018-01-01" />
-    </MemoryRouter>
+    <Provider store={store}>
+      <MemoryRouter>
+        <CoursesPanelItem course={COURSE} date="2018-01-01" />
+      </MemoryRouter>
+    </Provider>
   )
 
   expect(wrapper.text()).toContain('08:00')
-  expect(
-    wrapper
-      .find('a')
-      .at(0)
-      .prop('href')
-  ).toContain('/calendar/2018-01-01/courses/1/edit')
-  expect(
-    wrapper
-      .find('a')
-      .at(1)
-      .prop('href')
-  ).toContain('/calendar/2018-01-01/courses/1')
+  expect(wrapper.find('a').prop('href')).toContain(
+    '/calendar/2018-01-01/courses/1/edit'
+  )
 })
 
 it('Renders orders list', () => {
+  const store = configureStore()
+
   const wrapper = mount(
-    <MemoryRouter>
-      <CoursesPanelItem course={COURSE} date="2018-01-01" />
-    </MemoryRouter>
+    <Provider store={store}>
+      <MemoryRouter>
+        <CoursesPanelItem course={COURSE} date="2018-01-01" />
+      </MemoryRouter>
+    </Provider>
   )
 
   const rows = wrapper.find('OrdersPanelItem')
