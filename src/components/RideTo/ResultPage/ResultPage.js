@@ -36,8 +36,16 @@ class ResultPage extends Component {
       activeTab: '1',
       instantCourse: null,
       instantDate: null,
-      bike_hire: null
+      bike_hire: null,
+      selectedLicenceType: null,
+      selectedPackageDays: '',
+      selectedPackageDates: []
     }
+
+    this.isAllPackageDatesSelected = this.isAllPackageDatesSelected.bind(this)
+    this.isAnyPackageDatesSelected = this.isAnyPackageDatesSelected.bind(this)
+    this.onSelectPackage = this.onSelectPackage.bind(this)
+    this.onSelectPackageDate = this.onSelectPackageDate.bind(this)
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
     this.handleCourseChange = this.handleCourseChange.bind(this)
@@ -91,12 +99,84 @@ class ResultPage extends Component {
     this.setState({ showDateSelectorModal: false })
   }
 
+  onSelectPackage(days) {
+    let dates = [
+      { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
+      { id: 'mod1Test', title: 'Module 1 Test', date: '' },
+      { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
+      { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+    ]
+
+    if (days === '5') {
+      dates = [
+        { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
+        { id: 'mod1Test', title: 'Module 1 Test', date: '' },
+        { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
+        { id: 'mod2Training2', title: 'Module 2 Training', date: '' },
+        { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+      ]
+    }
+
+    if (days === '6') {
+      dates = [
+        { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
+        { id: 'mod1Training2', title: 'Module 1 Training', date: '' },
+        { id: 'mod1Test', title: 'Module 1 Test', date: '' },
+        { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
+        { id: 'mod2Training2', title: 'Module 2 Training', date: '' },
+        { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+      ]
+    }
+
+    this.onUpdate({ selectedPackageDays: days, selectedPackageDates: dates })
+  }
+
+  onSelectPackageDate(index, selectedDate) {
+    const newDates = [...this.state.selectedPackageDates]
+
+    if (
+      newDates[index + 1] &&
+      newDates[index + 1].date !== '' &&
+      !window.confirm('Changing this will unset subsequent dates')
+    ) {
+      return
+    }
+
+    newDates[index].date = selectedDate
+    newDates.forEach((date, i) => {
+      return i > index ? (date.date = '') : null
+    })
+
+    this.setState({
+      selectedPackageDates: newDates
+    })
+  }
+
   onUpdate(data) {
+    const { courseType } = this.props
+
+    if (
+      courseType === 'FULL_LICENCE' &&
+      (data.hasOwnProperty('bike_hire') ||
+        data.hasOwnProperty('selectedLicenceType') ||
+        data.hasOwnProperty('selectedPackageDays')) &&
+      this.isAnyPackageDatesSelected() &&
+      !window.confirm('Changing this will unset any dates')
+    ) {
+      return
+    }
+
     this.setState({ ...data })
   }
 
   onBookNow() {
-    const { selectedCourse, instantCourse, instantDate, bike_hire } = this.state
+    const {
+      selectedCourse,
+      instantCourse,
+      instantDate,
+      bike_hire,
+      selectedPackageDates
+    } = this.state
     const { postcode, courseType } = this.props
     if (!selectedCourse) {
       return
@@ -107,6 +187,16 @@ class ResultPage extends Component {
           instantCourse.id
         }&supplierId=${selectedCourse.id}&date=${instantDate}`
       }
+    } else if (courseType === 'FULL_LICENCE') {
+      const serializedDates = selectedPackageDates
+        .map(date => {
+          return `&${date.id}Date=${date.date}`
+        })
+        .join('')
+
+      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
+        selectedCourse.id
+      }${serializedDates}`
     } else {
       window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
         selectedCourse.id
@@ -156,11 +246,21 @@ class ResultPage extends Component {
     )
   }
 
-  renderRidetoButton(bookNowDisabled, instantDate, instantCourse, bike_hire) {
+  renderRidetoButton(
+    bookNowDisabled,
+    instantDate,
+    instantCourse,
+    bike_hire,
+    ifullLicence
+  ) {
     return (
       <RideToButton
-        className={styles.action}
+        className={classnames(
+          styles.action,
+          bookNowDisabled && ifullLicence && styles.bookNowDisabled
+        )}
         onClick={() => {
+          this.isAllPackageDatesSelected()
           if (this.state.activeTab !== '3') {
             this.setState({ activeTab: '3' })
           } else {
@@ -209,6 +309,22 @@ class ResultPage extends Component {
     return true
   }
 
+  isAllPackageDatesSelected() {
+    const { selectedPackageDates } = this.state
+    const packageSelected = selectedPackageDates.length
+    const allDatesSelected = selectedPackageDates.every(date => {
+      return date.date !== ''
+    })
+
+    return packageSelected && allDatesSelected
+  }
+
+  isAnyPackageDatesSelected() {
+    const { selectedPackageDates } = this.state
+
+    return selectedPackageDates.some(date => date.date !== '')
+  }
+
   render() {
     const {
       courses,
@@ -226,7 +342,10 @@ class ResultPage extends Component {
       activeTab,
       instantCourse,
       instantDate,
-      bike_hire
+      bike_hire,
+      selectedLicenceType,
+      selectedPackageDays,
+      selectedPackageDates
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -240,6 +359,14 @@ class ResultPage extends Component {
 
     const hasPartnerResults = this.checkPartnerResults(courses)
     const isFullLicence = courseType === 'FULL_LICENCE'
+
+    if (isFullLicence) {
+      bookNowDisabled = true
+    }
+
+    if (this.isAllPackageDatesSelected()) {
+      bookNowDisabled = false
+    }
 
     return (
       <div className={styles.container}>
@@ -399,13 +526,21 @@ class ResultPage extends Component {
           visible={selectedCourse !== null}
           headingImage={selectedCourse ? selectedCourse.image : ''}
           onDismiss={() =>
-            this.setState({ selectedCourse: null, instantCourse: null })
+            this.setState({
+              selectedCourse: null,
+              instantCourse: null,
+              bike_hire: null,
+              selectedLicenceType: null,
+              selectedPackageDays: '',
+              selectedPackageDates: []
+            })
           }
           footer={this.renderRidetoButton(
             bookNowDisabled,
             instantDate,
             instantCourse,
-            bike_hire
+            bike_hire,
+            isFullLicence
           )}>
           {selectedCourse && (
             <CourseDetailPanel
@@ -418,6 +553,11 @@ class ResultPage extends Component {
               instantDate={instantDate}
               bike_hire={bike_hire}
               onUpdate={this.onUpdate.bind(this)}
+              onSelectPackage={this.onSelectPackage}
+              onSelectPackageDate={this.onSelectPackageDate}
+              selectedLicenceType={selectedLicenceType}
+              selectedPackageDays={selectedPackageDays}
+              selectedPackageDates={selectedPackageDates}
             />
           )}
         </SidePanel>
