@@ -28,6 +28,23 @@ export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
   return axios.get(`api/o/${schoolId}/pending/`, config).catch(error => error)
 }
 
+// TODO FRONTEND PRODEV-861 Turn this into a real function using axios
+export const apiGetUnallocatedTests = () => {
+  return {
+    status: 200,
+    data: [
+      { id: '1', date: '2019-01-07' },
+      { id: '2', date: '2019-01-12' },
+      { id: '3', date: '2019-01-13' },
+      { id: '4', date: '2019-01-14' },
+      { id: '5', date: '2019-01-15' },
+      { id: '6', date: '2019-01-30' },
+      { id: '7', date: '2019-02-07' },
+      { id: '8', date: '2019-03-01' }
+    ]
+  }
+}
+
 const request = async (method, path, params, data = null, auth = true) => {
   const existingToken = getToken()
   const token =
