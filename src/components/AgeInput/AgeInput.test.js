@@ -20,5 +20,5 @@ it('Sets correct age', () => {
   const dob2 = moment('2000-01-01', 'YYYY-MM-DD')
   const age2 = moment().diff(dob2, 'years', false)
   wrapper.setProps({ value: dob2 })
-  expect(wrapper.find('InputGroupText').text()).toBe(`${age2} Yearsq`)
+  expect(wrapper.find('InputGroupText').text()).toBe(`${age2} Years`)
 })
