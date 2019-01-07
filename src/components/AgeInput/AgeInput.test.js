@@ -11,8 +11,14 @@ it('Sets correct age', () => {
   const wrapper = mount(<AgeInput onChange={jest.fn()} />)
 
   expect(wrapper.find('InputGroupText').text()).toBe('- Years')
-  wrapper.setProps({ value: moment('2017-01-01', 'YYYY-MM-DD') })
-  expect(wrapper.find('InputGroupText').text()).toBe('1 Year')
-  wrapper.setProps({ value: moment('2000-01-01', 'YYYY-MM-DD') })
-  expect(wrapper.find('InputGroupText').text()).toBe('18 Years')
+
+  const dob1 = moment('2017-01-01', 'YYYY-MM-DD')
+  const age1 = moment().diff(dob1, 'years', false)
+  wrapper.setProps({ value: dob1 })
+  expect(wrapper.find('InputGroupText').text()).toBe(`${age1} Years`)
+
+  const dob2 = moment('2000-01-01', 'YYYY-MM-DD')
+  const age2 = moment().diff(dob2, 'years', false)
+  wrapper.setProps({ value: dob2 })
+  expect(wrapper.find('InputGroupText').text()).toBe(`${age2} Yearsq`)
 })
