@@ -23,7 +23,6 @@ class DashboardPage extends React.Component {
     }
 
     this.handleDetails = this.handleDetails.bind(this)
-    this.recordGAEcommerceData = this.recordGAEcommerceData.bind(this)
   }
 
   async componentDidMount() {
@@ -44,12 +43,9 @@ class DashboardPage extends React.Component {
 
   async loadSingleOrder(orderId) {
     const recentOrder = await fetchOrder(orderId)
-    this.setState(
-      {
-        recentOrder
-      },
-      this.recordGAEcommerceData
-    )
+    this.setState({
+      recentOrder
+    })
   }
 
   async loadOrders(username) {
@@ -61,26 +57,6 @@ class DashboardPage extends React.Component {
 
   handleDetails(selectedOrder) {
     this.setState({ selectedOrder })
-  }
-
-  recordGAEcommerceData() {
-    const { recentOrder: order } = this.state
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push({
-      transactionId: order.friendly_id,
-      transactionAffiliation: `RideTo - ${order.source}`,
-      transactionTotal: order.amount / 100, // amount is returned in pence
-      transactionProducts: [
-        {
-          sku: order.friendly_id,
-          name: order.selected_licence,
-          category: order.supplier.name,
-          price: order.amount / 100,
-          quantity: 1
-        }
-      ],
-      event: 'rideto.ecom-purchase.completed'
-    })
   }
 
   render() {
