@@ -6,15 +6,18 @@ import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires } from 'common/info'
 import { getPaymentOptions } from 'services/order'
+import ChangeDate from './ChangeDate/'
 
 class EditOrderForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      order: props.order ? props.order : {}
+      order: props.order ? props.order : {},
+      showChangeDate: false
     }
 
     this.handleChangeRawEvent = this.handleChangeRawEvent.bind(this)
+    this.handleToggleDateClick = this.handleToggleDateClick.bind(this)
   }
 
   handleChangeRawEvent(event) {
@@ -34,8 +37,22 @@ class EditOrderForm extends React.Component {
     }
   }
 
+  handleToggleDateClick() {
+    this.setState(prevState => ({
+      showChangeDate: !prevState.showChangeDate
+    }))
+  }
+
   render() {
-    let { onCancel, info } = this.props
+    let {
+      onCancel,
+      info,
+      times,
+      date,
+      time,
+      handleChangeOrderDate
+    } = this.props
+    const { showChangeDate } = this.state
     const {
       user_first_name,
       user_last_name,
@@ -57,10 +74,22 @@ class EditOrderForm extends React.Component {
             <Col>
               <div className={styles.header}>
                 <h4>EDIT {direct_friendly_id}</h4>
-                <Button type="submit" color="primary">
-                  Change Training Date
+                <Button
+                  type="button"
+                  color={showChangeDate ? '' : 'primary'}
+                  onClick={this.handleToggleDateClick}>
+                  {showChangeDate ? 'Cancel' : 'Change Training Date'}
                 </Button>
               </div>
+              {showChangeDate && (
+                <ChangeDate
+                  date={date}
+                  time={time}
+                  times={times}
+                  handleChangeOrderDate={handleChangeOrderDate}
+                  onCancel={this.handleToggleDateClick}
+                />
+              )}
             </Col>
           </Row>
           <Row>

@@ -76,6 +76,8 @@ class OrdersPanel extends React.Component {
                     friendlyId={order.friendly_id}
                     courseId={course.id}
                     courseSpaces={course.spaces}
+                    date={course.date}
+                    time={course.time}
                   />
                 )}
               </React.Fragment>

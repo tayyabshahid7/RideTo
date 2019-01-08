@@ -110,6 +110,18 @@ export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
   return response
 }
 
+export const updateSchoolOrderDate = async (
+  schoolId,
+  friendlyId,
+  date,
+  time
+) => {
+  // TODO BACKEND PRODEV-375 Create actual endpoint
+  const path = `school/${schoolId}/course/order/${friendlyId}/date`
+  const response = await put(path, { date, time })
+  return response
+}
+
 export const updateSchoolCourse = async (
   schoolId,
   courseId,

@@ -1,7 +1,12 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getSchoolOrder, updateOrder } from 'store/course'
+import {
+  getSchoolOrder,
+  updateOrder,
+  updateOrderDate,
+  getDayCourses
+} from 'store/course'
 import EditOrderForm from 'components/EditOrderForm'
 import Loading from 'components/Loading'
 
@@ -9,6 +14,7 @@ class EditOrderFormContainer extends React.Component {
   constructor(props) {
     super(props)
     this.handleEditOrder = this.handleEditOrder.bind(this)
+    this.handleChangeOrderDate = this.handleChangeOrderDate.bind(this)
   }
 
   componentDidMount() {
@@ -35,8 +41,26 @@ class EditOrderFormContainer extends React.Component {
     return response
   }
 
+  async handleChangeOrderDate(date, time) {
+    const {
+      schoolId,
+      friendlyId,
+      updateOrderDate,
+      getDayCourses,
+      date: selectedDate
+    } = this.props
+    const response = await updateOrderDate({ schoolId, friendlyId, date, time })
+    getDayCourses({ schoolId, date: selectedDate })
+
+    return response
+  }
+
   render() {
-    const { order, info, loading, onCancel } = this.props
+    const { order, info, loading, onCancel, date, time, courses } = this.props
+    const times = courses.map(course => ({
+      title: course.time,
+      value: course.time
+    }))
 
     return (
       <Loading loading={loading}>
@@ -46,6 +70,10 @@ class EditOrderFormContainer extends React.Component {
             onCancel={onCancel}
             order={order}
             info={info}
+            date={date}
+            time={time}
+            times={times}
+            handleChangeOrderDate={this.handleChangeOrderDate}
           />
         )}
       </Loading>
@@ -58,7 +86,8 @@ const mapStateToProps = (state, props) => {
     order: state.course.orderEditForm.order,
     loading: state.course.orderEditForm.loading,
     schoolId: state.auth.schoolId,
-    info: state.info
+    info: state.info,
+    courses: state.course.day.courses
   }
 }
 
@@ -66,7 +95,9 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getSchoolOrder,
-      updateOrder
+      updateOrder,
+      updateOrderDate,
+      getDayCourses
     },
     dispatch
   )
