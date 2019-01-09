@@ -5,7 +5,7 @@ import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/Licenc
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
 import FullLicenceDatePicker from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicenceDatePicker'
 
-class CourseAvailabilityComponent extends Component {
+class CourseAvailabilityComponentFullLicence extends Component {
   checkErrors
 
   render() {
@@ -61,4 +61,4 @@ class CourseAvailabilityComponent extends Component {
   }
 }
 
-export default CourseAvailabilityComponent
+export default CourseAvailabilityComponentFullLicence
