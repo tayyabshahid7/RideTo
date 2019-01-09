@@ -172,8 +172,9 @@ class CourseForm extends React.Component {
     const finishTime = this.getFinishTime(time, duration)
     const formClass = isEditable ? styles.grey : ''
 
-    // TODO FRONTEND PRODEV-835 Change this to use actual course_type_ids
-    const isFullLicence = [4].includes(parseInt(course_type_id, 10))
+    const isFullLicence = [11, 12, 13, 14].includes(
+      parseInt(course_type_id, 10)
+    )
 
     return (
       <div className={styles.container}>
