@@ -23,12 +23,14 @@ const COURSE = {
     {
       id: '67ca8d4c-a617-4c5e-8fd0-80fe33fd2031',
       friendly_id: 1367,
-      user_name: 'Test'
+      user_name: 'Test',
+      customer_id: 123
     },
     {
       id: '8f5e12f9-db74-42fc-845f-37d0e9b80c73',
       friendly_id: 1366,
-      user_name: 'C C'
+      user_name: 'C C',
+      customer_id: 124
     }
   ],
   supplier: 697
@@ -46,9 +48,12 @@ it('Renders Course title and link', () => {
   )
 
   expect(wrapper.text()).toContain('08:00')
-  expect(wrapper.find('a').prop('href')).toContain(
-    '/calendar/2018-01-01/courses/1/edit'
-  )
+  expect(
+    wrapper
+      .find('a')
+      .first()
+      .prop('href')
+  ).toContain('/calendar/2018-01-01/courses/1/edit')
 })
 
 it('Renders orders list', () => {
