@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import { Button } from 'reactstrap'
 
@@ -12,7 +13,9 @@ const OrdersPanelItem = ({ order, onEdit, showEditButton = false }) => {
       <div className={styles.col}>
         <strong>{order.direct_friendly_id}</strong>
       </div>
-      <div className={styles.name}>{order.user_name}</div>
+      <div className={styles.name}>
+        <Link to={`/customers/${order.customer_id}`}>{order.user_name}</Link>
+      </div>
       <div className={styles.col}>
         {getTitleFor(BikeHires, order.bike_hire)}
       </div>
