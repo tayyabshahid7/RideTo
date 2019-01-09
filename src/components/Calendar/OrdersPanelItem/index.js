@@ -14,7 +14,7 @@ const OrdersPanelItem = ({ order, onEdit, showEditButton = false }) => {
         <strong>{order.direct_friendly_id}</strong>
       </div>
       <div className={styles.name}>
-        <Link to={`/customers/${order.user_id}`}>{order.user_name}</Link>
+        <Link to={`/customers/${order.customer_id}`}>{order.user_name}</Link>
       </div>
       <div className={styles.col}>
         {getTitleFor(BikeHires, order.bike_hire)}
