@@ -138,6 +138,12 @@ export const getCourseTypes = async schoolId => {
   return response
 }
 
+export const getDasBikeTypes = async schoolId => {
+  const path = `das/${schoolId}`
+  const response = await get(path, {}, false)
+  return response
+}
+
 export const getPricingForCourse = async (schoolId, course_type, datetime) => {
   const path = `school/${schoolId}/pricing`
   const response = await get(path, { course_type, datetime })

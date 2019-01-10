@@ -57,6 +57,7 @@ function BikePicker({
             onClick={() =>
               onUpdate({
                 bike_hire: 'auto',
+                selectedLicenceType: null,
                 selectedPackageDays: '',
                 selectedPackageDates: []
               })
@@ -76,6 +77,7 @@ function BikePicker({
             onClick={() =>
               onUpdate({
                 bike_hire: 'manual',
+                selectedLicenceType: null,
                 selectedPackageDays: '',
                 selectedPackageDates: []
               })
