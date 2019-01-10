@@ -29,15 +29,12 @@ class ChangeDate extends Component {
     })
   }
 
-  async handleUpdateClick() {
-    const { handleChangeOrderDate, onCancel } = this.props
+  handleUpdateClick() {
+    const { onSave } = this.props
     const { date, time } = this.state
+    const start_time = `${date}T${time}Z`
 
-    const response = await handleChangeOrderDate(date, time)
-
-    if (response) {
-      onCancel()
-    }
+    onSave({ start_time }, true)
   }
 
   render() {

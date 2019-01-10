@@ -1,12 +1,7 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {
-  getSchoolOrder,
-  updateOrder,
-  updateOrderDate,
-  getDayCourses
-} from 'store/course'
+import { getSchoolOrder, updateOrder, getDayCourses } from 'store/course'
 import EditOrderForm from 'components/EditOrderForm'
 import Loading from 'components/Loading'
 
@@ -14,7 +9,6 @@ class EditOrderFormContainer extends React.Component {
   constructor(props) {
     super(props)
     this.handleEditOrder = this.handleEditOrder.bind(this)
-    this.handleChangeOrderDate = this.handleChangeOrderDate.bind(this)
   }
 
   componentDidMount() {
@@ -22,36 +16,29 @@ class EditOrderFormContainer extends React.Component {
     getSchoolOrder({ schoolId, friendlyId })
   }
 
-  async handleEditOrder(order) {
+  async handleEditOrder(order, updateDate = false) {
     const {
       courseId,
       courseSpaces,
       updateOrder,
       schoolId,
-      friendlyId
+      friendlyId,
+      date
     } = this.props
-    order.user_name = `${order.user_first_name} ${order.user_last_name}`
+    if (order.user_first_name && order.user_last_name) {
+      order.user_name = `${order.user_first_name} ${order.user_last_name}`
+    }
     order.school_course_id = courseId // add in the course id
     let response = await updateOrder({ schoolId, friendlyId, order })
-    this.props.updateCourse({
+    await this.props.updateCourse({
       schoolId,
       courseId: courseId,
       data: { spaces: courseSpaces }
     })
-    return response
-  }
 
-  async handleChangeOrderDate(date, time) {
-    const {
-      schoolId,
-      friendlyId,
-      updateOrderDate,
-      getDayCourses,
-      date: selectedDate
-    } = this.props
-    const response = await updateOrderDate({ schoolId, friendlyId, date, time })
-    getDayCourses({ schoolId, date: selectedDate })
-
+    if (updateDate) {
+      this.props.getDayCourses({ schoolId, date })
+    }
     return response
   }
 
@@ -73,7 +60,7 @@ class EditOrderFormContainer extends React.Component {
             date={date}
             time={time}
             times={times}
-            handleChangeOrderDate={this.handleChangeOrderDate}
+            // handleChangeOrderDate={this.handleChangeOrderDate}
           />
         )}
       </Loading>
@@ -96,7 +83,6 @@ const mapDispatchToProps = dispatch =>
     {
       getSchoolOrder,
       updateOrder,
-      updateOrderDate,
       getDayCourses
     },
     dispatch

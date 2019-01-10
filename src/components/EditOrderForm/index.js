@@ -16,6 +16,7 @@ class EditOrderForm extends React.Component {
       showChangeDate: false
     }
 
+    this.handleSave = this.handleSave.bind(this)
     this.handleChangeRawEvent = this.handleChangeRawEvent.bind(this)
     this.handleToggleDateClick = this.handleToggleDateClick.bind(this)
   }
@@ -44,14 +45,7 @@ class EditOrderForm extends React.Component {
   }
 
   render() {
-    let {
-      onCancel,
-      info,
-      times,
-      date,
-      time,
-      handleChangeOrderDate
-    } = this.props
+    let { onCancel, info, times, date, time, onSave } = this.props
     const { showChangeDate } = this.state
     const {
       user_first_name,
@@ -69,7 +63,7 @@ class EditOrderForm extends React.Component {
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
-        <Form onSubmit={this.handleSave.bind(this)}>
+        <Form onSubmit={this.handleSave}>
           <Row>
             <Col>
               <div className={styles.header}>
@@ -77,7 +71,8 @@ class EditOrderForm extends React.Component {
                 <Button
                   type="button"
                   color={showChangeDate ? '' : 'primary'}
-                  onClick={this.handleToggleDateClick}>
+                  onClick={this.handleToggleDateClick}
+                  className={styles.toggleButton}>
                   {showChangeDate ? 'Cancel' : 'Change Training Date'}
                 </Button>
               </div>
@@ -86,7 +81,7 @@ class EditOrderForm extends React.Component {
                   date={date}
                   time={time}
                   times={times}
-                  handleChangeOrderDate={handleChangeOrderDate}
+                  onSave={onSave}
                   onCancel={this.handleToggleDateClick}
                 />
               )}

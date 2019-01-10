@@ -8,8 +8,7 @@ import {
   updateSchoolCourse,
   createSchoolCourse,
   createBulkSchoolCourse,
-  getPricingForCourse,
-  updateSchoolOrderDate
+  getPricingForCourse
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -29,7 +28,6 @@ const CREATE_BULK = createRequestTypes('rideto/course/CREATE_BULK')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
 const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
 const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
-const UPDATE_ORDER_DATE = createRequestTypes('rideto/course/UPDATE/ORDER_DATE')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
 const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 
@@ -179,33 +177,6 @@ export const updateOrder = ({
   } catch (error) {
     notificationActions.dispatchError(dispatch, 'Failed to save Order')
     dispatch({ type: UPDATE_ORDER[FAILURE], error })
-    return false
-  }
-  return true
-}
-
-export const updateOrderDate = ({
-  schoolId,
-  friendlyId,
-  date,
-  time
-}) => async dispatch => {
-  dispatch({ type: UPDATE_ORDER_DATE[REQUEST] })
-  try {
-    const response = await updateSchoolOrderDate(
-      schoolId,
-      friendlyId,
-      date,
-      time
-    )
-    notificationActions.dispatchSuccess(dispatch, 'Order saved')
-    dispatch({
-      type: UPDATE_ORDER_DATE[SUCCESS],
-      data: { order: response }
-    })
-  } catch (error) {
-    notificationActions.dispatchError(dispatch, 'Failed to save Order')
-    dispatch({ type: UPDATE_ORDER_DATE[FAILURE], error })
     return false
   }
   return true
