@@ -111,30 +111,135 @@ export const RiderTypes = [
 
 export function getPackageDays(days) {
   let dates = [
-    { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
-    { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-    { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
-    { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+    {
+      id: 'module1Training1',
+      type: 'FULL_LICENCE_MOD1_TRAINING',
+      title: 'Module 1 Training',
+      course_id: null,
+      date: '',
+      time: ''
+    },
+    {
+      id: 'module1Test',
+      type: 'FULL_LICENCE_MOD1_TEST',
+      title: 'Module 1 Test',
+      course_id: null,
+      date: '',
+      time: ''
+    },
+    {
+      id: 'module2Training1',
+      type: 'FULL_LICENCE_MOD2_TRAINING',
+      title: 'Module 2 Training',
+      course_id: null,
+      date: '',
+      time: ''
+    },
+    {
+      id: 'module2Test',
+      type: 'FULL_LICENCE_MOD2_TEST',
+      title: 'Module 2 Test',
+      course_id: null,
+      date: '',
+      time: ''
+    }
   ]
 
   if (days === '5') {
     dates = [
-      { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
-      { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-      { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
-      { id: 'mod2Training2', title: 'Module 2 Training', date: '' },
-      { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+      {
+        id: 'module1Training1',
+        type: 'FULL_LICENCE_MOD1_TRAINING',
+        title: 'Module 1 Training',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module1Test',
+        type: 'FULL_LICENCE_MOD1_TEST',
+        title: 'Module 1 Test',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module2Training1',
+        type: 'FULL_LICENCE_MOD2_TRAINING',
+        title: 'Module 2 Training',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module2Training2',
+        type: 'FULL_LICENCE_MOD2_TRAINING',
+        title: 'Module 2 Training',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module2Test',
+        type: 'FULL_LICENCE_MOD2_TEST',
+        title: 'Module 2 Test',
+        course_id: null,
+        date: '',
+        time: ''
+      }
     ]
   }
 
   if (days === '6') {
     dates = [
-      { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
-      { id: 'mod1Training2', title: 'Module 1 Training', date: '' },
-      { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-      { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
-      { id: 'mod2Training2', title: 'Module 2 Training', date: '' },
-      { id: 'mod2Test', title: 'Module 2 Test', date: '' }
+      {
+        id: 'module1Training1',
+        type: 'FULL_LICENCE_MOD1_TRAINING',
+        title: 'Module 1 Training',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module1Training2',
+        type: 'FULL_LICENCE_MOD1_TRAINING',
+        title: 'Module 1 Training',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module1Test',
+        type: 'FULL_LICENCE_MOD1_TEST',
+        title: 'Module 1 Test',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module2Training1',
+        type: 'FULL_LICENCE_MOD2_TRAINING',
+        title: 'Module 2 Training',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module2Training2',
+        type: 'FULL_LICENCE_MOD2_TRAINING',
+        title: 'Module 2 Training',
+        course_id: null,
+        date: '',
+        time: ''
+      },
+      {
+        id: 'module2Test',
+        type: 'FULL_LICENCE_MOD2_TEST',
+        title: 'Module 2 Test',
+        course_id: null,
+        date: '',
+        time: ''
+      }
     ]
   }
 

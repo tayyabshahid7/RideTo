@@ -144,6 +144,25 @@ export const getDasBikeTypes = async schoolId => {
   return response
 }
 
+export const getDasAvailableDates = async (
+  schoolId,
+  full_licence_type,
+  bike_type,
+  course_type,
+  start_date
+) => {
+  const path = `das/${schoolId}/dates`
+  let data = {
+    full_licence_type,
+    bike_type,
+    course_type,
+    start_date
+  }
+  start_date && (data.start_date = start_date)
+  const response = await get(path, data)
+  return response
+}
+
 export const getPricingForCourse = async (schoolId, course_type, datetime) => {
   const path = `school/${schoolId}/pricing`
   const response = await get(path, { course_type, datetime })

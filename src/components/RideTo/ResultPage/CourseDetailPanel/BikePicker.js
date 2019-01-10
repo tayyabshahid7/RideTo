@@ -13,7 +13,8 @@ function BikePicker({
   isManualFull,
   has_auto_bikes,
   has_manual_bikes,
-  isFullLicence
+  isFullLicence,
+  loading
 }) {
   const fullText = <span className={styles.full}> - Fully Booked</span>
   const manualText = (
@@ -90,6 +91,9 @@ function BikePicker({
         )}
       </div>
       {isCbt && bike_hire === 'manual' && manualText}
+      {isFullLicence && !has_manual_bikes && !has_auto_bikes && !loading && (
+        <div>No bikes available</div>
+      )}
     </div>
   )
 }

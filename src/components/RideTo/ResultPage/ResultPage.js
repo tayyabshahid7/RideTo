@@ -108,7 +108,7 @@ class ResultPage extends Component {
     })
   }
 
-  onSelectPackageDate(index, selectedDate) {
+  onSelectPackageDate(index, { date, course_id, time }) {
     const newDates = [...this.state.selectedPackageDates]
 
     if (
@@ -119,9 +119,15 @@ class ResultPage extends Component {
       return
     }
 
-    newDates[index].date = selectedDate
+    newDates[index].course_id = course_id
+    newDates[index].date = date
+    newDates[index].time = time
     newDates.forEach((date, i) => {
-      return i > index ? (date.date = '') : null
+      if (i > index) {
+        date.course_id = null
+        date.date = ''
+        date.time = ''
+      }
     })
 
     this.setState({
