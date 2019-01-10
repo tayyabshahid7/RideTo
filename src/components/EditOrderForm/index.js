@@ -6,15 +6,19 @@ import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires } from 'common/info'
 import { getPaymentOptions } from 'services/order'
+import ChangeDate from './ChangeDate/'
 
 class EditOrderForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      order: props.order ? props.order : {}
+      order: props.order ? props.order : {},
+      showChangeDate: false
     }
 
+    this.handleSave = this.handleSave.bind(this)
     this.handleChangeRawEvent = this.handleChangeRawEvent.bind(this)
+    this.handleToggleDateClick = this.handleToggleDateClick.bind(this)
   }
 
   handleChangeRawEvent(event) {
@@ -34,8 +38,15 @@ class EditOrderForm extends React.Component {
     }
   }
 
+  handleToggleDateClick() {
+    this.setState(prevState => ({
+      showChangeDate: !prevState.showChangeDate
+    }))
+  }
+
   render() {
-    let { onCancel, info } = this.props
+    let { onCancel, info, times, date, time, onSave } = this.props
+    const { showChangeDate } = this.state
     const {
       user_first_name,
       user_last_name,
@@ -52,10 +63,28 @@ class EditOrderForm extends React.Component {
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
-        <Form onSubmit={this.handleSave.bind(this)}>
+        <Form onSubmit={this.handleSave}>
           <Row>
             <Col>
-              <h4>EDIT {direct_friendly_id}</h4>
+              <div className={styles.header}>
+                <h4>EDIT {direct_friendly_id}</h4>
+                <Button
+                  type="button"
+                  color={showChangeDate ? '' : 'primary'}
+                  onClick={this.handleToggleDateClick}
+                  className={styles.toggleButton}>
+                  {showChangeDate ? 'Cancel' : 'Change Training Date'}
+                </Button>
+              </div>
+              {showChangeDate && (
+                <ChangeDate
+                  date={date}
+                  time={time}
+                  times={times}
+                  onSave={onSave}
+                  onCancel={this.handleToggleDateClick}
+                />
+              )}
             </Col>
           </Row>
           <Row>
