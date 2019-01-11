@@ -7,7 +7,7 @@ import {
   DropdownItem
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
-import { DAY_FORMAT5 } from 'common/constants'
+import { DAY_FORMAT5, LICENCE_TYPES } from 'common/constants'
 import { SortByOptions, getTitleFor, getPackageDays } from 'common/info'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
@@ -49,6 +49,8 @@ class ResultPage extends Component {
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
     this.handleCourseChange = this.handleCourseChange.bind(this)
+
+    window.sessionStorage.removeItem('trainings')
   }
 
   handleDetailClick(course) {
@@ -158,28 +160,37 @@ class ResultPage extends Component {
       instantCourse,
       instantDate,
       bike_hire,
-      selectedPackageDates
+      selectedPackageDates,
+      selectedLicenceType
     } = this.state
     const { postcode, courseType } = this.props
     if (!selectedCourse) {
       return
     }
-    if (selectedCourse.instant_book) {
+    if (courseType === 'FULL_LICENCE') {
+      const trainings = selectedPackageDates.map(training => {
+        return {
+          school_course_id: training.course_id,
+          course_type: training.type,
+          full_licence_type: LICENCE_TYPES[selectedLicenceType],
+          bike_type: bike_hire,
+          supplier_id: selectedCourse.id,
+          requested_date: training.date,
+          requested_time: training.time
+        }
+      })
+
+      window.sessionStorage.setItem('trainings', JSON.stringify(trainings))
+
+      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
+        selectedCourse.id
+      }`
+    } else if (selectedCourse.instant_book) {
       if (instantCourse) {
         window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&courseId=${
           instantCourse.id
         }&supplierId=${selectedCourse.id}&date=${instantDate}`
       }
-    } else if (courseType === 'FULL_LICENCE') {
-      const serializedDates = selectedPackageDates
-        .map(date => {
-          return `&${date.id}Date=${date.date}`
-        })
-        .join('')
-
-      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
-        selectedCourse.id
-      }${serializedDates}`
     } else {
       window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
         selectedCourse.id

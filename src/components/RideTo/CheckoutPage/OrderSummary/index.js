@@ -51,17 +51,40 @@ class OrderSummary extends Component {
       supplier,
       priceInfo,
       showMap,
-      handleMapButtonClick
+      handleMapButtonClick,
+      trainings
     } = this.props
     const { addons, courseType, date, bike_hire } = checkoutData
     const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
     const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
+    const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.rowContainer}>
-        {this.renderRow('Course', getCourseTitle(courseType))}
+        {isFullLicence &&
+          trainings.map((training, index) => {
+            if (training.price) {
+              return (
+                <div className={styles.rowGroup} key={index}>
+                  {this.renderRow(
+                    'test',
+                    `£${(training.price / 100.0).toFixed(2)}`
+                  )}
+                  {this.renderRow(
+                    'Date',
+                    moment(training.date).format('ddd D, MMMM')
+                  )}
+                  <hr />
+                </div>
+              )
+            } else {
+              return null
+            }
+          })}
+        {!isFullLicence && this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
-        {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
+        {!isFullLicence &&
+          this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow(
           'Location',
           <button className={styles.mapButton} onClick={handleMapButtonClick}>
@@ -76,7 +99,7 @@ class OrderSummary extends Component {
             checkout
           />
         )}
-        {priceInfo.training_price
+        {!isFullLicence && priceInfo.training_price
           ? this.renderRow(
               'Training',
               `£${(priceInfo.training_price / 100.0).toFixed(2)}`,

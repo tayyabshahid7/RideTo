@@ -97,7 +97,8 @@ class CheckoutPage extends Component {
       showAddressSelectorModal: false,
       voucher_code: '',
       loadingPrice: false,
-      showMap: false
+      showMap: false,
+      trainings: this.props.trainings
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -140,7 +141,8 @@ class CheckoutPage extends Component {
   async loadPrice(voucher_code) {
     try {
       const { supplierId, courseId, date, courseType } = this.props.checkoutData
-      const { details } = this.state
+      const { details, trainings } = this.state
+      const isFullLicence = courseType === 'FULL_LICENCE'
       let params = {
         supplierId,
         courseId,
@@ -149,17 +151,37 @@ class CheckoutPage extends Component {
         voucher_code
       }
       this.setState({ loadingPrice: true })
-      let response = await getPrice(params)
-      if (voucher_code && response.discount) {
-        details.voucher_code = voucher_code
+      if (isFullLicence) {
+        let fullPrice = 0
+        const newTrainings = await Promise.all(
+          trainings.map(async training => {
+            const price = await getPrice({ courseId: 2993 })
+            fullPrice += parseInt(price.price, 10)
+
+            return {
+              ...training,
+              price: price.price
+            }
+          })
+        )
+
+        this.setState({
+          priceInfo: { ...this.state.priceInfo, price: fullPrice },
+          trainings: newTrainings
+        })
       } else {
-        details.voucher_code = ''
+        let response = await getPrice(params)
+        if (voucher_code && response.discount) {
+          details.voucher_code = voucher_code
+        } else {
+          details.voucher_code = ''
+        }
+        this.setState({
+          priceInfo: { ...response },
+          loadingPrice: false,
+          details
+        })
       }
-      this.setState({
-        priceInfo: { ...response },
-        loadingPrice: false,
-        details
-      })
     } catch (error) {
       this.setState({ loadingPrice: false })
       console.log('Error', error)
@@ -524,7 +546,8 @@ class CheckoutPage extends Component {
       addresses,
       voucher_code,
       loadingPrice,
-      showMap
+      showMap,
+      trainings
     } = this.state
 
     return (
@@ -560,6 +583,7 @@ class CheckoutPage extends Component {
             loadingPrice={loadingPrice}
             showMap={showMap}
             handleMapButtonClick={this.handleMapButtonClick}
+            trainings={trainings}
           />
         </div>
         {showAddressSelectorModal && (

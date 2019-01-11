@@ -89,12 +89,14 @@ class UserDetails extends Component {
     const { addons, courseType, date, bike_hire } = checkoutData
     const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
     const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
+    const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.rowContainer}>
-        {this.renderRow('Course', getCourseTitle(courseType))}
+        {!isFullLicence && this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
-        {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
+        {!isFullLicence &&
+          this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow(
           'Location',
           <button className={styles.mapButton} onClick={handleMapButtonClick}>
@@ -109,7 +111,7 @@ class UserDetails extends Component {
             checkout
           />
         )}
-        {priceInfo.training_price
+        {!isFullLicence && priceInfo.training_price
           ? this.renderRow(
               'Training',
               `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
