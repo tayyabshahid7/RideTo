@@ -74,6 +74,7 @@ class OrdersPanel extends React.Component {
                       })
                     }
                     friendlyId={order.friendly_id}
+                    course_type={course.course_type.constant}
                     courseId={course.id}
                     courseSpaces={course.spaces}
                     date={course.date}

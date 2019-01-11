@@ -170,6 +170,14 @@ export const getShortCourseType = courseType => {
       return 'ITM'
     case 'FULL_LICENCE':
       return 'Full'
+    case 'FULL_LICENCE_MOD1_TRAINING':
+      return 'Mod1 Training'
+    case 'FULL_LICENCE_MOD1_TEST':
+      return 'Mod1 Test'
+    case 'FULL_LICENCE_MOD2_TRAINING':
+      return 'Mod2 Training'
+    case 'FULL_LICENCE_MOD2_TEST':
+      return 'Mod2 Test'
     default:
       return 'CBT'
   }
@@ -212,6 +220,30 @@ export const fetchAvailableCoursesDates = async (
     edate: endDate,
     course_type: courseType
   }
+  const authRequired = false
+  const response = await get(path, params, authRequired)
+
+  return response
+}
+
+export const fetchDayCourseTimes = async (
+  schoolId,
+  date,
+  course_type,
+  bike_type,
+  full_licence_type
+) => {
+  const path = `school/${schoolId}/course/times`
+  const params = {
+    date,
+    course_type,
+    bike_type
+  }
+
+  if (full_licence_type) {
+    params.full_licence_type = full_licence_type
+  }
+
   const authRequired = false
   const response = await get(path, params, authRequired)
 

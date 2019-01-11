@@ -15,7 +15,7 @@ const InputTextGroup = ({
   ...rest
 }) => (
   <div className={className}>
-    <label className="control-label">{label}</label>
+    {label && <label className="control-label">{label}</label>}
     {children ? (
       children
     ) : (
