@@ -8,7 +8,7 @@ import {
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
 import { DAY_FORMAT5 } from 'common/constants'
-import { SortByOptions, getTitleFor } from 'common/info'
+import { SortByOptions, getTitleFor, getPackageDays } from 'common/info'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
@@ -100,38 +100,15 @@ class ResultPage extends Component {
   }
 
   onSelectPackage(days) {
-    let dates = [
-      { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
-      { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-      { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
-      { id: 'mod2Test', title: 'Module 2 Test', date: '' }
-    ]
+    const packageDays = getPackageDays(days)
 
-    if (days === '5') {
-      dates = [
-        { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
-        { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-        { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
-        { id: 'mod2Training2', title: 'Module 2 Training', date: '' },
-        { id: 'mod2Test', title: 'Module 2 Test', date: '' }
-      ]
-    }
-
-    if (days === '6') {
-      dates = [
-        { id: 'mod1Training1', title: 'Module 1 Training', date: '' },
-        { id: 'mod1Training2', title: 'Module 1 Training', date: '' },
-        { id: 'mod1Test', title: 'Module 1 Test', date: '' },
-        { id: 'mod2Training1', title: 'Module 2 Training', date: '' },
-        { id: 'mod2Training2', title: 'Module 2 Training', date: '' },
-        { id: 'mod2Test', title: 'Module 2 Test', date: '' }
-      ]
-    }
-
-    this.onUpdate({ selectedPackageDays: days, selectedPackageDates: dates })
+    this.onUpdate({
+      selectedPackageDays: days,
+      selectedPackageDates: packageDays
+    })
   }
 
-  onSelectPackageDate(index, selectedDate) {
+  onSelectPackageDate(index, { date, course_id, time }) {
     const newDates = [...this.state.selectedPackageDates]
 
     if (
@@ -142,9 +119,15 @@ class ResultPage extends Component {
       return
     }
 
-    newDates[index].date = selectedDate
+    newDates[index].course_id = course_id
+    newDates[index].date = date
+    newDates[index].time = time
     newDates.forEach((date, i) => {
-      return i > index ? (date.date = '') : null
+      if (i > index) {
+        date.course_id = null
+        date.date = ''
+        date.time = ''
+      }
     })
 
     this.setState({
