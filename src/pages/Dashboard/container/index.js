@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { Col, Row } from 'reactstrap'
-import { getPendingOrders } from 'store/dashboard'
+import { getPendingOrders, getUnallocatedTests } from 'store/dashboard'
 import { changeSchool } from 'store/auth'
-import PendinOrdersTable from '../components/PendingOrdersTable'
+import PendingOrdersTable from '../components/PendingOrdersTable'
+import UnallocatedTestsTable from '../components/UnallocatedTestsTable'
 import Loading from 'components/Loading'
 import FaqsPanel from 'components/Home/FaqsPanel'
 import styles from './styles.scss'
@@ -23,6 +24,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.props.getPendingOrders(this.props.schoolId, this.props.page)
+    this.props.getUnallocatedTests()
   }
 
   handleChangePage(page) {
@@ -47,11 +49,17 @@ class Dashboard extends Component {
             lg="8"
             className={classnames(styles.leftColumn, commonStyles.mainContent)}>
             <Loading loading={this.props.loading}>
+              {this.props.unallocatedTests && (
+                <div>
+                  <h2>Unallocated Tests</h2>
+                  <UnallocatedTestsTable tests={this.props.unallocatedTests} />
+                </div>
+              )}
               <h2>Pending Orders</h2>
               {this.props.pendingOrders &&
               this.props.pendingOrders.results.length > 0 ? (
                 <div className={styles.main}>
-                  <PendinOrdersTable
+                  <PendingOrdersTable
                     orders={this.props.pendingOrders.results}
                     sortingChange={this.handleSorting}
                   />
@@ -79,7 +87,8 @@ const mapStateToProps = (state, ownProps) => {
     schoolName: state.auth.schoolName,
     pendingOrders: state.dashboard.pendingOrders,
     page: state.dashboard.page,
-    loading: state.dashboard.loading
+    loading: state.dashboard.loading,
+    unallocatedTests: state.dashboard.unallocatedTests
   }
 }
 
@@ -87,6 +96,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getPendingOrders,
+      getUnallocatedTests,
       changeSchool
     },
     dispatch
