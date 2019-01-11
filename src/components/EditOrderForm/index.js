@@ -45,7 +45,16 @@ class EditOrderForm extends React.Component {
   }
 
   render() {
-    let { onCancel, info, times, date, time, onSave } = this.props
+    let {
+      onCancel,
+      info,
+      courses,
+      date,
+      time,
+      onSave,
+      loadTimes,
+      times
+    } = this.props
     const { showChangeDate } = this.state
     const {
       user_first_name,
@@ -80,9 +89,11 @@ class EditOrderForm extends React.Component {
                 <ChangeDate
                   date={date}
                   time={time}
-                  times={times}
+                  courses={courses}
                   onSave={onSave}
                   onCancel={this.handleToggleDateClick}
+                  times={times}
+                  loadTimes={loadTimes}
                 />
               )}
             </Col>

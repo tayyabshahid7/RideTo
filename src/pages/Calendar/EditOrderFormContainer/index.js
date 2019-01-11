@@ -1,7 +1,12 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getSchoolOrder, updateOrder, getDayCourses } from 'store/course'
+import {
+  getSchoolOrder,
+  updateOrder,
+  getDayCourses,
+  getDayCourseTimes
+} from 'store/course'
 import EditOrderForm from 'components/EditOrderForm'
 import Loading from 'components/Loading'
 
@@ -9,6 +14,7 @@ class EditOrderFormContainer extends React.Component {
   constructor(props) {
     super(props)
     this.handleEditOrder = this.handleEditOrder.bind(this)
+    this.handleLoadTimes = this.handleLoadTimes.bind(this)
   }
 
   componentDidMount() {
@@ -29,7 +35,13 @@ class EditOrderFormContainer extends React.Component {
       order.user_name = `${order.user_first_name} ${order.user_last_name}`
     }
     order.school_course_id = courseId // add in the course id
+
+    if (updateDate) {
+      order.school_course_id = order.course_id
+    }
+
     let response = await updateOrder({ schoolId, friendlyId, order })
+    // TODO FRONTEND PRODEV-375 Update courseSpaces for current course and new course
     await this.props.updateCourse({
       schoolId,
       courseId: courseId,
@@ -42,12 +54,28 @@ class EditOrderFormContainer extends React.Component {
     return response
   }
 
+  async handleLoadTimes(date) {
+    const { schoolId, order, course_type, getDayCourseTimes } = this.props
+
+    await getDayCourseTimes({
+      schoolId,
+      date,
+      course_type,
+      bike_type: order.bike_hire
+    })
+  }
+
   render() {
-    const { order, info, loading, onCancel, date, time, courses } = this.props
-    const times = courses.map(course => ({
-      title: course.time,
-      value: course.time
-    }))
+    const {
+      order,
+      info,
+      loading,
+      onCancel,
+      date,
+      time,
+      courses,
+      times
+    } = this.props
 
     return (
       <Loading loading={loading}>
@@ -59,7 +87,9 @@ class EditOrderFormContainer extends React.Component {
             info={info}
             date={date}
             time={time}
+            courses={courses}
             times={times}
+            loadTimes={this.handleLoadTimes}
             // handleChangeOrderDate={this.handleChangeOrderDate}
           />
         )}
@@ -74,7 +104,8 @@ const mapStateToProps = (state, props) => {
     loading: state.course.orderEditForm.loading,
     schoolId: state.auth.schoolId,
     info: state.info,
-    courses: state.course.day.courses
+    courses: state.course.day.courses,
+    times: state.course.times.available
   }
 }
 
@@ -83,7 +114,8 @@ const mapDispatchToProps = dispatch =>
     {
       getSchoolOrder,
       updateOrder,
-      getDayCourses
+      getDayCourses,
+      getDayCourseTimes
     },
     dispatch
   )
