@@ -67,7 +67,10 @@ class OrderSummary extends Component {
               return (
                 <div className={styles.rowGroup} key={index}>
                   {this.renderRow(
-                    'test',
+                    getCourseTitle(training.course_type).replace(
+                      'Full Licence',
+                      ''
+                    ),
                     `£${(training.price / 100.0).toFixed(2)}`
                   )}
                   {this.renderRow(
