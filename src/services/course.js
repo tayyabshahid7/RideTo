@@ -218,8 +218,27 @@ export const getCourseTitle = courseTypeConstant => {
       return 'ITM Training'
     case 'FULL_LICENCE':
       return 'Full Licence'
+    case 'FULL_LICENCE_MOD1_TRAINING':
+      return 'Full Licence Mod1 Training'
+    case 'FULL_LICENCE_MOD1_TEST':
+      return 'Full Licence Mod1 Test'
+    case 'FULL_LICENCE_MOD2_TRAINING':
+      return 'Full Licence Mod2 Training'
+    case 'FULL_LICENCE_MOD2_TEST':
+      return 'Full Licence Mod2 Test'
     default:
       return 'CBT Training'
+  }
+}
+
+export const getLicenceAge = courseTypeConstant => {
+  switch (courseTypeConstant) {
+    case 'FULL_LICENCE_TYPE_A1':
+      return 17
+    case 'FULL_LICENCE_TYPE_A2':
+      return 19
+    default:
+      return 24
   }
 }
 
