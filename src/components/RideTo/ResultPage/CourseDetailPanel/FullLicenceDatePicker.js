@@ -168,8 +168,6 @@ class FullLicenceDatePicker extends Component {
 
       const days = await this.generateDaysDataFromCalendar(calendar)
 
-      console.log(days)
-
       this.setState({
         days
       })
