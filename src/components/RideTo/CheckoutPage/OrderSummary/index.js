@@ -13,6 +13,7 @@ import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
 import { getExpectedPrice, getBikeHireDetail } from 'services/order'
 import { Button } from 'reactstrap'
+import { SHORT_LICENCE_TYPES } from 'common/constants'
 
 class OrderSummary extends Component {
   constructor(props) {
@@ -62,22 +63,24 @@ class OrderSummary extends Component {
     return (
       <div className={styles.rowContainer}>
         {isFullLicence &&
+          this.renderRow(
+            'Course',
+            `Full Licence (${
+              SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
+            })`
+          )}
+        {isFullLicence &&
           trainings.map((training, index) => {
             if (training.price) {
               return (
-                <div className={styles.rowGroup} key={index}>
+                <div key={index}>
                   {this.renderRow(
                     getCourseTitle(training.course_type).replace(
                       'Full Licence',
                       ''
                     ),
-                    `£${(training.price / 100.0).toFixed(2)}`
+                    moment(training.requested_date).format('ddd D, MMMM')
                   )}
-                  {this.renderRow(
-                    'Date',
-                    moment(training.date).format('ddd D, MMMM')
-                  )}
-                  <hr />
                 </div>
               )
             } else {
