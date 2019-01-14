@@ -20,6 +20,7 @@ import { getCurrentLicenceOptions } from 'services/customer'
 import { getCourseTitle } from 'services/course'
 import { getBikeHireDetail } from 'services/order'
 import styles from './styles.scss'
+import { SHORT_LICENCE_TYPES } from 'common/constants'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -95,22 +96,24 @@ class UserDetails extends Component {
     return (
       <div className={styles.rowContainer}>
         {isFullLicence &&
+          this.renderRow(
+            'Course',
+            `Full Licence (${
+              SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
+            })`
+          )}
+        {isFullLicence &&
           trainings.map((training, index) => {
             if (training.price) {
               return (
-                <div className={styles.rowGroup} key={index}>
+                <div key={index}>
                   {this.renderRow(
                     getCourseTitle(training.course_type).replace(
                       'Full Licence',
                       ''
                     ),
-                    `£${(training.price / 100.0).toFixed(2)}`
+                    moment(training.requested_date).format('ddd D, MMMM')
                   )}
-                  {this.renderRow(
-                    'Date',
-                    moment(training.date).format('ddd D, MMMM')
-                  )}
-                  <hr />
                 </div>
               )
             } else {

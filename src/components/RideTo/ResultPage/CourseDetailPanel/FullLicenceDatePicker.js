@@ -95,7 +95,7 @@ class FullLicenceDatePicker extends Component {
     return days
   }
 
-  handlePrevMonth() {
+  async handlePrevMonth() {
     const { calendar } = this.state
     let month = calendar.month - 1
     let year = calendar.year
@@ -103,10 +103,15 @@ class FullLicenceDatePicker extends Component {
       month = 11
       year = year - 1
     }
-    this.setState({ calendar: { ...calendar, month, year } })
+    const days = await this.generateDaysDataFromCalendar({
+      ...calendar,
+      month,
+      year
+    })
+    this.setState({ days, calendar: { ...calendar, month, year } })
   }
 
-  handleNextMonth() {
+  async handleNextMonth() {
     const { calendar } = this.state
     let month = calendar.month + 1
     let year = calendar.year
@@ -114,7 +119,12 @@ class FullLicenceDatePicker extends Component {
       month = 0
       year = year + 1
     }
-    this.setState({ calendar: { ...calendar, month, year } })
+    const days = await this.generateDaysDataFromCalendar({
+      ...calendar,
+      month,
+      year
+    })
+    this.setState({ days, calendar: { ...calendar, month, year } })
   }
 
   handleDateSelect(date, course_id, time) {
@@ -157,6 +167,7 @@ class FullLicenceDatePicker extends Component {
       this.container.current.scrollIntoView()
 
       const days = await this.generateDaysDataFromCalendar(calendar)
+
       this.setState({
         days
       })
