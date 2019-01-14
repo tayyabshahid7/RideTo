@@ -164,11 +164,14 @@ class ResultPage extends Component {
       selectedLicenceType
     } = this.state
     const { postcode, courseType } = this.props
+    let trainings = []
+
     if (!selectedCourse) {
       return
     }
+
     if (courseType === 'FULL_LICENCE') {
-      const trainings = selectedPackageDates.map(training => {
+      trainings = selectedPackageDates.map(training => {
         return {
           school_course_id: training.course_id,
           course_type: training.type,
@@ -179,9 +182,26 @@ class ResultPage extends Component {
           requested_time: training.time
         }
       })
+    } else {
+      trainings = [
+        {
+          school_course_id: instantCourse && instantCourse.id,
+          course_type: courseType,
+          bike_type: bike_hire,
+          supplier_id: selectedCourse.id,
+          requested_date: selectedCourse.date,
+          requested_time: selectedCourse.startTime
+        }
+      ]
 
-      window.sessionStorage.setItem('trainings', JSON.stringify(trainings))
+      if (instantCourse) {
+        trainings[0].school_course_id = instantCourse.id
+      }
+    }
 
+    window.sessionStorage.setItem('trainings', JSON.stringify(trainings))
+
+    if (courseType === 'FULL_LICENCE') {
       window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
         selectedCourse.id
       }`
