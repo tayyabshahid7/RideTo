@@ -37,7 +37,9 @@ export const apiGetUnallocatedTests = (schoolId, token) => {
     },
     baseURL: BASE_URL
   }
-  return axios.get(`api/o/${schoolId}/upcoming/`, config).catch(error => error)
+  return axios
+    .get(`api/o/${schoolId}/upcoming-tests/`, config)
+    .catch(error => error)
 }
 
 const request = async (method, path, params, data = null, auth = true) => {
