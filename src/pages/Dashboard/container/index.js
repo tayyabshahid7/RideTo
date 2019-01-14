@@ -24,7 +24,7 @@ class Dashboard extends Component {
 
   componentDidMount() {
     this.props.getPendingOrders(this.props.schoolId, this.props.page)
-    this.props.getUnallocatedTests()
+    this.props.getUnallocatedTests(this.props.schoolId)
   }
 
   handleChangePage(page) {
