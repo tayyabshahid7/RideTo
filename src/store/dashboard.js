@@ -66,11 +66,12 @@ const unallocatedTestsError = error => ({
   error
 })
 
-export const getUnallocatedTests = () => {
+export const getUnallocatedTests = schoolId => {
   return async dispatch => {
     dispatch(unallocatedTestsRequest())
     try {
-      const response = await apiGetUnallocatedTests()
+      const token = localStorage.getItem('token')
+      const response = await apiGetUnallocatedTests(schoolId, token)
       if (response.status === 200) {
         dispatch(unallocatedTestsSuccess(response.data))
       } else {
