@@ -28,7 +28,6 @@ export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
   return axios.get(`api/o/${schoolId}/pending/`, config).catch(error => error)
 }
 
-// TODO FRONTEND PRODEV-861 Turn this into a real function using axios
 export const apiGetUnallocatedTests = (schoolId, token) => {
   const config = {
     headers: {
