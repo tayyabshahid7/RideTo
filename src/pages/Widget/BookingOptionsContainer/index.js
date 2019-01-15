@@ -85,8 +85,8 @@ class BookingOptionsContainer extends React.Component {
 
   setAvailableCourses(schoolCourses, courseType) {
     const availableCourses = schoolCourses.filter(
-      ({ course_type, order_count, spaces }) => {
-        return course_type.id === courseType.id && order_count < spaces
+      ({ course_type, training_count, spaces }) => {
+        return course_type.id === courseType.id && training_count < spaces
       }
     )
     const selectedDate = getEarliestDate(availableCourses)
