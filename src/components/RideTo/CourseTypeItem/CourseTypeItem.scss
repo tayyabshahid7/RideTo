@@ -51,8 +51,8 @@
   min-width: 96px;
   height: 120px;
 
-  background: white;
-  color: var(--primary-color);
+  color: white;
+  background: var(--primary-color);
 
   display: flex;
   flex-direction: column;
@@ -74,7 +74,6 @@
   font-weight: bold;
   line-height: 24px;
   text-align: center;
-  display: none;
 }
 
 .details {
