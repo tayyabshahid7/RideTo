@@ -21,7 +21,7 @@ class AddOrderItem extends React.Component {
         bike_hire: '',
         payment_status: '',
         riding_experience: '',
-        start_time: ''
+        start_time: `${this.props.course.date}T${this.props.course.time}Z`
       }
     }
 

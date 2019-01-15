@@ -146,6 +146,14 @@ class CourseForm extends React.Component {
       course.course_type_id = info.courseTypes[0].id
     }
 
+    if (!course.auto_bikes) {
+      course.auto_bikes = 0
+    }
+
+    if (!course.manual_bikes) {
+      course.manual_bikes = 0
+    }
+
     onSubmit(course)
   }
 
