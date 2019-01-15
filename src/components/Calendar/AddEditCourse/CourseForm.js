@@ -172,9 +172,13 @@ class CourseForm extends React.Component {
     const finishTime = this.getFinishTime(time, duration)
     const formClass = isEditable ? styles.grey : ''
 
-    const isFullLicence = [11, 12, 13, 14].includes(
-      parseInt(course_type_id, 10)
+    const courseTypes = info.courseTypes.filter(
+      type => type.constant !== 'FULL_LICENCE'
     )
+
+    const isFullLicence = courseTypes
+      .filter(type => type.constant.startsWith('FULL_LICENCE'))
+      .some(type => type.id === parseInt(course_type_id, 10))
 
     return (
       <div className={styles.container}>
@@ -188,7 +192,7 @@ class CourseForm extends React.Component {
                 disabled={!isEditable}
                 required
                 onChange={this.handleChangeRawEvent.bind(this)}>
-                {info.courseTypes.map(courseType => (
+                {courseTypes.map(courseType => (
                   <option key={courseType.id} value={courseType.id}>
                     {courseType.name}
                   </option>
