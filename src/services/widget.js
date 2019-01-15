@@ -10,9 +10,20 @@ export const createOrder = async (data, auth = false) => {
 }
 
 export const getInitialSuppliers = () => {
-  return window.RIDE_TO_DATA.widget_locations.filter(
-    ({ courses }) => courses.length
-  )
+  return window.RIDE_TO_DATA.widget_locations
+    .filter(({ courses }) => courses.length)
+    .map(supplier => ({
+      ...supplier,
+      courses: supplier.courses.filter(
+        ({ constant }) =>
+          ![
+            'FULL_LICENCE_MOD1_TRAINING',
+            'FULL_LICENCE_MOD1_TEST',
+            'FULL_LICENCE_MOD2_TRAINING',
+            'FULL_LICENCE_MOD2_TEST'
+          ].includes(constant)
+      )
+    }))
 }
 
 export const getAddress = loc => {
