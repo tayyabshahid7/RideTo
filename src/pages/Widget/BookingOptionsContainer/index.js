@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
+import CalendarFullLicence from 'pages/Widget/components/CalendarFullLicence'
 import Calendar from 'pages/Widget/components/Calendar'
 import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
 import CourseSelect from 'pages/Widget/components/CourseSelect'
@@ -12,6 +13,7 @@ import {
   getTotalOrderPrice,
   asPoundSterling
 } from 'services/widget'
+import { getPackageDays } from 'common/info'
 
 import styles from './BookingOptionsContainer.scss'
 
@@ -51,6 +53,8 @@ class BookingOptionsContainer extends React.Component {
     this.handleChangeCourse = this.handleChangeCourse.bind(this)
     this.handleChangeMonth = this.handleChangeMonth.bind(this)
     this.handleSelectBikeHire = this.handleSelectBikeHire.bind(this)
+    this.onUpdate = this.onUpdate.bind(this)
+    this.onSelectPackage = this.onSelectPackage.bind(this)
 
     window.document.body.scrollIntoView()
   }
@@ -95,11 +99,19 @@ class BookingOptionsContainer extends React.Component {
       availableCourses
     )
 
+    const isFullLicence = courseType.constant === 'FULL_LICENCE'
+
+    let selectedBikeHire = showOwnBikeHire(courseType) ? 'no' : 'auto'
+
+    if (isFullLicence) {
+      selectedBikeHire = ''
+    }
+
     this.setState({
       schoolCourses,
       selectedDate,
       selectedCourse: selectedCourses[0],
-      selectedBikeHire: showOwnBikeHire(courseType) ? 'no' : 'auto',
+      selectedBikeHire,
       availableCourses,
       courseType,
       isLoading: false
@@ -144,6 +156,25 @@ class BookingOptionsContainer extends React.Component {
     this.setState({ selectedBikeHire })
   }
 
+  onUpdate(data) {
+    const newState = { ...data }
+
+    if (data.bike_hire) {
+      newState.selectedBikeHire = data.bike_hire
+    }
+
+    this.setState(newState)
+  }
+
+  onSelectPackage(days) {
+    const packageDays = getPackageDays(days)
+
+    this.onUpdate({
+      selectedPackageDays: days,
+      selectedPackageDates: packageDays
+    })
+  }
+
   getTotalPrice() {
     const { selectedCourse, selectedBikeHire } = this.state
     if (selectedCourse && selectedCourse.pricing) {
@@ -169,6 +200,7 @@ class BookingOptionsContainer extends React.Component {
       selectedDate,
       selectedCourse,
       selectedBikeHire,
+      selectedLicenceType,
       isLoading
     } = this.state
     const selectedCourses = getSchoolCoursesByDate(
@@ -178,6 +210,7 @@ class BookingOptionsContainer extends React.Component {
     const url = selectedCourse
       ? `/widget/${slug}/payment/${selectedCourse.id}?hire=${selectedBikeHire}`
       : null
+    const isFullLicence = courseType.constant === 'FULL_LICENCE'
 
     if (!courseType) {
       return <div className={styles.bookingOptions}>No Course Found</div>
@@ -200,14 +233,24 @@ class BookingOptionsContainer extends React.Component {
           onChange={onChangeSupplier}
         />
 
-        <Calendar
-          color={widget.calendar_color}
-          date={selectedDate}
-          courses={availableCourses}
-          onChangeDate={this.handleChangeDate}
-          onChangeMonth={this.handleChangeMonth}
-          isLoading={isLoading}
-        />
+        {!isFullLicence ? (
+          <Calendar
+            color={widget.calendar_color}
+            date={selectedDate}
+            courses={availableCourses}
+            onChangeDate={this.handleChangeDate}
+            onChangeMonth={this.handleChangeMonth}
+            isLoading={isLoading}
+          />
+        ) : (
+          <CalendarFullLicence
+            selectedSupplier={selectedSupplier}
+            selectedBikeHire={selectedBikeHire}
+            selectedLicenceType={selectedLicenceType}
+            onUpdate={this.onUpdate}
+            onSelectPackage={this.onSelectPackage}
+          />
+        )}
 
         <hr />
 

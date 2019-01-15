@@ -44,8 +44,8 @@ export const getStartInTime = (now, startTime) => {
     .join(', ')
 }
 
-export const getMotorbikeLabel = bikeHire => {
-  return getBikeHireOptions()[bikeHire]
+export const getMotorbikeLabel = (bikeHire, isFullLicence) => {
+  return getBikeHireOptions(isFullLicence)[bikeHire]
 }
 
 export const getTotalOrderPrice = (course, bikeHire) => {

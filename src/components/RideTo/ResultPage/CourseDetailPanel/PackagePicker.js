@@ -16,7 +16,12 @@ class PackagePicker extends Component {
   }
 
   render() {
-    const { bike_hire, selectedLicenceType, selectedPackageDays } = this.props
+    const {
+      bike_hire,
+      selectedLicenceType,
+      selectedPackageDays,
+      isWidget
+    } = this.props
 
     return (
       <div className={styles.packageWrapper}>
@@ -27,7 +32,10 @@ class PackagePicker extends Component {
           <Select
             value={selectedPackageDays}
             name="rider_type"
-            className={classnames(styles.packageSelect)}
+            className={classnames(
+              styles.packageSelect,
+              isWidget && styles.widgetSelect
+            )}
             onChange={this.handleChange}
             required
             disabled={!(bike_hire && selectedLicenceType)}>

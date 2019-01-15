@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react'
 import styles from './styles.scss'
 import { getDasBikeTypes } from 'services/course'
-import Loading from 'components/Loading'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
@@ -59,17 +58,17 @@ class CourseAvailabilityComponentFullLicence extends Component {
         <p className={styles.dasInfo}>
           DAS courses take place over multiple days.
         </p>
-        <Loading loading={loading}>
-          <BikePicker
-            isFullLicence
-            bike_hire={bike_hire}
-            onUpdate={onUpdate}
-            course={course}
-            has_auto_bikes={hasAutoBikes}
-            has_manual_bikes={hasManualBikes}
-            loading={loading}
-          />
-        </Loading>
+
+        <BikePicker
+          isFullLicence
+          bike_hire={bike_hire}
+          onUpdate={onUpdate}
+          course={course}
+          has_auto_bikes={hasAutoBikes}
+          has_manual_bikes={hasManualBikes}
+          loading={loading}
+        />
+
         {bike_hire && (
           <Fragment>
             <LicencePicker

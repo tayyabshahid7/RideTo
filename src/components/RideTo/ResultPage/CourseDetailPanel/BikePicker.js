@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
 import { getMotorbikeLabel } from 'services/widget'
+import Loading from 'components/Loading'
 
 function BikePicker({
   isCbt,
@@ -14,7 +15,8 @@ function BikePicker({
   has_auto_bikes,
   has_manual_bikes,
   isFullLicence,
-  loading
+  loading,
+  isWidget
 }) {
   const fullText = <span className={styles.full}> - Fully Booked</span>
   const manualText = (
@@ -27,74 +29,79 @@ function BikePicker({
   )
 
   return (
-    <div className={styles.bikeHireWrapper}>
-      <label id="choose-bike" className={styles.subtitle1}>
-        {!isFullLicence ? 'Choose A Bike to Hire' : 'Type of Bike'}
-      </label>
+    <Loading loading={loading}>
+      <div className={styles.bikeHireWrapper}>
+        <label id="choose-bike" className={styles.subtitle1}>
+          {!isFullLicence ? 'Choose A Bike to Hire' : 'Type of Bike'}
+        </label>
 
-      {isCbtRenewal && (
-        <button
-          className={classnames(
-            styles.bikeHireBtn,
-            bike_hire === 'no' && styles.activeBtn
-          )}
-          onClick={() => onUpdate({ bike_hire: 'no' })}>
-          {getMotorbikeLabel('no')}
-        </button>
-      )}
-      {bike_hire === 'no' && (
-        <div className={styles.ownBikeDisclaimer}>
-          You must bring a valid CBT Certificate, Insurance Documents, Tax and
-          MOT if you wish to train on your own bike.
-        </div>
-      )}
-      <div className={isFullLicence && styles.bikeButtons}>
-        {has_auto_bikes && (
+        {isCbtRenewal && (
           <button
             className={classnames(
               styles.bikeHireBtn,
-              bike_hire === 'auto' && styles.activeBtn
+              isWidget && styles.widgetBtn,
+              bike_hire === 'no' && styles.activeBtn
             )}
-            onClick={() =>
-              onUpdate({
-                bike_hire: 'auto',
-                selectedLicenceType: null,
-                selectedPackageDays: '',
-                selectedPackageDates: []
-              })
-            }
-            disabled={isAutoFull}>
-            {getMotorbikeLabel('auto')}{' '}
-            {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-            {isAutoFull ? fullText : null}
+            onClick={() => onUpdate({ bike_hire: 'no' })}>
+            {getMotorbikeLabel('no')}
           </button>
         )}
-        {has_manual_bikes && (
-          <button
-            className={classnames(
-              styles.bikeHireBtn,
-              bike_hire === 'manual' && styles.activeBtn
-            )}
-            onClick={() =>
-              onUpdate({
-                bike_hire: 'manual',
-                selectedLicenceType: null,
-                selectedPackageDays: '',
-                selectedPackageDates: []
-              })
-            }
-            disabled={isManualFull}>
-            {getMotorbikeLabel('manual')}{' '}
-            {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-            {isManualFull ? fullText : null}
-          </button>
+        {bike_hire === 'no' && (
+          <div className={styles.ownBikeDisclaimer}>
+            You must bring a valid CBT Certificate, Insurance Documents, Tax and
+            MOT if you wish to train on your own bike.
+          </div>
+        )}
+        <div className={isFullLicence && styles.bikeButtons}>
+          {has_auto_bikes && (
+            <button
+              className={classnames(
+                styles.bikeHireBtn,
+                isWidget && styles.widgetBtn,
+                bike_hire === 'auto' && styles.activeBtn
+              )}
+              onClick={() =>
+                onUpdate({
+                  bike_hire: 'auto',
+                  selectedLicenceType: null,
+                  selectedPackageDays: '',
+                  selectedPackageDates: []
+                })
+              }
+              disabled={isAutoFull}>
+              {getMotorbikeLabel('auto', isFullLicence)}{' '}
+              {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+              {isAutoFull ? fullText : null}
+            </button>
+          )}
+          {has_manual_bikes && (
+            <button
+              className={classnames(
+                styles.bikeHireBtn,
+                isWidget && styles.widgetBtn,
+                bike_hire === 'manual' && styles.activeBtn
+              )}
+              onClick={() =>
+                onUpdate({
+                  bike_hire: 'manual',
+                  selectedLicenceType: null,
+                  selectedPackageDays: '',
+                  selectedPackageDates: []
+                })
+              }
+              disabled={isManualFull}>
+              {getMotorbikeLabel('manual', isFullLicence)}{' '}
+              {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+              {isManualFull ? fullText : null}
+            </button>
+          )}
+        </div>
+        {isCbt && bike_hire === 'manual' && manualText}
+        {isFullLicence && !has_manual_bikes && !has_auto_bikes && !loading && (
+          <div>No bikes available</div>
         )}
       </div>
-      {isCbt && bike_hire === 'manual' && manualText}
-      {isFullLicence && !has_manual_bikes && !has_auto_bikes && !loading && (
-        <div>No bikes available</div>
-      )}
-    </div>
+    </Loading>
   )
 }
 
