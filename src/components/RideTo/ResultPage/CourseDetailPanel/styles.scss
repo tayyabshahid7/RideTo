@@ -181,15 +181,6 @@
   }
 }
 
-.widgetBtn {
-  // margin-top: 0;
-  border: 1px solid #cacccd;
-
-  .licenceBtnType {
-    border-right: 1px solid #cacccd;
-  }
-}
-
 .ownBikeDisclaimer {
   margin-top: 10px;
   color: var(--danger-color);
@@ -221,17 +212,6 @@ select.packageSelect {
     background-color: #14141410;
     border: 1px solid var(--placeholder-color);
     opacity: 1;
-  }
-}
-
-select.widgetSelect {
-  padding: 0.5em 3.5em 0.5em 1em;
-  border: 1px solid #cacccd;
-
-  &,
-  &:hover {
-    border-color: #cacccd !important;
-    background-image: none !important;
   }
 }
 
@@ -297,4 +277,38 @@ select.widgetSelect {
   background: transparent;
   border: 0;
   cursor: pointer;
+}
+
+.widget {
+  label {
+    font-family: Arial, Helvetica, sans-serif;
+    text-transform: none;
+  }
+
+  h5 {
+    margin-top: 0;
+  }
+}
+
+.widgetBtn {
+  border: 1px solid #cacccd;
+
+  .licenceBtnType {
+    border-right: 1px solid #cacccd;
+  }
+}
+
+select.widgetSelect {
+  padding: 0.5em 3.5em 0.5em 1em;
+  border: 1px solid #cacccd;
+
+  &,
+  &:hover {
+    border-color: #cacccd !important;
+    background-image: none !important;
+  }
+}
+
+.widgetDateSelected {
+  border: 1px solid #cacccd;
 }

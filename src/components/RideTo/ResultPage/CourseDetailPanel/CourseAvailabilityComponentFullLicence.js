@@ -53,8 +53,10 @@ class CourseAvailabilityComponentFullLicence extends Component {
     } = this.state
 
     return (
-      <div className={!isWidget ? styles.content : undefined}>
-        <div className={styles.subtitle1}>Full Licence (A1/A2 DAS)</div>
+      <div className={!isWidget ? styles.content : styles.widget}>
+        {!isWidget && (
+          <div className={styles.subtitle1}>Full Licence (A1/A2 DAS)</div>
+        )}
         <p className={styles.dasInfo}>
           DAS courses take place over multiple days.
         </p>

@@ -223,7 +223,7 @@ export function isAllPackageDatesSelected(selectedPackageDates) {
     return date.date !== ''
   })
 
-  return packageSelected && allDatesSelected
+  return !!packageSelected && allDatesSelected
 }
 
 export function isAnyPackageDatesSelected(selectedPackageDates) {
