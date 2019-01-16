@@ -1,12 +1,11 @@
 import React, { Component, Fragment } from 'react'
 import styles from './styles.scss'
 import { getDasBikeTypes } from 'services/course'
+import { getPackageStartDate } from 'common/info'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
 import FullLicenceDatePicker from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicenceDatePicker'
-import moment from 'moment'
-import { DATE_FORMAT } from 'common/constants'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -42,7 +41,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       selectedPackageDays,
       onSelectPackage,
       onSelectPackageDate,
-      selectedPackageDates
+      selectedPackageDates,
+      isWidget
     } = this.props
     const {
       loading,
@@ -53,13 +53,14 @@ class CourseAvailabilityComponentFullLicence extends Component {
     } = this.state
 
     return (
-      <div className={styles.content}>
+      <div className={!isWidget ? styles.content : undefined}>
         <div className={styles.subtitle1}>Full Licence (A1/A2 DAS)</div>
         <p className={styles.dasInfo}>
           DAS courses take place over multiple days.
         </p>
 
         <BikePicker
+          isWidget={isWidget}
           isFullLicence
           bike_hire={bike_hire}
           onUpdate={onUpdate}
@@ -72,47 +73,28 @@ class CourseAvailabilityComponentFullLicence extends Component {
         {bike_hire && (
           <Fragment>
             <LicencePicker
+              isWidget={isWidget}
               selectedLicenceType={selectedLicenceType}
               onUpdate={onUpdate}
               licences={bike_hire === 'auto' ? autoLicences : manualLicences}
             />
             <PackagePicker
+              isWidget={isWidget}
               bike_hire={bike_hire}
               selectedLicenceType={selectedLicenceType}
               selectedPackageDays={selectedPackageDays}
               onSelectPackage={onSelectPackage}
             />
             {selectedPackageDates.map((date, index) => {
-              let start_date
-
-              if (!selectedPackageDates[index - 1]) {
-                start_date = moment().format(DATE_FORMAT)
-              } else if (selectedPackageDates[index - 1].date === '') {
-                start_date = null
-              } else {
-                start_date = moment(selectedPackageDates[index - 1].date)
-                  .add(1, 'days')
-                  .format(DATE_FORMAT)
-              }
-
-              if (date.type === 'FULL_LICENCE_MOD2_TEST') {
-                const dateTest1 = selectedPackageDates.find(
-                  selectedDate => selectedDate.type === 'FULL_LICENCE_MOD1_TEST'
-                ).date
-
-                if (dateTest1) {
-                  const afterDateTest1 = moment(dateTest1)
-                    .add(12, 'days')
-                    .format(DATE_FORMAT)
-
-                  if (afterDateTest1 > start_date) {
-                    start_date = afterDateTest1
-                  }
-                }
-              }
+              const start_date = getPackageStartDate(
+                date,
+                index,
+                selectedPackageDates
+              )
 
               return (
                 <FullLicenceDatePicker
+                  isWidget={isWidget}
                   schoolId={course.id}
                   licence={selectedLicenceType}
                   bike_hire={bike_hire}

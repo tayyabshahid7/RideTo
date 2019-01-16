@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
 import styles from './CalendarHeader.scss'
-import { IconArrowSlideLeft, IconArrowSlideRight } from 'assets/icons'
+import { IconArrowSlideLeft, IconArrowSlideRight } from '../../../assets/icons'
 // import classnames from 'classnames'
 
 const CalendarHeader = ({
