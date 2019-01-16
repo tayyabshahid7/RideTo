@@ -2,12 +2,13 @@ import React from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
 
-function Button({ type, age, size, onUpdate, selectedLicenceType }) {
+function Button({ type, age, size, onUpdate, selectedLicenceType, isWidget }) {
   return (
     <button
       className={classnames(
         styles.licenceBtn,
-        selectedLicenceType === type && styles.activeBtn
+        selectedLicenceType === type && styles.activeBtn,
+        isWidget && styles.widgetBtn
       )}
       onClick={() =>
         onUpdate({

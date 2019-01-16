@@ -109,7 +109,7 @@ class CourseAvailabilityComponent extends React.Component {
 
       if (courseLocation.instant_book) {
         for (let i = dayCourses.length - 1; i >= 0; i--) {
-          if (dayCourses[i].order_count >= dayCourses[i].spaces) {
+          if (dayCourses[i].training_count >= dayCourses[i].spaces) {
             dayCourses.splice(i, 1)
           }
         }

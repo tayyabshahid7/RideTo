@@ -1,4 +1,11 @@
-import { BIKE_HIRE, RIDING_EXPERIENCE, SORTBY, RIDER_TYPE } from './constants'
+import moment from 'moment'
+import {
+  BIKE_HIRE,
+  RIDING_EXPERIENCE,
+  SORTBY,
+  RIDER_TYPE,
+  DATE_FORMAT
+} from './constants'
 
 export const BikeHires = [
   { value: BIKE_HIRE.MANUAL, title: 'Manual' },
@@ -176,4 +183,49 @@ export function getPackageDays(days) {
   }
 
   return dates
+}
+
+export function getPackageStartDate(date, index, selectedPackageDates) {
+  let start_date
+
+  if (!selectedPackageDates[index - 1]) {
+    start_date = moment().format(DATE_FORMAT)
+  } else if (selectedPackageDates[index - 1].date === '') {
+    start_date = null
+  } else {
+    start_date = moment(selectedPackageDates[index - 1].date)
+      .add(1, 'days')
+      .format(DATE_FORMAT)
+  }
+
+  if (date.type === 'FULL_LICENCE_MOD2_TEST') {
+    const dateTest1 = selectedPackageDates.find(
+      selectedDate => selectedDate.type === 'FULL_LICENCE_MOD1_TEST'
+    ).date
+
+    if (dateTest1) {
+      const afterDateTest1 = moment(dateTest1)
+        .add(12, 'days')
+        .format(DATE_FORMAT)
+
+      if (afterDateTest1 > start_date) {
+        start_date = afterDateTest1
+      }
+    }
+  }
+
+  return start_date
+}
+
+export function isAllPackageDatesSelected(selectedPackageDates) {
+  const packageSelected = selectedPackageDates.length
+  const allDatesSelected = selectedPackageDates.every(date => {
+    return date.date !== ''
+  })
+
+  return !!packageSelected && allDatesSelected
+}
+
+export function isAnyPackageDatesSelected(selectedPackageDates) {
+  return selectedPackageDates.some(date => date.date !== '')
 }

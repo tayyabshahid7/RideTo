@@ -78,11 +78,11 @@ export const isRideTo = ({ source }) => {
   return source === 'RIDETO'
 }
 
-export const getBikeHireOptions = () => {
+export const getBikeHireOptions = isFullLicence => {
   return {
     no: 'Own Bike',
     auto: 'Automatic Scooter',
-    manual: 'Manual 125cc Motorcycle'
+    manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual Motorcycle'
   }
 }
 

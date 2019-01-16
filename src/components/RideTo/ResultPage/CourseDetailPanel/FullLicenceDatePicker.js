@@ -4,6 +4,7 @@ import moment from 'moment'
 import { getDasAvailableDates } from 'services/course'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import { DATE_FORMAT } from 'common/constants'
+import classnames from 'classnames'
 
 class FullLicenceDatePicker extends Component {
   constructor(props) {
@@ -175,7 +176,7 @@ class FullLicenceDatePicker extends Component {
   }
 
   render() {
-    const { date, index, showCalendar } = this.props
+    const { date, index, showCalendar, isWidget } = this.props
     const { calendar, days } = this.state
 
     const content = () => {
@@ -199,7 +200,11 @@ class FullLicenceDatePicker extends Component {
       }
 
       return (
-        <div className={styles.dateSelected}>
+        <div
+          className={classnames(
+            styles.dateSelected,
+            isWidget && styles.widgetDateSelected
+          )}>
           <div className={styles.selectedInfo}>
             <span className={styles.checked}>✓</span>
             <span>

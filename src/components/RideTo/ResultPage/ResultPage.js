@@ -8,7 +8,13 @@ import {
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
 import { DAY_FORMAT5, LICENCE_TYPES } from 'common/constants'
-import { SortByOptions, getTitleFor, getPackageDays } from 'common/info'
+import {
+  SortByOptions,
+  getTitleFor,
+  getPackageDays,
+  isAllPackageDatesSelected,
+  isAnyPackageDatesSelected
+} from 'common/info'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
@@ -42,8 +48,6 @@ class ResultPage extends Component {
       selectedPackageDates: []
     }
 
-    this.isAllPackageDatesSelected = this.isAllPackageDatesSelected.bind(this)
-    this.isAnyPackageDatesSelected = this.isAnyPackageDatesSelected.bind(this)
     this.onSelectPackage = this.onSelectPackage.bind(this)
     this.onSelectPackageDate = this.onSelectPackageDate.bind(this)
     this.onBookNow = this.onBookNow.bind(this)
@@ -139,13 +143,14 @@ class ResultPage extends Component {
 
   onUpdate(data) {
     const { courseType } = this.props
+    const { selectedPackageDates } = this.state
 
     if (
       courseType === 'FULL_LICENCE' &&
       (data.hasOwnProperty('bike_hire') ||
         data.hasOwnProperty('selectedLicenceType') ||
         data.hasOwnProperty('selectedPackageDays')) &&
-      this.isAnyPackageDatesSelected() &&
+      isAnyPackageDatesSelected(selectedPackageDates) &&
       !window.confirm('Changing this will unset any dates')
     ) {
       return
@@ -267,6 +272,8 @@ class ResultPage extends Component {
     bike_hire,
     ifullLicence
   ) {
+    const { selectedPackageDates } = this.state
+
     return (
       <RideToButton
         className={classnames(
@@ -274,7 +281,7 @@ class ResultPage extends Component {
           bookNowDisabled && ifullLicence && styles.bookNowDisabled
         )}
         onClick={() => {
-          this.isAllPackageDatesSelected()
+          isAllPackageDatesSelected(selectedPackageDates)
           if (this.state.activeTab !== '3') {
             this.setState({ activeTab: '3' })
           } else {
@@ -328,22 +335,6 @@ class ResultPage extends Component {
     return true
   }
 
-  isAllPackageDatesSelected() {
-    const { selectedPackageDates } = this.state
-    const packageSelected = selectedPackageDates.length
-    const allDatesSelected = selectedPackageDates.every(date => {
-      return date.date !== ''
-    })
-
-    return packageSelected && allDatesSelected
-  }
-
-  isAnyPackageDatesSelected() {
-    const { selectedPackageDates } = this.state
-
-    return selectedPackageDates.some(date => date.date !== '')
-  }
-
   render() {
     const {
       courses,
@@ -383,7 +374,7 @@ class ResultPage extends Component {
       bookNowDisabled = true
     }
 
-    if (this.isAllPackageDatesSelected()) {
+    if (isAllPackageDatesSelected(selectedPackageDates)) {
       bookNowDisabled = false
     }
 
