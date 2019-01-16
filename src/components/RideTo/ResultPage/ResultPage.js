@@ -322,9 +322,14 @@ class ResultPage extends Component {
       const availableCourses = courses.available.filter(
         course => course.is_partner
       )
-      const unavailableCourses = courses.unavailable.filter(
-        course => course.is_partner
-      )
+      let unavailableCourses = []
+      if (courses.unavailable) {
+        unavailableCourses = courses.unavailable.filter(
+          course => course.is_partner
+        )
+      } else {
+        unavailableCourses = []
+      }
       return availableCourses.length > 0 || unavailableCourses.length > 0
     }
     return true
@@ -462,7 +467,7 @@ class ResultPage extends Component {
                           )}
                         </React.Fragment>
                       )}
-                      {courses.unavailable.length > 0 && (
+                      {courses.unavailable && courses.unavailable.length > 0 && (
                         <React.Fragment>
                           {hasPartnerResults && (
                             <div className={styles.subTitle}>
