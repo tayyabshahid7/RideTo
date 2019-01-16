@@ -4,9 +4,9 @@ import moment from 'moment'
 import { getMotorbikeLabel } from 'services/widget'
 import styles from './BookingSummary.scss'
 import Loading from 'components/Loading'
-import { getTotalOrderPrice, asPoundSterling } from 'services/widget'
+import { asPoundSterling } from 'services/widget'
 
-const BookingSummary = ({ supplier, course, hire, isLoading }) => {
+const BookingSummary = ({ supplier, course, hire, isLoading, totalPrice }) => {
   if (isLoading) {
     return (
       <div className={styles.loading}>
@@ -17,7 +17,7 @@ const BookingSummary = ({ supplier, course, hire, isLoading }) => {
 
   const dateStr = `${course.date}T${course.time}`
   const startTime = moment(dateStr, 'YYYY-MM-DDTh:mm:ss')
-  const displayPrice = asPoundSterling(getTotalOrderPrice(course, hire))
+  const displayPrice = asPoundSterling(totalPrice)
 
   return (
     <div className={styles.bookingSummary}>

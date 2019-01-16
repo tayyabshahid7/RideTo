@@ -3,9 +3,16 @@ import moment from 'moment'
 
 import styles from './OrderDetails.scss'
 import Loading from 'components/Loading'
-import { getTotalOrderPrice, asPoundSterling } from 'services/widget'
+import { asPoundSterling } from 'services/widget'
 
-const OrderDetails = ({ course, hire, supplier, isLoading }) => {
+const OrderDetails = ({
+  course,
+  hire,
+  supplier,
+  isLoading,
+  totalPrice,
+  isFullLicence
+}) => {
   if (isLoading) {
     return (
       <div className={styles.loading}>
@@ -16,7 +23,7 @@ const OrderDetails = ({ course, hire, supplier, isLoading }) => {
 
   const dateStr = `${course.date}T${course.time}`
   const startTime = moment(dateStr, 'YYYY-MM-DDTh:mm:ss')
-  const displayPrice = asPoundSterling(getTotalOrderPrice(course, hire))
+  const displayPrice = asPoundSterling(totalPrice)
   const isBikeHire = hire === 'auto' || hire === 'manual'
 
   return (
@@ -26,12 +33,16 @@ const OrderDetails = ({ course, hire, supplier, isLoading }) => {
           {course.course_type.name} {supplier.town}
         </div>
 
-        <div className={styles.date}>
-          <div>
-            Start: <strong>{startTime.format('h:mm a')}</strong>
+        {isFullLicence ? (
+          <div>full licence multi thing</div>
+        ) : (
+          <div className={styles.date}>
+            <div>
+              Start: <strong>{startTime.format('h:mm a')}</strong>
+            </div>
+            <div>{startTime.format('dddd MMMM Do YYYY')}</div>
           </div>
-          <div>{startTime.format('dddd MMMM Do YYYY')}</div>
-        </div>
+        )}
 
         <div className={styles.addressDetails}>
           <div>
