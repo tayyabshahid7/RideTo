@@ -109,7 +109,7 @@ class UserDetails extends Component {
                 <div key={index}>
                   {this.renderRow(
                     getCourseTitle(training.course_type).replace(
-                      'Full Licence',
+                      'Full Licence ',
                       ''
                     ),
                     moment(training.requested_date).format('ddd D, MMMM')
