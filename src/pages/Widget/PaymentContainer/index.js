@@ -236,7 +236,8 @@ class PaymentContainer extends React.Component {
       hire,
       isSaving,
       totalPrice,
-      isFullLicence
+      isFullLicence,
+      trainings
     } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
 
@@ -248,6 +249,8 @@ class PaymentContainer extends React.Component {
           supplier={supplier}
           hire={hire}
           isLoading={isLoading}
+          isFullLicence={isFullLicence}
+          trainings={trainings}
         />
         <div className={styles.paymentDetails}>
           <h3 className={styles.heading}>Contact Details</h3>
@@ -288,6 +291,7 @@ class PaymentContainer extends React.Component {
             supplier={supplier}
             hire={hire}
             isLoading={isLoading}
+            trainings={trainings}
           />
         </div>
       </div>

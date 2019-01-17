@@ -78,3 +78,12 @@
   min-height: 240px;
   padding-top: 60px;
 }
+
+.fullLicenceDate {
+  display: flex;
+  justify-content: space-between;
+
+  &:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+}
