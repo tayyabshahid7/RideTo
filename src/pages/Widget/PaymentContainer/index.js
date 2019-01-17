@@ -17,12 +17,6 @@ import { parseQueryString } from 'services/api'
 
 import styles from './PaymentContainer.scss'
 
-// Map course type names to LICENCE_TYPES
-const LICENCE_TYPES = {
-  'CBT Training': 'LICENCE_CBT',
-  'CBT Training Renewal': 'LICENCE_CBT_RENEWAL'
-}
-
 const REQUIRED_FIELDS = [
   'first_name',
   'last_name',
@@ -178,21 +172,28 @@ class PaymentContainer extends React.Component {
 
   async createOrder(token) {
     const { match, history } = this.props
-    const { slug } = match.params
-    const { course, supplier, details, hire, trainings, price } = this.state
+    const { slug, courseId } = match.params
+    const {
+      course,
+      supplier,
+      details,
+      hire,
+      trainings,
+      totalPrice
+    } = this.state
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
       ...details,
       email_optin: details.email_optin || false,
-      school_course_id: course.id,
+      school_course_id: course.id || supplier.id,
       user_birthdate: birthdate.format('YYYY-MM-DD'),
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
       token: token.id,
-      expected_price: price,
+      expected_price: totalPrice,
       name: `${details.first_name} ${details.last_name}`,
-      user_date: course.date,
-      selected_licence: LICENCE_TYPES[course.course_type.name],
+      user_date: course.date || trainings[0].requested_date,
+      selected_licence: course.course_type.constant || courseId,
       supplier: supplier.id,
       bike_hire: hire,
       addons: [],
