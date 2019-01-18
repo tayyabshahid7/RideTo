@@ -44,9 +44,13 @@ const BookingSummary = ({
         </div>
         {isFullLicence ? (
           trainings.map((training, index) => {
-            const { requested_date, requested_time } = training
+            const {
+              requested_date,
+              requested_time,
+              school_course_id
+            } = training
             return (
-              <div className={styles.fullLicenceDate}>
+              <div className={styles.fullLicenceDate} key={school_course_id}>
                 <div>
                   {getCourseTitle(training.course_type).replace(
                     'Full Licence ',
