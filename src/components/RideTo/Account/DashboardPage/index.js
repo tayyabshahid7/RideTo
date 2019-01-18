@@ -23,6 +23,7 @@ class DashboardPage extends React.Component {
     }
 
     this.handleDetails = this.handleDetails.bind(this)
+    this.recordGAEcommerceData = this.recordGAEcommerceData.bind(this)
   }
 
   async componentDidMount() {
@@ -43,9 +44,10 @@ class DashboardPage extends React.Component {
 
   async loadSingleOrder(orderId) {
     const recentOrder = await fetchOrder(orderId)
-    this.setState({
-      recentOrder
-    })
+    this.setState(
+      { recentOrder },
+      () => this.recordGAEcommerceData(this.state.recentOrder) //Ecommerce tracking trigger
+    )
   }
 
   async loadOrders(username) {
@@ -57,6 +59,28 @@ class DashboardPage extends React.Component {
 
   handleDetails(selectedOrder) {
     this.setState({ selectedOrder })
+  }
+
+  recordGAEcommerceData(order) {
+    if (order && window.localStorage.getItem('gaok') === 'true') {
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({
+        transactionId: order.friendly_id,
+        transactionAffiliation: 'RideTo',
+        transactionTotal: order.revenue,
+        transactionProducts: [
+          {
+            sku: order.friendly_id,
+            name: order.selected_licence,
+            category: order.supplier_name,
+            price: order.revenue,
+            quantity: 1
+          }
+        ],
+        event: 'rideto.ecom-purchase.completed'
+      })
+      window.localStorage.removeItem('gaok')
+    }
   }
 
   render() {
