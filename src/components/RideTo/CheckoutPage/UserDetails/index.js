@@ -29,6 +29,7 @@ class UserDetails extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
     this.handleBillingAddressChange = this.handleBillingAddressChange.bind(this)
+    this.handlePhoneChange = this.handlePhoneChange.bind(this)
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
   }
@@ -47,6 +48,11 @@ class UserDetails extends Component {
   handleBillingAddressChange(name, value) {
     const { onDetailChange } = this.props
     onDetailChange(`billingAddress.${name}`, value)
+  }
+
+  handlePhoneChange(value) {
+    const { onDetailChange } = this.props
+    onDetailChange('phone', value)
   }
 
   handleSearchPostcode() {
@@ -258,7 +264,7 @@ class UserDetails extends Component {
               placeholder="Telephone Number"
               name="phone"
               value={details.phone}
-              onChange={this.handleChange}
+              onChange={this.handlePhoneChange}
               required
             />
           </div>
