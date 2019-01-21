@@ -70,15 +70,6 @@ class CourseItem extends Component {
         className={classnames(styles.container, className)}>
         <div className={styles.photo} onClick={() => handlePriceClick(course)}>
           <img src={course.image} className={styles.image} alt="logo" />
-          <div
-            className={classnames(
-              styles.price,
-              styles.priceMobile,
-              unavaiableDate && styles.priceDateUnavailableMobile
-            )}>
-            <div>£{parseInt(course.price / 100.0, 10)}</div>
-            <IconArrowRight className={styles.arrowIcon} />
-          </div>
         </div>
         <div className={styles.info}>
           <div className={styles.upperSection}>
@@ -118,14 +109,19 @@ class CourseItem extends Component {
             </span>
           </div>
         </div>
-        <div
-          className={classnames(
-            styles.price,
-            unavaiableDate && styles.priceDateUnavailable
-          )}
-          onClick={() => handlePriceClick(course)}>
-          <div>£{parseInt(course.price / 100.0, 10)}</div>
-          <IconArrowRight className={styles.arrowIcon} />
+        <div className={styles.footer}>
+          <div className={styles.price}>
+            £{parseInt(course.price / 100.0, 10)}
+          </div>
+          <div
+            className={classnames(
+              styles.cta,
+              unavaiableDate && styles.ctaDateUnavailable
+            )}
+            onClick={() => handlePriceClick(course)}>
+            <div>Select</div>
+            <IconArrowRight className={styles.arrowIcon} />
+          </div>
         </div>
       </div>
     )
