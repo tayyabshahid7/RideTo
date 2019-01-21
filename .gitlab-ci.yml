@@ -7,73 +7,73 @@ stages:
 
 cache:
   paths:
-  - node_modules/
+    - node_modules/
 
 test:
   stage: test
   script:
-  - yarn
-  - CI=true yarn test
+    - yarn
+    - CI=true yarn test
   only:
-  - staging
-  - master
+    - staging
+    - master
 
 build_staging:
   stage: build
   script:
-  - PUBLIC_URL=$STAGING_AWS_CDN REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
+    - PUBLIC_URL=$STAGING_AWS_CDN REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
   environment:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
   only:
-  - staging
+    - PRODEV-880
   artifacts:
     paths:
-    - build/
+      - build/
 
 build_master:
   stage: build
   script:
-  - PUBLIC_URL=$PRODUCTION_AWS_CDN APPS=widget,rideto REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL yarn build
+    - PUBLIC_URL=$PRODUCTION_AWS_CDN APPS=widget,rideto REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL yarn build
   environment:
     name: production
     url: https://rideto.com/
   only:
-  - master
+    - master
   artifacts:
     paths:
-    - build/
+      - build/
 
 deploy_staging:
-  image: "python:latest"
+  image: 'python:latest'
   stage: deploy
   before_script:
-  - pip install awscli
+    - pip install awscli
   variables:
     AWS_CLOUDFRONT_ID: E8ZUC9YWATM4A
     AWS_S3_BUCKET: bike-tests-staging
     APPS: widget,rideto
   script:
-  - ./scripts/deploy.sh
+    - ./scripts/deploy.sh
   environment:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
   only:
-  - staging
+    - PRODEV-880
 
 deploy_master:
-  image: "python:latest"
+  image: 'python:latest'
   stage: deploy
   before_script:
-  - pip install awscli
+    - pip install awscli
   variables:
     AWS_CLOUDFRONT_ID: EHLGMCG8HAANI
     AWS_S3_BUCKET: bike-tests
     APPS: widget,rideto
   script:
-  - ./scripts/deploy.sh
+    - ./scripts/deploy.sh
   environment:
     name: production
     url: https://rideto.com
   only:
-  - master
+    - master
