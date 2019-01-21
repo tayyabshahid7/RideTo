@@ -1,10 +1,8 @@
 import React from 'react'
 import moment from 'moment'
-import classnames from 'classnames'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import { DATE_FORMAT } from 'common/constants'
 
 class DateSelectorModal extends React.Component {
@@ -91,12 +89,15 @@ class DateSelectorModal extends React.Component {
   }
 
   handleDateSelect(selectedDate) {
+    const { onSelect } = this.props
     const { calendar } = this.state
-    this.setState({ calendar: { ...calendar, selectedDate } })
+    this.setState({ calendar: { ...calendar, selectedDate } }, () => {
+      onSelect(this.state.calendar.selectedDate)
+    })
   }
 
   render() {
-    const { isOpen, onClose, onSelect } = this.props
+    const { isOpen, onClose } = this.props
     const { calendar } = this.state
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
@@ -117,12 +118,6 @@ class DateSelectorModal extends React.Component {
             disablePreviousDates
           />
         </ModalBody>
-        <button
-          className={classnames('btn btn-primary', styles.selectDate)}
-          onClick={() => onSelect(calendar.selectedDate)}>
-          <span>Choose Date</span>
-          <img src={ButtonArrowWhite} alt="arrow" />
-        </button>
       </Modal>
     )
   }
