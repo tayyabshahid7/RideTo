@@ -11,7 +11,7 @@ class AddOrderItem extends React.Component {
     super(props)
     this.state = {
       order: {
-        school_course_id: this.props.course.id,
+        school_course: this.props.course.id,
         user_birthdate: '',
         user_driving_licence_number: '',
         user_email: '',

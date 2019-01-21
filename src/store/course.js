@@ -175,10 +175,10 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
   return true
 }
 
-export const getSchoolOrder = ({ schoolId, friendlyId }) => async dispatch => {
+export const getSchoolOrder = ({ schoolId, trainingId }) => async dispatch => {
   dispatch({ type: FETCH_ORDER[REQUEST] })
   try {
-    const response = await fetchSchoolOrder(schoolId, friendlyId)
+    const response = await fetchSchoolOrder(schoolId, trainingId)
     dispatch({
       type: FETCH_ORDER[SUCCESS],
       data: { order: response }

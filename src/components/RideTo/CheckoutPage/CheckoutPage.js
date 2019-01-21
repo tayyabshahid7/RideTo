@@ -155,7 +155,7 @@ class CheckoutPage extends Component {
         const newTrainings = await Promise.all(
           trainings.map(async training => {
             const price = await getPrice({
-              courseId: training.school_course_id
+              courseId: training.school_course
             })
             fullPrice += parseInt(price.price, 10)
 

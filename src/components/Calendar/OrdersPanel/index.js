@@ -74,12 +74,12 @@ class OrdersPanel extends React.Component {
       <div className={styles.ordersPanel}>
         <Loading loading={loading || saving}>
           <div className={styles.orders}>
-            {course.orders.map((order, index) => (
+            {course.orders.map((training, index) => (
               <React.Fragment key={index}>
                 <OrdersPanelItem
-                  order={order}
+                  training={training}
                   onEdit={() => this.handleShowEditForm(index)}
-                  showEditButton={order.is_manual_order && showEditButton}
+                  showEditButton={training.is_manual_order && showEditButton}
                 />
                 {editOrderIndex === index && (
                   <EditOrderFormContainer
@@ -90,7 +90,7 @@ class OrdersPanel extends React.Component {
                         showEditButton: true
                       })
                     }
-                    friendlyId={order.friendly_id}
+                    trainingId={training.id}
                     course_type={course.course_type.constant}
                     courseId={course.id}
                     courseSpaces={course.spaces}

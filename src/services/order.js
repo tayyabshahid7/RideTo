@@ -89,12 +89,16 @@ export const getBikeHireOptions = isFullLicence => {
 export const getPaymentOptions = () => {
   return [
     {
-      id: 'paid',
+      id: 'PAID',
       name: 'Paid'
     },
     {
-      id: 'pending',
+      id: 'PENDING',
       name: 'Payment Outstanding'
+    },
+    {
+      id: 'PARTIAL_PAYMENT',
+      name: 'Partially paid'
     }
   ]
 }
