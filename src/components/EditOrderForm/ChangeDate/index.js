@@ -10,11 +10,6 @@ class ChangeDate extends Component {
     this.state = {
       date: this.props.date,
       time: this.props.time,
-      // availableTimes: this.props.courses.map(course => ({
-      //   title: course.time,
-      //   value: course.time,
-      //   id: course.id
-      // }))
       timesLoaded: false
     }
 

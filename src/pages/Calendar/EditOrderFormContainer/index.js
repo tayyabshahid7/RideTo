@@ -41,7 +41,7 @@ class EditOrderFormContainer extends React.Component {
     }
 
     let response = await updateOrder({ schoolId, friendlyId, order })
-    // TODO FRONTEND PRODEV-375 Update courseSpaces for current course and new course
+
     await this.props.updateCourse({
       schoolId,
       courseId: courseId,

@@ -27,21 +27,38 @@ class OrdersPanel extends React.Component {
 
   handleNewOrder(order) {
     const { createSchoolOrder, schoolId, course } = this.props
-    if (order.bike_hire === BIKE_HIRE.MANUAL) {
-      let manualOrdersCount = course.orders.filter(
-        order1 => order1.bike_hire === BIKE_HIRE.MANUAL
-      ).length
-      if (course.manual_bikes - manualOrdersCount <= 0) {
-        alert('Manual bike not available')
-        return
+
+    if (!order.full_licence_type) {
+      if (order.bike_hire === BIKE_HIRE.MANUAL) {
+        let manualOrdersCount = course.orders.filter(
+          order1 => order1.bike_hire === BIKE_HIRE.MANUAL
+        ).length
+        if (course.manual_bikes - manualOrdersCount <= 0) {
+          alert('Manual bike not available')
+          return
+        }
+      } else if (order.bike_hire === BIKE_HIRE.AUTO) {
+        let automaticOrdersCount = course.orders.filter(
+          order1 => order1.bike_hire === BIKE_HIRE.AUTO
+        ).length
+        if (course.auto_bikes - automaticOrdersCount <= 0) {
+          alert('Automatic bike not available')
+          return
+        }
       }
-    } else if (order.bike_hire === BIKE_HIRE.AUTO) {
-      let automaticOrdersCount = course.orders.filter(
-        order1 => order1.bike_hire === BIKE_HIRE.AUTO
+    } else {
+      const { bike_hire, full_licence_type } = order
+      const maxOrders = parseInt(
+        course[`${full_licence_type}_${bike_hire}_bikes`],
+        10
+      )
+      const sameCourseOrderCount = course.orders.filter(
+        courseOrder =>
+          courseOrder.bike_hire === bike_hire &&
+          courseOrder.full_licence_type === full_licence_type
       ).length
-      if (course.auto_bikes - automaticOrdersCount <= 0) {
-        alert('Automatic bike not available')
-        return
+      if (maxOrders - sameCourseOrderCount <= 0) {
+        alert(`${full_licence_type} ${bike_hire} bike not available`)
       }
     }
 

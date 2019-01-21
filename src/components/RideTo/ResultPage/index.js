@@ -3,7 +3,6 @@ import moment from 'moment'
 import { DATE_FORMAT } from 'common/constants'
 import ResultPage from './ResultPage'
 // import SampleData from './SampleData.json'
-import SampleDataDAS from './SampleDataDAS.json' // TODO BACKEND PRODEV-847 Remove this
 import { SORTBY } from 'common/constants'
 import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 import { fetchSearchLocation } from 'services/geolocation'
@@ -82,10 +81,9 @@ class ResultPageContainer extends Component {
   }
 
   async loadCourses() {
-    const { date, sortByOption, courseType, postcode } = this.state // TODO BACKEND PRODEV-847 Remove this Remove this
-
     try {
-      // const { date, sortByOption, courseType, postcode } = this.state// TODO BACKEND PRODEV-847 Remove this Put this back
+      const { date, sortByOption, courseType, postcode } = this.state
+
       this.setState({ loading: true })
       let response = await fetchRidetoCourses({
         course_type: courseType,
@@ -104,15 +102,6 @@ class ResultPageContainer extends Component {
       }
     } catch (error) {
       this.setState({ loading: false })
-
-      // TODO BACKEND PRODEV-847 Remove this
-      if (courseType === 'FULL_LICENCE') {
-        this.setState({
-          courses: SampleDataDAS,
-          loading: false
-        })
-      }
-      // END TODO BACKEND PRODEV_847
     }
   }
 

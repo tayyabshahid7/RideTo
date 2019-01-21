@@ -13,6 +13,12 @@ export const BikeHires = [
   { value: BIKE_HIRE.NO, title: 'No' }
 ]
 
+export const FullLicenceTypes = [
+  { value: 'A1', title: 'A1' },
+  { value: 'A2', title: 'A2' },
+  { value: 'A', title: 'A' }
+]
+
 export function getTitleFor(arr, value) {
   let item = arr.find(itm => itm.value === value)
   if (item) {
