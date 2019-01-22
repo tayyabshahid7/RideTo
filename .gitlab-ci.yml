@@ -15,6 +15,7 @@ test:
     - yarn
     - CI=true yarn test
   only:
+    - test
     - staging
     - master
 
@@ -26,7 +27,8 @@ build_staging:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
   only:
-    - PRODEV-880
+    - test
+    - staging
   artifacts:
     paths:
       - build/
@@ -59,7 +61,8 @@ deploy_staging:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
   only:
-    - PRODEV-880
+    - test
+    - staging
 
 deploy_master:
   image: 'python:latest'
