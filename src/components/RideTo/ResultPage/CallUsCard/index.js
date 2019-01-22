@@ -6,7 +6,7 @@ function CallUsCard() {
     <div className={styles.container}>
       <h3 className={styles.heading}>Want to chat?</h3>
       <p className={styles.content}>
-        Call a member of our expect team to discuss your riding requirements.
+        Call a member of our expert team to discuss your riding requirements.
       </p>
       <a href="tel:+442036039652" className={styles.button}>
         <span className={styles.mobileCall}>Call Us</span>

@@ -298,7 +298,7 @@ class ResultPage extends Component {
                             (course, index) =>
                               course.is_partner && (
                                 <CourseItem
-                                  showCallMessage={(index + 1) % 3 === 0}
+                                  showCallMessage={index === 2}
                                   id={`card-course-${course.id}`}
                                   course={course}
                                   className={styles.courseSpacing}
@@ -327,7 +327,7 @@ class ResultPage extends Component {
                           {courses.unavailable.map((course, index) =>
                             course.is_partner ? (
                               <CourseItem
-                                showCallMessage={(index + 1) % 3 === 0}
+                                showCallMessage={index === 2}
                                 id={`card-course-${course.id}`}
                                 unavaiableDate={true}
                                 course={course}
