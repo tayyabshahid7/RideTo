@@ -157,15 +157,20 @@
 
 .action {
   width: inherit;
-  justify-content: space-between;
+  justify-content: center;
   padding-left: 62px;
   padding-right: 62px;
+
+  span {
+    font-size: 1.6rem;
+  }
+
   img {
     margin-left: 16px;
   }
 
   @media (max-width: 768px) {
-    padding: 22px 32px;
+    padding: 10px 32px;
   }
 }
 
