@@ -34,11 +34,9 @@ class EditOrderFormContainer extends React.Component {
     if (order.user_first_name && order.user_last_name) {
       order.user_name = `${order.user_first_name} ${order.user_last_name}`
     }
-    order.school_course_id = courseId // add in the course id
+    order.school_course = courseId // add in the course id
 
-    if (updateDate) {
-      order.school_course_id = order.course_id
-    }
+    console.log(trainingId)
 
     let response = await updateOrder({ schoolId, trainingId, order })
 

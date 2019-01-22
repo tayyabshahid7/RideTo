@@ -4,7 +4,7 @@ import { Button, Row, Col, Form, FormGroup, Label } from 'reactstrap'
 import AgeInput from 'components/AgeInput'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
-import { BikeHires } from 'common/info'
+import { BikeHires, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import ChangeDate from './ChangeDate/'
 
@@ -22,9 +22,16 @@ class EditOrderForm extends React.Component {
   }
 
   handleChangeRawEvent(event) {
-    let name = event.target.name
+    let type = event.target.name.split('.')[0]
+    let name = event.target.name.split('.')[1]
     let { order } = this.state
-    order[name] = event.target.value
+
+    if (!name) {
+      order[type] = event.target.value
+    } else {
+      order[type][name] = event.target.value
+    }
+
     this.setState({ order })
   }
 
@@ -56,18 +63,24 @@ class EditOrderForm extends React.Component {
       times
     } = this.props
     const { showChangeDate } = this.state
+
+    if (!this.state.order.order || !this.state.order.customer) {
+      return null
+    }
+
     const {
-      user_first_name,
-      user_last_name,
-      user_phone,
-      bike_hire,
-      riding_experience,
-      status, //payment status
-      user_birthdate,
-      user_driving_licence_number,
-      user_email,
-      direct_friendly_id
-    } = this.state.order
+      first_name,
+      last_name,
+      phone,
+      email,
+      birthdate,
+      licence_number,
+      riding_experience
+    } = this.state.order.customer
+
+    const { direct_friendly_id, payment_status } = this.state.order.order
+
+    const { bike_type, full_licence_type } = this.state.order
 
     return (
       <div className={styles.container}>
@@ -101,8 +114,8 @@ class EditOrderForm extends React.Component {
           <Row>
             <Col sm="6">
               <InputTextGroup
-                name="user_first_name"
-                value={user_first_name}
+                name="customer.first_name"
+                value={first_name}
                 label="First Name *"
                 className="form-group"
                 type="text"
@@ -112,8 +125,8 @@ class EditOrderForm extends React.Component {
             </Col>
             <Col sm="6">
               <InputTextGroup
-                name="user_last_name"
-                value={user_last_name}
+                name="customer.last_name"
+                value={last_name}
                 label="Surname *"
                 className="form-group"
                 type="text"
@@ -125,8 +138,8 @@ class EditOrderForm extends React.Component {
           <Row>
             <Col sm="6">
               <InputTextGroup
-                name="user_phone"
-                value={user_phone}
+                name="customer.phone"
+                value={phone}
                 label="Mobile"
                 className="form-group"
                 type="text"
@@ -135,8 +148,8 @@ class EditOrderForm extends React.Component {
             </Col>
             <Col sm="6">
               <InputTextGroup
-                name="user_email"
-                value={user_email}
+                name="customer.email"
+                value={email}
                 label="Email *"
                 className="form-group"
                 type="email"
@@ -150,18 +163,34 @@ class EditOrderForm extends React.Component {
               <FormGroup>
                 <Label>Birth Date *</Label>
                 <AgeInput
-                  name="user_birthdate"
-                  value={user_birthdate}
+                  name="customer.birthdate"
+                  value={birthdate}
                   onChange={this.handleChangeRawEvent}
                 />
               </FormGroup>
             </Col>
           </Row>
+          {full_licence_type && (
+            <Row>
+              <Col sm="6">
+                <FormGroup>
+                  <InputSelectGroup
+                    name="full_licence_type"
+                    value={full_licence_type}
+                    label="Licence Type *"
+                    valueArray={FullLicenceTypes}
+                    onChange={this.handleChangeRawEvent.bind}
+                    required
+                  />
+                </FormGroup>
+              </Col>
+            </Row>
+          )}
           <Row>
             <Col sm="6">
               <InputTextGroup
-                name="user_driving_licence_number"
-                value={user_driving_licence_number}
+                name="customer.licence_number"
+                value={licence_number}
                 label="License"
                 className="form-group"
                 type="text"
@@ -170,8 +199,8 @@ class EditOrderForm extends React.Component {
             </Col>
             <Col sm="6">
               <InputSelectGroup
-                name="status"
-                value={status}
+                name="order.payment_status"
+                value={payment_status}
                 label="Payment Status"
                 valueArray={getPaymentOptions()}
                 noSelectOption
@@ -185,7 +214,7 @@ class EditOrderForm extends React.Component {
           <Row>
             <Col sm="6">
               <InputSelectGroup
-                name="riding_experience"
+                name="customer.riding_experience"
                 value={riding_experience}
                 label="Riding Experience"
                 valueArray={info.ridingExperiences}
@@ -195,8 +224,8 @@ class EditOrderForm extends React.Component {
             </Col>
             <Col sm="6">
               <InputSelectGroup
-                name="bike_hire"
-                value={bike_hire}
+                name="bike_type"
+                value={bike_type}
                 label="Bike Hire"
                 valueArray={BikeHires}
                 noSelectOption
