@@ -47,19 +47,20 @@ class OrdersPanel extends React.Component {
         }
       }
     } else {
-      const { bike_hire, full_licence_type } = order
-      const maxOrders = parseInt(
-        course[`${full_licence_type}_${bike_hire}_bikes`],
-        10
-      )
-      const sameCourseOrderCount = course.orders.filter(
-        courseOrder =>
-          courseOrder.bike_hire === bike_hire &&
-          courseOrder.full_licence_type === full_licence_type
-      ).length
-      if (maxOrders - sameCourseOrderCount <= 0) {
-        alert(`${full_licence_type} ${bike_hire} bike not available`)
-      }
+      // TODO Front end full licence validation
+      // const { bike_hire, full_licence_type } = order
+      // const maxOrders = parseInt(
+      //   course[`${full_licence_type.toLowerCase()}_${bike_hire}_bikes`],
+      //   10
+      // )
+      // const sameCourseOrderCount = course.orders.filter(
+      //   courseOrder =>
+      //     courseOrder.bike_hire === bike_hire &&
+      //     courseOrder.full_licence_type === full_licence_type
+      // ).length
+      // if (maxOrders - sameCourseOrderCount <= 0) {
+      //   alert(`${full_licence_type} ${bike_hire} bike not available`)
+      // }
     }
 
     return createSchoolOrder({ schoolId, order })
