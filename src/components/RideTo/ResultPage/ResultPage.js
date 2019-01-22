@@ -185,7 +185,7 @@ class ResultPage extends Component {
             }
           }
         }}>
-        <span>Book Now</span>
+        <span>Select</span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </RideToButton>
     )
