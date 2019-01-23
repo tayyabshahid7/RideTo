@@ -91,8 +91,10 @@ class DateSelectorModal extends React.Component {
   handleDateSelect(selectedDate) {
     const { onSelectDate } = this.props
     const { calendar } = this.state
-    this.setState({ calendar: { ...calendar, selectedDate } })
-    onSelectDate(selectedDate)
+    this.setState({ calendar: { ...calendar, selectedDate } }, () => {
+      onSelectDate(selectedDate)
+    })
+    console.log('on click date', selectedDate)
   }
 
   render() {
