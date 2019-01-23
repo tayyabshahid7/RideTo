@@ -111,138 +111,142 @@ class EditOrderForm extends React.Component {
               )}
             </Col>
           </Row>
-          <Row>
-            <Col sm="6">
-              <InputTextGroup
-                name="customer.first_name"
-                value={first_name}
-                label="First Name *"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent}
-                required
-              />
-            </Col>
-            <Col sm="6">
-              <InputTextGroup
-                name="customer.last_name"
-                value={last_name}
-                label="Surname *"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent}
-                required
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col sm="6">
-              <InputTextGroup
-                name="customer.phone"
-                value={phone}
-                label="Mobile"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent}
-              />
-            </Col>
-            <Col sm="6">
-              <InputTextGroup
-                name="customer.email"
-                value={email}
-                label="Email *"
-                className="form-group"
-                type="email"
-                onChange={this.handleChangeRawEvent}
-                required
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FormGroup>
-                <Label>Birth Date *</Label>
-                <AgeInput
-                  name="customer.birthdate"
-                  value={birthdate}
-                  onChange={this.handleChangeRawEvent}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          {full_licence_type && (
-            <Row>
-              <Col sm="6">
-                <FormGroup>
-                  <InputSelectGroup
-                    name="full_licence_type"
-                    value={full_licence_type}
-                    label="Licence Type *"
-                    valueArray={FullLicenceTypes}
-                    onChange={this.handleChangeRawEvent.bind}
+          {!showChangeDate && (
+            <div>
+              <Row>
+                <Col sm="6">
+                  <InputTextGroup
+                    name="customer.first_name"
+                    value={first_name}
+                    label="First Name *"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeRawEvent}
                     required
                   />
-                </FormGroup>
-              </Col>
-            </Row>
+                </Col>
+                <Col sm="6">
+                  <InputTextGroup
+                    name="customer.last_name"
+                    value={last_name}
+                    label="Surname *"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeRawEvent}
+                    required
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm="6">
+                  <InputTextGroup
+                    name="customer.phone"
+                    value={phone}
+                    label="Mobile"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeRawEvent}
+                  />
+                </Col>
+                <Col sm="6">
+                  <InputTextGroup
+                    name="customer.email"
+                    value={email}
+                    label="Email *"
+                    className="form-group"
+                    type="email"
+                    onChange={this.handleChangeRawEvent}
+                    required
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <FormGroup>
+                    <Label>Birth Date *</Label>
+                    <AgeInput
+                      name="customer.birthdate"
+                      value={birthdate}
+                      onChange={this.handleChangeRawEvent}
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+              {full_licence_type && (
+                <Row>
+                  <Col sm="6">
+                    <FormGroup>
+                      <InputSelectGroup
+                        name="full_licence_type"
+                        value={full_licence_type}
+                        label="Licence Type *"
+                        valueArray={FullLicenceTypes}
+                        onChange={this.handleChangeRawEvent}
+                        required
+                      />
+                    </FormGroup>
+                  </Col>
+                </Row>
+              )}
+              <Row>
+                <Col sm="6">
+                  <InputTextGroup
+                    name="customer.licence_number"
+                    value={licence_number}
+                    label="License"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeRawEvent}
+                  />
+                </Col>
+                <Col sm="6">
+                  <InputSelectGroup
+                    name="order.payment_status"
+                    value={payment_status}
+                    label="Payment Status"
+                    valueArray={getPaymentOptions()}
+                    noSelectOption
+                    onChange={this.handleChangeRawEvent}
+                    required
+                    valueField="id"
+                    titleField="name"
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm="6">
+                  <InputSelectGroup
+                    name="customer.riding_experience"
+                    value={riding_experience}
+                    label="Riding Experience"
+                    valueArray={info.ridingExperiences}
+                    noSelectOption
+                    onChange={this.handleChangeRawEvent}
+                  />
+                </Col>
+                <Col sm="6">
+                  <InputSelectGroup
+                    name="bike_type"
+                    value={bike_type}
+                    label="Bike Hire"
+                    valueArray={BikeHires}
+                    noSelectOption
+                    onChange={this.handleChangeRawEvent}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col className="mt-3 text-right">
+                  <Button type="submit" color="primary" className="mr-2">
+                    Save
+                  </Button>
+                  <Button color="" onClick={onCancel}>
+                    Cancel
+                  </Button>
+                </Col>
+              </Row>
+            </div>
           )}
-          <Row>
-            <Col sm="6">
-              <InputTextGroup
-                name="customer.licence_number"
-                value={licence_number}
-                label="License"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent}
-              />
-            </Col>
-            <Col sm="6">
-              <InputSelectGroup
-                name="order.payment_status"
-                value={payment_status}
-                label="Payment Status"
-                valueArray={getPaymentOptions()}
-                noSelectOption
-                onChange={this.handleChangeRawEvent}
-                required
-                valueField="id"
-                titleField="name"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col sm="6">
-              <InputSelectGroup
-                name="customer.riding_experience"
-                value={riding_experience}
-                label="Riding Experience"
-                valueArray={info.ridingExperiences}
-                noSelectOption
-                onChange={this.handleChangeRawEvent}
-              />
-            </Col>
-            <Col sm="6">
-              <InputSelectGroup
-                name="bike_type"
-                value={bike_type}
-                label="Bike Hire"
-                valueArray={BikeHires}
-                noSelectOption
-                onChange={this.handleChangeRawEvent}
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col className="mt-3 text-right">
-              <Button type="submit" color="primary" className="mr-2">
-                Save
-              </Button>
-              <Button color="" onClick={onCancel}>
-                Cancel
-              </Button>
-            </Col>
-          </Row>
         </Form>
         {/* </Loading> */}
       </div>

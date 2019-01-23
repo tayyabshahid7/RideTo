@@ -53,8 +53,7 @@ class ChangeDate extends Component {
     const { date, time } = this.state
     const start_time = `${date}T${time}Z`
     const { course_id } = times.find(t => t.time === time)
-
-    onSave({ start_time, course_id }, true)
+    onSave({ start_time, school_course: course_id }, true)
   }
 
   render() {

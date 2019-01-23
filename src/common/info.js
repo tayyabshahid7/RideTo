@@ -14,9 +14,9 @@ export const BikeHires = [
 ]
 
 export const FullLicenceTypes = [
-  { value: 'A1', title: 'A1' },
-  { value: 'A2', title: 'A2' },
-  { value: 'A', title: 'A' }
+  { value: 'FULL_LICENCE_TYPE_A1', title: 'A1' },
+  { value: 'FULL_LICENCE_TYPE_A2', title: 'A2' },
+  { value: 'FULL_LICENCE_TYPE_A', title: 'A' }
 ]
 
 export function getTitleFor(arr, value) {
