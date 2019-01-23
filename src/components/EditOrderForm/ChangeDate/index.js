@@ -10,11 +10,6 @@ class ChangeDate extends Component {
     this.state = {
       date: this.props.date,
       time: this.props.time,
-      // availableTimes: this.props.courses.map(course => ({
-      //   title: course.time,
-      //   value: course.time,
-      //   id: course.id
-      // }))
       timesLoaded: false
     }
 
@@ -58,8 +53,7 @@ class ChangeDate extends Component {
     const { date, time } = this.state
     const start_time = `${date}T${time}Z`
     const { course_id } = times.find(t => t.time === time)
-
-    onSave({ start_time, course_id }, true)
+    onSave({ start_time, school_course: course_id }, true)
   }
 
   render() {

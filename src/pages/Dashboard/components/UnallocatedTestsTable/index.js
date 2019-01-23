@@ -9,14 +9,13 @@ function UnallocatedTestsTable({ tests }) {
       <table className="table table-responsive-md">
         <thead>
           <tr>
-            <th />
             <th>Type</th>
             <th>Date</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {tests.map(({ id, date, type }, index) => {
+          {tests.map(({ id, date, course_type }, index) => {
             const isExpiring = moment(date).isBefore(moment().add(13, 'days'))
 
             return (
@@ -26,19 +25,10 @@ function UnallocatedTestsTable({ tests }) {
                   isExpiring ? styles.isExpiring : null
                 )}
                 key={id}>
-                <td>
-                  <a
-                    className={styles.viewLink}
-                    href={`#view-test-${id}`}
-                    target="_blank"
-                    rel="noopener noreferrer">
-                    View
-                  </a>
-                </td>
-                <td>{type}</td>
+                <td>{course_type}</td>
                 <td>{date}</td>
                 <td>
-                  {isExpiring ? <span>Expiring</span> : <span>Fine</span>}
+                  {isExpiring ? <span>Expiring Soon</span> : <span>Ok</span>}
                 </td>
               </tr>
             )

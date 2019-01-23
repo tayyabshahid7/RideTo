@@ -98,8 +98,8 @@ export const addSchoolOrder = async (schoolId, order) => {
   return response
 }
 
-export const fetchSchoolOrder = async (schoolId, friendlyId) => {
-  const path = `school/${schoolId}/course/order/${friendlyId}`
+export const fetchSchoolOrder = async (schoolId, trainingId) => {
+  const path = `school/${schoolId}/course/order/${trainingId}`
   const response = await get(path, {})
   return response
 }

@@ -52,7 +52,9 @@ class Dashboard extends Component {
               {this.props.unallocatedTests && (
                 <div>
                   <h2>Unallocated Tests</h2>
-                  <UnallocatedTestsTable tests={this.props.unallocatedTests} />
+                  <UnallocatedTestsTable
+                    tests={this.props.unallocatedTests.results}
+                  />
                 </div>
               )}
               <h2>Pending Orders</h2>
