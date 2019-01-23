@@ -112,6 +112,7 @@ class DateSelectorModal extends React.Component {
         <ModalHeader toggle={onClose} />
         <ModalBody>
           <AvailabilityCalendar
+            isModal
             showTrainingTime={false}
             days={days}
             calendar={calendar}
