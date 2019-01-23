@@ -422,7 +422,7 @@ class ResultPage extends Component {
             isOpen={true}
             onClose={() => this.setState({ showDateSelectorModal: false })}
             date={date}
-            onSelect={this.onSelectDate.bind(this)}
+            onSelectDate={this.onSelectDate.bind(this)}
           />
         )}
       </div>
