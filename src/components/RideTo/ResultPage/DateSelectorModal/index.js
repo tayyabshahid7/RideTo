@@ -95,7 +95,6 @@ class DateSelectorModal extends React.Component {
 
     if (viaClick) {
       onSelectDate(selectedDate)
-      console.log('on click date', selectedDate, viaClick)
     }
   }
 

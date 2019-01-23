@@ -89,8 +89,6 @@ class ResultPage extends Component {
     const { handleSetDate } = this.props
     const { showDateSelectorModal } = this.state
 
-    console.log('update the date', date)
-
     if (!showDateSelectorModal || !date) {
       return
     }
@@ -151,7 +149,6 @@ class ResultPage extends Component {
       <div
         className={styles.dateSelectorMobile}
         onClick={() => {
-          console.log('show modal')
           this.setState({ showDateSelectorModal: true })
         }}>
         <span>{moment(date).format(DAY_FORMAT5)}</span>
