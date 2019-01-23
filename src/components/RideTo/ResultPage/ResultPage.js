@@ -87,6 +87,11 @@ class ResultPage extends Component {
 
   onSelectDate(date) {
     const { handleSetDate } = this.props
+    const { showDateSelectorModal } = this.state
+
+    if (!showDateSelectorModal) {
+      return
+    }
 
     handleSetDate(date)
     this.setState({ showDateSelectorModal: false })
