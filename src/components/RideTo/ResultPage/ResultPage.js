@@ -87,6 +87,7 @@ class ResultPage extends Component {
 
   onSelectDate(date) {
     const { handleSetDate } = this.props
+
     handleSetDate(date)
     this.setState({ showDateSelectorModal: false })
   }
@@ -417,7 +418,7 @@ class ResultPage extends Component {
             />
           )}
         </SidePanel>
-        {showDateSelectorModal && (
+        {showDateSelectorModal && !loading && (
           <DateSelectorModal
             isOpen={true}
             onClose={() => this.setState({ showDateSelectorModal: false })}
