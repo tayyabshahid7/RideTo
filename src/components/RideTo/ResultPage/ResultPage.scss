@@ -59,8 +59,9 @@
   display: flex;
   margin: 0 auto;
 
+  flex-wrap: wrap;
+
   @media (max-width: 1224px) {
-    flex-wrap: wrap;
   }
 }
 

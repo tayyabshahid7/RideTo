@@ -39,6 +39,9 @@
   @media (max-width: 768px) {
     padding: 20px 24px 10px;
   }
+  @media (min-width: 769px) {
+    max-width: 345px;
+  }
 }
 
 .upperSection {
@@ -72,6 +75,10 @@
   @media (max-width: 768px) {
     flex-direction: row;
     justify-content: flex-end;
+  }
+
+  @media (min-width: 769px) {
+    margin-left: auto;
   }
 }
 
