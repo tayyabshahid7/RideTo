@@ -49,6 +49,12 @@ class AvailabilityCalendar extends Component {
   }
 
   setFirstAvailableDate(days, isInstantBook) {
+    const { isModal } = this.props
+
+    if (isModal) {
+      return
+    }
+
     for (let i = 0; days && i < days.length; i++) {
       if (!days[i].disabled) {
         if (!isInstantBook) {

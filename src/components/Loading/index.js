@@ -7,6 +7,7 @@ const Loading = props => {
     <div
       className={classnames(
         styles.loading,
+        styles[props.position],
         props.loading && styles.loadingMask,
         props.className
       )}>
