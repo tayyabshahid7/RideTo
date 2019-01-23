@@ -63,7 +63,9 @@ class CourseDetailPanel extends React.Component {
             Availability
           </div>
         </div>
-        {activeTab === '1' && <CourseInformationComponent course={course} />}
+        {activeTab === '1' && (
+          <CourseInformationComponent course={course} courseType={courseType} />
+        )}
         {activeTab === '1' && (
           <MapComponent className={styles.mapWrapper} courses={[course]} />
         )}
