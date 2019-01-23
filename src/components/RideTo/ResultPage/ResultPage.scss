@@ -43,22 +43,26 @@
 }
 
 .contentWrapper {
-  margin-top: 56px;
   padding: 0px;
   display: flex;
-  @media (max-width: 768px) {
-    margin-top: 32px;
-  }
   // width: auto !important;
   // justify-content: center;
+}
+
+.contentWrapperInner {
+  width: 100%;
 }
 
 .mainContent {
   max-width: 1112px;
   width: 100%;
   display: flex;
-  margin: 0 auto;
+  margin: 56px auto 0;
   flex-wrap: wrap;
+
+  @media (max-width: 768px) {
+    margin-top: 32px;
+  }
 }
 
 .mapPanel {
