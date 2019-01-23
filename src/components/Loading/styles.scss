@@ -60,3 +60,16 @@ image using the content attribute.
   z-index: 11;
   filter: drop-shadow(0 0 2 rgba(0, 0, 0, 0.33));
 }
+
+.top.loadingMask::after {
+  top: 50px;
+}
+
+.center.loadingMask::after {
+  top: calc(50% - 25px);
+}
+
+.bottom.loadingMask::after {
+  top: auto;
+  bottom: 50px;
+}

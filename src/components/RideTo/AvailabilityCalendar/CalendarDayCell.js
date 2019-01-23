@@ -17,7 +17,7 @@ const CalendarDayCell = ({ day, price, calendar, handleDateSelect }) => {
       )}
       onClick={() => {
         if (!day.disabled && !day.invisible && !selectedDay) {
-          handleDateSelect(dateStr)
+          handleDateSelect(dateStr, true)
         }
       }}>
       <span>{day.date.getDate()}</span>

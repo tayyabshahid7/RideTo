@@ -87,6 +87,12 @@ class ResultPage extends Component {
 
   onSelectDate(date) {
     const { handleSetDate } = this.props
+    const { showDateSelectorModal } = this.state
+
+    if (!showDateSelectorModal || !date) {
+      return
+    }
+
     handleSetDate(date)
     this.setState({ showDateSelectorModal: false })
   }
@@ -142,7 +148,9 @@ class ResultPage extends Component {
     return (
       <div
         className={styles.dateSelectorMobile}
-        onClick={() => this.setState({ showDateSelectorModal: true })}>
+        onClick={() => {
+          this.setState({ showDateSelectorModal: true })
+        }}>
         <span>{moment(date).format(DAY_FORMAT5)}</span>
         <span>
           <IconCalendar />
@@ -261,45 +269,80 @@ class ResultPage extends Component {
           )}
           <Row>
             <Col>
-              {hasPartnerResults ? (
-                <React.Fragment>
-                  <DateSelector
-                    date={date}
-                    handleSetDate={handleSetDate}
-                    className={styles.dateSelector}
-                    courseType={courseType}
-                  />
-                  <div className={styles.mobileButtons}>
-                    {this.renderMobileDateSelectorButton()}
-                    {this.renderSortByDropdown()}
-                  </div>
-                </React.Fragment>
-              ) : (
-                <div className={styles.nonParnetResultMessage}>
-                  We don't have any partner schools to book with in your area,
-                  however feel free to use our directory to contact a school
-                  near you.
-                </div>
-              )}
-              <Loading loading={loading} className={styles.contentWrapper}>
-                {courses ? (
-                  <div className={styles.mainContent}>
-                    <div className={styles.coursesPanel}>
-                      {courses.available.length > 0 && (
-                        <React.Fragment>
-                          <div
-                            className={classnames(
-                              styles.subTitle,
-                              styles.hiddenOnMobile
-                            )}>
-                            Choose a location
-                          </div>
-                          {courses.available.map(
-                            (course, index) =>
-                              course.is_partner && (
+              <Loading
+                loading={loading}
+                position="top"
+                className={styles.contentWrapper}>
+                <div className={styles.contentWrapperInner}>
+                  {hasPartnerResults ? (
+                    <React.Fragment>
+                      <DateSelector
+                        date={date}
+                        handleSetDate={handleSetDate}
+                        className={styles.dateSelector}
+                        courseType={courseType}
+                      />
+                      <div className={styles.mobileButtons}>
+                        {this.renderMobileDateSelectorButton()}
+                        {this.renderSortByDropdown()}
+                      </div>
+                    </React.Fragment>
+                  ) : (
+                    <div className={styles.nonParnetResultMessage}>
+                      We don't have any partner schools to book with in your
+                      area, however feel free to use our directory to contact a
+                      school near you.
+                    </div>
+                  )}
+
+                  {courses ? (
+                    <div className={styles.mainContent}>
+                      <div className={styles.coursesPanel}>
+                        {courses.available.length > 0 && (
+                          <React.Fragment>
+                            <div
+                              className={classnames(
+                                styles.subTitle,
+                                styles.hiddenOnMobile
+                              )}>
+                              Choose a location
+                            </div>
+                            {courses.available.map(
+                              (course, index) =>
+                                course.is_partner && (
+                                  <CourseItem
+                                    showCallMessage={index === 2}
+                                    id={`card-course-${course.id}`}
+                                    course={course}
+                                    className={styles.courseSpacing}
+                                    key={course.id}
+                                    handleDetailClick={this.handleDetailClick.bind(
+                                      this
+                                    )}
+                                    handlePriceClick={this.handlePriceClick.bind(
+                                      this
+                                    )}
+                                    handleReviewClick={this.handleReviewClick.bind(
+                                      this
+                                    )}
+                                  />
+                                )
+                            )}
+                          </React.Fragment>
+                        )}
+                        {courses.unavailable.length > 0 && (
+                          <React.Fragment>
+                            {hasPartnerResults && (
+                              <div className={styles.subTitle}>
+                                Available on other dates
+                              </div>
+                            )}
+                            {courses.unavailable.map((course, index) =>
+                              course.is_partner ? (
                                 <CourseItem
                                   showCallMessage={index === 2}
                                   id={`card-course-${course.id}`}
+                                  unavaiableDate={true}
                                   course={course}
                                   className={styles.courseSpacing}
                                   key={course.id}
@@ -313,70 +356,41 @@ class ResultPage extends Component {
                                     this
                                   )}
                                 />
+                              ) : (
+                                <CourseItemNonPartner
+                                  id={`card-course-${course.id}`}
+                                  course={course}
+                                  className="mt-3"
+                                  key={course.id}
+                                />
                               )
-                          )}
-                        </React.Fragment>
-                      )}
-                      {courses.unavailable.length > 0 && (
-                        <React.Fragment>
-                          {hasPartnerResults && (
-                            <div className={styles.subTitle}>
-                              Available on other dates
-                            </div>
-                          )}
-                          {courses.unavailable.map((course, index) =>
-                            course.is_partner ? (
-                              <CourseItem
-                                showCallMessage={index === 2}
-                                id={`card-course-${course.id}`}
-                                unavaiableDate={true}
-                                course={course}
-                                className={styles.courseSpacing}
-                                key={course.id}
-                                handleDetailClick={this.handleDetailClick.bind(
-                                  this
-                                )}
-                                handlePriceClick={this.handlePriceClick.bind(
-                                  this
-                                )}
-                                handleReviewClick={this.handleReviewClick.bind(
-                                  this
-                                )}
-                              />
-                            ) : (
-                              <CourseItemNonPartner
-                                id={`card-course-${course.id}`}
-                                course={course}
-                                className="mt-3"
-                                key={course.id}
-                              />
-                            )
-                          )}
-                        </React.Fragment>
-                      )}
+                            )}
+                          </React.Fragment>
+                        )}
+                      </div>
+                      <div className={styles.mapPanel}>
+                        {hasPartnerResults && (
+                          <div className={styles.buttonsWrapper}>
+                            {this.renderSortByDropdown()}
+                          </div>
+                        )}
+                        {courses && (
+                          <MapComponent
+                            className={styles.mapWrapper}
+                            courses={courses}
+                            userLocation={userLocation}
+                          />
+                        )}
+                      </div>
                     </div>
-                    <div className={styles.mapPanel}>
-                      {hasPartnerResults && (
-                        <div className={styles.buttonsWrapper}>
-                          {this.renderSortByDropdown()}
-                        </div>
-                      )}
-                      {courses && (
-                        <MapComponent
-                          className={styles.mapWrapper}
-                          courses={courses}
-                          userLocation={userLocation}
-                        />
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  !loading && (
-                    <div className={styles.noResults}>
-                      No results, please try another date.
-                    </div>
-                  )
-                )}
+                  ) : (
+                    !loading && (
+                      <div className={styles.noResults}>
+                        No results, please try another date.
+                      </div>
+                    )
+                  )}
+                </div>
               </Loading>
             </Col>
           </Row>
@@ -409,12 +423,12 @@ class ResultPage extends Component {
             />
           )}
         </SidePanel>
-        {showDateSelectorModal && (
+        {showDateSelectorModal && !loading && (
           <DateSelectorModal
             isOpen={true}
             onClose={() => this.setState({ showDateSelectorModal: false })}
             date={date}
-            onSelect={this.onSelectDate.bind(this)}
+            onSelectDate={this.onSelectDate.bind(this)}
           />
         )}
       </div>
