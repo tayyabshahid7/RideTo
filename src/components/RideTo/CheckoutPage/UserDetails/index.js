@@ -207,7 +207,7 @@ class UserDetails extends Component {
               styles.input
             )}>
             <DateInput
-              placeholder="Date of Birth (DD/MM/YYYY)"
+              placeholder="Date of Birth"
               id="user_birthdate"
               name="user_birthdate"
               minyears={16}
