@@ -209,6 +209,7 @@ class CourseAvailabilityComponent extends React.Component {
     const isManualFull =
       instantCourse && instantCourse.manual_count === instantCourse.manual_bikes
 
+    const isItm = courseType === 'INTRO_TO_MOTORCYCLING'
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
 
     return (
@@ -279,7 +280,7 @@ class CourseAvailabilityComponent extends React.Component {
                 {isManualFull ? fullText : null}
               </button>
             )}
-            {bike_hire === 'manual' && manualText}
+            {bike_hire === 'manual' && !isItm && manualText}
           </div>
         </div>
       </Loading>
