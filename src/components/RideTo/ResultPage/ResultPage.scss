@@ -156,6 +156,15 @@
   padding: 0 !important;
 }
 
+.schoolCount {
+  margin-top: -2rem;
+  margin-bottom: 1.8rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 1.5em;
+  }
+}
+
 .action {
   width: inherit;
   justify-content: center;
