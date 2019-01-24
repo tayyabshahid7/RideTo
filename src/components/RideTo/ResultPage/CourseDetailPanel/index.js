@@ -41,34 +41,34 @@ class CourseDetailPanel extends React.Component {
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '1' && styles.active
+              activeTab === 1 && styles.active
             )}
-            onClick={() => this.toggle('1')}>
+            onClick={() => this.toggle(1)}>
             Information
           </div>
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '2' && styles.active
+              activeTab === 2 && styles.active
             )}
-            onClick={() => this.toggle('2')}>
+            onClick={() => this.toggle(2)}>
             Reviews
           </div>
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '3' && styles.active
+              activeTab === 3 && styles.active
             )}
-            onClick={() => this.toggle('3')}>
+            onClick={() => this.toggle(3)}>
             Availability
           </div>
         </div>
-        {activeTab === '1' && <CourseInformationComponent course={course} />}
-        {activeTab === '1' && (
+        {activeTab === 1 && <CourseInformationComponent course={course} />}
+        {activeTab === 1 && (
           <MapComponent className={styles.mapWrapper} courses={[course]} />
         )}
-        {activeTab === '2' && <CourseReviewsComponent course={course} />}
-        {activeTab === '3' && (
+        {activeTab === 2 && <CourseReviewsComponent course={course} />}
+        {activeTab === 3 && (
           <CourseAvailabilityComponent
             course={course}
             courseType={courseType}

@@ -3,14 +3,12 @@ import classnames from 'classnames'
 import { UncontrolledTooltip } from 'reactstrap'
 import styles from './styles.scss'
 import StarsComponent from 'components/RideTo/StarsComponent'
-import { IconArrowRight, IconInfo, IconDistance } from 'assets/icons'
+import { IconArrowRight, IconDistance } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import { getFeatureInfo } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 
 class CourseItem extends Component {
-  handleDetailClick() {}
-
   highlightPinOnMap(event) {
     const idElement = event.currentTarget.id
     const pinWrapper = document.getElementById(`${idElement.substring(5)}`)
@@ -73,7 +71,10 @@ class CourseItem extends Component {
           className={classnames(styles.container, className)}>
           <div
             className={styles.photo}
-            onClick={() => handlePriceClick(course)}>
+            onClick={() => handleDetailClick(course)}>
+            <div className={styles.infoIcon}>
+              <span>i</span>
+            </div>
             <img src={course.image} className={styles.image} alt="logo" />
           </div>
           <div className={styles.info}>
@@ -97,12 +98,6 @@ class CourseItem extends Component {
               <IconDistance className={styles.mileIcon} />{' '}
               {course.distance_miles.toFixed(2)}
               mi
-              <IconInfo className={styles.detailIcon} />{' '}
-              <span
-                onClick={() => handleDetailClick(course)}
-                className={styles.detail}>
-                Details
-              </span>
               <StarsComponent
                 rating={course.rating}
                 className={styles.starComponent}
