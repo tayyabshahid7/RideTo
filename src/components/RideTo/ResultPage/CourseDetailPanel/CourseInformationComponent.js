@@ -4,6 +4,8 @@ import { getShortCourseType } from 'services/course'
 import { getStaticData } from 'services/page'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import * as FeatureIcons from 'assets/icons/features'
+import MapComponent from 'components/RideTo/MapComponent'
+import StarsComponent from 'components/RideTo/StarsComponent'
 
 class CourseDetailPanel extends React.Component {
   constructor(props) {
@@ -33,7 +35,6 @@ class CourseDetailPanel extends React.Component {
 
     return (
       <Fragment>
-        {' '}
         <div className={styles.content}>
           <div className={styles.subtitle}>
             {`${getShortCourseType(courseType)} ${course.location_slug.replace(
@@ -44,12 +45,6 @@ class CourseDetailPanel extends React.Component {
           <div className={styles.address}>{`${course.place} ${
             course.postcode
           }`}</div>
-          <div className={styles.desc}>{course.rideto_opinion}</div>
-          {/*
-        <div className={styles.hostedLogo}>
-          <img src={course.hosted_logo} alt="feature" />
-        </div>
-      */}
           <div className={styles.features}>
             {course.mciac_approved &&
               this.renderFeature('Approved', 'MCIAC Approved')}
@@ -62,7 +57,33 @@ class CourseDetailPanel extends React.Component {
               this.renderFeature('Class', 'Indoor Classroom')}
           </div>
         </div>
-        <CourseTypeDetails courseType={this.selectedCourseType} />
+        <div className={styles.bring}>
+          <div className={styles.subtitle}>What you need to bring</div>
+          <div className={styles.desc}>
+            On the day of the training you'll need to bring a Valid UK Driving
+            or Provisional Licence, wear sturdy Jeans and Boots (something which
+            protect your feet such as walking boots) and suitable clothes for
+            being outside all day.
+          </div>
+        </div>
+        <MapComponent className={styles.mapWrapper} courses={[course]} />
+        <CourseTypeDetails
+          courseType={this.selectedCourseType}
+          title="Course information"
+        />
+        <div className={styles.instructor}>
+          <div className={styles.subtitle}>The Instructor</div>
+          <div className={styles.desc}>{course.rideto_opinion}</div>
+          <div className={styles.hostedLogo}>
+            <img src={course.hosted_logo} alt="feature" />
+          </div>
+          <div>
+            <StarsComponent
+              rating={course.rating}
+              className={styles.starComponent}
+            />
+          </div>
+        </div>
       </Fragment>
     )
   }
