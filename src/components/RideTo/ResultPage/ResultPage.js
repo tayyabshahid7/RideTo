@@ -352,7 +352,8 @@ class ResultPage extends Component {
       handleSetDate,
       navigation,
       loading,
-      userLocation
+      userLocation,
+      sortByOption
     } = this.props
     const {
       selectedCourse,
@@ -455,6 +456,14 @@ class ResultPage extends Component {
                                 styles.hiddenOnMobile
                               )}>
                               Choose a location
+                            </div>
+                            <div className={styles.schoolCount}>
+                              {`Showing ${courses.available.length +
+                                courses.unavailable
+                                  .length} training sites in your area by ${sortByOption.replace(
+                                '-',
+                                ''
+                              )}`}
                             </div>
                             {courses.available.map(
                               (course, index) =>
