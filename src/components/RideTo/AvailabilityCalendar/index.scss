@@ -3,6 +3,14 @@
   flex-direction: column;
 }
 
+.noLabel {
+  margin-top: -26px;
+
+  @media (max-width: 768px) {
+    margin-top: 5px;
+  }
+}
+
 .subtitle {
   text-transform: uppercase;
   font-size: 18px;

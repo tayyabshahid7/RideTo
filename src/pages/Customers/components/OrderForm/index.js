@@ -83,7 +83,13 @@ class OrderForm extends React.Component {
     const selectedSupplier = suppliers.find(
       ({ id }) => id === editable.supplier
     )
-    const courses = selectedSupplier ? selectedSupplier.courses : []
+    const courses = selectedSupplier
+      ? selectedSupplier.courses.filter(
+          course =>
+            course.constant !== 'TFL_ONE_ON_ONE' &&
+            course.constant !== 'FULL_LICENCE'
+        )
+      : []
     const isDisabled = !isChanged || isSaving
 
     return (

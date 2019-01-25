@@ -13,7 +13,6 @@ import {
   unsetSelectedCourse,
   deleteCourse
 } from 'store/course'
-import OrdersPanel from 'components/Calendar/OrdersPanel'
 import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
 import DateHeading from 'components/Calendar/DateHeading'
 import ConfirmModal from 'components/Modals/ConfirmModal'
@@ -80,16 +79,7 @@ class EditCourseComponent extends Component {
   }
 
   render() {
-    const {
-      loading,
-      saving,
-      schoolId,
-      course,
-      info,
-      createSchoolOrder,
-      updateSchoolOrder,
-      updateCourse
-    } = this.props
+    const { loading, course } = this.props
     const { isEditable, showDeleteCourseConfirmModal } = this.state
 
     if (loading) {
@@ -117,18 +107,6 @@ class EditCourseComponent extends Component {
           onSubmit={this.onSave.bind(this)}
         />
 
-        <h4 className={styles.heading}>Orders</h4>
-
-        <OrdersPanel
-          course={course}
-          info={info}
-          createSchoolOrder={createSchoolOrder}
-          updateSchoolOrder={updateSchoolOrder}
-          updateCourse={updateCourse}
-          loading={loading}
-          schoolId={schoolId}
-          saving={saving}
-        />
         {showDeleteCourseConfirmModal && (
           <ConfirmModal
             onClose={this.closeDeleteCourseConfirmModal.bind(this)}

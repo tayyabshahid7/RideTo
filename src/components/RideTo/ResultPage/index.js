@@ -29,8 +29,11 @@ class ResultPageContainer extends Component {
         queryValue: `courseType=${courseType}`
       },
       {
-        title: 'Date & Location',
-        subtitle: 'Choose a Date & Location',
+        title: courseType !== 'FULL_LICENCE' ? 'Date & Location' : 'Location',
+        subtitle:
+          courseType !== 'FULL_LICENCE'
+            ? 'Choose a Date & Location'
+            : 'Choose a Location',
         active: true
       },
       {
@@ -80,6 +83,7 @@ class ResultPageContainer extends Component {
   async loadCourses() {
     try {
       const { date, sortByOption, courseType, postcode } = this.state
+
       this.setState({ loading: true })
       let response = await fetchRidetoCourses({
         course_type: courseType,

@@ -1,0 +1,73 @@
+.container {
+  overflow-x: auto;
+
+  table {
+    color: #707070;
+    width: 100%;
+    text-align: center;
+    border-spacing: 0px;
+    border: 1px solid #acacac;
+    min-width: 470px;
+  }
+
+  th {
+    position: sticky;
+    top: 0px;
+    padding: 10px;
+    background-color: #f6f6f6;
+    border-bottom: 1px solid #acacac;
+  }
+
+  .asc::after {
+    content: '⬇';
+  }
+
+  .desc::after {
+    content: '⬆';
+  }
+
+  tr:hover {
+    background-color: #ddf9f3;
+
+    &.isExpiring {
+      background-color: #f2b8be;
+    }
+  }
+
+  td {
+    padding: 10px 0;
+  }
+
+  h1 {
+    padding: 10px;
+  }
+}
+
+.viewLink {
+  color: white;
+  background-color: #434343;
+  padding: 5px;
+  text-decoration: none;
+
+  &:hover {
+    background: white;
+    color: #434343;
+    text-decoration: none;
+  }
+}
+
+.noResults {
+  margin: auto;
+  width: 100%;
+  padding: 50px 0;
+  color: grey;
+  text-align: center;
+}
+
+.trEven {
+  background-color: #f9f7f7;
+}
+
+.isExpiring {
+  background-color: #f5c6cb;
+}

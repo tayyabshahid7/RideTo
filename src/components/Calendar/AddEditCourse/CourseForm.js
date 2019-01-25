@@ -21,7 +21,13 @@ class CourseForm extends React.Component {
       duration: '',
       notes: '',
       auto_bikes: '',
-      manual_bikes: ''
+      manual_bikes: '',
+      a1_auto_bikes: '',
+      a2_auto_bikes: '',
+      a_auto_bikes: '',
+      a1_manual_bikes: '',
+      a2_manual_bikes: '',
+      a_manual_bikes: ''
     }
     if (this.props.course) {
       Object.assign(
@@ -35,7 +41,13 @@ class CourseForm extends React.Component {
           'instructor_id',
           'auto_bikes',
           'manual_bikes',
-          'notes'
+          'notes',
+          'a1_auto_bikes',
+          'a2_auto_bikes',
+          'a_auto_bikes',
+          'a1_manual_bikes',
+          'a2_manual_bikes',
+          'a_manual_bikes'
         )
       )
       course.course_type_id =
@@ -134,6 +146,14 @@ class CourseForm extends React.Component {
       course.course_type_id = info.courseTypes[0].id
     }
 
+    if (!course.auto_bikes) {
+      course.auto_bikes = 0
+    }
+
+    if (!course.manual_bikes) {
+      course.manual_bikes = 0
+    }
+
     onSubmit(course)
   }
 
@@ -148,11 +168,25 @@ class CourseForm extends React.Component {
       duration,
       notes,
       auto_bikes,
-      manual_bikes
+      manual_bikes,
+      a1_auto_bikes,
+      a2_auto_bikes,
+      a_auto_bikes,
+      a1_manual_bikes,
+      a2_manual_bikes,
+      a_manual_bikes
     } = this.state.course
 
     const finishTime = this.getFinishTime(time, duration)
     const formClass = isEditable ? styles.grey : ''
+
+    const courseTypes = info.courseTypes.filter(
+      type => type.constant !== 'FULL_LICENCE'
+    )
+
+    const isFullLicence = courseTypes
+      .filter(type => type.constant.startsWith('FULL_LICENCE'))
+      .some(type => type.id === parseInt(course_type_id, 10))
 
     return (
       <div className={styles.container}>
@@ -166,7 +200,7 @@ class CourseForm extends React.Component {
                 disabled={!isEditable}
                 required
                 onChange={this.handleChangeRawEvent.bind(this)}>
-                {info.courseTypes.map(courseType => (
+                {courseTypes.map(courseType => (
                   <option key={courseType.id} value={courseType.id}>
                     {courseType.name}
                   </option>
@@ -184,7 +218,9 @@ class CourseForm extends React.Component {
 
             <div className={classnames(styles.form, formClass)}>
               <Row className={styles.formRow}>
-                <Col sm="4" className={styles.formGroup}>
+                <Col
+                  sm={!isFullLicence ? '4' : '12'}
+                  className={styles.formGroup}>
                   <label>Spaces:</label>
                   <Input
                     className={styles.inputNumber}
@@ -196,48 +232,154 @@ class CourseForm extends React.Component {
                     required
                   />
                 </Col>
-                <Col sm="4" className={styles.formGroup}>
-                  <label>Automatic:</label>
-                  <Input
-                    className={styles.inputNumber}
-                    name="auto_bikes"
-                    value={auto_bikes || ''}
-                    type="number"
-                    disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                  />
-                </Col>
-                <Col sm="4" className={styles.formGroup}>
-                  <label>Manual:</label>
-                  <Input
-                    className={styles.inputNumber}
-                    name="manual_bikes"
-                    value={manual_bikes || ''}
-                    type="number"
-                    disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                  />
-                </Col>
-              </Row>
-
-              {!this.props.course &&
-                !this.props.date && (
-                  <Row className={styles.formRow}>
-                    <Col className={styles.formGroup}>
-                      <label>Date:</label>
+                {!isFullLicence && (
+                  <React.Fragment>
+                    <Col sm="4" className={styles.formGroup}>
+                      <label>Automatic:</label>
                       <Input
-                        name="date"
-                        value={date || ''}
-                        type="date"
+                        className={styles.inputNumber}
+                        name="auto_bikes"
+                        value={auto_bikes || ''}
+                        type="number"
                         disabled={!isEditable}
                         onChange={this.handleChangeRawEvent.bind(this)}
                         required
                       />
                     </Col>
-                  </Row>
+                    <Col sm="4" className={styles.formGroup}>
+                      <label>Manual:</label>
+                      <Input
+                        className={styles.inputNumber}
+                        name="manual_bikes"
+                        value={manual_bikes || ''}
+                        type="number"
+                        disabled={!isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        required
+                      />
+                    </Col>
+                  </React.Fragment>
                 )}
+              </Row>
+
+              {isFullLicence && (
+                <Row className={styles.formRow}>
+                  <Col className={styles.formGroup}>
+                    <table className={classnames('table', styles.formTable)}>
+                      <tbody>
+                        <tr>
+                          <td />
+                          <td>Automatic</td>
+                          <td>Manual</td>
+                        </tr>
+                        <tr>
+                          <td>A1</td>
+                          <td>
+                            <Input
+                              className={styles.inputNumber}
+                              name="a1_auto_bikes"
+                              value={a1_auto_bikes || ''}
+                              type="number"
+                              min="0"
+                              max={spaces}
+                              disabled={!isEditable}
+                              onChange={this.handleChangeRawEvent.bind(this)}
+                              required
+                            />
+                          </td>
+                          <td>
+                            <Input
+                              className={styles.inputNumber}
+                              name="a1_manual_bikes"
+                              value={a1_manual_bikes || ''}
+                              type="number"
+                              min="0"
+                              max={spaces}
+                              disabled={!isEditable}
+                              onChange={this.handleChangeRawEvent.bind(this)}
+                              required
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>A2</td>
+                          <td>
+                            <Input
+                              className={styles.inputNumber}
+                              name="a2_auto_bikes"
+                              value={a2_auto_bikes || ''}
+                              type="number"
+                              min="0"
+                              max={spaces}
+                              disabled={!isEditable}
+                              onChange={this.handleChangeRawEvent.bind(this)}
+                              required
+                            />
+                          </td>
+                          <td>
+                            <Input
+                              className={styles.inputNumber}
+                              name="a2_manual_bikes"
+                              value={a2_manual_bikes || ''}
+                              type="number"
+                              min="0"
+                              max={spaces}
+                              disabled={!isEditable}
+                              onChange={this.handleChangeRawEvent.bind(this)}
+                              required
+                            />
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>A</td>
+                          <td>
+                            <Input
+                              className={styles.inputNumber}
+                              name="a_auto_bikes"
+                              value={a_auto_bikes || ''}
+                              type="number"
+                              min="0"
+                              max={spaces}
+                              disabled={!isEditable}
+                              onChange={this.handleChangeRawEvent.bind(this)}
+                              required
+                            />
+                          </td>
+                          <td>
+                            <Input
+                              className={styles.inputNumber}
+                              name="a_manual_bikes"
+                              value={a_manual_bikes || ''}
+                              type="number"
+                              min="0"
+                              max={spaces}
+                              disabled={!isEditable}
+                              onChange={this.handleChangeRawEvent.bind(this)}
+                              required
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </Col>
+                </Row>
+              )}
+
+              {!this.props.course && !this.props.date && (
+                <Row className={styles.formRow}>
+                  <Col className={styles.formGroup}>
+                    <label>Date:</label>
+                    <Input
+                      name="date"
+                      value={date || ''}
+                      type="date"
+                      disabled={!isEditable}
+                      onChange={this.handleChangeRawEvent.bind(this)}
+                      required
+                    />
+                  </Col>
+                </Row>
+              )}
 
               <Row className={styles.formRow}>
                 <Col sm="6" className={styles.formGroup}>
@@ -287,22 +429,25 @@ class CourseForm extends React.Component {
                   </select>
                 </Col>
               </Row>
-              <Row className={styles.formRow}>
-                <Col className={styles.formGroup}>
-                  <label>Payout Per Booking:</label>
-                  <Input
-                    name="price"
-                    value={
-                      pricing.loading
-                        ? '...'
-                        : pricing.info
+
+              {!isFullLicence && (
+                <Row className={styles.formRow}>
+                  <Col className={styles.formGroup}>
+                    <label>Payout Per Booking:</label>
+                    <Input
+                      name="price"
+                      value={
+                        pricing.loading
+                          ? '...'
+                          : pricing.info
                           ? `£${(pricing.info.payout / 100.0).toFixed(2)}`
                           : ''
-                    }
-                    disabled
-                  />
-                </Col>
-              </Row>
+                      }
+                      disabled
+                    />
+                  </Col>
+                </Row>
+              )}
 
               <div className={styles.formRow}>
                 <div className={styles.notes}>

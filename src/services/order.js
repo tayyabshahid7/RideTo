@@ -48,7 +48,6 @@ export const getDateFilters = () => {
 export const fetchSupplierOrders = async (schoolId, params = {}) => {
   const path = `o/${schoolId}/confirmed/`
   const response = await get(path, params)
-
   return response
 }
 
@@ -78,23 +77,27 @@ export const isRideTo = ({ source }) => {
   return source === 'RIDETO'
 }
 
-export const getBikeHireOptions = () => {
+export const getBikeHireOptions = isFullLicence => {
   return {
     no: 'Own Bike',
     auto: 'Automatic Scooter',
-    manual: 'Manual 125cc Motorcycle'
+    manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual Motorcycle'
   }
 }
 
 export const getPaymentOptions = () => {
   return [
     {
-      id: 'paid',
+      id: 'PAID',
       name: 'Paid'
     },
     {
-      id: 'pending',
+      id: 'PENDING',
       name: 'Payment Outstanding'
+    },
+    {
+      id: 'PARTIAL_PAYMENT',
+      name: 'Partially paid'
     }
   ]
 }

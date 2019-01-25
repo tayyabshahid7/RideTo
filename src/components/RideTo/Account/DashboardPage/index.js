@@ -85,8 +85,9 @@ class DashboardPage extends React.Component {
 
   render() {
     const { recentOrder, selectedOrder, orders } = this.state
-    const headingImage = selectedOrder ? selectedOrder.supplier.image : ''
-
+    const headingImage = selectedOrder
+      ? selectedOrder.training_location.image
+      : ''
     return (
       <React.Fragment>
         {recentOrder && (
