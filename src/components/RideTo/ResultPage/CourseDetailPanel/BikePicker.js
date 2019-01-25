@@ -6,6 +6,7 @@ import Loading from 'components/Loading'
 
 function BikePicker({
   isCbt,
+  isItm,
   isCbtRenewal,
   bike_hire,
   onUpdate,
@@ -96,7 +97,7 @@ function BikePicker({
             </button>
           )}
         </div>
-        {isCbt && bike_hire === 'manual' && manualText}
+        {isCbt && bike_hire === 'manual' && !isItm && manualText}
         {isFullLicence && !has_manual_bikes && !has_auto_bikes && !loading && (
           <div>No bikes available</div>
         )}

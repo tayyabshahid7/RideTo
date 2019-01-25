@@ -73,3 +73,11 @@ image using the content attribute.
   top: auto;
   bottom: 50px;
 }
+
+.resultsPage.loadingMask {
+  min-height: 100vh;
+}
+
+.resultsPage.top.loadingMask::after {
+  top: 185px;
+}

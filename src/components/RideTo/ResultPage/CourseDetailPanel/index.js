@@ -1,7 +1,6 @@
 import React from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
-import MapComponent from 'components/RideTo/MapComponent'
 import CourseReviewsComponent from './CourseReviewsComponent'
 import CourseAvailabilityComponent from './CourseAvailabilityComponent'
 import CourseAvailabilityComponentFullLicence from './CourseAvailabilityComponentFullLicence'
@@ -69,9 +68,8 @@ class CourseDetailPanel extends React.Component {
             Availability
           </div>
         </div>
-        {activeTab === 1 && <CourseInformationComponent course={course} />}
         {activeTab === 1 && (
-          <MapComponent className={styles.mapWrapper} courses={[course]} />
+          <CourseInformationComponent course={course} courseType={courseType} />
         )}
         {activeTab === 2 && <CourseReviewsComponent course={course} />}
         {activeTab === 3 && courseType !== 'FULL_LICENCE' && (

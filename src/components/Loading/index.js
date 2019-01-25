@@ -9,6 +9,7 @@ const Loading = props => {
         styles.loading,
         styles[props.position],
         props.loading && styles.loadingMask,
+        props.resultsPage && styles.resultsPage,
         props.className
       )}>
       {props.children}

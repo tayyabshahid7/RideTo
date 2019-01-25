@@ -32,10 +32,28 @@
   }
 }
 
-.content {
+.content,
+.instructor,
+.bring {
   padding: 45px 60px;
   @media (max-width: 768px) {
     padding: 30px 32px;
+  }
+}
+
+.bring {
+  margin-top: -45px;
+  @media (max-width: 768px) {
+    margin-top: -30px;
+  }
+}
+
+.instructor {
+  padding-bottom: 0;
+  margin-top: -64px;
+  @media (max-width: 768px) {
+    padding-bottom: 0;
+    margin-top: -32px;
   }
 }
 
@@ -59,11 +77,20 @@
   font-family: var(--font-proxima);
 }
 
-.desc {
-  font-size: 14px;
+.address {
+  margin-top: 0.8rem;
+  font-size: 16px;
   line-height: 20px;
   font-family: var(--font-proxima);
-  margin-top: 24px;
+}
+
+.desc {
+  margin-top: 16px;
+  font-family: var(--font-proxima);
+  font-size: 15px;
+  line-height: 24px;
+  text-transform: none;
+  font-weight: normal;
 }
 
 .hostedLogo {

@@ -13,10 +13,15 @@ const options = {
   threshold: 0
 }
 
-const lazyMountComponent = (module, el, props) => {
+const mountComponent = (module, el, props, lazy = true) => {
   const container = document.getElementById(el)
 
   if (container) {
+    if (!lazy) {
+      ReactDOM.render(<AsyncComponent module={module} {...props} />, container)
+      return
+    }
+
     const observer = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -33,4 +38,4 @@ const lazyMountComponent = (module, el, props) => {
   }
 }
 
-export default lazyMountComponent
+export default mountComponent
