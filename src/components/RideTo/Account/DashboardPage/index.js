@@ -23,7 +23,6 @@ class DashboardPage extends React.Component {
     }
 
     this.handleDetails = this.handleDetails.bind(this)
-    this.recordGAEcommerceData = this.recordGAEcommerceData.bind(this)
   }
 
   async componentDidMount() {

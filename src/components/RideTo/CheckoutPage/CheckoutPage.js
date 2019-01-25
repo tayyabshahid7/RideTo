@@ -108,6 +108,7 @@ class CheckoutPage extends Component {
     this.handleValueChange = this.handleValueChange.bind(this)
     this.handleVoucherApply = this.handleVoucherApply.bind(this)
     this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
+    this.recordGAEcommerceData = this.recordGAEcommerceData.bind(this)
   }
 
   onUpdate(data) {
@@ -527,6 +528,27 @@ class CheckoutPage extends Component {
           window.document.body.scrollIntoView()
         }
       }
+    }
+  }
+
+  recordGAEcommerceData(order) {
+    if (order) {
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({
+        transactionId: order.friendly_id,
+        transactionAffiliation: 'RideTo',
+        transactionTotal: order.revenue,
+        transactionProducts: [
+          {
+            sku: order.friendly_id,
+            name: order.selected_licence,
+            category: order.supplier_name,
+            price: order.revenue,
+            quantity: 1
+          }
+        ],
+        event: 'rideto.ecom-purchase.completed'
+      })
     }
   }
 
