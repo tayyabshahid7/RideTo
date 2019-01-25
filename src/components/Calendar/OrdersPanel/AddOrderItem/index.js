@@ -3,7 +3,7 @@ import styles from './styles.scss'
 import { Button, Row, Col, Form } from 'reactstrap'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
-import { BikeHires } from 'common/info'
+import { BikeHires, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 
 class AddOrderItem extends React.Component {
@@ -11,7 +11,7 @@ class AddOrderItem extends React.Component {
     super(props)
     this.state = {
       order: {
-        school_course_id: this.props.course.id,
+        school_course: this.props.course.id,
         user_birthdate: '',
         user_driving_licence_number: '',
         user_email: '',
@@ -21,8 +21,12 @@ class AddOrderItem extends React.Component {
         bike_hire: '',
         payment_status: '',
         riding_experience: '',
-        start_time: ''
-      }
+        full_licence_type: '',
+        start_time: `${this.props.course.date}T${this.props.course.time}Z`
+      },
+      isFullLicence: this.props.course.course_type.constant.startsWith(
+        'FULL_LICENCE'
+      )
     }
 
     this.scrollIntoView = React.createRef()
@@ -61,13 +65,16 @@ class AddOrderItem extends React.Component {
       payment_status,
       user_birthdate,
       user_driving_licence_number,
-      user_email
+      user_email,
+      full_licence_type,
+      isFullLicence
     } = this.state
 
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave.bind(this)}>
+          <div ref={this.scrollIntoView} />
           <Row>
             <Col sm="6">
               <InputTextGroup
@@ -128,14 +135,26 @@ class AddOrderItem extends React.Component {
                 required
               />
             </Col>
-            <Col sm="6" />
+            <Col sm="6">
+              {isFullLicence && (
+                <InputSelectGroup
+                  name="full_licence_type"
+                  value={full_licence_type}
+                  label="Licence Type *"
+                  valueArray={FullLicenceTypes}
+                  noSelectOption
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  required
+                />
+              )}
+            </Col>
           </Row>
           <Row>
             <Col sm="6">
               <InputTextGroup
                 name="user_driving_licence_number"
                 value={user_driving_licence_number}
-                label="License"
+                label="Driver's License Number"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
@@ -170,10 +189,11 @@ class AddOrderItem extends React.Component {
               <InputSelectGroup
                 name="bike_hire"
                 value={bike_hire}
-                label="Bike Hire"
+                label={isFullLicence ? 'Bike Hire *' : 'Bike Hire'}
                 valueArray={BikeHires}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
+                required={isFullLicence}
               />
             </Col>
           </Row>
@@ -187,7 +207,6 @@ class AddOrderItem extends React.Component {
               </Button>
             </Col>
           </Row>
-          <div ref={this.scrollIntoView} />
         </Form>
         {/* </Loading> */}
       </div>

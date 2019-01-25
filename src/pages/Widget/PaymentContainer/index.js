@@ -6,7 +6,7 @@ import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
 import BookingSummary from 'pages/Widget/components/BookingSummary'
-import { fetchWidgetSingleCourse } from 'services/course'
+import { fetchWidgetSingleCourse, getPrice } from 'services/course'
 import {
   createOrder,
   getTotalOrderPrice,
@@ -16,12 +16,6 @@ import {
 import { parseQueryString } from 'services/api'
 
 import styles from './PaymentContainer.scss'
-
-// Map course type names to LICENCE_TYPES
-const LICENCE_TYPES = {
-  'CBT Training': 'LICENCE_CBT',
-  'CBT Training Renewal': 'LICENCE_CBT_RENEWAL'
-}
 
 const REQUIRED_FIELDS = [
   'first_name',
@@ -59,7 +53,10 @@ class PaymentContainer extends React.Component {
       isSaving: false,
       hire: query.hire || null,
       errors: {},
-      details: {}
+      details: {},
+      trainings: JSON.parse(window.sessionStorage.getItem('widgetTrainings')),
+      isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
+      totalPrice: 0
     }
 
     this.handlePayment = this.handlePayment.bind(this)
@@ -69,17 +66,54 @@ class PaymentContainer extends React.Component {
   }
 
   async componentDidMount() {
-    const { match } = this.props
+    const { match, hire } = this.props
     const { courseId } = match.params
+    const { isFullLicence, trainings } = this.state
 
-    const course = await fetchWidgetSingleCourse(0, courseId)
-    const supplier = this.suppliers.filter(
-      ({ id }) => id === course.supplier
-    )[0]
+    let course
+    let supplier
+    let totalPrice
+
+    if (isFullLicence) {
+      course = {
+        course_type: {
+          name: 'Full Licence'
+        }
+      }
+      supplier = this.suppliers.filter(
+        ({ id }) => id === trainings[0].supplier_id
+      )[0]
+
+      let fullPrice = 0
+      const newTrainings = await Promise.all(
+        trainings.map(async training => {
+          const price = await getPrice({
+            courseId: training.school_course_id
+          })
+          fullPrice += parseInt(price.price, 10)
+
+          return {
+            ...training,
+            price: price.price
+          }
+        })
+      )
+
+      this.setState({
+        trainings: newTrainings
+      })
+
+      totalPrice = fullPrice
+    } else {
+      course = await fetchWidgetSingleCourse(0, courseId)
+      supplier = this.suppliers.filter(({ id }) => id === course.supplier)[0]
+      totalPrice = getTotalOrderPrice(course, hire)
+    }
 
     this.setState({
       course,
-      supplier
+      supplier,
+      totalPrice
     })
   }
 
@@ -138,28 +172,36 @@ class PaymentContainer extends React.Component {
 
   async createOrder(token) {
     const { match, history } = this.props
-    const { slug } = match.params
-    const { course, supplier, details, hire } = this.state
+    const { slug, courseId } = match.params
+    const {
+      course,
+      supplier,
+      details,
+      hire,
+      trainings,
+      totalPrice
+    } = this.state
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
       ...details,
       email_optin: details.email_optin || false,
-      school_course_id: course.id,
+      school_course_id: course.id || supplier.id,
       user_birthdate: birthdate.format('YYYY-MM-DD'),
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
       token: token.id,
-      expected_price: getTotalOrderPrice(course, hire),
+      expected_price: totalPrice,
       name: `${details.first_name} ${details.last_name}`,
-      user_date: course.date,
-      selected_licence: LICENCE_TYPES[course.course_type.name],
+      user_date: course.date || trainings[0].requested_date,
+      selected_licence: course.course_type.constant || courseId,
       supplier: supplier.id,
       bike_hire: hire,
       addons: [],
       accept_equipment_responsibility: true, // TODO Needs to be removed
       source: 'WIDGET',
       rider_type: 'RIDER_TYPE_SOCIAL',
-      voucher_code: ''
+      voucher_code: '',
+      trainings: trainings
     }
 
     try {
@@ -187,16 +229,29 @@ class PaymentContainer extends React.Component {
   }
 
   render() {
-    const { course, supplier, details, errors, hire, isSaving } = this.state
+    const {
+      course,
+      supplier,
+      details,
+      errors,
+      hire,
+      isSaving,
+      totalPrice,
+      isFullLicence,
+      trainings
+    } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
 
     return (
       <div className={styles.paymentContainer}>
         <BookingSummary
+          totalPrice={totalPrice}
           course={course}
           supplier={supplier}
           hire={hire}
           isLoading={isLoading}
+          isFullLicence={isFullLicence}
+          trainings={trainings}
         />
         <div className={styles.paymentDetails}>
           <h3 className={styles.heading}>Contact Details</h3>
@@ -231,10 +286,13 @@ class PaymentContainer extends React.Component {
         <div className={styles.orderDetails}>
           <h3 className={styles.heading}>Your Training</h3>
           <OrderDetails
+            isFullLicence={isFullLicence}
+            totalPrice={totalPrice}
             course={course}
             supplier={supplier}
             hire={hire}
             isLoading={isLoading}
+            trainings={trainings}
           />
         </div>
       </div>

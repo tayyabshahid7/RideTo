@@ -1,7 +1,12 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { getSchoolOrder, updateOrder } from 'store/course'
+import {
+  getSchoolOrder,
+  updateOrder,
+  getDayCourses,
+  getDayCourseTimes
+} from 'store/course'
 import EditOrderForm from 'components/EditOrderForm'
 import Loading from 'components/Loading'
 
@@ -9,34 +14,66 @@ class EditOrderFormContainer extends React.Component {
   constructor(props) {
     super(props)
     this.handleEditOrder = this.handleEditOrder.bind(this)
+    this.handleLoadTimes = this.handleLoadTimes.bind(this)
   }
 
   componentDidMount() {
-    const { schoolId, friendlyId, getSchoolOrder } = this.props
-    getSchoolOrder({ schoolId, friendlyId })
+    const { schoolId, trainingId, getSchoolOrder } = this.props
+    getSchoolOrder({ schoolId, trainingId })
   }
 
-  async handleEditOrder(order) {
+  async handleEditOrder(order, updateDate = false) {
     const {
       courseId,
       courseSpaces,
       updateOrder,
       schoolId,
-      friendlyId
+      trainingId,
+      date
     } = this.props
-    order.user_name = `${order.user_first_name} ${order.user_last_name}`
-    order.school_course_id = courseId // add in the course id
-    let response = await updateOrder({ schoolId, friendlyId, order })
-    this.props.updateCourse({
+    if (order.user_first_name && order.user_last_name) {
+      order.user_name = `${order.user_first_name} ${order.user_last_name}`
+    }
+    if (!updateDate) {
+      order.school_course = courseId // add in the course id
+    }
+
+    let response = await updateOrder({ schoolId, trainingId, order })
+
+    await this.props.updateCourse({
       schoolId,
       courseId: courseId,
       data: { spaces: courseSpaces }
     })
+
+    if (updateDate) {
+      this.props.getDayCourses({ schoolId, date })
+    }
     return response
   }
 
+  async handleLoadTimes(date) {
+    const { schoolId, order, course_type, getDayCourseTimes } = this.props
+
+    await getDayCourseTimes({
+      schoolId,
+      date,
+      course_type,
+      bike_type: order.bike_hire
+    })
+  }
+
   render() {
-    const { order, info, loading, onCancel } = this.props
+    const {
+      order,
+      info,
+      loading,
+      onCancel,
+      date,
+      time,
+      courses,
+      times
+    } = this.props
 
     return (
       <Loading loading={loading}>
@@ -46,6 +83,12 @@ class EditOrderFormContainer extends React.Component {
             onCancel={onCancel}
             order={order}
             info={info}
+            date={date}
+            time={time}
+            courses={courses}
+            times={times}
+            loadTimes={this.handleLoadTimes}
+            // handleChangeOrderDate={this.handleChangeOrderDate}
           />
         )}
       </Loading>
@@ -58,9 +101,9 @@ const mapStateToProps = (state, props) => {
     order: state.course.orderEditForm.order,
     loading: state.course.orderEditForm.loading,
     schoolId: state.auth.schoolId,
-    courseId: state.course.single.course.id,
-    courseSpaces: state.course.single.course.spaces,
-    info: state.info
+    info: state.info,
+    courses: state.course.day.courses,
+    times: state.course.times.available
   }
 }
 
@@ -68,7 +111,9 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getSchoolOrder,
-      updateOrder
+      updateOrder,
+      getDayCourses,
+      getDayCourseTimes
     },
     dispatch
   )

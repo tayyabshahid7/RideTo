@@ -6,6 +6,9 @@ import { MemoryRouter } from 'react-router-dom'
 import CoursesPanel from './CoursesPanel'
 import CoursesPanelItem from './CoursesPanelItem'
 
+import { Provider } from 'react-redux'
+import configureStore from '../../../store'
+
 Enzyme.configure({ adapter: new Adapter() })
 
 const COURSES = [
@@ -58,10 +61,14 @@ const COURSES = [
 ]
 
 it('Renders courses list', () => {
+  const store = configureStore()
+
   const wrapper = mount(
-    <MemoryRouter>
-      <CoursesPanel courses={COURSES} date="2018-01-01" />
-    </MemoryRouter>
+    <Provider store={store}>
+      <MemoryRouter>
+        <CoursesPanel courses={COURSES} date="2018-01-01" />
+      </MemoryRouter>
+    </Provider>
   )
 
   const rows = wrapper.find(CoursesPanelItem)

@@ -2,14 +2,15 @@ import React from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
 import styles from './CalendarHeader.scss'
-import { IconArrowSlideLeft, IconArrowSlideRight } from 'assets/icons'
+import { IconArrowSlideLeft, IconArrowSlideRight } from '../../../assets/icons'
 // import classnames from 'classnames'
 
 const CalendarHeader = ({
   calendar,
   handlePrevMonth,
   handleNextMonth,
-  disablePreviousDates
+  disablePreviousDates,
+  showLabel = true
 }) => {
   let todate = new Date()
   let currentMonth = todate.getMonth()
@@ -21,7 +22,7 @@ const CalendarHeader = ({
   return (
     <div className={styles.container}>
       <div id={'choose-date'} className={styles.title}>
-        Choose a date
+        {showLabel && 'Choose a date'}
       </div>
       <div
         className={classnames(styles.prev, prevDisabled && styles.disabled)}
