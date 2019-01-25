@@ -76,6 +76,26 @@
   text-align: center;
 }
 
+.infoIcon {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background: var(--grey-color);
+  cursor: pointer;
+  z-index: 1;
+
+  span {
+    font-size: 1.2rem;
+    font-family: var(--font-family-monospace);
+    color: var(--white-color);
+  }
+}
+
 .details {
   opacity: 0.5;
   color: #141414;
@@ -91,6 +111,7 @@
 }
 
 .courseTypeItem {
+  position: relative;
   font-family: var(--font-rift);
   box-shadow: 0px 7px 20px -8px #00000061;
   margin-bottom: 40px;

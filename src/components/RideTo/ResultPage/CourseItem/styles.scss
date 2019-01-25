@@ -31,24 +31,6 @@
   object-fit: cover;
 }
 
-.infoIcon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 25px;
-  height: 25px;
-  background: var(--grey-color);
-  cursor: pointer;
-  z-index: 1;
-
-  span {
-    color: var(--white-color);
-  }
-}
-
 .info {
   flex: 1 1 auto;
   display: flex;
@@ -173,6 +155,13 @@
   font-size: 14px;
   font-family: var(--font-proxima);
   line-height: 24px;
+}
+
+.detailIcon {
+  margin-left: 14px;
+  margin-right: 6px;
+  stroke: var(--dark-color);
+  fill: var(--dark-color);
 }
 
 .detail {

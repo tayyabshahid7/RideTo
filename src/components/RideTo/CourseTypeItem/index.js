@@ -3,7 +3,6 @@ import React from 'react'
 import styles from './CourseTypeItem.scss'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import ArrowRight from 'assets/images/rideto/ButtonArrowWhite.svg'
-import Info from 'assets/images/rideto/Info.svg'
 import classnames from 'classnames'
 
 const CourseTypeItem = ({
@@ -22,6 +21,11 @@ const CourseTypeItem = ({
 
   return (
     <div className={styles.courseTypeItem}>
+      <div
+        className={styles.infoIcon}
+        onClick={() => onClickDetails(courseType)}>
+        <span>i</span>
+      </div>
       <a href={url} className={isTypeform ? 'typeform-share' : null}>
         <div className={styles.backgroundImg} style={bgImg} />
       </a>
@@ -31,12 +35,6 @@ const CourseTypeItem = ({
           <div className={styles.info}>
             <h5>{courseType.name}</h5>
             <div className={styles.description}>{details.description}</div>
-          </div>
-          <div
-            className={styles.details}
-            onClick={() => onClickDetails(courseType)}>
-            <img src={Info} alt="Info" />
-            Details
           </div>
         </div>
         <a
