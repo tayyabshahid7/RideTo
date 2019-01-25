@@ -311,7 +311,10 @@ class ResultPage extends Component {
                             <div className={styles.schoolCount}>
                               {`Showing ${courses.available.length +
                                 courses.unavailable
-                                  .length} training sites in your area by ${sortByOption}`}
+                                  .length} training sites in your area by ${sortByOption.replace(
+                                '-',
+                                ''
+                              )}`}
                             </div>
                             {courses.available.map(
                               (course, index) =>
