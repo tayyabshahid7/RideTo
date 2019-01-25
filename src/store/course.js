@@ -163,7 +163,7 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     dispatch(
       getSingleCourse({
         schoolId,
-        courseId: order.school_course_id,
+        courseId: order.school_course,
         reset: false
       })
     )
@@ -175,10 +175,10 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
   return true
 }
 
-export const getSchoolOrder = ({ schoolId, friendlyId }) => async dispatch => {
+export const getSchoolOrder = ({ schoolId, trainingId }) => async dispatch => {
   dispatch({ type: FETCH_ORDER[REQUEST] })
   try {
-    const response = await fetchSchoolOrder(schoolId, friendlyId)
+    const response = await fetchSchoolOrder(schoolId, trainingId)
     dispatch({
       type: FETCH_ORDER[SUCCESS],
       data: { order: response }
@@ -194,12 +194,12 @@ export { updateSchoolOrder }
 
 export const updateOrder = ({
   schoolId,
-  friendlyId,
+  trainingId,
   order
 }) => async dispatch => {
   dispatch({ type: UPDATE_ORDER[REQUEST] })
   try {
-    const response = await updateSchoolOrder(schoolId, friendlyId, order)
+    const response = await updateSchoolOrder(schoolId, trainingId, order)
     notificationActions.dispatchSuccess(dispatch, 'Order saved')
     dispatch({
       type: UPDATE_ORDER[SUCCESS],

@@ -18,8 +18,8 @@ class EditOrderFormContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { schoolId, friendlyId, getSchoolOrder } = this.props
-    getSchoolOrder({ schoolId, friendlyId })
+    const { schoolId, trainingId, getSchoolOrder } = this.props
+    getSchoolOrder({ schoolId, trainingId })
   }
 
   async handleEditOrder(order, updateDate = false) {
@@ -28,20 +28,18 @@ class EditOrderFormContainer extends React.Component {
       courseSpaces,
       updateOrder,
       schoolId,
-      friendlyId,
+      trainingId,
       date
     } = this.props
     if (order.user_first_name && order.user_last_name) {
       order.user_name = `${order.user_first_name} ${order.user_last_name}`
     }
-    order.school_course_id = courseId // add in the course id
-
-    if (updateDate) {
-      order.school_course_id = order.course_id
+    if (!updateDate) {
+      order.school_course = courseId // add in the course id
     }
 
-    let response = await updateOrder({ schoolId, friendlyId, order })
-    // TODO FRONTEND PRODEV-375 Update courseSpaces for current course and new course
+    let response = await updateOrder({ schoolId, trainingId, order })
+
     await this.props.updateCourse({
       schoolId,
       courseId: courseId,
