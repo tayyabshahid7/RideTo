@@ -1,4 +1,4 @@
-import lazyMountComponent from 'utils/lazyMountComponent'
+import mountComponent from 'utils/mountComponent'
 import { setVersionInfo } from 'services/version'
 import menuToggle from 'menuToggle'
 import 'bootstrap'
@@ -10,26 +10,26 @@ setVersionInfo()
 // JS to handle clicking of burger menu
 menuToggle()
 
-lazyMountComponent('Account', 'rideto-account-page')
+mountComponent('Account', 'rideto-account-page')
 
-lazyMountComponent('CourseSlider', 'rideto-home-course-slider', {
+mountComponent('CourseSlider', 'rideto-home-course-slider', {
   sidepanel: true
 })
 
-lazyMountComponent('ResultPage', 'rideto-resultspage-root')
+mountComponent('ResultPage', 'rideto-resultspage-root', {}, false)
 
-lazyMountComponent('ReviewSlider', 'rideto-home-reviews')
+mountComponent('ReviewSlider', 'rideto-home-reviews')
 
-lazyMountComponent('CourseMenuItem', 'rideto-home-course-menu')
+mountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
-lazyMountComponent('UserMenuItem', 'rideto-nav-account')
+mountComponent('UserMenuItem', 'rideto-nav-account')
 
-lazyMountComponent('CourseTypeSelection', 'rideto-course-type-selection')
+mountComponent('CourseTypeSelection', 'rideto-course-type-selection')
 
-lazyMountComponent('AddonSelection', 'rideto-addon-selection')
+mountComponent('AddonSelection', 'rideto-addon-selection')
 
-lazyMountComponent('CheckoutPage', 'rideto-checkout')
+mountComponent('CheckoutPage', 'rideto-checkout')
 
-lazyMountComponent('FooterLinks', 'rideto-mobile-footer-links')
+mountComponent('FooterLinks', 'rideto-mobile-footer-links')
 
-lazyMountComponent('Faqs', 'rideto-faqs')
+mountComponent('Faqs', 'rideto-faqs')

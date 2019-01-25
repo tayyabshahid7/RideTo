@@ -57,6 +57,14 @@ class ResultPage extends Component {
     window.sessionStorage.removeItem('trainings')
   }
 
+  componentDidMount() {
+    // Prevent the reuslts from loading half way down the page
+    if ('scrollRestoration' in window) {
+      window.scrollRestoration = 'manual'
+    }
+    window.scrollTo(0, 0)
+  }
+
   handleDetailClick(course) {
     this.setState({
       selectedCourse: course,
@@ -422,7 +430,8 @@ class ResultPage extends Component {
               <Loading
                 loading={loading}
                 position="top"
-                className={styles.contentWrapper}>
+                className={styles.contentWrapper}
+                resultsPage>
                 <div className={styles.contentWrapperInner}>
                   {hasPartnerResults ? (
                     <React.Fragment>
