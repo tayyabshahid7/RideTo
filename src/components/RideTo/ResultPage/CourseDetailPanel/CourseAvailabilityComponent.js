@@ -198,7 +198,7 @@ class CourseAvailabilityComponent extends React.Component {
       instantCourse && instantCourse.auto_count === instantCourse.auto_bikes
     const isManualFull =
       instantCourse && instantCourse.manual_count === instantCourse.manual_bikes
-
+    const isItm = courseType === 'INTRO_TO_MOTORCYCLING'
     const isCbt = courseType === 'LICENCE_CBT'
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
 
