@@ -8,7 +8,8 @@ import {
   updateSchoolCourse,
   createSchoolCourse,
   createBulkSchoolCourse,
-  getPricingForCourse
+  getPricingForCourse,
+  fetchDayCourseTimes
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -30,6 +31,7 @@ const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
 const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
 const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
+const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 
 export const getSingleCourse = ({
   schoolId,
@@ -65,6 +67,35 @@ export const getDayCourses = ({ schoolId, date }) => async dispatch => {
     })
   } catch (error) {
     dispatch({ type: FETCH_FOR_DAY[FAILURE], error })
+  }
+}
+
+export const getDayCourseTimes = ({
+  schoolId,
+  date,
+  course_type,
+  bike_type,
+  full_licence_type
+}) => async dispatch => {
+  dispatch({ type: FETCH_TIMES[REQUEST] })
+
+  try {
+    const times = await fetchDayCourseTimes(
+      schoolId,
+      date,
+      course_type,
+      bike_type,
+      full_licence_type
+    )
+
+    dispatch({
+      type: FETCH_TIMES[SUCCESS],
+      data: {
+        times
+      }
+    })
+  } catch (error) {
+    dispatch({ type: FETCH_TIMES[FAILURE], error })
   }
 }
 
@@ -132,7 +163,7 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     dispatch(
       getSingleCourse({
         schoolId,
-        courseId: order.school_course_id,
+        courseId: order.school_course,
         reset: false
       })
     )
@@ -144,10 +175,10 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
   return true
 }
 
-export const getSchoolOrder = ({ schoolId, friendlyId }) => async dispatch => {
+export const getSchoolOrder = ({ schoolId, trainingId }) => async dispatch => {
   dispatch({ type: FETCH_ORDER[REQUEST] })
   try {
-    const response = await fetchSchoolOrder(schoolId, friendlyId)
+    const response = await fetchSchoolOrder(schoolId, trainingId)
     dispatch({
       type: FETCH_ORDER[SUCCESS],
       data: { order: response }
@@ -163,12 +194,12 @@ export { updateSchoolOrder }
 
 export const updateOrder = ({
   schoolId,
-  friendlyId,
+  trainingId,
   order
 }) => async dispatch => {
   dispatch({ type: UPDATE_ORDER[REQUEST] })
   try {
-    const response = await updateSchoolOrder(schoolId, friendlyId, order)
+    const response = await updateSchoolOrder(schoolId, trainingId, order)
     notificationActions.dispatchSuccess(dispatch, 'Order saved')
     dispatch({
       type: UPDATE_ORDER[SUCCESS],
@@ -300,6 +331,11 @@ const initialState = {
   bulk: {
     saving: false,
     error: null
+  },
+  times: {
+    available: [],
+    loading: false,
+    error: null
   }
 }
 
@@ -406,6 +442,33 @@ export default function reducer(state = initialState, action) {
         ...state,
         day: {
           ...state.day,
+          loading: false,
+          error: action.error
+        }
+      }
+    case FETCH_TIMES[REQUEST]:
+      return {
+        ...state,
+        times: {
+          available: [],
+          loading: true
+        }
+      }
+    case FETCH_TIMES[SUCCESS]:
+      return {
+        ...state,
+        times: {
+          ...state.times,
+          loading: false,
+          available: [...action.data.times],
+          errror: null
+        }
+      }
+    case FETCH_TIMES[FAILURE]:
+      return {
+        ...state,
+        times: {
+          ...state.times,
           loading: false,
           error: action.error
         }

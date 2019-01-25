@@ -4,3 +4,14 @@
   padding: 8px;
   margin-bottom: 10px;
 }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+button.toggleButton {
+  font-size: 12px;
+}

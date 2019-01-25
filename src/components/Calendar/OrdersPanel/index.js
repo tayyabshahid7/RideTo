@@ -27,22 +27,40 @@ class OrdersPanel extends React.Component {
 
   handleNewOrder(order) {
     const { createSchoolOrder, schoolId, course } = this.props
-    if (order.bike_hire === BIKE_HIRE.MANUAL) {
-      let manualOrdersCount = course.orders.filter(
-        order1 => order1.bike_hire === BIKE_HIRE.MANUAL
-      ).length
-      if (course.manual_bikes - manualOrdersCount <= 0) {
-        alert('Manual bike not available')
-        return
+
+    if (!order.full_licence_type) {
+      if (order.bike_hire === BIKE_HIRE.MANUAL) {
+        let manualOrdersCount = course.orders.filter(
+          order1 => order1.bike_hire === BIKE_HIRE.MANUAL
+        ).length
+        if (course.manual_bikes - manualOrdersCount <= 0) {
+          alert('Manual bike not available')
+          return
+        }
+      } else if (order.bike_hire === BIKE_HIRE.AUTO) {
+        let automaticOrdersCount = course.orders.filter(
+          order1 => order1.bike_hire === BIKE_HIRE.AUTO
+        ).length
+        if (course.auto_bikes - automaticOrdersCount <= 0) {
+          alert('Automatic bike not available')
+          return
+        }
       }
-    } else if (order.bike_hire === BIKE_HIRE.AUTO) {
-      let automaticOrdersCount = course.orders.filter(
-        order1 => order1.bike_hire === BIKE_HIRE.AUTO
-      ).length
-      if (course.auto_bikes - automaticOrdersCount <= 0) {
-        alert('Automatic bike not available')
-        return
-      }
+    } else {
+      // TODO Front end full licence validation
+      // const { bike_hire, full_licence_type } = order
+      // const maxOrders = parseInt(
+      //   course[`${full_licence_type.toLowerCase()}_${bike_hire}_bikes`],
+      //   10
+      // )
+      // const sameCourseOrderCount = course.orders.filter(
+      //   courseOrder =>
+      //     courseOrder.bike_hire === bike_hire &&
+      //     courseOrder.full_licence_type === full_licence_type
+      // ).length
+      // if (maxOrders - sameCourseOrderCount <= 0) {
+      //   alert(`${full_licence_type} ${bike_hire} bike not available`)
+      // }
     }
 
     return createSchoolOrder({ schoolId, order })
@@ -57,12 +75,12 @@ class OrdersPanel extends React.Component {
       <div className={styles.ordersPanel}>
         <Loading loading={loading || saving}>
           <div className={styles.orders}>
-            {course.orders.map((order, index) => (
+            {course.orders.map((training, index) => (
               <React.Fragment key={index}>
                 <OrdersPanelItem
-                  order={order}
+                  training={training}
                   onEdit={() => this.handleShowEditForm(index)}
-                  showEditButton={order.is_manual_order && showEditButton}
+                  showEditButton={training.is_manual_order && showEditButton}
                 />
                 {editOrderIndex === index && (
                   <EditOrderFormContainer
@@ -73,28 +91,32 @@ class OrdersPanel extends React.Component {
                         showEditButton: true
                       })
                     }
-                    friendlyId={order.friendly_id}
+                    trainingId={training.id}
+                    course_type={course.course_type.constant}
+                    courseId={course.id}
+                    courseSpaces={course.spaces}
+                    date={course.date}
+                    time={course.time}
                   />
                 )}
               </React.Fragment>
             ))}
-            {Array.apply(null, Array(availableSpaces)).map(
-              (val, index) =>
-                orderIndex === index ? (
-                  <AddOrderItem
-                    onCancel={() => this.setState({ orderIndex: -1 })}
-                    info={info}
-                    course={course}
-                    onSave={this.handleNewOrder.bind(this)}
-                    key={index}
-                    saving={saving}
-                  />
-                ) : (
-                  <OrdersPanelSpaceItem
-                    onAdd={() => this.handleAdd(index)}
-                    key={index}
-                  />
-                )
+            {Array.apply(null, Array(availableSpaces)).map((val, index) =>
+              orderIndex === index ? (
+                <AddOrderItem
+                  onCancel={() => this.setState({ orderIndex: -1 })}
+                  info={info}
+                  course={course}
+                  onSave={this.handleNewOrder.bind(this)}
+                  key={index}
+                  saving={saving}
+                />
+              ) : (
+                <OrdersPanelSpaceItem
+                  onAdd={() => this.handleAdd(index)}
+                  key={index}
+                />
+              )
             )}
           </div>
         </Loading>

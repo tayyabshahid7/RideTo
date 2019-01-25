@@ -32,10 +32,10 @@ selectors.getOrdersByCustomer = ({ items }, customerId) => {
 }
 
 export default combineReducers({
-  items: common.items(MODULE, 'friendly_id'),
+  items: common.items(MODULE),
   isSaving: common.isSaving(MODULE),
   total: common.total(MODULE),
   isFetching: common.isFetchingItems(MODULE),
-  result: common.result(MODULE, 'friendly_id'),
-  results: common.results(MODULE, 'friendly_id')
+  result: common.result(MODULE),
+  results: common.results(MODULE)
 })

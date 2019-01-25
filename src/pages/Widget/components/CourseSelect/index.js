@@ -17,7 +17,7 @@ const CourseSelect = ({
     .add(selected.duration, 'minutes')
     .format('h:mm a')
 
-  const spacesLeft = selected.spaces - selected.order_count
+  const spacesLeft = selected.spaces - selected.training_count
 
   return (
     <div className={styles.courseSelect}>
