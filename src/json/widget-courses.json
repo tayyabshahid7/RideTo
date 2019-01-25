@@ -6,7 +6,7 @@
       "name": "CBT Training"
     },
     "date": "2018-07-27",
-    "order_count": 0,
+    "training_count": 0,
     "auto_count": 0,
     "manual_count": 0,
     "time": "06:00:00",
@@ -23,7 +23,7 @@
       "name": "CBT Training"
     },
     "date": "2018-07-27",
-    "order_count": 0,
+    "training_count": 0,
     "auto_count": 0,
     "manual_count": 0,
     "time": "09:00:00",
@@ -40,7 +40,7 @@
       "name": "CBT Training"
     },
     "date": "2018-08-14",
-    "order_count": 0,
+    "training_count": 0,
     "auto_count": 0,
     "manual_count": 0,
     "time": "08:00:00",
@@ -57,7 +57,7 @@
       "name": "CBT Training"
     },
     "date": "2018-08-15",
-    "order_count": 0,
+    "training_count": 0,
     "auto_count": 0,
     "manual_count": 0,
     "time": "08:00:00",
@@ -74,7 +74,7 @@
       "name": "CBT Training"
     },
     "date": "2018-08-16",
-    "order_count": 0,
+    "training_count": 0,
     "auto_count": 0,
     "manual_count": 0,
     "time": "08:00:00",
@@ -91,7 +91,7 @@
       "name": "CBT Training"
     },
     "date": "2018-08-17",
-    "order_count": 0,
+    "training_count": 0,
     "auto_count": 0,
     "manual_count": 0,
     "time": "08:00:00",
@@ -108,7 +108,7 @@
       "name": "CBT Training"
     },
     "date": "2018-08-20",
-    "order_count": 0,
+    "training_count": 0,
     "auto_count": 0,
     "manual_count": 0,
     "time": "08:00:00",
@@ -125,7 +125,7 @@
       "name": "CBT Training"
     },
     "date": "2018-08-21",
-    "order_count": 0,
+    "training_count": 0,
     "auto_count": 0,
     "manual_count": 0,
     "time": "08:00:00",

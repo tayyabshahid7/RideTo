@@ -88,11 +88,14 @@ class AvailabilityCalendar extends Component {
       disablePreviousDates,
       nonInstantStartTime,
       nonInstantPrices,
-      showTrainingTime = true
+      showTrainingTime = true,
+      showLabel
     } = this.props
     return (
-      <div className={classnames(styles.container)}>
+      <div
+        className={classnames(styles.container, !showLabel && styles.noLabel)}>
         <CalendarHeader
+          showLabel={showLabel}
           calendar={calendar}
           handlePrevMonth={handlePrevMonth}
           handleNextMonth={handleNextMonth}

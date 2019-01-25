@@ -7,7 +7,7 @@ import UserDetails from './UserDetails'
 import OrderSummary from './OrderSummary'
 import { fetchAddressWithPostcode } from 'services/misc'
 import { createOrder, createStripeToken } from 'services/widget'
-import { getPrice } from 'services/course'
+import { getPrice, getLicenceAge } from 'services/course'
 import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { fetchUser } from 'services/user'
 import { isInstantBook } from 'services/page'
@@ -97,7 +97,8 @@ class CheckoutPage extends Component {
       showAddressSelectorModal: false,
       voucher_code: '',
       loadingPrice: false,
-      showMap: false
+      showMap: false,
+      trainings: this.props.trainings
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -140,7 +141,8 @@ class CheckoutPage extends Component {
   async loadPrice(voucher_code) {
     try {
       const { supplierId, courseId, date, courseType } = this.props.checkoutData
-      const { details } = this.state
+      const { details, trainings } = this.state
+      const isFullLicence = courseType === 'FULL_LICENCE'
       let params = {
         supplierId,
         courseId,
@@ -149,17 +151,39 @@ class CheckoutPage extends Component {
         voucher_code
       }
       this.setState({ loadingPrice: true })
-      let response = await getPrice(params)
-      if (voucher_code && response.discount) {
-        details.voucher_code = voucher_code
+      if (isFullLicence) {
+        let fullPrice = 0
+        const newTrainings = await Promise.all(
+          trainings.map(async training => {
+            const price = await getPrice({
+              courseId: training.school_course
+            })
+            fullPrice += parseInt(price.price, 10)
+
+            return {
+              ...training,
+              price: price.price
+            }
+          })
+        )
+
+        this.setState({
+          priceInfo: { ...this.state.priceInfo, price: fullPrice },
+          trainings: newTrainings
+        })
       } else {
-        details.voucher_code = ''
+        let response = await getPrice(params)
+        if (voucher_code && response.discount) {
+          details.voucher_code = voucher_code
+        } else {
+          details.voucher_code = ''
+        }
+        this.setState({
+          priceInfo: { ...response },
+          loadingPrice: false,
+          details
+        })
       }
-      this.setState({
-        priceInfo: { ...response },
-        loadingPrice: false,
-        details
-      })
     } catch (error) {
       this.setState({ loadingPrice: false })
       console.log('Error', error)
@@ -240,8 +264,16 @@ class CheckoutPage extends Component {
   }
 
   isValidDate(dateString) {
-    const minYears = 16
-    const trainingDate = moment(this.props.checkoutData.date, 'YYYY-MM-DD')
+    const { trainings } = this.props
+    const { courseType } = this.props.checkoutData
+    let minYears = 16
+    let trainingDate = moment(this.props.checkoutData.date, 'YYYY-MM-DD')
+
+    if (courseType === 'FULL_LICENCE') {
+      trainingDate = moment(trainings[0].requested_date, 'YYYY-MM-DD')
+      minYears = getLicenceAge(trainings[0].full_licence_type)
+    }
+
     const date = moment(dateString, 'DD/MM/YYYY')
     const isComplete = dateString.slice(-1) !== '_'
 
@@ -275,7 +307,9 @@ class CheckoutPage extends Component {
   }
 
   validateDetails(details) {
+    const { trainings } = this.props
     const addonsCount = this.props.checkoutData.addons.length
+    const { courseType } = this.props.checkoutData
     const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
 
@@ -324,6 +358,11 @@ class CheckoutPage extends Component {
     if (!this.isValidDate(details.user_birthdate)) {
       errors['user_birthdate'] =
         'You must be at least 16 years old to do your training. (On the selected date of training)'
+      if (courseType === 'FULL_LICENCE') {
+        errors['user_birthdate'] = `You must be at least ${getLicenceAge(
+          trainings[0].full_licence_type
+        )} years old to do your training. (On the selected date of training)`
+      }
       if (!errors.divId) errors.divId = this.getErrorDivId('user_birthdate')
       hasError = true
     }
@@ -415,7 +454,7 @@ class CheckoutPage extends Component {
   }
 
   async submitOrder(stripeToken) {
-    const { checkoutData } = this.props
+    const { checkoutData, trainings } = this.props
     const { priceInfo } = this.state
     const details = omit(this.state.details, [
       'card_name',
@@ -455,7 +494,8 @@ class CheckoutPage extends Component {
       bike_hire: bike_hire,
       addons: addonIds,
       source: isInstantBook() ? 'RIDETO_INSTANT' : 'RIDETO',
-      accept_equipment_responsibility: true
+      accept_equipment_responsibility: true,
+      trainings: trainings
     }
 
     try {
@@ -465,7 +505,7 @@ class CheckoutPage extends Component {
         if (userToken !== null) {
           window.localStorage.setItem('token', JSON.stringify(userToken))
         }
-        this.recordGAEcommerceData(order) //Ecommerce tracking trigger
+        window.localStorage.setItem('gaok', true) // Set Google Analytics Flag
         window.location.href = `/account/dashboard/${order.id}`
       } else {
         this.setState({ saving: false })
@@ -524,7 +564,8 @@ class CheckoutPage extends Component {
       addresses,
       voucher_code,
       loadingPrice,
-      showMap
+      showMap,
+      trainings
     } = this.state
 
     return (
@@ -543,6 +584,7 @@ class CheckoutPage extends Component {
             postcodeLookingup={postcodeLookingup}
             showMap={showMap}
             handleMapButtonClick={this.handleMapButtonClick}
+            trainings={trainings}
           />
         </div>
         <div className={styles.rightPanel}>
@@ -560,6 +602,7 @@ class CheckoutPage extends Component {
             loadingPrice={loadingPrice}
             showMap={showMap}
             handleMapButtonClick={this.handleMapButtonClick}
+            trainings={trainings}
           />
         </div>
         {showAddressSelectorModal && (

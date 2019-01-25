@@ -15,9 +15,7 @@ import classnames from 'classnames'
 import styles from './CourseTypeSelection.scss'
 
 const getBookUrl = (courseType, postcode) => {
-  if (courseType === 'FULL_LICENCE') {
-    return 'https://rideto.typeform.com/to/oXgXKP'
-  } else if (courseType === 'TFL_ONE_ON_ONE') {
+  if (courseType === 'TFL_ONE_ON_ONE') {
     return 'https://rideto.typeform.com/to/axybpw'
   } else {
     return `/course-location/?postcode=${postcode}&courseType=${courseType}`
@@ -25,7 +23,7 @@ const getBookUrl = (courseType, postcode) => {
 }
 
 const isTypeform = courseType => {
-  if (courseType === 'FULL_LICENCE' || courseType === 'TFL_ONE_ON_ONE') {
+  if (courseType === 'TFL_ONE_ON_ONE') {
     return true
   } else {
     return false

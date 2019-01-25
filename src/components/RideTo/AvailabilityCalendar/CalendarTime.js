@@ -16,9 +16,12 @@ class CalendarTime extends Component {
 
     return (
       <div className={styles.container}>
-        {courses.map(
-          (course, index) =>
-            course.spaces > course.order_count && (
+        {courses.map((course, index) => {
+          const training_count =
+            course.training_count || course.auto_count + course.manual_count
+
+          return (
+            course.spaces > training_count && (
               <button
                 key={index}
                 className={classnames(
@@ -31,7 +34,8 @@ class CalendarTime extends Component {
                 {course.time.substring(0, 5)}
               </button>
             )
-        )}
+          )
+        })}
       </div>
     )
   }

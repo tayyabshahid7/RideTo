@@ -28,6 +28,19 @@ export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
   return axios.get(`api/o/${schoolId}/pending/`, config).catch(error => error)
 }
 
+export const apiGetUnallocatedTests = (schoolId, token) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    baseURL: BASE_URL
+  }
+  return axios
+    .get(`api/o/${schoolId}/upcoming-tests/`, config)
+    .catch(error => error)
+}
+
 const request = async (method, path, params, data = null, auth = true) => {
   const existingToken = getToken()
   const token =

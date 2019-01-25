@@ -22,13 +22,18 @@
 .bikeHire,
 .startTime,
 .courseType,
-.address {
+.address,
+.fullLicenceDate {
   height: 32px;
   padding-left: 16px;
   padding-right: 16px;
   display: flex;
   align-items: center;
   border-bottom: solid 1px #cacccd;
+}
+
+.fullLicenceDate {
+  justify-content: space-between;
 }
 
 .bikeHire {
