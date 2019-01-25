@@ -5,7 +5,7 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
-    height: 352px;
+    height: 370px;
   }
 }
 
@@ -37,7 +37,10 @@
   justify-content: space-between;
   padding: 28px 30px;
   @media (max-width: 768px) {
-    padding: 20px 24px;
+    padding: 20px 24px 10px;
+  }
+  @media (min-width: 769px) {
+    max-width: 345px;
   }
 }
 
@@ -72,6 +75,10 @@
   @media (max-width: 768px) {
     flex-direction: row;
     justify-content: flex-end;
+  }
+
+  @media (min-width: 769px) {
+    margin-left: auto;
   }
 }
 
