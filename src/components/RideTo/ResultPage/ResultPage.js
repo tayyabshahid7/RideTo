@@ -311,7 +311,7 @@ class ResultPage extends Component {
             }
           }
         }}>
-        <span>Book Now</span>
+        <span>Select</span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </RideToButton>
     )
@@ -446,9 +446,10 @@ class ResultPage extends Component {
                             Choose a location
                           </div>
                           {courses.available.map(
-                            course =>
+                            (course, index) =>
                               course.is_partner && (
                                 <CourseItem
+                                  showCallMessage={index === 2}
                                   id={`card-course-${course.id}`}
                                   course={course}
                                   className={styles.courseSpacing}
@@ -474,9 +475,10 @@ class ResultPage extends Component {
                               Available on other dates
                             </div>
                           )}
-                          {courses.unavailable.map(course =>
+                          {courses.unavailable.map((course, index) =>
                             course.is_partner ? (
                               <CourseItem
+                                showCallMessage={index === 2}
                                 id={`card-course-${course.id}`}
                                 unavaiableDate={true}
                                 course={course}
