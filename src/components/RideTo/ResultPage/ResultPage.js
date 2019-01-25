@@ -39,7 +39,7 @@ class ResultPage extends Component {
       selectedCourse: null,
       loading: false,
       showDateSelectorModal: false,
-      activeTab: '1',
+      activeTab: 1,
       instantCourse: null,
       instantDate: null,
       bike_hire: null,
@@ -53,6 +53,9 @@ class ResultPage extends Component {
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
     this.handleCourseChange = this.handleCourseChange.bind(this)
+    this.handleDetailClick = this.handleDetailClick.bind(this)
+    this.handlePriceClick = this.handlePriceClick.bind(this)
+    this.handleReviewClick = this.handleReviewClick.bind(this)
 
     window.sessionStorage.removeItem('trainings')
   }
@@ -68,7 +71,7 @@ class ResultPage extends Component {
   handleDetailClick(course) {
     this.setState({
       selectedCourse: course,
-      activeTab: '1',
+      activeTab: 1,
       instantDate: this.props.date
     })
   }
@@ -76,7 +79,7 @@ class ResultPage extends Component {
   handlePriceClick(course) {
     this.setState({
       selectedCourse: course,
-      activeTab: '3',
+      activeTab: 3,
       instantDate: this.props.date
     })
   }
@@ -84,7 +87,7 @@ class ResultPage extends Component {
   handleReviewClick(course) {
     this.setState({
       selectedCourse: course,
-      activeTab: '2',
+      activeTab: 2,
       instantDate: this.props.date
     })
   }
@@ -298,8 +301,8 @@ class ResultPage extends Component {
         )}
         onClick={() => {
           isAllPackageDatesSelected(selectedPackageDates)
-          if (this.state.activeTab !== '3') {
-            this.setState({ activeTab: '3' })
+          if (this.state.activeTab !== 3) {
+            this.setState({ activeTab: 3 })
           } else {
             if (!bookNowDisabled) {
               this.onBookNow()
@@ -483,15 +486,9 @@ class ResultPage extends Component {
                                     course={course}
                                     className={styles.courseSpacing}
                                     key={course.id}
-                                    handleDetailClick={this.handleDetailClick.bind(
-                                      this
-                                    )}
-                                    handlePriceClick={this.handlePriceClick.bind(
-                                      this
-                                    )}
-                                    handleReviewClick={this.handleReviewClick.bind(
-                                      this
-                                    )}
+                                    handleDetailClick={this.handleDetailClick}
+                                    handlePriceClick={this.handlePriceClick}
+                                    handleReviewClick={this.handleReviewClick}
                                   />
                                 )
                             )}
@@ -513,15 +510,9 @@ class ResultPage extends Component {
                                   course={course}
                                   className={styles.courseSpacing}
                                   key={course.id}
-                                  handleDetailClick={this.handleDetailClick.bind(
-                                    this
-                                  )}
-                                  handlePriceClick={this.handlePriceClick.bind(
-                                    this
-                                  )}
-                                  handleReviewClick={this.handleReviewClick.bind(
-                                    this
-                                  )}
+                                  handleDetailClick={this.handleDetailClick}
+                                  handlePriceClick={this.handlePriceClick}
+                                  handleReviewClick={this.handleReviewClick}
                                 />
                               ) : (
                                 <CourseItemNonPartner

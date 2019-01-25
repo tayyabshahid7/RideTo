@@ -2,6 +2,7 @@
   display: flex;
   height: 200px;
   background: white;
+  position: relative;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -131,19 +132,19 @@
   line-height: 24px;
 }
 
+.detailIcon {
+  margin-left: 14px;
+  margin-right: 6px;
+  stroke: var(--dark-color);
+  fill: var(--dark-color);
+}
+
 .detail {
   text-decoration: underline;
   cursor: pointer;
 }
 
 .mileIcon {
-  margin-right: 6px;
-  stroke: var(--dark-color);
-  fill: var(--dark-color);
-}
-
-.detailIcon {
-  margin-left: 14px;
   margin-right: 6px;
   stroke: var(--dark-color);
   fill: var(--dark-color);

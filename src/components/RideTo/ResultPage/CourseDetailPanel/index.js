@@ -46,33 +46,33 @@ class CourseDetailPanel extends React.Component {
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '1' && styles.active
+              activeTab === 1 && styles.active
             )}
-            onClick={() => this.toggle('1')}>
+            onClick={() => this.toggle(1)}>
             Information
           </div>
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '2' && styles.active
+              activeTab === 2 && styles.active
             )}
-            onClick={() => this.toggle('2')}>
+            onClick={() => this.toggle(2)}>
             Reviews
           </div>
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '3' && styles.active
+              activeTab === 3 && styles.active
             )}
-            onClick={() => this.toggle('3')}>
+            onClick={() => this.toggle(3)}>
             Availability
           </div>
         </div>
-        {activeTab === '1' && (
+        {activeTab === 1 && (
           <CourseInformationComponent course={course} courseType={courseType} />
         )}
-        {activeTab === '2' && <CourseReviewsComponent course={course} />}
-        {activeTab === '3' && courseType !== 'FULL_LICENCE' && (
+        {activeTab === 2 && <CourseReviewsComponent course={course} />}
+        {activeTab === 3 && courseType !== 'FULL_LICENCE' && (
           <CourseAvailabilityComponent
             course={course}
             courseType={courseType}
@@ -83,7 +83,7 @@ class CourseDetailPanel extends React.Component {
             onUpdate={onUpdate}
           />
         )}
-        {activeTab === '3' && courseType === 'FULL_LICENCE' && (
+        {activeTab === 3 && courseType === 'FULL_LICENCE' && (
           <CourseAvailabilityComponentFullLicence
             course={course}
             bike_hire={bike_hire}
