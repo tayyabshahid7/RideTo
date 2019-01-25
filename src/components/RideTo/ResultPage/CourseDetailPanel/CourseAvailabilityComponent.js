@@ -225,6 +225,7 @@ class CourseAvailabilityComponent extends React.Component {
           />
           <BikePicker
             isCbt={isCbt}
+            isItm={isItm}
             isCbtRenewal={isCbtRenewal}
             bike_hire={bike_hire}
             onUpdate={onUpdate}
