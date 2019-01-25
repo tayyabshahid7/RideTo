@@ -113,9 +113,11 @@ class CourseItem extends Component {
             </div>
           </div>
           <div className={styles.footer}>
-            <div className={styles.price}>
-              £{parseInt(course.price / 100.0, 10)}
-            </div>
+            {course.price && (
+              <div className={styles.price}>
+                £{parseInt(course.price / 100.0, 10)}
+              </div>
+            )}
             <div
               className={classnames(
                 styles.cta,
