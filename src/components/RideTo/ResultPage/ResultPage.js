@@ -398,6 +398,15 @@ class ResultPage extends Component {
       bookNowDisabled = false
     }
 
+    let resultsCount = 0
+
+    if (courses) {
+      const unavailableCount = courses.unavailable
+        ? courses.unavailable.length
+        : 0
+      resultsCount = courses.available.length + unavailableCount
+    }
+
     return (
       <div className={styles.container}>
         <NavigationComponent
@@ -470,9 +479,7 @@ class ResultPage extends Component {
                               Choose a location
                             </div>
                             <div className={styles.schoolCount}>
-                              {`Showing ${courses.available.length +
-                                courses.unavailable
-                                  .length} training sites in your area by ${sortByOption.replace(
+                              {`Showing ${resultsCount} training sites in your area by ${sortByOption.replace(
                                 '-',
                                 ''
                               )}`}
@@ -494,7 +501,7 @@ class ResultPage extends Component {
                             )}
                           </React.Fragment>
                         )}
-                        {courses.unavailable.length > 0 && (
+                        {courses.unavailable && courses.unavailable.length > 0 && (
                           <React.Fragment>
                             {hasPartnerResults && (
                               <div className={styles.subTitle}>
