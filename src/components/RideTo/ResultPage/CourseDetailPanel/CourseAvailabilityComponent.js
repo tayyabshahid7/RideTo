@@ -5,6 +5,7 @@ import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import Loading from 'components/Loading'
 import { fetchWidgetCourses } from 'services/course'
+import { DATE_FORMAT } from 'common/constants'
 import { getMotorbikeLabel } from 'services/widget'
 
 class CourseAvailabilityComponent extends React.Component {
@@ -74,8 +75,8 @@ class CourseAvailabilityComponent extends React.Component {
     let today = moment()
     let tomorrow = moment()
       .add(1, 'days')
-      .hour(17)
-      .minute(30)
+      .hour(18)
+      .minutes(0)
     return dates.map(date => {
       let momentDate = moment(date)
       let dateInString = momentDate.format('YYYY-MM-DD')
@@ -97,13 +98,12 @@ class CourseAvailabilityComponent extends React.Component {
       ) {
         disabled = true
       }
-      if (momentDate.date() <= today.date()) {
+
+      if (dateInString <= today.format(DATE_FORMAT)) {
         disabled = true
       } else if (
         momentDate.date() === tomorrow.date() &&
-        (today.hour() > tomorrow.hour() ||
-          (today.hour() === tomorrow.hour() &&
-            today.minute() > tomorrow.minute()))
+        today.add(1, 'days') > tomorrow
       ) {
         disabled = true
       }
