@@ -5,7 +5,6 @@ import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import Loading from 'components/Loading'
 import { fetchWidgetCourses } from 'services/course'
-import { DATE_FORMAT } from 'common/constants'
 import { getMotorbikeLabel } from 'services/widget'
 
 class CourseAvailabilityComponent extends React.Component {
@@ -99,11 +98,13 @@ class CourseAvailabilityComponent extends React.Component {
         disabled = true
       }
 
-      if (dateInString <= today.format(DATE_FORMAT)) {
+      if (momentDate.isSameOrBefore(today)) {
         disabled = true
       } else if (
-        momentDate.date() === tomorrow.date() &&
-        today.add(1, 'days') > tomorrow
+        moment(dateInString).isSame(tomorrow.format('YYYY-MM-DD')) &&
+        (today.hour() > tomorrow.hour() ||
+          (today.hour() === tomorrow.hour() &&
+            today.minute() > tomorrow.minute()))
       ) {
         disabled = true
       }
