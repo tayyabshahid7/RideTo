@@ -154,6 +154,27 @@ class CourseForm extends React.Component {
       course.manual_bikes = 0
     }
 
+    if (!course.a1_auto_bikes) {
+      course.a1_auto_bikes = 0
+    }
+    if (!course.a1_manual_bikes) {
+      course.a1_manual_bikes = 0
+    }
+
+    if (!course.a2_auto_bikes) {
+      course.a2_auto_bikes = 0
+    }
+    if (!course.a2_manual_bikes) {
+      course.a2_manual_bikes = 0
+    }
+
+    if (!course.a_auto_bikes) {
+      course.a_auto_bikes = 0
+    }
+    if (!course.a_manual_bikes) {
+      course.a_manual_bikes = 0
+    }
+
     onSubmit(course)
   }
 
