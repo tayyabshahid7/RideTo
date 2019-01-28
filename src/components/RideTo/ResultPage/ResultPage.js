@@ -447,14 +447,17 @@ class ResultPage extends Component {
                 <div className={styles.contentWrapperInner}>
                   {hasPartnerResults ? (
                     <React.Fragment>
-                      <DateSelector
-                        date={date}
-                        handleSetDate={handleSetDate}
-                        className={styles.dateSelector}
-                        courseType={courseType}
-                      />
+                      {!isFullLicence && (
+                        <DateSelector
+                          date={date}
+                          handleSetDate={handleSetDate}
+                          className={styles.dateSelector}
+                          courseType={courseType}
+                        />
+                      )}
                       <div className={styles.mobileButtons}>
-                        {this.renderMobileDateSelectorButton()}
+                        {!isFullLicence &&
+                          this.renderMobileDateSelectorButton()}
                         {this.renderSortByDropdown()}
                       </div>
                     </React.Fragment>
@@ -467,7 +470,11 @@ class ResultPage extends Component {
                   )}
 
                   {courses ? (
-                    <div className={styles.mainContent}>
+                    <div
+                      className={classnames(
+                        styles.mainContent,
+                        isFullLicence && styles.noMargin
+                      )}>
                       <div className={styles.coursesPanel}>
                         {courses.available.length > 0 && (
                           <React.Fragment>
