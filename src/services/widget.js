@@ -1,5 +1,6 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
+import { FULL_LICENCE_MODULES } from 'common/constants'
 
 export const createStripeToken = async (stripe, data) => {
   return await stripe.createToken({ ...data })
@@ -15,13 +16,7 @@ export const getInitialSuppliers = () => {
     .map(supplier => ({
       ...supplier,
       courses: supplier.courses.filter(
-        ({ constant }) =>
-          ![
-            'FULL_LICENCE_MOD1_TRAINING',
-            'FULL_LICENCE_MOD1_TEST',
-            'FULL_LICENCE_MOD2_TRAINING',
-            'FULL_LICENCE_MOD2_TEST'
-          ].includes(constant)
+        ({ constant }) => !FULL_LICENCE_MODULES.includes(constant)
       )
     }))
 }
