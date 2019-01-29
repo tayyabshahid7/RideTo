@@ -65,12 +65,12 @@ export const sendConfirmation = async order => {
   return response
 }
 
-export const saveOrder = async order => {
-  const { id } = order
+export const saveTraining = async training => {
+  const { id } = training
   const path = id ? `o/${id}` : `o/`
   const method = id ? put : post
 
-  return await method(path, order)
+  return await method(path, training)
 }
 
 export const isRideTo = ({ source }) => {
@@ -104,18 +104,19 @@ export const getPaymentOptions = () => {
 
 export const getTrainingStatusOptions = () => {
   return [
+    { id: 'TRAINING_CONFIRMED', name: 'Confirmed' },
+    { id: 'TRAINING_FAILED', name: 'Failed' },
+    { id: 'TRAINING_CANCELLED', name: 'Cancelled' },
     {
-      id: 'NON_START',
-      name: 'Non-start'
+      id: 'TRAINING_WAITING_SCHOOL_CONFIRMATION',
+      name: 'Waiting for school confirmation'
     },
     {
-      id: 'NON_COMPLETION',
-      name: 'Non-completion'
+      id: 'TRAINING_WAITING_RIDER_CONFIRMATION',
+      name: 'Waiting for rider confirmation'
     },
-    {
-      id: 'COMPLETED',
-      name: 'Completed'
-    }
+    { id: 'TRAINING_NO_SHOW', name: 'No show' },
+    { id: 'TRAINING_PASSED', name: 'Passed' }
   ]
 }
 
