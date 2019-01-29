@@ -443,7 +443,7 @@ class ResultPage extends Component {
                 loading={loading}
                 position="top"
                 className={styles.contentWrapper}
-                resultsPage>
+                cover>
                 <div className={styles.contentWrapperInner}>
                   {hasPartnerResults ? (
                     <React.Fragment>
