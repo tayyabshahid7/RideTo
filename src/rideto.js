@@ -24,9 +24,9 @@ mountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
 mountComponent('UserMenuItem', 'rideto-nav-account')
 
-mountComponent('CourseTypeSelection', 'rideto-course-type-selection')
+mountComponent('CourseTypeSelection', 'rideto-course-type-selection', {}, false)
 
-mountComponent('AddonSelection', 'rideto-addon-selection')
+mountComponent('AddonSelection', 'rideto-addon-selection', {}, false)
 
 mountComponent('CheckoutPage', 'rideto-checkout')
 
