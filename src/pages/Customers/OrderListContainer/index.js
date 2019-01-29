@@ -11,7 +11,6 @@ import styles from './OrderListContainer.scss'
 class OrderListContainer extends React.Component {
   componentDidMount() {
     const { id } = this.props
-
     if (id !== 'create') {
       this.props.fetchOrders({ customer: parseInt(id, 10) })
     }
@@ -21,15 +20,17 @@ class OrderListContainer extends React.Component {
   }
 
   handleSave(order) {
-    this.props.saveOrder(order)
+    if (order.payout.includes('£')) {
+      order.payout = order.payout.replace('£', '')
+    }
+    this.props.saveTraining(order)
   }
 
   render() {
     const { orders, suppliers, isSaving } = this.props
-
     return (
       <Col className={styles.orderListContainer}>
-        <h3 className={styles.title}>Training</h3>
+        <h3 className={styles.title}>Trainings</h3>
         {orders.map(order => (
           <OrderForm
             key={order.friendly_id}

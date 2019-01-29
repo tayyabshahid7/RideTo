@@ -20,6 +20,16 @@ const BIKE_HIRE_OPTIONS = Object.keys(getBikeHireOptions()).map(id => {
   }
 })
 
+const get_bike_hire_option = option => {
+  if (option === 'BIKE_TYPE_MANUAL') {
+    return 'manual'
+  } else if (option === 'BIKE_TYPE_AUTOMATIC') {
+    return 'manual'
+  } else if (option === 'BIKE_TYPE_NONE') {
+    return 'no'
+  }
+}
+
 const getTime = startTime => {
   if (startTime) {
     return moment(new Date(startTime)).format('HH:mm')
@@ -81,7 +91,7 @@ class OrderForm extends React.Component {
     const { suppliers, isSaving, onSave } = this.props
     const { editable, isChanged, isSending } = this.state
     const selectedSupplier = suppliers.find(
-      ({ id }) => id === editable.supplier
+      ({ id }) => id === editable.training_location
     )
     const courses = selectedSupplier
       ? selectedSupplier.courses.filter(
@@ -91,7 +101,6 @@ class OrderForm extends React.Component {
         )
       : []
     const isDisabled = !isChanged || isSaving
-
     return (
       <div className={styles.orderForm}>
         <h4>Order: #{editable.friendly_id}</h4>
@@ -104,7 +113,7 @@ class OrderForm extends React.Component {
                   className={styles.select}
                   disabled={isRideTo(editable)}
                   options={suppliers}
-                  selected={editable.supplier || ''}
+                  selected={editable.training_location || ''}
                   onChange={value => {
                     this.handleChange('supplier', parseInt(value, 10))
                   }}
@@ -116,7 +125,7 @@ class OrderForm extends React.Component {
                 <Label>Training</Label>
                 <MinimalSelect
                   className={styles.select}
-                  disabled={isRideTo(editable)}
+                  disabled={true && isRideTo(editable)}
                   options={courses}
                   valueField="constant"
                   selected={editable.selected_licence || ''}
@@ -134,7 +143,7 @@ class OrderForm extends React.Component {
                 <Input
                   type="date"
                   disabled={true}
-                  value={getDate(editable.start_time) || ''}
+                  value={getDate(editable.training_date_time) || ''}
                 />
               </FormGroup>
             </Col>
@@ -144,7 +153,7 @@ class OrderForm extends React.Component {
                 <Input
                   type="time"
                   disabled={true}
-                  value={getTime(editable.start_time) || ''}
+                  value={getTime(editable.training_date_time) || ''}
                 />
               </FormGroup>
             </Col>
@@ -154,7 +163,7 @@ class OrderForm extends React.Component {
                 <MinimalSelect
                   className={styles.select}
                   options={BIKE_HIRE_OPTIONS}
-                  selected={editable.bike_hire || ''}
+                  selected={get_bike_hire_option(editable.bike_type) || ''}
                   onChange={value => {
                     this.handleChange('bike_hire', value)
                   }}

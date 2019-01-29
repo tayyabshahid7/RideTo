@@ -19,16 +19,14 @@ actions.fetchSupplierOrders = common.fetch(
   MODULE,
   orderService.fetchSupplierOrders
 )
-actions.saveOrder = common.save(MODULE, orderService.saveOrder)
+actions.saveTraining = common.save(MODULE, orderService.saveTraining)
 
 selectors.getItems = ({ results, items }) => {
   return results.map(id => items[id])
 }
 
 selectors.getOrdersByCustomer = ({ items }, customerId) => {
-  return Object.keys(items)
-    .map(id => items[id])
-    .filter(({ customer }) => customer === customerId)
+  return Object.keys(items).map(id => items[id])
 }
 
 export default combineReducers({
