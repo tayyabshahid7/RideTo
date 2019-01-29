@@ -74,10 +74,10 @@ image using the content attribute.
   bottom: 50px;
 }
 
-.resultsPage.loadingMask {
+.cover.loadingMask {
   min-height: 100vh;
 }
 
-.resultsPage.top.loadingMask::after {
+.cover.top.loadingMask::after {
   top: 185px;
 }

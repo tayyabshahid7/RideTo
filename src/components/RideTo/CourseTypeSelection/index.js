@@ -12,6 +12,8 @@ import Button from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import classnames from 'classnames'
 
+import Loading from 'components/Loading'
+
 import styles from './CourseTypeSelection.scss'
 
 const getBookUrl = (courseType, postcode) => {
@@ -65,7 +67,8 @@ class CourseTypeSelection extends React.Component {
       selectedFilter: { tag: 'ALL', name: 'All' },
       postcode: qs.postcode || '',
       selectedCourseType: null,
-      navigation: this.navigation
+      navigation: this.navigation,
+      loading: true
     }
 
     this.handleSelectFilter = this.handleSelectFilter.bind(this)
@@ -79,7 +82,8 @@ class CourseTypeSelection extends React.Component {
     this.courseTypes = result.results
 
     this.setState({
-      filteredCourseTypes: this.courseTypes
+      filteredCourseTypes: this.courseTypes,
+      loading: false
     })
   }
 
@@ -119,7 +123,8 @@ class CourseTypeSelection extends React.Component {
       selectedFilter,
       selectedCourseType,
       detailsImage,
-      navigation
+      navigation,
+      loading
     } = this.state
 
     const footer = selectedCourseType ? (
@@ -143,38 +148,40 @@ class CourseTypeSelection extends React.Component {
           }}
           navigation={navigation}
         />
-        <Container className={styles.container}>
-          <Row>
-            <Col sm={{ size: 4, offset: 8 }} className={styles.filtersTitle}>
-              Filter Courses
-            </Col>
-          </Row>
-          <Row className={styles.filters}>
-            <Col sm="6">
-              <h2 className={styles.heading}>Choose a Course</h2>
-            </Col>
-            <Col sm="6">
-              <CourseTypeSelectionFilters
-                filters={this.filters}
-                selected={selectedFilter}
-                onSelect={this.handleSelectFilter}
-              />
-            </Col>
-          </Row>
-          <Row>
-            {filteredCourseTypes.map(courseType => (
-              <Col sm="4" key={courseType.name}>
-                <CourseTypeItem
-                  isTypeform={isTypeform(courseType.constant)}
-                  postcode={postcode}
-                  courseType={courseType}
-                  onClickDetails={this.handleDetails}
-                  url={getBookUrl(courseType.constant, postcode)}
+        <Loading loading={loading} position="top" cover>
+          <Container className={styles.container}>
+            <Row>
+              <Col sm={{ size: 4, offset: 8 }} className={styles.filtersTitle}>
+                Filter Courses
+              </Col>
+            </Row>
+            <Row className={styles.filters}>
+              <Col sm="6">
+                <h2 className={styles.heading}>Choose a Course</h2>
+              </Col>
+              <Col sm="6">
+                <CourseTypeSelectionFilters
+                  filters={this.filters}
+                  selected={selectedFilter}
+                  onSelect={this.handleSelectFilter}
                 />
               </Col>
-            ))}
-          </Row>
-        </Container>
+            </Row>
+            <Row>
+              {filteredCourseTypes.map(courseType => (
+                <Col sm="4" key={courseType.name}>
+                  <CourseTypeItem
+                    isTypeform={isTypeform(courseType.constant)}
+                    postcode={postcode}
+                    courseType={courseType}
+                    onClickDetails={this.handleDetails}
+                    url={getBookUrl(courseType.constant, postcode)}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </Container>
+        </Loading>
         <SidePanel
           footer={footer}
           visible={selectedCourseType !== null}
