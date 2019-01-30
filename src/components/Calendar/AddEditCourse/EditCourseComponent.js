@@ -22,8 +22,7 @@ class EditCourseComponent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showDeleteCourseConfirmModal: false,
-      isEditable: false
+      showDeleteCourseConfirmModal: false
     }
   }
 
@@ -33,7 +32,7 @@ class EditCourseComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { course, history, schoolId, match, getSingleCourse } = this.props
+    const { saving, error, course, history, schoolId } = this.props
 
     if (schoolId !== prevProps.schoolId) {
       if (course) {
@@ -43,8 +42,13 @@ class EditCourseComponent extends Component {
       }
       return
     }
-    if (prevProps.match.params.courseId !== match.params.courseId) {
-      getSingleCourse({ schoolId, courseId: match.params.courseId })
+
+    if (prevProps.saving === true && saving === false) {
+      if (course) {
+        history.push(`/calendar/${course.date}`)
+      } else {
+        console.log('Error', error)
+      }
     }
   }
 
@@ -78,9 +82,19 @@ class EditCourseComponent extends Component {
     this.setState({ showDeleteCourseConfirmModal: false })
   }
 
+  handleSetEditable(isEditable, date) {
+    const { course } = this.props
+
+    if (!isEditable) {
+      const link =
+        course && course.date ? `/calendar/${course.date}` : `/calendar/${date}`
+      this.props.history.push(link)
+    }
+  }
+
   render() {
     const { loading, course } = this.props
-    const { isEditable, showDeleteCourseConfirmModal } = this.state
+    const { showDeleteCourseConfirmModal } = this.state
 
     if (loading) {
       return <div>Loading...</div>
@@ -102,8 +116,10 @@ class EditCourseComponent extends Component {
 
         <CourseForm
           {...this.props}
-          isEditable={isEditable}
-          onSetEditable={isEditable => this.setState({ isEditable })}
+          isEditable={true}
+          onSetEditable={isEditable =>
+            this.handleSetEditable(isEditable, course.date)
+          }
           onSubmit={this.onSave.bind(this)}
         />
 
