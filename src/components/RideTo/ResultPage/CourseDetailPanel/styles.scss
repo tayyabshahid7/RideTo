@@ -339,3 +339,11 @@ select.widgetSelect {
 .widgetDateSelected {
   border: 1px solid #cacccd;
 }
+
+.fullLicenceAvailability {
+  min-height: calc(100vh - 216px - 40px - 74px + 10px);
+
+  @media (max-width: 768px) {
+    min-height: calc(100vh - 168px - 40px - 91px + 10px);
+  }
+}
