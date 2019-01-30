@@ -32,6 +32,14 @@ let AccountSubNavbar = ({ history }) => {
             Booking Widget
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink
+            className={styles.navLink}
+            activeClassName={styles.activeNavLink}
+            to="/account/csv-upload">
+            Upload Tests
+          </NavLink>
+        </li>
       </ul>
     </div>
   )
