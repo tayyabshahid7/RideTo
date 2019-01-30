@@ -485,7 +485,11 @@ class ResultPage extends Component {
                               )}>
                               Choose a location
                             </div>
-                            <div className={styles.schoolCount}>
+                            <div
+                              className={classnames(
+                                styles.schoolCount,
+                                isFullLicence && styles.schoolCountFullLicence
+                              )}>
                               {`Showing ${resultsCount} training sites in your area by ${sortByOption.replace(
                                 '-',
                                 ''
