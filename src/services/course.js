@@ -159,7 +159,7 @@ export const getDasAvailableDates = async (
     start_date
   }
   start_date && (data.start_date = start_date)
-  const response = await get(path, data)
+  const response = await get(path, data, false)
   return response
 }
 
