@@ -44,6 +44,16 @@ class CourseTypeDetails extends React.Component {
         <hr className={styles.divider} />
 
         <div className={styles.accordion}>
+          {details.duration && (
+            <DetailsAccordionItem
+              title="How long is the course?"
+              content={details.duration}
+              isOpen={opened.indexOf('duration') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('duration', isOpen)
+              }
+            />
+          )}
           <DetailsAccordionItem
             title="What will I learn?"
             content={details.learn}

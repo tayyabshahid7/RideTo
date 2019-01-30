@@ -26,15 +26,6 @@ export const getFiltersTag = () => {
 export const getCourseFaqs = () => {
   return [
     {
-      question: 'How long is the course?',
-      answer: `CBT Training typically lasts up to 6 - 8 hours depending on how you progress and other people in your class. You need to leave the whole day for the course.`
-    },
-    {
-      question:
-        'Can I ride a manual motorcycle if I take my CBT on an automatic scooter?',
-      answer: `Legally yes, the CBT isn't restricted to the specific bike type you train on. However we'd always recommend professional training before riding a completely new type of bike on the road.`
-    },
-    {
       question:
         'Can I ride a manual motorcycle if I take my CBT on an automatic scooter?',
       answer: `Legally yes, the CBT isn't restricted to the specific bike type you train on. However we'd always recommend professional training before riding a completely new type of bike on the road.`
