@@ -165,6 +165,12 @@
   }
 }
 
+.schoolCountFullLicence {
+  @media (max-width: 768px) {
+    margin-top: 0;
+  }
+}
+
 .action {
   width: inherit;
   justify-content: center;
