@@ -24,7 +24,7 @@ function LicencePicker({ selectedLicenceType, onUpdate, licences, isWidget }) {
             isWidget={isWidget}
             type="A2"
             age="19+"
-            size="up to 400cc"
+            size="up to 35kW"
             selectedLicenceType={selectedLicenceType}
             onUpdate={onUpdate}
           />
@@ -34,7 +34,7 @@ function LicencePicker({ selectedLicenceType, onUpdate, licences, isWidget }) {
             isWidget={isWidget}
             type="A"
             age="24+"
-            size="all"
+            size="Unrestricted"
             selectedLicenceType={selectedLicenceType}
             onUpdate={onUpdate}
           />

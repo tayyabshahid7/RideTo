@@ -9,13 +9,15 @@ import classnames from 'classnames'
 class FullLicenceDatePicker extends Component {
   constructor(props) {
     super(props)
+
     let date = new Date()
     this.state = {
       calendar: {
         year: date.getFullYear(),
         month: date.getMonth()
       },
-      days: []
+      days: [],
+      availableDates: []
     }
 
     this.container = React.createRef()
@@ -36,18 +38,7 @@ class FullLicenceDatePicker extends Component {
   }
 
   async generateDaysDataFromCalendar(calendar) {
-    const { schoolId, licence, bike_hire, type, start_date } = this.props
-    let availableDates = []
-
-    if (start_date) {
-      availableDates = await getDasAvailableDates(
-        schoolId,
-        licence,
-        bike_hire,
-        type,
-        start_date
-      )
-    }
+    const { availableDates } = this.state
 
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
@@ -146,32 +137,60 @@ class FullLicenceDatePicker extends Component {
     })
   }
 
+  async loadDates() {
+    const { schoolId, licence, bike_hire, type, start_date } = this.props
+
+    if (start_date) {
+      const availableDates = await getDasAvailableDates(
+        schoolId,
+        licence,
+        bike_hire,
+        type,
+        start_date
+      )
+
+      this.setState({ availableDates }, () => {
+        const firstDate = this.state.availableDates[0]
+          ? new Date(this.state.availableDates[0].date)
+          : new Date()
+
+        this.setState(
+          {
+            calendar: {
+              year: firstDate.getFullYear(),
+              month: firstDate.getMonth()
+            }
+          },
+          async () => {
+            const days = await this.generateDaysDataFromCalendar(
+              this.state.calendar
+            )
+            this.setState({
+              days
+            })
+          }
+        )
+      })
+    }
+  }
+
   async componentDidMount() {
     const { index } = this.props
-    const { calendar } = this.state
 
     if (index === 0) {
       this.container.current.scrollIntoView()
 
-      const days = await this.generateDaysDataFromCalendar(calendar)
-      this.setState({
-        days
-      })
+      this.loadDates()
     }
   }
 
   async componentDidUpdate(prevProps) {
     const { showCalendar } = this.props
-    const { calendar } = this.state
 
     if (showCalendar !== prevProps.showCalendar && showCalendar) {
       this.container.current.scrollIntoView()
 
-      const days = await this.generateDaysDataFromCalendar(calendar)
-
-      this.setState({
-        days
-      })
+      this.loadDates()
     }
   }
 
