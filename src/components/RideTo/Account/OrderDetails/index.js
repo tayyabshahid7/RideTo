@@ -77,7 +77,6 @@ class OrderDetails extends React.Component {
       lat: parseFloat(training_location.latitude),
       lng: parseFloat(training_location.longitude)
     }
-    const date = moment(order.user_date, 'DD/MM/YYYY')
     const courseTitle = order.course_title
 
     return (
@@ -89,7 +88,12 @@ class OrderDetails extends React.Component {
             {renderRow('Course', courseTitle)}
             {renderRow('Bike Type', order.bike_type)}
             {order.source === 'RIDETO' &&
-              renderRow('Date & Time', date.format('ddd D, MMMM'))}
+              renderRow(
+                'Date & Time',
+                moment(order.trainings[0].requested_date, 'YYYY-MM-DD').format(
+                  'ddd D, MMMM'
+                )
+              )}
             {renderRow(
               'Location',
               `${training_location.town}, ${training_location.postcode}`
