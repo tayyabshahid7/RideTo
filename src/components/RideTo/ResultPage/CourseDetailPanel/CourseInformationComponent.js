@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
 import styles from './styles.scss'
-import { getShortCourseType } from 'services/course'
+import { getCourseTitle } from 'services/course'
 import { getStaticData } from 'services/page'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import * as FeatureIcons from 'assets/icons/features'
@@ -37,10 +37,10 @@ class CourseDetailPanel extends React.Component {
       <Fragment>
         <div className={styles.content}>
           <div className={styles.subtitle}>
-            {`${getShortCourseType(courseType)} ${course.location_slug.replace(
-              '-',
-              ' '
-            )}`}
+            {`${getCourseTitle(courseType).replace(
+              ' Training',
+              ''
+            )} ${course.location_slug.replace('-', ' ')}`}
           </div>
           <div className={styles.address}>{`${course.place} ${
             course.postcode
