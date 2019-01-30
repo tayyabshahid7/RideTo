@@ -6,6 +6,7 @@ import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicke
 import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
 import FullLicenceDatePicker from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicenceDatePicker'
+import classnames from 'classnames'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -53,7 +54,11 @@ class CourseAvailabilityComponentFullLicence extends Component {
     } = this.state
 
     return (
-      <div className={!isWidget ? styles.content : styles.widget}>
+      <div
+        className={classnames(
+          styles.fullLicenceAvailability,
+          !isWidget ? styles.content : styles.widget
+        )}>
         {!isWidget && (
           <div className={styles.subtitle1}>Full Licence (A1/A2 DAS)</div>
         )}
