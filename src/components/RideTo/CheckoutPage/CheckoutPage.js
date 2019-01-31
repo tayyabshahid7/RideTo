@@ -152,22 +152,32 @@ class CheckoutPage extends Component {
       this.setState({ loadingPrice: true })
       if (isFullLicence) {
         let fullPrice = 0
+        let discount = 0
         const newTrainings = await Promise.all(
-          trainings.map(async training => {
-            const price = await getPrice({
-              courseId: training.school_course_id
+          trainings.map(async (training, index) => {
+            const response = await getPrice({
+              courseId: training.school_course_id,
+              voucher_code: index === 0 ? voucher_code : ''
             })
-            fullPrice += parseInt(price.price, 10)
+
+            fullPrice += parseInt(response.price, 10)
+
+            // Discount is applied only to the first training in array
+            if (voucher_code && response.discount && index === 0) {
+              details.voucher_code = voucher_code
+              discount = response.discount
+            }
 
             return {
               ...training,
-              price: price.price
+              price: response.price
             }
           })
         )
-
         this.setState({
-          priceInfo: { ...this.state.priceInfo, price: fullPrice },
+          priceInfo: { ...this.state.priceInfo, price: fullPrice, discount },
+          loadingPrice: false,
+          details,
           trainings: newTrainings
         })
       } else {
