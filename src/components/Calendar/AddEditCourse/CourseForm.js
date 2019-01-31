@@ -227,6 +227,7 @@ class CourseForm extends React.Component {
                   </option>
                 ))}
               </select>
+              {/*
               <Button
                 className={styles.editCourse}
                 onClick={this.handleToggleEdit}
@@ -235,6 +236,7 @@ class CourseForm extends React.Component {
                 outline>
                 Edit Course
               </Button>
+              */}
             </div>
 
             <div className={classnames(styles.form, formClass)}>
