@@ -15,8 +15,6 @@ select {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  -webkit-appearance: none;
-  -moz-appearance: none;
 }
 
 select.minimal {
@@ -27,6 +25,9 @@ select.minimal {
     calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
   background-size: 5px 5px, 5px 5px, 1px 1.5em;
   background-repeat: no-repeat;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 select.minimal:focus {
