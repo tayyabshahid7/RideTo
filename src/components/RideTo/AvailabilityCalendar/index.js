@@ -5,6 +5,11 @@ import styles from './index.scss'
 import CalendarContent from './CalendarContent'
 import CalendarTime from './CalendarTime'
 import moment from 'moment'
+import { BANK_HOLIDAYS } from 'common/constants'
+
+const isBankHoliday = date => {
+  return BANK_HOLIDAYS.includes(date)
+}
 
 class AvailabilityCalendar extends Component {
   constructor(props) {
@@ -85,6 +90,18 @@ class AvailabilityCalendar extends Component {
     return false
   }
 
+  getStartTime(date, startTimes) {
+    const mdate = moment(date)
+    if (isBankHoliday(mdate.format('DD-MM-YYYY'))) {
+      return startTimes.bankHoliday.substring(0, 5)
+    }
+    if (mdate.day() === 6 || mdate.day() === 0) {
+      return startTimes.weekend.substring(0, 5)
+    } else {
+      return startTimes.weekday.substring(0, 5)
+    }
+  }
+
   render() {
     let {
       days,
@@ -96,7 +113,7 @@ class AvailabilityCalendar extends Component {
       handleTimeSelect,
       isInstantBook,
       disablePreviousDates,
-      nonInstantStartTime,
+      nonInstantStartTimes,
       nonInstantPrices,
       showTrainingTime = true,
       showLabel
@@ -138,7 +155,11 @@ class AvailabilityCalendar extends Component {
               )
             ) : (
               <button className={classnames(styles.btn, styles.activeBtn)}>
-                {nonInstantStartTime && nonInstantStartTime.substring(0, 5)}
+                {nonInstantStartTimes &&
+                  this.getStartTime(
+                    calendar.selectedDate,
+                    nonInstantStartTimes
+                  )}
               </button>
             )}
           </React.Fragment>

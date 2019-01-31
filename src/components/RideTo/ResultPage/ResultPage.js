@@ -31,6 +31,8 @@ import { IconCalendar } from 'assets/icons'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
 
+import { isBankHoliday } from 'services/misc'
+
 class ResultPage extends Component {
   constructor(props) {
     super(props)
@@ -117,7 +119,6 @@ class ResultPage extends Component {
     if (!showDateSelectorModal || !date) {
       return
     }
-
     handleSetDate(date)
     this.setState({ showDateSelectorModal: false })
   }
@@ -176,6 +177,18 @@ class ResultPage extends Component {
     this.setState({ ...data })
   }
 
+  getStartTime(course, selectedDate) {
+    const mdate = moment(selectedDate)
+    if (isBankHoliday(mdate.format('DD-MM-YYYY'))) {
+      return course.bank_holiday_start_time.substring(0, 5)
+    }
+    if (mdate.day() === 6 || mdate.day() === 0) {
+      return course.weekend_start_time.substring(0, 5)
+    } else {
+      return course.weekday_start_time.substring(0, 5)
+    }
+  }
+
   onBookNow() {
     const {
       selectedCourse,
@@ -191,7 +204,6 @@ class ResultPage extends Component {
     if (!selectedCourse) {
       return
     }
-
     if (courseType === 'FULL_LICENCE') {
       trainings = selectedPackageDates.map(training => {
         return {
@@ -211,11 +223,12 @@ class ResultPage extends Component {
           course_type: courseType,
           bike_type: bike_hire,
           supplier_id: selectedCourse.id,
-          requested_date: selectedCourse.date,
-          requested_time: selectedCourse.startTime
+          requested_date: instantDate,
+          requested_time: selectedCourse.instant_book
+            ? instantCourse.time.substring(0, 5)
+            : this.getStartTime(selectedCourse, instantDate)
         }
       ]
-
       if (instantCourse) {
         trainings[0].school_course_id = instantCourse.id
       }
