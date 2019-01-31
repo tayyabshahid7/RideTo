@@ -13,6 +13,18 @@ export const BikeHires = [
   { value: BIKE_HIRE.NO, title: 'No' }
 ]
 
+export function formatBikeConstant(constant) {
+  switch (constant) {
+    case 'BIKE_TYPE_AUTO':
+      return BIKE_HIRE.AUTO
+    case 'BIKE_TYPE_MANUAL':
+      return BIKE_HIRE.MANUAL
+    case 'BIKE_TYPE_NONE':
+    default:
+      return BIKE_HIRE.NO
+  }
+}
+
 export const FullLicenceTypes = [
   { value: 'FULL_LICENCE_TYPE_A1', title: 'A1' },
   { value: 'FULL_LICENCE_TYPE_A2', title: 'A2' },
