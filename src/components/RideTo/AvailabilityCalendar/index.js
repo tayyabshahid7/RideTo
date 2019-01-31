@@ -74,7 +74,11 @@ class AvailabilityCalendar extends Component {
   isSelectedDateDisabled(date, days) {
     const selectedDate = moment(date)
     for (let i = 0; i < days.length; i++) {
-      if (days[i].disabled && days[i].date.getDate() === selectedDate.date()) {
+      if (
+        days[i].disabled &&
+        days[i].date.getDate() === selectedDate.date() &&
+        days[i].date.getMonth() === selectedDate.month()
+      ) {
         return true
       }
     }
