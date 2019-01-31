@@ -6,17 +6,21 @@ import Button from 'components/RideTo/Button'
 import Complete from 'assets/images/rideto/Complete.svg'
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 import styles from './BookingCompleteBanner.scss'
-import { getCourseTitle } from 'services/course'
 
 const BookingCompleteBanner = ({ order, onDetails }) => {
-  const courseTitle = getCourseTitle(order.selected_licence)
-  const date = moment(order.user_date, 'DD/MM/YYYY').format('dddd Do MMMM')
-  const startTime = moment(order.start_time)
+  const training = order.trainings[0]
+  const date = moment(training.requested_date, 'YYYY-MM-DD').format(
+    'dddd Do MMMM'
+  )
+  const startTime = moment(training.training_date_time)
   const time =
-    order.start_time && order.source === 'RIDETO_INSTANT'
+    training.training_date_time && order.source === 'RIDETO_INSTANT'
       ? `at ${startTime.format('hh:mm A')}`
       : ''
-  const subTitle = `${courseTitle} on ${date} ${time}`
+  const selectedPackage = `${order.trainings.length} day package`
+  const subTitle = order.course_title.includes('Full Licence')
+    ? `${order.course_title} - ${selectedPackage} starting on ${date} ${time}`
+    : `${order.course_title} on ${date} ${time}`
   const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the ammount on your card. Booking require confirmation from the instructor, usually within 3 working hours.`
   const showDisclaimer = order.source !== 'RIDETO_INSTANT'
   return (
