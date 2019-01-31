@@ -4,7 +4,7 @@ import { Button, Row, Col, Form, FormGroup, Label } from 'reactstrap'
 import AgeInput from 'components/AgeInput'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
-import { BikeHires, FullLicenceTypes } from 'common/info'
+import { BikeHires, formatBikeConstant, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import ChangeDate from './ChangeDate/'
 
@@ -12,7 +12,12 @@ class EditOrderForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      order: props.order ? props.order : {},
+      order: props.order
+        ? {
+            ...props.order,
+            bike_type: formatBikeConstant(props.order.bike_type)
+          }
+        : {},
       showChangeDate: false
     }
 
@@ -232,6 +237,7 @@ class EditOrderForm extends React.Component {
                     valueArray={BikeHires}
                     noSelectOption
                     onChange={this.handleChangeRawEvent}
+                    required
                   />
                 </Col>
               </Row>
