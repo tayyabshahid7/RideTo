@@ -119,7 +119,6 @@ class ResultPage extends Component {
     if (!showDateSelectorModal || !date) {
       return
     }
-
     handleSetDate(date)
     this.setState({ showDateSelectorModal: false })
   }
@@ -178,8 +177,8 @@ class ResultPage extends Component {
     this.setState({ ...data })
   }
 
-  getStartTime(course) {
-    const mdate = moment(course.date)
+  getStartTime(course, selectedDate) {
+    const mdate = moment(selectedDate)
     if (isBankHoliday(mdate.format('DD-MM-YYYY'))) {
       return course.bank_holiday_start_time.substring(0, 5)
     }
@@ -224,8 +223,10 @@ class ResultPage extends Component {
           course_type: courseType,
           bike_type: bike_hire,
           supplier_id: selectedCourse.id,
-          requested_date: selectedCourse.date,
-          requested_time: this.getStartTime(selectedCourse)
+          requested_date: instantDate,
+          requested_time: selectedCourse.instant_book
+            ? instantCourse.time.substring(0, 5)
+            : this.getStartTime(selectedCourse, instantDate)
         }
       ]
       if (instantCourse) {
