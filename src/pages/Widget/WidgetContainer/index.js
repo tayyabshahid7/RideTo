@@ -30,8 +30,8 @@ class WidgetContainer extends React.Component {
       ? this.suppliers.filter(
           ({ id }) => id === parseInt(query.supplier, 10)
         )[0]
-      : this.suppliers[0]
-    const address = getAddress(selectedSupplier)
+      : ''
+    const address = selectedSupplier && getAddress(selectedSupplier)
 
     return (
       <div className={styles.widgetContainer}>

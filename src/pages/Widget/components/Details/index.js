@@ -12,8 +12,12 @@ const Details = ({ widget, address = '' }) => {
       <div className={styles.intro}>{widget.intro}</div>
 
       <div className={styles.block}>
-        <h3 className={styles.subHeading}>Address</h3>
-        {address}
+        {address && (
+          <React.Fragment>
+            <h3 className={styles.subHeading}>Address</h3>
+            {address}
+          </React.Fragment>
+        )}
       </div>
 
       <hr />
