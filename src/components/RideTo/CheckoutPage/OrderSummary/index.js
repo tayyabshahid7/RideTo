@@ -116,7 +116,7 @@ class OrderSummary extends Component {
           ? this.renderRow(
               'Bike Hire Cost',
               `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
-              100
+              101
             )
           : ''}
         {addons.map((addon, index) =>
