@@ -142,6 +142,14 @@ class CourseAvailabilityComponent extends React.Component {
     return days
   }
 
+  getNonInstantStartTimes(course) {
+    return {
+      bankHoliday: course.bank_holiday_start_time,
+      weekend: course.weekend_start_time,
+      weekday: course.weekday_start_time
+    }
+  }
+
   handlePrevMonth() {
     const { calendar } = this.state
     let month = calendar.month - 1
@@ -219,7 +227,7 @@ class CourseAvailabilityComponent extends React.Component {
             handleTimeSelect={this.handleTimeSelect.bind(this)}
             isInstantBook={!!course.instant_book}
             nonInstantPrices={course.week_prices}
-            nonInstantStartTime={course.startTime}
+            nonInstantStartTimes={this.getNonInstantStartTimes(course)}
             showChooseDate={true}
             courses={courses}
             disablePreviousDates
