@@ -40,18 +40,17 @@ const getEarliestDate = courses => {
 class BookingOptionsContainer extends React.Component {
   constructor(props) {
     super(props)
-    const { selectedSupplier } = props
 
     this.state = {
-      courseType: selectedSupplier.courses[0],
+      courseType: '',
       schoolCourses: [],
       availableCourses: [],
       selectedCourse: null,
       selectedDate: null,
       selectedBikeHire: 'no',
       month: moment().startOf('month'),
-      isLoading: true,
-      isFullLicence: selectedSupplier.courses[0].constant === 'FULL_LICENCE',
+      isLoading: false,
+      isFullLicence: null,
       selectedLicenceType: null,
       selectedPackageDays: '',
       selectedPackageDates: [],
@@ -73,13 +72,13 @@ class BookingOptionsContainer extends React.Component {
     window.document.body.scrollIntoView()
   }
 
-  componentDidMount() {
-    const { month } = this.state
-    this.fetchCourses(month.clone())
-  }
-
-  componentDidUpdate(oldProps) {
-    if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
+  componentDidUpdate(oldProps, oldState) {
+    if (
+      this.props.selectedSupplier &&
+      this.state.courseType &&
+      (this.props.selectedSupplier !== oldProps.selectedSupplier ||
+        this.state.courseType !== oldState.courseType)
+    ) {
       const { month } = this.state
       this.setState({ isLoading: true })
       this.fetchCourses(month.clone())
@@ -88,7 +87,7 @@ class BookingOptionsContainer extends React.Component {
 
   async fetchCourses(month) {
     const { selectedSupplier } = this.props
-    const courseType = this.state.courseType || selectedSupplier.courses[0]
+    const courseType = this.state.courseType
     const schoolCourses = await fetchWidgetCourses(
       selectedSupplier.id,
       month.startOf('month').format('YYYY-MM-DD'),
@@ -314,29 +313,33 @@ class BookingOptionsContainer extends React.Component {
       return <Redirect push to={submit} />
     }
 
-    if (!courseType) {
-      return <div className={styles.bookingOptions}>No Course Found</div>
+    if (!suppliers.length) {
+      return <div className={styles.bookingOptions}>No Location Found</div>
     }
 
     return (
       <div className={styles.bookingOptions}>
         <BookingOption
-          label="Training:"
-          options={selectedSupplier.courses}
-          selected={courseType.id}
-          onChange={this.handleChangeCourseType}
-        />
-
-        <BookingOption
+          placeholder
           label="Location:"
           options={suppliers}
           labelField="address_1"
-          selected={selectedSupplier.id}
+          selected={selectedSupplier && selectedSupplier.id}
           onChange={onChangeSupplier}
+        />
+
+        <BookingOption
+          disabled={!selectedSupplier}
+          placeholder
+          label="Training:"
+          options={selectedSupplier ? selectedSupplier.courses : []}
+          selected={courseType && courseType.id}
+          onChange={this.handleChangeCourseType}
         />
 
         {!isFullLicence ? (
           <Calendar
+            optionsSelected={!!selectedSupplier && !!courseType}
             color={widget.calendar_color}
             date={selectedDate}
             courses={availableCourses}
