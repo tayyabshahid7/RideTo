@@ -196,13 +196,13 @@ export const getShortCourseType = courseType => {
     case 'FULL_LICENCE':
       return 'Full'
     case 'FULL_LICENCE_MOD1_TRAINING':
-      return 'Mod1 Training'
+      return 'Module 1 Training'
     case 'FULL_LICENCE_MOD1_TEST':
-      return 'Mod1 Test'
+      return 'Module 1 Test'
     case 'FULL_LICENCE_MOD2_TRAINING':
-      return 'Mod2 Training'
+      return 'Module 2 Training'
     case 'FULL_LICENCE_MOD2_TEST':
-      return 'Mod2 Test'
+      return 'Module 2 Test'
     default:
       return 'CBT'
   }
@@ -219,13 +219,13 @@ export const getCourseTitle = courseTypeConstant => {
     case 'FULL_LICENCE':
       return 'Full Licence'
     case 'FULL_LICENCE_MOD1_TRAINING':
-      return 'Full Licence Mod1 Training'
+      return 'Full Licence Module 1 Training'
     case 'FULL_LICENCE_MOD1_TEST':
-      return 'Full Licence Mod1 Test'
+      return 'Full Licence Module 1 Test'
     case 'FULL_LICENCE_MOD2_TRAINING':
-      return 'Full Licence Mod2 Training'
+      return 'Full Licence Module 2 Training'
     case 'FULL_LICENCE_MOD2_TEST':
-      return 'Full Licence Mod2 Test'
+      return 'Full Licence Module 2 Test'
     default:
       return 'CBT Training'
   }
