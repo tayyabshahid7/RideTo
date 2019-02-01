@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 
 import classnames from 'classnames'
@@ -170,10 +170,12 @@ class OrderSummary extends Component {
       loadingPrice,
       details,
       onDetailChange,
-      errors = {}
+      errors = {},
+      checkoutData
     } = this.props
     const { showPromo } = this.state
     let confirmDisabled = saving || !details.accept_terms
+    const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.container}>
@@ -220,6 +222,12 @@ class OrderSummary extends Component {
                 I’ll wear suitable clothing including sturdy trousers (e.g.
                 jeans) and boots
               </li>
+              {isFullLicence && (
+                <Fragment>
+                  <li>I have a valid CBT certificate</li>
+                  <li>I have a valid motorcycle theory certificate</li>
+                </Fragment>
+              )}
             </ul>
           </div>
         </div>
