@@ -3,9 +3,11 @@ import moment from 'moment'
 
 import styles from './OrderDetails.scss'
 import Loading from 'components/Loading'
-import { asPoundSterling } from 'services/widget'
+
 import { getCourseTitle } from 'services/course'
 import { SHORT_LICENCE_TYPES } from 'common/constants'
+import { asPoundSterling } from 'services/widget'
+import { BikeHires } from 'common/info'
 
 const OrderDetails = ({
   course,
@@ -83,7 +85,12 @@ const OrderDetails = ({
         <div className={styles.includes}>
           <h3 className={styles.heading}>Includes</h3>
           <ul className={styles.checklist}>
-            {isBikeHire && <li>Bike and helmet hire (Manual Motorcycle)</li>}
+            {isBikeHire && (
+              <li>
+                Bike and helmet hire (
+                {BikeHires.find(bike => bike.value === hire).title} Motorcycle)
+              </li>
+            )}
             <li>Insurance</li>
           </ul>
         </div>
