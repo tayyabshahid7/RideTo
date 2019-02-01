@@ -181,6 +181,16 @@ class CustomerDetailForm extends React.Component {
         </Row>
         <Row>
           <Col>
+            <InputTextGroup
+              name="theory_test_number"
+              value={customer.theory_test_number || ''}
+              label="Theory Test Number"
+              className="form-group"
+              type="text"
+              onChange={this.handleChange}
+            />
+          </Col>
+          <Col>
             <div className="form-group">
               <Label for="email_optin">Email Opt-In</Label>
               <Checkbox
