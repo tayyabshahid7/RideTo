@@ -182,8 +182,8 @@ class CustomerDetailForm extends React.Component {
         <Row>
           <Col>
             <InputTextGroup
-              name="theory_test_number"
-              value={customer.theory_test_number || ''}
+              name="reference_number"
+              value={customer.reference_number || ''}
               label="Theory Test Number"
               className="form-group"
               type="text"
