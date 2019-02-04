@@ -47,12 +47,23 @@ class OrderForm extends React.Component {
     super(props)
 
     this.state = {
-      editable: { ...props.order },
+      editable: {
+        application_reference_number: '',
+        ...props.order
+      },
       isChanged: false,
-      isSending: false
+      isSending: false,
+      courseTypes: []
     }
     this.handleCancel = this.handleCancel.bind(this)
     this.handleConfirmation = this.handleConfirmation.bind(this)
+  }
+
+  componentDidMount() {
+    const { loadCourseTypes } = this.props
+    const { training_location } = this.state.editable
+
+    loadCourseTypes({ schoolId: training_location })
   }
 
   componentDidUpdate(prevProps) {
@@ -88,19 +99,20 @@ class OrderForm extends React.Component {
   }
 
   render() {
-    const { suppliers, isSaving, onSave } = this.props
+    const { suppliers, isSaving, onSave, courseTypes } = this.props
     const { editable, isChanged, isSending } = this.state
-    const selectedSupplier = suppliers.find(
-      ({ id }) => id === editable.training_location
-    )
-    const courses = selectedSupplier
-      ? selectedSupplier.courses.filter(
+    const courses = courseTypes
+      ? courseTypes.filter(
           course =>
-            course.constant !== 'TFL_ONE_ON_ONE' &&
-            course.constant !== 'FULL_LICENCE'
+            !['TFL_ONE_ON_ONE', 'FULL_LICENCE'].includes(course.constant)
         )
       : []
     const isDisabled = !isChanged || isSaving
+    const isFullLicenceTest = [
+      'FULL_LICENCE_MOD1_TEST',
+      'FULL_LICENCE_MOD2_TEST'
+    ].includes(editable.selected_licence)
+
     return (
       <div className={styles.orderForm}>
         <h4>Order: #{editable.friendly_id}</h4>
@@ -201,14 +213,22 @@ class OrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col sm="6">
-              <FormGroup>
-                <Label>Stripe</Label>
-                <a className={styles.link} href={editable.stripe_charge_href}>
-                  {editable.stripe_charge_href}
-                </a>
-              </FormGroup>
-            </Col>
+            {isFullLicenceTest && (
+              <Col sm="6">
+                <FormGroup>
+                  <Label>Theory Test Number</Label>
+                  <Input
+                    disabled
+                    type="text"
+                    value={editable.application_reference_number}
+                    name="application_reference_number"
+                    onChange={({ target }) =>
+                      this.handleChange(target.name, target.value)
+                    }
+                  />
+                </FormGroup>
+              </Col>
+            )}
             <Col sm="6">
               <FormGroup>
                 <Label>Amount Paid</Label>
@@ -221,6 +241,16 @@ class OrderForm extends React.Component {
                     this.handleChange(target.name, target.value)
                   }
                 />
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="6">
+              <FormGroup>
+                <Label>Stripe</Label>
+                <a className={styles.link} href={editable.stripe_charge_href}>
+                  {editable.stripe_charge_href}
+                </a>
               </FormGroup>
             </Col>
           </Row>
