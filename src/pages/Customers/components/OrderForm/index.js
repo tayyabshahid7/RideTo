@@ -48,14 +48,22 @@ class OrderForm extends React.Component {
 
     this.state = {
       editable: {
-        reference_number: '',
+        application_reference_number: '',
         ...props.order
       },
       isChanged: false,
-      isSending: false
+      isSending: false,
+      courseTypes: []
     }
     this.handleCancel = this.handleCancel.bind(this)
     this.handleConfirmation = this.handleConfirmation.bind(this)
+  }
+
+  componentDidMount() {
+    const { loadCourseTypes } = this.props
+    const { training_location } = this.state.editable
+
+    loadCourseTypes({ schoolId: training_location })
   }
 
   componentDidUpdate(prevProps) {
@@ -91,19 +99,19 @@ class OrderForm extends React.Component {
   }
 
   render() {
-    const { suppliers, isSaving, onSave } = this.props
+    const { suppliers, isSaving, onSave, courseTypes } = this.props
     const { editable, isChanged, isSending } = this.state
-    const selectedSupplier = suppliers.find(
-      ({ id }) => id === editable.training_location
-    )
-    const courses = selectedSupplier
-      ? selectedSupplier.courses.filter(
+    const courses = courseTypes
+      ? courseTypes.filter(
           course =>
             !['TFL_ONE_ON_ONE', 'FULL_LICENCE'].includes(course.constant)
         )
       : []
     const isDisabled = !isChanged || isSaving
-    const isFullLicence = editable.selected_licence.startsWith('FULL_LICENCE')
+    const isFullLicenceTest = [
+      'FULL_LICENCE_MOD1_TEST',
+      'FULL_LICENCE_MOD2_TEST'
+    ].includes(editable.selected_licence)
 
     return (
       <div className={styles.orderForm}>
@@ -205,14 +213,15 @@ class OrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            {isFullLicence && (
+            {isFullLicenceTest && (
               <Col sm="6">
                 <FormGroup>
                   <Label>Theory Test Number</Label>
                   <Input
+                    disabled
                     type="text"
-                    value={editable.reference_number}
-                    name="reference_number"
+                    value={editable.application_reference_number}
+                    name="application_reference_number"
                     onChange={({ target }) =>
                       this.handleChange(target.name, target.value)
                     }

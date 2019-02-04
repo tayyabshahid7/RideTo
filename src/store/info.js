@@ -14,7 +14,6 @@ export const loadCourseTypes = ({ schoolId }) => async dispatch => {
       data: courseTypes
     })
   } catch (error) {
-    console.log('Error', error)
     dispatch({ type: GET_COURSE_TYPES[FAILURE], error })
   }
 }
