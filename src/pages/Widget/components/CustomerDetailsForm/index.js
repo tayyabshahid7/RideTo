@@ -8,30 +8,32 @@ import {
   getRidingExperienceOptions,
   getCurrentLicenceOptions
 } from 'services/customer'
+import { getLicenceAge } from 'services/course'
 import styles from './CustomerDetailsForm.scss'
-
-const BIRTHDATE_ERROR =
-  'Please enter the date in the format DD/MM/YYYY. You MUST be at least 16 years old on the selected training date.'
 
 const handleChange = (event, details, errors, onChange) => {
   const { id, value } = event.target
   onChange({ ...details, [id]: value }, { ...errors, [id]: null })
 }
 
-const CustomerDetailsForm = ({ details, errors, onChange, trainingDate }) => {
+const CustomerDetailsForm = ({
+  details,
+  errors,
+  onChange,
+  trainingDate,
+  fullLicenceType
+}) => {
+  const BIRTHDATE_ERROR = `Please enter the date in the format DD/MM/YYYY. You MUST be at least ${
+    !fullLicenceType ? '16' : getLicenceAge(fullLicenceType)
+  } years old on the selected training date.`
+
   const labelStyle = {
     marginTop: '16px',
     marginBottom: '16px'
   }
 
-  const emptyOption = {
-    id: null,
-    name: 'Select...'
-  }
-  const currentLicenceOptions = [emptyOption].concat(getCurrentLicenceOptions())
-  const ridingExperienceOptions = [emptyOption].concat(
-    getRidingExperienceOptions()
-  )
+  const currentLicenceOptions = getCurrentLicenceOptions()
+  const ridingExperienceOptions = getRidingExperienceOptions()
 
   return (
     <div className={styles.customerDetailsForm}>
@@ -113,6 +115,7 @@ const CustomerDetailsForm = ({ details, errors, onChange, trainingDate }) => {
         style={labelStyle}
         error={errors.current_licence}>
         <MinimalSelect
+          placeholder
           options={currentLicenceOptions}
           selected={details.current_licence}
           onChange={value => {
@@ -127,6 +130,7 @@ const CustomerDetailsForm = ({ details, errors, onChange, trainingDate }) => {
         style={labelStyle}
         error={errors.riding_experience}>
         <MinimalSelect
+          placeholder
           options={ridingExperienceOptions}
           selected={details.riding_experience}
           onChange={value => {

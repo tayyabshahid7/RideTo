@@ -53,7 +53,10 @@ class PaymentContainer extends React.Component {
       isSaving: false,
       hire: query.hire || null,
       errors: {},
-      details: {},
+      details: {
+        current_licence: '',
+        riding_experience: ''
+      },
       trainings: JSON.parse(window.sessionStorage.getItem('widgetTrainings')),
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
       totalPrice: 0
@@ -66,9 +69,9 @@ class PaymentContainer extends React.Component {
   }
 
   async componentDidMount() {
-    const { match, hire } = this.props
+    const { match } = this.props
     const { courseId } = match.params
-    const { isFullLicence, trainings } = this.state
+    const { isFullLicence, trainings, hire } = this.state
 
     let course
     let supplier
@@ -259,6 +262,7 @@ class PaymentContainer extends React.Component {
             details={details}
             trainingDate={course && course.date}
             errors={errors}
+            fullLicenceType={trainings[0].full_licence_type}
             onChange={this.handleChangeDetails}
           />
 
