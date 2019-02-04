@@ -20,7 +20,7 @@ class OrderListContainer extends React.Component {
   }
 
   handleSave(order) {
-    if (order.payout.includes('£')) {
+    if (order.payout && order.payout.includes('£')) {
       order.payout = order.payout.replace('£', '')
     }
     this.props.saveTraining(order)
