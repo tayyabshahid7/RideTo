@@ -47,7 +47,10 @@ class OrderForm extends React.Component {
     super(props)
 
     this.state = {
-      editable: { ...props.order },
+      editable: {
+        reference_number: '',
+        ...props.order
+      },
       isChanged: false,
       isSending: false
     }
@@ -96,11 +99,12 @@ class OrderForm extends React.Component {
     const courses = selectedSupplier
       ? selectedSupplier.courses.filter(
           course =>
-            course.constant !== 'TFL_ONE_ON_ONE' &&
-            course.constant !== 'FULL_LICENCE'
+            !['TFL_ONE_ON_ONE', 'FULL_LICENCE'].includes(course.constant)
         )
       : []
     const isDisabled = !isChanged || isSaving
+    const isFullLicence = editable.selected_licence.startsWith('FULL_LICENCE')
+
     return (
       <div className={styles.orderForm}>
         <h4>Order: #{editable.friendly_id}</h4>
@@ -201,14 +205,21 @@ class OrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col sm="6">
-              <FormGroup>
-                <Label>Stripe</Label>
-                <a className={styles.link} href={editable.stripe_charge_href}>
-                  {editable.stripe_charge_href}
-                </a>
-              </FormGroup>
-            </Col>
+            {isFullLicence && (
+              <Col sm="6">
+                <FormGroup>
+                  <Label>Theory Test Number</Label>
+                  <Input
+                    type="text"
+                    value={editable.reference_number}
+                    name="reference_number"
+                    onChange={({ target }) =>
+                      this.handleChange(target.name, target.value)
+                    }
+                  />
+                </FormGroup>
+              </Col>
+            )}
             <Col sm="6">
               <FormGroup>
                 <Label>Amount Paid</Label>
@@ -221,6 +232,16 @@ class OrderForm extends React.Component {
                     this.handleChange(target.name, target.value)
                   }
                 />
+              </FormGroup>
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="6">
+              <FormGroup>
+                <Label>Stripe</Label>
+                <a className={styles.link} href={editable.stripe_charge_href}>
+                  {editable.stripe_charge_href}
+                </a>
               </FormGroup>
             </Col>
           </Row>
