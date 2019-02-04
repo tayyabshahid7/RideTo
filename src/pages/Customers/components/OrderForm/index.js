@@ -191,9 +191,9 @@ class OrderForm extends React.Component {
                   className={styles.select}
                   options={getPaymentOptions()}
                   disabled={isRideTo(editable)}
-                  selected={editable.status || ''}
+                  selected={editable.payment_status || ''}
                   onChange={value => {
-                    this.handleChange('status', value)
+                    this.handleChange('payment_status', value)
                   }}
                 />
               </FormGroup>
