@@ -53,7 +53,10 @@ class PaymentContainer extends React.Component {
       isSaving: false,
       hire: query.hire || null,
       errors: {},
-      details: {},
+      details: {
+        current_licence: '',
+        riding_experience: ''
+      },
       trainings: JSON.parse(window.sessionStorage.getItem('widgetTrainings')),
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
       totalPrice: 0

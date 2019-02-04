@@ -32,14 +32,8 @@ const CustomerDetailsForm = ({
     marginBottom: '16px'
   }
 
-  const emptyOption = {
-    id: null,
-    name: 'Select...'
-  }
-  const currentLicenceOptions = [emptyOption].concat(getCurrentLicenceOptions())
-  const ridingExperienceOptions = [emptyOption].concat(
-    getRidingExperienceOptions()
-  )
+  const currentLicenceOptions = getCurrentLicenceOptions()
+  const ridingExperienceOptions = getRidingExperienceOptions()
 
   return (
     <div className={styles.customerDetailsForm}>
@@ -121,6 +115,7 @@ const CustomerDetailsForm = ({
         style={labelStyle}
         error={errors.current_licence}>
         <MinimalSelect
+          placeholder
           options={currentLicenceOptions}
           selected={details.current_licence}
           onChange={value => {
@@ -135,6 +130,7 @@ const CustomerDetailsForm = ({
         style={labelStyle}
         error={errors.riding_experience}>
         <MinimalSelect
+          placeholder
           options={ridingExperienceOptions}
           selected={details.riding_experience}
           onChange={value => {
