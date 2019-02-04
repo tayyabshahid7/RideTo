@@ -8,17 +8,25 @@ import {
   getRidingExperienceOptions,
   getCurrentLicenceOptions
 } from 'services/customer'
+import { getLicenceAge } from 'services/course'
 import styles from './CustomerDetailsForm.scss'
-
-const BIRTHDATE_ERROR =
-  'Please enter the date in the format DD/MM/YYYY. You MUST be at least 16 years old on the selected training date.'
 
 const handleChange = (event, details, errors, onChange) => {
   const { id, value } = event.target
   onChange({ ...details, [id]: value }, { ...errors, [id]: null })
 }
 
-const CustomerDetailsForm = ({ details, errors, onChange, trainingDate }) => {
+const CustomerDetailsForm = ({
+  details,
+  errors,
+  onChange,
+  trainingDate,
+  fullLicenceType
+}) => {
+  const BIRTHDATE_ERROR = `Please enter the date in the format DD/MM/YYYY. You MUST be at least ${
+    !fullLicenceType ? '16' : getLicenceAge(fullLicenceType)
+  } years old on the selected training date.`
+
   const labelStyle = {
     marginTop: '16px',
     marginBottom: '16px'
