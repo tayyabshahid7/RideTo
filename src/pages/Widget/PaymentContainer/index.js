@@ -66,9 +66,9 @@ class PaymentContainer extends React.Component {
   }
 
   async componentDidMount() {
-    const { match, hire } = this.props
+    const { match } = this.props
     const { courseId } = match.params
-    const { isFullLicence, trainings } = this.state
+    const { isFullLicence, trainings, hire } = this.state
 
     let course
     let supplier
