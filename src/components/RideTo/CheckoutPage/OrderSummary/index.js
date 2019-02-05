@@ -79,7 +79,9 @@ class OrderSummary extends Component {
                       'Full Licence ',
                       ''
                     ),
-                    moment(training.requested_date).format('ddd D, MMMM')
+                    `${training.requested_time.slice(0, -3)} ${moment(
+                      training.requested_date
+                    ).format('ddd D, MMMM')}`
                   )}
                 </div>
               )
