@@ -17,7 +17,7 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
       ? `at ${startTime.format('hh:mm A')}`
       : ''
   const subTitle = `${courseTitle} on ${date} ${time}`
-  const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the ammount on your card. Booking require confirmation from the instructor, usually within 3 working hours.`
+  const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Booking require confirmation from the instructor, usually within 3 working hours.`
   const showDisclaimer = order.source !== 'RIDETO_INSTANT'
   return (
     <div className={styles.bookingCompleteBanner}>
