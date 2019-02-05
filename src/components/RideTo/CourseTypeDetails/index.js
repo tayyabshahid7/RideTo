@@ -29,19 +29,31 @@ class CourseTypeDetails extends React.Component {
   }
 
   render() {
-    const { courseType } = this.props
+    const { courseType, title } = this.props
     const { opened } = this.state
     const { details, tags } = courseType
 
+    const courseTitle = title || courseType.name
+
     return (
       <div className={styles.courseTypeDetails}>
-        <div className={styles.title}>{courseType.name}</div>
+        <div className={styles.title}>{courseTitle}</div>
         <div className={styles.description}>{details.description}</div>
         <SummaryIcons tags={tags} />
 
         <hr className={styles.divider} />
 
         <div className={styles.accordion}>
+          {details.duration && (
+            <DetailsAccordionItem
+              title="How long is the course?"
+              content={details.duration}
+              isOpen={opened.indexOf('duration') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('duration', isOpen)
+              }
+            />
+          )}
           <DetailsAccordionItem
             title="What will I learn?"
             content={details.learn}

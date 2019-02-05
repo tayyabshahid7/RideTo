@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import { Button } from 'reactstrap'
 
@@ -6,15 +7,19 @@ import { BikeHires, getTitleFor } from 'common/info'
 
 import styles from './style.scss'
 
-const OrdersPanelItem = ({ order, onEdit, showEditButton = false }) => {
+const OrdersPanelItem = ({ training, onEdit, showEditButton = false }) => {
   return (
-    <div className={styles.container} key={order.friendly_id}>
+    <div className={styles.container} key={training.id}>
       <div className={styles.col}>
-        <strong>{order.direct_friendly_id}</strong>
+        <strong>{training.direct_friendly_id}</strong>
       </div>
-      <div className={styles.name}>{order.user_name}</div>
+      <div className={styles.name}>
+        <Link to={`/customers/${training.customer_id}`}>
+          {training.customer_name}
+        </Link>
+      </div>
       <div className={styles.col}>
-        {getTitleFor(BikeHires, order.bike_hire)}
+        {getTitleFor(BikeHires, training.bike_type)}
       </div>
       <div className={styles.actions}>
         {showEditButton && (

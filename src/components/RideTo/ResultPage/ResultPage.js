@@ -7,8 +7,14 @@ import {
   DropdownItem
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
-import { DAY_FORMAT5 } from 'common/constants'
-import { SortByOptions, getTitleFor } from 'common/info'
+import { DAY_FORMAT5, LICENCE_TYPES } from 'common/constants'
+import {
+  SortByOptions,
+  getTitleFor,
+  getPackageDays,
+  isAllPackageDatesSelected,
+  isAnyPackageDatesSelected
+} from 'common/info'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
@@ -25,6 +31,8 @@ import { IconCalendar } from 'assets/icons'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
 
+import { isBankHoliday } from 'services/misc'
+
 class ResultPage extends Component {
   constructor(props) {
     super(props)
@@ -33,20 +41,39 @@ class ResultPage extends Component {
       selectedCourse: null,
       loading: false,
       showDateSelectorModal: false,
-      activeTab: '1',
+      activeTab: 1,
       instantCourse: null,
       instantDate: null,
-      bike_hire: null
+      bike_hire: null,
+      selectedLicenceType: null,
+      selectedPackageDays: '',
+      selectedPackageDates: []
     }
+
+    this.onSelectPackage = this.onSelectPackage.bind(this)
+    this.onSelectPackageDate = this.onSelectPackageDate.bind(this)
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
     this.handleCourseChange = this.handleCourseChange.bind(this)
+    this.handleDetailClick = this.handleDetailClick.bind(this)
+    this.handlePriceClick = this.handlePriceClick.bind(this)
+    this.handleReviewClick = this.handleReviewClick.bind(this)
+
+    window.sessionStorage.removeItem('trainings')
+  }
+
+  componentDidMount() {
+    // Prevent the reuslts from loading half way down the page
+    if ('scrollRestoration' in window) {
+      window.scrollRestoration = 'manual'
+    }
+    window.scrollTo(0, 0)
   }
 
   handleDetailClick(course) {
     this.setState({
       selectedCourse: course,
-      activeTab: '1',
+      activeTab: 1,
       instantDate: this.props.date
     })
   }
@@ -54,7 +81,7 @@ class ResultPage extends Component {
   handlePriceClick(course) {
     this.setState({
       selectedCourse: course,
-      activeTab: '3',
+      activeTab: 3,
       instantDate: this.props.date
     })
   }
@@ -62,7 +89,7 @@ class ResultPage extends Component {
   handleReviewClick(course) {
     this.setState({
       selectedCourse: course,
-      activeTab: '2',
+      activeTab: 2,
       instantDate: this.props.date
     })
   }
@@ -92,22 +119,128 @@ class ResultPage extends Component {
     if (!showDateSelectorModal || !date) {
       return
     }
-
     handleSetDate(date)
     this.setState({ showDateSelectorModal: false })
   }
 
+  onSelectPackage(days) {
+    const packageDays = getPackageDays(days)
+
+    this.onUpdate({
+      selectedPackageDays: days,
+      selectedPackageDates: packageDays
+    })
+  }
+
+  onSelectPackageDate(index, { date, course_id, time }) {
+    const newDates = [...this.state.selectedPackageDates]
+
+    if (
+      newDates[index + 1] &&
+      newDates[index + 1].date !== '' &&
+      !window.confirm('Changing this will unset subsequent dates')
+    ) {
+      return
+    }
+
+    newDates[index].course_id = course_id
+    newDates[index].date = date
+    newDates[index].time = time
+    newDates.forEach((date, i) => {
+      if (i > index) {
+        date.course_id = null
+        date.date = ''
+        date.time = ''
+      }
+    })
+
+    this.setState({
+      selectedPackageDates: newDates
+    })
+  }
+
   onUpdate(data) {
+    const { courseType } = this.props
+    const { selectedPackageDates } = this.state
+
+    if (
+      courseType === 'FULL_LICENCE' &&
+      (data.hasOwnProperty('bike_hire') ||
+        data.hasOwnProperty('selectedLicenceType') ||
+        data.hasOwnProperty('selectedPackageDays')) &&
+      isAnyPackageDatesSelected(selectedPackageDates) &&
+      !window.confirm('Changing this will unset any dates')
+    ) {
+      return
+    }
+
     this.setState({ ...data })
   }
 
+  getStartTime(course, selectedDate) {
+    const mdate = moment(selectedDate)
+    if (isBankHoliday(mdate.format('DD-MM-YYYY'))) {
+      return course.bank_holiday_start_time.substring(0, 5)
+    }
+    if (mdate.day() === 6 || mdate.day() === 0) {
+      return course.weekend_start_time.substring(0, 5)
+    } else {
+      return course.weekday_start_time.substring(0, 5)
+    }
+  }
+
   onBookNow() {
-    const { selectedCourse, instantCourse, instantDate, bike_hire } = this.state
+    const {
+      selectedCourse,
+      instantCourse,
+      instantDate,
+      bike_hire,
+      selectedPackageDates,
+      selectedLicenceType
+    } = this.state
     const { postcode, courseType } = this.props
+    let trainings = []
+
     if (!selectedCourse) {
       return
     }
-    if (selectedCourse.instant_book) {
+    if (courseType === 'FULL_LICENCE') {
+      trainings = selectedPackageDates.map(training => {
+        return {
+          school_course_id: training.course_id,
+          course_type: training.type,
+          full_licence_type: LICENCE_TYPES[selectedLicenceType],
+          bike_type: bike_hire,
+          supplier_id: selectedCourse.id,
+          requested_date: training.date,
+          requested_time: training.time
+        }
+      })
+    } else {
+      trainings = [
+        {
+          school_course_id: instantCourse && instantCourse.id,
+          course_type: courseType,
+          bike_type: bike_hire,
+          supplier_id: selectedCourse.id,
+          requested_date: instantDate,
+          requested_time: selectedCourse.instant_book
+            ? instantCourse.time.substring(0, 5)
+            : this.getStartTime(selectedCourse, instantDate)
+        }
+      ]
+      if (instantCourse) {
+        trainings[0].school_course_id = instantCourse.id
+      }
+    }
+
+    window.sessionStorage.setItem('trainings', JSON.stringify(trainings))
+
+    if (courseType === 'FULL_LICENCE') {
+      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
+        selectedCourse.id
+      }`
+    } else if (selectedCourse.instant_book) {
       if (instantCourse) {
         window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&courseId=${
           instantCourse.id
@@ -121,22 +254,27 @@ class ResultPage extends Component {
   }
 
   renderSortByDropdown() {
-    const { handeUpdateOption, sortByOption } = this.props
+    const { handeUpdateOption, sortByOption, courseType } = this.props
     return (
       <UncontrolledDropdown>
         <DropdownToggle caret color="lightgrey" className={styles.sortButton}>
           {getTitleFor(SortByOptions, sortByOption).toUpperCase()}
         </DropdownToggle>
         <DropdownMenu>
-          {SortByOptions.map(sortOption => (
-            <DropdownItem
-              onClick={() =>
-                handeUpdateOption({ sortByOption: sortOption.value })
-              }
-              key={sortOption.value}>
-              {sortOption.title.toUpperCase()}
-            </DropdownItem>
-          ))}
+          {SortByOptions.map(sortOption => {
+            if (courseType === 'FULL_LICENCE' && sortOption.value === 'price') {
+              return false
+            }
+            return (
+              <DropdownItem
+                onClick={() =>
+                  handeUpdateOption({ sortByOption: sortOption.value })
+                }
+                key={sortOption.value}>
+                {sortOption.title.toUpperCase()}
+              </DropdownItem>
+            )
+          })}
         </DropdownMenu>
       </UncontrolledDropdown>
     )
@@ -159,13 +297,25 @@ class ResultPage extends Component {
     )
   }
 
-  renderRidetoButton(bookNowDisabled, instantDate, instantCourse, bike_hire) {
+  renderRidetoButton(
+    bookNowDisabled,
+    instantDate,
+    instantCourse,
+    bike_hire,
+    ifullLicence
+  ) {
+    const { selectedPackageDates } = this.state
+
     return (
       <RideToButton
-        className={styles.action}
+        className={classnames(
+          styles.action,
+          bookNowDisabled && ifullLicence && styles.bookNowDisabled
+        )}
         onClick={() => {
-          if (this.state.activeTab !== '3') {
-            this.setState({ activeTab: '3' })
+          isAllPackageDatesSelected(selectedPackageDates)
+          if (this.state.activeTab !== 3) {
+            this.setState({ activeTab: 3 })
           } else {
             if (!bookNowDisabled) {
               this.onBookNow()
@@ -204,9 +354,14 @@ class ResultPage extends Component {
       const availableCourses = courses.available.filter(
         course => course.is_partner
       )
-      const unavailableCourses = courses.unavailable.filter(
-        course => course.is_partner
-      )
+      let unavailableCourses = []
+      if (courses.unavailable) {
+        unavailableCourses = courses.unavailable.filter(
+          course => course.is_partner
+        )
+      } else {
+        unavailableCourses = []
+      }
       return availableCourses.length > 0 || unavailableCourses.length > 0
     }
     return true
@@ -221,7 +376,8 @@ class ResultPage extends Component {
       handleSetDate,
       navigation,
       loading,
-      userLocation
+      userLocation,
+      sortByOption
     } = this.props
     const {
       selectedCourse,
@@ -229,7 +385,10 @@ class ResultPage extends Component {
       activeTab,
       instantCourse,
       instantDate,
-      bike_hire
+      bike_hire,
+      selectedLicenceType,
+      selectedPackageDays,
+      selectedPackageDates
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -242,6 +401,24 @@ class ResultPage extends Component {
     }
 
     const hasPartnerResults = this.checkPartnerResults(courses)
+    const isFullLicence = courseType === 'FULL_LICENCE'
+
+    if (isFullLicence) {
+      bookNowDisabled = true
+    }
+
+    if (isAllPackageDatesSelected(selectedPackageDates)) {
+      bookNowDisabled = false
+    }
+
+    let resultsCount = 0
+
+    if (courses) {
+      const unavailableCount = courses.unavailable
+        ? courses.unavailable.length
+        : 0
+      resultsCount = courses.available.length + unavailableCount
+    }
 
     return (
       <div className={styles.container}>
@@ -260,10 +437,16 @@ class ResultPage extends Component {
           {hasPartnerResults && (
             <Row>
               <Col sm="6">
-                <div className={styles.headingDesktop}>Choose a Date</div>
-                <div className={styles.headingMobile}>
-                  Choose a Date &amp; Location
-                </div>
+                {!isFullLicence ? (
+                  <React.Fragment>
+                    <div className={styles.headingDesktop}>Choose a Date</div>
+                    <div className={styles.headingMobile}>
+                      Choose a Date &amp; Location
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  <div className={styles.headingMobile}>Choose a Location</div>
+                )}
               </Col>
             </Row>
           )}
@@ -272,18 +455,22 @@ class ResultPage extends Component {
               <Loading
                 loading={loading}
                 position="top"
-                className={styles.contentWrapper}>
+                className={styles.contentWrapper}
+                cover>
                 <div className={styles.contentWrapperInner}>
                   {hasPartnerResults ? (
                     <React.Fragment>
-                      <DateSelector
-                        date={date}
-                        handleSetDate={handleSetDate}
-                        className={styles.dateSelector}
-                        courseType={courseType}
-                      />
+                      {!isFullLicence && (
+                        <DateSelector
+                          date={date}
+                          handleSetDate={handleSetDate}
+                          className={styles.dateSelector}
+                          courseType={courseType}
+                        />
+                      )}
                       <div className={styles.mobileButtons}>
-                        {this.renderMobileDateSelectorButton()}
+                        {!isFullLicence &&
+                          this.renderMobileDateSelectorButton()}
                         {this.renderSortByDropdown()}
                       </div>
                     </React.Fragment>
@@ -296,7 +483,11 @@ class ResultPage extends Component {
                   )}
 
                   {courses ? (
-                    <div className={styles.mainContent}>
+                    <div
+                      className={classnames(
+                        styles.mainContent,
+                        isFullLicence && styles.noMargin
+                      )}>
                       <div className={styles.coursesPanel}>
                         {courses.available.length > 0 && (
                           <React.Fragment>
@@ -307,6 +498,16 @@ class ResultPage extends Component {
                               )}>
                               Choose a location
                             </div>
+                            <div
+                              className={classnames(
+                                styles.schoolCount,
+                                isFullLicence && styles.schoolCountFullLicence
+                              )}>
+                              {`Showing ${resultsCount} training sites in your area by ${sortByOption.replace(
+                                '-',
+                                ''
+                              )}`}
+                            </div>
                             {courses.available.map(
                               (course, index) =>
                                 course.is_partner && (
@@ -316,21 +517,15 @@ class ResultPage extends Component {
                                     course={course}
                                     className={styles.courseSpacing}
                                     key={course.id}
-                                    handleDetailClick={this.handleDetailClick.bind(
-                                      this
-                                    )}
-                                    handlePriceClick={this.handlePriceClick.bind(
-                                      this
-                                    )}
-                                    handleReviewClick={this.handleReviewClick.bind(
-                                      this
-                                    )}
+                                    handleDetailClick={this.handleDetailClick}
+                                    handlePriceClick={this.handlePriceClick}
+                                    handleReviewClick={this.handleReviewClick}
                                   />
                                 )
                             )}
                           </React.Fragment>
                         )}
-                        {courses.unavailable.length > 0 && (
+                        {courses.unavailable && courses.unavailable.length > 0 && (
                           <React.Fragment>
                             {hasPartnerResults && (
                               <div className={styles.subTitle}>
@@ -346,15 +541,9 @@ class ResultPage extends Component {
                                   course={course}
                                   className={styles.courseSpacing}
                                   key={course.id}
-                                  handleDetailClick={this.handleDetailClick.bind(
-                                    this
-                                  )}
-                                  handlePriceClick={this.handlePriceClick.bind(
-                                    this
-                                  )}
-                                  handleReviewClick={this.handleReviewClick.bind(
-                                    this
-                                  )}
+                                  handleDetailClick={this.handleDetailClick}
+                                  handlePriceClick={this.handlePriceClick}
+                                  handleReviewClick={this.handleReviewClick}
                                 />
                               ) : (
                                 <CourseItemNonPartner
@@ -401,13 +590,21 @@ class ResultPage extends Component {
           visible={selectedCourse !== null}
           headingImage={selectedCourse ? selectedCourse.image : ''}
           onDismiss={() =>
-            this.setState({ selectedCourse: null, instantCourse: null })
+            this.setState({
+              selectedCourse: null,
+              instantCourse: null,
+              bike_hire: null,
+              selectedLicenceType: null,
+              selectedPackageDays: '',
+              selectedPackageDates: []
+            })
           }
           footer={this.renderRidetoButton(
             bookNowDisabled,
             instantDate,
             instantCourse,
-            bike_hire
+            bike_hire,
+            isFullLicence
           )}>
           {selectedCourse && (
             <CourseDetailPanel
@@ -420,6 +617,11 @@ class ResultPage extends Component {
               instantDate={instantDate}
               bike_hire={bike_hire}
               onUpdate={this.onUpdate.bind(this)}
+              onSelectPackage={this.onSelectPackage}
+              onSelectPackageDate={this.onSelectPackageDate}
+              selectedLicenceType={selectedLicenceType}
+              selectedPackageDays={selectedPackageDays}
+              selectedPackageDates={selectedPackageDates}
             />
           )}
         </SidePanel>

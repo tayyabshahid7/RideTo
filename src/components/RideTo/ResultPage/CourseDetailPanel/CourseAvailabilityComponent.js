@@ -1,11 +1,10 @@
 import React from 'react'
 import moment from 'moment'
-import classnames from 'classnames'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
+import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import Loading from 'components/Loading'
 import { fetchWidgetCourses } from 'services/course'
-import { getMotorbikeLabel } from 'services/widget'
 
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
@@ -111,7 +110,7 @@ class CourseAvailabilityComponent extends React.Component {
 
       if (courseLocation.instant_book) {
         for (let i = dayCourses.length - 1; i >= 0; i--) {
-          if (dayCourses[i].order_count >= dayCourses[i].spaces) {
+          if (dayCourses[i].training_count >= dayCourses[i].spaces) {
             dayCourses.splice(i, 1)
           }
         }
@@ -141,6 +140,14 @@ class CourseAvailabilityComponent extends React.Component {
       days.push(date)
     }
     return days
+  }
+
+  getNonInstantStartTimes(course) {
+    return {
+      bankHoliday: course.bank_holiday_start_time,
+      weekend: course.weekend_start_time,
+      weekday: course.weekday_start_time
+    }
   }
 
   handlePrevMonth() {
@@ -196,20 +203,12 @@ class CourseAvailabilityComponent extends React.Component {
     const { calendar, courses, loadingCourses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
 
-    const fullText = <span className={styles.full}> - Fully Booked</span>
-    const manualText = (
-      <span className={styles.manualInfo}>
-        Please note: If you haven't ridden a manual (geared) bike before and
-        expect to complete the CBT training in one day, you may find you need
-        additional training to complete your CBT. If your not sure, call us on
-        02036039652 to talk to a member of our friendly team.
-      </span>
-    )
     const isAutoFull =
       instantCourse && instantCourse.auto_count === instantCourse.auto_bikes
     const isManualFull =
       instantCourse && instantCourse.manual_count === instantCourse.manual_bikes
-
+    const isItm = courseType === 'INTRO_TO_MOTORCYCLING'
+    const isCbt = courseType === 'LICENCE_CBT'
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
 
     return (
@@ -228,60 +227,23 @@ class CourseAvailabilityComponent extends React.Component {
             handleTimeSelect={this.handleTimeSelect.bind(this)}
             isInstantBook={!!course.instant_book}
             nonInstantPrices={course.week_prices}
-            nonInstantStartTime={course.startTime}
+            nonInstantStartTimes={this.getNonInstantStartTimes(course)}
             showChooseDate={true}
             courses={courses}
             disablePreviousDates
           />
-          <div className={styles.bikeHireWrapper}>
-            <label id="choose-bike" className={styles.subtitle1}>
-              Choose A Bike to Hire
-            </label>
-
-            {isCbtRenewal && (
-              <button
-                className={classnames(
-                  styles.bikeHireBtn,
-                  bike_hire === 'no' && styles.activeBtn
-                )}
-                onClick={() => onUpdate({ bike_hire: 'no' })}>
-                {getMotorbikeLabel('no')}
-              </button>
-            )}
-            {bike_hire === 'no' && (
-              <div className={styles.ownBikeDisclaimer}>
-                You must bring a valid CBT Certificate, Insurance Documents, Tax
-                and MOT if you wish to train on your own bike.
-              </div>
-            )}
-            {course.has_auto_bikes && (
-              <button
-                className={classnames(
-                  styles.bikeHireBtn,
-                  bike_hire === 'auto' && styles.activeBtn
-                )}
-                onClick={() => onUpdate({ bike_hire: 'auto' })}
-                disabled={isAutoFull}>
-                {getMotorbikeLabel('auto')}{' '}
-                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-                {isAutoFull ? fullText : null}
-              </button>
-            )}
-            {course.has_manual_bikes && (
-              <button
-                className={classnames(
-                  styles.bikeHireBtn,
-                  bike_hire === 'manual' && styles.activeBtn
-                )}
-                onClick={() => onUpdate({ bike_hire: 'manual' })}
-                disabled={isManualFull}>
-                {getMotorbikeLabel('manual')}{' '}
-                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-                {isManualFull ? fullText : null}
-              </button>
-            )}
-            {bike_hire === 'manual' && manualText}
-          </div>
+          <BikePicker
+            isCbt={isCbt}
+            isItm={isItm}
+            isCbtRenewal={isCbtRenewal}
+            bike_hire={bike_hire}
+            onUpdate={onUpdate}
+            course={course}
+            isAutoFull={isAutoFull}
+            isManualFull={isManualFull}
+            has_auto_bikes={course.has_auto_bikes}
+            has_manual_bikes={course.has_manual_bikes}
+          />
         </div>
       </Loading>
     )

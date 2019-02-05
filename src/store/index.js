@@ -10,6 +10,7 @@ import customer from './customer'
 import supplier from './supplier'
 import settings from './settings'
 import notification from './notification'
+import upload from './upload'
 
 const appReducer = combineReducers({
   auth,
@@ -22,6 +23,7 @@ const appReducer = combineReducers({
   order,
   settings,
   supplier,
-  notification
+  notification,
+  upload
 })
 export default appReducer

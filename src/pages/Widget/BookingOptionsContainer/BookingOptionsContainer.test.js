@@ -16,6 +16,9 @@ jest.mock('pages/Widget/components/Calendar', () => () => <div />)
 global.localStorage = {
   getItem: jest.fn()
 }
+global.sessionStorage = {
+  removeItem: jest.fn()
+}
 global.window.document.body.scrollIntoView = jest.fn()
 
 coursesService.fetchWidgetCourses = jest.fn(() => courses)
@@ -62,9 +65,7 @@ describe('Initial Render', () => {
   })
 
   it('Renders Booking link', () => {
-    const expected = `/widget/${slug}/payment/${courses[0].id}?hire=auto`
-
-    expect(wrapper.find('Link').prop('to')).toBe(expected)
+    expect(wrapper.find('button').text()).toBe('Book Now')
   })
 })
 
@@ -80,7 +81,6 @@ describe('Change Date', () => {
     wrapper.setState({})
     expect(wrapper.state('selectedCourse').date).toBe('2018-08-14')
 
-    const expected = `/widget/${slug}/payment/83?hire=auto`
-    expect(wrapper.find('Link').prop('to')).toBe(expected)
+    expect(wrapper.find('button').text()).toBe('Book Now')
   })
 })

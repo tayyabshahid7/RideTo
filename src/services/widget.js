@@ -1,5 +1,6 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
+import { FULL_LICENCE_MODULES } from 'common/constants'
 
 export const createStripeToken = async (stripe, data) => {
   return await stripe.createToken({ ...data })
@@ -10,9 +11,14 @@ export const createOrder = async (data, auth = false) => {
 }
 
 export const getInitialSuppliers = () => {
-  return window.RIDE_TO_DATA.widget_locations.filter(
-    ({ courses }) => courses.length
-  )
+  return window.RIDE_TO_DATA.widget_locations
+    .filter(({ courses }) => courses.length)
+    .map(supplier => ({
+      ...supplier,
+      courses: supplier.courses.filter(
+        ({ constant }) => !FULL_LICENCE_MODULES.includes(constant)
+      )
+    }))
 }
 
 export const getAddress = loc => {
@@ -33,8 +39,8 @@ export const getStartInTime = (now, startTime) => {
     .join(', ')
 }
 
-export const getMotorbikeLabel = bikeHire => {
-  return getBikeHireOptions()[bikeHire]
+export const getMotorbikeLabel = (bikeHire, isFullLicence) => {
+  return getBikeHireOptions(isFullLicence)[bikeHire]
 }
 
 export const getTotalOrderPrice = (course, bikeHire) => {

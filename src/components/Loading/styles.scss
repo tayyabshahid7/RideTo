@@ -73,3 +73,11 @@ image using the content attribute.
   top: auto;
   bottom: 50px;
 }
+
+.cover.loadingMask {
+  min-height: 100vh;
+}
+
+.cover.top.loadingMask::after {
+  top: 185px;
+}

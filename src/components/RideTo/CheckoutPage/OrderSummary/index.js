@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import moment from 'moment'
 
 import classnames from 'classnames'
@@ -13,6 +13,7 @@ import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
 import { getExpectedPrice, getBikeHireDetail } from 'services/order'
 import { Button } from 'reactstrap'
+import { SHORT_LICENCE_TYPES } from 'common/constants'
 
 class OrderSummary extends Component {
   constructor(props) {
@@ -51,17 +52,47 @@ class OrderSummary extends Component {
       supplier,
       priceInfo,
       showMap,
-      handleMapButtonClick
+      handleMapButtonClick,
+      trainings
     } = this.props
     const { addons, courseType, date, bike_hire } = checkoutData
     const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
     const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
+    const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.rowContainer}>
-        {this.renderRow('Course', getCourseTitle(courseType))}
+        {isFullLicence &&
+          this.renderRow(
+            'Course',
+            `Full Licence (${
+              SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
+            })`
+          )}
+        {isFullLicence &&
+          trainings.map((training, index) => {
+            if (training.price) {
+              return (
+                <div key={index}>
+                  {this.renderRow(
+                    getCourseTitle(training.course_type).replace(
+                      'Full Licence ',
+                      ''
+                    ),
+                    `${training.requested_time.slice(0, -3)} ${moment(
+                      training.requested_date
+                    ).format('ddd D, MMMM')}`
+                  )}
+                </div>
+              )
+            } else {
+              return null
+            }
+          })}
+        {!isFullLicence && this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
-        {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
+        {!isFullLicence &&
+          this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow(
           'Location',
           <button className={styles.mapButton} onClick={handleMapButtonClick}>
@@ -76,7 +107,7 @@ class OrderSummary extends Component {
             checkout
           />
         )}
-        {priceInfo.training_price
+        {!isFullLicence && priceInfo.training_price
           ? this.renderRow(
               'Training',
               `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
@@ -87,7 +118,7 @@ class OrderSummary extends Component {
           ? this.renderRow(
               'Bike Hire Cost',
               `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
-              100
+              101
             )
           : ''}
         {addons.map((addon, index) =>
@@ -141,10 +172,12 @@ class OrderSummary extends Component {
       loadingPrice,
       details,
       onDetailChange,
-      errors = {}
+      errors = {},
+      checkoutData
     } = this.props
     const { showPromo } = this.state
     let confirmDisabled = saving || !details.accept_terms
+    const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.container}>
@@ -191,6 +224,12 @@ class OrderSummary extends Component {
                 I’ll wear suitable clothing including sturdy trousers (e.g.
                 jeans) and boots
               </li>
+              {isFullLicence && (
+                <Fragment>
+                  <li>I have a valid CBT certificate</li>
+                  <li>I have a valid motorcycle theory certificate</li>
+                </Fragment>
+              )}
             </ul>
           </div>
         </div>

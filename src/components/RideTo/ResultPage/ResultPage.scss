@@ -45,8 +45,6 @@
 .contentWrapper {
   padding: 0px;
   display: flex;
-  // width: auto !important;
-  // justify-content: center;
 }
 
 .contentWrapperInner {
@@ -129,8 +127,10 @@
 
 .dateSelector {
   margin-top: 20px;
+  margin-bottom: 56px;
   @media (max-width: 768px) {
     display: none !important;
+    margin-top: 32px;
   }
 }
 
@@ -156,6 +156,21 @@
   padding: 0 !important;
 }
 
+.schoolCount {
+  margin-top: -2rem;
+  margin-bottom: 1.8rem;
+
+  @media (max-width: 768px) {
+    margin-bottom: 1.5em;
+  }
+}
+
+.schoolCountFullLicence {
+  @media (max-width: 768px) {
+    margin-top: 0;
+  }
+}
+
 .action {
   width: inherit;
   justify-content: center;
@@ -176,7 +191,9 @@
 }
 
 .bookNowDisabled {
+  color: inherit;
   background: var(--light-grey-color);
+  pointer-events: none;
 }
 
 .courseSpacing {
@@ -194,4 +211,8 @@
   @media (max-width: 768px) {
     display: none !important;
   }
+}
+
+.noMargin {
+  margin-top: 0;
 }

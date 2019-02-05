@@ -10,6 +10,7 @@ class CheckoutPageContainer extends Component {
     super(props)
     try {
       this.checkoutData = JSON.parse(sessionStorage.getItem('checkout-data'))
+      this.trainings = JSON.parse(sessionStorage.getItem('trainings'))
     } catch (error) {
       console.log('Error', error)
     }
@@ -18,6 +19,7 @@ class CheckoutPageContainer extends Component {
     this.state = {
       loading: false,
       checkoutData: this.checkoutData || { addons: [] },
+      trainings: this.trainings,
       supplier,
       instantBook: isInstantBook()
     }
@@ -36,7 +38,13 @@ class CheckoutPageContainer extends Component {
   }
 
   render() {
-    const { checkoutData, loading, supplier, instantBook } = this.state
+    const {
+      checkoutData,
+      loading,
+      supplier,
+      instantBook,
+      trainings
+    } = this.state
 
     return (
       <StripeProvider apiKey={this.stripePublicKey}>
@@ -46,6 +54,7 @@ class CheckoutPageContainer extends Component {
             loading={loading}
             supplier={supplier}
             instantBook={instantBook}
+            trainings={trainings}
           />
         </Elements>
       </StripeProvider>

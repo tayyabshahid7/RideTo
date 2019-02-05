@@ -28,7 +28,27 @@ export const apiGetPendingOrders = (schoolId, page, sorting, token) => {
   return axios.get(`api/o/${schoolId}/pending/`, config).catch(error => error)
 }
 
-const request = async (method, path, params, data = null, auth = true) => {
+export const apiGetUnallocatedTests = (schoolId, token) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    baseURL: BASE_URL
+  }
+  return axios
+    .get(`api/o/${schoolId}/upcoming-tests/`, config)
+    .catch(error => error)
+}
+
+const request = async (
+  method,
+  path,
+  params,
+  data = null,
+  auth = true,
+  contentType = 'application/json'
+) => {
   const existingToken = getToken()
   const token =
     auth && isTokenExpiring(existingToken)
@@ -36,7 +56,7 @@ const request = async (method, path, params, data = null, auth = true) => {
       : existingToken
 
   const headers = {
-    'Content-Type': 'application/json'
+    'Content-Type': contentType
   }
   if (auth) {
     headers.Authorization = `Bearer ${token}`
@@ -64,8 +84,8 @@ export const get = async (path, params, auth = true) => {
   return await request('get', path, params, null, auth)
 }
 
-export const post = async (path, data, auth = true) => {
-  return await request('post', path, {}, data, auth)
+export const post = async (path, data, auth = true, contentType) => {
+  return await request('post', path, {}, data, auth, contentType)
 }
 
 export const destroy = async (path, params) => {

@@ -3,10 +3,21 @@ import moment from 'moment'
 
 import styles from './OrderDetails.scss'
 import Loading from 'components/Loading'
-import { getTotalOrderPrice, asPoundSterling } from 'services/widget'
+
+import { getCourseTitle } from 'services/course'
+import { SHORT_LICENCE_TYPES } from 'common/constants'
+import { asPoundSterling } from 'services/widget'
 import { BikeHires } from 'common/info'
 
-const OrderDetails = ({ course, hire, supplier, isLoading }) => {
+const OrderDetails = ({
+  course,
+  hire,
+  supplier,
+  isLoading,
+  totalPrice,
+  isFullLicence,
+  trainings
+}) => {
   if (isLoading) {
     return (
       <div className={styles.loading}>
@@ -17,22 +28,53 @@ const OrderDetails = ({ course, hire, supplier, isLoading }) => {
 
   const dateStr = `${course.date}T${course.time}`
   const startTime = moment(dateStr, 'YYYY-MM-DDTh:mm:ss')
-  const displayPrice = asPoundSterling(getTotalOrderPrice(course, hire))
+  const displayPrice = asPoundSterling(totalPrice)
   const isBikeHire = hire === 'auto' || hire === 'manual'
+  const fullLicenceType =
+    isFullLicence && SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
 
   return (
     <React.Fragment>
       <div className={styles.orderDetails}>
         <div className={styles.school}>
-          {course.course_type.name} {supplier.town}
+          {course.course_type.name} {fullLicenceType}
+          {isFullLicence && ' '}
+          {supplier.town}
         </div>
 
-        <div className={styles.date}>
-          <div>
-            Start: <strong>{startTime.format('h:mm a')}</strong>
+        {isFullLicence ? (
+          trainings.map((training, index) => {
+            const {
+              requested_date,
+              requested_time,
+              school_course_id
+            } = training
+            return (
+              <div className={styles.fullLicenceDate} key={school_course_id}>
+                <div>
+                  <b>
+                    {getCourseTitle(training.course_type).replace(
+                      'Full Licence ',
+                      ''
+                    )}
+                  </b>
+                </div>
+                <div>
+                  {moment(`${requested_date}T${requested_time}`).format(
+                    'h:mm a ddd D, MMMM'
+                  )}
+                </div>
+              </div>
+            )
+          })
+        ) : (
+          <div className={styles.date}>
+            <div>
+              Start: <strong>{startTime.format('h:mm a')}</strong>
+            </div>
+            <div>{startTime.format('dddd MMMM Do YYYY')}</div>
           </div>
-          <div>{startTime.format('dddd MMMM Do YYYY')}</div>
-        </div>
+        )}
 
         <div className={styles.addressDetails}>
           <div>

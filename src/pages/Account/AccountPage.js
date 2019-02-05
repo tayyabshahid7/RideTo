@@ -4,6 +4,7 @@ import AccountSubNavbar from 'components/Account/AccountSubNavbar'
 import AvailabilityCourses from './AvailabilityCourses'
 import AccountPassword from './AccountPassword'
 import BookingWidgetSettings from './BookingWidgetSettings'
+import CsvUpload from './CsvUpload'
 import styles from './styles.scss'
 
 class AccountPage extends Component {
@@ -12,7 +13,7 @@ class AccountPage extends Component {
   // }
 
   render() {
-    const { history } = this.props
+    const { history, schoolId } = this.props
     return (
       <div className={styles.container}>
         <AccountSubNavbar history={history} />
@@ -36,6 +37,13 @@ class AccountPage extends Component {
             exact
             path="/account/widget-settings"
             render={routeProps => <BookingWidgetSettings {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/account/csv-upload"
+            render={routeProps => (
+              <CsvUpload {...routeProps} schoolId={schoolId} />
+            )}
           />
         </div>
       </div>

@@ -98,8 +98,8 @@ export const addSchoolOrder = async (schoolId, order) => {
   return response
 }
 
-export const fetchSchoolOrder = async (schoolId, friendlyId) => {
-  const path = `school/${schoolId}/course/order/${friendlyId}`
+export const fetchSchoolOrder = async (schoolId, trainingId) => {
+  const path = `school/${schoolId}/course/order/${trainingId}`
   const response = await get(path, {})
   return response
 }
@@ -138,6 +138,31 @@ export const getCourseTypes = async schoolId => {
   return response
 }
 
+export const getDasBikeTypes = async schoolId => {
+  const path = `das/${schoolId}`
+  const response = await get(path, {}, false)
+  return response
+}
+
+export const getDasAvailableDates = async (
+  schoolId,
+  full_licence_type,
+  bike_type,
+  course_type,
+  start_date
+) => {
+  const path = `das/${schoolId}/dates`
+  let data = {
+    full_licence_type,
+    bike_type,
+    course_type,
+    start_date
+  }
+  start_date && (data.start_date = start_date)
+  const response = await get(path, data, false)
+  return response
+}
+
 export const getPricingForCourse = async (schoolId, course_type, datetime) => {
   const path = `school/${schoolId}/pricing`
   const response = await get(path, { course_type, datetime })
@@ -168,6 +193,16 @@ export const getShortCourseType = courseType => {
       return 'Renewal'
     case 'INTRO_TO_MOTORCYCLING':
       return 'ITM'
+    case 'FULL_LICENCE':
+      return 'Full'
+    case 'FULL_LICENCE_MOD1_TRAINING':
+      return 'Module 1 Training'
+    case 'FULL_LICENCE_MOD1_TEST':
+      return 'Module 1 Test'
+    case 'FULL_LICENCE_MOD2_TRAINING':
+      return 'Module 2 Training'
+    case 'FULL_LICENCE_MOD2_TEST':
+      return 'Module 2 Test'
     default:
       return 'CBT'
   }
@@ -181,8 +216,29 @@ export const getCourseTitle = courseTypeConstant => {
       return 'CBT Renewal'
     case 'INTRO_TO_MOTORCYCLING':
       return 'ITM Training'
+    case 'FULL_LICENCE':
+      return 'Full Licence'
+    case 'FULL_LICENCE_MOD1_TRAINING':
+      return 'Full Licence Module 1 Training'
+    case 'FULL_LICENCE_MOD1_TEST':
+      return 'Full Licence Module 1 Test'
+    case 'FULL_LICENCE_MOD2_TRAINING':
+      return 'Full Licence Module 2 Training'
+    case 'FULL_LICENCE_MOD2_TEST':
+      return 'Full Licence Module 2 Test'
     default:
       return 'CBT Training'
+  }
+}
+
+export const getLicenceAge = courseTypeConstant => {
+  switch (courseTypeConstant) {
+    case 'FULL_LICENCE_TYPE_A1':
+      return 17
+    case 'FULL_LICENCE_TYPE_A2':
+      return 19
+    default:
+      return 24
   }
 }
 
@@ -208,6 +264,30 @@ export const fetchAvailableCoursesDates = async (
     edate: endDate,
     course_type: courseType
   }
+  const authRequired = false
+  const response = await get(path, params, authRequired)
+
+  return response
+}
+
+export const fetchDayCourseTimes = async (
+  schoolId,
+  date,
+  course_type,
+  bike_type,
+  full_licence_type
+) => {
+  const path = `school/${schoolId}/course/times`
+  const params = {
+    date,
+    course_type,
+    bike_type
+  }
+
+  if (full_licence_type) {
+    params.full_licence_type = full_licence_type
+  }
+
   const authRequired = false
   const response = await get(path, params, authRequired)
 
