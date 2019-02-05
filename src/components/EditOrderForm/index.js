@@ -198,7 +198,7 @@ class EditOrderForm extends React.Component {
                   <InputTextGroup
                     name="customer.licence_number"
                     value={licence_number}
-                    label="License"
+                    label="License Number"
                     className="form-group"
                     type="text"
                     onChange={this.handleChangeRawEvent}
