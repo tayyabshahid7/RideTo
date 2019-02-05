@@ -228,10 +228,11 @@ class FullLicenceDatePicker extends Component {
             <span className={styles.checked}>✓</span>
             <span>
               {new Date(date.date).toLocaleDateString('en-GB', {
-                weekday: 'long',
+                weekday: 'short',
                 day: 'numeric',
                 month: 'long'
-              })}
+              })}{' '}
+              - {date.time.slice(0, -3)}
             </span>
           </div>
           <button
