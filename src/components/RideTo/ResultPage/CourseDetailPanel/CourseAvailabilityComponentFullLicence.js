@@ -43,7 +43,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       onSelectPackage,
       onSelectPackageDate,
       selectedPackageDates,
-      isWidget
+      isWidget,
+      phoneNumber = '02036039652.'
     } = this.props
     const {
       loading,
@@ -62,8 +63,17 @@ class CourseAvailabilityComponentFullLicence extends Component {
         {!isWidget && (
           <div className={styles.subtitle1}>Full Licence (A1/A2 DAS)</div>
         )}
-        <p className={styles.dasInfo}>
-          DAS courses take place over multiple days.
+        <p
+          className={classnames(
+            styles.dasInfo,
+            isWidget && styles.dasInfoWidget
+          )}>
+          Full motorcycle licence training is for anyone looking to progress
+          from a CBT, to remove L plates, carry passengers and ride on
+          motorways. Your age will determine what licence you can go for. Prices
+          include everything you need, including test fees, bike hire and fuel.
+          If you are unsure how many days training you need, call us on{' '}
+          {phoneNumber}
         </p>
 
         <BikePicker
