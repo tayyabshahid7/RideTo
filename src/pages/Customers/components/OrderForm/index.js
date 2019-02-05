@@ -109,10 +109,6 @@ class OrderForm extends React.Component {
         )
       : []
     const isDisabled = !isChanged || isSaving
-    const isFullLicenceTest = [
-      'FULL_LICENCE_MOD1_TEST',
-      'FULL_LICENCE_MOD2_TEST'
-    ].includes(editable.selected_licence)
 
     return (
       <div className={styles.orderForm}>
@@ -214,6 +210,7 @@ class OrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
+            {/*
             {isFullLicenceTest && (
               <Col sm="6">
                 <FormGroup>
@@ -234,6 +231,7 @@ class OrderForm extends React.Component {
                 </FormGroup>
               </Col>
             )}
+            */}
             <Col sm="6">
               <FormGroup>
                 <Label>Amount Paid</Label>
