@@ -83,7 +83,8 @@ class OrdersPanel extends React.Component {
                   showEditButton={
                     // TODO-man-ord If change Orders models in webapp change this too
                     (training.is_manual_order ||
-                      training.direct_friendly_id.startsWith('DIRECT')) &&
+                      (training.direct_friendly_id &&
+                        training.direct_friendly_id.startsWith('DIRECT'))) &&
                     showEditButton
                   }
                 />
