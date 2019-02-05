@@ -68,21 +68,10 @@ class Calendar extends React.Component {
   }
 
   render() {
-    const {
-      date,
-      courses,
-      onChangeDate,
-      onChangeMonth,
-      isLoading,
-      optionsSelected
-    } = this.props
+    const { date, courses, onChangeDate, onChangeMonth, isLoading } = this.props
 
     if (!isLoading && !date) {
-      if (optionsSelected) {
-        return <div className={styles.noCourses}>No Courses Available</div>
-      } else {
-        return <div className={styles.noCourses}>Please select options</div>
-      }
+      return <div className={styles.noCourses}>No Courses Available</div>
     }
 
     return (
