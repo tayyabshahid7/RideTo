@@ -42,9 +42,9 @@ class PackagePicker extends Component {
             <option value="" hidden disabled>
               Select Package
             </option>
-            <option value="4">4 Days Training Package</option>
-            <option value="5">5 Days Training Package</option>
-            <option value="6">6 Days Training Package</option>
+            <option value="4">4 Days - £870.50</option>
+            <option value="5">5 Days - £1065.50</option>
+            <option value="6">6 Days - £1260.50</option>
           </Select>
         </div>
       </div>
