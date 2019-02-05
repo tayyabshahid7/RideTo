@@ -23,10 +23,12 @@ const BIKE_HIRE_OPTIONS = Object.keys(getBikeHireOptions()).map(id => {
 const get_bike_hire_option = option => {
   if (option === 'BIKE_TYPE_MANUAL') {
     return 'manual'
-  } else if (option === 'BIKE_TYPE_AUTOMATIC') {
-    return 'manual'
+  } else if (option === 'BIKE_TYPE_AUTO') {
+    return 'auto'
   } else if (option === 'BIKE_TYPE_NONE') {
     return 'no'
+  } else {
+    return option
   }
 }
 
@@ -77,7 +79,6 @@ class OrderForm extends React.Component {
 
   handleChange(name, value) {
     const { editable } = this.state
-
     this.setState({
       editable: { ...editable, [name]: value },
       isChanged: true
@@ -177,7 +178,7 @@ class OrderForm extends React.Component {
                   options={BIKE_HIRE_OPTIONS}
                   selected={get_bike_hire_option(editable.bike_type) || ''}
                   onChange={value => {
-                    this.handleChange('bike_hire', value)
+                    this.handleChange('bike_type', value)
                   }}
                 />
               </FormGroup>
@@ -220,7 +221,11 @@ class OrderForm extends React.Component {
                   <Input
                     disabled
                     type="text"
-                    value={editable.application_reference_number}
+                    value={
+                      editable.application_reference_number
+                        ? editable.application_reference_number
+                        : ''
+                    }
                     name="application_reference_number"
                     onChange={({ target }) =>
                       this.handleChange(target.name, target.value)
