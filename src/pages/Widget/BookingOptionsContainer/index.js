@@ -358,6 +358,7 @@ class BookingOptionsContainer extends React.Component {
             selectedLicenceType={selectedLicenceType}
             selectedPackageDays={selectedPackageDays}
             selectedPackageDates={selectedPackageDates}
+            phoneNumber={selectedSupplier.phone}
           />
         )}
 
