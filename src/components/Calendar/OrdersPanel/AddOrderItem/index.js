@@ -189,11 +189,11 @@ class AddOrderItem extends React.Component {
               <InputSelectGroup
                 name="bike_hire"
                 value={bike_hire}
-                label={isFullLicence ? 'Bike Hire *' : 'Bike Hire'}
+                label="Bike Hire *"
                 valueArray={BikeHires}
                 noSelectOption
                 onChange={this.handleChangeRawEvent.bind(this)}
-                required={isFullLicence}
+                required
               />
             </Col>
           </Row>
