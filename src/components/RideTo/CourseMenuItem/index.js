@@ -3,6 +3,7 @@ import { lazy } from '@loadable/component'
 import classnames from 'classnames'
 import { getStaticData } from 'services/page'
 import styles from './CourseMenuItem.scss'
+import { FULL_LICENCE_MODULES } from 'common/constants'
 
 const CourseSlider = lazy(() => import('components/RideTo/CourseSlider'))
 
@@ -60,7 +61,10 @@ class CourseMenuItem extends React.Component {
       courseCardsVisible ? styles.visible : null
     )
 
-    const courseTypes = getStaticData('RIDETO_PAGE').courseTypes || []
+    const courseTypes =
+      getStaticData('RIDETO_PAGE').courseTypes.filter(
+        ({ constant }) => !FULL_LICENCE_MODULES.includes(constant)
+      ) || []
 
     return (
       <React.Fragment>
