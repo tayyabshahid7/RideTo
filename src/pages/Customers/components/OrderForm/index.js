@@ -3,6 +3,8 @@ import moment from 'moment'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
 import MinimalSelect from 'components/MinimalSelect'
+import InputSelectGroup from 'components/Forms/InputSelectGroup'
+import { FullLicenceTypes } from 'common/info'
 import Loading from 'components/Loading'
 import {
   getBikeHireOptions,
@@ -247,6 +249,20 @@ class OrderForm extends React.Component {
                 />
               </FormGroup>
             </Col>
+            {isFullLicence && (
+              <Col sm="6">
+                <InputSelectGroup
+                  name="full_licence_type"
+                  value={editable.full_licence_type}
+                  label="Licence Type"
+                  valueArray={FullLicenceTypes}
+                  onChange={({ target }) => {
+                    this.handleChange('full_licence_type', target.value)
+                  }}
+                  required
+                />
+              </Col>
+            )}
           </Row>
           <Row>
             <Col sm="6">
