@@ -16,10 +16,14 @@ export const BikeHires = [
 export function formatBikeConstant(constant) {
   switch (constant) {
     case 'BIKE_TYPE_AUTO':
+    case 'auto':
       return BIKE_HIRE.AUTO
     case 'BIKE_TYPE_MANUAL':
+    case 'manual':
       return BIKE_HIRE.MANUAL
     case 'BIKE_TYPE_NONE':
+    case 'none':
+    case 'no':
     default:
       return BIKE_HIRE.NO
   }
