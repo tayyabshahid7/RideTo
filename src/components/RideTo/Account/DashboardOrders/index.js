@@ -7,13 +7,12 @@ import { showReview } from 'services/order'
 import styles from './DashboardOrders.scss'
 
 const DashboardOrderItem = ({ order, onDetails }) => {
-  const { supplier } = order
+  const { training_location } = order
   const momentDate = order.start_time
     ? moment(order.start_time)
     : moment(order.user_date, 'DD/MM/YYYY')
   const date = momentDate.format('dddd Do MMMM')
   const time = order.start_time ? momentDate.format(', hh:mm') : ''
-
   return (
     <div className={styles.order} onClick={() => onDetails(order)}>
       <div className={styles.title}>
@@ -24,7 +23,7 @@ const DashboardOrderItem = ({ order, onDetails }) => {
         {time}
       </div>
       <div className={styles.location}>
-        {supplier.town}, {supplier.postcode}
+        {training_location.town}, {training_location.postcode}
       </div>
 
       {showReview(order) && (
