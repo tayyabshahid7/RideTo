@@ -31,7 +31,8 @@ const renderDayContents = (day, courses) => {
 const isDayBlocked = (day, courses) => {
   const formatted = day.format('YYYY-MM-DD')
   if (
-    moment().hour() >= 18 &&
+    (moment().hour() >= 18 ||
+      (moment().hour() >= 17 && moment().minute() >= 30)) &&
     day.format('YYYY-MM-DD') ===
       moment()
         .add(1, 'day')
