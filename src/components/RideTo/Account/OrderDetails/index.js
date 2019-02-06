@@ -34,7 +34,7 @@ const renderTraining = order => {
   } else {
     return order.trainings.map((training, key) => {
       return (
-        <React.Fragment>
+        <React.Fragment key={key}>
           <hr />
           {renderRow(
             training.course_type.replace('Full Licence ', ''),
