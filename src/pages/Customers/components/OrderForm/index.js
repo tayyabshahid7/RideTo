@@ -13,13 +13,6 @@ import {
 } from 'services/order'
 import styles from './OrderForm.scss'
 
-const BIKE_HIRE_OPTIONS = Object.keys(getBikeHireOptions()).map(id => {
-  return {
-    id,
-    name: getBikeHireOptions()[id]
-  }
-})
-
 const get_bike_hire_option = option => {
   if (option === 'BIKE_TYPE_MANUAL') {
     return 'manual'
@@ -110,6 +103,14 @@ class OrderForm extends React.Component {
       : []
     const isDisabled = !isChanged || isSaving
 
+    const isFullLicence = editable.selected_licence.startsWith('FULL_LICENCE')
+    const bikeHireOptions = Object.keys(getBikeHireOptions()).map(id => {
+      return {
+        id,
+        name: getBikeHireOptions(isFullLicence)[id]
+      }
+    })
+
     return (
       <div className={styles.orderForm}>
         <h4>Order: #{editable.friendly_id}</h4>
@@ -171,7 +172,7 @@ class OrderForm extends React.Component {
                 <Label>Bike Hire</Label>
                 <MinimalSelect
                   className={styles.select}
-                  options={BIKE_HIRE_OPTIONS}
+                  options={bikeHireOptions}
                   selected={get_bike_hire_option(editable.bike_type) || ''}
                   onChange={value => {
                     this.handleChange('bike_type', value)
