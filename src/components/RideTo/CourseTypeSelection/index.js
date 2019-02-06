@@ -16,6 +16,15 @@ import Loading from 'components/Loading'
 
 import styles from './CourseTypeSelection.scss'
 
+const COURSETYPE_ORDER = [
+  'INTRO_TO_MOTORCYCLING',
+  'LICENCE_CBT',
+  'LICENCE_CBT_RENEWAL',
+  'FULL_LICENCE',
+  'CANTFINDME',
+  'TFL_ONE_ON_ONE'
+]
+
 const getBookUrl = (courseType, postcode) => {
   if (courseType === 'TFL_ONE_ON_ONE') {
     return 'https://rideto.typeform.com/to/axybpw'
@@ -79,7 +88,9 @@ class CourseTypeSelection extends React.Component {
   async componentDidMount() {
     const { postcode } = this.state
     const result = await fetchCoursesTypes(postcode || '')
-    this.courseTypes = result.results
+    this.courseTypes = COURSETYPE_ORDER.map(constant =>
+      result.results.find(courseType => courseType.constant === constant)
+    ).filter(Boolean)
 
     this.setState({
       filteredCourseTypes: this.courseTypes,
