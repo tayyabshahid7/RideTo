@@ -74,7 +74,7 @@ export const saveTraining = async training => {
 }
 
 export const isRideTo = ({ source }) => {
-  return source === 'RIDETO'
+  return source === 'RIDETO' || source === 'RIDETO_INSTANT'
 }
 
 export const getBikeHireOptions = isFullLicence => {
