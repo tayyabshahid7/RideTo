@@ -48,10 +48,8 @@ class OrderListContainer extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const id = parseInt(props.id, 10)
-
   return {
-    orders: orderModule.selectors.getOrdersByCustomer(state.order, id),
+    orders: orderModule.selectors.getItems(state.order),
     isSaving: state.order.isSaving,
     suppliers: supplierModule.selectors.getItems(state.supplier),
     info: state.info

@@ -26,7 +26,9 @@ selectors.getItems = ({ results, items }) => {
 }
 
 selectors.getOrdersByCustomer = ({ items }, customerId) => {
-  return Object.keys(items).map(id => items[id])
+  return Object.keys(items)
+    .map(id => items[id])
+    .filter(({ customer }) => customer === customerId)
 }
 
 export default combineReducers({

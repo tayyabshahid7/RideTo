@@ -3,6 +3,8 @@ import moment from 'moment'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
 import MinimalSelect from 'components/MinimalSelect'
+import InputSelectGroup from 'components/Forms/InputSelectGroup'
+import { FullLicenceTypes } from 'common/info'
 import Loading from 'components/Loading'
 import {
   getBikeHireOptions,
@@ -12,13 +14,6 @@ import {
   isRideTo
 } from 'services/order'
 import styles from './OrderForm.scss'
-
-const BIKE_HIRE_OPTIONS = Object.keys(getBikeHireOptions()).map(id => {
-  return {
-    id,
-    name: getBikeHireOptions()[id]
-  }
-})
 
 const get_bike_hire_option = option => {
   if (option === 'BIKE_TYPE_MANUAL') {
@@ -110,6 +105,14 @@ class OrderForm extends React.Component {
       : []
     const isDisabled = !isChanged || isSaving
 
+    const isFullLicence = editable.selected_licence.startsWith('FULL_LICENCE')
+    const bikeHireOptions = Object.keys(getBikeHireOptions()).map(id => {
+      return {
+        id,
+        name: getBikeHireOptions(isFullLicence)[id]
+      }
+    })
+
     return (
       <div className={styles.orderForm}>
         <h4>Order: #{editable.friendly_id}</h4>
@@ -171,7 +174,7 @@ class OrderForm extends React.Component {
                 <Label>Bike Hire</Label>
                 <MinimalSelect
                   className={styles.select}
-                  options={BIKE_HIRE_OPTIONS}
+                  options={bikeHireOptions}
                   selected={get_bike_hire_option(editable.bike_type) || ''}
                   onChange={value => {
                     this.handleChange('bike_type', value)
@@ -246,6 +249,20 @@ class OrderForm extends React.Component {
                 />
               </FormGroup>
             </Col>
+            {isFullLicence && (
+              <Col sm="6">
+                <InputSelectGroup
+                  name="full_licence_type"
+                  value={editable.full_licence_type}
+                  label="Licence Type"
+                  valueArray={FullLicenceTypes}
+                  onChange={({ target }) => {
+                    this.handleChange('full_licence_type', target.value)
+                  }}
+                  required
+                />
+              </Col>
+            )}
           </Row>
           <Row>
             <Col sm="6">
