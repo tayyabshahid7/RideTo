@@ -58,6 +58,7 @@ export const getRidingExperienceOptions = () => {
 export const getCustomerType = source => {
   switch (source) {
     case 'RIDETO':
+    case 'RIDETO_INSTANT':
       return 'RideTo Rider'
     default:
       return 'Direct'
@@ -71,5 +72,5 @@ export const getEmptyCustomer = source => {
 }
 
 export const isRideTo = ({ source }) => {
-  return source === 'RIDETO'
+  return source === 'RIDETO' || source === 'RIDETO_INSTANT'
 }

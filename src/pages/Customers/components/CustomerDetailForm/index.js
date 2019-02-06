@@ -49,6 +49,8 @@ class CustomerDetailForm extends React.Component {
     const { customer, onChange, onDelete, isDisabled, onCancel } = this.props
     const { orders = [] } = customer
 
+    console.log(customer)
+
     return (
       <Form onSubmit={this.handleSubmit}>
         <Row>
