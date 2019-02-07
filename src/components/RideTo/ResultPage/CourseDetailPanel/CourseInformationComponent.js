@@ -34,7 +34,7 @@ class CourseDetailPanel extends React.Component {
   render() {
     const { course, courseType } = this.props
     const description = !this.isFullLicence
-      ? "On the day of the training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots (something which protect your feet such as walking boots) and suitable clothes forbeing outside all day."
+      ? "On the day of the training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots (something which protect your feet such as walking boots) and suitable clothes for being outside all day."
       : "On the day of training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots and suitable clothes for being outside all day. You must also bring your valid CBT and Motorcycle Theory certificates."
 
     return (
