@@ -87,6 +87,10 @@ class EditOrderForm extends React.Component {
 
     const { bike_type, full_licence_type } = this.state.order
 
+    const isFullLicence = this.state.order.course_type.startsWith(
+      'FULL_LICENCE'
+    )
+
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
@@ -177,7 +181,7 @@ class EditOrderForm extends React.Component {
                   </FormGroup>
                 </Col>
               </Row>
-              {full_licence_type && (
+              {isFullLicence && (
                 <Row>
                   <Col sm="6">
                     <FormGroup>
@@ -198,7 +202,7 @@ class EditOrderForm extends React.Component {
                   <InputTextGroup
                     name="customer.licence_number"
                     value={licence_number}
-                    label="License"
+                    label="License Number"
                     className="form-group"
                     type="text"
                     onChange={this.handleChangeRawEvent}

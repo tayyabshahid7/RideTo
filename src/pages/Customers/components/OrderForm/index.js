@@ -3,6 +3,8 @@ import moment from 'moment'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
 import MinimalSelect from 'components/MinimalSelect'
+import InputSelectGroup from 'components/Forms/InputSelectGroup'
+import { FullLicenceTypes } from 'common/info'
 import Loading from 'components/Loading'
 import {
   getBikeHireOptions,
@@ -13,20 +15,15 @@ import {
 } from 'services/order'
 import styles from './OrderForm.scss'
 
-const BIKE_HIRE_OPTIONS = Object.keys(getBikeHireOptions()).map(id => {
-  return {
-    id,
-    name: getBikeHireOptions()[id]
-  }
-})
-
 const get_bike_hire_option = option => {
   if (option === 'BIKE_TYPE_MANUAL') {
     return 'manual'
-  } else if (option === 'BIKE_TYPE_AUTOMATIC') {
-    return 'manual'
+  } else if (option === 'BIKE_TYPE_AUTO') {
+    return 'auto'
   } else if (option === 'BIKE_TYPE_NONE') {
     return 'no'
+  } else {
+    return option
   }
 }
 
@@ -77,7 +74,6 @@ class OrderForm extends React.Component {
 
   handleChange(name, value) {
     const { editable } = this.state
-
     this.setState({
       editable: { ...editable, [name]: value },
       isChanged: true
@@ -108,10 +104,14 @@ class OrderForm extends React.Component {
         )
       : []
     const isDisabled = !isChanged || isSaving
-    const isFullLicenceTest = [
-      'FULL_LICENCE_MOD1_TEST',
-      'FULL_LICENCE_MOD2_TEST'
-    ].includes(editable.selected_licence)
+
+    const isFullLicence = editable.selected_licence.startsWith('FULL_LICENCE')
+    const bikeHireOptions = Object.keys(getBikeHireOptions()).map(id => {
+      return {
+        id,
+        name: getBikeHireOptions(isFullLicence)[id]
+      }
+    })
 
     return (
       <div className={styles.orderForm}>
@@ -174,10 +174,10 @@ class OrderForm extends React.Component {
                 <Label>Bike Hire</Label>
                 <MinimalSelect
                   className={styles.select}
-                  options={BIKE_HIRE_OPTIONS}
+                  options={bikeHireOptions}
                   selected={get_bike_hire_option(editable.bike_type) || ''}
                   onChange={value => {
-                    this.handleChange('bike_hire', value)
+                    this.handleChange('bike_type', value)
                   }}
                 />
               </FormGroup>
@@ -213,6 +213,7 @@ class OrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
+            {/*
             {isFullLicenceTest && (
               <Col sm="6">
                 <FormGroup>
@@ -220,7 +221,11 @@ class OrderForm extends React.Component {
                   <Input
                     disabled
                     type="text"
-                    value={editable.application_reference_number}
+                    value={
+                      editable.application_reference_number
+                        ? editable.application_reference_number
+                        : ''
+                    }
                     name="application_reference_number"
                     onChange={({ target }) =>
                       this.handleChange(target.name, target.value)
@@ -229,6 +234,7 @@ class OrderForm extends React.Component {
                 </FormGroup>
               </Col>
             )}
+            */}
             <Col sm="6">
               <FormGroup>
                 <Label>Amount Paid</Label>
@@ -243,6 +249,20 @@ class OrderForm extends React.Component {
                 />
               </FormGroup>
             </Col>
+            {isFullLicence && (
+              <Col sm="6">
+                <InputSelectGroup
+                  name="full_licence_type"
+                  value={editable.full_licence_type}
+                  label="Licence Type"
+                  valueArray={FullLicenceTypes}
+                  onChange={({ target }) => {
+                    this.handleChange('full_licence_type', target.value)
+                  }}
+                  required
+                />
+              </Col>
+            )}
           </Row>
           <Row>
             <Col sm="6">

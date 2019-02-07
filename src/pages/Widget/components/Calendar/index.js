@@ -31,7 +31,8 @@ const renderDayContents = (day, courses) => {
 const isDayBlocked = (day, courses) => {
   const formatted = day.format('YYYY-MM-DD')
   if (
-    moment().hour() >= 18 &&
+    (moment().hour() >= 18 ||
+      (moment().hour() >= 17 && moment().minute() >= 30)) &&
     day.format('YYYY-MM-DD') ===
       moment()
         .add(1, 'day')
@@ -68,21 +69,10 @@ class Calendar extends React.Component {
   }
 
   render() {
-    const {
-      date,
-      courses,
-      onChangeDate,
-      onChangeMonth,
-      isLoading,
-      optionsSelected
-    } = this.props
+    const { date, courses, onChangeDate, onChangeMonth, isLoading } = this.props
 
     if (!isLoading && !date) {
-      if (optionsSelected) {
-        return <div className={styles.noCourses}>No Courses Available</div>
-      } else {
-        return <div className={styles.noCourses}>Please select options</div>
-      }
+      return <div className={styles.noCourses}>No Courses Available</div>
     }
 
     return (

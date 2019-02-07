@@ -8,7 +8,9 @@ import Cell from 'components/DataTable/Cell'
 import Loading from 'components/Loading'
 
 const getDisplaySource = ({ source }) => {
-  return source === 'RIDETO' ? 'RideTo' : 'Direct'
+  return source === 'RIDETO' || source === 'RIDETO_INSTANT'
+    ? 'RideTo'
+    : 'Direct'
 }
 
 const CustomerList = ({ customers, ordering, isLoading, onSort }) => {

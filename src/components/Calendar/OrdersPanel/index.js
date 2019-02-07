@@ -80,7 +80,13 @@ class OrdersPanel extends React.Component {
                 <OrdersPanelItem
                   training={training}
                   onEdit={() => this.handleShowEditForm(index)}
-                  showEditButton={training.is_manual_order && showEditButton}
+                  showEditButton={
+                    // TODO-man-ord If change Orders models in webapp change this too
+                    (training.is_manual_order ||
+                      (training.direct_friendly_id &&
+                        training.direct_friendly_id.startsWith('DIRECT'))) &&
+                    showEditButton
+                  }
                 />
                 {editOrderIndex === index && (
                   <EditOrderFormContainer

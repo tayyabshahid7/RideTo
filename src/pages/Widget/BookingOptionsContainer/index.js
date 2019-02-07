@@ -32,7 +32,18 @@ const getSchoolCoursesByDate = (selectedDate, courses) => {
 }
 
 const getEarliestDate = courses => {
-  const dates = courses.map(({ date }) => date).sort()
+  let dates = courses.map(({ date }) => date).sort()
+
+  if (
+    (moment().hour() >= 18 ||
+      (moment().hour() >= 17 && moment().minute() >= 30)) &&
+    moment(dates[0]).format('YYYY-MM-DD') ===
+      moment()
+        .add(1, 'day')
+        .format('YYYY-MM-DD')
+  ) {
+    dates.shift()
+  }
 
   return dates.length ? moment(dates[0], 'YYYY-MM-DD') : null
 }
@@ -40,17 +51,18 @@ const getEarliestDate = courses => {
 class BookingOptionsContainer extends React.Component {
   constructor(props) {
     super(props)
+    const { selectedSupplier } = props
 
     this.state = {
-      courseType: '',
+      courseType: selectedSupplier.courses[0],
       schoolCourses: [],
       availableCourses: [],
       selectedCourse: null,
       selectedDate: null,
       selectedBikeHire: 'no',
       month: moment().startOf('month'),
-      isLoading: false,
-      isFullLicence: null,
+      isLoading: true,
+      isFullLicence: selectedSupplier.courses[0].constant === 'FULL_LICENCE',
       selectedLicenceType: null,
       selectedPackageDays: '',
       selectedPackageDates: [],
@@ -72,13 +84,13 @@ class BookingOptionsContainer extends React.Component {
     window.document.body.scrollIntoView()
   }
 
-  componentDidUpdate(oldProps, oldState) {
-    if (
-      this.props.selectedSupplier &&
-      this.state.courseType &&
-      (this.props.selectedSupplier !== oldProps.selectedSupplier ||
-        this.state.courseType !== oldState.courseType)
-    ) {
+  componentDidMount() {
+    const { month } = this.state
+    this.fetchCourses(month.clone())
+  }
+
+  componentDidUpdate(oldProps) {
+    if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       const { month } = this.state
       this.setState({ isLoading: true })
       this.fetchCourses(month.clone())
@@ -87,7 +99,7 @@ class BookingOptionsContainer extends React.Component {
 
   async fetchCourses(month) {
     const { selectedSupplier } = this.props
-    const courseType = this.state.courseType
+    const courseType = this.state.courseType || selectedSupplier.courses[0]
     const schoolCourses = await fetchWidgetCourses(
       selectedSupplier.id,
       month.startOf('month').format('YYYY-MM-DD'),
@@ -313,33 +325,30 @@ class BookingOptionsContainer extends React.Component {
       return <Redirect push to={submit} />
     }
 
-    if (!suppliers.length) {
-      return <div className={styles.bookingOptions}>No Location Found</div>
+    if (!courseType) {
+      return <div className={styles.bookingOptions}>No Course Found</div>
     }
 
     return (
       <div className={styles.bookingOptions}>
         <BookingOption
-          placeholder
-          label="Location:"
-          options={suppliers}
-          labelField="address_1"
-          selected={selectedSupplier && selectedSupplier.id}
-          onChange={onChangeSupplier}
+          label="Training:"
+          options={selectedSupplier.courses}
+          selected={courseType.id}
+          onChange={this.handleChangeCourseType}
         />
 
         <BookingOption
-          disabled={!selectedSupplier}
-          placeholder
-          label="Training:"
-          options={selectedSupplier ? selectedSupplier.courses : []}
-          selected={courseType && courseType.id}
-          onChange={this.handleChangeCourseType}
+          label="Location:"
+          options={suppliers}
+          labelField="address_1"
+          selected={selectedSupplier.id}
+          onChange={onChangeSupplier}
         />
 
         {!isFullLicence ? (
           <Calendar
-            optionsSelected={!!selectedSupplier && !!courseType}
+            // optionsSelected={!!selectedSupplier && !!courseType}
             color={widget.calendar_color}
             date={selectedDate}
             courses={availableCourses}
@@ -358,6 +367,7 @@ class BookingOptionsContainer extends React.Component {
             selectedLicenceType={selectedLicenceType}
             selectedPackageDays={selectedPackageDays}
             selectedPackageDates={selectedPackageDates}
+            phoneNumber={selectedSupplier.phone}
           />
         )}
 
