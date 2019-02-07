@@ -1,5 +1,5 @@
 import React from 'react'
-import MaskedInput from 'react-maskedinput'
+import MaskedInput from 'react-text-mask'
 import styles from './DateInput.scss'
 
 class DateInput extends React.Component {
@@ -10,7 +10,7 @@ class DateInput extends React.Component {
         {...this.props}
         className={styles.input}
         value={value}
-        mask="11/11/1111"
+        mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
         size="7"
         onChange={this.props.onChange}
       />
