@@ -46,9 +46,6 @@ class CourseDetailPanel extends React.Component {
               ''
             )} ${course.location_slug.replace('-', ' ')}`}
           </div>
-          <div className={styles.address}>{`${course.place} ${
-            course.postcode
-          }`}</div>
           <div className={styles.features}>
             {course.mciac_approved &&
               this.renderFeature('Approved', 'MCIAC Approved')}
@@ -61,15 +58,21 @@ class CourseDetailPanel extends React.Component {
               this.renderFeature('Class', 'Indoor Classroom')}
           </div>
         </div>
-        <div className={styles.bring}>
-          <div className={styles.subtitle}>What you need to bring</div>
-          <div className={styles.desc}>{description}</div>
-        </div>
-        <MapComponent className={styles.mapWrapper} courses={[course]} />
         <CourseTypeDetails
           courseType={this.selectedCourseType}
           title="Course information"
         />
+        <div className={styles.bring}>
+          <div className={styles.subtitle}>What you need to bring</div>
+          <div className={styles.desc}>{description}</div>
+        </div>
+        <div className={styles.locationInfo}>
+          <div className={styles.subtitle}>Location</div>
+          <div className={styles.address}>{`${course.place} ${
+            course.postcode
+          }`}</div>
+          <MapComponent className={styles.mapWrapper} courses={[course]} />
+        </div>
         <div className={styles.instructor}>
           <div className={styles.subtitle}>The Instructor</div>
           <div className={styles.desc}>{course.rideto_opinion}</div>
