@@ -15,6 +15,7 @@ class CourseDetailPanel extends React.Component {
     this.selectedCourseType = staticData.courseTypes.find(
       type => type.constant === this.props.courseType
     )
+    this.isFullLicence = this.selectedCourseType.constant === 'FULL_LICENCE'
   }
 
   renderFeature(iconName, title) {
@@ -32,6 +33,9 @@ class CourseDetailPanel extends React.Component {
 
   render() {
     const { course, courseType } = this.props
+    const description = !this.isFullLicence
+      ? "On the day of the training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots (something which protect your feet such as walking boots) and suitable clothes forbeing outside all day."
+      : "On the day of training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots and suitable clothes for being outside all day. You must also bring your valid CBT and Motorcycle Theory certificates."
 
     return (
       <Fragment>
@@ -59,12 +63,7 @@ class CourseDetailPanel extends React.Component {
         </div>
         <div className={styles.bring}>
           <div className={styles.subtitle}>What you need to bring</div>
-          <div className={styles.desc}>
-            On the day of the training you'll need to bring a Valid UK Driving
-            or Provisional Licence, wear sturdy Jeans and Boots (something which
-            protect your feet such as walking boots) and suitable clothes for
-            being outside all day.
-          </div>
+          <div className={styles.desc}>{description}</div>
         </div>
         <MapComponent className={styles.mapWrapper} courses={[course]} />
         <CourseTypeDetails
