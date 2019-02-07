@@ -304,16 +304,19 @@ class ResultPage extends Component {
     bike_hire,
     ifullLicence
   ) {
-    const { selectedPackageDates } = this.state
+    // const { selectedPackageDates } = this.state
 
     return (
       <RideToButton
         className={classnames(
           styles.action,
-          bookNowDisabled && ifullLicence && styles.bookNowDisabled
+          bookNowDisabled &&
+            this.state.activeTab === 3 &&
+            ifullLicence &&
+            styles.bookNowDisabled
         )}
         onClick={() => {
-          isAllPackageDatesSelected(selectedPackageDates)
+          // isAllPackageDatesSelected(selectedPackageDates)
           if (this.state.activeTab !== 3) {
             this.setState({ activeTab: 3 })
           } else {

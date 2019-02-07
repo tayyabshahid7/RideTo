@@ -180,9 +180,12 @@ class FullLicenceDatePicker extends Component {
   }
 
   componentDidMount() {
-    const { index } = this.props
+    const { index, selectedPackageDates } = this.props
+    const indexOfFirstEmptyDate = selectedPackageDates
+      .map(date => date.date)
+      .indexOf('')
 
-    if (index === 0) {
+    if (index === indexOfFirstEmptyDate) {
       this.loadDates()
     }
   }
