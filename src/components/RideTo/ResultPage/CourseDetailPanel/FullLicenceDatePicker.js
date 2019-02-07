@@ -175,9 +175,12 @@ class FullLicenceDatePicker extends Component {
   }
 
   async componentDidMount() {
-    const { index } = this.props
+    const { index, selectedPackageDates } = this.props
+    const indexOfFirstEmptyDate = selectedPackageDates
+      .map(date => date.date)
+      .indexOf('')
 
-    if (index === 0) {
+    if (index === indexOfFirstEmptyDate) {
       this.container.current.scrollIntoView()
 
       this.loadDates()
