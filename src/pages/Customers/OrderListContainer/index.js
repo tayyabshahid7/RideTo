@@ -30,7 +30,7 @@ class OrderListContainer extends React.Component {
     const { orders, suppliers, isSaving, loadCourseTypes, info } = this.props
     return (
       <Col className={styles.orderListContainer}>
-        <h3 className={styles.title}>Trainings</h3>
+        <h3 className={styles.title}>Orders</h3>
         {orders.map(order => (
           <OrderForm
             courseTypes={info.courseTypes}
