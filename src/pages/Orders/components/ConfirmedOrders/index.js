@@ -21,10 +21,8 @@ class ConfirmedOrders extends Component {
     this.state = {
       friendly_id: null,
       training_date_time: null,
-      bike_hire: null,
-      user_name: null,
-      user_phone: null,
-      booking_status: null
+      first_name: null,
+      selected_licence: null
     }
     this.handleSort = this.handleSort.bind(this)
   }
@@ -75,13 +73,10 @@ class ConfirmedOrders extends Component {
     const newState = shiftPressed
       ? {}
       : {
-          friendly_id: null,
+          order__friendly_id: null,
           training_date_time: null,
-          bike_hire: null,
-          user_name: null,
-          user_phone: null,
-          booking_status: null,
-          selected_licence: null
+          order__customer__first_name: null,
+          course_type__constant: null
         }
 
     this.setState({ ...newState, [column]: ordering }, () => {
@@ -92,11 +87,12 @@ class ConfirmedOrders extends Component {
 
   render() {
     const {
-      friendly_id,
-      training_date_time,
-      user_name,
-      selected_licence
+      order__friendly_id: friendly_id,
+      order__customer__first_name: first_name,
+      course_type__constant: selected_licence,
+      training_date_time
     } = this.state
+
     return (
       <div className={styles.container}>
         {
@@ -110,10 +106,14 @@ class ConfirmedOrders extends Component {
                 <thead>
                   <tr>
                     <Header
-                      column="friendly_id"
+                      column="order__friendly_id"
                       ordering={friendly_id || ''}
                       onSort={(ordering, shiftPressed) => {
-                        this.handleSort('friendly_id', ordering, shiftPressed)
+                        this.handleSort(
+                          'order__friendly_id',
+                          ordering,
+                          shiftPressed
+                        )
                       }}>
                       Order #
                     </Header>
@@ -130,11 +130,11 @@ class ConfirmedOrders extends Component {
                       Training Date
                     </Header>
                     <Header
-                      column="selected_licence"
+                      column="course_type__constant"
                       ordering={selected_licence || ''}
                       onSort={(ordering, shiftPressed) => {
                         this.handleSort(
-                          'selected_licence',
+                          'course_type__constant',
                           ordering,
                           shiftPressed
                         )
@@ -143,10 +143,14 @@ class ConfirmedOrders extends Component {
                     </Header>
                     <Header>Bike Hire</Header>
                     <Header
-                      column="user_name"
-                      ordering={user_name || ''}
+                      column="order__customer__first_name"
+                      ordering={first_name || ''}
                       onSort={(ordering, shiftPressed) => {
-                        this.handleSort('user_name', ordering, shiftPressed)
+                        this.handleSort(
+                          'order__customer__first_name',
+                          ordering,
+                          shiftPressed
+                        )
                       }}>
                       Rider Name
                     </Header>
@@ -161,13 +165,17 @@ class ConfirmedOrders extends Component {
                       <Cell>
                         {this._checkCancelledOrRejected(training.status)
                           ? getDate(training.requested_date)
-                          : training.requested_date}
+                          : moment(training.requested_date).format('D MMM YY')}
                       </Cell>
-                      <Cell>{getCourseTitle(training.selected_licence)}</Cell>
+                      <Cell>{getCourseTitle(training.course_type)}</Cell>
                       <Cell>
-                        {training.bike_type === 'BIKE_TYPE_AUTO'
+                        {['BIKE_TYPE_AUTO', 'auto', 'AUTO'].includes(
+                          training.bike_type
+                        )
                           ? 'Automatic'
-                          : training.bike_type === 'BIKE_TYPE_MANUAL'
+                          : ['BIKE_TYPE_MANUAL', 'manual', 'MANUAL'].includes(
+                              training.bike_type
+                            )
                           ? 'Manual'
                           : 'None'}
                       </Cell>
