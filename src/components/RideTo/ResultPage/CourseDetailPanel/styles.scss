@@ -34,17 +34,32 @@
 
 .content,
 .instructor,
-.bring {
+.bring,
+.locationInfo {
   padding: 45px 60px;
   @media (max-width: 768px) {
     padding: 30px 32px;
   }
 }
 
-.bring {
+.content {
+  margin-bottom: -45px;
+  @media (max-width: 768px) {
+    margin-bottom: -30px;
+  }
+}
+
+.bring,
+.locationInfo {
   margin-top: -45px;
   @media (max-width: 768px) {
     margin-top: -30px;
+  }
+}
+
+.locationInfo {
+  .address {
+    margin-bottom: 1rem;
   }
 }
 
