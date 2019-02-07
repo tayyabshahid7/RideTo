@@ -137,11 +137,19 @@
   margin-right: 6px;
   stroke: var(--dark-color);
   fill: var(--dark-color);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .detail {
   text-decoration: underline;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .mileIcon {
