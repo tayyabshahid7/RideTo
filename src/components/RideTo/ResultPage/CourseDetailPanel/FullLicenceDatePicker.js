@@ -165,31 +165,32 @@ class FullLicenceDatePicker extends Component {
             const days = await this.generateDaysDataFromCalendar(
               this.state.calendar
             )
-            this.setState({
-              days
-            })
+            this.setState(
+              {
+                days
+              },
+              () => {
+                this.container.current.scrollIntoView()
+              }
+            )
           }
         )
       })
     }
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     const { index } = this.props
 
     if (index === 0) {
-      this.container.current.scrollIntoView()
-
       this.loadDates()
     }
   }
 
-  async componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps) {
     const { showCalendar } = this.props
 
     if (showCalendar !== prevProps.showCalendar && showCalendar) {
-      this.container.current.scrollIntoView()
-
       this.loadDates()
     }
   }
@@ -202,16 +203,18 @@ class FullLicenceDatePicker extends Component {
       if (!date.date) {
         if (showCalendar) {
           return (
-            <AvailabilityCalendar
-              showLabel={false}
-              showTrainingTime={false}
-              days={days}
-              calendar={{ ...calendar, selectedDate: date.date }}
-              handleDateSelect={this.handleDateSelect.bind(this)}
-              handlePrevMonth={this.handlePrevMonth.bind(this)}
-              handleNextMonth={this.handleNextMonth.bind(this)}
-              disablePreviousDates
-            />
+            <div className={styles.fullLicenceCalendar}>
+              <AvailabilityCalendar
+                showLabel={false}
+                showTrainingTime={false}
+                days={days}
+                calendar={{ ...calendar, selectedDate: date.date }}
+                handleDateSelect={this.handleDateSelect.bind(this)}
+                handlePrevMonth={this.handlePrevMonth.bind(this)}
+                handleNextMonth={this.handleNextMonth.bind(this)}
+                disablePreviousDates
+              />
+            </div>
           )
         }
 
