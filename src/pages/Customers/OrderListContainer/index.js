@@ -34,7 +34,7 @@ class OrderListContainer extends React.Component {
         {orders.map(order => (
           <OrderForm
             courseTypes={info.courseTypes}
-            key={order.friendly_id}
+            key={order.id}
             order={order}
             suppliers={suppliers}
             onSave={this.handleSave}
