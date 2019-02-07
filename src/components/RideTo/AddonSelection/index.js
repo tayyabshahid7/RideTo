@@ -24,6 +24,12 @@ class AddonSelection extends React.Component {
       step3Params.push(`supplierId=${qs.supplierId}`)
     }
 
+    if (qs.courseType === 'FULL_LICENCE') {
+      qs.date = JSON.parse(
+        sessionStorage.getItem('trainings')
+      )[0].requested_date
+    }
+
     this.navigation = [
       {
         title: 'Postcode',
