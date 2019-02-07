@@ -98,7 +98,7 @@ class CourseItem extends Component {
               <IconInfo className={styles.detailIcon} />{' '}
               <span
                 onClick={() => handleDetailClick(course)}
-                className={styles.detail}>
+                className={classnames(styles.detail, styles.detailsLink)}>
                 Details
               </span>
               <StarsComponent

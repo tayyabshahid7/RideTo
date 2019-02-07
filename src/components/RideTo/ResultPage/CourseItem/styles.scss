@@ -146,7 +146,9 @@
 .detail {
   text-decoration: underline;
   cursor: pointer;
+}
 
+.detailsLink {
   @media (max-width: 768px) {
     display: none;
   }
