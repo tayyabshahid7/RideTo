@@ -5,6 +5,7 @@ import { getDasAvailableDates } from 'services/course'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import { DATE_FORMAT } from 'common/constants'
 import classnames from 'classnames'
+import Loading from 'components/Loading'
 
 class FullLicenceDatePicker extends Component {
   constructor(props) {
@@ -141,6 +142,8 @@ class FullLicenceDatePicker extends Component {
     const { schoolId, licence, bike_hire, type, start_date } = this.props
 
     if (start_date) {
+      this.container.current.scrollIntoView()
+
       const availableDates = await getDasAvailableDates(
         schoolId,
         licence,
@@ -165,14 +168,9 @@ class FullLicenceDatePicker extends Component {
             const days = await this.generateDaysDataFromCalendar(
               this.state.calendar
             )
-            this.setState(
-              {
-                days
-              },
-              () => {
-                this.container.current.scrollIntoView()
-              }
-            )
+            this.setState({
+              days
+            })
           }
         )
       })
@@ -203,18 +201,20 @@ class FullLicenceDatePicker extends Component {
       if (!date.date) {
         if (showCalendar) {
           return (
-            <div className={styles.fullLicenceCalendar}>
-              <AvailabilityCalendar
-                showLabel={false}
-                showTrainingTime={false}
-                days={days}
-                calendar={{ ...calendar, selectedDate: date.date }}
-                handleDateSelect={this.handleDateSelect.bind(this)}
-                handlePrevMonth={this.handlePrevMonth.bind(this)}
-                handleNextMonth={this.handleNextMonth.bind(this)}
-                disablePreviousDates
-              />
-            </div>
+            <Loading loading={!days.length}>
+              <div className={styles.fullLicenceCalendar}>
+                <AvailabilityCalendar
+                  showLabel={false}
+                  showTrainingTime={false}
+                  days={days}
+                  calendar={{ ...calendar, selectedDate: date.date }}
+                  handleDateSelect={this.handleDateSelect.bind(this)}
+                  handlePrevMonth={this.handlePrevMonth.bind(this)}
+                  handleNextMonth={this.handleNextMonth.bind(this)}
+                  disablePreviousDates
+                />
+              </div>
+            </Loading>
           )
         }
 
