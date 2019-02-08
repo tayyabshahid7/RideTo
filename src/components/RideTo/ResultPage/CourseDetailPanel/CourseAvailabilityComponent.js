@@ -73,8 +73,8 @@ class CourseAvailabilityComponent extends React.Component {
     let today = moment()
     let tomorrow = moment()
       .add(1, 'days')
-      .hour(18)
-      .minutes(0)
+      .hour(17)
+      .minutes(30)
     return dates.map(date => {
       let momentDate = moment(date)
       let dateInString = momentDate.format('YYYY-MM-DD')
