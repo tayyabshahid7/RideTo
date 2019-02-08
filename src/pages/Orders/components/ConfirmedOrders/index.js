@@ -184,12 +184,12 @@ class ConfirmedOrders extends Component {
                       <Cell>
                         {this._checkCancelledOrRejected(training.status)
                           ? '-'
-                          : training.customer.full_name}
+                          : training.customer && training.customer.full_name}
                       </Cell>
                       <Cell>
                         {this._checkCancelledOrRejected(training.status)
                           ? '-'
-                          : training.customer.phone}
+                          : training.customer && training.customer.phone}
                       </Cell>
                       <Cell>{this._getTrainingStatus(training.status)}</Cell>
                     </tr>
