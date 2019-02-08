@@ -19,7 +19,7 @@ actions.fetchSupplierOrders = common.fetch(
   MODULE,
   orderService.fetchSupplierOrders
 )
-actions.saveOrder = common.save(MODULE, orderService.saveOrder)
+actions.saveTraining = common.save(MODULE, orderService.saveTraining)
 
 selectors.getItems = ({ results, items }) => {
   return results.map(id => items[id])
@@ -32,10 +32,10 @@ selectors.getOrdersByCustomer = ({ items }, customerId) => {
 }
 
 export default combineReducers({
-  items: common.items(MODULE, 'friendly_id'),
+  items: common.items(MODULE),
   isSaving: common.isSaving(MODULE),
   total: common.total(MODULE),
   isFetching: common.isFetchingItems(MODULE),
-  result: common.result(MODULE, 'friendly_id'),
-  results: common.results(MODULE, 'friendly_id')
+  result: common.result(MODULE),
+  results: common.results(MODULE)
 })

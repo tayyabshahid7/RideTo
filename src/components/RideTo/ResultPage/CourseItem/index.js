@@ -3,14 +3,12 @@ import classnames from 'classnames'
 import { UncontrolledTooltip } from 'reactstrap'
 import styles from './styles.scss'
 import StarsComponent from 'components/RideTo/StarsComponent'
-import { IconArrowRight, IconInfo, IconDistance } from 'assets/icons'
+import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import { getFeatureInfo } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 
 class CourseItem extends Component {
-  handleDetailClick() {}
-
   highlightPinOnMap(event) {
     const idElement = event.currentTarget.id
     const pinWrapper = document.getElementById(`${idElement.substring(5)}`)
@@ -73,7 +71,7 @@ class CourseItem extends Component {
           className={classnames(styles.container, className)}>
           <div
             className={styles.photo}
-            onClick={() => handlePriceClick(course)}>
+            onClick={() => handleDetailClick(course)}>
             <img src={course.image} className={styles.image} alt="logo" />
           </div>
           <div className={styles.info}>
@@ -100,7 +98,7 @@ class CourseItem extends Component {
               <IconInfo className={styles.detailIcon} />{' '}
               <span
                 onClick={() => handleDetailClick(course)}
-                className={styles.detail}>
+                className={classnames(styles.detail, styles.detailsLink)}>
                 Details
               </span>
               <StarsComponent
@@ -115,9 +113,11 @@ class CourseItem extends Component {
             </div>
           </div>
           <div className={styles.footer}>
-            <div className={styles.price}>
-              £{parseInt(course.price / 100.0, 10)}
-            </div>
+            {course.price && (
+              <div className={styles.price}>
+                £{parseInt(course.price / 100.0, 10)}
+              </div>
+            )}
             <div
               className={classnames(
                 styles.cta,

@@ -20,17 +20,18 @@ class ConfirmedOrders extends Component {
     super(props)
     this.state = {
       friendly_id: null,
-      start_time: null,
-      bike_hire: null,
-      user_name: null,
-      user_phone: null,
-      booking_status: null
+      training_date_time: null,
+      first_name: null,
+      selected_licence: null
     }
     this.handleSort = this.handleSort.bind(this)
   }
 
-  _checkCancelledOrRejected(order) {
-    if (order.cancelled || order.booking_status !== 'SCHOOL_CONFIRMED_BOOK') {
+  _checkCancelledOrRejected(status) {
+    if (
+      status === 'TRAINING_CANCELLED' ||
+      status === 'TRAINING_WAITING_RIDER_CONFIRMATION'
+    ) {
       return true
     }
     return false
@@ -48,17 +49,34 @@ class ConfirmedOrders extends Component {
     return sortingData.toString()
   }
 
+  _getTrainingStatus(status) {
+    if (status === 'TRAINING_CANCELLED') {
+      return 'Cancelled'
+    } else if (status === 'TRAINING_CONFIRMED') {
+      return 'Confirmed'
+    } else if (status === 'TRAINING_FAILED') {
+      return 'Not passed'
+    } else if (status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION') {
+      return 'Pending'
+    } else if (status === 'TRAINING_WAITING_RIDER_CONFIRMATION') {
+      return 'Waiting for rider'
+    } else if (status === 'TRAINING_NO_SHOW') {
+      return 'No show'
+    } else if (status === 'TRAINING_PASSED') {
+      return 'CBT Passed'
+    } else {
+      return 'N/A'
+    }
+  }
+
   handleSort(column, ordering, shiftPressed) {
     const newState = shiftPressed
       ? {}
       : {
-          friendly_id: null,
-          start_time: null,
-          bike_hire: null,
-          user_name: null,
-          user_phone: null,
-          booking_status: null,
-          selected_licence: null
+          order__friendly_id: null,
+          training_date_time: null,
+          order__customer__first_name: null,
+          course_type__constant: null
         }
 
     this.setState({ ...newState, [column]: ordering }, () => {
@@ -68,7 +86,12 @@ class ConfirmedOrders extends Component {
   }
 
   render() {
-    const { friendly_id, start_time, user_name, selected_licence } = this.state
+    const {
+      order__friendly_id: friendly_id,
+      order__customer__first_name: first_name,
+      course_type__constant: selected_licence,
+      training_date_time
+    } = this.state
 
     return (
       <div className={styles.container}>
@@ -83,27 +106,35 @@ class ConfirmedOrders extends Component {
                 <thead>
                   <tr>
                     <Header
-                      column="friendly_id"
+                      column="order__friendly_id"
                       ordering={friendly_id || ''}
                       onSort={(ordering, shiftPressed) => {
-                        this.handleSort('friendly_id', ordering, shiftPressed)
+                        this.handleSort(
+                          'order__friendly_id',
+                          ordering,
+                          shiftPressed
+                        )
                       }}>
                       Order #
                     </Header>
                     <Header
-                      column="start_time"
-                      ordering={start_time || ''}
+                      column="training_date_time"
+                      ordering={training_date_time || ''}
                       onSort={(ordering, shiftPressed) => {
-                        this.handleSort('start_time', ordering, shiftPressed)
+                        this.handleSort(
+                          'training_date_time',
+                          ordering,
+                          shiftPressed
+                        )
                       }}>
                       Training Date
                     </Header>
                     <Header
-                      column="selected_licence"
+                      column="course_type__constant"
                       ordering={selected_licence || ''}
                       onSort={(ordering, shiftPressed) => {
                         this.handleSort(
-                          'selected_licence',
+                          'course_type__constant',
                           ordering,
                           shiftPressed
                         )
@@ -112,10 +143,14 @@ class ConfirmedOrders extends Component {
                     </Header>
                     <Header>Bike Hire</Header>
                     <Header
-                      column="user_name"
-                      ordering={user_name || ''}
+                      column="order__customer__first_name"
+                      ordering={first_name || ''}
                       onSort={(ordering, shiftPressed) => {
-                        this.handleSort('user_name', ordering, shiftPressed)
+                        this.handleSort(
+                          'order__customer__first_name',
+                          ordering,
+                          shiftPressed
+                        )
                       }}>
                       Rider Name
                     </Header>
@@ -124,39 +159,37 @@ class ConfirmedOrders extends Component {
                   </tr>
                 </thead>
                 <tbody>
-                  {this.props.confirmedOrders.map(order => (
-                    <tr key={order.friendly_id}>
-                      <Cell>{order.friendly_id}</Cell>
+                  {this.props.confirmedOrders.map(training => (
+                    <tr key={training.id}>
+                      <Cell>{training.order.direct_friendly_id}</Cell>
                       <Cell>
-                        {this._checkCancelledOrRejected(order)
-                          ? order.user_date
-                          : getDate(order.start_time)}
+                        {this._checkCancelledOrRejected(training.status)
+                          ? getDate(training.requested_date)
+                          : moment(training.requested_date).format('D MMM YY')}
                       </Cell>
-                      <Cell>{getCourseTitle(order.selected_licence)}</Cell>
+                      <Cell>{getCourseTitle(training.course_type)}</Cell>
                       <Cell>
-                        {order.bike_hire === 'auto'
+                        {['BIKE_TYPE_AUTO', 'auto', 'AUTO'].includes(
+                          training.bike_type
+                        )
                           ? 'Automatic'
-                          : order.bike_hire === 'manual'
-                            ? 'Manual'
-                            : 'None'}
+                          : ['BIKE_TYPE_MANUAL', 'manual', 'MANUAL'].includes(
+                              training.bike_type
+                            )
+                          ? 'Manual'
+                          : 'None'}
                       </Cell>
                       <Cell>
-                        {this._checkCancelledOrRejected(order)
+                        {this._checkCancelledOrRejected(training.status)
                           ? '-'
-                          : order.user_name}
+                          : training.customer.full_name}
                       </Cell>
                       <Cell>
-                        {this._checkCancelledOrRejected(order)
+                        {this._checkCancelledOrRejected(training.status)
                           ? '-'
-                          : order.user_phone}
+                          : training.customer.phone}
                       </Cell>
-                      <Cell>
-                        {order.cancelled
-                          ? 'Cancelled'
-                          : order.booking_status === 'SCHOOL_CONFIRMED_BOOK'
-                            ? 'Confirmed'
-                            : 'Rejected'}
-                      </Cell>
+                      <Cell>{this._getTrainingStatus(training.status)}</Cell>
                     </tr>
                   ))}
                 </tbody>

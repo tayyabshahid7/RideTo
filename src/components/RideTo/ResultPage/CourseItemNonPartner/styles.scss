@@ -96,6 +96,12 @@
   cursor: pointer;
 }
 
+.detailsLink {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
 .mileIcon {
   margin-right: 6px;
   stroke: var(--dark-color);
@@ -107,6 +113,10 @@
   margin-right: 6px;
   stroke: var(--dark-color);
   fill: var(--dark-color);
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 }
 
 .starComponent {

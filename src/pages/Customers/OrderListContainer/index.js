@@ -2,7 +2,7 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
-
+import { loadCourseTypes } from 'store/info'
 import * as orderModule from 'store/order'
 import * as supplierModule from 'store/supplier'
 import OrderForm from 'pages/Customers/components/OrderForm'
@@ -11,7 +11,6 @@ import styles from './OrderListContainer.scss'
 class OrderListContainer extends React.Component {
   componentDidMount() {
     const { id } = this.props
-
     if (id !== 'create') {
       this.props.fetchOrders({ customer: parseInt(id, 10) })
     }
@@ -21,22 +20,26 @@ class OrderListContainer extends React.Component {
   }
 
   handleSave(order) {
-    this.props.saveOrder(order)
+    if (order.payout && order.payout.includes('£')) {
+      order.payout = order.payout.replace('£', '')
+    }
+    this.props.saveTraining(order)
   }
 
   render() {
-    const { orders, suppliers, isSaving } = this.props
-
+    const { orders, suppliers, isSaving, loadCourseTypes, info } = this.props
     return (
       <Col className={styles.orderListContainer}>
-        <h3 className={styles.title}>Training</h3>
+        <h3 className={styles.title}>Orders</h3>
         {orders.map(order => (
           <OrderForm
-            key={order.friendly_id}
+            courseTypes={info.courseTypes}
+            key={order.id}
             order={order}
             suppliers={suppliers}
             onSave={this.handleSave}
             isSaving={isSaving}
+            loadCourseTypes={loadCourseTypes}
           />
         ))}
       </Col>
@@ -45,12 +48,11 @@ class OrderListContainer extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
-  const id = parseInt(props.id, 10)
-
   return {
-    orders: orderModule.selectors.getOrdersByCustomer(state.order, id),
+    orders: orderModule.selectors.getItems(state.order),
     isSaving: state.order.isSaving,
-    suppliers: supplierModule.selectors.getItems(state.supplier)
+    suppliers: supplierModule.selectors.getItems(state.supplier),
+    info: state.info
   }
 }
 
@@ -60,7 +62,8 @@ export default connect(
     bindActionCreators(
       {
         ...orderModule.actions,
-        ...supplierModule.actions
+        ...supplierModule.actions,
+        loadCourseTypes
       },
       dispatch
     )

@@ -20,6 +20,7 @@ import { getCurrentLicenceOptions } from 'services/customer'
 import { getCourseTitle } from 'services/course'
 import { getBikeHireDetail } from 'services/order'
 import styles from './styles.scss'
+import { SHORT_LICENCE_TYPES } from 'common/constants'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class UserDetails extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
     this.handleBillingAddressChange = this.handleBillingAddressChange.bind(this)
+    this.handlePhoneChange = this.handlePhoneChange.bind(this)
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
   }
@@ -46,6 +48,11 @@ class UserDetails extends Component {
   handleBillingAddressChange(name, value) {
     const { onDetailChange } = this.props
     onDetailChange(`billingAddress.${name}`, value)
+  }
+
+  handlePhoneChange(value) {
+    const { onDetailChange } = this.props
+    onDetailChange('phone', value)
   }
 
   handleSearchPostcode() {
@@ -84,17 +91,47 @@ class UserDetails extends Component {
       supplier,
       priceInfo,
       showMap,
-      handleMapButtonClick
+      handleMapButtonClick,
+      trainings
     } = this.props
     const { addons, courseType, date, bike_hire } = checkoutData
     const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
     const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
+    const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.rowContainer}>
-        {this.renderRow('Course', getCourseTitle(courseType))}
+        {isFullLicence &&
+          this.renderRow(
+            'Course',
+            `Full Licence (${
+              SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
+            })`
+          )}
+        {isFullLicence &&
+          trainings.map((training, index) => {
+            if (training.price) {
+              return (
+                <div key={index}>
+                  {this.renderRow(
+                    getCourseTitle(training.course_type).replace(
+                      'Full Licence ',
+                      ''
+                    ),
+                    `${training.requested_time.slice(0, -3)} ${moment(
+                      training.requested_date
+                    ).format('ddd D, MMMM')}`
+                  )}
+                </div>
+              )
+            } else {
+              return null
+            }
+          })}
+        {!isFullLicence && this.renderRow('Course', getCourseTitle(courseType))}
         {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
-        {this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
+        {!isFullLicence &&
+          this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
         {this.renderRow(
           'Location',
           <button className={styles.mapButton} onClick={handleMapButtonClick}>
@@ -109,7 +146,7 @@ class UserDetails extends Component {
             checkout
           />
         )}
-        {priceInfo.training_price
+        {!isFullLicence && priceInfo.training_price
           ? this.renderRow(
               'Training',
               `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
@@ -120,7 +157,7 @@ class UserDetails extends Component {
           ? this.renderRow(
               'Bike Hire Cost',
               `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
-              100
+              101
             )
           : ''}
         {addons.map((addon, index) =>
@@ -207,7 +244,7 @@ class UserDetails extends Component {
               styles.input
             )}>
             <DateInput
-              placeholder="Date of Birth (DD/MM/YYYY)"
+              placeholder="Date of Birth"
               id="user_birthdate"
               name="user_birthdate"
               minyears={16}
@@ -229,7 +266,7 @@ class UserDetails extends Component {
               placeholder="Telephone Number"
               name="phone"
               value={details.phone}
-              onChange={this.handleChange}
+              onChange={this.handlePhoneChange}
               required
             />
           </div>

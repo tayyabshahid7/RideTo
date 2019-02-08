@@ -8,7 +8,8 @@ const MinimalSelect = ({
   disabled = false,
   className = ``,
   labelField = 'name',
-  valueField = 'id'
+  valueField = 'id',
+  placeholder
 }) => {
   const overrideClass = `${styles.minimal} ${className}`
 
@@ -23,6 +24,11 @@ const MinimalSelect = ({
           e.target.options[e.target.selectedIndex].innerText
         )
       }>
+      {placeholder && (
+        <option disabled value="">
+          {typeof placeholder === 'boolean' ? 'Select' : placeholder}
+        </option>
+      )}
       {options.map(opt => (
         <option
           key={opt[valueField]}

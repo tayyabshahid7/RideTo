@@ -1,9 +1,9 @@
 import React from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
-import MapComponent from 'components/RideTo/MapComponent'
 import CourseReviewsComponent from './CourseReviewsComponent'
 import CourseAvailabilityComponent from './CourseAvailabilityComponent'
+import CourseAvailabilityComponentFullLicence from './CourseAvailabilityComponentFullLicence'
 import CourseInformationComponent from './CourseInformationComponent'
 
 class CourseDetailPanel extends React.Component {
@@ -32,7 +32,12 @@ class CourseDetailPanel extends React.Component {
       onUpdate,
       bike_hire,
       activeTab,
-      courseType
+      courseType,
+      selectedLicenceType,
+      selectedPackageDays,
+      onSelectPackage,
+      onSelectPackageDate,
+      selectedPackageDates
     } = this.props
 
     return (
@@ -41,34 +46,33 @@ class CourseDetailPanel extends React.Component {
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '1' && styles.active
+              activeTab === 1 && styles.active
             )}
-            onClick={() => this.toggle('1')}>
+            onClick={() => this.toggle(1)}>
             Information
           </div>
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '2' && styles.active
+              activeTab === 2 && styles.active
             )}
-            onClick={() => this.toggle('2')}>
+            onClick={() => this.toggle(2)}>
             Reviews
           </div>
           <div
             className={classnames(
               styles.tabItem,
-              activeTab === '3' && styles.active
+              activeTab === 3 && styles.active
             )}
-            onClick={() => this.toggle('3')}>
+            onClick={() => this.toggle(3)}>
             Availability
           </div>
         </div>
-        {activeTab === '1' && <CourseInformationComponent course={course} />}
-        {activeTab === '1' && (
-          <MapComponent className={styles.mapWrapper} courses={[course]} />
+        {activeTab === 1 && (
+          <CourseInformationComponent course={course} courseType={courseType} />
         )}
-        {activeTab === '2' && <CourseReviewsComponent course={course} />}
-        {activeTab === '3' && (
+        {activeTab === 2 && <CourseReviewsComponent course={course} />}
+        {activeTab === 3 && courseType !== 'FULL_LICENCE' && (
           <CourseAvailabilityComponent
             course={course}
             courseType={courseType}
@@ -77,6 +81,18 @@ class CourseDetailPanel extends React.Component {
             instantDate={instantDate}
             bike_hire={bike_hire}
             onUpdate={onUpdate}
+          />
+        )}
+        {activeTab === 3 && courseType === 'FULL_LICENCE' && (
+          <CourseAvailabilityComponentFullLicence
+            course={course}
+            bike_hire={bike_hire}
+            onUpdate={onUpdate}
+            onSelectPackage={onSelectPackage}
+            onSelectPackageDate={onSelectPackageDate}
+            selectedLicenceType={selectedLicenceType}
+            selectedPackageDays={selectedPackageDays}
+            selectedPackageDates={selectedPackageDates}
           />
         )}
       </div>

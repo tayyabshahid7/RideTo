@@ -3,6 +3,8 @@ import moment from 'moment'
 import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
 
 import MinimalSelect from 'components/MinimalSelect'
+import InputSelectGroup from 'components/Forms/InputSelectGroup'
+import { FullLicenceTypes } from 'common/info'
 import Loading from 'components/Loading'
 import {
   getBikeHireOptions,
@@ -13,12 +15,17 @@ import {
 } from 'services/order'
 import styles from './OrderForm.scss'
 
-const BIKE_HIRE_OPTIONS = Object.keys(getBikeHireOptions()).map(id => {
-  return {
-    id,
-    name: getBikeHireOptions()[id]
+const get_bike_hire_option = option => {
+  if (option === 'BIKE_TYPE_MANUAL') {
+    return 'manual'
+  } else if (option === 'BIKE_TYPE_AUTO') {
+    return 'auto'
+  } else if (option === 'BIKE_TYPE_NONE') {
+    return 'no'
+  } else {
+    return option
   }
-})
+}
 
 const getTime = startTime => {
   if (startTime) {
@@ -37,12 +44,23 @@ class OrderForm extends React.Component {
     super(props)
 
     this.state = {
-      editable: { ...props.order },
+      editable: {
+        application_reference_number: '',
+        ...props.order
+      },
       isChanged: false,
-      isSending: false
+      isSending: false,
+      courseTypes: []
     }
     this.handleCancel = this.handleCancel.bind(this)
     this.handleConfirmation = this.handleConfirmation.bind(this)
+  }
+
+  componentDidMount() {
+    const { loadCourseTypes } = this.props
+    const { training_location } = this.state.editable
+
+    loadCourseTypes({ schoolId: training_location })
   }
 
   componentDidUpdate(prevProps) {
@@ -56,7 +74,6 @@ class OrderForm extends React.Component {
 
   handleChange(name, value) {
     const { editable } = this.state
-
     this.setState({
       editable: { ...editable, [name]: value },
       isChanged: true
@@ -78,13 +95,29 @@ class OrderForm extends React.Component {
   }
 
   render() {
-    const { suppliers, isSaving, onSave } = this.props
+    const { suppliers, isSaving, onSave, courseTypes } = this.props
     const { editable, isChanged, isSending } = this.state
-    const selectedSupplier = suppliers.find(
-      ({ id }) => id === editable.supplier
-    )
-    const courses = selectedSupplier ? selectedSupplier.courses : []
+    const courses = courseTypes
+      ? courseTypes.filter(
+          course =>
+            !['TFL_ONE_ON_ONE', 'FULL_LICENCE'].includes(course.constant)
+        )
+      : []
     const isDisabled = !isChanged || isSaving
+
+    if (!editable) {
+      return null
+    }
+
+    const isFullLicence =
+      editable.selected_licence &&
+      editable.selected_licence.startsWith('FULL_LICENCE')
+    const bikeHireOptions = Object.keys(getBikeHireOptions()).map(id => {
+      return {
+        id,
+        name: getBikeHireOptions(isFullLicence)[id]
+      }
+    })
 
     return (
       <div className={styles.orderForm}>
@@ -98,7 +131,7 @@ class OrderForm extends React.Component {
                   className={styles.select}
                   disabled={isRideTo(editable)}
                   options={suppliers}
-                  selected={editable.supplier || ''}
+                  selected={editable.training_location || ''}
                   onChange={value => {
                     this.handleChange('supplier', parseInt(value, 10))
                   }}
@@ -110,7 +143,7 @@ class OrderForm extends React.Component {
                 <Label>Training</Label>
                 <MinimalSelect
                   className={styles.select}
-                  disabled={isRideTo(editable)}
+                  disabled={true && isRideTo(editable)}
                   options={courses}
                   valueField="constant"
                   selected={editable.selected_licence || ''}
@@ -128,7 +161,7 @@ class OrderForm extends React.Component {
                 <Input
                   type="date"
                   disabled={true}
-                  value={getDate(editable.start_time) || ''}
+                  value={getDate(editable.training_date_time) || ''}
                 />
               </FormGroup>
             </Col>
@@ -138,7 +171,7 @@ class OrderForm extends React.Component {
                 <Input
                   type="time"
                   disabled={true}
-                  value={getTime(editable.start_time) || ''}
+                  value={getTime(editable.training_date_time) || ''}
                 />
               </FormGroup>
             </Col>
@@ -147,10 +180,10 @@ class OrderForm extends React.Component {
                 <Label>Bike Hire</Label>
                 <MinimalSelect
                   className={styles.select}
-                  options={BIKE_HIRE_OPTIONS}
-                  selected={editable.bike_hire || ''}
+                  options={bikeHireOptions}
+                  selected={get_bike_hire_option(editable.bike_type) || ''}
                   onChange={value => {
-                    this.handleChange('bike_hire', value)
+                    this.handleChange('bike_type', value)
                   }}
                 />
               </FormGroup>
@@ -164,9 +197,9 @@ class OrderForm extends React.Component {
                   className={styles.select}
                   options={getPaymentOptions()}
                   disabled={isRideTo(editable)}
-                  selected={editable.status || ''}
+                  selected={editable.payment_status || ''}
                   onChange={value => {
-                    this.handleChange('status', value)
+                    this.handleChange('payment_status', value)
                   }}
                 />
               </FormGroup>
@@ -186,14 +219,28 @@ class OrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            <Col sm="6">
-              <FormGroup>
-                <Label>Stripe</Label>
-                <a className={styles.link} href={editable.stripe_charge_href}>
-                  {editable.stripe_charge_href}
-                </a>
-              </FormGroup>
-            </Col>
+            {/*
+            {isFullLicenceTest && (
+              <Col sm="6">
+                <FormGroup>
+                  <Label>Theory Test Number</Label>
+                  <Input
+                    disabled
+                    type="text"
+                    value={
+                      editable.application_reference_number
+                        ? editable.application_reference_number
+                        : ''
+                    }
+                    name="application_reference_number"
+                    onChange={({ target }) =>
+                      this.handleChange(target.name, target.value)
+                    }
+                  />
+                </FormGroup>
+              </Col>
+            )}
+            */}
             <Col sm="6">
               <FormGroup>
                 <Label>Amount Paid</Label>
@@ -206,6 +253,30 @@ class OrderForm extends React.Component {
                     this.handleChange(target.name, target.value)
                   }
                 />
+              </FormGroup>
+            </Col>
+            {isFullLicence && (
+              <Col sm="6">
+                <InputSelectGroup
+                  name="full_licence_type"
+                  value={editable.full_licence_type}
+                  label="Licence Type"
+                  valueArray={FullLicenceTypes}
+                  onChange={({ target }) => {
+                    this.handleChange('full_licence_type', target.value)
+                  }}
+                  required
+                />
+              </Col>
+            )}
+          </Row>
+          <Row>
+            <Col sm="6">
+              <FormGroup>
+                <Label>Stripe</Label>
+                <a className={styles.link} href={editable.stripe_charge_href}>
+                  {editable.stripe_charge_href}
+                </a>
               </FormGroup>
             </Col>
           </Row>

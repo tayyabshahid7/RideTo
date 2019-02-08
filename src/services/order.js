@@ -48,7 +48,6 @@ export const getDateFilters = () => {
 export const fetchSupplierOrders = async (schoolId, params = {}) => {
   const path = `o/${schoolId}/confirmed/`
   const response = await get(path, params)
-
   return response
 }
 
@@ -66,53 +65,58 @@ export const sendConfirmation = async order => {
   return response
 }
 
-export const saveOrder = async order => {
-  const { id } = order
+export const saveTraining = async training => {
+  const { id } = training
   const path = id ? `o/${id}` : `o/`
   const method = id ? put : post
 
-  return await method(path, order)
+  return await method(path, training)
 }
 
 export const isRideTo = ({ source }) => {
-  return source === 'RIDETO'
+  return source === 'RIDETO' || source === 'RIDETO_INSTANT'
 }
 
-export const getBikeHireOptions = () => {
+export const getBikeHireOptions = isFullLicence => {
   return {
     no: 'Own Bike',
     auto: 'Automatic Scooter',
-    manual: 'Manual 125cc Motorcycle'
+    manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual Motorcycle'
   }
 }
 
 export const getPaymentOptions = () => {
   return [
     {
-      id: 'paid',
+      id: 'PAID',
       name: 'Paid'
     },
     {
-      id: 'pending',
+      id: 'PENDING',
       name: 'Payment Outstanding'
+    },
+    {
+      id: 'PARTIAL_PAYMENT',
+      name: 'Partially paid'
     }
   ]
 }
 
 export const getTrainingStatusOptions = () => {
   return [
-    {
-      id: 'NON_START',
-      name: 'Non-start'
-    },
-    {
-      id: 'NON_COMPLETION',
-      name: 'Non-completion'
-    },
-    {
-      id: 'COMPLETED',
-      name: 'Completed'
-    }
+    { id: 'TRAINING_CONFIRMED', name: 'Confirmed' },
+    { id: 'TRAINING_FAILED', name: 'Not completed' },
+    { id: 'TRAINING_CANCELLED', name: 'Cancelled' },
+    // {
+    //   id: 'TRAINING_WAITING_SCHOOL_CONFIRMATION',
+    //   name: 'Waiting for school confirmation'
+    // },
+    // {
+    //   id: 'TRAINING_WAITING_RIDER_CONFIRMATION',
+    //   name: 'Waiting for rider confirmation'
+    // },
+    { id: 'TRAINING_NO_SHOW', name: 'Not attended' },
+    { id: 'TRAINING_PASSED', name: 'Completed' }
   ]
 }
 

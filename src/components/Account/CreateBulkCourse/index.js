@@ -4,7 +4,9 @@ import { Button, Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
+import Input from 'components/Forms/Input'
 import Loading from 'components/Loading'
+import classnames from 'classnames'
 
 class CreateBulkCourse extends React.Component {
   constructor(props) {
@@ -20,7 +22,13 @@ class CreateBulkCourse extends React.Component {
       duration: '',
       notes: '',
       auto_bikes: '',
-      manual_bikes: ''
+      manual_bikes: '',
+      a1_auto_bikes: '',
+      a2_auto_bikes: '',
+      a_auto_bikes: '',
+      a1_manual_bikes: '',
+      a2_manual_bikes: '',
+      a_manual_bikes: ''
     }
 
     this.state = {
@@ -82,7 +90,13 @@ class CreateBulkCourse extends React.Component {
       end_time,
       notes,
       auto_bikes,
-      manual_bikes
+      manual_bikes,
+      a1_auto_bikes,
+      a2_auto_bikes,
+      a_auto_bikes,
+      a1_manual_bikes,
+      a2_manual_bikes,
+      a_manual_bikes
     } = this.state.course
 
     let repeat = {
@@ -106,12 +120,18 @@ class CreateBulkCourse extends React.Component {
       instructor_id,
       time,
       spaces,
-      auto_bikes,
-      manual_bikes,
+      auto_bikes: auto_bikes || 0,
+      manual_bikes: manual_bikes || 0,
       notes,
       duration: duration.toString(),
       supplier: schoolId.toString(),
-      date: start_date
+      date: start_date,
+      a1_auto_bikes: a1_auto_bikes || 0,
+      a2_auto_bikes: a2_auto_bikes || 0,
+      a_auto_bikes: a_auto_bikes || 0,
+      a1_manual_bikes: a1_manual_bikes || 0,
+      a2_manual_bikes: a2_manual_bikes || 0,
+      a_manual_bikes: a_manual_bikes || 0
     }
     onSubmit({ school_course, repeat })
   }
@@ -135,8 +155,23 @@ class CreateBulkCourse extends React.Component {
       end_time,
       notes,
       auto_bikes,
-      manual_bikes
+      manual_bikes,
+      a1_auto_bikes,
+      a2_auto_bikes,
+      a_auto_bikes,
+      a1_manual_bikes,
+      a2_manual_bikes,
+      a_manual_bikes
     } = this.state.course
+
+    const courseTypes = info.courseTypes.filter(
+      type => type.constant !== 'FULL_LICENCE'
+    )
+
+    const isFullLicence = courseTypes
+      .filter(type => type.constant.startsWith('FULL_LICENCE'))
+      .some(type => type.id === parseInt(course_type_id, 10))
+
     return (
       <div className={styles.container}>
         <div className={styles.title}>
@@ -150,7 +185,7 @@ class CreateBulkCourse extends React.Component {
                   name="course_type_id"
                   value={course_type_id}
                   label=""
-                  valueArray={info.courseTypes.map(courseType => ({
+                  valueArray={courseTypes.map(courseType => ({
                     value: courseType.id,
                     title: courseType.name
                   }))}
@@ -172,27 +207,129 @@ class CreateBulkCourse extends React.Component {
                   required
                 />
               </Col>
-              <Col>
-                <InputTextGroup
-                  name="auto_bikes"
-                  value={auto_bikes}
-                  label="Automatic"
-                  className="form-group"
-                  type="number"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-              <Col>
-                <InputTextGroup
-                  name="manual_bikes"
-                  value={manual_bikes}
-                  label="Manual"
-                  className="form-group"
-                  type="number"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
+              {!isFullLicence && (
+                <React.Fragment>
+                  <Col>
+                    <InputTextGroup
+                      name="auto_bikes"
+                      value={auto_bikes}
+                      label="Automatic"
+                      className="form-group"
+                      type="number"
+                      onChange={this.handleChangeRawEvent.bind(this)}
+                    />
+                  </Col>
+                  <Col>
+                    <InputTextGroup
+                      name="manual_bikes"
+                      value={manual_bikes}
+                      label="Manual"
+                      className="form-group"
+                      type="number"
+                      onChange={this.handleChangeRawEvent.bind(this)}
+                    />
+                  </Col>
+                </React.Fragment>
+              )}
             </Row>
+
+            {isFullLicence && (
+              <Row className={styles.formRow}>
+                <Col className={styles.formGroup}>
+                  <table className={classnames('table', styles.formTable)}>
+                    <tbody>
+                      <tr>
+                        <td />
+                        <td>Automatic</td>
+                        <td>Manual</td>
+                      </tr>
+                      <tr>
+                        <td>A1</td>
+                        <td>
+                          <Input
+                            className={styles.inputNumber}
+                            name="a1_auto_bikes"
+                            value={a1_auto_bikes || ''}
+                            type="number"
+                            min="0"
+                            max={spaces}
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            required
+                          />
+                        </td>
+                        <td>
+                          <Input
+                            className={styles.inputNumber}
+                            name="a1_manual_bikes"
+                            value={a1_manual_bikes || ''}
+                            type="number"
+                            min="0"
+                            max={spaces}
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>A2</td>
+                        <td>
+                          <Input
+                            className={styles.inputNumber}
+                            name="a2_auto_bikes"
+                            value={a2_auto_bikes || ''}
+                            type="number"
+                            min="0"
+                            max={spaces}
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            required
+                          />
+                        </td>
+                        <td>
+                          <Input
+                            className={styles.inputNumber}
+                            name="a2_manual_bikes"
+                            value={a2_manual_bikes || ''}
+                            type="number"
+                            min="0"
+                            max={spaces}
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>A</td>
+                        <td>
+                          <Input
+                            className={styles.inputNumber}
+                            name="a_auto_bikes"
+                            value={a_auto_bikes || ''}
+                            type="number"
+                            min="0"
+                            max={spaces}
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            required
+                          />
+                        </td>
+                        <td>
+                          <Input
+                            className={styles.inputNumber}
+                            name="a_manual_bikes"
+                            value={a_manual_bikes || ''}
+                            type="number"
+                            min="0"
+                            max={spaces}
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            required
+                          />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Col>
+              </Row>
+            )}
+
             <Row>
               <Col>
                 <InputTextGroup

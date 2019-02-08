@@ -12,12 +12,20 @@ import Button from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import classnames from 'classnames'
 
+import Loading from 'components/Loading'
+
 import styles from './CourseTypeSelection.scss'
 
+const COURSETYPE_ORDER = [
+  'INTRO_TO_MOTORCYCLING',
+  'LICENCE_CBT',
+  'LICENCE_CBT_RENEWAL',
+  'FULL_LICENCE',
+  'TFL_ONE_ON_ONE'
+]
+
 const getBookUrl = (courseType, postcode) => {
-  if (courseType === 'FULL_LICENCE') {
-    return 'https://rideto.typeform.com/to/oXgXKP'
-  } else if (courseType === 'TFL_ONE_ON_ONE') {
+  if (courseType === 'TFL_ONE_ON_ONE') {
     return 'https://rideto.typeform.com/to/axybpw'
   } else {
     return `/course-location/?postcode=${postcode}&courseType=${courseType}`
@@ -25,7 +33,7 @@ const getBookUrl = (courseType, postcode) => {
 }
 
 const isTypeform = courseType => {
-  if (courseType === 'FULL_LICENCE' || courseType === 'TFL_ONE_ON_ONE') {
+  if (courseType === 'TFL_ONE_ON_ONE') {
     return true
   } else {
     return false
@@ -67,7 +75,8 @@ class CourseTypeSelection extends React.Component {
       selectedFilter: { tag: 'ALL', name: 'All' },
       postcode: qs.postcode || '',
       selectedCourseType: null,
-      navigation: this.navigation
+      navigation: this.navigation,
+      loading: true
     }
 
     this.handleSelectFilter = this.handleSelectFilter.bind(this)
@@ -78,10 +87,13 @@ class CourseTypeSelection extends React.Component {
   async componentDidMount() {
     const { postcode } = this.state
     const result = await fetchCoursesTypes(postcode || '')
-    this.courseTypes = result.results
+    this.courseTypes = COURSETYPE_ORDER.map(constant =>
+      result.results.find(courseType => courseType.constant === constant)
+    ).filter(Boolean)
 
     this.setState({
-      filteredCourseTypes: this.courseTypes
+      filteredCourseTypes: this.courseTypes,
+      loading: false
     })
   }
 
@@ -121,7 +133,8 @@ class CourseTypeSelection extends React.Component {
       selectedFilter,
       selectedCourseType,
       detailsImage,
-      navigation
+      navigation,
+      loading
     } = this.state
 
     const footer = selectedCourseType ? (
@@ -145,38 +158,40 @@ class CourseTypeSelection extends React.Component {
           }}
           navigation={navigation}
         />
-        <Container className={styles.container}>
-          <Row>
-            <Col sm={{ size: 4, offset: 8 }} className={styles.filtersTitle}>
-              Filter Courses
-            </Col>
-          </Row>
-          <Row className={styles.filters}>
-            <Col sm="6">
-              <h2 className={styles.heading}>Choose a Course</h2>
-            </Col>
-            <Col sm="6">
-              <CourseTypeSelectionFilters
-                filters={this.filters}
-                selected={selectedFilter}
-                onSelect={this.handleSelectFilter}
-              />
-            </Col>
-          </Row>
-          <Row>
-            {filteredCourseTypes.map(courseType => (
-              <Col sm="4" key={courseType.name}>
-                <CourseTypeItem
-                  isTypeform={isTypeform(courseType.constant)}
-                  postcode={postcode}
-                  courseType={courseType}
-                  onClickDetails={this.handleDetails}
-                  url={getBookUrl(courseType.constant, postcode)}
+        <Loading loading={loading} position="top" cover>
+          <Container className={styles.container}>
+            <Row>
+              <Col sm={{ size: 4, offset: 8 }} className={styles.filtersTitle}>
+                Filter Courses
+              </Col>
+            </Row>
+            <Row className={styles.filters}>
+              <Col sm="6">
+                <h2 className={styles.heading}>Choose a Course</h2>
+              </Col>
+              <Col sm="6">
+                <CourseTypeSelectionFilters
+                  filters={this.filters}
+                  selected={selectedFilter}
+                  onSelect={this.handleSelectFilter}
                 />
               </Col>
-            ))}
-          </Row>
-        </Container>
+            </Row>
+            <Row>
+              {filteredCourseTypes.map(courseType => (
+                <Col sm="4" key={courseType.name}>
+                  <CourseTypeItem
+                    isTypeform={isTypeform(courseType.constant)}
+                    postcode={postcode}
+                    courseType={courseType}
+                    onClickDetails={this.handleDetails}
+                    url={getBookUrl(courseType.constant, postcode)}
+                  />
+                </Col>
+              ))}
+            </Row>
+          </Container>
+        </Loading>
         <SidePanel
           footer={footer}
           visible={selectedCourseType !== null}
