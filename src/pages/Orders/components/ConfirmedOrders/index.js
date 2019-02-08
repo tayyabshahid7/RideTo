@@ -161,7 +161,9 @@ class ConfirmedOrders extends Component {
                 <tbody>
                   {this.props.confirmedOrders.map(training => (
                     <tr key={training.id}>
-                      <Cell>{training.order.direct_friendly_id}</Cell>
+                      <Cell>
+                        {training.order && training.order.direct_friendly_id}
+                      </Cell>
                       <Cell>
                         {this._checkCancelledOrRejected(training.status)
                           ? getDate(training.requested_date)
