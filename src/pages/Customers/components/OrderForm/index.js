@@ -105,7 +105,13 @@ class OrderForm extends React.Component {
       : []
     const isDisabled = !isChanged || isSaving
 
-    const isFullLicence = editable.selected_licence.startsWith('FULL_LICENCE')
+    if (!editable) {
+      return null
+    }
+
+    const isFullLicence =
+      editable.selected_licence &&
+      editable.selected_licence.startsWith('FULL_LICENCE')
     const bikeHireOptions = Object.keys(getBikeHireOptions()).map(id => {
       return {
         id,
