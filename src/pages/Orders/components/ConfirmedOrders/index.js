@@ -161,7 +161,9 @@ class ConfirmedOrders extends Component {
                 <tbody>
                   {this.props.confirmedOrders.map(training => (
                     <tr key={training.id}>
-                      <Cell>{training.order.direct_friendly_id}</Cell>
+                      <Cell>
+                        {training.order && training.order.direct_friendly_id}
+                      </Cell>
                       <Cell>
                         {this._checkCancelledOrRejected(training.status)
                           ? getDate(training.requested_date)
@@ -182,12 +184,12 @@ class ConfirmedOrders extends Component {
                       <Cell>
                         {this._checkCancelledOrRejected(training.status)
                           ? '-'
-                          : training.customer.full_name}
+                          : training.customer && training.customer.full_name}
                       </Cell>
                       <Cell>
                         {this._checkCancelledOrRejected(training.status)
                           ? '-'
-                          : training.customer.phone}
+                          : training.customer && training.customer.phone}
                       </Cell>
                       <Cell>{this._getTrainingStatus(training.status)}</Cell>
                     </tr>
