@@ -24,11 +24,7 @@ export const fetchOrder = async orderId => {
 export const getChecklist = () => {
   return [
     {
-      text: 'Add a Bike to your garage',
-      checked: true
-    },
-    {
-      text: 'Book your CBT Training',
+      text: 'Book your training',
       checked: true
     },
     {
@@ -38,7 +34,8 @@ export const getChecklist = () => {
     },
     {
       text: 'Get an Insurance Quote',
-      href: 'http://www.lexhaminsurance.co.uk/?aff=LEX6327',
+      href:
+        'https://www.thebikeinsurer.co.uk/cheapest-quote-ride-to/?refid=AWIN-403899&awc=7856_1549907194_13aad8aa82865c266eb1627aaceaa38d&utm_source=https%3A%2F%2Fwww.rideto.co%2F-403899&utm_medium=AWIN&utm_campaign=Social+Content&utm_content=null',
       checked: false
     },
     {
