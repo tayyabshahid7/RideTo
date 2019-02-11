@@ -24,11 +24,7 @@ export const fetchOrder = async orderId => {
 export const getChecklist = () => {
   return [
     {
-      text: 'Add a Bike to your garage',
-      checked: true
-    },
-    {
-      text: 'Book your CBT Training',
+      text: 'Book your training',
       checked: true
     },
     {
