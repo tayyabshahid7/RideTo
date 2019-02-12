@@ -203,6 +203,10 @@ export const getShortCourseType = courseType => {
       return 'Module 2 Training'
     case 'FULL_LICENCE_MOD2_TEST':
       return 'Module 2 Test'
+    case 'ENHANCED_RIDER_SCHEME':
+      return 'Enhanced Rider Scheme'
+    case 'BIKE_HIRE':
+      return 'Bike Hire'
     default:
       return 'CBT'
   }
