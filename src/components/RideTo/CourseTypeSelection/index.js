@@ -16,13 +16,7 @@ import Loading from 'components/Loading'
 
 import styles from './CourseTypeSelection.scss'
 
-const COURSETYPE_ORDER = [
-  'INTRO_TO_MOTORCYCLING',
-  'LICENCE_CBT',
-  'LICENCE_CBT_RENEWAL',
-  'FULL_LICENCE',
-  'TFL_ONE_ON_ONE'
-]
+import { COURSETYPE_ORDER } from 'common/constants'
 
 const getBookUrl = (courseType, postcode) => {
   if (courseType === 'TFL_ONE_ON_ONE') {

@@ -9,7 +9,7 @@ import ArrowSlideRight from 'assets/images/rideto/ArrowSlideRight.svg'
 import SidePanel from 'components/RideTo/SidePanel'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import styles from './CourseSlider.scss'
-import { FULL_LICENCE_MODULES } from 'common/constants'
+import { COURSETYPE_ORDER } from 'common/constants'
 
 const NextArrow = ({ onClick }) => (
   <div className={classnames(styles.arrow, styles.nextArrow)} onClick={onClick}>
@@ -85,8 +85,8 @@ class CourseSlider extends React.Component {
 
     const staticData = getStaticData('RIDETO_PAGE')
     const slides =
-      staticData.courseTypes.filter(
-        ({ constant }) => !FULL_LICENCE_MODULES.includes(constant)
+      staticData.courseTypes.filter(({ constant }) =>
+        COURSETYPE_ORDER.includes(constant)
       ) || []
 
     return (
