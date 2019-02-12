@@ -10,7 +10,7 @@
   padding-top: 88px;
 
   @media (max-width: 768px) {
-    padding-top: 40px;
+    padding-top: 24px;
     padding-left: 32px !important;
     padding-right: 32px !important;
   }
@@ -46,7 +46,7 @@
 .subheadingMobile {
   display: none;
   margin-top: 0.5rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
   text-align: center;
   @media (max-width: 768px) {
     display: block;
@@ -70,7 +70,7 @@
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
-    margin-top: 32px;
+    margin-top: 18px;
   }
 }
 
@@ -111,12 +111,29 @@
   letter-spacing: 0.5px;
 
   @media (max-width: 768px) {
-    width: 100%;
-    display: flex !important;
-    padding: 0px 24px !important;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 16px;
+    appearance: none;
+    background-color: transparent !important;
+    height: auto;
+    letter-spacing: 0;
+    font-family: inherit !important;
+    font-size: inherit !important;
+    font-family: inherit !important;
+    line-height: inherit !important;
+    text-transform: inherit;
+    padding: 0;
+    color: var(--primary-color) !important;
+    text-decoration: underline;
+
+    &:after {
+      display: none;
+      content: '';
+    }
+  }
+}
+
+.desktopSortByValue {
+  @media (max-width: 768px) {
+    display: none;
   }
 }
 
@@ -128,12 +145,18 @@
   margin-bottom: 20px;
 }
 
-.subTitle {
+.subTitle,
+.instruction {
   text-transform: uppercase;
   font-size: 24px;
   font-family: var(--font-rift-bold);
   line-height: 29px;
   margin-bottom: 50px;
+}
+
+.instruction {
+  margin-top: 15px;
+  margin-bottom: 0;
 }
 
 .dateSelector {
@@ -159,6 +182,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
   padding: 12px 24px;
   background: #14141410;
 }
@@ -168,11 +192,21 @@
 }
 
 .schoolCount {
-  margin-top: -2rem;
+  // margin-top: -2rem;
   margin-bottom: 1.8rem;
 
+  .sortButtonWrap {
+    display: none;
+  }
+
   @media (max-width: 768px) {
-    margin-bottom: 1.5em;
+    margin-top: 0.5rem;
+    margin-bottom: 1em;
+    text-align: center;
+
+    .sortButtonWrap {
+      display: inline;
+    }
   }
 }
 

@@ -1,10 +1,12 @@
 import React from 'react'
 import styles from './styles.scss'
+import moment from 'moment'
 import NavigationItem from './NavigationItem'
 import NavigationItemPostcode from './NavigationItemPostcode'
 import NavigationItemCourse from './NavigationItemCourse'
 import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
 import { fetchCoursesTypes } from 'services/course-type'
+import { DAY_FORMAT5 } from 'common/constants'
 
 class NavigationComponent extends React.Component {
   constructor(props) {
@@ -55,9 +57,16 @@ class NavigationComponent extends React.Component {
   }
 
   render() {
-    const { navigation, onNavBack, courseType } = this.props
+    const {
+      navigation,
+      onNavBack,
+      courseType,
+      date,
+      handleMobileDateClick
+    } = this.props
     const { courseTypesOptions } = this.state
     const fullWidth = navigation.length === 1
+    const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.container}>
@@ -101,6 +110,16 @@ class NavigationComponent extends React.Component {
             )
           }
         })}
+
+        {!isFullLicence && (
+          <NavigationItem
+            className={styles.hiddenOnDesktop}
+            title="Date"
+            subtitle={moment(date).format(DAY_FORMAT5)}
+            onClick={handleMobileDateClick}
+            dropDown
+          />
+        )}
       </div>
     )
   }

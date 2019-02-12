@@ -7,7 +7,7 @@ import {
   DropdownItem
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
-import { DAY_FORMAT5, LICENCE_TYPES } from 'common/constants'
+import { LICENCE_TYPES } from 'common/constants'
 import {
   SortByOptions,
   getTitleFor,
@@ -27,7 +27,6 @@ import DateSelectorModal from './DateSelectorModal'
 import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
-import { IconCalendar } from 'assets/icons'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
 
@@ -59,6 +58,7 @@ class ResultPage extends Component {
     this.handleDetailClick = this.handleDetailClick.bind(this)
     this.handlePriceClick = this.handlePriceClick.bind(this)
     this.handleReviewClick = this.handleReviewClick.bind(this)
+    this.handleMobileDateClick = this.handleMobileDateClick.bind(this)
 
     window.sessionStorage.removeItem('trainings')
   }
@@ -254,12 +254,14 @@ class ResultPage extends Component {
     }
   }
 
-  renderSortByDropdown() {
+  renderSortByDropdown(shortOptions) {
     const { handeUpdateOption, sortByOption, courseType } = this.props
     return (
-      <UncontrolledDropdown>
+      <UncontrolledDropdown className={styles.sortButtonWrap}>
         <DropdownToggle caret color="lightgrey" className={styles.sortButton}>
-          {getTitleFor(SortByOptions, sortByOption).toUpperCase()}
+          {!shortOptions
+            ? getTitleFor(SortByOptions, sortByOption).toUpperCase()
+            : getTitleFor(SortByOptions, sortByOption).replace('Sort by', '')}
         </DropdownToggle>
         <DropdownMenu>
           {SortByOptions.map(sortOption => {
@@ -272,7 +274,9 @@ class ResultPage extends Component {
                   handeUpdateOption({ sortByOption: sortOption.value })
                 }
                 key={sortOption.value}>
-                {sortOption.title.toUpperCase()}
+                {!shortOptions
+                  ? sortOption.title.toUpperCase()
+                  : sortOption.title.replace('Sort by', '')}
               </DropdownItem>
             )
           })}
@@ -281,21 +285,8 @@ class ResultPage extends Component {
     )
   }
 
-  renderMobileDateSelectorButton() {
-    const { date } = this.props
-
-    return (
-      <div
-        className={styles.dateSelectorMobile}
-        onClick={() => {
-          this.setState({ showDateSelectorModal: true })
-        }}>
-        <span>{moment(date).format(DAY_FORMAT5)}</span>
-        <span>
-          <IconCalendar />
-        </span>
-      </div>
-    )
+  handleMobileDateClick() {
+    this.setState({ showDateSelectorModal: true })
   }
 
   renderRidetoButton(
@@ -305,8 +296,6 @@ class ResultPage extends Component {
     bike_hire,
     ifullLicence
   ) {
-    // const { selectedPackageDates } = this.state
-
     return (
       <RideToButton
         className={classnames(
@@ -317,7 +306,6 @@ class ResultPage extends Component {
             styles.bookNowDisabled
         )}
         onClick={() => {
-          // isAllPackageDatesSelected(selectedPackageDates)
           if (this.state.activeTab !== 3) {
             this.setState({ activeTab: 3 })
           } else {
@@ -436,11 +424,13 @@ class ResultPage extends Component {
           postcode={postcode}
           courseType={courseType}
           navigation={navigation}
+          date={date}
+          handleMobileDateClick={this.handleMobileDateClick}
         />
         <Container className={styles.pageContainer}>
           {hasPartnerResults && (
             <Row>
-              <Col sm="6">
+              <Col md="6">
                 {!isFullLicence ? (
                   <React.Fragment>
                     <div className={styles.headingDesktop}>Choose a Date</div>
@@ -453,9 +443,15 @@ class ResultPage extends Component {
                     Full Licence {postcode}
                   </div>
                 )}
-                <div className={styles.subheadingMobile}>
-                  Select a school near you
-                </div>
+                {!loading && (
+                  <div className={classnames(styles.schoolCount)}>
+                    {resultsCount} training sites sorted by{' '}
+                    {this.renderSortByDropdown(true)}
+                    <span className={styles.desktopSortByValue}>
+                      {sortByOption.replace('-', '')}
+                    </span>
+                  </div>
+                )}
               </Col>
             </Row>
           )}
@@ -477,13 +473,11 @@ class ResultPage extends Component {
                           courseType={courseType}
                         />
                       )}
-                      {/*
-                      <div className={styles.mobileButtons}>
-                        {!isFullLicence &&
-                          this.renderMobileDateSelectorButton()}
-                        {this.renderSortByDropdown()}
-                      </div>
-                      */}
+                      {!loading && (
+                        <div className={classnames(styles.instruction)}>
+                          Select a location
+                        </div>
+                      )}
                     </React.Fragment>
                   ) : (
                     <div className={styles.nonParnetResultMessage}>
@@ -502,23 +496,6 @@ class ResultPage extends Component {
                       <div className={styles.coursesPanel}>
                         {courses.available.length > 0 && (
                           <React.Fragment>
-                            <div
-                              className={classnames(
-                                styles.subTitle,
-                                styles.hiddenOnMobile
-                              )}>
-                              Choose a location
-                            </div>
-                            <div
-                              className={classnames(
-                                styles.schoolCount,
-                                isFullLicence && styles.schoolCountFullLicence
-                              )}>
-                              {`${resultsCount} training sites sorted by ${sortByOption.replace(
-                                '-',
-                                ''
-                              )}`}
-                            </div>
                             {courses.available.map(
                               (course, index) =>
                                 course.is_partner && (
