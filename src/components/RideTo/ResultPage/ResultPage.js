@@ -425,6 +425,7 @@ class ResultPage extends Component {
           courseType={courseType}
           navigation={navigation}
           date={date}
+          showDatePicker
           handleMobileDateClick={this.handleMobileDateClick}
         />
         <Container className={styles.pageContainer}>

@@ -62,6 +62,7 @@ class NavigationComponent extends React.Component {
       onNavBack,
       courseType,
       date,
+      showDatePicker,
       handleMobileDateClick
     } = this.props
     const { courseTypesOptions } = this.state
@@ -111,7 +112,7 @@ class NavigationComponent extends React.Component {
           }
         })}
 
-        {!isFullLicence && (
+        {!isFullLicence && showDatePicker && (
           <NavigationItem
             className={styles.hiddenOnDesktop}
             title="Date"
