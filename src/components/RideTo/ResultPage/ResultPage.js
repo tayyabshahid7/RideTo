@@ -32,6 +32,7 @@ import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
 
 import { isBankHoliday } from 'services/misc'
+import { getCourseTitle } from 'services/course'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -444,12 +445,17 @@ class ResultPage extends Component {
                   <React.Fragment>
                     <div className={styles.headingDesktop}>Choose a Date</div>
                     <div className={styles.headingMobile}>
-                      Choose a Date &amp; Location
+                      {getCourseTitle(courseType)} {postcode}
                     </div>
                   </React.Fragment>
                 ) : (
-                  <div className={styles.headingMobile}>Choose a Location</div>
+                  <div className={styles.headingMobile}>
+                    Full Licence {postcode}
+                  </div>
                 )}
+                <div className={styles.subheadingMobile}>
+                  Select a school near you
+                </div>
               </Col>
             </Row>
           )}
@@ -471,11 +477,13 @@ class ResultPage extends Component {
                           courseType={courseType}
                         />
                       )}
+                      {/*
                       <div className={styles.mobileButtons}>
                         {!isFullLicence &&
                           this.renderMobileDateSelectorButton()}
                         {this.renderSortByDropdown()}
                       </div>
+                      */}
                     </React.Fragment>
                   ) : (
                     <div className={styles.nonParnetResultMessage}>
@@ -506,7 +514,7 @@ class ResultPage extends Component {
                                 styles.schoolCount,
                                 isFullLicence && styles.schoolCountFullLicence
                               )}>
-                              {`Showing ${resultsCount} training sites in your area by ${sortByOption.replace(
+                              {`${resultsCount} training sites sorted by ${sortByOption.replace(
                                 '-',
                                 ''
                               )}`}
