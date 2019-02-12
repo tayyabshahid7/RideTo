@@ -66,7 +66,7 @@
   max-width: 1112px;
   width: 100%;
   display: flex;
-  margin: 56px auto 0;
+  margin: 45px auto 0;
   flex-wrap: wrap;
 
   @media (max-width: 768px) {
@@ -132,6 +132,7 @@
 }
 
 .desktopSortByValue {
+  text-transform: capitalize;
   @media (max-width: 768px) {
     display: none;
   }
@@ -207,6 +208,21 @@
     .sortButtonWrap {
       display: inline;
     }
+  }
+}
+
+.schoolCountMobile {
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
+.schoolCountDesktop {
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+
+  @media (max-width: 768px) {
+    display: none;
   }
 }
 

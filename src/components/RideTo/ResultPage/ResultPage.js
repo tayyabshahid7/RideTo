@@ -445,7 +445,11 @@ class ResultPage extends Component {
                   </div>
                 )}
                 {!loading && (
-                  <div className={classnames(styles.schoolCount)}>
+                  <div
+                    className={classnames(
+                      styles.schoolCount,
+                      styles.schoolCountMobile
+                    )}>
                     {resultsCount} training sites sorted by{' '}
                     {this.renderSortByDropdown(true)}
                     <span className={styles.desktopSortByValue}>
@@ -475,9 +479,21 @@ class ResultPage extends Component {
                         />
                       )}
                       {!loading && (
-                        <div className={classnames(styles.instruction)}>
-                          Select a location
-                        </div>
+                        <React.Fragment>
+                          <div className={classnames(styles.instruction)}>
+                            Select a location
+                          </div>
+                          <div
+                            className={classnames(
+                              styles.schoolCount,
+                              styles.schoolCountDesktop
+                            )}>
+                            {resultsCount} training sites sorted by{' '}
+                            <span className={styles.desktopSortByValue}>
+                              {sortByOption.replace('-', '')}
+                            </span>
+                          </div>
+                        </React.Fragment>
                       )}
                     </React.Fragment>
                   ) : (

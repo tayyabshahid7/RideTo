@@ -7,6 +7,7 @@ import NavigationItemCourse from './NavigationItemCourse'
 import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
 import { fetchCoursesTypes } from 'services/course-type'
 import { DAY_FORMAT5 } from 'common/constants'
+import classnames from 'classnames'
 
 class NavigationComponent extends React.Component {
   constructor(props) {
@@ -70,7 +71,11 @@ class NavigationComponent extends React.Component {
     const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
-      <div className={styles.container}>
+      <div
+        className={classnames(
+          styles.container,
+          showDatePicker && styles.hiddenOnDesktop
+        )}>
         {onNavBack && (
           <div className={styles.backItem} onClick={onNavBack}>
             <img src={ArrowLeft} alt="" />
