@@ -62,7 +62,7 @@ class FooterLinks extends Component {
               <a href="https://www.rideto.com/cbt-training/london">London</a>
               <a href="https://www.rideto.com/cbt-training/manchester">Manchester</a>
               <a href="https://www.rideto.com/cbt-training/birmingham">Birmingham</a>
-              <a href="https://www.rideto.com/cbt-training/bristol">Bristol</a>
+              <a href="https://www.rideto.com/cbt-training/glasgow">Glasgow</a>
               <a href="https://www.rideto.com/all-locations">View All</a>
             </div>`}
           isOpen={opened.indexOf('locations') > -1}
