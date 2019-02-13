@@ -156,13 +156,16 @@
 }
 
 .instruction {
-  margin-top: 15px;
   margin-bottom: 0;
+
+  @media (max-width: 768px) {
+    margin-top: 15px;
+  }
 }
 
 .dateSelector {
-  margin-top: 20px;
-  margin-bottom: 56px;
+  margin-top: 15px;
+  margin-bottom: 45px;
   @media (max-width: 768px) {
     display: none !important;
     margin-top: 32px;

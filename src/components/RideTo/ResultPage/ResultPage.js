@@ -15,6 +15,7 @@ import {
   isAllPackageDatesSelected,
   isAnyPackageDatesSelected
 } from 'common/info'
+import DesktopHeader from './DesktopHeader'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
@@ -29,6 +30,7 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
+import { fetchCoursesTypes } from 'services/course-type'
 
 import { isBankHoliday } from 'services/misc'
 import { getCourseTitle } from 'services/course'
@@ -47,7 +49,8 @@ class ResultPage extends Component {
       bike_hire: null,
       selectedLicenceType: null,
       selectedPackageDays: '',
-      selectedPackageDates: []
+      selectedPackageDates: [],
+      courseTypesOptions: []
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -63,12 +66,19 @@ class ResultPage extends Component {
     window.sessionStorage.removeItem('trainings')
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Prevent the reuslts from loading half way down the page
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
     }
     window.scrollTo(0, 0)
+
+    const { postcode } = this.props
+    const result = await fetchCoursesTypes(postcode || '')
+    const courseTypes = result.results
+    this.setState({
+      courseTypesOptions: courseTypes
+    })
   }
 
   handleDetailClick(course) {
@@ -380,7 +390,8 @@ class ResultPage extends Component {
       bike_hire,
       selectedLicenceType,
       selectedPackageDays,
-      selectedPackageDates
+      selectedPackageDates,
+      courseTypesOptions
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -427,6 +438,12 @@ class ResultPage extends Component {
           date={date}
           showDatePicker
           handleMobileDateClick={this.handleMobileDateClick}
+          courseTypesOptions={courseTypesOptions}
+        />
+        <DesktopHeader
+          courseType={courseType}
+          postcode={postcode}
+          courseTypesOptions={courseTypesOptions}
         />
         <Container className={styles.pageContainer}>
           {hasPartnerResults && (
