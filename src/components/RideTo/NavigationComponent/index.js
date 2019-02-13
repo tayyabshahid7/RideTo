@@ -1,28 +1,14 @@
 import React from 'react'
 import styles from './styles.scss'
+import moment from 'moment'
 import NavigationItem from './NavigationItem'
 import NavigationItemPostcode from './NavigationItemPostcode'
 import NavigationItemCourse from './NavigationItemCourse'
 import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
-import { fetchCoursesTypes } from 'services/course-type'
+import { DAY_FORMAT5 } from 'common/constants'
+import classnames from 'classnames'
 
 class NavigationComponent extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      courseTypesOptions: []
-    }
-  }
-
-  async componentDidMount() {
-    const { postcode } = this.props
-    const result = await fetchCoursesTypes(postcode || '')
-    const courseTypes = result.results
-    this.setState({
-      courseTypesOptions: courseTypes
-    })
-  }
-
   handleNavClick(navIndex, fullWidth) {
     const { navigation } = this.props
     let navItem = navigation[navIndex]
@@ -55,12 +41,24 @@ class NavigationComponent extends React.Component {
   }
 
   render() {
-    const { navigation, onNavBack, courseType } = this.props
-    const { courseTypesOptions } = this.state
+    const {
+      navigation,
+      onNavBack,
+      courseType,
+      date,
+      showDatePicker,
+      handleMobileDateClick,
+      courseTypesOptions
+    } = this.props
     const fullWidth = navigation.length === 1
+    const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
-      <div className={styles.container}>
+      <div
+        className={classnames(
+          styles.container,
+          showDatePicker && styles.hiddenOnDesktop
+        )}>
         {onNavBack && (
           <div className={styles.backItem} onClick={onNavBack}>
             <img src={ArrowLeft} alt="" />
@@ -101,6 +99,16 @@ class NavigationComponent extends React.Component {
             )
           }
         })}
+
+        {!isFullLicence && showDatePicker && (
+          <NavigationItem
+            className={styles.hiddenOnDesktop}
+            title="Date"
+            subtitle={moment(date).format(DAY_FORMAT5)}
+            onClick={handleMobileDateClick}
+            dropDown
+          />
+        )}
       </div>
     )
   }

@@ -88,7 +88,12 @@ class NavigationItemCourse extends Component {
               )}
             </div>
           ) : (
-            subtitle
+            <div className={styles.subtitleInner}>
+              {subtitle}{' '}
+              <span>
+                <i className="fas fa-chevron-down fa-lg" />
+              </span>
+            </div>
           )}
         </div>
       </div>
