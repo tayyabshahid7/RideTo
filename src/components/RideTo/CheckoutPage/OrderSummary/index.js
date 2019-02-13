@@ -31,6 +31,30 @@ class OrderSummary extends Component {
     }
   }
 
+  isValidDate() {
+    const { trainings, checkoutData } = this.props
+    const requestedDate = moment(
+      (trainings && trainings[0].requested_date) || checkoutData.date
+    )
+    const today = moment()
+    const tomorrow = moment(today).add(1, 'days')
+    const cutOff = moment(today).set({ hour: 17, minute: 30, second: 0 })
+    const isAfterCutOff = today.isAfter(cutOff)
+    const isRequestedDateInThePast = requestedDate.isBefore(today)
+    const isRequestedDateToday = requestedDate.isSame(today, 'day')
+    const isRequestedDateTomorrow = requestedDate.isSame(tomorrow, 'day')
+
+    if (isRequestedDateInThePast || isRequestedDateToday) {
+      return false
+    }
+
+    if (isRequestedDateTomorrow && isAfterCutOff) {
+      return false
+    }
+
+    return true
+  }
+
   renderRow(title, content, index, priceHighlight = false) {
     return (
       <div className={styles.rowItem} key={index}>
@@ -176,7 +200,7 @@ class OrderSummary extends Component {
       checkoutData
     } = this.props
     const { showPromo } = this.state
-    let confirmDisabled = saving || !details.accept_terms
+    let confirmDisabled = saving || !details.accept_terms || !this.isValidDate()
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
 
     return (
@@ -263,6 +287,12 @@ class OrderSummary extends Component {
             <img src={ButtonArrowWhite} alt="arrow" />
           </RideToButton>
         </Loading>
+        {!this.isValidDate() && (
+          <div className={styles.dateError}>
+            Bookings for the next day must be made before 5:30pm. Please return
+            to the results page to pick a later date.
+          </div>
+        )}
         <div className={styles.promoWrapper}>
           {showPromo ? (
             <div className={styles.promoContainer}>
