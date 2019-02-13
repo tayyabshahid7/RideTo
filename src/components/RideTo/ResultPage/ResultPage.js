@@ -444,6 +444,8 @@ class ResultPage extends Component {
           courseType={courseType}
           postcode={postcode}
           courseTypesOptions={courseTypesOptions}
+          handlePostcodeChange={this.handlePostcodeChange}
+          handleCourseChange={this.handleCourseChange}
         />
         <Container className={styles.pageContainer}>
           {hasPartnerResults && (

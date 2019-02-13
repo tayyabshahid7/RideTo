@@ -7,7 +7,8 @@
 }
 
 .pageContainer {
-  padding-top: 88px;
+  // padding-top: 88px;
+  padding-top: 25px;
 
   @media (max-width: 768px) {
     padding-top: 24px;
@@ -159,7 +160,8 @@
   margin-bottom: 0;
 
   @media (max-width: 768px) {
-    margin-top: 15px;
+    margin-top: 10px;
+    margin-bottom: 15px;
   }
 }
 
@@ -198,6 +200,7 @@
 .schoolCount {
   // margin-top: -2rem;
   margin-bottom: 1.8rem;
+  font-family: var(--font-proxima);
 
   .sortButtonWrap {
     display: none;
