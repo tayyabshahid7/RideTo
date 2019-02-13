@@ -2,6 +2,19 @@
   display: flex;
 }
 
+.header {
+  padding-top: 2rem;
+
+  h1 {
+    margin-top: 0;
+    font-size: 30px;
+    line-height: 29px;
+    font-family: var(--font-rift);
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
 .leftPanel {
   flex: 1 1 480px;
   display: flex;

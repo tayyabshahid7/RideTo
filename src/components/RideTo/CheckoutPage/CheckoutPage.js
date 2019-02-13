@@ -557,51 +557,57 @@ class CheckoutPage extends Component {
     } = this.state
 
     return (
-      <div className={styles.container}>
-        <div className={styles.leftPanel}>
-          <UserDetails
-            {...this.props}
-            details={details}
-            errors={errors}
-            priceInfo={priceInfo}
-            onDetailChange={this.handleValueChange}
-            onPaymentChange={this.handleOnPaymentChange}
-            onChange={this.onUpdate}
-            manualAddress={manualAddress}
-            onPostalCodeSubmit={this.handlePostalcodeSubmit}
-            postcodeLookingup={postcodeLookingup}
-            showMap={showMap}
-            handleMapButtonClick={this.handleMapButtonClick}
-            trainings={trainings}
-          />
+      <React.Fragment>
+        {' '}
+        <div className={styles.header}>
+          <h1>Checkout</h1>
         </div>
-        <div className={styles.rightPanel}>
-          <OrderSummary
-            {...this.props}
-            errors={errors}
-            details={details}
-            priceInfo={priceInfo}
-            onSubmit={this.handlePayment}
-            saving={saving}
-            onChange={this.onUpdate}
-            onDetailChange={this.handleValueChange}
-            voucher_code={voucher_code}
-            handleVoucherApply={this.handleVoucherApply}
-            loadingPrice={loadingPrice}
-            showMap={showMap}
-            handleMapButtonClick={this.handleMapButtonClick}
-            trainings={trainings}
-          />
+        <div className={styles.container}>
+          <div className={styles.leftPanel}>
+            <UserDetails
+              {...this.props}
+              details={details}
+              errors={errors}
+              priceInfo={priceInfo}
+              onDetailChange={this.handleValueChange}
+              onPaymentChange={this.handleOnPaymentChange}
+              onChange={this.onUpdate}
+              manualAddress={manualAddress}
+              onPostalCodeSubmit={this.handlePostalcodeSubmit}
+              postcodeLookingup={postcodeLookingup}
+              showMap={showMap}
+              handleMapButtonClick={this.handleMapButtonClick}
+              trainings={trainings}
+            />
+          </div>
+          <div className={styles.rightPanel}>
+            <OrderSummary
+              {...this.props}
+              errors={errors}
+              details={details}
+              priceInfo={priceInfo}
+              onSubmit={this.handlePayment}
+              saving={saving}
+              onChange={this.onUpdate}
+              onDetailChange={this.handleValueChange}
+              voucher_code={voucher_code}
+              handleVoucherApply={this.handleVoucherApply}
+              loadingPrice={loadingPrice}
+              showMap={showMap}
+              handleMapButtonClick={this.handleMapButtonClick}
+              trainings={trainings}
+            />
+          </div>
+          {showAddressSelectorModal && (
+            <AddressSelectModal
+              addresses={addresses}
+              isOpen={true}
+              onClose={() => this.setState({ showAddressSelectorModal: false })}
+              onSelect={this.handleSelectAddress.bind(this)}
+            />
+          )}
         </div>
-        {showAddressSelectorModal && (
-          <AddressSelectModal
-            addresses={addresses}
-            isOpen={true}
-            onClose={() => this.setState({ showAddressSelectorModal: false })}
-            onSelect={this.handleSelectAddress.bind(this)}
-          />
-        )}
-      </div>
+      </React.Fragment>
     )
   }
 }
