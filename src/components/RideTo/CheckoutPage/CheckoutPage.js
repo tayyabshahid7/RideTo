@@ -558,7 +558,6 @@ class CheckoutPage extends Component {
 
     return (
       <React.Fragment>
-        {' '}
         <div className={styles.header}>
           <h1>Checkout</h1>
         </div>
