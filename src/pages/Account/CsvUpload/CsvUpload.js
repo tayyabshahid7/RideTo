@@ -44,7 +44,11 @@ class CsvUpload extends React.Component {
     const { file } = this.state
 
     if (file.type !== 'text/csv') {
-      showNotification('Error', 'File is not CSV', 'danger')
+      showNotification(
+        'Error',
+        'File is not CSV. Make sure you have the file with ".csv" extension',
+        'danger'
+      )
       return
     }
     uploadFile({ schoolId, file })
