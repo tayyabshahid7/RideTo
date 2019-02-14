@@ -33,16 +33,28 @@ const CoursesPanelItem = ({
     availableSpaces === 1 && styles.warning,
     availableSpaces <= 0 && styles.danger
   )
+  const isTestCourse =
+    course.course_type.constant.includes('FULL_LICENCE') &&
+    course.course_type.constant.includes('TEST')
   const { notes = '' } = course
   const truncated = notes.length > 200 ? `${notes}...` : notes
-
   return (
     <div className={styles.coursesPanelItem}>
       <div className={styles.heading}>
         <div className={className}>
           <div>
-            {course.time} | {name}
+            {course.time.substring(0, 5)} | {name}
           </div>
+          {isTestCourse && (
+            <div className={styles.testNotes}>
+              {course.application_reference_number}
+              &nbsp;&nbsp;|&nbsp;&nbsp;
+              {course.test_centre}
+              <br />
+              <br />
+              Last day to cancel: {course.last_date_cancel}
+            </div>
+          )}
           {notes && <div className={styles.notes}>{truncated}</div>}
         </div>
         <Button
