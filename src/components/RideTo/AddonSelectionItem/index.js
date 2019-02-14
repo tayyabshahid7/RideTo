@@ -2,10 +2,6 @@ import React from 'react'
 import classnames from 'classnames'
 
 import Info from 'assets/images/rideto/Info.svg'
-import Add from 'assets/images/rideto/Add.svg'
-import AddWhite from 'assets/images/rideto/AddWhite.svg'
-import Added from 'assets/images/rideto/Added.svg'
-import Remove from 'assets/images/rideto/Remove.svg'
 import AddonSizes from './AddonSizes'
 import AddonImageSlider from './AddonImageSlider'
 import styles from './AddonSelectionItem.scss'
@@ -23,14 +19,13 @@ class AddonSelectionItem extends React.Component {
 
   render() {
     const { addon, isAdded, onAdd, onRemove, onDetails } = this.props
-    const { images, sizes, selectedSize } = addon
+    const { images, sizes, selectedSize, sizeRequired } = addon
     const isDiscount =
       addon.full_price &&
       addon.discount_price &&
       addon.full_price > addon.discount_price
     const price = addon.discount_price || addon.full_price
     const ctaClassName = classnames(styles.cta, isAdded && styles.added)
-    const icon = isAdded ? Added : Add
     const onClick = isAdded ? onRemove : onAdd
 
     return (
@@ -48,11 +43,13 @@ class AddonSelectionItem extends React.Component {
                   sizes={sizes}
                   selected={selectedSize}
                   onClick={this.handleSelectSize}
+                  sizeRequired={sizeRequired}
                 />
                 <div
                   className={styles.details}
                   onClick={() => onDetails(addon)}>
-                  <img src={Info} alt="Info" />Details
+                  <img src={Info} alt="Info" />
+                  Details
                 </div>
               </div>
             ) : (
@@ -67,17 +64,7 @@ class AddonSelectionItem extends React.Component {
               <div className={styles.price}>£{price}</div>
             </div>
             <div className={styles.action}>
-              <img className={styles.remove} src={Remove} alt="" />
-              <img
-                className={classnames(styles.icon, styles.desktopIcon)}
-                src={icon}
-                alt=""
-              />
-              <img
-                className={classnames(styles.icon, styles.mobileIcon)}
-                src={AddWhite}
-                alt=""
-              />
+              {!isAdded ? 'Select' : 'Remove'}
             </div>
           </div>
         </div>
