@@ -376,6 +376,16 @@ class CheckoutPage extends Component {
       hasError = true
     }
 
+    if (
+      !details.email.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+    ) {
+      errors['email'] = 'Invalid email address'
+      if (!errors.divId) errors.divId = this.getErrorDivId('email')
+      hasError = true
+    }
+
     this.setState({
       errors: errors
     })
