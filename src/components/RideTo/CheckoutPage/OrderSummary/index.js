@@ -14,6 +14,7 @@ import { getCourseTitle } from 'services/course'
 import { getExpectedPrice, getBikeHireDetail } from 'services/order'
 import { Button } from 'reactstrap'
 import { SHORT_LICENCE_TYPES } from 'common/constants'
+import { checkAllowedDate } from 'services/date'
 
 class OrderSummary extends Component {
   constructor(props) {
@@ -33,26 +34,9 @@ class OrderSummary extends Component {
 
   isValidDate() {
     const { trainings, checkoutData } = this.props
-    const requestedDate = moment(
+    return checkAllowedDate(
       (trainings && trainings[0].requested_date) || checkoutData.date
     )
-    const today = moment()
-    const tomorrow = moment(today).add(1, 'days')
-    const cutOff = moment(today).set({ hour: 17, minute: 30, second: 0 })
-    const isAfterCutOff = today.isAfter(cutOff)
-    const isRequestedDateInThePast = requestedDate.isBefore(today)
-    const isRequestedDateToday = requestedDate.isSame(today, 'day')
-    const isRequestedDateTomorrow = requestedDate.isSame(tomorrow, 'day')
-
-    if (isRequestedDateInThePast || isRequestedDateToday) {
-      return false
-    }
-
-    if (isRequestedDateTomorrow && isAfterCutOff) {
-      return false
-    }
-
-    return true
   }
 
   renderRow(title, content, index, priceHighlight = false) {
