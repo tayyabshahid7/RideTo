@@ -456,14 +456,14 @@ class CourseForm extends React.Component {
               {!isFullLicence && (
                 <Row className={styles.formRow}>
                   <Col className={styles.formGroup}>
-                    <label>Payout Per Booking:</label>
+                    <label>Course Price:</label>
                     <Input
                       name="price"
                       value={
                         pricing.loading
                           ? '...'
                           : pricing.info
-                          ? `£${(pricing.info.payout / 100.0).toFixed(2)}`
+                          ? `£${(pricing.info.price / 100.0).toFixed(2)}`
                           : ''
                       }
                       disabled
