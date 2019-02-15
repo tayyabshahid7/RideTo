@@ -88,6 +88,10 @@
   @media (max-width: 768px) {
     display: none;
   }
+
+  @media (min-width: 1200px) {
+    margin-top: -80px;
+  }
 }
 
 .coursesPanel {
