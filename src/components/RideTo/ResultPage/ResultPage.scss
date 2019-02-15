@@ -22,7 +22,7 @@
   height: 29px;
   font-size: 24px;
   line-height: 29px;
-  margin: 0px;
+  margin: 20px 0 0;
   align-self: center;
 
   @media (max-width: 768px) {
@@ -87,6 +87,10 @@
 
   @media (max-width: 768px) {
     display: none;
+  }
+
+  @media (min-width: 1200px) {
+    margin-top: -80px;
   }
 }
 
@@ -157,6 +161,7 @@
 }
 
 .instruction {
+  margin-top: 65px;
   margin-bottom: 0;
 
   @media (max-width: 768px) {

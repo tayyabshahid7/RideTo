@@ -3,7 +3,7 @@ import moment from 'moment'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
-import { DATE_FORMAT } from 'common/constants'
+import { checkAllowedDate } from 'services/date'
 
 class DateSelectorModal extends React.Component {
   constructor(props) {
@@ -34,13 +34,10 @@ class DateSelectorModal extends React.Component {
   generateDaysDataFromCalendar(calendar) {
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
-    let todate = moment().format(DATE_FORMAT)
     return dates.map(date => {
       let disabled = false
-      let momentDate = moment(date)
       let invisible = date.getMonth() !== calendar.month
-      let dateInString = momentDate.format(DATE_FORMAT)
-      if (dateInString < todate) {
+      if (!checkAllowedDate(date)) {
         disabled = true
       }
       return { date, disabled, invisible }
@@ -107,7 +104,8 @@ class DateSelectorModal extends React.Component {
         isOpen={isOpen}
         toggle={onClose}
         size={'md'}
-        className={styles.mobileFull}>
+        className={styles.mobileFull}
+        fade={false}>
         <ModalHeader toggle={onClose} />
         <ModalBody>
           <AvailabilityCalendar
