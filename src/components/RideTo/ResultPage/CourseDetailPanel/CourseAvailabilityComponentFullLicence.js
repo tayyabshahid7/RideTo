@@ -87,50 +87,48 @@ class CourseAvailabilityComponentFullLicence extends Component {
           loading={loading}
         />
 
-        {bike_hire && (
-          <Fragment>
-            <LicencePicker
-              isWidget={isWidget}
-              selectedLicenceType={selectedLicenceType}
-              onUpdate={onUpdate}
-              licences={bike_hire === 'auto' ? autoLicences : manualLicences}
-            />
-            <PackagePicker
-              isWidget={isWidget}
-              bike_hire={bike_hire}
-              selectedLicenceType={selectedLicenceType}
-              selectedPackageDays={selectedPackageDays}
-              onSelectPackage={onSelectPackage}
-            />
-            {selectedPackageDates.map((date, index) => {
-              const start_date = getPackageStartDate(
-                date,
-                index,
-                selectedPackageDates
-              )
+        <Fragment>
+          <LicencePicker
+            isWidget={isWidget}
+            selectedLicenceType={selectedLicenceType}
+            onUpdate={onUpdate}
+            licences={bike_hire === 'manual' ? manualLicences : autoLicences}
+          />
+          <PackagePicker
+            isWidget={isWidget}
+            bike_hire={bike_hire}
+            selectedLicenceType={selectedLicenceType}
+            selectedPackageDays={selectedPackageDays}
+            onSelectPackage={onSelectPackage}
+          />
+          {selectedPackageDates.map((date, index) => {
+            const start_date = getPackageStartDate(
+              date,
+              index,
+              selectedPackageDates
+            )
 
-              return (
-                <FullLicenceDatePicker
-                  isWidget={isWidget}
-                  schoolId={course.id}
-                  licence={selectedLicenceType}
-                  bike_hire={bike_hire}
-                  type={date.type}
-                  key={index}
-                  date={date}
-                  index={index}
-                  showCalendar={
-                    selectedPackageDates.findIndex(date => date.date === '') ===
-                    index
-                  }
-                  selectedPackageDates={selectedPackageDates}
-                  onSelectPackageDate={onSelectPackageDate}
-                  start_date={start_date}
-                />
-              )
-            })}
-          </Fragment>
-        )}
+            return (
+              <FullLicenceDatePicker
+                isWidget={isWidget}
+                schoolId={course.id}
+                licence={selectedLicenceType}
+                bike_hire={bike_hire}
+                type={date.type}
+                key={index}
+                date={date}
+                index={index}
+                showCalendar={
+                  selectedPackageDates.findIndex(date => date.date === '') ===
+                  index
+                }
+                selectedPackageDates={selectedPackageDates}
+                onSelectPackageDate={onSelectPackageDate}
+                start_date={start_date}
+              />
+            )
+          })}
+        </Fragment>
       </div>
     )
   }
