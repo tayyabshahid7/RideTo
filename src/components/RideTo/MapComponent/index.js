@@ -6,6 +6,7 @@ import { MAPBOX_KEY } from 'common/constants'
 import { IconMapPin, IconUser } from 'assets/icons'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import WebMercatorViewport from 'viewport-mercator-project'
 mapboxgl.accessToken = MAPBOX_KEY
 
 const navStyle = {
@@ -18,17 +19,24 @@ const navStyle = {
 class MapComponent extends Component {
   constructor(props) {
     super(props)
-    const { userLocation, courses, width = 400, height = 700 } = this.props
-    let location = userLocation ? userLocation : courses[0]
-    this.state = {
-      viewport: {
-        width,
-        height,
-        latitude: location.lat,
-        longitude: location.lng,
-        zoom: 8
-      }
+    const { userLocation, courses, width = 428, height = 700 } = this.props
+    let locations = [...courses.available, ...courses.unavailable].map(
+      course => [course.lng, course.lat]
+    )
+
+    if (!locations.length && userLocation) {
+      locations = [[userLocation.lng, userLocation.lat]]
     }
+
+    const viewport = new WebMercatorViewport({ width, height }).fitBounds(
+      locations,
+      { padding: 150 }
+    )
+
+    this.state = {
+      viewport
+    }
+
     this.updateViewport = this.updateViewport.bind(this)
     this.renderMarker = this.renderMarker.bind(this)
     this.renderPin = this.renderPin.bind(this)
