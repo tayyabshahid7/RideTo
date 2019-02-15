@@ -107,7 +107,8 @@ class DateSelectorModal extends React.Component {
         isOpen={isOpen}
         toggle={onClose}
         size={'md'}
-        className={styles.mobileFull}>
+        className={styles.mobileFull}
+        fade={false}>
         <ModalHeader toggle={onClose} />
         <ModalBody>
           <AvailabilityCalendar
