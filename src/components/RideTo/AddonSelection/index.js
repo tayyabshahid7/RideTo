@@ -138,7 +138,7 @@ class AddonSelection extends React.Component {
 
     return (
       <React.Fragment>
-        <NavigationComponent navigation={navigation} />
+        <NavigationComponent navigation={navigation} showIcons={false} />
         <Container>
           <Row>
             <Col sm="6">
