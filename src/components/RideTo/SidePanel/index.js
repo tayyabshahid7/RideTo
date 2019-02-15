@@ -7,7 +7,7 @@ import {
 } from 'body-scroll-lock'
 
 import styles from './SidePanel.scss'
-import closeImg from 'assets/images/rideto/CloseWhite.svg'
+import closeImg from 'assets/images/rideto/CloseCross.svg'
 
 class SidePanel extends React.Component {
   constructor(props) {
