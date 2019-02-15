@@ -27,7 +27,9 @@ class CourseForm extends React.Component {
       a_auto_bikes: '',
       a1_manual_bikes: '',
       a2_manual_bikes: '',
-      a_manual_bikes: ''
+      a_manual_bikes: '',
+      test_centre: '',
+      last_date_cancel: ''
     }
     if (this.props.course) {
       Object.assign(
@@ -47,7 +49,9 @@ class CourseForm extends React.Component {
           'a_auto_bikes',
           'a1_manual_bikes',
           'a2_manual_bikes',
-          'a_manual_bikes'
+          'a_manual_bikes',
+          'test_centre',
+          'last_date_cancel'
         )
       )
       course.course_type_id =
@@ -174,12 +178,22 @@ class CourseForm extends React.Component {
     if (!course.a_manual_bikes) {
       course.a_manual_bikes = 0
     }
+    if (course.last_date_cancel === '') {
+      course.last_date_cancel = null
+    }
 
     onSubmit(course)
   }
 
   render() {
-    const { isEditable, info, saving, instructors, pricing } = this.props
+    const {
+      isEditable,
+      info,
+      saving,
+      instructors,
+      testCentres,
+      pricing
+    } = this.props
     const {
       course_type_id,
       instructor_id,
@@ -195,7 +209,9 @@ class CourseForm extends React.Component {
       a_auto_bikes,
       a1_manual_bikes,
       a2_manual_bikes,
-      a_manual_bikes
+      a_manual_bikes,
+      last_date_cancel,
+      test_centre
     } = this.state.course
 
     const finishTime = this.getFinishTime(time, duration)
@@ -207,6 +223,14 @@ class CourseForm extends React.Component {
 
     const isFullLicence = courseTypes
       .filter(type => type.constant.startsWith('FULL_LICENCE'))
+      .some(type => type.id === parseInt(course_type_id, 10))
+
+    const isFullLicenceTest = courseTypes
+      .filter(
+        type =>
+          type.constant.startsWith('FULL_LICENCE') &&
+          type.constant.endsWith('TEST')
+      )
       .some(type => type.id === parseInt(course_type_id, 10))
 
     return (
@@ -227,16 +251,6 @@ class CourseForm extends React.Component {
                   </option>
                 ))}
               </select>
-              {/*
-              <Button
-                className={styles.editCourse}
-                onClick={this.handleToggleEdit}
-                disabled={isEditable}
-                color="primary"
-                outline>
-                Edit Course
-              </Button>
-              */}
             </div>
 
             <div className={classnames(styles.form, formClass)}>
@@ -286,106 +300,142 @@ class CourseForm extends React.Component {
               </Row>
 
               {isFullLicence && (
-                <Row className={styles.formRow}>
-                  <Col className={styles.formGroup}>
-                    <table className={classnames('table', styles.formTable)}>
-                      <tbody>
-                        <tr>
-                          <td />
-                          <td>Automatic</td>
-                          <td>Manual</td>
-                        </tr>
-                        <tr>
-                          <td>A1</td>
-                          <td>
-                            <Input
-                              className={styles.inputNumber}
-                              name="a1_auto_bikes"
-                              value={a1_auto_bikes || ''}
-                              type="number"
-                              min="0"
-                              max={spaces}
-                              disabled={!isEditable}
-                              onChange={this.handleChangeRawEvent.bind(this)}
-                              required
-                            />
-                          </td>
-                          <td>
-                            <Input
-                              className={styles.inputNumber}
-                              name="a1_manual_bikes"
-                              value={a1_manual_bikes || ''}
-                              type="number"
-                              min="0"
-                              max={spaces}
-                              disabled={!isEditable}
-                              onChange={this.handleChangeRawEvent.bind(this)}
-                              required
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>A2</td>
-                          <td>
-                            <Input
-                              className={styles.inputNumber}
-                              name="a2_auto_bikes"
-                              value={a2_auto_bikes || ''}
-                              type="number"
-                              min="0"
-                              max={spaces}
-                              disabled={!isEditable}
-                              onChange={this.handleChangeRawEvent.bind(this)}
-                              required
-                            />
-                          </td>
-                          <td>
-                            <Input
-                              className={styles.inputNumber}
-                              name="a2_manual_bikes"
-                              value={a2_manual_bikes || ''}
-                              type="number"
-                              min="0"
-                              max={spaces}
-                              disabled={!isEditable}
-                              onChange={this.handleChangeRawEvent.bind(this)}
-                              required
-                            />
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>A</td>
-                          <td>
-                            <Input
-                              className={styles.inputNumber}
-                              name="a_auto_bikes"
-                              value={a_auto_bikes || ''}
-                              type="number"
-                              min="0"
-                              max={spaces}
-                              disabled={!isEditable}
-                              onChange={this.handleChangeRawEvent.bind(this)}
-                              required
-                            />
-                          </td>
-                          <td>
-                            <Input
-                              className={styles.inputNumber}
-                              name="a_manual_bikes"
-                              value={a_manual_bikes || ''}
-                              type="number"
-                              min="0"
-                              max={spaces}
-                              disabled={!isEditable}
-                              onChange={this.handleChangeRawEvent.bind(this)}
-                              required
-                            />
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </Col>
-                </Row>
+                <React.Fragment>
+                  <Row className={styles.formRow}>
+                    <Col className={styles.formGroup}>
+                      <table className={classnames('table', styles.formTable)}>
+                        <tbody>
+                          <tr>
+                            <td />
+                            <td>Automatic</td>
+                            <td>Manual</td>
+                          </tr>
+                          <tr>
+                            <td>A1</td>
+                            <td>
+                              <Input
+                                className={styles.inputNumber}
+                                name="a1_auto_bikes"
+                                value={a1_auto_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
+                            </td>
+                            <td>
+                              <Input
+                                className={styles.inputNumber}
+                                name="a1_manual_bikes"
+                                value={a1_manual_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>A2</td>
+                            <td>
+                              <Input
+                                className={styles.inputNumber}
+                                name="a2_auto_bikes"
+                                value={a2_auto_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
+                            </td>
+                            <td>
+                              <Input
+                                className={styles.inputNumber}
+                                name="a2_manual_bikes"
+                                value={a2_manual_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>A</td>
+                            <td>
+                              <Input
+                                className={styles.inputNumber}
+                                name="a_auto_bikes"
+                                value={a_auto_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
+                            </td>
+                            <td>
+                              <Input
+                                className={styles.inputNumber}
+                                name="a_manual_bikes"
+                                value={a_manual_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </Col>
+                  </Row>
+                  {isFullLicenceTest && (
+                    <React.Fragment>
+                      <Row>
+                        <Col sm="12" className={styles.formGroup}>
+                          <label>Last date to cancel</label>
+                          <Input
+                            name="last_date_cancel"
+                            value={last_date_cancel || ''}
+                            type="date"
+                            disabled={!isEditable}
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            required
+                          />
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col sm="12" className={styles.formGroup}>
+                          <label>Test Centre</label>
+                          <select
+                            className={styles.formSelect}
+                            name="test_centre"
+                            value={test_centre}
+                            disabled={!isEditable}
+                            onChange={this.handleChangeRawEvent.bind(this)}>
+                            {testCentres.map(testCentre => (
+                              <option key={testCentre.id} value={testCentre.id}>
+                                {testCentre.name}
+                              </option>
+                            ))}
+                          </select>
+                        </Col>
+                      </Row>
+                    </React.Fragment>
+                  )}
+                </React.Fragment>
               )}
 
               {!this.props.course && !this.props.date && (
