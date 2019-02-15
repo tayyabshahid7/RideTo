@@ -19,7 +19,7 @@ function UnallocatedTestsTable({ tests }) {
         <tbody>
           {tests.map(
             (
-              { id, date, last_date_cancel, test_centre, course_type },
+              { id, date, last_date_cancel, test_centre_name, course_type },
               index
             ) => {
               const testDate = moment(date)
@@ -35,7 +35,7 @@ function UnallocatedTestsTable({ tests }) {
                   )}
                   key={id}>
                   <td>{course_type.replace('Test', '')}</td>
-                  <td>{test_centre}</td>
+                  <td>{test_centre_name}</td>
                   <td>{testDate.format('ddd, Do MMM YYYY')}</td>
                   <td>{lastDateCancel.format('ddd, Do MMM YYYY')}</td>
                   <td>
