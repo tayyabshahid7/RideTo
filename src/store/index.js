@@ -6,6 +6,7 @@ import course from './course'
 import event from './event'
 import info from './info'
 import instructor from './instructor'
+import testCentre from './testCentre'
 import customer from './customer'
 import supplier from './supplier'
 import settings from './settings'
@@ -19,6 +20,7 @@ const appReducer = combineReducers({
   course,
   event,
   instructor,
+  testCentre,
   customer,
   order,
   settings,

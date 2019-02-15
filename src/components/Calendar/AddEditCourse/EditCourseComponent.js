@@ -144,6 +144,7 @@ const mapStateToProps = (state, ownProps) => {
     course: state.course.single.course,
     saving: state.course.single.saving,
     instructors: state.instructor.instructors,
+    testCentres: state.testCentre.testCentres,
     pricing: state.course.pricing,
     info: state.info
   }

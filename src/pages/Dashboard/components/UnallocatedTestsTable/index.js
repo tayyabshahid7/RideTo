@@ -10,30 +10,41 @@ function UnallocatedTestsTable({ tests }) {
         <thead>
           <tr>
             <th>Test</th>
+            <th>Centre</th>
             <th>Date</th>
+            <th>Last date to cancel</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
-          {tests.map(({ id, date, course_type }, index) => {
-            const testDate = moment(date)
-            const isExpiring = testDate.isBefore(moment().add(13, 'days'))
-
-            return (
-              <tr
-                className={classnames(
-                  index % 2 ? styles.trEven : styles.trOdd,
-                  isExpiring ? styles.isExpiring : null
-                )}
-                key={id}>
-                <td>{course_type.replace('Test', '')}</td>
-                <td>{testDate.format('ddd, do MMM YYYY')}</td>
-                <td>
-                  {isExpiring ? <span>Expiring Soon</span> : <span>Ok</span>}
-                </td>
-              </tr>
-            )
-          })}
+          {tests.map(
+            (
+              { id, date, last_date_cancel, test_centre, course_type },
+              index
+            ) => {
+              const testDate = moment(date)
+              const lastDateCancel = moment(last_date_cancel)
+              const isExpiring = lastDateCancel.isBefore(
+                moment().add(3, 'days')
+              )
+              return (
+                <tr
+                  className={classnames(
+                    index % 2 ? styles.trEven : styles.trOdd,
+                    isExpiring ? styles.isExpiring : null
+                  )}
+                  key={id}>
+                  <td>{course_type.replace('Test', '')}</td>
+                  <td>{test_centre}</td>
+                  <td>{testDate.format('ddd, Do MMM YYYY')}</td>
+                  <td>{lastDateCancel.format('ddd, Do MMM YYYY')}</td>
+                  <td>
+                    {isExpiring ? <span>Expiring Soon</span> : <span>Ok</span>}
+                  </td>
+                </tr>
+              )
+            }
+          )}
         </tbody>
       </table>
     </div>
