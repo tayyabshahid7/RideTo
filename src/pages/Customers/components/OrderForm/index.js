@@ -159,9 +159,12 @@ class OrderForm extends React.Component {
               <FormGroup>
                 <Label>Training Date</Label>
                 <Input
-                  type="date"
                   disabled={true}
-                  value={getDate(editable.training_date_time) || ''}
+                  value={
+                    moment(getDate(editable.training_date_time)).format(
+                      'DD/MM/YYYY'
+                    ) || ''
+                  }
                 />
               </FormGroup>
             </Col>
