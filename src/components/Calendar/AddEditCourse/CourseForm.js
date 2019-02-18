@@ -4,7 +4,7 @@ import { Col, Row, Button } from 'reactstrap'
 import classnames from 'classnames'
 
 import styles from './styles.scss'
-import { DAY_FORMAT3 } from 'common/constants'
+import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
 import Loading from 'components/Loading'
 import Input from 'components/Forms/Input'
 import pick from 'lodash/pick'
@@ -51,7 +51,8 @@ class CourseForm extends React.Component {
           'a2_manual_bikes',
           'a_manual_bikes',
           'test_centre',
-          'last_date_cancel'
+          'last_date_cancel',
+          'status'
         )
       )
       course.course_type_id =
@@ -211,7 +212,8 @@ class CourseForm extends React.Component {
       a2_manual_bikes,
       a_manual_bikes,
       last_date_cancel,
-      test_centre
+      test_centre,
+      status
     } = this.state.course
 
     const finishTime = this.getFinishTime(time, duration)
@@ -430,6 +432,36 @@ class CourseForm extends React.Component {
                                 {testCentre.name}
                               </option>
                             ))}
+                          </select>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col sm="12" className={styles.formGroup}>
+                          <label>Test Status</label>
+                          <select
+                            className={styles.formSelect}
+                            name="status"
+                            value={status ? status : ''}
+                            disabled={!isEditable}
+                            onChange={this.handleChangeRawEvent.bind(this)}>
+                            <option value="" disabled>
+                              Select status
+                            </option>
+                            <option
+                              key={'TEST_STATUS_NO_NAME'}
+                              value={'TEST_STATUS_NO_NAME'}>
+                              {TEST_STATUS_CHOICES.TEST_STATUS_NO_NAME}
+                            </option>
+                            <option
+                              key={'TEST_STATUS_NAMED'}
+                              value={'TEST_STATUS_NAMED'}>
+                              {TEST_STATUS_CHOICES.TEST_STATUS_NAMED}
+                            </option>
+                            <option
+                              key={'TEST_STATUS_NO_BOOKING'}
+                              value={'TEST_STATUS_NO_BOOKING'}>
+                              {TEST_STATUS_CHOICES.TEST_STATUS_NO_BOOKING}
+                            </option>
                           </select>
                         </Col>
                       </Row>

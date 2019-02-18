@@ -2,6 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
 import styles from './styles.scss'
+import { TEST_STATUS_CHOICES } from 'common/constants'
 
 function UnallocatedTestsTable({ tests }) {
   return (
@@ -19,7 +20,14 @@ function UnallocatedTestsTable({ tests }) {
         <tbody>
           {tests.map(
             (
-              { id, date, last_date_cancel, test_centre_name, course_type },
+              {
+                id,
+                date,
+                last_date_cancel,
+                test_centre_name,
+                course_type,
+                status
+              },
               index
             ) => {
               const testDate = moment(date)
@@ -38,9 +46,7 @@ function UnallocatedTestsTable({ tests }) {
                   <td>{test_centre_name}</td>
                   <td>{testDate.format('ddd, Do MMM YYYY')}</td>
                   <td>{lastDateCancel.format('ddd, Do MMM YYYY')}</td>
-                  <td>
-                    {isExpiring ? <span>Expiring Soon</span> : <span>Ok</span>}
-                  </td>
+                  <td>{TEST_STATUS_CHOICES[status]}</td>
                 </tr>
               )
             }

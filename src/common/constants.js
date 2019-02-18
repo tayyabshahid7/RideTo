@@ -98,3 +98,9 @@ export const COURSETYPE_ORDER = [
   'FULL_LICENCE',
   'TFL_ONE_ON_ONE'
 ]
+
+export const TEST_STATUS_CHOICES = {
+  TEST_STATUS_NO_BOOKING: 'No Booking',
+  TEST_STATUS_NO_NAME: 'Booked, NO Name',
+  TEST_STATUS_NAMED: 'Booked, Named'
+}
