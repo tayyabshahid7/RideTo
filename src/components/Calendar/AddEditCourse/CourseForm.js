@@ -12,6 +12,7 @@ import pick from 'lodash/pick'
 class CourseForm extends React.Component {
   constructor(props) {
     super(props)
+
     const course = {
       course_type_id: '',
       instructor_id: '',
@@ -85,8 +86,29 @@ class CourseForm extends React.Component {
     this.loadPricing()
   }
 
-  componentDidUpdate() {
-    this.loadPricing()
+  componentDidUpdate(prevProps) {
+    const { courseTypes } = this.props.info
+    const { courseTypes: prevCourseTypes } = prevProps.info
+    const { course_type_id } = this.state.course
+
+    if (
+      courseTypes &&
+      prevCourseTypes &&
+      courseTypes.length !== prevCourseTypes.length &&
+      course_type_id === ''
+    ) {
+      this.setState(
+        {
+          course: {
+            ...this.state.course,
+            course_type_id: courseTypes[0].id
+          }
+        },
+        this.loadPricing()
+      )
+    } else {
+      this.loadPricing()
+    }
   }
 
   loadPricing() {
