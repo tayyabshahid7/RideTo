@@ -47,7 +47,7 @@ function BikePicker({
             {getMotorbikeLabel('no')}
           </button>
         )}
-        {bike_hire === 'no' && (
+        {isCbtRenewal && bike_hire === 'no' && (
           <div className={styles.ownBikeDisclaimer}>
             You must bring a valid CBT Certificate, Insurance Documents, Tax and
             MOT if you wish to train on your own bike.
