@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { Button } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 import { getShortCourseType } from 'services/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
@@ -50,7 +51,8 @@ const CoursesPanelItem = ({
             <div className={styles.testNotes}>
               {course.test_centre_name}
               <br />
-              Last day to cancel: {course.last_date_cancel}
+              Last day to cancel:{' '}
+              {moment(course.last_date_cancel).format('Do MMM YYYY')}
             </div>
           )}
           {notes && <div className={styles.notes}>{truncated}</div>}
