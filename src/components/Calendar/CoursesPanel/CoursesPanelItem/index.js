@@ -43,14 +43,12 @@ const CoursesPanelItem = ({
       <div className={styles.heading}>
         <div className={className}>
           <div>
-            {course.time.substring(0, 5)} | {name}
+            {course.time.substring(0, 5)} | {name}{' '}
+            {isTestCourse && `(${course.application_reference_number})`}
           </div>
           {isTestCourse && (
             <div className={styles.testNotes}>
-              {course.application_reference_number}
-              &nbsp;&nbsp;|&nbsp;&nbsp;
-              {course.test_centre}
-              <br />
+              {course.test_centre_name}
               <br />
               Last day to cancel: {course.last_date_cancel}
             </div>
