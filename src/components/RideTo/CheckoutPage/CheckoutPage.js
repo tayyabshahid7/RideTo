@@ -13,6 +13,7 @@ import { fetchUser } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import AddressSelectModal from 'components/RideTo/AddressSelectModal'
+import { tldExists } from 'tldjs'
 
 const getStripeError = error => {
   const field = error.code.split('_').slice(-1)[0]
@@ -379,7 +380,8 @@ class CheckoutPage extends Component {
     if (
       !details.email.match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      )
+      ) ||
+      !tldExists(details.email)
     ) {
       errors['email'] = 'Invalid email address'
       if (!errors.divId) errors.divId = this.getErrorDivId('email')
