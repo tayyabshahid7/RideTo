@@ -13,7 +13,7 @@ import {
   updateSchoolOrder,
   updateCourse
 } from 'store/course'
-
+import { TEST_STATUS_CHOICES } from 'common/constants'
 import styles from './CoursesPanelItem.scss'
 
 const CoursesPanelItem = ({
@@ -45,10 +45,14 @@ const CoursesPanelItem = ({
         <div className={className}>
           <div>
             {course.time.substring(0, 5)} | {name}{' '}
-            {isTestCourse && `(${course.application_reference_number})`}
+            {isTestCourse &&
+              course.application_reference_number &&
+              `(${course.application_reference_number})`}
           </div>
           {isTestCourse && (
             <div className={styles.testNotes}>
+              <b>{TEST_STATUS_CHOICES[course.status]}</b>
+              <br />
               {course.test_centre_name}
               <br />
               Last day to cancel:{' '}
