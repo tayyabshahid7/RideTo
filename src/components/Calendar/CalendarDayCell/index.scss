@@ -21,6 +21,24 @@
   color: var(--light-grey-color);
 }
 
+.highlight {
+  background-color: #2cceac;
+  color: #fff;
+  margin-top: -4px;
+  margin-left: -4px;
+  border-radius: 50%;
+  text-align: center;
+  width: 17px;
+  height: 17px;
+  line-height: 17px;
+
+  @media (min-width: 1200px) {
+    line-height: 23px;
+    width: 22px;
+    height: 22px;
+  }
+}
+
 .dayLink {
   display: block;
   height: 100%;

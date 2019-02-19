@@ -42,6 +42,14 @@ const CalendarDayCell = ({ day, calendar, history }) => {
     calendar.year === day.date.getFullYear() &&
     calendar.month === day.date.getMonth() &&
     calendar.day === day.date.getDate()
+  const now = new Date()
+  const isToday =
+    now.getFullYear() === day.date.getFullYear() &&
+    now.getMonth() === day.date.getMonth() &&
+    now.getDate() === day.date.getDate()
+
+  console.log(isToday)
+
   return (
     <li
       className={classnames(
@@ -53,14 +61,15 @@ const CalendarDayCell = ({ day, calendar, history }) => {
       <div
         className={classnames(
           isOtherMonthDate && styles.otherMonthDate,
-          styles.date
+          styles.date,
+          isToday && styles.highlight
         )}>
         {day.date.getDate()}
       </div>
       <div className={styles.courseContainer}>
-        {items
-          .slice(0, 3)
-          .map(item => <CalendarDayCellItem key={item.id} item={item} />)}
+        {items.slice(0, 3).map(item => (
+          <CalendarDayCellItem key={item.id} item={item} />
+        ))}
 
         {more > 0 && <div className={styles.more}>{more} more...</div>}
       </div>
