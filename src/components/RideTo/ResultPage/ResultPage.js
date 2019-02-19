@@ -7,7 +7,7 @@ import {
   DropdownItem
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
-import { DAY_FORMAT5, LICENCE_TYPES } from 'common/constants'
+import { LICENCE_TYPES } from 'common/constants'
 import {
   SortByOptions,
   getTitleFor,
@@ -15,6 +15,7 @@ import {
   isAllPackageDatesSelected,
   isAnyPackageDatesSelected
 } from 'common/info'
+import DesktopHeader from './DesktopHeader'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
@@ -27,11 +28,12 @@ import DateSelectorModal from './DateSelectorModal'
 import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
-import { IconCalendar } from 'assets/icons'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
+import { fetchCoursesTypes } from 'services/course-type'
 
 import { isBankHoliday } from 'services/misc'
+import { getCourseTitle } from 'services/course'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -47,7 +49,8 @@ class ResultPage extends Component {
       bike_hire: null,
       selectedLicenceType: null,
       selectedPackageDays: '',
-      selectedPackageDates: []
+      selectedPackageDates: [],
+      courseTypesOptions: []
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -58,16 +61,24 @@ class ResultPage extends Component {
     this.handleDetailClick = this.handleDetailClick.bind(this)
     this.handlePriceClick = this.handlePriceClick.bind(this)
     this.handleReviewClick = this.handleReviewClick.bind(this)
+    this.handleMobileDateClick = this.handleMobileDateClick.bind(this)
 
     window.sessionStorage.removeItem('trainings')
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // Prevent the reuslts from loading half way down the page
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
     }
     window.scrollTo(0, 0)
+
+    const { postcode } = this.props
+    const result = await fetchCoursesTypes(postcode || '')
+    const courseTypes = result.results
+    this.setState({
+      courseTypesOptions: courseTypes
+    })
   }
 
   handleDetailClick(course) {
@@ -253,12 +264,14 @@ class ResultPage extends Component {
     }
   }
 
-  renderSortByDropdown() {
+  renderSortByDropdown(shortOptions) {
     const { handeUpdateOption, sortByOption, courseType } = this.props
     return (
-      <UncontrolledDropdown>
+      <UncontrolledDropdown className={styles.sortButtonWrap}>
         <DropdownToggle caret color="lightgrey" className={styles.sortButton}>
-          {getTitleFor(SortByOptions, sortByOption).toUpperCase()}
+          {!shortOptions
+            ? getTitleFor(SortByOptions, sortByOption).toUpperCase()
+            : getTitleFor(SortByOptions, sortByOption).replace('Sort by', '')}
         </DropdownToggle>
         <DropdownMenu>
           {SortByOptions.map(sortOption => {
@@ -271,7 +284,9 @@ class ResultPage extends Component {
                   handeUpdateOption({ sortByOption: sortOption.value })
                 }
                 key={sortOption.value}>
-                {sortOption.title.toUpperCase()}
+                {!shortOptions
+                  ? sortOption.title.toUpperCase()
+                  : sortOption.title.replace('Sort by', '')}
               </DropdownItem>
             )
           })}
@@ -280,21 +295,8 @@ class ResultPage extends Component {
     )
   }
 
-  renderMobileDateSelectorButton() {
-    const { date } = this.props
-
-    return (
-      <div
-        className={styles.dateSelectorMobile}
-        onClick={() => {
-          this.setState({ showDateSelectorModal: true })
-        }}>
-        <span>{moment(date).format(DAY_FORMAT5)}</span>
-        <span>
-          <IconCalendar />
-        </span>
-      </div>
-    )
+  handleMobileDateClick() {
+    this.setState({ showDateSelectorModal: true })
   }
 
   renderRidetoButton(
@@ -304,8 +306,6 @@ class ResultPage extends Component {
     bike_hire,
     ifullLicence
   ) {
-    // const { selectedPackageDates } = this.state
-
     return (
       <RideToButton
         className={classnames(
@@ -316,7 +316,6 @@ class ResultPage extends Component {
             styles.bookNowDisabled
         )}
         onClick={() => {
-          // isAllPackageDatesSelected(selectedPackageDates)
           if (this.state.activeTab !== 3) {
             this.setState({ activeTab: 3 })
           } else {
@@ -391,7 +390,8 @@ class ResultPage extends Component {
       bike_hire,
       selectedLicenceType,
       selectedPackageDays,
-      selectedPackageDates
+      selectedPackageDates,
+      courseTypesOptions
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -435,20 +435,46 @@ class ResultPage extends Component {
           postcode={postcode}
           courseType={courseType}
           navigation={navigation}
+          date={date}
+          showDatePicker
+          handleMobileDateClick={this.handleMobileDateClick}
+          courseTypesOptions={courseTypesOptions}
+        />
+        <DesktopHeader
+          courseType={courseType}
+          postcode={postcode}
+          courseTypesOptions={courseTypesOptions}
+          handlePostcodeChange={this.handlePostcodeChange}
+          handleCourseChange={this.handleCourseChange}
         />
         <Container className={styles.pageContainer}>
           {hasPartnerResults && (
             <Row>
-              <Col sm="6">
+              <Col md="6">
                 {!isFullLicence ? (
                   <React.Fragment>
                     <div className={styles.headingDesktop}>Choose a Date</div>
                     <div className={styles.headingMobile}>
-                      Choose a Date &amp; Location
+                      {getCourseTitle(courseType)} {postcode}
                     </div>
                   </React.Fragment>
                 ) : (
-                  <div className={styles.headingMobile}>Choose a Location</div>
+                  <div className={styles.headingMobile}>
+                    Full Licence {postcode}
+                  </div>
+                )}
+                {!loading && (
+                  <div
+                    className={classnames(
+                      styles.schoolCount,
+                      styles.schoolCountMobile
+                    )}>
+                    {resultsCount} training sites sorted by{' '}
+                    {this.renderSortByDropdown(true)}
+                    <span className={styles.desktopSortByValue}>
+                      {sortByOption.replace('-', '')}
+                    </span>
+                  </div>
                 )}
               </Col>
             </Row>
@@ -471,11 +497,23 @@ class ResultPage extends Component {
                           courseType={courseType}
                         />
                       )}
-                      <div className={styles.mobileButtons}>
-                        {!isFullLicence &&
-                          this.renderMobileDateSelectorButton()}
-                        {this.renderSortByDropdown()}
-                      </div>
+                      {!loading && (
+                        <React.Fragment>
+                          <div className={classnames(styles.instruction)}>
+                            Select a location
+                          </div>
+                          <div
+                            className={classnames(
+                              styles.schoolCount,
+                              styles.schoolCountDesktop
+                            )}>
+                            {resultsCount} training sites sorted by{' '}
+                            <span className={styles.desktopSortByValue}>
+                              {sortByOption.replace('-', '')}
+                            </span>
+                          </div>
+                        </React.Fragment>
+                      )}
                     </React.Fragment>
                   ) : (
                     <div className={styles.nonParnetResultMessage}>
@@ -494,23 +532,6 @@ class ResultPage extends Component {
                       <div className={styles.coursesPanel}>
                         {courses.available.length > 0 && (
                           <React.Fragment>
-                            <div
-                              className={classnames(
-                                styles.subTitle,
-                                styles.hiddenOnMobile
-                              )}>
-                              Choose a location
-                            </div>
-                            <div
-                              className={classnames(
-                                styles.schoolCount,
-                                isFullLicence && styles.schoolCountFullLicence
-                              )}>
-                              {`Showing ${resultsCount} training sites in your area by ${sortByOption.replace(
-                                '-',
-                                ''
-                              )}`}
-                            </div>
                             {courses.available.map(
                               (course, index) =>
                                 course.is_partner && (

@@ -60,12 +60,12 @@ class AddonSelection extends React.Component {
     let addons = getAddons()
     addons.forEach(addon => {
       if (addon.sizes && addon.sizes.length > 0) {
-        addon.selectedSize = addon.sizes.filter(({ quantity }) => quantity)[0]
+        addon.selectedSize = null
       }
     })
 
     this.state = {
-      addons: getAddons(),
+      addons,
       postcode: qs.postcode || '',
       courseType: qs.courseType || '',
       qs: qs || {},
@@ -83,7 +83,21 @@ class AddonSelection extends React.Component {
   }
 
   handleAddAddon(addon) {
+    const { addons } = this.state
+
+    if (!addon.selectedSize) {
+      this.setState({
+        addons: addons.map(a =>
+          a.id === addon.id ? { ...a, sizeRequired: true } : a
+        )
+      })
+      return
+    }
+
     this.setState({
+      addons: addons.map(a =>
+        a.id === addon.id ? { ...a, sizeRequired: false } : a
+      ),
       selectedAddons: this.state.selectedAddons.concat([addon]),
       detailsAddon: null
     })
@@ -91,7 +105,9 @@ class AddonSelection extends React.Component {
 
   handleRemoveAddon(addon) {
     this.setState({
-      selectedAddons: this.state.selectedAddons.filter(item => item !== addon),
+      selectedAddons: this.state.selectedAddons.filter(
+        item => item.id !== addon.id
+      ),
       detailsAddon: null
     })
   }
@@ -129,7 +145,7 @@ class AddonSelection extends React.Component {
   isAddonSelected(addon) {
     const { selectedAddons } = this.state
 
-    return selectedAddons.filter(item => item === addon).length > 0
+    return selectedAddons.filter(item => item.id === addon.id).length > 0
   }
 
   render() {
@@ -138,7 +154,7 @@ class AddonSelection extends React.Component {
 
     return (
       <React.Fragment>
-        <NavigationComponent navigation={navigation} />
+        <NavigationComponent navigation={navigation} showIcons={false} />
         <Container>
           <Row>
             <Col sm="6">

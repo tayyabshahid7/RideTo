@@ -16,7 +16,8 @@ const COURSES = [
     id: 1,
     course_type: {
       id: 1,
-      name: 'CBT Training'
+      name: 'CBT Training',
+      constant: 'LICENCE_CBT'
     },
     date: '2018-07-25',
     time: '08:00:00',
@@ -39,7 +40,8 @@ const COURSES = [
     id: 2,
     course_type: {
       id: 2,
-      name: 'CBT Training'
+      name: 'CBT Training',
+      constant: 'LICENCE_CBT'
     },
     date: '2018-07-25',
     time: '09:00:00',

@@ -16,7 +16,7 @@
     justify-content: space-between;
 
     width: 100%;
-    padding: 16px 32px;
+    padding: 12px 32px;
 
     border-bottom: 1px solid #f8f8f8;
   }
@@ -56,6 +56,29 @@
   font-family: var(--font-proxima);
   opacity: 0.5;
   font-family: var(--font-proxima);
+  height: 30px;
+
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+  }
+
+  .subtitleInner {
+    svg {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      display: flex;
+      align-items: center;
+      height: 24px;
+
+      svg {
+        display: block;
+        margin-left: 1rem;
+      }
+    }
+  }
 }
 
 .disabled {

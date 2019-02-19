@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { Button } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 import { getShortCourseType } from 'services/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
@@ -12,7 +13,7 @@ import {
   updateSchoolOrder,
   updateCourse
 } from 'store/course'
-
+import { TEST_STATUS_CHOICES } from 'common/constants'
 import styles from './CoursesPanelItem.scss'
 
 const CoursesPanelItem = ({
@@ -43,16 +44,19 @@ const CoursesPanelItem = ({
       <div className={styles.heading}>
         <div className={className}>
           <div>
-            {course.time.substring(0, 5)} | {name}
+            {course.time.substring(0, 5)} | {name}{' '}
+            {isTestCourse &&
+              course.application_reference_number &&
+              `(${course.application_reference_number})`}
           </div>
           {isTestCourse && (
             <div className={styles.testNotes}>
-              {course.application_reference_number}
-              &nbsp;&nbsp;|&nbsp;&nbsp;
-              {course.test_centre}
+              <b>{TEST_STATUS_CHOICES[course.status]}</b>
               <br />
+              {course.test_centre_name}
               <br />
-              Last day to cancel: {course.last_date_cancel}
+              Last day to cancel:{' '}
+              {moment(course.last_date_cancel).format('Do MMM YYYY')}
             </div>
           )}
           {notes && <div className={styles.notes}>{truncated}</div>}

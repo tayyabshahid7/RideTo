@@ -5,6 +5,8 @@ import MapComponent from 'components/RideTo/MapComponent'
 import { saveSupplierRating } from 'services/supplier'
 import { showReview } from 'services/order'
 import DashboardReview from 'components/RideTo/Account/DashboardReview'
+import { formatBikeConstant } from 'common/info'
+import { BikeHires } from 'common/info'
 
 import styles from './OrderDetails.scss'
 const getFriendlyStatus = status => {
@@ -78,6 +80,8 @@ class OrderDetails extends React.Component {
       lng: parseFloat(training_location.longitude)
     }
     const courseTitle = order.course_title
+    const trainingBikeType =
+      order.trainings && order.trainings[0] && order.trainings[0].bike_type
 
     return (
       <div className={styles.orderDetails}>
@@ -86,7 +90,14 @@ class OrderDetails extends React.Component {
 
           <div className={styles.rowContainer}>
             {renderRow('Course', courseTitle)}
-            {renderRow('Bike Type', order.bike_type)}
+            {renderRow(
+              'Bike Type',
+              trainingBikeType
+                ? BikeHires.find(
+                    bike => bike.value === formatBikeConstant(trainingBikeType)
+                  ).title
+                : order.bike_type
+            )}
             {order.source === 'RIDETO' &&
               renderRow(
                 'Date & Time',

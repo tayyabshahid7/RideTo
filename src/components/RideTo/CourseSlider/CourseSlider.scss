@@ -67,6 +67,10 @@ $break-point-mobile-425: 425px;
     background: transparent;
     border: 0;
   }
+
+  @media (max-width: 768px) {
+    margin-top: -2rem;
+  }
 }
 
 .slide {

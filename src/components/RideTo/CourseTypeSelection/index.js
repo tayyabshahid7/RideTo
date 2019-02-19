@@ -5,7 +5,6 @@ import { parseQueryString } from 'services/api'
 import { fetchCoursesTypes, getFilters } from 'services/course-type'
 import CourseTypeItem from 'components/RideTo/CourseTypeItem'
 import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFilters'
-import NavigationComponent from 'components/RideTo/NavigationComponent'
 import SidePanel from 'components/RideTo/SidePanel'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import Button from 'components/RideTo/Button'
@@ -127,7 +126,6 @@ class CourseTypeSelection extends React.Component {
       selectedFilter,
       selectedCourseType,
       detailsImage,
-      navigation,
       loading
     } = this.state
 
@@ -146,12 +144,14 @@ class CourseTypeSelection extends React.Component {
 
     return (
       <React.Fragment>
+        {/*
         <NavigationComponent
           onPostcodeChange={postcode => {
             this.handlePostcodeChange(postcode)
           }}
           navigation={navigation}
         />
+        */}
         <Loading loading={loading} position="top" cover>
           <Container className={styles.container}>
             <Row>

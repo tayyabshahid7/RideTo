@@ -13,6 +13,7 @@ import { fetchUser } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import AddressSelectModal from 'components/RideTo/AddressSelectModal'
+import { tldExists } from 'tldjs'
 
 const getStripeError = error => {
   const field = error.code.split('_').slice(-1)[0]
@@ -376,6 +377,17 @@ class CheckoutPage extends Component {
       hasError = true
     }
 
+    if (
+      !details.email.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      ) ||
+      !tldExists(details.email)
+    ) {
+      errors['email'] = 'Invalid email address'
+      if (!errors.divId) errors.divId = this.getErrorDivId('email')
+      hasError = true
+    }
+
     this.setState({
       errors: errors
     })
@@ -425,6 +437,8 @@ class CheckoutPage extends Component {
       details.address = NO_ADDONS_ADDRESS
     }
 
+    this.setState({ saving: true })
+
     //Check if email already exists or user logged in
     const result = await this.checkEmail(details.email)
     if (result.error) {
@@ -434,10 +448,12 @@ class CheckoutPage extends Component {
           divId: this.getErrorDivId('email')
         }
       })
+      this.setState({ saving: false })
       return
     }
 
     if (!this.validateDetails(details)) {
+      this.setState({ saving: false })
       return
     }
 
@@ -557,51 +573,56 @@ class CheckoutPage extends Component {
     } = this.state
 
     return (
-      <div className={styles.container}>
-        <div className={styles.leftPanel}>
-          <UserDetails
-            {...this.props}
-            details={details}
-            errors={errors}
-            priceInfo={priceInfo}
-            onDetailChange={this.handleValueChange}
-            onPaymentChange={this.handleOnPaymentChange}
-            onChange={this.onUpdate}
-            manualAddress={manualAddress}
-            onPostalCodeSubmit={this.handlePostalcodeSubmit}
-            postcodeLookingup={postcodeLookingup}
-            showMap={showMap}
-            handleMapButtonClick={this.handleMapButtonClick}
-            trainings={trainings}
-          />
+      <React.Fragment>
+        <div className={styles.header}>
+          <h1>Checkout</h1>
         </div>
-        <div className={styles.rightPanel}>
-          <OrderSummary
-            {...this.props}
-            errors={errors}
-            details={details}
-            priceInfo={priceInfo}
-            onSubmit={this.handlePayment}
-            saving={saving}
-            onChange={this.onUpdate}
-            onDetailChange={this.handleValueChange}
-            voucher_code={voucher_code}
-            handleVoucherApply={this.handleVoucherApply}
-            loadingPrice={loadingPrice}
-            showMap={showMap}
-            handleMapButtonClick={this.handleMapButtonClick}
-            trainings={trainings}
-          />
+        <div className={styles.container}>
+          <div className={styles.leftPanel}>
+            <UserDetails
+              {...this.props}
+              details={details}
+              errors={errors}
+              priceInfo={priceInfo}
+              onDetailChange={this.handleValueChange}
+              onPaymentChange={this.handleOnPaymentChange}
+              onChange={this.onUpdate}
+              manualAddress={manualAddress}
+              onPostalCodeSubmit={this.handlePostalcodeSubmit}
+              postcodeLookingup={postcodeLookingup}
+              showMap={showMap}
+              handleMapButtonClick={this.handleMapButtonClick}
+              trainings={trainings}
+            />
+          </div>
+          <div className={styles.rightPanel}>
+            <OrderSummary
+              {...this.props}
+              errors={errors}
+              details={details}
+              priceInfo={priceInfo}
+              onSubmit={this.handlePayment}
+              saving={saving}
+              onChange={this.onUpdate}
+              onDetailChange={this.handleValueChange}
+              voucher_code={voucher_code}
+              handleVoucherApply={this.handleVoucherApply}
+              loadingPrice={loadingPrice}
+              showMap={showMap}
+              handleMapButtonClick={this.handleMapButtonClick}
+              trainings={trainings}
+            />
+          </div>
+          {showAddressSelectorModal && (
+            <AddressSelectModal
+              addresses={addresses}
+              isOpen={true}
+              onClose={() => this.setState({ showAddressSelectorModal: false })}
+              onSelect={this.handleSelectAddress.bind(this)}
+            />
+          )}
         </div>
-        {showAddressSelectorModal && (
-          <AddressSelectModal
-            addresses={addresses}
-            isOpen={true}
-            onClose={() => this.setState({ showAddressSelectorModal: false })}
-            onSelect={this.handleSelectAddress.bind(this)}
-          />
-        )}
-      </div>
+      </React.Fragment>
     )
   }
 }

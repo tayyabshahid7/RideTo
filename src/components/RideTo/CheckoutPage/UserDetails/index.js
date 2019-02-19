@@ -228,6 +228,7 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.last_name}</div>
           )}
           <Input
+            type="email"
             placeholder="E-mail address"
             name="email"
             value={details.email}

@@ -52,6 +52,8 @@ class BookingOptionsContainer extends React.Component {
   constructor(props) {
     super(props)
     const { selectedSupplier } = props
+    const isFullLicence =
+      selectedSupplier.courses[0].constant === 'FULL_LICENCE'
 
     this.state = {
       courseType: selectedSupplier.courses[0],
@@ -59,10 +61,10 @@ class BookingOptionsContainer extends React.Component {
       availableCourses: [],
       selectedCourse: null,
       selectedDate: null,
-      selectedBikeHire: 'no',
+      selectedBikeHire: !isFullLicence ? 'no' : '',
       month: moment().startOf('month'),
       isLoading: true,
-      isFullLicence: selectedSupplier.courses[0].constant === 'FULL_LICENCE',
+      isFullLicence,
       selectedLicenceType: null,
       selectedPackageDays: '',
       selectedPackageDates: [],
@@ -85,13 +87,29 @@ class BookingOptionsContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { month } = this.state
+    const { month, isFullLicence } = this.state
+    if (isFullLicence) {
+      this.setState({ isLoading: false })
+      return
+    }
     this.fetchCourses(month.clone())
   }
 
-  componentDidUpdate(oldProps) {
+  componentDidUpdate(oldProps, oldState) {
+    const { isFullLicence, month } = this.state
+    if (isFullLicence) {
+      return
+    }
+
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
-      const { month } = this.state
+      this.setState({ isLoading: true })
+      this.fetchCourses(month.clone())
+    }
+
+    if (
+      oldState.courseType.constant !== this.state.courseType.constant &&
+      !this.state.availableCourses.length
+    ) {
       this.setState({ isLoading: true })
       this.fetchCourses(month.clone())
     }
@@ -124,9 +142,9 @@ class BookingOptionsContainer extends React.Component {
       availableCourses
     )
 
-    const isFullLicence = courseType.constant === 'FULL_LICENCE'
-
     let selectedBikeHire = showOwnBikeHire(courseType) ? 'no' : 'auto'
+
+    const isFullLicence = courseType.constant === 'FULL_LICENCE'
 
     if (isFullLicence) {
       selectedBikeHire = ''

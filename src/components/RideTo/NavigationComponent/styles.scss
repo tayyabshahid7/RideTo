@@ -23,8 +23,21 @@
   cursor: pointer;
 }
 
+.hiddenOnDesktop {
+  display: none !important;
+  @media (max-width: 768px) {
+    display: flex !important;
+  }
+}
+
 .hiddenOnMobile {
   @media (max-width: 768px) {
+    display: none !important;
+  }
+}
+
+.hideIcons {
+  svg {
     display: none !important;
   }
 }
