@@ -1,12 +1,30 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import Select from 'components/RideTo/Select'
+import { fetchDasPackagePrice } from 'services/course'
 
 class PackagePicker extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      prices: null
+    }
     this.handleChange = this.handleChange.bind(this)
+  }
+
+  async loadPrices() {
+    const { schoolId } = this.props
+
+    const prices = await fetchDasPackagePrice(schoolId)
+
+    this.setState({
+      prices
+    })
+  }
+
+  componentDidMount() {
+    this.loadPrices()
   }
 
   handleChange(event) {
@@ -22,6 +40,7 @@ class PackagePicker extends Component {
       selectedPackageDays,
       isWidget
     } = this.props
+    const { prices } = this.state
 
     return (
       <div className={styles.packageWrapper}>
@@ -42,9 +61,19 @@ class PackagePicker extends Component {
             <option value="" hidden disabled>
               Select Package
             </option>
-            <option value="4">4 Days - £870.50</option>
-            <option value="5">5 Days - £1065.50</option>
-            <option value="6">6 Days - £1260.50</option>
+            {prices && (
+              <Fragment>
+                <option value="4">
+                  4 Days - £{(prices.package_4 / 100.0).toFixed(2)}
+                </option>
+                <option value="5">
+                  5 Days - £{(prices.package_5 / 100.0).toFixed(2)}
+                </option>
+                <option value="6">
+                  6 Days - £{(prices.package_6 / 100.0).toFixed(2)}
+                </option>
+              </Fragment>
+            )}
           </Select>
         </div>
       </div>

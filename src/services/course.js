@@ -297,3 +297,9 @@ export const fetchDayCourseTimes = async (
 
   return response
 }
+
+export const fetchDasPackagePrice = async schoolId => {
+  const path = `school/${schoolId}/get-das-package-price`
+  const response = await get(path, {}, false)
+  return response
+}
