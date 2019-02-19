@@ -30,7 +30,9 @@ class CourseForm extends React.Component {
       a2_manual_bikes: '',
       a_manual_bikes: '',
       test_centre: '',
-      last_date_cancel: ''
+      last_date_cancel: '',
+      status: '',
+      application_reference_number: ''
     }
     if (this.props.course) {
       Object.assign(
@@ -53,7 +55,8 @@ class CourseForm extends React.Component {
           'a_manual_bikes',
           'test_centre',
           'last_date_cancel',
-          'status'
+          'status',
+          'application_reference_number'
         )
       )
       course.course_type_id =
@@ -235,7 +238,8 @@ class CourseForm extends React.Component {
       a_manual_bikes,
       last_date_cancel,
       test_centre,
-      status
+      status,
+      application_reference_number
     } = this.state.course
 
     const finishTime = this.getFinishTime(time, duration)
@@ -427,6 +431,19 @@ class CourseForm extends React.Component {
                   </Row>
                   {isFullLicenceTest && (
                     <React.Fragment>
+                      <Row>
+                        <Col sm="12" className={styles.formGroup}>
+                          <label>Test Reference Number</label>
+                          <Input
+                            name="application_reference_number"
+                            value={application_reference_number || ''}
+                            type="text"
+                            disabled={!isEditable}
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            required
+                          />
+                        </Col>
+                      </Row>
                       <Row>
                         <Col sm="12" className={styles.formGroup}>
                           <label>Last date to cancel</label>
