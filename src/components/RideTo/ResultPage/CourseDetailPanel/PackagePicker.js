@@ -2,12 +2,27 @@ import React, { Component } from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import Select from 'components/RideTo/Select'
+// import { getPricingForCourse } from 'services/course'
+// import { getPackageDays } from 'common/info'
 
 class PackagePicker extends Component {
   constructor(props) {
     super(props)
+    this.state = {
+      prices: [
+        { days: 4, price: null },
+        { days: 5, price: null },
+        { days: 6, price: null }
+      ]
+    }
     this.handleChange = this.handleChange.bind(this)
   }
+
+  loadPrices() {
+    // const { prices } = this.state;
+  }
+
+  componentDidMount() {}
 
   handleChange(event) {
     const { onSelectPackage } = this.props
