@@ -437,6 +437,8 @@ class CheckoutPage extends Component {
       details.address = NO_ADDONS_ADDRESS
     }
 
+    this.setState({ saving: true })
+
     //Check if email already exists or user logged in
     const result = await this.checkEmail(details.email)
     if (result.error) {
@@ -446,10 +448,12 @@ class CheckoutPage extends Component {
           divId: this.getErrorDivId('email')
         }
       })
+      this.setState({ saving: false })
       return
     }
 
     if (!this.validateDetails(details)) {
+      this.setState({ saving: false })
       return
     }
 
