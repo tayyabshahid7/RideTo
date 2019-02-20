@@ -68,7 +68,11 @@
   width: 100%;
   display: flex;
   margin: 45px auto 0;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
+
+  @media (max-width: 995px) {
+    flex-wrap: wrap;
+  }
 
   @media (max-width: 768px) {
     margin-top: 18px;
@@ -80,16 +84,22 @@
   top: 16px;
   height: 800px;
 
-  flex: 0 0 448px;
+  // flex: 0 0 448px;
+  flex: 0 1 448px;
   display: flex;
   flex-direction: column;
-  max-width: 100%;
+  // max-width: 100%;
+  max-width: 40%;
 
   @media (max-width: 768px) {
     display: none;
   }
 
-  @media (min-width: 1200px) {
+  @media (max-width: 995px) {
+    max-width: 100%;
+  }
+
+  @media (min-width: 996px) {
     margin-top: -80px;
   }
 }
