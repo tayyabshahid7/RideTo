@@ -7,7 +7,9 @@ import { IconMapPin, IconUser } from 'assets/icons'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import WebMercatorViewport from 'viewport-mercator-project'
-import * as turf from '@turf/turf'
+import { lineString } from '@turf/helpers'
+import bbox from '@turf/bbox'
+
 mapboxgl.accessToken = MAPBOX_KEY
 
 const navStyle = {
@@ -47,9 +49,9 @@ class MapComponent extends Component {
     let viewport = {}
 
     if (locations.length > 1) {
-      const line = turf.lineString(locations)
-      const bbox = turf.bbox(line)
-      const [minLat, minLng, maxLat, maxLng] = bbox
+      const line = lineString(locations)
+      const box = bbox(line)
+      const [minLat, minLng, maxLat, maxLng] = box
 
       viewport = new WebMercatorViewport({
         height,
