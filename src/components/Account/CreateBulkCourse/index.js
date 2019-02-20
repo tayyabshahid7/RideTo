@@ -28,7 +28,11 @@ class CreateBulkCourse extends React.Component {
       a_auto_bikes: '',
       a1_manual_bikes: '',
       a2_manual_bikes: '',
-      a_manual_bikes: ''
+      a_manual_bikes: '',
+      application_reference_number: '',
+      test_centre: '',
+      last_date_cancel: '',
+      status: ''
     }
 
     this.state = {
@@ -131,7 +135,8 @@ class CreateBulkCourse extends React.Component {
       a_auto_bikes: a_auto_bikes || 0,
       a1_manual_bikes: a1_manual_bikes || 0,
       a2_manual_bikes: a2_manual_bikes || 0,
-      a_manual_bikes: a_manual_bikes || 0
+      a_manual_bikes: a_manual_bikes || 0,
+      last_date_cancel: null
     }
     onSubmit({ school_course, repeat })
   }
@@ -165,7 +170,11 @@ class CreateBulkCourse extends React.Component {
     } = this.state.course
 
     const courseTypes = info.courseTypes.filter(
-      type => type.constant !== 'FULL_LICENCE'
+      type =>
+        !(
+          type.constant.startsWith('FULL_LICENCE') &&
+          type.constant.endsWith('TEST')
+        ) && type.constant !== 'FULL_LICENCE'
     )
 
     const isFullLicence = courseTypes
