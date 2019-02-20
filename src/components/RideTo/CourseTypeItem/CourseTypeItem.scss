@@ -118,18 +118,18 @@
 
   &:hover {
     h5 {
-      height: 20px;
+      height: auto;
     }
   }
 
   @media (min-width: 768px) {
     &:hover {
       .expandedInfo {
-        height: 216px;
+        height: 235px;
       }
 
       .info {
-        height: 160px;
+        height: 195px;
       }
 
       .cta {
@@ -157,7 +157,7 @@
     box-shadow: none;
 
     .backgroundImg {
-      height: 200px;
+      height: 150px;
       padding-bottom: 0;
     }
     .content {
@@ -167,14 +167,15 @@
 
     .expandedInfo {
       padding: 20px 24px;
-      height: 170px;
+      // height: 170px;
+      height: auto;
       width: 100%;
     }
 
     .info {
       height: auto;
       h5 {
-        height: 24px;
+        height: auto;
         font-size: 20px;
       }
     }
