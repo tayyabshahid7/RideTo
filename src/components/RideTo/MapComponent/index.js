@@ -7,6 +7,7 @@ import { IconMapPin, IconUser } from 'assets/icons'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import WebMercatorViewport from 'viewport-mercator-project'
+import * as turf from '@turf/turf'
 mapboxgl.accessToken = MAPBOX_KEY
 
 const navStyle = {
@@ -19,22 +20,9 @@ const navStyle = {
 class MapComponent extends Component {
   constructor(props) {
     super(props)
-    const { userLocation, courses, width = 428, height = 700 } = this.props
-    let locations = [...courses.available, ...courses.unavailable].map(
-      course => [course.lng, course.lat]
-    )
-
-    if (!locations.length && userLocation) {
-      locations = [[userLocation.lng, userLocation.lat]]
-    }
-
-    const viewport = new WebMercatorViewport({ width, height }).fitBounds(
-      locations,
-      { padding: 150 }
-    )
 
     this.state = {
-      viewport
+      viewport: {}
     }
 
     this.updateViewport = this.updateViewport.bind(this)
@@ -45,8 +33,44 @@ class MapComponent extends Component {
   }
 
   componentDidMount() {
-    this.updateDimensions()
-    window.addEventListener('resize', this.updateDimensions)
+    const { userLocation, courses } = this.props
+    const locations = [
+      [userLocation.lat, userLocation.lng],
+      ...[...courses.available, ...courses.unavailable].map(course => [
+        course.lat,
+        course.lng
+      ])
+    ]
+    const height = this.refs.mapContainer.offsetHeight
+    const width = this.refs.mapContainer.offsetWidth
+
+    let viewport = {}
+
+    if (locations.length > 1) {
+      const line = turf.lineString(locations)
+      const bbox = turf.bbox(line)
+      const [minLat, minLng, maxLat, maxLng] = bbox
+
+      viewport = new WebMercatorViewport({
+        height,
+        width
+      }).fitBounds([[minLng, minLat], [maxLng, maxLat]], {
+        padding: { top: 60, right: 40, bottom: 40, left: 60 }
+      })
+    } else {
+      viewport = {
+        latitude: userLocation.lat,
+        longitude: userLocation.lng,
+        height,
+        width,
+        zoom: 10
+      }
+    }
+
+    this.setState({ viewport }, () => {
+      this.updateDimensions()
+      window.addEventListener('resize', this.updateDimensions)
+    })
   }
 
   componentWillUnmount() {
