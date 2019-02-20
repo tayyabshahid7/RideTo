@@ -592,6 +592,7 @@ class ResultPage extends Component {
                             className={styles.mapWrapper}
                             courses={courses}
                             userLocation={userLocation}
+                            width="100%"
                           />
                         )}
                       </div>
