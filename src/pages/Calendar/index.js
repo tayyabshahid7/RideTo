@@ -14,12 +14,14 @@ import styles from './styles.scss'
 import { getCourses, updateCalendarSetting } from 'store/course'
 import { getEvents } from 'store/event'
 import { getInstructors } from 'store/instructor'
+import { getTestCentres } from 'store/testCentre'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 
 class CalendarPage extends Component {
   componentDidMount() {
     this.loadData()
     this.loadInstructors()
+    this.props.getTestCentres()
   }
 
   componentDidUpdate(prevProps) {
@@ -279,6 +281,7 @@ const mapDispatchToProps = dispatch =>
       getCourses,
       getEvents,
       getInstructors,
+      getTestCentres,
       updateCalendarSetting
     },
     dispatch

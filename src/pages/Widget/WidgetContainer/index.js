@@ -6,6 +6,14 @@ import styles from './WidgetContainer.scss'
 import { parseQueryString } from 'services/api'
 import { getInitialSuppliers, getAddress } from 'services/widget'
 
+const COURSETYPE_ORDER = [
+  'LICENCE_CBT',
+  'INTRO_TO_MOTORCYCLING',
+  'LICENCE_CBT_RENEWAL',
+  'FULL_LICENCE',
+  'TFL_ONE_ON_ONE'
+]
+
 class WidgetContainer extends React.Component {
   constructor(props) {
     super(props)
@@ -32,6 +40,12 @@ class WidgetContainer extends React.Component {
         )[0]
       : this.suppliers[0]
     const address = getAddress(selectedSupplier)
+
+    selectedSupplier.courses = COURSETYPE_ORDER.map(constant =>
+      selectedSupplier.courses.find(
+        courseType => courseType.constant === constant
+      )
+    ).filter(Boolean)
 
     return (
       <div className={styles.widgetContainer}>

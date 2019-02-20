@@ -48,7 +48,8 @@ class NavigationComponent extends React.Component {
       date,
       showDatePicker,
       handleMobileDateClick,
-      courseTypesOptions
+      courseTypesOptions,
+      showIcons = true
     } = this.props
     const fullWidth = navigation.length === 1
     const isFullLicence = courseType === 'FULL_LICENCE'
@@ -57,7 +58,8 @@ class NavigationComponent extends React.Component {
       <div
         className={classnames(
           styles.container,
-          showDatePicker && styles.hiddenOnDesktop
+          showDatePicker && styles.hiddenOnDesktop,
+          !showIcons && styles.hideIcons
         )}>
         {onNavBack && (
           <div className={styles.backItem} onClick={onNavBack}>

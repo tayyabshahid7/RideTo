@@ -173,7 +173,7 @@ class CourseTypeSelection extends React.Component {
             </Row>
             <Row>
               {filteredCourseTypes.map(courseType => (
-                <Col sm="4" key={courseType.name}>
+                <Col md="6" lg="4" key={courseType.name}>
                   <CourseTypeItem
                     isTypeform={isTypeform(courseType.constant)}
                     postcode={postcode}
