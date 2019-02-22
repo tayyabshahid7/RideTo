@@ -39,7 +39,8 @@ class MapComponent extends Component {
       userLocation,
       courses,
       height: defaultHeight,
-      width: defaultWidth
+      width: defaultWidth,
+      hiddenOnMobile
     } = this.props
     let locations = []
 
@@ -61,8 +62,13 @@ class MapComponent extends Component {
       locations.push([userLocation.lat, userLocation.lng])
     }
 
-    const height = this.refs.mapContainer.offsetHeight || defaultHeight
-    const width = this.refs.mapContainer.offsetWidth || defaultWidth
+    let height = this.refs.mapContainer.offsetHeight || defaultHeight
+    let width = this.refs.mapContainer.offsetWidth || defaultWidth
+
+    if (hiddenOnMobile && window.matchMedia('(max-width: 768px)').matches) {
+      height = 700
+      width = 424
+    }
 
     let viewport = {}
 

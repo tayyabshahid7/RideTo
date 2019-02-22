@@ -593,6 +593,7 @@ class ResultPage extends Component {
                             courses={courses}
                             userLocation={userLocation}
                             width="100%"
+                            hiddenOnMobile
                           />
                         )}
                       </div>
