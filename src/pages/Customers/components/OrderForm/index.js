@@ -11,7 +11,8 @@ import {
   getPaymentOptions,
   getTrainingStatusOptions,
   sendConfirmation,
-  isRideTo
+  isRideTo,
+  isConnectManual
 } from 'services/order'
 import styles from './OrderForm.scss'
 
@@ -222,20 +223,15 @@ class OrderForm extends React.Component {
             </Col>
           </Row>
           <Row>
-            {/*
-            {isFullLicenceTest && (
+            {!isConnectManual(editable) && (
               <Col sm="6">
                 <FormGroup>
-                  <Label>Theory Test Number</Label>
+                  <Label>Price Paid</Label>
                   <Input
-                    disabled
                     type="text"
-                    value={
-                      editable.application_reference_number
-                        ? editable.application_reference_number
-                        : ''
-                    }
-                    name="application_reference_number"
+                    disabled
+                    value={editable.price_paid}
+                    name="price_paid"
                     onChange={({ target }) =>
                       this.handleChange(target.name, target.value)
                     }
@@ -243,21 +239,6 @@ class OrderForm extends React.Component {
                 </FormGroup>
               </Col>
             )}
-            */}
-            <Col sm="6">
-              <FormGroup>
-                <Label>Amount Paid</Label>
-                <Input
-                  type="text"
-                  disabled={isRideTo(editable)}
-                  value={editable.payout}
-                  name="payout"
-                  onChange={({ target }) =>
-                    this.handleChange(target.name, target.value)
-                  }
-                />
-              </FormGroup>
-            </Col>
             {isFullLicence && (
               <Col sm="6">
                 <InputSelectGroup
