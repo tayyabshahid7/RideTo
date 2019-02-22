@@ -118,9 +118,8 @@ class AvailabilityCalendar extends Component {
       showTrainingTime = true,
       showLabel
     } = this.props
-    const filteredCourses = courses.filter(
-      course => course.date === calendar.selectedDate
-    )
+    const filteredCourses =
+      courses && courses.filter(course => course.date === calendar.selectedDate)
 
     return (
       <div
