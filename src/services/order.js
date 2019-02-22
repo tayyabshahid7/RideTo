@@ -77,6 +77,10 @@ export const isRideTo = ({ source }) => {
   return source === 'RIDETO' || source === 'RIDETO_INSTANT'
 }
 
+export const isConnectManual = ({ source }) => {
+  return source === 'DASHBOARD'
+}
+
 export const getBikeHireOptions = isFullLicence => {
   return {
     no: 'Own Bike',
