@@ -52,7 +52,10 @@ class MapComponent extends Component {
         return [course.lat, course.lng]
       })
     } else if (courses) {
-      locations = [...courses.available, ...courses.unavailable].map(course => [
+      const available = courses.available || []
+      const unavailable = courses.unavailable || []
+
+      locations = [...available, ...unavailable].map(course => [
         course.lat,
         course.lng
       ])
