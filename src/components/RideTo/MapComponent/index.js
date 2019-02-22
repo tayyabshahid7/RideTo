@@ -35,16 +35,34 @@ class MapComponent extends Component {
   }
 
   componentDidMount() {
-    const { userLocation, courses } = this.props
-    const locations = [
-      [userLocation.lat, userLocation.lng],
-      ...[...courses.available, ...courses.unavailable].map(course => [
+    const {
+      userLocation,
+      courses,
+      height: defaultHeight,
+      width: defaultWidth
+    } = this.props
+    let locations = []
+
+    if (courses && Array.isArray(courses)) {
+      locations = courses.map(course => {
+        if (Array.isArray(course)) {
+          return course
+        }
+        return [course.lat, course.lng]
+      })
+    } else if (courses) {
+      locations = [...courses.available, ...courses.unavailable].map(course => [
         course.lat,
         course.lng
       ])
-    ]
-    const height = this.refs.mapContainer.offsetHeight
-    const width = this.refs.mapContainer.offsetWidth
+    }
+
+    if (userLocation) {
+      locations.push([userLocation.lat, userLocation.lng])
+    }
+
+    const height = this.refs.mapContainer.offsetHeight || defaultHeight
+    const width = this.refs.mapContainer.offsetWidth || defaultWidth
 
     let viewport = {}
 
@@ -61,8 +79,8 @@ class MapComponent extends Component {
       })
     } else {
       viewport = {
-        latitude: userLocation.lat,
-        longitude: userLocation.lng,
+        latitude: locations[0][0],
+        longitude: locations[0][1],
         height,
         width,
         zoom: 10
