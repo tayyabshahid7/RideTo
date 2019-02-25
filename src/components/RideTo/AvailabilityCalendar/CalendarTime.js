@@ -23,7 +23,7 @@ class CalendarTime extends Component {
 
           return (
             course.spaces > training_count && (
-              <React.Fragment>
+              <React.Fragment key={course.id}>
                 {!isSingleTime ? (
                   <button
                     key={index}
