@@ -7,7 +7,7 @@ import * as FeatureIcons from 'assets/icons/features'
 import MapComponent from 'components/RideTo/MapComponent'
 import StarsComponent from 'components/RideTo/StarsComponent'
 
-class CourseDetailPanel extends React.Component {
+class CourseInformationComponent extends React.Component {
   constructor(props) {
     super(props)
 
@@ -91,4 +91,4 @@ class CourseDetailPanel extends React.Component {
   }
 }
 
-export default CourseDetailPanel
+export default CourseInformationComponent
