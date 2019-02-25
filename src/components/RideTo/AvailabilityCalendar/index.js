@@ -120,6 +120,7 @@ class AvailabilityCalendar extends Component {
     } = this.props
     const filteredCourses =
       courses && courses.filter(course => course.date === calendar.selectedDate)
+    const hasManyTimes = isInstantBook && filteredCourses.length > 1
 
     return (
       <div
@@ -139,13 +140,11 @@ class AvailabilityCalendar extends Component {
           handleDateSelect={handleDateSelect}
         />
         {showTrainingTime && (
-          <React.Fragment>
+          <div className={classnames(!hasManyTimes && styles.singleTime)}>
             <div
               id={isInstantBook ? 'choose-time-validate' : ''}
               className={styles.subtitle}>
-              {isInstantBook && filteredCourses.length > 1
-                ? 'Choose a time'
-                : 'Training time:'}
+              {hasManyTimes ? 'Choose a time' : 'Course Start Time:'}
             </div>
 
             {isInstantBook ? (
@@ -165,7 +164,7 @@ class AvailabilityCalendar extends Component {
                   )}
               </span>
             )}
-          </React.Fragment>
+          </div>
         )}
       </div>
     )
