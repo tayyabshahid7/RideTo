@@ -37,7 +37,11 @@ class CalendarTime extends Component {
                     {course.time.substring(0, 5)}
                   </button>
                 ) : (
-                  <span className={styles.trainingTime}>
+                  <span
+                    className={classnames(
+                      styles.trainingTime,
+                      styles.singleTrainingTime
+                    )}>
                     {course.time.substring(0, 5)}
                   </span>
                 )}
