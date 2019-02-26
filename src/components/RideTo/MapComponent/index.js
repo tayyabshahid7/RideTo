@@ -6,6 +6,10 @@ import { MAPBOX_KEY } from 'common/constants'
 import { IconMapPin, IconUser } from 'assets/icons'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
+import WebMercatorViewport from 'viewport-mercator-project'
+import { lineString } from '@turf/helpers'
+import bbox from '@turf/bbox'
+
 mapboxgl.accessToken = MAPBOX_KEY
 
 const navStyle = {
@@ -18,17 +22,11 @@ const navStyle = {
 class MapComponent extends Component {
   constructor(props) {
     super(props)
-    const { userLocation, courses, width = 400, height = 700 } = this.props
-    let location = userLocation ? userLocation : courses[0]
+
     this.state = {
-      viewport: {
-        width,
-        height,
-        latitude: location.lat,
-        longitude: location.lng,
-        zoom: 8
-      }
+      viewport: {}
     }
+
     this.updateViewport = this.updateViewport.bind(this)
     this.renderMarker = this.renderMarker.bind(this)
     this.renderPin = this.renderPin.bind(this)
@@ -37,8 +35,71 @@ class MapComponent extends Component {
   }
 
   componentDidMount() {
-    this.updateDimensions()
-    window.addEventListener('resize', this.updateDimensions)
+    const {
+      userLocation,
+      courses,
+      height: defaultHeight,
+      width: defaultWidth,
+      hiddenOnMobile
+    } = this.props
+    let locations = []
+
+    if (courses && Array.isArray(courses)) {
+      locations = courses.map(course => {
+        if (Array.isArray(course)) {
+          return course
+        }
+        return [course.lat, course.lng]
+      })
+    } else if (courses) {
+      const available = courses.available || []
+      const unavailable = courses.unavailable || []
+
+      locations = [...available, ...unavailable].map(course => [
+        course.lat,
+        course.lng
+      ])
+    }
+
+    if (userLocation) {
+      locations.push([userLocation.lat, userLocation.lng])
+    }
+
+    let height = this.refs.mapContainer.offsetHeight || defaultHeight
+    let width = this.refs.mapContainer.offsetWidth || defaultWidth
+
+    if (hiddenOnMobile && window.matchMedia('(max-width: 768px)').matches) {
+      height = 700
+      width = 424
+    }
+
+    let viewport = {}
+
+    if (locations.length > 1) {
+      const line = lineString(locations)
+      const box = bbox(line)
+      const [minLat, minLng, maxLat, maxLng] = box
+
+      viewport = new WebMercatorViewport({
+        height,
+        width
+      }).fitBounds([[minLng, minLat], [maxLng, maxLat]], {
+        padding: { top: 60, right: 40, bottom: 40, left: 60 }
+      })
+    } else {
+      viewport = {
+        latitude: locations[0][0],
+        longitude: locations[0][1],
+        height,
+        width,
+        zoom: 10
+      }
+    }
+
+    this.setState({ viewport }, () => {
+      this.updateDimensions()
+      window.addEventListener('resize', this.updateDimensions)
+    })
   }
 
   componentWillUnmount() {

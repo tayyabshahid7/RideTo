@@ -27,3 +27,15 @@
     outline: none;
   }
 }
+
+.trainingTime {
+  font-family: var(--font-proxima);
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.singleTrainingTime {
+  display: inline-block;
+  margin-top: 40px;
+  margin-left: 7px;
+}

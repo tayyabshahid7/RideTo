@@ -76,9 +76,11 @@ class CourseItem extends Component {
           </div>
           <div className={styles.info}>
             <div className={styles.upperSection}>
-              <div className={styles.courseName}>
+              <button
+                className={styles.courseName}
+                onClick={() => handleDetailClick(course)}>
                 {course.location_slug.replace('-', ' ')}
-              </div>
+              </button>
               <div className={styles.place}>
                 {course.place}, {course.postcode}
               </div>

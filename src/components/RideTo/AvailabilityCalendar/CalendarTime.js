@@ -13,26 +13,39 @@ class CalendarTime extends Component {
 
   render() {
     const { calendar, courses, handleTimeSelect } = this.props
+    const isSingleTime = courses.length === 1
 
     return (
-      <div className={styles.container}>
+      <div className={classnames(!isSingleTime && styles.container)}>
         {courses.map((course, index) => {
           const training_count =
             course.training_count || course.auto_count + course.manual_count
 
           return (
             course.spaces > training_count && (
-              <button
-                key={index}
-                className={classnames(
-                  styles.btn,
-                  calendar.selectedCourse &&
-                    calendar.selectedCourse.id === course.id &&
-                    styles.activeBtn
+              <React.Fragment key={course.id}>
+                {!isSingleTime ? (
+                  <button
+                    key={index}
+                    className={classnames(
+                      styles.btn,
+                      calendar.selectedCourse &&
+                        calendar.selectedCourse.id === course.id &&
+                        styles.activeBtn
+                    )}
+                    onClick={() => handleTimeSelect(course)}>
+                    {course.time.substring(0, 5)}
+                  </button>
+                ) : (
+                  <span
+                    className={classnames(
+                      styles.trainingTime,
+                      styles.singleTrainingTime
+                    )}>
+                    {course.time.substring(0, 5)}
+                  </span>
                 )}
-                onClick={() => handleTimeSelect(course)}>
-                {course.time.substring(0, 5)}
-              </button>
+              </React.Fragment>
             )
           )
         })}

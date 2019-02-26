@@ -71,7 +71,8 @@ export const Faqs = [
   },
   {
     question: 'I have another question!',
-    answer: 'Email james@rideto.com'
+    answer:
+      'You can read more information in our <a href="https://docs.google.com/document/d/1DJD4RzjNr59P60FcShXNiIBl34Y3NcOgUdCWRUoG9b4/" target="_blank">guidebook</a> and watch the <a href="https://youtu.be/iYLoRPZTvlk" target="_blank">demo video</a> online. Alternatively email <a href="mailto:vince@rideto.com">vince@rideto.com</a>'
   }
 ]
 

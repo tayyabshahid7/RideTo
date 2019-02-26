@@ -4,6 +4,10 @@ import classnames from 'classnames'
 import styles from './styles.scss'
 
 class FaqsPanel extends React.Component {
+  renderAnswer(answer) {
+    return { __html: answer }
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -13,9 +17,10 @@ class FaqsPanel extends React.Component {
             <div className={classnames(styles.question, 'text-grey')}>
               {faq.question}
             </div>
-            <div className={classnames(styles.answer, 'text-primary')}>
-              {faq.answer}
-            </div>
+            <div
+              className={classnames(styles.answer, 'text-primary')}
+              dangerouslySetInnerHTML={this.renderAnswer(faq.answer)}
+            />
           </div>
         ))}
       </React.Fragment>

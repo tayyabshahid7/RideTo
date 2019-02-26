@@ -6,6 +6,7 @@ import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import { DATE_FORMAT } from 'common/constants'
 import classnames from 'classnames'
 import Loading from 'components/Loading'
+import { checkAllowedDate } from 'services/date'
 
 class FullLicenceDatePicker extends Component {
   constructor(props) {
@@ -43,7 +44,6 @@ class FullLicenceDatePicker extends Component {
 
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
-    let todate = moment().format(DATE_FORMAT)
     return dates.map(date => {
       let disabled = false
       let momentDate = moment(date)
@@ -55,8 +55,7 @@ class FullLicenceDatePicker extends Component {
       let course_id = availableDate && availableDate.course_id
       let time = availableDate && availableDate.time
 
-      // Date is earlier than today
-      if (dateInString < todate) {
+      if (!checkAllowedDate(date)) {
         disabled = true
       }
 

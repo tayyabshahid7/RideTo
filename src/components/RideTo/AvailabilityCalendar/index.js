@@ -41,7 +41,8 @@ class AvailabilityCalendar extends Component {
       calendar: { selectedDate },
       days,
       isInstantBook,
-      courses
+      courses,
+      handleTimeSelect
     } = this.props
 
     // For instant booking calendars
@@ -50,6 +51,20 @@ class AvailabilityCalendar extends Component {
         this.setFirstAvailableDate(days, isInstantBook)
       }
       this.setState({ dateAlreadyChecked: true })
+    }
+
+    // Auto set calendar time if only one time available
+    if (
+      isInstantBook &&
+      courses.length > 0 &&
+      selectedDate !== prevProps.calendar.selectedDate
+    ) {
+      const filteredCourses =
+        courses && courses.filter(course => course.date === selectedDate)
+
+      if (filteredCourses.length === 1) {
+        handleTimeSelect(filteredCourses[0])
+      }
     }
   }
 
@@ -118,6 +133,10 @@ class AvailabilityCalendar extends Component {
       showTrainingTime = true,
       showLabel
     } = this.props
+    const filteredCourses =
+      courses && courses.filter(course => course.date === calendar.selectedDate)
+    const hasManyTimes = isInstantBook && filteredCourses.length > 1
+
     return (
       <div
         className={classnames(styles.container, !showLabel && styles.noLabel)}>
@@ -136,33 +155,31 @@ class AvailabilityCalendar extends Component {
           handleDateSelect={handleDateSelect}
         />
         {showTrainingTime && (
-          <React.Fragment>
+          <div className={classnames(!hasManyTimes && styles.singleTime)}>
             <div
               id={isInstantBook ? 'choose-time-validate' : ''}
               className={styles.subtitle}>
-              {isInstantBook ? 'Choose a time' : 'Training time:'}
+              {hasManyTimes ? 'Choose a time' : 'Course Start Time:'}
             </div>
 
             {isInstantBook ? (
               calendar.selectedDate && (
                 <CalendarTime
                   calendar={calendar}
-                  courses={courses.filter(
-                    course => course.date === calendar.selectedDate
-                  )}
+                  courses={filteredCourses}
                   handleTimeSelect={handleTimeSelect}
                 />
               )
             ) : (
-              <button className={classnames(styles.btn, styles.activeBtn)}>
+              <span className={classnames(styles.trainingTime)}>
                 {nonInstantStartTimes &&
                   this.getStartTime(
                     calendar.selectedDate,
                     nonInstantStartTimes
                   )}
-              </button>
+              </span>
             )}
-          </React.Fragment>
+          </div>
         )}
       </div>
     )

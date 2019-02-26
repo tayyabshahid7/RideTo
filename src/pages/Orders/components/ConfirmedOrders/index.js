@@ -9,12 +9,6 @@ import Header from 'components/DataTable/Header'
 import Cell from 'components/DataTable/Cell'
 import { getCourseTitle } from 'services/course'
 
-const getDate = startTime => {
-  if (startTime) {
-    return moment(new Date(startTime)).format('YYYY-MM-DD')
-  }
-}
-
 class ConfirmedOrders extends Component {
   constructor(props) {
     super(props)
@@ -165,9 +159,11 @@ class ConfirmedOrders extends Component {
                         {training.order && training.order.direct_friendly_id}
                       </Cell>
                       <Cell>
-                        {this._checkCancelledOrRejected(training.status)
-                          ? getDate(training.requested_date)
-                          : moment(training.requested_date).format('D MMM YY')}
+                        {training.training_date_time === null
+                          ? moment(training.requested_date).format('D MMM YY')
+                          : moment(training.training_date_time).format(
+                              'D MMM YY'
+                            )}
                       </Cell>
                       <Cell>{getCourseTitle(training.course_type)}</Cell>
                       <Cell>

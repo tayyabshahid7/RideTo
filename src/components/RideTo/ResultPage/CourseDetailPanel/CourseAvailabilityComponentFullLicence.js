@@ -95,6 +95,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
             licences={bike_hire === 'manual' ? manualLicences : autoLicences}
           />
           <PackagePicker
+            schoolId={course.id}
             isWidget={isWidget}
             bike_hire={bike_hire}
             selectedLicenceType={selectedLicenceType}
