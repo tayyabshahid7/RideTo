@@ -48,11 +48,13 @@ export const getCurrentLicenceOptions = () => {
 }
 
 export const getRidingExperienceOptions = () => {
-  return ['Cycling', 'Off road motorcycling', 'On road motorcycling'].map(
-    opt => {
-      return { name: opt, id: opt }
-    }
-  )
+  return [
+    'Cycling experience',
+    'Off road motorcycling',
+    'On road motorcycling'
+  ].map(opt => {
+    return { name: opt, id: opt }
+  })
 }
 
 export const getCustomerType = source => {
