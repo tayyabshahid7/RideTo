@@ -41,7 +41,8 @@ class AvailabilityCalendar extends Component {
       calendar: { selectedDate },
       days,
       isInstantBook,
-      courses
+      courses,
+      handleTimeSelect
     } = this.props
 
     // For instant booking calendars
@@ -50,6 +51,20 @@ class AvailabilityCalendar extends Component {
         this.setFirstAvailableDate(days, isInstantBook)
       }
       this.setState({ dateAlreadyChecked: true })
+    }
+
+    // Auto set calendar time if only one time available
+    if (
+      isInstantBook &&
+      courses.length > 0 &&
+      selectedDate !== prevProps.calendar.selectedDate
+    ) {
+      const filteredCourses =
+        courses && courses.filter(course => course.date === selectedDate)
+
+      if (filteredCourses.length === 1) {
+        handleTimeSelect(filteredCourses[0])
+      }
     }
   }
 
