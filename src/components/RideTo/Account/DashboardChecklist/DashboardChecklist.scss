@@ -10,7 +10,7 @@
 .checkbox {
   text-align: left;
   line-height: 1;
-  margin-bottom: 24px;
+  margin-bottom: 4px;
   font-family: var(--font-proxima);
   font-size: 15px;
 
@@ -18,6 +18,10 @@
     color: var(--dark-color);
     font-size: 15px;
   }
+}
+
+.checkbox {
+  pointer-events: none;
 }
 
 .checked {
