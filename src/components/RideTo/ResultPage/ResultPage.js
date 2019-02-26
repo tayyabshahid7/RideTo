@@ -345,7 +345,9 @@ class ResultPage extends Component {
             }
           }
         }}>
-        <span>Select</span>
+        <span>
+          {this.state.activeTab === 3 ? 'Go to Checkout' : 'Select Date'}
+        </span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </RideToButton>
     )
