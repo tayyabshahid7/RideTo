@@ -2,7 +2,6 @@ import React from 'react'
 import moment from 'moment'
 
 import Button from 'components/RideTo/Button'
-import { getCourseTitle } from 'services/course'
 import { showReview } from 'services/order'
 import styles from './DashboardOrders.scss'
 
@@ -15,17 +14,21 @@ const DashboardOrderItem = ({ order, onDetails }) => {
   const time = order.start_time ? momentDate.format(', hh:mm') : ''
   return (
     <div className={styles.order} onClick={() => onDetails(order)}>
-      <div className={styles.title}>
-        {getCourseTitle(order.selected_licence)}
-      </div>
-      <div className={styles.date}>
-        {date}
-        {time}
-      </div>
-      <div className={styles.location}>
-        {training_location.town}, {training_location.postcode}
-      </div>
-
+      <div className={styles.title}>Order #{order.friendly_id}</div>
+      {order.trainings.map((training, index) => (
+        <div className={styles.training} key={index}>
+          <div className={styles.subTitle}>{training.course_type}</div>
+          <div className={styles.date}>
+            {training.date
+              ? date
+              : moment(training.requested_date).format('ddd Do MMMM YYYY')}
+            {training.time && time}
+          </div>
+          <div className={styles.location}>
+            {training_location.town}, {training_location.postcode}
+          </div>
+        </div>
+      ))}
       {showReview(order) && (
         <Button className={styles.review}>
           <span>Write Review</span>
