@@ -49,24 +49,36 @@ class CalendarPage extends Component {
   }
 
   loadEvents() {
-    const { getEvents, schoolId, calendar } = this.props
+    const { getEvents, schoolId, calendar, eventCalendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+    const month = `${calendar.year}-${calendar.month}`
+
+    if (eventCalendar.loadedMonths.includes(month)) {
+      return
+    }
 
     getEvents({
       schoolId,
       firstDate: moment(firstDate).format(DATE_FORMAT),
-      lastDate: moment(lastDate).format(DATE_FORMAT)
+      lastDate: moment(lastDate).format(DATE_FORMAT),
+      month
     })
   }
 
   loadCourses() {
     const { getCourses, schoolId, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+    const month = `${calendar.year}-${calendar.month}`
+
+    if (calendar.loadedMonths.includes(month)) {
+      return
+    }
 
     getCourses({
       schoolId,
       firstDate: moment(firstDate).format(DATE_FORMAT),
-      lastDate: moment(lastDate).format(DATE_FORMAT)
+      lastDate: moment(lastDate).format(DATE_FORMAT),
+      month
     })
   }
 
