@@ -56,6 +56,8 @@ class CourseInformationComponent extends React.Component {
             {course.on_site_cafe && this.renderFeature('Cafe', 'On Site Cafe')}
             {course.indoor_classroom &&
               this.renderFeature('Class', 'Indoor Classroom')}
+            {course.gloves_jacket_included &&
+              this.renderFeature('Gloves', 'Gloves & Jacket Provided')}
           </div>
         </div>
         <CourseTypeDetails

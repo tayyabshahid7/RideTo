@@ -121,6 +121,12 @@ export const Features = [
     title: 'Instant Booking',
     description:
       'This site has instant booking, so your order will be booked on checkout. Non-instant sites require confirmation from the instructor.'
+  },
+  {
+    value: 'gloves_jacket_included',
+    icon: 'Gloves',
+    title: 'Gloves & Jacket Provided',
+    description: null
   }
 ]
 

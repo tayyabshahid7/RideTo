@@ -91,6 +91,8 @@ class CourseItem extends Component {
                 {course.on_site_cafe && this.renderIcon('on_site_cafe')}
                 {course.indoor_classroom && this.renderIcon('indoor_classroom')}
                 {course.instant_book && this.renderIcon('instant_book')}
+                {course.gloves_jacket_included &&
+                  this.renderIcon('gloves_jacket_included')}
               </div>
             </div>
             <div className={styles.extraInfo}>
