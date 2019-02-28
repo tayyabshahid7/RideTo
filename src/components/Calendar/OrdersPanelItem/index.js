@@ -5,9 +5,16 @@ import { Button } from 'reactstrap'
 
 import { BikeHires, getTitleFor } from 'common/info'
 
+import classnames from 'classnames'
+
 import styles from './style.scss'
 
-const OrdersPanelItem = ({ training, onEdit, showEditButton = false }) => {
+const OrdersPanelItem = ({
+  training,
+  onEdit,
+  onDelete,
+  showEditButton = false
+}) => {
   return (
     <div className={styles.container} key={training.id}>
       <div className={styles.col}>
@@ -23,9 +30,26 @@ const OrdersPanelItem = ({ training, onEdit, showEditButton = false }) => {
       </div>
       <div className={styles.actions}>
         {showEditButton && (
-          <Button color="link" onClick={onEdit} className="mr-1 btn-padding-sm">
-            Edit
-          </Button>
+          <React.Fragment>
+            <Button
+              color="link"
+              onClick={onEdit}
+              className={classnames(
+                'mr-1 btn-padding-sm',
+                styles.inlineButton
+              )}>
+              Edit
+            </Button>
+            <Button
+              color="link"
+              onClick={onDelete}
+              className={classnames(
+                'mr-1 btn-padding-sm',
+                styles.inlineButton
+              )}>
+              Delete
+            </Button>
+          </React.Fragment>
         )}
       </div>
     </div>
