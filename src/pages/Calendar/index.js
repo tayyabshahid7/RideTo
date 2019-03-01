@@ -279,11 +279,21 @@ class CalendarPage extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { auth, course, event } = state
+  const schoolId = auth.schoolId || auth.user.suppliers[0].id
+  const isSupplier = course => course.supplier === parseInt(schoolId)
+  const calendar = {
+    ...course.calendar,
+    courses: course.calendar.courses.filter(isSupplier)
+  }
+  const eventCalendar = {
+    ...event.calendar,
+    events: event.calendar.events.filter(isSupplier)
+  }
 
   return {
-    schoolId: auth.schoolId || auth.user.suppliers[0].id,
-    calendar: course.calendar,
-    eventCalendar: event.calendar
+    schoolId,
+    calendar,
+    eventCalendar
   }
 }
 
