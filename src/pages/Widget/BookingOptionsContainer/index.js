@@ -68,7 +68,8 @@ class BookingOptionsContainer extends React.Component {
       selectedLicenceType: null,
       selectedPackageDays: '',
       selectedPackageDates: [],
-      submit: false
+      submit: false,
+      loadedMonths: {}
     }
 
     this.handleChangeCourseType = this.handleChangeCourseType.bind(this)
@@ -102,8 +103,19 @@ class BookingOptionsContainer extends React.Component {
     }
 
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
-      this.setState({ isLoading: true })
-      this.fetchCourses(month.clone())
+      this.setState(
+        {
+          isLoading: true,
+          availableCourses: [],
+          schoolCourses: [],
+          loadedMonths: {},
+          selectedCourse: null,
+          courseType: this.props.selectedSupplier.courses[0]
+        },
+        () => {
+          this.fetchCourses(month.clone())
+        }
+      )
     }
 
     if (
@@ -117,21 +129,42 @@ class BookingOptionsContainer extends React.Component {
 
   async fetchCourses(month) {
     const { selectedSupplier } = this.props
+    const { loadedMonths } = this.state
     const courseType = this.state.courseType || selectedSupplier.courses[0]
+
+    if (
+      loadedMonths[courseType.constant] &&
+      loadedMonths[courseType.constant].includes(month.format('YYYY-MM'))
+    ) {
+      this.setAvailableCourses([], courseType)
+      return
+    }
+
+    this.setState({ isLoading: true })
+
     const schoolCourses = await fetchWidgetCourses(
       selectedSupplier.id,
       month.startOf('month').format('YYYY-MM-DD'),
-      month
-        .add(6, 'month')
-        .endOf('month')
-        .format('YYYY-MM-DD')
+      month.endOf('month').format('YYYY-MM-DD'),
+      courseType.constant
     )
 
+    this.setState({
+      loadedMonths: {
+        ...this.state.loadedMonths,
+        [courseType.constant]: [
+          ...(this.state.loadedMonths[courseType.constant] || []),
+          month.format('YYYY-MM')
+        ]
+      }
+    })
     this.setAvailableCourses(schoolCourses, courseType)
   }
 
   setAvailableCourses(schoolCourses, courseType) {
-    const availableCourses = schoolCourses.filter(
+    const { schoolCourses: prevschoolCourses } = this.state
+    const newSchoolCourses = [...prevschoolCourses, ...schoolCourses]
+    const availableCourses = newSchoolCourses.filter(
       ({ course_type, training_count, spaces }) => {
         return course_type.id === courseType.id && training_count < spaces
       }
@@ -151,7 +184,7 @@ class BookingOptionsContainer extends React.Component {
     }
 
     this.setState({
-      schoolCourses,
+      schoolCourses: newSchoolCourses,
       selectedDate,
       selectedCourse: selectedCourses[0],
       selectedBikeHire,
@@ -171,7 +204,14 @@ class BookingOptionsContainer extends React.Component {
       ({ id }) => id === parseInt(courseTypeId, 10)
     )[0]
 
-    this.setAvailableCourses(this.state.schoolCourses, courseType)
+    this.setState(
+      {
+        courseType
+      },
+      () => {
+        this.fetchCourses(this.state.month.clone())
+      }
+    )
   }
 
   handleChangeDate(selectedDate) {
@@ -196,7 +236,9 @@ class BookingOptionsContainer extends React.Component {
 
   handleChangeMonth(date) {
     const month = date.startOf('month')
-    this.setState({ month })
+    this.setState({ month, isLoading: true }, () => {
+      this.fetchCourses(this.state.month.clone())
+    })
   }
 
   handleSelectBikeHire(selectedBikeHire) {
