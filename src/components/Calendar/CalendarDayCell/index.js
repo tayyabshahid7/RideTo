@@ -48,8 +48,6 @@ const CalendarDayCell = ({ day, calendar, history }) => {
     now.getMonth() === day.date.getMonth() &&
     now.getDate() === day.date.getDate()
 
-  console.log(isToday)
-
   return (
     <li
       className={classnames(

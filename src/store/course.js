@@ -15,6 +15,7 @@ import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
 import { actions as notificationActions } from './notification'
+import { uniqBy } from 'lodash'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
@@ -119,7 +120,8 @@ export const deleteCourse = ({ schoolId, courseId }) => async dispatch => {
 export const getCourses = ({
   schoolId,
   firstDate,
-  lastDate
+  lastDate,
+  month
 }) => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
@@ -128,7 +130,8 @@ export const getCourses = ({
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
-        courses
+        courses,
+        month
       }
     })
   } catch (error) {
@@ -322,7 +325,8 @@ const initialState = {
     rightPanelMode: null,
     selectedDate: null,
     selectedCourse: null,
-    silent: false // This is to tell whether should re-load calendar. false: re-load, true: not reload
+    silent: false, // This is to tell whether should re-load calendar. false: re-load, true: not reload
+    loadedMonths: []
   },
   orderEditForm: {
     order: null,
@@ -496,8 +500,12 @@ export default function reducer(state = initialState, action) {
         calendar: {
           ...state.calendar,
           loading: false,
-          courses: [...action.data.courses],
-          error: null
+          courses: uniqBy(
+            [...state.calendar.courses, ...action.data.courses],
+            'id'
+          ),
+          error: null,
+          loadedMonths: [...state.calendar.loadedMonths, action.data.month]
         }
       }
     case FETCH_ALL[FAILURE]:
