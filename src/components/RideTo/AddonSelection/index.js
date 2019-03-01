@@ -160,8 +160,8 @@ class AddonSelection extends React.Component {
             <Col sm="6">
               <h2 className={styles.heading}>Choose Extras</h2>
               <div className={styles.subHeading}>
-                Optional purchases to get on the road faster (not required for
-                training).
+                Optional purchases with FREE delivery, to get on the road faster
+                (not required for training).
               </div>
             </Col>
             <Col sm="6" className={styles.checkoutButtonTop}>
