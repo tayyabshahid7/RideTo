@@ -100,7 +100,7 @@ export const Features = [
   {
     value: 'helmet_hire',
     icon: 'Helmet',
-    title: 'Helmet & Gloves Provided',
+    title: 'Helmet Provided',
     description: null
   },
   {
