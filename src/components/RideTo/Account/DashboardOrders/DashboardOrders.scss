@@ -12,14 +12,18 @@
   cursor: pointer;
 
   .title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     font-family: var(--font-rift);
   }
+  .training {
+    margin-left: 10px;
+    margin-top: 10px;
+  }
 
   .subTitle {
-    font-size: 15px;
-    font-family: var(--font-proxima);
+    font-size: 18px;
+    font-family: var(--font-proxima-bold);
   }
 
   .review {
