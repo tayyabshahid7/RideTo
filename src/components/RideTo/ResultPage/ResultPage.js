@@ -35,8 +35,6 @@ import { fetchCoursesTypes } from 'services/course-type'
 import { isBankHoliday } from 'services/misc'
 import { getCourseTitle } from 'services/course'
 
-import { loadTypeformScript } from 'utils/helper'
-
 class ResultPage extends Component {
   constructor(props) {
     super(props)
@@ -52,8 +50,7 @@ class ResultPage extends Component {
       selectedLicenceType: null,
       selectedPackageDays: '',
       selectedPackageDates: [],
-      courseTypesOptions: [],
-      loadTypeform: false
+      courseTypesOptions: []
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -396,8 +393,7 @@ class ResultPage extends Component {
       selectedLicenceType,
       selectedPackageDays,
       selectedPackageDates,
-      courseTypesOptions,
-      loadTypeform
+      courseTypesOptions
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -675,7 +671,6 @@ class ResultPage extends Component {
             onSelectDate={this.onSelectDate.bind(this)}
           />
         )}
-        {loadTypeform && loadTypeformScript()}
       </div>
     )
   }

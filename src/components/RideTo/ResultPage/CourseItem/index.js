@@ -7,6 +7,7 @@ import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import { getFeatureInfo } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
+import { loadTypeformScript } from 'utils/helper'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -73,6 +74,13 @@ class CourseItem extends Component {
       id,
       showCallMessage
     } = this.props
+
+    const isTypeform = this.isFullLicenceTypeform(course)
+
+    if (isTypeform) {
+      loadTypeformScript()
+    }
+
     return (
       <Fragment>
         <div
@@ -133,8 +141,10 @@ class CourseItem extends Component {
                 £{parseInt(course.price / 100.0, 10)}
               </div>
             )}
-            {this.isFullLicenceTypeform(course) ? (
-              <a href="#" className={styles.cta}>
+            {isTypeform ? (
+              <a
+                href="https://rideto.typeform.com/to/U9apGA"
+                className={classnames(styles.cta, 'typeform-share')}>
                 <div>Enquire</div>
                 <IconArrowRight className={styles.arrowIcon} />
               </a>

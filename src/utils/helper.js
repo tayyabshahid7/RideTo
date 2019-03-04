@@ -63,7 +63,6 @@ export const generateRandomString = (length = 10) => {
 }
 
 export const loadTypeformScript = () => {
-  console.log('load it')
   var js,
     q,
     d = document,
