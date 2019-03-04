@@ -462,7 +462,7 @@ class ResultPage extends Component {
                   </React.Fragment>
                 ) : (
                   <div className={styles.headingMobile}>
-                    Full Licence {postcode}
+                    Motorcycle Licence {postcode}
                   </div>
                 )}
                 {!loading && (
