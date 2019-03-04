@@ -51,6 +51,17 @@ class CourseItem extends Component {
     )
   }
 
+  isFullLicenceTypeform(course) {
+    const { courseType } = this.props
+    const { instant_book } = course
+
+    if (courseType === 'FULL_LICENCE' && instant_book === false) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   render() {
     const {
       course,
@@ -122,15 +133,22 @@ class CourseItem extends Component {
                 £{parseInt(course.price / 100.0, 10)}
               </div>
             )}
-            <div
-              className={classnames(
-                styles.cta,
-                unavaiableDate && styles.ctaDateUnavailable
-              )}
-              onClick={() => handlePriceClick(course)}>
-              <div>Select</div>
-              <IconArrowRight className={styles.arrowIcon} />
-            </div>
+            {this.isFullLicenceTypeform(course) ? (
+              <a href="#" className={styles.cta}>
+                <div>Enquire</div>
+                <IconArrowRight className={styles.arrowIcon} />
+              </a>
+            ) : (
+              <div
+                className={classnames(
+                  styles.cta,
+                  unavaiableDate && styles.ctaDateUnavailable
+                )}
+                onClick={() => handlePriceClick(course)}>
+                <div>Select</div>
+                <IconArrowRight className={styles.arrowIcon} />
+              </div>
+            )}
           </div>
         </div>
         {showCallMessage && (

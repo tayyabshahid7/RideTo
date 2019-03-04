@@ -35,6 +35,8 @@ import { fetchCoursesTypes } from 'services/course-type'
 import { isBankHoliday } from 'services/misc'
 import { getCourseTitle } from 'services/course'
 
+import { loadTypeformScript } from 'utils/helper'
+
 class ResultPage extends Component {
   constructor(props) {
     super(props)
@@ -50,7 +52,8 @@ class ResultPage extends Component {
       selectedLicenceType: null,
       selectedPackageDays: '',
       selectedPackageDates: [],
-      courseTypesOptions: []
+      courseTypesOptions: [],
+      loadTypeform: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -393,7 +396,8 @@ class ResultPage extends Component {
       selectedLicenceType,
       selectedPackageDays,
       selectedPackageDates,
-      courseTypesOptions
+      courseTypesOptions,
+      loadTypeform
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -543,6 +547,7 @@ class ResultPage extends Component {
                                       (courses.available.length < 3 &&
                                         index === courses.available.length - 1)
                                     }
+                                    courseType={courseType}
                                     id={`card-course-${course.id}`}
                                     course={course}
                                     className={styles.courseSpacing}
@@ -570,6 +575,7 @@ class ResultPage extends Component {
                                     (courses.unavailable.length < 3 &&
                                       index === courses.unavailable.length - 1)
                                   }
+                                  courseType={courseType}
                                   id={`card-course-${course.id}`}
                                   unavaiableDate={true}
                                   course={course}
@@ -669,6 +675,7 @@ class ResultPage extends Component {
             onSelectDate={this.onSelectDate.bind(this)}
           />
         )}
+        {loadTypeform && loadTypeformScript()}
       </div>
     )
   }
