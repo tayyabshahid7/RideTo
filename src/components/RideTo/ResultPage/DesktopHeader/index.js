@@ -50,13 +50,17 @@ class DesktopHeader extends Component {
     const { courseType, postcode, courseTypesOptions } = this.props
     const { editableCourseType, editablePostcode, transitioning } = this.state
 
+    const isFullLicence = courseType === 'FULL_LICENCE'
+
     return (
       <Loading loading={transitioning}>
         <Container className={styles.container}>
           <Row>
             <Col>
               <h1 className={styles.title}>
-                {getCourseTitle(courseType)} {postcode}
+                {isFullLicence
+                  ? `Motorcycle Licence ${postcode}`
+                  : `${getCourseTitle(courseType)} ${postcode}`}
               </h1>
               <h2 className={styles.subtitle}>
                 Book motorcycle training near you
