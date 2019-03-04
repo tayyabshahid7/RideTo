@@ -66,6 +66,19 @@ class OrdersPanel extends React.Component {
     return createSchoolOrder({ schoolId, order })
   }
 
+  handleDeleteTraining(training) {
+    if (
+      window.confirm(
+        `Are you sure you whant to delete the training from Order ${
+          training.direct_friendly_id
+        }?`
+      )
+    ) {
+      const { deleteOrderTraining, schoolId } = this.props
+      deleteOrderTraining(schoolId, training.id)
+    }
+  }
+
   render() {
     const { course, info, saving, loading } = this.props
     const { orderIndex, editOrderIndex, showEditButton } = this.state
@@ -80,6 +93,7 @@ class OrdersPanel extends React.Component {
                 <OrdersPanelItem
                   training={training}
                   onEdit={() => this.handleShowEditForm(index)}
+                  onDelete={() => this.handleDeleteTraining(training)}
                   showEditButton={
                     // TODO-man-ord If change Orders models in webapp change this too
                     (training.is_manual_order ||

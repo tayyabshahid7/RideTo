@@ -11,6 +11,7 @@ import OrdersPanel from 'components/Calendar/OrdersPanel'
 import {
   createSchoolOrder,
   updateSchoolOrder,
+  deleteOrderTraining,
   updateCourse
 } from 'store/course'
 import { TEST_STATUS_CHOICES } from 'common/constants'
@@ -25,6 +26,7 @@ const CoursesPanelItem = ({
   info,
   createSchoolOrder,
   updateSchoolOrder,
+  deleteOrderTraining,
   updateCourse
 }) => {
   const name = getShortCourseType(course.course_type)
@@ -75,6 +77,7 @@ const CoursesPanelItem = ({
         info={info}
         createSchoolOrder={createSchoolOrder}
         updateSchoolOrder={updateSchoolOrder}
+        deleteOrderTraining={deleteOrderTraining}
         updateCourse={updateCourse}
         loading={loading}
         schoolId={schoolId}
@@ -98,7 +101,8 @@ const mapDispatchToProps = dispatch =>
     {
       updateCourse,
       createSchoolOrder,
-      updateSchoolOrder
+      updateSchoolOrder,
+      deleteOrderTraining
     },
     dispatch
   )
