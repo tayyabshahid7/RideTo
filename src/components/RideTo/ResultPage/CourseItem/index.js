@@ -88,6 +88,8 @@ class CourseItem extends Component {
                 {course.mciac_approved && this.renderIcon('mciac_approved')}
                 {course.bike_hire && this.renderIcon('bike_hire')}
                 {course.helmet_hire && this.renderIcon('helmet_hire')}
+                {course.gloves_jacket_included &&
+                  this.renderIcon('gloves_jacket_included')}
                 {course.on_site_cafe && this.renderIcon('on_site_cafe')}
                 {course.indoor_classroom && this.renderIcon('indoor_classroom')}
                 {course.instant_book && this.renderIcon('instant_book')}

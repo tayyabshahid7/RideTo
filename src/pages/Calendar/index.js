@@ -49,24 +49,36 @@ class CalendarPage extends Component {
   }
 
   loadEvents() {
-    const { getEvents, schoolId, calendar } = this.props
+    const { getEvents, schoolId, calendar, eventCalendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+    const month = `${calendar.year}-${calendar.month}-${schoolId}`
+
+    if (eventCalendar.loadedMonths.includes(month)) {
+      return
+    }
 
     getEvents({
       schoolId,
       firstDate: moment(firstDate).format(DATE_FORMAT),
-      lastDate: moment(lastDate).format(DATE_FORMAT)
+      lastDate: moment(lastDate).format(DATE_FORMAT),
+      month
     })
   }
 
   loadCourses() {
     const { getCourses, schoolId, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+    const month = `${calendar.year}-${calendar.month}-${schoolId}`
+
+    if (calendar.loadedMonths.includes(month)) {
+      return
+    }
 
     getCourses({
       schoolId,
       firstDate: moment(firstDate).format(DATE_FORMAT),
-      lastDate: moment(lastDate).format(DATE_FORMAT)
+      lastDate: moment(lastDate).format(DATE_FORMAT),
+      month
     })
   }
 
@@ -267,11 +279,21 @@ class CalendarPage extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { auth, course, event } = state
+  const schoolId = auth.schoolId || auth.user.suppliers[0].id
+  const isSupplier = course => course.supplier === parseInt(schoolId)
+  const calendar = {
+    ...course.calendar,
+    courses: course.calendar.courses.filter(isSupplier)
+  }
+  const eventCalendar = {
+    ...event.calendar,
+    events: event.calendar.events.filter(isSupplier)
+  }
 
   return {
-    schoolId: auth.schoolId || auth.user.suppliers[0].id,
-    calendar: course.calendar,
-    eventCalendar: event.calendar
+    schoolId,
+    calendar,
+    eventCalendar
   }
 }
 

@@ -345,7 +345,9 @@ class ResultPage extends Component {
             }
           }
         }}>
-        <span>Select</span>
+        <span>
+          {this.state.activeTab === 3 ? 'Go to Checkout' : 'Select Date'}
+        </span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </RideToButton>
     )
@@ -536,7 +538,11 @@ class ResultPage extends Component {
                               (course, index) =>
                                 course.is_partner && (
                                   <CourseItem
-                                    showCallMessage={index === 2}
+                                    showCallMessage={
+                                      index === 2 ||
+                                      (courses.available.length < 3 &&
+                                        index === courses.available.length - 1)
+                                    }
                                     id={`card-course-${course.id}`}
                                     course={course}
                                     className={styles.courseSpacing}
@@ -559,7 +565,11 @@ class ResultPage extends Component {
                             {courses.unavailable.map((course, index) =>
                               course.is_partner ? (
                                 <CourseItem
-                                  showCallMessage={index === 2}
+                                  showCallMessage={
+                                    index === 2 ||
+                                    (courses.unavailable.length < 3 &&
+                                      index === courses.unavailable.length - 1)
+                                  }
                                   id={`card-course-${course.id}`}
                                   unavaiableDate={true}
                                   course={course}

@@ -110,6 +110,12 @@ export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
   return response
 }
 
+export const deleteSchoolOrderTraining = async (schoolId, trainingId) => {
+  const path = `school/${schoolId}/course/order/training/${trainingId}`
+  const response = await destroy(path, {})
+  return response
+}
+
 export const updateSchoolCourse = async (
   schoolId,
   courseId,

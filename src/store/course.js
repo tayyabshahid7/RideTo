@@ -5,6 +5,7 @@ import {
   addSchoolOrder,
   fetchSchoolOrder,
   updateSchoolOrder,
+  deleteSchoolOrderTraining,
   updateSchoolCourse,
   createSchoolCourse,
   createBulkSchoolCourse,
@@ -15,6 +16,7 @@ import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
 import { actions as notificationActions } from './notification'
+import { uniqBy } from 'lodash'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
@@ -28,6 +30,7 @@ const CREATE = createRequestTypes('rideto/course/CREATE')
 const CREATE_BULK = createRequestTypes('rideto/course/CREATE_BULK')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
 const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
+const DELETE_ORDER = createRequestTypes('rideto/course/FETCH/DELETE_ORDER')
 const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
 const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
@@ -119,7 +122,8 @@ export const deleteCourse = ({ schoolId, courseId }) => async dispatch => {
 export const getCourses = ({
   schoolId,
   firstDate,
-  lastDate
+  lastDate,
+  month
 }) => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
@@ -128,7 +132,8 @@ export const getCourses = ({
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
-        courses
+        courses,
+        month
       }
     })
   } catch (error) {
@@ -211,6 +216,23 @@ export const updateOrder = ({
     return false
   }
   return true
+}
+
+export const deleteOrderTraining = (schoolId, trainingId) => async dispatch => {
+  dispatch({ type: DELETE_ORDER[REQUEST] })
+
+  try {
+    await deleteSchoolOrderTraining(schoolId, trainingId)
+    notificationActions.dispatchSuccess(dispatch, 'Order training deleted')
+    dispatch({
+      type: DELETE_ORDER[SUCCESS],
+      data: {
+        trainingId
+      }
+    })
+  } catch (error) {
+    dispatch({ type: DELETE_ORDER[FAILURE], error })
+  }
 }
 
 export const updateCourse = ({
@@ -322,7 +344,8 @@ const initialState = {
     rightPanelMode: null,
     selectedDate: null,
     selectedCourse: null,
-    silent: false // This is to tell whether should re-load calendar. false: re-load, true: not reload
+    silent: false, // This is to tell whether should re-load calendar. false: re-load, true: not reload
+    loadedMonths: []
   },
   orderEditForm: {
     order: null,
@@ -409,6 +432,7 @@ export default function reducer(state = initialState, action) {
         day: { ...state.day, courses: dayCourses },
         calendar: { ...state.calendar, courses: calendarCourses }
       }
+
     case FETCH_FOR_DAY[REQUEST]:
       dt = new Date(action.date)
       return {
@@ -496,8 +520,12 @@ export default function reducer(state = initialState, action) {
         calendar: {
           ...state.calendar,
           loading: false,
-          courses: [...action.data.courses],
-          error: null
+          courses: uniqBy(
+            [...state.calendar.courses, ...action.data.courses],
+            'id'
+          ),
+          error: null,
+          loadedMonths: [...state.calendar.loadedMonths, action.data.month]
         }
       }
     case FETCH_ALL[FAILURE]:
@@ -520,6 +548,28 @@ export default function reducer(state = initialState, action) {
         single: { ...state.single, saving: false }
       }
     case CREATE_ORDER[FAILURE]:
+      return {
+        ...state,
+        single: { ...state.single, saving: false, error: action.error }
+      }
+    case DELETE_ORDER[REQUEST]:
+      return {
+        ...state,
+        single: { ...state.single, saving: true, error: null }
+      }
+    case DELETE_ORDER[SUCCESS]:
+      dayCourses = state.day.courses.map(course => {
+        const newOrders = course.orders.filter(
+          order => order.id !== action.data.trainingId
+        )
+        return { ...course, orders: newOrders }
+      })
+      return {
+        ...state,
+        single: { ...state.single, saving: false },
+        day: { ...state.day, courses: dayCourses }
+      }
+    case DELETE_ORDER[FAILURE]:
       return {
         ...state,
         single: { ...state.single, saving: false, error: action.error }

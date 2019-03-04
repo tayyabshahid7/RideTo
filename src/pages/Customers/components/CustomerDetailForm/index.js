@@ -47,7 +47,6 @@ class CustomerDetailForm extends React.Component {
   render() {
     const { showConfirmModal } = this.state
     const { customer, onChange, onDelete, isDisabled, onCancel } = this.props
-    const { orders = [] } = customer
 
     return (
       <Form onSubmit={this.handleSubmit}>
@@ -217,7 +216,7 @@ class CustomerDetailForm extends React.Component {
         </Row>
         <Row>
           <Col sm="6">
-            {orders.length === 0 && (
+            {['WIDGET', 'DASHBOARD'].includes(customer.source) && (
               <React.Fragment>
                 <Button color="danger" onClick={this.handleToggleModal}>
                   Remove Customer

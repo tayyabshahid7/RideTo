@@ -53,6 +53,8 @@ class CourseInformationComponent extends React.Component {
               this.renderFeature('Bike', 'Bike Hire Included')}
             {course.helmet_hire &&
               this.renderFeature('Helmet', 'Helmet Hire Included')}
+            {course.gloves_jacket_included &&
+              this.renderFeature('Gloves', 'Gloves & Jacket Provided')}
             {course.on_site_cafe && this.renderFeature('Cafe', 'On Site Cafe')}
             {course.indoor_classroom &&
               this.renderFeature('Class', 'Indoor Classroom')}

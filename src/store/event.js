@@ -9,6 +9,8 @@ import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 import { actions as notificationActions } from './notification'
 
+import { uniqBy } from 'lodash'
+
 const FETCH_ALL = createRequestTypes('rideto/event/FETCH/ALL')
 const FETCH_FOR_DAY = createRequestTypes('rideto/event/FETCH/DAY')
 export const FETCH_SINGLE = createRequestTypes('rideto/event/FETCH/SINGLE')
@@ -74,7 +76,8 @@ export const deleteEvent = ({ schoolId, eventId }) => async dispatch => {
 export const getEvents = ({
   schoolId,
   firstDate,
-  lastDate
+  lastDate,
+  month
 }) => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
@@ -83,7 +86,8 @@ export const getEvents = ({
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
-        events
+        events,
+        month
       }
     })
   } catch (error) {
@@ -141,7 +145,8 @@ const initialState = {
   calendar: {
     events: [],
     loading: false,
-    error: null
+    error: null,
+    loadedMonths: []
   }
 }
 
@@ -161,13 +166,11 @@ export default function reducer(state = initialState, action) {
         single: { ...state.single, loading: true }
       }
     case FETCH_SINGLE[SUCCESS]:
-      dayEvents = state.day.events.map(
-        event =>
-          event.id !== action.data.event.id ? event : { ...action.data.event }
+      dayEvents = state.day.events.map(event =>
+        event.id !== action.data.event.id ? event : { ...action.data.event }
       )
-      calendarEvents = state.calendar.events.map(
-        event =>
-          event.id !== action.data.event.id ? event : { ...action.data.event }
+      calendarEvents = state.calendar.events.map(event =>
+        event.id !== action.data.event.id ? event : { ...action.data.event }
       )
       return {
         ...state,
@@ -243,8 +246,12 @@ export default function reducer(state = initialState, action) {
         calendar: {
           ...state.calendar,
           loading: false,
-          events: [...action.data.events],
-          error: null
+          events: uniqBy(
+            [...state.calendar.events, ...action.data.events],
+            'id'
+          ),
+          error: null,
+          loadedMonths: [...state.calendar.loadedMonths, action.data.month]
         }
       }
     case FETCH_ALL[FAILURE]:
@@ -262,13 +269,11 @@ export default function reducer(state = initialState, action) {
         single: { ...state.single, saving: true, error: null }
       }
     case UPDATE[SUCCESS]:
-      dayEvents = state.day.events.map(
-        event =>
-          event.id !== action.data.event.id ? event : { ...action.data.event }
+      dayEvents = state.day.events.map(event =>
+        event.id !== action.data.event.id ? event : { ...action.data.event }
       )
-      calendarEvents = state.calendar.events.map(
-        event =>
-          event.id !== action.data.event.id ? event : { ...action.data.event }
+      calendarEvents = state.calendar.events.map(event =>
+        event.id !== action.data.event.id ? event : { ...action.data.event }
       )
       return {
         ...state,

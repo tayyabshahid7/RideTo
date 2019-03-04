@@ -71,10 +71,6 @@ class Calendar extends React.Component {
   render() {
     const { date, courses, onChangeDate, onChangeMonth, isLoading } = this.props
 
-    if (!isLoading && !date) {
-      return <div className={styles.noCourses}>No Courses Available</div>
-    }
-
     return (
       <div className={styles.calendar}>
         <SingleDatePicker
