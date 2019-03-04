@@ -131,7 +131,6 @@ class CourseTypeSelection extends React.Component {
 
     const footer = selectedCourseType ? (
       <Button
-        target={'_blank'}
         className={classnames(
           styles.action,
           isTypeform(selectedCourseType.constant) && 'typeform-share'
