@@ -61,3 +61,11 @@ export const generateRandomString = (length = 10) => {
     text += possible.charAt(Math.floor(Math.random() * possible.length))
   return text
 }
+
+export const getAge = birthdate => {
+  const age = birthdate
+    ? moment().diff(moment(birthdate, 'YYYY-MM-DD'), 'years')
+    : '-'
+
+  return age === 1 ? `${age} Year` : `${age} Years`
+}

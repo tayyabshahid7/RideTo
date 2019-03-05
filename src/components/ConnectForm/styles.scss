@@ -1,0 +1,47 @@
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.25em;
+  color: #707070;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.input,
+.select {
+  display: block;
+  width: 100%;
+  height: 20px;
+  padding: 0;
+  color: #707070;
+  border: 1px solid transparent;
+  border-bottom: 1px dashed #e4e4e4;
+  appearance: none;
+  // cursor: pointer;
+
+  &:focus {
+    border-bottom-color: #2cceac;
+  }
+}
+
+.ageInputGroup {
+  display: flex;
+
+  .input {
+    flex: 1 1 auto;
+    width: 1%;
+  }
+
+  .age {
+    height: 20px;
+    color: #707070;
+    border-bottom: 1px dashed #e4e4e4;
+  }
+
+  .input:focus + .age {
+    border-bottom-color: #2cceac;
+  }
+}

@@ -1,8 +1,8 @@
 import React from 'react'
-import { Row } from 'reactstrap'
+import { Container, Row } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 import styles from './DetailContainer.scss'
-import commonStyles from 'pages/styles.scss'
 
 import DetailFormContainer from 'pages/Customers/DetailFormContainer'
 import OrderListContainer from 'pages/Customers/OrderListContainer'
@@ -13,13 +13,18 @@ class CustomerDetailContainer extends React.Component {
     const { id } = match.params
 
     return (
-      <div className={commonStyles.mainContent}>
-        <h1 className={styles.heading}>Customer Information</h1>
-
-        <Row className={styles.grey}>
-          <DetailFormContainer id={id} history={history} />
-          <OrderListContainer id={id} />
-        </Row>
+      <div className={styles.wrapper}>
+        <Container>
+          <div className={styles.header}>
+            <Link to="/customers" className={styles.backLink}>
+              {'< '}Customers
+            </Link>
+          </div>
+          <Row className={styles.grey}>
+            <DetailFormContainer id={id} history={history} />
+            <OrderListContainer id={id} />
+          </Row>
+        </Container>
       </div>
     )
   }

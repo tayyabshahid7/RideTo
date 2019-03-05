@@ -67,6 +67,10 @@ export const getCustomerType = source => {
   }
 }
 
+export const getBooleanSelectOptions = () => {
+  return [{ name: 'No', id: 'false' }, { name: 'Yes', id: 'true' }]
+}
+
 export const getEmptyCustomer = source => {
   return {
     source

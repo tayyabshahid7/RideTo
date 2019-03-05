@@ -1,14 +1,31 @@
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
+.panel {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 14px;
+  background-color: #fff;
+  border: 1px solid #f0f0f0;
 
-.actions button {
-  margin-left: 8px;
-}
+  // label {
+  //   margin-bottom: 0.25em;
+  //   font-weight: bold;
+  // }
 
-.select {
-  display: block;
-  min-width: 100%;
+  // input,
+  // select {
+  //   height: 34px;
+  //   padding: 0;
+  //   line-height: inherit;
+  //   border: 0;
+  //   border-bottom: 1px dashed #f0f0f0;
+
+  //   &:focus {
+  //     border-bottom-color: #00dbae;
+  //   }
+  // }
+
+  // .input-group-text {
+  //   background-color: transparent;
+  //   border: 0;
+  //   border-radius: 0;
+  // }
 }
