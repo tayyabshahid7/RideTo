@@ -67,6 +67,7 @@ class DetailFormContainer extends React.Component {
   }
 
   handleCancel() {
+    console.log('cancel!')
     this.setState({
       editable: { ...this.props.customer },
       isChanged: false

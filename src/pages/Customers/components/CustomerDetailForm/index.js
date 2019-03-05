@@ -1,13 +1,7 @@
 import React from 'react'
-// import { Form, Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
-import { Form } from 'reactstrap'
+import { Form, Container } from 'reactstrap'
 
 import styles from './CustomerDetailForm.scss'
-// import Checkbox from 'components/Checkbox'
-// import InputTextGroup from 'components/Forms/InputTextGroup'
-// import ConfirmModal from 'components/Modals/ConfirmModal'
-// import AgeInput from 'components/AgeInput'
-// import MinimalSelect from 'components/MinimalSelect'
 import {
   isRideTo,
   getRidingExperienceOptions,
@@ -17,8 +11,10 @@ import {
 import {
   ConnectInput,
   ConnectSelect,
-  ConnectAgeInput
+  ConnectAgeInput,
+  Button
 } from 'components/ConnectForm'
+import classnames from 'classnames'
 
 class CustomerDetailForm extends React.Component {
   constructor(props) {
@@ -54,7 +50,7 @@ class CustomerDetailForm extends React.Component {
   render() {
     // const { showConfirmModal } = this.state
     // const { customer, onChange, onDelete, isDisabled, onCancel } = this.props
-    const { customer, onChange } = this.props
+    const { customer, onChange, isDisabled, onCancel } = this.props
 
     return (
       <Form className={styles.panel} onSubmit={this.handleSubmit}>
@@ -191,15 +187,21 @@ class CustomerDetailForm extends React.Component {
             />
           </React.Fragment>
         )}
-        <div>
-          <Button type="submit" color="primary" disabled={isDisabled}>
-            Save
-          </Button>
-          <Button color="link" onClick={onCancel} disabled={isDisabled}>
-            Cancel
-          </Button>
-        </div>
         */}
+        <div
+          className={classnames(
+            styles.saveBar,
+            !isDisabled && styles.showSaveBar
+          )}>
+          <Container>
+            <Button type="submit" color="primary" disabled={isDisabled}>
+              Save
+            </Button>
+            <Button color="white" onClick={onCancel} disabled={isDisabled}>
+              Cancel
+            </Button>
+          </Container>
+        </div>
       </Form>
     )
   }

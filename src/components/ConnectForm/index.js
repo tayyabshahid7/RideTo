@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 import { getAge } from 'utils/helper'
+import classnames from 'classnames'
 
 export function ConnectInput({
   label,
@@ -92,5 +93,19 @@ export function ConnectSelect({
         ))}
       </select>
     </div>
+  )
+}
+
+export function Button({ type = 'button', children, color, onClick }) {
+  return (
+    <button
+      className={classnames(
+        styles.button,
+        styles[`button${color.charAt(0).toUpperCase()}${color.slice(1)}`]
+      )}
+      type={type}
+      onClick={onClick}>
+      {children}
+    </button>
   )
 }

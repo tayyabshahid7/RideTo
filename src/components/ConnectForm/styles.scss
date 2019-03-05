@@ -45,3 +45,24 @@
     border-bottom-color: #2cceac;
   }
 }
+
+.button {
+  height: 44px;
+  min-width: 90px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #2cceac;
+  border-radius: 3px;
+  border: 0;
+  cursor: pointer;
+}
+
+.buttonPrimary {
+  background-color: #2cceac;
+}
+
+.buttonWhite {
+  color: #2cceac;
+  background-color: #fff;
+  border: 2px solid #2cceac;
+}
