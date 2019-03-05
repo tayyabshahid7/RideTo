@@ -67,6 +67,16 @@ export const getCustomerType = source => {
   }
 }
 
+export const getCustomerTypeShort = source => {
+  switch (source) {
+    case 'RIDETO':
+    case 'RIDETO_INSTANT':
+      return 'RT'
+    default:
+      return 'Direct'
+  }
+}
+
 export const getBooleanSelectOptions = () => {
   return [{ name: 'No', id: 'false' }, { name: 'Yes', id: 'true' }]
 }

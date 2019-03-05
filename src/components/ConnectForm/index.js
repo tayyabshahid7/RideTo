@@ -9,7 +9,9 @@ export function ConnectInput({
   onChange,
   value,
   id,
-  name
+  name,
+  disabled,
+  required
 }) {
   return (
     <div className={styles.formGroup}>
@@ -23,12 +25,22 @@ export function ConnectInput({
         type={type}
         value={value}
         onChange={onChange}
+        disabled={disabled}
+        required={required}
       />
     </div>
   )
 }
 
-export function ConnectAgeInput({ label, onChange, value, id, name }) {
+export function ConnectAgeInput({
+  label,
+  onChange,
+  value,
+  id,
+  name,
+  disabled,
+  required
+}) {
   return (
     <div className={styles.formGroup}>
       <label className={styles.label} htmlFor={id || name}>
@@ -42,6 +54,8 @@ export function ConnectAgeInput({ label, onChange, value, id, name }) {
           type="date"
           value={value}
           onChange={onChange}
+          disabled={disabled}
+          required={required}
         />
         <div className={styles.age}>({getAge(value)})</div>
       </div>
@@ -59,13 +73,16 @@ export function ConnectSelect({
   options,
   labelField = 'name',
   valueField = 'id',
-  disabled
+  disabled,
+  required
 }) {
   return (
     <div className={styles.formGroup}>
-      <label className={styles.label} htmlFor={id || name}>
-        {label}
-      </label>
+      {label && (
+        <label className={styles.label} htmlFor={id || name}>
+          {label}
+        </label>
+      )}
       <select
         className={styles.select}
         name={name}
@@ -76,7 +93,9 @@ export function ConnectSelect({
             e.target.value,
             e.target.options[e.target.selectedIndex].innerText
           )
-        }>
+        }
+        disabled={disabled}
+        required={required}>
         {placeholder && (
           <option disabled value="">
             {typeof placeholder === 'boolean' ? 'Select' : placeholder}
@@ -96,15 +115,35 @@ export function ConnectSelect({
   )
 }
 
-export function Button({ type = 'button', children, color, onClick }) {
+export function ConnectLabeledContent({ label, children, disabled }) {
+  return (
+    <div className={styles.formGroup}>
+      {label && <label className={styles.label}>{label}</label>}
+      <div className={styles.input} disabled={disabled}>
+        {children}
+      </div>
+    </div>
+  )
+}
+
+export function Button({
+  type = 'button',
+  children,
+  color = 'primary',
+  onClick,
+  disabled,
+  small
+}) {
   return (
     <button
       className={classnames(
         styles.button,
-        styles[`button${color.charAt(0).toUpperCase()}${color.slice(1)}`]
+        styles[`button${color.charAt(0).toUpperCase()}${color.slice(1)}`],
+        small && styles.buttonSmall
       )}
       type={type}
-      onClick={onClick}>
+      onClick={onClick}
+      disabled={disabled}>
       {children}
     </button>
   )

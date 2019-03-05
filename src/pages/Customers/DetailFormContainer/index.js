@@ -67,7 +67,6 @@ class DetailFormContainer extends React.Component {
   }
 
   handleCancel() {
-    console.log('cancel!')
     this.setState({
       editable: { ...this.props.customer },
       isChanged: false
@@ -86,12 +85,6 @@ class DetailFormContainer extends React.Component {
             {editable.first_name} {editable.last_name}
           </h3>
           <div className={styles.customerInfo}>
-            {/*
-            <div className={styles.source}>
-              {getCustomerType(editable.source)}
-            </div>
-            */}
-
             {editable.updated_at && (
               <div className={styles.updatedAt}>
                 Last updated: {getLastUpdated(editable.updated_at)}
