@@ -30,7 +30,6 @@ class OrderListContainer extends React.Component {
 
   render() {
     const {
-      customer,
       orders,
       suppliers,
       isSaving,
@@ -42,7 +41,7 @@ class OrderListContainer extends React.Component {
 
     return (
       <Col className={styles.orderListContainer}>
-        <Tabs customer={customer}>
+        <Tabs>
           <div label="Orders">
             {orders.length > 0 ? (
               <ul className={styles.list}>
@@ -60,7 +59,7 @@ class OrderListContainer extends React.Component {
                 ))}
               </ul>
             ) : (
-              <div>No orders</div>
+              <div className={styles.noOrder}>No orders</div>
             )}
           </div>
           <div label="Notes">
