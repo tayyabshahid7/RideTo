@@ -57,7 +57,7 @@ export function ConnectAgeInput({
           disabled={disabled}
           required={required}
         />
-        <div className={styles.age}>({getAge(value)})</div>
+        {value && <div className={styles.age}>({getAge(value)})</div>}
       </div>
     </div>
   )

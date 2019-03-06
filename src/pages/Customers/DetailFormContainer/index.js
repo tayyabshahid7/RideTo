@@ -97,20 +97,14 @@ class DetailFormContainer extends React.Component {
   }
 
   render() {
-    const { isSaving } = this.props
+    const { isSaving, customer } = this.props
     const { editable, isChanged, nameEditable } = this.state
     const isDisabled = !isChanged || isSaving
 
     return (
       <Col md="4" className={styles.detailFormContainer}>
         <div className={styles.panel}>
-          {!nameEditable ? (
-            <button
-              className={classnames(styles.title, styles.name)}
-              onClick={this.handleNameClick}>
-              {editable.first_name} {editable.last_name}
-            </button>
-          ) : (
+          {nameEditable || !customer ? (
             <Row>
               <Col>
                 <ConnectInput
@@ -139,8 +133,13 @@ class DetailFormContainer extends React.Component {
                 />
               </Col>
             </Row>
+          ) : (
+            <button
+              className={classnames(styles.title, styles.name)}
+              onClick={this.handleNameClick}>
+              {editable.first_name} {editable.last_name}
+            </button>
           )}
-
           <div className={styles.customerInfo}>
             {editable.updated_at && (
               <div className={styles.updatedAt}>

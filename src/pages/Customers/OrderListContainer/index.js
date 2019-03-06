@@ -8,6 +8,7 @@ import * as supplierModule from 'store/supplier'
 import Tabs from 'pages/Customers/components/Tabs'
 import OrderForm from 'pages/Customers/components/OrderForm'
 import styles from './OrderListContainer.scss'
+import { selectors } from 'store/customer'
 
 class OrderListContainer extends React.Component {
   componentDidMount() {
@@ -29,6 +30,7 @@ class OrderListContainer extends React.Component {
 
   render() {
     const {
+      customer,
       orders,
       suppliers,
       isSaving,
@@ -40,9 +42,9 @@ class OrderListContainer extends React.Component {
 
     return (
       <Col className={styles.orderListContainer}>
-        <Tabs>
+        <Tabs customer={customer}>
           <div label="Orders">
-            {orders.length > 0 && (
+            {orders.length > 0 ? (
               <ul className={styles.list}>
                 {orders.map(order => (
                   <li key={order.id} className={styles.listItem}>
@@ -57,13 +59,15 @@ class OrderListContainer extends React.Component {
                   </li>
                 ))}
               </ul>
+            ) : (
+              <div>No orders</div>
             )}
           </div>
           <div label="Notes">
             <textarea
               className={styles.notepad}
               placeholder="Add notes here"
-              value={notepad}
+              value={notepad || ''}
               onChange={({ target: { value } }) => {
                 handleNotepadChange(value)
               }}
@@ -76,8 +80,12 @@ class OrderListContainer extends React.Component {
 }
 
 const mapStateToProps = (state, props) => {
+  const { id } = props
+  const { customer } = state
+
   return {
-    orders: orderModule.selectors.getItems(state.order),
+    customer: selectors.getItem(customer, id),
+    orders: id !== 'create' ? orderModule.selectors.getItems(state.order) : [],
     isSaving: state.order.isSaving,
     suppliers: supplierModule.selectors.getItems(state.supplier),
     info: state.info
