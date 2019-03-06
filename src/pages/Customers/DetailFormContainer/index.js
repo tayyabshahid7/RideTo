@@ -2,11 +2,10 @@ import React from 'react'
 import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Col } from 'reactstrap'
-
+import { Row, Col } from 'reactstrap'
+import { ConnectInput } from 'components/ConnectForm'
 import styles from './DetailFormContainer.scss'
 import { actions, selectors } from 'store/customer'
-// import { getCustomerType, getEmptyCustomer } from 'services/customer'
 import { getEmptyCustomer } from 'services/customer'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
 import Loading from 'components/Loading'
@@ -22,13 +21,15 @@ class DetailFormContainer extends React.Component {
 
     this.state = {
       editable: props.customer || getEmptyCustomer('DASHBOARD'),
-      isChanged: false
+      isChanged: false,
+      nameEditable: false
     }
 
     this.handleSaveCustomer = this.handleSaveCustomer.bind(this)
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
     this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
+    this.handleNameClick = this.handleNameClick.bind(this)
   }
 
   componentDidMount() {
@@ -89,17 +90,57 @@ class DetailFormContainer extends React.Component {
     )
   }
 
+  handleNameClick() {
+    this.setState({
+      nameEditable: true
+    })
+  }
+
   render() {
     const { isSaving } = this.props
-    const { editable, isChanged } = this.state
+    const { editable, isChanged, nameEditable } = this.state
     const isDisabled = !isChanged || isSaving
 
     return (
       <Col md="4" className={styles.detailFormContainer}>
         <div className={styles.panel}>
-          <h3 className={styles.title}>
-            {editable.first_name} {editable.last_name}
-          </h3>
+          {!nameEditable ? (
+            <button
+              className={classnames(styles.title, styles.name)}
+              onClick={this.handleNameClick}>
+              {editable.first_name} {editable.last_name}
+            </button>
+          ) : (
+            <Row>
+              <Col>
+                <ConnectInput
+                  ref={this.firstName}
+                  name="first_name"
+                  value={editable.first_name || ''}
+                  label="First Name"
+                  type="text"
+                  onChange={({ target: { value } }) => {
+                    this.handleChangeCustomer({
+                      ...editable,
+                      first_name: value
+                    })
+                  }}
+                />
+              </Col>
+              <Col>
+                <ConnectInput
+                  name="last_name"
+                  value={editable.last_name || ''}
+                  label="Last Name"
+                  type="text"
+                  onChange={({ target: { value } }) => {
+                    this.handleChangeCustomer({ ...editable, last_name: value })
+                  }}
+                />
+              </Col>
+            </Row>
+          )}
+
           <div className={styles.customerInfo}>
             {editable.updated_at && (
               <div className={styles.updatedAt}>
