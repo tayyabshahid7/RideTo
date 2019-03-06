@@ -191,7 +191,6 @@ class OrderForm extends React.Component {
             <Col sm="4">
               <ConnectSelect
                 label="Training Course"
-                className={styles.select}
                 disabled={isRideTo(editable) || inputsDisabled}
                 options={courses}
                 valueField="constant"
@@ -229,7 +228,6 @@ class OrderForm extends React.Component {
               <ConnectSelect
                 disabled={inputsDisabled}
                 label="Bike Hire"
-                className={styles.select}
                 options={bikeHireOptions}
                 selected={get_bike_hire_option(editable.bike_type) || ''}
                 name="bike_type"
@@ -242,7 +240,6 @@ class OrderForm extends React.Component {
               <ConnectSelect
                 disabled={inputsDisabled}
                 label="Training Status"
-                className={styles.select}
                 options={getTrainingStatusOptions()}
                 selected={editable.training_status || ''}
                 name="training_status"
@@ -254,7 +251,6 @@ class OrderForm extends React.Component {
             <Col sm="4">
               <ConnectSelect
                 label="Payment Status"
-                className={styles.select}
                 options={getPaymentOptions()}
                 disabled={isRideTo(editable) || inputsDisabled}
                 selected={editable.payment_status || ''}
@@ -285,7 +281,6 @@ class OrderForm extends React.Component {
               <Col sm="4">
                 <ConnectLabeledContent label="Stripe link" disabled>
                   <a
-                    className={styles.link}
                     href={editable.stripe_charge_href}
                     target="_blank"
                     rel="noopener noreferrer">
@@ -297,7 +292,6 @@ class OrderForm extends React.Component {
               <Col sm="4">
                 <ConnectSelect
                   label="Training Site"
-                  className={styles.select}
                   disabled={isRideTo(editable) || inputsDisabled}
                   options={suppliers}
                   selected={editable.training_location || ''}

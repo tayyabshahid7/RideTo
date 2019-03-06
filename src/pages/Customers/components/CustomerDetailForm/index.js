@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Container } from 'reactstrap'
+import { Form } from 'reactstrap'
 
 import styles from './CustomerDetailForm.scss'
 import {
@@ -193,14 +193,12 @@ class CustomerDetailForm extends React.Component {
             styles.saveBar,
             !isDisabled && styles.showSaveBar
           )}>
-          <Container>
-            <Button type="submit" color="primary" disabled={isDisabled}>
-              Save
-            </Button>
-            <Button color="white" onClick={onCancel} disabled={isDisabled}>
-              Cancel
-            </Button>
-          </Container>
+          <Button type="submit" color="primary" disabled={isDisabled}>
+            Save
+          </Button>
+          <Button color="white" onClick={onCancel} disabled={isDisabled}>
+            Cancel
+          </Button>
         </div>
       </Form>
     )

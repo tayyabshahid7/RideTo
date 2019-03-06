@@ -31,17 +31,20 @@ class OrderListContainer extends React.Component {
     return (
       <Col className={styles.orderListContainer}>
         <h3 className={styles.title}>Orders</h3>
-        {orders.map(order => (
-          <OrderForm
-            courseTypes={info.courseTypes}
-            key={order.id}
-            order={order}
-            suppliers={suppliers}
-            onSave={this.handleSave}
-            isSaving={isSaving}
-            loadCourseTypes={loadCourseTypes}
-          />
-        ))}
+        <ul className={styles.list}>
+          {orders.map(order => (
+            <li key={order.id} className={styles.listItem}>
+              <OrderForm
+                courseTypes={info.courseTypes}
+                order={order}
+                suppliers={suppliers}
+                onSave={this.handleSave}
+                isSaving={isSaving}
+                loadCourseTypes={loadCourseTypes}
+              />
+            </li>
+          ))}
+        </ul>
       </Col>
     )
   }
