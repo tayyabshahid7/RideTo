@@ -28,7 +28,16 @@ class OrderListContainer extends React.Component {
   }
 
   render() {
-    const { orders, suppliers, isSaving, loadCourseTypes, info } = this.props
+    const {
+      orders,
+      suppliers,
+      isSaving,
+      loadCourseTypes,
+      info,
+      notepad,
+      handleNotepadChange
+    } = this.props
+
     return (
       <Col className={styles.orderListContainer}>
         <Tabs>
@@ -50,7 +59,16 @@ class OrderListContainer extends React.Component {
               </ul>
             )}
           </div>
-          <div label="Notes">Notes</div>
+          <div label="Notes">
+            <textarea
+              className={styles.notepad}
+              placeholder="Add notes here"
+              value={notepad}
+              onChange={({ target: { value } }) => {
+                handleNotepadChange(value)
+              }}
+            />
+          </div>
         </Tabs>
       </Col>
     )

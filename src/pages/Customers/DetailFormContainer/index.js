@@ -38,8 +38,10 @@ class DetailFormContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { customer } = this.props
+    const { customer, notepad, notepadChanged } = this.props
     const prev = prevProps.customer
+    const prevNotepad = prevProps.notepad
+    const { editable } = this.state
 
     if (prev !== customer) {
       if (!customer) {
@@ -49,6 +51,13 @@ class DetailFormContainer extends React.Component {
       this.setState({
         editable: { ...customer },
         isChanged: false
+      })
+    }
+
+    if (prevNotepad !== notepad && notepadChanged) {
+      this.handleChangeCustomer({
+        ...editable,
+        notes: notepad
       })
     }
   }
@@ -67,10 +76,17 @@ class DetailFormContainer extends React.Component {
   }
 
   handleCancel() {
-    this.setState({
-      editable: { ...this.props.customer },
-      isChanged: false
-    })
+    const { handleNotepadChange } = this.props
+
+    this.setState(
+      {
+        editable: { ...this.props.customer },
+        isChanged: false
+      },
+      () => {
+        handleNotepadChange(this.props.customer.notes, false)
+      }
+    )
   }
 
   render() {
