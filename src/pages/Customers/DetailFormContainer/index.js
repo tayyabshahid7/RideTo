@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Row, Col } from 'reactstrap'
-import { ConnectInput } from 'components/ConnectForm'
+import { ConnectInput, Button } from 'components/ConnectForm'
 import styles from './DetailFormContainer.scss'
 import { actions, selectors } from 'store/customer'
 import { getEmptyCustomer } from 'services/customer'
@@ -103,50 +103,75 @@ class DetailFormContainer extends React.Component {
 
     return (
       <Col md="4" className={styles.detailFormContainer}>
-        <div className={styles.panel}>
-          {nameEditable || !customer ? (
-            <Row>
-              <Col>
-                <ConnectInput
-                  ref={this.firstName}
-                  name="first_name"
-                  value={editable.first_name || ''}
-                  label="First Name"
-                  type="text"
-                  onChange={({ target: { value } }) => {
-                    this.handleChangeCustomer({
-                      ...editable,
-                      first_name: value
-                    })
-                  }}
-                />
-              </Col>
-              <Col>
-                <ConnectInput
-                  name="last_name"
-                  value={editable.last_name || ''}
-                  label="Last Name"
-                  type="text"
-                  onChange={({ target: { value } }) => {
-                    this.handleChangeCustomer({ ...editable, last_name: value })
-                  }}
-                />
-              </Col>
-            </Row>
-          ) : (
-            <button
-              className={classnames(styles.title, styles.name)}
-              onClick={this.handleNameClick}>
-              {editable.first_name} {editable.last_name}
-            </button>
-          )}
-          <div className={styles.customerInfo}>
-            {editable.updated_at && (
-              <div className={styles.updatedAt}>
-                Last updated: {getLastUpdated(editable.updated_at)}
+        <div
+          className={classnames(
+            styles.panel,
+            !nameEditable && styles.userPanel
+          )}>
+          <div
+            className={classnames(
+              styles.user,
+              nameEditable && styles.editingUser
+            )}>
+            {nameEditable || !customer ? (
+              <Fragment>
+                <Row>
+                  <Col>
+                    <ConnectInput
+                      ref={this.firstName}
+                      name="first_name"
+                      value={editable.first_name || ''}
+                      label="First Name"
+                      type="text"
+                      onChange={({ target: { value } }) => {
+                        this.handleChangeCustomer({
+                          ...editable,
+                          first_name: value
+                        })
+                      }}
+                    />
+                  </Col>
+                  <Col>
+                    <ConnectInput
+                      name="last_name"
+                      value={editable.last_name || ''}
+                      label="Last Name"
+                      type="text"
+                      onChange={({ target: { value } }) => {
+                        this.handleChangeCustomer({
+                          ...editable,
+                          last_name: value
+                        })
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <div className={styles.customerInfo}>
+                  {editable.updated_at && (
+                    <div className={styles.updatedAt}>
+                      Last updated: {getLastUpdated(editable.updated_at)}
+                    </div>
+                  )}
+                </div>
+              </Fragment>
+            ) : (
+              <div>
+                <button
+                  className={classnames(styles.title, styles.name)}
+                  onClick={this.handleNameClick}>
+                  {editable.first_name} {editable.last_name}
+                </button>
+                <div className={styles.customerInfo}>
+                  {editable.updated_at && (
+                    <div className={styles.updatedAt}>
+                      Last updated: {getLastUpdated(editable.updated_at)}
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
+          <Button>Actions</Button>
         </div>
         <Loading loading={isSaving}>
           <h3 className={classnames(styles.title, styles.details)}>

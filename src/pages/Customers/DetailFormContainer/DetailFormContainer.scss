@@ -16,8 +16,28 @@
   border: 0;
 }
 
+.userPanel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user {
+  max-width: calc(100% - 90px - 1rem);
+}
+
+.editingUser {
+  margin-bottom: 1rem;
+  max-width: none;
+}
+
 .name {
+  display: block;
+  margin-bottom: 0.25rem;
   cursor: pointer;
+  word-break: break-word;
+  text-align: left;
+  line-height: 1;
 }
 
 .details {
