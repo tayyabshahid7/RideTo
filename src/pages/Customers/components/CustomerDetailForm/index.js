@@ -20,12 +20,7 @@ class CustomerDetailForm extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-      showConfirmModal: false
-    }
-
     this.handleChange = this.handleChange.bind(this)
-    this.handleToggleModal = this.handleToggleModal.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -37,10 +32,6 @@ class CustomerDetailForm extends React.Component {
     onChange({ ...customer, [name]: value })
   }
 
-  handleToggleModal() {
-    this.setState({ showConfirmModal: !this.state.showConfirmModal })
-  }
-
   handleSubmit(event) {
     const { onSave } = this.props
     event.preventDefault()
@@ -48,34 +39,10 @@ class CustomerDetailForm extends React.Component {
   }
 
   render() {
-    // const { showConfirmModal } = this.state
-    // const { customer, onChange, onDelete, isDisabled, onCancel } = this.props
     const { customer, onChange, isDisabled, onCancel } = this.props
 
     return (
       <Form className={styles.panel} onSubmit={this.handleSubmit}>
-        {/*
-        <Row>
-          <Col>
-            <InputTextGroup
-              name="first_name"
-              value={customer.first_name || ''}
-              label="First Name"
-              onChange={this.handleChange}
-              required
-            />
-          </Col>
-          <Col>
-            <InputTextGroup
-              name="last_name"
-              value={customer.last_name || ''}
-              label="Last Name"
-              onChange={this.handleChange}
-              required
-            />
-          </Col>
-        </Row>
-        */}
         <ConnectInput
           name="phone"
           value={customer.phone || ''}
@@ -162,32 +129,6 @@ class CustomerDetailForm extends React.Component {
             onChange({ ...customer, email_optin: value === 'true' })
           }
         />
-
-        {/*
-        <FormGroup>
-          <Label>Notes</Label>
-          <Input
-            type="textarea"
-            name="notes"
-            value={customer.notes || ''}
-            onChange={this.handleChange}
-          />
-        </FormGroup>
-        {['WIDGET', 'DASHBOARD'].includes(customer.source) && (
-          <React.Fragment>
-            <Button color="danger" onClick={this.handleToggleModal}>
-              Remove Customer
-            </Button>
-
-            <ConfirmModal
-              onClose={this.handleToggleModal}
-              showModal={showConfirmModal}
-              onDelete={onDelete}
-              message={`Are you sure to remove this customer?`}
-            />
-          </React.Fragment>
-        )}
-        */}
         <div
           className={classnames(
             styles.saveBar,

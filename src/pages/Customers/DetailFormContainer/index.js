@@ -10,6 +10,7 @@ import { getEmptyCustomer } from 'services/customer'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
 import Loading from 'components/Loading'
 import classnames from 'classnames'
+import ConfirmModal from 'components/Modals/ConfirmModal'
 
 const getLastUpdated = date => {
   return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY')
@@ -22,7 +23,9 @@ class DetailFormContainer extends React.Component {
     this.state = {
       editable: props.customer || getEmptyCustomer('DASHBOARD'),
       isChanged: false,
-      nameEditable: false
+      nameEditable: false,
+      showActions: false,
+      showConfirmModal: false
     }
 
     this.handleSaveCustomer = this.handleSaveCustomer.bind(this)
@@ -30,6 +33,8 @@ class DetailFormContainer extends React.Component {
     this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
     this.handleNameClick = this.handleNameClick.bind(this)
+    this.handleActionsClick = this.handleActionsClick.bind(this)
+    this.handleToggleModal = this.handleToggleModal.bind(this)
   }
 
   componentDidMount() {
@@ -96,82 +101,123 @@ class DetailFormContainer extends React.Component {
     })
   }
 
+  handleActionsClick() {
+    this.setState({
+      showActions: !this.state.showActions
+    })
+  }
+
+  handleToggleModal() {
+    this.setState({ showConfirmModal: !this.state.showConfirmModal })
+  }
+
   render() {
-    const { isSaving, customer } = this.props
-    const { editable, isChanged, nameEditable } = this.state
+    const { isSaving, customer, id } = this.props
+    const {
+      editable,
+      isChanged,
+      nameEditable,
+      showActions,
+      showConfirmModal
+    } = this.state
     const isDisabled = !isChanged || isSaving
+    const isCreateUser = id === 'create'
+    const hasActions =
+      ['WIDGET', 'DASHBOARD'].includes(editable.source) && !isCreateUser
 
     return (
       <Col md="4" className={styles.detailFormContainer}>
-        <div
-          className={classnames(
-            styles.panel,
-            !nameEditable && styles.userPanel
-          )}>
-          <div
-            className={classnames(
-              styles.user,
-              nameEditable && styles.editingUser
-            )}>
-            {nameEditable || !customer ? (
-              <Fragment>
-                <Row>
-                  <Col>
-                    <ConnectInput
-                      ref={this.firstName}
-                      name="first_name"
-                      value={editable.first_name || ''}
-                      label="First Name"
-                      type="text"
-                      onChange={({ target: { value } }) => {
-                        this.handleChangeCustomer({
-                          ...editable,
-                          first_name: value
-                        })
-                      }}
-                    />
-                  </Col>
-                  <Col>
-                    <ConnectInput
-                      name="last_name"
-                      value={editable.last_name || ''}
-                      label="Last Name"
-                      type="text"
-                      onChange={({ target: { value } }) => {
-                        this.handleChangeCustomer({
-                          ...editable,
-                          last_name: value
-                        })
-                      }}
-                    />
-                  </Col>
-                </Row>
-                <div className={styles.customerInfo}>
-                  {editable.updated_at && (
-                    <div className={styles.updatedAt}>
-                      Last updated: {getLastUpdated(editable.updated_at)}
-                    </div>
-                  )}
+        <div className={styles.panel}>
+          <div className={classnames(!nameEditable && styles.userPanel)}>
+            <div
+              className={classnames(
+                hasActions && styles.user,
+                nameEditable && styles.editingUser
+              )}>
+              {nameEditable || !customer ? (
+                <Fragment>
+                  <Row>
+                    <Col>
+                      <ConnectInput
+                        ref={this.firstName}
+                        name="first_name"
+                        value={editable.first_name || ''}
+                        label="First Name"
+                        type="text"
+                        onChange={({ target: { value } }) => {
+                          this.handleChangeCustomer({
+                            ...editable,
+                            first_name: value
+                          })
+                        }}
+                      />
+                    </Col>
+                    <Col>
+                      <ConnectInput
+                        name="last_name"
+                        value={editable.last_name || ''}
+                        label="Last Name"
+                        type="text"
+                        onChange={({ target: { value } }) => {
+                          this.handleChangeCustomer({
+                            ...editable,
+                            last_name: value
+                          })
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <div className={styles.customerInfo}>
+                    {editable.updated_at && (
+                      <div className={styles.updatedAt}>
+                        Last updated: {getLastUpdated(editable.updated_at)}
+                      </div>
+                    )}
+                  </div>
+                </Fragment>
+              ) : (
+                <div>
+                  <button
+                    className={classnames(styles.title, styles.name)}
+                    onClick={this.handleNameClick}>
+                    {editable.first_name} {editable.last_name}
+                  </button>
+                  <div className={styles.customerInfo}>
+                    {editable.updated_at && (
+                      <div className={styles.updatedAt}>
+                        Last updated: {getLastUpdated(editable.updated_at)}
+                      </div>
+                    )}
+                  </div>
                 </div>
-              </Fragment>
-            ) : (
-              <div>
-                <button
-                  className={classnames(styles.title, styles.name)}
-                  onClick={this.handleNameClick}>
-                  {editable.first_name} {editable.last_name}
-                </button>
-                <div className={styles.customerInfo}>
-                  {editable.updated_at && (
-                    <div className={styles.updatedAt}>
-                      Last updated: {getLastUpdated(editable.updated_at)}
-                    </div>
-                  )}
-                </div>
-              </div>
+              )}
+            </div>
+            {hasActions && (
+              <Button
+                color={showActions ? 'white' : 'primary'}
+                onClick={this.handleActionsClick}>
+                {showActions ? 'Close' : 'Actions'}
+              </Button>
             )}
           </div>
-          <Button>Actions</Button>
+          {showActions && (
+            <div className={styles.actions}>
+              {hasActions && (
+                <React.Fragment>
+                  <Button color="danger" onClick={this.handleToggleModal}>
+                    Remove Customer
+                  </Button>
+
+                  <ConfirmModal
+                    onClose={this.handleToggleModal}
+                    showModal={showConfirmModal}
+                    onDelete={this.handleDeleteCustomer}
+                    message={`Are you sure to remove this customer?`}
+                  />
+                </React.Fragment>
+              )}
+            </div>
+          )}
         </div>
         <Loading loading={isSaving}>
           <h3 className={classnames(styles.title, styles.details)}>
@@ -183,7 +229,6 @@ class DetailFormContainer extends React.Component {
             onChange={this.handleChangeCustomer}
             onSave={this.handleSaveCustomer}
             onCancel={this.handleCancel}
-            onDelete={this.handleDeleteCustomer}
           />
         </Loading>
       </Col>

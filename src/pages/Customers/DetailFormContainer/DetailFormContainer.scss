@@ -22,7 +22,7 @@
   align-items: center;
 }
 
-.user {
+.userHasActions {
   max-width: calc(100% - 90px - 1rem);
 }
 
@@ -49,4 +49,8 @@
 .updatedAt {
   font-size: 11px;
   font-style: italic;
+}
+
+.actions {
+  margin-top: 1rem;
 }
