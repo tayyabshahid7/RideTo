@@ -1,20 +1,14 @@
-import React, { Fragment } from 'react'
-import moment from 'moment'
+import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Row, Col } from 'reactstrap'
-import { ConnectInput, Button } from 'components/ConnectForm'
+import { Col } from 'reactstrap'
 import styles from './DetailFormContainer.scss'
 import { actions, selectors } from 'store/customer'
 import { getEmptyCustomer } from 'services/customer'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
+import UserName from 'pages/Customers/components/UserName'
 import Loading from 'components/Loading'
 import classnames from 'classnames'
-import ConfirmModal from 'components/Modals/ConfirmModal'
-
-const getLastUpdated = date => {
-  return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY')
-}
 
 class DetailFormContainer extends React.Component {
   constructor(props) {
@@ -127,98 +121,19 @@ class DetailFormContainer extends React.Component {
 
     return (
       <Col md="4" className={styles.detailFormContainer}>
-        <div className={styles.panel}>
-          <div className={classnames(!nameEditable && styles.userPanel)}>
-            <div
-              className={classnames(
-                hasActions && styles.user,
-                nameEditable && styles.editingUser
-              )}>
-              {nameEditable || !customer ? (
-                <Fragment>
-                  <Row>
-                    <Col>
-                      <ConnectInput
-                        ref={this.firstName}
-                        name="first_name"
-                        value={editable.first_name || ''}
-                        label="First Name"
-                        type="text"
-                        onChange={({ target: { value } }) => {
-                          this.handleChangeCustomer({
-                            ...editable,
-                            first_name: value
-                          })
-                        }}
-                      />
-                    </Col>
-                    <Col>
-                      <ConnectInput
-                        name="last_name"
-                        value={editable.last_name || ''}
-                        label="Last Name"
-                        type="text"
-                        onChange={({ target: { value } }) => {
-                          this.handleChangeCustomer({
-                            ...editable,
-                            last_name: value
-                          })
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  <div className={styles.customerInfo}>
-                    {editable.updated_at && (
-                      <div className={styles.updatedAt}>
-                        Last updated: {getLastUpdated(editable.updated_at)}
-                      </div>
-                    )}
-                  </div>
-                </Fragment>
-              ) : (
-                <div>
-                  <button
-                    className={classnames(styles.title, styles.name)}
-                    onClick={this.handleNameClick}>
-                    {editable.first_name} {editable.last_name}
-                  </button>
-                  <div className={styles.customerInfo}>
-                    {editable.updated_at && (
-                      <div className={styles.updatedAt}>
-                        Last updated: {getLastUpdated(editable.updated_at)}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-            {hasActions && (
-              <Button
-                color={showActions ? 'white' : 'primary'}
-                onClick={this.handleActionsClick}>
-                {showActions ? 'Close' : 'Actions'}
-              </Button>
-            )}
-          </div>
-          {showActions && (
-            <div className={styles.actions}>
-              {hasActions && (
-                <React.Fragment>
-                  <Button color="danger" onClick={this.handleToggleModal}>
-                    Remove Customer
-                  </Button>
-
-                  <ConfirmModal
-                    onClose={this.handleToggleModal}
-                    showModal={showConfirmModal}
-                    onDelete={this.handleDeleteCustomer}
-                    message={`Are you sure to remove this customer?`}
-                  />
-                </React.Fragment>
-              )}
-            </div>
-          )}
-        </div>
+        <UserName
+          nameEditable={nameEditable}
+          hasActions={hasActions}
+          customer={customer}
+          editable={editable}
+          showActions={showActions}
+          showConfirmModal={showConfirmModal}
+          handleActionsClick={this.handleActionsClick}
+          handleNameClick={this.handleNameClick}
+          handleToggleModal={this.handleToggleModal}
+          handleChangeCustomer={this.handleChangeCustomer}
+          handleDeleteCustomer={this.handleDeleteCustomer}
+        />
         <Loading loading={isSaving}>
           <h3 className={classnames(styles.title, styles.details)}>
             Customer details
