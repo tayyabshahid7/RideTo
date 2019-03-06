@@ -5,6 +5,7 @@ import { Col } from 'reactstrap'
 import { loadCourseTypes } from 'store/info'
 import * as orderModule from 'store/order'
 import * as supplierModule from 'store/supplier'
+import Tabs from 'pages/Customers/components/Tabs'
 import OrderForm from 'pages/Customers/components/OrderForm'
 import styles from './OrderListContainer.scss'
 
@@ -30,21 +31,27 @@ class OrderListContainer extends React.Component {
     const { orders, suppliers, isSaving, loadCourseTypes, info } = this.props
     return (
       <Col className={styles.orderListContainer}>
-        <h3 className={styles.title}>Orders</h3>
-        <ul className={styles.list}>
-          {orders.map(order => (
-            <li key={order.id} className={styles.listItem}>
-              <OrderForm
-                courseTypes={info.courseTypes}
-                order={order}
-                suppliers={suppliers}
-                onSave={this.handleSave}
-                isSaving={isSaving}
-                loadCourseTypes={loadCourseTypes}
-              />
-            </li>
-          ))}
-        </ul>
+        <Tabs>
+          <div label="Orders">
+            {orders.length > 0 && (
+              <ul className={styles.list}>
+                {orders.map(order => (
+                  <li key={order.id} className={styles.listItem}>
+                    <OrderForm
+                      courseTypes={info.courseTypes}
+                      order={order}
+                      suppliers={suppliers}
+                      onSave={this.handleSave}
+                      isSaving={isSaving}
+                      loadCourseTypes={loadCourseTypes}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+          <div label="Notes">Notes</div>
+        </Tabs>
       </Col>
     )
   }

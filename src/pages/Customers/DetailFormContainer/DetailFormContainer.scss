@@ -12,7 +12,9 @@
 }
 
 .details {
-  margin-left: 25px;
+  @media (min-width: 768px) {
+    margin-left: 25px;
+  }
 }
 
 .updatedAt {

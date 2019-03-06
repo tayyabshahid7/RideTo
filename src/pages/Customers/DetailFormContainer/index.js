@@ -79,7 +79,7 @@ class DetailFormContainer extends React.Component {
     const isDisabled = !isChanged || isSaving
 
     return (
-      <Col sm="4" className={styles.detailFormContainer}>
+      <Col md="4" className={styles.detailFormContainer}>
         <div className={styles.panel}>
           <h3 className={styles.title}>
             {editable.first_name} {editable.last_name}
