@@ -40,6 +40,14 @@ let AccountSubNavbar = ({ history }) => {
             Upload Tests
           </NavLink>
         </li>
+        <li className="nav-item">
+          <NavLink
+            className={styles.navLink}
+            activeClassName={styles.activeNavLink}
+            to="/account/emails">
+            Emails
+          </NavLink>
+        </li>
       </ul>
     </div>
   )
