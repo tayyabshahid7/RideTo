@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { Row, Col, Button } from 'reactstrap'
 import CalendarMonthView from './CalendarMonthView'
-import CalendarHeader from './CalendarHeader'
+// import CalendarHeader from './CalendarHeader'
 import styles from './index.scss'
 import { CALENDAR_VIEW } from '../../common/constants'
 import CalendarWeekView from './CalendarWeekView'
@@ -19,7 +19,7 @@ class CalendarComponent extends Component {
     return (
       <div className={classnames(styles.overview)}>
         <Row>
-          <Col>
+          <Col md="3">
             <SchoolSelect className="Test" />
             <div className={styles.changeCalendarWrapper}>
               <span
@@ -68,14 +68,17 @@ class CalendarComponent extends Component {
     )
   }
   render() {
-    let { days, calendar, handleCustomEvent, history } = this.props
+    // let { days, calendar, handleCustomEvent, history } = this.props
+    let { days, calendar, history } = this.props
     return (
       <div className={classnames(styles.container)}>
         {this.renderOverview()}
+        {/*
         <CalendarHeader
           calendar={calendar}
           handleCustomEvent={handleCustomEvent}
         />
+        */}
         <Loading loading={calendar.loading} className={styles.calendarWrapper}>
           {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
             <CalendarWeekView
