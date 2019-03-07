@@ -79,6 +79,10 @@ class EmailSettingsForm extends React.Component {
                 <b>[[school_phone]]</b> - The school phone number for contacting
                 the school if any enquiry
               </li>
+              <li>
+                <b>[[price_paid]]</b> - The price paid for the training. (Note:
+                this will not be shown if the booking was manually added)
+              </li>
             </ul>
           </div>
           <Form onSubmit={this.handleSave.bind(this)}>
