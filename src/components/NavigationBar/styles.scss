@@ -1,5 +1,5 @@
 .navigationBar {
-  border-bottom: 1px solid var(--light-grey-color);
+  border-bottom: 2px solid var(--light-grey-color);
   text-align: center;
 }
 .navItem {
@@ -27,7 +27,7 @@
   align-items: center;
 }
 .navLink {
-  margin: 0 1.2rem;
+  margin: 0 1rem;
   color: var(--dark-color);
   text-decoration: none;
   &:hover {
@@ -36,9 +36,6 @@
 }
 
 @media (min-width: 768px) {
-  .activeNavLink {
-    border-bottom: 2px solid #2cceac;
-  }
   .navigationBar {
     text-align: left;
   }
@@ -53,6 +50,13 @@
     // &:hover {
     //   text-decoration: unset;
     // }
+    font-size: 18px;
+    font-weight: bold;
+    color: #707070;
+  }
+  .activeNavLink {
+    padding-bottom: 17px;
+    border-bottom: 4px solid #2cceac;
   }
   .authMenu {
     width: 250px;
