@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
+import RightPanel from 'components/RightPanel'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
 import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseComponent'
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
@@ -245,7 +246,7 @@ class CalendarPage extends Component {
             calendarPath={calendarPath}
           />
         </div>
-        <div className={styles.rightPanel}>
+        <RightPanel location={location}>
           <Route
             exact
             path="/calendar/:date"
@@ -271,7 +272,7 @@ class CalendarPage extends Component {
             path="/calendar/events/:eventId/edit"
             render={routeProps => <EditEventComponent {...routeProps} />}
           />
-        </div>
+        </RightPanel>
       </div>
     )
   }
