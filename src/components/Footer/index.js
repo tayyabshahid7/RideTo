@@ -4,7 +4,7 @@ import styles from './styles.scss'
 const Footer = () => {
   return (
     <div className={styles.container}>
-      © {new Date().getFullYear()} RideTo Ltd.
+      © {new Date().getFullYear()} Connectmct.
     </div>
   )
 }
