@@ -27,7 +27,15 @@ class OrderListContainer extends React.Component {
   }
 
   render() {
-    const { orders, suppliers, isSaving, loadCourseTypes, info } = this.props
+    const {
+      orders,
+      suppliers,
+      isSaving,
+      loadCourseTypes,
+      isSending,
+      sendEmailConfirmation,
+      info
+    } = this.props
     return (
       <Col className={styles.orderListContainer}>
         <h3 className={styles.title}>Orders</h3>
@@ -39,6 +47,8 @@ class OrderListContainer extends React.Component {
             suppliers={suppliers}
             onSave={this.handleSave}
             isSaving={isSaving}
+            isSending={isSending}
+            sendEmailConfirmation={sendEmailConfirmation}
             loadCourseTypes={loadCourseTypes}
           />
         ))}
@@ -51,6 +61,7 @@ const mapStateToProps = (state, props) => {
   return {
     orders: orderModule.selectors.getItems(state.order),
     isSaving: state.order.isSaving,
+    isSending: state.order.isSending,
     suppliers: supplierModule.selectors.getItems(state.supplier),
     info: state.info
   }

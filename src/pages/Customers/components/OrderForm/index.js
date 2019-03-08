@@ -10,7 +10,6 @@ import {
   getBikeHireOptions,
   getPaymentOptions,
   getTrainingStatusOptions,
-  sendConfirmation,
   isRideTo,
   isConnectManual
 } from 'services/order'
@@ -88,16 +87,19 @@ class OrderForm extends React.Component {
     })
   }
 
-  async handleConfirmation() {
+  handleConfirmation() {
+    // const { editable } = this.state
+    // this.setState({ isSending: true })
+    // await sendConfirmation(editable)
+    // this.setState({ isSending: false })
+
     const { editable } = this.state
-    this.setState({ isSending: true })
-    await sendConfirmation(editable)
-    this.setState({ isSending: false })
+    this.props.sendEmailConfirmation(editable.friendly_id)
   }
 
   render() {
-    const { suppliers, isSaving, onSave, courseTypes } = this.props
-    const { editable, isChanged, isSending } = this.state
+    const { suppliers, isSaving, onSave, courseTypes, isSending } = this.props
+    const { editable, isChanged } = this.state
     const courses = courseTypes
       ? courseTypes.filter(
           course =>
