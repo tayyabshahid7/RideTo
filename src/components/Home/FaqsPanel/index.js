@@ -18,7 +18,7 @@ class FaqsPanel extends React.Component {
               {faq.question}
             </div>
             <div
-              className={classnames(styles.answer, 'text-primary')}
+              className={classnames(styles.answer)}
               dangerouslySetInnerHTML={this.renderAnswer(faq.answer)}
             />
           </div>

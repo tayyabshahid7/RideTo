@@ -2,11 +2,14 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 16px;
+  font-size: 18px;
 }
 
 .answer {
-  padding: 8px;
+  // padding: 8px;
   width: 100%;
+  color: #c7c7c7;
+  font-style: italic;
 
   a {
     text-decoration: underline;
@@ -15,7 +18,11 @@
 
 .title {
   width: 100%;
-  font-size: 20px;
-  font-size: bold;
-  margin-bottom: 32px;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 1rem;
+
+  @media (min-width: 769px) {
+    margin-top: 36px;
+  }
 }
