@@ -91,6 +91,7 @@ const CustomerDetailsForm = ({
         <input
           id="phone"
           type="text"
+          maxlength="15"
           value={details.phone || ''}
           onChange={event => handleChange(event, details, errors, onChange)}
         />
