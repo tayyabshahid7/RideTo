@@ -72,6 +72,7 @@
     "style-loader": "0.23.1",
     "sw-precache-webpack-plugin": "0.11.5",
     "tldjs": "^2.3.1",
+    "typeface-pt-sans": "^0.0.72",
     "url-loader": "1.1.2",
     "viewport-mercator-project": "^6.1.1",
     "webpack": "4.26.1",
