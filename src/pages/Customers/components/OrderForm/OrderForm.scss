@@ -60,3 +60,9 @@
   border: 0;
   cursor: pointer;
 }
+
+a.trainingDateLink {
+  &:hover {
+    text-decoration: none;
+  }
+}

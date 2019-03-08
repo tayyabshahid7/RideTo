@@ -163,6 +163,8 @@ class OrderForm extends React.Component {
       }
     })
 
+    const trainingDate = moment(getDate(editable.training_date_time))
+
     return (
       <div className={styles.panel}>
         <div className={styles.header}>
@@ -202,16 +204,13 @@ class OrderForm extends React.Component {
               />
             </Col>
             <Col sm="4">
-              <ConnectInput
-                disabled
-                label="Training Date"
-                name="training_date_time_date"
-                value={
-                  moment(getDate(editable.training_date_time)).format(
-                    'DD/MM/YYYY'
-                  ) || ''
-                }
-              />
+              <ConnectLabeledContent label="Trining Date" disabled>
+                <a
+                  className={styles.trainingDateLink}
+                  href={`/calendar/${trainingDate.format('YYYY-MM-DD')}`}>
+                  {trainingDate.format('DD/MM/YYYY') || ''}
+                </a>
+              </ConnectLabeledContent>
             </Col>
             <Col sm="4">
               <ConnectInput
