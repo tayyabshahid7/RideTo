@@ -31,7 +31,11 @@ class AddonSelectionItem extends React.Component {
     return (
       <div className={styles.addonSelectionItem}>
         <div className={styles.image}>
-          <AddonImageSlider images={images} />
+          <AddonImageSlider
+            addon={addon}
+            onDetails={onDetails}
+            images={images}
+          />
         </div>
 
         <div className={styles.content}>

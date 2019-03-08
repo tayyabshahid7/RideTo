@@ -23,7 +23,7 @@ const PrevArrow = ({ onClick }) => (
   />
 )
 
-const AddonImageSlider = ({ images }) => {
+const AddonImageSlider = ({ images, addon, onDetails }) => {
   const settings = {
     dots: false,
     slidesToShow: 1,
@@ -37,7 +37,15 @@ const AddonImageSlider = ({ images }) => {
   return (
     <RideToSlider settings={settings}>
       {images.map(image => (
-        <img key={image} src={image} className={styles.addonImage} alt="" />
+        <img
+          key={image}
+          src={image}
+          className={styles.addonImage}
+          alt=""
+          onClick={() => {
+            onDetails(addon)
+          }}
+        />
       ))}
     </RideToSlider>
   )
