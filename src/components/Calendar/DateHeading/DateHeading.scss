@@ -1,10 +1,8 @@
 .dateHeading {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
   color: #707070;
 
-  border-bottom: solid 1px var(--light-grey-color);
-  padding-bottom: 4px;
   margin-bottom: 8px;
 
   display: flex;
@@ -17,7 +15,16 @@
 }
 
 .backLink {
+  display: block;
+  margin-top: -1rem;
   margin-right: 16px;
+  font-size: 3rem;
+  color: inherit;
+  line-height: 1;
+
+  i::before {
+    content: '\00d7';
+  }
 }
 
 .actions {

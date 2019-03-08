@@ -15,12 +15,14 @@ class CoursesPanel extends React.Component {
         <div className={styles.courses}>
           <div className={styles.title}>
             Courses
+            {/*
             <Button
               tag={Link}
               to={`/calendar/courses/create?date=${date}`}
               color="primary">
               Add Course
             </Button>
+            */}
           </div>
 
           {courses.map(course => (
