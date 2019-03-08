@@ -4,6 +4,7 @@ import AccountSubNavbar from 'components/Account/AccountSubNavbar'
 import AvailabilityCourses from './AvailabilityCourses'
 import AccountPassword from './AccountPassword'
 import BookingWidgetSettings from './BookingWidgetSettings'
+import EmailSettings from './EmailSettings'
 import CsvUpload from './CsvUpload'
 import styles from './styles.scss'
 
@@ -37,6 +38,13 @@ class AccountPage extends Component {
             exact
             path="/account/widget-settings"
             render={routeProps => <BookingWidgetSettings {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/account/emails"
+            render={routeProps => (
+              <EmailSettings {...routeProps} schoolId={schoolId} />
+            )}
           />
           <Route
             exact
