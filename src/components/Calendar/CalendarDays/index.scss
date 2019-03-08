@@ -12,6 +12,8 @@
   flex: 1 1 auto;
   overflow-y: auto;
 
+  border-bottom: 1px solid #ccc;
+
   &::-webkit-scrollbar {
     display: none;
   }
