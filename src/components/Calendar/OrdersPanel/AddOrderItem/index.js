@@ -5,6 +5,7 @@ import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions } from 'services/order'
+import { checkCustomerExists } from 'services/customer'
 
 class AddOrderItem extends React.Component {
   constructor(props) {
@@ -47,6 +48,18 @@ class AddOrderItem extends React.Component {
     const { onSave, onCancel } = this.props
     const { order } = this.state
     event.preventDefault()
+
+    let result = await checkCustomerExists(order.user_email)
+
+    if (result.email_exists) {
+      const confirm = window.confirm(
+        `There's already a customer with this email (${order.user_email})\n` +
+          'The order will be associated to this email.\n' +
+          'Do you want to continue?'
+      )
+      if (!confirm) return
+    }
+
     let response = await onSave(order)
     if (response) {
       // Then Success

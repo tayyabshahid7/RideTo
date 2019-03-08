@@ -76,3 +76,8 @@ export const getEmptyCustomer = source => {
 export const isRideTo = ({ source }) => {
   return source === 'RIDETO' || source === 'RIDETO_INSTANT'
 }
+
+export const checkCustomerExists = async email => {
+  const path = `school/customer/check-email-exists/`
+  return await get(path, { email: email })
+}
