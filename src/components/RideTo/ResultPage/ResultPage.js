@@ -116,7 +116,12 @@ class ResultPage extends Component {
 
   handleCourseChange(newCourseType) {
     const qs = parseQueryString(window.location.search.slice(1))
-    const postcode = qs.postcode ? qs.postcode.toUpperCase() : ''
+    let postcode = ''
+    if (window.location.pathname.startsWith('/cbt-training/')) {
+      postcode = window.location.pathname.replace('/cbt-training/', '')
+    } else if (qs.postcode) {
+      postcode = qs.postcode.toUpperCase()
+    }
     const actualCourseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     if (actualCourseType !== newCourseType) {
       window.location = `/course-location/?postcode=${postcode}&courseType=${newCourseType}`
