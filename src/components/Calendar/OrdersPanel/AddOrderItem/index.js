@@ -212,6 +212,9 @@ class AddOrderItem extends React.Component {
           </Row>
           <Row>
             <Col className="mt-3 text-right">
+              <Button type="button" color="primary" className="mr-2">
+                Payment
+              </Button>
               <Button type="submit" color="primary" className="mr-2">
                 Save
               </Button>
