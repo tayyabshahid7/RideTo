@@ -204,33 +204,35 @@ class OrderSummary extends Component {
               onDetailChange('accept_terms', event.target.checked)
             }>
             <div>
-              I can confirm that I have read and agreed to the requirements and{' '}
+              I confirm I have read and agree to the{' '}
               <a
                 href="https://www.rideto.com/terms"
                 rel="noopener noreferrer"
                 target="_blank">
-                terms and conditions.
-              </a>
+                terms and conditions
+              </a>{' '}
+              and:
             </div>
           </Checkbox>
           <div className={styles.terms}>
             <ul>
               <li>
-                I will be able to present a valid Full UK Drivers Licence or
-                Provisional licence (with Category A entitlement)
+                I will be able to present a valid UK Driving or Provisional
+                licence (with Category A entitlement)
               </li>
-              <li>Or full EU licence with UK counterpart licence number</li>
+              <li>Or a Full EU licence with UK counterpart licence number</li>
               <li>
-                I’m able to read a registration plate at a distance of 20 meters
+                I'm able to read a registration plate from a distance of 20.5
+                meters
               </li>
               <li>
-                I’m able to speak and understand English and understand the
+                I'm able to speak and understand English and understand the
                 Highway Code to a good level
               </li>
-              <li>I’m able to ride an adult size bicycle</li>
+              <li>I'm able to ride an adult size bicycle</li>
               <li>
-                I’ll wear suitable clothing including sturdy trousers (e.g.
-                jeans) and boots
+                I'll wear suitable clothing to training including thick trousers
+                (e.g. jeans) and boots
               </li>
               {isFullLicence && (
                 <Fragment>
