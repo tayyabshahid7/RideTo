@@ -46,7 +46,7 @@ class EmailSettingsForm extends React.Component {
           <div className={styles.helpText}>
             <p>
               These are the place holders available that will translate directly
-              for any details that you need to add for the confirmation emails
+              for any details that you need to add to the confirmation emails
             </p>
             <p>
               Notice that they have to match the examples exactly, otherwise the
@@ -68,20 +68,22 @@ class EmailSettingsForm extends React.Component {
                 <b>[[location]]</b> - The location of the training
               </li>
               <li>
-                <b>[[bike_hire]]</b> - Type of bike selected (Automatic, Manual,
-                Own Bike)
+                <b>[[bike_hire]]</b> - Type of bike selected for course
+                (Automatic, Manual, Own Bike)
               </li>
               <li>
-                <b>[[school_name]]</b> - The training school name (Your training
-                school name) this
+                <b>[[school_name]]</b> - Your training school name
               </li>
               <li>
-                <b>[[school_phone]]</b> - The school phone number for contacting
-                the school if any enquiry
+                <b>[[school_phone]]</b> - Your phone number for customer contact
               </li>
               <li>
                 <b>[[price_paid]]</b> - The price paid for the training. (Note:
                 this will not be shown if the booking was manually added)
+              </li>
+              <li>
+                <b>[[logo]]</b> - Your logo image. (Limited to a height of
+                100px)
               </li>
             </ul>
           </div>
