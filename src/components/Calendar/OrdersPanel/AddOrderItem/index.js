@@ -71,7 +71,6 @@ class AddOrderItem extends React.Component {
     if (!userDetailsValid) {
       return
     }
-    console.log('show payment')
     this.setState({
       showPayment: true
     })
