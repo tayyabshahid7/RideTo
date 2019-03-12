@@ -6,6 +6,7 @@ import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import OrdersPanelItem from 'components/Calendar/OrdersPanelItem'
 import Loading from 'components/Loading'
 import { BIKE_HIRE } from 'common/constants'
+import { StripeProvider, Elements } from 'react-stripe-elements'
 
 class OrdersPanel extends React.Component {
   constructor(props) {
@@ -123,14 +124,19 @@ class OrdersPanel extends React.Component {
             ))}
             {Array.apply(null, Array(availableSpaces)).map((val, index) =>
               orderIndex === index ? (
-                <AddOrderItem
-                  onCancel={() => this.setState({ orderIndex: -1 })}
-                  info={info}
-                  course={course}
-                  onSave={this.handleNewOrder.bind(this)}
-                  key={index}
-                  saving={saving}
-                />
+                <StripeProvider
+                  apiKey="pk_test_sXI82393iZeCRPwuQM6Sv0v5"
+                  key={index}>
+                  <Elements>
+                    <AddOrderItem
+                      onCancel={() => this.setState({ orderIndex: -1 })}
+                      info={info}
+                      course={course}
+                      onSave={this.handleNewOrder.bind(this)}
+                      saving={saving}
+                    />
+                  </Elements>
+                </StripeProvider>
               ) : (
                 <OrdersPanelSpaceItem
                   onAdd={() => this.handleAdd(index)}

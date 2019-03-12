@@ -6,6 +6,8 @@ import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import { checkCustomerExists } from 'services/customer'
+import { injectStripe } from 'react-stripe-elements'
+import CheckoutForm from './CheckoutForm'
 
 class AddOrderItem extends React.Component {
   constructor(props) {
@@ -45,8 +47,9 @@ class AddOrderItem extends React.Component {
   }
 
   async handleSave(event) {
-    const { onSave, onCancel } = this.props
+    const { onSave, onCancel, stripe } = this.props
     const { order } = this.state
+
     event.preventDefault()
 
     let result = await checkCustomerExists(order.user_email)
@@ -59,6 +62,12 @@ class AddOrderItem extends React.Component {
       )
       if (!confirm) return
     }
+
+    let { token } = await stripe.createToken({ name: 'Name' })
+
+    console.log(stripe, token)
+
+    return false
 
     let response = await onSave(order)
     if (response) {
@@ -210,6 +219,9 @@ class AddOrderItem extends React.Component {
               />
             </Col>
           </Row>
+          <div>
+            <CheckoutForm />
+          </div>
           <Row>
             <Col className="mt-3 text-right">
               <Button type="button" color="primary" className="mr-2">
@@ -230,4 +242,4 @@ class AddOrderItem extends React.Component {
   }
 }
 
-export default AddOrderItem
+export default injectStripe(AddOrderItem)

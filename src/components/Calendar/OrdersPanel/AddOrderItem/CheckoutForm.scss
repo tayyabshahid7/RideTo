@@ -1,0 +1,25 @@
+.checkout {
+  label {
+    margin-top: 19px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .input {
+    display: block;
+    width: 100%;
+    max-width: 238px;
+    height: 34px;
+    padding: 0.5rem;
+    background-color: #fff;
+    border: 1px solid #f0f0f0;
+  }
+
+  .cards {
+    img {
+      width: 50px;
+      height: auto;
+    }
+  }
+}
