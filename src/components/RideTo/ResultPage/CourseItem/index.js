@@ -7,6 +7,7 @@ import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import { getFeatureInfo } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
+import { loadTypeformScript } from 'utils/helper'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -51,6 +52,17 @@ class CourseItem extends Component {
     )
   }
 
+  isFullLicenceTypeform(course) {
+    const { courseType } = this.props
+    const { instant_book } = course
+
+    if (courseType === 'FULL_LICENCE' && instant_book === false) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   render() {
     const {
       course,
@@ -62,6 +74,13 @@ class CourseItem extends Component {
       id,
       showCallMessage
     } = this.props
+
+    const isTypeform = this.isFullLicenceTypeform(course)
+
+    if (isTypeform) {
+      loadTypeformScript()
+    }
+
     return (
       <Fragment>
         <div
@@ -122,15 +141,24 @@ class CourseItem extends Component {
                 £{parseInt(course.price / 100.0, 10)}
               </div>
             )}
-            <div
-              className={classnames(
-                styles.cta,
-                unavaiableDate && styles.ctaDateUnavailable
-              )}
-              onClick={() => handlePriceClick(course)}>
-              <div>Select</div>
-              <IconArrowRight className={styles.arrowIcon} />
-            </div>
+            {isTypeform ? (
+              <a
+                href="https://rideto.typeform.com/to/U9apGA"
+                className={classnames(styles.cta, 'typeform-share')}>
+                <div>Enquire</div>
+                <IconArrowRight className={styles.arrowIcon} />
+              </a>
+            ) : (
+              <div
+                className={classnames(
+                  styles.cta,
+                  unavaiableDate && styles.ctaDateUnavailable
+                )}
+                onClick={() => handlePriceClick(course)}>
+                <div>Select</div>
+                <IconArrowRight className={styles.arrowIcon} />
+              </div>
+            )}
           </div>
         </div>
         {showCallMessage && (

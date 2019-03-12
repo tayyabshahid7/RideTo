@@ -543,6 +543,7 @@ class ResultPage extends Component {
                                       (courses.available.length < 3 &&
                                         index === courses.available.length - 1)
                                     }
+                                    courseType={courseType}
                                     id={`card-course-${course.id}`}
                                     course={course}
                                     className={styles.courseSpacing}
@@ -570,6 +571,7 @@ class ResultPage extends Component {
                                     (courses.unavailable.length < 3 &&
                                       index === courses.unavailable.length - 1)
                                   }
+                                  courseType={courseType}
                                   id={`card-course-${course.id}`}
                                   unavaiableDate={true}
                                   course={course}

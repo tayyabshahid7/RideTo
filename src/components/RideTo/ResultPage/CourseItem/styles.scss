@@ -118,6 +118,15 @@
   color: white;
   stroke: white;
   background: var(--primary-color);
+  text-decoration: none;
+
+  div {
+    color: white;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .ctaDateUnavailable {
