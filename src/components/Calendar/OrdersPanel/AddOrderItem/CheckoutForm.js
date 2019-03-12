@@ -42,13 +42,17 @@ const options = {
 function CheckoutForm() {
   return (
     <div className={styles.checkout}>
+      <div className={styles.header}>
+        <h3 className={styles.title}>Payment</h3>
+      </div>
+      <div className={styles.price}>Total: £{125.0}</div>
       <div>
-        <label>Card number</label>
-        <div className={styles.cards}>
+        <label className={styles.cards}>
+          Card number{' '}
           {CARD_IMAGES.map(src => (
             <img key={src} src={src} alt="" />
           ))}
-        </div>
+        </label>
         <CardNumberElement className={styles.input} {...options} />
       </div>
       <div>

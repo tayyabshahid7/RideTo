@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.scss'
-import { Button, Row, Col, Form } from 'reactstrap'
+import { Button, Row, Col } from 'reactstrap'
 import InputTextGroup from 'components/Forms/InputTextGroup'
 import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { BikeHires, FullLicenceTypes } from 'common/info'
@@ -8,6 +8,7 @@ import { getPaymentOptions } from 'services/order'
 import { checkCustomerExists } from 'services/customer'
 import { injectStripe } from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
+import classnames from 'classnames'
 
 class AddOrderItem extends React.Component {
   constructor(props) {
@@ -29,28 +30,49 @@ class AddOrderItem extends React.Component {
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
-      )
+      ),
+      userDetailsValid: false,
+      showPayment: false
     }
 
     this.scrollIntoView = React.createRef()
+    this.form = React.createRef()
+
+    this.handleShowPaymentClick = this.handleShowPaymentClick.bind(this)
   }
 
   componentDidMount() {
     this.scrollIntoView.current.scrollIntoView()
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.order !== prevState.order) {
+      this.setState({
+        userDetailsValid: this.form.current.checkValidity()
+      })
+    }
+  }
+
   handleChangeRawEvent(event) {
     let name = event.target.name
     let { order } = this.state
-    order[name] = event.target.value
-    this.setState({ order })
+    this.setState({ order: { ...order, [name]: event.target.value } })
+  }
+
+  handleShowPaymentClick() {
+    const { userDetailsValid } = this.state
+    if (!userDetailsValid) {
+      return
+    }
+    console.log('show payment')
+    this.setState({
+      showPayment: true
+    })
   }
 
   async handleSave(event) {
     const { onSave, onCancel, stripe } = this.props
-    const { order } = this.state
-
-    event.preventDefault()
+    const { order, showPayment } = this.state
 
     let result = await checkCustomerExists(order.user_email)
 
@@ -64,15 +86,23 @@ class AddOrderItem extends React.Component {
     }
 
     let { token } = await stripe.createToken({ name: 'Name' })
+    console.log('save that shit', token)
 
-    console.log(stripe, token)
+    event.preventDefault()
 
     return false
 
-    let response = await onSave(order)
-    if (response) {
-      // Then Success
-      onCancel()
+    if (showPayment) {
+      // Submit a payment order
+      let { token } = await stripe.createToken({ name: 'Name' })
+      console.log(token)
+    } else {
+      // Just submit a normal order
+      let response = await onSave(order)
+      if (response) {
+        // Then Success
+        onCancel()
+      }
     }
   }
 
@@ -89,15 +119,17 @@ class AddOrderItem extends React.Component {
       user_driving_licence_number,
       user_email,
       full_licence_type,
-      isFullLicence
+      isFullLicence,
+      userDetailsValid,
+      showPayment
     } = this.state
 
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
-        <Form onSubmit={this.handleSave.bind(this)}>
+        <form onSubmit={this.handleSave.bind(this)} ref={this.form}>
           <div ref={this.scrollIntoView} />
-          <Row>
+          <Row className={classnames(showPayment && styles.hideUserForm)}>
             <Col sm="6">
               <InputTextGroup
                 name="user_first_name"
@@ -219,12 +251,19 @@ class AddOrderItem extends React.Component {
               />
             </Col>
           </Row>
-          <div>
-            <CheckoutForm />
-          </div>
+          {showPayment && (
+            <div>
+              <CheckoutForm />
+            </div>
+          )}
           <Row>
             <Col className="mt-3 text-right">
-              <Button type="button" color="primary" className="mr-2">
+              <Button
+                disabled={!userDetailsValid}
+                type={!showPayment ? 'button' : 'submit'}
+                color="primary"
+                className="mr-2"
+                onClick={!showPayment ? this.handleShowPaymentClick : null}>
                 Payment
               </Button>
               <Button type="submit" color="primary" className="mr-2">
@@ -235,7 +274,7 @@ class AddOrderItem extends React.Component {
               </Button>
             </Col>
           </Row>
-        </Form>
+        </form>
         {/* </Loading> */}
       </div>
     )
