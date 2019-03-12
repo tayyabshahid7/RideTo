@@ -40,6 +40,7 @@ const options = {
 }
 
 function CheckoutForm({
+  price,
   cardName,
   handleCardNameChange,
   handleStripeElementChange
@@ -52,7 +53,7 @@ function CheckoutForm({
         </span>
         <span>Step 2 or 2</span>
       </div>
-      <div className={styles.price}>Total: £{125.0}</div>
+      <div className={styles.price}>Total: £{(price / 100.0).toFixed(2)}</div>
       <div>
         <label>
           <span className={styles.cards}>

@@ -120,7 +120,13 @@ class AddOrderItem extends React.Component {
   }
 
   render() {
-    let { onCancel, info } = this.props
+    let {
+      onCancel,
+      info,
+      course: {
+        pricing: { price }
+      }
+    } = this.props
     const {
       user_first_name,
       user_last_name,
@@ -274,6 +280,7 @@ class AddOrderItem extends React.Component {
           {showPayment && (
             <div>
               <CheckoutForm
+                price={price}
                 cardName={cardName}
                 handleCardNameChange={this.handleCardNameChange}
                 handleStripeElementChange={this.handleStripeElementChange}
@@ -297,11 +304,12 @@ class AddOrderItem extends React.Component {
                 color="primary"
                 className="mr-2"
                 disabled={
-                  !cardName ||
-                  !cardNumberComplete ||
-                  !cardDateComplete ||
-                  !cardCVCComplete ||
-                  !cardPostCodeComplete
+                  showPayment &&
+                  (!cardName ||
+                    !cardNumberComplete ||
+                    !cardDateComplete ||
+                    !cardCVCComplete ||
+                    !cardPostCodeComplete)
                 }>
                 {showPayment ? 'Take Payment' : 'Save'}
               </Button>
