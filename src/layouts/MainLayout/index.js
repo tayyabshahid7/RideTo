@@ -8,7 +8,6 @@ import CustomerDetailContainer from 'pages/Customers/DetailContainer'
 import NotificationContainer from 'pages/Notifications/NotificationContainer'
 import Calendar from 'pages/Calendar'
 import Account from 'pages/Account'
-import Footer from 'components/Footer'
 import styles from './styles.scss'
 
 const MainLayout = ({ history }) => {
@@ -30,7 +29,6 @@ const MainLayout = ({ history }) => {
         </Switch>
       </div>
       <NotificationContainer />
-      <Footer />
     </div>
   )
 }

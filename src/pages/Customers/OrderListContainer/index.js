@@ -5,8 +5,10 @@ import { Col } from 'reactstrap'
 import { loadCourseTypes } from 'store/info'
 import * as orderModule from 'store/order'
 import * as supplierModule from 'store/supplier'
+import Tabs from 'pages/Customers/components/Tabs'
 import OrderForm from 'pages/Customers/components/OrderForm'
 import styles from './OrderListContainer.scss'
+import { selectors } from 'store/customer'
 
 class OrderListContainer extends React.Component {
   componentDidMount() {
@@ -34,32 +36,59 @@ class OrderListContainer extends React.Component {
       loadCourseTypes,
       isSending,
       sendEmailConfirmation,
-      info
+      info,
+      notepad,
+      handleNotepadChange
     } = this.props
+
     return (
       <Col className={styles.orderListContainer}>
-        <h3 className={styles.title}>Orders</h3>
-        {orders.map(order => (
-          <OrderForm
-            courseTypes={info.courseTypes}
-            key={order.id}
-            order={order}
-            suppliers={suppliers}
-            onSave={this.handleSave}
-            isSaving={isSaving}
-            isSending={isSending}
-            sendEmailConfirmation={sendEmailConfirmation}
-            loadCourseTypes={loadCourseTypes}
-          />
-        ))}
+        <Tabs>
+          <div label="Orders">
+            {orders.length > 0 ? (
+              <ul className={styles.list}>
+                {orders.map(order => (
+                  <li key={order.id} className={styles.listItem}>
+                    <OrderForm
+                      courseTypes={info.courseTypes}
+                      order={order}
+                      suppliers={suppliers}
+                      onSave={this.handleSave}
+                      isSaving={isSaving}
+                      loadCourseTypes={loadCourseTypes}
+                      isSending={isSending}
+                      sendEmailConfirmation={sendEmailConfirmation}
+                    />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className={styles.noOrder}>No orders</div>
+            )}
+          </div>
+          <div label="Notes">
+            <textarea
+              className={styles.notepad}
+              placeholder="Add notes here"
+              value={notepad || ''}
+              onChange={({ target: { value } }) => {
+                handleNotepadChange(value)
+              }}
+            />
+          </div>
+        </Tabs>
       </Col>
     )
   }
 }
 
 const mapStateToProps = (state, props) => {
+  const { id } = props
+  const { customer } = state
+
   return {
-    orders: orderModule.selectors.getItems(state.order),
+    customer: selectors.getItem(customer, id),
+    orders: id !== 'create' ? orderModule.selectors.getItems(state.order) : [],
     isSaving: state.order.isSaving,
     isSending: state.order.isSending,
     suppliers: supplierModule.selectors.getItems(state.supplier),

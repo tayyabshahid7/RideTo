@@ -1,18 +1,14 @@
 import React from 'react'
-import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
-
 import styles from './DetailFormContainer.scss'
 import { actions, selectors } from 'store/customer'
-import { getCustomerType, getEmptyCustomer } from 'services/customer'
+import { getEmptyCustomer } from 'services/customer'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
+import UserName from 'pages/Customers/components/UserName'
 import Loading from 'components/Loading'
-
-const getLastUpdated = date => {
-  return moment(date, 'YYYY-MM-DD').format('DD/MM/YYYY')
-}
+import classnames from 'classnames'
 
 class DetailFormContainer extends React.Component {
   constructor(props) {
@@ -20,13 +16,19 @@ class DetailFormContainer extends React.Component {
 
     this.state = {
       editable: props.customer || getEmptyCustomer('DASHBOARD'),
-      isChanged: false
+      isChanged: false,
+      nameEditable: false,
+      showActions: false,
+      showConfirmModal: false
     }
 
     this.handleSaveCustomer = this.handleSaveCustomer.bind(this)
     this.handleChangeCustomer = this.handleChangeCustomer.bind(this)
     this.handleDeleteCustomer = this.handleDeleteCustomer.bind(this)
     this.handleCancel = this.handleCancel.bind(this)
+    this.handleNameClick = this.handleNameClick.bind(this)
+    this.handleActionsClick = this.handleActionsClick.bind(this)
+    this.handleToggleModal = this.handleToggleModal.bind(this)
   }
 
   componentDidMount() {
@@ -36,8 +38,10 @@ class DetailFormContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { customer } = this.props
+    const { customer, notepad, notepadChanged } = this.props
     const prev = prevProps.customer
+    const prevNotepad = prevProps.notepad
+    const { editable } = this.state
 
     if (prev !== customer) {
       if (!customer) {
@@ -47,6 +51,13 @@ class DetailFormContainer extends React.Component {
       this.setState({
         editable: { ...customer },
         isChanged: false
+      })
+    }
+
+    if (prevNotepad !== notepad && notepadChanged) {
+      this.handleChangeCustomer({
+        ...editable,
+        notes: notepad
       })
     }
   }
@@ -65,43 +76,74 @@ class DetailFormContainer extends React.Component {
   }
 
   handleCancel() {
+    const { handleNotepadChange } = this.props
+
+    this.setState(
+      {
+        editable: { ...this.props.customer },
+        isChanged: false
+      },
+      () => {
+        handleNotepadChange(this.props.customer.notes, false)
+      }
+    )
+  }
+
+  handleNameClick() {
     this.setState({
-      editable: { ...this.props.customer },
-      isChanged: false
+      nameEditable: true
     })
   }
 
+  handleActionsClick() {
+    this.setState({
+      showActions: !this.state.showActions
+    })
+  }
+
+  handleToggleModal() {
+    this.setState({ showConfirmModal: !this.state.showConfirmModal })
+  }
+
   render() {
-    const { isSaving } = this.props
-    const { editable, isChanged } = this.state
+    const { isSaving, customer, id } = this.props
+    const {
+      editable,
+      isChanged,
+      nameEditable,
+      showActions,
+      showConfirmModal
+    } = this.state
     const isDisabled = !isChanged || isSaving
+    const isCreateUser = id === 'create'
+    const hasActions =
+      ['WIDGET', 'DASHBOARD'].includes(editable.source) && !isCreateUser
 
     return (
-      <Col sm="6" className={styles.detailFormContainer}>
-        <div className={styles.heading}>
-          <h3 className={styles.customerName}>
-            {editable.first_name} {editable.last_name}
-          </h3>
-          <div className={styles.customerInfo}>
-            <div className={styles.source}>
-              {getCustomerType(editable.source)}
-            </div>
-
-            {editable.updated_at && (
-              <div className={styles.updatedAt}>
-                Last updated: {getLastUpdated(editable.updated_at)}
-              </div>
-            )}
-          </div>
-        </div>
+      <Col md="4" className={styles.detailFormContainer}>
+        <UserName
+          nameEditable={nameEditable}
+          hasActions={hasActions}
+          customer={customer}
+          editable={editable}
+          showActions={showActions}
+          showConfirmModal={showConfirmModal}
+          handleActionsClick={this.handleActionsClick}
+          handleNameClick={this.handleNameClick}
+          handleToggleModal={this.handleToggleModal}
+          handleChangeCustomer={this.handleChangeCustomer}
+          handleDeleteCustomer={this.handleDeleteCustomer}
+        />
         <Loading loading={isSaving}>
+          <h3 className={classnames(styles.title, styles.details)}>
+            Customer details
+          </h3>
           <CustomerDetailForm
             customer={editable}
             isDisabled={isDisabled}
             onChange={this.handleChangeCustomer}
             onSave={this.handleSaveCustomer}
             onCancel={this.handleCancel}
-            onDelete={this.handleDeleteCustomer}
           />
         </Loading>
       </Col>

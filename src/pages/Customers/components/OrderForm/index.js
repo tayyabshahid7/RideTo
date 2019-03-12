@@ -1,9 +1,15 @@
 import React from 'react'
 import moment from 'moment'
-import { Button, Label, Row, Col, Input, FormGroup } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
+import classnames from 'classnames'
+import { getCustomerTypeShort } from 'services/customer'
+import {
+  ConnectInput,
+  ConnectSelect,
+  ConnectLabeledContent,
+  Button
+} from 'components/ConnectForm'
 
-import MinimalSelect from 'components/MinimalSelect'
-import InputSelectGroup from 'components/Forms/InputSelectGroup'
 import { FullLicenceTypes } from 'common/info'
 import Loading from 'components/Loading'
 import {
@@ -50,10 +56,15 @@ class OrderForm extends React.Component {
       },
       isChanged: false,
       isSending: false,
-      courseTypes: []
+      courseTypes: [],
+      showMore: false,
+      inputsDisabled: true
     }
     this.handleCancel = this.handleCancel.bind(this)
     this.handleConfirmation = this.handleConfirmation.bind(this)
+    this.handleShowMore = this.handleShowMore.bind(this)
+    this.handleEditClick = this.handleEditClick.bind(this)
+    this.handleSaveClick = this.handleSaveClick.bind(this)
   }
 
   componentDidMount() {
@@ -88,26 +99,44 @@ class OrderForm extends React.Component {
   }
 
   handleConfirmation() {
-    // const { editable } = this.state
-    // this.setState({ isSending: true })
-    // await sendConfirmation(editable)
-    // this.setState({ isSending: false })
-
     const { editable } = this.state
     this.props.sendEmailConfirmation(editable.friendly_id)
   }
+  handleShowMore() {
+    this.setState({
+      showMore: !this.state.showMore
+    })
+  }
+
+  handleEditClick() {
+    this.setState({
+      inputsDisabled: false
+    })
+  }
+
+  handleSaveClick() {
+    const { onSave } = this.props
+    const { editable } = this.state
+
+    this.setState(
+      {
+        inputsDisabled: true
+      },
+      () => {
+        onSave(editable)
+      }
+    )
+  }
 
   render() {
-    const { suppliers, isSaving, onSave, courseTypes, isSending } = this.props
-    const { editable, isChanged } = this.state
+    const { suppliers, isSaving, courseTypes, isSending } = this.props
+    const { editable, isChanged, showMore, inputsDisabled } = this.state
     const courses = courseTypes
       ? courseTypes.filter(
           course =>
             !['TFL_ONE_ON_ONE', 'FULL_LICENCE'].includes(course.constant)
         )
       : []
-    const isDisabled = !isChanged || isSaving
-
     if (!editable) {
       return null
     }
@@ -122,177 +151,179 @@ class OrderForm extends React.Component {
       }
     })
 
+    const trainingDate = moment(getDate(editable.training_date_time))
+
     return (
-      <div className={styles.orderForm}>
-        <h4>Order: #{editable.friendly_id}</h4>
+      <div className={styles.panel}>
+        <div className={styles.header}>
+          <h4 className={styles.title}>
+            Order {getCustomerTypeShort(editable.source)} #
+            {editable.friendly_id}
+          </h4>
+          <div className={styles.actions}>
+            {inputsDisabled ? (
+              <Button small color="link" onClick={this.handleEditClick}>
+                Edit
+              </Button>
+            ) : (
+              <Button
+                small
+                color="primary"
+                onClick={this.handleSaveClick}
+                disabled={!isChanged}>
+                Save
+              </Button>
+            )}
+          </div>
+        </div>
         <Loading loading={isSaving}>
           <Row>
-            <Col sm="6">
-              <FormGroup>
-                <Label>Training Site</Label>
-                <MinimalSelect
-                  className={styles.select}
-                  disabled={isRideTo(editable)}
+            <Col sm="4">
+              <ConnectSelect
+                label="Training Course"
+                disabled={isRideTo(editable) || inputsDisabled}
+                options={courses}
+                valueField="constant"
+                selected={editable.selected_licence || ''}
+                name="selected_licence"
+                onChange={value => {
+                  this.handleChange('selected_licence', value)
+                }}
+              />
+            </Col>
+            <Col sm="4">
+              <ConnectLabeledContent label="Trining Date" disabled>
+                <a
+                  className={styles.trainingDateLink}
+                  href={`/calendar/${trainingDate.format('YYYY-MM-DD')}`}>
+                  {trainingDate.format('DD/MM/YYYY') || ''}
+                </a>
+              </ConnectLabeledContent>
+            </Col>
+            <Col sm="4">
+              <ConnectInput
+                disabled
+                type="time"
+                label="Training Time"
+                name="training_date_time_time"
+                value={getTime(editable.training_date_time) || ''}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col sm="4">
+              <ConnectSelect
+                disabled={inputsDisabled}
+                label="Bike Hire"
+                options={bikeHireOptions}
+                selected={get_bike_hire_option(editable.bike_type) || ''}
+                name="bike_type"
+                onChange={value => {
+                  this.handleChange('bike_type', value)
+                }}
+              />
+            </Col>
+            <Col sm="4">
+              <ConnectSelect
+                disabled={inputsDisabled}
+                label="Training Status"
+                options={getTrainingStatusOptions()}
+                selected={editable.training_status || ''}
+                name="training_status"
+                onChange={value => {
+                  this.handleChange('training_status', value)
+                }}
+              />
+            </Col>
+            <Col sm="4">
+              <ConnectSelect
+                label="Payment Status"
+                options={getPaymentOptions()}
+                disabled={isRideTo(editable) || inputsDisabled}
+                selected={editable.payment_status || ''}
+                name="payment_status"
+                onChange={value => {
+                  this.handleChange('payment_status', value)
+                }}
+              />
+            </Col>
+          </Row>
+          <div
+            className={classnames(
+              styles.extra,
+              showMore && styles.extraVisible
+            )}>
+            <Row>
+              {!isConnectManual(editable) && (
+                <Col sm="4">
+                  <ConnectInput
+                    label="Price Paid"
+                    type="text"
+                    disabled
+                    value={`£${parseFloat(editable.price_paid).toFixed(2)}`}
+                    name="price_paid"
+                  />
+                </Col>
+              )}
+              <Col sm="4">
+                <ConnectLabeledContent label="Stripe link" disabled>
+                  <a
+                    href={editable.stripe_charge_href}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Open
+                  </a>
+                </ConnectLabeledContent>
+              </Col>
+
+              <Col sm="4">
+                <ConnectSelect
+                  label="Training Site"
+                  disabled={isRideTo(editable) || inputsDisabled}
                   options={suppliers}
                   selected={editable.training_location || ''}
+                  name="supplier"
                   onChange={value => {
                     this.handleChange('supplier', parseInt(value, 10))
                   }}
                 />
-              </FormGroup>
-            </Col>
-            <Col sm="6">
-              <FormGroup>
-                <Label>Training</Label>
-                <MinimalSelect
-                  className={styles.select}
-                  disabled={true && isRideTo(editable)}
-                  options={courses}
-                  valueField="constant"
-                  selected={editable.selected_licence || ''}
-                  onChange={value => {
-                    this.handleChange('selected_licence', value)
-                  }}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm="4">
-              <FormGroup>
-                <Label>Training Date</Label>
-                <Input
-                  disabled={true}
-                  value={
-                    moment(getDate(editable.training_date_time)).format(
-                      'DD/MM/YYYY'
-                    ) || ''
-                  }
-                />
-              </FormGroup>
-            </Col>
-            <Col sm="4">
-              <FormGroup>
-                <Label>Training Time</Label>
-                <Input
-                  type="time"
-                  disabled={true}
-                  value={getTime(editable.training_date_time) || ''}
-                />
-              </FormGroup>
-            </Col>
-            <Col sm="4">
-              <FormGroup>
-                <Label>Bike Hire</Label>
-                <MinimalSelect
-                  className={styles.select}
-                  options={bikeHireOptions}
-                  selected={get_bike_hire_option(editable.bike_type) || ''}
-                  onChange={value => {
-                    this.handleChange('bike_type', value)
-                  }}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <FormGroup>
-                <Label>Payment Status</Label>
-                <MinimalSelect
-                  className={styles.select}
-                  options={getPaymentOptions()}
-                  disabled={isRideTo(editable)}
-                  selected={editable.payment_status || ''}
-                  onChange={value => {
-                    this.handleChange('payment_status', value)
-                  }}
-                />
-              </FormGroup>
-            </Col>
-            <Col>
-              <FormGroup>
-                <Label>Training Status</Label>
-                <MinimalSelect
-                  className={styles.select}
-                  options={getTrainingStatusOptions()}
-                  selected={editable.training_status || ''}
-                  onChange={value => {
-                    this.handleChange('training_status', value)
-                  }}
-                />
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            {!isConnectManual(editable) && (
-              <Col sm="6">
-                <FormGroup>
-                  <Label>Price Paid</Label>
-                  <Input
-                    type="text"
-                    disabled
-                    value={editable.price_paid}
-                    name="price_paid"
-                    onChange={({ target }) =>
-                      this.handleChange(target.name, target.value)
-                    }
+              </Col>
+
+              {isFullLicence && (
+                <Col sm="4">
+                  <ConnectSelect
+                    disabled={inputsDisabled}
+                    name="full_licence_type"
+                    value={editable.full_licence_type}
+                    label="Licence Type"
+                    options={FullLicenceTypes}
+                    labelField="title"
+                    valueField="value"
+                    onChange={value => {
+                      this.handleChange('full_licence_type', value)
+                    }}
+                    required
                   />
-                </FormGroup>
-              </Col>
-            )}
-            {isFullLicence && (
-              <Col sm="6">
-                <InputSelectGroup
-                  name="full_licence_type"
-                  value={editable.full_licence_type}
-                  label="Licence Type"
-                  valueArray={FullLicenceTypes}
-                  onChange={({ target }) => {
-                    this.handleChange('full_licence_type', target.value)
-                  }}
-                  required
-                />
-              </Col>
-            )}
-          </Row>
-          <Row>
-            <Col sm="6">
-              <FormGroup>
-                <Label>Stripe</Label>
-                <a className={styles.link} href={editable.stripe_charge_href}>
-                  {editable.stripe_charge_href}
-                </a>
-              </FormGroup>
-            </Col>
-          </Row>
-          <Row>
-            <Col sm="6">
+                </Col>
+              )}
+            </Row>
+            <div className={styles.comms}>
               <Button
                 disabled={isSending}
-                color="link"
+                color="primary"
                 outline
                 onClick={this.handleConfirmation}>
                 Send Confirmation
               </Button>
-            </Col>
-          </Row>
-          <Row>
-            <Col className={styles.actions}>
-              <Button
-                disabled={isDisabled}
-                color="primary"
-                onClick={() => onSave(editable)}>
-                Save
-              </Button>
-              <Button
-                color="link"
-                disabled={isDisabled}
-                onClick={this.handleCancel}>
-                Cancel
-              </Button>
-            </Col>
-          </Row>
+            </div>
+          </div>
+          <div className={styles.showMore}>
+            <button
+              className={styles.showMoreButton}
+              onClick={this.handleShowMore}>
+              {showMore ? 'Show less' : 'Show more'}
+            </button>
+          </div>
         </Loading>
       </div>
     )

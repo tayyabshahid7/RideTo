@@ -79,3 +79,11 @@ export const loadTypeformScript = () => {
     q.parentNode.insertBefore(js, q)
   }
 }
+
+export const getAge = birthdate => {
+  const age = birthdate
+    ? moment().diff(moment(birthdate, 'YYYY-MM-DD'), 'years')
+    : '-'
+
+  return age === 1 ? `${age} Year` : `${age} Years`
+}
