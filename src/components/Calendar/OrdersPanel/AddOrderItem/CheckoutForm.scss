@@ -5,13 +5,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 0.5rem;
+    margin-top: 0.25rem;
     margin-bottom: 1rem;
+
+    @media (max-width: 425px) {
+      align-items: flex-start;
+    }
   }
 
   .leftCol {
     display: flex;
     align-items: center;
+
+    @media (max-width: 425px) {
+      flex-direction: column;
+      align-items: flex-start;
+
+      svg {
+        margin-top: 0.5rem;
+      }
+    }
   }
 
   .price {
@@ -43,6 +56,8 @@
     margin-top: 4px;
     background-color: #fff;
     border: 1px solid #f0f0f0;
+
+    outline: 0;
 
     font-size: 14px;
     color: #424770;
