@@ -62,6 +62,9 @@ class AddonSelection extends React.Component {
       if (addon.sizes && addon.sizes.length > 0) {
         addon.selectedSize = null
       }
+      if (addon.sizes && addon.sizes.length === 1) {
+        addon.selectedSize = addon.sizes[0]
+      }
     })
 
     this.state = {

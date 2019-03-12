@@ -24,6 +24,15 @@
     padding: 0;
     margin-bottom: 12px;
   }
+
+  @media (min-width: 769px) {
+    display: flex;
+    flex-direction: column;
+
+    h5 {
+      flex-grow: 1;
+    }
+  }
 }
 
 .description {

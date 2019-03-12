@@ -1,14 +1,6 @@
 import React from 'react'
-import moment from 'moment'
 import { Input, InputGroup, InputGroupAddon, InputGroupText } from 'reactstrap'
-
-const getAge = birthdate => {
-  const age = birthdate
-    ? moment().diff(moment(birthdate, 'YYYY-MM-DD'), 'years')
-    : '-'
-
-  return age === 1 ? `${age} Year` : `${age} Years`
-}
+import { getAge } from 'utils/helper'
 
 const AgeInput = ({ name, value, onChange }) => {
   return (

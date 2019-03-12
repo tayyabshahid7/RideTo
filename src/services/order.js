@@ -58,10 +58,9 @@ export const fetchOrders = async (params = {}) => {
   return response
 }
 
-export const sendConfirmation = async order => {
-  const path = `o/${order.friendly_id}/send_confirmation`
+export const sendConfirmation = async orderFriendlyId => {
+  const path = `o/${orderFriendlyId}/send_confirmation`
   const response = await post(path)
-
   return response
 }
 

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-
+import { actions as notificationActions } from './notification'
 import common from 'store/common'
 import * as orderService from 'services/order'
 
@@ -14,12 +14,47 @@ export const ERROR = common.constant(MODULE, 'ERROR')
 export const actions = {}
 export const selectors = {}
 
+const send = (moduleName, sendFn) => (...args) => dispatch => {
+  dispatch({ type: common.constant(moduleName, 'SEND') })
+
+  try {
+    return sendFn(...args).then(result => {
+      dispatch({
+        type: common.constant(moduleName, 'SEND_SUCCESS'),
+        result
+      })
+      notificationActions.dispatchSuccess(dispatch, 'Email Sent')
+    })
+  } catch (error) {
+    dispatch({
+      type: common.constant(moduleName, 'ERROR'),
+      error
+    })
+    notificationActions.dispatchError(dispatch, 'Email not sent')
+  }
+}
+
+const isSending = moduleName => (state = false, action) => {
+  switch (action.type) {
+    case common.constant(moduleName, 'SEND'):
+      return true
+    case common.constant(moduleName, 'SEND_SUCCESS'):
+      return false
+    case common.constant(moduleName, 'ERROR'):
+      return false
+    default:
+      return state
+  }
+}
+
 actions.fetchOrders = common.fetch(MODULE, orderService.fetchOrders)
 actions.fetchSupplierOrders = common.fetch(
   MODULE,
   orderService.fetchSupplierOrders
 )
 actions.saveTraining = common.save(MODULE, orderService.saveTraining)
+
+actions.sendEmailConfirmation = send(MODULE, orderService.sendConfirmation)
 
 selectors.getItems = ({ results, items }) => {
   return results.map(id => items[id])
@@ -34,6 +69,7 @@ selectors.getOrdersByCustomer = ({ items }, customerId) => {
 export default combineReducers({
   items: common.items(MODULE),
   isSaving: common.isSaving(MODULE),
+  isSending: isSending(MODULE),
   total: common.total(MODULE),
   isFetching: common.isFetchingItems(MODULE),
   result: common.result(MODULE),

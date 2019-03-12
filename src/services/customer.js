@@ -67,6 +67,20 @@ export const getCustomerType = source => {
   }
 }
 
+export const getCustomerTypeShort = source => {
+  switch (source) {
+    case 'RIDETO':
+    case 'RIDETO_INSTANT':
+      return 'RT'
+    default:
+      return 'Direct'
+  }
+}
+
+export const getBooleanSelectOptions = () => {
+  return [{ name: 'No', id: 'false' }, { name: 'Yes', id: 'true' }]
+}
+
 export const getEmptyCustomer = source => {
   return {
     source
@@ -75,4 +89,9 @@ export const getEmptyCustomer = source => {
 
 export const isRideTo = ({ source }) => {
   return source === 'RIDETO' || source === 'RIDETO_INSTANT'
+}
+
+export const checkCustomerExists = async email => {
+  const path = `school/customer/check-email-exists/`
+  return await get(path, { email: email })
 }

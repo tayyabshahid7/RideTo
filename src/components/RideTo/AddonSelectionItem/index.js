@@ -31,7 +31,11 @@ class AddonSelectionItem extends React.Component {
     return (
       <div className={styles.addonSelectionItem}>
         <div className={styles.image}>
-          <AddonImageSlider images={images} />
+          <AddonImageSlider
+            addon={addon}
+            onDetails={onDetails}
+            images={images}
+          />
         </div>
 
         <div className={styles.content}>
@@ -39,14 +43,19 @@ class AddonSelectionItem extends React.Component {
             <h5>{addon.name}</h5>
             {sizes.length ? (
               <div className={styles.sizes}>
-                <AddonSizes
-                  sizes={sizes}
-                  selected={selectedSize}
-                  onClick={this.handleSelectSize}
-                  sizeRequired={sizeRequired}
-                />
+                {sizes.length > 1 && (
+                  <AddonSizes
+                    sizes={sizes}
+                    selected={selectedSize}
+                    onClick={this.handleSelectSize}
+                    sizeRequired={sizeRequired}
+                  />
+                )}
                 <div
-                  className={styles.details}
+                  className={classnames(
+                    styles.details,
+                    sizes.length === 1 && styles.singleSizeDetails
+                  )}
                   onClick={() => onDetails(addon)}>
                   <img src={Info} alt="Info" />
                   Details

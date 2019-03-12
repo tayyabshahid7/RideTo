@@ -66,7 +66,7 @@ class CourseTypeSelection extends React.Component {
     this.state = {
       filteredCourseTypes: [],
       selectedFilter: { tag: 'ALL', name: 'All' },
-      postcode: qs.postcode || '',
+      postcode: qs.postcode ? qs.postcode.replace('+', ' ') : '',
       selectedCourseType: null,
       navigation: this.navigation,
       loading: true
