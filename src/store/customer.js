@@ -52,7 +52,10 @@ actions.saveCustomer = (customer, history) => async dispatch => {
       result
     })
   } catch (error) {
-    notificationActions.dispatchError(dispatch, 'Failed to save Customer')
+    notificationActions.dispatchError(
+      dispatch,
+      'Customer not saved. ' + error.response.data.detail
+    )
 
     dispatch({
       type: ERROR,
