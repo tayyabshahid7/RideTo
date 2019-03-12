@@ -32,13 +32,20 @@ class AddOrderItem extends React.Component {
         'FULL_LICENCE'
       ),
       userDetailsValid: false,
-      showPayment: false
+      showPayment: false,
+      cardName: '',
+      cardNumberComplete: false,
+      cardDateComplete: false,
+      cardCVCComplete: false,
+      cardPostCodeComplete: false
     }
 
     this.scrollIntoView = React.createRef()
     this.form = React.createRef()
 
+    this.handleCardNameChange = this.handleCardNameChange.bind(this)
     this.handleShowPaymentClick = this.handleShowPaymentClick.bind(this)
+    this.handleStripeElementChange = this.handleStripeElementChange.bind(this)
   }
 
   componentDidMount() {
@@ -71,11 +78,13 @@ class AddOrderItem extends React.Component {
   }
 
   async handleSave(event) {
-    const { onSave, onCancel, stripe } = this.props
-    const { order, showPayment } = this.state
+    // const { onSave, onCancel, stripe } = this.props
+    const { onCancel, stripe } = this.props
+    const { order, showPayment, cardName } = this.state
+
+    event.preventDefault()
 
     let result = await checkCustomerExists(order.user_email)
-
     if (result.email_exists) {
       const confirm = window.confirm(
         `There's already a customer with this email (${order.user_email})\n` +
@@ -85,25 +94,30 @@ class AddOrderItem extends React.Component {
       if (!confirm) return
     }
 
-    let { token } = await stripe.createToken({ name: 'Name' })
-    console.log('save that shit', token)
-
-    event.preventDefault()
-
-    return false
-
-    if (showPayment) {
-      // Submit a payment order
-      let { token } = await stripe.createToken({ name: 'Name' })
-      console.log(token)
-    } else {
-      // Just submit a normal order
-      let response = await onSave(order)
-      if (response) {
-        // Then Success
-        onCancel()
+    // const response = await onSave(order)
+    const response = true
+    if (response) {
+      // Then Success
+      if (showPayment) {
+        if (!stripe) {
+          console.log("Stripe.js hasn't loaded yet.")
+        } else {
+          const { token } = await stripe.createToken({ name: cardName })
+          console.log(token)
+        }
       }
+      onCancel()
     }
+  }
+
+  handleCardNameChange({ target: { value } }) {
+    this.setState({
+      cardName: value
+    })
+  }
+
+  handleStripeElementChange(el, name) {
+    this.setState({ [`card${name}Complete`]: !el.empty && el.complete })
   }
 
   render() {
@@ -121,7 +135,12 @@ class AddOrderItem extends React.Component {
       full_licence_type,
       isFullLicence,
       userDetailsValid,
-      showPayment
+      showPayment,
+      cardName,
+      cardNumberComplete,
+      cardDateComplete,
+      cardCVCComplete,
+      cardPostCodeComplete
     } = this.state
 
     return (
@@ -129,145 +148,163 @@ class AddOrderItem extends React.Component {
         {/* <Loading loading={saving}> */}
         <form onSubmit={this.handleSave.bind(this)} ref={this.form}>
           <div ref={this.scrollIntoView} />
-          <Row className={classnames(showPayment && styles.hideUserForm)}>
-            <Col sm="6">
-              <InputTextGroup
-                name="user_first_name"
-                value={user_first_name}
-                label="First Name *"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
-                required
-              />
-            </Col>
-            <Col sm="6">
-              <InputTextGroup
-                name="user_last_name"
-                value={user_last_name}
-                label="Surname *"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
-                required
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col sm="6">
-              <InputTextGroup
-                name="user_phone"
-                value={user_phone}
-                label="Mobile"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
-              />
-            </Col>
-            <Col sm="6">
-              <InputTextGroup
-                name="user_email"
-                value={user_email}
-                label="Email *"
-                className="form-group"
-                type="email"
-                onChange={this.handleChangeRawEvent.bind(this)}
-                required
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col sm="6">
-              <InputTextGroup
-                name="user_birthdate"
-                value={user_birthdate}
-                label="Birthdate *"
-                className="form-group"
-                type="date"
-                onChange={this.handleChangeRawEvent.bind(this)}
-                // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
-                required
-              />
-            </Col>
-            <Col sm="6">
-              {isFullLicence && (
+          <div className={classnames(showPayment && styles.hideUserForm)}>
+            <Row>
+              <Col sm="6">
+                <InputTextGroup
+                  name="user_first_name"
+                  value={user_first_name}
+                  label="First Name *"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  required
+                />
+              </Col>
+              <Col sm="6">
+                <InputTextGroup
+                  name="user_last_name"
+                  value={user_last_name}
+                  label="Surname *"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm="6">
+                <InputTextGroup
+                  name="user_phone"
+                  value={user_phone}
+                  label="Mobile"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+              </Col>
+              <Col sm="6">
+                <InputTextGroup
+                  name="user_email"
+                  value={user_email}
+                  label="Email *"
+                  className="form-group"
+                  type="email"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm="6">
+                <InputTextGroup
+                  name="user_birthdate"
+                  value={user_birthdate}
+                  label="Birthdate *"
+                  className="form-group"
+                  type="date"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
+                  required
+                />
+              </Col>
+              <Col sm="6">
+                {isFullLicence && (
+                  <InputSelectGroup
+                    name="full_licence_type"
+                    value={full_licence_type}
+                    label="Licence Type *"
+                    valueArray={FullLicenceTypes}
+                    noSelectOption
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    required
+                  />
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col sm="6">
+                <InputTextGroup
+                  name="user_driving_licence_number"
+                  value={user_driving_licence_number}
+                  label="License Number"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+              </Col>
+              <Col sm="6">
                 <InputSelectGroup
-                  name="full_licence_type"
-                  value={full_licence_type}
-                  label="Licence Type *"
-                  valueArray={FullLicenceTypes}
+                  name="payment_status"
+                  value={payment_status}
+                  label="Payment Status *"
+                  valueArray={getPaymentOptions()}
+                  noSelectOption
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  required
+                  valueField="id"
+                  titleField="name"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm="6">
+                <InputSelectGroup
+                  name="riding_experience"
+                  value={riding_experience}
+                  label="Riding Experience"
+                  valueArray={info.ridingExperiences}
+                  noSelectOption
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+              </Col>
+              <Col sm="6">
+                <InputSelectGroup
+                  name="bike_hire"
+                  value={bike_hire}
+                  label="Bike Hire *"
+                  valueArray={BikeHires}
                   noSelectOption
                   onChange={this.handleChangeRawEvent.bind(this)}
                   required
                 />
-              )}
-            </Col>
-          </Row>
-          <Row>
-            <Col sm="6">
-              <InputTextGroup
-                name="user_driving_licence_number"
-                value={user_driving_licence_number}
-                label="License Number"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
-              />
-            </Col>
-            <Col sm="6">
-              <InputSelectGroup
-                name="payment_status"
-                value={payment_status}
-                label="Payment Status *"
-                valueArray={getPaymentOptions()}
-                noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
-                required
-                valueField="id"
-                titleField="name"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col sm="6">
-              <InputSelectGroup
-                name="riding_experience"
-                value={riding_experience}
-                label="Riding Experience"
-                valueArray={info.ridingExperiences}
-                noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
-              />
-            </Col>
-            <Col sm="6">
-              <InputSelectGroup
-                name="bike_hire"
-                value={bike_hire}
-                label="Bike Hire *"
-                valueArray={BikeHires}
-                noSelectOption
-                onChange={this.handleChangeRawEvent.bind(this)}
-                required
-              />
-            </Col>
-          </Row>
+              </Col>
+            </Row>
+          </div>
           {showPayment && (
             <div>
-              <CheckoutForm />
+              <CheckoutForm
+                cardName={cardName}
+                handleCardNameChange={this.handleCardNameChange}
+                handleStripeElementChange={this.handleStripeElementChange}
+              />
             </div>
           )}
           <Row>
             <Col className="mt-3 text-right">
+              {!showPayment && (
+                <Button
+                  disabled={!userDetailsValid}
+                  type="button"
+                  color="primary"
+                  className="mr-2"
+                  onClick={this.handleShowPaymentClick}>
+                  Payment
+                </Button>
+              )}
               <Button
-                disabled={!userDetailsValid}
-                type={!showPayment ? 'button' : 'submit'}
+                type="submit"
                 color="primary"
                 className="mr-2"
-                onClick={!showPayment ? this.handleShowPaymentClick : null}>
-                Payment
-              </Button>
-              <Button type="submit" color="primary" className="mr-2">
-                Save
+                disabled={
+                  !cardName ||
+                  !cardNumberComplete ||
+                  !cardDateComplete ||
+                  !cardCVCComplete ||
+                  !cardPostCodeComplete
+                }>
+                {showPayment ? 'Take Payment' : 'Save'}
               </Button>
               <Button color="" onClick={onCancel}>
                 Cancel

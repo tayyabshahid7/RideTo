@@ -12,6 +12,7 @@ import cardAmex from 'assets/images/card-amex.jpg'
 import cardElectron from 'assets/images/card-electron.png'
 import cardMastercard from 'assets/images/card-mastercard.jpg'
 import cardMaestro from 'assets/images/card-maestro.png'
+import { PoweredByStripe } from 'assets/icons'
 
 const CARD_IMAGES = [
   cardVisa,
@@ -30,8 +31,7 @@ const options = {
       fontFamily: 'Source Code Pro, monospace',
       '::placeholder': {
         color: '#aab7c4'
-      },
-      padding: '0.5rem'
+      }
     },
     invalid: {
       color: '#9e2146'
@@ -39,37 +39,77 @@ const options = {
   }
 }
 
-function CheckoutForm() {
+function CheckoutForm({
+  cardName,
+  handleCardNameChange,
+  handleStripeElementChange
+}) {
   return (
     <div className={styles.checkout}>
       <div className={styles.header}>
-        <h3 className={styles.title}>Payment</h3>
+        <span className={styles.leftCol}>
+          <h3 className={styles.title}>Payment</h3> <PoweredByStripe />
+        </span>
+        <span>Step 2 or 2</span>
       </div>
       <div className={styles.price}>Total: £{125.0}</div>
       <div>
-        <label className={styles.cards}>
-          Card number{' '}
-          {CARD_IMAGES.map(src => (
-            <img key={src} src={src} alt="" />
-          ))}
+        <label>
+          <span className={styles.cards}>
+            Card number{' '}
+            {CARD_IMAGES.map(src => (
+              <img key={src} src={src} alt="" />
+            ))}
+          </span>
+          <CardNumberElement
+            className={styles.input}
+            {...options}
+            onChange={el => handleStripeElementChange(el, 'Number')}
+          />
         </label>
-        <CardNumberElement className={styles.input} {...options} />
       </div>
       <div>
-        <label>Name on card</label>
-        <input type="text" className={styles.input} />
+        <label>
+          Name on card{' '}
+          <input
+            required
+            type="text"
+            className={styles.input}
+            placeholder="Joe Bloggs"
+            value={cardName}
+            onChange={handleCardNameChange}
+          />
+        </label>
       </div>
       <div>
-        <label>Expiry date</label>
-        <CardExpiryElement className={styles.input} {...options} />
+        <label>
+          Expiry date{' '}
+          <CardExpiryElement
+            className={styles.input}
+            {...options}
+            onChange={el => handleStripeElementChange(el, 'Date')}
+          />
+        </label>
       </div>
       <div>
-        <label>CVC/CV2</label>
-        <CardCVCElement className={styles.input} {...options} />
+        <label>
+          CVC/CV2{' '}
+          <CardCVCElement
+            className={styles.input}
+            {...options}
+            onChange={el => handleStripeElementChange(el, 'CVC')}
+          />
+        </label>
       </div>
       <div>
-        <label>Billing postcode</label>
-        <PostalCodeElement className={styles.input} {...options} />
+        <label>
+          Billing postcode{' '}
+          <PostalCodeElement
+            className={styles.input}
+            {...options}
+            onChange={el => handleStripeElementChange(el, 'PostCode')}
+          />
+        </label>
       </div>
     </div>
   )

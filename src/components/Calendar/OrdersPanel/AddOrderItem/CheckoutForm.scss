@@ -2,8 +2,16 @@
   font-size: 14px;
 
   .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 0.5rem;
     margin-bottom: 1rem;
+  }
+
+  .leftCol {
+    display: flex;
+    align-items: center;
   }
 
   .price {
@@ -11,6 +19,7 @@
   }
 
   .title {
+    margin-right: 15px;
     margin-bottom: 0;
     font-size: 18px;
     line-height: 23px;
@@ -19,8 +28,9 @@
   }
 
   label {
+    width: 100%;
+    display: block;
     margin-top: 19px;
-    margin-bottom: 5px;
     font-weight: bold;
   }
 
@@ -30,11 +40,25 @@
     max-width: 238px;
     height: 34px;
     padding: 0.5rem;
+    margin-top: 4px;
     background-color: #fff;
     border: 1px solid #f0f0f0;
+
+    font-size: 14px;
+    color: #424770;
+    letter-spacing: 0.025em;
+    font-family: Source Code Pro, monospace;
+    padding: 0.5rem;
+
+    &::placeholder {
+      color: #aab7c4;
+    }
   }
 
   .cards {
+    display: flex;
+    align-items: center;
+
     img {
       width: 25px;
       height: auto;
