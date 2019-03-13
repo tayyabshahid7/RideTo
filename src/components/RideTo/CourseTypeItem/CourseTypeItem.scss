@@ -33,12 +33,6 @@
     color: inherit;
     text-decoration: none;
   }
-
-  &:hover {
-    h5 {
-      text-decoration: underline;
-    }
-  }
 }
 
 .info {
@@ -131,6 +125,7 @@
   &:hover {
     h5 {
       height: auto;
+      text-decoration: underline;
     }
   }
 
