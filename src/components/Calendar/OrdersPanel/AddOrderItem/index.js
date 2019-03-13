@@ -87,8 +87,15 @@ class AddOrderItem extends React.Component {
   }
 
   async handleSave(event) {
-    // const { onSave, onCancel, stripe } = this.props
-    const { onCancel, stripe } = this.props
+    const {
+      onSave,
+      onCancel,
+      onPayment,
+      stripe,
+      course: {
+        pricing: { price }
+      }
+    } = this.props
     const { order, showPayment, cardName } = this.state
 
     event.preventDefault()
@@ -103,20 +110,26 @@ class AddOrderItem extends React.Component {
       if (!confirm) return
     }
 
-    // const response = await onSave(order)
-    const response = true
-    if (response) {
-      // Then Success
-      if (showPayment) {
-        if (!stripe) {
-          console.log("Stripe.js hasn't loaded yet.")
-        } else {
-          const { token } = await stripe.createToken({ name: cardName })
-          console.log(token)
-        }
+    const orderResponse = await onSave(order)
+    // const orderResponse = true
+    if (!orderResponse) return
+
+    if (showPayment) {
+      if (!stripe) {
+        console.log("Stripe.js hasn't loaded yet.")
+      } else {
+        const { token } = await stripe.createToken({ name: cardName })
+        const paymentResponse = await onPayment(
+          orderResponse,
+          token,
+          price,
+          order.user_email
+        )
+        if (!paymentResponse) return
       }
-      onCancel()
     }
+
+    onCancel()
   }
 
   handleCardNameChange({ target: { value } }) {

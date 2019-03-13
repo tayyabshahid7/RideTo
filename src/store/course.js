@@ -3,6 +3,7 @@ import {
   fetchCourses,
   deleteSingleCourse,
   addSchoolOrder,
+  addSchoolPayment,
   fetchSchoolOrder,
   updateSchoolOrder,
   deleteSchoolOrderTraining,
@@ -29,6 +30,7 @@ const UPDATE = createRequestTypes('rideto/course/UPDATE')
 const CREATE = createRequestTypes('rideto/course/CREATE')
 const CREATE_BULK = createRequestTypes('rideto/course/CREATE_BULK')
 const CREATE_ORDER = createRequestTypes('rideto/course/CREATE/ORDER')
+const CREATE_PAYMENT = createRequestTypes('rideto/course/CREATE/PAYMENT')
 const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
 const DELETE_ORDER = createRequestTypes('rideto/course/FETCH/DELETE_ORDER')
 const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
@@ -154,10 +156,11 @@ export const unsetSelectedCourse = data => async dispatch => {
 }
 
 export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
+  let response = false
   dispatch({ type: CREATE_ORDER[REQUEST] })
 
   try {
-    let response = await addSchoolOrder(schoolId, order)
+    response = await addSchoolOrder(schoolId, order)
     dispatch({
       type: CREATE_ORDER[SUCCESS],
       data: {
@@ -175,6 +178,21 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
   } catch (error) {
     notificationActions.dispatchError(dispatch, 'Failed to add Order')
     dispatch({ type: CREATE_ORDER[FAILURE], error })
+    return false
+  }
+  return response
+}
+
+export const createSchoolPayment = (schoolId, data) => async dispatch => {
+  dispatch({ type: CREATE_PAYMENT[REQUEST] })
+  try {
+    await addSchoolPayment(schoolId, data)
+    dispatch({
+      type: CREATE_PAYMENT[SUCCESS]
+    })
+  } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to take payment')
+    dispatch({ type: CREATE_PAYMENT[FAILURE], error })
     return false
   }
   return true
@@ -548,6 +566,21 @@ export default function reducer(state = initialState, action) {
         single: { ...state.single, saving: false }
       }
     case CREATE_ORDER[FAILURE]:
+      return {
+        ...state,
+        single: { ...state.single, saving: false, error: action.error }
+      }
+    case CREATE_PAYMENT[REQUEST]:
+      return {
+        ...state,
+        single: { ...state.single, saving: true, error: null }
+      }
+    case CREATE_PAYMENT[SUCCESS]:
+      return {
+        ...state,
+        single: { ...state.single, saving: false }
+      }
+    case CREATE_PAYMENT[FAILURE]:
       return {
         ...state,
         single: { ...state.single, saving: false, error: action.error }

@@ -67,6 +67,17 @@ class OrdersPanel extends React.Component {
     return createSchoolOrder({ schoolId, order })
   }
 
+  handleNewPayment(order, token, price, email) {
+    const { createSchoolPayment, schoolId } = this.props
+
+    return createSchoolPayment(schoolId, {
+      order_id: order.order_id,
+      token: token.id,
+      expected_price: price,
+      email
+    })
+  }
+
   handleDeleteTraining(training) {
     if (
       window.confirm(
@@ -133,6 +144,7 @@ class OrdersPanel extends React.Component {
                       info={info}
                       course={course}
                       onSave={this.handleNewOrder.bind(this)}
+                      onPayment={this.handleNewPayment.bind(this)}
                       saving={saving}
                     />
                   </Elements>
