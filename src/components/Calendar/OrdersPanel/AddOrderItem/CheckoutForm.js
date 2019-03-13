@@ -7,12 +7,12 @@ import {
 } from 'react-stripe-elements'
 import styles from './CheckoutForm.scss'
 
-import cardVisa from 'assets/images/card-visa.jpg'
-import cardAmex from 'assets/images/card-amex.jpg'
-import cardElectron from 'assets/images/card-electron.png'
-import cardMastercard from 'assets/images/card-mastercard.jpg'
-import cardMaestro from 'assets/images/card-maestro.png'
-import { PoweredByStripe } from 'assets/icons'
+import cardVisa from '../../../../assets/images/card-visa.jpg'
+import cardAmex from '../../../../assets/images/card-amex.jpg'
+import cardElectron from '../../../../assets/images/card-electron.png'
+import cardMastercard from '../../../../assets/images/card-mastercard.jpg'
+import cardMaestro from '../../../../assets/images/card-maestro.png'
+import { PoweredByStripe } from '../../../../assets/icons'
 
 const CARD_IMAGES = [
   cardVisa,
