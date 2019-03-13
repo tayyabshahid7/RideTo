@@ -64,6 +64,16 @@ class AddOrderItem extends React.Component {
     let name = event.target.name
     let { order } = this.state
     this.setState({ order: { ...order, [name]: event.target.value } })
+
+    if (name === 'user_first_name') {
+      this.setState({
+        cardName: `${event.target.value} ${order.user_last_name}`.toUpperCase()
+      })
+    } else if (name === 'user_last_name') {
+      this.setState({
+        cardName: `${order.user_first_name} ${event.target.value}`.toUpperCase()
+      })
+    }
   }
 
   handleShowPaymentClick() {
