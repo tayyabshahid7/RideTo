@@ -101,7 +101,6 @@ export const addSchoolOrder = async (schoolId, order) => {
 export const addSchoolPayment = async (schoolId, data) => {
   const path = `school/${schoolId}/course/payment`
   const response = await post(path, data)
-  // const response = true
   return response
 }
 

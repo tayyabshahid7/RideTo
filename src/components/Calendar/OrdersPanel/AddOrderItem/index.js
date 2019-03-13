@@ -112,7 +112,7 @@ class AddOrderItem extends React.Component {
     }
 
     const orderResponse = await onSave(order)
-    // const orderResponse = true
+
     if (!orderResponse) return
 
     if (showPayment) {
