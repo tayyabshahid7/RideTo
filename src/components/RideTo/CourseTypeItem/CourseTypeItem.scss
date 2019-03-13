@@ -27,6 +27,18 @@
   height: 120px;
 
   padding: 20px 32px;
+
+  &,
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &:hover {
+    h5 {
+      text-decoration: underline;
+    }
+  }
 }
 
 .info {
