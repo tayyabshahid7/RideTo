@@ -49,7 +49,13 @@ function CheckoutForm({
     <div className={styles.checkout}>
       <div className={styles.header}>
         <span className={styles.leftCol}>
-          <h3 className={styles.title}>Payment</h3> <PoweredByStripe />
+          <h3 className={styles.title}>Payment</h3>{' '}
+          <a
+            href="https://stripe.com/gb"
+            target="_blank"
+            rel="noopener noreferrer">
+            <PoweredByStripe />
+          </a>
         </span>
         <span>Step 2 or 2</span>
       </div>
