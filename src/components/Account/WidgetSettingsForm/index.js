@@ -24,10 +24,9 @@ class WidgetSettingsForm extends React.Component {
   }
 
   handleChangeRawEvent(event) {
-    let name = event.target.name
-    let { settings } = this.state
-    settings[name] = event.target.value
-    this.setState({ settings })
+    const { name, value } = event.target
+    const { settings } = this.state
+    this.setState({ settings: { ...settings, [name]: value } })
   }
 
   handleCancel(event) {

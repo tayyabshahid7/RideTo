@@ -5,6 +5,7 @@ import AvailabilityCourses from './AvailabilityCourses'
 import AccountPassword from './AccountPassword'
 import BookingWidgetSettings from './BookingWidgetSettings'
 import EmailSettings from './EmailSettings'
+import Instructors from './Instructors'
 import CsvUpload from './CsvUpload'
 import styles from './styles.scss'
 
@@ -51,6 +52,13 @@ class AccountPage extends Component {
             path="/account/csv-upload"
             render={routeProps => (
               <CsvUpload {...routeProps} schoolId={schoolId} />
+            )}
+          />
+          <Route
+            exact
+            path="/account/instructors"
+            render={routeProps => (
+              <Instructors {...routeProps} schoolId={schoolId} />
             )}
           />
         </div>
