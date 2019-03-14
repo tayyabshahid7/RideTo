@@ -18,6 +18,10 @@
 
 .active {
   background: white;
+
+  span {
+    border-bottom: 2px solid var(--primary-color);
+  }
 }
 
 .action {
