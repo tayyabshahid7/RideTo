@@ -191,7 +191,11 @@ export const createSchoolPayment = (schoolId, data) => async dispatch => {
       type: CREATE_PAYMENT[SUCCESS]
     })
   } catch (error) {
-    notificationActions.dispatchError(dispatch, 'Failed to take payment')
+    const message = error.response.data.detail
+    notificationActions.dispatchError(
+      dispatch,
+      `Failed to take payment. ${message}`
+    )
     dispatch({ type: CREATE_PAYMENT[FAILURE], error })
     return false
   }

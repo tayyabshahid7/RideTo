@@ -31,6 +31,8 @@ class AddOrderItem extends React.Component {
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
       ),
+      orderCreated: false,
+      orderResponse: null,
       userDetailsValid: false,
       showPayment: false,
       showPaymentConfirmation: false,
@@ -47,6 +49,8 @@ class AddOrderItem extends React.Component {
     this.handleCardNameChange = this.handleCardNameChange.bind(this)
     this.handleShowPaymentClick = this.handleShowPaymentClick.bind(this)
     this.handleStripeElementChange = this.handleStripeElementChange.bind(this)
+    this.handleCancel = this.handleCancel.bind(this)
+    this.sendStripePayment = this.sendStripePayment.bind(this)
   }
 
   componentDidMount() {
@@ -59,6 +63,13 @@ class AddOrderItem extends React.Component {
         userDetailsValid: this.form.current.checkValidity()
       })
     }
+  }
+
+  handleCancel() {
+    if (!this.state.showPayment) {
+      this.props.onCancel()
+    }
+    this.setState({ showPayment: false })
   }
 
   handleChangeRawEvent(event) {
@@ -87,56 +98,70 @@ class AddOrderItem extends React.Component {
     })
   }
 
-  async handleSave(event) {
+  async sendStripePayment() {
     const {
-      onSave,
-      onCancel,
       onPayment,
       stripe,
       course: {
         pricing: { price }
       }
     } = this.props
-    const { order, showPayment, cardName } = this.state
+    const { order, cardName, orderResponse } = this.state
+
+    if (!stripe) {
+      console.log("Stripe.js hasn't loaded yet.")
+    } else {
+      const { token } = await stripe.createToken({ name: cardName })
+      const paymentResponse = await onPayment(
+        orderResponse,
+        token,
+        price,
+        order.user_email
+      )
+      if (paymentResponse) {
+        this.setState({
+          showPaymentConfirmation: true
+        })
+      }
+    }
+  }
+
+  async handleSave(event) {
+    const { onSave, onCancel } = this.props
+    const { order, showPayment, orderCreated } = this.state
 
     event.preventDefault()
 
-    let result = await checkCustomerExists(order.user_email)
-    if (result.email_exists) {
-      const confirm = window.confirm(
-        `There's already a customer with this email (${order.user_email})\n` +
-          'The order will be associated to this email.\n' +
-          'Do you want to continue?'
-      )
-      if (!confirm) return
-    }
-
-    const orderResponse = await onSave(order)
-
-    if (!orderResponse) return
-
-    if (showPayment) {
-      if (!stripe) {
-        console.log("Stripe.js hasn't loaded yet.")
-      } else {
-        const { token } = await stripe.createToken({ name: cardName })
-        const paymentResponse = await onPayment(
-          orderResponse,
-          token,
-          price,
-          order.user_email
+    if (!orderCreated) {
+      let result = await checkCustomerExists(order.user_email)
+      if (result.email_exists) {
+        const confirm = window.confirm(
+          `There's already a customer with this email (${order.user_email})\n` +
+            'The order will be associated to this email.\n' +
+            'Do you want to continue?'
         )
-
-        if (paymentResponse) {
-          this.setState({
-            showPaymentConfirmation: true
-          })
-          return
-        }
+        if (!confirm) return
       }
-    }
 
-    onCancel()
+      const orderResponse = await onSave(order)
+
+      if (!orderResponse) {
+        this.setState({ showPayment: false })
+      } else {
+        this.setState(
+          { orderCreated: true, orderResponse: orderResponse },
+          async () => {
+            if (showPayment) {
+              await this.sendStripePayment()
+            } else {
+              onCancel()
+            }
+          }
+        )
+      }
+    } else if (showPayment) {
+      await this.sendStripePayment()
+    }
   }
 
   handleCardNameChange({ target: { value } }) {
@@ -344,7 +369,7 @@ class AddOrderItem extends React.Component {
                   }>
                   {showPayment ? 'Take Payment' : 'Save'}
                 </Button>
-                <Button color="" onClick={onCancel}>
+                <Button color="" onClick={this.handleCancel}>
                   Cancel
                 </Button>
               </Col>

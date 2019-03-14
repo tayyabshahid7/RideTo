@@ -5,7 +5,7 @@ import AddOrderItem from './AddOrderItem'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import OrdersPanelItem from 'components/Calendar/OrdersPanelItem'
 import Loading from 'components/Loading'
-import { BIKE_HIRE } from 'common/constants'
+import { BIKE_HIRE, STRIPE_KEY } from 'common/constants'
 import { StripeProvider, Elements } from 'react-stripe-elements'
 
 class OrdersPanel extends React.Component {
@@ -135,9 +135,7 @@ class OrdersPanel extends React.Component {
             ))}
             {Array.apply(null, Array(availableSpaces)).map((val, index) =>
               orderIndex === index ? (
-                <StripeProvider
-                  apiKey="pk_test_sXI82393iZeCRPwuQM6Sv0v5"
-                  key={index}>
+                <StripeProvider apiKey={STRIPE_KEY} key={index}>
                   <Elements>
                     <AddOrderItem
                       onCancel={() => this.setState({ orderIndex: -1 })}
