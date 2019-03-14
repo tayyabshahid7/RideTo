@@ -104,3 +104,5 @@ export const TEST_STATUS_CHOICES = {
   TEST_STATUS_NO_NAME: 'Booked, NO Name',
   TEST_STATUS_NAMED: 'Booked, Named'
 }
+
+export const STRIPE_KEY = process.env.REACT_APP_STRIPE_KEY
