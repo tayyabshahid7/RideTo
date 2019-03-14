@@ -1,6 +1,8 @@
 import React from 'react'
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Button } from 'reactstrap'
+import InputTextGroup from 'components/Forms/InputTextGroup'
 import styles from './styles.scss'
+import classnames from 'classnames'
 
 class Instructors extends React.Component {
   constructor(props) {
@@ -16,9 +18,10 @@ class Instructors extends React.Component {
     this.handleDelete = this.handleDelete.bind(this)
   }
 
-  handleSave() {
+  handleSave(event) {
     const { schoolId, newInstructor, editInstructor } = this.props
     const { addNew, selectedInstructor } = this.state
+    event.preventDefault()
     if (addNew) {
       newInstructor(schoolId, selectedInstructor)
     } else {
@@ -63,50 +66,71 @@ class Instructors extends React.Component {
     const { addNew, selectedInstructor } = this.state
     return (
       <Row className={styles.container}>
-        <Col>
-          <h2>
-            Instructors <button onClick={this.handleAddNew}>Add New</button>
-          </h2>
-          <ul>
+        <Col sm="6">
+          <div className={styles.header}>
+            <div>
+              <h3>Instructors</h3>
+              <p>Add and edit instructors.</p>
+            </div>
+            <Button color="primary" onClick={this.handleAddNew}>
+              Add New
+            </Button>
+          </div>
+          <ul className={styles.list}>
             {instructors.map((instructor, key) => {
               return (
-                <li key={key}>
-                  {instructor.first_name} {instructor.last_name}
-                  <button onClick={() => this.handleEdit(instructor)}>
+                <li
+                  key={key}
+                  className={classnames(
+                    instructor === selectedInstructor && styles.selected
+                  )}>
+                  <span className={styles.fullName}>
+                    {instructor.first_name} {instructor.last_name}
+                  </span>
+                  <Button
+                    color="link"
+                    onClick={() => this.handleEdit(instructor)}>
                     Edit
-                  </button>
-                  <button onClick={() => this.handleDelete(instructor)}>
+                  </Button>
+                  <Button
+                    color="link"
+                    onClick={() => this.handleDelete(instructor)}>
                     Delete
-                  </button>
+                  </Button>
                 </li>
               )
             })}
-            .
           </ul>
         </Col>
         {selectedInstructor && (
-          <Col>
-            <form>
-              <label>First name</label>
-              <input
+          <Col sm="6" className={styles.editInstructor}>
+            <h3>{addNew ? 'Add' : 'Edit'} Instructor Details</h3>
+            <form onSubmit={this.handleSave} className={styles.editForm}>
+              <InputTextGroup
                 name="first_name"
                 value={selectedInstructor.first_name}
+                label="First Name"
+                className="form-group"
                 onChange={this.handleChange}
+                required
               />
-              <label>Last name</label>
-              <input
+              <InputTextGroup
                 name="last_name"
                 value={selectedInstructor.last_name}
+                label="Last Name"
+                className="form-group"
                 onChange={this.handleChange}
+                required
               />
-              <button type="button" onClick={this.handleSave} disabled={saving}>
+              <Button color="primary" type="submit" disabled={saving}>
                 {addNew ? 'Add' : 'Save'}
-              </button>
-              <button
+              </Button>
+              <Button
+                color="link"
                 type="button"
                 onClick={() => this.setState({ selectedInstructor: null })}>
                 Cancel
-              </button>
+              </Button>
             </form>
           </Col>
         )}

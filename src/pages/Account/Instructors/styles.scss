@@ -1,8 +1,51 @@
 .container {
-  margin-top: 16px;
+  margin-top: 1rem;
 }
 
-.subtitle {
-  font-size: 1rem;
-  font-weight: bold;
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h3 {
+    margin-right: 1rem;
+  }
+}
+
+.list {
+  list-style: none;
+  border-top: 1px solid var(--light-grey-color);
+
+  li {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--light-grey-color);
+
+    &.selected {
+      background-color: rgba(#2cceac, 0.15);
+    }
+
+    span {
+      flex-grow: 1;
+      padding-left: 9px;
+      font-weight: bold;
+    }
+
+    button {
+      padding-right: 0.5rem;
+      padding-left: 0.5rem;
+    }
+  }
+}
+
+.fullName {
+  margin-right: 0.5rem;
+}
+
+.editForm {
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
 }
