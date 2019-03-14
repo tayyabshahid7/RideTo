@@ -318,7 +318,8 @@ class ResultPage extends Component {
           bookNowDisabled &&
             this.state.activeTab === 3 &&
             ifullLicence &&
-            styles.bookNowDisabled
+            styles.bookNowDisabled,
+          this.state.activeTab === 3 && styles.actionStatic
         )}
         onClick={() => {
           if (this.state.activeTab !== 3) {
@@ -648,7 +649,8 @@ class ResultPage extends Component {
             instantCourse,
             bike_hire,
             isFullLicence
-          )}>
+          )}
+          footerStatic={activeTab === 3}>
           {selectedCourse && (
             <CourseDetailPanel
               courseType={courseType}
