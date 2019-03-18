@@ -33,12 +33,12 @@ const CourseTypeItem = ({
       </a>
 
       <div className={styles.content}>
-        <div className={styles.expandedInfo}>
+        <a className={styles.expandedInfo} href={url}>
           <div className={styles.info}>
             <h5>{courseType.name}</h5>
             <div className={styles.description}>{details.description}</div>
           </div>
-        </div>
+        </a>
         <a
           className={classnames(styles.cta, isTypeform && 'typeform-share')}
           href={url}>
