@@ -98,6 +98,12 @@ export const addSchoolOrder = async (schoolId, order) => {
   return response
 }
 
+export const addSchoolPayment = async (schoolId, data) => {
+  const path = `school/${schoolId}/course/payment`
+  const response = await post(path, data)
+  return response
+}
+
 export const fetchSchoolOrder = async (schoolId, trainingId) => {
   const path = `school/${schoolId}/course/order/${trainingId}`
   const response = await get(path, {})

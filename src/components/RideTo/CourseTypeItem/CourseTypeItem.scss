@@ -27,6 +27,12 @@
   height: 120px;
 
   padding: 20px 32px;
+
+  &,
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+  }
 }
 
 .info {
@@ -119,6 +125,7 @@
   &:hover {
     h5 {
       height: auto;
+      text-decoration: underline;
     }
   }
 

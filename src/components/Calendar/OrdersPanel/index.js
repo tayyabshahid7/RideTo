@@ -5,7 +5,8 @@ import AddOrderItem from './AddOrderItem'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import OrdersPanelItem from 'components/Calendar/OrdersPanelItem'
 import Loading from 'components/Loading'
-import { BIKE_HIRE } from 'common/constants'
+import { BIKE_HIRE, STRIPE_KEY } from 'common/constants'
+import { StripeProvider, Elements } from 'react-stripe-elements'
 
 class OrdersPanel extends React.Component {
   constructor(props) {
@@ -66,6 +67,17 @@ class OrdersPanel extends React.Component {
     return createSchoolOrder({ schoolId, order })
   }
 
+  handleNewPayment(order, token, price, email) {
+    const { createSchoolPayment, schoolId } = this.props
+
+    return createSchoolPayment(schoolId, {
+      order_id: order.order_id,
+      token: token.id,
+      expected_price: price,
+      email
+    })
+  }
+
   handleDeleteTraining(training) {
     if (
       window.confirm(
@@ -123,14 +135,18 @@ class OrdersPanel extends React.Component {
             ))}
             {Array.apply(null, Array(availableSpaces)).map((val, index) =>
               orderIndex === index ? (
-                <AddOrderItem
-                  onCancel={() => this.setState({ orderIndex: -1 })}
-                  info={info}
-                  course={course}
-                  onSave={this.handleNewOrder.bind(this)}
-                  key={index}
-                  saving={saving}
-                />
+                <StripeProvider apiKey={STRIPE_KEY} key={index}>
+                  <Elements>
+                    <AddOrderItem
+                      onCancel={() => this.setState({ orderIndex: -1 })}
+                      info={info}
+                      course={course}
+                      onSave={this.handleNewOrder.bind(this)}
+                      onPayment={this.handleNewPayment.bind(this)}
+                      saving={saving}
+                    />
+                  </Elements>
+                </StripeProvider>
               ) : (
                 <OrdersPanelSpaceItem
                   onAdd={() => this.handleAdd(index)}

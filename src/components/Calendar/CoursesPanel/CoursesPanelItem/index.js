@@ -10,6 +10,7 @@ import { getShortCourseType } from 'services/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
 import {
   createSchoolOrder,
+  createSchoolPayment,
   updateSchoolOrder,
   deleteOrderTraining,
   updateCourse
@@ -25,6 +26,7 @@ const CoursesPanelItem = ({
   schoolId,
   info,
   createSchoolOrder,
+  createSchoolPayment,
   updateSchoolOrder,
   deleteOrderTraining,
   updateCourse
@@ -76,6 +78,7 @@ const CoursesPanelItem = ({
         course={course}
         info={info}
         createSchoolOrder={createSchoolOrder}
+        createSchoolPayment={createSchoolPayment}
         updateSchoolOrder={updateSchoolOrder}
         deleteOrderTraining={deleteOrderTraining}
         updateCourse={updateCourse}
@@ -101,6 +104,7 @@ const mapDispatchToProps = dispatch =>
     {
       updateCourse,
       createSchoolOrder,
+      createSchoolPayment,
       updateSchoolOrder,
       deleteOrderTraining
     },

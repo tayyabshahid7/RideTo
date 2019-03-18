@@ -32,7 +32,14 @@ class SidePanel extends React.Component {
   }
 
   render() {
-    const { children, visible, headingImage, onDismiss, footer } = this.props
+    const {
+      children,
+      visible,
+      headingImage,
+      onDismiss,
+      footer,
+      footerStatic = false
+    } = this.props
     const headingStyle = { backgroundImage: `url(${headingImage})` }
     const className = classnames(
       styles.sidePanelWrapper,
@@ -47,7 +54,15 @@ class SidePanel extends React.Component {
             <img src={closeImg} alt="Close" onClick={onDismiss} />
           </div>
           <div className={styles.content}>{children}</div>
-          {footer && <div className={styles.footer}>{footer}</div>}
+          {footer && (
+            <div
+              className={classnames(
+                styles.footer,
+                footerStatic && styles.footerStatic
+              )}>
+              {footer}
+            </div>
+          )}
         </div>
       </div>
     )
