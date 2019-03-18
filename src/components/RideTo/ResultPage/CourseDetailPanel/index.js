@@ -49,7 +49,7 @@ class CourseDetailPanel extends React.Component {
               activeTab === 1 && styles.active
             )}
             onClick={() => this.toggle(1)}>
-            Information
+            <span>Information</span>
           </div>
           <div
             className={classnames(
@@ -57,7 +57,7 @@ class CourseDetailPanel extends React.Component {
               activeTab === 2 && styles.active
             )}
             onClick={() => this.toggle(2)}>
-            Reviews
+            <span>Reviews</span>
           </div>
           <div
             className={classnames(
@@ -65,7 +65,7 @@ class CourseDetailPanel extends React.Component {
               activeTab === 3 && styles.active
             )}
             onClick={() => this.toggle(3)}>
-            Availability
+            <span>Availability</span>
           </div>
         </div>
         {activeTab === 1 && (
