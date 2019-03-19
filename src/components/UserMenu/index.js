@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logout, changeSchool } from 'store/auth'
 import styles from './styles.scss'
-import { Button } from 'reactstrap'
+import { Button } from 'components/ConnectForm'
 
 import SchoolSelect from 'components/SchoolSelect'
 

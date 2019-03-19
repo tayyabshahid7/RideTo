@@ -76,7 +76,7 @@ let NavigationBar = ({ history }) => {
         <div className={styles.navTools}>
           <Link
             to={`/calendar/courses/create`}
-            className={classnames('btn', 'btn-primary')}>
+            className={classnames(styles.addCourse)}>
             Add Course
           </Link>
           <form

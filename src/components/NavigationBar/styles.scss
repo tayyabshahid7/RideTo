@@ -63,6 +63,33 @@
   }
 }
 
+.addCourse {
+  height: 44px;
+  min-width: 90px;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--primary-color);
+  border-radius: 3px;
+  border: 0;
+  cursor: pointer;
+  text-align: center;
+  line-height: 42px;
+  font-size: 18px;
+  width: 120px;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
 .navTools {
   display: flex;
   align-items: center;
