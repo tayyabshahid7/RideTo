@@ -22,7 +22,7 @@
   width: 200px;
 }
 .authMenu {
-  width: 100%;
+  // width: 100%;
   display: flex;
   align-items: center;
 }
@@ -59,6 +59,12 @@
     border-bottom: 4px solid #2cceac;
   }
   .authMenu {
-    width: 250px;
+    // width: 250px;
   }
+}
+
+.navTools {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

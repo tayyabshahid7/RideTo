@@ -5,6 +5,7 @@ import UserMenu from '../UserMenu'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import IconRideToLogo from '../../assets/icons/IconRideToLogo'
+// import { Button } from 'reactstrap'
 
 let NavigationBar = ({ history }) => {
   return (
@@ -72,10 +73,17 @@ let NavigationBar = ({ history }) => {
             </NavLink>
           </li>
         </ul>
-        <form
-          className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
-          <UserMenu history={history} />
-        </form>
+        <div className={styles.navTools}>
+          <Link
+            to={`/calendar/courses/create`}
+            className={classnames('btn', 'btn-primary')}>
+            Add Course
+          </Link>
+          <form
+            className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
+            <UserMenu history={history} />
+          </form>
+        </div>
       </div>
     </nav>
   )

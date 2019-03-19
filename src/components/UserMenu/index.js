@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logout, changeSchool } from 'store/auth'
 import styles from './styles.scss'
+import { Button } from 'reactstrap'
 
 import SchoolSelect from 'components/SchoolSelect'
 
@@ -57,18 +58,18 @@ class UserMenu extends Component {
       user && (
         <div className={styles.container}>
           <div className={styles.username} onClick={this.toggleMenu}>
-            {user.email}
+            <div className={styles.avatar}>{user.first_name.charAt(0)}</div>
           </div>
           {this.state.menuOpen && (
             <div ref={node => (this.node = node)} className={styles.userMenu}>
-              <br />
-              <button onClick={this.handleLogout}>Logout</button>
-              <br />
-              <br />
+              <Button color="primary" onClick={this.handleLogout}>
+                Logout
+              </Button>
               <SchoolSelect
                 schools={user.suppliers}
                 selected={schoolId}
                 onChange={this.handleSupplierChange}
+                small
               />
             </div>
           )}
