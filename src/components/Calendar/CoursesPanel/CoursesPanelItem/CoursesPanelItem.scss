@@ -1,5 +1,5 @@
 .coursesPanelItem {
-  margin-bottom: 24px;
+  margin-bottom: 36px;
 }
 
 .heading {
@@ -7,6 +7,7 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 12px;
+  font-size: 14px;
 }
 
 .container {
@@ -23,6 +24,7 @@
   flex-grow: 1;
   padding: 12px;
   color: #707070;
+  // min-height: 50px;
 }
 
 .notes {
@@ -50,6 +52,5 @@
 .editButton {
   font-size: 14px;
   font-weight: bold;
-  text-decoration: underline;
   color: inherit;
 }

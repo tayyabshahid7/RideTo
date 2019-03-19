@@ -8,14 +8,21 @@
 
   background-color: #fafafa;
   white-space: now;
+
+  font-size: 14px;
 }
 
 .col {
   margin-right: 8px;
 }
 
+.bikeType {
+  font-weight: bold;
+}
+
 .name {
-  flex-grow: 1;
+  // flex-grow: 1;
+  font-weight: bold;
   text-align: left;
   margin-right: 8px;
 }

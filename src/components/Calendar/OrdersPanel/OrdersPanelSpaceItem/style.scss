@@ -1,11 +1,18 @@
 .container {
   display: flex;
-  border: 1px solid var(--light-grey-color);
-  padding: 5px;
+  padding: 1px 12px;
   margin-bottom: 10px;
+  background-color: #fafafa;
+  align-items: center;
+  padding-right: 0;
+
+  button {
+    margin-right: 0 !important;
+  }
 }
 
 .info {
+  font-size: 14px;
   flex-grow: 1;
-  line-height: 40px;
+  font-weight: bold;
 }
