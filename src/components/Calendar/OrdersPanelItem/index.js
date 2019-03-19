@@ -2,7 +2,6 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 // import { Button } from 'reactstrap'
-
 // import { BikeHires, getTitleFor } from 'common/info'
 
 import classnames from 'classnames'
@@ -18,7 +17,9 @@ const OrdersPanelItem = ({
   return (
     <div className={styles.container} key={training.id}>
       <div className={styles.col}>
-        <strong>{training.direct_friendly_id}</strong>
+        <button className={styles.editButton} onClick={onEdit}>
+          {training.direct_friendly_id}
+        </button>
       </div>
       <div className={classnames(styles.col, styles.bikeType)}>Manual</div>
       <div className={styles.name}>
