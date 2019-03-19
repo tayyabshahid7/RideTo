@@ -3,9 +3,9 @@ import styles from './styles.scss'
 
 const Footer = () => {
   return (
-    <div className={styles.container}>
-      © {new Date().getFullYear()} Connectmct.
-    </div>
+    <footer className={styles.container}>
+      RideTo Ltd © {new Date().getFullYear()}
+    </footer>
   )
 }
 
