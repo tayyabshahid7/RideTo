@@ -75,13 +75,10 @@ export const getDayCourses = ({ schoolId, date }) => async dispatch => {
   }
 }
 
-export const getDayCourseTimes = ({
-  schoolId,
-  date,
-  course_type,
-  bike_type,
-  full_licence_type
-}) => async dispatch => {
+export const getDayCourseTimes = (
+  { schoolId, date, course_type, bike_type, full_licence_type },
+  defaultTime
+) => async dispatch => {
   dispatch({ type: FETCH_TIMES[REQUEST] })
 
   try {
@@ -96,7 +93,8 @@ export const getDayCourseTimes = ({
     dispatch({
       type: FETCH_TIMES[SUCCESS],
       data: {
-        times
+        times,
+        defaultTime
       }
     })
   } catch (error) {
@@ -501,12 +499,22 @@ export default function reducer(state = initialState, action) {
         }
       }
     case FETCH_TIMES[SUCCESS]:
+      const { defaultTime } = action.data
+      const { times } = action.data
+      const available =
+        defaultTime && !times.some(t => t.time === defaultTime)
+          ? [...times, { time: defaultTime }]
+          : [...times]
+      const sortedAvailable = available.sort((a, b) =>
+        a.time > b.time ? 1 : b.time > a.time ? -1 : 0
+      )
+
       return {
         ...state,
         times: {
           ...state.times,
           loading: false,
-          available: [...action.data.times],
+          available: sortedAvailable,
           errror: null
         }
       }

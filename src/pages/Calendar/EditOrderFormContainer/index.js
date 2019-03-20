@@ -53,15 +53,18 @@ class EditOrderFormContainer extends React.Component {
     return response
   }
 
-  async handleLoadTimes(date) {
+  async handleLoadTimes(date, defaultTime) {
     const { schoolId, order, course_type, getDayCourseTimes } = this.props
 
-    await getDayCourseTimes({
-      schoolId,
-      date,
-      course_type,
-      bike_type: order.bike_hire
-    })
+    await getDayCourseTimes(
+      {
+        schoolId,
+        date,
+        course_type,
+        bike_type: order.bike_hire
+      },
+      defaultTime
+    )
   }
 
   render() {

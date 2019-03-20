@@ -36,10 +36,14 @@ class ChangeDate extends Component {
   }
 
   async handleFetchTimes({ init }) {
-    const { loadTimes } = this.props
+    const { loadTimes, time } = this.props
     const { date } = this.state
 
-    await loadTimes(date)
+    if (init || this.props.date === date) {
+      await loadTimes(date, time)
+    } else {
+      await loadTimes(date)
+    }
 
     this.setState({
       showTimes: true
