@@ -399,7 +399,7 @@ class AddOrderItem extends React.Component {
                   }>
                   {showPayment ? 'Take Payment' : 'Save'}
                 </Button>
-                <Button color="" onClick={this.handleCancel}>
+                <Button color="white" onClick={this.handleCancel}>
                   Cancel
                 </Button>
               </Col>
@@ -414,11 +414,7 @@ class AddOrderItem extends React.Component {
             </p>
             <p>Confirmation Email sent.</p>
             <p>
-              <Button
-                color="primary"
-                outline
-                style={{ backgroundColor: '#fff' }}
-                onClick={onCancel}>
+              <Button color="white" onClick={onCancel}>
                 Close
               </Button>
             </p>
