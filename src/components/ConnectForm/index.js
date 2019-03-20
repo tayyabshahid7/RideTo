@@ -69,6 +69,7 @@ export function ConnectSelect({
   label,
   onChange,
   selected,
+  value,
   id,
   name,
   placeholder,
@@ -95,7 +96,7 @@ export function ConnectSelect({
         )}
         name={name}
         id={id || name}
-        value={selected}
+        value={selected || value}
         onChange={e =>
           onChange(
             e.target.value,

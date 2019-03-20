@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import styles from './styles.scss'
-import { Button, Row, Col, InputGroup, InputGroupAddon } from 'reactstrap'
-import InputTextGroup from 'components/Forms/InputTextGroup'
-import InputSelectGroup from 'components/Forms/InputSelectGroup'
+import { Row, Col } from 'reactstrap'
+
+import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
 
 class ChangeDate extends Component {
   constructor(props) {
@@ -10,7 +10,9 @@ class ChangeDate extends Component {
     this.state = {
       date: this.props.date,
       time: this.props.time,
-      timesLoaded: false
+      showTimes: true,
+      isDateChanged: false,
+      isTimeChanged: false
     }
 
     this.handleDateChange = this.handleDateChange.bind(this)
@@ -19,32 +21,41 @@ class ChangeDate extends Component {
     this.handleUpdateClick = this.handleUpdateClick.bind(this)
   }
 
-  async handleFetchTimes() {
-    const { loadTimes } = this.props
-    const { date } = this.state
-
-    await loadTimes(date)
-
-    this.setState({
-      timesLoaded: true
-    })
-  }
-
   componentDidMount() {
-    this.handleFetchTimes()
+    this.handleFetchTimes({ init: true })
   }
 
   handleDateChange(event) {
     this.setState({
       date: event.target.value,
       time: '',
-      timesLoaded: false
+      showTimes: false,
+      isDateChanged: true,
+      isTimeChanged: true
     })
   }
 
-  handleTimeChange(event) {
+  async handleFetchTimes({ init }) {
+    const { loadTimes } = this.props
+    const { date } = this.state
+
+    await loadTimes(date)
+
     this.setState({
-      time: event.target.value
+      showTimes: true
+    })
+
+    if (!init) {
+      this.setState({
+        time: this.props.times[0].time
+      })
+    }
+  }
+
+  handleTimeChange(value) {
+    this.setState({
+      time: value,
+      isTimeChanged: true
     })
   }
 
@@ -58,69 +69,76 @@ class ChangeDate extends Component {
 
   render() {
     const { times } = this.props
-    const { date, time, timesLoaded } = this.state
+    const { date, time, showTimes, isDateChanged, isTimeChanged } = this.state
 
     return (
       <div className={styles.form}>
         <Row>
           <Col>
-            <label className="control-label">Date</label>
-            <InputGroup className="form-group">
-              <InputTextGroup
+            <div className={styles.addon}>
+              <ConnectInput
+                basic
+                label="Course date"
                 name="date"
                 value={date}
                 type="date"
                 onChange={this.handleDateChange}
                 className={styles.dateInput}
               />
-              <InputGroupAddon addonType="append">
-                <Button
-                  type="button"
-                  color="primary"
-                  onClick={this.handleFetchTimes}>
-                  Search
-                </Button>
-              </InputGroupAddon>
-            </InputGroup>
+              <Button
+                disabled={!isDateChanged}
+                small
+                type="button"
+                color="primary"
+                onClick={this.handleFetchTimes}>
+                Search
+              </Button>
+            </div>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <InputSelectGroup
-              name="time"
-              value={time}
-              label="Time"
-              valueArray={
-                !timesLoaded
-                  ? []
-                  : times.map(time => ({
-                      title: time.time,
-                      value: time.time
-                    }))
-              }
-              noSelectOption
-              onChange={this.handleTimeChange}
-              disabled={!timesLoaded || !times.length}
-            />
-            {timesLoaded && !times.length && (
-              <span className={styles.noTimes}>
-                No times available on this date
-              </span>
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <Col className="mt-3 text-right">
-            <Button
-              type="button"
-              color="primary"
-              className="mr-2"
-              onClick={this.handleUpdateClick}
-              disabled={!date || !time}>
-              Update
-            </Button>
-          </Col>
-        </Row>
+        {showTimes && (
+          <Row>
+            <Col>
+              {!times.length ? (
+                <span className={styles.noTimes}>
+                  No times available on this date
+                </span>
+              ) : (
+                <ConnectSelect
+                  basic
+                  name="time"
+                  selected={time}
+                  label="Time"
+                  options={
+                    !showTimes
+                      ? []
+                      : times.map(time => ({
+                          title: time.time,
+                          value: time.time
+                        }))
+                  }
+                  valueField="value"
+                  labelField="title"
+                  noSelectOption
+                  onChange={this.handleTimeChange}
+                  disabled={!showTimes || !times.length}
+                />
+              )}
+            </Col>
+          </Row>
+        )}
+        {date && time && isTimeChanged && (
+          <Row>
+            <Col className="mb-3">
+              <Button
+                type="button"
+                color="primary"
+                onClick={this.handleUpdateClick}>
+                Update time
+              </Button>
+            </Col>
+          </Row>
+        )}
       </div>
     )
   }

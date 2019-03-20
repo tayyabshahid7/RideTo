@@ -11,7 +11,7 @@ import {
 
 import { BikeHires, formatBikeConstant, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions, getTrainingStatusOptions } from 'services/order'
-// import ChangeDate from './ChangeDate/'
+import ChangeDate from './ChangeDate/'
 
 class EditOrderForm extends React.Component {
   constructor(props) {
@@ -74,7 +74,17 @@ class EditOrderForm extends React.Component {
   }
 
   render() {
-    let { onCancel, isSending, onDelete } = this.props
+    let {
+      onCancel,
+      isSending,
+      onDelete,
+      date,
+      time,
+      courses,
+      onSave,
+      times,
+      loadTimes
+    } = this.props
     const { showChangeDate, isChanged } = this.state
 
     if (!this.state.order.order || !this.state.order.customer) {
@@ -109,28 +119,17 @@ class EditOrderForm extends React.Component {
               Delete
             </Button>
           </div>
-          {/*
-          <div>
-            <Button
-              type="button"
-              color={showChangeDate ? '' : 'primary'}
-              onClick={this.handleToggleDateClick}
-              className={styles.toggleButton}>
-              {showChangeDate ? 'Cancel' : 'Change Training Date'}
-            </Button>
-          </div>
-          {showChangeDate && (
-            <ChangeDate
-              date={date}
-              time={time}
-              courses={courses}
-              onSave={onSave}
-              onCancel={this.handleToggleDateClick}
-              times={times}
-              loadTimes={loadTimes}
-            />
-          )}
-          */}
+
+          <ChangeDate
+            date={date}
+            time={time}
+            courses={courses}
+            onSave={onSave}
+            onCancel={this.handleToggleDateClick}
+            times={times}
+            loadTimes={loadTimes}
+          />
+
           {!showChangeDate && (
             <div>
               <Row>
