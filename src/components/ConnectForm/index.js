@@ -74,6 +74,7 @@ export function ConnectSelect({
   name,
   placeholder,
   options,
+  valueArray,
   labelField = 'name',
   valueField = 'id',
   disabled,
@@ -81,6 +82,10 @@ export function ConnectSelect({
   basic,
   textStyle = false
 }) {
+  if (!options) {
+    options = valueArray
+  }
+
   return (
     <div className={styles.formGroup}>
       {label && (
@@ -89,6 +94,7 @@ export function ConnectSelect({
         </label>
       )}
       <select
+        defaultValue={placeholder && ''}
         className={classnames(
           styles.select,
           basic && styles.basic,
@@ -100,7 +106,8 @@ export function ConnectSelect({
         onChange={e =>
           onChange(
             e.target.value,
-            e.target.options[e.target.selectedIndex].innerText
+            e.target.options[e.target.selectedIndex].innerText,
+            e.target.name
           )
         }
         disabled={disabled}
