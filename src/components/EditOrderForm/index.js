@@ -29,8 +29,13 @@ class EditOrderForm extends React.Component {
 
     this.handleSave = this.handleSave.bind(this)
     this.handleToggleDateClick = this.handleToggleDateClick.bind(this)
-
+    this.handleConfirmation = this.handleConfirmation.bind(this)
     this.handleChange = this.handleChange.bind(this)
+  }
+
+  handleConfirmation() {
+    const { order } = this.state
+    this.props.sendEmailConfirmation(order.order.friendly_id)
   }
 
   handleChange(typeName, value) {
@@ -69,7 +74,7 @@ class EditOrderForm extends React.Component {
   }
 
   render() {
-    let { onCancel } = this.props
+    let { onCancel, isSending } = this.props
     const { showChangeDate, isChanged } = this.state
 
     if (!this.state.order.order || !this.state.order.customer) {
@@ -207,6 +212,15 @@ class EditOrderForm extends React.Component {
                 </Col>
               </Row>
               */}
+              <div className={styles.comms}>
+                <Button
+                  disabled={isSending}
+                  color="primary"
+                  outline
+                  onClick={this.handleConfirmation}>
+                  Send Confirmation
+                </Button>
+              </div>
               <div>
                 <Button
                   type="submit"
