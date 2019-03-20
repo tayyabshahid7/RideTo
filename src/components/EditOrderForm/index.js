@@ -85,7 +85,7 @@ class EditOrderForm extends React.Component {
 
     const { direct_friendly_id, payment_status } = this.state.order.order
 
-    const { bike_type, full_licence_type } = this.state.order
+    const { bike_type, full_licence_type, status } = this.state.order
 
     const isFullLicence = this.state.order.course_type.startsWith(
       'FULL_LICENCE'
@@ -133,7 +133,7 @@ class EditOrderForm extends React.Component {
                 <Col sm="8">
                   <ConnectSelect
                     name="bike_type"
-                    value={bike_type}
+                    selected={bike_type}
                     label="Bike hire"
                     options={BikeHires}
                     noSelectOption
@@ -152,7 +152,7 @@ class EditOrderForm extends React.Component {
                   <Col sm="8">
                     <ConnectSelect
                       name="full_licence_type"
-                      value={full_licence_type}
+                      selected={full_licence_type}
                       label="Licence Type *"
                       options={FullLicenceTypes}
                       required
@@ -171,7 +171,7 @@ class EditOrderForm extends React.Component {
                   <ConnectSelect
                     label="Training status"
                     options={getTrainingStatusOptions()}
-                    selected={3}
+                    selected={status}
                     name="status"
                     basic
                     onChange={value => {
@@ -182,7 +182,7 @@ class EditOrderForm extends React.Component {
                 <Col sm="6">
                   <ConnectSelect
                     name="order.payment_status"
-                    value={payment_status}
+                    selected={payment_status}
                     label="Payment status"
                     options={getPaymentOptions()}
                     noSelectOption

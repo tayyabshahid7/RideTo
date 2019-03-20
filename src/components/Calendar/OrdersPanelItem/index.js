@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 // import { Button } from 'reactstrap'
 // import { BikeHires, getTitleFor } from 'common/info'
 
-import classnames from 'classnames'
-
 import styles from './style.scss'
 
 const OrdersPanelItem = ({
@@ -21,7 +19,9 @@ const OrdersPanelItem = ({
           {training.direct_friendly_id}
         </button>
       </div>
+      {/* TODO PRODEV-1112 needs BACKEND
       <div className={classnames(styles.col, styles.bikeType)}>Manual</div>
+      */}
       <div className={styles.name}>
         <Link to={`/customers/${training.customer_id}`}>
           {training.customer_name}

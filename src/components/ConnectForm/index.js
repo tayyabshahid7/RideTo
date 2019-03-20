@@ -128,7 +128,11 @@ export function ConnectLabeledContent({ label, children, disabled, basic }) {
     <div className={styles.formGroup}>
       {label && <label className={styles.label}>{label}</label>}
       <div
-        className={classnames(styles.input, basic && styles.basic)}
+        className={classnames(
+          styles.input,
+          styles.plainText,
+          basic && styles.basic
+        )}
         disabled={disabled}>
         {children}
       </div>

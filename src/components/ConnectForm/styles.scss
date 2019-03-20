@@ -91,6 +91,11 @@ select {
   }
 }
 
+.plainText {
+  display: flex;
+  align-items: center;
+}
+
 .button {
   height: 44px;
   min-width: 90px;
