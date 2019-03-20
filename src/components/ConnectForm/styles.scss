@@ -1,5 +1,6 @@
 .formGroup {
   margin-bottom: 1.5rem;
+  font-size: 14px;
 }
 
 .label {
@@ -26,11 +27,49 @@
     border-bottom-color: var(--primary-color);
   }
 
-  &:disabled,
-  &[disabled] {
+  &:disabled {
     background-color: transparent;
     // border-bottom-color: transparent;
   }
+}
+
+input {
+  &.input {
+    &.basic {
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+  }
+}
+
+select {
+  &.select {
+    &.basic {
+      appearance: menulist-button;
+    }
+
+    &:not(:disabled) {
+      appearance: menulist-button;
+    }
+
+    &.textStyle {
+      appearance: none;
+
+      &.basic {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    &.textStyle:focus:not(:disabled) {
+      appearance: menulist-button;
+    }
+  }
+}
+
+.basic {
+  height: 30px;
+  border-bottom: 0;
 }
 
 .ageInputGroup {
@@ -55,6 +94,7 @@
 .button {
   height: 44px;
   min-width: 90px;
+  font-size: 14px;
   font-weight: bold;
   color: #fff;
   background-color: var(--primary-color);
@@ -62,11 +102,21 @@
   border: 0;
   cursor: pointer;
 
+  &:hover {
+    color: #ffffff;
+    background-color: #25ae92;
+    border-color: #23a489;
+  }
+
   &:disabled {
     opacity: 0.5;
     pointer-events: none;
     cursor: default;
   }
+}
+
+.button + .button {
+  margin-left: 1rem;
 }
 
 .buttonPrimary {

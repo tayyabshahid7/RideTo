@@ -11,7 +11,8 @@ export function ConnectInput({
   id,
   name,
   disabled,
-  required
+  required,
+  basic
 }) {
   return (
     <div className={styles.formGroup}>
@@ -20,7 +21,7 @@ export function ConnectInput({
       </label>
       <input
         name={name}
-        className={styles.input}
+        className={classnames(styles.input, basic && styles.basic)}
         id={id || name}
         type={type}
         value={value}
@@ -39,7 +40,8 @@ export function ConnectAgeInput({
   id,
   name,
   disabled,
-  required
+  required,
+  basic
 }) {
   return (
     <div className={styles.formGroup}>
@@ -49,7 +51,7 @@ export function ConnectAgeInput({
       <div className={styles.ageInputGroup}>
         <input
           name={name}
-          className={styles.input}
+          className={classnames(styles.input, basic && styles.basic)}
           id={id || name}
           type="date"
           value={value}
@@ -74,7 +76,9 @@ export function ConnectSelect({
   labelField = 'name',
   valueField = 'id',
   disabled,
-  required
+  required,
+  basic,
+  textStyle = false
 }) {
   return (
     <div className={styles.formGroup}>
@@ -84,7 +88,11 @@ export function ConnectSelect({
         </label>
       )}
       <select
-        className={styles.select}
+        className={classnames(
+          styles.select,
+          basic && styles.basic,
+          textStyle && styles.textStyle
+        )}
         name={name}
         id={id || name}
         value={selected}
@@ -115,11 +123,13 @@ export function ConnectSelect({
   )
 }
 
-export function ConnectLabeledContent({ label, children, disabled }) {
+export function ConnectLabeledContent({ label, children, disabled, basic }) {
   return (
     <div className={styles.formGroup}>
       {label && <label className={styles.label}>{label}</label>}
-      <div className={styles.input} disabled={disabled}>
+      <div
+        className={classnames(styles.input, basic && styles.basic)}
+        disabled={disabled}>
         {children}
       </div>
     </div>

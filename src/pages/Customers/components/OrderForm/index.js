@@ -192,7 +192,7 @@ class OrderForm extends React.Component {
               />
             </Col>
             <Col sm="4">
-              <ConnectLabeledContent label="Trining Date" disabled>
+              <ConnectLabeledContent label="Training Date" disabled>
                 <a
                   className={styles.trainingDateLink}
                   href={`/calendar/${trainingDate.format('YYYY-MM-DD')}`}>

@@ -1,12 +1,17 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import styles from './styles.scss'
-import { Button, Row, Col, Form, FormGroup, Label } from 'reactstrap'
-import AgeInput from 'components/AgeInput'
-import InputTextGroup from 'components/Forms/InputTextGroup'
-import InputSelectGroup from 'components/Forms/InputSelectGroup'
+import { Row, Col, Form } from 'reactstrap'
+
+import {
+  ConnectSelect,
+  ConnectLabeledContent,
+  Button
+} from 'components/ConnectForm'
+
 import { BikeHires, formatBikeConstant, FullLicenceTypes } from 'common/info'
-import { getPaymentOptions } from 'services/order'
-import ChangeDate from './ChangeDate/'
+import { getPaymentOptions, getTrainingStatusOptions } from 'services/order'
+// import ChangeDate from './ChangeDate/'
 
 class EditOrderForm extends React.Component {
   constructor(props) {
@@ -18,26 +23,33 @@ class EditOrderForm extends React.Component {
             bike_type: formatBikeConstant(props.order.bike_type)
           }
         : {},
-      showChangeDate: false
+      showChangeDate: false,
+      isChanged: false
     }
 
     this.handleSave = this.handleSave.bind(this)
-    this.handleChangeRawEvent = this.handleChangeRawEvent.bind(this)
     this.handleToggleDateClick = this.handleToggleDateClick.bind(this)
+
+    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleChangeRawEvent(event) {
-    let type = event.target.name.split('.')[0]
-    let name = event.target.name.split('.')[1]
-    let { order } = this.state
+  handleChange(typeName, value) {
+    const { order } = this.state
+    const newOrder = { ...order }
+
+    let type = typeName.split('.')[0]
+    let name = typeName.split('.')[1]
 
     if (!name) {
-      order[type] = event.target.value
+      newOrder[type] = value
     } else {
-      order[type][name] = event.target.value
+      newOrder[type][name] = value
     }
 
-    this.setState({ order })
+    this.setState({
+      order: { ...newOrder },
+      isChanged: true
+    })
   }
 
   async handleSave(event) {
@@ -57,31 +69,14 @@ class EditOrderForm extends React.Component {
   }
 
   render() {
-    let {
-      onCancel,
-      info,
-      courses,
-      date,
-      time,
-      onSave,
-      loadTimes,
-      times
-    } = this.props
-    const { showChangeDate } = this.state
+    let { onCancel } = this.props
+    const { showChangeDate, isChanged } = this.state
 
     if (!this.state.order.order || !this.state.order.customer) {
       return null
     }
 
-    const {
-      first_name,
-      last_name,
-      phone,
-      email,
-      birthdate,
-      licence_number,
-      riding_experience
-    } = this.state.order.customer
+    const { first_name, last_name, id } = this.state.order.customer
 
     const { direct_friendly_id, payment_status } = this.state.order.order
 
@@ -95,166 +90,135 @@ class EditOrderForm extends React.Component {
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave}>
-          <Row>
-            <Col>
-              <div className={styles.header}>
-                <h4>EDIT {direct_friendly_id}</h4>
-                <Button
-                  type="button"
-                  color={showChangeDate ? '' : 'primary'}
-                  onClick={this.handleToggleDateClick}
-                  className={styles.toggleButton}>
-                  {showChangeDate ? 'Cancel' : 'Change Training Date'}
-                </Button>
-              </div>
-              {showChangeDate && (
-                <ChangeDate
-                  date={date}
-                  time={time}
-                  courses={courses}
-                  onSave={onSave}
-                  onCancel={this.handleToggleDateClick}
-                  times={times}
-                  loadTimes={loadTimes}
-                />
-              )}
-            </Col>
-          </Row>
+          <div className={styles.header}>
+            <h4>Edit Order {direct_friendly_id}</h4>
+          </div>
+          {/*
+          <div>
+            <Button
+              type="button"
+              color={showChangeDate ? '' : 'primary'}
+              onClick={this.handleToggleDateClick}
+              className={styles.toggleButton}>
+              {showChangeDate ? 'Cancel' : 'Change Training Date'}
+            </Button>
+          </div>
+          {showChangeDate && (
+            <ChangeDate
+              date={date}
+              time={time}
+              courses={courses}
+              onSave={onSave}
+              onCancel={this.handleToggleDateClick}
+              times={times}
+              loadTimes={loadTimes}
+            />
+          )}
+          */}
           {!showChangeDate && (
             <div>
+              <ConnectLabeledContent label="Customer" disabled basic>
+                <b>
+                  <Link to={`/customers/${id}`}>
+                    {first_name} {last_name}
+                  </Link>
+                </b>
+              </ConnectLabeledContent>
               <Row>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="customer.first_name"
-                    value={first_name}
-                    label="First Name *"
-                    className="form-group"
-                    type="text"
-                    onChange={this.handleChangeRawEvent}
+                <Col sm="8">
+                  <ConnectSelect
+                    name="bike_type"
+                    value={bike_type}
+                    label="Bike hire"
+                    options={BikeHires}
+                    noSelectOption
                     required
+                    valueField="value"
+                    labelField="title"
+                    basic
+                    onChange={value => {
+                      this.handleChange('bike_type', value)
+                    }}
                   />
-                </Col>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="customer.last_name"
-                    value={last_name}
-                    label="Surname *"
-                    className="form-group"
-                    type="text"
-                    onChange={this.handleChangeRawEvent}
-                    required
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="customer.phone"
-                    value={phone}
-                    label="Mobile"
-                    className="form-group"
-                    type="text"
-                    onChange={this.handleChangeRawEvent}
-                  />
-                </Col>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="customer.email"
-                    value={email}
-                    label="Email *"
-                    className="form-group"
-                    type="email"
-                    onChange={this.handleChangeRawEvent}
-                    required
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <FormGroup>
-                    <Label>Birth Date *</Label>
-                    <AgeInput
-                      name="customer.birthdate"
-                      value={birthdate}
-                      onChange={this.handleChangeRawEvent}
-                    />
-                  </FormGroup>
                 </Col>
               </Row>
               {isFullLicence && (
                 <Row>
-                  <Col sm="6">
-                    <FormGroup>
-                      <InputSelectGroup
-                        name="full_licence_type"
-                        value={full_licence_type}
-                        label="Licence Type *"
-                        valueArray={FullLicenceTypes}
-                        onChange={this.handleChangeRawEvent}
-                        required
-                      />
-                    </FormGroup>
+                  <Col sm="8">
+                    <ConnectSelect
+                      name="full_licence_type"
+                      value={full_licence_type}
+                      label="Licence Type *"
+                      options={FullLicenceTypes}
+                      required
+                      valueField="value"
+                      labelField="title"
+                      basic
+                      onChange={value => {
+                        this.handleChange('full_licence_type', value)
+                      }}
+                    />
                   </Col>
                 </Row>
               )}
               <Row>
                 <Col sm="6">
-                  <InputTextGroup
-                    name="customer.licence_number"
-                    value={licence_number}
-                    label="License Number"
-                    className="form-group"
-                    type="text"
-                    onChange={this.handleChangeRawEvent}
+                  <ConnectSelect
+                    label="Training status"
+                    options={getTrainingStatusOptions()}
+                    selected={3}
+                    name="status"
+                    basic
+                    onChange={value => {
+                      this.handleChange('status', value)
+                    }}
                   />
                 </Col>
                 <Col sm="6">
-                  <InputSelectGroup
+                  <ConnectSelect
                     name="order.payment_status"
                     value={payment_status}
-                    label="Payment Status"
-                    valueArray={getPaymentOptions()}
+                    label="Payment status"
+                    options={getPaymentOptions()}
                     noSelectOption
-                    onChange={this.handleChangeRawEvent}
                     required
                     valueField="id"
-                    titleField="name"
+                    labelField="name"
+                    basic
+                    onChange={value => {
+                      this.handleChange('order.payment_status', value)
+                    }}
                   />
                 </Col>
               </Row>
+              {/* TODO PRODEV-1112 Needs BACKEND
               <Row>
                 <Col sm="6">
-                  <InputSelectGroup
-                    name="customer.riding_experience"
-                    value={riding_experience}
-                    label="Riding Experience"
-                    valueArray={info.ridingExperiences}
-                    noSelectOption
-                    onChange={this.handleChangeRawEvent}
-                  />
+                  <ConnectLabeledContent label="Price paid" disabled basic>
+                    {`£${parseFloat(0).toFixed(2)}`}
+                  </ConnectLabeledContent>
                 </Col>
                 <Col sm="6">
-                  <InputSelectGroup
-                    name="bike_type"
-                    value={bike_type}
-                    label="Bike Hire"
-                    valueArray={BikeHires}
-                    noSelectOption
-                    onChange={this.handleChangeRawEvent}
-                    required
-                  />
+                  <ConnectLabeledContent label="Stripe link" disabled basic>
+                    <a href={0} target="_blank" rel="noopener noreferrer">
+                      Open
+                    </a>
+                  </ConnectLabeledContent>
                 </Col>
               </Row>
-              <Row>
-                <Col className="mt-3 text-right">
-                  <Button type="submit" color="primary" className="mr-2">
-                    Save
-                  </Button>
-                  <Button color="" onClick={onCancel}>
-                    Cancel
-                  </Button>
-                </Col>
-              </Row>
+              */}
+              <div>
+                <Button
+                  type="submit"
+                  color="primary"
+                  className="mr-2"
+                  disabled={!isChanged}>
+                  Save
+                </Button>
+                <Button color="white" onClick={onCancel}>
+                  Cancel
+                </Button>
+              </div>
             </div>
           )}
         </Form>
