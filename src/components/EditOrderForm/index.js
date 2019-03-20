@@ -74,7 +74,7 @@ class EditOrderForm extends React.Component {
   }
 
   render() {
-    let { onCancel, isSending } = this.props
+    let { onCancel, isSending, onDelete } = this.props
     const { showChangeDate, isChanged } = this.state
 
     if (!this.state.order.order || !this.state.order.customer) {
@@ -82,11 +82,8 @@ class EditOrderForm extends React.Component {
     }
 
     const { first_name, last_name, id } = this.state.order.customer
-
     const { direct_friendly_id, payment_status } = this.state.order.order
-
     const { bike_type, full_licence_type, status } = this.state.order
-
     const isFullLicence = this.state.order.course_type.startsWith(
       'FULL_LICENCE'
     )
@@ -95,8 +92,22 @@ class EditOrderForm extends React.Component {
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave}>
-          <div className={styles.header}>
-            <h4>Edit Order {direct_friendly_id}</h4>
+          <div className={styles.topSection}>
+            <div>
+              <div className={styles.header}>
+                <h4>Edit Order {direct_friendly_id}</h4>
+              </div>
+              <ConnectLabeledContent label="Customer" disabled basic>
+                <b>
+                  <Link to={`/customers/${id}`}>
+                    {first_name} {last_name}
+                  </Link>
+                </b>
+              </ConnectLabeledContent>
+            </div>
+            <Button color="danger" onClick={onDelete}>
+              Delete
+            </Button>
           </div>
           {/*
           <div>
@@ -122,13 +133,6 @@ class EditOrderForm extends React.Component {
           */}
           {!showChangeDate && (
             <div>
-              <ConnectLabeledContent label="Customer" disabled basic>
-                <b>
-                  <Link to={`/customers/${id}`}>
-                    {first_name} {last_name}
-                  </Link>
-                </b>
-              </ConnectLabeledContent>
               <Row>
                 <Col sm="8">
                   <ConnectSelect

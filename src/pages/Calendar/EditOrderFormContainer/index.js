@@ -75,7 +75,8 @@ class EditOrderFormContainer extends React.Component {
       courses,
       times,
       sendEmailConfirmation,
-      isSending
+      isSending,
+      onDelete
     } = this.props
 
     return (
@@ -93,6 +94,7 @@ class EditOrderFormContainer extends React.Component {
             loadTimes={this.handleLoadTimes}
             sendEmailConfirmation={sendEmailConfirmation}
             isSending={isSending}
+            onDelete={onDelete}
             // handleChangeOrderDate={this.handleChangeOrderDate}
           />
         )}

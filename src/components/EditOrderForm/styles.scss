@@ -9,6 +9,7 @@
   margin-bottom: 0.5rem;
 
   h4 {
+    margin-bottom: 1.5rem;
     font-size: 18px;
     font-weight: bold;
     color: #707070;
@@ -17,6 +18,11 @@
 
 button.toggleButton {
   font-size: 12px;
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
 }
 
 .comms {

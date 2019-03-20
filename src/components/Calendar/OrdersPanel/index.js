@@ -129,6 +129,7 @@ class OrdersPanel extends React.Component {
                     courseSpaces={course.spaces}
                     date={course.date}
                     time={course.time}
+                    onDelete={() => this.handleDeleteTraining(training)}
                   />
                 )}
               </React.Fragment>

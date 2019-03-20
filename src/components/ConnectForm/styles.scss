@@ -136,7 +136,12 @@ select {
 
 .buttonDanger {
   color: #fff;
-  background-color: var(--danger);
+  background-color: #fe9898;
+
+  &:hover,
+  &:focus {
+    background-color: darken(#fe9898, 10%);
+  }
 }
 
 .buttonLink {
