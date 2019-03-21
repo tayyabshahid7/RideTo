@@ -1,0 +1,23 @@
+.wrapper {
+  margin-top: 0.75rem;
+  margin-bottom: 1em;
+}
+
+.list {
+  padding: 0;
+  list-style: none;
+
+  li {
+    font-size: 17px;
+
+    + li {
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.tick {
+  margin-right: 0.25rem;
+  color: var(--primary-color);
+  font-size: 1.3rem;
+}

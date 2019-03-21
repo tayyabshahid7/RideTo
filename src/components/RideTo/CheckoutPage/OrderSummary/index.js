@@ -6,15 +6,17 @@ import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
 import MapComponent from 'components/RideTo/MapComponent'
 import Checkbox from 'components/Checkbox'
-import Input from 'components/RideTo/Input'
+// import Input from 'components/RideTo/Input'
 import Loading from 'components/Loading'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
-import { getExpectedPrice, getBikeHireDetail } from 'services/order'
-import { Button } from 'reactstrap'
+// import { getExpectedPrice, getBikeHireDetail } from 'services/order'
+import { getExpectedPrice } from 'services/order'
+// import { Button } from 'reactstrap'
 import { SHORT_LICENCE_TYPES } from 'common/constants'
 import { checkAllowedDate } from 'services/date'
+import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 
 class OrderSummary extends Component {
   constructor(props) {
@@ -64,6 +66,7 @@ class OrderSummary extends Component {
       trainings
     } = this.props
     const { courseType, date, bike_hire } = checkoutData
+    const { requested_time } = trainings[0]
     const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
     const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
     const isFullLicence = courseType === 'FULL_LICENCE'
@@ -97,31 +100,44 @@ class OrderSummary extends Component {
               return null
             }
           })}
-        {!isFullLicence && this.renderRow('Course', getCourseTitle(courseType))}
-        {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
-        {!isFullLicence &&
-          this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
-        {this.renderRow(
-          'Location',
+
+        {!isFullLicence && (
+          <div className={styles.coursePrice}>
+            <div>{getCourseTitle(courseType)}</div>
+            {priceInfo.training_price && (
+              <div>{`£${(priceInfo.training_price / 100.0).toFixed(2)}`}</div>
+            )}
+          </div>
+        )}
+
+        {!isFullLicence && (
+          <div className={styles.dateLimit}>
+            <div>
+              <div>{moment(date).format('ddd D MMMM')}</div>
+              <div className={styles.requestedTime}>{requested_time}</div>
+            </div>
+            <div className={styles.limitedWarning}>Limited spaces left</div>
+          </div>
+        )}
+
+        <div>
           <button className={styles.mapButton} onClick={handleMapButtonClick}>
-            {`${supplier.town}, ${supplier.postcode}`}
+            {`${supplier.address_1}, ${supplier.postcode}`}
           </button>
-        )}
-        {showMap && (
-          <MapComponent
-            userLocation={{ lat, lng }}
-            width={'auto'}
-            height={200}
-            checkout
-          />
-        )}
-        {!isFullLicence && priceInfo.training_price
-          ? this.renderRow(
-              'Training',
-              `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
-              100
-            )
-          : ''}
+          {showMap && (
+            <MapComponent
+              userLocation={{ lat, lng }}
+              width={'auto'}
+              height={200}
+              checkout
+            />
+          )}
+        </div>
+
+        <OrderIncluded bikeHire={bike_hire} />
+
+        {/*this.renderRow('Bike hire', getBikeHireDetail(bike_hire))*/}
+
         {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no'
           ? this.renderRow(
               'Bike Hire Cost',
@@ -154,7 +170,7 @@ class OrderSummary extends Component {
     const { addons } = checkoutData
     let price = getExpectedPrice(priceInfo, addons, checkoutData)
     return (
-      <div className={styles.rowContainer}>
+      <div>
         {priceInfo.discount
           ? this.renderRow(
               'Discount',
@@ -162,12 +178,12 @@ class OrderSummary extends Component {
               200
             )
           : ''}
-        {this.renderRow(
-          'Order Total',
-          `£${(price / 100).toFixed(2)}`,
-          100,
-          true
-        )}
+        <div className={styles.totalPriceRow}>
+          <div className={styles.priceLabel}>Total:</div>
+          <div className={styles.totalPrice}>{`£${(price / 100).toFixed(
+            2
+          )}`}</div>
+        </div>
       </div>
     )
   }
@@ -177,27 +193,25 @@ class OrderSummary extends Component {
       onSubmit,
       saving,
       instantBook,
-      voucher_code,
-      handleVoucherApply,
-      onChange,
-      loadingPrice,
+      // voucher_code,
+      // handleVoucherApply,
+      // onChange,
+      // loadingPrice,
       details,
       onDetailChange,
       errors = {},
       checkoutData
     } = this.props
-    const { showPromo } = this.state
+    // const { showPromo } = this.state
     let confirmDisabled = saving || !details.accept_terms || !this.isValidDate()
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.container}>
         <div className={styles.hiddenOnMobile}>
-          <div className={styles.title}>Order Summary</div>
+          <div className={styles.title}>Your Order</div>
           {this.renderCourseInformation()}
-          <hr />
         </div>
-        {this.renderPrices()}
         <div className={styles.acceptTerms}>
           <Checkbox
             checked={details.accept_terms}
@@ -260,6 +274,7 @@ class OrderSummary extends Component {
             </div>
           </Checkbox>
         </div>
+        {this.renderPrices()}
         {errors.paymentError && (
           <div className={styles.paymentError}>
             <strong>{errors.paymentError}</strong>
@@ -282,6 +297,8 @@ class OrderSummary extends Component {
             to the results page to pick a later date.
           </div>
         )}
+
+        {/*
         <div className={styles.promoWrapper}>
           {showPromo ? (
             <div className={styles.promoContainer}>
@@ -311,31 +328,36 @@ class OrderSummary extends Component {
             </div>
           )}
         </div>
-        {!instantBook && (
-          <div id="terms-conditions-section" className={styles.information}>
-            <p>
-              You won't be charged until your booking is confirmed, we'll just
-              reserve the amount on your card. Bookings require confirmation
-              from the instructor, usually within 3 working hours.
-            </p>
-          </div>
-        )}
-        <hr className={styles.hr} />
-        <div className={styles.guaranteeInfo}>
-          <div className={styles.guaranteeLogo}>
-            <img src={IconMoneyBack} alt="money-back" />
-          </div>
-          <div className={styles.guarenteeContent}>
-            <div className={styles.guarantee1}>
-              Cancel with 3 working days notice to get a full refund.
+        */}
+
+        <div className={styles.sectionFooter}>
+          {' '}
+          {!instantBook && (
+            <div id="terms-conditions-section" className={styles.information}>
+              <p>
+                You won't be charged until your booking is confirmed, we'll just
+                reserve the amount on your card. Bookings require confirmation
+                from the instructor, usually within 3 working hours.
+              </p>
             </div>
-            <a
-              href="https://www.rideto.com/terms#cancellations"
-              className={styles.guarantee2}
-              target="_blank"
-              rel="noopener noreferrer">
-              More Details
-            </a>
+          )}
+          <hr className={styles.hr} />
+          <div className={styles.guaranteeInfo}>
+            <div className={styles.guaranteeLogo}>
+              <img src={IconMoneyBack} alt="money-back" />
+            </div>
+            <div className={styles.guarenteeContent}>
+              <div className={styles.guarantee1}>
+                Cancel with 3 working days notice to get a full refund.
+              </div>
+              <a
+                href="https://www.rideto.com/terms#cancellations"
+                className={styles.guarantee2}
+                target="_blank"
+                rel="noopener noreferrer">
+                More Details
+              </a>
+            </div>
           </div>
         </div>
       </div>
