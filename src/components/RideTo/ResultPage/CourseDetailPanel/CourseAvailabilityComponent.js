@@ -9,7 +9,7 @@ import { fetchWidgetCourses } from 'services/course'
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
     super(props)
-    let date = new Date(this.props.date) || new Date()
+    let date = this.props.date ? new Date(this.props.date) : new Date()
     this.state = {
       calendar: {
         year: date.getFullYear(),

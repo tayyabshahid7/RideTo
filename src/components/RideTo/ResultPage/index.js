@@ -43,9 +43,7 @@ class ResultPageContainer extends Component {
     ]
 
     this.state = {
-      date: moment(new Date())
-        .add(3, 'day')
-        .format(DATE_FORMAT),
+      date: null,
       sortByOption: SORTBY.DISTANCE,
       userLocation: {
         lat: 51.711712,
