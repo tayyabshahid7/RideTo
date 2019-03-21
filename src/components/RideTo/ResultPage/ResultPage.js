@@ -122,8 +122,8 @@ class ResultPage extends Component {
     if (pathname.startsWith('/cbt-training/')) {
       postcode = pathname.replace('/cbt-training/', '')
       actualCourseType = 'LICENCE_CBT'
-    } else if (pathname.startsWith('/motorcycle-license/')) {
-      postcode = pathname.replace('/motorcycle-license/', '')
+    } else if (pathname.startsWith('/motorcycle-licence/')) {
+      postcode = pathname.replace('/motorcycle-licence/', '')
       actualCourseType = 'FULL_LICENCE'
     } else if (qs.postcode) {
       postcode = qs.postcode.toUpperCase()
