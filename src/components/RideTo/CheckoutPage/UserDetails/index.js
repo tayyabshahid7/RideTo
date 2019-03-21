@@ -11,9 +11,7 @@ import { Row, Col } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import MapComponent from 'components/RideTo/MapComponent'
-import Button from 'components/RideTo/Button'
 import Input from 'components/RideTo/Input'
-import AddressForm from 'components/AddressForm'
 import { RidingExperiences, RiderTypes } from 'common/info'
 import Select from 'components/RideTo/Select'
 import { getCurrentLicenceOptions } from 'services/customer'
@@ -94,7 +92,7 @@ class UserDetails extends Component {
       handleMapButtonClick,
       trainings
     } = this.props
-    const { addons, courseType, date, bike_hire } = checkoutData
+    const { courseType, date, bike_hire } = checkoutData
     const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
     const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
     const isFullLicence = courseType === 'FULL_LICENCE'
@@ -160,6 +158,9 @@ class UserDetails extends Component {
               101
             )
           : ''}
+
+        {/*
+
         {addons.map((addon, index) =>
           this.renderRow(
             addon.selectedSize
@@ -173,20 +174,14 @@ class UserDetails extends Component {
             index
           )
         )}
+
+        */}
       </div>
     )
   }
 
   renderUserInfo() {
-    const {
-      details,
-      manualAddress,
-      errors = {},
-      onChange,
-      onPostalCodeSubmit,
-      postcodeLookingup,
-      checkoutData: { addons }
-    } = this.props
+    const { details, errors = {} } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
 
@@ -346,6 +341,9 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.rider_type}</div>
           )}
         </div>
+
+        {/*
+
         {addons.length > 0 && (
           <React.Fragment>
             <div id="checkout-delivery-address" className={styles.title}>
@@ -400,6 +398,8 @@ class UserDetails extends Component {
             )}
           </React.Fragment>
         )}
+
+        */}
       </div>
     )
   }

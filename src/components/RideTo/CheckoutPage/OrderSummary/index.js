@@ -63,7 +63,7 @@ class OrderSummary extends Component {
       handleMapButtonClick,
       trainings
     } = this.props
-    const { addons, courseType, date, bike_hire } = checkoutData
+    const { courseType, date, bike_hire } = checkoutData
     const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
     const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
     const isFullLicence = courseType === 'FULL_LICENCE'
@@ -129,6 +129,8 @@ class OrderSummary extends Component {
               101
             )
           : ''}
+
+        {/*
         {addons.map((addon, index) =>
           this.renderRow(
             addon.selectedSize
@@ -142,6 +144,7 @@ class OrderSummary extends Component {
             index
           )
         )}
+      */}
       </div>
     )
   }

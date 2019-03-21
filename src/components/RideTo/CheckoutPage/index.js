@@ -5,6 +5,18 @@ import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
 import { getSupplier, isInstantBook } from 'services/page'
 
+const POM_NAME = 'Peace Of Mind Policy'
+
+function createPOM() {
+  const pom = window.RIDETO_PAGE.checkout.addons.find(
+    addon => addon.name === POM_NAME
+  )
+  pom.price = pom.discount_price
+  pom.selectedSize = pom.sizes[0]
+
+  return pom
+}
+
 class CheckoutPageContainer extends Component {
   constructor(props) {
     super(props)
@@ -27,6 +39,8 @@ class CheckoutPageContainer extends Component {
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
+
+    this.POM = createPOM()
   }
 
   handleSetDate(date) {
@@ -35,6 +49,30 @@ class CheckoutPageContainer extends Component {
 
   handeUpdateOption(data) {
     this.setState({ ...data })
+  }
+
+  handleAddPOM() {
+    const { checkoutData } = this.state
+    const newCheckoutData = { ...checkoutData }
+
+    if (!newCheckoutData.addons.some(addon => addon.name === POM_NAME)) {
+      newCheckoutData.addons = [...newCheckoutData.addons, this.POM]
+    }
+
+    this.setState({
+      checkoutData: newCheckoutData
+    })
+  }
+
+  handleRemovePOM() {
+    const { checkoutData } = this.state
+
+    this.setState({
+      checkoutData: {
+        ...checkoutData,
+        addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
+      }
+    })
   }
 
   render() {
