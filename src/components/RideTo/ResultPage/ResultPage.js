@@ -116,13 +116,21 @@ class ResultPage extends Component {
 
   handleCourseChange(newCourseType) {
     const qs = parseQueryString(window.location.search.slice(1))
+    const { pathname } = window.location
     let postcode = ''
-    if (window.location.pathname.startsWith('/cbt-training/')) {
-      postcode = window.location.pathname.replace('/cbt-training/', '')
+    let actualCourseType = ''
+    if (pathname.startsWith('/cbt-training/')) {
+      postcode = pathname.replace('/cbt-training/', '')
+      actualCourseType = 'LICENCE_CBT'
+    } else if (pathname.startsWith('/motorcycle-licence/')) {
+      postcode = pathname.replace('/motorcycle-licence/', '')
+      actualCourseType = 'FULL_LICENCE'
     } else if (qs.postcode) {
       postcode = qs.postcode.toUpperCase()
+      actualCourseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
+    } else {
+      actualCourseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     }
-    const actualCourseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     if (actualCourseType !== newCourseType) {
       window.location = `/course-location/?postcode=${postcode}&courseType=${newCourseType}`
     }

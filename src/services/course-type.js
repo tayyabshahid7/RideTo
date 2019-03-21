@@ -36,7 +36,7 @@ export const getCourseFaqs = () => {
     },
     {
       question: 'Do I need to take a theory test before my CBT?',
-      answer: `In short, no. The CBT passes you as a learner for 2 years, you don’t need to pass a theory test. However you will have to pass one if you wish to progress to a full motorcycle license.`
+      answer: `In short, no. The CBT passes you as a learner for 2 years, you don’t need to pass a theory test. However you will have to pass one if you wish to progress to a full motorcycle licence.`
     },
     {
       question: 'What can I ride once I complete the CBT?',
