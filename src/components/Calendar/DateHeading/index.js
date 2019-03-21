@@ -12,7 +12,7 @@ const DateHeading = ({ date, title, children, backLink }) => {
         </Link>
       )}
       <div className={styles.dateHeading}>
-        {title ? title : date.format('dddd Do MMMM')}
+        {!date ? null : date.format('dddd Do MMMM')}
         <div className={styles.actions}>{children}</div>
       </div>
     </Fragment>

@@ -196,9 +196,7 @@ class AddOrderItem extends React.Component {
     let {
       onCancel,
       info,
-      course: {
-        pricing: { price }
-      }
+      course: { pricing }
     } = this.props
     const {
       user_first_name,
@@ -221,6 +219,7 @@ class AddOrderItem extends React.Component {
       cardCVCComplete,
       cardPostCodeComplete
     } = this.state
+    const price = pricing && pricing.price
 
     return (
       <div className={styles.container}>

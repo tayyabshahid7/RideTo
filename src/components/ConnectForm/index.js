@@ -99,7 +99,7 @@ export function ConnectSelect({
         </label>
       )}
       <select
-        defaultValue={placeholder && ''}
+        // defaultValue={placeholder && ''}
         className={classnames(
           styles.select,
           basic && styles.basic,
@@ -107,7 +107,7 @@ export function ConnectSelect({
         )}
         name={name}
         id={id || name}
-        value={selected || value}
+        value={selected || value || ''}
         onChange={e => {
           if (raw) {
             onChange(e)

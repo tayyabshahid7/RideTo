@@ -9,6 +9,19 @@ import { ConnectLogo } from '../../assets/icons/'
 // import { Button } from 'reactstrap'
 
 let NavigationBar = ({ history }) => {
+  const { pathname } = history.location
+  const [, first, second] = pathname.split('/')
+  let date
+
+  if (
+    first &&
+    first === 'calendar' &&
+    second &&
+    second.match(/\d{4}-\d{2}-\d{2}/)
+  ) {
+    date = second
+  }
+
   return (
     <nav
       className={classnames(
@@ -76,7 +89,11 @@ let NavigationBar = ({ history }) => {
         </ul>
         <div className={styles.navTools}>
           <Link
-            to={`/calendar/courses/create`}
+            to={
+              date
+                ? `/calendar/courses/create?date=${date}`
+                : `/calendar/courses/create`
+            }
             className={classnames(styles.addCourse)}>
             Add Course
           </Link>

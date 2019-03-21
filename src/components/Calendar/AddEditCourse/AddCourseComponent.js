@@ -64,7 +64,7 @@ class AddCourseComponent extends Component {
 
     return (
       <div className={styles.addCourse}>
-        <DateHeading date={moment(date)} backLink={backLink} />
+        <DateHeading date={date ? moment(date) : null} backLink={backLink} />
 
         <div className={styles.wrapper}>
           <h4 className={styles.addTitle}>Add Course</h4>
