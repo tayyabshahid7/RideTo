@@ -4,7 +4,8 @@ import { Link, NavLink } from 'react-router-dom'
 import UserMenu from '../UserMenu'
 import classnames from 'classnames'
 import styles from './styles.scss'
-import IconRideToLogo from '../../assets/icons/IconRideToLogo'
+// import IconRideToLogo from '../../assets/icons/IconRideToLogo'
+import { ConnectLogo } from '../../assets/icons/'
 // import { Button } from 'reactstrap'
 
 let NavigationBar = ({ history }) => {
@@ -16,7 +17,7 @@ let NavigationBar = ({ history }) => {
       )}>
       <div className={classnames(styles.image)}>
         <Link to="/">
-          <IconRideToLogo className={classnames(styles.logoImage)} />
+          <ConnectLogo className={classnames(styles.logoImage)} />
         </Link>
       </div>
       <button
