@@ -7,6 +7,7 @@ import {
   getDayCourses,
   getDayCourseTimes
 } from 'store/course'
+import * as orderModule from 'store/order'
 import EditOrderForm from 'components/EditOrderForm'
 import Loading from 'components/Loading'
 
@@ -52,15 +53,18 @@ class EditOrderFormContainer extends React.Component {
     return response
   }
 
-  async handleLoadTimes(date) {
+  async handleLoadTimes(date, defaultTime) {
     const { schoolId, order, course_type, getDayCourseTimes } = this.props
 
-    await getDayCourseTimes({
-      schoolId,
-      date,
-      course_type,
-      bike_type: order.bike_hire
-    })
+    await getDayCourseTimes(
+      {
+        schoolId,
+        date,
+        course_type,
+        bike_type: order.bike_hire
+      },
+      defaultTime
+    )
   }
 
   render() {
@@ -72,7 +76,10 @@ class EditOrderFormContainer extends React.Component {
       date,
       time,
       courses,
-      times
+      times,
+      sendEmailConfirmation,
+      isSending,
+      onDelete
     } = this.props
 
     return (
@@ -88,6 +95,9 @@ class EditOrderFormContainer extends React.Component {
             courses={courses}
             times={times}
             loadTimes={this.handleLoadTimes}
+            sendEmailConfirmation={sendEmailConfirmation}
+            isSending={isSending}
+            onDelete={onDelete}
             // handleChangeOrderDate={this.handleChangeOrderDate}
           />
         )}
@@ -103,13 +113,15 @@ const mapStateToProps = (state, props) => {
     schoolId: state.auth.schoolId,
     info: state.info,
     courses: state.course.day.courses,
-    times: state.course.times.available
+    times: state.course.times.available,
+    isSending: state.order.isSending
   }
 }
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
+      ...orderModule.actions,
       getSchoolOrder,
       updateOrder,
       getDayCourses,

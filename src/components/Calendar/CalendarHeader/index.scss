@@ -1,9 +1,10 @@
-$h: 50px;
+$h: 20px;
 .container {
   display: flex;
   height: $h;
   line-height: $h;
   flex: 0 0 $h;
+  margin-bottom: 1rem;
 }
 .prev {
   width: 40px;

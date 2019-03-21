@@ -3,7 +3,6 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
   flex: 1 1 auto;
 }
 
@@ -15,6 +14,7 @@
 }
 .overview {
   flex: 0 0 60px;
+  margin-bottom: 1rem;
 }
 
 .calendarTypeInactive,
@@ -61,8 +61,13 @@
 }
 
 .changeCalendarWrapper {
-  margin-top: 25px;
-  font-size: 15px;
+  margin-top: 0.75rem;
+  font-size: 16px;
+
+  @media (min-width: 768px) {
+    display: flex;
+    align-items: center;
+  }
 }
 
 /* ============================

@@ -1,21 +1,20 @@
 .container {
-  overflow-x: auto;
-
   table {
     color: #707070;
     width: 100%;
     text-align: center;
     border-spacing: 0px;
-    border: 1px solid #acacac;
-    min-width: 470px;
-  }
+    // border: 1px solid #acacac;
 
-  th {
-    position: sticky;
-    top: 0px;
-    padding: 10px;
-    background-color: #f6f6f6;
-    border-bottom: 1px solid #acacac;
+    th {
+      position: sticky;
+      top: 0px;
+      padding: 6px;
+      border-top: 0;
+      border-bottom: 1px solid #e4e4e4 !important;
+      font-size: 18px;
+      font-weight: bold;
+    }
   }
 
   .asc::after {
@@ -27,11 +26,18 @@
   }
 
   tr:hover {
-    background-color: #ddf9f3;
+    background-color: transparent;
+  }
+
+  tbody {
+    border: 1px solid #e4e4e4;
   }
 
   td {
-    padding: 10px 0;
+    font-size: 18px;
+    padding: 0.85rem !important;
+    border-top: 0;
+    border-bottom: 1px solid #e4e4e4;
   }
 
   h1 {

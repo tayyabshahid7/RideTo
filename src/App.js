@@ -13,6 +13,7 @@ import history from './history1'
 import 'bootstrap'
 import './bootstrap.scss'
 import './constants.scss'
+import 'typeface-pt-sans'
 import styles from './App.scss'
 
 class App extends Component {

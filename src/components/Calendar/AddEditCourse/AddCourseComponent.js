@@ -64,18 +64,20 @@ class AddCourseComponent extends Component {
 
     return (
       <div className={styles.addCourse}>
-        <DateHeading
-          date={moment(date)}
-          title={date ? null : 'Add Course'}
-          backLink={backLink}
-        />
-        <CourseForm
-          {...rest}
-          isEditable={true}
-          date={date}
-          onSubmit={this.onSave.bind(this)}
-          onSetEditable={isEditable => this.handleSetEditable(isEditable, date)}
-        />
+        <DateHeading date={date ? moment(date) : null} backLink={backLink} />
+
+        <div className={styles.wrapper}>
+          <h4 className={styles.addTitle}>Add Course</h4>
+          <CourseForm
+            {...rest}
+            isEditable={true}
+            date={date}
+            onSubmit={this.onSave.bind(this)}
+            onSetEditable={isEditable =>
+              this.handleSetEditable(isEditable, date)
+            }
+          />
+        </div>
       </div>
     )
   }

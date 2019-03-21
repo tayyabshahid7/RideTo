@@ -12,6 +12,8 @@
   flex: 1 1 auto;
   overflow-y: auto;
 
+  border-bottom: 1px solid #ccc;
+
   &::-webkit-scrollbar {
     display: none;
   }
@@ -22,13 +24,17 @@
     list-style-type: none;
     margin-bottom: 4px;
 
-    width: 14.342%;
+    width: calc(14.2857142857% + 1px);
     padding: 5px;
     box-sizing: border-box;
     border: 1px solid #ccc;
     margin-right: -1px;
     margin-bottom: -1px;
     // height: 180px;
+
+    &:nth-child(7n) {
+      width: calc(14.2857142857%);
+    }
   }
 }
 @media (min-width: 1200px) {

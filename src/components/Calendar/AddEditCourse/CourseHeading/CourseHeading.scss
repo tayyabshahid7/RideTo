@@ -3,18 +3,16 @@
 .courseHeading {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
 .title {
   flex-grow: 1;
-  border: solid 1px var(--dark-color);
-
   display: flex;
   align-items: center;
-
-  color: $grey;
-  border: solid 1px $grey;
-  padding: 4px 8px;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .actions {

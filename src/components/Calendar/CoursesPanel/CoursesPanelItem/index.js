@@ -1,7 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
-import { Button } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
@@ -46,32 +45,32 @@ const CoursesPanelItem = ({
   return (
     <div className={styles.coursesPanelItem}>
       <div className={styles.heading}>
-        <div className={className}>
-          <div>
-            {course.time.substring(0, 5)} | {name}{' '}
-            {isTestCourse &&
-              course.application_reference_number &&
-              `(${course.application_reference_number})`}
-          </div>
-          {isTestCourse && (
-            <div className={styles.testNotes}>
-              <b>{TEST_STATUS_CHOICES[course.status]}</b>
-              <br />
-              {course.test_centre_name}
-              <br />
-              Last day to cancel:{' '}
-              {moment(course.last_date_cancel).format('Do MMM YYYY')}
+        <div className={classnames(styles.container, className)}>
+          <div className={styles.title}>
+            <div>
+              {course.time.substring(0, 5)} | {name}{' '}
+              {isTestCourse &&
+                course.application_reference_number &&
+                `(${course.application_reference_number})`}
             </div>
-          )}
-          {notes && <div className={styles.notes}>{truncated}</div>}
+            {isTestCourse && (
+              <div className={styles.testNotes}>
+                <b>{TEST_STATUS_CHOICES[course.status]}</b>
+                <br />
+                {course.test_centre_name}
+                <br />
+                Last day to cancel:{' '}
+                {moment(course.last_date_cancel).format('Do MMM YYYY')}
+              </div>
+            )}
+            {notes && <div className={styles.notes}>{truncated}</div>}
+          </div>
+          <Link
+            className={styles.editButton}
+            to={`/calendar/${date}/courses/${course.id}/edit`}>
+            Edit
+          </Link>
         </div>
-        <Button
-          tag={Link}
-          outline
-          color="primary"
-          to={`/calendar/${date}/courses/${course.id}/edit`}>
-          Edit
-        </Button>
       </div>
 
       <OrdersPanel

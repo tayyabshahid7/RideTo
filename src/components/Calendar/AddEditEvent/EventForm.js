@@ -1,14 +1,15 @@
 import React from 'react'
 import moment from 'moment'
-import { Button, Row, Col, Form } from 'reactstrap'
+import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-import InputTextGroup from 'components/Forms/InputTextGroup'
 import { DAY_FORMAT2, DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
 import Loading from 'components/Loading'
 import DateHeading from 'components/Calendar/DateHeading'
 import pick from 'lodash/pick'
 
 import { getTimeFromDateTime } from 'utils/helper'
+
+import { ConnectInput, ConnectTextArea, Button } from 'components/ConnectForm'
 
 class EventForm extends React.Component {
   constructor(props) {
@@ -130,7 +131,8 @@ class EventForm extends React.Component {
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="name"
                   value={name}
                   label="Event Name"
@@ -143,7 +145,8 @@ class EventForm extends React.Component {
             </Row>
             <Row>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="startTime"
                   value={startTime}
                   label="Start Time"
@@ -156,7 +159,8 @@ class EventForm extends React.Component {
                 />
               </Col>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="endTime"
                   value={endTime}
                   label="End Time"
@@ -171,7 +175,8 @@ class EventForm extends React.Component {
             </Row>
             <Row>
               <Col>
-                <InputTextGroup
+                <ConnectTextArea
+                  basic
                   name="notes"
                   value={notes}
                   label="Notes"

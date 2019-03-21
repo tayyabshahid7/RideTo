@@ -1,5 +1,6 @@
 import React from 'react'
 import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap'
+import { Button } from 'components/ConnectForm'
 
 const DeleteConfirmModal = ({
   showModal,
@@ -15,12 +16,12 @@ const DeleteConfirmModal = ({
         <div dangerouslySetInnerHTML={{ __html: message }} />
       </ModalBody>
       <ModalFooter>
-        <button className="btn btn-danger" onClick={onDelete}>
+        <Button color="danger" onClick={onDelete}>
           Delete
-        </button>
-        <button className="btn btn-default" onClick={onClose}>
+        </Button>
+        <Button color="link" onClick={onClose}>
           Cancel
-        </button>
+        </Button>
       </ModalFooter>
     </Modal>
   )

@@ -26,6 +26,8 @@ $theme-colors: (
   'highlight': $highlight
 );
 
+$font-family-base: 'PT Sans', sans-serif;
+
 @import '~bootstrap/scss/bootstrap';
 
 .btn {

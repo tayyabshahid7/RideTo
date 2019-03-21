@@ -10,6 +10,7 @@
 .date {
   float: none;
   color: #707070;
+  font-size: 14px;
 }
 
 .otherMonth {
@@ -19,6 +20,31 @@
 
 .otherMonthDate {
   color: var(--light-grey-color);
+}
+
+.selectedDay.selectedDay {
+  position: relative;
+  box-shadow: inset 0px 0px 0px 3px #707070;
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    content: '';
+    display: block;
+    background-color: #707070;
+  }
+
+  &::before {
+    height: 3px;
+    width: 100%;
+  }
+
+  &::after {
+    height: 100%;
+    width: 3px;
+  }
 }
 
 .highlight {
