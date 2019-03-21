@@ -16,9 +16,11 @@ export function ConnectInput({
 }) {
   return (
     <div className={styles.formGroup}>
-      <label className={styles.label} htmlFor={id || name}>
-        {label}
-      </label>
+      {label && (
+        <label className={styles.label} htmlFor={id || name}>
+          {label}
+        </label>
+      )}
       <input
         name={name}
         className={classnames(styles.input, basic && styles.basic)}
@@ -45,9 +47,11 @@ export function ConnectAgeInput({
 }) {
   return (
     <div className={styles.formGroup}>
-      <label className={styles.label} htmlFor={id || name}>
-        {label}
-      </label>
+      {label && (
+        <label className={styles.label} htmlFor={id || name}>
+          {label}
+        </label>
+      )}
       <div className={styles.ageInputGroup}>
         <input
           name={name}
@@ -80,7 +84,8 @@ export function ConnectSelect({
   disabled,
   required,
   basic,
-  textStyle = false
+  textStyle = false,
+  raw
 }) {
   if (!options) {
     options = valueArray
@@ -103,13 +108,17 @@ export function ConnectSelect({
         name={name}
         id={id || name}
         value={selected || value}
-        onChange={e =>
-          onChange(
-            e.target.value,
-            e.target.options[e.target.selectedIndex].innerText,
-            e.target.name
-          )
-        }
+        onChange={e => {
+          if (raw) {
+            onChange(e)
+          } else {
+            onChange(
+              e.target.value,
+              e.target.options[e.target.selectedIndex].innerText,
+              e.target.name
+            )
+          }
+        }}
         disabled={disabled}
         required={required}>
         {placeholder && (
@@ -144,6 +153,30 @@ export function ConnectLabeledContent({ label, children, disabled, basic }) {
         disabled={disabled}>
         {children}
       </div>
+    </div>
+  )
+}
+
+export function ConnectTextArea({
+  label,
+  name,
+  value,
+  type,
+  disabled,
+  onChange,
+  children
+}) {
+  return (
+    <div className={styles.formGroup}>
+      {label && <label className={styles.label}>{label}</label>}
+      <textarea
+        className={styles.textarea}
+        name={name}
+        value={value}
+        type={type}
+        disabled={disabled}
+        onChange={onChange}
+      />
     </div>
   )
 }

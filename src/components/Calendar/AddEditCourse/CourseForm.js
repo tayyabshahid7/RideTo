@@ -1,13 +1,19 @@
 import React from 'react'
 import moment from 'moment'
-import { Col, Row, Button } from 'reactstrap'
+import { Col, Row } from 'reactstrap'
 import classnames from 'classnames'
 
 import styles from './styles.scss'
 import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
 import Loading from 'components/Loading'
-import Input from 'components/Forms/Input'
 import pick from 'lodash/pick'
+
+import {
+  ConnectInput,
+  ConnectSelect,
+  ConnectTextArea,
+  Button
+} from 'components/ConnectForm'
 
 class CourseForm extends React.Component {
   constructor(props) {
@@ -243,7 +249,7 @@ class CourseForm extends React.Component {
     } = this.state.course
 
     const finishTime = this.getFinishTime(time, duration)
-    const formClass = isEditable ? styles.grey : ''
+    // const formClass = isEditable ? styles.grey : ''
 
     const courseTypes = info.courseTypes.filter(
       type => type.constant !== 'FULL_LICENCE'
@@ -265,29 +271,56 @@ class CourseForm extends React.Component {
       <div className={styles.container}>
         <Loading loading={saving}>
           <form onSubmit={this.handleSave.bind(this)}>
-            <div className={styles.formRow}>
-              <select
-                className={styles.courseTypeSelect}
-                name="course_type_id"
-                value={course_type_id}
-                disabled={!isEditable}
-                required
-                onChange={this.handleChangeRawEvent.bind(this)}>
-                {courseTypes.map(courseType => (
-                  <option key={courseType.id} value={courseType.id}>
-                    {courseType.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div className={classnames(styles.form, formClass)}>
-              <Row className={styles.formRow}>
-                <Col
-                  sm={!isFullLicence ? '4' : '12'}
-                  className={styles.formGroup}>
-                  <label>Spaces:</label>
-                  <Input
+            <Row>
+              <Col sm="8">
+                <ConnectSelect
+                  basic
+                  name="course_type_id"
+                  value={course_type_id}
+                  disabled={!isEditable}
+                  required
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
+                  options={courseTypes}
+                />
+              </Col>
+            </Row>
+            <div>
+              <Row>
+                <Col sm="4">
+                  <ConnectInput
+                    label="Start Time"
+                    basic
+                    name="time"
+                    className={styles.inputDate}
+                    value={time.slice(0, 5)}
+                    step="60"
+                    type="time"
+                    disabled={!isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    required
+                  />
+                </Col>
+                <Col sm="4">
+                  <ConnectInput
+                    label="Finish Time"
+                    basic
+                    name="finish_time"
+                    className={styles.inputDate}
+                    value={finishTime.slice(0, 5)}
+                    step="60"
+                    type="time"
+                    disabled={!isEditable}
+                    onChange={this.handleChangeFinishTime.bind(this)}
+                    required
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={!isFullLicence ? '4' : '8'}>
+                  <ConnectInput
+                    basic
+                    label="Spaces"
                     className={styles.inputNumber}
                     name="spaces"
                     value={spaces || ''}
@@ -299,9 +332,10 @@ class CourseForm extends React.Component {
                 </Col>
                 {!isFullLicence && (
                   <React.Fragment>
-                    <Col sm="4" className={styles.formGroup}>
-                      <label>Automatic:</label>
-                      <Input
+                    <Col sm="4">
+                      <ConnectInput
+                        label="Automatic"
+                        basic
                         className={styles.inputNumber}
                         name="auto_bikes"
                         value={auto_bikes || ''}
@@ -311,9 +345,10 @@ class CourseForm extends React.Component {
                         required
                       />
                     </Col>
-                    <Col sm="4" className={styles.formGroup}>
-                      <label>Manual:</label>
-                      <Input
+                    <Col sm="4">
+                      <ConnectInput
+                        basic
+                        label="Manual"
                         className={styles.inputNumber}
                         name="manual_bikes"
                         value={manual_bikes || ''}
@@ -326,11 +361,10 @@ class CourseForm extends React.Component {
                   </React.Fragment>
                 )}
               </Row>
-
               {isFullLicence && (
                 <React.Fragment>
-                  <Row className={styles.formRow}>
-                    <Col className={styles.formGroup}>
+                  <Row>
+                    <Col>
                       <table className={classnames('table', styles.formTable)}>
                         <tbody>
                           <tr>
@@ -341,7 +375,8 @@ class CourseForm extends React.Component {
                           <tr>
                             <td>A1</td>
                             <td>
-                              <Input
+                              <ConnectInput
+                                basic
                                 className={styles.inputNumber}
                                 name="a1_auto_bikes"
                                 value={a1_auto_bikes || ''}
@@ -354,7 +389,8 @@ class CourseForm extends React.Component {
                               />
                             </td>
                             <td>
-                              <Input
+                              <ConnectInput
+                                basic
                                 className={styles.inputNumber}
                                 name="a1_manual_bikes"
                                 value={a1_manual_bikes || ''}
@@ -370,7 +406,8 @@ class CourseForm extends React.Component {
                           <tr>
                             <td>A2</td>
                             <td>
-                              <Input
+                              <ConnectInput
+                                basic
                                 className={styles.inputNumber}
                                 name="a2_auto_bikes"
                                 value={a2_auto_bikes || ''}
@@ -383,7 +420,8 @@ class CourseForm extends React.Component {
                               />
                             </td>
                             <td>
-                              <Input
+                              <ConnectInput
+                                basic
                                 className={styles.inputNumber}
                                 name="a2_manual_bikes"
                                 value={a2_manual_bikes || ''}
@@ -399,7 +437,8 @@ class CourseForm extends React.Component {
                           <tr>
                             <td>A</td>
                             <td>
-                              <Input
+                              <ConnectInput
+                                basic
                                 className={styles.inputNumber}
                                 name="a_auto_bikes"
                                 value={a_auto_bikes || ''}
@@ -412,7 +451,8 @@ class CourseForm extends React.Component {
                               />
                             </td>
                             <td>
-                              <Input
+                              <ConnectInput
+                                basic
                                 className={styles.inputNumber}
                                 name="a_manual_bikes"
                                 value={a_manual_bikes || ''}
@@ -432,9 +472,10 @@ class CourseForm extends React.Component {
                   {isFullLicenceTest && (
                     <React.Fragment>
                       <Row>
-                        <Col sm="12" className={styles.formGroup}>
-                          <label>Test Reference Number</label>
-                          <Input
+                        <Col sm="8">
+                          <ConnectInput
+                            label="Test Reference Number"
+                            basic
                             name="application_reference_number"
                             value={application_reference_number || ''}
                             type="text"
@@ -444,10 +485,12 @@ class CourseForm extends React.Component {
                           />
                         </Col>
                       </Row>
+
                       <Row>
-                        <Col sm="12" className={styles.formGroup}>
-                          <label>Last date to cancel</label>
-                          <Input
+                        <Col sm="8">
+                          <ConnectInput
+                            label="Last date to cancel"
+                            basic
                             name="last_date_cancel"
                             value={last_date_cancel || ''}
                             type="date"
@@ -457,165 +500,114 @@ class CourseForm extends React.Component {
                           />
                         </Col>
                       </Row>
+
                       <Row>
-                        <Col sm="12" className={styles.formGroup}>
-                          <label>Test Centre</label>
-                          <select
-                            className={styles.formSelect}
+                        <Col sm="8">
+                          <ConnectSelect
+                            basic
+                            label="Test Centre"
                             name="test_centre"
                             value={test_centre}
                             disabled={!isEditable}
-                            onChange={this.handleChangeRawEvent.bind(this)}>
-                            {testCentres.map(testCentre => (
-                              <option key={testCentre.id} value={testCentre.id}>
-                                {testCentre.name}
-                              </option>
-                            ))}
-                          </select>
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            raw
+                            options={testCentres}
+                          />
                         </Col>
                       </Row>
+
                       <Row>
-                        <Col sm="12" className={styles.formGroup}>
-                          <label>Test Status</label>
-                          <select
-                            className={styles.formSelect}
+                        <Col sm="8">
+                          <ConnectSelect
+                            basic
+                            label="Test Status"
                             name="status"
                             value={status ? status : ''}
                             disabled={!isEditable}
-                            onChange={this.handleChangeRawEvent.bind(this)}>
-                            <option value="" disabled>
-                              Select status
-                            </option>
-                            <option
-                              key={'TEST_STATUS_NO_NAME'}
-                              value={'TEST_STATUS_NO_NAME'}>
-                              {TEST_STATUS_CHOICES.TEST_STATUS_NO_NAME}
-                            </option>
-                            <option
-                              key={'TEST_STATUS_NAMED'}
-                              value={'TEST_STATUS_NAMED'}>
-                              {TEST_STATUS_CHOICES.TEST_STATUS_NAMED}
-                            </option>
-                            <option
-                              key={'TEST_STATUS_NO_BOOKING'}
-                              value={'TEST_STATUS_NO_BOOKING'}>
-                              {TEST_STATUS_CHOICES.TEST_STATUS_NO_BOOKING}
-                            </option>
-                          </select>
+                            onChange={this.handleChangeRawEvent.bind(this)}
+                            raw
+                            options={[
+                              {
+                                id: 'TEST_STATUS_NO_NAME',
+                                name: TEST_STATUS_CHOICES.TEST_STATUS_NO_NAME
+                              },
+                              {
+                                id: 'TEST_STATUS_NAMED',
+                                name: TEST_STATUS_CHOICES.TEST_STATUS_NAMED
+                              },
+                              {
+                                id: 'TEST_STATUS_NO_BOOKING',
+                                name: TEST_STATUS_CHOICES.TEST_STATUS_NO_BOOKING
+                              }
+                            ]}
+                            placeholder
+                          />
                         </Col>
                       </Row>
                     </React.Fragment>
                   )}
                 </React.Fragment>
               )}
-
               {!this.props.course && !this.props.date && (
-                <Row className={styles.formRow}>
-                  <Col className={styles.formGroup}>
-                    <label>Date:</label>
-                    <Input
-                      name="date"
-                      value={date || ''}
-                      type="date"
-                      disabled={!isEditable}
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      required
-                    />
-                  </Col>
-                </Row>
+                <ConnectInput
+                  lable="Date"
+                  basic
+                  name="date"
+                  value={date || ''}
+                  type="date"
+                  disabled={!isEditable}
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  required
+                />
               )}
-
-              <Row className={styles.formRow}>
-                <Col sm="6" className={styles.formGroup}>
-                  <label>Start Time:</label>
-                  <Input
-                    name="time"
-                    className={styles.inputDate}
-                    value={time.slice(0, 5)}
-                    label="Start Time"
-                    step="60"
-                    type="time"
-                    disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                  />
-                </Col>
-                <Col sm="6" className={styles.formGroup}>
-                  <label>Finish Time:</label>
-                  <Input
-                    name="finish_time"
-                    className={styles.inputDate}
-                    value={finishTime.slice(0, 5)}
-                    label="Finish Time"
-                    step="60"
-                    type="time"
-                    disabled={!isEditable}
-                    onChange={this.handleChangeFinishTime.bind(this)}
-                    required
-                  />
-                </Col>
-              </Row>
-
-              <Row className={styles.formRow}>
-                <Col className={styles.formGroup}>
-                  <label>Instructor:</label>
-                  <select
-                    className={styles.formSelect}
+              <Row>
+                <Col sm="8">
+                  <ConnectSelect
+                    basic
+                    label="Instructor"
                     name="instructor_id"
                     value={instructor_id}
                     disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}>
-                    {instructors.map(instructor => (
-                      <option key={instructor.id} value={instructor.id}>
-                        {instructor.first_name} {instructor.last_name}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    raw
+                    options={instructors.map(instructor => ({
+                      ...instructor,
+                      name: `${instructor.first_name} ${instructor.last_name}`
+                    }))}
+                  />
                 </Col>
               </Row>
-
               {!isFullLicence && (
-                <Row className={styles.formRow}>
-                  <Col className={styles.formGroup}>
-                    <label>Course Price:</label>
-                    <Input
-                      name="price"
-                      value={
-                        pricing.loading
-                          ? '...'
-                          : pricing.info
-                          ? `£${(pricing.info.price / 100.0).toFixed(2)}`
-                          : ''
-                      }
-                      disabled
-                    />
-                  </Col>
-                </Row>
+                <ConnectInput
+                  label="Course Price"
+                  basic
+                  name="price"
+                  value={
+                    pricing.loading
+                      ? '...'
+                      : pricing.info
+                      ? `£${(pricing.info.price / 100.0).toFixed(2)}`
+                      : ''
+                  }
+                  disabled
+                />
               )}
-
-              <div className={styles.formRow}>
-                <div className={styles.notes}>
-                  <label>Notes:</label>
-                  <textarea
-                    name="notes"
-                    value={notes}
-                    type="textarea"
-                    disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                  />
-                </div>
-              </div>
-
+              <ConnectTextArea
+                label="Notes"
+                name="notes"
+                value={notes}
+                type="textarea"
+                disabled={!isEditable}
+                onChange={this.handleChangeRawEvent.bind(this)}
+              />
               {isEditable && (
-                <div className={styles.formRow}>
-                  <div className={styles.actions}>
-                    <Button type="submit" color="primary" className="mr-2">
-                      Save
-                    </Button>
-                    <Button color="link" onClick={this.handleToggleEdit}>
-                      Cancel
-                    </Button>
-                  </div>
+                <div className={styles.actions}>
+                  <Button type="submit" color="primary" className="mr-2">
+                    Save
+                  </Button>
+                  <Button color="white" onClick={this.handleToggleEdit}>
+                    Cancel
+                  </Button>
                 </div>
               )}
             </div>

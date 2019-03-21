@@ -96,6 +96,12 @@ select {
   align-items: center;
 }
 
+.textarea {
+  // border: 0;
+  width: 100%;
+  min-height: 65px;
+}
+
 .button {
   height: 44px;
   min-width: 90px;

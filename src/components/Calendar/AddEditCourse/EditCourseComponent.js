@@ -109,19 +109,22 @@ class EditCourseComponent extends Component {
           date={moment(course.date)}
           backLink={`/calendar/${course.date}`}
         />
-        <CourseHeading
-          course={course}
-          onRemove={this.handleRemoveCourseClick.bind(this)}
-        />
 
-        <CourseForm
-          {...this.props}
-          isEditable={true}
-          onSetEditable={isEditable =>
-            this.handleSetEditable(isEditable, course.date)
-          }
-          onSubmit={this.onSave.bind(this)}
-        />
+        <div className={styles.wrapper}>
+          <CourseHeading
+            course={course}
+            onRemove={this.handleRemoveCourseClick.bind(this)}
+          />
+
+          <CourseForm
+            {...this.props}
+            isEditable={true}
+            onSetEditable={isEditable =>
+              this.handleSetEditable(isEditable, course.date)
+            }
+            onSubmit={this.onSave.bind(this)}
+          />
+        </div>
 
         {showDeleteCourseConfirmModal && (
           <ConfirmModal
