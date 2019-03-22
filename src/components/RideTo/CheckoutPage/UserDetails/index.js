@@ -1,30 +1,28 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
-import moment from 'moment'
 import {
   CardNumberElement,
   CardExpiryElement,
   CardCVCElement,
   PostalCodeElement
 } from 'react-stripe-elements'
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Button } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
-import MapComponent from 'components/RideTo/MapComponent'
-import Button from 'components/RideTo/Button'
 import Input from 'components/RideTo/Input'
-import AddressForm from 'components/AddressForm'
 import { RidingExperiences, RiderTypes } from 'common/info'
 import Select from 'components/RideTo/Select'
 import { getCurrentLicenceOptions } from 'services/customer'
-import { getCourseTitle } from 'services/course'
-import { getBikeHireDetail } from 'services/order'
 import styles from './styles.scss'
-import { SHORT_LICENCE_TYPES } from 'common/constants'
+import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 
 class UserDetails extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      showPromo: false
+    }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -32,6 +30,21 @@ class UserDetails extends Component {
     this.handlePhoneChange = this.handlePhoneChange.bind(this)
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
+
+    this.cardDetails = React.createRef()
+  }
+
+  componentDidUpdate(prevProps) {
+    const { showCardDetails } = this.props
+
+    if (prevProps.showCardDetails !== showCardDetails) {
+      const cardDetails = this.cardDetails.current
+
+      cardDetails.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
   }
 
   handleChange(event) {
@@ -85,107 +98,18 @@ class UserDetails extends Component {
     )
   }
 
-  renderCourseInformation() {
+  renderUserInfo() {
     const {
+      details,
+      errors = {},
       checkoutData,
       supplier,
       priceInfo,
       showMap,
       handleMapButtonClick,
-      trainings
-    } = this.props
-    const { addons, courseType, date, bike_hire } = checkoutData
-    const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
-    const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
-    const isFullLicence = courseType === 'FULL_LICENCE'
-
-    return (
-      <div className={styles.rowContainer}>
-        {isFullLicence &&
-          this.renderRow(
-            'Course',
-            `Full Licence (${
-              SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
-            })`
-          )}
-        {isFullLicence &&
-          trainings.map((training, index) => {
-            if (training.price) {
-              return (
-                <div key={index}>
-                  {this.renderRow(
-                    getCourseTitle(training.course_type).replace(
-                      'Full Licence ',
-                      ''
-                    ),
-                    `${training.requested_time.slice(0, -3)} ${moment(
-                      training.requested_date
-                    ).format('ddd D, MMMM')}`
-                  )}
-                </div>
-              )
-            } else {
-              return null
-            }
-          })}
-        {!isFullLicence && this.renderRow('Course', getCourseTitle(courseType))}
-        {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
-        {!isFullLicence &&
-          this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
-        {this.renderRow(
-          'Location',
-          <button className={styles.mapButton} onClick={handleMapButtonClick}>
-            {`${supplier.town}, ${supplier.postcode}`}
-          </button>
-        )}
-        {showMap && (
-          <MapComponent
-            userLocation={{ lat, lng }}
-            width={'auto'}
-            height={200}
-            checkout
-          />
-        )}
-        {!isFullLicence && priceInfo.training_price
-          ? this.renderRow(
-              'Training',
-              `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
-              100
-            )
-          : ''}
-        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no'
-          ? this.renderRow(
-              'Bike Hire Cost',
-              `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
-              101
-            )
-          : ''}
-        {addons.map((addon, index) =>
-          this.renderRow(
-            addon.selectedSize
-              ? `${addon.name} ${
-                  addon.selectedSize.code === 'ALL'
-                    ? ''
-                    : '(' + addon.selectedSize.code + ')'
-                }`
-              : addon.name,
-            `£${addon.price}`,
-            index
-          )
-        )}
-      </div>
-    )
-  }
-
-  renderUserInfo() {
-    const {
-      details,
-      manualAddress,
-      errors = {},
-      onChange,
-      onPostalCodeSubmit,
-      postcodeLookingup,
-      checkoutData: { addons }
+      trainings,
+      handlePOMToggleClick,
+      hasPOM
     } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
@@ -193,9 +117,19 @@ class UserDetails extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.hiddenOnDesktop}>
-          <div className={styles.title}>Order Summary</div>
-          {this.renderCourseInformation()}
-          <hr />
+          <div className={classnames(styles.title, styles.hiddenOnMobile)}>
+            Order Summary
+          </div>
+          <CourseInformation
+            checkoutData={checkoutData}
+            supplier={supplier}
+            priceInfo={priceInfo}
+            showMap={showMap}
+            handleMapButtonClick={handleMapButtonClick}
+            trainings={trainings}
+            handlePOMToggleClick={handlePOMToggleClick}
+            hasPOM={hasPOM}
+          />
         </div>
         <div id="checkout-your-details" className={styles.title}>
           Your Details
@@ -346,6 +280,9 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.rider_type}</div>
           )}
         </div>
+
+        {/*
+
         {addons.length > 0 && (
           <React.Fragment>
             <div id="checkout-delivery-address" className={styles.title}>
@@ -400,12 +337,14 @@ class UserDetails extends Component {
             )}
           </React.Fragment>
         )}
+
+        */}
       </div>
     )
   }
 
   renderPaymentForm() {
-    const { details, errors = {} } = this.props
+    const { details, errors = {}, showCardDetails } = this.props
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -414,83 +353,149 @@ class UserDetails extends Component {
       }
     }
     return (
-      <div className={styles.checkForm}>
+      <div className={styles.checkForm} ref={this.cardDetails}>
         <div id="checkout-payment-details" className={styles.title}>
           Payment Details
         </div>
-        <div className={styles.rowItem}>
-          <div
-            className={classnames(
-              styles.cardElementWrapper,
-              errors.card_number && styles.inputError
-            )}>
-            <CardNumberElement
-              style={inputStyle}
+        <div
+          className={classnames(
+            styles.rowItem,
+            styles.cardDetails,
+            !showCardDetails && styles.hideCardDetails
+          )}>
+          <label className={styles.cardLabel}>
+            <span>Card number</span>
+            <div
+              className={classnames(
+                styles.cardElementWrapper,
+                errors.card_number && styles.inputError
+              )}>
+              <CardNumberElement
+                placeholder=""
+                style={inputStyle}
+                required
+                onChange={element =>
+                  this.stripeElementChange(element, 'card_number')
+                }
+              />
+            </div>
+          </label>
+          <label className={styles.cardLabel}>
+            <span>Name on card</span>
+            <Input
+              placeholder=""
+              name="card_name"
+              value={details.card_name}
+              className={classnames(
+                styles.input,
+                errors.card_name && styles.inputError
+              )}
+              onChange={this.handleChange}
               required
-              onChange={element =>
-                this.stripeElementChange(element, 'card_number')
-              }
             />
-          </div>
-          <Input
-            placeholder="Cardholder Name"
-            name="card_name"
-            value={details.card_name}
-            className={classnames(
-              styles.input,
-              errors.card_name && styles.inputError
-            )}
-            onChange={this.handleChange}
-            required
-          />
+          </label>
           <Row>
             <Col>
-              <div
-                className={classnames(
-                  styles.cardElementWrapper,
-                  errors.expiry_date && styles.inputError
-                )}>
-                <CardExpiryElement
-                  style={inputStyle}
-                  required
-                  placeholder="Expiry Date"
-                  onChange={element =>
-                    this.stripeElementChange(element, 'expiry_date')
-                  }
-                />
-              </div>
-              <div className={styles.subtext}>MM/YY</div>
+              <label className={styles.cardLabel}>
+                <span>Expiry date</span>
+                <div
+                  className={classnames(
+                    styles.cardElementWrapper,
+                    errors.expiry_date && styles.inputError
+                  )}>
+                  <CardExpiryElement
+                    style={inputStyle}
+                    required
+                    placeholder=""
+                    onChange={element =>
+                      this.stripeElementChange(element, 'expiry_date')
+                    }
+                  />
+                </div>
+                <div className={styles.subtext}>MM/YY</div>
+              </label>
             </Col>
             <Col>
-              <div
-                className={classnames(
-                  styles.cardElementWrapper,
-                  errors.cvv && styles.inputError
-                )}>
-                <CardCVCElement
-                  required
-                  style={inputStyle}
-                  placeholder="CVV/CV2"
-                  onChange={element => this.stripeElementChange(element, 'cvv')}
-                />
-              </div>
+              <label className={styles.cardLabel}>
+                <span>CVV/CV2</span>
+                <div
+                  className={classnames(
+                    styles.cardElementWrapper,
+                    styles.cvvElementWrapper,
+                    errors.cvv && styles.inputError
+                  )}>
+                  <CardCVCElement
+                    required
+                    style={inputStyle}
+                    placeholder=""
+                    onChange={element =>
+                      this.stripeElementChange(element, 'cvv')
+                    }
+                  />
+                </div>
+              </label>
             </Col>
           </Row>
-          <div
-            className={classnames(
-              styles.cardElementWrapper,
-              errors.card_zip && styles.inputError
-            )}>
-            <PostalCodeElement
-              required
-              placeholder="Billing Postcode"
-              style={inputStyle}
-              onChange={element =>
-                this.stripeElementChange(element, 'card_zip')
-              }
-            />
-          </div>
+
+          <label className={styles.cardLabel}>
+            <span>Billing postcode</span>
+            <div
+              className={classnames(
+                styles.cardElementWrapper,
+                errors.card_zip && styles.inputError
+              )}>
+              <PostalCodeElement
+                required
+                placeholder=""
+                style={inputStyle}
+                onChange={element =>
+                  this.stripeElementChange(element, 'card_zip')
+                }
+              />
+            </div>
+          </label>
+          {this.renderPromoCode()}
         </div>
+      </div>
+    )
+  }
+
+  renderPromoCode() {
+    const {
+      voucher_code,
+      loadingPrice,
+      handleVoucherApply,
+      onChange
+    } = this.props
+    const { showPromo } = this.state
+
+    return (
+      <div className={styles.promoWrapper}>
+        {showPromo ? (
+          <div className={styles.promoContainer}>
+            <Input
+              placeholder="Promo code"
+              name="voucher_code"
+              value={voucher_code}
+              className={styles.promoInput}
+              onChange={event => onChange({ voucher_code: event.target.value })}
+              required
+            />
+            <Button
+              color="primary"
+              className={styles.applyBtn}
+              disabled={voucher_code === '' || loadingPrice}
+              onClick={handleVoucherApply}>
+              Apply
+            </Button>
+          </div>
+        ) : (
+          <div
+            className={styles.promoAction}
+            onClick={() => this.setState({ showPromo: true })}>
+            I have a promo code
+          </div>
+        )}
       </div>
     )
   }

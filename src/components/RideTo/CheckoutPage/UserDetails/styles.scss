@@ -1,5 +1,5 @@
 .container {
-  width: 480px;
+  width: 320px;
 }
 
 .title {
@@ -8,6 +8,12 @@
   font-family: var(--font-rift);
   font-weight: bold;
   // margin-top: 32px;
+
+  @media (max-width: 768px) {
+    margin-top: -10px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+  }
 }
 
 .input {
@@ -16,6 +22,7 @@
 }
 
 .subtext {
+  padding-left: 15px;
   text-align: left;
   font-size: 12px;
   color: var(--grey-color);
@@ -29,10 +36,29 @@
 }
 
 .rowItem {
+  overflow: hidden;
   margin-top: 8px;
   margin-bottom: 32px;
   &:last-of-type {
     margin-bottom: 18px;
+  }
+
+  @media (max-width: 768px) {
+    background-color: #fff;
+    padding: 0 20px 24px;
+
+    input,
+    select,
+    .cardElementWrapper {
+      border: 2px solid #e3e3e3 !important;
+      border-radius: 2px;
+    }
+
+    .cardElementWrapper {
+      input {
+        border: 0 !important;
+      }
+    }
   }
 }
 
@@ -72,8 +98,44 @@
   font-size: 15px;
 }
 
+.checkForm {
+  margin-top: 3rem;
+
+  @media (max-width: 768px) {
+    margin-top: 35px;
+  }
+}
+
 .checkoutForm {
   color: #707070;
+}
+
+.cardDetails {
+  margin-top: 0.7rem;
+}
+
+.hideCardDetails {
+  display: none;
+}
+
+.cardLabel {
+  width: 100%;
+  margin-top: 1rem;
+
+  span {
+    display: block;
+    margin-bottom: 0.5em;
+    color: rgba(#070707, 0.8);
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  .input {
+    margin-top: 0;
+  }
 }
 
 .terms {
@@ -129,7 +191,12 @@
   // align-items: center;
   padding: 16px 16px;
   background: white;
-  margin-top: 16px;
+}
+
+.cvvElementWrapper {
+  background-image: url('assets/images/cvc.png');
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
 }
 
 .actionDiv {
@@ -182,6 +249,12 @@
   }
 }
 
+.hiddenOnMobile {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
 .mapButton {
   appearance: none;
   display: inline;
@@ -195,4 +268,22 @@
     color: #1f8f77;
     text-decoration: underline;
   }
+}
+
+.promoAction {
+  cursor: pointer;
+  color: var(--primary-color);
+  font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+}
+
+.promoWrapper {
+  margin-top: 16px;
+}
+
+.promoContainer {
+  display: flex;
 }

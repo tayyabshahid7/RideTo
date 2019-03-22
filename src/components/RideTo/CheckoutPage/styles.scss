@@ -19,12 +19,12 @@
   flex: 1 1 480px;
   display: flex;
   justify-content: center;
-  padding: 80px 3px 40px 30px;
+  padding: 50px 3px 40px 30px;
 }
 
 .rightPanel {
-  flex: 0 1 528px;
-  padding: 80px 80px 40px 80px;
+  flex: 0 1 500px;
+  padding: 50px 60px 40px 60px;
   background: white;
 }
 
@@ -44,13 +44,11 @@
 
   .leftPanel,
   .rightPanel {
-    padding: 30px 30px;
+    padding: 25px 10px;
   }
-}
 
-@media (min-width: 769px) {
   .rightPanel {
-    margin-top: -69px;
-    padding-top: 149px;
+    padding: 25px 5px;
+    background: transparent;
   }
 }
