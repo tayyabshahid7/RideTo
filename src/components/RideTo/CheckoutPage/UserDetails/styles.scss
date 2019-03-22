@@ -8,6 +8,12 @@
   font-family: var(--font-rift);
   font-weight: bold;
   // margin-top: 32px;
+
+  @media (max-width: 768px) {
+    margin-top: -10px;
+    margin-left: 30px;
+    margin-bottom: 20px;
+  }
 }
 
 .input {
@@ -30,10 +36,29 @@
 }
 
 .rowItem {
+  overflow: hidden;
   margin-top: 8px;
   margin-bottom: 32px;
   &:last-of-type {
     margin-bottom: 18px;
+  }
+
+  @media (max-width: 768px) {
+    background-color: #fff;
+    padding: 0 20px 24px;
+
+    input,
+    select,
+    .cardElementWrapper {
+      border: 2px solid #e3e3e3 !important;
+      border-radius: 2px;
+    }
+
+    .cardElementWrapper {
+      input {
+        border: 0 !important;
+      }
+    }
   }
 }
 
@@ -75,6 +100,10 @@
 
 .checkForm {
   margin-top: 3rem;
+
+  @media (max-width: 768px) {
+    margin-top: 35px;
+  }
 }
 
 .checkoutForm {
@@ -97,6 +126,11 @@
     display: block;
     margin-bottom: 0.5em;
     color: rgba(#070707, 0.8);
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+      margin-bottom: 0.25rem;
+    }
   }
 
   .input {
@@ -215,6 +249,12 @@
   }
 }
 
+.hiddenOnMobile {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
 .mapButton {
   appearance: none;
   display: inline;
@@ -234,6 +274,10 @@
   cursor: pointer;
   color: var(--primary-color);
   font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 }
 
 .promoWrapper {

@@ -10,14 +10,18 @@ function OrderIncluded({ bikeHire, pom = false }) {
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
-            Complete <strong>peace of mind</strong> for new riders
+            <span className={styles.text}>
+              Complete <strong>peace of mind</strong> for new riders
+            </span>
           </li>
           <li>
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
-            <strong>We'll pay for your 2nd day</strong> of training if you need
-            it.
+            <span className={styles.text}>
+              <strong>We'll pay for your 2nd day</strong> of training if you
+              need it.
+            </span>
           </li>
         </ul>
       </div>
@@ -36,20 +40,22 @@ function OrderIncluded({ bikeHire, pom = false }) {
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
-            {bikeHire === 'auto' ? 'Automatic scooter' : 'Manual motorcycle'}{' '}
-            hire
+            <span className={styles.text}>
+              {bikeHire === 'auto' ? 'Automatic scooter' : 'Manual motorcycle'}{' '}
+              hire
+            </span>
           </li>
           <li>
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
-            Helmet provided
+            <span className={styles.text}>Helmet provided</span>
           </li>
           <li>
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
-            Gloves &amp; jacket provided
+            <span className={styles.text}>Gloves &amp; jacket provided</span>
           </li>
         </ul>
       )}

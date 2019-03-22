@@ -44,6 +44,11 @@
 
   .leftPanel,
   .rightPanel {
-    padding: 30px 30px;
+    padding: 25px 10px;
+  }
+
+  .rightPanel {
+    padding: 25px 5px;
+    background: transparent;
   }
 }

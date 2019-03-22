@@ -108,67 +108,77 @@ class OrderSummary extends Component {
             hasPOM={hasPOM}
           />
         </div>
-        <div className={styles.acceptTerms}>
-          <Checkbox
-            checked={details.accept_terms}
-            extraClass="WidgetCheckbox"
-            size="large"
-            onChange={event =>
-              onDetailChange('accept_terms', event.target.checked)
-            }>
-            <div>
-              I confirm I have read and agree to the{' '}
-              <a
-                href="https://www.rideto.com/terms"
-                rel="noopener noreferrer"
-                target="_blank">
-                terms and conditions
-              </a>{' '}
-              and:
+        <div className={styles.acceptTermsWrapper}>
+          <div
+            className={classnames(
+              styles.acceptTerms,
+              !showCardDetails && styles.acceptTermsHideMobile
+            )}>
+            <Checkbox
+              checked={details.accept_terms}
+              extraClass="WidgetCheckbox"
+              size="large"
+              onChange={event =>
+                onDetailChange('accept_terms', event.target.checked)
+              }>
+              <div>
+                I confirm I have read and agree to the{' '}
+                <a
+                  href="https://www.rideto.com/terms"
+                  rel="noopener noreferrer"
+                  target="_blank">
+                  terms and conditions
+                </a>{' '}
+                and:
+              </div>
+            </Checkbox>
+            <div className={styles.terms}>
+              <ul>
+                <li>
+                  I will be able to present a valid UK Driving or Provisional
+                  licence (with Category A entitlement)
+                </li>
+                <li>Or a Full EU licence with UK counterpart licence number</li>
+                <li>
+                  I'm able to read a registration plate from a distance of 20.5
+                  meters
+                </li>
+                <li>
+                  I'm able to speak and understand English and understand the
+                  Highway Code to a good level
+                </li>
+                <li>I'm able to ride an adult size bicycle</li>
+                <li>
+                  I'll wear suitable clothing to training including thick
+                  trousers (e.g. jeans) and boots
+                </li>
+                {isFullLicence && (
+                  <Fragment>
+                    <li>I have a valid CBT certificate</li>
+                    <li>I have a valid motorcycle theory certificate</li>
+                  </Fragment>
+                )}
+              </ul>
             </div>
-          </Checkbox>
-          <div className={styles.terms}>
-            <ul>
-              <li>
-                I will be able to present a valid UK Driving or Provisional
-                licence (with Category A entitlement)
-              </li>
-              <li>Or a Full EU licence with UK counterpart licence number</li>
-              <li>
-                I'm able to read a registration plate from a distance of 20.5
-                meters
-              </li>
-              <li>
-                I'm able to speak and understand English and understand the
-                Highway Code to a good level
-              </li>
-              <li>I'm able to ride an adult size bicycle</li>
-              <li>
-                I'll wear suitable clothing to training including thick trousers
-                (e.g. jeans) and boots
-              </li>
-              {isFullLicence && (
-                <Fragment>
-                  <li>I have a valid CBT certificate</li>
-                  <li>I have a valid motorcycle theory certificate</li>
-                </Fragment>
-              )}
-            </ul>
           </div>
-        </div>
-        <div className={styles.acceptTerms}>
-          <Checkbox
-            checked={details.email_optin}
-            extraClass="WidgetCheckbox"
-            size="large"
-            onChange={event =>
-              onDetailChange('email_optin', event.target.checked)
-            }>
-            <div>
-              Join the RideTo community newsletter to be invited to weekly ride
-              outs, events and special offers.
-            </div>
-          </Checkbox>
+          <div
+            className={classnames(
+              styles.acceptTerms,
+              !showCardDetails && styles.acceptTermsHideMobile
+            )}>
+            <Checkbox
+              checked={details.email_optin}
+              extraClass="WidgetCheckbox"
+              size="large"
+              onChange={event =>
+                onDetailChange('email_optin', event.target.checked)
+              }>
+              <div>
+                Join the RideTo community newsletter to be invited to weekly
+                ride outs, events and special offers.
+              </div>
+            </Checkbox>
+          </div>
         </div>
         {this.renderPrices()}
         {errors.paymentError && (

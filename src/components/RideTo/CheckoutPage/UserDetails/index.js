@@ -117,7 +117,9 @@ class UserDetails extends Component {
     return (
       <div className={styles.container}>
         <div className={styles.hiddenOnDesktop}>
-          <div className={styles.title}>Order Summary</div>
+          <div className={classnames(styles.title, styles.hiddenOnMobile)}>
+            Order Summary
+          </div>
           <CourseInformation
             checkoutData={checkoutData}
             supplier={supplier}
