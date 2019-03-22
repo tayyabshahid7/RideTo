@@ -1,7 +1,29 @@
 import React from 'react'
 import styles from './styles.scss'
 
-function OrderIncluded({ bikeHire }) {
+function OrderIncluded({ bikeHire, pom = false }) {
+  if (pom) {
+    return (
+      <div className={styles.wrapper}>
+        <ul className={styles.list}>
+          <li>
+            <span className={styles.tick}>
+              <i className="fa fa-check" />
+            </span>{' '}
+            Complete <strong>peace of mind</strong> for new riders
+          </li>
+          <li>
+            <span className={styles.tick}>
+              <i className="fa fa-check" />
+            </span>{' '}
+            <strong>We'll pay for your 2nd day</strong> of training if you need
+            it.
+          </li>
+        </ul>
+      </div>
+    )
+  }
+
   const noBike = ['no', 'none', 'BIKE_HIRE_NONE'].includes(bikeHire)
 
   return (

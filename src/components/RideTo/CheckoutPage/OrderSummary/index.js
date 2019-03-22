@@ -1,21 +1,17 @@
 import React, { Component, Fragment } from 'react'
-import moment from 'moment'
 
 import classnames from 'classnames'
 import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
-import MapComponent from 'components/RideTo/MapComponent'
 import Checkbox from 'components/Checkbox'
 // import Input from 'components/RideTo/Input'
 import Loading from 'components/Loading'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
-import { getCourseTitle } from 'services/course'
 // import { getExpectedPrice, getBikeHireDetail } from 'services/order'
 import { getExpectedPrice } from 'services/order'
-import { SHORT_LICENCE_TYPES } from 'common/constants'
 import { checkAllowedDate } from 'services/date'
-import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
+import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 
 class OrderSummary extends Component {
   componentDidUpdate(prevProps) {
@@ -43,120 +39,6 @@ class OrderSummary extends Component {
           )}>
           {content}
         </div>
-      </div>
-    )
-  }
-
-  renderCourseInformation() {
-    const {
-      checkoutData,
-      supplier,
-      priceInfo,
-      showMap,
-      handleMapButtonClick,
-      trainings
-    } = this.props
-    const { courseType, date, bike_hire } = checkoutData
-    const requested_time =
-      trainings && trainings[0] && trainings[0].requested_time
-    const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
-    const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
-    const isFullLicence = courseType === 'FULL_LICENCE'
-
-    return (
-      <div className={styles.rowContainer}>
-        {isFullLicence && (
-          <div className="mb-2">
-            {this.renderRow(
-              'Course',
-              `Full Licence (${
-                SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
-              })`
-            )}
-            {trainings.map((training, index) => {
-              if (training.price) {
-                return (
-                  <div key={index}>
-                    {this.renderRow(
-                      getCourseTitle(training.course_type).replace(
-                        'Full Licence ',
-                        ''
-                      ),
-                      `${training.requested_time.slice(0, -3)} ${moment(
-                        training.requested_date
-                      ).format('ddd D, MMMM')}`
-                    )}
-                  </div>
-                )
-              } else {
-                return null
-              }
-            })}
-          </div>
-        )}
-
-        {!isFullLicence && (
-          <div className={styles.coursePrice}>
-            <div>{getCourseTitle(courseType)}</div>
-            {priceInfo.training_price && (
-              <div>{`£${(priceInfo.training_price / 100.0).toFixed(2)}`}</div>
-            )}
-          </div>
-        )}
-
-        {!isFullLicence && (
-          <div className={styles.dateLimit}>
-            <div>
-              <div>{moment(date).format('ddd D MMMM')}</div>
-              <div className={styles.requestedTime}>{requested_time}</div>
-            </div>
-            <div className={styles.limitedWarning}>Limited spaces left</div>
-          </div>
-        )}
-
-        <div>
-          <button className={styles.mapButton} onClick={handleMapButtonClick}>
-            {`${supplier.address_1}, ${supplier.postcode}`}
-          </button>
-          {showMap && (
-            <MapComponent
-              userLocation={{ lat, lng }}
-              width={'auto'}
-              height={200}
-              checkout
-            />
-          )}
-        </div>
-
-        <OrderIncluded bikeHire={bike_hire} />
-
-        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no' ? (
-          <div className={styles.bikeHireCost}>
-            {this.renderRow(
-              'Bike Hire Cost',
-              `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
-              101
-            )}
-          </div>
-        ) : (
-          ''
-        )}
-
-        {/*
-        {addons.map((addon, index) =>
-          this.renderRow(
-            addon.selectedSize
-              ? `${addon.name} ${
-                  addon.selectedSize.code === 'ALL'
-                    ? ''
-                    : '(' + addon.selectedSize.code + ')'
-                }`
-              : addon.name,
-            `£${addon.price}`,
-            index
-          )
-        )}
-      */}
       </div>
     )
   }
@@ -196,7 +78,12 @@ class OrderSummary extends Component {
       details,
       onDetailChange,
       errors = {},
-      checkoutData
+      checkoutData,
+      supplier,
+      priceInfo,
+      showMap,
+      handleMapButtonClick,
+      trainings
     } = this.props
     let confirmDisabled = saving || !details.accept_terms || !this.isValidDate()
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
@@ -205,7 +92,14 @@ class OrderSummary extends Component {
       <div className={styles.container}>
         <div className={styles.hiddenOnMobile}>
           <div className={styles.title}>Your Order</div>
-          {this.renderCourseInformation()}
+          <CourseInformation
+            checkoutData={checkoutData}
+            supplier={supplier}
+            priceInfo={priceInfo}
+            showMap={showMap}
+            handleMapButtonClick={handleMapButtonClick}
+            trainings={trainings}
+          />
         </div>
         <div className={styles.acceptTerms}>
           <Checkbox

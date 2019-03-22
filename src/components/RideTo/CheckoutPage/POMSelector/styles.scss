@@ -1,0 +1,63 @@
+.container {
+  position: relative;
+  background-color: #eaf6fa;
+  margin-right: -60px;
+  margin-bottom: 2rem;
+  margin-left: -60px;
+  padding-right: 60px;
+  padding-left: 60px;
+  padding-bottom: 0.1rem;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    content: '';
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    height: 25px;
+  }
+}
+
+.tailored {
+  position: relative;
+  display: flex;
+  width: 192px;
+  height: 35px;
+  background-color: #59b1ce;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.header {
+  position: relative;
+  font-size: 17px;
+  font-weight: bold;
+  margin-top: 1.2rem;
+
+  &::before {
+    position: absolute;
+    top: -4px;
+    left: -38px;
+    content: '';
+    display: block;
+    width: 27px;
+    height: 32px;
+    background-image: url(assets/images/pom-shield.png);
+  }
+}
+
+.price {
+  color: var(--primary-color);
+}
+
+.tAndC {
+  font-size: 11px;
+  font-weight: normal;
+}

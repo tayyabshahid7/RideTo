@@ -19,6 +19,7 @@ import { getCourseTitle } from 'services/course'
 import { getBikeHireDetail } from 'services/order'
 import styles from './styles.scss'
 import { SHORT_LICENCE_TYPES } from 'common/constants'
+import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -200,7 +201,16 @@ class UserDetails extends Component {
   }
 
   renderUserInfo() {
-    const { details, errors = {} } = this.props
+    const {
+      details,
+      errors = {},
+      checkoutData,
+      supplier,
+      priceInfo,
+      showMap,
+      handleMapButtonClick,
+      trainings
+    } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
 
@@ -208,8 +218,14 @@ class UserDetails extends Component {
       <div className={styles.container}>
         <div className={styles.hiddenOnDesktop}>
           <div className={styles.title}>Order Summary</div>
-          {this.renderCourseInformation()}
-          <hr />
+          <CourseInformation
+            checkoutData={checkoutData}
+            supplier={supplier}
+            priceInfo={priceInfo}
+            showMap={showMap}
+            handleMapButtonClick={handleMapButtonClick}
+            trainings={trainings}
+          />
         </div>
         <div id="checkout-your-details" className={styles.title}>
           Your Details
