@@ -39,6 +39,7 @@ function CourseInformation({
   const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
   const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
   const isFullLicence = courseType === 'FULL_LICENCE'
+  const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(courseType)
 
   return (
     <Fragment>
@@ -118,10 +119,14 @@ function CourseInformation({
           </div>
         ) : null}
       </div>
-      <POMSelector
-        handlePOMToggleClick={handlePOMToggleClick}
-        hasPOM={hasPOM}
-      />
+      {offersPOM ? (
+        <POMSelector
+          handlePOMToggleClick={handlePOMToggleClick}
+          hasPOM={hasPOM}
+        />
+      ) : (
+        <div className={styles.POMPlaceholder} />
+      )}
     </Fragment>
   )
 }

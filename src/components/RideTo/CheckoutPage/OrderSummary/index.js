@@ -108,7 +108,11 @@ class OrderSummary extends Component {
             hasPOM={hasPOM}
           />
         </div>
-        <div className={styles.acceptTermsWrapper}>
+        <div
+          className={classnames(
+            styles.acceptTermsWrapper,
+            !showCardDetails && styles.acceptTermsWrapperHideMobile
+          )}>
           <div
             className={classnames(
               styles.acceptTerms,
