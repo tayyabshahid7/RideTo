@@ -57,7 +57,7 @@ const NO_ADDONS_ADDRESS = {
   postcode: 'no'
 }
 
-const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
+// const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
 
 class CheckoutPage extends Component {
   constructor(props) {
@@ -346,7 +346,7 @@ class CheckoutPage extends Component {
 
   validateDetails(details) {
     const { trainings } = this.props
-    const addonsCount = this.props.checkoutData.addons.length
+    // const addonsCount = this.props.checkoutData.addons.length
     const { courseType } = this.props.checkoutData
     const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
@@ -361,6 +361,8 @@ class CheckoutPage extends Component {
     })
 
     // Check delivery address only if there are addons
+    // DISABLE THIS WHILE POM IS THE ONLY ADDON WE SELL
+    /*
     if (addonsCount > 0) {
       // Check postcode serach field only if
       // manual address form is not open
@@ -386,6 +388,7 @@ class CheckoutPage extends Component {
         })
       }
     }
+    */
 
     if (!details.phone.match(/^\+44\d{10}$/)) {
       errors['phone'] = 'Invalid phone number'
@@ -457,13 +460,15 @@ class CheckoutPage extends Component {
   async handlePayment() {
     const { details } = this.state
     const {
-      stripe,
-      checkoutData: { addons }
+      stripe
+      // checkoutData: { addons }
     } = this.props
 
-    if (addons.length <= 0) {
-      details.address = NO_ADDONS_ADDRESS
-    }
+    // WHILE POM IS THE ONLY ONE WE SELL
+    // if (addons.length <= 0) {
+    //   details.address = NO_ADDONS_ADDRESS
+    // }
+    details.address = NO_ADDONS_ADDRESS
 
     this.setState({ saving: true })
 
@@ -641,6 +646,7 @@ class CheckoutPage extends Component {
               showMap={showMap}
               handleMapButtonClick={this.handleMapButtonClick}
               trainings={trainings}
+              showCardDetails={showCardDetails}
             />
           </div>
           {showAddressSelectorModal && (

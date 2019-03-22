@@ -4,18 +4,9 @@ import { DATE_FORMAT } from 'common/constants'
 import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
 import { getSupplier, isInstantBook } from 'services/page'
+import { createPOM } from 'utils/helper'
 
 const POM_NAME = 'Peace Of Mind Policy'
-
-function createPOM() {
-  const pom = window.RIDETO_PAGE.checkout.addons.find(
-    addon => addon.name === POM_NAME
-  )
-  pom.price = pom.discount_price
-  pom.selectedSize = pom.sizes[0]
-
-  return pom
-}
 
 class CheckoutPageContainer extends Component {
   constructor(props) {
@@ -33,12 +24,14 @@ class CheckoutPageContainer extends Component {
       checkoutData: this.checkoutData || { addons: [] },
       trainings: this.trainings,
       supplier,
-      instantBook: isInstantBook()
+      instantBook: isInstantBook(),
+      hasPOM: false
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
+    this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
 
     this.POM = createPOM()
   }
@@ -60,7 +53,8 @@ class CheckoutPageContainer extends Component {
     }
 
     this.setState({
-      checkoutData: newCheckoutData
+      checkoutData: newCheckoutData,
+      hasPOM: true
     })
   }
 
@@ -71,8 +65,19 @@ class CheckoutPageContainer extends Component {
       checkoutData: {
         ...checkoutData,
         addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
-      }
+      },
+      hasPOM: false
     })
+  }
+
+  handlePOMToggleClick() {
+    const { hasPOM } = this.state
+
+    if (hasPOM) {
+      this.handleRemovePOM()
+    } else {
+      this.handleAddPOM()
+    }
   }
 
   render() {
@@ -81,7 +86,8 @@ class CheckoutPageContainer extends Component {
       loading,
       supplier,
       instantBook,
-      trainings
+      trainings,
+      hasPOM
     } = this.state
 
     return (
@@ -93,6 +99,8 @@ class CheckoutPageContainer extends Component {
             supplier={supplier}
             instantBook={instantBook}
             trainings={trainings}
+            handlePOMToggleClick={this.handlePOMToggleClick}
+            hasPOM={hasPOM}
           />
         </Elements>
       </StripeProvider>

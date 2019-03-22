@@ -29,7 +29,9 @@ function CourseInformation({
   priceInfo,
   showMap,
   handleMapButtonClick,
-  trainings
+  trainings,
+  handlePOMToggleClick,
+  hasPOM
 }) {
   const { courseType, date, bike_hire } = checkoutData
   const requested_time =
@@ -116,7 +118,10 @@ function CourseInformation({
           </div>
         ) : null}
       </div>
-      <POMSelector />
+      <POMSelector
+        handlePOMToggleClick={handlePOMToggleClick}
+        hasPOM={hasPOM}
+      />
     </Fragment>
   )
 }

@@ -17,7 +17,8 @@ class OrderSummary extends Component {
   componentDidUpdate(prevProps) {
     const { errors } = this.props
     if (errors.divId) {
-      document.getElementById(errors.divId).scrollIntoView()
+      const el = document.getElementById(errors.divId)
+      el && el.scrollIntoView()
     }
   }
 
@@ -83,9 +84,13 @@ class OrderSummary extends Component {
       priceInfo,
       showMap,
       handleMapButtonClick,
-      trainings
+      trainings,
+      handlePOMToggleClick,
+      hasPOM,
+      showCardDetails
     } = this.props
-    let confirmDisabled = saving || !details.accept_terms || !this.isValidDate()
+    let confirmDisabled =
+      saving || !details.accept_terms || !this.isValidDate() || !showCardDetails
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
 
     return (
@@ -99,6 +104,8 @@ class OrderSummary extends Component {
             showMap={showMap}
             handleMapButtonClick={handleMapButtonClick}
             trainings={trainings}
+            handlePOMToggleClick={handlePOMToggleClick}
+            hasPOM={hasPOM}
           />
         </div>
         <div className={styles.acceptTerms}>

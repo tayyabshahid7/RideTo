@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
-import moment from 'moment'
 import {
   CardNumberElement,
   CardExpiryElement,
@@ -10,15 +9,11 @@ import {
 import { Row, Col, Button } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
-import MapComponent from 'components/RideTo/MapComponent'
 import Input from 'components/RideTo/Input'
 import { RidingExperiences, RiderTypes } from 'common/info'
 import Select from 'components/RideTo/Select'
 import { getCurrentLicenceOptions } from 'services/customer'
-import { getCourseTitle } from 'services/course'
-import { getBikeHireDetail } from 'services/order'
 import styles from './styles.scss'
-import { SHORT_LICENCE_TYPES } from 'common/constants'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 
 class UserDetails extends Component {
@@ -103,103 +98,6 @@ class UserDetails extends Component {
     )
   }
 
-  renderCourseInformation() {
-    const {
-      checkoutData,
-      supplier,
-      priceInfo,
-      showMap,
-      handleMapButtonClick,
-      trainings
-    } = this.props
-    const { courseType, date, bike_hire } = checkoutData
-    const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
-    const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
-    const isFullLicence = courseType === 'FULL_LICENCE'
-
-    return (
-      <div className={styles.rowContainer}>
-        {isFullLicence &&
-          this.renderRow(
-            'Course',
-            `Full Licence (${
-              SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
-            })`
-          )}
-        {isFullLicence &&
-          trainings.map((training, index) => {
-            if (training.price) {
-              return (
-                <div key={index}>
-                  {this.renderRow(
-                    getCourseTitle(training.course_type).replace(
-                      'Full Licence ',
-                      ''
-                    ),
-                    `${training.requested_time.slice(0, -3)} ${moment(
-                      training.requested_date
-                    ).format('ddd D, MMMM')}`
-                  )}
-                </div>
-              )
-            } else {
-              return null
-            }
-          })}
-        {!isFullLicence && this.renderRow('Course', getCourseTitle(courseType))}
-        {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
-        {!isFullLicence &&
-          this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
-        {this.renderRow(
-          'Location',
-          <button className={styles.mapButton} onClick={handleMapButtonClick}>
-            {`${supplier.town}, ${supplier.postcode}`}
-          </button>
-        )}
-        {showMap && (
-          <MapComponent
-            userLocation={{ lat, lng }}
-            width={'auto'}
-            height={200}
-            checkout
-          />
-        )}
-        {!isFullLicence && priceInfo.training_price
-          ? this.renderRow(
-              'Training',
-              `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
-              100
-            )
-          : ''}
-        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no'
-          ? this.renderRow(
-              'Bike Hire Cost',
-              `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
-              101
-            )
-          : ''}
-
-        {/*
-
-        {addons.map((addon, index) =>
-          this.renderRow(
-            addon.selectedSize
-              ? `${addon.name} ${
-                  addon.selectedSize.code === 'ALL'
-                    ? ''
-                    : '(' + addon.selectedSize.code + ')'
-                }`
-              : addon.name,
-            `£${addon.price}`,
-            index
-          )
-        )}
-
-        */}
-      </div>
-    )
-  }
-
   renderUserInfo() {
     const {
       details,
@@ -209,7 +107,9 @@ class UserDetails extends Component {
       priceInfo,
       showMap,
       handleMapButtonClick,
-      trainings
+      trainings,
+      handlePOMToggleClick,
+      hasPOM
     } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
@@ -225,6 +125,8 @@ class UserDetails extends Component {
             showMap={showMap}
             handleMapButtonClick={handleMapButtonClick}
             trainings={trainings}
+            handlePOMToggleClick={handlePOMToggleClick}
+            hasPOM={hasPOM}
           />
         </div>
         <div id="checkout-your-details" className={styles.title}>
