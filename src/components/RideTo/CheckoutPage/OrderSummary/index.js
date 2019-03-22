@@ -65,33 +65,35 @@ class OrderSummary extends Component {
 
     return (
       <div className={styles.rowContainer}>
-        {isFullLicence &&
-          this.renderRow(
-            'Course',
-            `Full Licence (${
-              SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
-            })`
-          )}
-        {isFullLicence &&
-          trainings.map((training, index) => {
-            if (training.price) {
-              return (
-                <div key={index}>
-                  {this.renderRow(
-                    getCourseTitle(training.course_type).replace(
-                      'Full Licence ',
-                      ''
-                    ),
-                    `${training.requested_time.slice(0, -3)} ${moment(
-                      training.requested_date
-                    ).format('ddd D, MMMM')}`
-                  )}
-                </div>
-              )
-            } else {
-              return null
-            }
-          })}
+        {isFullLicence && (
+          <div className="mb-2">
+            {this.renderRow(
+              'Course',
+              `Full Licence (${
+                SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
+              })`
+            )}
+            {trainings.map((training, index) => {
+              if (training.price) {
+                return (
+                  <div key={index}>
+                    {this.renderRow(
+                      getCourseTitle(training.course_type).replace(
+                        'Full Licence ',
+                        ''
+                      ),
+                      `${training.requested_time.slice(0, -3)} ${moment(
+                        training.requested_date
+                      ).format('ddd D, MMMM')}`
+                    )}
+                  </div>
+                )
+              } else {
+                return null
+              }
+            })}
+          </div>
+        )}
 
         {!isFullLicence && (
           <div className={styles.coursePrice}>
@@ -128,15 +130,17 @@ class OrderSummary extends Component {
 
         <OrderIncluded bikeHire={bike_hire} />
 
-        {/*this.renderRow('Bike hire', getBikeHireDetail(bike_hire))*/}
-
-        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no'
-          ? this.renderRow(
+        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no' ? (
+          <div className={styles.bikeHireCost}>
+            {this.renderRow(
               'Bike Hire Cost',
               `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
               101
-            )
-          : ''}
+            )}
+          </div>
+        ) : (
+          ''
+        )}
 
         {/*
         {addons.map((addon, index) =>
