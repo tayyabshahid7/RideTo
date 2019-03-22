@@ -8,9 +8,20 @@ import { createPOM } from 'utils/helper'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
+function addCheckoutToHeader() {
+  const logoPhone = document.querySelector('.heading--logo-phone')
+  logoPhone.insertAdjacentHTML(
+    'afterend',
+    '<div style="font-size: 2rem; color: #fff; position: relative; left: -25px;">Checkout</div>'
+  )
+}
+
 class CheckoutPageContainer extends Component {
   constructor(props) {
     super(props)
+
+    addCheckoutToHeader()
+
     try {
       this.checkoutData = JSON.parse(sessionStorage.getItem('checkout-data'))
       this.trainings = JSON.parse(sessionStorage.getItem('trainings'))
