@@ -13,20 +13,11 @@ import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getCourseTitle } from 'services/course'
 // import { getExpectedPrice, getBikeHireDetail } from 'services/order'
 import { getExpectedPrice } from 'services/order'
-// import { Button } from 'reactstrap'
 import { SHORT_LICENCE_TYPES } from 'common/constants'
 import { checkAllowedDate } from 'services/date'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 
 class OrderSummary extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      showPromo: false
-    }
-  }
-
   componentDidUpdate(prevProps) {
     const { errors } = this.props
     if (errors.divId) {
@@ -66,7 +57,8 @@ class OrderSummary extends Component {
       trainings
     } = this.props
     const { courseType, date, bike_hire } = checkoutData
-    const { requested_time } = trainings[0]
+    const requested_time =
+      trainings && trainings[0] && trainings[0].requested_time
     const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
     const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
     const isFullLicence = courseType === 'FULL_LICENCE'
@@ -202,7 +194,6 @@ class OrderSummary extends Component {
       errors = {},
       checkoutData
     } = this.props
-    // const { showPromo } = this.state
     let confirmDisabled = saving || !details.accept_terms || !this.isValidDate()
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
 
@@ -298,40 +289,7 @@ class OrderSummary extends Component {
           </div>
         )}
 
-        {/*
-        <div className={styles.promoWrapper}>
-          {showPromo ? (
-            <div className={styles.promoContainer}>
-              <Input
-                placeholder="Promo code"
-                name="voucher_code"
-                value={voucher_code}
-                className={styles.promoInput}
-                onChange={event =>
-                  onChange({ voucher_code: event.target.value })
-                }
-                required
-              />
-              <Button
-                color="primary"
-                className={styles.applyBtn}
-                disabled={voucher_code === '' || loadingPrice}
-                onClick={handleVoucherApply}>
-                Apply
-              </Button>
-            </div>
-          ) : (
-            <div
-              className={styles.promoAction}
-              onClick={() => this.setState({ showPromo: true })}>
-              I have a promo code
-            </div>
-          )}
-        </div>
-        */}
-
         <div className={styles.sectionFooter}>
-          {' '}
           {!instantBook && (
             <div id="terms-conditions-section" className={styles.information}>
               <p>

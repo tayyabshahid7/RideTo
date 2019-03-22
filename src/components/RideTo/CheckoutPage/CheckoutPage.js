@@ -40,6 +40,17 @@ const REQUIRED_FIELDS = [
   'email'
 ]
 
+const USER_FIELDS = [
+  'user_birthdate',
+  'phone',
+  'current_licence',
+  'riding_experience',
+  'rider_type',
+  'first_name',
+  'last_name',
+  'email'
+]
+
 const NO_ADDONS_ADDRESS = {
   address_1: 'no',
   town: 'no',
@@ -99,7 +110,8 @@ class CheckoutPage extends Component {
       voucher_code: '',
       loadingPrice: false,
       showMap: false,
-      trainings: this.props.trainings
+      trainings: this.props.trainings,
+      showCardDetails: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -216,10 +228,12 @@ class CheckoutPage extends Component {
 
   handleValueChange(path, value) {
     let { details, errors } = this.state
-    errors.divId = false
-    set(details, path, value)
-    set(errors, path, null)
-    this.setState({ details, errors })
+    let newDetails = { ...details }
+    let newErrors = { ...errors }
+    newErrors.divId = false
+    set(newDetails, path, value)
+    set(newErrors, path, null)
+    this.setState({ details: newDetails, errors: newErrors })
   }
 
   async handlePostalcodeSubmit(postcode) {
@@ -313,6 +327,20 @@ class CheckoutPage extends Component {
         return 'checkout-payment-details'
       default:
         break
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { details, showCardDetails } = this.state
+
+    if (
+      USER_FIELDS.some(key => prevState.details[key] !== details[key]) &&
+      USER_FIELDS.every(key => details[key]) &&
+      !showCardDetails
+    ) {
+      this.setState({
+        showCardDetails: true
+      })
     }
   }
 
@@ -569,7 +597,8 @@ class CheckoutPage extends Component {
       voucher_code,
       loadingPrice,
       showMap,
-      trainings
+      trainings,
+      showCardDetails
     } = this.state
 
     return (
@@ -590,6 +619,10 @@ class CheckoutPage extends Component {
               showMap={showMap}
               handleMapButtonClick={this.handleMapButtonClick}
               trainings={trainings}
+              voucher_code={voucher_code}
+              loadingPrice={loadingPrice}
+              handleVoucherApply={this.handleVoucherApply}
+              showCardDetails={showCardDetails}
             />
           </div>
           <div className={styles.rightPanel}>

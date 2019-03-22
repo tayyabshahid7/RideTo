@@ -7,7 +7,7 @@ import {
   CardCVCElement,
   PostalCodeElement
 } from 'react-stripe-elements'
-import { Row, Col } from 'reactstrap'
+import { Row, Col, Button } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import MapComponent from 'components/RideTo/MapComponent'
@@ -24,12 +24,31 @@ class UserDetails extends Component {
   constructor(props) {
     super(props)
 
+    this.state = {
+      showPromo: false
+    }
+
     this.handleChange = this.handleChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
     this.handleBillingAddressChange = this.handleBillingAddressChange.bind(this)
     this.handlePhoneChange = this.handlePhoneChange.bind(this)
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
+
+    this.cardDetails = React.createRef()
+  }
+
+  componentDidUpdate(prevProps) {
+    const { showCardDetails } = this.props
+
+    if (prevProps.showCardDetails !== showCardDetails) {
+      const cardDetails = this.cardDetails.current
+
+      cardDetails.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
   }
 
   handleChange(event) {
@@ -405,7 +424,7 @@ class UserDetails extends Component {
   }
 
   renderPaymentForm() {
-    const { details, errors = {} } = this.props
+    const { details, errors = {}, showCardDetails } = this.props
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -414,83 +433,149 @@ class UserDetails extends Component {
       }
     }
     return (
-      <div className={styles.checkForm}>
+      <div className={styles.checkForm} ref={this.cardDetails}>
         <div id="checkout-payment-details" className={styles.title}>
           Payment Details
         </div>
-        <div className={styles.rowItem}>
-          <div
-            className={classnames(
-              styles.cardElementWrapper,
-              errors.card_number && styles.inputError
-            )}>
-            <CardNumberElement
-              style={inputStyle}
+        <div
+          className={classnames(
+            styles.rowItem,
+            styles.cardDetails,
+            !showCardDetails && styles.hideCardDetails
+          )}>
+          <label className={styles.cardLabel}>
+            <span>Card number</span>
+            <div
+              className={classnames(
+                styles.cardElementWrapper,
+                errors.card_number && styles.inputError
+              )}>
+              <CardNumberElement
+                placeholder=""
+                style={inputStyle}
+                required
+                onChange={element =>
+                  this.stripeElementChange(element, 'card_number')
+                }
+              />
+            </div>
+          </label>
+          <label className={styles.cardLabel}>
+            <span>Name on card</span>
+            <Input
+              placeholder=""
+              name="card_name"
+              value={details.card_name}
+              className={classnames(
+                styles.input,
+                errors.card_name && styles.inputError
+              )}
+              onChange={this.handleChange}
               required
-              onChange={element =>
-                this.stripeElementChange(element, 'card_number')
-              }
             />
-          </div>
-          <Input
-            placeholder="Cardholder Name"
-            name="card_name"
-            value={details.card_name}
-            className={classnames(
-              styles.input,
-              errors.card_name && styles.inputError
-            )}
-            onChange={this.handleChange}
-            required
-          />
+          </label>
           <Row>
             <Col>
-              <div
-                className={classnames(
-                  styles.cardElementWrapper,
-                  errors.expiry_date && styles.inputError
-                )}>
-                <CardExpiryElement
-                  style={inputStyle}
-                  required
-                  placeholder="Expiry Date"
-                  onChange={element =>
-                    this.stripeElementChange(element, 'expiry_date')
-                  }
-                />
-              </div>
-              <div className={styles.subtext}>MM/YY</div>
+              <label className={styles.cardLabel}>
+                <span>Expiry date</span>
+                <div
+                  className={classnames(
+                    styles.cardElementWrapper,
+                    errors.expiry_date && styles.inputError
+                  )}>
+                  <CardExpiryElement
+                    style={inputStyle}
+                    required
+                    placeholder=""
+                    onChange={element =>
+                      this.stripeElementChange(element, 'expiry_date')
+                    }
+                  />
+                </div>
+                <div className={styles.subtext}>MM/YY</div>
+              </label>
             </Col>
             <Col>
-              <div
-                className={classnames(
-                  styles.cardElementWrapper,
-                  errors.cvv && styles.inputError
-                )}>
-                <CardCVCElement
-                  required
-                  style={inputStyle}
-                  placeholder="CVV/CV2"
-                  onChange={element => this.stripeElementChange(element, 'cvv')}
-                />
-              </div>
+              <label className={styles.cardLabel}>
+                <span>CVV/CV2</span>
+                <div
+                  className={classnames(
+                    styles.cardElementWrapper,
+                    styles.cvvElementWrapper,
+                    errors.cvv && styles.inputError
+                  )}>
+                  <CardCVCElement
+                    required
+                    style={inputStyle}
+                    placeholder=""
+                    onChange={element =>
+                      this.stripeElementChange(element, 'cvv')
+                    }
+                  />
+                </div>
+              </label>
             </Col>
           </Row>
-          <div
-            className={classnames(
-              styles.cardElementWrapper,
-              errors.card_zip && styles.inputError
-            )}>
-            <PostalCodeElement
-              required
-              placeholder="Billing Postcode"
-              style={inputStyle}
-              onChange={element =>
-                this.stripeElementChange(element, 'card_zip')
-              }
-            />
-          </div>
+
+          <label className={styles.cardLabel}>
+            <span>Billing postcode</span>
+            <div
+              className={classnames(
+                styles.cardElementWrapper,
+                errors.card_zip && styles.inputError
+              )}>
+              <PostalCodeElement
+                required
+                placeholder=""
+                style={inputStyle}
+                onChange={element =>
+                  this.stripeElementChange(element, 'card_zip')
+                }
+              />
+            </div>
+          </label>
+          {this.renderPromoCode()}
         </div>
+      </div>
+    )
+  }
+
+  renderPromoCode() {
+    const {
+      voucher_code,
+      loadingPrice,
+      handleVoucherApply,
+      onChange
+    } = this.props
+    const { showPromo } = this.state
+
+    return (
+      <div className={styles.promoWrapper}>
+        {showPromo ? (
+          <div className={styles.promoContainer}>
+            <Input
+              placeholder="Promo code"
+              name="voucher_code"
+              value={voucher_code}
+              className={styles.promoInput}
+              onChange={event => onChange({ voucher_code: event.target.value })}
+              required
+            />
+            <Button
+              color="primary"
+              className={styles.applyBtn}
+              disabled={voucher_code === '' || loadingPrice}
+              onClick={handleVoucherApply}>
+              Apply
+            </Button>
+          </div>
+        ) : (
+          <div
+            className={styles.promoAction}
+            onClick={() => this.setState({ showPromo: true })}>
+            I have a promo code
+          </div>
+        )}
       </div>
     )
   }

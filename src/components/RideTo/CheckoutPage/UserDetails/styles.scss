@@ -1,5 +1,5 @@
 .container {
-  width: 480px;
+  width: 320px;
 }
 
 .title {
@@ -16,6 +16,7 @@
 }
 
 .subtext {
+  padding-left: 15px;
   text-align: left;
   font-size: 12px;
   color: var(--grey-color);
@@ -72,8 +73,35 @@
   font-size: 15px;
 }
 
+.checkForm {
+  margin-top: 3rem;
+}
+
 .checkoutForm {
   color: #707070;
+}
+
+.cardDetails {
+  margin-top: 0.7rem;
+}
+
+.hideCardDetails {
+  display: none;
+}
+
+.cardLabel {
+  width: 100%;
+  margin-top: 1rem;
+
+  span {
+    display: block;
+    margin-bottom: 0.5em;
+    color: rgba(#070707, 0.8);
+  }
+
+  .input {
+    margin-top: 0;
+  }
 }
 
 .terms {
@@ -129,7 +157,12 @@
   // align-items: center;
   padding: 16px 16px;
   background: white;
-  margin-top: 16px;
+}
+
+.cvvElementWrapper {
+  background-image: url('assets/images/cvc.png');
+  background-repeat: no-repeat;
+  background-position: right 0.5rem center;
 }
 
 .actionDiv {
@@ -195,4 +228,18 @@
     color: #1f8f77;
     text-decoration: underline;
   }
+}
+
+.promoAction {
+  cursor: pointer;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.promoWrapper {
+  margin-top: 16px;
+}
+
+.promoContainer {
+  display: flex;
 }
