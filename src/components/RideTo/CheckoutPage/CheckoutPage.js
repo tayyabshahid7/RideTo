@@ -111,8 +111,7 @@ class CheckoutPage extends Component {
       loadingPrice: false,
       showMap: false,
       trainings: this.props.trainings,
-      showCardDetails: true // TODO DISABLE
-      // showCardDetails: false // TODO ENABLE
+      showCardDetails: false
     }
 
     this.handleChange = this.handleChange.bind(this)
