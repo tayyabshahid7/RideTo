@@ -218,7 +218,6 @@ class OrderSummary extends Component {
               </p>
             </div>
           )}
-          <hr className={styles.hr} />
           <div className={styles.guaranteeInfo}>
             <div className={styles.guaranteeLogo}>
               <img src={IconMoneyBack} alt="money-back" />
