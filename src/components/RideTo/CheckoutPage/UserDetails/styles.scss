@@ -16,6 +16,16 @@
   }
 }
 
+.titleOrderSummary {
+  @media (max-width: 768px) {
+    margin-top: -0.2rem;
+  }
+}
+
+.fadeTitle {
+  opacity: 0.4444;
+}
+
 .input {
   margin-top: 24px;
   // padding: 0;
@@ -268,22 +278,4 @@
     color: #1f8f77;
     text-decoration: underline;
   }
-}
-
-.promoAction {
-  cursor: pointer;
-  color: var(--primary-color);
-  font-weight: bold;
-
-  @media (max-width: 768px) {
-    font-size: 15px;
-  }
-}
-
-.promoWrapper {
-  margin-top: 16px;
-}
-
-.promoContainer {
-  display: flex;
 }

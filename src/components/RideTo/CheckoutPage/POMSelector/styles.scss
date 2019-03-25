@@ -55,7 +55,7 @@
 .header {
   display: flex;
   position: relative;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bold;
   margin-top: 1.2rem;
   justify-content: space-between;
@@ -127,6 +127,10 @@
   &:hover {
     background-color: darken(#2cceac, 5%);
     border: 2px solid darken(#2cceac, 5%);
+  }
+
+  &:focus {
+    outline: 0;
   }
 
   .headerSwitchSlider {

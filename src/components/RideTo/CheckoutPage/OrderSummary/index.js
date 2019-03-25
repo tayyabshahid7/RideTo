@@ -12,6 +12,7 @@ import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
 import { getExpectedPrice } from 'services/order'
 import { checkAllowedDate } from 'services/date'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
+import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
 
 class OrderSummary extends Component {
   componentDidUpdate(prevProps) {
@@ -72,10 +73,10 @@ class OrderSummary extends Component {
       onSubmit,
       saving,
       instantBook,
-      // voucher_code,
-      // handleVoucherApply,
-      // onChange,
-      // loadingPrice,
+      voucher_code,
+      handleVoucherApply,
+      onChange,
+      loadingPrice,
       details,
       onDetailChange,
       errors = {},
@@ -207,7 +208,12 @@ class OrderSummary extends Component {
             to the results page to pick a later date.
           </div>
         )}
-
+        <PromoCode
+          voucher_code={voucher_code}
+          loadingPrice={loadingPrice}
+          handleVoucherApply={handleVoucherApply}
+          onChange={onChange}
+        />
         <div className={styles.sectionFooter}>
           {!instantBook && (
             <div id="terms-conditions-section" className={styles.information}>
