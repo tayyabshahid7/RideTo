@@ -1,5 +1,9 @@
 .container {
-  width: 320px;
+  max-width: 480px;
+
+  @media (min-width: 769px) {
+    padding-right: 30px;
+  }
 }
 
 .title {

@@ -37,9 +37,4 @@
 .tick {
   margin-right: 0.5rem;
   color: var(--primary-color);
-  font-size: 1.3rem;
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
 }

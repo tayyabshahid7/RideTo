@@ -111,7 +111,7 @@ class UserDetails extends Component {
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
-      <div className={styles.container}>
+      <div>
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
             Order Summary
