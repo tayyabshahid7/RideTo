@@ -18,4 +18,10 @@
     padding: 0;
     border: none;
   }
+
+  @media (min-width: 1082px) {
+    position: fixed;
+    top: 62px;
+    height: calc(100% - 62px);
+  }
 }

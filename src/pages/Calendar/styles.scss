@@ -28,8 +28,12 @@
   }
 }
 
-@media (max-width: 992px) {
-  .noCalendarPath {
+.noCalendarPath {
+  @media (max-width: 992px) {
     display: none;
+  }
+
+  @media (min-width: 1082px) {
+    padding-right: 371px;
   }
 }

@@ -128,7 +128,7 @@ export function ConnectSelect({
         )}
         {options.map(opt => (
           <option
-            key={opt[valueField]}
+            key={opt.key || opt[valueField]}
             disabled={!opt[valueField]}
             value={opt[valueField]}
             name={opt[labelField]}>
