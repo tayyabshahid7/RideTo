@@ -118,7 +118,8 @@ class ChangeDate extends Component {
                       ? []
                       : times.map(time => ({
                           title: time.time,
-                          value: time.time
+                          value: time.time,
+                          key: `${time.course_id}-${time.time}`
                         }))
                   }
                   valueField="value"
