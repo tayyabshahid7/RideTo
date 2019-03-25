@@ -34,12 +34,15 @@ class UserDetails extends Component {
     const { showCardDetails } = this.props
 
     if (prevProps.showCardDetails !== showCardDetails) {
-      const cardDetails = this.cardDetails.current
+      setTimeout(() => {
+        const cardDetails = this.cardDetails.current
 
-      cardDetails.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      })
+        cardDetails &&
+          cardDetails.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          })
+      }, 99)
     }
   }
 
