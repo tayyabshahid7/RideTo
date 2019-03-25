@@ -121,14 +121,6 @@
   line-height: 24px;
 }
 
-.applyBtn {
-  flex: 0 0 100px;
-}
-
-.promoInput {
-  flex: 1 1 auto;
-}
-
 .acceptTermsWrapper {
   @media (max-width: 768px) {
     background-color: #fff;
@@ -157,7 +149,7 @@
 
   label {
     font-weight: bold;
-    font-size: 16px;
+    font-size: 15px;
 
     @media (max-width: 768px) {
       font-size: 14px;
@@ -203,7 +195,7 @@
   ul {
     margin: 0;
   }
-  font-size: 13px;
+  font-size: 12px;
   margin-top: 20px;
   margin-left: 23px;
 }
@@ -217,7 +209,7 @@
   border: 0;
   cursor: pointer;
   text-decoration: underline;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bold;
   margin-bottom: 0.5rem;
   text-align: left;
@@ -236,17 +228,19 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 17px;
+  font-size: 15px;
   font-weight: bold;
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 
   @media (max-width: 768px) {
     font-size: 15px;
   }
-}
 
-.dateLimit {
-  align-items: flex-start;
+  > div:first-child {
+    font-size: 18px;
+    font-weight: 500;
+    font-family: var(--font-rift);
+  }
 }
 
 .limitedWarning {

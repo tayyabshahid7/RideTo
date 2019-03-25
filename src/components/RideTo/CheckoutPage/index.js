@@ -10,10 +10,11 @@ const POM_NAME = 'Peace Of Mind Policy'
 
 function addCheckoutToHeader() {
   const logoPhone = document.querySelector('.heading--logo-phone')
-  logoPhone.insertAdjacentHTML(
-    'afterend',
-    '<div style="font-size: 2rem; color: #fff; position: relative; left: -25px;">Checkout</div>'
-  )
+  logoPhone &&
+    logoPhone.insertAdjacentHTML(
+      'afterend',
+      '<div style="font-size: 2rem; color: #fff; position: relative; left: -25px;">Checkout</div>'
+    )
 }
 
 class CheckoutPageContainer extends Component {

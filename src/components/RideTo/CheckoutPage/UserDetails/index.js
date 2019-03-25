@@ -6,7 +6,7 @@ import {
   CardCVCElement,
   PostalCodeElement
 } from 'react-stripe-elements'
-import { Row, Col, Button } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Input from 'components/RideTo/Input'
@@ -19,10 +19,6 @@ import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/Cours
 class UserDetails extends Component {
   constructor(props) {
     super(props)
-
-    this.state = {
-      showPromo: false
-    }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -38,12 +34,15 @@ class UserDetails extends Component {
     const { showCardDetails } = this.props
 
     if (prevProps.showCardDetails !== showCardDetails) {
-      const cardDetails = this.cardDetails.current
+      setTimeout(() => {
+        const cardDetails = this.cardDetails.current
 
-      cardDetails.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      })
+        cardDetails &&
+          cardDetails.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          })
+      }, 99)
     }
   }
 
@@ -115,9 +114,9 @@ class UserDetails extends Component {
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
-      <div className={styles.container}>
+      <div>
         <div className={styles.hiddenOnDesktop}>
-          <div className={classnames(styles.title, styles.hiddenOnMobile)}>
+          <div className={classnames(styles.title, styles.titleOrderSummary)}>
             Order Summary
           </div>
           <CourseInformation
@@ -354,7 +353,12 @@ class UserDetails extends Component {
     }
     return (
       <div className={styles.checkForm} ref={this.cardDetails}>
-        <div id="checkout-payment-details" className={styles.title}>
+        <div
+          id="checkout-payment-details"
+          className={classnames(
+            styles.title,
+            !showCardDetails && styles.fadeTitle
+          )}>
           Payment Details
         </div>
         <div
@@ -454,48 +458,7 @@ class UserDetails extends Component {
               />
             </div>
           </label>
-          {this.renderPromoCode()}
         </div>
-      </div>
-    )
-  }
-
-  renderPromoCode() {
-    const {
-      voucher_code,
-      loadingPrice,
-      handleVoucherApply,
-      onChange
-    } = this.props
-    const { showPromo } = this.state
-
-    return (
-      <div className={styles.promoWrapper}>
-        {showPromo ? (
-          <div className={styles.promoContainer}>
-            <Input
-              placeholder="Promo code"
-              name="voucher_code"
-              value={voucher_code}
-              className={styles.promoInput}
-              onChange={event => onChange({ voucher_code: event.target.value })}
-              required
-            />
-            <Button
-              color="primary"
-              className={styles.applyBtn}
-              disabled={voucher_code === '' || loadingPrice}
-              onClick={handleVoucherApply}>
-              Apply
-            </Button>
-          </div>
-        ) : (
-          <div
-            className={styles.promoAction}
-            onClick={() => this.setState({ showPromo: true })}>
-            I have a promo code
-          </div>
-        )}
       </div>
     )
   }

@@ -86,8 +86,9 @@ function CourseInformation({
         {!isFullLicence && (
           <div className={styles.dateLimit}>
             <div>
-              <div>{moment(date).format('ddd D MMMM')}</div>
-              <div className={styles.requestedTime}>{requested_time}</div>
+              <div>
+                {moment(date).format('ddd D MMMM')}: {requested_time}
+              </div>
             </div>
             <div className={styles.limitedWarning}>Limited spaces left</div>
           </div>
