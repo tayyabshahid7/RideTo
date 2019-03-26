@@ -44,7 +44,8 @@ function UnallocatedTestsTable({ tests }) {
                   <td>
                     {course_type
                       .replace('Test', '')
-                      .replace('Full Licence Mod', 'Module')}
+                      .replace('Full Licence Mod', 'Module')
+                      .replace('uleule', 'ule')}
                   </td>
                   <td>{test_centre_name}</td>
                   <td>{testDate.format('Do MMM')}</td>

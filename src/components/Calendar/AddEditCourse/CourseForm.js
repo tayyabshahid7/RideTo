@@ -550,7 +550,7 @@ class CourseForm extends React.Component {
               )}
               {!this.props.course && !this.props.date && (
                 <ConnectInput
-                  lable="Date"
+                  label="Date"
                   basic
                   name="date"
                   value={date || ''}

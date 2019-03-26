@@ -627,7 +627,11 @@ export default function reducer(state = initialState, action) {
     case CREATE_BULK[SUCCESS]:
       return {
         ...state,
-        bulk: { ...state.bulk, saving: false }
+        bulk: { ...state.bulk, saving: false },
+        calendar: {
+          ...state.calendar,
+          loadedMonths: []
+        }
       }
     case CREATE_BULK[FAILURE]:
       return {
