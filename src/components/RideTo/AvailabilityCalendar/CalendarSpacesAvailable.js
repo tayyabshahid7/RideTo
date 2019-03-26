@@ -16,11 +16,11 @@ function CalendarSpacesAvailable({ calendar: { selectedCourse }, courses }) {
   const spacesLeft = spacesTotal - spacesTaken
   let colorClass = null
 
-  if (spacesLeft < spacesTotal && spacesLeft > 1 && spacesLeft < 3) {
+  if (spacesLeft === 2) {
     colorClass = styles.yellow
   }
 
-  if (spacesLeft < spacesTotal && spacesLeft < 2) {
+  if (spacesLeft < 2) {
     colorClass = styles.red
   }
 
