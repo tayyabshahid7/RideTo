@@ -102,6 +102,11 @@ class EditOrderForm extends React.Component {
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave}>
+          <div className={styles.deleteWrap}>
+            <Button color="danger" onClick={onDelete}>
+              Delete
+            </Button>
+          </div>
           <div className={styles.topSection}>
             <div>
               <div className={styles.header}>
@@ -115,9 +120,6 @@ class EditOrderForm extends React.Component {
                 </b>
               </ConnectLabeledContent>
             </div>
-            <Button color="danger" onClick={onDelete}>
-              Delete
-            </Button>
           </div>
 
           <ChangeDate

@@ -21,10 +21,15 @@ button.toggleButton {
 }
 
 .topSection {
-  display: flex;
-  justify-content: space-between;
+  // display: flex;
+  // justify-content: space-between;
 }
 
 .comms {
   margin-bottom: 1.5rem;
+}
+
+.deleteWrap {
+  text-align: right;
+  margin-bottom: 0.5rem;
 }
