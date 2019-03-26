@@ -199,16 +199,6 @@ class AddOrderItem extends React.Component {
       course: { pricing }
     } = this.props
     const {
-      user_first_name,
-      user_last_name,
-      user_phone,
-      bike_hire,
-      riding_experience,
-      payment_status,
-      user_birthdate,
-      user_driving_licence_number,
-      user_email,
-      full_licence_type,
       isFullLicence,
       userDetailsValid,
       showPayment,
@@ -217,7 +207,19 @@ class AddOrderItem extends React.Component {
       cardNumberComplete,
       cardDateComplete,
       cardCVCComplete,
-      cardPostCodeComplete
+      cardPostCodeComplete,
+      order: {
+        bike_hire,
+        full_licence_type,
+        payment_status,
+        riding_experience,
+        user_birthdate,
+        user_driving_licence_number,
+        user_email,
+        user_first_name,
+        user_last_name,
+        user_phone
+      }
     } = this.state
     const price = pricing && pricing.price
 
