@@ -72,10 +72,8 @@
     display: block;
     width: 27px;
     height: 32px;
-    background-image: url(assets/images/pom-shield.png);
-
-    @media (max-width: 768px) {
-    }
+    background-image: url(assets/images/pom-shield.svg);
+    background-size: 27px 32px;
   }
 }
 
