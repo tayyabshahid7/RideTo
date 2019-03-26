@@ -5,10 +5,30 @@
 
 .loginDetails {
   display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
   width: 42%;
   padding: 0 60px;
   background-color: #fff;
+}
+
+.loginHeader {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  svg {
+    width: 107px;
+    height: 107px;
+  }
+}
+
+.loginTitle {
+  margin: 40px 0;
+  font-size: 40px;
+  font-weight: bold;
 }
 
 .form {
