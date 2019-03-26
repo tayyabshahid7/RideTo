@@ -33,7 +33,7 @@ function BikePicker({
     <Loading loading={loading}>
       <div className={styles.bikeHireWrapper}>
         <label id="choose-bike" className={styles.subtitle1}>
-          {!isFullLicence ? 'Choose A Bike to Hire' : 'Type of Bike'}
+          {!isFullLicence ? 'Choose A Bike to Hire:' : 'Type of Bike'}
         </label>
 
         {isCbtRenewal && (
