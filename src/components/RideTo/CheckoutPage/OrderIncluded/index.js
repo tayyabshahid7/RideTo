@@ -11,7 +11,7 @@ function OrderIncluded({ bikeHire, pom = false }) {
               <i className="fa fa-check" />
             </span>{' '}
             <span className={styles.text}>
-              Complete <strong>peace of mind</strong> for new riders
+              Covers failure to achieve CBT on 1st day
             </span>
           </li>
           <li>
@@ -21,6 +21,14 @@ function OrderIncluded({ bikeHire, pom = false }) {
             <span className={styles.text}>
               <strong>We'll pay for your 2nd day</strong> of training if you
               need it.
+            </span>
+          </li>
+          <li>
+            <span className={styles.tick}>
+              <i className="fa fa-check" />
+            </span>{' '}
+            <span className={styles.text}>
+              Complete <strong>peace of mind</strong> for new riders
             </span>
           </li>
         </ul>
