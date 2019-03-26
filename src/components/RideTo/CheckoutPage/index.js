@@ -13,7 +13,7 @@ function addCheckoutToHeader() {
   logoPhone &&
     logoPhone.insertAdjacentHTML(
       'afterend',
-      '<div style="font-size: 2rem; color: #fff; position: relative; left: -25px;">Checkout</div>'
+      '<style>@media(max-width: 768px) { #checkout-title { display: none; } }</style><div id="checkout-title" style="font-size: 2rem; color: #fff; position: relative; left: -25px;">Checkout</div>'
     )
 }
 
