@@ -165,12 +165,9 @@ class OrdersPanel extends React.Component {
                   </Elements>
                 </StripeProvider>
               ) : (
-                <Fragment>
+                <Fragment key={index}>
                   {!addingOrder && (
-                    <OrdersPanelSpaceItem
-                      onAdd={() => this.handleAdd(index)}
-                      key={index}
-                    />
+                    <OrdersPanelSpaceItem onAdd={() => this.handleAdd(index)} />
                   )}
                 </Fragment>
               )
