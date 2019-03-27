@@ -1,6 +1,10 @@
 .wrapper {
   display: flex;
   min-height: 100vh;
+
+  svg {
+    max-width: 100%;
+  }
 }
 
 .loginDetails {
@@ -8,9 +12,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 42%;
+  width: 100%;
   padding: 0 60px;
   background-color: #fff;
+
+  @media (min-width: 1000px) {
+    width: 42%;
+  }
 }
 
 .loginHeader {
@@ -18,11 +26,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
 
-  svg {
-    width: 107px;
-    height: 107px;
-  }
+.loginLogo {
+  width: 107px;
+  height: 107px;
+  margin-top: 20px;
 }
 
 .loginTitle {
@@ -69,6 +78,30 @@
 }
 
 .info {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   flex-grow: 1;
   background-color: #51b5c8;
+  padding: 0 60px;
+
+  @media (min-width: 1000px) {
+    display: flex;
+  }
+}
+
+.logoFull {
+  width: 466px;
+  margin-top: -20px;
+}
+
+.laptop {
+  margin-top: 80px;
+  margin-bottom: 70px;
+}
+
+.strap {
+  font-size: 26px;
+  color: #fff;
 }

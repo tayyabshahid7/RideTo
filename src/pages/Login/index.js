@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { login } from 'store/auth'
 import { isAuthenticated } from 'services/auth'
-import { ConnectLogo, ConnectLogoFull } from 'assets/icons'
+import { ConnectLogo, ConnectLogoFull, Info } from 'assets/icons'
 import styles from './styles.scss'
 
 class Login extends Component {
@@ -40,7 +40,7 @@ class Login extends Component {
       <div className={styles.wrapper}>
         <div className={styles.loginDetails}>
           <div className={styles.loginHeader}>
-            <ConnectLogo />
+            <ConnectLogo className={styles.loginLogo} />
             <h1 className={styles.loginTitle}>Log In</h1>
           </div>
           <form className={styles.form} onSubmit={this.handleFormSubmit}>
@@ -75,7 +75,8 @@ class Login extends Component {
           )}
         </div>
         <div className={styles.info}>
-          <ConnectLogoFull />
+          <ConnectLogoFull className={styles.logoFull} />
+          <Info className={styles.laptop} />
           <div className={styles.strap}>The UK's #1 ATB Software Partner</div>
         </div>
       </div>
