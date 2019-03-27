@@ -28,7 +28,9 @@ const CoursesPanelItem = ({
   createSchoolPayment,
   updateSchoolOrder,
   deleteOrderTraining,
-  updateCourse
+  updateCourse,
+  updateAdding,
+  addingOrder
 }) => {
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
@@ -89,6 +91,8 @@ const CoursesPanelItem = ({
         loading={loading}
         schoolId={schoolId}
         saving={saving}
+        addingOrder={addingOrder}
+        updateAdding={updateAdding}
       />
     </div>
   )

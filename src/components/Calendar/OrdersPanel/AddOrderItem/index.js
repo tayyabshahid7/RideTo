@@ -54,7 +54,17 @@ class AddOrderItem extends React.Component {
   }
 
   componentDidMount() {
+    const { updateAdding, course } = this.props
+
     this.scrollIntoView.current.scrollIntoView()
+
+    updateAdding(course.id)
+  }
+
+  componentWillUnmount() {
+    const { updateAdding } = this.props
+
+    updateAdding(null)
   }
 
   componentDidUpdate(prevProps, prevState) {

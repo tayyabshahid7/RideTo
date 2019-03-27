@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styles from './OrdersPanel.scss'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 import AddOrderItem from './AddOrderItem'
@@ -100,7 +100,14 @@ class OrdersPanel extends React.Component {
   }
 
   render() {
-    const { course, info, saving, loading } = this.props
+    const {
+      course,
+      info,
+      saving,
+      loading,
+      updateAdding,
+      addingOrder
+    } = this.props
     const { orderIndex, editOrderIndex, showEditButton } = this.state
     const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
 
@@ -153,14 +160,19 @@ class OrdersPanel extends React.Component {
                       onSave={this.handleNewOrder.bind(this)}
                       onPayment={this.handleNewPayment.bind(this)}
                       saving={saving}
+                      updateAdding={updateAdding}
                     />
                   </Elements>
                 </StripeProvider>
               ) : (
-                <OrdersPanelSpaceItem
-                  onAdd={() => this.handleAdd(index)}
-                  key={index}
-                />
+                <Fragment>
+                  {!addingOrder && (
+                    <OrdersPanelSpaceItem
+                      onAdd={() => this.handleAdd(index)}
+                      key={index}
+                    />
+                  )}
+                </Fragment>
               )
             )}
           </div>
