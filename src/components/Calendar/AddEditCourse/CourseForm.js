@@ -80,7 +80,8 @@ class CourseForm extends React.Component {
       course.date = this.props.date
     }
     this.state = {
-      course: course
+      course: course,
+      edited: false
     }
 
     this.handleToggleEdit = this.handleToggleEdit.bind(this)
@@ -163,7 +164,7 @@ class CourseForm extends React.Component {
     let name = event.target.name
     let { course } = this.state
     course[name] = event.target.value
-    this.setState({ course })
+    this.setState({ course, edited: true })
   }
 
   handleSave(event) {
@@ -215,6 +216,9 @@ class CourseForm extends React.Component {
     }
 
     onSubmit(course)
+    this.setState({
+      edited: false
+    })
   }
 
   render() {
@@ -226,6 +230,7 @@ class CourseForm extends React.Component {
       testCentres,
       pricing
     } = this.props
+    const { edited } = this.state
     const {
       course_type_id,
       instructor_id,
@@ -286,6 +291,22 @@ class CourseForm extends React.Component {
               </Col>
             </Row>
             <div>
+              {!this.props.course && !this.props.date && (
+                <Row>
+                  <Col sm="8">
+                    <ConnectInput
+                      label="Date"
+                      basic
+                      name="date"
+                      value={date || ''}
+                      type="date"
+                      disabled={!isEditable}
+                      onChange={this.handleChangeRawEvent.bind(this)}
+                      required
+                    />
+                  </Col>
+                </Row>
+              )}
               <Row>
                 <Col sm="4">
                   <ConnectInput
@@ -548,18 +569,6 @@ class CourseForm extends React.Component {
                   )}
                 </React.Fragment>
               )}
-              {!this.props.course && !this.props.date && (
-                <ConnectInput
-                  label="Date"
-                  basic
-                  name="date"
-                  value={date || ''}
-                  type="date"
-                  disabled={!isEditable}
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
-              )}
               <Row>
                 <Col sm="8">
                   <ConnectSelect
@@ -602,7 +611,11 @@ class CourseForm extends React.Component {
               />
               {isEditable && (
                 <div className={styles.actions}>
-                  <Button type="submit" color="primary" className="mr-2">
+                  <Button
+                    type="submit"
+                    color="primary"
+                    className="mr-2"
+                    disabled={!edited}>
                     Save
                   </Button>
                   <Button color="white" onClick={this.handleToggleEdit}>

@@ -27,6 +27,7 @@ class AddOrderItem extends React.Component {
         riding_experience: '',
         full_licence_type: '',
         start_time: `${this.props.course.date}T${this.props.course.time}Z`
+        // email_optin: 'false'
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
@@ -54,7 +55,17 @@ class AddOrderItem extends React.Component {
   }
 
   componentDidMount() {
+    const { updateAdding, course } = this.props
+
     this.scrollIntoView.current.scrollIntoView()
+
+    updateAdding(course.id)
+  }
+
+  componentWillUnmount() {
+    const { updateAdding } = this.props
+
+    updateAdding(null)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -219,6 +230,7 @@ class AddOrderItem extends React.Component {
         user_first_name,
         user_last_name,
         user_phone
+        // email_optin
       }
     } = this.state
     const price = pricing && pricing.price
@@ -363,6 +375,22 @@ class AddOrderItem extends React.Component {
                 valueField="value"
                 labelField="title"
               />
+
+              {/*
+              <ConnectSelect
+                basic
+                name="email_optin"
+                selected={email_optin}
+                label="Add to mailing list?"
+                valueArray={[
+                  { id: 'false', name: 'No' },
+                  { id: 'true', name: 'Yes' }
+                ]}
+                onChange={value => {
+                  this.handleChange('email_optin', value)
+                }}
+              />
+              */}
             </div>
             {showPayment && (
               <div>

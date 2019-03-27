@@ -10,6 +10,22 @@ import DateHeading from 'components/Calendar/DateHeading'
 import CoursesPanel from './CoursesPanel'
 
 class CoursesPanelContainer extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      addingOrder: null
+    }
+
+    this.updateAdding = this.updateAdding.bind(this)
+  }
+
+  updateAdding(id) {
+    this.setState({
+      addingOrder: id
+    })
+  }
+
   componentDidMount() {
     this.loadData()
   }
@@ -37,14 +53,17 @@ class CoursesPanelContainer extends React.Component {
     const {
       params: { date }
     } = match
+    const { addingOrder } = this.state
 
     return (
       <Loading loading={loading}>
         <DateHeading date={moment(date, 'YYYY-MM-DD')} backLink={`/calendar`} />
         <CoursesPanel
+          addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
           events={events.sort((a, b) => a.start_time > b.start_time)}
+          updateAdding={this.updateAdding}
         />
       </Loading>
     )

@@ -28,7 +28,9 @@ const CoursesPanelItem = ({
   createSchoolPayment,
   updateSchoolOrder,
   deleteOrderTraining,
-  updateCourse
+  updateCourse,
+  updateAdding,
+  addingOrder
 }) => {
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
@@ -40,7 +42,7 @@ const CoursesPanelItem = ({
   const isTestCourse =
     course.course_type.constant.includes('FULL_LICENCE') &&
     course.course_type.constant.includes('TEST')
-  const { notes = '' } = course
+  const { notes = '', instructor } = course
   const truncated = notes.length > 200 ? `${notes}...` : notes
   return (
     <div className={styles.coursesPanelItem}>
@@ -53,6 +55,11 @@ const CoursesPanelItem = ({
                 course.application_reference_number &&
                 `(${course.application_reference_number})`}
             </div>
+            {instructor && (
+              <div>
+                Instructor: {instructor.first_name} {instructor.last_name}
+              </div>
+            )}
             {isTestCourse && (
               <div className={styles.testNotes}>
                 <b>{TEST_STATUS_CHOICES[course.status]}</b>
@@ -84,6 +91,8 @@ const CoursesPanelItem = ({
         loading={loading}
         schoolId={schoolId}
         saving={saving}
+        addingOrder={addingOrder}
+        updateAdding={updateAdding}
       />
     </div>
   )
