@@ -53,6 +53,7 @@ class NavigationComponent extends React.Component {
     } = this.props
     const fullWidth = navigation.length === 1
     const isFullLicence = courseType === 'FULL_LICENCE'
+    const dateString = date ? moment(date).format(DAY_FORMAT5) : 'Select date'
 
     return (
       <div
@@ -106,7 +107,7 @@ class NavigationComponent extends React.Component {
           <NavigationItem
             className={styles.hiddenOnDesktop}
             title="Date"
-            subtitle={moment(date).format(DAY_FORMAT5)}
+            subtitle={dateString}
             onClick={handleMobileDateClick}
             dropDown
           />
