@@ -78,7 +78,7 @@ class OrdersPanel extends React.Component {
     })
   }
 
-  handleDeleteTraining(training) {
+  async handleDeleteTraining(training) {
     if (
       window.confirm(
         `Are you sure you whant to delete the training from Order ${
@@ -87,7 +87,15 @@ class OrdersPanel extends React.Component {
       )
     ) {
       const { deleteOrderTraining, schoolId } = this.props
-      deleteOrderTraining(schoolId, training.id)
+      try {
+        await deleteOrderTraining(schoolId, training.id)
+        this.setState({
+          editOrderIndex: -1,
+          showEditButton: true
+        })
+      } catch {
+        console.log("Couldn't delete order.")
+      }
     }
   }
 
