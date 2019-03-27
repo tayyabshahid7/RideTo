@@ -291,6 +291,22 @@ class CourseForm extends React.Component {
               </Col>
             </Row>
             <div>
+              {!this.props.course && !this.props.date && (
+                <Row>
+                  <Col sm="8">
+                    <ConnectInput
+                      label="Date"
+                      basic
+                      name="date"
+                      value={date || ''}
+                      type="date"
+                      disabled={!isEditable}
+                      onChange={this.handleChangeRawEvent.bind(this)}
+                      required
+                    />
+                  </Col>
+                </Row>
+              )}
               <Row>
                 <Col sm="4">
                   <ConnectInput
@@ -552,18 +568,6 @@ class CourseForm extends React.Component {
                     </React.Fragment>
                   )}
                 </React.Fragment>
-              )}
-              {!this.props.course && !this.props.date && (
-                <ConnectInput
-                  label="Date"
-                  basic
-                  name="date"
-                  value={date || ''}
-                  type="date"
-                  disabled={!isEditable}
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                  required
-                />
               )}
               <Row>
                 <Col sm="8">
