@@ -122,8 +122,8 @@ class ResultPage extends Component {
     if (pathname.startsWith('/cbt-training/')) {
       postcode = pathname.replace('/cbt-training/', '')
       actualCourseType = 'LICENCE_CBT'
-    } else if (pathname.startsWith('/motorcycle-license/')) {
-      postcode = pathname.replace('/motorcycle-license/', '')
+    } else if (pathname.startsWith('/motorcycle-licence/')) {
+      postcode = pathname.replace('/motorcycle-licence/', '')
       actualCourseType = 'FULL_LICENCE'
     } else if (qs.postcode) {
       postcode = qs.postcode.toUpperCase()
@@ -260,21 +260,27 @@ class ResultPage extends Component {
 
     window.sessionStorage.setItem('trainings', JSON.stringify(trainings))
 
-    if (courseType === 'FULL_LICENCE') {
-      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
-        selectedCourse.id
-      }`
-    } else if (selectedCourse.instant_book) {
-      if (instantCourse) {
-        window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&courseId=${
-          instantCourse.id
-        }&supplierId=${selectedCourse.id}&date=${instantDate}`
-      }
-    } else {
-      window.location = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${
-        selectedCourse.id
-      }&date=${instantDate}`
+    const next = `/${selectedCourse.supplier_slug}/checkout`
+
+    let checkoutData = {
+      postcode,
+      courseType,
+      bike_hire,
+      supplierId: selectedCourse.id,
+      addons: []
     }
+
+    if (courseType !== 'FULL_LICENCE') {
+      checkoutData.date = instantDate
+    }
+
+    if (selectedCourse.instant_book && instantCourse) {
+      checkoutData.courseId = instantCourse.id
+    }
+
+    sessionStorage.setItem('checkout-data', JSON.stringify(checkoutData))
+    sessionStorage.setItem('login-next', JSON.stringify(next))
+    window.location = next
   }
 
   renderSortByDropdown(shortOptions) {
@@ -359,9 +365,7 @@ class ResultPage extends Component {
             }
           }
         }}>
-        <span>
-          {this.state.activeTab === 3 ? 'Go to Checkout' : 'Select Date'}
-        </span>
+        <span>SELECT</span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </RideToButton>
     )

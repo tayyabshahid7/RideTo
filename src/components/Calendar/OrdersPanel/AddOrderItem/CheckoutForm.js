@@ -57,7 +57,7 @@ function CheckoutForm({
             <PoweredByStripe />
           </a>
         </span>
-        <span>Step 2 or 2</span>
+        <span>Step 2 of 2</span>
       </div>
       <div className={styles.price}>Total: £{(price / 100.0).toFixed(2)}</div>
       <div>

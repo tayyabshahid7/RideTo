@@ -11,16 +11,19 @@ export function ConnectInput({
   id,
   name,
   disabled,
-  required
+  required,
+  basic
 }) {
   return (
     <div className={styles.formGroup}>
-      <label className={styles.label} htmlFor={id || name}>
-        {label}
-      </label>
+      {label && (
+        <label className={styles.label} htmlFor={id || name}>
+          {label}
+        </label>
+      )}
       <input
         name={name}
-        className={styles.input}
+        className={classnames(styles.input, basic && styles.basic)}
         id={id || name}
         type={type}
         value={value}
@@ -39,17 +42,20 @@ export function ConnectAgeInput({
   id,
   name,
   disabled,
-  required
+  required,
+  basic
 }) {
   return (
     <div className={styles.formGroup}>
-      <label className={styles.label} htmlFor={id || name}>
-        {label}
-      </label>
+      {label && (
+        <label className={styles.label} htmlFor={id || name}>
+          {label}
+        </label>
+      )}
       <div className={styles.ageInputGroup}>
         <input
           name={name}
-          className={styles.input}
+          className={classnames(styles.input, basic && styles.basic)}
           id={id || name}
           type="date"
           value={value}
@@ -67,15 +73,24 @@ export function ConnectSelect({
   label,
   onChange,
   selected,
+  value,
   id,
   name,
   placeholder,
   options,
+  valueArray,
   labelField = 'name',
   valueField = 'id',
   disabled,
-  required
+  required,
+  basic,
+  textStyle = false,
+  raw
 }) {
+  if (!options) {
+    options = valueArray
+  }
+
   return (
     <div className={styles.formGroup}>
       {label && (
@@ -84,16 +99,26 @@ export function ConnectSelect({
         </label>
       )}
       <select
-        className={styles.select}
+        // defaultValue={placeholder && ''}
+        className={classnames(
+          styles.select,
+          basic && styles.basic,
+          textStyle && styles.textStyle
+        )}
         name={name}
         id={id || name}
-        value={selected}
-        onChange={e =>
-          onChange(
-            e.target.value,
-            e.target.options[e.target.selectedIndex].innerText
-          )
-        }
+        value={selected || value || ''}
+        onChange={e => {
+          if (raw) {
+            onChange(e)
+          } else {
+            onChange(
+              e.target.value,
+              e.target.options[e.target.selectedIndex].innerText,
+              e.target.name
+            )
+          }
+        }}
         disabled={disabled}
         required={required}>
         {placeholder && (
@@ -103,7 +128,7 @@ export function ConnectSelect({
         )}
         {options.map(opt => (
           <option
-            key={opt[valueField]}
+            key={opt.key || opt[valueField]}
             disabled={!opt[valueField]}
             value={opt[valueField]}
             name={opt[labelField]}>
@@ -115,13 +140,43 @@ export function ConnectSelect({
   )
 }
 
-export function ConnectLabeledContent({ label, children, disabled }) {
+export function ConnectLabeledContent({ label, children, disabled, basic }) {
   return (
     <div className={styles.formGroup}>
       {label && <label className={styles.label}>{label}</label>}
-      <div className={styles.input} disabled={disabled}>
+      <div
+        className={classnames(
+          styles.input,
+          styles.plainText,
+          basic && styles.basic
+        )}
+        disabled={disabled}>
         {children}
       </div>
+    </div>
+  )
+}
+
+export function ConnectTextArea({
+  label,
+  name,
+  value,
+  type,
+  disabled,
+  onChange,
+  children
+}) {
+  return (
+    <div className={styles.formGroup}>
+      {label && <label className={styles.label}>{label}</label>}
+      <textarea
+        className={styles.textarea}
+        name={name}
+        value={value}
+        type={type}
+        disabled={disabled}
+        onChange={onChange}
+      />
     </div>
   )
 }

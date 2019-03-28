@@ -1,0 +1,27 @@
+.promoAction {
+  cursor: pointer;
+  color: var(--primary-color);
+  font-weight: bold;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
+}
+
+.promoWrapper {
+  margin-top: 16px;
+  padding: 0 30px;
+}
+
+.promoContainer {
+  display: flex;
+}
+
+.applyBtn {
+  flex: 0 0 100px;
+}
+
+.promoInput {
+  flex: 1 1 auto;
+  border: 2px solid #e3e3e3 !important;
+}

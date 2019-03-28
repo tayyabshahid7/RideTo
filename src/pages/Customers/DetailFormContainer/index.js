@@ -84,7 +84,9 @@ class DetailFormContainer extends React.Component {
         isChanged: false
       },
       () => {
-        handleNotepadChange(this.props.customer.notes, false)
+        if (this.props.customer) {
+          handleNotepadChange(this.props.customer.notes, false)
+        }
       }
     )
   }

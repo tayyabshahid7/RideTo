@@ -1,14 +1,14 @@
 import React from 'react'
 import styles from './styles.scss'
-import { Button, Row, Col } from 'reactstrap'
-import InputTextGroup from 'components/Forms/InputTextGroup'
-import InputSelectGroup from 'components/Forms/InputSelectGroup'
+import { Row, Col } from 'reactstrap'
 import { BikeHires, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import { checkCustomerExists } from 'services/customer'
 import { injectStripe } from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
+
+import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
 
 class AddOrderItem extends React.Component {
   constructor(props) {
@@ -27,6 +27,7 @@ class AddOrderItem extends React.Component {
         riding_experience: '',
         full_licence_type: '',
         start_time: `${this.props.course.date}T${this.props.course.time}Z`
+        // email_optin: 'false'
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
@@ -54,7 +55,17 @@ class AddOrderItem extends React.Component {
   }
 
   componentDidMount() {
+    const { updateAdding, course } = this.props
+
     this.scrollIntoView.current.scrollIntoView()
+
+    updateAdding(course.id)
+  }
+
+  componentWillUnmount() {
+    const { updateAdding } = this.props
+
+    updateAdding(null)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -86,6 +97,24 @@ class AddOrderItem extends React.Component {
         cardName: `${order.user_first_name} ${event.target.value}`.toUpperCase()
       })
     }
+  }
+
+  handleChange(typeName, value) {
+    const { order } = this.state
+    // const newOrder = { ...order }
+
+    // let type = typeName.split('.')[0]
+    // let name = typeName.split('.')[1]
+
+    // if (!name) {
+    //   newOrder[type] = value
+    // } else {
+    //   newOrder[type][name] = value
+    // }
+
+    this.setState({
+      order: { ...order, [typeName]: value }
+    })
   }
 
   handleShowPaymentClick() {
@@ -178,21 +207,9 @@ class AddOrderItem extends React.Component {
     let {
       onCancel,
       info,
-      course: {
-        pricing: { price }
-      }
+      course: { pricing }
     } = this.props
     const {
-      user_first_name,
-      user_last_name,
-      user_phone,
-      bike_hire,
-      riding_experience,
-      payment_status,
-      user_birthdate,
-      user_driving_licence_number,
-      user_email,
-      full_licence_type,
       isFullLicence,
       userDetailsValid,
       showPayment,
@@ -201,137 +218,179 @@ class AddOrderItem extends React.Component {
       cardNumberComplete,
       cardDateComplete,
       cardCVCComplete,
-      cardPostCodeComplete
+      cardPostCodeComplete,
+      order: {
+        bike_hire,
+        full_licence_type,
+        payment_status,
+        riding_experience,
+        user_birthdate,
+        user_driving_licence_number,
+        user_email,
+        user_first_name,
+        user_last_name,
+        user_phone
+        // email_optin
+      }
     } = this.state
+    const price = pricing && pricing.price
 
     return (
       <div className={styles.container}>
         <div ref={this.scrollIntoView} />
+        {!showPayment &&
+          (!showPaymentConfirmation && (
+            <div className={styles.header}>
+              <span className={styles.leftCol}>
+                <h3 className={styles.title}>Add Order</h3>
+              </span>
+              <span>Step 1 of 2</span>
+            </div>
+          ))}
         {!showPaymentConfirmation ? (
           <form onSubmit={this.handleSave.bind(this)} ref={this.form}>
             <div className={classnames(showPayment && styles.hideUserForm)}>
-              <Row>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="user_first_name"
-                    value={user_first_name}
-                    label="First Name *"
-                    className="form-group"
-                    type="text"
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                  />
-                </Col>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="user_last_name"
-                    value={user_last_name}
-                    label="Surname *"
-                    className="form-group"
-                    type="text"
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="user_phone"
-                    value={user_phone}
-                    label="Mobile"
-                    className="form-group"
-                    type="text"
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                  />
-                </Col>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="user_email"
-                    value={user_email}
-                    label="Email *"
-                    className="form-group"
-                    type="email"
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="user_birthdate"
-                    value={user_birthdate}
-                    label="Birthdate *"
-                    className="form-group"
-                    type="date"
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
-                    required
-                  />
-                </Col>
-                <Col sm="6">
-                  {isFullLicence && (
-                    <InputSelectGroup
-                      name="full_licence_type"
-                      value={full_licence_type}
-                      label="Licence Type *"
-                      valueArray={FullLicenceTypes}
-                      noSelectOption
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      required
-                    />
-                  )}
-                </Col>
-              </Row>
-              <Row>
-                <Col sm="6">
-                  <InputTextGroup
-                    name="user_driving_licence_number"
-                    value={user_driving_licence_number}
-                    label="License Number"
-                    className="form-group"
-                    type="text"
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                  />
-                </Col>
-                <Col sm="6">
-                  <InputSelectGroup
-                    name="payment_status"
-                    value={payment_status}
-                    label="Payment Status *"
-                    valueArray={getPaymentOptions()}
-                    noSelectOption
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                    valueField="id"
-                    titleField="name"
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col sm="6">
-                  <InputSelectGroup
-                    name="riding_experience"
-                    value={riding_experience}
-                    label="Riding Experience"
-                    valueArray={info.ridingExperiences}
-                    noSelectOption
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                  />
-                </Col>
-                <Col sm="6">
-                  <InputSelectGroup
-                    name="bike_hire"
-                    value={bike_hire}
-                    label="Bike Hire *"
-                    valueArray={BikeHires}
-                    noSelectOption
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                  />
-                </Col>
-              </Row>
+              <ConnectInput
+                basic
+                name="user_first_name"
+                value={user_first_name}
+                label="First Name *"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+
+              <ConnectInput
+                basic
+                name="user_last_name"
+                value={user_last_name}
+                label="Surname *"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+
+              <ConnectInput
+                basic
+                name="user_phone"
+                value={user_phone}
+                label="Mobile"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+              />
+
+              <ConnectInput
+                basic
+                name="user_email"
+                value={user_email}
+                label="Email *"
+                className="form-group"
+                type="email"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+
+              <ConnectInput
+                basic
+                name="user_birthdate"
+                value={user_birthdate}
+                label="Birthdate *"
+                className="form-group"
+                type="date"
+                onChange={this.handleChangeRawEvent.bind(this)}
+                // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
+                required
+              />
+
+              {isFullLicence && (
+                <ConnectSelect
+                  placeholder
+                  basic
+                  name="full_licence_type"
+                  selected={full_licence_type}
+                  label="Licence Type *"
+                  valueArray={FullLicenceTypes}
+                  onChange={value => {
+                    this.handleChange('full_licence_type', value)
+                  }}
+                  required
+                  valueField="value"
+                  labelField="title"
+                />
+              )}
+
+              <ConnectInput
+                basic
+                name="user_driving_licence_number"
+                value={user_driving_licence_number}
+                label="Licence Number"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+              />
+
+              <ConnectSelect
+                placeholder
+                basic
+                name="payment_status"
+                selected={payment_status}
+                label="Payment Status *"
+                valueArray={getPaymentOptions()}
+                onChange={value => {
+                  this.handleChange('payment_status', value)
+                }}
+                required
+                valueField="id"
+                labelField="name"
+              />
+
+              <ConnectSelect
+                placeholder
+                basic
+                name="riding_experience"
+                selected={riding_experience}
+                label="Riding Experience"
+                valueArray={info.ridingExperiences}
+                onChange={value => {
+                  this.handleChange('riding_experience', value)
+                }}
+                valueField="value"
+                labelField="title"
+              />
+
+              <ConnectSelect
+                placeholder
+                basic
+                name="bike_hire"
+                selected={bike_hire}
+                label="Bike Hire *"
+                valueArray={BikeHires}
+                onChange={value => {
+                  this.handleChange('bike_hire', value)
+                }}
+                required
+                valueField="value"
+                labelField="title"
+              />
+
+              {/*
+              <ConnectSelect
+                basic
+                name="email_optin"
+                selected={email_optin}
+                label="Add to mailing list?"
+                valueArray={[
+                  { id: 'false', name: 'No' },
+                  { id: 'true', name: 'Yes' }
+                ]}
+                onChange={value => {
+                  this.handleChange('email_optin', value)
+                }}
+              />
+              */}
             </div>
             {showPayment && (
               <div>
@@ -369,7 +428,7 @@ class AddOrderItem extends React.Component {
                   }>
                   {showPayment ? 'Take Payment' : 'Save'}
                 </Button>
-                <Button color="" onClick={this.handleCancel}>
+                <Button color="white" onClick={this.handleCancel}>
                   Cancel
                 </Button>
               </Col>
@@ -384,11 +443,7 @@ class AddOrderItem extends React.Component {
             </p>
             <p>Confirmation Email sent.</p>
             <p>
-              <Button
-                color="primary"
-                outline
-                style={{ backgroundColor: '#fff' }}
-                onClick={onCancel}>
+              <Button color="white" onClick={onCancel}>
                 Close
               </Button>
             </p>

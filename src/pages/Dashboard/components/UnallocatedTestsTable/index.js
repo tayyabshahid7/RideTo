@@ -10,11 +10,11 @@ function UnallocatedTestsTable({ tests }) {
       <table className="table table-responsive-md">
         <thead>
           <tr>
-            <th>Test</th>
+            <th>Course</th>
             <th>Centre</th>
-            <th>Date</th>
-            <th>Last date to cancel</th>
+            <th>Test Date</th>
             <th>Status</th>
+            <th>Cancel Date</th>
           </tr>
         </thead>
         <tbody>
@@ -38,15 +38,21 @@ function UnallocatedTestsTable({ tests }) {
               return (
                 <tr
                   className={classnames(
-                    index % 2 ? styles.trEven : styles.trOdd,
-                    isExpiring ? styles.isExpiring : null
+                    index % 2 ? styles.trEven : styles.trOdd
                   )}
                   key={id}>
-                  <td>{course_type.replace('Test', '')}</td>
+                  <td>
+                    {course_type
+                      .replace('Test', '')
+                      .replace('Full Licence Mod', 'Module')
+                      .replace('uleule', 'ule')}
+                  </td>
                   <td>{test_centre_name}</td>
-                  <td>{testDate.format('ddd, Do MMM YYYY')}</td>
-                  <td>{lastDateCancel.format('ddd, Do MMM YYYY')}</td>
+                  <td>{testDate.format('Do MMM')}</td>
                   <td>{TEST_STATUS_CHOICES[status]}</td>
+                  <td className={classnames(isExpiring && styles.isExpiring)}>
+                    {lastDateCancel.format('DD/MM')}
+                  </td>
                 </tr>
               )
             }

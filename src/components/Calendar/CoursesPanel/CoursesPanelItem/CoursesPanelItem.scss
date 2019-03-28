@@ -1,47 +1,56 @@
 .coursesPanelItem {
-  margin-bottom: 24px;
+  margin-bottom: 36px;
 }
 
 .heading {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fafafa;
+}
+
+.title {
+  font-weight: bold;
 }
 
 .course {
-  color: var(---grey-color);
-  border: solid 1px var(--dark-color);
-
   flex-grow: 1;
-  margin-right: 16px;
-  padding: 0;
-  padding-left: 4px;
-  line-height: 37px;
+  padding: 12px;
+  color: #707070;
+  // min-height: 50px;
 }
 
 .notes {
   font-size: 11px;
   margin-bottom: 8px;
-  color: var(--grey-color);
-  line-height: 1;
 }
 
 .testNotes {
-  font-size: 12px;
+  font-size: 11px;
   margin-bottom: 8px;
-  color: black;
-  line-height: 1.5;
 }
 
 .warning {
-  border: solid 1px var(--warning-color);
+  background-color: #ffcfa0;
 }
 
 .danger {
-  border: solid 1px var(--danger-color);
+  background-color: #fe9898;
 }
 
 .actions {
   text-align: center;
+}
+
+.editButton {
+  font-size: 14px;
+  font-weight: bold;
+  color: inherit;
 }

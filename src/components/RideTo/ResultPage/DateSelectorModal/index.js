@@ -8,7 +8,7 @@ import { checkAllowedDate } from 'services/date'
 class DateSelectorModal extends React.Component {
   constructor(props) {
     super(props)
-    let date = new Date(this.props.date)
+    let date = this.props.date ? new Date(this.props.date) : new Date()
     this.state = {
       calendar: {
         year: date.getFullYear(),

@@ -52,7 +52,7 @@ const CalendarDayCell = ({ day, calendar, history }) => {
     <li
       className={classnames(
         styles.container,
-        selectedDay && 'bg-primary',
+        selectedDay && styles.selectedDay,
         isAxisDate && 'axis-date'
       )}
       onClick={() => history.push(`/calendar/${dateStr}`)}>

@@ -57,6 +57,7 @@ class CustomerDetailForm extends React.Component {
           onChange={this.handleChange}
         />
         <ConnectSelect
+          textStyle
           label="Current Licence"
           name="current_licence"
           options={getCurrentLicenceOptions()}
@@ -78,6 +79,7 @@ class CustomerDetailForm extends React.Component {
           onChange={this.handleChange}
         />
         <ConnectSelect
+          textStyle
           label="Riding Experience"
           name="riding_experience"
           options={getRidingExperienceOptions()}
@@ -119,6 +121,7 @@ class CustomerDetailForm extends React.Component {
           onChange={this.handleChange}
         />
         <ConnectSelect
+          textStyle
           label="Email opt in"
           name="email_optin"
           options={getBooleanSelectOptions()}

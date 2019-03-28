@@ -44,20 +44,21 @@ class Dashboard extends Component {
   render() {
     return (
       <div className={classnames(styles.container)}>
-        <Row style={{ height: '100%' }}>
+        <Row>
           <Col
             lg="8"
             className={classnames(styles.leftColumn, commonStyles.mainContent)}>
+            <h2>Dashboard</h2>
             <Loading loading={this.props.loading}>
               {this.props.unallocatedTests && (
                 <div>
-                  <h2>Unallocated Tests</h2>
+                  <h3>Unallocated Tests</h3>
                   <UnallocatedTestsTable
                     tests={this.props.unallocatedTests.results}
                   />
                 </div>
               )}
-              <h2>Pending Orders</h2>
+              <h3>Pending Orders</h3>
               {this.props.pendingOrders &&
               this.props.pendingOrders.results.length > 0 ? (
                 <div className={styles.main}>
@@ -67,9 +68,7 @@ class Dashboard extends Component {
                   />
                 </div>
               ) : (
-                <div className={styles.noResults}>
-                  ʘ‿ʘ Everything up to date!
-                </div>
+                <div className={styles.noResults}>No pending orders</div>
               )}
             </Loading>
           </Col>

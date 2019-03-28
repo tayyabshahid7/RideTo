@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styles from './OrdersPanel.scss'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 import AddOrderItem from './AddOrderItem'
@@ -78,7 +78,7 @@ class OrdersPanel extends React.Component {
     })
   }
 
-  handleDeleteTraining(training) {
+  async handleDeleteTraining(training) {
     if (
       window.confirm(
         `Are you sure you whant to delete the training from Order ${
@@ -87,12 +87,27 @@ class OrdersPanel extends React.Component {
       )
     ) {
       const { deleteOrderTraining, schoolId } = this.props
-      deleteOrderTraining(schoolId, training.id)
+      try {
+        await deleteOrderTraining(schoolId, training.id)
+        this.setState({
+          editOrderIndex: -1,
+          showEditButton: true
+        })
+      } catch {
+        console.log("Couldn't delete order.")
+      }
     }
   }
 
   render() {
-    const { course, info, saving, loading } = this.props
+    const {
+      course,
+      info,
+      saving,
+      loading,
+      updateAdding,
+      addingOrder
+    } = this.props
     const { orderIndex, editOrderIndex, showEditButton } = this.state
     const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
 
@@ -129,6 +144,7 @@ class OrdersPanel extends React.Component {
                     courseSpaces={course.spaces}
                     date={course.date}
                     time={course.time}
+                    onDelete={() => this.handleDeleteTraining(training)}
                   />
                 )}
               </React.Fragment>
@@ -144,14 +160,16 @@ class OrdersPanel extends React.Component {
                       onSave={this.handleNewOrder.bind(this)}
                       onPayment={this.handleNewPayment.bind(this)}
                       saving={saving}
+                      updateAdding={updateAdding}
                     />
                   </Elements>
                 </StripeProvider>
               ) : (
-                <OrdersPanelSpaceItem
-                  onAdd={() => this.handleAdd(index)}
-                  key={index}
-                />
+                <Fragment key={index}>
+                  {!addingOrder && (
+                    <OrdersPanelSpaceItem onAdd={() => this.handleAdd(index)} />
+                  )}
+                </Fragment>
               )
             )}
           </div>

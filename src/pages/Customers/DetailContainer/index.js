@@ -24,7 +24,7 @@ class CustomerDetailContainer extends React.Component {
   componentDidUpdate(prevProps) {
     const { customer } = this.props
 
-    if (!customer) {
+    if (customer !== prevProps.customer && !customer) {
       this.setState({
         notepad: '',
         notepadChanged: false

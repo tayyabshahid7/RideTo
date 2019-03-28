@@ -1,0 +1,40 @@
+.wrapper {
+  margin-top: 0.75rem;
+  // margin-bottom: 1em;
+
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+  }
+}
+
+.list {
+  padding: 0;
+  list-style: none;
+
+  @media (max-width: 768px) {
+    margin-bottom: 0;
+  }
+
+  li {
+    display: flex;
+    font-size: 15px;
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    + li {
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.text {
+  flex-grow: 1;
+}
+
+.tick {
+  margin-right: 0.5rem;
+  color: var(--primary-color);
+}

@@ -1,34 +1,25 @@
 import React, { Component, Fragment } from 'react'
-import moment from 'moment'
 
 import classnames from 'classnames'
 import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
-import MapComponent from 'components/RideTo/MapComponent'
 import Checkbox from 'components/Checkbox'
-import Input from 'components/RideTo/Input'
+// import Input from 'components/RideTo/Input'
 import Loading from 'components/Loading'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconMoneyBack from 'assets/icons/IconMoneyBack.svg'
-import { getCourseTitle } from 'services/course'
-import { getExpectedPrice, getBikeHireDetail } from 'services/order'
-import { Button } from 'reactstrap'
-import { SHORT_LICENCE_TYPES } from 'common/constants'
+// import { getExpectedPrice, getBikeHireDetail } from 'services/order'
+import { getExpectedPrice } from 'services/order'
 import { checkAllowedDate } from 'services/date'
+import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
+import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
 
 class OrderSummary extends Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      showPromo: false
-    }
-  }
-
   componentDidUpdate(prevProps) {
     const { errors } = this.props
     if (errors.divId) {
-      document.getElementById(errors.divId).scrollIntoView()
+      const el = document.getElementById(errors.divId)
+      el && el.scrollIntoView()
     }
   }
 
@@ -54,104 +45,12 @@ class OrderSummary extends Component {
     )
   }
 
-  renderCourseInformation() {
-    const {
-      checkoutData,
-      supplier,
-      priceInfo,
-      showMap,
-      handleMapButtonClick,
-      trainings
-    } = this.props
-    const { addons, courseType, date, bike_hire } = checkoutData
-    const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
-    const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
-    const isFullLicence = courseType === 'FULL_LICENCE'
-
-    return (
-      <div className={styles.rowContainer}>
-        {isFullLicence &&
-          this.renderRow(
-            'Course',
-            `Full Licence (${
-              SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
-            })`
-          )}
-        {isFullLicence &&
-          trainings.map((training, index) => {
-            if (training.price) {
-              return (
-                <div key={index}>
-                  {this.renderRow(
-                    getCourseTitle(training.course_type).replace(
-                      'Full Licence ',
-                      ''
-                    ),
-                    `${training.requested_time.slice(0, -3)} ${moment(
-                      training.requested_date
-                    ).format('ddd D, MMMM')}`
-                  )}
-                </div>
-              )
-            } else {
-              return null
-            }
-          })}
-        {!isFullLicence && this.renderRow('Course', getCourseTitle(courseType))}
-        {this.renderRow('Bike hire', getBikeHireDetail(bike_hire))}
-        {!isFullLicence &&
-          this.renderRow('Date & Time', moment(date).format('ddd D, MMMM'))}
-        {this.renderRow(
-          'Location',
-          <button className={styles.mapButton} onClick={handleMapButtonClick}>
-            {`${supplier.town}, ${supplier.postcode}`}
-          </button>
-        )}
-        {showMap && (
-          <MapComponent
-            userLocation={{ lat, lng }}
-            width={'auto'}
-            height={200}
-            checkout
-          />
-        )}
-        {!isFullLicence && priceInfo.training_price
-          ? this.renderRow(
-              'Training',
-              `£${(priceInfo.training_price / 100.0).toFixed(2)}`,
-              100
-            )
-          : ''}
-        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no'
-          ? this.renderRow(
-              'Bike Hire Cost',
-              `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
-              101
-            )
-          : ''}
-        {addons.map((addon, index) =>
-          this.renderRow(
-            addon.selectedSize
-              ? `${addon.name} ${
-                  addon.selectedSize.code === 'ALL'
-                    ? ''
-                    : '(' + addon.selectedSize.code + ')'
-                }`
-              : addon.name,
-            `£${addon.price}`,
-            index
-          )
-        )}
-      </div>
-    )
-  }
-
   renderPrices() {
     const { checkoutData, priceInfo } = this.props
     const { addons } = checkoutData
     let price = getExpectedPrice(priceInfo, addons, checkoutData)
     return (
-      <div className={styles.rowContainer}>
+      <div>
         {priceInfo.discount
           ? this.renderRow(
               'Discount',
@@ -159,12 +58,12 @@ class OrderSummary extends Component {
               200
             )
           : ''}
-        {this.renderRow(
-          'Order Total',
-          `£${(price / 100).toFixed(2)}`,
-          100,
-          true
-        )}
+        <div className={styles.totalPriceRow}>
+          <div className={styles.priceLabel}>Total:</div>
+          <div className={styles.totalPrice}>{`£${(price / 100).toFixed(
+            2
+          )}`}</div>
+        </div>
       </div>
     )
   }
@@ -181,82 +80,112 @@ class OrderSummary extends Component {
       details,
       onDetailChange,
       errors = {},
-      checkoutData
+      checkoutData,
+      supplier,
+      priceInfo,
+      showMap,
+      handleMapButtonClick,
+      trainings,
+      handlePOMToggleClick,
+      hasPOM,
+      showCardDetails
     } = this.props
-    const { showPromo } = this.state
-    let confirmDisabled = saving || !details.accept_terms || !this.isValidDate()
+    let confirmDisabled =
+      saving || !details.accept_terms || !this.isValidDate() || !showCardDetails
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
 
     return (
       <div className={styles.container}>
         <div className={styles.hiddenOnMobile}>
-          <div className={styles.title}>Order Summary</div>
-          {this.renderCourseInformation()}
-          <hr />
+          <div className={styles.title}>Your Order</div>
+          <CourseInformation
+            checkoutData={checkoutData}
+            supplier={supplier}
+            priceInfo={priceInfo}
+            showMap={showMap}
+            handleMapButtonClick={handleMapButtonClick}
+            trainings={trainings}
+            handlePOMToggleClick={handlePOMToggleClick}
+            hasPOM={hasPOM}
+          />
         </div>
-        {this.renderPrices()}
-        <div className={styles.acceptTerms}>
-          <Checkbox
-            checked={details.accept_terms}
-            extraClass="WidgetCheckbox"
-            size="large"
-            onChange={event =>
-              onDetailChange('accept_terms', event.target.checked)
-            }>
-            <div>
-              I confirm I have read and agree to the{' '}
-              <a
-                href="https://www.rideto.com/terms"
-                rel="noopener noreferrer"
-                target="_blank">
-                terms and conditions
-              </a>{' '}
-              and:
+        <div
+          className={classnames(
+            styles.acceptTermsWrapper,
+            !showCardDetails && styles.acceptTermsWrapperHideMobile
+          )}>
+          <div
+            className={classnames(
+              styles.acceptTerms,
+              !showCardDetails && styles.acceptTermsHideMobile
+            )}>
+            <Checkbox
+              checked={details.accept_terms}
+              extraClass="WidgetCheckbox"
+              size="large"
+              onChange={event =>
+                onDetailChange('accept_terms', event.target.checked)
+              }>
+              <div>
+                I confirm I have read and agree to the{' '}
+                <a
+                  href="https://www.rideto.com/terms"
+                  rel="noopener noreferrer"
+                  target="_blank">
+                  terms and conditions
+                </a>{' '}
+                and:
+              </div>
+            </Checkbox>
+            <div className={styles.terms}>
+              <ul>
+                <li>
+                  I will be able to present a valid UK Driving or Provisional
+                  licence (with Category A entitlement)
+                </li>
+                <li>Or a Full EU licence with UK counterpart licence number</li>
+                <li>
+                  I'm able to read a registration plate from a distance of 20.5
+                  meters
+                </li>
+                <li>
+                  I'm able to speak and understand English and understand the
+                  Highway Code to a good level
+                </li>
+                <li>I'm able to ride an adult size bicycle</li>
+                <li>
+                  I'll wear suitable clothing to training including thick
+                  trousers (e.g. jeans) and boots
+                </li>
+                {isFullLicence && (
+                  <Fragment>
+                    <li>I have a valid CBT certificate</li>
+                    <li>I have a valid motorcycle theory certificate</li>
+                  </Fragment>
+                )}
+              </ul>
             </div>
-          </Checkbox>
-          <div className={styles.terms}>
-            <ul>
-              <li>
-                I will be able to present a valid UK Driving or Provisional
-                licence (with Category A entitlement)
-              </li>
-              <li>Or a Full EU licence with UK counterpart licence number</li>
-              <li>
-                I'm able to read a registration plate from a distance of 20.5
-                meters
-              </li>
-              <li>
-                I'm able to speak and understand English and understand the
-                Highway Code to a good level
-              </li>
-              <li>I'm able to ride an adult size bicycle</li>
-              <li>
-                I'll wear suitable clothing to training including thick trousers
-                (e.g. jeans) and boots
-              </li>
-              {isFullLicence && (
-                <Fragment>
-                  <li>I have a valid CBT certificate</li>
-                  <li>I have a valid motorcycle theory certificate</li>
-                </Fragment>
-              )}
-            </ul>
+          </div>
+          <div
+            className={classnames(
+              styles.acceptTerms,
+              !showCardDetails && styles.acceptTermsHideMobile
+            )}>
+            <Checkbox
+              checked={details.email_optin}
+              extraClass="WidgetCheckbox"
+              size="large"
+              onChange={event =>
+                onDetailChange('email_optin', event.target.checked)
+              }>
+              <div>
+                Join the RideTo community newsletter to be invited to weekly
+                ride outs, events and special offers.
+              </div>
+            </Checkbox>
           </div>
         </div>
-        <div className={styles.acceptTerms}>
-          <Checkbox
-            checked={details.email_optin}
-            extraClass="WidgetCheckbox"
-            size="large"
-            onChange={event =>
-              onDetailChange('email_optin', event.target.checked)
-            }>
-            <div>
-              Join the RideTo community newsletter to be invited to weekly ride
-              outs, events and special offers.
-            </div>
-          </Checkbox>
-        </div>
+        {this.renderPrices()}
         {errors.paymentError && (
           <div className={styles.paymentError}>
             <strong>{errors.paymentError}</strong>
@@ -279,60 +208,38 @@ class OrderSummary extends Component {
             to the results page to pick a later date.
           </div>
         )}
-        <div className={styles.promoWrapper}>
-          {showPromo ? (
-            <div className={styles.promoContainer}>
-              <Input
-                placeholder="Promo code"
-                name="voucher_code"
-                value={voucher_code}
-                className={styles.promoInput}
-                onChange={event =>
-                  onChange({ voucher_code: event.target.value })
-                }
-                required
-              />
-              <Button
-                color="primary"
-                className={styles.applyBtn}
-                disabled={voucher_code === '' || loadingPrice}
-                onClick={handleVoucherApply}>
-                Apply
-              </Button>
-            </div>
-          ) : (
-            <div
-              className={styles.promoAction}
-              onClick={() => this.setState({ showPromo: true })}>
-              I have a promo code
+        <PromoCode
+          voucher_code={voucher_code}
+          loadingPrice={loadingPrice}
+          handleVoucherApply={handleVoucherApply}
+          onChange={onChange}
+        />
+        <div className={styles.sectionFooter}>
+          {!instantBook && (
+            <div id="terms-conditions-section" className={styles.information}>
+              <p>
+                You won't be charged until your booking is confirmed, we'll just
+                reserve the amount on your card. Bookings require confirmation
+                from the instructor, usually within 3 working hours.
+              </p>
             </div>
           )}
-        </div>
-        {!instantBook && (
-          <div id="terms-conditions-section" className={styles.information}>
-            <p>
-              You won't be charged until your booking is confirmed, we'll just
-              reserve the amount on your card. Bookings require confirmation
-              from the instructor, usually within 3 working hours.
-            </p>
-          </div>
-        )}
-        <hr className={styles.hr} />
-        <div className={styles.guaranteeInfo}>
-          <div className={styles.guaranteeLogo}>
-            <img src={IconMoneyBack} alt="money-back" />
-          </div>
-          <div className={styles.guarenteeContent}>
-            <div className={styles.guarantee1}>
-              Cancel with 3 working days notice to get a full refund.
+          <div className={styles.guaranteeInfo}>
+            <div className={styles.guaranteeLogo}>
+              <img src={IconMoneyBack} alt="money-back" />
             </div>
-            <a
-              href="https://www.rideto.com/terms#cancellations"
-              className={styles.guarantee2}
-              target="_blank"
-              rel="noopener noreferrer">
-              More Details
-            </a>
+            <div className={styles.guarenteeContent}>
+              <div className={styles.guarantee1}>
+                Cancel with 3 working days notice to get a full refund.
+              </div>
+              <a
+                href="https://www.rideto.com/terms#cancellations"
+                className={styles.guarantee2}
+                target="_blank"
+                rel="noopener noreferrer">
+                More Details
+              </a>
+            </div>
           </div>
         </div>
       </div>
