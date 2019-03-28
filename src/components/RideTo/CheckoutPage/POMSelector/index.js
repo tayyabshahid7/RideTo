@@ -16,9 +16,9 @@ function POMSelector({ handlePOMToggleClick, hasPOM }) {
         <div className={styles.headerText}>
           <div>
             Peace of mind policy{' '}
-            <span className={styles.price}>only £{discount_price}</span>
+            <span className={styles.price}>only £{discount_price}</span>{' '}
+            <span className={styles.tAndC}>T&C's apply</span>
           </div>
-          <div className={styles.tAndC}>T&C's apply</div>
         </div>
         <button
           className={classnames(
