@@ -20,7 +20,7 @@ function OrderIncluded({ bikeHire, pom = false }) {
             </span>{' '}
             <span className={styles.text}>
               <strong>We'll pay for your 2nd day</strong> of training if you
-              need it.
+              need it
             </span>
           </li>
           <li>

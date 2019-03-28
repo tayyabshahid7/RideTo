@@ -58,15 +58,18 @@
   font-size: 15px;
   font-weight: bold;
   margin-top: 1.2rem;
+  margin-bottom: -5px;
+  align-items: center;
   justify-content: space-between;
 
   @media (max-width: 768px) {
+    margin-bottom: 0;
     font-size: 15px;
   }
 
   &::before {
     position: absolute;
-    top: -4px;
+    top: -2px;
     left: -33px;
     content: '';
     display: block;
@@ -84,6 +87,7 @@
 .tAndC {
   font-size: 11px;
   font-weight: normal;
+  white-space: nowrap;
 
   @media (max-width: 768px) {
     font-size: 10px;
