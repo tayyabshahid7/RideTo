@@ -4,18 +4,20 @@ import { connect } from 'react-redux'
 import { changeSchool } from 'store/auth'
 import { DownCaret } from 'assets/icons'
 import styles from './styles.scss'
+import classnames from 'classnames'
 
 const SchoolSelect = ({
   selected,
   options,
   onChange,
   labelField = 'name',
-  valueField = 'id'
+  valueField = 'id',
+  small
 }) => {
   return (
     <div className={styles.container}>
       <select
-        className={styles.select}
+        className={classnames(styles.select, small && styles.selectSmall)}
         value={selected}
         onChange={e =>
           onChange(
@@ -33,7 +35,11 @@ const SchoolSelect = ({
           </option>
         ))}
       </select>
-      <DownCaret className={styles.caret} width="48" height="26" />
+      <DownCaret
+        className={classnames(styles.caret, styles.caretSmall)}
+        width="48"
+        height="26"
+      />
     </div>
   )
 }

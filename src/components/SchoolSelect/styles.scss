@@ -15,10 +15,23 @@
   border: 0;
 }
 
+.selectSmall {
+  font-size: inherit;
+  font-weight: inherit;
+  padding: 2px;
+  appearance: menulist-button;
+  border: 1px solid #e4e4e4;
+  border-radius: 2px;
+}
+
 .caret {
   position: absolute;
   top: 9px;
   right: 0;
   z-index: -1;
   pointer-events: none;
+}
+
+.caretSmall {
+  display: none;
 }
