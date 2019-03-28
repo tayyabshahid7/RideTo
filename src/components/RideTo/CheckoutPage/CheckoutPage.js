@@ -40,13 +40,24 @@ const REQUIRED_FIELDS = [
   'email'
 ]
 
+const USER_FIELDS = [
+  'user_birthdate',
+  'phone',
+  'current_licence',
+  'riding_experience',
+  'rider_type',
+  'first_name',
+  'last_name',
+  'email'
+]
+
 const NO_ADDONS_ADDRESS = {
   address_1: 'no',
   town: 'no',
   postcode: 'no'
 }
 
-const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
+// const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
 
 class CheckoutPage extends Component {
   constructor(props) {
@@ -99,7 +110,8 @@ class CheckoutPage extends Component {
       voucher_code: '',
       loadingPrice: false,
       showMap: false,
-      trainings: this.props.trainings
+      trainings: this.props.trainings,
+      showCardDetails: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -216,10 +228,12 @@ class CheckoutPage extends Component {
 
   handleValueChange(path, value) {
     let { details, errors } = this.state
-    errors.divId = false
-    set(details, path, value)
-    set(errors, path, null)
-    this.setState({ details, errors })
+    let newDetails = { ...details }
+    let newErrors = { ...errors }
+    newErrors.divId = false
+    set(newDetails, path, value)
+    set(newErrors, path, null)
+    this.setState({ details: newDetails, errors: newErrors })
   }
 
   async handlePostalcodeSubmit(postcode) {
@@ -316,9 +330,23 @@ class CheckoutPage extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    const { details, showCardDetails } = this.state
+
+    if (
+      USER_FIELDS.some(key => prevState.details[key] !== details[key]) &&
+      USER_FIELDS.every(key => details[key]) &&
+      !showCardDetails
+    ) {
+      this.setState({
+        showCardDetails: true
+      })
+    }
+  }
+
   validateDetails(details) {
     const { trainings } = this.props
-    const addonsCount = this.props.checkoutData.addons.length
+    // const addonsCount = this.props.checkoutData.addons.length
     const { courseType } = this.props.checkoutData
     const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
@@ -333,6 +361,8 @@ class CheckoutPage extends Component {
     })
 
     // Check delivery address only if there are addons
+    // DISABLE THIS WHILE POM IS THE ONLY ADDON WE SELL
+    /*
     if (addonsCount > 0) {
       // Check postcode serach field only if
       // manual address form is not open
@@ -358,6 +388,7 @@ class CheckoutPage extends Component {
         })
       }
     }
+    */
 
     if (!details.phone.match(/^\+44\d{10}$/)) {
       errors['phone'] = 'Invalid phone number'
@@ -429,13 +460,15 @@ class CheckoutPage extends Component {
   async handlePayment() {
     const { details } = this.state
     const {
-      stripe,
-      checkoutData: { addons }
+      stripe
+      // checkoutData: { addons }
     } = this.props
 
-    if (addons.length <= 0) {
-      details.address = NO_ADDONS_ADDRESS
-    }
+    // WHILE POM IS THE ONLY ONE WE SELL
+    // if (addons.length <= 0) {
+    //   details.address = NO_ADDONS_ADDRESS
+    // }
+    details.address = NO_ADDONS_ADDRESS
 
     this.setState({ saving: true })
 
@@ -569,14 +602,12 @@ class CheckoutPage extends Component {
       voucher_code,
       loadingPrice,
       showMap,
-      trainings
+      trainings,
+      showCardDetails
     } = this.state
 
     return (
       <React.Fragment>
-        <div className={styles.header}>
-          <h1>Checkout</h1>
-        </div>
         <div className={styles.container}>
           <div className={styles.leftPanel}>
             <UserDetails
@@ -593,6 +624,10 @@ class CheckoutPage extends Component {
               showMap={showMap}
               handleMapButtonClick={this.handleMapButtonClick}
               trainings={trainings}
+              voucher_code={voucher_code}
+              loadingPrice={loadingPrice}
+              handleVoucherApply={this.handleVoucherApply}
+              showCardDetails={showCardDetails}
             />
           </div>
           <div className={styles.rightPanel}>
@@ -611,6 +646,7 @@ class CheckoutPage extends Component {
               showMap={showMap}
               handleMapButtonClick={this.handleMapButtonClick}
               trainings={trainings}
+              showCardDetails={showCardDetails}
             />
           </div>
           {showAddressSelectorModal && (

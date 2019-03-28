@@ -87,3 +87,13 @@ export const getAge = birthdate => {
 
   return age === 1 ? `${age} Year` : `${age} Years`
 }
+
+export function createPOM(POM_NAME = 'Peace Of Mind Policy') {
+  const pom = window.RIDETO_PAGE.checkout.addons.find(
+    addon => addon.name === POM_NAME
+  )
+  pom.price = pom.discount_price
+  pom.selectedSize = pom.sizes[0]
+
+  return pom
+}
