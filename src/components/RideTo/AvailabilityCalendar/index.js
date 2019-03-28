@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import classnames from 'classnames'
 import CalendarHeader from './CalendarHeader'
 import styles from './index.scss'
 import CalendarContent from './CalendarContent'
 import CalendarTime from './CalendarTime'
+import CalendarSpacesAvailable from './CalendarSpacesAvailable'
 import moment from 'moment'
 import { BANK_HOLIDAYS } from 'common/constants'
 
@@ -155,31 +156,39 @@ class AvailabilityCalendar extends Component {
           handleDateSelect={handleDateSelect}
         />
         {showTrainingTime && (
-          <div className={classnames(!hasManyTimes && styles.singleTime)}>
-            <div
-              id={isInstantBook ? 'choose-time-validate' : ''}
-              className={styles.subtitle}>
-              {hasManyTimes ? 'Choose a time' : 'Course Start Time:'}
-            </div>
-
-            {isInstantBook ? (
-              calendar.selectedDate && (
-                <CalendarTime
-                  calendar={calendar}
-                  courses={filteredCourses}
-                  handleTimeSelect={handleTimeSelect}
-                />
-              )
-            ) : (
-              <span className={classnames(styles.trainingTime)}>
-                {nonInstantStartTimes &&
-                  this.getStartTime(
-                    calendar.selectedDate,
-                    nonInstantStartTimes
-                  )}
-              </span>
+          <Fragment>
+            {isInstantBook && calendar.selectedDate && (
+              <CalendarSpacesAvailable
+                courses={filteredCourses}
+                calendar={calendar}
+              />
             )}
-          </div>
+            <div className={classnames(!hasManyTimes && styles.singleTime)}>
+              <div
+                id={isInstantBook ? 'choose-time-validate' : ''}
+                className={styles.subtitle}>
+                {hasManyTimes ? 'Choose a time' : 'Course Start Time:'}
+              </div>
+
+              {isInstantBook ? (
+                calendar.selectedDate && (
+                  <CalendarTime
+                    calendar={calendar}
+                    courses={filteredCourses}
+                    handleTimeSelect={handleTimeSelect}
+                  />
+                )
+              ) : (
+                <span className={classnames(styles.trainingTime)}>
+                  {nonInstantStartTimes &&
+                    this.getStartTime(
+                      calendar.selectedDate,
+                      nonInstantStartTimes
+                    )}
+                </span>
+              )}
+            </div>
+          </Fragment>
         )}
       </div>
     )
