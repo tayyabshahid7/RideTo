@@ -326,7 +326,7 @@ class AddOrderItem extends React.Component {
                 basic
                 name="user_driving_licence_number"
                 value={user_driving_licence_number}
-                label="License Number"
+                label="Licence Number"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
