@@ -1,5 +1,5 @@
 .container {
-  height: 100vh;
+  // height: 100vh;
   display: flex;
   flex-direction: column;
   padding-top: 56px;
@@ -15,5 +15,6 @@
   padding: 20px;
   flex: 1 1 auto;
   display: flex;
-  overflow: auto;
+  flex-direction: column;
+  // overflow: auto;
 }

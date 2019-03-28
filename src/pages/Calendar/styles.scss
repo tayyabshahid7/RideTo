@@ -4,28 +4,8 @@
   flex-wrap: wrap;
 }
 
-.rightPanel {
-  background: white;
-  right: 0px;
-  padding: 16px;
-  display: flex;
-  border-left: 1px solid var(--light-grey-color);
-
-  width: 480px;
-  height: auto;
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  @media (max-width: 992px) {
-    width: 100%;
-    height: auto;
-    padding: 0;
-    border: none;
-  }
-}
-
 .calendarColumn {
-  padding-right: 16px;
+  // padding-right: 16px;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
@@ -48,8 +28,12 @@
   }
 }
 
-@media (max-width: 992px) {
-  .noCalendarPath {
+.noCalendarPath {
+  @media (max-width: 992px) {
     display: none;
+  }
+
+  @media (min-width: 1082px) {
+    padding-right: 371px;
   }
 }

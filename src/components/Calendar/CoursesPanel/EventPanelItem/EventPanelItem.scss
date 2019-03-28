@@ -20,16 +20,18 @@
 .title {
   flex-grow: 1;
 
-  border: solid 1px var(--dark-color);
-  color: var(--grey-color);
-  margin-right: 16px;
+  background-color: #fafafa;
+  color: #707070;
+  font-size: 14px;
+  font-weight: bold;
 
-  padding: 0;
-  padding-left: 4px;
+  display: flex;
+
+  padding: 6px 12px;
 }
 
 .name {
-  line-height: 1;
+  // line-height: 1;
 }
 
 .orders td {
@@ -43,4 +45,12 @@
 .order {
   margin-top: 8px;
   margin-bottom: 8px;
+}
+
+.body {
+  flex-grow: 1;
+}
+
+.editLink {
+  color: inherit;
 }

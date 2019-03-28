@@ -4,9 +4,24 @@ import { Link, NavLink } from 'react-router-dom'
 import UserMenu from '../UserMenu'
 import classnames from 'classnames'
 import styles from './styles.scss'
-import IconRideToLogo from '../../assets/icons/IconRideToLogo'
+// import IconRideToLogo from '../../assets/icons/IconRideToLogo'
+import { ConnectLogo } from '../../assets/icons/'
+// import { Button } from 'reactstrap'
 
 let NavigationBar = ({ history }) => {
+  const { pathname } = history.location
+  const [, first, second] = pathname.split('/')
+  let date
+
+  if (
+    first &&
+    first === 'calendar' &&
+    second &&
+    second.match(/\d{4}-\d{2}-\d{2}/)
+  ) {
+    date = second
+  }
+
   return (
     <nav
       className={classnames(
@@ -15,7 +30,7 @@ let NavigationBar = ({ history }) => {
       )}>
       <div className={classnames(styles.image)}>
         <Link to="/">
-          <IconRideToLogo className={classnames(styles.logoImage)} />
+          <ConnectLogo className={classnames(styles.logoImage)} />
         </Link>
       </div>
       <button
@@ -72,10 +87,21 @@ let NavigationBar = ({ history }) => {
             </NavLink>
           </li>
         </ul>
-        <form
-          className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
-          <UserMenu history={history} />
-        </form>
+        <div className={styles.navTools}>
+          <Link
+            to={
+              date
+                ? `/calendar/courses/create?date=${date}`
+                : `/calendar/courses/create`
+            }
+            className={classnames(styles.addCourse)}>
+            Add Course
+          </Link>
+          <form
+            className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
+            <UserMenu history={history} />
+          </form>
+        </div>
       </div>
     </nav>
   )

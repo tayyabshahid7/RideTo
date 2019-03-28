@@ -1,17 +1,35 @@
 .container {
-  background: var(--light-grey-color);
+  background: #fafafa;
   color: var(--grey-color);
-  padding: 8px;
+  padding: 1rem;
   margin-bottom: 10px;
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 0.5rem;
+
+  h4 {
+    margin-bottom: 1.5rem;
+    font-size: 18px;
+    font-weight: bold;
+    color: #707070;
+  }
 }
 
 button.toggleButton {
   font-size: 12px;
+}
+
+.topSection {
+  // display: flex;
+  // justify-content: space-between;
+}
+
+.comms {
+  margin-bottom: 1.5rem;
+}
+
+.deleteWrap {
+  text-align: right;
+  margin-bottom: 0.5rem;
 }

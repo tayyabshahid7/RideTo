@@ -1,0 +1,27 @@
+.rightPanel {
+  background: white;
+  right: 0px;
+  padding: 16px;
+  margin-left: 16px;
+  display: flex;
+  border-left: 1px solid var(--light-grey-color);
+
+  // width: 480px;
+  width: calc(355px + 16px);
+  height: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  @media (max-width: 992px) {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    border: none;
+  }
+
+  @media (min-width: 1082px) {
+    position: fixed;
+    top: 62px;
+    height: calc(100% - 62px);
+  }
+}

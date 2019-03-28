@@ -3,23 +3,47 @@
   justify-content: space-between;
   align-items: center;
 
-  padding: 5px;
-  margin-bottom: 10px;
+  padding: 6px 12px;
+  margin-bottom: 6px;
 
-  background-color: #f0f0f0;
+  background-color: #fafafa;
   white-space: now;
+
+  font-size: 14px;
 }
 
 .col {
   margin-right: 8px;
 }
 
+.bikeType {
+  font-weight: bold;
+}
+
 .name {
-  flex-grow: 1;
+  // flex-grow: 1;
+  font-weight: bold;
   text-align: left;
   margin-right: 8px;
+  text-align: right;
 }
 
 .inlineButton {
   padding: 0 10px !important;
+}
+
+.editButton {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--primary-color);
+  padding: 0;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+
+  &:hover {
+    color: #1f8f77;
+    text-decoration: underline;
+  }
 }

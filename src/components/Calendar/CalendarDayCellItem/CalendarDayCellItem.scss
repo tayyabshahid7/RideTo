@@ -1,22 +1,28 @@
 @import '../../../bootstrap';
 
+$warning: #fed697;
+$danger: #fe9898;
+
 .calendarDayCellItem {
   color: $grey;
-  border: solid 1px var(--dark-color);
-  margin-top: 12px;
+  // border: solid 1px var(--dark-color);
+  margin-top: 6px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
-  line-height: 28px;
+  line-height: 30px;
   padding-left: 4px;
+  background-color: #f3f3f3;
+  font-weight: bold;
+  font-size: 14px;
 }
 
 .warning {
-  border: solid 1px $warning;
+  background-color: $warning;
 }
 
 .danger {
-  border: solid 1px $danger;
+  background-color: $danger;
 }
 
 @media (max-width: 768px) {

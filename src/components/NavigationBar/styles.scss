@@ -1,5 +1,5 @@
 .navigationBar {
-  border-bottom: 1px solid var(--light-grey-color);
+  border-bottom: 2px solid var(--light-grey-color);
   text-align: center;
 }
 .navItem {
@@ -22,12 +22,12 @@
   width: 200px;
 }
 .authMenu {
-  width: 100%;
+  // width: 100%;
   display: flex;
   align-items: center;
 }
 .navLink {
-  margin: 0 1.2rem;
+  margin: 0 1rem;
   color: var(--dark-color);
   text-decoration: none;
   &:hover {
@@ -36,9 +36,6 @@
 }
 
 @media (min-width: 768px) {
-  .activeNavLink {
-    border-bottom: 2px solid #2cceac;
-  }
   .navigationBar {
     text-align: left;
   }
@@ -53,8 +50,50 @@
     // &:hover {
     //   text-decoration: unset;
     // }
+    font-size: 18px;
+    font-weight: bold;
+    color: #707070;
+  }
+  .activeNavLink {
+    padding-bottom: 15px;
+    border-bottom: 4px solid #2cceac;
   }
   .authMenu {
-    width: 250px;
+    // width: 250px;
   }
+}
+
+.addCourse {
+  height: 44px;
+  min-width: 90px;
+  font-weight: bold;
+  color: #fff;
+  background-color: var(--primary-color);
+  border-radius: 3px;
+  border: 0;
+  cursor: pointer;
+  text-align: center;
+  line-height: 42px;
+  font-size: 18px;
+  width: 120px;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #25ae92;
+    border-color: #23a489;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+  }
+}
+
+.navTools {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

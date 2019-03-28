@@ -57,19 +57,23 @@ class UserMenu extends Component {
       user && (
         <div className={styles.container}>
           <div className={styles.username} onClick={this.toggleMenu}>
-            {user.email}
+            <div className={styles.avatar}>{user.first_name.charAt(0)}</div>
           </div>
           {this.state.menuOpen && (
             <div ref={node => (this.node = node)} className={styles.userMenu}>
-              <br />
-              <button onClick={this.handleLogout}>Logout</button>
-              <br />
-              <br />
               <SchoolSelect
                 schools={user.suppliers}
                 selected={schoolId}
                 onChange={this.handleSupplierChange}
+                small
               />
+              <hr />
+              <button
+                className={styles.logoutLink}
+                color="link"
+                onClick={this.handleLogout}>
+                Logout
+              </button>
             </div>
           )}
         </div>

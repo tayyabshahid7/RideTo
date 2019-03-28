@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
+import RightPanel from 'components/RightPanel'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
 import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseComponent'
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
@@ -225,6 +226,38 @@ class CalendarPage extends Component {
     }
   }
 
+  handleChangeDate({ month, year }) {
+    const { calendar, updateCalendarSetting } = this.props
+    let date = moment({
+      year: calendar.year,
+      month: calendar.month,
+      day: calendar.day
+    })
+
+    const endDay = moment({
+      year: year || calendar.year,
+      month: month || calendar.month
+    })
+      .endOf('month')
+      .date()
+
+    if (calendar.day > endDay) {
+      date.date(endDay)
+    }
+
+    if (month) {
+      date.month(parseInt(month))
+    } else if (year) {
+      date.year(parseInt(year))
+    }
+
+    updateCalendarSetting({
+      year: date.year(),
+      month: date.month(),
+      day: date.date()
+    })
+  }
+
   render() {
     const { calendar, eventCalendar, history, location } = this.props
     let days = this.generateDaysDataFromCalendar(calendar, eventCalendar)
@@ -241,11 +274,12 @@ class CalendarPage extends Component {
             calendar={calendar}
             eventCalendar={eventCalendar}
             handleCustomEvent={this.handleCustomEvent.bind(this)}
+            handleChangeDate={this.handleChangeDate.bind(this)}
             history={history}
             calendarPath={calendarPath}
           />
         </div>
-        <div className={styles.rightPanel}>
+        <RightPanel location={location}>
           <Route
             exact
             path="/calendar/:date"
@@ -271,7 +305,7 @@ class CalendarPage extends Component {
             path="/calendar/events/:eventId/edit"
             render={routeProps => <EditEventComponent {...routeProps} />}
           />
-        </div>
+        </RightPanel>
       </div>
     )
   }
