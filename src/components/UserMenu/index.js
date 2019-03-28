@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logout, changeSchool } from 'store/auth'
 import styles from './styles.scss'
-import { Button } from 'components/ConnectForm'
 
 import SchoolSelect from 'components/SchoolSelect'
 
@@ -62,15 +61,19 @@ class UserMenu extends Component {
           </div>
           {this.state.menuOpen && (
             <div ref={node => (this.node = node)} className={styles.userMenu}>
-              <Button color="primary" onClick={this.handleLogout}>
-                Logout
-              </Button>
               <SchoolSelect
                 schools={user.suppliers}
                 selected={schoolId}
                 onChange={this.handleSupplierChange}
                 small
               />
+              <hr />
+              <button
+                className={styles.logoutLink}
+                color="link"
+                onClick={this.handleLogout}>
+                Logout
+              </button>
             </div>
           )}
         </div>
