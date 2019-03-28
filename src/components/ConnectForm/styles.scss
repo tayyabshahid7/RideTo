@@ -39,6 +39,16 @@ input {
       padding-left: 5px;
       padding-right: 5px;
     }
+
+    &[type='time'],
+    &[type='date'],
+    &[type='number'] {
+      padding-right: 0;
+
+      &::-webkit-clear-button {
+        display: none;
+      }
+    }
   }
 }
 
