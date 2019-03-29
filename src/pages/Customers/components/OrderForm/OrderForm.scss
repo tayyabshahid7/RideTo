@@ -66,3 +66,68 @@ a.trainingDateLink {
     text-decoration: none;
   }
 }
+
+// Email stuff
+
+.headerEmail {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.date {
+  margin-top: 5px;
+  margin-bottom: -5px;
+  font-size: 11px;
+}
+
+.emailRow {
+  border-bottom: 2px solid #f0f0f0;
+
+  &:first-child {
+    margin-top: -15px;
+  }
+
+  label {
+    display: flex;
+    height: 40px;
+    align-items: center;
+    margin-bottom: 0;
+  }
+
+  span {
+    display: flex;
+    align-items: center;
+    margin-right: 0.25rem;
+    // width: 48px;
+    font-weight: bold;
+  }
+
+  input {
+    flex-grow: 1;
+    appearance: none;
+    height: 30px;
+    border: 0;
+    padding-left: 0.25rem;
+    background-color: #fff;
+
+    &[disabled] {
+      background-color: #fff;
+    }
+
+    &::placeholder {
+      color: rgba(#707070, 0.47);
+    }
+  }
+}
+
+.emailTextarea {
+  width: 100%;
+  height: 120px;
+  border: 0;
+  padding: 10px 0;
+  margin-bottom: 0.5rem;
+
+  &::placeholder {
+    color: rgba(#707070, 0.47);
+  }
+}
