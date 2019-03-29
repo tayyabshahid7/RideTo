@@ -20,7 +20,7 @@ class Email extends Component {
   }
 
   render() {
-    const { title, date, time } = this.props.email
+    const { title, date, time, body } = this.props.email
     const { showMore } = this.state
 
     return (
@@ -31,6 +31,7 @@ class Email extends Component {
             Sent {date} at {time}
           </div>
         </div>
+        {showMore && <div className={styles.body}>{body}</div>}
         <div className={styles.showMore}>
           <button
             className={styles.showMoreButton}

@@ -28,7 +28,7 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   border-bottom: 2px solid #f0f0f0;
 }
 
@@ -130,4 +130,9 @@ a.trainingDateLink {
   &::placeholder {
     color: rgba(#707070, 0.47);
   }
+}
+
+.body {
+  margin-top: -0.5rem;
+  margin-bottom: 1rem;
 }
