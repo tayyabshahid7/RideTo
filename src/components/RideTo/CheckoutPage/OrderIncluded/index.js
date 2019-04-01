@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 
-function OrderIncluded({ bikeHire, pom = false }) {
+function OrderIncluded({ bikeHire, pom = false, hasGloves }) {
   if (pom) {
     return (
       <div className={styles.wrapper}>
@@ -59,12 +59,14 @@ function OrderIncluded({ bikeHire, pom = false }) {
             </span>{' '}
             <span className={styles.text}>Helmet provided</span>
           </li>
-          <li>
-            <span className={styles.tick}>
-              <i className="fa fa-check" />
-            </span>{' '}
-            <span className={styles.text}>Gloves &amp; jacket provided</span>
-          </li>
+          {hasGloves && (
+            <li>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>Gloves &amp; jacket provided</span>
+            </li>
+          )}
         </ul>
       )}
     </div>
