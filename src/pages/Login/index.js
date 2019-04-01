@@ -39,40 +39,40 @@ class Login extends Component {
     return (
       <div className={styles.wrapper}>
         <div className={styles.loginDetails}>
-          <div className={styles.loginHeader}>
-            <ConnectLogo className={styles.loginLogo} />
-            <h1 className={styles.loginTitle}>Log In</h1>
+          <div className={styles.loginDetailsInner}>
+            <div className={styles.loginHeader}>
+              <ConnectLogo className={styles.loginLogo} />
+              <h1 className={styles.loginTitle}>Log In</h1>
+            </div>
+            <form className={styles.form} onSubmit={this.handleFormSubmit}>
+              <label className={styles.formGroup}>
+                <span className={styles.formLabel}>Email</span>
+                <input
+                  className={styles.formElement}
+                  type="email"
+                  autoComplete="email"
+                  ref={this.emailInput}
+                  name="email"
+                />
+              </label>
+              <label className={styles.formGroup}>
+                <span className={styles.formLabel}>Password</span>
+                <input
+                  className={styles.formElement}
+                  type="password"
+                  autoComplete="current-password"
+                  ref={this.passwordInput}
+                  name="password"
+                />
+              </label>
+              <button className={styles.formSubmit} type="submit">
+                Login
+              </button>
+            </form>
+            {this.props.error && (
+              <div style={{ color: 'red' }}>{this.props.error}</div>
+            )}
           </div>
-          <form className={styles.form} onSubmit={this.handleFormSubmit}>
-            <label className={styles.formGroup}>
-              <span className={styles.formLabel}>Email</span>
-              <input
-                className={styles.formElement}
-                type="email"
-                autoComplete="email"
-                ref={this.emailInput}
-                name="email"
-                placeholder="Username"
-              />
-            </label>
-            <label className={styles.formGroup}>
-              <span className={styles.formLabel}>Password</span>
-              <input
-                className={styles.formElement}
-                type="password"
-                autoComplete="current-password"
-                ref={this.passwordInput}
-                name="password"
-                placeholder="Password"
-              />
-            </label>
-            <button className={styles.formSubmit} type="submit">
-              Login
-            </button>
-          </form>
-          {this.props.error && (
-            <div style={{ color: 'red' }}>{this.props.error}</div>
-          )}
         </div>
         <div className={styles.info}>
           <ConnectLogoFull className={styles.logoFull} />
