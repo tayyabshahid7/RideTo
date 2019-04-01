@@ -17,6 +17,7 @@ class Email extends Component {
     }
 
     this.handleChange = this.handleChange.bind(this)
+    this.clearForm = this.clearForm.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
@@ -35,13 +36,27 @@ class Email extends Component {
     }
   }
 
-  handleSubmit(e) {
+  clearForm() {
+    this.setState({
+      email: {
+        ...this.state.email,
+        subject: '',
+        body: ''
+      }
+    })
+  }
+
+  async handleSubmit(e) {
     const { onSendEmail } = this.props
     const { email } = this.state
 
     e.preventDefault()
 
-    onSendEmail(email)
+    const response = await onSendEmail(email)
+
+    if (response) {
+      this.clearForm()
+    }
   }
 
   render() {
@@ -104,7 +119,9 @@ class Email extends Component {
           <Button type="submit" disabled={!isChanged}>
             Send
           </Button>
-          <Button color="white">Cancel</Button>
+          <Button color="white" onClick={this.clearForm}>
+            Cancel
+          </Button>
         </div>
       </form>
     )

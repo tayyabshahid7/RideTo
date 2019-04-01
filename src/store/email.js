@@ -1,5 +1,6 @@
 import { fetchEmails, fireEmail } from 'services/email'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
+import { actions as notificationActions } from './notification'
 
 const FETCH_ALL = createRequestTypes('rideto/email/FETCH/ALL')
 const SEND = createRequestTypes('rideto/email/SEND')
@@ -31,9 +32,14 @@ export const sendEmail = email => async dispatch => {
         email
       }
     })
+    notificationActions.dispatchSuccess(dispatch, 'Email sent')
   } catch (error) {
     dispatch({ type: SEND[FAILURE], error })
+    notificationActions.dispatchError(dispatch, 'Failed to send email')
+    return false
   }
+
+  return true
 }
 
 const initialState = {
