@@ -1,7 +1,8 @@
-import { fetchEmails } from 'services/email'
+import { fetchEmails, fireEmail } from 'services/email'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 const FETCH_ALL = createRequestTypes('rideto/email/FETCH/ALL')
+const SEND = createRequestTypes('rideto/email/SEND')
 
 export const getEmails = customerId => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
@@ -16,6 +17,22 @@ export const getEmails = customerId => async dispatch => {
     })
   } catch (error) {
     dispatch({ type: FETCH_ALL[FAILURE], error })
+  }
+}
+
+export const sendEmail = email => async dispatch => {
+  dispatch({ type: SEND[REQUEST] })
+
+  try {
+    await fireEmail(email)
+    dispatch({
+      type: SEND[SUCCESS],
+      data: {
+        email
+      }
+    })
+  } catch (error) {
+    dispatch({ type: SEND[FAILURE], error })
   }
 }
 
@@ -41,6 +58,25 @@ export default function reducer(state = initialState, action) {
         error: null
       }
     case FETCH_ALL[FAILURE]:
+      return {
+        ...state,
+        loading: false,
+        error: action.error
+      }
+    case SEND[REQUEST]:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      }
+    case SEND[SUCCESS]:
+      return {
+        ...state,
+        emails: [action.data.email, ...state.emails],
+        loading: false,
+        error: null
+      }
+    case SEND[FAILURE]:
       return {
         ...state,
         loading: false,

@@ -1,4 +1,4 @@
-import { get } from 'services/api'
+import { get, post } from 'services/api'
 
 export const fetchEmails = async customerId => {
   const path = 'email/'
@@ -33,6 +33,15 @@ export const fetchEmails = async customerId => {
   ]
 
   const response = await get(path, params)
+
+  return response
+}
+
+export const fireEmail = async email => {
+  const path = 'email/send'
+  const params = { email }
+
+  const response = await post(path, params)
 
   return response
 }

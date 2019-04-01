@@ -5,7 +5,7 @@ import { Col } from 'reactstrap'
 import { loadCourseTypes } from 'store/info'
 import * as orderModule from 'store/order'
 import * as supplierModule from 'store/supplier'
-import { getEmails } from 'store/email'
+import { getEmails, sendEmail } from 'store/email'
 import Tabs from 'pages/Customers/components/Tabs'
 import OrderForm from 'pages/Customers/components/OrderForm'
 import Email from 'pages/Customers/components/Email'
@@ -49,7 +49,8 @@ class OrderListContainer extends React.Component {
       handleNotepadChange,
       user,
       customer,
-      emails = []
+      emails = [],
+      sendEmail
     } = this.props
 
     return (
@@ -78,7 +79,13 @@ class OrderListContainer extends React.Component {
             )}
           </div>
           <div label="Email">
-            {user && customer && <NewEmail customer={customer} user={user} />}
+            {user && customer && (
+              <NewEmail
+                customer={customer}
+                user={user}
+                onSendEmail={sendEmail}
+              />
+            )}
             {emails.length > 0 ? (
               <ul className={styles.list}>
                 {emails.map(email => (
@@ -131,7 +138,8 @@ export default connect(
         ...orderModule.actions,
         ...supplierModule.actions,
         loadCourseTypes,
-        getEmails
+        getEmails,
+        sendEmail
       },
       dispatch
     )

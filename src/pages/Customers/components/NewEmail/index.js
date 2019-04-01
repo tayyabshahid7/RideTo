@@ -20,7 +20,7 @@ class Email extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange({ target: { name, value } }) {
+  handleChange({ target, target: { name, value } }) {
     this.setState({
       isChanged: true,
       email: {
@@ -28,12 +28,20 @@ class Email extends Component {
         [name]: value
       }
     })
+
+    if (name === 'body') {
+      target.style.height = ''
+      target.style.height = `${target.scrollHeight}px`
+    }
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    const { onSendEmail } = this.props
     const { email } = this.state
 
-    console.log(email)
+    e.preventDefault()
+
+    onSendEmail(email)
   }
 
   render() {
