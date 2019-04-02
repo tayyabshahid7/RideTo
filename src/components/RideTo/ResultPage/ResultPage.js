@@ -267,7 +267,8 @@ class ResultPage extends Component {
       courseType,
       bike_hire,
       supplierId: selectedCourse.id,
-      addons: []
+      addons: [],
+      gloves_jacket_included: selectedCourse.gloves_jacket_included
     }
 
     if (courseType !== 'FULL_LICENCE') {
