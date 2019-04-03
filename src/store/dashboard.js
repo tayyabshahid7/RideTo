@@ -1,4 +1,8 @@
-import { apiGetPendingOrders, apiGetUnallocatedTests } from 'services/api'
+import {
+  apiGetPendingOrders,
+  apiGetUnallocatedTests,
+  apiHideUnallocatedTest
+} from 'services/api'
 import { reset as loginReset } from './auth'
 import { LOGOUT, RESET } from './common'
 export const PENDING_ORDERS_REQUEST = 'PENDING_ORDERS_REQUEST'
@@ -8,6 +12,10 @@ export const PENDING_ORDERS_PAGE_CHANGE = 'PENDING_ORDERS_PAGE_CHANGE'
 export const UNALLOCATED_TESTS_REQUEST = 'UNALLOCATED_TESTS_REQUEST'
 export const UNALLOCATED_TESTS_SUCCESS = 'REQUEST_UNALLOCATED_TESTS_SUCCESS'
 export const UNALLOCATED_TESTS_ERROR = 'REQUEST_UNALLOCATED_TESTS_ERROR'
+export const HIDE_UNALLOCATED_TEST_REQUEST = 'HIDE_UNALLOCATED_TEST_REQUEST'
+export const HIDE_UNALLOCATED_TEST_SUCCESS =
+  'REQUEST_HIDE_UNALLOCATED_TEST_SUCCESS'
+export const HIDE_UNALLOCATED_TEST_ERROR = 'REQUEST_HIDE_UNALLOCATED_TEST_ERROR'
 
 const pendingOrdersRequest = () => ({ type: PENDING_ORDERS_REQUEST })
 const pendingOrdersSuccess = data => ({
@@ -92,6 +100,46 @@ export const getUnallocatedTests = schoolId => {
   }
 }
 
+const hideUnallocatedTestRequest = () => ({
+  type: HIDE_UNALLOCATED_TEST_REQUEST
+})
+
+const hideUnallocatedTestSuccess = data => ({
+  type: HIDE_UNALLOCATED_TEST_SUCCESS,
+  data
+})
+
+const hideUnallocatedTestError = error => ({
+  type: HIDE_UNALLOCATED_TEST_ERROR,
+  error
+})
+
+export const hideUnallocatedTest = (schoolId, testId) => {
+  return async dispatch => {
+    dispatch(hideUnallocatedTestRequest())
+    try {
+      const token = localStorage.getItem('token')
+      const response = await apiHideUnallocatedTest(schoolId, testId, token)
+      if (response.status === 200) {
+        dispatch(hideUnallocatedTestSuccess(testId))
+      } else {
+        throw response
+      }
+    } catch (error) {
+      if (error.response) {
+        if (error.response.status === 403) {
+          //Unauthorized access
+          dispatch(loginReset())
+        } else {
+          dispatch(hideUnallocatedTestError(error.response))
+        }
+      } else {
+        dispatch(hideUnallocatedTestError('Check your internet connection'))
+      }
+    }
+  }
+}
+
 const initialState = {
   loading: false,
   error: null,
@@ -104,12 +152,14 @@ export default function reducer(state = initialState, action) {
   switch (action.type) {
     case PENDING_ORDERS_REQUEST:
     case UNALLOCATED_TESTS_REQUEST:
+    case HIDE_UNALLOCATED_TEST_REQUEST:
       return {
         ...state,
         loading: true
       }
     case PENDING_ORDERS_ERROR:
     case UNALLOCATED_TESTS_ERROR:
+    case HIDE_UNALLOCATED_TEST_ERROR:
       return {
         ...state,
         loading: false,
@@ -133,6 +183,19 @@ export default function reducer(state = initialState, action) {
         loading: false,
         error: null,
         unallocatedTests: action.data
+      }
+    case HIDE_UNALLOCATED_TEST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        unallocatedTests: {
+          ...state.unallocatedTests,
+          count: state.unallocatedTests.count - 1,
+          results: state.unallocatedTests.results.filter(
+            test => test.id !== action.data
+          )
+        }
       }
     case LOGOUT:
     case RESET:

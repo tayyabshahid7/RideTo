@@ -3,7 +3,11 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { Col, Row } from 'reactstrap'
-import { getPendingOrders, getUnallocatedTests } from 'store/dashboard'
+import {
+  getPendingOrders,
+  getUnallocatedTests,
+  hideUnallocatedTest
+} from 'store/dashboard'
 import { changeSchool } from 'store/auth'
 import PendingOrdersTable from '../components/PendingOrdersTable'
 import UnallocatedTestsTable from '../components/UnallocatedTestsTable'
@@ -20,6 +24,7 @@ class Dashboard extends Component {
     }
     this.handleChangePage = this.handleChangePage.bind(this)
     this.handleSorting = this.handleSorting.bind(this)
+    this.hideNotification = this.hideNotification.bind(this)
   }
 
   componentDidMount() {
@@ -41,6 +46,10 @@ class Dashboard extends Component {
     )
   }
 
+  hideNotification(id) {
+    this.props.hideUnallocatedTest(this.props.schoolId, id)
+  }
+
   render() {
     return (
       <div className={classnames(styles.container)}>
@@ -55,6 +64,7 @@ class Dashboard extends Component {
                   <h3>Unallocated Tests</h3>
                   <UnallocatedTestsTable
                     tests={this.props.unallocatedTests.results}
+                    hideNotification={this.hideNotification}
                   />
                 </div>
               )}
@@ -98,7 +108,8 @@ const mapDispatchToProps = dispatch =>
     {
       getPendingOrders,
       getUnallocatedTests,
-      changeSchool
+      changeSchool,
+      hideUnallocatedTest
     },
     dispatch
   )
