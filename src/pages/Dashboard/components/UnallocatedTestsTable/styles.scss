@@ -75,3 +75,19 @@
 .isExpiring {
   color: #e01616;
 }
+
+.hideNotification {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  display: inline;
+  line-height: 17px;
+  vertical-align: -5px;
+  font-size: 2rem;
+  color: #c7c7c7;
+  cursor: pointer;
+
+  &:hover {
+    color: darken(#c7c7c7, 15%);
+  }
+}
