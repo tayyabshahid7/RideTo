@@ -1,5 +1,6 @@
 import React from 'react'
-import { Row, Col, Button } from 'reactstrap'
+import { Row, Col } from 'reactstrap'
+import { Button } from 'components/ConnectForm'
 import styles from './styles.scss'
 
 class CsvUpload extends React.Component {
@@ -60,29 +61,37 @@ class CsvUpload extends React.Component {
     return (
       <Row className={styles.container}>
         <Col>
-          <h3>Upload Tests</h3>
-          <p>Upload full licence tests CSVs</p>
-          <form
-            className={styles.csvUploadForm}
-            onSubmit={this.handleFormSubmit}
-            encType="multipart/form-data">
-            <Row>
-              <Col>
-                <div className="form-group">
-                  <input
-                    name="csvFile"
-                    ref={this.input}
-                    type="file"
-                    accept="text/csv"
-                    onChange={this.handleChange}
-                  />
-                </div>
-              </Col>
-            </Row>
-            <Button color="primary" type="submit" disabled={!file}>
-              Submit
-            </Button>
-          </form>
+          <div className={styles.box}>
+            <div>
+              <h3 className={styles.title}>Upload DVSA test dates</h3>
+              <p>
+                Upload your test dates to your calendar using the DVSA CSV file
+              </p>
+            </div>
+            <form
+              className={styles.csvUploadForm}
+              onSubmit={this.handleFormSubmit}
+              encType="multipart/form-data">
+              <Row>
+                <Col>
+                  <div className="form-group">
+                    <input
+                      name="csvFile"
+                      ref={this.input}
+                      type="file"
+                      accept="text/csv"
+                      onChange={this.handleChange}
+                    />
+                  </div>
+                </Col>
+              </Row>
+              {file && (
+                <Button color="primary" type="submit">
+                  Submit
+                </Button>
+              )}
+            </form>
+          </div>
         </Col>
       </Row>
     )

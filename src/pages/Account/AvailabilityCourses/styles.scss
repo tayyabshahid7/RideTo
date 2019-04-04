@@ -16,6 +16,13 @@
   max-width: 240px;
 }
 
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 23px;
+  margin-bottom: 0.25rem;
+}
+
 .box {
   display: flex;
   justify-content: space-between;
@@ -41,13 +48,6 @@
   @media (max-width: 768px) {
     margin-top: 20px;
   }
-}
-
-.title {
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 23px;
-  margin-bottom: 0.25rem;
 }
 
 .topRow {
