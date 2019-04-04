@@ -1,5 +1,5 @@
-import React from 'react'
-import { Row, Col, Button } from 'reactstrap'
+import React, { Fragment } from 'react'
+import { Button } from 'components/ConnectForm'
 import moment from 'moment'
 import styles from './styles.scss'
 import CreateBulkCourse from 'components/Account/CreateBulkCourse'
@@ -41,17 +41,21 @@ class AvailabilityCourses extends React.Component {
 
   renderCreateCourse() {
     return (
-      <div>
-        <h3>Bulk create course</h3>
-        <div>Set default courses for your calendar</div>
-        <div>
+      <Fragment>
+        <div className={styles.leftCol}>
+          <h3 className={styles.title}>Bulk create course</h3>
+          <div>
+            Setup a mass number of courses in your calendar for any time range
+          </div>
+        </div>
+        <div className={styles.rightCol}>
           <Button
             color="primary"
             onClick={() => this.setState({ showCreateBulkCourseForm: true })}>
-            New Course
+            Bulk Create
           </Button>
         </div>
-      </div>
+      </Fragment>
     )
   }
 
@@ -60,46 +64,55 @@ class AvailabilityCourses extends React.Component {
     const { settingsSaving } = this.props
     return (
       <div className={styles.defaultDays}>
-        <div className={styles.subtitle}>Default Days</div>
-        <div>Set default days you have courses</div>
-        <div>
-          {available_days.map((day, index) => (
-            <div
-              key={index}
-              className={styles.defaultDayRow}
-              onClick={() => this.handleAvailableDaysChange(index)}>
-              <div className="col-6">
-                {`${moment()
-                  .isoWeekday(index + 1)
-                  .format('dddd')}`}
-                :
-              </div>
-              <div className="col-6">
-                <div className="custom-control custom-checkbox">
-                  <input
-                    type="checkbox"
-                    className="custom-control-input"
-                    id={`customCheck${index}`}
-                    checked={day !== 'F'}
-                    readOnly
-                  />
-                  <label
-                    className={`custom-control-label ${
-                      day === 'F' ? '' : 'text-white'
-                    }`}>
-                    {day === 'F' ? 'Closed' : 'Open'}
-                  </label>
+        <div className={styles.topRow}>
+          <div>
+            <div className={styles.title}>Default Days</div>
+            <div>
+              Set default days for when you run courses. Untick days you are not
+              open
+            </div>
+          </div>
+          <div>
+            {available_days.map((day, index) => (
+              <div
+                key={index}
+                className={styles.defaultDayRow}
+                onClick={() => this.handleAvailableDaysChange(index)}>
+                <div className="col-6">
+                  {`${moment()
+                    .isoWeekday(index + 1)
+                    .format('dddd')}`}
+                  :
+                </div>
+                <div className="col-6">
+                  <div className="custom-control custom-checkbox">
+                    <input
+                      type="checkbox"
+                      className="custom-control-input"
+                      id={`customCheck${index}`}
+                      checked={day !== 'F'}
+                      readOnly
+                    />
+                    <label
+                      className={`custom-control-label ${
+                        day === 'F' ? '' : 'text-white'
+                      }`}>
+                      {day === 'F' ? 'Closed' : 'Open'}
+                    </label>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-        <Button
-          color="primary mt-2"
-          onClick={this.handleSaveDefaultDays.bind(this)}
-          disabled={settingsSaving}>
-          Save
-        </Button>
+        <div className={styles.bottomRow}>
+          <Button
+            color="primary mt-2"
+            onClick={this.handleSaveDefaultDays.bind(this)}
+            disabled={settingsSaving}>
+            Save
+          </Button>
+        </div>
       </div>
     )
   }
@@ -118,19 +131,10 @@ class AvailabilityCourses extends React.Component {
     } = this.props
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
-      <Row className={styles.container}>
-        <Col lg={4}>
+      <Fragment>
+        <div className={styles.box}>
           {this.renderCreateCourse()}
-          {this.renderDefaultDays()}
-        </Col>
-        {!showCreateBulkCourseForm && (
-          <Col lg={8}>
-            <Col />
-            <Col />
-          </Col>
-        )}
-        {showCreateBulkCourseForm && (
-          <Col lg={8}>
+          {showCreateBulkCourseForm && (
             <CreateBulkCourse
               onSubmit={this.handleCreateBulkCourse.bind(this)}
               info={info}
@@ -145,9 +149,10 @@ class AvailabilityCourses extends React.Component {
               saving={saving}
               error={error}
             />
-          </Col>
-        )}
-      </Row>
+          )}
+        </div>
+        <div className={styles.box}>{this.renderDefaultDays()}</div>
+      </Fragment>
     )
   }
 }

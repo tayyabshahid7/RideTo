@@ -6,7 +6,7 @@ import styles from './styles.scss'
 let AccountSubNavbar = ({ history }) => {
   return (
     <div className={styles.container}>
-      <ul className={classnames('navbar-nav mr-auto', styles.linkContainer)}>
+      <ul className={classnames('navbar-nav', styles.linkContainer)}>
         <li className="nav-item">
           <NavLink
             className={styles.navLink}

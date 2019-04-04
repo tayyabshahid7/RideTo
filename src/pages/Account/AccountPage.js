@@ -19,7 +19,7 @@ class AccountPage extends Component {
     return (
       <div className={styles.container}>
         <AccountSubNavbar history={history} />
-        <div>
+        <div className={styles.content}>
           <Route
             exact
             path="/account"
