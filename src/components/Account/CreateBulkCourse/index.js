@@ -454,7 +454,7 @@ class CreateBulkCourse extends React.Component {
                 </Button>
                 <Button
                   type="button"
-                  color=""
+                  color="white"
                   onClick={this.handleCancel.bind(this)}>
                   Cancel
                 </Button>
