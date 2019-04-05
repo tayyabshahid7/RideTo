@@ -80,6 +80,10 @@
   padding-bottom: 5px;
   // border-bottom: 3px solid var(--primary-color);
 
+  @media (max-width: 768px) {
+    padding-bottom: 0;
+  }
+
   &::after {
     bottom: -5px;
     left: 0;
