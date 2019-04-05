@@ -36,6 +36,16 @@
   }
 }
 
+.boxVertical {
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
 .leftCol {
   max-width: 357px;
   flex-grow: 1;

@@ -1,12 +1,14 @@
 import React from 'react'
 import moment from 'moment'
-import { Button, Row, Col, Form } from 'reactstrap'
+import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-import InputTextGroup from 'components/Forms/InputTextGroup'
-import InputSelectGroup from 'components/Forms/InputSelectGroup'
-import Input from 'components/Forms/Input'
+// import InputTextGroup from 'components/Forms/InputTextGroup'
+// import InputSelectGroup from 'components/Forms/InputSelectGroup'
+// import Input from 'components/Forms/Input'
 import Loading from 'components/Loading'
 import classnames from 'classnames'
+
+import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
 
 class CreateBulkCourse extends React.Component {
   constructor(props) {
@@ -190,52 +192,60 @@ class CreateBulkCourse extends React.Component {
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
               <Col>
-                <InputSelectGroup
+                <ConnectSelect
+                  basic
                   name="course_type_id"
                   value={course_type_id}
                   label=""
                   valueArray={courseTypes.map(courseType => ({
-                    value: courseType.id,
-                    title: courseType.name
+                    id: courseType.id,
+                    name: courseType.name
                   }))}
                   noSelectOption
                   onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
                   required
                 />
               </Col>
             </Row>
             <Row>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="spaces"
                   value={spaces}
                   label="Spaces"
                   className="form-group"
                   type="number"
                   onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
                   required
                 />
               </Col>
               {!isFullLicence && (
                 <React.Fragment>
                   <Col>
-                    <InputTextGroup
+                    <ConnectInput
+                      basic
                       name="auto_bikes"
                       value={auto_bikes}
                       label="Automatic"
                       className="form-group"
                       type="number"
                       onChange={this.handleChangeRawEvent.bind(this)}
+                      raw
                     />
                   </Col>
                   <Col>
-                    <InputTextGroup
+                    <ConnectInput
+                      basic
                       name="manual_bikes"
                       value={manual_bikes}
                       label="Manual"
                       className="form-group"
                       type="number"
                       onChange={this.handleChangeRawEvent.bind(this)}
+                      raw
                     />
                   </Col>
                 </React.Fragment>
@@ -255,7 +265,8 @@ class CreateBulkCourse extends React.Component {
                       <tr>
                         <td>A1</td>
                         <td>
-                          <Input
+                          <ConnectInput
+                            basic
                             className={styles.inputNumber}
                             name="a1_auto_bikes"
                             value={a1_auto_bikes || ''}
@@ -263,11 +274,13 @@ class CreateBulkCourse extends React.Component {
                             min="0"
                             max={spaces}
                             onChange={this.handleChangeRawEvent.bind(this)}
+                            raw
                             required
                           />
                         </td>
                         <td>
-                          <Input
+                          <ConnectInput
+                            basic
                             className={styles.inputNumber}
                             name="a1_manual_bikes"
                             value={a1_manual_bikes || ''}
@@ -275,6 +288,7 @@ class CreateBulkCourse extends React.Component {
                             min="0"
                             max={spaces}
                             onChange={this.handleChangeRawEvent.bind(this)}
+                            raw
                             required
                           />
                         </td>
@@ -282,7 +296,8 @@ class CreateBulkCourse extends React.Component {
                       <tr>
                         <td>A2</td>
                         <td>
-                          <Input
+                          <ConnectInput
+                            basic
                             className={styles.inputNumber}
                             name="a2_auto_bikes"
                             value={a2_auto_bikes || ''}
@@ -290,11 +305,13 @@ class CreateBulkCourse extends React.Component {
                             min="0"
                             max={spaces}
                             onChange={this.handleChangeRawEvent.bind(this)}
+                            raw
                             required
                           />
                         </td>
                         <td>
-                          <Input
+                          <ConnectInput
+                            basic
                             className={styles.inputNumber}
                             name="a2_manual_bikes"
                             value={a2_manual_bikes || ''}
@@ -302,6 +319,7 @@ class CreateBulkCourse extends React.Component {
                             min="0"
                             max={spaces}
                             onChange={this.handleChangeRawEvent.bind(this)}
+                            raw
                             required
                           />
                         </td>
@@ -309,7 +327,8 @@ class CreateBulkCourse extends React.Component {
                       <tr>
                         <td>A</td>
                         <td>
-                          <Input
+                          <ConnectInput
+                            basic
                             className={styles.inputNumber}
                             name="a_auto_bikes"
                             value={a_auto_bikes || ''}
@@ -317,11 +336,13 @@ class CreateBulkCourse extends React.Component {
                             min="0"
                             max={spaces}
                             onChange={this.handleChangeRawEvent.bind(this)}
+                            raw
                             required
                           />
                         </td>
                         <td>
-                          <Input
+                          <ConnectInput
+                            basic
                             className={styles.inputNumber}
                             name="a_manual_bikes"
                             value={a_manual_bikes || ''}
@@ -329,6 +350,7 @@ class CreateBulkCourse extends React.Component {
                             min="0"
                             max={spaces}
                             onChange={this.handleChangeRawEvent.bind(this)}
+                            raw
                             required
                           />
                         </td>
@@ -341,75 +363,87 @@ class CreateBulkCourse extends React.Component {
 
             <Row>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="start_date"
                   value={start_date}
                   label="Start Date"
                   className="form-group"
                   type="date"
                   onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
                   required
                 />
               </Col>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="end_date"
                   value={end_date}
                   label="End Date"
                   className="form-group"
                   type="date"
                   onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
                   required
                 />
               </Col>
             </Row>
             <Row>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="time"
                   value={time}
                   label="Start Time"
                   className="form-group"
                   type="time"
                   onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
                   required
                 />
               </Col>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="end_time"
                   value={end_time}
                   label="Finish Time"
                   className="form-group"
                   type="time"
                   onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
                   required
                 />
               </Col>
             </Row>
             <Row>
               <Col>
-                <InputSelectGroup
+                <ConnectSelect
+                  basic
                   name="instructor_id"
                   value={instructor_id}
                   label="Instructor"
                   valueArray={instructors.map(instructor => ({
-                    value: instructor.id,
-                    title: `${instructor.first_name} ${instructor.last_name}`
+                    id: instructor.id,
+                    name: `${instructor.first_name} ${instructor.last_name}`
                   }))}
                   noSelectOption
                   onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
                 />
               </Col>
             </Row>
             <Row>
               <Col>
-                <InputTextGroup
+                <ConnectInput
+                  basic
                   name="notes"
                   value={notes}
                   label="Notes"
                   type="textarea"
                   onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
                 />
               </Col>
             </Row>

@@ -3,6 +3,7 @@ import { Button } from 'components/ConnectForm'
 import moment from 'moment'
 import styles from './styles.scss'
 import CreateBulkCourse from 'components/Account/CreateBulkCourse'
+import classnames from 'classnames'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
@@ -41,7 +42,7 @@ class AvailabilityCourses extends React.Component {
 
   renderCreateCourse() {
     return (
-      <Fragment>
+      <div className={styles.row}>
         <div className={styles.leftCol}>
           <h3 className={styles.title}>Bulk create course</h3>
           <div>
@@ -55,7 +56,7 @@ class AvailabilityCourses extends React.Component {
             Bulk Create
           </Button>
         </div>
-      </Fragment>
+      </div>
     )
   }
 
@@ -132,7 +133,7 @@ class AvailabilityCourses extends React.Component {
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
       <Fragment>
-        <div className={styles.box}>
+        <div className={classnames(styles.box, styles.boxVertical)}>
           {this.renderCreateCourse()}
           {showCreateBulkCourseForm && (
             <CreateBulkCourse

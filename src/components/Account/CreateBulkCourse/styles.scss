@@ -1,7 +1,8 @@
 .container {
-  background: lightgray;
-  padding: 20px;
-  max-width: 600px;
+  background: #fafafa;
+  padding: 1rem;
+  // max-width: 600px;
+  width: 100%;
 }
 
 table.formTable {
@@ -10,4 +11,8 @@ table.formTable {
   td {
     border-top: 0;
   }
+}
+
+.title {
+  margin-bottom: 1rem;
 }
