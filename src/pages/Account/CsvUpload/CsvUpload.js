@@ -74,21 +74,26 @@ class CsvUpload extends React.Component {
               encType="multipart/form-data">
               <Row>
                 <Col>
-                  <div className="form-group">
-                    <input
-                      name="csvFile"
-                      ref={this.input}
-                      type="file"
-                      accept="text/csv"
-                      onChange={this.handleChange}
-                    />
+                  <div>
+                    <label className={styles.csvUploadLabel}>
+                      <span>{!file ? 'Choose file' : file.name}</span>
+                      <input
+                        name="csvFile"
+                        ref={this.input}
+                        type="file"
+                        accept="text/csv"
+                        onChange={this.handleChange}
+                      />
+                    </label>
                   </div>
                 </Col>
               </Row>
               {file && (
-                <Button color="primary" type="submit">
-                  Submit
-                </Button>
+                <div className="mt-3">
+                  <Button color="primary" type="submit">
+                    Submit
+                  </Button>
+                </div>
               )}
             </form>
           </div>

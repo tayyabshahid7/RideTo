@@ -25,3 +25,33 @@
 .csvUploadForm {
   max-width: 400px;
 }
+
+.csvUploadLabel {
+  margin-top: 31px;
+  margin-bottom: 0;
+
+  span {
+    display: inline-block;
+    line-height: 44px;
+    text-align: center;
+    height: 44px;
+    min-width: 90px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+      color: #ffffff;
+      background-color: #25ae92;
+      border-color: #23a489;
+    }
+  }
+
+  input {
+    display: none;
+  }
+}
