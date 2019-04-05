@@ -1,4 +1,54 @@
-.container {
-  padding: 20px;
-  max-width: 1000px;
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 23px;
+  margin-bottom: 0.25rem;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 70px;
+  border: 2px solid #e4e4e4;
+  padding: 25px;
+
+  @media (max-width: 768px) {
+    margin-top: 30px;
+    display: block;
+  }
+}
+
+.boxVertical {
+  flex-direction: column;
+}
+
+.leftCol {
+  flex-grow: 1;
+  max-width: 380px;
+}
+
+.editButton {
+  button {
+    margin-top: 26px;
+    width: auto;
+    min-width: 0;
+    display: inline;
+    height: auto;
+    padding: 0;
+
+    &:hover {
+      color: var(--primary-color);
+      background: none;
+      text-decoration: underline;
+    }
+  }
+}
+
+.color {
+  width: 111px;
+  height: 40px;
+
+  @media (min-width: 769px) {
+    margin-top: 30px;
+  }
 }
