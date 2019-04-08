@@ -131,6 +131,10 @@ a.trainingDateLink {
   &::placeholder {
     color: rgba(#707070, 0.47);
   }
+
+  &:focus {
+    outline: 0;
+  }
 }
 
 .body {
