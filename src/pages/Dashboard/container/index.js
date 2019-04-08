@@ -57,18 +57,22 @@ class Dashboard extends Component {
           <Col
             lg="8"
             className={classnames(styles.leftColumn, commonStyles.mainContent)}>
-            <h2>Dashboard</h2>
+            <h2 className={styles.dashboardTitle}>Dashboard</h2>
             <Loading loading={this.props.loading}>
               {this.props.unallocatedTests && (
                 <div>
-                  <h3>Unallocated Tests</h3>
+                  <h3 className={styles.dashboardSubTitle}>
+                    Unallocated Tests
+                  </h3>
                   <UnallocatedTestsTable
                     tests={this.props.unallocatedTests.results}
                     hideNotification={this.hideNotification}
                   />
                 </div>
               )}
-              <h3>Pending Orders</h3>
+              <h3 className={styles.dashboardSubTitlePending}>
+                Pending Orders
+              </h3>
               {this.props.pendingOrders &&
               this.props.pendingOrders.results.length > 0 ? (
                 <div className={styles.main}>
