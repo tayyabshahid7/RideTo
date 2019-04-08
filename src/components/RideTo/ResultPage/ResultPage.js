@@ -77,7 +77,9 @@ class ResultPage extends Component {
     const result = await fetchCoursesTypes(postcode || '')
     const courseTypes = result.results
     this.setState({
-      courseTypesOptions: courseTypes
+      courseTypesOptions: courseTypes.filter(
+        courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
+      )
     })
   }
 
