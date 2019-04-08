@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react'
-import { Button } from 'components/ConnectForm'
-import InputTextGroup from 'components/Forms/InputTextGroup'
+import { ConnectInput, Button } from 'components/ConnectForm'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
 
@@ -112,36 +112,42 @@ class Instructors extends React.Component {
         </Fragment>
 
         {selectedInstructor && (
-          <Fragment>
-            <h3>{addNew ? 'Add' : 'Edit'} Instructor Details</h3>
-            <form onSubmit={this.handleSave} className={styles.editForm}>
-              <InputTextGroup
-                name="first_name"
-                value={selectedInstructor.first_name}
-                label="First Name"
-                className="form-group"
-                onChange={this.handleChange}
-                required
-              />
-              <InputTextGroup
-                name="last_name"
-                value={selectedInstructor.last_name}
-                label="Last Name"
-                className="form-group"
-                onChange={this.handleChange}
-                required
-              />
-              <Button color="primary" type="submit" disabled={saving}>
-                {addNew ? 'Add' : 'Save'}
-              </Button>
-              <Button
-                color="link"
-                type="button"
-                onClick={() => this.setState({ selectedInstructor: null })}>
-                Cancel
-              </Button>
-            </form>
-          </Fragment>
+          <Modal isOpen={true}>
+            <ModalHeader>
+              <h3 className={styles.title}>
+                {addNew ? 'Add' : 'Edit'} Instructor Details
+              </h3>
+            </ModalHeader>
+            <ModalBody>
+              <form onSubmit={this.handleSave} className={styles.editForm}>
+                <ConnectInput
+                  name="first_name"
+                  value={selectedInstructor.first_name}
+                  label="First Name"
+                  className="form-group"
+                  onChange={this.handleChange}
+                  required
+                />
+                <ConnectInput
+                  name="last_name"
+                  value={selectedInstructor.last_name}
+                  label="Last Name"
+                  className="form-group"
+                  onChange={this.handleChange}
+                  required
+                />
+                <Button color="primary" type="submit" disabled={saving}>
+                  {addNew ? 'Add' : 'Save'}
+                </Button>
+                <Button
+                  color="link"
+                  type="button"
+                  onClick={() => this.setState({ selectedInstructor: null })}>
+                  Cancel
+                </Button>
+              </form>
+            </ModalBody>
+          </Modal>
         )}
       </Fragment>
     )
