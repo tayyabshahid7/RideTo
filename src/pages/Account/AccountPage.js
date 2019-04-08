@@ -7,6 +7,7 @@ import BookingWidgetSettings from './BookingWidgetSettings'
 import EmailSettings from './EmailSettings'
 import Instructors from './Instructors'
 import CsvUpload from './CsvUpload'
+import Bikes from './Bikes'
 import styles from './styles.scss'
 
 class AccountPage extends Component {
@@ -60,6 +61,11 @@ class AccountPage extends Component {
             render={routeProps => (
               <Instructors {...routeProps} schoolId={schoolId} />
             )}
+          />
+          <Route
+            exact
+            path="/account/bikes"
+            render={routeProps => <Bikes {...routeProps} schoolId={schoolId} />}
           />
         </div>
       </div>

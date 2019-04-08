@@ -220,7 +220,8 @@ export function Button({
   color = 'primary',
   onClick,
   disabled,
-  small
+  small,
+  ...rest
 }) {
   return (
     <button
@@ -231,7 +232,8 @@ export function Button({
       )}
       type={type}
       onClick={onClick}
-      disabled={disabled}>
+      disabled={disabled}
+      {...rest}>
       {children}
     </button>
   )
