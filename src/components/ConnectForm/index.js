@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styles from './styles.scss'
 import { getAge } from 'utils/helper'
 import classnames from 'classnames'
@@ -157,28 +157,61 @@ export function ConnectLabeledContent({ label, children, disabled, basic }) {
   )
 }
 
-export function ConnectTextArea({
-  label,
-  name,
-  value,
-  type,
-  disabled,
-  onChange,
-  children
-}) {
-  return (
-    <div className={styles.formGroup}>
-      {label && <label className={styles.label}>{label}</label>}
-      <textarea
-        className={styles.textarea}
-        name={name}
-        value={value}
-        type={type}
-        disabled={disabled}
-        onChange={onChange}
-      />
-    </div>
-  )
+export class ConnectTextArea extends Component {
+  constructor(props) {
+    super(props)
+
+    this.el = React.createRef()
+
+    this.setHeight = this.setHeight.bind(this)
+  }
+
+  setHeight() {
+    const { autoHeight } = this.props
+    const textarea = this.el.current
+
+    if (autoHeight) {
+      textarea.style.height = ''
+      textarea.style.height = textarea.scrollHeight + 'px'
+    }
+  }
+
+  componentDidMount() {
+    this.setHeight()
+  }
+
+  render() {
+    const {
+      label,
+      name,
+      value,
+      type,
+      disabled,
+      onChange,
+      autoHeight,
+      noBorder
+    } = this.props
+
+    return (
+      <div className={styles.formGroup}>
+        {label && <label className={styles.label}>{label}</label>}
+        <textarea
+          ref={this.el}
+          className={classnames(
+            styles.textarea,
+            autoHeight && styles.textareaAutoHeight,
+            noBorder && styles.textareaNoBorder
+          )}
+          name={name}
+          value={value}
+          type={type}
+          disabled={disabled}
+          onChange={onChange}
+          onInput={this.setHeight}
+        />
+      </div>
+    )
+  }
 }
 
 export function Button({
@@ -187,7 +220,8 @@ export function Button({
   color = 'primary',
   onClick,
   disabled,
-  small
+  small,
+  ...rest
 }) {
   return (
     <button
@@ -198,7 +232,8 @@ export function Button({
       )}
       type={type}
       onClick={onClick}
-      disabled={disabled}>
+      disabled={disabled}
+      {...rest}>
       {children}
     </button>
   )

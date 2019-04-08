@@ -82,7 +82,7 @@ let NavigationBar = ({ history }) => {
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
-              to="/account">
+              to="/account/availability">
               Account
             </NavLink>
           </li>

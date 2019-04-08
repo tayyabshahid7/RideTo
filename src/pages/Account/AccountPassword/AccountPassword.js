@@ -1,7 +1,8 @@
 import React from 'react'
-import { Row, Col, Button } from 'reactstrap'
-import InputTextGroup from 'components/Forms/InputTextGroup'
+import { Row, Col } from 'reactstrap'
 import styles from './styles.scss'
+import classnames from 'classnames'
+import { ConnectInput, Button } from 'components/ConnectForm'
 
 class AccountPassword extends React.Component {
   constructor(props) {
@@ -9,7 +10,8 @@ class AccountPassword extends React.Component {
     this.state = {
       new_password: '',
       old_password: '',
-      new_password_copy: ''
+      new_password_copy: '',
+      showForm: false
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
@@ -47,59 +49,89 @@ class AccountPassword extends React.Component {
   }
 
   render() {
-    const { new_password, old_password, new_password_copy } = this.state
+    const {
+      new_password,
+      old_password,
+      new_password_copy,
+      showForm
+    } = this.state
     return (
-      <Row className={styles.container}>
-        <Col>
-          <h3>Update Password</h3>
-          <form
-            className={styles.passwordResetForm}
-            onSubmit={this.handleFormSubmit}>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="old_password"
-                  value={old_password}
-                  label="Old Password"
-                  className="form-group"
-                  type="password"
-                  onChange={this.handleChange.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="new_password"
-                  value={new_password}
-                  label="New Password"
-                  className="form-group"
-                  type="password"
-                  onChange={this.handleChange.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup
-                  name="new_password_copy"
-                  value={new_password_copy}
-                  label="Confirm Password"
-                  className="form-group"
-                  type="password"
-                  onChange={this.handleChange.bind(this)}
-                  required
-                />
-              </Col>
-            </Row>
-            <Button color="primary" type="submit">
-              Update Password
+      <div className={classnames(styles.box, styles.boxVertical)}>
+        <div className={styles.topRow}>
+          <div className={styles.leftCol}>
+            <h3 className={styles.title}>Admin settings</h3>
+            <p>If you need to change your password you can so here</p>
+          </div>
+          <div className={styles.rightCol}>
+            <Button
+              onClick={() => {
+                this.setState({
+                  showForm: !showForm,
+                  new_password: '',
+                  old_password: '',
+                  new_password_copy: ''
+                })
+              }}
+              color={showForm ? 'white' : 'primary'}>
+              {showForm ? 'Cancel' : 'Update Password'}
             </Button>
-          </form>
-        </Col>
-      </Row>
+          </div>
+        </div>
+
+        {showForm && (
+          <Row className={styles.container}>
+            <Col>
+              <h3 className={styles.title}>Update Password</h3>
+              <form
+                className={styles.passwordResetForm}
+                onSubmit={this.handleFormSubmit}>
+                <Row>
+                  <Col>
+                    <ConnectInput
+                      name="old_password"
+                      value={old_password}
+                      label="Old Password"
+                      className="form-group"
+                      type="password"
+                      onChange={this.handleChange.bind(this)}
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <ConnectInput
+                      name="new_password"
+                      value={new_password}
+                      label="New Password"
+                      className="form-group"
+                      type="password"
+                      onChange={this.handleChange.bind(this)}
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <ConnectInput
+                      name="new_password_copy"
+                      value={new_password_copy}
+                      label="Confirm Password"
+                      className="form-group"
+                      type="password"
+                      onChange={this.handleChange.bind(this)}
+                      required
+                    />
+                  </Col>
+                </Row>
+                <Button color="primary" type="submit">
+                  Save
+                </Button>
+              </form>
+            </Col>
+          </Row>
+        )}
+      </div>
     )
   }
 }

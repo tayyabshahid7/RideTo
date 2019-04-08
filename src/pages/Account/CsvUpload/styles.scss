@@ -1,7 +1,60 @@
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 23px;
+  margin-bottom: 0.25rem;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 70px;
+  border: 2px solid #e4e4e4;
+  padding: 25px;
+
+  @media (max-width: 768px) {
+    margin-top: 30px;
+    display: block;
+  }
+}
+
 .container {
   margin-top: 16px;
 }
 
 .csvUploadForm {
   max-width: 400px;
+}
+
+.csvUploadLabel {
+  margin-bottom: 0;
+
+  @media (min-width: 769px) {
+    margin-top: 31px;
+  }
+
+  span {
+    display: inline-block;
+    line-height: 44px;
+    text-align: center;
+    height: 44px;
+    min-width: 90px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: var(--primary-color);
+    border-radius: 3px;
+    border: 0;
+    cursor: pointer;
+
+    &:hover {
+      color: #ffffff;
+      background-color: #25ae92;
+      border-color: #23a489;
+    }
+  }
+
+  input {
+    display: none;
+  }
 }

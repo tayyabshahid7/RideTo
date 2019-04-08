@@ -1,8 +1,10 @@
 import React from 'react'
-import { Button, Row, Col, Form } from 'reactstrap'
+import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-import InputTextGroup2 from 'components/Forms/InputTextGroup2'
+// import InputTextGroup2 from 'components/Forms/InputTextGroup2'
+import { ConnectTextArea, Button } from 'components/ConnectForm'
 import Loading from 'components/Loading'
+import classnames from 'classnames'
 
 class WidgetSettingsForm extends React.Component {
   constructor(props) {
@@ -19,20 +21,49 @@ class WidgetSettingsForm extends React.Component {
     Object.assign(settings, this.props.settings ? this.props.settings : {})
 
     this.state = {
-      settings: settings
+      settings: settings,
+      introEditable: false,
+      requirementsEditable: false,
+      cancellationEditable: false,
+      termsEditable: false,
+      isChanged: false
     }
+
+    this.color = React.createRef()
+
+    this.handleCancel = this.handleCancel.bind(this)
+    this.handleColourChange = this.handleColourChange.bind(this)
   }
 
   handleChangeRawEvent(event) {
     const { name, value } = event.target
     const { settings } = this.state
-    this.setState({ settings: { ...settings, [name]: value } })
+    this.setState({ settings: { ...settings, [name]: value }, isChanged: true })
   }
 
   handleCancel(event) {
     event.preventDefault()
-    const { handleCancel } = this.props
-    handleCancel()
+    // const { handleCancel } = this.props
+    // handleCancel()
+    this.setState({
+      settings: this.props.settings,
+      isChanged: false
+    })
+  }
+
+  handleColourChange() {
+    const { value } = this.color.current
+    const { settings } = this.state
+
+    this.setState({
+      isChanged: true,
+      settings: {
+        ...settings,
+        widget_color: value,
+        button_color: value,
+        calendar_color: value
+      }
+    })
   }
 
   handleSave(event) {
@@ -45,9 +76,14 @@ class WidgetSettingsForm extends React.Component {
   render() {
     let { saving } = this.props
     const {
+      introEditable,
+      requirementsEditable,
+      cancellationEditable,
+      termsEditable,
+      isChanged
+    } = this.state
+    const {
       widget_color,
-      button_color,
-      calendar_color,
       intro,
       requirements,
       cancellation,
@@ -57,79 +93,168 @@ class WidgetSettingsForm extends React.Component {
       <div className={styles.container}>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
-            <InputTextGroup2
-              name="widget_color"
-              value={widget_color}
-              label="Widget color:"
-              className="form-group"
-              type="text"
-              onChange={this.handleChangeRawEvent.bind(this)}
-              required
-            />
-            <InputTextGroup2
-              name="button_color"
-              value={button_color}
-              label="Button color:"
-              className="form-group"
-              type="text"
-              onChange={this.handleChangeRawEvent.bind(this)}
-            />
-            <InputTextGroup2
-              name="calendar_color"
-              value={calendar_color}
-              label="Calendar color:"
-              className="form-group"
-              type="text"
-              onChange={this.handleChangeRawEvent.bind(this)}
-            />
-            <InputTextGroup2
-              name="intro"
-              value={intro}
-              label="Intro:"
-              type="textarea"
-              onChange={this.handleChangeRawEvent.bind(this)}
-            />
-            <Row>
-              <Col>
-                <InputTextGroup2
-                  name="requirements"
-                  value={requirements}
-                  label="Requirements:"
-                  type="textarea"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup2
-                  name="cancellation"
-                  value={cancellation}
-                  label="Cancellation:"
-                  type="textarea"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <InputTextGroup2
-                  name="terms"
-                  value={terms}
-                  label="Terms:"
-                  className="form-group"
-                  type="text"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col className="mt-3 text-right">
-                <Button type="submit" color="primary">
-                  Save
-                </Button>
-              </Col>
-            </Row>
+            <div className={styles.box}>
+              <div className={styles.leftCol}>
+                <h3 className={styles.title}>Widget brand colour</h3>
+                <p>
+                  Select a hex code which represents your brand, this will
+                  change the buttons and overall look and feel
+                </p>
+              </div>
+              <div className={styles.rightCol}>
+                <div className="text-right">
+                  <input
+                    onChange={this.handleColourChange}
+                    className={styles.color}
+                    type="color"
+                    ref={this.color}
+                    defaultValue={widget_color}
+                  />
+                </div>
+                <div className="mt-3 text-right">
+                  <Button disabled={!isChanged} type="submit" color="primary">
+                    Save
+                  </Button>
+                  <Button
+                    disabled={!isChanged}
+                    color="white"
+                    onClick={this.handleCancel}>
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            </div>
+            <div className={classnames(styles.box, styles.boxVertical)}>
+              <div>
+                <h3 className={styles.title}>Widget information</h3>
+                <p>
+                  Write the copy that you wish to display in the widget for
+                  customers
+                </p>
+              </div>
+              <Row>
+                <Col>
+                  <ConnectTextArea
+                    noBorder
+                    autoHeight
+                    name="intro"
+                    value={intro}
+                    label="Introduction"
+                    type="textarea"
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    disabled={!introEditable}
+                  />
+                </Col>
+                <Col xs="2">
+                  <div className={styles.editButton}>
+                    <Button
+                      color="link"
+                      onClick={() => {
+                        this.setState({
+                          introEditable: true
+                        })
+                      }}>
+                      Edit
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ConnectTextArea
+                    noBorder
+                    autoHeight
+                    name="requirements"
+                    value={requirements}
+                    label="Requirements"
+                    type="textarea"
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    disabled={!requirementsEditable}
+                  />
+                </Col>
+                <Col xs="2">
+                  <div className={styles.editButton}>
+                    <Button
+                      color="link"
+                      onClick={() => {
+                        this.setState({
+                          requirementsEditable: true
+                        })
+                      }}>
+                      Edit
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ConnectTextArea
+                    noBorder
+                    autoHeight
+                    name="cancellation"
+                    value={cancellation}
+                    label="Cancellation"
+                    type="textarea"
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    disabled={!cancellationEditable}
+                  />
+                </Col>
+                <Col xs="2">
+                  <div className={styles.editButton}>
+                    <Button
+                      color="link"
+                      onClick={() => {
+                        this.setState({
+                          cancellationEditable: true
+                        })
+                      }}>
+                      Edit
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ConnectTextArea
+                    noBorder
+                    autoHeight
+                    name="terms"
+                    value={terms}
+                    label="Terms of booking"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    disabled={!termsEditable}
+                  />
+                </Col>
+                <Col xs="2">
+                  <div className={styles.editButton}>
+                    <Button
+                      color="link"
+                      onClick={() => {
+                        this.setState({
+                          termsEditable: true
+                        })
+                      }}>
+                      Edit
+                    </Button>
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="mt-3 text-right">
+                  <Button disabled={!isChanged} type="submit" color="primary">
+                    Save
+                  </Button>
+                  <Button
+                    disabled={!isChanged}
+                    color="white"
+                    onClick={this.handleCancel}>
+                    Cancel
+                  </Button>
+                </Col>
+              </Row>
+            </div>
           </Form>
         </Loading>
       </div>
