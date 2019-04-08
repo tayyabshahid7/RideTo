@@ -27,8 +27,11 @@
 }
 
 .csvUploadLabel {
-  margin-top: 31px;
   margin-bottom: 0;
+
+  @media (min-width: 769px) {
+    margin-top: 31px;
+  }
 
   span {
     display: inline-block;

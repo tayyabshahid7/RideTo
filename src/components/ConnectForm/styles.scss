@@ -180,6 +180,13 @@ select {
   color: var(--primary-color);
   background-color: #fff;
   border-color: transparent;
+
+  &:hover,
+  &:focus {
+    color: var(--primary-color);
+    text-decoration: underline;
+    background-color: transparent;
+  }
 }
 
 .buttonSmall {
