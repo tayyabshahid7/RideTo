@@ -401,7 +401,7 @@ class BookingOptionsContainer extends React.Component {
         <BookingOption
           label="Location:"
           options={suppliers}
-          labelField="address_1"
+          labelField="town"
           selected={selectedSupplier.id}
           onChange={onChangeSupplier}
         />
