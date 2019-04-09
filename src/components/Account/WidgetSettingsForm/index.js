@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
 // import InputTextGroup2 from 'components/Forms/InputTextGroup2'
@@ -30,9 +30,14 @@ class WidgetSettingsForm extends React.Component {
     }
 
     this.color = React.createRef()
+    this.introEl = React.createRef()
+    this.requirementsEl = React.createRef()
+    this.cancellationEl = React.createRef()
+    this.termsEl = React.createRef()
 
     this.handleCancel = this.handleCancel.bind(this)
     this.handleColourChange = this.handleColourChange.bind(this)
+    this.handleEditClick = this.handleEditClick.bind(this)
   }
 
   handleChangeRawEvent(event) {
@@ -49,6 +54,7 @@ class WidgetSettingsForm extends React.Component {
       settings: this.props.settings,
       isChanged: false
     })
+    this.color.current.value = this.props.settings.widget_color
   }
 
   handleColourChange() {
@@ -66,11 +72,31 @@ class WidgetSettingsForm extends React.Component {
     })
   }
 
+  handleEditClick(el) {
+    this.setState(
+      {
+        [`${el}Editable`]: true
+      },
+      () => {
+        const {
+          current: {
+            el: { current }
+          }
+        } = this[`${el}El`]
+
+        current.focus()
+      }
+    )
+  }
+
   handleSave(event) {
     event.preventDefault()
     const { onSubmit } = this.props
     const { settings } = this.state
     onSubmit(settings)
+    this.setState({
+      isChanged: false
+    })
   }
 
   render() {
@@ -111,17 +137,25 @@ class WidgetSettingsForm extends React.Component {
                     defaultValue={widget_color}
                   />
                 </div>
-                <div className="mt-3 text-right">
-                  <Button disabled={!isChanged} type="submit" color="primary">
-                    Save
-                  </Button>
-                  <Button
-                    disabled={!isChanged}
-                    color="white"
-                    onClick={this.handleCancel}>
-                    Cancel
-                  </Button>
-                </div>
+                {isChanged && (
+                  <Fragment>
+                    {' '}
+                    <div className="mt-3 text-right">
+                      <Button
+                        disabled={!isChanged}
+                        type="submit"
+                        color="primary">
+                        Save
+                      </Button>
+                      <Button
+                        disabled={!isChanged}
+                        color="white"
+                        onClick={this.handleCancel}>
+                        Cancel
+                      </Button>
+                    </div>
+                  </Fragment>
+                )}
               </div>
             </div>
             <div className={classnames(styles.box, styles.boxVertical)}>
@@ -135,6 +169,7 @@ class WidgetSettingsForm extends React.Component {
               <Row>
                 <Col>
                   <ConnectTextArea
+                    ref={this.introEl}
                     noBorder
                     autoHeight
                     name="intro"
@@ -150,18 +185,22 @@ class WidgetSettingsForm extends React.Component {
                     <Button
                       color="link"
                       onClick={() => {
-                        this.setState({
-                          introEditable: true
-                        })
+                        this.handleEditClick('intro')
                       }}>
                       Edit
                     </Button>
+                    {introEditable && (
+                      <Button color="link" type="submit">
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>
               <Row>
                 <Col>
                   <ConnectTextArea
+                    ref={this.requirementsEl}
                     noBorder
                     autoHeight
                     name="requirements"
@@ -177,18 +216,22 @@ class WidgetSettingsForm extends React.Component {
                     <Button
                       color="link"
                       onClick={() => {
-                        this.setState({
-                          requirementsEditable: true
-                        })
+                        this.handleEditClick('requirements')
                       }}>
                       Edit
                     </Button>
+                    {requirementsEditable && (
+                      <Button color="link" type="submit">
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>
               <Row>
                 <Col>
                   <ConnectTextArea
+                    ref={this.cancellationEl}
                     noBorder
                     autoHeight
                     name="cancellation"
@@ -204,18 +247,22 @@ class WidgetSettingsForm extends React.Component {
                     <Button
                       color="link"
                       onClick={() => {
-                        this.setState({
-                          cancellationEditable: true
-                        })
+                        this.handleEditClick('cancellation')
                       }}>
                       Edit
                     </Button>
+                    {cancellationEditable && (
+                      <Button color="link" type="submit">
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>
               <Row>
                 <Col>
                   <ConnectTextArea
+                    ref={this.termsEl}
                     noBorder
                     autoHeight
                     name="terms"
@@ -232,12 +279,15 @@ class WidgetSettingsForm extends React.Component {
                     <Button
                       color="link"
                       onClick={() => {
-                        this.setState({
-                          termsEditable: true
-                        })
+                        this.handleEditClick('terms')
                       }}>
                       Edit
                     </Button>
+                    {termsEditable && (
+                      <Button color="link" type="submit">
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>

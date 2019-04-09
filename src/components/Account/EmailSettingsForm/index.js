@@ -138,6 +138,9 @@ class EmailSettingsForm extends React.Component {
     const { settings, value } = this.state
     settings.email_text = html.serialize(value)
     onSubmit(settings)
+    this.setState({
+      showModal: false
+    })
   }
 
   /**
@@ -177,7 +180,7 @@ class EmailSettingsForm extends React.Component {
 
     return (
       <Button
-        active={isActive}
+        active={isActive.toString()}
         onMouseDown={event => this.onClickMark(event, type)}>
         <i className={`fa fa-${icon}`} />
       </Button>
@@ -208,7 +211,7 @@ class EmailSettingsForm extends React.Component {
 
     return (
       <Button
-        active={isActive}
+        active={isActive.toString()}
         onMouseDown={event => this.onClickBlock(event, type)}>
         {showIcon ? <i className={`${icon}`} /> : icon}
       </Button>
@@ -376,19 +379,24 @@ class EmailSettingsForm extends React.Component {
                 }}
               />
               <Col sm="2">
-                <Button
-                  style={{ height: 'auto' }}
-                  color="link"
-                  onClick={() => {
-                    this.setState({ showModal: !this.state.showModal })
-                  }}>
-                  Edit
-                </Button>
+                <div className={styles.editButton}>
+                  <Button
+                    style={{ height: 'auto' }}
+                    color="link"
+                    onClick={() => {
+                      this.setState({ showModal: !this.state.showModal })
+                    }}>
+                    Edit
+                  </Button>
+                </div>
               </Col>
             </Row>
           </div>
         </div>
-        <Modal isOpen={this.state.showModal} className={styles.modalContent}>
+        <Modal
+          isOpen={this.state.showModal}
+          className={styles.modalContent}
+          fade={false}>
           <Loading loading={saving}>
             <ModalBody>
               <div className={styles.header}>CBT booking confirmation</div>

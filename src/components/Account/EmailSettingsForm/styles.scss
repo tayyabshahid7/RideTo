@@ -41,7 +41,7 @@
 
 .modalContent {
   @media (min-width: 576px) {
-    max-width: 748px !important;
+    max-width: 1024px !important;
   }
 }
 
@@ -72,5 +72,13 @@
     margin-left: 0 !important;
     border-radius: 0;
     background-color: #707070;
+  }
+}
+
+.editButton {
+  > button {
+    width: auto;
+    min-width: 0;
+    padding: 0;
   }
 }

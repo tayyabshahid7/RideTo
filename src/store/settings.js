@@ -72,6 +72,7 @@ export const updateWidgetSettings = data => async dispatch => {
   try {
     const settings = await saveWidgetSettings(data)
 
+    notificationActions.dispatchSuccess(dispatch, 'Settings saved')
     dispatch({
       type: UPDATE_WIDGET_SETTING[SUCCESS],
       data: {
@@ -79,6 +80,7 @@ export const updateWidgetSettings = data => async dispatch => {
       }
     })
   } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to save settings')
     dispatch({ type: UPDATE_WIDGET_SETTING[FAILURE], error })
   }
 }

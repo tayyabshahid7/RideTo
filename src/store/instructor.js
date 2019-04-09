@@ -113,7 +113,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         saving: false,
         instructors: [...state.instructors, action.data.instructor],
-        selectedInstructor: { ...action.data.instructor }
+        selectedInstructor: null
       }
     case SAVE[FAILURE]:
       return {
@@ -135,7 +135,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         saving: false,
         instructors: [...updatedInstructors, updatedInstructor],
-        selectedInstructor: { ...updatedInstructor }
+        selectedInstructor: null
       }
     case UPDATE[FAILURE]:
       return {
