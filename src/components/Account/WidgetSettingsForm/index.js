@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
 // import InputTextGroup2 from 'components/Forms/InputTextGroup2'
@@ -54,6 +54,7 @@ class WidgetSettingsForm extends React.Component {
       settings: this.props.settings,
       isChanged: false
     })
+    this.color.current.value = this.props.settings.widget_color
   }
 
   handleColourChange() {
@@ -93,6 +94,9 @@ class WidgetSettingsForm extends React.Component {
     const { onSubmit } = this.props
     const { settings } = this.state
     onSubmit(settings)
+    this.setState({
+      isChanged: false
+    })
   }
 
   render() {
@@ -133,17 +137,25 @@ class WidgetSettingsForm extends React.Component {
                     defaultValue={widget_color}
                   />
                 </div>
-                <div className="mt-3 text-right">
-                  <Button disabled={!isChanged} type="submit" color="primary">
-                    Save
-                  </Button>
-                  <Button
-                    disabled={!isChanged}
-                    color="white"
-                    onClick={this.handleCancel}>
-                    Cancel
-                  </Button>
-                </div>
+                {isChanged && (
+                  <Fragment>
+                    {' '}
+                    <div className="mt-3 text-right">
+                      <Button
+                        disabled={!isChanged}
+                        type="submit"
+                        color="primary">
+                        Save
+                      </Button>
+                      <Button
+                        disabled={!isChanged}
+                        color="white"
+                        onClick={this.handleCancel}>
+                        Cancel
+                      </Button>
+                    </div>
+                  </Fragment>
+                )}
               </div>
             </div>
             <div className={classnames(styles.box, styles.boxVertical)}>
