@@ -77,7 +77,6 @@ class Login extends Component {
         <div className={styles.info}>
           <ConnectLogoFull className={styles.logoFull} />
           <Info className={styles.laptop} />
-          <div className={styles.strap}>SPEND MORE TIME RIDING.</div>
         </div>
       </div>
     )
