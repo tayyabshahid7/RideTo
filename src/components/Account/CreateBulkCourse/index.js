@@ -449,7 +449,7 @@ class CreateBulkCourse extends React.Component {
             </Row>
             <Row>
               <Col className="mt-3 text-right">
-                <Button type="submit" color="primary" className="mr-2">
+                <Button type="submit" color="primary">
                   Save
                 </Button>
                 <Button

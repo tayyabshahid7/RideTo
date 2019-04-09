@@ -177,6 +177,11 @@ class WidgetSettingsForm extends React.Component {
                       }}>
                       Edit
                     </Button>
+                    {introEditable && (
+                      <Button color="link" type="submit">
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>
@@ -203,6 +208,11 @@ class WidgetSettingsForm extends React.Component {
                       }}>
                       Edit
                     </Button>
+                    {requirementsEditable && (
+                      <Button color="link" type="submit">
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>
@@ -229,6 +239,11 @@ class WidgetSettingsForm extends React.Component {
                       }}>
                       Edit
                     </Button>
+                    {cancellationEditable && (
+                      <Button color="link" type="submit">
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>
@@ -256,6 +271,11 @@ class WidgetSettingsForm extends React.Component {
                       }}>
                       Edit
                     </Button>
+                    {termsEditable && (
+                      <Button color="link" type="submit">
+                        Save
+                      </Button>
+                    )}
                   </div>
                 </Col>
               </Row>
