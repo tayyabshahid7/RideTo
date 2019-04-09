@@ -30,9 +30,14 @@ class WidgetSettingsForm extends React.Component {
     }
 
     this.color = React.createRef()
+    this.introEl = React.createRef()
+    this.requirementsEl = React.createRef()
+    this.cancellationEl = React.createRef()
+    this.termsEl = React.createRef()
 
     this.handleCancel = this.handleCancel.bind(this)
     this.handleColourChange = this.handleColourChange.bind(this)
+    this.handleEditClick = this.handleEditClick.bind(this)
   }
 
   handleChangeRawEvent(event) {
@@ -64,6 +69,23 @@ class WidgetSettingsForm extends React.Component {
         calendar_color: value
       }
     })
+  }
+
+  handleEditClick(el) {
+    this.setState(
+      {
+        [`${el}Editable`]: true
+      },
+      () => {
+        const {
+          current: {
+            el: { current }
+          }
+        } = this[`${el}El`]
+
+        current.focus()
+      }
+    )
   }
 
   handleSave(event) {
@@ -135,6 +157,7 @@ class WidgetSettingsForm extends React.Component {
               <Row>
                 <Col>
                   <ConnectTextArea
+                    ref={this.introEl}
                     noBorder
                     autoHeight
                     name="intro"
@@ -150,9 +173,7 @@ class WidgetSettingsForm extends React.Component {
                     <Button
                       color="link"
                       onClick={() => {
-                        this.setState({
-                          introEditable: true
-                        })
+                        this.handleEditClick('intro')
                       }}>
                       Edit
                     </Button>
@@ -162,6 +183,7 @@ class WidgetSettingsForm extends React.Component {
               <Row>
                 <Col>
                   <ConnectTextArea
+                    ref={this.requirementsEl}
                     noBorder
                     autoHeight
                     name="requirements"
@@ -177,9 +199,7 @@ class WidgetSettingsForm extends React.Component {
                     <Button
                       color="link"
                       onClick={() => {
-                        this.setState({
-                          requirementsEditable: true
-                        })
+                        this.handleEditClick('requirements')
                       }}>
                       Edit
                     </Button>
@@ -189,6 +209,7 @@ class WidgetSettingsForm extends React.Component {
               <Row>
                 <Col>
                   <ConnectTextArea
+                    ref={this.cancellationEl}
                     noBorder
                     autoHeight
                     name="cancellation"
@@ -204,9 +225,7 @@ class WidgetSettingsForm extends React.Component {
                     <Button
                       color="link"
                       onClick={() => {
-                        this.setState({
-                          cancellationEditable: true
-                        })
+                        this.handleEditClick('cancellation')
                       }}>
                       Edit
                     </Button>
@@ -216,6 +235,7 @@ class WidgetSettingsForm extends React.Component {
               <Row>
                 <Col>
                   <ConnectTextArea
+                    ref={this.termsEl}
                     noBorder
                     autoHeight
                     name="terms"
@@ -232,9 +252,7 @@ class WidgetSettingsForm extends React.Component {
                     <Button
                       color="link"
                       onClick={() => {
-                        this.setState({
-                          termsEditable: true
-                        })
+                        this.handleEditClick('terms')
                       }}>
                       Edit
                     </Button>
