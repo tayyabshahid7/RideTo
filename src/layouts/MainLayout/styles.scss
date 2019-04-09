@@ -1,8 +1,8 @@
 .container {
-  // height: 100vh;
   display: flex;
   flex-direction: column;
   padding-top: 56px;
+  min-height: 100vh;
 }
 
 .bgBlack {
@@ -12,7 +12,9 @@
 .bodyContainer {
   // width: 70%;
   // border-right: 1px solid;
+  position: relative;
   padding: 20px;
+  padding-bottom: 40px;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
