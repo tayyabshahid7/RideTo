@@ -72,6 +72,7 @@ const CustomerDetailsForm = ({
           trainingDate={trainingDate}
           id="user_birthdate"
           minYears={16}
+          maxYears={100}
           today={moment()}
           value={details.user_birthdate || ''}
           onChange={(id, value) => {
@@ -91,7 +92,7 @@ const CustomerDetailsForm = ({
         <input
           id="phone"
           type="text"
-          maxlength="15"
+          maxLength="15"
           value={details.phone || ''}
           onChange={event => handleChange(event, details, errors, onChange)}
         />

@@ -139,7 +139,13 @@ const CheckoutForm = ({
 
       {errors.paymentError && (
         <div className={styles.paymentError}>
-          <strong>{errors.paymentError}</strong>
+          {Object.entries(errors.paymentError).map(error => (
+            <div>
+              <strong>
+                {error[0]}: {error[1]}
+              </strong>
+            </div>
+          ))}
         </div>
       )}
 

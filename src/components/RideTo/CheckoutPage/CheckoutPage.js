@@ -291,6 +291,7 @@ class CheckoutPage extends Component {
     const { trainings } = this.props
     const { courseType } = this.props.checkoutData
     let minYears = 16
+    let maxYears = 100
     let trainingDate = moment(this.props.checkoutData.date, 'YYYY-MM-DD')
 
     if (courseType === 'FULL_LICENCE') {
@@ -301,8 +302,28 @@ class CheckoutPage extends Component {
     const date = moment(dateString, 'DD/MM/YYYY')
     const isComplete = dateString.slice(-1) !== '_'
 
-    if (isComplete && minYears && trainingDate) {
-      return trainingDate.diff(date, 'years') >= minYears
+    if (!isComplete || !date.isValid()) {
+      return false
+    }
+
+    if (isComplete && minYears && maxYears && trainingDate) {
+      // return (
+      //   trainingDate.diff(date, 'years') >= minYears &&
+      //   trainingDate.diff(date, 'years') < maxYears
+      // )
+      if (trainingDate.diff(date, 'years') < minYears) {
+        return {
+          error: true,
+          message:
+            'You must be at least 16 years old to do your training. (On the selected date of training)'
+        }
+      }
+      if (trainingDate.diff(date, 'years') >= maxYears) {
+        return {
+          error: true,
+          message: 'Please enter a valid date.'
+        }
+      }
     }
 
     return isComplete || date.isValid()
@@ -396,7 +417,9 @@ class CheckoutPage extends Component {
       hasError = true
     }
 
-    if (!this.isValidDate(details.user_birthdate)) {
+    const validatedDate = this.isValidDate(details.user_birthdate)
+
+    if (!validatedDate) {
       errors['user_birthdate'] =
         'You must be at least 16 years old to do your training. (On the selected date of training)'
       if (courseType === 'FULL_LICENCE') {
@@ -404,6 +427,12 @@ class CheckoutPage extends Component {
           trainings[0].full_licence_type
         )} years old to do your training. (On the selected date of training)`
       }
+      if (!errors.divId) errors.divId = this.getErrorDivId('user_birthdate')
+      hasError = true
+    }
+
+    if (validatedDate.error) {
+      errors['user_birthdate'] = validatedDate.message
       if (!errors.divId) errors.divId = this.getErrorDivId('user_birthdate')
       hasError = true
     }

@@ -148,6 +148,10 @@ class PaymentContainer extends React.Component {
       return false
     }
 
+    if (this.state.errors.user_birthdate) {
+      return false
+    }
+
     return true
   }
 
