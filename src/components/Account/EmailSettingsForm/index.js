@@ -399,9 +399,11 @@ class EmailSettingsForm extends React.Component {
           fade={false}>
           <Loading loading={saving}>
             <ModalBody>
-              <div className={styles.header}>CBT booking confirmation</div>
+              <div className={styles.header}>
+                Booking confirmation email template
+              </div>
               <Row>
-                <Col sm="5">
+                <Col sm="3">
                   <div className={styles.helpText}>
                     <p>
                       Use the place holders to merge a customers booking
@@ -425,7 +427,7 @@ class EmailSettingsForm extends React.Component {
                     </ul>
                   </div>
                 </Col>
-                <Col sm="7">
+                <Col sm="9">
                   <div className={styles.buttons}>
                     {this.renderMarkButton('bold', 'bold')}
                     {this.renderMarkButton('italic', 'italic')}

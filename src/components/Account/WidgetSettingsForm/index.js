@@ -38,6 +38,7 @@ class WidgetSettingsForm extends React.Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleColourChange = this.handleColourChange.bind(this)
     this.handleEditClick = this.handleEditClick.bind(this)
+    this.handleSaveClick = this.handleSaveClick.bind(this)
   }
 
   handleChangeRawEvent(event) {
@@ -52,6 +53,10 @@ class WidgetSettingsForm extends React.Component {
     // handleCancel()
     this.setState({
       settings: this.props.settings,
+      introEditable: false,
+      requirementsEditable: false,
+      cancellationEditable: false,
+      termsEditable: false,
       isChanged: false
     })
     this.color.current.value = this.props.settings.widget_color
@@ -95,6 +100,20 @@ class WidgetSettingsForm extends React.Component {
     const { settings } = this.state
     onSubmit(settings)
     this.setState({
+      isChanged: false,
+      introEditable: false,
+      requirementsEditable: false,
+      cancellationEditable: false,
+      termsEditable: false
+    })
+  }
+
+  handleSaveClick(el) {
+    const { onSubmit } = this.props
+    const { settings } = this.state
+    onSubmit(settings)
+    this.setState({
+      [`${el}Editable`]: false,
       isChanged: false
     })
   }
@@ -139,7 +158,6 @@ class WidgetSettingsForm extends React.Component {
                 </div>
                 {isChanged && (
                   <Fragment>
-                    {' '}
                     <div className="mt-3 text-right">
                       <Button
                         disabled={!isChanged}
@@ -190,7 +208,11 @@ class WidgetSettingsForm extends React.Component {
                       Edit
                     </Button>
                     {introEditable && (
-                      <Button color="link" type="submit">
+                      <Button
+                        color="link"
+                        onClick={() => {
+                          this.handleSaveClick('intro')
+                        }}>
                         Save
                       </Button>
                     )}
@@ -221,7 +243,11 @@ class WidgetSettingsForm extends React.Component {
                       Edit
                     </Button>
                     {requirementsEditable && (
-                      <Button color="link" type="submit">
+                      <Button
+                        color="link"
+                        onClick={() => {
+                          this.handleSaveClick('requirements')
+                        }}>
                         Save
                       </Button>
                     )}
@@ -252,7 +278,11 @@ class WidgetSettingsForm extends React.Component {
                       Edit
                     </Button>
                     {cancellationEditable && (
-                      <Button color="link" type="submit">
+                      <Button
+                        color="link"
+                        onClick={() => {
+                          this.handleSaveClick('cancellation')
+                        }}>
                         Save
                       </Button>
                     )}
@@ -284,7 +314,11 @@ class WidgetSettingsForm extends React.Component {
                       Edit
                     </Button>
                     {termsEditable && (
-                      <Button color="link" type="submit">
+                      <Button
+                        color="link"
+                        onClick={() => {
+                          this.handleSaveClick('terms')
+                        }}>
                         Save
                       </Button>
                     )}
