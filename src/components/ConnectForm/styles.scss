@@ -112,6 +112,22 @@ select {
   min-height: 65px;
 }
 
+.textareaAutoHeight {
+  overflow: hidden;
+  min-height: 0;
+  resize: none;
+}
+
+.textareaNoBorder {
+  border: 0;
+  color: #707070;
+
+  &:disabled {
+    background-color: #fff;
+    cursor: text;
+  }
+}
+
 .button {
   height: 44px;
   min-width: 90px;
@@ -162,8 +178,15 @@ select {
 
 .buttonLink {
   color: var(--primary-color);
-  background-color: #fff;
+  background-color: transparent;
   border-color: transparent;
+
+  &:hover,
+  &:focus {
+    color: var(--primary-color);
+    text-decoration: underline;
+    background-color: transparent;
+  }
 }
 
 .buttonSmall {

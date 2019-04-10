@@ -1,3 +1,41 @@
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 23px;
+  margin-bottom: 0.25rem;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 70px;
+  border: 2px solid #e4e4e4;
+  padding: 25px;
+
+  @media (max-width: 768px) {
+    margin-top: 30px;
+    display: block;
+  }
+}
+
+.boxVertical {
+  flex-direction: column;
+}
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    display: block;
+  }
+}
+
+.leftCol {
+  flex-grow: 1;
+  max-width: 361px;
+}
+
 .container {
   margin-top: 16px;
 }

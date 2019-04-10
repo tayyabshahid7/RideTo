@@ -1,6 +1,6 @@
-import React from 'react'
-import { Row, Col, Button } from 'reactstrap'
-import InputTextGroup from 'components/Forms/InputTextGroup'
+import React, { Fragment } from 'react'
+import { ConnectInput, Button } from 'components/ConnectForm'
+import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
 
@@ -65,76 +65,91 @@ class Instructors extends React.Component {
     const { saving, instructors } = this.props
     const { addNew, selectedInstructor } = this.state
     return (
-      <Row className={styles.container}>
-        <Col sm="6">
-          <div className={styles.header}>
+      <Fragment>
+        <Fragment>
+          <div className={styles.box}>
             <div>
-              <h3>Instructors</h3>
-              <p>Add and edit instructors.</p>
+              <h3 className={styles.title}>Add an instructor</h3>
+              <p>Add a new instructor to assign to courses</p>
             </div>
-            <Button color="primary" onClick={this.handleAddNew}>
-              Add New
-            </Button>
+            <div className={styles.buttons}>
+              <Button color="primary" onClick={this.handleAddNew}>
+                Add New
+              </Button>
+            </div>
           </div>
-          <ul className={styles.list}>
-            {instructors.map((instructor, key) => {
-              return (
-                <li
-                  key={key}
-                  className={classnames(
-                    instructor === selectedInstructor && styles.selected
-                  )}>
-                  <span className={styles.fullName}>
-                    {instructor.first_name} {instructor.last_name}
-                  </span>
-                  <Button
-                    color="link"
-                    onClick={() => this.handleEdit(instructor)}>
-                    Edit
-                  </Button>
-                  <Button
-                    color="link"
-                    onClick={() => this.handleDelete(instructor)}>
-                    Delete
-                  </Button>
-                </li>
-              )
-            })}
-          </ul>
-        </Col>
+          <div className={classnames(styles.box, styles.header)}>
+            <div className={styles.headerText}>
+              <h3 className={styles.title}>Current instructors</h3>
+              <p>Edit the details of exisiting instructors</p>
+            </div>
+            <ul className={styles.list}>
+              {instructors.map((instructor, key) => {
+                return (
+                  <li
+                    key={key}
+                    className={classnames(
+                      instructor === selectedInstructor && styles.selected
+                    )}>
+                    <span className={styles.fullName}>
+                      {instructor.first_name} {instructor.last_name}
+                    </span>
+                    <Button
+                      color="link"
+                      onClick={() => this.handleEdit(instructor)}>
+                      Edit
+                    </Button>
+                    <Button
+                      color="link"
+                      onClick={() => this.handleDelete(instructor)}>
+                      Delete
+                    </Button>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </Fragment>
+
         {selectedInstructor && (
-          <Col sm="6" className={styles.editInstructor}>
-            <h3>{addNew ? 'Add' : 'Edit'} Instructor Details</h3>
-            <form onSubmit={this.handleSave} className={styles.editForm}>
-              <InputTextGroup
-                name="first_name"
-                value={selectedInstructor.first_name}
-                label="First Name"
-                className="form-group"
-                onChange={this.handleChange}
-                required
-              />
-              <InputTextGroup
-                name="last_name"
-                value={selectedInstructor.last_name}
-                label="Last Name"
-                className="form-group"
-                onChange={this.handleChange}
-                required
-              />
-              <Button color="primary" type="submit" disabled={saving}>
-                {addNew ? 'Add' : 'Save'}
-              </Button>
-              <Button
-                color="link"
-                type="button"
-                onClick={() => this.setState({ selectedInstructor: null })}>
-                Cancel
-              </Button>
-            </form>
-          </Col>
+          <Modal isOpen={true}>
+            <ModalHeader>
+              <h3 className={styles.title}>
+                {addNew ? 'Add' : 'Edit'} Instructor Details
+              </h3>
+            </ModalHeader>
+            <ModalBody>
+              <form onSubmit={this.handleSave} className={styles.editForm}>
+                <ConnectInput
+                  name="first_name"
+                  value={selectedInstructor.first_name}
+                  label="First Name"
+                  className="form-group"
+                  onChange={this.handleChange}
+                  required
+                />
+                <ConnectInput
+                  name="last_name"
+                  value={selectedInstructor.last_name}
+                  label="Last Name"
+                  className="form-group"
+                  onChange={this.handleChange}
+                  required
+                />
+                <Button color="primary" type="submit" disabled={saving}>
+                  {addNew ? 'Add' : 'Save'}
+                </Button>
+                <Button
+                  color="link"
+                  type="button"
+                  onClick={() => this.setState({ selectedInstructor: null })}>
+                  Cancel
+                </Button>
+              </form>
+            </ModalBody>
+          </Modal>
         )}
-      </Row>
+      </Fragment>
     )
   }
 }

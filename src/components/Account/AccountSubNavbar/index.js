@@ -6,7 +6,7 @@ import styles from './styles.scss'
 let AccountSubNavbar = ({ history }) => {
   return (
     <div className={styles.container}>
-      <ul className={classnames('navbar-nav mr-auto', styles.linkContainer)}>
+      <ul className={classnames('navbar-nav', styles.linkContainer)}>
         <li className="nav-item">
           <NavLink
             className={styles.navLink}
@@ -54,6 +54,14 @@ let AccountSubNavbar = ({ history }) => {
             activeClassName={styles.activeNavLink}
             to="/account/instructors">
             Instructors
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink
+            className={styles.navLink}
+            activeClassName={styles.activeNavLink}
+            to="/account/bikes">
+            Bikes
           </NavLink>
         </li>
       </ul>

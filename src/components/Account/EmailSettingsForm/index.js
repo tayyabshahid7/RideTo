@@ -1,11 +1,13 @@
-import React from 'react'
-import { Button, Row, Col } from 'reactstrap'
+import React, { Fragment } from 'react'
+import { Row, Col, Modal, ModalBody } from 'reactstrap'
+import { Button } from 'components/ConnectForm'
 import styles from './styles.scss'
 // import InputTextGroup2 from 'components/Forms/InputTextGroup2'
 import Loading from 'components/Loading'
 import { Editor } from 'slate-react'
 import { isKeyHotkey } from 'is-hotkey'
 import Html from 'slate-html-serializer'
+import classnames from 'classnames'
 
 const DEFAULT_NODE = 'paragraph'
 
@@ -104,7 +106,8 @@ class EmailSettingsForm extends React.Component {
     super(props)
     this.state = {
       settings: this.props.settings ? this.props.settings : {},
-      value: html.deserialize(this.props.settings.email_text || '<p></p>')
+      value: html.deserialize(this.props.settings.email_text || '<p></p>'),
+      showModal: false
     }
 
     this.handleSave = this.handleSave.bind(this)
@@ -135,6 +138,9 @@ class EmailSettingsForm extends React.Component {
     const { settings, value } = this.state
     settings.email_text = html.serialize(value)
     onSubmit(settings)
+    this.setState({
+      showModal: false
+    })
   }
 
   /**
@@ -174,7 +180,7 @@ class EmailSettingsForm extends React.Component {
 
     return (
       <Button
-        active={isActive}
+        active={isActive.toString()}
         onMouseDown={event => this.onClickMark(event, type)}>
         <i className={`fa fa-${icon}`} />
       </Button>
@@ -205,7 +211,7 @@ class EmailSettingsForm extends React.Component {
 
     return (
       <Button
-        active={isActive}
+        active={isActive.toString()}
         onMouseDown={event => this.onClickBlock(event, type)}>
         {showIcon ? <i className={`${icon}`} /> : icon}
       </Button>
@@ -357,86 +363,118 @@ class EmailSettingsForm extends React.Component {
   render() {
     let { saving } = this.props
     return (
-      <div className={styles.container}>
-        <Loading loading={saving}>
-          <div className={styles.helpText}>
-            <p>
-              These are the place holders available that will translate directly
-              for any details that you need to add to the confirmation emails
-            </p>
-            <p>
-              Notice that they have to match the examples exactly, otherwise the
-              email's text will be inconsistent
-            </p>
-            <ul>
-              <li>
-                <b>[[rider_name]]</b> - The rider's first name
-              </li>
-              <li>
-                <b>[[selected_training]]</b> - The selected training (CBT
-                Training, Renewal, etc)
-              </li>
-              <li>
-                <b>[[training_details]]</b> - Details about the training booked
-                Example: <i>CBT Training - Tue Mar 5 2019 - 09:00 AM</i>
-              </li>
-              <li>
-                <b>[[location]]</b> - The location of the training
-              </li>
-              <li>
-                <b>[[bike_hire]]</b> - Type of bike selected for course
-                (Automatic, Manual, Own Bike)
-              </li>
-              <li>
-                <b>[[school_name]]</b> - Your training school name
-              </li>
-              <li>
-                <b>[[school_phone]]</b> - Your phone number for customer contact
-              </li>
-              <li>
-                <b>[[price_paid]]</b> - The price paid for the training. (Note:
-                this will not be shown if the booking was manually added)
-              </li>
-              <li>
-                <b>[[logo]]</b> - Your logo image. (Limited to a height of
-                100px)
-              </li>
-            </ul>
-          </div>
-          <Row>
-            <Col className="mt-3 text-right">
-              <Button type="submit" color="primary" onClick={this.handleSave}>
-                Save
-              </Button>
-            </Col>
-          </Row>
-          <Col>
-            {this.renderMarkButton('bold', 'bold')}
-            {this.renderMarkButton('italic', 'italic')}
-            {this.renderMarkButton('underline', 'underline')}
-            {this.renderBlockButton('heading-one', 'H1', false)}
-            {this.renderBlockButton('heading-two', 'H2', false)}
-          </Col>
-          <Row />
-          <Row>
-            <Col className={styles.textArea}>
-              <Editor
-                spellCheck
-                autoFocus
-                placeholder="Enter some rich text..."
-                ref={editor => {
-                  this.editor = editor
+      <Fragment>
+        <div className={classnames(styles.box, styles.boxVertical)}>
+          <h3 className={styles.title}>Email templates</h3>
+          <p>
+            Write the copy that you wish to display in your email communication
+            to customers
+          </p>
+          <div>
+            <h4 className={styles.titleSmall}>CBT booking confirmation</h4>
+            <Row>
+              <Col
+                dangerouslySetInnerHTML={{
+                  __html: this.props.settings.email_text
                 }}
-                value={this.state.value}
-                onChange={this.handleChangeText}
-                onKeyDown={this.onKeyDown}
-                renderNode={this.renderNode}
-                renderMark={this.renderMark}
               />
-            </Col>
-          </Row>
-        </Loading>
-      </div>
+              <Col sm="2">
+                <div className={styles.editButton}>
+                  <Button
+                    style={{ height: 'auto' }}
+                    color="link"
+                    onClick={() => {
+                      this.setState({ showModal: !this.state.showModal })
+                    }}>
+                    Edit
+                  </Button>
+                </div>
+              </Col>
+            </Row>
+          </div>
+        </div>
+        <Modal
+          isOpen={this.state.showModal}
+          className={styles.modalContent}
+          fade={false}>
+          <Loading loading={saving}>
+            <ModalBody>
+              <div className={styles.header}>
+                Booking confirmation email template
+              </div>
+              <Row>
+                <Col sm="3">
+                  <div className={styles.helpText}>
+                    <p>
+                      Use the place holders to merge a customers booking
+                      information directly in the email
+                    </p>
+                    <p>
+                      Place holders must match the examples exactly, including
+                      [[ ]]
+                    </p>
+                    <h4 className={styles.smallTitle}>Merge place holders</h4>
+                    <ul className={styles.list}>
+                      <li>[[rider_name]]</li>
+                      <li>[[selected_training]]</li>
+                      <li>[[training_details]]</li>
+                      <li>[[location]]</li>
+                      <li>[[bike_hire]]</li>
+                      <li>[[school_name]]</li>
+                      <li>[[school_phone]]</li>
+                      <li>[[price_paid]]</li>
+                      <li>[[logo]]</li>
+                    </ul>
+                  </div>
+                </Col>
+                <Col sm="9">
+                  <div className={styles.buttons}>
+                    {this.renderMarkButton('bold', 'bold')}
+                    {this.renderMarkButton('italic', 'italic')}
+                    {this.renderMarkButton('underline', 'underline')}
+                    {this.renderBlockButton('heading-one', 'H1', false)}
+                    {this.renderBlockButton('heading-two', 'H2', false)}
+                  </div>
+                  <div className={styles.textArea}>
+                    <Editor
+                      spellCheck
+                      autoFocus
+                      placeholder="Enter some rich text..."
+                      ref={editor => {
+                        this.editor = editor
+                      }}
+                      value={this.state.value}
+                      onChange={this.handleChangeText}
+                      onKeyDown={this.onKeyDown}
+                      renderNode={this.renderNode}
+                      renderMark={this.renderMark}
+                    />
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="mt-5 text-right">
+                  <Button
+                    type="submit"
+                    color="primary"
+                    onClick={this.handleSave}>
+                    Save
+                  </Button>
+                  <Button
+                    color="white"
+                    onClick={() => {
+                      this.setState({
+                        showModal: false
+                      })
+                    }}>
+                    Cancel
+                  </Button>
+                </Col>
+              </Row>
+            </ModalBody>
+          </Loading>
+        </Modal>
+      </Fragment>
     )
   }
 }

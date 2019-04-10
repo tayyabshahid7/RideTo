@@ -227,11 +227,7 @@ class EditOrderForm extends React.Component {
                 </Button>
               </div>
               <div>
-                <Button
-                  type="submit"
-                  color="primary"
-                  className="mr-2"
-                  disabled={!isChanged}>
+                <Button type="submit" color="primary" disabled={!isChanged}>
                   Save
                 </Button>
                 <Button color="white" onClick={onCancel}>

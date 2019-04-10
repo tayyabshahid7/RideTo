@@ -409,7 +409,6 @@ class AddOrderItem extends React.Component {
                     disabled={!userDetailsValid}
                     type="button"
                     color="primary"
-                    className="mr-2"
                     onClick={this.handleShowPaymentClick}>
                     Payment
                   </Button>
@@ -417,7 +416,6 @@ class AddOrderItem extends React.Component {
                 <Button
                   type="submit"
                   color="primary"
-                  className="mr-2"
                   disabled={
                     showPayment &&
                     (!cardName ||
