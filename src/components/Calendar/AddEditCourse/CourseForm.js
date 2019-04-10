@@ -611,11 +611,7 @@ class CourseForm extends React.Component {
               />
               {isEditable && (
                 <div className={styles.actions}>
-                  <Button
-                    type="submit"
-                    color="primary"
-                    className="mr-2"
-                    disabled={!edited}>
+                  <Button type="submit" color="primary" disabled={!edited}>
                     Save
                   </Button>
                   <Button color="white" onClick={this.handleToggleEdit}>
