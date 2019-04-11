@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import styles from './styles.scss'
 import { getDasBikeTypes } from 'services/course'
-import { getPackageStartDate } from 'common/info'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
-import FullLicenceDatePicker from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicenceDatePicker'
 import classnames from 'classnames'
+
+const HOURLY_RATE = 2800 // TODO SORT THIS OUT
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -41,10 +41,9 @@ class CourseAvailabilityComponentFullLicence extends Component {
       selectedLicenceType,
       selectedPackageDays,
       onSelectPackage,
-      onSelectPackageDate,
-      selectedPackageDates,
       isWidget,
-      phoneNumber = '02036039652.'
+      phoneNumber = '02036039652.',
+      selectedPackageHours
     } = this.props
     const {
       loading,
@@ -95,40 +94,15 @@ class CourseAvailabilityComponentFullLicence extends Component {
             licences={bike_hire === 'manual' ? manualLicences : autoLicences}
           />
           <PackagePicker
+            pricePerHour={course.pricePerHour || HOURLY_RATE}
             schoolId={course.id}
             isWidget={isWidget}
             bike_hire={bike_hire}
             selectedLicenceType={selectedLicenceType}
             selectedPackageDays={selectedPackageDays}
+            selectedPackageHours={selectedPackageHours}
             onSelectPackage={onSelectPackage}
           />
-          {selectedPackageDates.map((date, index) => {
-            const start_date = getPackageStartDate(
-              date,
-              index,
-              selectedPackageDates
-            )
-
-            return (
-              <FullLicenceDatePicker
-                isWidget={isWidget}
-                schoolId={course.id}
-                licence={selectedLicenceType}
-                bike_hire={bike_hire}
-                type={date.type}
-                key={index}
-                date={date}
-                index={index}
-                showCalendar={
-                  selectedPackageDates.findIndex(date => date.date === '') ===
-                  index
-                }
-                selectedPackageDates={selectedPackageDates}
-                onSelectPackageDate={onSelectPackageDate}
-                start_date={start_date}
-              />
-            )
-          })}
         </Fragment>
       </div>
     )
