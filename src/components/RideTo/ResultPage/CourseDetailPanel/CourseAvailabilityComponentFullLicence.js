@@ -44,7 +44,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       onSelectPackage,
       isWidget,
       selectedPackageHours,
-      showDayOfWeekPicker
+      showDayOfWeekPicker,
+      timeDayChange
     } = this.props
     const {
       loading,
@@ -106,7 +107,18 @@ class CourseAvailabilityComponentFullLicence extends Component {
             </Fragment>
           </Fragment>
         ) : (
-          <DayOfWeekPicker />
+          <Fragment>
+            <div className={styles.subtitle1}>Your Availability</div>
+            <p
+              className={classnames(
+                styles.dasInfo,
+                isWidget && styles.dasInfoWidget
+              )}>
+              Select the times which you can train on, the more flexible, the
+              sooner you can train
+            </p>
+            <DayOfWeekPicker timeDayChange={timeDayChange} />
+          </Fragment>
         )}
       </div>
     )

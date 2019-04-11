@@ -253,6 +253,10 @@
   line-height: 1.4;
 }
 
+.dasInfoCenter {
+  text-align: center;
+}
+
 select.packageSelect {
   padding: 14px 16px;
   margin-top: 16px;
@@ -410,4 +414,48 @@ select.widgetSelect {
 .packageButtonActive {
   background-color: #000;
   color: #fff;
+}
+
+.dayWeekTable {
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
+
+  th,
+  td {
+    padding: 10px 5px;
+    width: auto;
+
+    input[type='checkbox'] {
+      vertical-align: middle;
+      appearance: none;
+      border: 1px solid lightgrey;
+      background-color: white;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+
+      &:checked {
+        box-shadow: inset 0 0 0 3px #fff;
+        background-color: var(--primary-color);
+      }
+    }
+  }
+
+  td {
+    background-color: #f7f7fa;
+    border-top: 1px solid #fff;
+  }
+
+  td:not(:first-child) {
+    text-align: center;
+  }
+
+  th,
+  td {
+    &:first-child {
+      width: 85px;
+      padding: 10px;
+    }
+  }
 }

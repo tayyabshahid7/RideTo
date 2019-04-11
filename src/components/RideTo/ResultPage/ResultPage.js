@@ -43,7 +43,8 @@ class ResultPage extends Component {
       selectedLicenceType: null,
       courseTypesOptions: [],
       selectedPackageHours: null,
-      showDayOfWeekPicker: false
+      showDayOfWeekPicker: false,
+      selectedTimeDays: []
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -54,6 +55,7 @@ class ResultPage extends Component {
     this.handlePriceClick = this.handlePriceClick.bind(this)
     this.handleReviewClick = this.handleReviewClick.bind(this)
     this.handleMobileDateClick = this.handleMobileDateClick.bind(this)
+    this.timeDayChange = this.timeDayChange.bind(this)
 
     window.sessionStorage.removeItem('trainings')
   }
@@ -149,6 +151,23 @@ class ResultPage extends Component {
 
   onUpdate(data) {
     this.setState({ ...data })
+  }
+
+  timeDayChange({ time, day, status }) {
+    const { selectedTimeDays } = this.state
+    const dayTime = `${day}_${time}`
+
+    if (status) {
+      this.setState({
+        selectedTimeDays: [...selectedTimeDays, dayTime]
+      })
+    } else {
+      this.setState({
+        selectedTimeDays: selectedTimeDays.filter(
+          timeDay => timeDay !== dayTime
+        )
+      })
+    }
   }
 
   getStartTime(course, selectedDate) {
@@ -633,6 +652,7 @@ class ResultPage extends Component {
               selectedLicenceType={selectedLicenceType}
               selectedPackageHours={selectedPackageHours}
               showDayOfWeekPicker={showDayOfWeekPicker}
+              timeDayChange={this.timeDayChange}
             />
           )}
         </SidePanel>

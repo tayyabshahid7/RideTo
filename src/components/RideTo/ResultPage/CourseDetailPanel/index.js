@@ -36,7 +36,8 @@ class CourseDetailPanel extends React.Component {
       selectedLicenceType,
       selectedPackageHours,
       onSelectPackage,
-      showDayOfWeekPicker
+      showDayOfWeekPicker,
+      timeDayChange
     } = this.props
 
     return (
@@ -91,6 +92,7 @@ class CourseDetailPanel extends React.Component {
             selectedLicenceType={selectedLicenceType}
             selectedPackageHours={selectedPackageHours}
             showDayOfWeekPicker={showDayOfWeekPicker}
+            timeDayChange={timeDayChange}
           />
         )}
       </div>
