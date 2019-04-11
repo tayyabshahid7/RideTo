@@ -4,6 +4,7 @@ import { getDasBikeTypes } from 'services/course'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
+import DayOfWeekPicker from 'components/RideTo/ResultPage/CourseDetailPanel/DayOfWeekPicker'
 import classnames from 'classnames'
 
 const HOURLY_RATE = 2800 // TODO SORT THIS OUT
@@ -42,8 +43,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       selectedPackageDays,
       onSelectPackage,
       isWidget,
-      phoneNumber = '02036039652.',
-      selectedPackageHours
+      selectedPackageHours,
+      showDayOfWeekPicker
     } = this.props
     const {
       loading,
@@ -59,51 +60,54 @@ class CourseAvailabilityComponentFullLicence extends Component {
           styles.fullLicenceAvailability,
           !isWidget ? styles.content : styles.widget
         )}>
-        {!isWidget && (
-          <div className={styles.subtitle1}>Full Licence (A1/A2 DAS)</div>
+        {!showDayOfWeekPicker ? (
+          <Fragment>
+            {!isWidget && (
+              <div className={styles.subtitle1}>Select a package</div>
+            )}
+            <p
+              className={classnames(
+                styles.dasInfo,
+                isWidget && styles.dasInfoWidget
+              )}>
+              Select the right package for your riding ambitions. The instructor
+              will be in touch within 24 hours to book your training and test
+              dates which work for you.
+            </p>
+            <BikePicker
+              isWidget={isWidget}
+              isFullLicence
+              bike_hire={bike_hire}
+              onUpdate={onUpdate}
+              course={course}
+              has_auto_bikes={hasAutoBikes}
+              has_manual_bikes={hasManualBikes}
+              loading={loading}
+            />
+            <Fragment>
+              <LicencePicker
+                isWidget={isWidget}
+                selectedLicenceType={selectedLicenceType}
+                onUpdate={onUpdate}
+                licences={
+                  bike_hire === 'manual' ? manualLicences : autoLicences
+                }
+              />
+              <PackagePicker
+                pricePerHour={course.pricePerHour || HOURLY_RATE}
+                schoolId={course.id}
+                isWidget={isWidget}
+                bike_hire={bike_hire}
+                selectedLicenceType={selectedLicenceType}
+                selectedPackageDays={selectedPackageDays}
+                selectedPackageHours={selectedPackageHours}
+                onSelectPackage={onSelectPackage}
+              />
+            </Fragment>
+          </Fragment>
+        ) : (
+          <DayOfWeekPicker />
         )}
-        <p
-          className={classnames(
-            styles.dasInfo,
-            isWidget && styles.dasInfoWidget
-          )}>
-          Full motorcycle licence training is for anyone looking to progress
-          from a CBT, to remove L plates, carry passengers and ride on
-          motorways. Your age will determine what licence you can go for. Prices
-          include everything you need, including test fees, bike hire and fuel.
-          If you are unsure how many days training you need, call us on{' '}
-          {phoneNumber}
-        </p>
-
-        <BikePicker
-          isWidget={isWidget}
-          isFullLicence
-          bike_hire={bike_hire}
-          onUpdate={onUpdate}
-          course={course}
-          has_auto_bikes={hasAutoBikes}
-          has_manual_bikes={hasManualBikes}
-          loading={loading}
-        />
-
-        <Fragment>
-          <LicencePicker
-            isWidget={isWidget}
-            selectedLicenceType={selectedLicenceType}
-            onUpdate={onUpdate}
-            licences={bike_hire === 'manual' ? manualLicences : autoLicences}
-          />
-          <PackagePicker
-            pricePerHour={course.pricePerHour || HOURLY_RATE}
-            schoolId={course.id}
-            isWidget={isWidget}
-            bike_hire={bike_hire}
-            selectedLicenceType={selectedLicenceType}
-            selectedPackageDays={selectedPackageDays}
-            selectedPackageHours={selectedPackageHours}
-            onSelectPackage={onSelectPackage}
-          />
-        </Fragment>
       </div>
     )
   }

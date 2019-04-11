@@ -6,7 +6,7 @@ function LicencePicker({ selectedLicenceType, onUpdate, licences, isWidget }) {
   return (
     <div className={styles.licenceWrapper}>
       <label id="choose-licence" className={styles.subtitle1}>
-        Licence Type
+        Licence
       </label>
       <div>
         {licences.includes('a1') && (

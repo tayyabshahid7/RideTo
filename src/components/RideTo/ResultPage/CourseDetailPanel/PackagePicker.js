@@ -1,29 +1,11 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
-import { fetchDasPackagePrice } from 'services/course'
 
 class PackagePicker extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      prices: null
-    }
     this.handleChange = this.handleChange.bind(this)
-  }
-
-  async loadPrices() {
-    const { schoolId } = this.props
-
-    const prices = await fetchDasPackagePrice(schoolId)
-
-    this.setState({
-      prices
-    })
-  }
-
-  componentDidMount() {
-    this.loadPrices()
   }
 
   handleChange(event) {

@@ -41,10 +41,9 @@ class ResultPage extends Component {
       instantDate: null,
       bike_hire: null,
       selectedLicenceType: null,
-      // selectedPackageDays: '',
-      // selectedPackageDates: [],
       courseTypesOptions: [],
-      selectedPackageHours: null
+      selectedPackageHours: null,
+      showDayOfWeekPicker: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -268,7 +267,8 @@ class ResultPage extends Component {
     instantDate,
     instantCourse,
     bike_hire,
-    ifullLicence
+    isFullLicence,
+    showDayOfWeekPicker
   ) {
     return (
       <RideToButton
@@ -276,7 +276,7 @@ class ResultPage extends Component {
           styles.action,
           bookNowDisabled &&
             this.state.activeTab === 3 &&
-            ifullLicence &&
+            isFullLicence &&
             styles.bookNowDisabled,
           this.state.activeTab === 3 && styles.actionStatic
         )}
@@ -284,6 +284,10 @@ class ResultPage extends Component {
           if (this.state.activeTab !== 3) {
             this.setState({ activeTab: 3 })
           } else {
+            if (isFullLicence && !showDayOfWeekPicker) {
+              this.setState({ showDayOfWeekPicker: true })
+              return
+            }
             if (!bookNowDisabled) {
               this.onBookNow()
             } else {
@@ -355,7 +359,8 @@ class ResultPage extends Component {
       bike_hire,
       selectedLicenceType,
       selectedPackageHours,
-      courseTypesOptions
+      courseTypesOptions,
+      showDayOfWeekPicker
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -372,6 +377,15 @@ class ResultPage extends Component {
 
     if (isFullLicence) {
       bookNowDisabled = true
+    }
+
+    if (
+      isFullLicence &&
+      bike_hire &&
+      selectedLicenceType &&
+      selectedPackageHours
+    ) {
+      bookNowDisabled = false
     }
 
     let resultsCount = 0
@@ -591,7 +605,8 @@ class ResultPage extends Component {
               instantCourse: null,
               bike_hire: null,
               selectedLicenceType: null,
-              selectedPackageHours: null
+              selectedPackageHours: null,
+              showDayOfWeekPicker: false
             })
           }
           footer={this.renderRidetoButton(
@@ -599,7 +614,8 @@ class ResultPage extends Component {
             instantDate,
             instantCourse,
             bike_hire,
-            isFullLicence
+            isFullLicence,
+            showDayOfWeekPicker
           )}
           footerStatic={activeTab === 3}>
           {selectedCourse && (
@@ -616,6 +632,7 @@ class ResultPage extends Component {
               onSelectPackage={this.onSelectPackage}
               selectedLicenceType={selectedLicenceType}
               selectedPackageHours={selectedPackageHours}
+              showDayOfWeekPicker={showDayOfWeekPicker}
             />
           )}
         </SidePanel>
