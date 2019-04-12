@@ -183,7 +183,14 @@ class ResultPage extends Component {
   }
 
   onBookNow() {
-    const { selectedCourse, instantCourse, instantDate, bike_hire } = this.state
+    const {
+      selectedCourse,
+      instantCourse,
+      instantDate,
+      bike_hire,
+      selectedPackageHours,
+      selectedTimeDays
+    } = this.state
     const { postcode, courseType } = this.props
     let trainings = []
 
@@ -191,17 +198,15 @@ class ResultPage extends Component {
       return
     }
     if (courseType === 'FULL_LICENCE') {
-      // trainings = selectedPackageDates.map(training => {
-      //   return {
-      //     school_course_id: training.course_id,
-      //     course_type: training.type,
-      //     full_licence_type: LICENCE_TYPES[selectedLicenceType],
-      //     bike_type: bike_hire,
-      //     supplier_id: selectedCourse.id,
-      //     requested_date: training.date,
-      //     requested_time: training.time
-      //   }
-      // })
+      trainings = [
+        {
+          course_type: courseType,
+          bike_type: bike_hire,
+          supplier_id: selectedCourse.id,
+          package_hours: selectedPackageHours,
+          available_times: selectedTimeDays
+        }
+      ]
     } else {
       trainings = [
         {
@@ -333,7 +338,7 @@ class ResultPage extends Component {
             }
           }
         }}>
-        <span>SELECT</span>
+        <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </RideToButton>
     )
@@ -406,6 +411,10 @@ class ResultPage extends Component {
       selectedPackageHours
     ) {
       bookNowDisabled = false
+    }
+
+    if (showDayOfWeekPicker && selectedTimeDays.length < 1) {
+      bookNowDisabled = true
     }
 
     let resultsCount = 0
