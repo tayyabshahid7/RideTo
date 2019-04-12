@@ -6,6 +6,7 @@ import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/Licenc
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
 import DayOfWeekPicker from 'components/RideTo/ResultPage/CourseDetailPanel/DayOfWeekPicker'
 import classnames from 'classnames'
+import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -74,6 +75,14 @@ class CourseAvailabilityComponentFullLicence extends Component {
               will be in touch within 24 hours to book your training and test
               dates which work for you.
             </p>
+            <p
+              className={classnames(
+                styles.dasInfo,
+                isWidget && styles.dasInfoWidget
+              )}>
+              Included as standard
+            </p>
+            <OrderIncluded fullLicence />
             <BikePicker
               isWidget={isWidget}
               isFullLicence
