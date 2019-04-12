@@ -80,7 +80,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
                 styles.dasInfo,
                 isWidget && styles.dasInfoWidget
               )}>
-              Included as standard
+              Included as standard:
             </p>
             <OrderIncluded fullLicence />
             <BikePicker
