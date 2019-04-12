@@ -9,8 +9,6 @@ import { getFeatureInfo } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 // import { loadTypeformScript } from 'utils/helper'
 
-const HOURLY_RATE = 2800 // TODO REMOVE ME
-
 class CourseItem extends Component {
   highlightPinOnMap(event) {
     const idElement = event.currentTarget.id
@@ -74,7 +72,8 @@ class CourseItem extends Component {
       handleReviewClick,
       unavaiableDate = false,
       id,
-      showCallMessage
+      showCallMessage,
+      courseType
     } = this.props
 
     // const isTypeform = this.isFullLicenceTypeform(course)
@@ -141,11 +140,7 @@ class CourseItem extends Component {
             {course.price && (
               <div className={styles.price}>
                 £{parseInt(course.price / 100.0, 10)}
-              </div>
-            )}
-            {HOURLY_RATE && (
-              <div className={styles.price}>
-                £{parseInt(HOURLY_RATE / 100.0, 10)}/Hr
+                {courseType === 'FULL_LICENCE' && '/Hr'}
               </div>
             )}
             {/*

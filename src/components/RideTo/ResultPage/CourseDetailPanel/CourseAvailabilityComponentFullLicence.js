@@ -7,8 +7,6 @@ import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/Packag
 import DayOfWeekPicker from 'components/RideTo/ResultPage/CourseDetailPanel/DayOfWeekPicker'
 import classnames from 'classnames'
 
-const HOURLY_RATE = 2800 // TODO SORT THIS OUT
-
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
     super(props)
@@ -45,7 +43,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       isWidget,
       selectedPackageHours,
       showDayOfWeekPicker,
-      timeDayChange
+      timeDayChange,
+      selectedTimeDays
     } = this.props
     const {
       loading,
@@ -95,7 +94,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
                 }
               />
               <PackagePicker
-                pricePerHour={course.pricePerHour || HOURLY_RATE}
+                pricePerHour={course.price}
                 schoolId={course.id}
                 isWidget={isWidget}
                 bike_hire={bike_hire}
@@ -117,7 +116,10 @@ class CourseAvailabilityComponentFullLicence extends Component {
               Select the times which you can train on, the more flexible, the
               sooner you can train
             </p>
-            <DayOfWeekPicker timeDayChange={timeDayChange} />
+            <DayOfWeekPicker
+              timeDayChange={timeDayChange}
+              selectedTimeDays={selectedTimeDays}
+            />
           </Fragment>
         )}
       </div>

@@ -379,7 +379,8 @@ class ResultPage extends Component {
       selectedLicenceType,
       selectedPackageHours,
       courseTypesOptions,
-      showDayOfWeekPicker
+      showDayOfWeekPicker,
+      selectedTimeDays
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -653,6 +654,7 @@ class ResultPage extends Component {
               selectedPackageHours={selectedPackageHours}
               showDayOfWeekPicker={showDayOfWeekPicker}
               timeDayChange={this.timeDayChange}
+              selectedTimeDays={selectedTimeDays}
             />
           )}
         </SidePanel>

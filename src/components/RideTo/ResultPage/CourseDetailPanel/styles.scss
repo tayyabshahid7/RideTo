@@ -459,3 +459,29 @@ select.widgetSelect {
     }
   }
 }
+
+.availabilityWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.availabilityText {
+  font-family: var(--font-proxima);
+  padding: 10px 20px;
+  width: 267px;
+  text-align: center;
+  border: 2px solid var(--dark-color);
+  border-radius: 25px;
+  color: var(--dark-color);
+  font-weight: bold;
+}
+
+.availabilityTextModerate {
+  border-color: var(--warning-color);
+  color: var(--warning-color);
+}
+
+.availabilityTextGood {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
