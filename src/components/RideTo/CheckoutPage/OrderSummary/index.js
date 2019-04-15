@@ -26,7 +26,7 @@ class OrderSummary extends Component {
   isValidDate() {
     const { trainings, checkoutData } = this.props
 
-    if (trainings[0].course_type === 'FULL_LICENCE') {
+    if (trainings && trainings[0].course_type === 'FULL_LICENCE') {
       return true
     }
 
