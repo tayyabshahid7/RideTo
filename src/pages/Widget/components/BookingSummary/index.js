@@ -6,7 +6,6 @@ import styles from './BookingSummary.scss'
 import Loading from 'components/Loading'
 import { asPoundSterling } from 'services/widget'
 import { SHORT_LICENCE_TYPES } from 'common/constants'
-import { getCourseTitle } from 'services/course'
 
 const BookingSummary = ({
   supplier,
@@ -41,31 +40,9 @@ const BookingSummary = ({
         <div className={styles.courseType}>
           {course.course_type.name}
           {fullLicenceType}
+          {isFullLicence && ` (${trainings[0].package_hours} hours)`}
         </div>
-        {isFullLicence ? (
-          trainings.map((training, index) => {
-            const {
-              requested_date,
-              requested_time,
-              school_course_id
-            } = training
-            return (
-              <div className={styles.fullLicenceDate} key={school_course_id}>
-                <div>
-                  {getCourseTitle(training.course_type).replace(
-                    'Full Licence ',
-                    ''
-                  )}
-                </div>
-                <div>
-                  {moment(`${requested_date}T${requested_time}`).format(
-                    'h:mm a ddd D, MMMM'
-                  )}
-                </div>
-              </div>
-            )
-          })
-        ) : (
+        {!isFullLicence && (
           <div className={styles.startTime}>
             {startTime.format('dddd MMMM Do YYYY h:mm a')}
           </div>
