@@ -8,6 +8,7 @@ import {
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
 import { SortByOptions, getTitleFor } from 'common/info'
+import { LICENCE_TYPES } from 'common/constants'
 import DesktopHeader from './DesktopHeader'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
@@ -189,6 +190,7 @@ class ResultPage extends Component {
       instantDate,
       bike_hire,
       selectedPackageHours,
+      selectedLicenceType,
       selectedTimeDays
     } = this.state
     const { postcode, courseType } = this.props
@@ -201,6 +203,7 @@ class ResultPage extends Component {
       trainings = selectedTimeDays.map(timeDay => ({
         selected_availability: timeDay,
         course_type: courseType,
+        full_licence_type: LICENCE_TYPES[selectedLicenceType],
         bike_type: bike_hire,
         supplier_id: selectedCourse.id,
         package_hours: selectedPackageHours

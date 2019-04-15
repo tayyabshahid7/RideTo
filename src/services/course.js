@@ -45,11 +45,17 @@ export const fetchWidgetCourses = async (
   courseType
 ) => {
   const path = `school/${schoolId}/widget/course`
-  const params = {
-    sdate: startDate,
-    edate: endDate,
+  let params = {
     ordering: 'time',
     course_type: courseType
+  }
+
+  if (courseType !== 'FULL_LICENCE') {
+    params = {
+      ...params,
+      sdate: startDate,
+      edate: endDate
+    }
   }
 
   const response = await get(path, params)

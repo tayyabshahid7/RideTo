@@ -15,10 +15,19 @@ class PackagePicker extends Component {
   }
 
   render() {
-    const { pricePerHour, onSelectPackage, selectedPackageHours } = this.props
+    const {
+      pricePerHour,
+      onSelectPackage,
+      selectedPackageHours,
+      isWidget
+    } = this.props
 
     return (
-      <div className={styles.packageWrapper}>
+      <div
+        className={classnames(
+          styles.packageWrapper,
+          isWidget && styles.packageWrapperWidget
+        )}>
         <label id="choose-licence" className={styles.subtitle1}>
           Training Package
         </label>
