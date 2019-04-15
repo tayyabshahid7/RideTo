@@ -198,15 +198,13 @@ class ResultPage extends Component {
       return
     }
     if (courseType === 'FULL_LICENCE') {
-      trainings = [
-        {
-          course_type: courseType,
-          bike_type: bike_hire,
-          supplier_id: selectedCourse.id,
-          package_hours: selectedPackageHours,
-          available_times: selectedTimeDays
-        }
-      ]
+      trainings = selectedTimeDays.map(timeDay => ({
+        selected_availability: timeDay,
+        course_type: courseType,
+        bike_type: bike_hire,
+        supplier_id: selectedCourse.id,
+        package_hours: selectedPackageHours
+      }))
     } else {
       trainings = [
         {
