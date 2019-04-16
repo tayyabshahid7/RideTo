@@ -192,12 +192,13 @@ export const getPrice = async ({
   date,
   course_type,
   courseId,
-  voucher_code = null
+  voucher_code = null,
+  hours
 }) => {
   const path = 'get-price'
   let params = courseId
     ? { course_id: courseId }
-    : { course_type, date, supplier_id: supplierId }
+    : { course_type, date, supplier_id: supplierId, hours }
   if (voucher_code) params.voucher_code = voucher_code
   const response = await get(path, params, false)
   return response
