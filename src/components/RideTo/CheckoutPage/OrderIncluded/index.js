@@ -1,7 +1,12 @@
 import React from 'react'
 import styles from './styles.scss'
 
-function OrderIncluded({ bikeHire, pom = false, hasGloves }) {
+function OrderIncluded({
+  bikeHire,
+  pom = false,
+  hasGloves,
+  fullLicence = false
+}) {
   if (pom) {
     return (
       <div className={styles.wrapper}>
@@ -29,6 +34,43 @@ function OrderIncluded({ bikeHire, pom = false, hasGloves }) {
             </span>{' '}
             <span className={styles.text}>
               Complete <strong>peace of mind</strong> for new riders
+            </span>
+          </li>
+        </ul>
+      </div>
+    )
+  }
+
+  if (fullLicence) {
+    return (
+      <div className={styles.wrapper}>
+        <ul className={styles.list}>
+          <li>
+            <span className={styles.tick}>
+              <i className="fa fa-check" />
+            </span>{' '}
+            <span className={styles.text}>Bike hire and fuel</span>
+          </li>
+          <li>
+            <span className={styles.tick}>
+              <i className="fa fa-check" />
+            </span>{' '}
+            <span className={styles.text}>Helmet, gloves and jacket</span>
+          </li>
+          <li>
+            <span className={styles.tick}>
+              <i className="fa fa-check" />
+            </span>{' '}
+            <span className={styles.text}>
+              Test feeds and escort to and from test centres
+            </span>
+          </li>
+          <li>
+            <span className={styles.tick}>
+              <i className="fa fa-check" />
+            </span>{' '}
+            <span className={styles.text}>
+              12 working day free cancellation
             </span>
           </li>
         </ul>

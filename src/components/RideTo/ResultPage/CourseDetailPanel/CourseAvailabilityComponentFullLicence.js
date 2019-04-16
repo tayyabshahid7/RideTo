@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react'
 import styles from './styles.scss'
 import { getDasBikeTypes } from 'services/course'
-import { getPackageStartDate } from 'common/info'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
-import FullLicenceDatePicker from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicenceDatePicker'
+import DayOfWeekPicker from 'components/RideTo/ResultPage/CourseDetailPanel/DayOfWeekPicker'
 import classnames from 'classnames'
+import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -41,10 +41,11 @@ class CourseAvailabilityComponentFullLicence extends Component {
       selectedLicenceType,
       selectedPackageDays,
       onSelectPackage,
-      onSelectPackageDate,
-      selectedPackageDates,
       isWidget,
-      phoneNumber = '02036039652.'
+      selectedPackageHours,
+      showDayOfWeekPicker,
+      timeDayChange,
+      selectedTimeDays
     } = this.props
     const {
       loading,
@@ -60,76 +61,77 @@ class CourseAvailabilityComponentFullLicence extends Component {
           styles.fullLicenceAvailability,
           !isWidget ? styles.content : styles.widget
         )}>
-        {!isWidget && (
-          <div className={styles.subtitle1}>Full Licence (A1/A2 DAS)</div>
-        )}
-        <p
-          className={classnames(
-            styles.dasInfo,
-            isWidget && styles.dasInfoWidget
-          )}>
-          Full motorcycle licence training is for anyone looking to progress
-          from a CBT, to remove L plates, carry passengers and ride on
-          motorways. Your age will determine what licence you can go for. Prices
-          include everything you need, including test fees, bike hire and fuel.
-          If you are unsure how many days training you need, call us on{' '}
-          {phoneNumber}
-        </p>
-
-        <BikePicker
-          isWidget={isWidget}
-          isFullLicence
-          bike_hire={bike_hire}
-          onUpdate={onUpdate}
-          course={course}
-          has_auto_bikes={hasAutoBikes}
-          has_manual_bikes={hasManualBikes}
-          loading={loading}
-        />
-
-        <Fragment>
-          <LicencePicker
-            isWidget={isWidget}
-            selectedLicenceType={selectedLicenceType}
-            onUpdate={onUpdate}
-            licences={bike_hire === 'manual' ? manualLicences : autoLicences}
-          />
-          <PackagePicker
-            schoolId={course.id}
-            isWidget={isWidget}
-            bike_hire={bike_hire}
-            selectedLicenceType={selectedLicenceType}
-            selectedPackageDays={selectedPackageDays}
-            onSelectPackage={onSelectPackage}
-          />
-          {selectedPackageDates.map((date, index) => {
-            const start_date = getPackageStartDate(
-              date,
-              index,
-              selectedPackageDates
-            )
-
-            return (
-              <FullLicenceDatePicker
+        {!showDayOfWeekPicker ? (
+          <Fragment>
+            {!isWidget && (
+              <div className={styles.subtitle1}>Select a package</div>
+            )}
+            <p
+              className={classnames(
+                styles.dasInfo,
+                isWidget && styles.dasInfoWidget
+              )}>
+              Select the right package for your riding ambitions. The instructor
+              will be in touch within 24 hours to book your training and test
+              dates which work for you.
+            </p>
+            <p
+              className={classnames(
+                styles.dasInfo,
+                isWidget && styles.dasInfoWidget
+              )}>
+              Included as standard:
+            </p>
+            <OrderIncluded fullLicence />
+            <BikePicker
+              isWidget={isWidget}
+              isFullLicence
+              bike_hire={bike_hire}
+              onUpdate={onUpdate}
+              course={course}
+              has_auto_bikes={hasAutoBikes}
+              has_manual_bikes={hasManualBikes}
+              loading={loading}
+            />
+            <Fragment>
+              <LicencePicker
                 isWidget={isWidget}
-                schoolId={course.id}
-                licence={selectedLicenceType}
-                bike_hire={bike_hire}
-                type={date.type}
-                key={index}
-                date={date}
-                index={index}
-                showCalendar={
-                  selectedPackageDates.findIndex(date => date.date === '') ===
-                  index
+                selectedLicenceType={selectedLicenceType}
+                onUpdate={onUpdate}
+                licences={
+                  bike_hire === 'manual' ? manualLicences : autoLicences
                 }
-                selectedPackageDates={selectedPackageDates}
-                onSelectPackageDate={onSelectPackageDate}
-                start_date={start_date}
               />
-            )
-          })}
-        </Fragment>
+              <PackagePicker
+                pricePerHour={course.price}
+                schoolId={course.id}
+                isWidget={isWidget}
+                bike_hire={bike_hire}
+                selectedLicenceType={selectedLicenceType}
+                selectedPackageDays={selectedPackageDays}
+                selectedPackageHours={selectedPackageHours}
+                onSelectPackage={onSelectPackage}
+              />
+            </Fragment>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <div className={styles.subtitle1}>Your Availability</div>
+            <p
+              className={classnames(
+                styles.dasInfo,
+                isWidget && styles.dasInfoWidget
+              )}>
+              Select the times which you can train on, the more flexible, the
+              sooner you can train
+            </p>
+            <DayOfWeekPicker
+              isWidget={isWidget}
+              timeDayChange={timeDayChange}
+              selectedTimeDays={selectedTimeDays}
+            />
+          </Fragment>
+        )}
       </div>
     )
   }

@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react'
 import moment from 'moment'
 import styles from './styles.scss'
-import { SHORT_LICENCE_TYPES } from 'common/constants'
 import { getCourseTitle } from 'services/course'
 import MapComponent from 'components/RideTo/MapComponent'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
@@ -48,9 +47,7 @@ function CourseInformation({
           <div className="mb-2">
             {renderRow(
               'Course',
-              `Full Licence (${
-                SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
-              })`
+              `Full Licence (${trainings[0].package_hours} hours)`
             )}
             {trainings.map((training, index) => {
               if (training.price) {

@@ -40,9 +40,10 @@
 .instructor,
 .bring,
 .locationInfo {
-  padding: 45px 60px;
+  // padding: 45px 60px;
+  padding: 45px 25px;
   @media (max-width: 768px) {
-    padding: 30px 32px;
+    padding: 30px 25px;
   }
 }
 
@@ -160,6 +161,12 @@
   }
 }
 
+.packageWrapperWidget {
+  button {
+    border: 1px solid #cacccd;
+  }
+}
+
 .bikeButtons {
   display: flex;
   justify-content: space-between;
@@ -251,6 +258,10 @@
 
 .dasInfoWidget {
   line-height: 1.4;
+}
+
+.dasInfoCenter {
+  text-align: center;
 }
 
 select.packageSelect {
@@ -378,4 +389,157 @@ select.widgetSelect {
 
 .fullLicenceCalendar {
   min-height: 375px;
+}
+
+.packageButtonList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.packageButton {
+  width: 100%;
+  cursor: pointer;
+  background: white;
+  border: 1px solid black;
+  margin-top: 16px;
+  font-size: 15px;
+  line-height: 18px;
+  font-family: var(--font-proxima);
+  cursor: pointer;
+  text-align: left;
+  padding: 16px;
+
+  > span {
+    display: block;
+    font-weight: bold;
+    font-size: 17px;
+    margin-bottom: 2px;
+  }
+}
+
+.packageButtonActive {
+  background-color: #000;
+  color: #fff;
+}
+
+.dayWeekTable {
+  table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
+
+  th,
+  td {
+    padding: 10px 5px;
+    width: auto;
+
+    input[type='checkbox'] {
+      vertical-align: middle;
+      appearance: none;
+      border: 1px solid lightgrey;
+      background-color: white;
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+
+      @media (max-width: 444px) {
+        width: 16px;
+        height: 16px;
+      }
+
+      &:checked {
+        // box-shadow: inset 0 0 0 3px #fff;
+        // background-color: var(--primary-color);
+        background-image: url('assets/icons/tick.svg');
+        background-size: 20px 20px;
+        background-repeat: no-repeat;
+        background-position: center center;
+      }
+    }
+  }
+
+  th {
+    text-align: center;
+
+    @media (max-width: 444px) {
+      position: relative;
+    }
+
+    > span {
+      position: absolute;
+      margin-top: 3px;
+      margin-left: 3px;
+
+      @media (max-width: 444px) {
+        top: -10px;
+        left: 50%;
+        margin-left: -9px;
+      }
+    }
+  }
+
+  td {
+    background-color: #f7f7fa;
+    border-top: 1px solid #fff;
+  }
+
+  td:not(:first-child) {
+    text-align: center;
+  }
+
+  th,
+  td {
+    &:first-child {
+      width: 85px;
+      padding: 10px;
+
+      > span {
+        position: absolute;
+        margin-top: 3px;
+        margin-left: 5px;
+      }
+    }
+  }
+
+  tr:last-child {
+    td {
+      background-color: #eef2f6;
+    }
+  }
+}
+
+.availabilityWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.availabilityText {
+  font-family: var(--font-proxima);
+  padding: 10px 20px;
+  width: 267px;
+  text-align: center;
+  border: 2px solid var(--dark-color);
+  border-radius: 25px;
+  color: var(--dark-color);
+  font-weight: bold;
+}
+
+.availabilityTextModerate {
+  border-color: var(--warning-color);
+  color: var(--warning-color);
+}
+
+.availabilityTextGood {
+  border-color: var(--primary-color);
+  color: var(--primary-color);
+}
+
+.peakMessage {
+  margin-top: 1rem;
+  text-align: center;
+  font-family: var(--font-proxima);
+
+  span {
+    vertical-align: middle;
+  }
 }
