@@ -10,6 +10,27 @@ const AVAILABILITY_TEXTS = {
   moderate: 'Moderate availability',
   good: 'Good availability'
 }
+function Zap(style) {
+  return (
+    <span
+      style={{
+        display: 'inline-block',
+        background: 'var(--primary-color)',
+        color: '#fff',
+        borderRadius: '50%',
+        textAlign: 'center',
+        lineHeight: '18px',
+        width: '18px',
+        height: '18px',
+        fontSize: '9.5px',
+        fontWeight: 'normal',
+        verticalAlign: 'middle',
+        ...style
+      }}>
+      <i className="fas fa-bolt" />
+    </span>
+  )
+}
 
 class DayOfWeekPicker extends Component {
   constructor(props) {
@@ -70,14 +91,18 @@ class DayOfWeekPicker extends Component {
             <tr>
               <th />
               {DAYS_OF_WEEK.map(day => (
-                <th key={day}>{day}</th>
+                <th key={day}>
+                  {day} {['Sat', 'Sun'].includes(day) && <Zap />}
+                </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {TIMES_OF_DAY.map(time => (
               <tr key={time}>
-                <td>{time}</td>
+                <td>
+                  {time} {time === 'Evening' && <Zap />}
+                </td>
                 {DAYS_OF_WEEK.map(day => (
                   <td key={day}>
                     <input
@@ -93,6 +118,9 @@ class DayOfWeekPicker extends Component {
             ))}
           </tbody>
         </table>
+        <p className={styles.peakMessage}>
+          Peak times, reduced availability = <Zap />
+        </p>
       </Fragment>
     )
   }
