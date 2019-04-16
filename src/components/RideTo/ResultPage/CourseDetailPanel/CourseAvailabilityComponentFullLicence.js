@@ -126,6 +126,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
               sooner you can train
             </p>
             <DayOfWeekPicker
+              isWidget={isWidget}
               timeDayChange={timeDayChange}
               selectedTimeDays={selectedTimeDays}
             />

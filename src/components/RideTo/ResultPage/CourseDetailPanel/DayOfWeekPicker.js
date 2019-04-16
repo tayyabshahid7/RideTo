@@ -92,7 +92,7 @@ class DayOfWeekPicker extends Component {
               <th />
               {DAYS_OF_WEEK.map(day => (
                 <th key={day}>
-                  {day} {['Sat', 'Sun'].includes(day) && <Zap />}
+                  {day} {['Sat', 'Sun'].includes(day) && !isWidget && <Zap />}
                 </th>
               ))}
             </tr>
@@ -101,7 +101,7 @@ class DayOfWeekPicker extends Component {
             {TIMES_OF_DAY.map(time => (
               <tr key={time}>
                 <td>
-                  {time} {time === 'Evening' && <Zap />}
+                  {time} {time === 'Evening' && !isWidget && <Zap />}
                 </td>
                 {DAYS_OF_WEEK.map(day => (
                   <td key={day}>
@@ -118,9 +118,11 @@ class DayOfWeekPicker extends Component {
             ))}
           </tbody>
         </table>
-        <p className={styles.peakMessage}>
-          Peak times, reduced availability = <Zap />
-        </p>
+        {!isWidget && (
+          <p className={styles.peakMessage}>
+            Peak times, reduced availability = <Zap />
+          </p>
+        )}
       </Fragment>
     )
   }
