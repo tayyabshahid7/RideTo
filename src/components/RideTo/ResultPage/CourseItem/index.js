@@ -82,6 +82,8 @@ class CourseItem extends Component {
     //   loadTypeformScript()
     // }
 
+    const isFullLicence = courseType === 'FULL_LICENCE'
+
     return (
       <Fragment>
         <div
@@ -112,7 +114,9 @@ class CourseItem extends Component {
                   this.renderIcon('gloves_jacket_included')}
                 {course.on_site_cafe && this.renderIcon('on_site_cafe')}
                 {course.indoor_classroom && this.renderIcon('indoor_classroom')}
-                {course.instant_book && this.renderIcon('instant_book')}
+                {!isFullLicence &&
+                  course.instant_book &&
+                  this.renderIcon('instant_book')}
               </div>
             </div>
             <div className={styles.extraInfo}>
