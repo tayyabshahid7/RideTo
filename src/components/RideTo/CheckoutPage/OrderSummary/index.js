@@ -99,6 +99,7 @@ class OrderSummary extends Component {
     let confirmDisabled =
       saving || !details.accept_terms || !this.isValidDate() || !showCardDetails
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
+    const isRenewal = checkoutData.courseType === 'LICENCE_CBT_RENEWAL'
 
     return (
       <div className={styles.container}>
@@ -163,6 +164,7 @@ class OrderSummary extends Component {
                   I'll wear suitable clothing to training including thick
                   trousers (e.g. jeans) and boots
                 </li>
+                {isRenewal && <li>I will bring my valid CBT Certificate</li>}
                 {isFullLicence && (
                   <Fragment>
                     <li>I have a valid CBT certificate</li>
