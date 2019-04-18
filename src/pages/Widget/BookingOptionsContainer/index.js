@@ -110,7 +110,9 @@ class BookingOptionsContainer extends React.Component {
           schoolCourses: [],
           loadedMonths: {},
           selectedCourse: null,
-          courseType: this.props.selectedSupplier.courses[0]
+          courseType: this.props.selectedSupplier.courses[0],
+          isFullLicence:
+            this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
         () => {
           this.fetchCourses(month.clone())
