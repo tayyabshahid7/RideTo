@@ -72,7 +72,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
                 isWidget && styles.dasInfoWidget
               )}>
               Select the right package for your riding ambitions. The instructor
-              will be in touch within 24 hours to book your training and test
+              will be in touch within 24 hours to book the training and test
               dates which work for you.
             </p>
             <p
@@ -122,8 +122,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
                 styles.dasInfo,
                 isWidget && styles.dasInfoWidget
               )}>
-              Select the times which you can train on, the more flexible, the
-              sooner you can train
+              Select the times you can train on, the more flexible the sooner
+              you can train.
             </p>
             <DayOfWeekPicker
               isWidget={isWidget}

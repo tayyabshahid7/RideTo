@@ -41,8 +41,11 @@ class PackagePicker extends Component {
               onClick={() => {
                 onSelectPackage(16)
               }}>
-              <span>16 hours | £{(pricePerHour / 100) * 16} - Intro</span>2 days
-              of training without tests. Suitable for riders to start learning.
+              <span>
+                16 hours | £{(pricePerHour / 100) * 16} - Introduction Course
+              </span>
+              2 days of training without tests. Suitable for riders to start
+              learning.
             </button>
           </li>
           <li>
@@ -55,7 +58,7 @@ class PackagePicker extends Component {
                 onSelectPackage(32)
               }}>
               <span>
-                32 hours | £{(pricePerHour / 100) * 32} - Training & Tests
+                32 hours | £{(pricePerHour / 100) * 32} - Experienced Rider
               </span>
               4 Days of training to learn and take both module 1 and 2 tests.
               Suitable for experienced riders only.
@@ -71,10 +74,10 @@ class PackagePicker extends Component {
                 onSelectPackage(40)
               }}>
               <span>
-                40 hours | £{(pricePerHour / 100) * 40} - Training & Tests
+                40 hours | £{(pricePerHour / 100) * 40} - Intermediate Rider
               </span>
-              5 days of training to learn and take both module 1 and 2 testes.
-              Suitable for experienced riders only.
+              5 days of training to learn and take both module 1 and 2 tests.
+              Suitable for riders with experience on a CBT licence.
             </button>
           </li>
         </ul>

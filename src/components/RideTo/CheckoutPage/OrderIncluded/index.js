@@ -62,7 +62,7 @@ function OrderIncluded({
               <i className="fa fa-check" />
             </span>{' '}
             <span className={styles.text}>
-              Test feeds and escort to and from test centres
+              Test fees and escort to and from test centres
             </span>
           </li>
           <li>
