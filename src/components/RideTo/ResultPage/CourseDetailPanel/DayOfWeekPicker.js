@@ -4,7 +4,8 @@ import classnames from 'classnames'
 import { capitalizeFirstLetter } from 'utils/helper'
 
 const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-const TIMES_OF_DAY = ['Morning', 'Afternoon', 'Evening']
+// const TIMES_OF_DAY = ['Morning', 'Afternoon', 'Evening']
+const TIMES_OF_DAY = ['Morning', 'Afternoon']
 const AVAILABILITY_TEXTS = {
   empty: 'Select all time slots you can do',
   moderate: 'Moderate availability',
