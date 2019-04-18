@@ -122,8 +122,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
                 styles.dasInfo,
                 isWidget && styles.dasInfoWidget
               )}>
-              Select the times which you can train on, the more flexible, the
-              sooner you can train
+              Select the times you can train on, the more flexible the sooner
+              you can train.
             </p>
             <DayOfWeekPicker
               isWidget={isWidget}

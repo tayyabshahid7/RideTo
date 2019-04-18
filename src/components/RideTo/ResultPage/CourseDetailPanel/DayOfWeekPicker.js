@@ -85,7 +85,7 @@ class DayOfWeekPicker extends Component {
           )}>
           Top instructors have busy schedules, so select{' '}
           <strong>as many slots as possible</strong> to ensure you get the best
-          match and choice of lesson times.
+          choice of dates.
         </p>
         <table className={styles.dayWeekTable}>
           <thead>
