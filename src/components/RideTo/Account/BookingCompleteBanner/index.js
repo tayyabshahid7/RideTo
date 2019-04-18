@@ -17,9 +17,9 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
     training.training_date_time && order.source === 'RIDETO_INSTANT'
       ? `at ${startTime.format('hh:mm A')}`
       : ''
-  const selectedPackage = `${order.trainings.length} day package`
+  // const selectedPackage = `${order.trainings.length} day package`
   const subTitle = order.course_title.includes('Full Licence')
-    ? `${order.course_title} - ${selectedPackage} starting on ${date} ${time}`
+    ? `${order.course_title}`
     : `${order.course_title} on ${date} ${time}`
   const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Booking require confirmation from the instructor, usually within 3 working hours.`
   const showDisclaimer = order.source !== 'RIDETO_INSTANT'
