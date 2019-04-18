@@ -73,7 +73,7 @@ class PackagePicker extends Component {
               <span>
                 40 hours | £{(pricePerHour / 100) * 40} - Training & Tests
               </span>
-              4 days of training to learn and take both module 1 and 2 testes.
+              5 days of training to learn and take both module 1 and 2 testes.
               Suitable for experienced riders only.
             </button>
           </li>
