@@ -81,7 +81,7 @@ class OrdersPanel extends React.Component {
   async handleDeleteTraining(training) {
     if (
       window.confirm(
-        `Are you sure you whant to delete the training from Order ${
+        `Are you sure you want to delete the training from Order ${
           training.direct_friendly_id
         }?`
       )
