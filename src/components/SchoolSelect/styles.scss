@@ -1,18 +1,31 @@
 .container {
   position: relative;
-  width: 100%;
-  max-width: 422px;
+  // width: 100%;
+  // max-width: 422px;
+  display: inline-block;
+
+  @media (max-width: 768px) {
+    display: block;
+    width: 100%;
+    max-width: 422px;
+  }
 }
 
 .select {
   appearance: none;
-  width: 100%;
-  padding: 0 35px 0 0;
+  // width: 100%;
+  width: auto;
+  padding: 0 40px 0 0;
   font-size: 24px;
   font-weight: bold;
   color: #707070;
   background: transparent;
   border: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    font-size: 18px;
+  }
 }
 
 .selectSmall {
@@ -30,8 +43,12 @@
   right: 0;
   z-index: -1;
   pointer-events: none;
+
+  @media (max-width: 768px) {
+    top: 4px;
+  }
 }
 
 .caretSmall {
-  display: none;
+  // display: none;
 }
