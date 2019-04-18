@@ -195,7 +195,7 @@ class OrderSummary extends Component {
         {errors.paymentError && (
           <div className={styles.paymentError}>
             {typeof errors.paymentError === 'string' ? (
-              <strong>errors.paymentError</strong>
+              <strong>{errors.paymentError}</strong>
             ) : (
               Object.entries(errors.paymentError).map(entry => (
                 <div>
