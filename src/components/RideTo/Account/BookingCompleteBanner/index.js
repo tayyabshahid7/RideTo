@@ -8,6 +8,7 @@ import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 import styles from './BookingCompleteBanner.scss'
 
 const BookingCompleteBanner = ({ order, onDetails }) => {
+  const isFullLicence = order.course_title.includes('Full Licence')
   const training = order.trainings[0]
   const date = moment(training.requested_date, 'YYYY-MM-DD').format(
     'dddd Do MMMM'
@@ -18,10 +19,12 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
       ? `at ${startTime.format('hh:mm A')}`
       : ''
   // const selectedPackage = `${order.trainings.length} day package`
-  const subTitle = order.course_title.includes('Full Licence')
+  const subTitle = isFullLicence
     ? `${order.course_title}`
     : `${order.course_title} on ${date} ${time}`
-  const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Booking require confirmation from the instructor, usually within 3 working hours.`
+  const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Bookings require confirmation from the instructor, usually within 3 working hours.`
+  const fullLicenceDisclaimer =
+    "You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Bookings require confirmation from the instructor."
   const showDisclaimer = order.source !== 'RIDETO_INSTANT'
   return (
     <div className={styles.bookingCompleteBanner}>
@@ -39,6 +42,13 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
                   <br />
                   <br />
                   {disclaimer}
+                </span>
+              )}
+              {isFullLicence && (
+                <span>
+                  <br />
+                  <br />
+                  {fullLicenceDisclaimer}
                 </span>
               )}
             </div>
