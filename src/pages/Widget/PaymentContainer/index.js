@@ -78,35 +78,24 @@ class PaymentContainer extends React.Component {
     let totalPrice
 
     if (isFullLicence) {
+      const training = trainings[0]
+
       course = {
         course_type: {
           name: 'Full Licence'
         }
       }
       supplier = this.suppliers.filter(
-        ({ id }) => id === trainings[0].supplier_id
+        ({ id }) => id === training.supplier_id
       )[0]
 
-      let fullPrice = 0
-      const newTrainings = await Promise.all(
-        trainings.map(async training => {
-          const price = await getPrice({
-            courseId: training.school_course_id
-          })
-          fullPrice += parseInt(price.price, 10)
-
-          return {
-            ...training,
-            price: price.price
-          }
-        })
-      )
-
-      this.setState({
-        trainings: newTrainings
+      let response = await getPrice({
+        supplierId: training.supplier_id,
+        course_type: training.course_type,
+        hours: training.package_hours
       })
 
-      totalPrice = fullPrice
+      totalPrice = response.price
     } else {
       course = await fetchWidgetSingleCourse(0, courseId)
       supplier = this.suppliers.filter(({ id }) => id === course.supplier)[0]

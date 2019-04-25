@@ -13,6 +13,7 @@ import { getExpectedPrice } from 'services/order'
 import { checkAllowedDate } from 'services/date'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
+import { capitalizeFirstLetter } from 'utils/helper'
 
 class OrderSummary extends Component {
   componentDidUpdate(prevProps) {
@@ -25,6 +26,11 @@ class OrderSummary extends Component {
 
   isValidDate() {
     const { trainings, checkoutData } = this.props
+
+    if (trainings && trainings[0].course_type === 'FULL_LICENCE') {
+      return true
+    }
+
     return checkAllowedDate(
       (trainings && trainings[0].requested_date) || checkoutData.date
     )
@@ -190,7 +196,18 @@ class OrderSummary extends Component {
         {this.renderPrices()}
         {errors.paymentError && (
           <div className={styles.paymentError}>
-            <strong>{errors.paymentError}</strong>
+            {typeof errors.paymentError === 'string' ? (
+              <strong>{errors.paymentError}</strong>
+            ) : (
+              Object.entries(errors.paymentError).map(entry => (
+                <div>
+                  <strong>
+                    {capitalizeFirstLetter(entry[0].replace('_', ' '))}:{' '}
+                    {entry[1]}
+                  </strong>
+                </div>
+              ))
+            )}
           </div>
         )}
         <Loading loading={saving}>

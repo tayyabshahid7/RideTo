@@ -7,14 +7,8 @@ import {
   DropdownItem
 } from 'reactstrap'
 import { Container, Row, Col } from 'reactstrap'
+import { SortByOptions, getTitleFor } from 'common/info'
 import { LICENCE_TYPES } from 'common/constants'
-import {
-  SortByOptions,
-  getTitleFor,
-  getPackageDays,
-  isAllPackageDatesSelected,
-  isAnyPackageDatesSelected
-} from 'common/info'
 import DesktopHeader from './DesktopHeader'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import styles from './ResultPage.scss'
@@ -48,13 +42,13 @@ class ResultPage extends Component {
       instantDate: null,
       bike_hire: null,
       selectedLicenceType: null,
-      selectedPackageDays: '',
-      selectedPackageDates: [],
-      courseTypesOptions: []
+      courseTypesOptions: [],
+      selectedPackageHours: null,
+      showDayOfWeekPicker: false,
+      selectedTimeDays: []
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
-    this.onSelectPackageDate = this.onSelectPackageDate.bind(this)
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
     this.handleCourseChange = this.handleCourseChange.bind(this)
@@ -62,6 +56,7 @@ class ResultPage extends Component {
     this.handlePriceClick = this.handlePriceClick.bind(this)
     this.handleReviewClick = this.handleReviewClick.bind(this)
     this.handleMobileDateClick = this.handleMobileDateClick.bind(this)
+    this.timeDayChange = this.timeDayChange.bind(this)
 
     window.sessionStorage.removeItem('trainings')
   }
@@ -149,58 +144,31 @@ class ResultPage extends Component {
     this.setState({ showDateSelectorModal: false })
   }
 
-  onSelectPackage(days) {
-    const packageDays = getPackageDays(days)
-
+  onSelectPackage(hours) {
     this.onUpdate({
-      selectedPackageDays: days,
-      selectedPackageDates: packageDays
-    })
-  }
-
-  onSelectPackageDate(index, { date, course_id, time }) {
-    const newDates = [...this.state.selectedPackageDates]
-
-    if (
-      newDates[index + 1] &&
-      newDates[index + 1].date !== '' &&
-      !window.confirm('Changing this will unset subsequent dates')
-    ) {
-      return
-    }
-
-    newDates[index].course_id = course_id
-    newDates[index].date = date
-    newDates[index].time = time
-    newDates.forEach((date, i) => {
-      if (i > index) {
-        date.course_id = null
-        date.date = ''
-        date.time = ''
-      }
-    })
-
-    this.setState({
-      selectedPackageDates: newDates
+      selectedPackageHours: hours
     })
   }
 
   onUpdate(data) {
-    const { courseType } = this.props
-    const { selectedPackageDates } = this.state
-
-    if (
-      courseType === 'FULL_LICENCE' &&
-      (data.hasOwnProperty('bike_hire') ||
-        data.hasOwnProperty('selectedLicenceType') ||
-        data.hasOwnProperty('selectedPackageDays')) &&
-      isAnyPackageDatesSelected(selectedPackageDates) &&
-      !window.confirm('Changing this will unset any dates')
-    ) {
-      return
-    }
-
     this.setState({ ...data })
+  }
+
+  timeDayChange({ time, day, status }) {
+    const { selectedTimeDays } = this.state
+    const dayTime = `${day}_${time}`
+
+    if (status) {
+      this.setState({
+        selectedTimeDays: [...selectedTimeDays, dayTime]
+      })
+    } else {
+      this.setState({
+        selectedTimeDays: selectedTimeDays.filter(
+          timeDay => timeDay !== dayTime
+        )
+      })
+    }
   }
 
   getStartTime(course, selectedDate) {
@@ -221,8 +189,9 @@ class ResultPage extends Component {
       instantCourse,
       instantDate,
       bike_hire,
-      selectedPackageDates,
-      selectedLicenceType
+      selectedPackageHours,
+      selectedLicenceType,
+      selectedTimeDays
     } = this.state
     const { postcode, courseType } = this.props
     let trainings = []
@@ -231,17 +200,14 @@ class ResultPage extends Component {
       return
     }
     if (courseType === 'FULL_LICENCE') {
-      trainings = selectedPackageDates.map(training => {
-        return {
-          school_course_id: training.course_id,
-          course_type: training.type,
-          full_licence_type: LICENCE_TYPES[selectedLicenceType],
-          bike_type: bike_hire,
-          supplier_id: selectedCourse.id,
-          requested_date: training.date,
-          requested_time: training.time
-        }
-      })
+      trainings = selectedTimeDays.map(timeDay => ({
+        selected_availability: timeDay,
+        course_type: courseType,
+        full_licence_type: LICENCE_TYPES[selectedLicenceType],
+        bike_type: bike_hire,
+        supplier_id: selectedCourse.id,
+        package_hours: selectedPackageHours
+      }))
     } else {
       trainings = [
         {
@@ -326,7 +292,8 @@ class ResultPage extends Component {
     instantDate,
     instantCourse,
     bike_hire,
-    ifullLicence
+    isFullLicence,
+    showDayOfWeekPicker
   ) {
     return (
       <RideToButton
@@ -334,7 +301,7 @@ class ResultPage extends Component {
           styles.action,
           bookNowDisabled &&
             this.state.activeTab === 3 &&
-            ifullLicence &&
+            isFullLicence &&
             styles.bookNowDisabled,
           this.state.activeTab === 3 && styles.actionStatic
         )}
@@ -342,6 +309,10 @@ class ResultPage extends Component {
           if (this.state.activeTab !== 3) {
             this.setState({ activeTab: 3 })
           } else {
+            if (isFullLicence && !showDayOfWeekPicker) {
+              this.setState({ showDayOfWeekPicker: true })
+              return
+            }
             if (!bookNowDisabled) {
               this.onBookNow()
             } else {
@@ -368,7 +339,7 @@ class ResultPage extends Component {
             }
           }
         }}>
-        <span>SELECT</span>
+        <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
         <img src={ButtonArrowWhite} alt="arrow" />
       </RideToButton>
     )
@@ -412,9 +383,10 @@ class ResultPage extends Component {
       instantDate,
       bike_hire,
       selectedLicenceType,
-      selectedPackageDays,
-      selectedPackageDates,
-      courseTypesOptions
+      selectedPackageHours,
+      courseTypesOptions,
+      showDayOfWeekPicker,
+      selectedTimeDays
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -433,8 +405,17 @@ class ResultPage extends Component {
       bookNowDisabled = true
     }
 
-    if (isAllPackageDatesSelected(selectedPackageDates)) {
+    if (
+      isFullLicence &&
+      bike_hire &&
+      selectedLicenceType &&
+      selectedPackageHours
+    ) {
       bookNowDisabled = false
+    }
+
+    if (showDayOfWeekPicker && selectedTimeDays.length < 1) {
+      bookNowDisabled = true
     }
 
     let resultsCount = 0
@@ -654,8 +635,8 @@ class ResultPage extends Component {
               instantCourse: null,
               bike_hire: null,
               selectedLicenceType: null,
-              selectedPackageDays: '',
-              selectedPackageDates: []
+              selectedPackageHours: null,
+              showDayOfWeekPicker: false
             })
           }
           footer={this.renderRidetoButton(
@@ -663,7 +644,8 @@ class ResultPage extends Component {
             instantDate,
             instantCourse,
             bike_hire,
-            isFullLicence
+            isFullLicence,
+            showDayOfWeekPicker
           )}
           footerStatic={activeTab === 3}>
           {selectedCourse && (
@@ -678,10 +660,11 @@ class ResultPage extends Component {
               bike_hire={bike_hire}
               onUpdate={this.onUpdate.bind(this)}
               onSelectPackage={this.onSelectPackage}
-              onSelectPackageDate={this.onSelectPackageDate}
               selectedLicenceType={selectedLicenceType}
-              selectedPackageDays={selectedPackageDays}
-              selectedPackageDates={selectedPackageDates}
+              selectedPackageHours={selectedPackageHours}
+              showDayOfWeekPicker={showDayOfWeekPicker}
+              timeDayChange={this.timeDayChange}
+              selectedTimeDays={selectedTimeDays}
             />
           )}
         </SidePanel>

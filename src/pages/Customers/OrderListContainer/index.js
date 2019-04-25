@@ -5,20 +5,28 @@ import { Col } from 'reactstrap'
 import { loadCourseTypes } from 'store/info'
 import * as orderModule from 'store/order'
 import * as supplierModule from 'store/supplier'
+import { getEmails, sendEmail } from 'store/email'
 import Tabs from 'pages/Customers/components/Tabs'
 import OrderForm from 'pages/Customers/components/OrderForm'
+import Email from 'pages/Customers/components/Email'
+import NewEmail from 'pages/Customers/components/NewEmail'
 import styles from './OrderListContainer.scss'
 import { selectors } from 'store/customer'
 
 class OrderListContainer extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.handleSave = this.handleSave.bind(this)
+  }
+
   componentDidMount() {
     const { id } = this.props
     if (id !== 'create') {
       this.props.fetchOrders({ customer: parseInt(id, 10) })
+      this.props.getEmails(id)
     }
     this.props.fetchSuppliers()
-
-    this.handleSave = this.handleSave.bind(this)
   }
 
   handleSave(order) {
@@ -38,7 +46,11 @@ class OrderListContainer extends React.Component {
       sendEmailConfirmation,
       info,
       notepad,
-      handleNotepadChange
+      handleNotepadChange,
+      user,
+      customer,
+      emails = [],
+      sendEmail
     } = this.props
 
     return (
@@ -64,6 +76,26 @@ class OrderListContainer extends React.Component {
               </ul>
             ) : (
               <div className={styles.noOrder}>No orders</div>
+            )}
+          </div>
+          <div label="Email">
+            {user && customer && (
+              <NewEmail
+                customer={customer}
+                user={user}
+                onSendEmail={sendEmail}
+              />
+            )}
+            {emails.length > 0 ? (
+              <ul className={styles.list}>
+                {emails.map(email => (
+                  <li key={email.id} className={styles.listItem}>
+                    <Email email={email} />
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <div className={styles.noOrder}>No emails</div>
             )}
           </div>
           <div label="Notes">
@@ -92,7 +124,9 @@ const mapStateToProps = (state, props) => {
     isSaving: state.order.isSaving,
     isSending: state.order.isSending,
     suppliers: supplierModule.selectors.getItems(state.supplier),
-    info: state.info
+    info: state.info,
+    user: state.auth.user,
+    emails: state.email.emails
   }
 }
 
@@ -103,7 +137,9 @@ export default connect(
       {
         ...orderModule.actions,
         ...supplierModule.actions,
-        loadCourseTypes
+        loadCourseTypes,
+        getEmails,
+        sendEmail
       },
       dispatch
     )
