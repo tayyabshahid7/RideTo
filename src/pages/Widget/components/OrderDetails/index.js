@@ -4,7 +4,6 @@ import moment from 'moment'
 import styles from './OrderDetails.scss'
 import Loading from 'components/Loading'
 
-import { getCourseTitle } from 'services/course'
 import { SHORT_LICENCE_TYPES } from 'common/constants'
 import { asPoundSterling } from 'services/widget'
 import { BikeHires } from 'common/info'
@@ -40,34 +39,10 @@ const OrderDetails = ({
           {course.course_type.name} {fullLicenceType}
           {isFullLicence && ' '}
           {supplier.town}
+          {isFullLicence && ` (${trainings[0].package_hours} hours)`}
         </div>
 
-        {isFullLicence ? (
-          trainings.map((training, index) => {
-            const {
-              requested_date,
-              requested_time,
-              school_course_id
-            } = training
-            return (
-              <div className={styles.fullLicenceDate} key={school_course_id}>
-                <div>
-                  <b>
-                    {getCourseTitle(training.course_type).replace(
-                      'Full Licence ',
-                      ''
-                    )}
-                  </b>
-                </div>
-                <div>
-                  {moment(`${requested_date}T${requested_time}`).format(
-                    'h:mm a ddd D, MMMM'
-                  )}
-                </div>
-              </div>
-            )
-          })
-        ) : (
+        {!isFullLicence && (
           <div className={styles.date}>
             <div>
               Start: <strong>{startTime.format('h:mm a')}</strong>

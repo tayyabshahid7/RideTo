@@ -7,7 +7,7 @@ import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import { getFeatureInfo } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
-import { loadTypeformScript } from 'utils/helper'
+// import { loadTypeformScript } from 'utils/helper'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -52,16 +52,16 @@ class CourseItem extends Component {
     )
   }
 
-  isFullLicenceTypeform(course) {
-    const { courseType } = this.props
-    const { instant_book } = course
+  // isFullLicenceTypeform(course) {
+  //   const { courseType } = this.props
+  //   const { instant_book } = course
 
-    if (courseType === 'FULL_LICENCE' && instant_book === false) {
-      return true
-    } else {
-      return false
-    }
-  }
+  //   if (courseType === 'FULL_LICENCE' && instant_book === false) {
+  //     return true
+  //   } else {
+  //     return false
+  //   }
+  // }
 
   render() {
     const {
@@ -72,14 +72,17 @@ class CourseItem extends Component {
       handleReviewClick,
       unavaiableDate = false,
       id,
-      showCallMessage
+      showCallMessage,
+      courseType
     } = this.props
 
-    const isTypeform = this.isFullLicenceTypeform(course)
+    // const isTypeform = this.isFullLicenceTypeform(course)
 
-    if (isTypeform) {
-      loadTypeformScript()
-    }
+    // if (isTypeform) {
+    //   loadTypeformScript()
+    // }
+
+    const isFullLicence = courseType === 'FULL_LICENCE'
 
     return (
       <Fragment>
@@ -111,7 +114,9 @@ class CourseItem extends Component {
                   this.renderIcon('gloves_jacket_included')}
                 {course.on_site_cafe && this.renderIcon('on_site_cafe')}
                 {course.indoor_classroom && this.renderIcon('indoor_classroom')}
-                {course.instant_book && this.renderIcon('instant_book')}
+                {!isFullLicence &&
+                  course.instant_book &&
+                  this.renderIcon('instant_book')}
               </div>
             </div>
             <div className={styles.extraInfo}>
@@ -139,8 +144,10 @@ class CourseItem extends Component {
             {course.price && (
               <div className={styles.price}>
                 £{parseInt(course.price / 100.0, 10)}
+                {courseType === 'FULL_LICENCE' && '/Hr'}
               </div>
             )}
+            {/*
             {isTypeform ? (
               <a
                 href="https://rideto.typeform.com/to/U9apGA"
@@ -149,16 +156,17 @@ class CourseItem extends Component {
                 <IconArrowRight className={styles.arrowIcon} />
               </a>
             ) : (
-              <div
-                className={classnames(
-                  styles.cta,
-                  unavaiableDate && styles.ctaDateUnavailable
-                )}
-                onClick={() => handlePriceClick(course)}>
-                <div>Select</div>
-                <IconArrowRight className={styles.arrowIcon} />
-              </div>
             )}
+            */}
+            <div
+              className={classnames(
+                styles.cta,
+                unavaiableDate && styles.ctaDateUnavailable
+              )}
+              onClick={() => handlePriceClick(course)}>
+              <div>Select</div>
+              <IconArrowRight className={styles.arrowIcon} />
+            </div>
           </div>
         </div>
         {showCallMessage && (

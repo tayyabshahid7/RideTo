@@ -31,7 +31,10 @@ const renderRow = (title, content, index) => {
 }
 
 const renderTraining = order => {
-  if (order.source === 'RIDETO') {
+  if (
+    order.source === 'RIDETO' ||
+    order.course_title.includes('Full Licence')
+  ) {
     return renderRow('Status', getFriendlyStatus(order.training_status))
   } else {
     return order.trainings.map((training, key) => {

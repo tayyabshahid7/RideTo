@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { login } from 'store/auth'
-import Header from '../../components/Header'
 import { isAuthenticated } from 'services/auth'
+import { ConnectLogo, ConnectLogoFull, Info } from 'assets/icons'
 import styles from './styles.scss'
 
 class Login extends Component {
@@ -37,36 +37,46 @@ class Login extends Component {
 
   render() {
     return (
-      <div className={styles.container}>
-        <Header dark />
-        <div className={styles.main}>
-          <div className={styles.loginFormContainer}>
-            <div className={styles.formTitle}>
-              <div>Partner school dashboard</div>
+      <div className={styles.wrapper}>
+        <div className={styles.loginDetails}>
+          <div className={styles.loginDetailsInner}>
+            <div className={styles.loginHeader}>
+              <ConnectLogo className={styles.loginLogo} />
+              <h1 className={styles.loginTitle}>Log In</h1>
             </div>
-            <form className={styles.loginForm} onSubmit={this.handleFormSubmit}>
-              <input
-                type="email"
-                autoComplete="email"
-                ref={this.emailInput}
-                name="email"
-                placeholder="Username"
-              />
-              <br />
-              <input
-                type="password"
-                autoComplete="current-password"
-                ref={this.passwordInput}
-                name="password"
-                placeholder="Password"
-              />
-              <br />
-              <button type="submit">Login</button>
+            <form className={styles.form} onSubmit={this.handleFormSubmit}>
+              <label className={styles.formGroup}>
+                <span className={styles.formLabel}>Email</span>
+                <input
+                  className={styles.formElement}
+                  type="email"
+                  autoComplete="email"
+                  ref={this.emailInput}
+                  name="email"
+                />
+              </label>
+              <label className={styles.formGroup}>
+                <span className={styles.formLabel}>Password</span>
+                <input
+                  className={styles.formElement}
+                  type="password"
+                  autoComplete="current-password"
+                  ref={this.passwordInput}
+                  name="password"
+                />
+              </label>
+              <button className={styles.formSubmit} type="submit">
+                Login
+              </button>
             </form>
             {this.props.error && (
               <div style={{ color: 'red' }}>{this.props.error}</div>
             )}
           </div>
+        </div>
+        <div className={styles.info}>
+          <ConnectLogoFull className={styles.logoFull} />
+          <Info className={styles.laptop} />
         </div>
       </div>
     )

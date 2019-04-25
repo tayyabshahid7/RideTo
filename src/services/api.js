@@ -41,6 +41,22 @@ export const apiGetUnallocatedTests = (schoolId, token) => {
     .catch(error => error)
 }
 
+export const apiHideUnallocatedTest = (schoolId, testId, token) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    params: {
+      id: testId
+    },
+    baseURL: BASE_URL
+  }
+  return axios
+    .post(`api/o/${schoolId}/upcoming-tests/hide/`, config)
+    .catch(error => error)
+}
+
 const request = async (
   method,
   path,

@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import styles from './styles.scss'
 import { TEST_STATUS_CHOICES } from 'common/constants'
 
-function UnallocatedTestsTable({ tests }) {
+function UnallocatedTestsTable({ tests, hideNotification }) {
   return (
     <div className={styles.container}>
       <table className="table table-responsive-md">
@@ -15,6 +15,7 @@ function UnallocatedTestsTable({ tests }) {
             <th>Test Date</th>
             <th>Status</th>
             <th>Cancel Date</th>
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -52,6 +53,16 @@ function UnallocatedTestsTable({ tests }) {
                   <td>{TEST_STATUS_CHOICES[status]}</td>
                   <td className={classnames(isExpiring && styles.isExpiring)}>
                     {lastDateCancel.format('DD/MM')}
+                  </td>
+                  <td>
+                    <button
+                      className={styles.hideNotification}
+                      onClick={() => {
+                        hideNotification(id)
+                      }}
+                      title="Hide notification">
+                      ×
+                    </button>
                   </td>
                 </tr>
               )

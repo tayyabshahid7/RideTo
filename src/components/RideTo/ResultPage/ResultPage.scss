@@ -274,16 +274,16 @@
 
 .actionStatic {
   margin-top: -40px;
-  margin-right: 60px;
+  margin-right: 25px;
   margin-bottom: 29px;
-  margin-left: 60px;
-  width: calc(100% - 120px);
+  margin-left: 25px;
+  width: calc(100% - 50px);
 
   @media (max-width: 768px) {
     margin-top: -60px;
-    margin-right: 32px;
-    margin-left: 32px;
-    width: calc(100% - 64px);
+    margin-right: 25px;
+    margin-left: 25px;
+    width: calc(100% - 50px);
   }
 }
 

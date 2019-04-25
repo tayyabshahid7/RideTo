@@ -13,11 +13,6 @@ import {
   getTotalOrderPrice,
   asPoundSterling
 } from 'services/widget'
-import {
-  getPackageDays,
-  isAnyPackageDatesSelected,
-  isAllPackageDatesSelected
-} from 'common/info'
 import { LICENCE_TYPES } from 'common/constants'
 
 import styles from './BookingOptionsContainer.scss'
@@ -66,10 +61,11 @@ class BookingOptionsContainer extends React.Component {
       isLoading: true,
       isFullLicence,
       selectedLicenceType: null,
-      selectedPackageDays: '',
-      selectedPackageDates: [],
+      selectedPackageHours: '',
       submit: false,
-      loadedMonths: {}
+      loadedMonths: {},
+      showDayOfWeekPicker: false,
+      selectedTimeDays: []
     }
 
     this.handleChangeCourseType = this.handleChangeCourseType.bind(this)
@@ -78,9 +74,9 @@ class BookingOptionsContainer extends React.Component {
     this.handleChangeMonth = this.handleChangeMonth.bind(this)
     this.handleSelectBikeHire = this.handleSelectBikeHire.bind(this)
     this.onUpdate = this.onUpdate.bind(this)
-    this.onSelectPackageDays = this.onSelectPackageDays.bind(this)
-    this.onSelectPackageDate = this.onSelectPackageDate.bind(this)
+    this.onSelectPackageHours = this.onSelectPackageHours.bind(this)
     this.handleSubmitClick = this.handleSubmitClick.bind(this)
+    this.timeDayChange = this.timeDayChange.bind(this)
 
     window.sessionStorage.removeItem('widgetTrainings')
 
@@ -110,7 +106,9 @@ class BookingOptionsContainer extends React.Component {
           schoolCourses: [],
           loadedMonths: {},
           selectedCourse: null,
-          courseType: this.props.selectedSupplier.courses[0]
+          courseType: this.props.selectedSupplier.courses[0],
+          isFullLicence:
+            this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
         () => {
           this.fetchCourses(month.clone())
@@ -193,7 +191,7 @@ class BookingOptionsContainer extends React.Component {
       isLoading: false,
       isFullLicence,
       selectedLicenceType: null,
-      selectedPackageDays: '',
+      selectedPackageHours: '',
       selectedPackageDates: []
     })
   }
@@ -246,19 +244,6 @@ class BookingOptionsContainer extends React.Component {
   }
 
   onUpdate(data) {
-    const { isFullLicence, selectedPackageDates } = this.state
-
-    if (
-      isFullLicence &&
-      (data.hasOwnProperty('bike_hire') ||
-        data.hasOwnProperty('selectedLicenceType') ||
-        data.hasOwnProperty('selectedPackageDays')) &&
-      isAnyPackageDatesSelected(selectedPackageDates) &&
-      !window.confirm('Changing this will unset any dates')
-    ) {
-      return
-    }
-
     const newState = { ...data }
 
     if (data.bike_hire) {
@@ -268,40 +253,27 @@ class BookingOptionsContainer extends React.Component {
     this.setState(newState)
   }
 
-  onSelectPackageDays(days) {
-    const packageDays = getPackageDays(days)
-
+  onSelectPackageHours(hours) {
     this.onUpdate({
-      selectedPackageDays: days,
-      selectedPackageDates: packageDays
+      selectedPackageHours: hours
     })
   }
 
-  onSelectPackageDate(index, { date, course_id, time }) {
-    const newDates = [...this.state.selectedPackageDates]
+  timeDayChange({ time, day, status }) {
+    const { selectedTimeDays } = this.state
+    const dayTime = `${day}_${time}`
 
-    if (
-      newDates[index + 1] &&
-      newDates[index + 1].date !== '' &&
-      !window.confirm('Changing this will unset subsequent dates')
-    ) {
-      return
+    if (status) {
+      this.setState({
+        selectedTimeDays: [...selectedTimeDays, dayTime]
+      })
+    } else {
+      this.setState({
+        selectedTimeDays: selectedTimeDays.filter(
+          timeDay => timeDay !== dayTime
+        )
+      })
     }
-
-    newDates[index].course_id = course_id
-    newDates[index].date = date
-    newDates[index].time = time
-    newDates.forEach((date, i) => {
-      if (i > index) {
-        date.course_id = null
-        date.date = ''
-        date.time = ''
-      }
-    })
-
-    this.setState({
-      selectedPackageDates: newDates
-    })
   }
 
   getTotalPrice() {
@@ -319,26 +291,32 @@ class BookingOptionsContainer extends React.Component {
     const { selectedSupplier, slug } = this.props
     const {
       isFullLicence,
-      selectedPackageDates,
-      selectedLicenceType,
       selectedBikeHire,
-      selectedCourse
+      selectedCourse,
+      showDayOfWeekPicker,
+      selectedTimeDays,
+      selectedLicenceType,
+      selectedPackageHours
     } = this.state
 
     let trainings = []
 
-    if (isFullLicence) {
-      trainings = selectedPackageDates.map(training => {
-        return {
-          school_course_id: training.course_id,
-          course_type: training.type,
-          full_licence_type: LICENCE_TYPES[selectedLicenceType],
-          bike_type: selectedBikeHire,
-          supplier_id: selectedSupplier.id,
-          requested_date: training.date,
-          requested_time: training.time
-        }
+    if (isFullLicence && !showDayOfWeekPicker) {
+      this.setState({
+        showDayOfWeekPicker: true
       })
+      return
+    }
+
+    if (isFullLicence) {
+      trainings = selectedTimeDays.map(timeDay => ({
+        selected_availability: timeDay,
+        course_type: 'FULL_LICENCE',
+        full_licence_type: LICENCE_TYPES[selectedLicenceType],
+        bike_type: selectedBikeHire,
+        supplier_id: selectedSupplier.id,
+        package_hours: selectedPackageHours
+      }))
     } else {
       trainings = [
         {
@@ -370,11 +348,12 @@ class BookingOptionsContainer extends React.Component {
       selectedCourse,
       selectedBikeHire,
       selectedLicenceType,
-      selectedPackageDays,
-      selectedPackageDates,
+      selectedPackageHours,
       isLoading,
       isFullLicence,
-      submit
+      submit,
+      showDayOfWeekPicker,
+      selectedTimeDays
     } = this.state
     const selectedCourses = getSchoolCoursesByDate(
       selectedDate,
@@ -422,12 +401,14 @@ class BookingOptionsContainer extends React.Component {
             course={selectedSupplier}
             bike_hire={selectedBikeHire}
             onUpdate={this.onUpdate}
-            onSelectPackage={this.onSelectPackageDays}
+            onSelectPackage={this.onSelectPackageHours}
             onSelectPackageDate={this.onSelectPackageDate}
             selectedLicenceType={selectedLicenceType}
-            selectedPackageDays={selectedPackageDays}
-            selectedPackageDates={selectedPackageDates}
+            selectedPackageHours={selectedPackageHours}
             phoneNumber={selectedSupplier.phone}
+            showDayOfWeekPicker={showDayOfWeekPicker}
+            selectedTimeDays={selectedTimeDays}
+            timeDayChange={this.timeDayChange}
           />
         )}
 
@@ -462,10 +443,13 @@ class BookingOptionsContainer extends React.Component {
           </React.Fragment>
         ) : null}
 
-        {((isFullLicence && isAllPackageDatesSelected(selectedPackageDates)) ||
+        {((isFullLicence &&
+          selectedBikeHire &&
+          selectedLicenceType &&
+          selectedPackageHours) ||
           (!isFullLicence && selectedCourse)) && (
           <button onClick={this.handleSubmitClick} className="WidgetBtn">
-            Book Now
+            {isFullLicence ? 'Continue' : 'Book Now'}
           </button>
         )}
       </div>
