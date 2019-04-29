@@ -601,7 +601,7 @@ class ResultPage extends Component {
                             {this.renderSortByDropdown()}
                           </div>
                         )}
-                        {courses && (
+                        {courses && userLocation && (
                           <MapComponent
                             className={styles.mapWrapper}
                             courses={courses}
