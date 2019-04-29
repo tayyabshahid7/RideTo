@@ -80,6 +80,7 @@ class ResultPage extends Component {
       )
     ) {
       this.handleCourseChange(courseTypes[0].constant)
+      return
     }
 
     this.setState({
