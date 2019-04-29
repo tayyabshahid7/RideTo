@@ -68,13 +68,22 @@ class ResultPage extends Component {
     }
     window.scrollTo(0, 0)
 
-    const { postcode } = this.props
+    const { postcode, courseType } = this.props
     const result = await fetchCoursesTypes(postcode || '')
-    const courseTypes = result.results
-    this.setState({
-      courseTypesOptions: courseTypes.filter(
-        courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
+    const courseTypes = result.results.filter(
+      courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
+    )
+
+    if (
+      !courseTypes.some(
+        courseTypeOption => courseTypeOption.constant === courseType
       )
+    ) {
+      this.handleCourseChange(courseTypes[0].constant)
+    }
+
+    this.setState({
+      courseTypesOptions: courseTypes
     })
   }
 
