@@ -234,12 +234,13 @@ class OrderSummary extends Component {
           onChange={onChange}
         />
         <div className={styles.sectionFooter}>
-          {!instantBook && (
+          {(!instantBook || isFullLicence) && (
             <div id="terms-conditions-section" className={styles.information}>
               <p>
                 You won't be charged until your booking is confirmed, we'll just
                 reserve the amount on your card. Bookings require confirmation
-                from the instructor, usually within 3 working hours.
+                from the instructor, usually within {isFullLicence ? '12' : '3'}{' '}
+                working hours.
               </p>
             </div>
           )}
@@ -249,7 +250,8 @@ class OrderSummary extends Component {
             </div>
             <div className={styles.guarenteeContent}>
               <div className={styles.guarantee1}>
-                Cancel with 3 working days notice to get a full refund.
+                Cancel with {isFullLicence ? '12' : '3'} working days notice to
+                get a full refund.
               </div>
               <a
                 href="https://www.rideto.com/terms#cancellations"
