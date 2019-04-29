@@ -45,10 +45,7 @@ class ResultPageContainer extends Component {
     this.state = {
       date: null,
       sortByOption: SORTBY.DISTANCE,
-      userLocation: {
-        lat: 51.711712,
-        lng: -0.327693
-      },
+      userLocation: null,
       postcode,
       courseType,
       courses: null,
@@ -64,7 +61,17 @@ class ResultPageContainer extends Component {
     this.loadData()
 
     const userLocation = await fetchSearchLocation(this.state.postcode)
-    this.setState({ userLocation })
+
+    if (userLocation) {
+      this.setState({ userLocation })
+    } else {
+      this.setState({
+        userLocation: {
+          lat: 51.711712,
+          lng: -0.327693
+        }
+      })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
