@@ -22,6 +22,10 @@
   color: inherit;
   line-height: 1;
 
+  @media (max-width: 992px) {
+    margin-top: 0;
+  }
+
   i::before {
     content: '\00d7';
   }
