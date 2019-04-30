@@ -39,7 +39,7 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
             <div className={styles.title}>Booking Complete</div>
             <div className={styles.subTitle}>
               {subTitle}
-              {showDisclaimer && (
+              {showDisclaimer && !isFullLicence && (
                 <span>
                   <br />
                   <br />
