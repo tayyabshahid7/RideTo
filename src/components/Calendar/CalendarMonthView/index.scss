@@ -40,6 +40,7 @@
   overflow: hidden;
   // margin-right: -15px;
   display: flex;
+  flex-grow: 1;
 }
 
 @media (max-width: 768px) {

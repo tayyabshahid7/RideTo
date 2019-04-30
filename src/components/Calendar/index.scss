@@ -11,6 +11,8 @@
   display: flex;
   position: relative;
   // margin-right: -17px;
+
+  flex-grow: 1;
 }
 .overview {
   flex: 0 0 60px;
