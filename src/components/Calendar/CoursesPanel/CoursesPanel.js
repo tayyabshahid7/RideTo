@@ -25,6 +25,14 @@ class CoursesPanel extends React.Component {
                 updateAdding={updateAdding}
               />
             ))}
+
+          {!addingOrder && (
+            <Link
+              className={styles.addCourse}
+              to={`/calendar/courses/create?date=${date}`}>
+              Add course
+            </Link>
+          )}
         </div>
 
         {!addingOrder && (

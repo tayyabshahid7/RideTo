@@ -34,7 +34,8 @@
   margin-right: -15px;
 }
 
-.addEvent {
+.addEvent,
+.addCourse {
   display: flex;
   width: 100%;
   height: 62px;
@@ -48,4 +49,9 @@
     text-decoration: none;
     background: var(--highlight);
   }
+}
+
+.addCourse {
+  margin-top: -22px;
+  margin-bottom: 5px;
 }
