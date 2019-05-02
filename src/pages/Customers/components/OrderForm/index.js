@@ -311,7 +311,7 @@ class OrderForm extends React.Component {
               <Button
                 disabled={isSending}
                 color="primary"
-                outline
+                outline="true"
                 onClick={this.handleConfirmation}>
                 Send Confirmation
               </Button>
