@@ -3,8 +3,12 @@ import styles from './styles.scss'
 import { getAge } from 'utils/helper'
 import classnames from 'classnames'
 import TimeField from 'react-simple-timefield'
+import moment from 'moment'
 
-export function ConnectInput({
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+
+function MyDatePicker({
   label,
   type = 'text',
   onChange,
@@ -15,6 +19,41 @@ export function ConnectInput({
   required,
   basic
 }) {
+  return (
+    <DatePicker
+      name={name}
+      className={classnames(styles.input, basic && styles.basic)}
+      id={id || name}
+      type="date"
+      selected={value && new Date(value)}
+      onChange={date => {
+        onChange({
+          target: {
+            name: name,
+            value: moment(date).format('YYYY-MM-DD')
+          }
+        })
+      }}
+      dateFormat="dd/MM/yyyy"
+      disabled={disabled}
+      required={required}
+    />
+  )
+}
+
+export function ConnectInput(props) {
+  const {
+    label,
+    type = 'text',
+    onChange,
+    value,
+    id,
+    name,
+    disabled,
+    required,
+    basic
+  } = props
+
   if (type === 'time') {
     return (
       <div className={styles.formGroup}>
@@ -48,6 +87,19 @@ export function ConnectInput({
     )
   }
 
+  if (type === 'date') {
+    return (
+      <div className={styles.formGroup}>
+        {label && (
+          <label className={styles.label} htmlFor={id || name}>
+            {label}
+          </label>
+        )}
+        <MyDatePicker {...props} />
+      </div>
+    )
+  }
+
   return (
     <div className={styles.formGroup}>
       {label && (
@@ -69,16 +121,9 @@ export function ConnectInput({
   )
 }
 
-export function ConnectAgeInput({
-  label,
-  onChange,
-  value,
-  id,
-  name,
-  disabled,
-  required,
-  basic
-}) {
+export function ConnectAgeInput(props) {
+  const { label, id, name, value } = props
+
   return (
     <div className={styles.formGroup}>
       {label && (
@@ -87,16 +132,7 @@ export function ConnectAgeInput({
         </label>
       )}
       <div className={styles.ageInputGroup}>
-        <input
-          name={name}
-          className={classnames(styles.input, basic && styles.basic)}
-          id={id || name}
-          type="date"
-          value={value}
-          onChange={onChange}
-          disabled={disabled}
-          required={required}
-        />
+        <MyDatePicker {...props} />
         {value && <div className={styles.age}>({getAge(value)})</div>}
       </div>
     </div>

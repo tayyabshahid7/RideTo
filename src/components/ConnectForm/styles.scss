@@ -85,13 +85,22 @@ select {
 .ageInputGroup {
   display: flex;
 
-  .input {
+  // .input {
+  //   flex: 1 1 auto;
+  //   width: 1%;
+  // }
+
+  > div:first-child {
     flex: 1 1 auto;
     width: 1%;
+
+    > div:first-child {
+      width: 100%;
+    }
   }
 
   .age {
-    height: 20px;
+    height: 21px;
     color: #707070;
     border-bottom: 1px dashed #e4e4e4;
   }
