@@ -26,7 +26,6 @@ function MyDatePicker({
       type="date"
       selected={value && new Date(value)}
       onChange={date => {
-        console.log(date)
         onChange({
           target: {
             name: name,
