@@ -23,7 +23,7 @@ class CalendarWeekView extends Component {
               <span>
                 {moment(
                   new Date(
-                    new Date('2000-01-01 00:00:00') -
+                    new Date('2000-01-01T00:00:00Z') -
                       (WEEK_VIEW_START_TIME + index * 30 * 60) * -1000
                   )
                 ).format('HH:mm')}
@@ -77,7 +77,7 @@ class CalendarWeekView extends Component {
 
   evaluateData(days) {
     let date = '2000-01-01'
-    let baseDate = new Date('2000-01-01 00:00:00')
+    let baseDate = new Date('2000-01-01T00:00:00Z')
     let results = days.map(day => {
       let dayObj = { ...day }
       dayObj.courses = [
