@@ -138,6 +138,10 @@ class CourseForm extends React.Component {
   }
 
   getFinishTime(time, duration) {
+    if (!time) {
+      return '00:00'
+    }
+
     return moment(time, 'HH:mm')
       .add(duration, 'minute')
       .format('HH:mm')
