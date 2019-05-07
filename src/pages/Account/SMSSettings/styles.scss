@@ -23,9 +23,12 @@
 }
 
 .credits {
-  display: flex;
-  justify-content: space-between;
   margin-bottom: 1rem;
+
+  @media (min-width: 769px) {
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .intro {
@@ -38,6 +41,17 @@
 
 .buttonRow {
   margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    button {
+      display: block;
+      margin-left: 0 !important;
+
+      + button {
+        margin-top: 0.5rem;
+      }
+    }
+  }
 }
 
 .container {

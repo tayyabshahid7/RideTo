@@ -13,6 +13,7 @@ import settings from './settings'
 import notification from './notification'
 import upload from './upload'
 import email from './email'
+import sms from './sms'
 
 const appReducer = combineReducers({
   auth,
@@ -28,6 +29,7 @@ const appReducer = combineReducers({
   supplier,
   notification,
   upload,
-  email
+  email,
+  sms
 })
 export default appReducer

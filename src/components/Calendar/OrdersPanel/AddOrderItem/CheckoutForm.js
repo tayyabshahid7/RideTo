@@ -43,7 +43,8 @@ function CheckoutForm({
   price,
   cardName,
   handleCardNameChange,
-  handleStripeElementChange
+  handleStripeElementChange,
+  singlePage = false
 }) {
   return (
     <div className={styles.checkout}>
@@ -57,7 +58,7 @@ function CheckoutForm({
             <PoweredByStripe />
           </a>
         </span>
-        <span>Step 2 of 2</span>
+        {!singlePage && <span>Step 2 of 2</span>}
       </div>
       <div className={styles.price}>Total: £{(price / 100.0).toFixed(2)}</div>
       <div>
