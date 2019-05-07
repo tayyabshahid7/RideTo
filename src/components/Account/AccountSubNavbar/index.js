@@ -52,6 +52,14 @@ let AccountSubNavbar = ({ history }) => {
           <NavLink
             className={styles.navLink}
             activeClassName={styles.activeNavLink}
+            to="/account/sms">
+            SMS
+          </NavLink>
+        </li>
+        <li className="nav-item">
+          <NavLink
+            className={styles.navLink}
+            activeClassName={styles.activeNavLink}
             to="/account/instructors">
             Instructors
           </NavLink>

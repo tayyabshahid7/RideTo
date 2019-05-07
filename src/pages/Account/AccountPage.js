@@ -7,6 +7,7 @@ import BookingWidgetSettings from './BookingWidgetSettings'
 import EmailSettings from './EmailSettings'
 import Instructors from './Instructors'
 import CsvUpload from './CsvUpload'
+import SMSSettings from './SMSSettings'
 import Bikes from './Bikes'
 import styles from './styles.scss'
 
@@ -53,6 +54,13 @@ class AccountPage extends Component {
             path="/account/csv-upload"
             render={routeProps => (
               <CsvUpload {...routeProps} schoolId={schoolId} />
+            )}
+          />
+          <Route
+            exact
+            path="/account/sms"
+            render={routeProps => (
+              <SMSSettings {...routeProps} schoolId={schoolId} />
             )}
           />
           <Route
