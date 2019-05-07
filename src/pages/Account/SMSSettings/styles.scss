@@ -1,0 +1,59 @@
+.title {
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 23px;
+  margin-bottom: 0.25rem;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 70px;
+  border: 2px solid #e4e4e4;
+  padding: 25px;
+
+  @media (max-width: 768px) {
+    margin-top: 30px;
+    display: block;
+  }
+}
+
+.boxVertical {
+  flex-direction: column;
+}
+
+.credits {
+  margin-bottom: 1rem;
+
+  @media (min-width: 769px) {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.intro {
+  max-width: 366px;
+
+  @media (min-width: 769px) {
+    margin-right: 1rem;
+  }
+}
+
+.buttonRow {
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    button {
+      display: block;
+      margin-left: 0 !important;
+
+      + button {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}
+
+.container {
+  margin-top: 16px;
+}

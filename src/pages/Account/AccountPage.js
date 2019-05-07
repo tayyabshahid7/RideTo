@@ -7,8 +7,11 @@ import BookingWidgetSettings from './BookingWidgetSettings'
 import EmailSettings from './EmailSettings'
 import Instructors from './Instructors'
 import CsvUpload from './CsvUpload'
+import SMSSettings from './SMSSettings'
 import Bikes from './Bikes'
 import styles from './styles.scss'
+import { STRIPE_KEY } from 'common/constants'
+import { StripeProvider, Elements } from 'react-stripe-elements'
 
 class AccountPage extends Component {
   // componentDidMount() {
@@ -53,6 +56,17 @@ class AccountPage extends Component {
             path="/account/csv-upload"
             render={routeProps => (
               <CsvUpload {...routeProps} schoolId={schoolId} />
+            )}
+          />
+          <Route
+            exact
+            path="/account/sms"
+            render={routeProps => (
+              <StripeProvider apiKey={STRIPE_KEY}>
+                <Elements>
+                  <SMSSettings {...routeProps} schoolId={schoolId} />
+                </Elements>
+              </StripeProvider>
             )}
           />
           <Route

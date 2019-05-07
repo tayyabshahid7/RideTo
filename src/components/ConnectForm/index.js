@@ -291,6 +291,7 @@ export function Button({
   onClick,
   disabled,
   small,
+  large,
   className,
   ...rest
 }) {
@@ -304,7 +305,8 @@ export function Button({
         className,
         styles.button,
         styles[`button${color.charAt(0).toUpperCase()}${color.slice(1)}`],
-        small && styles.buttonSmall
+        small && styles.buttonSmall,
+        large && styles.buttonLarge
       )}>
       {children}
     </button>
