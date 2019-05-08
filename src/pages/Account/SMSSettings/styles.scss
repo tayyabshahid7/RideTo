@@ -57,3 +57,23 @@
 .container {
   margin-top: 16px;
 }
+
+.editButton {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    margin-top: 26px;
+    width: auto;
+    min-width: 0;
+    display: inline;
+    height: auto;
+    padding: 0;
+
+    &:hover {
+      color: var(--primary-color);
+      background: none;
+      text-decoration: underline;
+    }
+  }
+}
