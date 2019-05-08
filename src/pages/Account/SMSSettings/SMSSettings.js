@@ -66,7 +66,7 @@ class SMSSettings extends Component {
 
       const paymentResponse = await purchaseCredits(schoolId, {
         token: token.id,
-        sms_credit: selectedValue * 100
+        sms_credit: String(selectedValue * 100)
       })
 
       if (paymentResponse) {
