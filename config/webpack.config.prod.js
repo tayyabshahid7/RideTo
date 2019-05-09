@@ -434,6 +434,7 @@ module.exports = {
     hints: false
   },
   optimization: {
-    minimizer: [new TerserPlugin()]
+    minimizer: [new TerserPlugin()],
+    concatenateModules: true
   }
 }
