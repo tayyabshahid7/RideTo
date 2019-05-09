@@ -318,6 +318,6 @@ module.exports = {
   // splitting or minification in interest of speed. These warnings become
   // cumbersome.
   performance: {
-    hints: false
+    hints: 'warning'
   }
 }
