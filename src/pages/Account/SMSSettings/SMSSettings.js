@@ -6,6 +6,8 @@ import { Button, ConnectTextArea } from 'components/ConnectForm'
 import CheckoutForm from 'components/Calendar/OrdersPanel/AddOrderItem/CheckoutForm'
 import { injectStripe } from 'react-stripe-elements'
 import Loading from 'components/Loading'
+import Toggle from 'react-toggle'
+import 'react-toggle/style.css'
 
 class SMSSettings extends Component {
   constructor(props) {
@@ -15,6 +17,7 @@ class SMSSettings extends Component {
       cbt_booking_confirmation: '',
       full_licence_booking_confirmation: '',
       post_cbt_feedback: '',
+      sms_active: true,
       ...this.props.settings
     }
 
@@ -41,6 +44,7 @@ class SMSSettings extends Component {
     this.handleStripeElementChange = this.handleStripeElementChange.bind(this)
     this.handleEditClick = this.handleEditClick.bind(this)
     this.handleSaveClick = this.handleSaveClick.bind(this)
+    this.handleToggleChange = this.handleToggleChange.bind(this)
   }
 
   componentDidMount() {
@@ -118,9 +122,28 @@ class SMSSettings extends Component {
   handleSaveClick(el) {
     const { updateWidgetSettings } = this.props
     const { settings } = this.state
-    updateWidgetSettings(settings)
+    // updateWidgetSettings(settings)
+    updateWidgetSettings({
+      [el]: settings[el]
+    })
     this.setState({
       [`${el}Editable`]: false
+    })
+  }
+
+  handleToggleChange() {
+    const { updateWidgetSettings } = this.props
+    const { settings } = this.state
+    const newState = !settings.sms_active
+
+    this.setState({
+      settings: {
+        ...settings,
+        sms_active: newState
+      }
+    })
+    updateWidgetSettings({
+      sms_active: newState
     })
   }
 
@@ -136,175 +159,189 @@ class SMSSettings extends Component {
       settings: {
         cbt_booking_confirmation,
         full_licence_booking_confirmation,
-        post_cbt_feedback
+        sms_active
+        // post_cbt_feedback
       },
       cbt_booking_confirmationEditable,
-      full_licence_booking_confirmationEditable,
-      post_cbt_feedbackEditable
+      full_licence_booking_confirmationEditable
+      // post_cbt_feedbackEditable
     } = this.state
 
     return (
       <Fragment>
         <Row className={styles.container}>
           <Col>
-            <div className={classnames(styles.box, styles.boxVertical)}>
-              <div>
+            <div className={styles.toggleContainer}>
+              <label>
+                <Toggle
+                  checked={sms_active}
+                  className={styles.myToggle}
+                  icons={false}
+                  onChange={this.handleToggleChange}
+                />
+                <span>Toggle SMS</span>
+              </label>
+            </div>
+            <div className={!sms_active && styles.disabledBlock}>
+              <div className={classnames(styles.box, styles.boxVertical)}>
                 <div>
-                  <h3 className={styles.title}>SMS credits</h3>
-                  <div className={styles.credits}>
-                    <div className={styles.intro}>
-                      <p>
-                        SMS credits are required to send SMS to customers. Here
-                        you can check your credits and purchase more
-                      </p>
-                    </div>
-                    <div className={styles.title}>
-                      <span style={{ color: 'var(--primary-color)' }}>
-                        Current credits:
-                      </span>{' '}
-                      {Math.trunc(credit_unit)} SMS
+                  <div>
+                    <h3 className={styles.title}>SMS credits</h3>
+                    <div className={styles.credits}>
+                      <div className={styles.intro}>
+                        <p>
+                          SMS credits are required to send SMS to customers.
+                          Here you can check your credits and purchase more
+                        </p>
+                      </div>
+                      <div className={styles.title}>
+                        <span style={{ color: 'var(--primary-color)' }}>
+                          Current credits:
+                        </span>{' '}
+                        {Math.trunc(credit_unit)} SMS
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div>
-                <h3 className={styles.title}>Purchase SMS credits</h3>
-                <div className={styles.buttonRow}>
-                  {[200, 100, 40].map(value => (
-                    <Button
-                      key={value}
-                      large
-                      onClick={() => {
-                        this.setState({
-                          selectedValue: value
-                        })
-                      }}>
-                      Add £{value}
-                    </Button>
-                  ))}
+                <div>
+                  <h3 className={styles.title}>Purchase SMS credits</h3>
+                  <div className={styles.buttonRow}>
+                    {[200, 100, 40].map(value => (
+                      <Button
+                        key={value}
+                        large
+                        onClick={() => {
+                          this.setState({
+                            selectedValue: value
+                          })
+                        }}>
+                        Add £{value}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-            <Loading loading={saving}>
-              <div className={classnames(styles.box, styles.boxVertical)}>
-                <h3 className={styles.title}>SMS templates</h3>
-                <p className={styles.intro}>
-                  Write the copy that you wish to display in your SMS
-                  communication to customers
-                </p>
-                <div>
-                  <Row>
-                    <Col>
-                      <ConnectTextArea
-                        ref={this.cbt_booking_confirmationEl}
-                        noBorder
-                        autoHeight
-                        name="cbt_booking_confirmation"
-                        value={cbt_booking_confirmation}
-                        label="CBT booking confirmation"
-                        type="textarea"
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        disabled={!cbt_booking_confirmationEditable}
-                      />
-                    </Col>
-                    <Col xs="2">
-                      <div className={styles.editButton}>
-                        <Button
-                          color="link"
-                          onClick={() => {
-                            this.handleEditClick('cbt_booking_confirmation')
-                          }}>
-                          Edit
-                        </Button>
-                        {cbt_booking_confirmationEditable && (
+              <Loading loading={saving}>
+                <div className={classnames(styles.box, styles.boxVertical)}>
+                  <h3 className={styles.title}>SMS templates</h3>
+                  <p className={styles.intro}>
+                    Write the copy that you wish to display in your SMS
+                    communication to customers
+                  </p>
+                  <div>
+                    <Row>
+                      <Col>
+                        <ConnectTextArea
+                          ref={this.cbt_booking_confirmationEl}
+                          noBorder
+                          autoHeight
+                          name="cbt_booking_confirmation"
+                          value={cbt_booking_confirmation}
+                          label="CBT booking confirmation"
+                          type="textarea"
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          disabled={!cbt_booking_confirmationEditable}
+                        />
+                      </Col>
+                      <Col xs="2">
+                        <div className={styles.editButton}>
                           <Button
                             color="link"
                             onClick={() => {
-                              this.handleSaveClick('cbt_booking_confirmation')
+                              this.handleEditClick('cbt_booking_confirmation')
                             }}>
-                            Save
+                            Edit
                           </Button>
-                        )}
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <ConnectTextArea
-                        ref={this.full_licence_booking_confirmationEl}
-                        noBorder
-                        autoHeight
-                        name="full_licence_booking_confirmation"
-                        value={full_licence_booking_confirmation}
-                        label="Full licence booking confirmation"
-                        type="textarea"
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        disabled={!full_licence_booking_confirmationEditable}
-                      />
-                    </Col>
-                    <Col xs="2">
-                      <div className={styles.editButton}>
-                        <Button
-                          color="link"
-                          onClick={() => {
-                            this.handleEditClick(
-                              'full_licence_booking_confirmation'
-                            )
-                          }}>
-                          Edit
-                        </Button>
-                        {full_licence_booking_confirmationEditable && (
+                          {cbt_booking_confirmationEditable && (
+                            <Button
+                              color="link"
+                              onClick={() => {
+                                this.handleSaveClick('cbt_booking_confirmation')
+                              }}>
+                              Save
+                            </Button>
+                          )}
+                        </div>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <ConnectTextArea
+                          ref={this.full_licence_booking_confirmationEl}
+                          noBorder
+                          autoHeight
+                          name="full_licence_booking_confirmation"
+                          value={full_licence_booking_confirmation}
+                          label="Full licence booking confirmation"
+                          type="textarea"
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          disabled={!full_licence_booking_confirmationEditable}
+                        />
+                      </Col>
+                      <Col xs="2">
+                        <div className={styles.editButton}>
                           <Button
                             color="link"
                             onClick={() => {
-                              this.handleSaveClick(
+                              this.handleEditClick(
                                 'full_licence_booking_confirmation'
                               )
                             }}>
-                            Save
+                            Edit
                           </Button>
-                        )}
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <ConnectTextArea
-                        ref={this.post_cbt_feedbackEl}
-                        noBorder
-                        autoHeight
-                        name="post_cbt_feedback"
-                        value={post_cbt_feedback}
-                        label="Post CBT feedback"
-                        type="textarea"
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        disabled={!post_cbt_feedbackEditable}
-                      />
-                    </Col>
-                    <Col xs="2">
-                      <div className={styles.editButton}>
-                        <Button
-                          color="link"
-                          onClick={() => {
-                            this.handleEditClick('post_cbt_feedback')
-                          }}>
-                          Edit
-                        </Button>
-                        {post_cbt_feedbackEditable && (
+                          {full_licence_booking_confirmationEditable && (
+                            <Button
+                              color="link"
+                              onClick={() => {
+                                this.handleSaveClick(
+                                  'full_licence_booking_confirmation'
+                                )
+                              }}>
+                              Save
+                            </Button>
+                          )}
+                        </div>
+                      </Col>
+                    </Row>
+                    {/*                   <Row>
+                      <Col>
+                        <ConnectTextArea
+                          ref={this.post_cbt_feedbackEl}
+                          noBorder
+                          autoHeight
+                          name="post_cbt_feedback"
+                          value={post_cbt_feedback}
+                          label="Post CBT feedback"
+                          type="textarea"
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          disabled={!post_cbt_feedbackEditable}
+                        />
+                      </Col>
+                      <Col xs="2">
+                        <div className={styles.editButton}>
                           <Button
                             color="link"
                             onClick={() => {
-                              this.handleSaveClick('post_cbt_feedback')
+                              this.handleEditClick('post_cbt_feedback')
                             }}>
-                            Save
+                            Edit
                           </Button>
-                        )}
-                      </div>
-                    </Col>
-                  </Row>
+                          {post_cbt_feedbackEditable && (
+                            <Button
+                              color="link"
+                              onClick={() => {
+                                this.handleSaveClick('post_cbt_feedback')
+                              }}>
+                              Save
+                            </Button>
+                          )}
+                        </div>
+                      </Col>
+                    </Row> */}
+                  </div>
                 </div>
-              </div>
-            </Loading>
+              </Loading>
+            </div>
           </Col>
         </Row>
 
