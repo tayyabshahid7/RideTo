@@ -69,6 +69,13 @@ class ResultPage extends Component {
     window.scrollTo(0, 0)
 
     const { postcode, courseType } = this.props
+
+    window.onpopstate = ({ state }) => {
+      const { selectedCourse = null } = state
+
+      this.handlePriceClick(selectedCourse)
+    }
+
     const result = await fetchCoursesTypes(postcode || '')
     const courseTypes = result.results.filter(
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
@@ -86,6 +93,14 @@ class ResultPage extends Component {
     this.setState({
       courseTypesOptions: courseTypes
     })
+  }
+
+  componentDidUpdate(prevProps) {
+    const { defaultCourse } = this.props
+
+    if (defaultCourse && prevProps.defaultCourse === null) {
+      this.handlePriceClick(defaultCourse)
+    }
   }
 
   handleDetailClick(course) {

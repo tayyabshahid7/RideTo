@@ -23,6 +23,30 @@ class CourseDetailPanel extends React.Component {
     }
   }
 
+  componentDidMount() {
+    const { course } = this.props
+    const { id } = course
+    const { search } = window.location
+
+    if (search.match(/courseId=/)) {
+      window.history.replaceState({ selectedCourse: course }, '')
+      return
+    }
+
+    window.history.pushState(
+      { selectedCourse: course },
+      '',
+      `${window.location.search}&courseId=${id}`
+    )
+  }
+
+  componentWillUnmount() {
+    const { search } = window.location
+    const strippedSearch = search.replace(/&courseId=\d+/, '')
+
+    window.history.pushState({ selectedCourse: null }, '', strippedSearch)
+  }
+
   render() {
     const {
       course,
