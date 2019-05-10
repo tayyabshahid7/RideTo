@@ -69,7 +69,7 @@ class ResultPage extends Component {
     window.scrollTo(0, 0)
 
     window.onpopstate = ({ state }) => {
-      const { selectedCourse } = state
+      const { selectedCourse = null } = state
 
       this.handlePriceClick(selectedCourse)
     }
