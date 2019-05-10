@@ -78,6 +78,14 @@ class ResultPage extends Component {
     })
   }
 
+  componentDidUpdate(prevProps) {
+    const { defaultCourse } = this.props
+
+    if (defaultCourse && prevProps.defaultCourse === null) {
+      this.handlePriceClick(defaultCourse)
+    }
+  }
+
   handleDetailClick(course) {
     this.setState({
       selectedCourse: course,
