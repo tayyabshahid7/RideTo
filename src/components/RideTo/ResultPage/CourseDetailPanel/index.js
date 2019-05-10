@@ -29,6 +29,7 @@ class CourseDetailPanel extends React.Component {
     const { search } = window.location
 
     if (search.match(/courseId=/)) {
+      window.history.replaceState({ selectedCourse: course }, '')
       return
     }
 
