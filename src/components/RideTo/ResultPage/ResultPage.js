@@ -68,6 +68,12 @@ class ResultPage extends Component {
     }
     window.scrollTo(0, 0)
 
+    window.onpopstate = ({ state }) => {
+      const { selectedCourse } = state
+
+      this.handlePriceClick(selectedCourse)
+    }
+
     const { postcode } = this.props
     const result = await fetchCoursesTypes(postcode || '')
     const courseTypes = result.results

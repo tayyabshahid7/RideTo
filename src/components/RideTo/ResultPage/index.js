@@ -8,6 +8,7 @@ import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 import { fetchSearchLocation } from 'services/geolocation'
 import { parseQueryString } from 'services/api'
 import { getStaticData } from 'services/page'
+import { findResultsCourseWithId } from 'services/course'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -99,13 +100,7 @@ class ResultPageContainer extends Component {
         let defaultCourse = null
 
         if (defaultCourseId) {
-          defaultCourse =
-            response.available.filter(
-              course => course.id === parseInt(defaultCourseId, 10)
-            )[0] ||
-            response.unavailable.filter(
-              course => course.id === parseInt(defaultCourseId, 10)
-            )[0]
+          defaultCourse = findResultsCourseWithId(response, defaultCourseId)
         }
 
         this.setState({
