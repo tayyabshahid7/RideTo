@@ -206,7 +206,7 @@ class SMSSettings extends Component {
                 <div>
                   <h3 className={styles.title}>Purchase SMS credits</h3>
                   <div className={styles.buttonRow}>
-                    {[200, 100, 40].map(value => (
+                    {[200, 100, 40, 20].map(value => (
                       <Button
                         key={value}
                         large
