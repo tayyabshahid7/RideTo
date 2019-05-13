@@ -23,7 +23,7 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
     ? `${order.course_title}`
     : `${order.course_title} on ${date} ${time}`
   const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Bookings require confirmation from the instructor, usually within ${
-    isFullLicence ? '12' : '3'
+    isFullLicence ? '24' : '3'
   } working hours.`
   const fullLicenceDisclaimer =
     "You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Bookings require confirmation from the instructor."
