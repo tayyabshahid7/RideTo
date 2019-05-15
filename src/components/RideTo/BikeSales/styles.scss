@@ -1,0 +1,44 @@
+.container {
+  max-width: 1158px;
+  padding: 0 24px;
+  margin: 0 auto;
+  overflow: hidden;
+  font-family: ProximaNova, Helvetica, Arial, sans-serif;
+}
+
+.header {
+  padding: 3rem 0;
+  color: #fff;
+  background-image: url('assets/images/black-background.png');
+  background-size: cover;
+
+  h1,
+  h2 {
+    font-weight: bold;
+    text-align: center;
+  }
+}
+
+.listing {
+  background-color: #f1f1f1;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -40px;
+  margin-left: -40px;
+}
+
+.item {
+  width: 100%;
+  padding: 0 40px 40px;
+
+  @media (min-width: 651px) {
+    width: 50%;
+  }
+
+  @media (min-width: 1025px) {
+    width: 33.3333333333%;
+  }
+}
