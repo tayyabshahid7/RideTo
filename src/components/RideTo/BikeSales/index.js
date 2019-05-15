@@ -1,7 +1,8 @@
-import React, { Component, Fragment } from 'react'
-import Drawer from 'rc-drawer'
+import React, { Component } from 'react'
+import SlidingPane from 'react-sliding-pane'
 import styles from './styles.scss'
 import BikeSummary from './BikeSummary'
+import 'react-sliding-pane/dist/react-sliding-pane.css'
 
 const DUMMY_DATA = [
   {
@@ -84,16 +85,16 @@ class BikeSales extends Component {
   }
 
   handleFiltersButtonClick() {
+    const { filtersOpen } = this.state
     this.setState({
-      filtersOpen: true
-      // sortOpen: false
+      filtersOpen: !filtersOpen
     })
   }
 
   handleSortButtonClick() {
+    const { sortOpen } = this.state
     this.setState({
-      // filtersOpen: false,
-      sortOpen: true
+      sortOpen: !sortOpen
     })
   }
 
@@ -101,11 +102,11 @@ class BikeSales extends Component {
     const { filtersOpen, sortOpen } = this.state
 
     return (
-      <Fragment>
+      <div className={styles.page}>
         <div className={styles.header}>
           <div className={styles.container}>
             <div>
-              <h1>RideTo Bikers</h1>
+              <h1>RideTo Bikes</h1>
               <h2>Let's find you the perfect ride.</h2>
             </div>
             <div className={styles.filterButtons}>
@@ -136,17 +137,21 @@ class BikeSales extends Component {
             </div>
           </div>
         </div>
-        <Drawer
-          width="250px"
-          handler={false}
-          open={filtersOpen}
-          placement="left">
-          filters
-        </Drawer>
-        <Drawer width="250px" handler={false} open={sortOpen} placement="right">
-          sort
-        </Drawer>
-      </Fragment>
+        <SlidingPane
+          className={styles.panel}
+          isOpen={filtersOpen}
+          onRequestClose={this.handleFiltersButtonClick}
+          from="left">
+          Filters
+        </SlidingPane>
+        <SlidingPane
+          className={styles.panel}
+          isOpen={sortOpen}
+          onRequestClose={this.handleSortButtonClick}
+          from="right">
+          Sort
+        </SlidingPane>
+      </div>
     )
   }
 }
