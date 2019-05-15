@@ -82,7 +82,9 @@ function BikeSales() {
             <button className={styles.filterButton}>Filters</button>
             <button className={styles.filterButton}>Sort</button>
           </div>
-          <div>Results: 205 bikes found</div>
+          <div className={styles.results}>
+            Results: {DUMMY_DATA.length} bikes found
+          </div>
         </div>
       </div>
       <div className={styles.listing}>

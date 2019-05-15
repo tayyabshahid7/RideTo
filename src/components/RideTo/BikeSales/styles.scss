@@ -7,7 +7,8 @@
 }
 
 .header {
-  padding: 3rem 0;
+  position: relative;
+  padding: 3rem 0 calc(3rem + 115px);
   color: #fff;
   background-image: url('assets/images/black-background.png');
   background-size: cover;
@@ -19,11 +20,41 @@
   }
 }
 
+.filterButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 420px;
+  margin: 2rem auto;
+}
+
+.filterButton {
+  appearance: none;
+  width: 120px;
+  height: 50px;
+  padding: 0;
+  font-size: 25px;
+  line-height: 50px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 3px;
+}
+
+.results {
+  font-size: 20px;
+  font-weight: bold;
+}
+
 .listing {
+  margin-top: -115px;
   background-color: #f1f1f1;
 }
 
 .row {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   margin-right: -40px;
