@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
+import Drawer from 'rc-drawer'
 import styles from './styles.scss'
 import BikeSummary from './BikeSummary'
 
@@ -69,37 +70,85 @@ const DUMMY_DATA = [
   }
 ]
 
-function BikeSales() {
-  return (
-    <Fragment>
-      <div className={styles.header}>
-        <div className={styles.container}>
-          <div>
-            <h1>RideTo Bikers</h1>
-            <h2>Let's find you the perfect ride.</h2>
-          </div>
-          <div className={styles.filterButtons}>
-            <button className={styles.filterButton}>Filters</button>
-            <button className={styles.filterButton}>Sort</button>
-          </div>
-          <div className={styles.results}>
-            Results: {DUMMY_DATA.length} bikes found
+class BikeSales extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      filtersOpen: false,
+      sortOpen: false
+    }
+
+    this.handleFiltersButtonClick = this.handleFiltersButtonClick.bind(this)
+    this.handleSortButtonClick = this.handleSortButtonClick.bind(this)
+  }
+
+  handleFiltersButtonClick() {
+    this.setState({
+      filtersOpen: true
+      // sortOpen: false
+    })
+  }
+
+  handleSortButtonClick() {
+    this.setState({
+      // filtersOpen: false,
+      sortOpen: true
+    })
+  }
+
+  render() {
+    const { filtersOpen, sortOpen } = this.state
+
+    return (
+      <Fragment>
+        <div className={styles.header}>
+          <div className={styles.container}>
+            <div>
+              <h1>RideTo Bikers</h1>
+              <h2>Let's find you the perfect ride.</h2>
+            </div>
+            <div className={styles.filterButtons}>
+              <button
+                className={styles.filterButton}
+                onClick={this.handleFiltersButtonClick}>
+                Filters
+              </button>
+              <button
+                className={styles.filterButton}
+                onClick={this.handleSortButtonClick}>
+                Sort
+              </button>
+            </div>
+            <div className={styles.results}>
+              Results: {DUMMY_DATA.length} bikes found
+            </div>
           </div>
         </div>
-      </div>
-      <div className={styles.listing}>
-        <div className={styles.container}>
-          <div className={styles.row}>
-            {DUMMY_DATA.map(bike => (
-              <div className={styles.item}>
-                <BikeSummary bike={bike} />
-              </div>
-            ))}
+        <div className={styles.listing}>
+          <div className={styles.container}>
+            <div className={styles.row}>
+              {DUMMY_DATA.map((bike, i) => (
+                <div className={styles.item} key={i}>
+                  <BikeSummary bike={bike} />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
-    </Fragment>
-  )
+        <Drawer
+          width="250px"
+          handler={false}
+          open={filtersOpen}
+          placement="left">
+          filters
+        </Drawer>
+        <Drawer width="250px" handler={false} open={sortOpen} placement="right">
+          sort
+        </Drawer>
+      </Fragment>
+    )
+  }
 }
 
 export default BikeSales
