@@ -8,7 +8,6 @@ import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 import { fetchSearchLocation } from 'services/geolocation'
 import { parseQueryString } from 'services/api'
 import { getStaticData } from 'services/page'
-import { findResultsCourseWithId } from 'services/course'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -54,8 +53,7 @@ class ResultPageContainer extends Component {
       courseType,
       courses: null,
       loading: false,
-      navigation: this.navigation,
-      defaultCourse: null
+      navigation: this.navigation
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
@@ -63,11 +61,7 @@ class ResultPageContainer extends Component {
   }
 
   async componentDidMount() {
-    const defaultCourseId = new URL(window.location.href).searchParams.get(
-      'courseId'
-    )
-
-    this.loadData(defaultCourseId)
+    this.loadData()
 
     const userLocation = await fetchSearchLocation(this.state.postcode)
     this.setState({ userLocation })
@@ -80,11 +74,11 @@ class ResultPageContainer extends Component {
     }
   }
 
-  loadData(defaultCourseId) {
-    this.loadCourses(defaultCourseId)
+  loadData() {
+    this.loadCourses()
   }
 
-  async loadCourses(defaultCourseId) {
+  async loadCourses() {
     try {
       const { date, sortByOption, courseType, postcode } = this.state
 
@@ -97,16 +91,9 @@ class ResultPageContainer extends Component {
         ordering: sortByOption
       })
       if (response) {
-        let defaultCourse = null
-
-        if (defaultCourseId) {
-          defaultCourse = findResultsCourseWithId(response, defaultCourseId)
-        }
-
         this.setState({
           courses: response,
-          loading: false,
-          defaultCourse
+          loading: false
         })
       } else {
         this.setState({ courses: null, loading: false })
@@ -133,8 +120,7 @@ class ResultPageContainer extends Component {
       loading,
       courseType,
       postcode,
-      navigation,
-      defaultCourse
+      navigation
     } = this.state
 
     return (
@@ -149,7 +135,6 @@ class ResultPageContainer extends Component {
         handeUpdateOption={this.handeUpdateOption}
         navigation={navigation}
         userLocation={userLocation}
-        defaultCourse={defaultCourse}
       />
     )
   }
