@@ -123,13 +123,13 @@ class CustomerDetailForm extends React.Component {
         <ConnectSelect
           textStyle
           label="T&Cs agreed"
-          name="tandc_agree"
+          name="tandc_agreed"
           options={getBooleanSelectOptions()}
           selected={
-            (customer.tandc_agree && customer.tandc_agree.toString()) || ''
+            (customer.tandc_agreed && customer.tandc_agreed.toString()) || ''
           }
           onChange={value =>
-            onChange({ ...customer, tandc_agree: value === 'true' })
+            onChange({ ...customer, tandc_agreed: value === 'true' })
           }
         />
         <ConnectSelect
