@@ -43,7 +43,7 @@ class ResultPage extends Component {
       selectedCourse: null,
       loading: false,
       showDateSelectorModal: false,
-      activeTab: 1,
+      activeTab: 3,
       instantCourse: null,
       instantDate: null,
       bike_hire: null,
