@@ -101,3 +101,15 @@ export function createPOM(POM_NAME = 'Peace Of Mind Policy') {
 export function capitalizeFirstLetter(string) {
   return string.substr(0, 1).toUpperCase() + string.substr(1).toLowerCase()
 }
+
+export function setParam(search, name, value) {
+  const params = new URLSearchParams(search)
+  params.set(name, value)
+  return `?${params.toString()}`
+}
+
+export function deleteParam(search, name) {
+  const params = new URLSearchParams(search)
+  params.delete(name)
+  return `?${params.toString()}`
+}

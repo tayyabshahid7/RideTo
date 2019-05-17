@@ -8,7 +8,7 @@ import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 import { fetchSearchLocation } from 'services/geolocation'
 import { parseQueryString } from 'services/api'
 import { getStaticData } from 'services/page'
-import { findResultsCourseWithId } from 'services/course'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -51,8 +51,7 @@ class ResultPageContainer extends Component {
       courseType,
       courses: null,
       loading: false,
-      navigation: this.navigation,
-      defaultCourse: null
+      navigation: this.navigation
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
@@ -60,11 +59,7 @@ class ResultPageContainer extends Component {
   }
 
   async componentDidMount() {
-    const defaultCourseId = new URL(window.location.href).searchParams.get(
-      'courseId'
-    )
-
-    this.loadData(defaultCourseId)
+    this.loadData()
 
     const userLocation = await fetchSearchLocation(this.state.postcode)
 
@@ -87,11 +82,11 @@ class ResultPageContainer extends Component {
     }
   }
 
-  loadData(defaultCourseId) {
-    this.loadCourses(defaultCourseId)
+  loadData() {
+    this.loadCourses()
   }
 
-  async loadCourses(defaultCourseId) {
+  async loadCourses() {
     try {
       const { date, sortByOption, courseType, postcode } = this.state
 
@@ -104,16 +99,9 @@ class ResultPageContainer extends Component {
         ordering: sortByOption
       })
       if (response) {
-        let defaultCourse = null
-
-        if (defaultCourseId) {
-          defaultCourse = findResultsCourseWithId(response, defaultCourseId)
-        }
-
         this.setState({
           courses: response,
-          loading: false,
-          defaultCourse
+          loading: false
         })
       } else {
         this.setState({ courses: null, loading: false })
@@ -140,24 +128,29 @@ class ResultPageContainer extends Component {
       loading,
       courseType,
       postcode,
-      navigation,
-      defaultCourse
+      navigation
     } = this.state
 
     return (
-      <ResultPage
-        postcode={postcode}
-        courseType={courseType}
-        courses={courses}
-        loading={loading}
-        date={date}
-        sortByOption={sortByOption}
-        handleSetDate={this.handleSetDate}
-        handeUpdateOption={this.handeUpdateOption}
-        navigation={navigation}
-        userLocation={userLocation}
-        defaultCourse={defaultCourse}
-      />
+      <Router>
+        <Route
+          render={props => (
+            <ResultPage
+              {...props}
+              postcode={postcode}
+              courseType={courseType}
+              courses={courses}
+              loading={loading}
+              date={date}
+              sortByOption={sortByOption}
+              handleSetDate={this.handleSetDate}
+              handeUpdateOption={this.handeUpdateOption}
+              navigation={navigation}
+              userLocation={userLocation}
+            />
+          )}
+        />
+      </Router>
     )
   }
 }

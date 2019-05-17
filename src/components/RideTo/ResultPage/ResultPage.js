@@ -25,9 +25,15 @@ import Loading from 'components/Loading'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
 import { fetchCoursesTypes } from 'services/course-type'
-
+import { isEqual } from 'lodash'
 import { isBankHoliday } from 'services/misc'
-import { getCourseTitle } from 'services/course'
+import {
+  getCourseTitle,
+  getCourseIdFromSearch,
+  findResultsCourseWithId
+} from 'services/course'
+import { Redirect } from 'react-router-dom'
+import { setParam, deleteParam } from 'utils/helper'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -37,7 +43,7 @@ class ResultPage extends Component {
       selectedCourse: null,
       loading: false,
       showDateSelectorModal: false,
-      activeTab: 1,
+      activeTab: 3,
       instantCourse: null,
       instantDate: null,
       bike_hire: null,
@@ -45,7 +51,11 @@ class ResultPage extends Component {
       courseTypesOptions: [],
       selectedPackageHours: null,
       showDayOfWeekPicker: false,
-      selectedTimeDays: []
+      selectedTimeDays: [],
+      initialLoaded: false,
+      addCourseIdParam: false,
+      removeCourseIdParam: false,
+      noRedirect: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -57,6 +67,7 @@ class ResultPage extends Component {
     this.handleReviewClick = this.handleReviewClick.bind(this)
     this.handleMobileDateClick = this.handleMobileDateClick.bind(this)
     this.timeDayChange = this.timeDayChange.bind(this)
+    this.handleDissmiss = this.handleDissmiss.bind(this)
 
     window.sessionStorage.removeItem('trainings')
   }
@@ -69,13 +80,6 @@ class ResultPage extends Component {
     window.scrollTo(0, 0)
 
     const { postcode, courseType } = this.props
-
-    window.onpopstate = ({ state }) => {
-      const { selectedCourse = null } = state
-
-      this.handlePriceClick(selectedCourse)
-    }
-
     const result = await fetchCoursesTypes(postcode || '')
     const courseTypes = result.results.filter(
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
@@ -93,14 +97,6 @@ class ResultPage extends Component {
     this.setState({
       courseTypesOptions: courseTypes
     })
-  }
-
-  componentDidUpdate(prevProps) {
-    const { defaultCourse } = this.props
-
-    if (defaultCourse && prevProps.defaultCourse === null) {
-      this.handlePriceClick(defaultCourse)
-    }
   }
 
   handleDetailClick(course) {
@@ -388,6 +384,101 @@ class ResultPage extends Component {
     return true
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!this.props.courses) {
+      return
+    }
+
+    const courseId = getCourseIdFromSearch(this.props.location.search)
+
+    // Reset param changing state
+    if (this.state.addCourseIdParam || this.state.removeCourseIdParam) {
+      this.setState({
+        addCourseIdParam: false,
+        removeCourseIdParam: false
+      })
+    }
+
+    if (this.state.noRedirect) {
+      this.setState({
+        noRedirect: false
+      })
+      return
+    }
+
+    // On initial page load, open the sidebar if courseId is set as param
+    if (!this.state.initialLoaded) {
+      if (courseId) {
+        this.setState({
+          selectedCourse: findResultsCourseWithId(this.props.courses, courseId),
+          activeTab: 3,
+          instantDate: this.props.date,
+          initialLoaded: true
+        })
+        return
+      }
+      this.setState({
+        initialLoaded: true
+      })
+      return
+    }
+
+    const prevCourseId = getCourseIdFromSearch(prevProps.location.search)
+
+    // If the selectedCourse changes
+    if (
+      this.state.initialLoaded &&
+      !isEqual(this.state.selectedCourse, prevState.selectedCourse)
+    ) {
+      // If we need to close sidebar
+      if (this.state.selectedCourse === null) {
+        this.setState({
+          removeCourseIdParam: true
+        })
+        return
+      }
+
+      // If we need to open the sidebar
+      if (
+        this.state.selectedCourse.id !==
+        getCourseIdFromSearch(this.props.location.search)
+      ) {
+        this.setState({
+          addCourseIdParam: true
+        })
+        return
+      }
+
+      return
+    }
+
+    // if courseId changes
+    if (courseId !== prevCourseId) {
+      if (courseId === null && this.state.selectedCourse !== null) {
+        this.handleDissmiss()
+        this.setState({
+          noRedirect: true
+        })
+      }
+      if (courseId && this.state.selectedCourse === null) {
+        this.setState({
+          selectedCourse: findResultsCourseWithId(this.props.courses, courseId)
+        })
+      }
+    }
+  }
+
+  handleDissmiss() {
+    this.setState({
+      selectedCourse: null,
+      instantCourse: null,
+      bike_hire: null,
+      selectedLicenceType: null,
+      selectedPackageHours: null,
+      showDayOfWeekPicker: false
+    })
+  }
+
   render() {
     const {
       courses,
@@ -398,7 +489,8 @@ class ResultPage extends Component {
       navigation,
       loading,
       userLocation,
-      sortByOption
+      sortByOption,
+      location: { pathname, search }
     } = this.props
     const {
       selectedCourse,
@@ -411,7 +503,10 @@ class ResultPage extends Component {
       selectedPackageHours,
       courseTypesOptions,
       showDayOfWeekPicker,
-      selectedTimeDays
+      selectedTimeDays,
+      addCourseIdParam,
+      removeCourseIdParam,
+      noRedirect
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -450,6 +545,27 @@ class ResultPage extends Component {
         ? courses.unavailable.length
         : 0
       resultsCount = courses.available.length + unavailableCount
+    }
+
+    if (addCourseIdParam) {
+      return (
+        <Redirect
+          push
+          to={{
+            pathname,
+            search: setParam(search, 'courseId', selectedCourse.id)
+          }}
+        />
+      )
+    }
+
+    if (removeCourseIdParam) {
+      return (
+        <Redirect
+          push={!noRedirect}
+          to={{ pathname, search: deleteParam(search, 'courseId') }}
+        />
+      )
     }
 
     return (
@@ -654,16 +770,7 @@ class ResultPage extends Component {
           className={styles.noPadding}
           visible={selectedCourse !== null}
           headingImage={selectedCourse ? selectedCourse.image : ''}
-          onDismiss={() =>
-            this.setState({
-              selectedCourse: null,
-              instantCourse: null,
-              bike_hire: null,
-              selectedLicenceType: null,
-              selectedPackageHours: null,
-              showDayOfWeekPicker: false
-            })
-          }
+          onDismiss={this.handleDissmiss}
           footer={this.renderRidetoButton(
             bookNowDisabled,
             instantDate,
