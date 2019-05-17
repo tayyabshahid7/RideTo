@@ -315,7 +315,8 @@ class BookingOptionsContainer extends React.Component {
         full_licence_type: LICENCE_TYPES[selectedLicenceType],
         bike_type: selectedBikeHire,
         supplier_id: selectedSupplier.id,
-        package_hours: selectedPackageHours
+        package_hours: selectedPackageHours,
+        school_course_id: selectedCourse.id
       }))
     } else {
       trainings = [
