@@ -8,6 +8,7 @@ import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 import { fetchSearchLocation } from 'services/geolocation'
 import { parseQueryString } from 'services/api'
 import { getStaticData } from 'services/page'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -124,18 +125,25 @@ class ResultPageContainer extends Component {
     } = this.state
 
     return (
-      <ResultPage
-        postcode={postcode}
-        courseType={courseType}
-        courses={courses}
-        loading={loading}
-        date={date}
-        sortByOption={sortByOption}
-        handleSetDate={this.handleSetDate}
-        handeUpdateOption={this.handeUpdateOption}
-        navigation={navigation}
-        userLocation={userLocation}
-      />
+      <Router>
+        <Route
+          render={props => (
+            <ResultPage
+              {...props}
+              postcode={postcode}
+              courseType={courseType}
+              courses={courses}
+              loading={loading}
+              date={date}
+              sortByOption={sortByOption}
+              handleSetDate={this.handleSetDate}
+              handeUpdateOption={this.handeUpdateOption}
+              navigation={navigation}
+              userLocation={userLocation}
+            />
+          )}
+        />
+      </Router>
     )
   }
 }
