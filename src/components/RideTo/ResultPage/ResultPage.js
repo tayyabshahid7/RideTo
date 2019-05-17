@@ -27,7 +27,11 @@ import classnames from 'classnames'
 import { fetchCoursesTypes } from 'services/course-type'
 
 import { isBankHoliday } from 'services/misc'
-import { getCourseTitle } from 'services/course'
+import {
+  getCourseTitle,
+  getCourseIdFromSearch,
+  findResultsCourseWithId
+} from 'services/course'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -45,7 +49,10 @@ class ResultPage extends Component {
       courseTypesOptions: [],
       selectedPackageHours: null,
       showDayOfWeekPicker: false,
-      selectedTimeDays: []
+      selectedTimeDays: [],
+      initialLoaded: false,
+      addCourseIdParam: false,
+      removeCourseIdPrams: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -361,6 +368,25 @@ class ResultPage extends Component {
       return availableCourses.length > 0 || unavailableCourses.length > 0
     }
     return true
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.courses && !this.state.initialLoaded) {
+      const courseId = getCourseIdFromSearch(this.props.location.search)
+
+      if (courseId) {
+        this.setState({
+          selectedCourse: findResultsCourseWithId(this.props.courses, courseId),
+          activeTab: 3,
+          instantDate: this.props.date,
+          initialLoaded: true
+        })
+        return
+      }
+      this.setState({
+        initialLoaded: true
+      })
+    }
   }
 
   render() {
