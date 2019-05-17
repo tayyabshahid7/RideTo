@@ -20,24 +20,37 @@ function MyDatePicker({
   basic
 }) {
   return (
-    <DatePicker
-      name={name}
-      className={classnames(styles.input, basic && styles.basic)}
-      id={id || name}
-      type="date"
-      selected={value && new Date(value)}
-      onChange={date => {
-        onChange({
-          target: {
-            name: name,
-            value: moment(date).format('YYYY-MM-DD')
-          }
-        })
-      }}
-      dateFormat="dd/MM/yyyy"
-      disabled={disabled}
-      required={required}
-    />
+    <React.Fragment>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .react-datepicker__current-month { display: none }
+      `
+        }}
+      />
+      <DatePicker
+        name={name}
+        className={classnames(styles.input, basic && styles.basic)}
+        id={id || name}
+        type="date"
+        selected={value && new Date(value)}
+        onChange={date => {
+          onChange({
+            target: {
+              name: name,
+              value: moment(date).format('YYYY-MM-DD')
+            }
+          })
+        }}
+        dateFormat="dd/MM/yyyy"
+        disabled={disabled}
+        required={required}
+        showMonthDropdown
+        showYearDropdown
+        autoComplete="off"
+        dropdownMode="select"
+      />
+    </React.Fragment>
   )
 }
 
