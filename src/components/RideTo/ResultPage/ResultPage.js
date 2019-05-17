@@ -32,6 +32,8 @@ import {
   getCourseIdFromSearch,
   findResultsCourseWithId
 } from 'services/course'
+import { Redirect } from 'react-router-dom'
+import { setParam, deleteParam } from 'utils/helper'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -52,7 +54,7 @@ class ResultPage extends Component {
       selectedTimeDays: [],
       initialLoaded: false,
       addCourseIdParam: false,
-      removeCourseIdPrams: false
+      removeCourseIdParam: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -371,6 +373,14 @@ class ResultPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // Reset param changing state
+    if (this.state.addCourseIdParam || this.state.removeCourseIdParam) {
+      this.setState({
+        addCourseIdParam: false,
+        removeCourseIdParam: false
+      })
+    }
+
     // On initial page load, open the sidebar if courseId is set as param
     if (this.props.courses && !this.state.initialLoaded) {
       const courseId = getCourseIdFromSearch(this.props.location.search)
@@ -397,7 +407,9 @@ class ResultPage extends Component {
     ) {
       // If we need to close sidebar
       if (this.state.selectedCourse === null) {
-        console.log('close it')
+        this.setState({
+          removeCourseIdParam: true
+        })
         return
       }
 
@@ -406,7 +418,10 @@ class ResultPage extends Component {
         this.state.selectedCourse.id !==
         getCourseIdFromSearch(this.props.location.search)
       ) {
-        console.log('open it')
+        this.setState({
+          addCourseIdParam: true
+        })
+        return
       }
     }
   }
@@ -421,7 +436,8 @@ class ResultPage extends Component {
       navigation,
       loading,
       userLocation,
-      sortByOption
+      sortByOption,
+      location: { pathname, search }
     } = this.props
     const {
       selectedCourse,
@@ -434,7 +450,9 @@ class ResultPage extends Component {
       selectedPackageHours,
       courseTypesOptions,
       showDayOfWeekPicker,
-      selectedTimeDays
+      selectedTimeDays,
+      addCourseIdParam,
+      removeCourseIdParam
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -473,6 +491,29 @@ class ResultPage extends Component {
         ? courses.unavailable.length
         : 0
       resultsCount = courses.available.length + unavailableCount
+    }
+
+    if (addCourseIdParam) {
+      console.log('add')
+      return (
+        <Redirect
+          push
+          to={{
+            pathname,
+            search: setParam(search, 'courseId', selectedCourse.id)
+          }}
+        />
+      )
+    }
+
+    if (removeCourseIdParam) {
+      console.log('remove')
+      return (
+        <Redirect
+          push
+          to={{ pathname, search: deleteParam(search, 'courseId') }}
+        />
+      )
     }
 
     return (
