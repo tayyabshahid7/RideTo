@@ -25,7 +25,7 @@ import Loading from 'components/Loading'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
 import { fetchCoursesTypes } from 'services/course-type'
-
+import { isEqual } from 'lodash'
 import { isBankHoliday } from 'services/misc'
 import {
   getCourseTitle,
@@ -371,6 +371,7 @@ class ResultPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    // On initial page load, open the sidebar if courseId is set as param
     if (this.props.courses && !this.state.initialLoaded) {
       const courseId = getCourseIdFromSearch(this.props.location.search)
 
@@ -386,6 +387,27 @@ class ResultPage extends Component {
       this.setState({
         initialLoaded: true
       })
+      return
+    }
+
+    // If the selected state changes
+    if (
+      this.state.initialLoaded &&
+      !isEqual(this.state.selectedCourse, prevState.selectedCourse)
+    ) {
+      // If we need to close sidebar
+      if (this.state.selectedCourse === null) {
+        console.log('close it')
+        return
+      }
+
+      // If we need to open the sidebar
+      if (
+        this.state.selectedCourse.id !==
+        getCourseIdFromSearch(this.props.location.search)
+      ) {
+        console.log('open it')
+      }
     }
   }
 
