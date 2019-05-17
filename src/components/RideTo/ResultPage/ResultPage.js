@@ -54,7 +54,8 @@ class ResultPage extends Component {
       selectedTimeDays: [],
       initialLoaded: false,
       addCourseIdParam: false,
-      removeCourseIdParam: false
+      removeCourseIdParam: false,
+      noRedirect: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -384,9 +385,15 @@ class ResultPage extends Component {
       })
     }
 
+    if (this.state.noRedirect) {
+      this.setState({
+        noRedirect: false
+      })
+      return
+    }
+
     // On initial page load, open the sidebar if courseId is set as param
     if (this.props.courses && !this.state.initialLoaded) {
-      console.log('initial load')
       if (courseId) {
         this.setState({
           selectedCourse: findResultsCourseWithId(this.props.courses, courseId),
@@ -409,7 +416,6 @@ class ResultPage extends Component {
       this.state.initialLoaded &&
       !isEqual(this.state.selectedCourse, prevState.selectedCourse)
     ) {
-      console.log(this.state, prevState)
       // If we need to close sidebar
       if (this.state.selectedCourse === null) {
         this.setState({
@@ -435,11 +441,12 @@ class ResultPage extends Component {
     // if courseId changes
     if (courseId !== prevCourseId) {
       if (courseId === null && this.state.selectedCourse !== null) {
-        console.log('dismiss please')
         this.handleDissmiss()
+        this.setState({
+          noRedirect: true
+        })
       }
       if (courseId && this.state.selectedCourse === null) {
-        console.log('set course please')
         this.setState({
           selectedCourse: findResultsCourseWithId(this.props.courses, courseId)
         })
@@ -484,7 +491,8 @@ class ResultPage extends Component {
       showDayOfWeekPicker,
       selectedTimeDays,
       addCourseIdParam,
-      removeCourseIdParam
+      removeCourseIdParam,
+      noRedirect
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -526,7 +534,6 @@ class ResultPage extends Component {
     }
 
     if (addCourseIdParam) {
-      console.log('add')
       return (
         <Redirect
           push
@@ -539,10 +546,9 @@ class ResultPage extends Component {
     }
 
     if (removeCourseIdParam) {
-      console.log('remove')
       return (
         <Redirect
-          push
+          push={!noRedirect}
           to={{ pathname, search: deleteParam(search, 'courseId') }}
         />
       )
