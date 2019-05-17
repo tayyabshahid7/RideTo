@@ -375,6 +375,10 @@ class ResultPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (!this.props.courses) {
+      return
+    }
+
     const courseId = getCourseIdFromSearch(this.props.location.search)
 
     // Reset param changing state
@@ -393,7 +397,7 @@ class ResultPage extends Component {
     }
 
     // On initial page load, open the sidebar if courseId is set as param
-    if (this.props.courses && !this.state.initialLoaded) {
+    if (!this.state.initialLoaded) {
       if (courseId) {
         this.setState({
           selectedCourse: findResultsCourseWithId(this.props.courses, courseId),
