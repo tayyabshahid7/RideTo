@@ -766,40 +766,43 @@ class ResultPage extends Component {
           </Row>
         </Container>
 
-        <SidePanel
-          className={styles.noPadding}
-          visible={selectedCourse !== null}
-          headingImage={selectedCourse ? selectedCourse.image : ''}
-          onDismiss={this.handleDissmiss}
-          footer={this.renderRidetoButton(
-            bookNowDisabled,
-            instantDate,
-            instantCourse,
-            bike_hire,
-            isFullLicence,
-            showDayOfWeekPicker
-          )}
-          footerStatic={activeTab === 3}>
-          {selectedCourse && (
-            <CourseDetailPanel
-              courseType={courseType}
-              course={selectedCourse}
-              activeTab={activeTab}
-              onChangeTab={tab => this.setState({ activeTab: tab })}
-              date={date}
-              instantCourse={instantCourse}
-              instantDate={instantDate}
-              bike_hire={bike_hire}
-              onUpdate={this.onUpdate.bind(this)}
-              onSelectPackage={this.onSelectPackage}
-              selectedLicenceType={selectedLicenceType}
-              selectedPackageHours={selectedPackageHours}
-              showDayOfWeekPicker={showDayOfWeekPicker}
-              timeDayChange={this.timeDayChange}
-              selectedTimeDays={selectedTimeDays}
-            />
-          )}
-        </SidePanel>
+        {selectedCourse && (
+          <SidePanel
+            mountUnmount
+            className={styles.noPadding}
+            visible={selectedCourse !== null}
+            headingImage={selectedCourse ? selectedCourse.image : ''}
+            onDismiss={this.handleDissmiss}
+            footer={this.renderRidetoButton(
+              bookNowDisabled,
+              instantDate,
+              instantCourse,
+              bike_hire,
+              isFullLicence,
+              showDayOfWeekPicker
+            )}
+            footerStatic={activeTab === 3}>
+            {selectedCourse && (
+              <CourseDetailPanel
+                courseType={courseType}
+                course={selectedCourse}
+                activeTab={activeTab}
+                onChangeTab={tab => this.setState({ activeTab: tab })}
+                date={date}
+                instantCourse={instantCourse}
+                instantDate={instantDate}
+                bike_hire={bike_hire}
+                onUpdate={this.onUpdate.bind(this)}
+                onSelectPackage={this.onSelectPackage}
+                selectedLicenceType={selectedLicenceType}
+                selectedPackageHours={selectedPackageHours}
+                showDayOfWeekPicker={showDayOfWeekPicker}
+                timeDayChange={this.timeDayChange}
+                selectedTimeDays={selectedTimeDays}
+              />
+            )}
+          </SidePanel>
+        )}
         {showDateSelectorModal && !loading && (
           <DateSelectorModal
             isOpen={true}
