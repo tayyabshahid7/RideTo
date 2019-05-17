@@ -80,9 +80,13 @@
   font-size: 18px;
   // font-weight: bold;
   font-weight: normal;
-  text-align-last: center;
   border: 0;
   width: 100%;
+}
+
+.selectLabelFull {
+  text-align: left;
+  padding-left: 10%;
 }
 
 .selectLabel {

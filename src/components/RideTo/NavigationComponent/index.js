@@ -100,7 +100,11 @@ class NavigationComponent extends React.Component {
           <div style={{ width: '50%', flexGrow: '1' }}>
             {courseTypesOptions ? (
               <Fragment>
-                <span className={styles.selectLabel}>
+                <span
+                  className={classnames(
+                    styles.selectLabel,
+                    isFullLicence && styles.selectLabelFull
+                  )}>
                   {!!courseTypesOptions.length &&
                     courseTypesOptions.find(
                       opt => opt.constant === formCourseType
