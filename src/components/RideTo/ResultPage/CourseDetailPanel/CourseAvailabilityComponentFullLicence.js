@@ -55,6 +55,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       manualLicences
     } = this.state
 
+    console.log(course)
+
     return (
       <div
         className={classnames(

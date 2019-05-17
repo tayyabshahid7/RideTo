@@ -398,7 +398,10 @@ class BookingOptionsContainer extends React.Component {
         ) : (
           <CourseAvailabilityComponentFullLicence
             isWidget
-            course={selectedSupplier}
+            course={{
+              ...selectedSupplier,
+              price: selectedCourse.pricing.price
+            }}
             bike_hire={selectedBikeHire}
             onUpdate={this.onUpdate}
             onSelectPackage={this.onSelectPackageHours}
@@ -414,7 +417,7 @@ class BookingOptionsContainer extends React.Component {
 
         <hr />
 
-        {selectedCourse ? (
+        {selectedCourse && !isFullLicence ? (
           <React.Fragment>
             <CourseSelect
               date={selectedDate}
