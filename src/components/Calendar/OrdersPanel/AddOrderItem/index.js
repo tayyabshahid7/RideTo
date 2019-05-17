@@ -32,7 +32,7 @@ class AddOrderItem extends React.Component {
         riding_experience: '',
         full_licence_type: '',
         start_time: `${this.props.course.date}T${this.props.course.time}Z`,
-        tandc_agree: false,
+        tandc_agreed: false,
         email_optin: false
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
@@ -239,7 +239,7 @@ class AddOrderItem extends React.Component {
         user_first_name,
         user_last_name,
         user_phone,
-        tandc_agree,
+        tandc_agreed,
         email_optin
       }
     } = this.state
@@ -388,8 +388,8 @@ class AddOrderItem extends React.Component {
 
               <ConnectCheckbox
                 label="T&Cs Agreed"
-                checked={tandc_agree}
-                name="tandc_agree"
+                checked={tandc_agreed}
+                name="tandc_agreed"
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
 
