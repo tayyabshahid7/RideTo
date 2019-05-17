@@ -11,6 +11,18 @@
   cursor: pointer;
 }
 
+.labelCheckbox {
+  display: flex;
+  align-items: center;
+  margin: 0;
+
+  input {
+    position: relative;
+    top: 2px;
+    margin-right: 0.25rem;
+  }
+}
+
 .input,
 .select {
   display: block;

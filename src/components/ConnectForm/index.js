@@ -227,6 +227,32 @@ export function ConnectLabeledContent({ label, children, disabled, basic }) {
   )
 }
 
+export function ConnectCheckbox({
+  label,
+  type = 'checkbox',
+  disabled,
+  checked = false,
+  onChange,
+  name
+}) {
+  return (
+    <div className={styles.formGroup}>
+      {label && (
+        <label className={classnames(styles.label, styles.labelCheckbox)}>
+          <input
+            name={name}
+            checked={checked}
+            type={type}
+            disabled={disabled}
+            onChange={onChange}
+          />
+          <span>{label}</span>
+        </label>
+      )}
+    </div>
+  )
+}
+
 export class ConnectTextArea extends Component {
   constructor(props) {
     super(props)
