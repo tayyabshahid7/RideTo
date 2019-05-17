@@ -66,6 +66,7 @@ class ResultPage extends Component {
     this.handleReviewClick = this.handleReviewClick.bind(this)
     this.handleMobileDateClick = this.handleMobileDateClick.bind(this)
     this.timeDayChange = this.timeDayChange.bind(this)
+    this.handleDissmiss = this.handleDissmiss.bind(this)
 
     window.sessionStorage.removeItem('trainings')
   }
@@ -373,6 +374,8 @@ class ResultPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const courseId = getCourseIdFromSearch(this.props.location.search)
+
     // Reset param changing state
     if (this.state.addCourseIdParam || this.state.removeCourseIdParam) {
       this.setState({
@@ -383,8 +386,7 @@ class ResultPage extends Component {
 
     // On initial page load, open the sidebar if courseId is set as param
     if (this.props.courses && !this.state.initialLoaded) {
-      const courseId = getCourseIdFromSearch(this.props.location.search)
-
+      console.log('initial load')
       if (courseId) {
         this.setState({
           selectedCourse: findResultsCourseWithId(this.props.courses, courseId),
@@ -400,11 +402,14 @@ class ResultPage extends Component {
       return
     }
 
-    // If the selected state changes
+    const prevCourseId = getCourseIdFromSearch(prevProps.location.search)
+
+    // If the selectedCourse changes
     if (
       this.state.initialLoaded &&
       !isEqual(this.state.selectedCourse, prevState.selectedCourse)
     ) {
+      console.log(this.state, prevState)
       // If we need to close sidebar
       if (this.state.selectedCourse === null) {
         this.setState({
@@ -423,7 +428,34 @@ class ResultPage extends Component {
         })
         return
       }
+
+      return
     }
+
+    // if courseId changes
+    if (courseId !== prevCourseId) {
+      if (courseId === null && this.state.selectedCourse !== null) {
+        console.log('dismiss please')
+        this.handleDissmiss()
+      }
+      if (courseId && this.state.selectedCourse === null) {
+        console.log('set course please')
+        this.setState({
+          selectedCourse: findResultsCourseWithId(this.props.courses, courseId)
+        })
+      }
+    }
+  }
+
+  handleDissmiss() {
+    this.setState({
+      selectedCourse: null,
+      instantCourse: null,
+      bike_hire: null,
+      selectedLicenceType: null,
+      selectedPackageHours: null,
+      showDayOfWeekPicker: false
+    })
   }
 
   render() {
@@ -718,16 +750,7 @@ class ResultPage extends Component {
           className={styles.noPadding}
           visible={selectedCourse !== null}
           headingImage={selectedCourse ? selectedCourse.image : ''}
-          onDismiss={() =>
-            this.setState({
-              selectedCourse: null,
-              instantCourse: null,
-              bike_hire: null,
-              selectedLicenceType: null,
-              selectedPackageHours: null,
-              showDayOfWeekPicker: false
-            })
-          }
+          onDismiss={this.handleDissmiss}
           footer={this.renderRidetoButton(
             bookNowDisabled,
             instantDate,

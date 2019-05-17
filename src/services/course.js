@@ -333,5 +333,6 @@ export const findResultsCourseWithId = (courses, id) => {
 
 export const getCourseIdFromSearch = search => {
   const params = new URLSearchParams(search)
-  return parseInt(params.get('courseId'), 10)
+  const courseId = parseInt(params.get('courseId'), 10)
+  return courseId || null
 }
