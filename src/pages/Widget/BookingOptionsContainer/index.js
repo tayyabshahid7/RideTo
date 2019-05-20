@@ -93,10 +93,7 @@ class BookingOptionsContainer extends React.Component {
   }
 
   componentDidUpdate(oldProps, oldState) {
-    const { isFullLicence, month } = this.state
-    if (isFullLicence) {
-      return
-    }
+    const { month } = this.state
 
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       this.setState(
@@ -106,7 +103,11 @@ class BookingOptionsContainer extends React.Component {
           schoolCourses: [],
           loadedMonths: {},
           selectedCourse: null,
-          courseType: this.props.selectedSupplier.courses[0],
+          courseType:
+            this.props.selectedSupplier.courses.find(
+              courseType =>
+                courseType.constant === this.state.courseType.constant
+            ) || this.props.selectedSupplier.courses[0],
           isFullLicence:
             this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
@@ -401,7 +402,9 @@ class BookingOptionsContainer extends React.Component {
             isWidget
             course={{
               ...selectedSupplier,
-              price: selectedCourse.pricing.price
+              price: selectedCourse.pricing
+                ? selectedCourse.pricing.price
+                : null
             }}
             bike_hire={selectedBikeHire}
             onUpdate={this.onUpdate}
