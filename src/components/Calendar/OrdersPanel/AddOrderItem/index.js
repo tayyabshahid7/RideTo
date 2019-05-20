@@ -12,7 +12,8 @@ import {
   ConnectInput,
   ConnectSelect,
   Button,
-  ConnectCheckbox
+  ConnectCheckbox,
+  ConnectAgeInput
 } from 'components/ConnectForm'
 
 class AddOrderItem extends React.Component {
@@ -303,7 +304,7 @@ class AddOrderItem extends React.Component {
                 required
               />
 
-              <ConnectInput
+              <ConnectAgeInput
                 basic
                 name="user_birthdate"
                 value={user_birthdate}
@@ -313,6 +314,7 @@ class AddOrderItem extends React.Component {
                 onChange={this.handleChangeRawEvent.bind(this)}
                 // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
                 required
+                hideAge
               />
 
               {isFullLicence && (
