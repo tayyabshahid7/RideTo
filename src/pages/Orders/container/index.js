@@ -7,6 +7,7 @@ import PaginationLinks from 'components/PaginationLinks'
 import { getDateFilters } from 'services/order'
 import { changeSchool } from 'store/auth'
 import * as orderModule from 'store/order'
+import Loading from 'components/Loading'
 
 import ConfirmedOrders from 'pages/Orders/components/ConfirmedOrders'
 import OrderFilters from 'pages/Orders/components/OrderFilters'
@@ -104,26 +105,28 @@ class Orders extends Component {
               onSearch={this.handleSearch}
             />
           </div>
-          {orders.length > 0 ? (
-            <React.Fragment>
-              <ConfirmedOrders
-                loading={isFetching}
-                confirmedOrders={orders}
-                sortingChange={this.handleSorting}
-              />
-              <PaginationLinks
-                currentPage={page}
-                count={total}
-                pageSize={15}
-                rowName={'orders'}
-                onPageChange={this.handleChangePage}
-              />
-            </React.Fragment>
-          ) : (
-            <div className={styles.noResults}>
-              No orders yet. No worries we have your back! ;)
-            </div>
-          )}
+          <Loading loading={isFetching}>
+            {orders.length > 0 ? (
+              <React.Fragment>
+                <ConfirmedOrders
+                  loading={isFetching}
+                  confirmedOrders={orders}
+                  sortingChange={this.handleSorting}
+                />
+                <PaginationLinks
+                  currentPage={page}
+                  count={total}
+                  pageSize={15}
+                  rowName={'orders'}
+                  onPageChange={this.handleChangePage}
+                />
+              </React.Fragment>
+            ) : (
+              <div className={styles.noResults}>
+                No orders yet. No worries we have your back! ;)
+              </div>
+            )}
+          </Loading>
         </div>
       </div>
     )
