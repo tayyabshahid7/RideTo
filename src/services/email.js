@@ -9,7 +9,7 @@ export const fetchEmails = async customerId => {
 }
 
 export const fireEmail = async email => {
-  const path = 'email/send'
+  const path = 'email/'
   const params = email
 
   const response = await post(path, params)
