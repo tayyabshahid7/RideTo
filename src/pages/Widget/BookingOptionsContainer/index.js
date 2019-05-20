@@ -401,7 +401,9 @@ class BookingOptionsContainer extends React.Component {
             isWidget
             course={{
               ...selectedSupplier,
-              price: selectedCourse.pricing.price
+              price: selectedCourse.pricing
+                ? selectedCourse.pricing.price
+                : null
             }}
             bike_hire={selectedBikeHire}
             onUpdate={this.onUpdate}
