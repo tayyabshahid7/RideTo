@@ -27,7 +27,10 @@ const getSchoolCoursesByDate = (selectedDate, courses) => {
 }
 
 const getEarliestDate = courses => {
-  let dates = courses.map(({ date }) => date).sort()
+  let dates = courses
+    .map(({ date }) => date)
+    .sort()
+    .filter(date => date > moment().format('YYYY-MM-DD'))
 
   if (
     (moment().hour() >= 18 ||
