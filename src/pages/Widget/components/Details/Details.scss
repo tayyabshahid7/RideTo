@@ -23,7 +23,7 @@
 .block {
   white-space: pre-line;
 
-  * {
+  *:not(div) {
     white-space: normal;
   }
 }
