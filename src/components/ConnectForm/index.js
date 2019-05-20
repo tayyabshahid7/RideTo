@@ -16,13 +16,15 @@ function MyDatePicker({
   name,
   disabled,
   required,
-  basic
+  basic,
+  maxDate
 }) {
   return (
     <React.Fragment>
       <style
         dangerouslySetInnerHTML={{
           __html: `
+        .react-datepicker-wrapper { flex-grow: 1 }
         .react-datepicker__current-month { display: none }
       `
         }}
@@ -48,6 +50,7 @@ function MyDatePicker({
         showYearDropdown
         autoComplete="off"
         dropdownMode="select"
+        maxDate={maxDate}
       />
     </React.Fragment>
   )
@@ -101,7 +104,7 @@ export function ConnectInput(props) {
 }
 
 export function ConnectAgeInput(props) {
-  const { label, id, name, value } = props
+  const { label, id, name, value, hideAge } = props
 
   return (
     <div className={styles.formGroup}>
@@ -111,8 +114,10 @@ export function ConnectAgeInput(props) {
         </label>
       )}
       <div className={styles.ageInputGroup}>
-        <MyDatePicker {...props} />
-        {value && <div className={styles.age}>({getAge(value)})</div>}
+        <MyDatePicker {...props} maxDate={new Date()} />
+        {value && !hideAge && (
+          <div className={styles.age}>({getAge(value)})</div>
+        )}
       </div>
     </div>
   )
