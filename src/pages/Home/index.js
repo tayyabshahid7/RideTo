@@ -5,7 +5,6 @@ import { ConnectLogoFullWhite } from 'assets/icons/'
 import prepaid from 'assets/images/Pre-paid lessons.svg'
 import fillFree from 'assets/images/Fill free space.svg'
 import provenResults from 'assets/images/Proven results.svg'
-import bmf from 'assets/images/bmf.png'
 import classnames from 'classnames'
 
 function Home() {
@@ -103,11 +102,6 @@ function Home() {
         </section>
         <section className={styles.footerBottom}>
           <div className={styles.container}>
-            <img
-              src={bmf}
-              alt="British Motocyclists Federation"
-              className={styles.bmf}
-            />
             <p className={styles.copyright}>
               © 2019 RideTo Ltd, Registered Company Number: 10454345, Registered
               Office: Dunsden Green, Reading, Oxfordshire RG4 9QD
