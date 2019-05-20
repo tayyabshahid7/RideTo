@@ -40,7 +40,7 @@ let wrapper = shallow(
   />
 )
 wrapper.setState({
-  month: moment('2018-07-01', 'YYYY-MM-DD').startOf('month')
+  month: moment('2019-07-01', 'YYYY-MM-DD').startOf('month')
 })
 
 describe('Initial Render', () => {
@@ -51,12 +51,12 @@ describe('Initial Render', () => {
 
   it('Sets earliest date', () => {
     expect(moment(wrapper.state('selectedDate')).format('YYYY-MM-DD')).toBe(
-      '2018-07-27'
+      '2019-07-27'
     )
   })
 
   it('Selects first course', () => {
-    expect(wrapper.state('selectedCourse').date).toBe('2018-07-27')
+    expect(wrapper.state('selectedCourse').date).toBe('2019-07-27')
     expect(wrapper.state('selectedCourse').time).toBe('06:00:00')
   })
 
@@ -76,10 +76,10 @@ describe('Change Date', () => {
   })
 
   it('Updates the selected course', () => {
-    expect(wrapper.state('selectedCourse').date).toBe('2018-07-27')
-    wrapper.instance().handleChangeDate(moment('2018-08-14', 'YYYY-MM-DD'))
+    expect(wrapper.state('selectedCourse').date).toBe('2019-07-27')
+    wrapper.instance().handleChangeDate(moment('2019-08-14', 'YYYY-MM-DD'))
     wrapper.setState({})
-    expect(wrapper.state('selectedCourse').date).toBe('2018-08-14')
+    expect(wrapper.state('selectedCourse').date).toBe('2019-08-14')
 
     expect(wrapper.find('button').text()).toBe('Book Now')
   })
