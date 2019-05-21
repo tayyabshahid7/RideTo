@@ -188,7 +188,7 @@ class BookingOptionsContainer extends React.Component {
     this.setState({
       schoolCourses: newSchoolCourses,
       selectedDate,
-      selectedCourse: selectedCourses[0],
+      selectedCourse: !isFullLicence ? selectedCourses[0] : availableCourses[0],
       selectedBikeHire,
       availableCourses,
       courseType,
