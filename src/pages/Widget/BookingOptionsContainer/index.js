@@ -398,25 +398,27 @@ class BookingOptionsContainer extends React.Component {
             isLoading={isLoading}
           />
         ) : (
-          <CourseAvailabilityComponentFullLicence
-            isWidget
-            course={{
-              ...selectedSupplier,
-              price: selectedCourse.pricing
-                ? selectedCourse.pricing.price
-                : null
-            }}
-            bike_hire={selectedBikeHire}
-            onUpdate={this.onUpdate}
-            onSelectPackage={this.onSelectPackageHours}
-            onSelectPackageDate={this.onSelectPackageDate}
-            selectedLicenceType={selectedLicenceType}
-            selectedPackageHours={selectedPackageHours}
-            phoneNumber={selectedSupplier.phone}
-            showDayOfWeekPicker={showDayOfWeekPicker}
-            selectedTimeDays={selectedTimeDays}
-            timeDayChange={this.timeDayChange}
-          />
+          selectedCourse && (
+            <CourseAvailabilityComponentFullLicence
+              isWidget
+              course={{
+                ...selectedSupplier,
+                price: selectedCourse.pricing
+                  ? selectedCourse.pricing.price
+                  : null
+              }}
+              bike_hire={selectedBikeHire}
+              onUpdate={this.onUpdate}
+              onSelectPackage={this.onSelectPackageHours}
+              onSelectPackageDate={this.onSelectPackageDate}
+              selectedLicenceType={selectedLicenceType}
+              selectedPackageHours={selectedPackageHours}
+              phoneNumber={selectedSupplier.phone}
+              showDayOfWeekPicker={showDayOfWeekPicker}
+              selectedTimeDays={selectedTimeDays}
+              timeDayChange={this.timeDayChange}
+            />
+          )
         )}
 
         <hr />
