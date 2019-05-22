@@ -123,7 +123,7 @@ const DUMMY_DATA = [
 ]
 
 const FILTERS = [
-  { name: 'Brand', values: ['Honda', 'BMW', 'Susuki', 'Ducati'] },
+  { name: 'Brand', values: ['BMW', 'Ducati', 'Honda', 'Susuki'] },
   {
     name: 'Engine',
     values: ['50cc', '125cc', '200cc', '300cc', '400cc', '2000cc']
@@ -152,6 +152,20 @@ function reduceFilters(filters) {
   }, {})
 }
 
+function MySlidingPane(props) {
+  const { isOpen, children } = props
+
+  return (
+    <SlidingPane
+      {...props}
+      isOpen={isOpen}
+      width="60%"
+      className={styles.panel}>
+      {children}
+    </SlidingPane>
+  )
+}
+
 class BikeSales extends Component {
   constructor(props) {
     super(props)
@@ -166,7 +180,8 @@ class BikeSales extends Component {
           active: false
         }))
       })),
-      bikes: DUMMY_DATA
+      bikes: DUMMY_DATA,
+      reducedFilters: reduceFilters(FILTERS)
     }
 
     this.updateFilters = this.updateFilters.bind(this)
@@ -193,7 +208,8 @@ class BikeSales extends Component {
             }
             return true
           })
-        })
+        }),
+        reducedFilters
       })
     }
   }
@@ -237,7 +253,7 @@ class BikeSales extends Component {
   }
 
   render() {
-    const { filtersOpen, sortOpen, bikes } = this.state
+    const { filtersOpen, sortOpen, bikes, filters, reducedFilters } = this.state
 
     return (
       <div className={styles.page}>
@@ -275,22 +291,22 @@ class BikeSales extends Component {
             </div>
           </div>
         </div>
-        <SlidingPane
-          width="60%"
-          className={styles.panel}
+        <MySlidingPane
           isOpen={filtersOpen}
           onRequestClose={this.handleFiltersButtonClick}
           from="left">
-          <Filters options={FILTERS} updateFilters={this.updateFilters} />
-        </SlidingPane>
-        <SlidingPane
-          width="60%"
-          className={styles.panel}
+          <Filters
+            options={filters}
+            reducedFilters={reducedFilters}
+            updateFilters={this.updateFilters}
+          />
+        </MySlidingPane>
+        <MySlidingPane
           isOpen={sortOpen}
           onRequestClose={this.handleSortButtonClick}
           from="right">
           Sort
-        </SlidingPane>
+        </MySlidingPane>
       </div>
     )
   }

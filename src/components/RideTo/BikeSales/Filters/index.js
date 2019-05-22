@@ -29,7 +29,7 @@ class Filters extends Component {
   }
 
   render() {
-    const { options } = this.props
+    const { options, reducedFilters } = this.props
 
     return (
       <div>
@@ -39,20 +39,24 @@ class Filters extends Component {
             <Item key={name} className={styles.accordionItem}>
               <Heading>
                 <Button className={styles.accordionButton}>
-                  {name} <Selected />
+                  {name}{' '}
+                  <Selected
+                    selectedFilters={reducedFilters[name.toLowerCase()]}
+                  />
                 </Button>
               </Heading>
               <Panel className={styles.accordionPanel}>
                 {values.map(value => (
-                  <div key={value}>
+                  <div key={value.name}>
                     <label>
                       <input
+                        checked={value.active}
                         type="checkbox"
-                        onClick={event => {
-                          this.handleCheckboxClick(event, name, value)
+                        onChange={event => {
+                          this.handleCheckboxClick(event, name, value.name)
                         }}
                       />{' '}
-                      {value}
+                      {value.name}
                     </label>
                   </div>
                 ))}
