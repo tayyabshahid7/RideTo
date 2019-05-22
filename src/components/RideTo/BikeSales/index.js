@@ -176,12 +176,15 @@ class BikeSales extends Component {
       sortOpen: false,
       bikes: DUMMY_DATA,
       filters: this.defaultFilters,
-      reducedFilters: this.defaultReducedFilters
+      reducedFilters: this.defaultReducedFilters,
+      budgetMin: null,
+      budgetMax: null
     }
 
     this.closeFilters = this.closeFilters.bind(this)
     this.updateFilters = this.updateFilters.bind(this)
     this.clearFilters = this.clearFilters.bind(this)
+    this.updateBudget = this.updateBudget.bind(this)
     this.handleFiltersButtonClick = this.handleFiltersButtonClick.bind(this)
     this.handleSortButtonClick = this.handleSortButtonClick.bind(this)
   }
@@ -191,11 +194,24 @@ class BikeSales extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!isEqual(this.state.filters, prevState.filters)) {
+    if (
+      !isEqual(this.state.filters, prevState.filters) ||
+      this.state.budgetMin !== prevState.budgetMin ||
+      this.state.budgetMax !== prevState.budgetMax
+    ) {
       const reducedFilters = reduceFilters(this.state.filters)
 
       this.setState({
         bikes: DUMMY_DATA.filter(bike => {
+          const min = !this.state.budgetMin ? 0 : this.state.budgetMin
+          const max = !this.state.budgetMax
+            ? this.state.budgetMin || Infinity
+            : this.state.budgetMax
+
+          console.log(min, max)
+
+          return true
+        }).filter(bike => {
           return Object.entries(bike.categories).every(([name, value]) => {
             if (
               reducedFilters[name] !== 'All' &&
@@ -214,7 +230,9 @@ class BikeSales extends Component {
   closeFilters() {
     this.setState({
       filtersOpen: false,
-      sortOpen: false
+      sortOpen: false,
+      budgetMin: null,
+      budgetMax: null
     })
   }
 
@@ -249,6 +267,12 @@ class BikeSales extends Component {
     })
   }
 
+  updateBudget(type, value) {
+    this.setState({
+      [type]: value
+    })
+  }
+
   handleFiltersButtonClick() {
     const { filtersOpen } = this.state
     this.setState({
@@ -264,7 +288,15 @@ class BikeSales extends Component {
   }
 
   render() {
-    const { filtersOpen, sortOpen, bikes, filters, reducedFilters } = this.state
+    const {
+      filtersOpen,
+      sortOpen,
+      bikes,
+      filters,
+      reducedFilters,
+      budgetMin,
+      budgetMax
+    } = this.state
 
     return (
       <div className={styles.page}>
@@ -314,6 +346,9 @@ class BikeSales extends Component {
             options={filters}
             reducedFilters={reducedFilters}
             updateFilters={this.updateFilters}
+            budgetMin={budgetMin}
+            budgetMax={budgetMax}
+            updateBudget={this.updateBudget}
           />
         </MySlidingPane>
         <MySlidingPane

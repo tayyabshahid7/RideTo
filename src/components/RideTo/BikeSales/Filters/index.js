@@ -29,7 +29,13 @@ class Filters extends Component {
   }
 
   render() {
-    const { options, reducedFilters } = this.props
+    const {
+      options,
+      reducedFilters,
+      budgetMin,
+      budgetMax,
+      updateBudget
+    } = this.props
 
     return (
       <Accordion allowMultipleExpanded allowZeroExpanded>
@@ -44,20 +50,51 @@ class Filters extends Component {
               </Button>
             </Heading>
             <Panel className={styles.accordionPanel}>
-              {values.map(value => (
-                <div key={value.name}>
+              {name === 'Budget' ? (
+                <div className={styles.budgetGroup}>
                   <label>
+                    From{' '}
                     <input
-                      checked={value.active}
-                      type="checkbox"
+                      value={budgetMin || ''}
+                      type="number"
+                      min="0"
+                      step="100"
                       onChange={event => {
-                        this.handleCheckboxClick(event, name, value.name)
+                        updateBudget('budgetMin', event.target.value)
                       }}
-                    />{' '}
-                    {value.name}
+                      placeholder="Min value (£)"
+                    />
+                  </label>
+                  <label>
+                    To{' '}
+                    <input
+                      value={budgetMax || budgetMin || ''}
+                      type="number"
+                      min={budgetMin}
+                      step="100"
+                      onChange={event => {
+                        updateBudget('budgetMax', event.target.value)
+                      }}
+                      placeholder="Max value (£)"
+                    />
                   </label>
                 </div>
-              ))}
+              ) : (
+                values.map(value => (
+                  <div key={value.name}>
+                    <label>
+                      <input
+                        checked={value.active}
+                        type="checkbox"
+                        onChange={event => {
+                          this.handleCheckboxClick(event, name, value.name)
+                        }}
+                      />{' '}
+                      {value.name}
+                    </label>
+                  </div>
+                ))
+              )}
             </Panel>
           </Item>
         ))}

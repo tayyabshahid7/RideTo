@@ -162,3 +162,17 @@
 .accordionPanel {
   padding: 0 1rem 0.5rem;
 }
+
+.budgetGroup {
+  display: flex;
+  justify-content: space-between;
+
+  label {
+    width: 49%;
+
+    input {
+      display: block;
+      width: 100%;
+    }
+  }
+}
