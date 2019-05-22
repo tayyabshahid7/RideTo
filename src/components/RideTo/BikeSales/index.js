@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import SlidingPane from 'react-sliding-pane'
+import SlidingPane from 'react-sliding-pane-spread-props'
 import Modal from 'react-modal'
 import styles from './styles.scss'
 import BikeSummary from './BikeSummary'
 import Filters from './Filters'
-import 'react-sliding-pane/dist/react-sliding-pane.css'
+import 'react-sliding-pane-spread-props/dist/react-sliding-pane.css'
 import { isEqual } from 'lodash'
+import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 const DUMMY_DATA = [
   {
@@ -152,18 +153,33 @@ function reduceFilters(filters) {
   }, {})
 }
 
-function MySlidingPane(props) {
-  const { isOpen, children } = props
+class MySlidingPane extends Component {
+  constructor(props) {
+    super(props)
 
-  return (
-    <SlidingPane
-      {...props}
-      isOpen={isOpen}
-      width="60%"
-      className={styles.panel}>
-      {children}
-    </SlidingPane>
-  )
+    this.pane = React.createRef()
+  }
+
+  render() {
+    const { isOpen, children } = this.props
+
+    return (
+      <SlidingPane
+        {...this.props}
+        isOpen={isOpen}
+        width="60%"
+        className={styles.panel}
+        overlayRef={pane => (this.pane = pane)}
+        onAfterOpen={() => {
+          disableBodyScroll(this.pane)
+        }}
+        onAfterClose={() => {
+          clearAllBodyScrollLocks()
+        }}>
+        {children}
+      </SlidingPane>
+    )
+  }
 }
 
 class BikeSales extends Component {
