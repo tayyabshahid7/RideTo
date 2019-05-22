@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import SlidingPane from 'react-sliding-pane-spread-props'
 import Modal from 'react-modal'
 import styles from './styles.scss'
 import BikeSummary from './BikeSummary'
 import Filters from './Filters'
 import 'react-sliding-pane-spread-props/dist/react-sliding-pane.css'
 import { isEqual } from 'lodash'
-import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
+import MySlidingPane from './MySlidingPane'
 
 const DUMMY_DATA = [
   {
@@ -134,6 +133,12 @@ const FILTERS = [
   { name: 'Licence', values: ['CBT', 'A1 Licence', 'A2 Licence', 'A Licence'] }
 ]
 
+function getFiltersCount(filters) {
+  return Object.values(filters).reduce((count, values) => {
+    return values === 'All' ? count : count + values.length
+  }, 0)
+}
+
 function reduceFilters(filters) {
   return filters.reduce((obj, option) => {
     const name = option.name.toLowerCase()
@@ -153,54 +158,30 @@ function reduceFilters(filters) {
   }, {})
 }
 
-class MySlidingPane extends Component {
-  constructor(props) {
-    super(props)
-
-    this.pane = React.createRef()
-  }
-
-  render() {
-    const { isOpen, children } = this.props
-
-    return (
-      <SlidingPane
-        {...this.props}
-        isOpen={isOpen}
-        width="60%"
-        className={styles.panel}
-        overlayRef={pane => (this.pane = pane)}
-        onAfterOpen={() => {
-          disableBodyScroll(this.pane)
-        }}
-        onAfterClose={() => {
-          clearAllBodyScrollLocks()
-        }}>
-        {children}
-      </SlidingPane>
-    )
-  }
-}
-
 class BikeSales extends Component {
   constructor(props) {
     super(props)
 
+    this.defaultFilters = FILTERS.map(option => ({
+      ...option,
+      values: option.values.map(value => ({
+        name: value,
+        active: false
+      }))
+    }))
+    this.defaultReducedFilters = reduceFilters(FILTERS)
+
     this.state = {
       filtersOpen: false,
       sortOpen: false,
-      filters: FILTERS.map(option => ({
-        ...option,
-        values: option.values.map(value => ({
-          name: value,
-          active: false
-        }))
-      })),
       bikes: DUMMY_DATA,
-      reducedFilters: reduceFilters(FILTERS)
+      filters: this.defaultFilters,
+      reducedFilters: this.defaultReducedFilters
     }
 
+    this.closeFilters = this.closeFilters.bind(this)
     this.updateFilters = this.updateFilters.bind(this)
+    this.clearFilters = this.clearFilters.bind(this)
     this.handleFiltersButtonClick = this.handleFiltersButtonClick.bind(this)
     this.handleSortButtonClick = this.handleSortButtonClick.bind(this)
   }
@@ -230,6 +211,13 @@ class BikeSales extends Component {
     }
   }
 
+  closeFilters() {
+    this.setState({
+      filtersOpen: false,
+      sortOpen: false
+    })
+  }
+
   updateFilters(active, name, valueToSet) {
     this.setState({
       filters: this.state.filters.map(option => {
@@ -251,6 +239,13 @@ class BikeSales extends Component {
 
         return option
       })
+    })
+  }
+
+  clearFilters() {
+    this.setState({
+      filters: this.defaultFilters,
+      reducedFilters: this.defaultReducedFilters
     })
   }
 
@@ -308,9 +303,13 @@ class BikeSales extends Component {
           </div>
         </div>
         <MySlidingPane
+          closeFilters={this.closeFilters}
           isOpen={filtersOpen}
           onRequestClose={this.handleFiltersButtonClick}
-          from="left">
+          from="left"
+          title="Filters"
+          filtersCount={getFiltersCount(reducedFilters)}
+          clearFilters={this.clearFilters}>
           <Filters
             options={filters}
             reducedFilters={reducedFilters}
@@ -318,9 +317,11 @@ class BikeSales extends Component {
           />
         </MySlidingPane>
         <MySlidingPane
+          closeFilters={this.closeFilters}
           isOpen={sortOpen}
           onRequestClose={this.handleSortButtonClick}
-          from="right">
+          from="right"
+          title="Sort">
           Sort
         </MySlidingPane>
       </div>
