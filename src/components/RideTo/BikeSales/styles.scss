@@ -80,3 +80,17 @@
     display: none;
   }
 }
+
+.accordionItem {
+  font-size: 18px;
+  border-bottom: 1px solid #cecece;
+}
+
+.accordionButton {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  cursor: pointer;
+  user-select: none;
+}

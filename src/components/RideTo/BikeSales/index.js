@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import SlidingPane from 'react-sliding-pane'
 import styles from './styles.scss'
 import BikeSummary from './BikeSummary'
+import Filters from './Filters'
 import 'react-sliding-pane/dist/react-sliding-pane.css'
 
 const DUMMY_DATA = [
@@ -142,7 +143,7 @@ class BikeSales extends Component {
           isOpen={filtersOpen}
           onRequestClose={this.handleFiltersButtonClick}
           from="left">
-          Filters
+          <Filters />
         </SlidingPane>
         <SlidingPane
           className={styles.panel}
