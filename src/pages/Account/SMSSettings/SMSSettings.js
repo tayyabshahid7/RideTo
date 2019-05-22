@@ -173,14 +173,24 @@ class SMSSettings extends Component {
           <Col>
             <div className={styles.toggleContainer}>
               <label>
+                <style
+                  dangerouslySetInnerHTML={{
+                    __html: `
+                  .react-toggle--checked .react-toggle-track { background-color: var(--primary-color) !important; }
+                  .react-toggle--checked .react-toggle-thumb { border-color: var(--primary-color) !important; }
+                `
+                  }}
+                />
                 <Toggle
                   checked={sms_active}
-                  className={styles.myToggle}
                   icons={false}
                   onChange={this.handleToggleChange}
                 />
-                <span>Toggle SMS</span>
+                <span style={{ fontWeight: 'bold' }}>Toggle SMS</span>
               </label>
+              <div>
+                Select whether you want to send text confirmation to customers
+              </div>
             </div>
             <div className={!sms_active && styles.disabledBlock}>
               <div className={classnames(styles.box, styles.boxVertical)}>
@@ -191,7 +201,8 @@ class SMSSettings extends Component {
                       <div className={styles.intro}>
                         <p>
                           SMS credits are required to send SMS to customers.
-                          Here you can check your credits and purchase more
+                          Here you can check your credits and purchase more.
+                          Each SMS costs 6p.
                         </p>
                       </div>
                       <div className={styles.title}>
