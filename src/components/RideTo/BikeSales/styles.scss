@@ -79,6 +79,9 @@
   > div:first-child {
     display: none;
   }
+  > div:nth-child(2) {
+    padding: 0;
+  }
 }
 
 .accordionItem {
@@ -90,7 +93,12 @@
   font-weight: bold;
   display: flex;
   justify-content: space-between;
-  padding: 1rem 0;
+  padding: 1rem;
   cursor: pointer;
   user-select: none;
+  outline: 0;
+}
+
+.accordionPanel {
+  padding: 0 1rem 1rem;
 }
