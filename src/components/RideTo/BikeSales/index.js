@@ -145,10 +145,16 @@ const FILTERS = [
   }
 ]
 
-function getFiltersCount(filters) {
-  return Object.values(filters).reduce((count, values) => {
+function getFiltersCount(filters, budgetMin, budgetMax) {
+  let count = Object.values(filters).reduce((count, values) => {
     return values === 'All' ? count : count + values.length
   }, 0)
+
+  if (budgetMin || budgetMax) {
+    ++count
+  }
+
+  return count
 }
 
 function reduceFilters(filters) {
@@ -277,7 +283,9 @@ class BikeSales extends Component {
   clearFilters() {
     this.setState({
       filters: this.defaultFilters,
-      reducedFilters: this.defaultReducedFilters
+      reducedFilters: this.defaultReducedFilters,
+      budgetMin: null,
+      budgetMax: null
     })
   }
 
@@ -354,7 +362,7 @@ class BikeSales extends Component {
           onRequestClose={this.handleFiltersButtonClick}
           from="left"
           title="Filters"
-          filtersCount={getFiltersCount(reducedFilters)}
+          filtersCount={getFiltersCount(reducedFilters, budgetMin, budgetMax)}
           clearFilters={this.clearFilters}>
           <Filters
             options={filters}
