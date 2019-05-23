@@ -21,10 +21,10 @@ class OrderListContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { id } = this.props
+    const { id, schoolId } = this.props
     if (id !== 'create') {
       this.props.fetchOrders({ customer: parseInt(id, 10) })
-      this.props.getEmails(id)
+      this.props.getEmails(id, schoolId, schoolId)
     }
     this.props.fetchSuppliers()
   }
@@ -126,7 +126,8 @@ const mapStateToProps = (state, props) => {
     suppliers: supplierModule.selectors.getItems(state.supplier),
     info: state.info,
     user: state.auth.user,
-    emails: state.email.emails
+    emails: state.email.emails,
+    schoolId: state.auth.schoolId
   }
 }
 
