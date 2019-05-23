@@ -20,16 +20,14 @@ class Email extends Component {
   }
 
   render() {
-    const { title, date, time, body } = this.props.email
+    const { subject, email_date, body } = this.props.email
     const { showMore } = this.state
 
     return (
       <div className={styles.panel}>
         <div className={classnames(styles.header, styles.headerEmail)}>
-          <h4 className={styles.title}>{title}</h4>
-          <div className={styles.date}>
-            Sent {date} at {time}
-          </div>
+          <h4 className={styles.title}>{subject}</h4>
+          <div className={styles.date}>Sent {email_date}</div>
         </div>
         {showMore && <div className={styles.body}>{body}</div>}
         <div className={styles.showMore}>
