@@ -36,25 +36,35 @@ class MySlidingPane extends Component {
         onAfterClose={() => {
           clearAllBodyScrollLocks()
         }}>
-        <div className={styles.slidingPaneTitle}>
-          {isFilters && (
+        <div className={styles.slidingPaneContent}>
+          <div className={styles.slidingPaneTitle}>
+            {isFilters && (
+              <button
+                className={classnames(
+                  styles.clearAll,
+                  filtersCount > 0 && styles.clearAllReady
+                )}
+                onClick={clearFilters}>
+                Clear all {filtersCount > 0 && <span>({filtersCount})</span>}
+              </button>
+            )}
+            <span>{title}</span>
             <button
               className={classnames(
-                styles.clearAll,
-                filtersCount > 0 && styles.clearAllReady
+                styles.close,
+                !isFilters && styles.closeSort
               )}
-              onClick={clearFilters}>
-              Clear all {filtersCount > 0 && <span>({filtersCount})</span>}
+              onClick={closeFilters}>
+              ×
             </button>
-          )}
-          <span>{title}</span>
-          <button
-            className={classnames(styles.close, !isFilters && styles.closeSort)}
-            onClick={closeFilters}>
-            ×
-          </button>
+          </div>
+          <div className={styles.accordionContent}>{children}</div>
+          <div className={styles.seeButtonWrap}>
+            <button className={styles.seeButton} onClick={closeFilters}>
+              See bikes
+            </button>
+          </div>
         </div>
-        {children}
       </SlidingPane>
     )
   }

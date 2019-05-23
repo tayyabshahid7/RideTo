@@ -88,6 +88,7 @@ class Filters extends Component {
                   <div key={value.name}>
                     <label>
                       <input
+                        className={styles.boxInput}
                         checked={value.active}
                         type="checkbox"
                         onChange={event => {

@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Modal from 'react-modal'
 import styles from './styles.scss'
 import BikeSummary from './BikeSummary'
+import Sort from './Sort'
 import Filters from './Filters'
 import 'react-sliding-pane-spread-props/dist/react-sliding-pane.css'
 import { isEqual } from 'lodash'
@@ -15,6 +16,7 @@ const DUMMY_DATA = [
     desc: 'Blah blah blah blah',
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
+    reviews: 77,
     categories: {
       engine: '125cc',
       licence: 'CBT',
@@ -29,6 +31,7 @@ const DUMMY_DATA = [
     desc: 'Blah lorem blah blah',
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
+    reviews: 10,
     categories: {
       engine: '125cc',
       licence: 'CBT',
@@ -43,6 +46,7 @@ const DUMMY_DATA = [
     desc: 'Blah blah blah blah',
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
+    reviews: 56,
     categories: {
       licence: 'A2 Licence',
       engine: '2000cc',
@@ -57,6 +61,7 @@ const DUMMY_DATA = [
     desc: 'Blah lorem blah blah',
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
+    reviews: 10,
     categories: {
       engine: '125cc',
       licence: 'CBT',
@@ -71,6 +76,7 @@ const DUMMY_DATA = [
     desc: 'Blah blah blah blah',
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
+    reviews: 9,
     categories: {
       licence: 'A1 Licence',
       engine: '300cc',
@@ -85,6 +91,7 @@ const DUMMY_DATA = [
     desc: 'Blah lorem blah blah',
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
+    reviews: 10,
     categories: {
       engine: '125cc',
       licence: 'CBT',
@@ -99,6 +106,7 @@ const DUMMY_DATA = [
     desc: 'Blah blah blah blah',
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
+    reviews: 11,
     categories: {
       engine: '125cc',
       licence: 'CBT',
@@ -113,6 +121,7 @@ const DUMMY_DATA = [
     desc: 'Blah lorem blah blah',
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
+    reviews: 1,
     categories: {
       engine: '125cc',
       licence: 'CBT',
@@ -144,6 +153,20 @@ const FILTERS = [
     values: ['CBT', 'A1 Licence', 'A2 Licence', 'A Licence']
   }
 ]
+
+const SORT_OPTIONS = [
+  { name: 'Reviews', id: 'reviews' },
+  { name: 'Price (Low to High)', id: 'priceAsc' },
+  { name: 'Price (High to Low)', id: 'priceDesc' },
+  { name: 'Make (A-Z)', id: 'aToZ' }
+]
+
+const sortFunctions = {
+  reviews: (a, b) => (a.reviews < b.reviews ? 1 : -1),
+  priceAsc: (a, b) => (a.price > b.price ? 1 : -1),
+  priceDesc: (a, b) => (a.price < b.price ? 1 : -1),
+  aToZ: (a, b) => (a.categories.brand > b.categories.brand ? 1 : -1)
+}
 
 function getFiltersCount(filters, budgetMin, budgetMax) {
   let count = Object.values(filters).reduce((count, values) => {
@@ -188,21 +211,24 @@ class BikeSales extends Component {
       }))
     }))
     this.defaultReducedFilters = reduceFilters(FILTERS)
+    this.sortOptions = SORT_OPTIONS
 
     this.state = {
       filtersOpen: false,
       sortOpen: false,
-      bikes: DUMMY_DATA,
+      bikes: DUMMY_DATA.sort(sortFunctions[this.sortOptions[0].id]),
       filters: this.defaultFilters,
       reducedFilters: this.defaultReducedFilters,
       budgetMin: null,
-      budgetMax: null
+      budgetMax: null,
+      sort: this.sortOptions[0]
     }
 
     this.closeFilters = this.closeFilters.bind(this)
     this.updateFilters = this.updateFilters.bind(this)
     this.clearFilters = this.clearFilters.bind(this)
     this.updateBudget = this.updateBudget.bind(this)
+    this.updateSort = this.updateSort.bind(this)
     this.handleFiltersButtonClick = this.handleFiltersButtonClick.bind(this)
     this.handleSortButtonClick = this.handleSortButtonClick.bind(this)
   }
@@ -215,7 +241,8 @@ class BikeSales extends Component {
     if (
       !isEqual(this.state.filters, prevState.filters) ||
       this.state.budgetMin !== prevState.budgetMin ||
-      this.state.budgetMax !== prevState.budgetMax
+      this.state.budgetMax !== prevState.budgetMax ||
+      this.state.sort.id !== prevState.sort.id
     ) {
       const reducedFilters = reduceFilters(this.state.filters)
 
@@ -231,17 +258,19 @@ class BikeSales extends Component {
           }
 
           return true
-        }).filter(bike => {
-          return Object.entries(bike.categories).every(([name, value]) => {
-            if (
-              reducedFilters[name] !== 'All' &&
-              !reducedFilters[name].includes(value)
-            ) {
-              return false
-            }
-            return true
+        })
+          .filter(bike => {
+            return Object.entries(bike.categories).every(([name, value]) => {
+              if (
+                reducedFilters[name] !== 'All' &&
+                !reducedFilters[name].includes(value)
+              ) {
+                return false
+              }
+              return true
+            })
           })
-        }),
+          .sort(sortFunctions[this.state.sort.id]),
         reducedFilters
       })
     }
@@ -295,6 +324,12 @@ class BikeSales extends Component {
     })
   }
 
+  updateSort(sort) {
+    this.setState({
+      sort
+    })
+  }
+
   handleFiltersButtonClick() {
     const { filtersOpen } = this.state
     this.setState({
@@ -317,7 +352,8 @@ class BikeSales extends Component {
       filters,
       reducedFilters,
       budgetMin,
-      budgetMax
+      budgetMax,
+      sort
     } = this.state
 
     return (
@@ -379,7 +415,11 @@ class BikeSales extends Component {
           onRequestClose={this.handleSortButtonClick}
           from="right"
           title="Sort">
-          Sort
+          <Sort
+            sortOptions={this.sortOptions}
+            sortSelected={sort}
+            updateSort={this.updateSort}
+          />
         </MySlidingPane>
       </div>
     )
