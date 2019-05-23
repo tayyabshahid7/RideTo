@@ -30,6 +30,11 @@ const renderDayContents = (day, courses) => {
 
 const isDayBlocked = (day, courses) => {
   const formatted = day.format('YYYY-MM-DD')
+
+  if (moment().isSame(day, 'day')) {
+    return true
+  }
+
   if (
     (moment().hour() >= 18 ||
       (moment().hour() >= 17 && moment().minute() >= 30)) &&
