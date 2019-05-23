@@ -5,11 +5,15 @@ import { actions as notificationActions } from './notification'
 const FETCH_ALL = createRequestTypes('rideto/email/FETCH/ALL')
 const SEND = createRequestTypes('rideto/email/SEND')
 
-export const getEmails = customerId => async dispatch => {
+export const getEmails = (
+  customerId,
+  school_id,
+  supplier_id
+) => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
   try {
-    const emails = await fetchEmails(customerId)
+    const emails = await fetchEmails(customerId, school_id, supplier_id)
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
