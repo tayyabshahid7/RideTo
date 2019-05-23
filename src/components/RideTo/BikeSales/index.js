@@ -123,14 +123,26 @@ const DUMMY_DATA = [
 ]
 
 const FILTERS = [
-  { name: 'Brand', values: ['BMW', 'Ducati', 'Honda', 'Susuki'] },
+  {
+    name: 'Brand',
+    values: ['BMW', 'Ducati', 'Honda', 'Susuki']
+  },
   {
     name: 'Engine',
     values: ['50cc', '125cc', '200cc', '300cc', '400cc', '2000cc']
   },
-  { name: 'Style', values: ['Adventure', 'Classic', 'Scooter', 'Super Moto'] },
-  { name: 'Budget', values: [] },
-  { name: 'Licence', values: ['CBT', 'A1 Licence', 'A2 Licence', 'A Licence'] }
+  {
+    name: 'Style',
+    values: ['Adventure', 'Classic', 'Scooter', 'Super Moto']
+  },
+  {
+    name: 'Budget',
+    values: []
+  },
+  {
+    name: 'Licence',
+    values: ['CBT', 'A1 Licence', 'A2 Licence', 'A Licence']
+  }
 ]
 
 function getFiltersCount(filters) {
@@ -203,12 +215,14 @@ class BikeSales extends Component {
 
       this.setState({
         bikes: DUMMY_DATA.filter(bike => {
-          const min = !this.state.budgetMin ? 0 : this.state.budgetMin
+          const min = !this.state.budgetMin ? 0 : this.state.budgetMin * 100
           const max = !this.state.budgetMax
-            ? this.state.budgetMin || Infinity
-            : this.state.budgetMax
+            ? Infinity
+            : this.state.budgetMax * 100
 
-          console.log(min, max)
+          if (bike.price > max || bike.price < min) {
+            return false
+          }
 
           return true
         }).filter(bike => {
@@ -269,7 +283,7 @@ class BikeSales extends Component {
 
   updateBudget(type, value) {
     this.setState({
-      [type]: value
+      [type]: value ? parseInt(value, 10) : 0
     })
   }
 

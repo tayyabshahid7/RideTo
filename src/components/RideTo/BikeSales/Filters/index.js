@@ -44,9 +44,13 @@ class Filters extends Component {
             <Heading>
               <Button className={styles.accordionButton}>
                 {name}{' '}
-                <Selected
-                  selectedFilters={reducedFilters[name.toLowerCase()]}
-                />
+                {name === 'Budget' ? (
+                  <Selected budgetMin={budgetMin} budgetMax={budgetMax} />
+                ) : (
+                  <Selected
+                    selectedFilters={reducedFilters[name.toLowerCase()]}
+                  />
+                )}
               </Button>
             </Heading>
             <Panel className={styles.accordionPanel}>
@@ -68,7 +72,7 @@ class Filters extends Component {
                   <label>
                     To{' '}
                     <input
-                      value={budgetMax || budgetMin || ''}
+                      value={budgetMax || ''}
                       type="number"
                       min={budgetMin}
                       step="100"
