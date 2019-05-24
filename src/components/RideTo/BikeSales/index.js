@@ -7,8 +7,16 @@ import Filters from './Filters'
 import 'react-sliding-pane-spread-props/dist/react-sliding-pane.css'
 import { isEqual } from 'lodash'
 import MySlidingPane from './MySlidingPane'
+import {
+  SORT_OPTIONS,
+  sortFunctions,
+  getFiltersCount,
+  reduceFilters
+} from 'services/bike-sales.js'
+import Pagination from 'rc-pagination'
+import en_GB from 'rc-pagination/es/locale/en_GB.js'
 
-const DUMMY_DATA = [
+const DATA = [
   {
     image: 'https://via.placeholder.com/330x200',
     name: 'Honda MSADV 125',
@@ -131,6 +139,24 @@ const DUMMY_DATA = [
   }
 ]
 
+const DUMMY_DATA = [
+  ...DATA,
+  ...DATA,
+  ...DATA,
+  ...DATA,
+  ...DATA,
+  ...DATA,
+  ...DATA,
+  ...DATA,
+  ...DATA,
+  ...DATA
+]
+  .map((bike, i) => ({
+    ...bike,
+    name: `${i} ${bike.name}`
+  }))
+  .sort(() => Math.random() - 0.5)
+
 const FILTERS = [
   {
     name: 'Brand',
@@ -154,51 +180,6 @@ const FILTERS = [
   }
 ]
 
-const SORT_OPTIONS = [
-  { name: 'Reviews', id: 'reviews' },
-  { name: 'Price (Low to High)', id: 'priceAsc' },
-  { name: 'Price (High to Low)', id: 'priceDesc' },
-  { name: 'Make (A-Z)', id: 'aToZ' }
-]
-
-const sortFunctions = {
-  reviews: (a, b) => (a.reviews < b.reviews ? 1 : -1),
-  priceAsc: (a, b) => (a.price > b.price ? 1 : -1),
-  priceDesc: (a, b) => (a.price < b.price ? 1 : -1),
-  aToZ: (a, b) => (a.categories.brand > b.categories.brand ? 1 : -1)
-}
-
-function getFiltersCount(filters, budgetMin, budgetMax) {
-  let count = Object.values(filters).reduce((count, values) => {
-    return values === 'All' ? count : count + values.length
-  }, 0)
-
-  if (budgetMin || budgetMax) {
-    ++count
-  }
-
-  return count
-}
-
-function reduceFilters(filters) {
-  return filters.reduce((obj, option) => {
-    const name = option.name.toLowerCase()
-
-    obj[name] = option.values
-      .filter(value => value.active)
-      .reduce((arr, value) => {
-        arr.push(value.name)
-        return arr
-      }, [])
-
-    if (obj[name].length === 0) {
-      obj[name] = 'All'
-    }
-
-    return obj
-  }, {})
-}
-
 class BikeSales extends Component {
   constructor(props) {
     super(props)
@@ -221,7 +202,8 @@ class BikeSales extends Component {
       reducedFilters: this.defaultReducedFilters,
       budgetMin: null,
       budgetMax: null,
-      sort: this.sortOptions[0]
+      sort: this.sortOptions[0],
+      page: 1
     }
 
     this.closeFilters = this.closeFilters.bind(this)
@@ -231,6 +213,7 @@ class BikeSales extends Component {
     this.updateSort = this.updateSort.bind(this)
     this.handleFiltersButtonClick = this.handleFiltersButtonClick.bind(this)
     this.handleSortButtonClick = this.handleSortButtonClick.bind(this)
+    this.handlePageChange = this.handlePageChange.bind(this)
   }
 
   componentDidMount() {
@@ -326,7 +309,8 @@ class BikeSales extends Component {
 
   updateSort(sort) {
     this.setState({
-      sort
+      sort,
+      page: 1
     })
   }
 
@@ -344,6 +328,12 @@ class BikeSales extends Component {
     })
   }
 
+  handlePageChange(current, pageSize) {
+    this.setState({
+      page: current
+    })
+  }
+
   render() {
     const {
       filtersOpen,
@@ -353,7 +343,8 @@ class BikeSales extends Component {
       reducedFilters,
       budgetMin,
       budgetMax,
-      sort
+      sort,
+      page
     } = this.state
 
     return (
@@ -384,13 +375,45 @@ class BikeSales extends Component {
         <div className={styles.listing}>
           <div className={styles.container}>
             <div className={styles.row}>
-              {bikes.map((bike, i) => (
+              {bikes.slice(page * 9 - 9, page * 9).map((bike, i) => (
                 <div className={styles.item} key={i}>
                   <BikeSummary bike={bike} />
                 </div>
               ))}
             </div>
           </div>
+        </div>
+        <div className={styles.paginationWrap}>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
+            .${
+              styles.pagination
+            } .rc-pagination-item-active { background-color: var(--primary-color); }
+            .${
+              styles.pagination
+            } .rc-pagination-item-active a { color: white; cursor: default; }
+            .${
+              styles.pagination
+            } .rc-pagination-item-active a:hover { color: white; }
+            .${
+              styles.pagination
+            } [class^="rc-pagination-jump"] { pointer-events: none; outline: 0; }
+            .${
+              styles.pagination
+            } [class^="rc-pagination-jump"] a::before { content: "..." }
+          `
+            }}
+          />
+          <Pagination
+            className={styles.pagination}
+            current={page}
+            total={Math.ceil(bikes.length)}
+            pageSize={9}
+            locale={en_GB}
+            hideOnSinglePage={true}
+            onChange={this.handlePageChange}
+          />
         </div>
         <MySlidingPane
           closeFilters={this.closeFilters}
