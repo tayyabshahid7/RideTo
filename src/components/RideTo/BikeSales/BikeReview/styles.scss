@@ -1,0 +1,18 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.largeImage {
+  width: 55%;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.keyInfo {
+  width: 41%;
+  background-color: #fff;
+}

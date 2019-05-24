@@ -1,9 +1,10 @@
 import React from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import { Link } from 'react-router-dom'
 
 function BikeSummary({
-  bike: { image, name, price, desc, bookLink, reviewLink }
+  bike: { id, image, name, price, desc, bookLink, reviewLink }
 }) {
   return (
     <div className={styles.bikeSummary}>
@@ -19,9 +20,12 @@ function BikeSummary({
           href={bookLink}>
           Book test ride
         </a>
-        <a className={classnames(styles.button)} href={reviewLink}>
+        <Link
+          className={classnames(styles.button)}
+          // to={`/bike-sales/bike/${id}`}>
+          to={`/bike/${id}`}>
           Read review
-        </a>
+        </Link>
       </div>
     </div>
   )
