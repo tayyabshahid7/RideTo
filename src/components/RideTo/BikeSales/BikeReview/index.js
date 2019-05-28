@@ -1,14 +1,17 @@
 import React from 'react'
+import classnames from 'classnames'
 import containerStyles from '../styles.scss'
+import summaryStyles from '../BikeSummary/styles.scss'
 import componentStyles from './styles.scss'
 
 const styles = {
   ...containerStyles,
+  ...summaryStyles,
   ...componentStyles
 }
 
 function BikeReview({ match, bikes }) {
-  const { image, name } = bikes.find(
+  const { image, name, price, bookLink } = bikes.find(
     bike => bike.id === parseInt(match.params.id, 10)
   )
 
@@ -20,11 +23,110 @@ function BikeReview({ match, bikes }) {
             <img src={image} alt="Large product" />
           </div>
           <div className={styles.keyInfo}>
-            <div>
+            <div className={styles.keyInfoHeader}>
               <div>
-                <h1>{name}</h1>
+                <h1 className={styles.title}>{name}</h1>
+                <div className={styles.price}>
+                  RRP £{(price / 100).toLocaleString()}
+                </div>
+              </div>
+              <div className={styles.score}>RideTo Score</div>
+            </div>
+            <div className={styles.infoRow}>125cc - 9.25 bhp</div>
+            <div className={styles.infoRow}>189 MPG - 235 miles range</div>
+            <div className={styles.infoRow}>CBT Licence</div>
+            <div className={styles.infoRow}>Insurance group: 12</div>
+            <a
+              className={classnames(
+                styles.button,
+                styles.buttonPrimary,
+                styles.buttonReview
+              )}
+              href={bookLink}>
+              Book test ride
+            </a>
+          </div>
+        </div>
+        <div className={styles.main}>
+          <div className={styles.content}>
+            <h2 className={styles.title}>{name} Review</h2>
+            <p>
+              That's the lorem ipsum. And it's ipsum dolor sit amet blah blah
+              blah lorem blah yeah. Yep
+            </p>
+            <div className={styles.goodBad}>
+              <div>
+                <div>
+                  <h3>The good</h3>
+                  <ul>
+                    <li>Lorem ipsum</li>
+                    <li>Lorem ipsum</li>
+                    <li>Lorem ipsum</li>
+                  </ul>
+                </div>
+              </div>
+              <div>
+                <h3>The not so good</h3>
+                <ul>
+                  <li>Lorem ipsum</li>
+                  <li>Lorem ipsum</li>
+                  <li>Lorem ipsum</li>
+                </ul>
               </div>
             </div>
+            <h3>The ride</h3>
+            <p>
+              Because it’s so small you can just fly around town, hitting gaps
+              in traffic that aren’t really on, before buzzing off into the
+              distance. The suspension is ultra soft, as is the enormous seat,
+              but on the rough roads of{' '}
+              <a href="https://www.google.com">London</a>’s West End, it was my
+              derrière’s best friend.
+            </p>
+            <p>
+              The only downside to this soft ride is that there’s a max system
+              weight of 105kg, which you could easily reach if you’ve got all
+              your gear on and a bag full of swag.
+            </p>
+            <img src="https://via.placeholder.com/588x440" alt="Placeholder" />
+            <blockquote>
+              <p>
+                "That’s the Monkey in a nutshell. And its reliable engine’s the
+                same; the air-cooled, fuel-injected horizontal 125cc"
+              </p>
+              <footer>
+                <cite>James Jameson</cite> carwow expert
+              </footer>
+            </blockquote>
+          </div>
+          <div className={styles.footerButtons}>
+            <a
+              className={classnames(
+                styles.button,
+                styles.buttonPrimary,
+                styles.buttonReview
+              )}
+              href={bookLink}>
+              Book test ride
+            </a>
+            <a
+              className={classnames(
+                styles.button,
+                styles.buttonPrimary,
+                styles.buttonReview
+              )}
+              href={bookLink}>
+              Book CBT course
+            </a>
+            <a
+              className={classnames(
+                styles.button,
+                styles.buttonPrimary,
+                styles.buttonReview
+              )}
+              href={bookLink}>
+              Insurance quote
+            </a>
           </div>
         </div>
       </div>
