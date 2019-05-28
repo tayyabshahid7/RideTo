@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import containerStyles from '../styles.scss'
 import summaryStyles from '../BikeSummary/styles.scss'
 import componentStyles from './styles.scss'
+import Circle from 'react-circle'
 
 const styles = {
   ...containerStyles,
@@ -30,12 +31,30 @@ function BikeReview({ match, bikes }) {
                   RRP £{(price / 100).toLocaleString()}
                 </div>
               </div>
-              <div className={styles.score}>RideTo Score</div>
+              <div className={styles.score}>
+                <div>RideTo Score</div>
+                <div className={styles.circle}>
+                  <Circle
+                    progress={(8 / 10) * 100}
+                    roundedStrike={true}
+                    progressColor="green"
+                    animate={false}
+                    responsive={true}
+                    showPercentage={false}
+                  />
+                </div>
+              </div>
             </div>
             <div className={styles.infoRow}>125cc - 9.25 bhp</div>
             <div className={styles.infoRow}>189 MPG - 235 miles range</div>
-            <div className={styles.infoRow}>CBT Licence</div>
-            <div className={styles.infoRow}>Insurance group: 12</div>
+            <div className={styles.infoRow}>
+              CBT Licence{' '}
+              <a href="https://via.placeholder.com/588x440">Book Course</a>
+            </div>
+            <div className={styles.infoRow}>
+              Insurance group: 12{' '}
+              <a href="https://via.placeholder.com/588x440">Get Quote</a>
+            </div>
             <a
               className={classnames(
                 styles.button,
@@ -58,7 +77,7 @@ function BikeReview({ match, bikes }) {
               <div>
                 <div>
                   <h3>The good</h3>
-                  <ul>
+                  <ul className={styles.good}>
                     <li>Lorem ipsum</li>
                     <li>Lorem ipsum</li>
                     <li>Lorem ipsum</li>
@@ -67,7 +86,7 @@ function BikeReview({ match, bikes }) {
               </div>
               <div>
                 <h3>The not so good</h3>
-                <ul>
+                <ul className={styles.bad}>
                   <li>Lorem ipsum</li>
                   <li>Lorem ipsum</li>
                   <li>Lorem ipsum</li>

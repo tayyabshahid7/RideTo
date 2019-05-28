@@ -9306,6 +9306,11 @@ react-addons-shallow-compare@^15.6.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-circle@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-circle/-/react-circle-1.1.1.tgz#f97ccf3e2a37a91ea50280ea8262420e0d1de60c"
+  integrity sha512-iphQfy+MRuNuBqJyZlGKbxyBJhDszaiT5eTiilFFPuwo5nsW5k/uH0KCq/sXXBMiJpLJ/Ly3arkUDvrK62Zung==
+
 react-create-ref@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/react-create-ref/-/react-create-ref-1.0.1.tgz#c0cbeec9e05b608c9f9434fafbecbcc46750293d"

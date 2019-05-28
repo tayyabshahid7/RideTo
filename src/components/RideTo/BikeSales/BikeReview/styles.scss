@@ -46,7 +46,15 @@
   text-align: center;
 }
 
+.circle {
+  max-width: 50px;
+  margin: 5px auto 0;
+}
+
 .infoRow {
+  display: flex;
+  justify-content: space-between;
+
   & + & {
     margin-top: 0.5rem;
   }
@@ -117,6 +125,35 @@
       padding: 0;
       margin: 0;
       list-style: none;
+    }
+  }
+}
+
+.good,
+.bad {
+  li {
+    &::before {
+      font-weight: bold;
+      margin-right: 0.5rem;
+      opacity: 0.9;
+    }
+  }
+}
+
+.good {
+  li {
+    &::before {
+      content: '+';
+      color: var(--primary-color);
+    }
+  }
+}
+
+.bad {
+  li {
+    &::before {
+      content: '-';
+      color: var(--danger-color);
     }
   }
 }
