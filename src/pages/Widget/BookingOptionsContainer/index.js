@@ -179,6 +179,7 @@ class BookingOptionsContainer extends React.Component {
 
     if (
       selectedBikeHire === 'auto' &&
+      defaultCourse &&
       defaultCourse.auto_count === defaultCourse.auto_bikes
     ) {
       selectedBikeHire = 'manual'
@@ -235,6 +236,7 @@ class BookingOptionsContainer extends React.Component {
 
     if (
       selectedBikeHire === 'auto' &&
+      defaultCourse &&
       defaultCourse.auto_count === defaultCourse.auto_bikes
     ) {
       selectedBikeHire = 'manual'
