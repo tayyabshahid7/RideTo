@@ -19,7 +19,13 @@
   margin-bottom: 16px;
 }
 
-.intro {
+.intro,
+.block {
+  white-space: pre-line;
+
+  *:not(div) {
+    white-space: normal;
+  }
 }
 
 @media (max-width: 768px) {

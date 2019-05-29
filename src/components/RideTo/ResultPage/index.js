@@ -8,6 +8,7 @@ import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 import { fetchSearchLocation } from 'services/geolocation'
 import { parseQueryString } from 'services/api'
 import { getStaticData } from 'services/page'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -45,10 +46,7 @@ class ResultPageContainer extends Component {
     this.state = {
       date: null,
       sortByOption: SORTBY.DISTANCE,
-      userLocation: {
-        lat: 51.711712,
-        lng: -0.327693
-      },
+      userLocation: null,
       postcode,
       courseType,
       courses: null,
@@ -64,7 +62,17 @@ class ResultPageContainer extends Component {
     this.loadData()
 
     const userLocation = await fetchSearchLocation(this.state.postcode)
-    this.setState({ userLocation })
+
+    if (userLocation) {
+      this.setState({ userLocation })
+    } else {
+      this.setState({
+        userLocation: {
+          lat: 51.711712,
+          lng: -0.327693
+        }
+      })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -124,18 +132,25 @@ class ResultPageContainer extends Component {
     } = this.state
 
     return (
-      <ResultPage
-        postcode={postcode}
-        courseType={courseType}
-        courses={courses}
-        loading={loading}
-        date={date}
-        sortByOption={sortByOption}
-        handleSetDate={this.handleSetDate}
-        handeUpdateOption={this.handeUpdateOption}
-        navigation={navigation}
-        userLocation={userLocation}
-      />
+      <Router>
+        <Route
+          render={props => (
+            <ResultPage
+              {...props}
+              postcode={postcode}
+              courseType={courseType}
+              courses={courses}
+              loading={loading}
+              date={date}
+              sortByOption={sortByOption}
+              handleSetDate={this.handleSetDate}
+              handeUpdateOption={this.handeUpdateOption}
+              navigation={navigation}
+              userLocation={userLocation}
+            />
+          )}
+        />
+      </Router>
     )
   }
 }

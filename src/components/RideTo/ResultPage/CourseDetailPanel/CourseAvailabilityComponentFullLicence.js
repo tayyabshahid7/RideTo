@@ -82,7 +82,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
               )}>
               Included as standard:
             </p>
-            <OrderIncluded fullLicence />
+            <OrderIncluded fullLicence isWidget={isWidget} />
             <BikePicker
               isWidget={isWidget}
               isFullLicence

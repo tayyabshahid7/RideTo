@@ -8,6 +8,7 @@ import * as FeatureIcons from 'assets/icons/features'
 import { getFeatureInfo } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 // import { loadTypeformScript } from 'utils/helper'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -94,7 +95,11 @@ class CourseItem extends Component {
           <div
             className={styles.photo}
             onClick={() => handleDetailClick(course)}>
-            <img src={course.image} className={styles.image} alt="logo" />
+            <LazyLoadImage
+              src={course.image}
+              className={styles.image}
+              alt="logo"
+            />
           </div>
           <div className={styles.info}>
             <div className={styles.upperSection}>

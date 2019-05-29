@@ -122,6 +122,18 @@ class CustomerDetailForm extends React.Component {
         />
         <ConnectSelect
           textStyle
+          label="T&Cs agreed"
+          name="tandcs_agreed"
+          options={getBooleanSelectOptions()}
+          selected={
+            (customer.tandcs_agreed && customer.tandcs_agreed.toString()) || ''
+          }
+          onChange={value =>
+            onChange({ ...customer, tandcs_agreed: value === 'true' })
+          }
+        />
+        <ConnectSelect
+          textStyle
           label="Email opt in"
           name="email_optin"
           options={getBooleanSelectOptions()}

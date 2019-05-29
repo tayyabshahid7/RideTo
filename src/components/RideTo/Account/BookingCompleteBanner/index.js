@@ -22,7 +22,9 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
   const subTitle = isFullLicence
     ? `${order.course_title}`
     : `${order.course_title} on ${date} ${time}`
-  const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Bookings require confirmation from the instructor, usually within 3 working hours.`
+  const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Bookings require confirmation from the instructor, usually within ${
+    isFullLicence ? '24' : '3'
+  } working hours.`
   const fullLicenceDisclaimer =
     "You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Bookings require confirmation from the instructor."
   const showDisclaimer = order.source !== 'RIDETO_INSTANT'
@@ -37,7 +39,7 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
             <div className={styles.title}>Booking Complete</div>
             <div className={styles.subTitle}>
               {subTitle}
-              {showDisclaimer && (
+              {showDisclaimer && !isFullLicence && (
                 <span>
                   <br />
                   <br />

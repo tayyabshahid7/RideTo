@@ -126,7 +126,7 @@ class CourseForm extends React.Component {
     const { fetchPrice, schoolId, pricing } = this.props
     const { course_type_id, date, time } = this.state.course
     if (course_type_id && date && time) {
-      let datetime = moment(new Date(`${date} ${time}`)).format(DAY_FORMAT3)
+      let datetime = moment(`${date} ${time}`).format(DAY_FORMAT3)
       if (
         pricing.schoolId !== schoolId ||
         pricing.course_type !== course_type_id ||
@@ -138,6 +138,10 @@ class CourseForm extends React.Component {
   }
 
   getFinishTime(time, duration) {
+    if (!time) {
+      return '00:00'
+    }
+
     return moment(time, 'HH:mm')
       .add(duration, 'minute')
       .format('HH:mm')

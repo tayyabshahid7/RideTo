@@ -133,8 +133,7 @@ class OrderForm extends React.Component {
     const { editable, isChanged, showMore, inputsDisabled } = this.state
     const courses = courseTypes
       ? courseTypes.filter(
-          course =>
-            !['TFL_ONE_ON_ONE', 'FULL_LICENCE'].includes(course.constant)
+          course => !['TFL_ONE_ON_ONE'].includes(course.constant)
         )
       : []
     if (!editable) {
@@ -307,15 +306,17 @@ class OrderForm extends React.Component {
                 </Col>
               )}
             </Row>
-            <div className={styles.comms}>
-              <Button
-                disabled={isSending}
-                color="primary"
-                outline
-                onClick={this.handleConfirmation}>
-                Send Confirmation
-              </Button>
-            </div>
+            {editable.source !== 'RIDETO' &&
+              editable.source !== 'RIDETO_INSTANT' && (
+                <div className={styles.comms}>
+                  <Button
+                    disabled={isSending}
+                    color="primary"
+                    onClick={this.handleConfirmation}>
+                    Send Confirmation
+                  </Button>
+                </div>
+              )}
           </div>
           <div className={styles.showMore}>
             <button

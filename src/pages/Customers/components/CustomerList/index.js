@@ -23,7 +23,7 @@ const CustomerList = ({ customers, ordering, isLoading, onSort }) => {
         )}>
         <thead>
           <tr>
-            <Header column="last_name" ordering={ordering} onSort={onSort}>
+            <Header column="first_name" ordering={ordering} onSort={onSort}>
               Name
             </Header>
             <Header column="phone" ordering={ordering} onSort={onSort}>

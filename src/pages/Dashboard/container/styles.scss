@@ -39,6 +39,26 @@
   height: 100%;
 }
 
+@media (max-width: 991.98px) {
+  .rightPanel {
+    margin-top: 32px;
+    padding: 0px 32px !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .rightPanel {
+    margin-top: 16px;
+    padding: 0px 16px !important;
+  }
+}
+@media (max-width: 575.98px) {
+  .rightPanel {
+    margin-top: 8px;
+    padding: 0px 8px !important;
+  }
+}
+
 .dashboardTitle {
   margin-top: 1rem;
 }

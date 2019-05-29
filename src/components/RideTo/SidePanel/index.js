@@ -15,10 +15,18 @@ class SidePanel extends React.Component {
     this.sidePanel = React.createRef()
   }
 
-  componentDidUpdate(prevProps) {
-    const { visible } = this.props
+  componentDidMount() {
+    const { mountUnmount } = this.props
 
-    if (prevProps.visible !== visible) {
+    if (mountUnmount) {
+      disableBodyScroll(this.sidePanel.current)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const { visible, mountUnmount } = this.props
+
+    if (prevProps.visible !== visible && !mountUnmount) {
       if (visible) {
         disableBodyScroll(this.sidePanel.current)
       } else {
@@ -28,7 +36,13 @@ class SidePanel extends React.Component {
   }
 
   componentWillUnmount() {
-    clearAllBodyScrollLocks()
+    const { mountUnmount } = this.props
+
+    if (mountUnmount) {
+      enableBodyScroll(this.sidePanel.current)
+    } else {
+      clearAllBodyScrollLocks()
+    }
   }
 
   render() {

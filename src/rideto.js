@@ -1,7 +1,7 @@
 import mountComponent from 'utils/mountComponent'
 import { setVersionInfo } from 'services/version'
 import menuToggle from 'menuToggle'
-import 'bootstrap'
+// import 'bootstrap'
 import './rideto_bootstrap.scss'
 import './rideto_constants.scss'
 

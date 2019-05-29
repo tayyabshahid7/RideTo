@@ -322,3 +322,17 @@ export const fetchDasPackagePrice = async schoolId => {
   const response = await get(path, {}, false)
   return response
 }
+
+export const findResultsCourseWithId = (courses, id) => {
+  return (
+    courses.available.filter(course => course.id === parseInt(id, 10))[0] ||
+    courses.unavailable.filter(course => course.id === parseInt(id, 10))[0] ||
+    null
+  )
+}
+
+export const getCourseIdFromSearch = search => {
+  const params = new URLSearchParams(search)
+  const courseId = parseInt(params.get('courseId'), 10)
+  return courseId || null
+}

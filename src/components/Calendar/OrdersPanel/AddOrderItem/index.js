@@ -8,7 +8,13 @@ import { injectStripe } from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 
-import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
+import {
+  ConnectInput,
+  ConnectSelect,
+  Button,
+  ConnectCheckbox,
+  ConnectAgeInput
+} from 'components/ConnectForm'
 
 class AddOrderItem extends React.Component {
   constructor(props) {
@@ -26,8 +32,9 @@ class AddOrderItem extends React.Component {
         payment_status: '',
         riding_experience: '',
         full_licence_type: '',
-        start_time: `${this.props.course.date}T${this.props.course.time}Z`
-        // email_optin: 'false'
+        start_time: `${this.props.course.date}T${this.props.course.time}Z`,
+        tandcs_agreed: false,
+        email_optin: false
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
@@ -84,17 +91,20 @@ class AddOrderItem extends React.Component {
   }
 
   handleChangeRawEvent(event) {
-    let name = event.target.name
-    let { order } = this.state
-    this.setState({ order: { ...order, [name]: event.target.value } })
+    const { target } = event
+    const { name } = target
+    const value = target.type === 'checkbox' ? target.checked : target.value
+    const { order } = this.state
+
+    this.setState({ order: { ...order, [name]: value } })
 
     if (name === 'user_first_name') {
       this.setState({
-        cardName: `${event.target.value} ${order.user_last_name}`.toUpperCase()
+        cardName: `${value} ${order.user_last_name}`.toUpperCase()
       })
     } else if (name === 'user_last_name') {
       this.setState({
-        cardName: `${order.user_first_name} ${event.target.value}`.toUpperCase()
+        cardName: `${order.user_first_name} ${value}`.toUpperCase()
       })
     }
   }
@@ -229,8 +239,9 @@ class AddOrderItem extends React.Component {
         user_email,
         user_first_name,
         user_last_name,
-        user_phone
-        // email_optin
+        user_phone,
+        tandcs_agreed,
+        email_optin
       }
     } = this.state
     const price = pricing && pricing.price
@@ -293,7 +304,7 @@ class AddOrderItem extends React.Component {
                 required
               />
 
-              <ConnectInput
+              <ConnectAgeInput
                 basic
                 name="user_birthdate"
                 value={user_birthdate}
@@ -303,6 +314,7 @@ class AddOrderItem extends React.Component {
                 onChange={this.handleChangeRawEvent.bind(this)}
                 // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
                 required
+                hideAge
               />
 
               {isFullLicence && (
@@ -376,21 +388,19 @@ class AddOrderItem extends React.Component {
                 labelField="title"
               />
 
-              {/*
-              <ConnectSelect
-                basic
-                name="email_optin"
-                selected={email_optin}
-                label="Add to mailing list?"
-                valueArray={[
-                  { id: 'false', name: 'No' },
-                  { id: 'true', name: 'Yes' }
-                ]}
-                onChange={value => {
-                  this.handleChange('email_optin', value)
-                }}
+              <ConnectCheckbox
+                label="T&Cs Agreed"
+                checked={tandcs_agreed}
+                name="tandcs_agreed"
+                onChange={this.handleChangeRawEvent.bind(this)}
               />
-              */}
+
+              <ConnectCheckbox
+                label="Email Opt In"
+                checked={email_optin}
+                name="email_optin"
+                onChange={this.handleChangeRawEvent.bind(this)}
+              />
             </div>
             {showPayment && (
               <div>

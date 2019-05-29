@@ -31,7 +31,11 @@ class Login extends Component {
     this.props
       .login(this.emailInput.current.value, this.passwordInput.current.value)
       .then(() => {
-        this.props.history.push('/')
+        if (isAuthenticated()) {
+          this.props.history.push('/')
+        } else {
+          this.props.history.replace('/login')
+        }
       })
   }
 

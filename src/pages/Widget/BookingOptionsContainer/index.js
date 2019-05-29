@@ -27,7 +27,10 @@ const getSchoolCoursesByDate = (selectedDate, courses) => {
 }
 
 const getEarliestDate = courses => {
-  let dates = courses.map(({ date }) => date).sort()
+  let dates = courses
+    .map(({ date }) => date)
+    .sort()
+    .filter(date => date > moment().format('YYYY-MM-DD'))
 
   if (
     (moment().hour() >= 18 ||
@@ -93,10 +96,7 @@ class BookingOptionsContainer extends React.Component {
   }
 
   componentDidUpdate(oldProps, oldState) {
-    const { isFullLicence, month } = this.state
-    if (isFullLicence) {
-      return
-    }
+    const { month } = this.state
 
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       this.setState(
@@ -106,7 +106,11 @@ class BookingOptionsContainer extends React.Component {
           schoolCourses: [],
           loadedMonths: {},
           selectedCourse: null,
-          courseType: this.props.selectedSupplier.courses[0],
+          courseType:
+            this.props.selectedSupplier.courses.find(
+              courseType =>
+                courseType.constant === this.state.courseType.constant
+            ) || this.props.selectedSupplier.courses[0],
           isFullLicence:
             this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
@@ -175,6 +179,16 @@ class BookingOptionsContainer extends React.Component {
 
     let selectedBikeHire = showOwnBikeHire(courseType) ? 'no' : 'auto'
 
+    const defaultCourse = selectedCourses[0]
+
+    if (
+      selectedBikeHire === 'auto' &&
+      defaultCourse &&
+      defaultCourse.auto_count === defaultCourse.auto_bikes
+    ) {
+      selectedBikeHire = 'manual'
+    }
+
     const isFullLicence = courseType.constant === 'FULL_LICENCE'
 
     if (isFullLicence) {
@@ -184,7 +198,7 @@ class BookingOptionsContainer extends React.Component {
     this.setState({
       schoolCourses: newSchoolCourses,
       selectedDate,
-      selectedCourse: selectedCourses[0],
+      selectedCourse: !isFullLicence ? defaultCourse : availableCourses[0],
       selectedBikeHire,
       availableCourses,
       courseType,
@@ -218,10 +232,24 @@ class BookingOptionsContainer extends React.Component {
       this.state.availableCourses
     )
 
+    let selectedBikeHire = showOwnBikeHire(this.state.courseType)
+      ? 'no'
+      : 'auto'
+
+    const defaultCourse = selectedCourses[0]
+
+    if (
+      selectedBikeHire === 'auto' &&
+      defaultCourse &&
+      defaultCourse.auto_count === defaultCourse.auto_bikes
+    ) {
+      selectedBikeHire = 'manual'
+    }
+
     this.setState({
       selectedDate,
-      selectedCourse: selectedCourses[0],
-      selectedBikeHire: showOwnBikeHire(this.state.courseType) ? 'no' : 'auto'
+      selectedCourse: defaultCourse,
+      selectedBikeHire: selectedBikeHire
     })
   }
 
@@ -315,7 +343,8 @@ class BookingOptionsContainer extends React.Component {
         full_licence_type: LICENCE_TYPES[selectedLicenceType],
         bike_type: selectedBikeHire,
         supplier_id: selectedSupplier.id,
-        package_hours: selectedPackageHours
+        package_hours: selectedPackageHours,
+        school_course_id: selectedCourse.id
       }))
     } else {
       trainings = [
@@ -396,25 +425,32 @@ class BookingOptionsContainer extends React.Component {
             isLoading={isLoading}
           />
         ) : (
-          <CourseAvailabilityComponentFullLicence
-            isWidget
-            course={selectedSupplier}
-            bike_hire={selectedBikeHire}
-            onUpdate={this.onUpdate}
-            onSelectPackage={this.onSelectPackageHours}
-            onSelectPackageDate={this.onSelectPackageDate}
-            selectedLicenceType={selectedLicenceType}
-            selectedPackageHours={selectedPackageHours}
-            phoneNumber={selectedSupplier.phone}
-            showDayOfWeekPicker={showDayOfWeekPicker}
-            selectedTimeDays={selectedTimeDays}
-            timeDayChange={this.timeDayChange}
-          />
+          selectedCourse && (
+            <CourseAvailabilityComponentFullLicence
+              isWidget
+              course={{
+                ...selectedSupplier,
+                price: selectedCourse.pricing
+                  ? selectedCourse.pricing.price
+                  : null
+              }}
+              bike_hire={selectedBikeHire}
+              onUpdate={this.onUpdate}
+              onSelectPackage={this.onSelectPackageHours}
+              onSelectPackageDate={this.onSelectPackageDate}
+              selectedLicenceType={selectedLicenceType}
+              selectedPackageHours={selectedPackageHours}
+              phoneNumber={selectedSupplier.phone}
+              showDayOfWeekPicker={showDayOfWeekPicker}
+              selectedTimeDays={selectedTimeDays}
+              timeDayChange={this.timeDayChange}
+            />
+          )
         )}
 
         <hr />
 
-        {selectedCourse ? (
+        {selectedCourse && !isFullLicence ? (
           <React.Fragment>
             <CourseSelect
               date={selectedDate}

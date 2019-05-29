@@ -35,7 +35,7 @@ class OrdersPanel extends React.Component {
           order1 => order1.bike_hire === BIKE_HIRE.MANUAL
         ).length
         if (course.manual_bikes - manualOrdersCount <= 0) {
-          alert('Manual bike not available')
+          alert('There aren’t enough manual bikes available in the course')
           return
         }
       } else if (order.bike_hire === BIKE_HIRE.AUTO) {
@@ -43,7 +43,7 @@ class OrdersPanel extends React.Component {
           order1 => order1.bike_hire === BIKE_HIRE.AUTO
         ).length
         if (course.auto_bikes - automaticOrdersCount <= 0) {
-          alert('Automatic bike not available')
+          alert('There aren’t enough automatic bikes available in the course')
           return
         }
       }
@@ -81,7 +81,7 @@ class OrdersPanel extends React.Component {
   async handleDeleteTraining(training) {
     if (
       window.confirm(
-        `Are you sure you whant to delete the training from Order ${
+        `Are you sure you want to delete the training from Order ${
           training.direct_friendly_id
         }?`
       )

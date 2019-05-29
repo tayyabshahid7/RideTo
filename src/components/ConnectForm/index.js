@@ -2,8 +2,13 @@ import React, { Component } from 'react'
 import styles from './styles.scss'
 import { getAge } from 'utils/helper'
 import classnames from 'classnames'
+import TimeField from 'react-simple-timefield'
+import moment from 'moment'
 
-export function ConnectInput({
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+
+function MyDatePicker({
   label,
   type = 'text',
   onChange,
@@ -12,8 +17,105 @@ export function ConnectInput({
   name,
   disabled,
   required,
-  basic
+  basic,
+  maxDate
 }) {
+  return (
+    <React.Fragment>
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .react-datepicker-wrapper { flex-grow: 1 }
+        .react-datepicker__current-month { display: none }
+      `
+        }}
+      />
+      <DatePicker
+        name={name}
+        className={classnames(styles.input, basic && styles.basic)}
+        id={id || name}
+        type="date"
+        selected={value && new Date(value)}
+        onChange={date => {
+          onChange({
+            target: {
+              name: name,
+              value: moment(date).format('YYYY-MM-DD')
+            }
+          })
+        }}
+        dateFormat="dd/MM/yyyy"
+        disabled={disabled}
+        required={required}
+        showMonthDropdown
+        showYearDropdown
+        autoComplete="off"
+        dropdownMode="select"
+        maxDate={maxDate}
+      />
+    </React.Fragment>
+  )
+}
+
+export function ConnectInput(props) {
+  const {
+    label,
+    type = 'text',
+    onChange,
+    value,
+    id,
+    name,
+    disabled,
+    required,
+    basic
+  } = props
+
+  if (type === 'time') {
+    return (
+      <div className={styles.formGroup}>
+        {label && (
+          <label className={styles.label} htmlFor={id || name}>
+            {label}
+          </label>
+        )}
+        <TimeField
+          value={value}
+          onChange={value => {
+            onChange({
+              target: {
+                name,
+                value
+              }
+            })
+          }}
+          input={
+            <input
+              name={name}
+              className={classnames(styles.input, basic && styles.basic)}
+              id={id || name}
+              type="text"
+              disabled={disabled}
+              required={required}
+            />
+          }
+        />
+      </div>
+    )
+  }
+
+  if (type === 'date') {
+    return (
+      <div className={styles.formGroup}>
+        {label && (
+          <label className={styles.label} htmlFor={id || name}>
+            {label}
+          </label>
+        )}
+        <MyDatePicker {...props} />
+      </div>
+    )
+  }
+
   return (
     <div className={styles.formGroup}>
       {label && (
@@ -35,16 +137,9 @@ export function ConnectInput({
   )
 }
 
-export function ConnectAgeInput({
-  label,
-  onChange,
-  value,
-  id,
-  name,
-  disabled,
-  required,
-  basic
-}) {
+export function ConnectAgeInput(props) {
+  const { label, id, name, value, hideAge } = props
+
   return (
     <div className={styles.formGroup}>
       {label && (
@@ -53,17 +148,10 @@ export function ConnectAgeInput({
         </label>
       )}
       <div className={styles.ageInputGroup}>
-        <input
-          name={name}
-          className={classnames(styles.input, basic && styles.basic)}
-          id={id || name}
-          type="date"
-          value={value}
-          onChange={onChange}
-          disabled={disabled}
-          required={required}
-        />
-        {value && <div className={styles.age}>({getAge(value)})</div>}
+        <MyDatePicker {...props} maxDate={new Date()} />
+        {value && !hideAge && (
+          <div className={styles.age}>({getAge(value)})</div>
+        )}
       </div>
     </div>
   )
@@ -157,6 +245,32 @@ export function ConnectLabeledContent({ label, children, disabled, basic }) {
   )
 }
 
+export function ConnectCheckbox({
+  label,
+  type = 'checkbox',
+  disabled,
+  checked = false,
+  onChange,
+  name
+}) {
+  return (
+    <div className={styles.formGroup}>
+      {label && (
+        <label className={classnames(styles.label, styles.labelCheckbox)}>
+          <input
+            name={name}
+            checked={checked}
+            type={type}
+            disabled={disabled}
+            onChange={onChange}
+          />
+          <span>{label}</span>
+        </label>
+      )}
+    </div>
+  )
+}
+
 export class ConnectTextArea extends Component {
   constructor(props) {
     super(props)
@@ -221,6 +335,7 @@ export function Button({
   onClick,
   disabled,
   small,
+  large,
   className,
   ...rest
 }) {
@@ -234,7 +349,8 @@ export function Button({
         className,
         styles.button,
         styles[`button${color.charAt(0).toUpperCase()}${color.slice(1)}`],
-        small && styles.buttonSmall
+        small && styles.buttonSmall,
+        large && styles.buttonLarge
       )}>
       {children}
     </button>

@@ -66,11 +66,23 @@
   }
 
   @media (max-width: 768px) {
-    margin: 0;
+    margin: 15px 0 0;
     padding: 0;
     border: 0;
     flex-direction: row !important;
     flex-wrap: wrap;
+    justify-content: space-between;
+
+    li {
+      a {
+        font-size: 16px;
+        font-weight: normal;
+      }
+    }
+  }
+
+  @media (max-width: 630px) {
+    justify-content: flex-start;
   }
 }
 
@@ -100,5 +112,9 @@
     width: 111px;
     height: 0;
     border-bottom: 4px solid var(--primary-color);
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
   }
 }
