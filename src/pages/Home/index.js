@@ -95,7 +95,7 @@ function Home() {
               target="_blank"
               rel="noopener noreferrer"
               href="https://rideto.typeform.com/to/jGpVsq"
-              className={classnames(styles.button, styles.buttonLarge)}>
+              className={classnames(styles.button)}>
               Start now
             </a>
           </div>
