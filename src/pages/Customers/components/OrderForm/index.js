@@ -133,8 +133,7 @@ class OrderForm extends React.Component {
     const { editable, isChanged, showMore, inputsDisabled } = this.state
     const courses = courseTypes
       ? courseTypes.filter(
-          course =>
-            !['TFL_ONE_ON_ONE', 'FULL_LICENCE'].includes(course.constant)
+          course => !['TFL_ONE_ON_ONE'].includes(course.constant)
         )
       : []
     if (!editable) {
