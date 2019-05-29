@@ -306,16 +306,17 @@ class OrderForm extends React.Component {
                 </Col>
               )}
             </Row>
-            {editable.source !== 'RIDETO' && (
-              <div className={styles.comms}>
-                <Button
-                  disabled={isSending}
-                  color="primary"
-                  onClick={this.handleConfirmation}>
-                  Send Confirmation
-                </Button>
-              </div>
-            )}
+            {editable.source !== 'RIDETO' &&
+              editable.source !== 'RIDETO_INSTANT' && (
+                <div className={styles.comms}>
+                  <Button
+                    disabled={isSending}
+                    color="primary"
+                    onClick={this.handleConfirmation}>
+                    Send Confirmation
+                  </Button>
+                </div>
+              )}
           </div>
           <div className={styles.showMore}>
             <button
