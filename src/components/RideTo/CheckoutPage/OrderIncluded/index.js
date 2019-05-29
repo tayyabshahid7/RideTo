@@ -5,7 +5,8 @@ function OrderIncluded({
   bikeHire,
   pom = false,
   hasGloves,
-  fullLicence = false
+  fullLicence = false,
+  isWidget = false
 }) {
   if (pom) {
     return (
@@ -65,14 +66,16 @@ function OrderIncluded({
               Test fees and escort to and from test centres
             </span>
           </li>
-          <li>
-            <span className={styles.tick}>
-              <i className="fa fa-check" />
-            </span>{' '}
-            <span className={styles.text}>
-              12 working day free cancellation
-            </span>
-          </li>
+          {!isWidget && (
+            <li>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>
+                12 working day free cancellation
+              </span>
+            </li>
+          )}
         </ul>
       </div>
     )
