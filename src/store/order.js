@@ -23,7 +23,13 @@ const send = (moduleName, sendFn) => (...args) => dispatch => {
         type: common.constant(moduleName, 'SEND_SUCCESS'),
         result
       })
-      notificationActions.dispatchSuccess(dispatch, 'Email Sent')
+      const comms = Object.entries(result)
+        .filter(([name, value]) => value)
+        .map(([name]) =>
+          name.replace('email_success', 'Email').replace('sms_success', 'SMS')
+        )
+        .join(' & ')
+      notificationActions.dispatchSuccess(dispatch, `${comms} Sent`)
     })
   } catch (error) {
     dispatch({
