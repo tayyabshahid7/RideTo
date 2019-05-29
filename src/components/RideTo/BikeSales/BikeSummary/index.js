@@ -4,8 +4,10 @@ import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
 function BikeSummary({
-  bike: { id, image, name, price, desc, bookLink, reviewLink }
+  bike: { id, images, name, price, desc, bookLink, reviewLink }
 }) {
+  const image = images[0]
+
   return (
     <div className={styles.bikeSummary}>
       <img className={styles.image} src={image} alt="Bike" />

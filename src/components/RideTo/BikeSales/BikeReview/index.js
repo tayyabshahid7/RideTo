@@ -12,7 +12,7 @@ const styles = {
 }
 
 function BikeReview({ match, bikes }) {
-  const { image, name, price, bookLink } = bikes.find(
+  const { images, name, price, bookLink } = bikes.find(
     bike => bike.id === parseInt(match.params.id, 10)
   )
 
@@ -21,7 +21,7 @@ function BikeReview({ match, bikes }) {
       <div className={styles.container}>
         <div className={styles.header}>
           <div className={styles.largeImage}>
-            <img src={image} alt="Large product" />
+            <img src={images[0]} alt="Large product" />
           </div>
           <div className={styles.keyInfo}>
             <div className={styles.keyInfoHeader}>

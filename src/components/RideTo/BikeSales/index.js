@@ -5,7 +5,12 @@ import { HashRouter as Router, Route } from 'react-router-dom'
 
 const DATA = [
   {
-    image: 'https://via.placeholder.com/330x200',
+    images: [
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/ff0000',
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/00ff00'
+    ],
     name: 'Honda MSADV 125',
     price: 420000,
     desc: 'Blah blah blah blah',
@@ -20,7 +25,12 @@ const DATA = [
     }
   },
   {
-    image: 'https://via.placeholder.com/330x200',
+    images: [
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/ff0000',
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/00ff00'
+    ],
     name: 'Honda CBR125 Classy',
     price: 344900,
     desc: 'Blah lorem blah blah',
@@ -35,7 +45,12 @@ const DATA = [
     }
   },
   {
-    image: 'https://via.placeholder.com/330x200',
+    images: [
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/ff0000',
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/00ff00'
+    ],
     name: 'Ducati MSX 2000cc ADV',
     price: 420000,
     desc: 'Blah blah blah blah',
@@ -50,7 +65,12 @@ const DATA = [
     }
   },
   {
-    image: 'https://via.placeholder.com/330x200',
+    images: [
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/ff0000',
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/00ff00'
+    ],
     name: 'Ducati CBR125 Super Moto',
     price: 344900,
     desc: 'Blah lorem blah blah',
@@ -65,7 +85,12 @@ const DATA = [
     }
   },
   {
-    image: 'https://via.placeholder.com/330x200',
+    images: [
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/ff0000',
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/00ff00'
+    ],
     name: 'Honda MSX 300 Adventure',
     price: 420000,
     desc: 'Blah blah blah blah',
@@ -80,7 +105,12 @@ const DATA = [
     }
   },
   {
-    image: 'https://via.placeholder.com/330x200',
+    images: [
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/ff0000',
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/00ff00'
+    ],
     name: 'BMW CBR125 Classic',
     price: 344900,
     desc: 'Blah lorem blah blah',
@@ -95,7 +125,12 @@ const DATA = [
     }
   },
   {
-    image: 'https://via.placeholder.com/330x200',
+    images: [
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/ff0000',
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/00ff00'
+    ],
     name: 'Honda MSX 125 Classico',
     price: 420000,
     desc: 'Blah blah blah blah',
@@ -110,7 +145,12 @@ const DATA = [
     }
   },
   {
-    image: 'https://via.placeholder.com/330x200',
+    images: [
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/ff0000',
+      'https://via.placeholder.com/330x200',
+      'https://via.placeholder.com/330x200/00ff00'
+    ],
     name: 'Honda CBR125 Adventure',
     price: 344900,
     desc: 'Blah lorem blah blah',
