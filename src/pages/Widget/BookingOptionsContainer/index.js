@@ -179,6 +179,15 @@ class BookingOptionsContainer extends React.Component {
 
     let selectedBikeHire = showOwnBikeHire(courseType) ? 'no' : 'auto'
 
+    const defaultCourse = selectedCourses[0]
+
+    if (
+      selectedBikeHire === 'auto' &&
+      defaultCourse.auto_count === defaultCourse.auto_bikes
+    ) {
+      selectedBikeHire = 'manual'
+    }
+
     const isFullLicence = courseType.constant === 'FULL_LICENCE'
 
     if (isFullLicence) {
@@ -188,7 +197,7 @@ class BookingOptionsContainer extends React.Component {
     this.setState({
       schoolCourses: newSchoolCourses,
       selectedDate,
-      selectedCourse: !isFullLicence ? selectedCourses[0] : availableCourses[0],
+      selectedCourse: !isFullLicence ? defaultCourse : availableCourses[0],
       selectedBikeHire,
       availableCourses,
       courseType,
@@ -222,10 +231,23 @@ class BookingOptionsContainer extends React.Component {
       this.state.availableCourses
     )
 
+    let selectedBikeHire = showOwnBikeHire(this.state.courseType)
+      ? 'no'
+      : 'auto'
+
+    const defaultCourse = selectedCourses[0]
+
+    if (
+      selectedBikeHire === 'auto' &&
+      defaultCourse.auto_count === defaultCourse.auto_bikes
+    ) {
+      selectedBikeHire = 'manual'
+    }
+
     this.setState({
       selectedDate,
-      selectedCourse: selectedCourses[0],
-      selectedBikeHire: showOwnBikeHire(this.state.courseType) ? 'no' : 'auto'
+      selectedCourse: defaultCourse[0],
+      selectedBikeHire: selectedBikeHire
     })
   }
 
