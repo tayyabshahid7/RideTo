@@ -246,7 +246,7 @@ class BookingOptionsContainer extends React.Component {
 
     this.setState({
       selectedDate,
-      selectedCourse: defaultCourse[0],
+      selectedCourse: defaultCourse,
       selectedBikeHire: selectedBikeHire
     })
   }
