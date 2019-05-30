@@ -87,11 +87,7 @@ class BookingOptionsContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { month, isFullLicence } = this.state
-    if (isFullLicence) {
-      this.setState({ isLoading: false })
-      return
-    }
+    const { month } = this.state
     this.fetchCourses(month.clone())
   }
 
