@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import Listing from './Listing'
 import BikeReview from './BikeReview'
-import { HashRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 const DATA = [
   {
@@ -191,13 +191,11 @@ function BikeSales() {
       <Fragment>
         <Route
           exact
-          // path="/bike-sales/"
-          path="/"
+          path="/bike-sales/"
           render={routeProps => <Listing {...routeProps} bikes={DUMMY_DATA} />}
         />
         <Route
-          // path="/bike-sales/bike/:id"
-          path="/bike/:id"
+          path="/bike-sales/bike/:id"
           render={routeProps => (
             <BikeReview {...routeProps} bikes={DUMMY_DATA} />
           )}
