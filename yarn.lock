@@ -9274,9 +9274,9 @@ raw-body@2.4.0:
     unpipe "1.0.0"
 
 rc-pagination@^1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/rc-pagination/-/rc-pagination-1.19.0.tgz#887c785fd1ab51b9ff8bcefb27b1895581d93d1a"
-  integrity sha512-hK8fZxxDYa3+6bgxkYTTzeAhq1YGEE+SvuWUCw1ZOFSDUi475S2/aZmQhspQXokahEIVTe1pfivlhFBSQzYhaA==
+  version "1.20.1"
+  resolved "https://registry.yarnpkg.com/rc-pagination/-/rc-pagination-1.20.1.tgz#d53a0564282a79129588fbd2b74885d7d315f0bb"
+  integrity sha512-EC2sxfKo1+R34fDN8EQgFiJn0Z6SKef4O0FizoqV3IomPczSikoarxL1RrHzqeGNsfg7JbUYaux5fQdmUAlPnA==
   dependencies:
     babel-runtime "6.x"
     classnames "^2.2.6"
