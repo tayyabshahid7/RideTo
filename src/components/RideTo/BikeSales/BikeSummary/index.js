@@ -24,7 +24,7 @@ function BikeSummary({
         </a>
         <Link
           className={classnames(styles.button)}
-          to={`/bike-sales/bike/${id}`}>
+          to={`/bike-sales/bike/${id}/`}>
           Read review
         </Link>
       </div>

@@ -2,10 +2,35 @@
   display: flex;
   justify-content: space-between;
   margin-top: 85px;
+  margin-bottom: 2rem;
 }
 
 .largeImage {
   width: 55%;
+
+  > img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.imagesList {
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  list-style: none;
+
+  > li + li {
+    margin-left: 1rem;
+  }
+
+  button {
+    appearance: none;
+    outline: 0;
+    border: 0;
+    background: none;
+    padding: 0;
+  }
 
   img {
     width: 100%;
@@ -14,6 +39,8 @@
 }
 
 .keyInfo {
+  display: flex;
+  flex-direction: column;
   width: 41%;
   padding: 22px;
   font-size: 25px;

@@ -6,10 +6,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 const DATA = [
   {
     images: [
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/ff0000',
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/00ff00'
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/ff0000',
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/00ff00'
     ],
     name: 'Honda MSADV 125',
     price: 420000,
@@ -26,10 +26,10 @@ const DATA = [
   },
   {
     images: [
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/ff0000',
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/00ff00'
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/ff0000',
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/00ff00'
     ],
     name: 'Honda CBR125 Classy',
     price: 344900,
@@ -46,10 +46,10 @@ const DATA = [
   },
   {
     images: [
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/ff0000',
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/00ff00'
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/ff0000',
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/00ff00'
     ],
     name: 'Ducati MSX 2000cc ADV',
     price: 420000,
@@ -66,10 +66,10 @@ const DATA = [
   },
   {
     images: [
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/ff0000',
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/00ff00'
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/ff0000',
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/00ff00'
     ],
     name: 'Ducati CBR125 Super Moto',
     price: 344900,
@@ -86,10 +86,10 @@ const DATA = [
   },
   {
     images: [
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/ff0000',
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/00ff00'
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/ff0000',
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/00ff00'
     ],
     name: 'Honda MSX 300 Adventure',
     price: 420000,
@@ -106,10 +106,10 @@ const DATA = [
   },
   {
     images: [
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/ff0000',
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/00ff00'
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/ff0000',
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/00ff00'
     ],
     name: 'BMW CBR125 Classic',
     price: 344900,
@@ -126,10 +126,10 @@ const DATA = [
   },
   {
     images: [
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/ff0000',
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/00ff00'
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/ff0000',
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/00ff00'
     ],
     name: 'Honda MSX 125 Classico',
     price: 420000,
@@ -146,10 +146,10 @@ const DATA = [
   },
   {
     images: [
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/ff0000',
-      'https://via.placeholder.com/330x200',
-      'https://via.placeholder.com/330x200/00ff00'
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/ff0000',
+      'https://via.placeholder.com/330x172',
+      'https://via.placeholder.com/330x172/00ff00'
     ],
     name: 'Honda CBR125 Adventure',
     price: 344900,
@@ -181,7 +181,12 @@ const DUMMY_DATA = [
   .map((bike, i) => ({
     ...bike,
     id: i,
-    name: `${i} ${bike.name}`
+    name: `${i} ${bike.name}`,
+    categories: {
+      ...bike.categories,
+      bhp: 7.2,
+      mpg: 150
+    }
   }))
   .sort(() => Math.random() - 0.5)
 
