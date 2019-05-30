@@ -97,6 +97,7 @@ class BookingOptionsContainer extends React.Component {
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       this.setState(
         {
+          month: moment().startOf('month'),
           selectedDate: null,
           isLoading: true,
           availableCourses: [],
