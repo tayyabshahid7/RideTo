@@ -97,6 +97,7 @@ class BookingOptionsContainer extends React.Component {
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       this.setState(
         {
+          selectedDate: null,
           isLoading: true,
           availableCourses: [],
           schoolCourses: [],
@@ -111,7 +112,7 @@ class BookingOptionsContainer extends React.Component {
             this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
         () => {
-          this.fetchCourses(month.clone())
+          this.fetchCourses(moment().startOf('month'))
         }
       )
       return
@@ -420,7 +421,6 @@ class BookingOptionsContainer extends React.Component {
             onChangeDate={this.handleChangeDate}
             onChangeMonth={this.handleChangeMonth}
             isLoading={isLoading}
-            initialVisibleMonth={() => selectedDate || moment()}
           />
         ) : (
           selectedCourse && (
