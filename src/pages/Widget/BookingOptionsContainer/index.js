@@ -114,6 +114,7 @@ class BookingOptionsContainer extends React.Component {
           this.fetchCourses(month.clone())
         }
       )
+      return
     }
 
     if (
