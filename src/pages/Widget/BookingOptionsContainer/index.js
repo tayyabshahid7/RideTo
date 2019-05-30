@@ -422,6 +422,7 @@ class BookingOptionsContainer extends React.Component {
             onChangeDate={this.handleChangeDate}
             onChangeMonth={this.handleChangeMonth}
             isLoading={isLoading}
+            initialVisibleMonth={() => moment().startOf('month')}
           />
         ) : (
           selectedCourse && (
