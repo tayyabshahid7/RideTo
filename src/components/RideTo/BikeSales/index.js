@@ -182,11 +182,12 @@ const DUMMY_DATA = [
     ...bike,
     id: i,
     name: `${i} ${bike.name}`,
-    categories: {
-      ...bike.categories,
-      bhp: 7.2,
-      mpg: 150
-    }
+    bhp: 7.2,
+    mpg: 150,
+    intro:
+      "That's the lorem ipsum. And it's ipsum dolor sit amet blah blah blah lorem blah yeah. Yep",
+    goodPoints: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
+    badPoints: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum']
   }))
   .sort(() => Math.random() - 0.5)
 

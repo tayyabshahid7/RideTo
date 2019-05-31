@@ -36,7 +36,12 @@ class BikeReview extends Component {
       name,
       price,
       bookLink,
-      categories: { engine, bhp, mpg }
+      categories: { engine },
+      bhp,
+      mpg,
+      intro,
+      goodPoints,
+      badPoints
     } = bikes.find(bike => bike.id === parseInt(match.params.id, 10))
 
     return (
@@ -104,27 +109,24 @@ class BikeReview extends Component {
           <div className={styles.main}>
             <div className={styles.content}>
               <h2 className={styles.title}>{name} Review</h2>
-              <p>
-                That's the lorem ipsum. And it's ipsum dolor sit amet blah blah
-                blah lorem blah yeah. Yep
-              </p>
+              <p>{intro}</p>
               <div className={styles.goodBad}>
                 <div>
                   <div>
                     <h3>The good</h3>
                     <ul className={styles.good}>
-                      <li>Lorem ipsum</li>
-                      <li>Lorem ipsum</li>
-                      <li>Lorem ipsum</li>
+                      {goodPoints.map((point, i) => (
+                        <li key={i}>{point}</li>
+                      ))}
                     </ul>
                   </div>
                 </div>
                 <div>
                   <h3>The not so good</h3>
                   <ul className={styles.bad}>
-                    <li>Lorem ipsum</li>
-                    <li>Lorem ipsum</li>
-                    <li>Lorem ipsum</li>
+                    {badPoints.map((point, i) => (
+                      <li key={i}>{point}</li>
+                    ))}
                   </ul>
                 </div>
               </div>

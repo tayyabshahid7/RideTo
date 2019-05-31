@@ -1,12 +1,21 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 85px;
+  margin-top: 2rem;
   margin-bottom: 2rem;
+
+  @media (min-width: 1000px) {
+    margin-top: 85px;
+    display: flex;
+    justify-content: space-between;
+  }
 }
 
 .largeImage {
-  width: 55%;
+  margin-bottom: 1rem;
+
+  @media (min-width: 1000px) {
+    width: 55%;
+    margin-bottom: 0;
+  }
 
   > img {
     width: 100%;
@@ -41,10 +50,17 @@
 .keyInfo {
   display: flex;
   flex-direction: column;
-  width: 41%;
   padding: 22px;
-  font-size: 25px;
+  font-size: 18px;
+
+  @media (min-width: 1000px) {
+    font-size: 20px;
+  }
   background-color: #fff;
+
+  @media (min-width: 1000px) {
+    width: 41%;
+  }
 }
 
 .keyInfoHeader {
@@ -56,13 +72,22 @@
 }
 
 .title {
-  font-size: 28px;
+  font-size: 25px;
+
+  @media (min-width: 1000px) {
+    font-size: 28px;
+  }
+
   line-height: 1;
   font-weight: bold;
 }
 
 .price {
-  font-size: 25px;
+  font-size: 18px;
+
+  @media (min-width: 1000px) {
+    font-size: 20px;
+  }
 }
 
 .score {
@@ -94,15 +119,22 @@
 }
 
 .main {
-  width: 55%;
   display: flex;
   align-items: center;
   flex-direction: column;
   margin-top: 1rem;
+
+  @media (min-width: 1000px) {
+    width: 55%;
+  }
 }
 
 .content {
-  font-size: 25px;
+  font-size: 18px;
+
+  @media (min-width: 1000px) {
+    font-size: 20px;
+  }
   line-height: 32px;
 
   h3 {
@@ -141,12 +173,25 @@
 }
 
 .goodBad {
-  display: flex;
   margin-bottom: 2rem;
   justify-content: space-between;
 
+  @media (min-width: 1000px) {
+    display: flex;
+  }
+
   > div {
-    width: 49%;
+    @media (min-width: 1000px) {
+      width: 49%;
+    }
+
+    + div {
+      margin-top: 1rem;
+
+      @media (min-width: 1000px) {
+        margin-top: 0;
+      }
+    }
 
     ul {
       padding: 0;

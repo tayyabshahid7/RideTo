@@ -12,7 +12,7 @@ import {
   sortFunctions,
   getFiltersCount,
   reduceFilters
-} from 'services/bike-sales.js'
+} from 'services/bike-sales'
 import Pagination from 'rc-pagination'
 import en_GB from 'rc-pagination/es/locale/en_GB.js'
 
