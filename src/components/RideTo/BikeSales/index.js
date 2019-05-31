@@ -187,7 +187,34 @@ const DUMMY_DATA = [
     intro:
       "That's the lorem ipsum. And it's ipsum dolor sit amet blah blah blah lorem blah yeah. Yep",
     goodPoints: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
-    badPoints: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum']
+    badPoints: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
+    bodyContent: `<h3>The ride</h3>
+      <p>
+        Because it’s so small you can just fly around town, hitting gaps
+        in traffic that aren’t really on, before buzzing off into the
+        distance. The suspension is ultra soft, as is the enormous seat,
+        but on the rough roads of
+        <a href="https://www.google.com">London</a>’s West End, it was
+        my derrière’s best friend.
+      </p>
+      <p>
+        The only downside to this soft ride is that there’s a max system
+        weight of 105kg, which you could easily reach if you’ve got all
+        your gear on and a bag full of swag.
+      </p>
+      <img
+        src="https://via.placeholder.com/588x440"
+        alt="Placeholder"
+      />
+      <blockquote>
+        <p>
+          "That’s the Monkey in a nutshell. And its reliable engine’s
+          the same; the air-cooled, fuel-injected horizontal 125cc"
+        </p>
+        <footer>
+          <cite>James Jameson</cite> carwow expert
+        </footer>
+      </blockquote>`
   }))
   .sort(() => Math.random() - 0.5)
 
