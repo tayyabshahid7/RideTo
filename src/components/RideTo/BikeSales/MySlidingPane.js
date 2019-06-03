@@ -19,7 +19,8 @@ class MySlidingPane extends Component {
       title,
       filtersCount,
       clearFilters,
-      closeFilters
+      closeFilters,
+      width
     } = this.props
     const isFilters = title === 'Filters'
 
@@ -27,7 +28,7 @@ class MySlidingPane extends Component {
       <SlidingPane
         {...this.props}
         isOpen={isOpen}
-        width="60%"
+        width={width}
         className={styles.panel}
         overlayRef={pane => (this.pane = pane)}
         onAfterOpen={() => {

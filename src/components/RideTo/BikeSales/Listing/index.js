@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import Modal from 'react-modal'
 import styles from '../styles.scss'
 import BikeSummary from '../BikeSummary'
@@ -15,6 +15,7 @@ import {
 } from 'services/bike-sales'
 import Pagination from 'rc-pagination'
 import en_GB from 'rc-pagination/es/locale/en_GB.js'
+import MediaQuery from 'react-responsive'
 
 const FILTERS = [
   {
@@ -275,35 +276,49 @@ class BikeSales extends Component {
             onChange={this.handlePageChange}
           />
         </div>
-        <MySlidingPane
-          closeFilters={this.closeFilters}
-          isOpen={filtersOpen}
-          onRequestClose={this.handleFiltersButtonClick}
-          from="left"
-          title="Filters"
-          filtersCount={getFiltersCount(reducedFilters, budgetMin, budgetMax)}
-          clearFilters={this.clearFilters}>
-          <Filters
-            options={filters}
-            reducedFilters={reducedFilters}
-            updateFilters={this.updateFilters}
-            budgetMin={budgetMin}
-            budgetMax={budgetMax}
-            updateBudget={this.updateBudget}
-          />
-        </MySlidingPane>
-        <MySlidingPane
-          closeFilters={this.closeFilters}
-          isOpen={sortOpen}
-          onRequestClose={this.handleSortButtonClick}
-          from="right"
-          title="Sort">
-          <Sort
-            sortOptions={this.sortOptions}
-            sortSelected={sort}
-            updateSort={this.updateSort}
-          />
-        </MySlidingPane>
+        <MediaQuery minWidth={600}>
+          {matches => {
+            return (
+              <Fragment>
+                <MySlidingPane
+                  width={matches ? '60%' : '100%'}
+                  closeFilters={this.closeFilters}
+                  isOpen={filtersOpen}
+                  onRequestClose={this.handleFiltersButtonClick}
+                  from="left"
+                  title="Filters"
+                  filtersCount={getFiltersCount(
+                    reducedFilters,
+                    budgetMin,
+                    budgetMax
+                  )}
+                  clearFilters={this.clearFilters}>
+                  <Filters
+                    options={filters}
+                    reducedFilters={reducedFilters}
+                    updateFilters={this.updateFilters}
+                    budgetMin={budgetMin}
+                    budgetMax={budgetMax}
+                    updateBudget={this.updateBudget}
+                  />
+                </MySlidingPane>
+                <MySlidingPane
+                  width={matches ? undefined : '100%'}
+                  closeFilters={this.closeFilters}
+                  isOpen={sortOpen}
+                  onRequestClose={this.handleSortButtonClick}
+                  from="right"
+                  title="Sort">
+                  <Sort
+                    sortOptions={this.sortOptions}
+                    sortSelected={sort}
+                    updateSort={this.updateSort}
+                  />
+                </MySlidingPane>
+              </Fragment>
+            )
+          }}
+        </MediaQuery>
       </div>
     )
   }
