@@ -80,7 +80,9 @@ class BikeReview extends Component {
                 <div className={styles.score}>
                   <div>RideTo Score</div>
                   <div className={styles.circle}>
-                    <span className={styles.scoreNum}>{score}</span>
+                    <span className={styles.scoreNum}>
+                      {Math.round(score) / 10}/10
+                    </span>
                     <Circle
                       progress={score}
                       roundedStrike={true}

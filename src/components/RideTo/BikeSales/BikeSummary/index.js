@@ -3,9 +3,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 
-function BikeSummary({
-  bike: { id, images, name, price, desc, bookLink, reviewLink }
-}) {
+function BikeSummary({ bike: { id, images, name, price, desc, bookLink } }) {
   const image = images[0]
 
   return (
