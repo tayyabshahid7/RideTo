@@ -251,9 +251,16 @@
   opacity: 0.9;
 }
 
-.dasInfo {
+.dasInfo,
+.estimate {
   margin-top: 16px;
   font-family: var(--font-proxima);
+}
+
+.estimate {
+  text-align: center;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .dasInfoWidget {
