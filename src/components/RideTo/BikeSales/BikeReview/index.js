@@ -4,6 +4,7 @@ import containerStyles from '../styles.scss'
 import summaryStyles from '../BikeSummary/styles.scss'
 import componentStyles from './styles.scss'
 import Circle from 'react-circle'
+import { getShortCourseType } from 'services/course'
 
 const styles = {
   ...containerStyles,
@@ -42,7 +43,11 @@ class BikeReview extends Component {
       intro,
       goodPoints,
       badPoints,
-      bodyContent
+      bodyContent,
+      score,
+      range,
+      requiredLicence,
+      insuranceGroup
     } = bikes.find(bike => bike.id === parseInt(match.params.id, 10))
 
     return (
@@ -76,7 +81,7 @@ class BikeReview extends Component {
                   <div>RideTo Score</div>
                   <div className={styles.circle}>
                     <Circle
-                      progress={(8 / 10) * 100}
+                      progress={score}
                       roundedStrike={true}
                       progressColor="green"
                       animate={false}
@@ -89,12 +94,16 @@ class BikeReview extends Component {
               <div className={styles.infoRow}>
                 {engine} - {bhp} bhp
               </div>
-              <div className={styles.infoRow}>{mpg} MPG - 235 miles range</div>
               <div className={styles.infoRow}>
-                CBT Licence <a href="http://cbt.com">Book Course</a>
+                {mpg} MPG - {range} miles range
+              </div>
+              <div className={styles.infoRow}>
+                {getShortCourseType(requiredLicence)} Licence{' '}
+                <a href="http://cbt.com">Book Course</a>
               </div>
               <div className={styles.infoRow} style={{ flexGrow: '1' }}>
-                Insurance group: 12 <a href="https:insurance.com">Get Quote</a>
+                Insurance group: {insuranceGroup}{' '}
+                <a href="https:insurance.com">Get Quote</a>
               </div>
               <a
                 className={classnames(

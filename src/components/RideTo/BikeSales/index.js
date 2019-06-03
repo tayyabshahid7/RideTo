@@ -184,6 +184,10 @@ const DUMMY_DATA = [
     name: `${i} ${bike.name}`,
     bhp: 7.2,
     mpg: 150,
+    score: 80,
+    range: 235,
+    requiredLicence: 'LICENCE_CBT',
+    insuranceGroup: '12',
     intro:
       "That's the lorem ipsum. And it's ipsum dolor sit amet blah blah blah lorem blah yeah. Yep",
     goodPoints: ['Lorem ipsum', 'Lorem ipsum', 'Lorem ipsum'],
