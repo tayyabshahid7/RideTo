@@ -99,8 +99,18 @@
 }
 
 .circle {
+  position: relative;
   max-width: 50px;
   margin: 5px auto 0;
+}
+
+.scoreNum {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  line-height: 50px;
 }
 
 .infoRow {
