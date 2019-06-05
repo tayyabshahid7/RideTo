@@ -15,6 +15,10 @@ import {
   Button
 } from 'components/ConnectForm'
 
+function removeFullLicence(type) {
+  return type.constant !== 'FULL_LICENCE'
+}
+
 class CourseForm extends React.Component {
   constructor(props) {
     super(props)
@@ -112,7 +116,9 @@ class CourseForm extends React.Component {
         {
           course: {
             ...this.state.course,
-            course_type_id: courseTypes[0].id
+            course_type_id: courseTypes
+              .filter(removeFullLicence)[0]
+              .id.toString()
           }
         },
         this.loadPricing()
@@ -260,9 +266,7 @@ class CourseForm extends React.Component {
     const finishTime = this.getFinishTime(time, duration)
     // const formClass = isEditable ? styles.grey : ''
 
-    const courseTypes = info.courseTypes.filter(
-      type => type.constant !== 'FULL_LICENCE'
-    )
+    const courseTypes = info.courseTypes.filter(removeFullLicence)
 
     const isFullLicence = courseTypes
       .filter(type => type.constant.startsWith('FULL_LICENCE'))
