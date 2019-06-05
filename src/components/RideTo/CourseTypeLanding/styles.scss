@@ -54,6 +54,16 @@
   }
 }
 
+.proof {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 0.25rem;
+}
+
+.headerTrust {
+  margin-right: 0.5rem;
+}
+
 .bookInfo {
   background-color: #fff;
   padding: 0.5rem;
@@ -116,6 +126,10 @@
   }
 }
 
+.bookTrust {
+  margin-top: 0.5rem;
+}
+
 .mainBody {
   @media (min-width: 768px) {
     width: 55%;
@@ -135,11 +149,6 @@
 .fastTrackAdvert {
   display: block;
   width: 100%;
-  padding: 1rem;
-  border: 1px solid rgba(black, 0.5);
-  text-align: center;
-
-  &::before {
-    content: 'FAST TRACK ADVERT HERE';
-  }
+  height: auto;
+  margin: 1rem 0;
 }
