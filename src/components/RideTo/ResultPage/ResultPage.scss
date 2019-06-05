@@ -289,7 +289,7 @@
 
 .bookNowDisabled {
   color: inherit;
-  background: var(--light-grey-color);
+  background-color: var(--light-grey-color) !important;
   pointer-events: none;
 }
 

@@ -2,9 +2,9 @@ import React, { Component, Fragment } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
 import { capitalizeFirstLetter } from 'utils/helper'
+import moment from 'moment'
 
 const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-// const TIMES_OF_DAY = ['Morning', 'Afternoon', 'Evening']
 const TIMES_OF_DAY = ['Morning', 'Afternoon']
 const AVAILABILITY_TEXTS = {
   empty: 'Select all time slots you can do',
@@ -65,6 +65,13 @@ class DayOfWeekPicker extends Component {
   render() {
     const { isWidget, timeDayChange } = this.props
     const { availability } = this.state
+    let estimate = ''
+
+    if (availability !== 'empty') {
+      estimate = moment()
+        .add(availability === 'moderate' ? 60 : 40, 'days')
+        .format('dddd Do MMMM')
+    }
 
     return (
       <Fragment>
@@ -77,6 +84,7 @@ class DayOfWeekPicker extends Component {
             {AVAILABILITY_TEXTS[availability]}
           </div>
         </div>
+        <p className={styles.estimate}>Estimated Pass Date: {estimate}</p>
         <p
           className={classnames(
             styles.dasInfo,
