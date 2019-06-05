@@ -1,0 +1,145 @@
+.container {
+  max-width: 1158px;
+  padding: 0 24px;
+  margin: 0 auto;
+  font-family: ProximaNova, Helvetica, Arial, sans-serif;
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: bold;
+  }
+
+  h3,
+  h4 {
+    font-size: 20px;
+  }
+
+  h5 {
+    font-weight: bold;
+    font-size: inherit;
+  }
+}
+
+.header {
+  background-color: #eeeeef;
+  padding-top: 2.5rem;
+  padding-bottom: 2rem;
+
+  h1 {
+    font-size: 40px;
+    font-family: var(--font-rift);
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: normal;
+    line-height: 24px;
+  }
+}
+
+.headerInner {
+  @media (min-width: 768px) {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.headerInfo {
+  @media (min-width: 768px) {
+    width: 55%;
+  }
+}
+
+.bookInfo {
+  background-color: #fff;
+  padding: 0.5rem;
+  margin-top: 2rem;
+  border: 1px solid #eeeeef;
+
+  @media (min-width: 768px) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 41%;
+    margin-top: 0;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.bookInfoText {
+  padding: 0.5rem;
+  font-size: 18px;
+
+  h4 {
+    font-size: 25px;
+    font-family: var(--font-rift);
+    margin: 0.5rem 0 1rem;
+  }
+
+  ul {
+    padding: 0;
+    margin-bottom: 0;
+    list-style: none;
+  }
+}
+
+.bookForm {
+  display: flex;
+  margin-bottom: 1rem;
+
+  input {
+    flex-grow: 1;
+    border: 1px solid #efefef;
+    border-right: 0;
+    padding-left: 1rem;
+  }
+
+  button {
+    font-size: 25px;
+    font-family: var(--font-rift);
+    text-transform: uppercase;
+    background-color: var(--primary-color);
+    width: 111px;
+    height: 50px;
+    padding: 0;
+    cursor: pointer;
+    color: #fff;
+    border: 0;
+  }
+}
+
+.mainBody {
+  @media (min-width: 768px) {
+    width: 55%;
+  }
+
+  h2 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+.fastTrackAdvert {
+  display: block;
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid rgba(black, 0.5);
+  text-align: center;
+
+  &::before {
+    content: 'FAST TRACK ADVERT HERE';
+  }
+}
