@@ -10,9 +10,18 @@ import classnames from 'classnames'
 
 import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
 
+function filterExtraCourses(type) {
+  return (
+    !(
+      type.constant.startsWith('FULL_LICENCE') && type.constant.endsWith('TEST')
+    ) && type.constant !== 'FULL_LICENCE'
+  )
+}
+
 class CreateBulkCourse extends React.Component {
   constructor(props) {
     super(props)
+
     const course = {
       course_type_id: '',
       instructor_id: '',
@@ -61,12 +70,36 @@ class CreateBulkCourse extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, error, history } = this.props
+    const {
+      saving,
+      error,
+      history,
+      info: { courseTypes }
+    } = this.props
+    const {
+      course: { course_type_id }
+    } = this.state
+
     if (prevProps.saving && !saving) {
       if (!error) {
         const { start_date } = this.state.course
         history.push(`/calendar/${start_date}`)
       }
+    }
+
+    if (
+      course_type_id === '' &&
+      courseTypes.length !== prevProps.info.courseTypes.length &&
+      prevProps.info.courseTypes.length === 0
+    ) {
+      this.setState({
+        course: {
+          ...this.state.course,
+          course_type_id: courseTypes
+            .filter(filterExtraCourses)[0]
+            .id.toString()
+        }
+      })
     }
   }
 
@@ -171,13 +204,7 @@ class CreateBulkCourse extends React.Component {
       a_manual_bikes
     } = this.state.course
 
-    const courseTypes = info.courseTypes.filter(
-      type =>
-        !(
-          type.constant.startsWith('FULL_LICENCE') &&
-          type.constant.endsWith('TEST')
-        ) && type.constant !== 'FULL_LICENCE'
-    )
+    const courseTypes = info.courseTypes.filter(filterExtraCourses)
 
     const isFullLicence = courseTypes
       .filter(type => type.constant.startsWith('FULL_LICENCE'))
