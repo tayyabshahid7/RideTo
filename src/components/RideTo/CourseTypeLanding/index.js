@@ -238,7 +238,7 @@ class CourseTypeLanding extends React.Component {
               <div>
                 <h2>Popular Full Motorcycle</h2>
                 <ul className={styles.locationList}>
-                  {LOCATIONS.map(location => (
+                  {LOCATIONS.slice(0, 5).map(location => (
                     <li className={styles.location} key={location}>
                       <a
                         href={`/course-location/?postcode=${location}&courseType=${
@@ -249,6 +249,22 @@ class CourseTypeLanding extends React.Component {
                     </li>
                   ))}
                 </ul>
+                {LOCATIONS.length > 5 && (
+                  <ShowMore className={styles.showMoreLocations}>
+                    <ul className={styles.locationList}>
+                      {LOCATIONS.slice(5).map(location => (
+                        <li className={styles.location} key={location}>
+                          <a
+                            href={`/course-location/?postcode=${location}&courseType=${
+                              courseType.constant
+                            }`}>
+                            {location}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </ShowMore>
+                )}
               </div>
             </div>
           </div>

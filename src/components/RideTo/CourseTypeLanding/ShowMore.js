@@ -7,11 +7,11 @@ class ShowMore extends React.Component {
   }
 
   render() {
-    const { children } = this.props
+    const { children, className } = this.props
     const { open } = this.state
 
     return (
-      <div>
+      <div className={className}>
         <div className={open ? undefined : styles.hidden}>{children}</div>
 
         <div>
