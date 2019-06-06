@@ -152,3 +152,21 @@
   height: auto;
   margin: 1rem 0;
 }
+
+.showMoreButton {
+  appearance: none;
+  color: var(--primary-color);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  overflow: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.hidden {
+  display: none;
+}

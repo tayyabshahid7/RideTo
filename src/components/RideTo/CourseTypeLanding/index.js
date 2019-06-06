@@ -3,6 +3,7 @@ import styles from './styles.scss'
 import Script from 'react-load-script'
 import classnames from 'classnames'
 import fastTrack from 'assets/images/fast-track.png'
+import ShowMore from './ShowMore'
 
 class CourseTypeLanding extends React.Component {
   constructor(props) {
@@ -191,6 +192,9 @@ class CourseTypeLanding extends React.Component {
                   Ut laborum ut mollit magna incididunt est dolor voluptate
                   dolor commodo officia excepteur magna do sit.
                 </p>
+                <ShowMore>
+                  <p>hello</p>
+                </ShowMore>
               </div>
             </div>
           </div>
