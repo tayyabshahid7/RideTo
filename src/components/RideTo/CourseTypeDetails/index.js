@@ -3,6 +3,7 @@ import React from 'react'
 import styles from './CourseTypeDetails.scss'
 import DetailsAccordionItem from 'components/RideTo/DetailsAccordionItem'
 import SummaryIcons from './SummaryIcons'
+import classnames from 'classnames'
 
 class CourseTypeDetails extends React.Component {
   constructor(props) {
@@ -29,19 +30,26 @@ class CourseTypeDetails extends React.Component {
   }
 
   render() {
-    const { courseType, title } = this.props
+    const { courseType, title, minimal } = this.props
     const { opened } = this.state
     const { details, tags } = courseType
 
     const courseTitle = title || courseType.name
 
     return (
-      <div className={styles.courseTypeDetails}>
-        <div className={styles.title}>{courseTitle}</div>
-        <div className={styles.description}>{details.description}</div>
-        <SummaryIcons tags={tags} />
-
-        <hr className={styles.divider} />
+      <div
+        className={classnames(
+          styles.courseTypeDetails,
+          minimal && styles.courseTypeDetailsMinimal
+        )}>
+        {!minimal && (
+          <React.Fragment>
+            <div className={styles.title}>{courseTitle}</div>
+            <div className={styles.description}>{details.description}</div>
+            <SummaryIcons tags={tags} />
+            <hr className={styles.divider} />
+          </React.Fragment>
+        )}
 
         <div className={styles.accordion}>
           {details.duration && (

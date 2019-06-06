@@ -170,3 +170,26 @@
 .hidden {
   display: none;
 }
+
+.locationList {
+  padding: 0;
+  list-style: none;
+}
+
+.location {
+  + .location {
+    margin-top: 10px;
+  }
+
+  a {
+    display: block;
+    background-color: #0ed4ae;
+    font-size: 35px;
+    font-family: var(--font-rift);
+    text-transform: uppercase;
+    max-width: 370px;
+    color: #fff;
+    padding-left: 1rem;
+    text-decoration: none;
+  }
+}

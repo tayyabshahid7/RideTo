@@ -4,13 +4,46 @@ import Script from 'react-load-script'
 import classnames from 'classnames'
 import fastTrack from 'assets/images/fast-track.png'
 import ShowMore from './ShowMore'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import { getStaticData } from 'services/page'
+
+const SLUG_COURSE_TYPES = {
+  'introduction-to-motocylcling': 'INTRO_TO_MOTORCYCLING',
+  'cbt-training': 'LICENCE_CBT',
+  'cbt-training-renewal': 'LICENCE_CBT_RENEWAL',
+  'motorcycle-training': 'FULL_LICENCE',
+  'motorcycle-licence': 'FULL_LICENCE',
+  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE',
+  'cbt-training-info': 'FULL_LICENCE' // dev only
+}
+
+const LOCATIONS = [
+  'london',
+  'birmingham',
+  'swansea',
+  'bristol',
+  'essex',
+  'exeter',
+  'pourtsmouth',
+  'cardiff'
+]
 
 class CourseTypeLanding extends React.Component {
   constructor(props) {
     super(props)
 
+    const {
+      location: { pathname }
+    } = window
+
+    const courseTypeConstant = SLUG_COURSE_TYPES[pathname.replace('/', '')]
+    const { courseTypes } = getStaticData('RIDETO_PAGE')
+    const courseType = courseTypes.find(
+      courseType => courseType.constant === courseTypeConstant
+    )
+
     this.state = {
-      courseType: 'FULL_LICENCE',
+      courseType,
       search: ''
     }
 
@@ -27,13 +60,15 @@ class CourseTypeLanding extends React.Component {
   handleSubmit(event) {
     const { courseType, search } = this.state
 
-    window.location = `/course-location/?postcode=${search}&courseType=${courseType}`
+    window.location = `/course-location/?postcode=${search}&courseType=${
+      courseType.constant
+    }`
 
     event.preventDefault()
   }
 
   render() {
-    const { search } = this.state
+    const { courseType, search } = this.state
 
     return (
       <React.Fragment>
@@ -187,6 +222,10 @@ class CourseTypeLanding extends React.Component {
                 </p>
               </div>
               <div>
+                <h2>Frequently Asked Questions</h2>
+                <CourseTypeDetails courseType={courseType} minimal />
+              </div>
+              <div>
                 <h2>What you can ride after</h2>
                 <p>
                   Ut laborum ut mollit magna incididunt est dolor voluptate
@@ -195,6 +234,21 @@ class CourseTypeLanding extends React.Component {
                 <ShowMore>
                   <p>hello</p>
                 </ShowMore>
+              </div>
+              <div>
+                <h2>Popular Full Motorcycle</h2>
+                <ul className={styles.locationList}>
+                  {LOCATIONS.map(location => (
+                    <li className={styles.location} key={location}>
+                      <a
+                        href={`/course-location/?postcode=${location}&courseType=${
+                          courseType.constant
+                        }`}>
+                        {location}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>
