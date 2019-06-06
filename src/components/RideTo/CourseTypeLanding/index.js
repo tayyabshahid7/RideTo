@@ -5,7 +5,35 @@ import classnames from 'classnames'
 import fastTrack from 'assets/images/fast-track.png'
 
 class CourseTypeLanding extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      courseType: 'FULL_LICENCE',
+      search: ''
+    }
+
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleInputChange({ target: { value: search } }) {
+    this.setState({
+      search
+    })
+  }
+
+  handleSubmit(event) {
+    const { courseType, search } = this.state
+
+    window.location = `/course-location/?postcode=${search}&courseType=${courseType}`
+
+    event.preventDefault()
+  }
+
   render() {
+    const { search } = this.state
+
     return (
       <React.Fragment>
         <section>
@@ -51,8 +79,15 @@ class CourseTypeLanding extends React.Component {
                   />
                   <div className={styles.bookInfoText}>
                     <h4>Book a local instructor</h4>
-                    <form className={styles.bookForm}>
-                      <input placeholder="Your postcode" type="text" />
+                    <form
+                      className={styles.bookForm}
+                      onSubmit={this.handleSubmit}>
+                      <input
+                        onChange={this.handleInputChange}
+                        placeholder="Your postcode"
+                        type="text"
+                        value={search}
+                      />
                       <button>Search</button>
                     </form>
                     <h5>We include as standard:</h5>
@@ -118,8 +153,7 @@ class CourseTypeLanding extends React.Component {
                   occaecat sint cupidatat enim quis fugiat irure anim.
                 </p>
               </div>
-              <a href="#">
-                {' '}
+              <a href="/">
                 <img
                   src={fastTrack}
                   className={styles.fastTrackAdvert}
