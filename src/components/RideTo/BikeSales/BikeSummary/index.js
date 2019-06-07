@@ -8,7 +8,13 @@ function BikeSummary({ bike: { id, images, name, price, desc, bookLink } }) {
 
   return (
     <div className={styles.bikeSummary}>
-      <img className={styles.image} src={image} alt="Bike" />
+      <img
+        className={styles.image}
+        src={image}
+        alt="Bike"
+        width="330"
+        height="172"
+      />
       <div className={styles.info}>
         <div className={styles.header}>
           <span>{name}</span>
