@@ -15,14 +15,16 @@ function BikeSummary({ bike: { id, images, name, price, desc, bookLink } }) {
           <span>RRP £{price / 100}</span>
         </div>
         <div className={styles.description}>{desc}</div>
-        <a
-          className={classnames(styles.button, styles.buttonPrimary)}
-          href={bookLink}>
-          Book test ride
-        </a>
+        {bookLink && (
+          <a
+            className={classnames(styles.button, styles.buttonPrimary)}
+            href={bookLink}>
+            Book test ride
+          </a>
+        )}
         <Link
           className={classnames(styles.button)}
-          to={`/bike-review/bike/${id}/`}>
+          to={`/bike-sales/bike/${id}/`}>
           Read review
         </Link>
       </div>

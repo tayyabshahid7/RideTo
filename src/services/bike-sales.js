@@ -9,7 +9,7 @@ export const sortFunctions = {
   reviews: (a, b) => (a.reviews < b.reviews ? 1 : -1),
   priceAsc: (a, b) => (a.price > b.price ? 1 : -1),
   priceDesc: (a, b) => (a.price < b.price ? 1 : -1),
-  aToZ: (a, b) => (a.categories.brand > b.categories.brand ? 1 : -1)
+  aToZ: (a, b) => (a.brand > b.brand ? 1 : -1)
 }
 
 export function getFiltersCount(filters, budgetMin, budgetMax) {
@@ -41,4 +41,18 @@ export function reduceFilters(filters) {
 
     return obj
   }, {})
+}
+
+export function mapBike(bike) {
+  const mappedBike = {
+    ...bike,
+    price: parseInt(bike.price) * 100,
+    name: bike.bike_model,
+    images: bike.images.map(({ image }) => image),
+    goodPoints: bike.good_points.map(({ good_point }) => good_point),
+    badPoints: bike.bad_points.map(({ bad_point }) => bad_point),
+    licence: bike.required_licence
+  }
+
+  return mappedBike
 }
