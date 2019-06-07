@@ -8,6 +8,8 @@ import {
   AccordionItemButton as Button,
   AccordionItemPanel as Panel
 } from 'react-accessible-accordion'
+import { capitalizeFirstLetter } from 'utils/helper'
+import { getCourseTitle } from 'services/course'
 
 class Filters extends Component {
   constructor(props) {
@@ -45,9 +47,14 @@ class Filters extends Component {
               <Button className={styles.accordionButton}>
                 {name}{' '}
                 {name === 'Budget' ? (
-                  <Selected budgetMin={budgetMin} budgetMax={budgetMax} />
+                  <Selected
+                    type={name}
+                    budgetMin={budgetMin}
+                    budgetMax={budgetMax}
+                  />
                 ) : (
                   <Selected
+                    type={name}
                     selectedFilters={reducedFilters[name.toLowerCase()]}
                   />
                 )}
@@ -95,7 +102,11 @@ class Filters extends Component {
                           this.handleCheckboxClick(event, name, value.name)
                         }}
                       />{' '}
-                      {value.name}
+                      {name === 'Style'
+                        ? capitalizeFirstLetter(value.name)
+                        : name === 'Licence'
+                        ? getCourseTitle(value.name)
+                        : value.name}
                     </label>
                   </div>
                 ))

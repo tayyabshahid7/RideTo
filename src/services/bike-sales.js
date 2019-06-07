@@ -1,8 +1,49 @@
+import { get } from 'services/api'
+
+export const fetchBikes = async () => {
+  const path = `bike-reviews/`
+  const response = await get(path)
+
+  return response
+}
+
+export const fetchBike = async id => {
+  const path = `bike-reviews/${id}/`
+  const response = await get(path)
+
+  return response
+}
+
 export const SORT_OPTIONS = [
   { name: 'Reviews', id: 'reviews' },
   { name: 'Price (Low to High)', id: 'priceAsc' },
   { name: 'Price (High to Low)', id: 'priceDesc' },
   { name: 'Make (A-Z)', id: 'aToZ' }
+]
+
+export const CATEGORIES = ['engine', 'licence', 'brand', 'style']
+
+export const DEFAULT_FILTERS = [
+  {
+    name: 'Brand',
+    values: []
+  },
+  {
+    name: 'Engine',
+    values: []
+  },
+  {
+    name: 'Style',
+    values: []
+  },
+  {
+    name: 'Budget',
+    values: []
+  },
+  {
+    name: 'Licence',
+    values: []
+  }
 ]
 
 export const sortFunctions = {
@@ -46,7 +87,7 @@ export function reduceFilters(filters) {
 export function mapBike(bike) {
   const mappedBike = {
     ...bike,
-    price: parseInt(bike.price) * 100,
+    price: parseInt(bike.price),
     name: bike.bike_model,
     images: bike.images.map(({ image }) => image),
     goodPoints: bike.good_points.map(({ good_point }) => good_point),

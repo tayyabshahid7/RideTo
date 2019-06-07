@@ -9,6 +9,8 @@ import { isEqual } from 'lodash'
 import MySlidingPane from '../MySlidingPane'
 import {
   SORT_OPTIONS,
+  CATEGORIES,
+  DEFAULT_FILTERS,
   sortFunctions,
   getFiltersCount,
   reduceFilters
@@ -17,55 +19,23 @@ import Pagination from 'rc-pagination'
 import en_GB from 'rc-pagination/es/locale/en_GB.js'
 import MediaQuery from 'react-responsive'
 
-const CATEGORIES = ['engine', 'licence', 'brand', 'style']
-
-const FILTERS = [
-  {
-    name: 'Brand',
-    values: ['BMW', 'Ducati', 'Honda', 'Susuki']
-  },
-  {
-    name: 'Engine',
-    values: ['50cc', '125cc', '200cc', '300cc', '400cc', '2000cc']
-  },
-  {
-    name: 'Style',
-    values: ['Adventure', 'Classic', 'Scooter', 'Super Moto']
-  },
-  {
-    name: 'Budget',
-    values: []
-  },
-  {
-    name: 'Licence',
-    values: ['CBT', 'A1 Licence', 'A2 Licence', 'A Licence']
-  }
-]
-
-class BikeSales extends Component {
+class BikeSalesListing extends Component {
   constructor(props) {
     super(props)
 
-    this.defaultFilters = FILTERS.map(option => ({
-      ...option,
-      values: option.values.map(value => ({
-        name: value,
-        active: false
-      }))
-    }))
-    this.defaultReducedFilters = reduceFilters(FILTERS)
     this.sortOptions = SORT_OPTIONS
 
     this.state = {
       filtersOpen: false,
       sortOpen: false,
-      bikes: this.props.bikes.sort(sortFunctions[this.sortOptions[0].id]),
-      filters: this.defaultFilters,
-      reducedFilters: this.defaultReducedFilters,
+      bikes: [],
+      filters: [],
+      reducedFilters: {},
       budgetMin: null,
       budgetMax: null,
       sort: this.sortOptions[0],
-      page: 1
+      page: 1,
+      loading: true
     }
 
     this.closeFilters = this.closeFilters.bind(this)
@@ -76,13 +46,52 @@ class BikeSales extends Component {
     this.handleFiltersButtonClick = this.handleFiltersButtonClick.bind(this)
     this.handleSortButtonClick = this.handleSortButtonClick.bind(this)
     this.handlePageChange = this.handlePageChange.bind(this)
+    this.init = this.init.bind(this)
   }
 
   componentDidMount() {
     Modal.setAppElement(document.getElementById('bike-sales-root'))
   }
 
+  init() {
+    const { bikes } = this.props
+    const filters = DEFAULT_FILTERS.map(filter => {
+      if (filter.name === 'Budget') {
+        return filter
+      }
+
+      const options = bikes.reduce((arr, bike) => {
+        return [...arr, bike[filter.name.toLowerCase()]]
+      }, [])
+
+      return {
+        ...filter,
+        values: [...new Set(options)].sort()
+      }
+    })
+
+    this.defaultFilters = filters.map(option => ({
+      ...option,
+      values: option.values.map(value => ({
+        name: value,
+        active: false
+      }))
+    }))
+    this.defaultReducedFilters = reduceFilters(filters)
+
+    this.setState({
+      bikes: bikes.sort(sortFunctions[this.sortOptions[0].id]),
+      filters: this.defaultFilters,
+      reducedFilters: this.defaultReducedFilters,
+      loading: false
+    })
+  }
+
   componentDidUpdate(prevProps, prevState) {
+    if (this.props.bikes.length !== prevProps.bikes.length) {
+      this.init()
+    }
+
     if (
       !isEqual(this.state.filters, prevState.filters) ||
       this.state.budgetMin !== prevState.budgetMin ||
@@ -209,7 +218,8 @@ class BikeSales extends Component {
       budgetMin,
       budgetMax,
       sort,
-      page
+      page,
+      loading
     } = this.state
 
     return (
@@ -233,7 +243,10 @@ class BikeSales extends Component {
               </button>
             </div>
             <div className={styles.results}>
-              Results: {bikes.length} bikes found
+              Results:{' '}
+              {loading
+                ? 'Loading...'
+                : `${bikes.length} bike${bikes.length > 1 ? 's' : ''} found`}
             </div>
           </div>
         </div>
@@ -328,4 +341,4 @@ class BikeSales extends Component {
   }
 }
 
-export default BikeSales
+export default BikeSalesListing
