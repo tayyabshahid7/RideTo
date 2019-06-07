@@ -17,6 +17,8 @@ import Pagination from 'rc-pagination'
 import en_GB from 'rc-pagination/es/locale/en_GB.js'
 import MediaQuery from 'react-responsive'
 
+const CATEGORIES = ['engine', 'licence', 'brand', 'style']
+
 const FILTERS = [
   {
     name: 'Brand',
@@ -104,15 +106,17 @@ class BikeSales extends Component {
             return true
           })
           .filter(bike => {
-            return Object.entries(bike.categories).every(([name, value]) => {
-              if (
-                reducedFilters[name] !== 'All' &&
-                !reducedFilters[name].includes(value)
-              ) {
-                return false
-              }
-              return true
-            })
+            return Object.entries(bike)
+              .filter(([name]) => CATEGORIES.includes(name))
+              .every(([name, value]) => {
+                if (
+                  reducedFilters[name] !== 'All' &&
+                  !reducedFilters[name].includes(value)
+                ) {
+                  return false
+                }
+                return true
+              })
           })
           .sort(sortFunctions[this.state.sort.id]),
         reducedFilters

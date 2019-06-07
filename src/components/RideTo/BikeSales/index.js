@@ -17,12 +17,11 @@ const DATA = [
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
     reviews: 77,
-    categories: {
-      engine: '125cc',
-      licence: 'CBT',
-      brand: 'Honda',
-      style: 'Adventure'
-    }
+
+    engine: '125cc',
+    licence: 'CBT',
+    brand: 'Honda',
+    style: 'Adventure'
   },
   {
     images: [
@@ -37,12 +36,11 @@ const DATA = [
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
     reviews: 10,
-    categories: {
-      engine: '125cc',
-      licence: 'CBT',
-      brand: 'Honda',
-      style: 'Classic'
-    }
+
+    engine: '125cc',
+    licence: 'CBT',
+    brand: 'Honda',
+    style: 'Classic'
   },
   {
     images: [
@@ -57,12 +55,11 @@ const DATA = [
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
     reviews: 56,
-    categories: {
-      licence: 'A2 Licence',
-      engine: '2000cc',
-      brand: 'Ducati',
-      style: 'Adventure'
-    }
+
+    licence: 'A2 Licence',
+    engine: '2000cc',
+    brand: 'Ducati',
+    style: 'Adventure'
   },
   {
     images: [
@@ -77,12 +74,11 @@ const DATA = [
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
     reviews: 10,
-    categories: {
-      engine: '125cc',
-      licence: 'CBT',
-      brand: 'Ducati',
-      style: 'Super Moto'
-    }
+
+    engine: '125cc',
+    licence: 'CBT',
+    brand: 'Ducati',
+    style: 'Super Moto'
   },
   {
     images: [
@@ -97,12 +93,11 @@ const DATA = [
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
     reviews: 9,
-    categories: {
-      licence: 'A1 Licence',
-      engine: '300cc',
-      brand: 'Honda',
-      style: 'Adventure'
-    }
+
+    licence: 'A1 Licence',
+    engine: '300cc',
+    brand: 'Honda',
+    style: 'Adventure'
   },
   {
     images: [
@@ -117,12 +112,11 @@ const DATA = [
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
     reviews: 10,
-    categories: {
-      engine: '125cc',
-      licence: 'CBT',
-      brand: 'BMW',
-      style: 'Classic'
-    }
+
+    engine: '125cc',
+    licence: 'CBT',
+    brand: 'BMW',
+    style: 'Classic'
   },
   {
     images: [
@@ -137,12 +131,11 @@ const DATA = [
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
     reviews: 11,
-    categories: {
-      engine: '125cc',
-      licence: 'CBT',
-      brand: 'Honda',
-      style: 'Classic'
-    }
+
+    engine: '125cc',
+    licence: 'CBT',
+    brand: 'Honda',
+    style: 'Classic'
   },
   {
     images: [
@@ -157,12 +150,11 @@ const DATA = [
     bookLink: 'https://www.google.com/',
     reviewLink: 'https://www.google.com/',
     reviews: 1,
-    categories: {
-      engine: '125cc',
-      licence: 'CBT',
-      brand: 'Honda',
-      style: 'Adventure'
-    }
+
+    engine: '125cc',
+    licence: 'CBT',
+    brand: 'Honda',
+    style: 'Adventure'
   }
 ]
 
@@ -228,11 +220,11 @@ function BikeSales() {
       <Fragment>
         <Route
           exact
-          path="/bike-sales/"
+          path="/bike-review/"
           render={routeProps => <Listing {...routeProps} bikes={DUMMY_DATA} />}
         />
         <Route
-          path="/bike-sales/bike/:id"
+          path="/bike-review/bike/:id"
           render={routeProps => (
             <BikeReview {...routeProps} bikes={DUMMY_DATA} />
           )}
