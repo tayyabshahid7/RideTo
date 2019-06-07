@@ -19,7 +19,8 @@
 
   > img {
     width: 100%;
-    height: auto;
+    object-fit: cover;
+    object-position: center;
   }
 }
 
@@ -28,6 +29,10 @@
   margin: 1rem 0 0;
   display: flex;
   list-style: none;
+
+  > li {
+    max-width: calc(25% - 0.75rem);
+  }
 
   > li + li {
     margin-left: 1rem;
@@ -43,7 +48,8 @@
 
   img {
     width: 100%;
-    height: auto;
+    object-fit: cover;
+    object-position: center;
   }
 }
 
@@ -140,6 +146,7 @@
 }
 
 .content {
+  width: 100%;
   font-size: 18px;
 
   @media (min-width: 1000px) {

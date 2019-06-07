@@ -5,6 +5,7 @@ import summaryStyles from '../BikeSummary/styles.scss'
 import componentStyles from './styles.scss'
 import Circle from 'react-circle'
 import { getShortCourseType } from 'services/course'
+import { SLUG_COURSE_TYPES } from 'common/constants'
 
 const styles = {
   ...containerStyles,
@@ -32,12 +33,17 @@ class BikeReview extends Component {
   render() {
     const { match, bikes } = this.props
     const { currentImage } = this.state
+
+    if (!bikes.length) {
+      return null
+    }
+
     const {
       images,
       name,
       price,
       bookLink,
-      categories: { engine },
+      engine,
       bhp,
       mpg,
       intro,
@@ -48,14 +54,26 @@ class BikeReview extends Component {
       range,
       requiredLicence,
       insuranceGroup
-    } = bikes.find(bike => bike.id === parseInt(match.params.id, 10))
+    } = bikes.find(bike => bike.slug === match.params.slug)
+    const insuranceLink = 'https://www.lexhaminsurance.co.uk/?aff=LEX6327'
+    const trainingLink = `/${Object.keys(SLUG_COURSE_TYPES).find(
+      key => SLUG_COURSE_TYPES[key] === requiredLicence
+    )}`
+    const licenceText = `${getShortCourseType({
+      constant: requiredLicence
+    })} Licence`
 
     return (
       <div className={styles.page}>
         <div className={styles.container}>
           <div className={styles.header}>
             <div className={styles.largeImage}>
-              <img src={images[currentImage]} alt="Large product" />
+              <img
+                src={images[currentImage]}
+                alt="Large product"
+                width="611"
+                height="318"
+              />
               <ul className={styles.imagesList}>
                 {images.map((image, i) => (
                   <li key={i}>
@@ -63,7 +81,12 @@ class BikeReview extends Component {
                       onClick={() => {
                         this.handleImageButtonClick(i)
                       }}>
-                      <img src={image} alt="Small product" />
+                      <img
+                        src={image}
+                        alt="Small product"
+                        width="141"
+                        height="73"
+                      />
                     </button>
                   </li>
                 ))}
@@ -101,12 +124,12 @@ class BikeReview extends Component {
                 {mpg} MPG - {range} miles range
               </div>
               <div className={styles.infoRow}>
-                {getShortCourseType(requiredLicence)} Licence{' '}
-                <a href="http://cbt.com">Book Course</a>
+                {licenceText}
+                <a href={trainingLink}>Book Course</a>
               </div>
               <div className={styles.infoRow} style={{ flexGrow: '1' }}>
                 Insurance group: {insuranceGroup}{' '}
-                <a href="https:insurance.com">Get Quote</a>
+                <a href={insuranceLink}>Get Quote</a>
               </div>
               <a
                 className={classnames(
@@ -164,8 +187,8 @@ class BikeReview extends Component {
                   styles.buttonPrimary,
                   styles.buttonReview
                 )}
-                href={bookLink}>
-                Book CBT course
+                href={trainingLink}>
+                Book {licenceText}
               </a>
               <a
                 className={classnames(
@@ -173,7 +196,7 @@ class BikeReview extends Component {
                   styles.buttonPrimary,
                   styles.buttonReview
                 )}
-                href={bookLink}>
+                href={insuranceLink}>
                 Insurance quote
               </a>
             </div>

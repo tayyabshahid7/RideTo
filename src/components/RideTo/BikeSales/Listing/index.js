@@ -50,11 +50,17 @@ class BikeSalesListing extends Component {
   }
 
   componentDidMount() {
+    this.init()
     Modal.setAppElement(document.getElementById('bike-sales-root'))
   }
 
   init() {
     const { bikes } = this.props
+
+    if (!bikes.length) {
+      return
+    }
+
     const filters = DEFAULT_FILTERS.map(filter => {
       if (filter.name === 'Budget') {
         return filter

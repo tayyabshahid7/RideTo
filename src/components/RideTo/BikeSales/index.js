@@ -33,7 +33,7 @@ class BikeSales extends React.Component {
             render={routeProps => <Listing {...routeProps} bikes={bikes} />}
           />
           <Route
-            path="/bike-review/bike/:id"
+            path="/bike-review/bike/:slug/"
             render={routeProps => <BikeReview {...routeProps} bikes={bikes} />}
           />
         </Fragment>
