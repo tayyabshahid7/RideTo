@@ -33,3 +33,5 @@ mountComponent('CheckoutPage', 'rideto-checkout')
 mountComponent('FooterLinks', 'rideto-mobile-footer-links')
 
 mountComponent('Faqs', 'rideto-faqs')
+
+mountComponent('BikeSales', 'bike-sales-root')

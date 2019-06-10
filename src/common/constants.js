@@ -106,3 +106,12 @@ export const TEST_STATUS_CHOICES = {
 }
 
 export const STRIPE_KEY = process.env.REACT_APP_STRIPE_KEY
+
+export const SLUG_COURSE_TYPES = {
+  'introduction-to-motocylcling': 'INTRO_TO_MOTORCYCLING',
+  'cbt-training': 'LICENCE_CBT',
+  'cbt-training-renewal': 'LICENCE_CBT_RENEWAL',
+  'motorcycle-training': 'FULL_LICENCE',
+  'motorcycle-licence': 'FULL_LICENCE',
+  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
+}
