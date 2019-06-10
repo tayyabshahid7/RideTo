@@ -29,11 +29,11 @@ class BikeSales extends React.Component {
         <Fragment>
           <Route
             exact
-            path="/bike-review/"
+            path="/bike-reviews/"
             render={routeProps => <Listing {...routeProps} bikes={bikes} />}
           />
           <Route
-            path="/bike-review/bike/:slug/"
+            path="/bike-reviews/:slug/"
             render={routeProps => <BikeReview {...routeProps} bikes={bikes} />}
           />
         </Fragment>
