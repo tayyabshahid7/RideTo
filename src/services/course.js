@@ -226,6 +226,8 @@ export const getShortCourseType = courseType => {
       return 'Enhanced Rider Scheme'
     case 'BIKE_HIRE':
       return 'Bike Hire'
+    case 'TFL_ONE_ON_ONE':
+      return 'TFL'
     default:
       return 'CBT'
   }
