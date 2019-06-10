@@ -58,6 +58,10 @@ class BikeSalesListing extends Component {
     const { bikes } = this.props
 
     if (!bikes.length) {
+      this.setState({
+        loading: false
+      })
+
       return
     }
 
