@@ -6,15 +6,15 @@ import fastTrack from 'assets/images/fast-track.png'
 import ShowMore from './ShowMore'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { getStaticData } from 'services/page'
+import fullLicenceBookImage from 'assets/images/FullLicenceTypeImage.jpg'
 
 const SLUG_COURSE_TYPES = {
-  'introduction-to-motocylcling': 'INTRO_TO_MOTORCYCLING',
+  'introduction-to-motorcycling': 'INTRO_TO_MOTORCYCLING',
   'cbt-training': 'LICENCE_CBT',
-  'cbt-training-renewal': 'LICENCE_CBT_RENEWAL',
-  'motorcycle-training': 'FULL_LICENCE',
+  'blog/cbt-renewal': 'LICENCE_CBT_RENEWAL',
   'motorcycle-licence': 'FULL_LICENCE',
   '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE',
-  'cbt-training-info': 'FULL_LICENCE' // dev only
+  'full-licence-info': 'FULL_LICENCE' // dev only
 }
 
 const LOCATIONS = [
@@ -109,10 +109,7 @@ class CourseTypeLanding extends React.Component {
                   </div>
                 </div>
                 <div className={styles.bookInfo}>
-                  <img
-                    src="https://via.placeholder.com/350x200"
-                    alt="Placeholder"
-                  />
+                  <img src={fullLicenceBookImage} alt="Placeholder" />
                   <div className={styles.bookInfoText}>
                     <h4>Book a local instructor</h4>
                     <form
@@ -162,32 +159,21 @@ class CourseTypeLanding extends React.Component {
             <div className={styles.mainBody}>
               <div>
                 <h2>What you'll learn</h2>
-                <h3>How to ride the bike for your licence (A1, A2, A)</h3>
-                <p>
-                  Eu exercitation aliquip id cupidatat nisi veniam dolor
-                  incididunt reprehenderit laboris officia.
-                </p>
-                <h3>Module 1 maneauvers</h3>
-                <p>
-                  Minim sunt consectetur nisi do voluptate ea anim mollit do
-                  consectetur adipisicing pariatur voluptate do fugiat commodo
-                  fugiat fugiat. Magna id sed dolor deserunt et excepteur aute
-                  veniam.
-                </p>
-                <h3>Module 2 maneauvers</h3>
-                <p>
-                  Quis ex quis officia est laboris ut ex in labore. Lorem ipsum
-                  duis dolor ullamco ut quis duis duis nulla sunt culpa ea sunt
-                  deserunt duis nostrud.
-                </p>
-                <h3>Module 2 road riding skills</h3>
-                <p>
-                  Non et elit labore fugiat do reprehenderit cillum ad officia
-                  commodo. Aute duis ut officia labore dolore non adipisicing
-                  laboris amet reprehenderit consequat nisi cillum sunt aute.
-                  Enim aute consectetur proident velit sit quis dolor in do nisi
-                  occaecat sint cupidatat enim quis fugiat irure anim.
-                </p>
+                <h3> How to ride the bike for your licence (A1, A2, A)</h3>
+                You’ll learn to ride and pass the tests on the right bike for
+                the licence you wish to obtain. either an A1, A2 or A
+                (unrestricted) licence depending on your age and the bike you
+                take the tests on.
+                <h3>Module 1: Maneuvers</h3>
+                Off road riding; learning the test exercises such as riding in a
+                figure of 8, emergency stop and turn in the road.
+                <h3> Module 2: Theory Questions</h3>
+                The ‘show me tell me’ questions an examiner might ask you about
+                bike maintenance and safety.
+                <h3> Module 2: Road Riding Skills</h3>
+                Riding in a variety of road conditions under directions from the
+                examiner as well as following signs, carrying out normal stops,
+                pulling away from behind a park car and a hill start.
               </div>
               <a href="/">
                 <img
@@ -199,41 +185,70 @@ class CourseTypeLanding extends React.Component {
               <div>
                 <h2>Requirements</h2>
                 <p>
-                  Esse nostrud ut aute non dolor in tempor voluptate
-                  exercitation exercitation officia duis consectetur ad ea id ea
-                  enim.
+                  In order to take the full motorcycle licence course, you must
+                  meet the following requirements:
                 </p>
                 <p>
-                  Lorem ipsum ut deserunt nulla in cillum et proident sit
-                  aliquip cupidatat in irure eiusmod nisi ea.
+                  Have the correct licence card: UK driving, UK provisional or
+                  EU licence with UK counterpart licence number
+                </p>
+                <ul>
+                  <li>
+                    Hold a valid CBT certificate Hold a valid motorcycle theory
+                  </li>
+                  <li>
+                    certificate Be able to read a registration plate from 20.5
+                  </li>
+                  <li>
+                    meters Speak and understand English and the Highway code Be
+                  </li>
+                  <li>
+                    able to ride an adult sized bicycle Wear suitable clothing
+                  </li>
+                  <li>including sturdy jeans and boots</li>
+                </ul>
+              </div>
+              <div>
+                <h2>What you can ride after</h2>
+                <p>
+                  A Motorcycle licence allows you pillion passenger and ride on
+                  motorways.
                 </p>
                 <p>
-                  Mollit eiusmod officia voluptate sint irure dolor commodo
-                  voluptate id excepteur consectetur sed ut incididunt nulla
-                  voluptate.
+                  Depending on your age and the bike you train on will decide
+                  what you can ride after.
+                </p>
+                <ShowMore />
+              </div>
+              <div>
+                <h2>Course details</h2>
+                <p>
+                  The full motorcycle licence course combines the training and
+                  tests for the two motorcycle tests, known as module 1 and
+                  module 2.
                 </p>
                 <p>
-                  Lorem ipsum quis proident in consectetur eiusmod anim laboris
-                  nulla sit laborum mollit anim eu.
+                  Module 1 is an off-road test to assess your handling and and
+                  control of the bike.
                 </p>
                 <p>
-                  Aliquip consequat consectetur in nulla aliqua nisi magna
-                  deserunt commodo quis labore adipisicing.
+                  Module 2 is an on-road test, similar to the car driving test.
+                  You’ll ride through a variety of road conditions under
+                  assessment from an examiner following on a motorcycle.
                 </p>
+                <ShowMore />
               </div>
               <div>
                 <h2>Frequently Asked Questions</h2>
                 <CourseTypeDetails courseType={courseType} minimal />
               </div>
               <div>
-                <h2>What you can ride after</h2>
+                <h2>Cancellation policy</h2>
                 <p>
-                  Ut laborum ut mollit magna incididunt est dolor voluptate
-                  dolor commodo officia excepteur magna do sit.
+                  Once your booking is confirmed, we can cancel and refund you
+                  in full as long as you give us at least 12 working days notice
+                  before your training starts.
                 </p>
-                <ShowMore>
-                  <p>hello</p>
-                </ShowMore>
               </div>
               <div>
                 <h2>Popular Full Motorcycle</h2>
