@@ -143,12 +143,42 @@ class CourseTypeLanding extends React.Component {
                     </form>
                     <h5>We include as standard:</h5>
                     <ul>
-                      <li>Bike &amp; helmet hire</li>
-                      <li>Test fees &amp; fuel</li>
-                      <li>Online pre-training</li>
-                      <li>Free cancellation</li>
-                      <li>135 training locations UK wide</li>
-                      <li>Dedicated support team</li>
+                      <li>
+                        <span className={styles.tick}>
+                          <i className="fa fa-check" />
+                        </span>{' '}
+                        Bike &amp; helmet hire
+                      </li>
+                      <li>
+                        <span className={styles.tick}>
+                          <i className="fa fa-check" />
+                        </span>{' '}
+                        Test fees &amp; fuel
+                      </li>
+                      <li>
+                        <span className={styles.tick}>
+                          <i className="fa fa-check" />
+                        </span>{' '}
+                        Online pre-training
+                      </li>
+                      <li>
+                        <span className={styles.tick}>
+                          <i className="fa fa-check" />
+                        </span>{' '}
+                        Free cancellation
+                      </li>
+                      <li>
+                        <span className={styles.tick}>
+                          <i className="fa fa-check" />
+                        </span>{' '}
+                        135 training locations UK wide
+                      </li>
+                      <li>
+                        <span className={styles.tick}>
+                          <i className="fa fa-check" />
+                        </span>{' '}
+                        Dedicated support team
+                      </li>
                     </ul>
                     <div
                       className={classnames(
