@@ -7,6 +7,7 @@ import ShowMore from './ShowMore'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { getStaticData } from 'services/page'
 import fullLicenceBookImage from 'assets/images/FullLicenceTypeImage.jpg'
+import infoGraphic from 'assets/images/infographic-website@2x.png'
 
 const SLUG_COURSE_TYPES = {
   'introduction-to-motorcycling': 'INTRO_TO_MOTORCYCLING',
@@ -17,16 +18,33 @@ const SLUG_COURSE_TYPES = {
   'full-licence-info': 'FULL_LICENCE' // dev only
 }
 
-const LOCATIONS = [
-  'london',
-  'birmingham',
-  'swansea',
-  'bristol',
-  'essex',
-  'exeter',
-  'pourtsmouth',
-  'cardiff'
-]
+const LOCATIONS = {
+  full: [
+    'london',
+    'birmingham',
+    'swansea',
+    'bristol',
+    'essex',
+    'exeter',
+    'portsmouth',
+    'cardiff',
+    'chelmsford',
+    'brighton'
+  ],
+  cbt: [
+    'london',
+    'gasgow',
+    'liverpool',
+    'manchester',
+    'birmingham',
+    'bournemouth',
+    'brighton',
+    'cardiff',
+    'leeds',
+    'bristol',
+    'portsmouth'
+  ]
+}
 
 class CourseTypeLanding extends React.Component {
   constructor(props) {
@@ -160,20 +178,28 @@ class CourseTypeLanding extends React.Component {
               <div>
                 <h2>What you'll learn</h2>
                 <h3> How to ride the bike for your licence (A1, A2, A)</h3>
-                You’ll learn to ride and pass the tests on the right bike for
-                the licence you wish to obtain. either an A1, A2 or A
-                (unrestricted) licence depending on your age and the bike you
-                take the tests on.
+                <p>
+                  You'll learn to ride and pass the tests on the right bike for
+                  the licence you wish to obtain. either an A1, A2 or A
+                  (unrestricted) licence depending on your age and the bike you
+                  take the tests on.
+                </p>
                 <h3>Module 1: Maneuvers</h3>
-                Off road riding; learning the test exercises such as riding in a
-                figure of 8, emergency stop and turn in the road.
+                <p>
+                  Off road riding; learning the test exercises such as riding in
+                  a figure of 8, emergency stop and turn in the road.
+                </p>
                 <h3> Module 2: Theory Questions</h3>
-                The ‘show me tell me’ questions an examiner might ask you about
-                bike maintenance and safety.
+                <p>
+                  The ‘show me tell me' questions an examiner might ask you
+                  about bike maintenance and safety.
+                </p>
                 <h3> Module 2: Road Riding Skills</h3>
-                Riding in a variety of road conditions under directions from the
-                examiner as well as following signs, carrying out normal stops,
-                pulling away from behind a park car and a hill start.
+                <p>
+                  Riding in a variety of road conditions under directions from
+                  the examiner as well as following signs, carrying out normal
+                  stops, pulling away from behind a park car and a hill start.
+                </p>
               </div>
               <a href="/">
                 <img
@@ -218,7 +244,33 @@ class CourseTypeLanding extends React.Component {
                   Depending on your age and the bike you train on will decide
                   what you can ride after.
                 </p>
-                <ShowMore />
+                <ShowMore>
+                  <p>
+                    At 16 years old you can get an "AM" licence to ride a
+                    motorcycle or scooter up 50cc, restricted to 28Mph
+                  </p>
+                  <p>
+                    At 17 - 18 years old you can get an "A1" licence to ride a
+                    motorcycle or scooter up 125cc
+                  </p>
+                  <p>
+                    At 19 - 23 years old you can get an "A2" licence to ride a
+                    motorcycle or scooter up 35 Kw of power
+                  </p>
+                  <p>
+                    At 24 years old and above you can get a full unrestricted
+                    "A" licence to ride a motorcycle or scooter of any power
+                  </p>
+                  <p>
+                    If you take the tests on an automatic geared scooter or
+                    motorcycle, you'll be restricted to only ride automatic
+                    bikes. Passing on a manual geared bike allows you to ride
+                    both
+                  </p>
+                </ShowMore>
+              </div>
+              <div style={{ marginTop: '2rem' }}>
+                <img src={infoGraphic} alt="Info graphic" />
               </div>
               <div>
                 <h2>Course details</h2>
@@ -233,10 +285,61 @@ class CourseTypeLanding extends React.Component {
                 </p>
                 <p>
                   Module 2 is an on-road test, similar to the car driving test.
-                  You’ll ride through a variety of road conditions under
+                  You'll ride through a variety of road conditions under
                   assessment from an examiner following on a motorcycle.
                 </p>
-                <ShowMore />
+                <ShowMore>
+                  <p>
+                    The official list of maneuvers for Module 1 is as follows:
+                  </p>
+                  <ul>
+                    <li>
+                      Wheeling the moped or motorcycle and using the stand
+                      Riding a slalom and figure of 8.
+                    </li>
+                    <li>
+                      A slow ride - being able to ride - and balance - a bike at
+                      walking speed, using clutch and brake control
+                    </li>
+                    <li>
+                      A U-turn - to ride and turn the bike around in the space
+                      of a normal road
+                    </li>
+                    <li>Cornering and a controlled stop</li>
+                    <li>Cornering and an emergency stop</li>
+                    <li>Cornering and hazard avoidance</li>
+                  </ul>
+                  <p>
+                    For Module 2 you'll be asked to ride across various local
+                    roads and within differing traffic conditions and whilst
+                    riding you'll be asked to carry out a few different
+                    maneuvers:
+                  </p>
+                  <ul>
+                    <li>A normal stop</li>
+                    <li>
+                      An angled start (pulling out safely from behind a parked
+                      vehicle)
+                    </li>
+                    <li>
+                      A hill start (where possible, not everywhere has hills!)
+                    </li>
+                  </ul>
+                  <p>
+                    The examiner will give you directions using a one-way radio
+                    worn on your ear. They'll normally follow you on a
+                    motorcycle in much the same way as your instructor will do
+                    during your training.
+                  </p>
+                  <p>
+                    The final part of module 2 is around 10 minutes of
+                    independent riding. This is designed to assess your ability
+                    to ride safely while making your own decisions so you can
+                    expect the examiner to give you a destination (or a series
+                    of turn instructions) and then they will follow behind to
+                    assess your riding.
+                  </p>
+                </ShowMore>
               </div>
               <div>
                 <h2>Frequently Asked Questions</h2>
@@ -253,7 +356,7 @@ class CourseTypeLanding extends React.Component {
               <div>
                 <h2>Popular Full Motorcycle</h2>
                 <ul className={styles.locationList}>
-                  {LOCATIONS.slice(0, 5).map(location => (
+                  {LOCATIONS['full'].slice(0, 5).map(location => (
                     <li className={styles.location} key={location}>
                       <a
                         href={`/course-location/?postcode=${location}&courseType=${
@@ -264,10 +367,10 @@ class CourseTypeLanding extends React.Component {
                     </li>
                   ))}
                 </ul>
-                {LOCATIONS.length > 5 && (
+                {LOCATIONS['full'].length > 5 && (
                   <ShowMore className={styles.showMoreLocations}>
                     <ul className={styles.locationList}>
-                      {LOCATIONS.slice(5).map(location => (
+                      {LOCATIONS['full'].slice(5).map(location => (
                         <li className={styles.location} key={location}>
                           <a
                             href={`/course-location/?postcode=${location}&courseType=${
