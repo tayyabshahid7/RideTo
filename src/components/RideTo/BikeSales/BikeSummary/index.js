@@ -28,7 +28,7 @@ function BikeSummary({ bike: { slug, images, name, price, desc, bookLink } }) {
         </a>
         <Link
           className={classnames(styles.button)}
-          to={`/bike-review/bike/${slug}/`}>
+          to={`/bike-reviews/${slug}/`}>
           Read review
         </Link>
       </div>
