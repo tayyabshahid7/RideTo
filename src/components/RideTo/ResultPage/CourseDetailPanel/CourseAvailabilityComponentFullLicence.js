@@ -116,7 +116,9 @@ class CourseAvailabilityComponentFullLicence extends Component {
           </Fragment>
         ) : (
           <Fragment>
-            <div className={styles.subtitle1}>Your Availability</div>
+            <div className={styles.subtitle1} style={{ textAlign: 'center' }}>
+              Your Availability
+            </div>
             <p
               className={classnames(
                 styles.dasInfo,
