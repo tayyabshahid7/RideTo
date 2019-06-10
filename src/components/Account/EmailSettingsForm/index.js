@@ -124,13 +124,14 @@ class EmailSettingsForm extends React.Component {
     }, {})
 
     this.state = {
-      settings: this.props.settings ? this.props.settings : {},
+      settings: this.props.settings
+        ? { ...this.props.settings, ...emailtexts }
+        : {},
       // value: html.deserialize(this.props.settings.email_text || '<p></p>'),
       value: html.deserialize('<p></p>'),
       showModal: false,
       courses,
-      activeEmail: null,
-      ...emailtexts
+      activeEmail: null
     }
 
     this.handleSave = this.handleSave.bind(this)
@@ -159,15 +160,17 @@ class EmailSettingsForm extends React.Component {
   handleSave() {
     const { onSubmit } = this.props
     const { settings, value, activeEmail } = this.state
-    console.log(activeEmail)
     onSubmit({
-      ...settings,
+      ...this.props.settings,
       [activeEmail]: html.serialize(value)
     })
     this.setState({
       showModal: false,
-      [activeEmail]: html.serialize(value),
-      activeEmail: null
+      activeEmail: null,
+      settings: {
+        ...settings,
+        [activeEmail]: value
+      }
     })
   }
 
@@ -400,40 +403,45 @@ class EmailSettingsForm extends React.Component {
             Write the copy that you wish to display in your email communication
             to customers
           </p>
-          {courses.map(course => (
-            <div key={course} className={styles.formGroup}>
-              <h4 className={styles.titleSmall}>
-                {getShortCourseType({ constant: course })} booking confirmation
-              </h4>
-              <Row>
-                <Col
-                  dangerouslySetInnerHTML={{
-                    __html: this.state.settings[
-                      `email_text_${course.toLowerCase()}`
-                    ]
-                  }}
-                />
-                <Col sm="2">
-                  <div className={styles.editButton}>
-                    <Button
-                      style={{ height: 'auto' }}
-                      color="link"
-                      onClick={() => {
-                        this.setState({
-                          showModal: !this.state.showModal,
-                          activeEmail: `email_text_${course.toLowerCase()}`,
-                          value: this.state[
-                            `email_text_${course.toLowerCase()}`
-                          ]
-                        })
-                      }}>
-                      Edit
-                    </Button>
-                  </div>
-                </Col>
-              </Row>
-            </div>
-          ))}
+          <Loading loading={saving}>
+            {courses.map(course => (
+              <div key={course} className={styles.formGroup}>
+                <h4 className={styles.titleSmall}>
+                  {getShortCourseType({ constant: course })} booking
+                  confirmation
+                </h4>
+                <Row>
+                  <Col
+                    dangerouslySetInnerHTML={{
+                      __html: html.serialize(
+                        this.state.settings[
+                          `email_text_${course.toLowerCase()}`
+                        ]
+                      )
+                    }}
+                  />
+                  <Col sm="2">
+                    <div className={styles.editButton}>
+                      <Button
+                        style={{ height: 'auto' }}
+                        color="link"
+                        onClick={() => {
+                          this.setState({
+                            showModal: !this.state.showModal,
+                            activeEmail: `email_text_${course.toLowerCase()}`,
+                            value: this.state.settings[
+                              `email_text_${course.toLowerCase()}`
+                            ]
+                          })
+                        }}>
+                        Edit
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            ))}
+          </Loading>
         </div>
         <Modal
           isOpen={this.state.showModal}
