@@ -47,8 +47,7 @@ export class Faqs extends Component {
               <h3 className={styles.faqsSectionHeading}>Speak to our team</h3>
               <div className={styles.content}>
                 Give us a call for more information and to speak to the team.
-                Our lines are open 8am-7pm Monday to Friday and 9am-4pm Saturday
-                to Sunday.
+                Our lines are open 9am-6pm Monday to Saturday.
               </div>
               <Button
                 className={styles.arrowButton}
