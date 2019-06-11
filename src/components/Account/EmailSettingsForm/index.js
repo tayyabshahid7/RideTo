@@ -8,7 +8,7 @@ import { Editor } from 'slate-react'
 import { isKeyHotkey } from 'is-hotkey'
 import Html from 'slate-html-serializer'
 import classnames from 'classnames'
-import { getShortCourseType } from 'services/course'
+import { getMediumCourseType } from 'services/course'
 
 const DEFAULT_NODE = 'paragraph'
 
@@ -407,7 +407,7 @@ class EmailSettingsForm extends React.Component {
             {courses.map(course => (
               <div key={course} className={styles.formGroup}>
                 <h4 className={styles.titleSmall}>
-                  {getShortCourseType({ constant: course })} booking
+                  {getMediumCourseType({ constant: course })} booking
                   confirmation
                 </h4>
                 <Row>
