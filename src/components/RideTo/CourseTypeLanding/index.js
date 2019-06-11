@@ -48,6 +48,7 @@ class CourseTypeLanding extends React.Component {
 
   render() {
     const { courseType, search } = this.state
+    courseType.constant = 'TFL_ONE_ON_ONE'
     const { header, body } = CONTENT[courseType.constant]
 
     return (

@@ -20,11 +20,11 @@ export const CONTENT = {
         <h1>Full Motorcycle Licence Course</h1>
         <h2>
           A multi day course of training and 2 tests to:
-          <br />
-          - Remove L plates
-          <br />
-          - Carry passengers
-          <br />- Ride on motorways
+          <ul>
+            <li>Remove L plates</li>
+            <li>Carry passengers</li>
+            <li>Ride on motorways</li>
+          </ul>
         </h2>
       </Fragment>
     ),
@@ -45,7 +45,7 @@ export const CONTENT = {
           </p>
           <h3> Module 2: Theory Questions</h3>
           <p>
-            The ‘show me tell me' questions an examiner might ask you about bike
+            The 'show me tell me' questions an examiner might ask you about bike
             maintenance and safety.
           </p>
           <h3> Module 2: Road Riding Skills</h3>
@@ -201,15 +201,13 @@ export const CONTENT = {
         <h2>
           A 1 day course designed for experienced riders to complete the CBT
           course for another time:
-          <br />
-          - Ride up to 125cc (11Kw) scooter or motorcycle
-          <br />
-          - Ride on dual carriageways
-          <br />
-          - You cannot ride on motorways or take passengers
-          <br />
-          - You must display L plates
-          <br />- Valid for another 2 years
+          <ul>
+            <li>Ride up to 125cc (11Kw) scooter or motorcycle</li>
+            <li>Ride on dual carriageways</li>
+            <li>You cannot ride on motorways or take passengers</li>
+            <li>You must display L plates</li>
+            <li>Valid for another 2 years</li>
+          </ul>
         </h2>
       </Fragment>
     ),
@@ -219,12 +217,12 @@ export const CONTENT = {
           <h2>What you'll learn</h2>
           <h3>Refresh on the basics of motorcycle controls and handling</h3>
           <p>
-            You’ll learn how a motorcycle works; the controls, maintenance and
+            You'll learn how a motorcycle works; the controls, maintenance and
             safety checks you should conduct before riding and how to move and
             park your bike.
           </p>
           <h3>
-            A review of how to safely ride and control a scooter or motorcycle{' '}
+            A review of how to safely ride and control a scooter or motorcycle
           </h3>
           <p>
             The instructor will refresh your skills on maneuvers, braking,
@@ -233,14 +231,14 @@ export const CONTENT = {
           </p>
           <h3>Road riding theory</h3>
           <p>
-            You’ll be shown diagrams and discuss the correct theory of how to
+            You'll be shown diagrams and discuss the correct theory of how to
             ride safely on the road and asked questions about what to do.
           </p>
           <h3>Practical road riding</h3>
           <p>
-            You’ll spend at least 2 hours riding on a variety of roads with your
+            You'll spend at least 2 hours riding on a variety of roads with your
             instructor, who will give directions through a radio earpiece and
-            teach you how to change any ‘bad habits’.
+            teach you how to change any 'bad habits'.
           </p>
         </div>
         <div>
@@ -297,8 +295,8 @@ export const CONTENT = {
         <div>
           <h2>Course details</h2>
           <p>
-            CBT renewals aren’t technically a different course to the CBT but
-            are often referred to as a ‘renewal’. The CBT renewal course is the
+            CBT renewals aren't technically a different course to the CBT but
+            are often referred to as a 'renewal'. The CBT renewal course is the
             full CBT training course, usually taken at a slightly quicker pace
             if riders can show they are confident with each element of the CBT.
             All 5 elements must still be completed
@@ -320,19 +318,19 @@ export const CONTENT = {
               A basic demonstration of how a motorcycle works; the controls,
               maintenance and safety checks and how to move and park your bike.
               You will be shown how everything on a bike works then given the
-              chance to try it yourself to make sure you’re comfortable.
+              chance to try it yourself to make sure you're comfortable.
             </p>
             <h3>On-Site Riding </h3>
             <p>
               The instructor will teach you maneuvers, braking, observations,
-              clutch control and gear changing (on a manual motorcycle). You’ll
+              clutch control and gear changing (on a manual motorcycle). You'll
               spend a lot of time riding around cones, practicing different road
               riding scenarios and techniques.
             </p>
             <h3>On-Road Training </h3>
             <p>
               Road riding theory, covering the highway code and best practice
-              for riding safely on the road. You’ll be shown diagrams of how to
+              for riding safely on the road. You'll be shown diagrams of how to
               ride safely on the road in different scenarios and asked questions
               about what to do.
             </p>
@@ -352,7 +350,7 @@ export const CONTENT = {
         <div>
           <h2>Cancellation policy</h2>
           <p>
-            You won’t be charged anything until your booking is confirmed. Once
+            You won't be charged anything until your booking is confirmed. Once
             the booking is confirmed, we can cancel or refund you in full as
             long as you give us at least 3 working days notice before your
             training.
@@ -368,15 +366,13 @@ export const CONTENT = {
         <h2>
           A 1 day course designed for experienced riders to complete the CBT
           course for another time:
-          <br />
-          - Ride up to 125cc (11Kw) scooter or motorcycle
-          <br />
-          - Ride on dual carriageways
-          <br />
-          - You cannot ride on motorways or take passengers
-          <br />
-          - You must display L plates
-          <br />- Valid for 2 years
+          <ul>
+            <li>Ride up to 125cc (11Kw) scooter or motorcycle</li>
+            <li>Ride on dual carriageways</li>
+            <li>You cannot ride on motorways or take passengers</li>
+            <li>You must display L plates</li>
+            <li>Valid for 2 years</li>
+          </ul>
         </h2>
       </Fragment>
     ),
@@ -386,7 +382,7 @@ export const CONTENT = {
           <h2>What you'll learn</h2>
           <h3>The basics of motorcycle controls and handling</h3>
           <p>
-            You’ll learn how a motorcycle works; the controls, maintenance and
+            You'll learn how a motorcycle works; the controls, maintenance and
             safety checks you should conduct before riding and how to move and
             park your bike.
           </p>
@@ -395,18 +391,18 @@ export const CONTENT = {
           </h3>
           <p>
             The instructor will teach you maneuvers, braking, observations,
-            clutch control and gear changing (on a manual motorcycle). You’ll
+            clutch control and gear changing (on a manual motorcycle). You'll
             spend a lot of time riding around cones, practicing different road
             riding scenarios and techniques.
           </p>
           <h3>Road riding theory</h3>
           <p>
-            You’ll be shown diagrams and discuss the correct theory of how to
+            You'll be shown diagrams and discuss the correct theory of how to
             ride safely on the road and asked questions about what to do.
           </p>
           <h3>Practical road riding</h3>
           <p>
-            You’ll spend at least 2 hours riding on a variety of roads with your
+            You'll spend at least 2 hours riding on a variety of roads with your
             instructor, who will give directions through a radio earpiece.
           </p>
         </div>
@@ -486,19 +482,19 @@ export const CONTENT = {
               A basic demonstration of how a motorcycle works; the controls,
               maintenance and safety checks and how to move and park your bike.
               You will be shown how everything on a bike works then given the
-              chance to try it yourself to make sure you’re comfortable.
+              chance to try it yourself to make sure you're comfortable.
             </p>
             <h3>On-Site Riding </h3>
             <p>
               The instructor will teach you maneuvers, braking, observations,
-              clutch control and gear changing (on a manual motorcycle). You’ll
+              clutch control and gear changing (on a manual motorcycle). You'll
               spend a lot of time riding around cones, practicing different road
               riding scenarios and techniques.
             </p>
             <h3>On-Road Training </h3>
             <p>
               Road riding theory, covering the highway code and best practice
-              for riding safely on the road. You’ll be shown diagrams of how to
+              for riding safely on the road. You'll be shown diagrams of how to
               ride safely on the road in different scenarios and asked questions
               about what to do.
             </p>
@@ -518,7 +514,234 @@ export const CONTENT = {
         <div>
           <h2>Cancellation policy</h2>
           <p>
-            You won’t be charged anything until your booking is confirmed. Once
+            You won't be charged anything until your booking is confirmed. Once
+            the booking is confirmed, we can cancel or refund you in full as
+            long as you give us at least 3 working days notice before your
+            training.
+          </p>
+        </div>
+      </Fragment>
+    )
+  },
+  TFL_ONE_ON_ONE: {
+    header: courseType => (
+      <Fragment>
+        <h1>Free 1-2-1 Motorcycle Skills Course</h1>
+        <h2>
+          A 2 hour 1-2-1 session available to anyone who lives, works or studies
+          in London:
+          <ul>
+            <li>Ride a route of your choice with an instructor</li>
+            <li>Develop further riding skills to stay safe riding in London</li>
+            <li>You cannot ride on motorways or take passengers</li>
+            <li>
+              You'll need to have your own road legal bike and a valid CBT
+            </li>
+            certificate
+          </ul>
+        </h2>
+      </Fragment>
+    ),
+    body: courseType => (
+      <Fragment>
+        <div>
+          <h2>What you'll learn</h2>
+          <h3>Improved city riding skills</h3>
+          <p>
+            Learn to ride safely on urban roads, including how to filter,
+            overtake and ride in bus lanes on a route of your choosing
+          </p>
+          <h3>Hazard perception</h3>
+          <p>
+            Improve hazard perception and defensive riding skills as a
+            motorcyclist in the city
+          </p>
+          <h3>Road riding theory</h3>
+          <p>
+            You'll be shown diagrams and discuss the correct theory of how to
+            ride safely on the road and asked questions about what to do.
+          </p>
+          <h3>Speed control and awareness</h3>
+          <p>
+            Better understand the need to ride at speeds appropriate to the road
+            conditions
+          </p>
+        </div>
+        <div>
+          <h2>Requirements</h2>
+          <p>
+            In order to take the free 1-2-1 motorcycle skills course you must
+            meet the following requirements:
+          </p>
+          <ul>
+            <li>Live, work or study in any of the 33 London Boroughs</li>
+            <li>
+              Have a valid CBT certificate and road legal scooter or motorcycle
+              to train on
+            </li>
+            <li>
+              Wear suitable clothing including thick trousers (such as jeans)
+              and leather boots
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2>What you can ride after</h2>
+          <p>
+            At the end of the session, the instructor will provide both verbal
+            and written feedback on your riding and how you can continue to
+            improve. A certificate of completion will be issued on Behalf of
+            Transport for London by the Instructor. The course is not a licence
+            and does not change your entitlement to what you can ride on the
+            road.
+          </p>
+        </div>
+        <div>
+          <h2>Course details</h2>
+          <p>
+            The instructor comes to you such as your home or workplace. 1-2-1
+            Motorcycle Skills training sessions are Client-led, they are based
+            on what you want to learn, and the routes you want to ride. You will
+            be encouraged to select the route you use most often, or which you
+            find most challenging.
+          </p>
+          <ShowMore>
+            <p>
+              The assessment ride will consist in the instructor following you
+              and analysing your riding skills on a public road, including the
+              following core areas:
+            </p>
+            <ul>
+              <li>Normal road positioning</li>
+              <li>Separation distance</li>
+              <li>Appropriate use of speed</li>
+              <li>Use of observations</li>
+              <li>Use of mirrors</li>
+              <li>Road attitude</li>
+              <li>Junction approach procedures</li>
+              <li>Roundabout procedures (mini, standard, multi-lane, etc.)</li>
+              <li>Reaction to other road users</li>
+              <li>Progress / hesitancy</li>
+              <li>Corners / bends</li>
+              <li>Motorways / dual carriageways (if available/allowed)</li>
+            </ul>
+            <p>
+              The instructor will provide feedback to the rider as it progresses
+              via radio/stops, using video and other training aids where
+              relevant.
+            </p>
+          </ShowMore>
+        </div>
+        <div>
+          <h2>Cancellation policy</h2>
+          <p>
+            Once your booking is confirmed, we can cancel the course as long as
+            you give us at least 3 working days notice before your training.
+          </p>
+        </div>
+      </Fragment>
+    )
+  },
+  INTRO_TO_MOTORCYCLING: {
+    header: courseType => (
+      <Fragment>
+        <h1>Introduction to motorcycling Course</h1>
+        <h2>
+          A 2 hour introduction course, to give new riders experience before the
+          CBT:
+          <ul>
+            <li>
+              Focus on the core skills and controls of riding a motorcycle
+            </li>
+            <li>
+              Experience the fun and freedom before committing to the CBT course
+            </li>
+            <li>Learn the basics of clutch and gear controls</li>
+            <li>Not a valid licence to ride on the road</li>
+          </ul>
+        </h2>
+      </Fragment>
+    ),
+    body: courseType => (
+      <Fragment>
+        <div>
+          <h2>What you'll learn</h2>
+          <h3>Introduction to basics of motorcycle controls and handling</h3>
+          <p>
+            You'll learn how a motorcycle works; the controls, maintenance and
+            safety checks you should conduct before riding including how to move
+            and park your bike.
+          </p>
+          <h3>How to safely ride and control a scooter or motorcycle</h3>
+          <p>
+            The instructor will start from scratch and teach you the core skills
+            of how to stop, start, turn and brake. You'll also learn the basic
+            observations you should make and spend time learning clutch control
+            and gear changing (on a manual motorcycle).
+          </p>
+        </div>
+        <div>
+          <h2>Requirements</h2>
+          <p>
+            In order to take the Introduction to motorcycling course, you must
+            meet the following requirements:
+          </p>
+          <ul>
+            <li>
+              Have the correct licence card: UK driving, UK provisional or EU
+              licence with UK counterpart licence number. Photocopies or images
+              are not accepted.
+            </li>
+            <li>Be able to read a registration plate from 20.5 meters</li>
+            <li>Speak and understand English and the Highway code</li>
+            <li>Be able to ride an adult sized bicycle</li>
+            <li>
+              Wear suitable clothing including thick trousers (such as jeans)
+              and leather boots
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2>What you can ride after</h2>
+          <p>
+            The introduction to motorcycling course is not a valid licence, so
+            you are not legally entitled to ride a motorcycle on the road after
+            the course. The next step is to complete the CBT course to be able
+            to ride on the road.
+          </p>
+        </div>
+        <div>
+          <h2>Course details</h2>
+          <p>
+            The introduction motorcycle lesson follows the same format as the
+            beginning of the CBT. Introducing you to the most basic skills and
+            techniques you will need to ride a motorcycle and progress on to the
+            CBT.
+          </p>
+          <p>
+            This includes the controls of the motorcycle, how to sit and balance
+            yourself on a motorcycle, how to put the motorcycle on its stand and
+            take it off again too, clutch control and gear selection and how to
+            ride and turn the motorcycle.
+          </p>
+          <p>
+            It's a relaxed and introductory session designed to give you a
+            taster of what riding on two wheels is like.
+          </p>
+          <p>
+            The course is ideal for anyone looking to practice riding ahead of
+            taking the CBT, especially for new riders planning to ride a geared
+            motorcycle with no previous experience.
+          </p>
+        </div>
+        <div>
+          <h2>Frequently Asked Questions</h2>
+          <CourseTypeDetails courseType={courseType} minimal />
+        </div>
+        <div>
+          <h2>Cancellation policy</h2>
+          <p>
+            You won't be charged anything until your booking is confirmed. Once
             the booking is confirmed, we can cancel or refund you in full as
             long as you give us at least 3 working days notice before your
             training.
@@ -565,6 +788,17 @@ export const LOCATIONS = {
     'portsmouth',
     'brighton',
     'cardiff'
+  ],
+  TFL_ONE_ON_ONE: ['london'],
+  INTRO_TO_MOTORCYCLING: [
+    'london',
+    'bristol',
+    'birmingham',
+    'manchester',
+    'glasgow',
+    'southampton',
+    'bournemouth',
+    'portsmouth'
   ]
 }
 

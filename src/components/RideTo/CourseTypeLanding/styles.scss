@@ -45,6 +45,20 @@
     @media (min-width: 768px) {
       margin-bottom: 1.5rem;
     }
+
+    ul {
+      margin-top: 0.75rem;
+      padding-left: 0;
+      list-style: none;
+
+      li + li {
+        margin-top: 0.25rem;
+      }
+
+      li::before {
+        content: '- ';
+      }
+    }
   }
 
   @media (min-width: 768px) {
