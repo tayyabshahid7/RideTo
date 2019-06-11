@@ -362,10 +362,10 @@ export const CONTENT = {
   LICENCE_CBT: {
     header: courseType => (
       <Fragment>
-        <h1>CBT Renewal Course</h1>
+        <h1>CBT Course</h1>
         <h2>
-          A 1 day course designed for experienced riders to complete the CBT
-          course for another time:
+          A 1 day course designed to prepare new riders to ride up to a 125cc
+          motorcycle or scooter. :
           <ul>
             <li>Ride up to 125cc (11Kw) scooter or motorcycle</li>
             <li>Ride on dual carriageways</li>
