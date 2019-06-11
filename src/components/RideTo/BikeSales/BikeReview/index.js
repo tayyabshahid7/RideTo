@@ -57,7 +57,6 @@ class BikeReview extends Component {
     } = bikes.find(bike => bike.slug === match.params.slug)
     const insuranceLink = 'https://www.lexhaminsurance.co.uk/?aff=LEX6327'
     const trainingLink = `/${Object.keys(SLUG_COURSE_TYPES).find(key => {
-      console.log(SLUG_COURSE_TYPES[key], requiredLicence)
       return SLUG_COURSE_TYPES[key] === requiredLicence
     })}`
     const licenceText = `${getShortCourseType({
