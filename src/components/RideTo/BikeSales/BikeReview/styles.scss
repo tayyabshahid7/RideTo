@@ -53,6 +53,12 @@
   }
 }
 
+.rightPanel {
+  @media (min-width: 1000px) {
+    width: 41%;
+  }
+}
+
 .keyInfo {
   display: flex;
   flex-direction: column;
@@ -61,7 +67,7 @@
   background-color: #fff;
 
   @media (min-width: 1000px) {
-    width: 41%;
+    // width: 41%;
     font-size: 20px;
 
     position: sticky;
@@ -97,7 +103,8 @@
 }
 
 .score {
-  width: 116px;
+  // width: 116px;
+  width: 126px;
   flex-shrink: 0;
   font-size: 20px;
   font-weight: bold;

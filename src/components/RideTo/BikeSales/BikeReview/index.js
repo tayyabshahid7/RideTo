@@ -93,54 +93,56 @@ class BikeReview extends Component {
                 ))}
               </ul>
             </div>
-            <div className={styles.keyInfo}>
-              <div className={styles.keyInfoHeader}>
-                <div>
-                  <h1 className={styles.title}>{name}</h1>
-                  <div className={styles.price}>
-                    RRP £{(price / 100).toLocaleString()}
+            <div className={styles.rightPanel}>
+              <div className={styles.keyInfo}>
+                <div className={styles.keyInfoHeader}>
+                  <div>
+                    <h1 className={styles.title}>{name}</h1>
+                    <div className={styles.price}>
+                      RRP £{(price / 100).toLocaleString()}
+                    </div>
+                  </div>
+                  <div className={styles.score}>
+                    <div>RideTo Score</div>
+                    <div className={styles.circle}>
+                      <span className={styles.scoreNum}>
+                        {Math.round(score) / 10}/10
+                      </span>
+                      <Circle
+                        progress={score}
+                        roundedStrike={true}
+                        progressColor="green"
+                        animate={false}
+                        responsive={true}
+                        showPercentage={false}
+                      />
+                    </div>
                   </div>
                 </div>
-                <div className={styles.score}>
-                  <div>RideTo Score</div>
-                  <div className={styles.circle}>
-                    <span className={styles.scoreNum}>
-                      {Math.round(score) / 10}/10
-                    </span>
-                    <Circle
-                      progress={score}
-                      roundedStrike={true}
-                      progressColor="green"
-                      animate={false}
-                      responsive={true}
-                      showPercentage={false}
-                    />
-                  </div>
+                <div className={styles.infoRow}>
+                  {engine} - {bhp} bhp
                 </div>
+                <div className={styles.infoRow}>
+                  {mpg} MPG - {range} miles range
+                </div>
+                <div className={styles.infoRow}>
+                  {licenceText}
+                  <a href={trainingLink}>Book Course</a>
+                </div>
+                <div className={styles.infoRow} style={{ flexGrow: '1' }}>
+                  Insurance group: {insuranceGroup}{' '}
+                  <a href={insuranceLink}>Get Quote</a>
+                </div>
+                <a
+                  className={classnames(
+                    styles.button,
+                    styles.buttonPrimary,
+                    styles.buttonReview
+                  )}
+                  href={bookLink}>
+                  Book test ride
+                </a>
               </div>
-              <div className={styles.infoRow}>
-                {engine} - {bhp} bhp
-              </div>
-              <div className={styles.infoRow}>
-                {mpg} MPG - {range} miles range
-              </div>
-              <div className={styles.infoRow}>
-                {licenceText}
-                <a href={trainingLink}>Book Course</a>
-              </div>
-              <div className={styles.infoRow} style={{ flexGrow: '1' }}>
-                Insurance group: {insuranceGroup}{' '}
-                <a href={insuranceLink}>Get Quote</a>
-              </div>
-              <a
-                className={classnames(
-                  styles.button,
-                  styles.buttonPrimary,
-                  styles.buttonReview
-                )}
-                href={bookLink}>
-                Book test ride
-              </a>
             </div>
           </div>
           <div className={styles.main}>
