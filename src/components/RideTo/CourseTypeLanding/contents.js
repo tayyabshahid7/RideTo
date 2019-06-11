@@ -8,7 +8,7 @@ import ShowMore from './ShowMore'
 export const SLUG_COURSE_TYPES = {
   'introduction-to-motorcycling': 'INTRO_TO_MOTORCYCLING',
   'cbt-training': 'LICENCE_CBT',
-  'cbt-renewal': 'LICENCE_CBT_RENEWAL',
+  'cbt-training-renewal': 'LICENCE_CBT_RENEWAL',
   'motorcycle-licence': 'FULL_LICENCE',
   '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
 }
