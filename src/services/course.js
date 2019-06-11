@@ -233,6 +233,35 @@ export const getShortCourseType = courseType => {
   }
 }
 
+export const getMediumCourseType = courseType => {
+  switch (courseType.constant) {
+    case 'LICENCE_CBT':
+      return 'CBT'
+    case 'LICENCE_CBT_RENEWAL':
+      return 'CBT renewal'
+    case 'INTRO_TO_MOTORCYCLING':
+      return 'ITM'
+    case 'FULL_LICENCE':
+      return 'Full licence'
+    case 'FULL_LICENCE_MOD1_TRAINING':
+      return 'Module 1 Training'
+    case 'FULL_LICENCE_MOD1_TEST':
+      return 'Module 1 Test'
+    case 'FULL_LICENCE_MOD2_TRAINING':
+      return 'Module 2 Training'
+    case 'FULL_LICENCE_MOD2_TEST':
+      return 'Module 2 Test'
+    case 'ENHANCED_RIDER_SCHEME':
+      return 'Enhanced Rider Scheme'
+    case 'BIKE_HIRE':
+      return 'Bike Hire'
+    case 'TFL_ONE_ON_ONE':
+      return 'TFL'
+    default:
+      return 'CBT'
+  }
+}
+
 export const getCourseTitle = courseTypeConstant => {
   switch (courseTypeConstant) {
     case 'LICENCE_CBT':
