@@ -55,7 +55,10 @@
 
 .rightPanel {
   @media (min-width: 1000px) {
+    position: absolute;
+    right: 24px;
     width: 41%;
+    height: calc(100% - 85px);
   }
 }
 
@@ -66,12 +69,16 @@
   font-size: 18px;
   background-color: #fff;
 
+  @media (max-width: 999px) {
+    position: static !important;
+    width: auto !important;
+  }
+
   @media (min-width: 1000px) {
-    // width: 41%;
     font-size: 20px;
 
     position: sticky;
-    top: 22px;
+    min-height: 407px;
   }
 }
 

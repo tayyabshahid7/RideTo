@@ -6,6 +6,7 @@ import componentStyles from './styles.scss'
 import Circle from 'react-circle'
 import { getShortCourseType } from 'services/course'
 import { SLUG_COURSE_TYPES } from 'common/constants'
+import stickybits from 'stickybits'
 
 const styles = {
   ...containerStyles,
@@ -18,16 +19,61 @@ class BikeReview extends Component {
     super(props)
 
     this.state = {
-      currentImage: 0
+      currentImage: 0,
+      stuckSet: false
     }
 
     this.handleImageButtonClick = this.handleImageButtonClick.bind(this)
+    this.handleResize = this.handleResize.bind(this)
+    this.init = this.init.bind(this)
+
+    this.keyInfo = React.createRef()
+    this.rightPanel = React.createRef()
   }
 
   handleImageButtonClick(index) {
     this.setState({
       currentImage: index
     })
+  }
+
+  handleResize() {
+    this.keyInfo.current.style.width = `${
+      this.rightPanel.current.offsetWidth
+    }px`
+  }
+
+  init() {
+    if (
+      !this.state.stuckSet &&
+      this.keyInfo.current &&
+      this.rightPanel.current
+    ) {
+      this.handleResize()
+
+      window.addEventListener('resize', this.handleResize)
+
+      this.stickybits = stickybits(this.keyInfo.current, {
+        useFixed: true,
+        stickyBitStickyOffset: 22
+      })
+
+      this.setState({
+        stuckSet: true
+      })
+    }
+  }
+
+  componentDidMount() {
+    this.init()
+  }
+
+  componentDidUpdate() {
+    this.init()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize)
   }
 
   render() {
@@ -65,7 +111,7 @@ class BikeReview extends Component {
 
     return (
       <div className={styles.page}>
-        <div className={styles.container}>
+        <div className={styles.container} style={{ position: 'relative' }}>
           <div className={styles.header}>
             <div className={styles.largeImage}>
               <img
@@ -92,8 +138,8 @@ class BikeReview extends Component {
                 ))}
               </ul>
             </div>
-            <div className={styles.rightPanel}>
-              <div className={styles.keyInfo}>
+            <div ref={this.rightPanel} className={styles.rightPanel}>
+              <div ref={this.keyInfo} className={styles.keyInfo}>
                 <div className={styles.keyInfoHeader}>
                   <div>
                     <h1 className={styles.title}>{name}</h1>
