@@ -8,17 +8,19 @@ function BikeSummary({ bike: { slug, images, name, price, desc, bookLink } }) {
 
   return (
     <div className={styles.bikeSummary}>
-      <img
-        className={styles.image}
-        src={image}
-        alt="Bike"
-        width="317"
-        height="172"
-      />
+      <Link to={`/bike-reviews/${slug}/`}>
+        <img
+          className={styles.image}
+          src={image}
+          alt="Bike"
+          width="317"
+          height="172"
+        />
+      </Link>
       <div className={styles.info}>
         <div className={styles.header}>
           <span>{name}</span>
-          <span>RRP £{price / 100}</span>
+          <span>RRP £{(price / 100).toLocaleString()}</span>
         </div>
         <div className={styles.description}>{desc}</div>
         <a
