@@ -6,7 +6,6 @@ import fastTrack from 'assets/images/fast-track.png'
 import ShowMore from './ShowMore'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { getStaticData } from 'services/page'
-import fullLicenceBookImage from 'assets/images/FullLicenceTypeImage.jpg'
 import infoGraphic from 'assets/images/infographic-website@2x.png'
 
 const SLUG_COURSE_TYPES = {
@@ -14,8 +13,7 @@ const SLUG_COURSE_TYPES = {
   'cbt-training': 'LICENCE_CBT',
   'blog/cbt-renewal': 'LICENCE_CBT_RENEWAL',
   'motorcycle-licence': 'FULL_LICENCE',
-  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE',
-  'full-licence-info': 'FULL_LICENCE' // dev only
+  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
 }
 
 const LOCATIONS = {
@@ -127,7 +125,7 @@ class CourseTypeLanding extends React.Component {
                   </div>
                 </div>
                 <div className={styles.bookInfo}>
-                  <img src={fullLicenceBookImage} alt="Placeholder" />
+                  <img src={courseType.details.image} alt="Placeholder" />
                   <div className={styles.bookInfoText}>
                     <h4>Book a local instructor</h4>
                     <form
