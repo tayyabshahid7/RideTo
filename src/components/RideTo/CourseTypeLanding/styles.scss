@@ -31,12 +31,38 @@
     font-size: 40px;
     font-family: var(--font-rift);
     margin-bottom: 1rem;
+
+    @media (min-width: 768px) {
+      margin-bottom: 1.25rem;
+    }
   }
 
   h2 {
     font-size: 18px;
     font-weight: normal;
     line-height: 24px;
+
+    @media (min-width: 768px) {
+      margin-bottom: 1.5rem;
+    }
+
+    ul {
+      margin-top: 0.75rem;
+      padding-left: 0;
+      list-style: none;
+
+      li + li {
+        margin-top: 0.25rem;
+      }
+
+      li::before {
+        content: '- ';
+      }
+    }
+  }
+
+  @media (min-width: 768px) {
+    padding-bottom: 0.25rem;
   }
 }
 
@@ -57,7 +83,7 @@
 .proof {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 0.25rem;
+  margin-top: 1.25rem;
 }
 
 .headerTrust {
