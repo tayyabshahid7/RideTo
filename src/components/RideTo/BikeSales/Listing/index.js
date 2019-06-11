@@ -237,7 +237,7 @@ class BikeSalesListing extends Component {
         <div className={styles.header}>
           <div className={styles.container}>
             <div>
-              <h1>RideTo Bikes</h1>
+              <h1 className={styles.headerTitle}>RideTo Bikes</h1>
               <h2>Let's find you the perfect ride.</h2>
             </div>
             <div className={styles.filterButtons}>

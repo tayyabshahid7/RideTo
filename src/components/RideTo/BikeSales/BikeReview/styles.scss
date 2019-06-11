@@ -53,19 +53,32 @@
   }
 }
 
+.rightPanel {
+  @media (min-width: 1000px) {
+    position: absolute;
+    right: 24px;
+    width: 41%;
+    height: calc(100% - 85px);
+  }
+}
+
 .keyInfo {
   display: flex;
   flex-direction: column;
   padding: 22px;
   font-size: 18px;
+  background-color: #fff;
+
+  @media (max-width: 999px) {
+    position: static !important;
+    width: auto !important;
+  }
 
   @media (min-width: 1000px) {
     font-size: 20px;
-  }
-  background-color: #fff;
 
-  @media (min-width: 1000px) {
-    width: 41%;
+    position: sticky;
+    min-height: 407px;
   }
 }
 
@@ -97,7 +110,8 @@
 }
 
 .score {
-  width: 116px;
+  // width: 116px;
+  width: 126px;
   flex-shrink: 0;
   font-size: 20px;
   font-weight: bold;
