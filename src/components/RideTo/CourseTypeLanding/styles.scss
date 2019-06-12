@@ -22,6 +22,21 @@
   }
 }
 
+.background {
+  position: absolute;
+  top: 56px;
+  width: 100%;
+  content: '';
+  display: block;
+  background-color: #eeeeef;
+  height: 0;
+  z-index: -1;
+
+  @media (min-width: 801px) {
+    top: 80px;
+  }
+}
+
 .header {
   background-color: #eeeeef;
   padding-top: 2.5rem;
@@ -60,15 +75,11 @@
       }
     }
   }
-
-  @media (min-width: 768px) {
-    padding-bottom: 0.25rem;
-  }
 }
 
 .headerInner {
   @media (min-width: 768px) {
-    position: relative;
+    // position: relative;
     display: flex;
     justify-content: space-between;
   }
@@ -90,18 +101,28 @@
   margin-right: 0.5rem;
 }
 
+.bookInfoWrap {
+  @media (min-width: 768px) {
+    position: absolute;
+    // top: -2rem;
+    top: 1rem;
+    right: 24px;
+    width: calc(41% - 24px);
+    margin-top: 0;
+    height: 100%;
+  }
+}
+
 .bookInfo {
+  width: 100%;
   background-color: #fff;
   padding: 0.5rem;
   margin-top: 2rem;
   border: 1px solid #eeeeef;
 
   @media (min-width: 768px) {
-    position: absolute;
+    position: sticky;
     top: 0;
-    right: 0;
-    width: 41%;
-    margin-top: 0;
   }
 
   img {
