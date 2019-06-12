@@ -92,7 +92,8 @@ class PaymentContainer extends React.Component {
       let response = await getPrice({
         supplierId: training.supplier_id,
         course_type: training.course_type,
-        hours: training.package_hours
+        hours: training.package_hours,
+        full_licence_course_id: training.school_course_id
       })
 
       totalPrice = response.price
