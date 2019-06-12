@@ -19,7 +19,8 @@ export const CONTENT = {
       <Fragment>
         <h1>Full Motorcycle Licence Course</h1>
         <h2>
-          A multi day course of training and 2 tests to:
+          A multi day course of training and 2 tests to get a full motorcycle
+          licence
           <ul>
             <li>Remove L plates</li>
             <li>Carry passengers</li>
@@ -52,7 +53,7 @@ export const CONTENT = {
           <p>
             Riding in a variety of road conditions under directions from the
             examiner as well as following signs, carrying out normal stops,
-            pulling away from behind a park car and a hill start.
+            pulling away from behind a parked car and a hill start.
           </p>
         </div>
         <a href="/">
@@ -125,8 +126,8 @@ export const CONTENT = {
             for the two motorcycle tests, known as module 1 and module 2.
           </p>
           <p>
-            Module 1 is an off-road test to assess your handling and and control
-            of the bike.
+            Module 1 is an off-road test to assess your handling and control of
+            the bike.
           </p>
           <p>
             Module 2 is an on-road test, similar to the car driving test. You'll
@@ -136,13 +137,11 @@ export const CONTENT = {
           <ShowMore>
             <p>The official list of maneuvers for Module 1 is as follows:</p>
             <ul>
+              <li>Wheeling the moped or motorcycle and using the stand</li>
+              <li>Riding a slalom and figure of 8</li>
               <li>
-                Wheeling the moped or motorcycle and using the stand Riding a
-                slalom and figure of 8.
-              </li>
-              <li>
-                A slow ride - being able to ride - and balance - a bike at
-                walking speed, using clutch and brake control
+                A slow ride - being able to ride and balance a bike at walking
+                speed, using clutch and brake control
               </li>
               <li>
                 A U-turn - to ride and turn the bike around in the space of a
@@ -200,7 +199,7 @@ export const CONTENT = {
         <h1>CBT Renewal Course</h1>
         <h2>
           A 1 day course designed for experienced riders to complete the CBT
-          course for another time:
+          course for another time
           <ul>
             <li>Ride up to 125cc (11Kw) scooter or motorcycle</li>
             <li>Ride on dual carriageways</li>
@@ -311,7 +310,7 @@ export const CONTENT = {
             <p>
               Welcome and brief to what to expect during the course, as well as
               an eyesight test to check you can read a registration plate at a
-              distance of 20.5 meters. You may wear glasses is you use them.
+              distance of 20.5 meters. You may wear glasses if you use them.
             </p>
             <h3>On-Site Training </h3>
             <p>
@@ -365,7 +364,7 @@ export const CONTENT = {
         <h1>CBT Course</h1>
         <h2>
           A 1 day course designed to prepare new riders to ride up to a 125cc
-          motorcycle or scooter. :
+          motorcycle or scooter
           <ul>
             <li>Ride up to 125cc (11Kw) scooter or motorcycle</li>
             <li>Ride on dual carriageways</li>
@@ -409,7 +408,7 @@ export const CONTENT = {
         <div>
           <h2>Requirements</h2>
           <p>
-            In order to take the CBT Renewal training course, you must meet the
+            In order to take the CBT training course, you must meet the
             following requirements:
           </p>
           <ul>
@@ -475,7 +474,7 @@ export const CONTENT = {
             <p>
               Welcome and brief to what to expect during the course, as well as
               an eyesight test to check you can read a registration plate at a
-              distance of 20.5 meters. You may wear glasses is you use them.
+              distance of 20.5 meters. You may wear glasses if you use them.
             </p>
             <h3>On-Site Training </h3>
             <p>
@@ -529,7 +528,7 @@ export const CONTENT = {
         <h1>Free 1-2-1 Motorcycle Skills Course</h1>
         <h2>
           A 2 hour 1-2-1 session available to anyone who lives, works or studies
-          in London:
+          in London
           <ul>
             <li>Ride a route of your choice with an instructor</li>
             <li>Develop further riding skills to stay safe riding in London</li>
@@ -559,7 +558,7 @@ export const CONTENT = {
           <h3>Road riding theory</h3>
           <p>
             You'll be shown diagrams and discuss the correct theory of how to
-            ride safely on the road and asked questions about what to do.
+            ride safely on the road and asked questions about what to do
           </p>
           <h3>Speed control and awareness</h3>
           <p>
@@ -648,7 +647,7 @@ export const CONTENT = {
         <h1>Introduction to motorcycling Course</h1>
         <h2>
           A 2 hour introduction course, to give new riders experience before the
-          CBT:
+          CBT
           <ul>
             <li>
               Focus on the core skills and controls of riding a motorcycle

@@ -60,11 +60,16 @@ class CourseTypeLanding extends React.Component {
   handleSubmit(event) {
     const { courseType, search } = this.state
 
+    event.preventDefault()
+
+    if (courseType.constant === 'TFL_ONE_ON_ONE') {
+      window.location = 'https://rideto.typeform.com/to/axybpw'
+      return
+    }
+
     window.location = `/course-location/?postcode=${search}&courseType=${
       courseType.constant
     }`
-
-    event.preventDefault()
   }
 
   render() {
@@ -105,7 +110,18 @@ class CourseTypeLanding extends React.Component {
                           Trustpilot
                         </a>
                       </div>
-                      <span>10,500 courses sold</span>
+                      {courseType.constant !== 'TFL_ONE_ON_ONE' && (
+                        <span>
+                          {courseType.constant === 'FULL_LICENCE'
+                            ? '500'
+                            : courseType.constant === 'LICENCE_CBT_RENEWAL'
+                            ? '4,500'
+                            : courseType.constant === 'INTRO_TO_MOTORCYCLING'
+                            ? '2,500'
+                            : '10,500'}{' '}
+                          courses sold
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className={styles.bookInfoWrap}>
@@ -192,7 +208,8 @@ class CourseTypeLanding extends React.Component {
                 {body(courseType)}
                 <div>
                   <h2>
-                    Popular {getCourseTitle(courseType.constant)} Locations
+                    {courseType.constant !== 'TFL_ONE_ON_ONE' && 'Popular'}{' '}
+                    {getCourseTitle(courseType.constant)} Locations
                   </h2>
                   <ul className={styles.locationList}>
                     {getLocations(courseType)
@@ -200,9 +217,13 @@ class CourseTypeLanding extends React.Component {
                       .map(location => (
                         <li className={styles.location} key={location}>
                           <a
-                            href={`/course-location/?postcode=${location}&courseType=${
-                              courseType.constant
-                            }`}>
+                            href={
+                              courseType.constant !== 'TFL_ONE_ON_ONE'
+                                ? `/course-location/?postcode=${location}&courseType=${
+                                    courseType.constant
+                                  }`
+                                : 'https://rideto.typeform.com/to/axybpw'
+                            }>
                             {location}
                           </a>
                         </li>
