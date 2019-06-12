@@ -20,6 +20,20 @@
   font-size: 18px;
   font-family: var(--font-proxima-bold);
   font-weight: bold;
+  padding-top: 5px;
+}
+
+.price {
+  position: relative;
+}
+
+.rrp {
+  position: absolute;
+  font-size: 13px;
+  top: -13px;
+  left: 0;
+  font-family: var(--font-proxima);
+  opacity: 0.8;
 }
 
 .description {
