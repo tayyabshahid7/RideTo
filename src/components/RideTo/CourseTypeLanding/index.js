@@ -6,6 +6,7 @@ import ShowMore from './ShowMore'
 import { getStaticData } from 'services/page'
 import { SLUG_COURSE_TYPES, getLocations, CONTENT } from './contents'
 import { getCourseTitle } from 'services/course'
+import { Helmet } from 'react-helmet'
 
 class CourseTypeLanding extends React.Component {
   constructor(props) {
@@ -72,6 +73,9 @@ class CourseTypeLanding extends React.Component {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>RideTo | {getCourseTitle(courseType.constant)}</title>
+        </Helmet>
         <div ref={this.background} className={styles.background} />
         <div>
           <section
