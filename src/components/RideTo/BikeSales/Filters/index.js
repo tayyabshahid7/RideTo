@@ -10,6 +10,7 @@ import {
 } from 'react-accessible-accordion'
 import { capitalizeFirstLetter } from 'utils/helper'
 import { getCourseTitle } from 'services/course'
+import BudgetSelect from './BudgetSelect'
 
 class Filters extends Component {
   constructor(props) {
@@ -64,29 +65,23 @@ class Filters extends Component {
               {name === 'Budget' ? (
                 <div className={styles.budgetGroup}>
                   <label>
-                    From{' '}
-                    <input
+                    From
+                    <BudgetSelect
+                      placeholder="Min value (£)"
                       value={budgetMin || ''}
-                      type="number"
-                      min="0"
-                      step="100"
                       onChange={event => {
                         updateBudget('budgetMin', event.target.value)
                       }}
-                      placeholder="Min value (£)"
                     />
                   </label>
                   <label>
-                    To{' '}
-                    <input
+                    To
+                    <BudgetSelect
+                      placeholder="Max value (£)"
                       value={budgetMax || ''}
-                      type="number"
-                      min={budgetMin}
-                      step="100"
                       onChange={event => {
                         updateBudget('budgetMax', event.target.value)
                       }}
-                      placeholder="Max value (£)"
                     />
                   </label>
                 </div>
@@ -105,7 +100,7 @@ class Filters extends Component {
                       {name === 'Style'
                         ? capitalizeFirstLetter(value.name)
                         : name === 'Licence'
-                        ? getCourseTitle(value.name)
+                        ? getCourseTitle(value.name).replace(' Training', '')
                         : value.name}
                     </label>
                   </div>

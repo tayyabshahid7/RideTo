@@ -20,7 +20,10 @@ function BikeSummary({ bike: { slug, images, name, price, desc, bookLink } }) {
       <div className={styles.info}>
         <div className={styles.header}>
           <span>{name}</span>
-          <span>RRP £{(price / 100).toLocaleString()}</span>
+          <div className={styles.price}>
+            <span className={styles.rrp}>RRP</span>£
+            {(price / 100).toLocaleString()}
+          </div>
         </div>
         <div className={styles.description}>{desc}</div>
         <a
