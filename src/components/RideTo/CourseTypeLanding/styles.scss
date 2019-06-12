@@ -136,7 +136,7 @@
     top: 1rem;
   }
 
-  img {
+  .bookingImage {
     width: 100%;
     height: auto;
   }
@@ -168,6 +168,7 @@
     border: 1px solid #efefef;
     border-right: 0;
     padding-left: 1rem;
+    max-width: 52%;
   }
 
   button {
@@ -182,6 +183,13 @@
     color: #fff;
     border: 0;
     min-width: 80px;
+    font-family: Rift-Bold, ProximaNovaBold, ProximaNova, Helvetica, Arial,
+      sans-serif;
+    line-height: 24px;
+    font-weight: normal;
+    font-size: 20px;
+    text-transform: uppercase;
+    text-decoration: none;
   }
 }
 

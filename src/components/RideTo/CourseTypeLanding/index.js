@@ -7,6 +7,7 @@ import { getStaticData } from 'services/page'
 import { SLUG_COURSE_TYPES, getLocations, CONTENT } from './contents'
 import { getCourseTitle } from 'services/course'
 import { Helmet } from 'react-helmet'
+import buttonArrowWhite from 'assets/images/rideto/ButtonArrowWhiteThick.svg'
 
 class CourseTypeLanding extends React.Component {
   constructor(props) {
@@ -126,7 +127,11 @@ class CourseTypeLanding extends React.Component {
                   </div>
                   <div className={styles.bookInfoWrap}>
                     <div className={styles.bookInfo}>
-                      <img src={courseType.details.image} alt="Placeholder" />
+                      <img
+                        className={styles.bookingImage}
+                        src={courseType.details.image}
+                        alt="Placeholder"
+                      />
                       <div className={styles.bookInfoText}>
                         <h4>Book a local instructor</h4>
                         <form
@@ -138,7 +143,15 @@ class CourseTypeLanding extends React.Component {
                             type="text"
                             value={search}
                           />
-                          <button>Search</button>
+                          <button>
+                            Search{' '}
+                            <img
+                              src={buttonArrowWhite}
+                              alt="Arrow right"
+                              width="16"
+                              height="11"
+                            />
+                          </button>
                         </form>
                         <h5>We include as standard:</h5>
                         <ul>
