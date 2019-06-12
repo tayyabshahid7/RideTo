@@ -13,13 +13,51 @@ export const SLUG_COURSE_TYPES = {
   '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
 }
 
+const FULL_LICENCE_FAQS = {
+  howMuchTraining:
+    "This depends heavily on your riding experience. It's best to call us on 0203 603 9652 to chat with our friendly team about what package is right for you.",
+  howFarAdvance:
+    'Full licence classes have a very restricted number of places in each course. Due to extremely popular demand, you should aim to book at least 2 weeks in advance in order to get a convenient date.',
+  canIJustBook:
+    'You can with the government, however there are issues with having the correct bike and learning the required skills. Being professionally taught to ride is vital in becoming a safe rider and successfully gaining your licence.',
+  iveCompleted:
+    'Yes we can, call our team on 0203 603 9652 to discuss Module 2 availability.',
+  whatSize:
+    "This very much depends on how old you are. Read our 'What Can I Ride' section."
+}
+
+const CBT_FAQS = {
+  doesTheBike:
+    "Currently no. You can legally train on an automatic and ride a manual 125cc after your CBT, although we'd highly recommend training to ride a manual motorcycle, either through an ITM course or Gear conversion training. ",
+  iHaveEU:
+    "You'll need to complete a D91 form with the government to get a UK counterpart licence number.",
+  howDoIPass:
+    "A common misunderstanding - there is no CBT test, it's a training course, which the 5 elements need to be completed in order to gain the certificate. Therefore, if you want a CBT 'licence', book the CBT training.",
+  iDontHave:
+    "You'll need to apply for a UK provisional licence with the government here.",
+  howFarAdvance:
+    'CBT classes have a restricted number of places in each course. Due to popular demand, you should aim to book at least 1 week in advance to get a convenient date.'
+}
+
+const ITM_FAQ = {
+  doINeed:
+    'If you’ve never ridden a motorcycle or scooter before and your expectation is to complete your CBT within 1 day, we’d recommend considering the ITM or beginners course first.',
+  whatWillIdO:
+    'The ITM is tailored to your needs. You’ll focus all the time on bike control and handling, getting to grips with balancing, stopping, starting and turning.',
+  howFarAdvance:
+    'ITM classes have a restricted number of places in each course. Due to the popular demand, you should aim to book at least 1 week in advance in order to get a convenient date.',
+  iCantSee:
+    'Not all of our instructors have their introduction courses live online. If you can’t find a local ITM course to you, give us a call and we can arrange something for you.'
+}
+
 export const CONTENT = {
   FULL_LICENCE: {
     header: courseType => (
       <Fragment>
         <h1>Full Motorcycle Licence Course</h1>
         <h2>
-          A multi day course of training and 2 tests to:
+          A multi day course of training and 2 tests to get a full motorcycle
+          licence
           <ul>
             <li>Remove L plates</li>
             <li>Carry passengers</li>
@@ -52,7 +90,7 @@ export const CONTENT = {
           <p>
             Riding in a variety of road conditions under directions from the
             examiner as well as following signs, carrying out normal stops,
-            pulling away from behind a park car and a hill start.
+            pulling away from behind a parked car and a hill start.
           </p>
         </div>
         <a href="/">
@@ -125,8 +163,8 @@ export const CONTENT = {
             for the two motorcycle tests, known as module 1 and module 2.
           </p>
           <p>
-            Module 1 is an off-road test to assess your handling and and control
-            of the bike.
+            Module 1 is an off-road test to assess your handling and control of
+            the bike.
           </p>
           <p>
             Module 2 is an on-road test, similar to the car driving test. You'll
@@ -136,13 +174,11 @@ export const CONTENT = {
           <ShowMore>
             <p>The official list of maneuvers for Module 1 is as follows:</p>
             <ul>
+              <li>Wheeling the moped or motorcycle and using the stand</li>
+              <li>Riding a slalom and figure of 8</li>
               <li>
-                Wheeling the moped or motorcycle and using the stand Riding a
-                slalom and figure of 8.
-              </li>
-              <li>
-                A slow ride - being able to ride - and balance - a bike at
-                walking speed, using clutch and brake control
+                A slow ride - being able to ride and balance a bike at walking
+                speed, using clutch and brake control
               </li>
               <li>
                 A U-turn - to ride and turn the bike around in the space of a
@@ -181,7 +217,10 @@ export const CONTENT = {
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={courseType} minimal />
+          <CourseTypeDetails
+            courseType={{ details: FULL_LICENCE_FAQS }}
+            minimal
+          />
         </div>
         <div>
           <h2>Cancellation policy</h2>
@@ -200,7 +239,7 @@ export const CONTENT = {
         <h1>CBT Renewal Course</h1>
         <h2>
           A 1 day course designed for experienced riders to complete the CBT
-          course for another time:
+          course for another time
           <ul>
             <li>Ride up to 125cc (11Kw) scooter or motorcycle</li>
             <li>Ride on dual carriageways</li>
@@ -311,7 +350,7 @@ export const CONTENT = {
             <p>
               Welcome and brief to what to expect during the course, as well as
               an eyesight test to check you can read a registration plate at a
-              distance of 20.5 meters. You may wear glasses is you use them.
+              distance of 20.5 meters. You may wear glasses if you use them.
             </p>
             <h3>On-Site Training </h3>
             <p>
@@ -345,7 +384,7 @@ export const CONTENT = {
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={courseType} minimal />
+          <CourseTypeDetails courseType={{ details: CBT_FAQS }} minimal />
         </div>
         <div>
           <h2>Cancellation policy</h2>
@@ -365,7 +404,7 @@ export const CONTENT = {
         <h1>CBT Course</h1>
         <h2>
           A 1 day course designed to prepare new riders to ride up to a 125cc
-          motorcycle or scooter. :
+          motorcycle or scooter
           <ul>
             <li>Ride up to 125cc (11Kw) scooter or motorcycle</li>
             <li>Ride on dual carriageways</li>
@@ -409,7 +448,7 @@ export const CONTENT = {
         <div>
           <h2>Requirements</h2>
           <p>
-            In order to take the CBT Renewal training course, you must meet the
+            In order to take the CBT training course, you must meet the
             following requirements:
           </p>
           <ul>
@@ -475,7 +514,7 @@ export const CONTENT = {
             <p>
               Welcome and brief to what to expect during the course, as well as
               an eyesight test to check you can read a registration plate at a
-              distance of 20.5 meters. You may wear glasses is you use them.
+              distance of 20.5 meters. You may wear glasses if you use them.
             </p>
             <h3>On-Site Training </h3>
             <p>
@@ -509,7 +548,7 @@ export const CONTENT = {
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={courseType} minimal />
+          <CourseTypeDetails courseType={{ details: CBT_FAQS }} minimal />
         </div>
         <div>
           <h2>Cancellation policy</h2>
@@ -529,7 +568,7 @@ export const CONTENT = {
         <h1>Free 1-2-1 Motorcycle Skills Course</h1>
         <h2>
           A 2 hour 1-2-1 session available to anyone who lives, works or studies
-          in London:
+          in London
           <ul>
             <li>Ride a route of your choice with an instructor</li>
             <li>Develop further riding skills to stay safe riding in London</li>
@@ -559,7 +598,7 @@ export const CONTENT = {
           <h3>Road riding theory</h3>
           <p>
             You'll be shown diagrams and discuss the correct theory of how to
-            ride safely on the road and asked questions about what to do.
+            ride safely on the road and asked questions about what to do
           </p>
           <h3>Speed control and awareness</h3>
           <p>
@@ -648,7 +687,7 @@ export const CONTENT = {
         <h1>Introduction to motorcycling Course</h1>
         <h2>
           A 2 hour introduction course, to give new riders experience before the
-          CBT:
+          CBT
           <ul>
             <li>
               Focus on the core skills and controls of riding a motorcycle
@@ -736,7 +775,7 @@ export const CONTENT = {
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={courseType} minimal />
+          <CourseTypeDetails courseType={{ details: ITM_FAQ }} minimal />
         </div>
         <div>
           <h2>Cancellation policy</h2>

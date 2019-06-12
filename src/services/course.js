@@ -280,6 +280,8 @@ export const getCourseTitle = courseTypeConstant => {
       return 'Full Licence Module 2 Training'
     case 'FULL_LICENCE_MOD2_TEST':
       return 'Full Licence Module 2 Test'
+    case 'TFL_ONE_ON_ONE':
+      return 'Free 1-2-1 Skills course'
     default:
       return 'CBT Training'
   }

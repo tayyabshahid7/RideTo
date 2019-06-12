@@ -6,6 +6,8 @@ import ShowMore from './ShowMore'
 import { getStaticData } from 'services/page'
 import { SLUG_COURSE_TYPES, getLocations, CONTENT } from './contents'
 import { getCourseTitle } from 'services/course'
+import { Helmet } from 'react-helmet'
+import buttonArrowWhite from 'assets/images/rideto/ButtonArrowWhiteThick.svg'
 
 class CourseTypeLanding extends React.Component {
   constructor(props) {
@@ -59,11 +61,14 @@ class CourseTypeLanding extends React.Component {
   handleSubmit(event) {
     const { courseType, search } = this.state
 
-    window.location = `/course-location/?postcode=${search}&courseType=${
-      courseType.constant
-    }`
-
     event.preventDefault()
+
+    if (courseType.constant === 'TFL_ONE_ON_ONE') {
+      window.location = 'https://rideto.typeform.com/to/axybpw'
+      return
+    }
+
+    window.location = `/course-location/?postcode=${search}&courseType=${courseType.constant}`
   }
 
   render() {
@@ -72,6 +77,9 @@ class CourseTypeLanding extends React.Component {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>RideTo | {getCourseTitle(courseType.constant)}</title>
+        </Helmet>
         <div ref={this.background} className={styles.background} />
         <div>
           <section
@@ -101,12 +109,27 @@ class CourseTypeLanding extends React.Component {
                           Trustpilot
                         </a>
                       </div>
-                      <span>10,500 courses sold</span>
+                      {courseType.constant !== 'TFL_ONE_ON_ONE' && (
+                        <span>
+                          {courseType.constant === 'FULL_LICENCE'
+                            ? '500'
+                            : courseType.constant === 'LICENCE_CBT_RENEWAL'
+                            ? '4,500'
+                            : courseType.constant === 'INTRO_TO_MOTORCYCLING'
+                            ? '2,500'
+                            : '10,500'}{' '}
+                          courses sold
+                        </span>
+                      )}
                     </div>
                   </div>
                   <div className={styles.bookInfoWrap}>
                     <div className={styles.bookInfo}>
-                      <img src={courseType.details.image} alt="Placeholder" />
+                      <img
+                        className={styles.bookingImage}
+                        src={courseType.details.image}
+                        alt="Placeholder"
+                      />
                       <div className={styles.bookInfoText}>
                         <h4>Book a local instructor</h4>
                         <form
@@ -118,7 +141,15 @@ class CourseTypeLanding extends React.Component {
                             type="text"
                             value={search}
                           />
-                          <button>Search</button>
+                          <button>
+                            Search{' '}
+                            <img
+                              src={buttonArrowWhite}
+                              alt="Arrow right"
+                              width="16"
+                              height="11"
+                            />
+                          </button>
                         </form>
                         <h5>We include as standard:</h5>
                         <ul>
@@ -188,7 +219,8 @@ class CourseTypeLanding extends React.Component {
                 {body(courseType)}
                 <div>
                   <h2>
-                    Popular {getCourseTitle(courseType.constant)} Locations
+                    {courseType.constant !== 'TFL_ONE_ON_ONE' && 'Popular'}{' '}
+                    {getCourseTitle(courseType.constant)} Locations
                   </h2>
                   <ul className={styles.locationList}>
                     {getLocations(courseType)
@@ -196,9 +228,11 @@ class CourseTypeLanding extends React.Component {
                       .map(location => (
                         <li className={styles.location} key={location}>
                           <a
-                            href={`/course-location/?postcode=${location}&courseType=${
-                              courseType.constant
-                            }`}>
+                            href={
+                              courseType.constant !== 'TFL_ONE_ON_ONE'
+                                ? `/course-location/?postcode=${location}&courseType=${courseType.constant}`
+                                : 'https://rideto.typeform.com/to/axybpw'
+                            }>
                             {location}
                           </a>
                         </li>
@@ -212,9 +246,7 @@ class CourseTypeLanding extends React.Component {
                           .map(location => (
                             <li className={styles.location} key={location}>
                               <a
-                                href={`/course-location/?postcode=${location}&courseType=${
-                                  courseType.constant
-                                }`}>
+                                href={`/course-location/?postcode=${location}&courseType=${courseType.constant}`}>
                                 {location}
                               </a>
                             </li>

@@ -3,6 +3,7 @@
   padding: 0 24px;
   margin: 0 auto 2rem;
   font-family: ProximaNova, Helvetica, Arial, sans-serif;
+  line-height: 1.8;
 
   h1,
   h2,
@@ -19,6 +20,10 @@
   h5 {
     font-weight: bold;
     font-size: inherit;
+  }
+
+  p {
+    margin-bottom: 2rem;
   }
 }
 
@@ -48,7 +53,7 @@
     margin-bottom: 1rem;
 
     @media (min-width: 768px) {
-      margin-bottom: 1.25rem;
+      margin-bottom: 1.5rem;
     }
   }
 
@@ -58,7 +63,7 @@
     line-height: 24px;
 
     @media (min-width: 768px) {
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     ul {
@@ -67,12 +72,18 @@
       list-style: none;
 
       li + li {
-        margin-top: 0.25rem;
+        margin-top: 0.5rem;
       }
 
       li::before {
         content: '- ';
       }
+    }
+  }
+
+  h3 {
+    @media (min-width: 768px) {
+      margin-bottom: 1rem;
     }
   }
 }
@@ -122,10 +133,10 @@
 
   @media (min-width: 768px) {
     position: sticky;
-    top: 0;
+    top: 1rem;
   }
 
-  img {
+  .bookingImage {
     width: 100%;
     height: auto;
   }
@@ -157,6 +168,7 @@
     border: 1px solid #efefef;
     border-right: 0;
     padding-left: 1rem;
+    max-width: 52%;
   }
 
   button {
@@ -171,6 +183,13 @@
     color: #fff;
     border: 0;
     min-width: 80px;
+    font-family: Rift-Bold, ProximaNovaBold, ProximaNova, Helvetica, Arial,
+      sans-serif;
+    line-height: 24px;
+    font-weight: normal;
+    font-size: 20px;
+    text-transform: uppercase;
+    text-decoration: none;
   }
 }
 
