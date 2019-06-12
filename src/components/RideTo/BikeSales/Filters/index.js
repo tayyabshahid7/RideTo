@@ -100,7 +100,7 @@ class Filters extends Component {
                       {name === 'Style'
                         ? capitalizeFirstLetter(value.name)
                         : name === 'Licence'
-                        ? getCourseTitle(value.name)
+                        ? getCourseTitle(value.name).replace(' Training', '')
                         : value.name}
                     </label>
                   </div>
