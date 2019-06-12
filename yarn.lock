@@ -9347,7 +9347,7 @@ react-datepicker@^2.5.0:
     react-onclickoutside "^6.7.1"
     react-popper "^1.0.2"
 
-react-dates@^18.2.2:
+react-dates@18.2.2:
   version "18.2.2"
   resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-18.2.2.tgz#77f8fc55ebd462673e0476d64ed926d98504d6a4"
   integrity sha512-esJhsXmQdSFVKU39fzRTXD8ViXj3JT26JNWDh2STQZni8AfdWTqM2OHa2YbrHsqqhDj5mlfc8inX99WzOeJ69g==
