@@ -9350,10 +9350,10 @@ react-datepicker@^2.5.0:
     react-onclickoutside "^6.7.1"
     react-popper "^1.0.2"
 
-react-dates@^18.2.2:
-  version "18.5.0"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-18.5.0.tgz#31cc8ab01b2cc546b938e198fd8d4316878f5717"
-  integrity sha512-5zWR3+ekkRzf740omDkO+N0JifsGGOeyvWwQ/7dFxSb2CqHUsOfKgvpXOiwd3hBm4yr+lelESI3b458BEOU5og==
+react-dates@18.2.2:
+  version "18.2.2"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-18.2.2.tgz#77f8fc55ebd462673e0476d64ed926d98504d6a4"
+  integrity sha512-esJhsXmQdSFVKU39fzRTXD8ViXj3JT26JNWDh2STQZni8AfdWTqM2OHa2YbrHsqqhDj5mlfc8inX99WzOeJ69g==
   dependencies:
     airbnb-prop-types "^2.10.0"
     consolidated-events "^1.1.1 || ^2.0.0"
