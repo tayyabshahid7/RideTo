@@ -29,6 +29,7 @@ class BikeReview extends Component {
 
     this.keyInfo = React.createRef()
     this.rightPanel = React.createRef()
+    this.content = React.createRef()
   }
 
   handleImageButtonClick(index) {
@@ -56,6 +57,15 @@ class BikeReview extends Component {
       this.stickybits = stickybits(this.keyInfo.current, {
         useFixed: true,
         stickyBitStickyOffset: 22
+      })
+
+      const content = this.content.current
+
+      // Update stickybits for when images are loaded because they make the height wrong
+      content.querySelectorAll('img').forEach(img => {
+        img.onload = () => {
+          this.stickybits.update()
+        }
       })
 
       this.setState({
@@ -216,6 +226,7 @@ class BikeReview extends Component {
               </div>
             </div>
             <div
+              ref={this.content}
               className={styles.content}
               dangerouslySetInnerHTML={{ __html: bodyContent }}
             />
