@@ -13,6 +13,43 @@ export const SLUG_COURSE_TYPES = {
   '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
 }
 
+const FULL_LICENCE_FAQS = {
+  howMuchTraining:
+    "This depends heavily on your riding experience. It's best to call us on 0203 603 9652 to chat with our friendly team about what package is right for you.",
+  howFarAdvance:
+    'Full licence classes have a very restricted number of places in each course. Due to extremely popular demand, you should aim to book at least 2 weeks in advance in order to get a convenient date.',
+  canIJustBook:
+    'You can with the government, however there are issues with having the correct bike and learning the required skills. Being professionally taught to ride is vital in becoming a safe rider and successfully gaining your licence.',
+  iveCompleted:
+    'Yes we can, call our team on 0203 603 9652 to discuss Module 2 availability.',
+  whatSize:
+    "This very much depends on how old you are. Read our 'What Can I Ride' section."
+}
+
+const CBT_FAQS = {
+  doesTheBike:
+    "Currently no. You can legally train on an automatic and ride a manual 125cc after your CBT, although we'd highly recommend training to ride a manual motorcycle, either through an ITM course or Gear conversion training. ",
+  iHaveEU:
+    "You'll need to complete a D91 form with the government to get a UK counterpart licence number.",
+  howDoIPass:
+    "A common misunderstanding - there is no CBT test, it's a training course, which the 5 elements need to be completed in order to gain the certificate. Therefore, if you want a CBT 'licence', book the CBT training.",
+  iDontHave:
+    "You'll need to apply for a UK provisional licence with the government here.",
+  howFarAdvance:
+    'CBT classes have a restricted number of places in each course. Due to popular demand, you should aim to book at least 1 week in advance to get a convenient date.'
+}
+
+const ITM_FAQ = {
+  doINeed:
+    'If you’ve never ridden a motorcycle or scooter before and your expectation is to complete your CBT within 1 day, we’d recommend considering the ITM or beginners course first.',
+  whatWillIdO:
+    'The ITM is tailored to your needs. You’ll focus all the time on bike control and handling, getting to grips with balancing, stopping, starting and turning.',
+  howFarAdvance:
+    'ITM classes have a restricted number of places in each course. Due to the popular demand, you should aim to book at least 1 week in advance in order to get a convenient date.',
+  iCantSee:
+    'Not all of our instructors have their introduction courses live online. If you can’t find a local ITM course to you, give us a call and we can arrange something for you.'
+}
+
 export const CONTENT = {
   FULL_LICENCE: {
     header: courseType => (
@@ -180,7 +217,10 @@ export const CONTENT = {
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={courseType} minimal />
+          <CourseTypeDetails
+            courseType={{ details: FULL_LICENCE_FAQS }}
+            minimal
+          />
         </div>
         <div>
           <h2>Cancellation policy</h2>
@@ -344,7 +384,7 @@ export const CONTENT = {
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={courseType} minimal />
+          <CourseTypeDetails courseType={{ details: CBT_FAQS }} minimal />
         </div>
         <div>
           <h2>Cancellation policy</h2>
@@ -508,7 +548,7 @@ export const CONTENT = {
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={courseType} minimal />
+          <CourseTypeDetails courseType={{ details: CBT_FAQS }} minimal />
         </div>
         <div>
           <h2>Cancellation policy</h2>
@@ -735,7 +775,7 @@ export const CONTENT = {
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={courseType} minimal />
+          <CourseTypeDetails courseType={{ details: ITM_FAQ }} minimal />
         </div>
         <div>
           <h2>Cancellation policy</h2>
