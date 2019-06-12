@@ -7,6 +7,7 @@ import Circle from 'react-circle'
 import { getShortCourseType } from 'services/course'
 import { SLUG_COURSE_TYPES } from 'common/constants'
 import stickybits from 'stickybits'
+import Helmet from 'react-helmet'
 
 const styles = {
   ...containerStyles,
@@ -121,6 +122,9 @@ class BikeReview extends Component {
 
     return (
       <div className={styles.page}>
+        <Helmet>
+          <title>Rideto | {name} Review</title>
+        </Helmet>
         <div className={styles.container} style={{ position: 'relative' }}>
           <div className={styles.header}>
             <div className={styles.largeImage}>

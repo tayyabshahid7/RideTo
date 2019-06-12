@@ -18,6 +18,7 @@ import {
 import Pagination from 'rc-pagination'
 import en_GB from 'rc-pagination/es/locale/en_GB.js'
 import MediaQuery from 'react-responsive'
+import { Helmet } from 'react-helmet'
 
 class BikeSalesListing extends Component {
   constructor(props) {
@@ -234,6 +235,9 @@ class BikeSalesListing extends Component {
 
     return (
       <div className={styles.page}>
+        <Helmet>
+          <title>Rideto | Bike Reviews</title>
+        </Helmet>
         <div className={styles.header}>
           <div className={styles.container}>
             <div>
