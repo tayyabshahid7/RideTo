@@ -67,7 +67,7 @@ class Filters extends Component {
                   <label>
                     From
                     <BudgetSelect
-                      placeholder="Min value"
+                      placeholder="Min value (£)"
                       value={budgetMin || ''}
                       onChange={event => {
                         updateBudget('budgetMin', event.target.value)
@@ -77,7 +77,7 @@ class Filters extends Component {
                   <label>
                     To
                     <BudgetSelect
-                      placeholder="Max value"
+                      placeholder="Max value (£)"
                       value={budgetMax || ''}
                       onChange={event => {
                         updateBudget('budgetMax', event.target.value)
