@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import Listing from './Listing'
 import BikeReview from './BikeReview'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { mapBike, fetchBikes } from 'services/bike-sales'
+import ScrollToTop from 'components/RideTo/ScrollToTop'
 
 class BikeSales extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ class BikeSales extends React.Component {
 
     return (
       <Router>
-        <Fragment>
+        <ScrollToTop>
           <Route
             exact
             path="/bike-reviews/"
@@ -36,7 +37,7 @@ class BikeSales extends React.Component {
             path="/bike-reviews/:slug/"
             render={routeProps => <BikeReview {...routeProps} bikes={bikes} />}
           />
-        </Fragment>
+        </ScrollToTop>
       </Router>
     )
   }
