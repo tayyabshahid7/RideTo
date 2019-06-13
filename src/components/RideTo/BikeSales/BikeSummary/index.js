@@ -14,7 +14,7 @@ function BikeSummary({ bike: { slug, images, name, price, desc, bookLink } }) {
           src={image}
           alt="Bike"
           width="317"
-          height="172"
+          height="205"
         />
       </Link>
       <div className={styles.info}>
