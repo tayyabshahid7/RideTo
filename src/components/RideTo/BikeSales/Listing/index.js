@@ -147,9 +147,9 @@ class BikeSalesListing extends Component {
   closeFilters() {
     this.setState({
       filtersOpen: false,
-      sortOpen: false,
-      budgetMin: null,
-      budgetMax: null
+      sortOpen: false
+      // budgetMin: null,
+      // budgetMax: null
     })
   }
 
@@ -279,21 +279,11 @@ class BikeSalesListing extends Component {
           <style
             dangerouslySetInnerHTML={{
               __html: `
-            .${
-              styles.pagination
-            } .rc-pagination-item-active { background-color: var(--primary-color); }
-            .${
-              styles.pagination
-            } .rc-pagination-item-active a { color: white; cursor: default; }
-            .${
-              styles.pagination
-            } .rc-pagination-item-active a:hover { color: white; }
-            .${
-              styles.pagination
-            } [class^="rc-pagination-jump"] { pointer-events: none; outline: 0; }
-            .${
-              styles.pagination
-            } [class^="rc-pagination-jump"] a::before { content: "..." }
+            .${styles.pagination} .rc-pagination-item-active { background-color: var(--primary-color); }
+            .${styles.pagination} .rc-pagination-item-active a { color: white; cursor: default; }
+            .${styles.pagination} .rc-pagination-item-active a:hover { color: white; }
+            .${styles.pagination} [class^="rc-pagination-jump"] { pointer-events: none; outline: 0; }
+            .${styles.pagination} [class^="rc-pagination-jump"] a::before { content: "..." }
           `
             }}
           />
