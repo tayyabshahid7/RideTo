@@ -1,0 +1,103 @@
+.infoBox {
+  background-color: #fff;
+  width: 100%;
+  border-bottom: 1px solid var(--light-grey-color);
+}
+
+.infoButton {
+  display: flex;
+  width: 100%;
+  appearance: none;
+  border: 0;
+  background-color: #fff;
+  height: 52px;
+  padding-right: 32px;
+  padding-left: 32px;
+  font-family: var(--font-rift);
+  text-transform: uppercase;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.infoCircle {
+  margin-right: 0.5rem;
+}
+
+.container {
+  background-color: #fff;
+  width: 100%;
+  padding-right: 32px;
+  padding-left: 32px;
+}
+
+.main {
+  padding: 16px 0 32px;
+}
+
+.title {
+  text-transform: uppercase;
+  font-size: 32px;
+  font-family: var(--font-rift-bold);
+  margin: 0 0 24px;
+  text-align: center;
+}
+
+.formGroup {
+  display: flex;
+  position: relative;
+  border: 1px solid #000;
+  height: 54px;
+  margin: 0 0 24px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.clickable {
+  margin: 0;
+  flex-grow: 1;
+}
+
+.label {
+  position: absolute;
+  top: -8px;
+  left: 15px;
+  background-color: #fff;
+  line-height: 1;
+  font-size: 14px;
+  padding: 0 5px;
+}
+
+.input {
+  width: 100%;
+  height: 100%;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding-right: 20px;
+  padding-left: 20px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.inputButton {
+  cursor: pointer;
+}
+
+.button {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.chev {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  line-height: 52px;
+  pointer-events: none;
+}

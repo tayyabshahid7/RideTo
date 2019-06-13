@@ -9,8 +9,7 @@ import {
 import { Container, Row, Col } from 'reactstrap'
 import { SortByOptions, getTitleFor } from 'common/info'
 import { LICENCE_TYPES } from 'common/constants'
-import DesktopHeader from './DesktopHeader'
-import NavigationComponent from 'components/RideTo/NavigationComponent'
+import ResultsHeader from './ResultsHeader'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
@@ -27,11 +26,7 @@ import classnames from 'classnames'
 import { fetchCoursesTypes } from 'services/course-type'
 import { isEqual } from 'lodash'
 import { isBankHoliday } from 'services/misc'
-import {
-  getCourseTitle,
-  getCourseIdFromSearch,
-  findResultsCourseWithId
-} from 'services/course'
+import { getCourseIdFromSearch, findResultsCourseWithId } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 
@@ -486,7 +481,6 @@ class ResultPage extends Component {
       postcode,
       date,
       handleSetDate,
-      navigation,
       loading,
       userLocation,
       sortByOption,
@@ -570,6 +564,7 @@ class ResultPage extends Component {
 
     return (
       <div className={styles.container}>
+        {/*
         <NavigationComponent
           onPostcodeChange={postcode => {
             this.handlePostcodeChange(postcode)
@@ -585,6 +580,8 @@ class ResultPage extends Component {
           handleMobileDateClick={this.handleMobileDateClick}
           courseTypesOptions={courseTypesOptions}
         />
+        */}
+        {/*
         <DesktopHeader
           courseType={courseType}
           postcode={postcode}
@@ -592,7 +589,19 @@ class ResultPage extends Component {
           handlePostcodeChange={this.handlePostcodeChange}
           handleCourseChange={this.handleCourseChange}
         />
+        */}
+        <ResultsHeader
+          courseType={courseType}
+          postcode={postcode}
+          date={date}
+          courseTypesOptions={courseTypesOptions}
+          handlePostcodeChange={this.handlePostcodeChange}
+          handleCourseChange={this.handleCourseChange}
+          handleMobileDateClick={this.handleMobileDateClick}
+          isFullLicence={isFullLicence}
+        />
         <Container className={styles.pageContainer}>
+          {/*
           {hasPartnerResults && (
             <Row>
               <Col md="6">
@@ -608,22 +617,10 @@ class ResultPage extends Component {
                     Motorcycle Licence {postcode}
                   </div>
                 )}
-                {!loading && (
-                  <div
-                    className={classnames(
-                      styles.schoolCount,
-                      styles.schoolCountMobile
-                    )}>
-                    {resultsCount} training sites sorted by{' '}
-                    {this.renderSortByDropdown(true)}
-                    <span className={styles.desktopSortByValue}>
-                      {sortByOption.replace('-', '')}
-                    </span>
-                  </div>
-                )}
               </Col>
             </Row>
           )}
+          */}
           <Row>
             <Col>
               <Loading
@@ -649,10 +646,11 @@ class ResultPage extends Component {
                           </div>
                           <div
                             className={classnames(
-                              styles.schoolCount,
-                              styles.schoolCountDesktop
+                              styles.schoolCount
+                              // styles.schoolCountDesktop
                             )}>
                             {resultsCount} training sites sorted by{' '}
+                            {this.renderSortByDropdown(true)}
                             <span className={styles.desktopSortByValue}>
                               {sortByOption.replace('-', '')}
                             </span>
