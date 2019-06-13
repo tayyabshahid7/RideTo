@@ -1,4 +1,7 @@
 .bikeSummary {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
 }
 
 .image {
@@ -12,6 +15,10 @@
   background-color: #fff;
   border: 1px solid #cbcbcb;
   border-top: 0;
+
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
 .header {
@@ -38,6 +45,8 @@
 
 .description {
   font-size: 18px;
+
+  flex-grow: 1;
 }
 
 .button {
