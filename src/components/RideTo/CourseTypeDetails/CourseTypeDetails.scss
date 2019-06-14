@@ -2,14 +2,15 @@
   cursor: auto;
   color: #141414;
   font-family: var(--font-rift);
-  padding: 50px 60px;
+  // padding: 50px 60px;
+  padding: 50px 24px;
   padding-bottom: 64px;
   @media (max-width: 768px) {
-    padding: 32px;
+    padding: 32px 24px;
   }
 }
 
-.courseTypeDetails {
+.courseTypeDetailsMinimal {
   padding: 0 !important;
 }
 
