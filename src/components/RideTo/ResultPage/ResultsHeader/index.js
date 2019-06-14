@@ -47,14 +47,15 @@ class ResultsHeader extends React.Component {
       date,
       courseTypesOptions,
       isFullLicence,
-      handleMobileDateClick
+      handleMobileDateClick,
+      showCourseTypeInfo
     } = this.props
     const { postcode } = this.state
 
     return (
       <React.Fragment>
         <div className={styles.infoBox}>
-          <button className={styles.infoButton}>
+          <button className={styles.infoButton} onClick={showCourseTypeInfo}>
             <span>
               <span className={styles.infoCircle}>
                 <i className="fa fa-info-circle"></i>

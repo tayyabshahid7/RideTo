@@ -29,6 +29,7 @@ import { isBankHoliday } from 'services/misc'
 import { getCourseIdFromSearch, findResultsCourseWithId } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -50,7 +51,8 @@ class ResultPage extends Component {
       initialLoaded: false,
       addCourseIdParam: false,
       removeCourseIdParam: false,
-      noRedirect: false
+      noRedirect: false,
+      isShowCourseTypeInfo: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -64,7 +66,22 @@ class ResultPage extends Component {
     this.timeDayChange = this.timeDayChange.bind(this)
     this.handleDissmiss = this.handleDissmiss.bind(this)
 
+    this.showCourseTypeInfo = this.showCourseTypeInfo.bind(this)
+    this.hideCourseTypeInfo = this.hideCourseTypeInfo.bind(this)
+
     window.sessionStorage.removeItem('trainings')
+  }
+
+  showCourseTypeInfo() {
+    this.setState({
+      isShowCourseTypeInfo: true
+    })
+  }
+
+  hideCourseTypeInfo() {
+    this.setState({
+      isShowCourseTypeInfo: false
+    })
   }
 
   async componentDidMount() {
@@ -90,7 +107,10 @@ class ResultPage extends Component {
     }
 
     this.setState({
-      courseTypesOptions: courseTypes
+      courseTypesOptions: courseTypes,
+      selectedCourseType: courseTypes.find(
+        course => course.constant === this.props.courseType
+      )
     })
   }
 
@@ -500,7 +520,9 @@ class ResultPage extends Component {
       selectedTimeDays,
       addCourseIdParam,
       removeCourseIdParam,
-      noRedirect
+      noRedirect,
+      isShowCourseTypeInfo,
+      selectedCourseType
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -599,6 +621,7 @@ class ResultPage extends Component {
           handleCourseChange={this.handleCourseChange}
           handleMobileDateClick={this.handleMobileDateClick}
           isFullLicence={isFullLicence}
+          showCourseTypeInfo={this.showCourseTypeInfo}
         />
         <Container className={styles.pageContainer}>
           {/*
@@ -763,6 +786,15 @@ class ResultPage extends Component {
             </Col>
           </Row>
         </Container>
+
+        {isShowCourseTypeInfo && (
+          <SidePanel
+            visible
+            headingImage={selectedCourseType.details.image}
+            onDismiss={this.hideCourseTypeInfo}>
+            <CourseTypeDetails courseType={selectedCourseType} />
+          </SidePanel>
+        )}
 
         {selectedCourse && (
           <SidePanel
