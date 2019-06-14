@@ -29,7 +29,7 @@ export const getChecklist = () => {
     },
     {
       text: 'Get a Bike Quote',
-      href: 'https://www.rideto.com/bike-sales',
+      href: 'https://www.rideto.com/bike-reviews',
       checked: false
     },
     {

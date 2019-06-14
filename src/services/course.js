@@ -193,12 +193,19 @@ export const getPrice = async ({
   course_type,
   courseId,
   voucher_code = null,
-  hours
+  hours,
+  full_licence_course_id
 }) => {
   const path = 'get-price'
   let params = courseId
     ? { course_id: courseId }
-    : { course_type, date, supplier_id: supplierId, hours }
+    : {
+        course_type,
+        date,
+        supplier_id: supplierId,
+        hours,
+        ...(full_licence_course_id && { course_id: full_licence_course_id })
+      }
   if (voucher_code) params.voucher_code = voucher_code
   const response = await get(path, params, false)
   return response
@@ -226,6 +233,37 @@ export const getShortCourseType = courseType => {
       return 'Enhanced Rider Scheme'
     case 'BIKE_HIRE':
       return 'Bike Hire'
+    case 'TFL_ONE_ON_ONE':
+      return 'TFL'
+    default:
+      return 'CBT'
+  }
+}
+
+export const getMediumCourseType = courseType => {
+  switch (courseType.constant) {
+    case 'LICENCE_CBT':
+      return 'CBT'
+    case 'LICENCE_CBT_RENEWAL':
+      return 'CBT renewal'
+    case 'INTRO_TO_MOTORCYCLING':
+      return 'ITM'
+    case 'FULL_LICENCE':
+      return 'Full licence'
+    case 'FULL_LICENCE_MOD1_TRAINING':
+      return 'Module 1 Training'
+    case 'FULL_LICENCE_MOD1_TEST':
+      return 'Module 1 Test'
+    case 'FULL_LICENCE_MOD2_TRAINING':
+      return 'Module 2 Training'
+    case 'FULL_LICENCE_MOD2_TEST':
+      return 'Module 2 Test'
+    case 'ENHANCED_RIDER_SCHEME':
+      return 'Enhanced Rider Scheme'
+    case 'BIKE_HIRE':
+      return 'Bike Hire'
+    case 'TFL_ONE_ON_ONE':
+      return 'TFL'
     default:
       return 'CBT'
   }
@@ -249,6 +287,8 @@ export const getCourseTitle = courseTypeConstant => {
       return 'Full Licence Module 2 Training'
     case 'FULL_LICENCE_MOD2_TEST':
       return 'Full Licence Module 2 Test'
+    case 'TFL_ONE_ON_ONE':
+      return 'Free 1-2-1 Skills course'
     default:
       return 'CBT Training'
   }

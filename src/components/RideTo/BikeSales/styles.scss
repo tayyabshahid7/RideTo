@@ -1,0 +1,299 @@
+.page {
+  font-family: var(--font-proxima);
+  background-color: #f1f1f1;
+}
+
+.container {
+  max-width: 1158px;
+  padding: 0 24px;
+  margin: 0 auto;
+  overflow: hidden;
+  font-family: ProximaNova, Helvetica, Arial, sans-serif;
+}
+
+.header {
+  padding: 3rem 0 calc(3rem + 115px);
+  color: #fff;
+  background-image: url('assets/images/black-background.png');
+  background-size: cover;
+
+  h1,
+  h2 {
+    text-align: center;
+  }
+
+  h1 {
+    font-weight: 700;
+    font-size: 3.5rem;
+  }
+
+  h2 {
+    font-weight: bold;
+  }
+}
+
+.headerTitle {
+  font-family: var(--font-rift);
+}
+
+.filterButtons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 420px;
+  margin: 2rem auto;
+}
+
+.filterButton {
+  appearance: none;
+  width: 120px;
+  height: 50px;
+  padding: 0;
+  font-size: 25px;
+  line-height: 50px;
+  font-weight: bold;
+  text-align: center;
+  background-color: #fff;
+  border: 1px solid #fff;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.results {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.listing {
+  margin-top: -115px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -20px;
+  margin-left: -20px;
+}
+
+.item {
+  width: 100%;
+  padding: 0 20px 40px;
+
+  @media (min-width: 651px) {
+    width: 50%;
+  }
+
+  @media (min-width: 1025px) {
+    width: 33.3333333333%;
+  }
+}
+
+.slidingPaneContent {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.slidingPaneTitle {
+  position: relative;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #cecece;
+
+  > span {
+    font-size: 18px;
+    font-weight: bold;
+  }
+}
+
+.close,
+.clearAll {
+  position: absolute;
+  left: 1rem;
+  font-size: 18px;
+  font-weight: bold;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  outline: 0;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.clearAllReady {
+  color: var(--primary-color);
+}
+
+.close {
+  left: auto;
+  right: 1rem;
+  font-weight: normal;
+  font-size: 2rem;
+  line-height: 28px;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.closeSort {
+  left: 1rem;
+  right: auto;
+}
+
+.panel {
+  > div:first-child {
+    display: none;
+  }
+  > div:nth-child(2) {
+    padding: 0;
+  }
+}
+
+.accordionContent {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.accordionItem,
+.sortItem {
+  font-size: 18px;
+  border-bottom: 1px solid #cecece;
+}
+
+.accordionButton {
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  user-select: none;
+  outline: 0;
+}
+
+.boxInput {
+  position: relative;
+  top: -1px;
+  vertical-align: middle;
+  width: 18px;
+  height: 18px;
+  margin-right: 0.5rem;
+}
+
+.sortLabel {
+  margin-bottom: 0;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.accordionButtonSelection {
+  color: var(--primary-color);
+}
+
+.accordionButtonIcon {
+  vertical-align: middle;
+}
+
+.accordionPanel {
+  padding: 0 1rem 0.5rem;
+}
+
+.budgetGroup {
+  display: flex;
+  justify-content: space-between;
+
+  label {
+    width: 49%;
+
+    input {
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+.seeButtonWrap {
+  display: flex;
+  padding: 1rem;
+  flex-shrink: 0;
+}
+
+.seeButton {
+  @extend .filterButton;
+  flex-grow: 1;
+  height: 45px;
+  font-size: 18px;
+  line-height: 45px;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+}
+
+.paginationWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin-bottom: 3rem;
+  padding-left: 0;
+
+  > li {
+    width: 48px;
+    height: 40px;
+    text-align: center;
+    border-top: 1px solid rgba(33, 34, 36, 0.15);
+    border-bottom: 1px solid rgba(33, 34, 36, 0.15);
+    border-left: 1px solid rgba(33, 34, 36, 0.15);
+    font-size: 12px;
+    line-height: 18px;
+    align-items: center;
+    background-color: #fff;
+    font-size: 14px;
+    line-height: 22px;
+
+    > a {
+      color: #212224;
+      font-weight: 600;
+      height: 100%;
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    &:first-child {
+      > a::before {
+        content: 'Prev';
+      }
+    }
+
+    &:last-child {
+      border-right: 1px solid rgba(33, 34, 36, 0.15);
+
+      > a::before {
+        content: 'Next';
+      }
+    }
+
+    &[aria-disabled='true'] {
+      > a,
+      a:hover {
+        cursor: default;
+        color: rgba(#212224, 0.5);
+      }
+    }
+  }
+}

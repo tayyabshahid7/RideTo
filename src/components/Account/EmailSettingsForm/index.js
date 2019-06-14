@@ -8,6 +8,7 @@ import { Editor } from 'slate-react'
 import { isKeyHotkey } from 'is-hotkey'
 import Html from 'slate-html-serializer'
 import classnames from 'classnames'
+import { getMediumCourseType } from 'services/course'
 
 const DEFAULT_NODE = 'paragraph'
 
@@ -104,10 +105,33 @@ const html = new Html({ rules })
 class EmailSettingsForm extends React.Component {
   constructor(props) {
     super(props)
+
+    const courses = this.props.settings.courses.filter(
+      course =>
+        ![
+          'FULL_LICENCE_MOD1_TRAINING',
+          'FULL_LICENCE_MOD2_TRAINING',
+          'FULL_LICENCE_MOD1_TEST',
+          'FULL_LICENCE_MOD2_TEST'
+        ].includes(course)
+    )
+
+    const emailtexts = courses.reduce((obj, course) => {
+      const key = `email_text_${course.toLowerCase()}`
+
+      obj[key] = html.deserialize(this.props.settings[key] || '<p></p>')
+      return obj
+    }, {})
+
     this.state = {
-      settings: this.props.settings ? this.props.settings : {},
-      value: html.deserialize(this.props.settings.email_text || '<p></p>'),
-      showModal: false
+      settings: this.props.settings
+        ? { ...this.props.settings, ...emailtexts }
+        : {},
+      // value: html.deserialize(this.props.settings.email_text || '<p></p>'),
+      value: html.deserialize('<p></p>'),
+      showModal: false,
+      courses,
+      activeEmail: null
     }
 
     this.handleSave = this.handleSave.bind(this)
@@ -135,11 +159,18 @@ class EmailSettingsForm extends React.Component {
 
   handleSave() {
     const { onSubmit } = this.props
-    const { settings, value } = this.state
-    settings.email_text = html.serialize(value)
-    onSubmit(settings)
+    const { settings, value, activeEmail } = this.state
+    onSubmit({
+      ...this.props.settings,
+      [activeEmail]: html.serialize(value)
+    })
     this.setState({
-      showModal: false
+      showModal: false,
+      activeEmail: null,
+      settings: {
+        ...settings,
+        [activeEmail]: value
+      }
     })
   }
 
@@ -362,6 +393,8 @@ class EmailSettingsForm extends React.Component {
 
   render() {
     let { saving } = this.props
+    const { courses } = this.state
+
     return (
       <Fragment>
         <div className={classnames(styles.box, styles.boxVertical)}>
@@ -370,28 +403,45 @@ class EmailSettingsForm extends React.Component {
             Write the copy that you wish to display in your email communication
             to customers
           </p>
-          <div>
-            <h4 className={styles.titleSmall}>CBT booking confirmation</h4>
-            <Row>
-              <Col
-                dangerouslySetInnerHTML={{
-                  __html: this.props.settings.email_text
-                }}
-              />
-              <Col sm="2">
-                <div className={styles.editButton}>
-                  <Button
-                    style={{ height: 'auto' }}
-                    color="link"
-                    onClick={() => {
-                      this.setState({ showModal: !this.state.showModal })
-                    }}>
-                    Edit
-                  </Button>
-                </div>
-              </Col>
-            </Row>
-          </div>
+          <Loading loading={saving}>
+            {courses.map(course => (
+              <div key={course} className={styles.formGroup}>
+                <h4 className={styles.titleSmall}>
+                  {getMediumCourseType({ constant: course })} booking
+                  confirmation
+                </h4>
+                <Row>
+                  <Col
+                    dangerouslySetInnerHTML={{
+                      __html: html.serialize(
+                        this.state.settings[
+                          `email_text_${course.toLowerCase()}`
+                        ]
+                      )
+                    }}
+                  />
+                  <Col sm="2">
+                    <div className={styles.editButton}>
+                      <Button
+                        style={{ height: 'auto' }}
+                        color="link"
+                        onClick={() => {
+                          this.setState({
+                            showModal: !this.state.showModal,
+                            activeEmail: `email_text_${course.toLowerCase()}`,
+                            value: this.state.settings[
+                              `email_text_${course.toLowerCase()}`
+                            ]
+                          })
+                        }}>
+                        Edit
+                      </Button>
+                    </div>
+                  </Col>
+                </Row>
+              </div>
+            ))}
+          </Loading>
         </div>
         <Modal
           isOpen={this.state.showModal}

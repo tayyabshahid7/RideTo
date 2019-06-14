@@ -3,6 +3,7 @@ import React from 'react'
 import styles from './CourseTypeDetails.scss'
 import DetailsAccordionItem from 'components/RideTo/DetailsAccordionItem'
 import SummaryIcons from './SummaryIcons'
+import classnames from 'classnames'
 
 class CourseTypeDetails extends React.Component {
   constructor(props) {
@@ -29,21 +30,156 @@ class CourseTypeDetails extends React.Component {
   }
 
   render() {
-    const { courseType, title } = this.props
+    const { courseType, title, minimal } = this.props
     const { opened } = this.state
     const { details, tags } = courseType
 
     const courseTitle = title || courseType.name
 
     return (
-      <div className={styles.courseTypeDetails}>
-        <div className={styles.title}>{courseTitle}</div>
-        <div className={styles.description}>{details.description}</div>
-        <SummaryIcons tags={tags} />
-
-        <hr className={styles.divider} />
+      <div
+        className={classnames(
+          styles.courseTypeDetails,
+          minimal && styles.courseTypeDetailsMinimal
+        )}>
+        {!minimal && (
+          <React.Fragment>
+            <div className={styles.title}>{courseTitle}</div>
+            <div className={styles.description}>{details.description}</div>
+            <SummaryIcons tags={tags} />
+            <hr className={styles.divider} />
+          </React.Fragment>
+        )}
 
         <div className={styles.accordion}>
+          {details.howMuchTraining && (
+            <DetailsAccordionItem
+              title="How much training do I need?"
+              content={details.howMuchTraining}
+              isOpen={opened.indexOf('howMuchTraining') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('howMuchTraining', isOpen)
+              }
+            />
+          )}
+
+          {details.doesTheBike && (
+            <DetailsAccordionItem
+              title="Does the bike I train on effect my licence? "
+              content={details.doesTheBike}
+              isOpen={opened.indexOf('doesTheBike') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('doesTheBike', isOpen)
+              }
+            />
+          )}
+
+          {details.iHaveEU && (
+            <DetailsAccordionItem
+              title="I have an EU licence, what do I need? "
+              content={details.iHaveEU}
+              isOpen={opened.indexOf('iHaveEU') > -1}
+              onToggle={isOpen => this.handleToggleAccordion('iHaveEU', isOpen)}
+            />
+          )}
+
+          {details.howDoIPass && (
+            <DetailsAccordionItem
+              title="How do I pass the CBT test? "
+              content={details.howDoIPass}
+              isOpen={opened.indexOf('howDoIPass') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('howDoIPass', isOpen)
+              }
+            />
+          )}
+
+          {details.iDontHave && (
+            <DetailsAccordionItem
+              title="I don't have a licence/ have non-EU licence, what do I need? "
+              content={details.iDontHave}
+              isOpen={opened.indexOf('iDontHave') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('iDontHave', isOpen)
+              }
+            />
+          )}
+
+          {details.doINeed && (
+            <DetailsAccordionItem
+              title="Do I need to take an ITM? "
+              content={details.doINeed}
+              isOpen={opened.indexOf('doINeed') > -1}
+              onToggle={isOpen => this.handleToggleAccordion('doINeed', isOpen)}
+            />
+          )}
+
+          {details.whatWillIdO && (
+            <DetailsAccordionItem
+              title="What will I do during the ITM?"
+              content={details.whatWillIdO}
+              isOpen={opened.indexOf('whatWillIdO') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('whatWillIdO', isOpen)
+              }
+            />
+          )}
+
+          {details.howFarAdvance && (
+            <DetailsAccordionItem
+              title="How far in advance should I book?"
+              content={details.howFarAdvance}
+              isOpen={opened.indexOf('howFarAdvance') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('howFarAdvance', isOpen)
+              }
+            />
+          )}
+
+          {details.iCantSee && (
+            <DetailsAccordionItem
+              title="I can't see any Introduction courses in my area?"
+              content={details.iCantSee}
+              isOpen={opened.indexOf('iCantSee') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('iCantSee', isOpen)
+              }
+            />
+          )}
+
+          {details.canIJustBook && (
+            <DetailsAccordionItem
+              title="Can I just book the tests?"
+              content={details.canIJustBook}
+              isOpen={opened.indexOf('canIJustBook') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('canIJustBook', isOpen)
+              }
+            />
+          )}
+
+          {details.iveCompleted && (
+            <DetailsAccordionItem
+              title="I've completed my Module 1 somewhere else, can you help me with Module 2?"
+              content={details.iveCompleted}
+              isOpen={opened.indexOf('iveCompleted') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('iveCompleted', isOpen)
+              }
+            />
+          )}
+
+          {details.whatSize && (
+            <DetailsAccordionItem
+              title="What size bike can I ride after?"
+              content={details.whatSize}
+              isOpen={opened.indexOf('whatSize') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('whatSize', isOpen)
+              }
+            />
+          )}
+
           {details.duration && (
             <DetailsAccordionItem
               title="How long is the course?"
@@ -54,48 +190,63 @@ class CourseTypeDetails extends React.Component {
               }
             />
           )}
-          <DetailsAccordionItem
-            title="What will I learn?"
-            content={details.learn}
-            isOpen={opened.indexOf('learn') > -1}
-            onToggle={isOpen => this.handleToggleAccordion('learn', isOpen)}
-          />
-          <DetailsAccordionItem
-            title="What's Included?"
-            content={details.included}
-            isOpen={opened.indexOf('included') > -1}
-            onToggle={isOpen => this.handleToggleAccordion('included', isOpen)}
-          />
-          <DetailsAccordionItem
-            title="What can I ride after?"
-            content={details.ride_after}
-            isOpen={opened.indexOf('ride_after') > -1}
-            onToggle={isOpen =>
-              this.handleToggleAccordion('ride_after', isOpen)
-            }
-          />
-          <DetailsAccordionItem
-            title="Requirements"
-            content={details.requirements}
-            isOpen={opened.indexOf('requirements') > -1}
-            onToggle={isOpen =>
-              this.handleToggleAccordion('requirements', isOpen)
-            }
-          />
-          <DetailsAccordionItem
-            title="Training FAQs"
-            content={details.faqs}
-            isOpen={opened.indexOf('faqs') > -1}
-            onToggle={isOpen => this.handleToggleAccordion('faqs', isOpen)}
-          />
-          <DetailsAccordionItem
-            title="Cancellation Policy"
-            content={details.cancellation}
-            isOpen={opened.indexOf('cancellation') > -1}
-            onToggle={isOpen =>
-              this.handleToggleAccordion('cancellation', isOpen)
-            }
-          />
+
+          {details.learn && (
+            <DetailsAccordionItem
+              title="What will I learn?"
+              content={details.learn}
+              isOpen={opened.indexOf('learn') > -1}
+              onToggle={isOpen => this.handleToggleAccordion('learn', isOpen)}
+            />
+          )}
+          {details.included && (
+            <DetailsAccordionItem
+              title="What's Included?"
+              content={details.included}
+              isOpen={opened.indexOf('included') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('included', isOpen)
+              }
+            />
+          )}
+          {details.ride_after && (
+            <DetailsAccordionItem
+              title="What can I ride after?"
+              content={details.ride_after}
+              isOpen={opened.indexOf('ride_after') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('ride_after', isOpen)
+              }
+            />
+          )}
+          {details.requirements && (
+            <DetailsAccordionItem
+              title="Requirements"
+              content={details.requirements}
+              isOpen={opened.indexOf('requirements') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('requirements', isOpen)
+              }
+            />
+          )}
+          {details.faqs && (
+            <DetailsAccordionItem
+              title="Training FAQs"
+              content={details.faqs}
+              isOpen={opened.indexOf('faqs') > -1}
+              onToggle={isOpen => this.handleToggleAccordion('faqs', isOpen)}
+            />
+          )}
+          {details.cancellation && (
+            <DetailsAccordionItem
+              title="Cancellation Policy"
+              content={details.cancellation}
+              isOpen={opened.indexOf('cancellation') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('cancellation', isOpen)
+              }
+            />
+          )}
         </div>
       </div>
     )
