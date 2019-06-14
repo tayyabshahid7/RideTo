@@ -60,7 +60,8 @@ class ResultsHeader extends React.Component {
               <span className={styles.infoCircle}>
                 <i className="fa fa-info-circle"></i>
               </span>{' '}
-              What is CBT training?
+              What is {getCourseTitle(courseType)}
+              {!getCourseTitle(courseType).includes('Training') && ' Training'}?
             </span>
             <img src={expandImg} alt="Open" />
           </button>
@@ -68,7 +69,10 @@ class ResultsHeader extends React.Component {
         <div className={styles.container}>
           <div className={styles.main}>
             <h1 className={styles.title}>
-              {getCourseTitle(courseType)} {this.props.postcode}
+              {!isFullLicence
+                ? getCourseTitle(courseType)
+                : 'Motorcycle Licence'}{' '}
+              {this.props.postcode}
             </h1>
             <Input
               value={postcode}
