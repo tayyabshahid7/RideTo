@@ -3,7 +3,8 @@ import styles from './styles.scss'
 import { getCourseTitle } from 'services/course'
 import Input from './Input'
 import moment from 'moment'
-import expandImg from 'assets/images/rideto/Expand.svg'
+import InfoBox from './InfoBox'
+import MediaQuery from 'react-responsive'
 
 class ResultsHeader extends React.Component {
   constructor(props) {
@@ -53,56 +54,63 @@ class ResultsHeader extends React.Component {
     const { postcode } = this.state
 
     return (
-      <React.Fragment>
-        <div className={styles.infoBox}>
-          <button className={styles.infoButton} onClick={showCourseTypeInfo}>
-            <span>
-              <span className={styles.infoCircle}>
-                <i className="fa fa-info-circle"></i>
-              </span>{' '}
-              What is {getCourseTitle(courseType)}
-              {!getCourseTitle(courseType).includes('Training') && ' Training'}?
-            </span>
-            <img src={expandImg} alt="Open" />
-          </button>
-        </div>
+      <div className={styles.background}>
+        <InfoBox
+          showCourseTypeInfo={showCourseTypeInfo}
+          courseType={courseType}
+          className={styles.hideDesktop}
+        />
         <div className={styles.container}>
           <div className={styles.main}>
-            <h1 className={styles.title}>
-              {!isFullLicence
-                ? getCourseTitle(courseType)
-                : 'Motorcycle Licence'}{' '}
-              {this.props.postcode}
-            </h1>
-            <Input
-              value={postcode}
-              label="Postcode"
-              onChange={this.handlePostcodeChange}
-              onSubmit={this.handlePostcodeSubmit}
-            />
-            <Input
-              value={courseType}
-              label="Course"
-              select
-              chevron
-              options={courseTypesOptions}
-              onChange={this.handleCourseChange}
-            />
-            {!isFullLicence && (
+            <div className={styles.titles}>
+              <h2 className={styles.subtitle}>
+                Book Motorcycle Training Near You
+              </h2>
+              <h1 className={styles.title}>
+                {!isFullLicence
+                  ? getCourseTitle(courseType)
+                  : 'Motorcycle Licence'}{' '}
+                {this.props.postcode}
+              </h1>
+            </div>
+            <div className={styles.formGroupWrap}>
               <Input
-                value={
-                  date ? moment(date).format('ddd Do MMMM') : 'Select date'
-                }
-                label="Date"
-                chevron
-                disabled
-                button
-                onClick={handleMobileDateClick}
+                value={postcode}
+                label="Postcode"
+                onChange={this.handlePostcodeChange}
+                onSubmit={this.handlePostcodeSubmit}
               />
-            )}
+              <Input
+                value={courseType}
+                label="Course"
+                select
+                chevron
+                options={courseTypesOptions}
+                onChange={this.handleCourseChange}
+              />
+              {!isFullLicence && (
+                <Input
+                  value={
+                    date ? moment(date).format('ddd Do MMMM') : 'Select date'
+                  }
+                  label="Date"
+                  chevron
+                  disabled
+                  button
+                  onClick={handleMobileDateClick}
+                  className={styles.hideDesktop}
+                />
+              )}
+              <MediaQuery query="(min-width: 769px)">
+                <InfoBox
+                  showCourseTypeInfo={showCourseTypeInfo}
+                  courseType={courseType}
+                />
+              </MediaQuery>
+            </div>
           </div>
         </div>
-      </React.Fragment>
+      </div>
     )
   }
 }
