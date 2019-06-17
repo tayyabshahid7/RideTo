@@ -655,16 +655,29 @@ class ResultPage extends Component {
                   {hasPartnerResults ? (
                     <React.Fragment>
                       {!isFullLicence && (
-                        <DateSelector
-                          date={date}
-                          handleSetDate={handleSetDate}
-                          className={styles.dateSelector}
-                          courseType={courseType}
-                        />
+                        <React.Fragment>
+                          <div
+                            className={classnames(
+                              styles.instruction,
+                              styles.instructionDate
+                            )}>
+                            Choose a date
+                          </div>
+                          <DateSelector
+                            date={date}
+                            handleSetDate={handleSetDate}
+                            className={styles.dateSelector}
+                            courseType={courseType}
+                          />
+                        </React.Fragment>
                       )}
                       {!loading && (
                         <React.Fragment>
-                          <div className={classnames(styles.instruction)}>
+                          <div
+                            className={classnames(
+                              styles.instruction,
+                              isFullLicence && styles.instructionFullLicence
+                            )}>
                             Select a location
                           </div>
                           <div

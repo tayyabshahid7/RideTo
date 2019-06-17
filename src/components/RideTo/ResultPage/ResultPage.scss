@@ -172,13 +172,25 @@
 }
 
 .instruction {
-  margin-top: 65px;
+  margin-top: 2rem;
   margin-bottom: 0;
 
   @media (max-width: 768px) {
     margin-top: 10px;
     margin-bottom: 15px;
   }
+}
+
+.instructionDate {
+  margin-top: 1rem;
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.instructionFullLicence {
+  margin-top: 1rem;
 }
 
 .dateSelector {
