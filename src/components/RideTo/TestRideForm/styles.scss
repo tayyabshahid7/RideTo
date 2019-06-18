@@ -4,6 +4,7 @@
   background-color: #f1f1f1;
   min-height: calc(100vh - 56px);
   font-family: var(--font-proxima);
+  overflow: hidden;
 
   @media (min-width: 801px) {
     min-height: calc(100vh - 80px);
@@ -15,6 +16,7 @@
   flex-direction: column;
   flex-grow: 1;
   align-items: center;
+  width: 100%;
   max-width: 1044px;
   padding: 0 24px;
 }
@@ -34,11 +36,19 @@
   font-weight: bold;
 }
 
+.steps {
+  text-align: right;
+}
+
 .stepsList {
-  display: flex;
+  display: none;
   justify-content: space-between;
   padding: 0;
   margin: 0.5rem 0 0;
+
+  @media (min-width: 801px) {
+    display: flex;
+  }
 
   li {
     display: block;
@@ -60,10 +70,10 @@
   justify-content: center;
   flex-grow: 1;
   width: 100%;
-  max-width: 480px;
 }
 
 .formTitle {
+  text-align: center;
   margin-bottom: 1.5rem;
   color: #707070;
   font-weight: bold;
@@ -77,6 +87,11 @@
 .formControls {
   width: 100%;
   margin-bottom: 24px;
+  max-width: 380px;
+
+  @media (min-width: 801px) {
+    max-width: 480px;
+  }
 }
 
 .inputGroup {
@@ -95,16 +110,21 @@
 }
 
 .icon {
+  display: none;
   border-right: 0;
   line-height: 70px;
   font-size: 2.5rem;
-
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
   color: #c2c2c2;
+
+  @media (min-width: 801px) {
+    display: block;
+  }
 }
 
 .input {
+  width: 100%;
   font-size: 25px;
   flex-grow: 1;
   border-top-right-radius: 3px;
@@ -113,7 +133,9 @@
 }
 
 .icon + .input {
-  padding-right: 91px;
+  @media (min-width: 801px) {
+    padding-right: 91px;
+  }
 }
 
 .footer {
@@ -139,6 +161,11 @@
 .nextButton {
   background-color: var(--primary-color);
   color: #fff;
+  max-width: 380px;
+
+  @media (min-width: 801px) {
+    max-width: 480px;
+  }
 }
 
 .backButton {
