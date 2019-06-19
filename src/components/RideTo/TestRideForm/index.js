@@ -104,14 +104,14 @@ class TestRideForm extends Component {
       time
     } = this.state
     const data = {
-      bike_name: name,
-      location,
-      licence,
+      email,
+      bike: name,
+      postcode: location,
+      current_licence: licence,
       date,
-      time,
-      email
+      period: time
     }
-    const path = `test-ride-submit`
+    const path = `bike-reviews/new-message`
 
     this.setState({
       loading: true

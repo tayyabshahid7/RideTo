@@ -95,7 +95,7 @@ export function mapBike(bike) {
     licence: bike.required_licence,
     requiredLicence: bike.required_licence,
     range: bike.miles_range,
-    bookLink: `/test-ride?id=${bike.id}`,
+    bookLink: `/bike-reviews/test-ride?id=${bike.id}`,
     score: bike.rideto_score,
     insuranceGroup: bike.insurance_group,
     bodyContent: bike.content
