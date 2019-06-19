@@ -102,6 +102,12 @@ export function capitalizeFirstLetter(string) {
   return string.substr(0, 1).toUpperCase() + string.substr(1).toLowerCase()
 }
 
+export function getParam(search, name) {
+  const params = new URLSearchParams(search)
+  const value = params.get(name)
+  return value
+}
+
 export function setParam(search, name, value) {
   const params = new URLSearchParams(search)
   params.set(name, value)
