@@ -79,9 +79,7 @@ class NavigationItemPostcode extends Component {
               </Button>
             </React.Fragment>
           ) : (
-            <div className={styles.subtitleInner}>
-              {postcode} <i className="fas fa-search fa-lg" />
-            </div>
+            postcode
           )}
         </div>
       </div>

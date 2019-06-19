@@ -1,25 +1,26 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styles from './styles.scss'
-import moment from 'moment'
+import NavigationItem from './NavigationItem'
+import NavigationItemPostcode from './NavigationItemPostcode'
+import NavigationItemCourse from './NavigationItemCourse'
 import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
-import { DAY_FORMAT5 } from 'common/constants'
-import classnames from 'classnames'
-import { AVAILABLE_COURSE_TYPES } from 'common/constants'
+import { fetchCoursesTypes } from 'services/course-type'
 
 class NavigationComponent extends React.Component {
   constructor(props) {
     super(props)
-
     this.state = {
-      formCourseType: this.props.courseType,
-      date: this.props.date,
-      postcode: this.props.postcode,
-      postcodeChanged: false
+      courseTypesOptions: []
     }
+  }
 
-    this.handleCourseChange = this.handleCourseChange.bind(this)
-    this.handleInputChange = this.handleInputChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
+  async componentDidMount() {
+    const { postcode } = this.props
+    const result = await fetchCoursesTypes(postcode || '')
+    const courseTypes = result.results
+    this.setState({
+      courseTypesOptions: courseTypes
+    })
   }
 
   handleNavClick(navIndex, fullWidth) {
@@ -45,126 +46,61 @@ class NavigationComponent extends React.Component {
     window.location = `${url}?${params.join('&')}`
   }
 
-  handleCourseChange(event) {
-    this.setState({
-      formCourseType: event.target.value
-    })
-    this.props.onCourseChange(event.target.value)
+  handleNavPostcodeClick(postcode) {
+    this.props.onPostcodeChange(postcode)
   }
 
-  handleInputChange({ target }) {
-    this.setState({
-      postcode: target.value,
-      postcodeChanged: true
-    })
-  }
-
-  handleSubmit(event) {
-    const { postcode } = this.state
-
-    event.preventDefault()
-
-    if (postcode.length > 0) {
-      this.props.onPostcodeChange(postcode)
-    }
+  handleNavCourseClick(course) {
+    this.props.onCourseChange(course)
   }
 
   render() {
-    const {
-      onNavBack,
-      courseType,
-      date,
-      showDatePicker,
-      handleMobileDateClick,
-      courseTypesOptions,
-      showIcons = true
-    } = this.props
-    const { postcode, formCourseType, postcodeChanged } = this.state
-    const isFullLicence = courseType === 'FULL_LICENCE'
-    const dateString = date ? moment(date).format(DAY_FORMAT5) : 'Select date'
+    const { navigation, onNavBack, courseType } = this.props
+    const { courseTypesOptions } = this.state
+    const fullWidth = navigation.length === 1
 
     return (
-      <div
-        className={classnames(
-          styles.container,
-          showDatePicker && styles.hiddenOnDesktop,
-          !showIcons && styles.hideIcons
-        )}>
+      <div className={styles.container}>
         {onNavBack && (
           <div className={styles.backItem} onClick={onNavBack}>
             <img src={ArrowLeft} alt="" />
           </div>
         )}
 
-        <form className={styles.navItemContainer} onSubmit={this.handleSubmit}>
-          <div style={{ width: '50%', flexGrow: '1' }}>
-            {courseTypesOptions ? (
-              <Fragment>
-                <span
-                  className={classnames(
-                    styles.selectLabel,
-                    isFullLicence && styles.selectLabelFull
-                  )}>
-                  {!!courseTypesOptions.length &&
-                    courseTypesOptions.find(
-                      opt => opt.constant === formCourseType
-                    ).name}
-                </span>
-                <select
-                  className={styles.navInput}
-                  value={formCourseType}
-                  onChange={this.handleCourseChange}>
-                  {courseTypesOptions.map(
-                    (course_type, index) =>
-                      AVAILABLE_COURSE_TYPES.includes(course_type.constant) && (
-                        <option value={course_type.constant} key={index}>
-                          {course_type.name}
-                        </option>
-                      )
-                  )}
-                </select>
-                <i
-                  className={classnames(
-                    'fas fa-chevron-down fa-lg',
-                    styles.chev,
-                    isFullLicence && styles.chevFull
-                  )}
-                />
-              </Fragment>
-            ) : (
-              'No courses'
-            )}
-          </div>
-          {!isFullLicence && (
-            <div style={{ width: '50%', borderLeft: '1px solid lightgrey' }}>
-              <button
-                type="button"
-                className={styles.navInput}
-                onClick={handleMobileDateClick}>
-                {dateString}
-              </button>
-              <i
-                className={classnames('fas fa-chevron-down fa-lg', styles.chev)}
+        {navigation.map((naviItem, index) => {
+          if (index === 0 && naviItem.title.toUpperCase() === 'POSTCODE') {
+            return (
+              <NavigationItemPostcode
+                {...naviItem}
+                fullWidth={fullWidth}
+                onPostcodeUpdate={postcode =>
+                  this.handleNavPostcodeClick(postcode)
+                }
+                key={naviItem.title}
               />
-            </div>
-          )}
-          <div style={{ display: 'flex', paddingLeft: '10%' }}>
-            <i className="fas fa-search fa-lg" />
-            <input
-              className={classnames(styles.navInput, styles.navInputText)}
-              type="text"
-              onChange={this.handleInputChange}
-              value={postcode}
-            />
-          </div>
-          {postcodeChanged && (
-            <div className={styles.submitButtonWrap}>
-              <button type="submit" className={styles.submitButton}>
-                Search Training
-              </button>
-            </div>
-          )}
-        </form>
+            )
+          } else if (naviItem.title.toUpperCase() === 'COURSE') {
+            return (
+              <NavigationItemCourse
+                {...naviItem}
+                fullWidth={fullWidth}
+                courseType={courseType}
+                courseTypesOptions={courseTypesOptions}
+                onCourseUpdate={course => this.handleNavCourseClick(course)}
+                key={naviItem.title}
+              />
+            )
+          } else {
+            return (
+              <NavigationItem
+                {...naviItem}
+                fullWidth={fullWidth}
+                onClick={() => this.handleNavClick(index, fullWidth)}
+                key={naviItem.title}
+              />
+            )
+          }
+        })}
       </div>
     )
   }
