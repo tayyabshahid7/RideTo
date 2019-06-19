@@ -5,8 +5,14 @@ import { getCourseTitle } from 'services/course'
 import expandImg from 'assets/images/rideto/Expand.svg'
 import expandImgWhite from 'assets/images/rideto/AddWhite.svg'
 import MediaQuery from 'react-responsive'
+import { getStaticData } from 'services/page'
 
 function InfoBox({ showCourseTypeInfo, courseType, className }) {
+  const staticData = getStaticData('RIDETO_PAGE')
+  const { details } = staticData.courseTypes.find(
+    ({ constant }) => constant === courseType
+  )
+
   return (
     <div className={classnames(styles.infoBox, className)}>
       <button className={styles.infoButton} onClick={showCourseTypeInfo}>
@@ -23,10 +29,7 @@ function InfoBox({ showCourseTypeInfo, courseType, className }) {
         <MediaQuery query="(min-width: 769px)">
           <img className={styles.expandWhite} src={expandImgWhite} alt="Open" />
         </MediaQuery>
-        <div className={styles.infoContent}>
-          Typically completed between 6 to 8 hours and requiring a base of
-          ability and knowledge relating to the UK Highway Code.
-        </div>
+        <div className={styles.infoContent}>{details.description}</div>
       </button>
     </div>
   )
