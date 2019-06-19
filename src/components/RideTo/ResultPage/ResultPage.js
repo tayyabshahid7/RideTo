@@ -586,32 +586,6 @@ class ResultPage extends Component {
 
     return (
       <div className={styles.container}>
-        {/*
-        <NavigationComponent
-          onPostcodeChange={postcode => {
-            this.handlePostcodeChange(postcode)
-          }}
-          onCourseChange={course => {
-            this.handleCourseChange(course)
-          }}
-          postcode={postcode}
-          courseType={courseType}
-          navigation={navigation}
-          date={date}
-          showDatePicker
-          handleMobileDateClick={this.handleMobileDateClick}
-          courseTypesOptions={courseTypesOptions}
-        />
-        */}
-        {/*
-        <DesktopHeader
-          courseType={courseType}
-          postcode={postcode}
-          courseTypesOptions={courseTypesOptions}
-          handlePostcodeChange={this.handlePostcodeChange}
-          handleCourseChange={this.handleCourseChange}
-        />
-        */}
         <ResultsHeader
           courseType={courseType}
           postcode={postcode}
@@ -624,26 +598,6 @@ class ResultPage extends Component {
           showCourseTypeInfo={this.showCourseTypeInfo}
         />
         <Container className={styles.pageContainer}>
-          {/*
-          {hasPartnerResults && (
-            <Row>
-              <Col md="6">
-                {!isFullLicence ? (
-                  <React.Fragment>
-                    <div className={styles.headingDesktop}>Choose a Date</div>
-                    <div className={styles.headingMobile}>
-                      {getCourseTitle(courseType)} {postcode}
-                    </div>
-                  </React.Fragment>
-                ) : (
-                  <div className={styles.headingMobile}>
-                    Motorcycle Licence {postcode}
-                  </div>
-                )}
-              </Col>
-            </Row>
-          )}
-          */}
           <Row>
             <Col>
               <Loading
