@@ -34,11 +34,12 @@ function Input({ value, name, onChange, icon, placeholder }) {
             <option value="" disabled>
               {placeholder}
             </option>
-            <option>CBT Certificate</option>
-            <option>UK Driving Licence</option>
-            <option>UK Provisional Licence</option>
-            <option>EU Licence (with UK counterpart licence number)</option>
-            <option>None</option>
+            <option>CBT</option>
+            <option>A1 Motorcycle Licence</option>
+            <option>A2 Motorcycle Licence</option>
+            <option>Full (A) Motorcycle Licence</option>
+            <option>Driving Licence Pre 2001</option>
+            <option>No Bike Licence</option>
           </select>
         ) : (
           <Fragment>
