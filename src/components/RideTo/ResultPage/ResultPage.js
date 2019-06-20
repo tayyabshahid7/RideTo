@@ -35,6 +35,9 @@ import {
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 
+import smoothscroll from 'smoothscroll-polyfill'
+smoothscroll.polyfill()
+
 class ResultPage extends Component {
   constructor(props) {
     super(props)
@@ -70,6 +73,8 @@ class ResultPage extends Component {
     this.handleDissmiss = this.handleDissmiss.bind(this)
 
     window.sessionStorage.removeItem('trainings')
+
+    this.selectButton = React.createRef()
   }
 
   async componentDidMount() {
@@ -172,7 +177,19 @@ class ResultPage extends Component {
   }
 
   onUpdate(data) {
+    const { courseType } = this.props
+    const { instantDate } = this.state
+
     this.setState({ ...data })
+
+    if (instantDate && data.bike_hire && courseType !== 'FULL_LICENCE') {
+      setTimeout(() => {
+        this.selectButton.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end'
+        })
+      }, 99)
+    }
   }
 
   timeDayChange({ time, day, status }) {
@@ -318,6 +335,7 @@ class ResultPage extends Component {
   ) {
     return (
       <RideToButton
+        ref={this.selectButton}
         className={classnames(
           styles.action,
           bookNowDisabled &&
@@ -475,7 +493,8 @@ class ResultPage extends Component {
       bike_hire: null,
       selectedLicenceType: null,
       selectedPackageHours: null,
-      showDayOfWeekPicker: false
+      showDayOfWeekPicker: false,
+      instantDate: null
     })
   }
 
