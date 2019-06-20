@@ -214,6 +214,9 @@ class BikeSalesListing extends Component {
   }
 
   handlePageChange(current, pageSize) {
+    // Scroll to top of page if pagination changes
+    window.scrollTo(0, 0)
+
     this.setState({
       page: current
     })
