@@ -35,6 +35,18 @@ class AvailabilityCalendar extends Component {
     ) {
       this.setFirstAvailableDate(days, isInstantBook)
     }
+
+    if (!selectedDate) {
+      this.findFirstMonth(days)
+    }
+  }
+
+  findFirstMonth(days) {
+    const { handleNextMonth } = this.props
+
+    if (!days.some(({ disabled }) => !disabled)) {
+      handleNextMonth()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
