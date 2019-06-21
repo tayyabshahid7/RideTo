@@ -70,10 +70,15 @@ class CourseInformationComponent extends React.Component {
         </div>
         <div className={styles.locationInfo}>
           <div className={styles.subtitle}>Location</div>
-          <div className={styles.address}>{`${course.place} ${
-            course.postcode
-          }`}</div>
-          <MapComponent className={styles.mapWrapper} courses={[course]} />
+          <div
+            className={
+              styles.address
+            }>{`${course.place} ${course.postcode}`}</div>
+          <MapComponent
+            className={styles.mapWrapper}
+            courses={[course]}
+            sidebar
+          />
         </div>
         <div className={styles.instructor}>
           <div className={styles.subtitle}>The Instructor</div>
