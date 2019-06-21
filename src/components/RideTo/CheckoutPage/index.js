@@ -17,6 +17,12 @@ function addCheckoutToHeader() {
     )
 }
 
+function backToResults(postcode) {
+  const path = `/course-location/?postcode=${postcode}&courseType=LICENCE_CBT`
+
+  window.location = path
+}
+
 class CheckoutPageContainer extends Component {
   constructor(props) {
     super(props)
@@ -30,6 +36,10 @@ class CheckoutPageContainer extends Component {
       console.log('Error', error)
     }
     const supplier = getSupplier()
+
+    if (!this.trainings) {
+      backToResults(supplier.postcode)
+    }
 
     this.state = {
       loading: false,
