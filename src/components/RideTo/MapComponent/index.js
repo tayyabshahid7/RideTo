@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import classnames from 'classnames'
 import MapGL, { Marker, NavigationControl } from 'react-map-gl'
 import styles from './styles.scss'
 import { MAPBOX_KEY } from 'common/constants'
-import { IconMapPin, IconUser } from 'assets/icons'
+import { IconMapPin, IconUser, IconBike } from 'assets/icons'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import WebMercatorViewport from 'viewport-mercator-project'
@@ -122,6 +122,23 @@ class MapComponent extends Component {
   }
 
   renderMarker(course, index, available = true) {
+    const { sidebar } = this.props
+
+    if (sidebar && course.lng && course.lat) {
+      return (
+        <Marker
+          key={course.id}
+          longitude={course.lng}
+          latitude={course.lat}
+          offsetLeft={-25}
+          offsetTop={-64}>
+          <div id={`user-pin`} className={styles.coursePin}>
+            <IconBike className={styles.userIcon} />
+          </div>
+        </Marker>
+      )
+    }
+
     if (course.lng && course.lat) {
       return (
         <Marker
@@ -186,8 +203,14 @@ class MapComponent extends Component {
               offsetLeft={-25}
               offsetTop={-64}>
               <div id={`user-pin`} className={styles.coursePin}>
-                <IconMapPin className={styles.mapPinBg} />
-                <IconUser className={styles.userIcon} />
+                {!checkout ? (
+                  <Fragment>
+                    <IconMapPin className={styles.mapPinBg} />
+                    <IconUser className={styles.userIcon} />
+                  </Fragment>
+                ) : (
+                  <IconBike className={styles.userIcon} />
+                )}
               </div>
             </Marker>
           )}
