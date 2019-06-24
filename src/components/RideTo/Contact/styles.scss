@@ -95,10 +95,13 @@
   margin-bottom: 1rem;
 }
 
-.mapCol {
+.mapCol,
+.successMessage {
   background-color: #fff;
   box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+}
 
+.mapCol {
   @media (min-width: 769px) {
     width: 40%;
   }
@@ -178,4 +181,27 @@
   font-family: var(--font-rift);
   font-size: 20px;
   font-weight: bold;
+}
+
+.successMessage {
+  padding: 2rem;
+  text-align: center;
+
+  h3 {
+    margin-bottom: 1rem;
+  }
+}
+
+.back {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--primary-color);
+}
+
+.error {
+  margin-top: 0.75rem;
+  color: var(--danger-color);
 }

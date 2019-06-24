@@ -4,19 +4,35 @@ import call from 'assets/icons/contact/call.svg'
 import chat from 'assets/icons/contact/chat.svg'
 import MapComponent from 'components/RideTo/MapComponent'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
-
-// constructor(props) {
-//   super(props)
-
-//   this.state = {
-//     name: '',
-//     email: '',
-//     message: ''
-//   }
-// }
+import { post } from 'services/api'
 
 function Contact() {
   const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [message, setMessage] = useState('')
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async event => {
+    event.preventDefault()
+
+    setError('')
+
+    try {
+      await post('contact/new-message', { name, email, message })
+      setSent(true)
+    } catch ({ message }) {
+      setError(message)
+    }
+  }
+
+  const handleBack = () => {
+    setName('')
+    setEmail('')
+    setMessage('')
+    setSent(false)
+    setError('')
+  }
 
   return (
     <Fragment>
@@ -27,14 +43,16 @@ function Contact() {
               <img src={chat} alt="Chat" />
               <div>
                 <h2>Chat with us</h2>
-                <p>Mon-Sat 9am-6pm • Sun Closed</p>
+                <p>Mon-Sat 9am - 6pm • Sun Closed</p>
               </div>
             </div>
             <div className={styles.keyInfoItem}>
               <img src={call} alt="Call" />
               <div>
                 <h2>020 3603 9652</h2>
-                <p className={styles.callTimes}>Mon-Sat 9am-6pm • Sun Closed</p>
+                <p className={styles.callTimes}>
+                  Mon-Sat 9am - 6pm • Sun Closed
+                </p>
               </div>
             </div>
           </div>
@@ -50,35 +68,65 @@ function Contact() {
                 especially over a good coffee. Drop us a line and one of the
                 team will be in touch.
               </p>
-              <form className={styles.form}>
-                <div>
-                  <label htmlFor="name">Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    onChange={event => setName(event.target.value)}
-                    value={name}
-                  />
+              {!sent ? (
+                <form className={styles.form} onSubmit={handleSubmit}>
+                  <div>
+                    <label htmlFor="name">Name</label>
+                    <input
+                      required
+                      type="text"
+                      id="name"
+                      onChange={event => setName(event.target.value)}
+                      value={name}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email">Email Address</label>
+                    <input
+                      required
+                      type="text"
+                      id="email"
+                      onChange={event => setEmail(event.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="message">
+                      Tell us what you want to discuss...
+                    </label>
+                    <textarea
+                      required
+                      type="text"
+                      id="message"
+                      onChange={event =>
+                        setMessage(event.target.value)
+                      }></textarea>
+                  </div>
+                  <button type="submit" className={styles.submitButton}>
+                    <span className={styles.submitButtonText}>
+                      Send us your message
+                    </span>
+                    <span>
+                      <img src={ButtonArrowWhite} alt="Go" />
+                    </span>
+                  </button>
+                  {error && <div className={styles.error}>{error}</div>}
+                </form>
+              ) : (
+                <div className={styles.form}>
+                  <div className={styles.successMessage}>
+                    <h3>
+                      <span className={styles.tick}>
+                        <i className="fa fa-check" />
+                      </span>{' '}
+                      Message sent!
+                    </h3>
+                    <p>We'll be back in touch as soon as possible.</p>
+                    <button className={styles.back} onClick={handleBack}>
+                      Send another message
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <label htmlFor="email">Email Address</label>
-                  <input type="text" id="email" />
-                </div>
-                <div>
-                  <label htmlFor="message">
-                    Tell us what you want to discuss...
-                  </label>
-                  <textarea type="text" id="message"></textarea>
-                </div>
-                <button type="submit" className={styles.submitButton}>
-                  <span className={styles.submitButtonText}>
-                    Send us your message
-                  </span>
-                  <span>
-                    <img src={ButtonArrowWhite} alt="Go" />
-                  </span>
-                </button>
-              </form>
+              )}
             </div>
             <div className={styles.mapCol}>
               <MapComponent
