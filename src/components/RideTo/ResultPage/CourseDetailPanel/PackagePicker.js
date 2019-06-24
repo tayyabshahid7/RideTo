@@ -28,7 +28,7 @@ class PackagePicker extends Component {
           styles.packageWrapper,
           isWidget && styles.packageWrapperWidget
         )}>
-        <label id="choose-licence" className={styles.subtitle1}>
+        <label id="choose-package" className={styles.subtitle1}>
           Training Package
         </label>
         <ul className={styles.packageButtonList}>
