@@ -111,7 +111,7 @@ class TestRideForm extends Component {
       date,
       period: time
     }
-    const path = `bike-reviews/new-message`
+    const path = `bike-reviews/new-message/`
 
     this.setState({
       loading: true
