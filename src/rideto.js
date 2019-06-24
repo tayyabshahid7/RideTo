@@ -39,3 +39,5 @@ mountComponent('BikeSales', 'bike-sales-root')
 mountComponent('CourseTypeLanding', 'course-type-root')
 
 mountComponent('TestRideForm', 'test-ride-form-root')
+
+mountComponent('Contact', 'contact-root')
