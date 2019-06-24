@@ -99,6 +99,10 @@ export const COURSETYPE_ORDER = [
   'TFL_ONE_ON_ONE'
 ]
 
+export const COURSETYPE_ORDER_SLIDER = COURSETYPE_ORDER.filter(
+  course => course !== 'TFL_ONE_ON_ONE'
+)
+
 export const TEST_STATUS_CHOICES = {
   TEST_STATUS_NO_BOOKING: 'No Booking',
   TEST_STATUS_NO_NAME: 'Booked, NO Name',
