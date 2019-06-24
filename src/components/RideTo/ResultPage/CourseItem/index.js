@@ -96,7 +96,7 @@ class CourseItem extends Component {
             className={styles.photo}
             onClick={() => handleDetailClick(course)}>
             <LazyLoadImage
-              src={course.image}
+              src={course.image_thumbnail || course.image}
               className={styles.image}
               alt="logo"
             />
