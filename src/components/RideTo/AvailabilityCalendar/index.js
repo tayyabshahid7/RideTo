@@ -7,6 +7,7 @@ import CalendarTime from './CalendarTime'
 import CalendarSpacesAvailable from './CalendarSpacesAvailable'
 import moment from 'moment'
 import { BANK_HOLIDAYS } from 'common/constants'
+import { fetchWidgetCourses } from 'services/course'
 
 const isBankHoliday = date => {
   return BANK_HOLIDAYS.includes(date)
@@ -41,11 +42,27 @@ class AvailabilityCalendar extends Component {
     }
   }
 
-  findFirstMonth(days) {
+  async findFirstMonth(days) {
     const { handleNextMonth } = this.props
 
     if (!days.some(({ disabled }) => !disabled)) {
-      handleNextMonth()
+      const {
+        course,
+        courseType,
+        calendar: { year, month }
+      } = this.props
+      let momentDate = moment(new Date(year, month, 1)).add(1, 'months')
+
+      const courses = await fetchWidgetCourses(
+        course.id,
+        momentDate.format('YYYY-MM-DD'),
+        momentDate.endOf('month').format('YYYY-MM-DD'),
+        courseType
+      )
+
+      if (courses.length) {
+        handleNextMonth()
+      }
     }
   }
 
