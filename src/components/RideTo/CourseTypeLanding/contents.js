@@ -1,7 +1,5 @@
 import React, { Fragment } from 'react'
-import infoGraphic from 'assets/images/infographic-website@2x.png'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
-import fastTrack from 'assets/images/fast-track.png'
 import styles from './styles.scss'
 import ShowMore from './ShowMore'
 
@@ -95,7 +93,7 @@ export const CONTENT = {
         </div>
         <a href="/">
           <img
-            src={fastTrack}
+            src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/fast-track.png"
             className={styles.fastTrackAdvert}
             alt="Full licence fast-track package"
           />
@@ -154,7 +152,10 @@ export const CONTENT = {
           </ShowMore>
         </div>
         <div style={{ marginTop: '2rem' }}>
-          <img src={infoGraphic} alt="Info graphic" />
+          <img
+            src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/infographic-website%402x.png"
+            alt="Info graphic"
+          />
         </div>
         <div>
           <h2>Course details</h2>
