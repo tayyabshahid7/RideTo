@@ -31,6 +31,13 @@ import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 
+function flashDiv(id) {
+  let el = document.getElementById(id)
+  el.classList.remove('highlight-required')
+  el.scrollIntoView()
+  el.classList.add('highlight-required')
+}
+
 class ResultPage extends Component {
   constructor(props) {
     super(props)
@@ -335,42 +342,53 @@ class ResultPage extends Component {
       <RideToButton
         className={classnames(
           styles.action,
-          bookNowDisabled &&
-            this.state.activeTab === 3 &&
-            isFullLicence &&
-            styles.bookNowDisabled,
           this.state.activeTab === 3 && styles.actionStatic
         )}
         onClick={() => {
           if (this.state.activeTab !== 3) {
             this.setState({ activeTab: 3 })
           } else {
+            if (isFullLicence && bookNowDisabled) {
+              if (!bike_hire) {
+                flashDiv('choose-bike')
+              }
+
+              if (!this.state.selectedLicenceType) {
+                flashDiv('choose-licence')
+              }
+
+              if (!this.state.selectedPackageHours) {
+                flashDiv('choose-package')
+                return
+              }
+
+              if (
+                showDayOfWeekPicker &&
+                this.state.selectedTimeDays.length < 1
+              ) {
+                flashDiv('choose-times')
+                return
+              }
+            }
+
             if (isFullLicence && !showDayOfWeekPicker) {
               this.setState({ showDayOfWeekPicker: true })
               return
             }
             if (!bookNowDisabled) {
               this.onBookNow()
-            } else {
+            } else if (!isFullLicence) {
               let chooseTimeDiv = document.getElementById(
                 'choose-time-validate'
               )
 
               if (!instantDate) {
-                let chooseDateDiv = document.getElementById('choose-date')
-                chooseDateDiv.classList.remove('highlight-required')
-                chooseDateDiv.scrollIntoView()
-                chooseDateDiv.classList.add('highlight-required')
+                flashDiv('choose-date')
               }
               if (!instantCourse && chooseTimeDiv) {
-                chooseTimeDiv.classList.remove('highlight-required')
-                chooseTimeDiv.scrollIntoView()
-                chooseTimeDiv.classList.add('highlight-required')
+                flashDiv('choose-time-validate')
               } else if (!bike_hire) {
-                let bikeTypeDiv = document.getElementById('choose-bike')
-                bikeTypeDiv.classList.remove('highlight-required')
-                bikeTypeDiv.scrollIntoView()
-                bikeTypeDiv.classList.add('highlight-required')
+                flashDiv('choose-bike')
               }
             }
           }

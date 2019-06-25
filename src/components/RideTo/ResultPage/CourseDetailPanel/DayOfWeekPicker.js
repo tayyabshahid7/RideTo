@@ -75,7 +75,7 @@ class DayOfWeekPicker extends Component {
 
     return (
       <Fragment>
-        <div className={styles.availabilityWrapper}>
+        <div id="choose-times" className={styles.availabilityWrapper}>
           <div
             className={classnames(
               styles.availabilityText,
