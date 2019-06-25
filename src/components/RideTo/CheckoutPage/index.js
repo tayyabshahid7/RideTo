@@ -5,6 +5,9 @@ import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
 import { getSupplier, isInstantBook } from 'services/page'
 import { createPOM } from 'utils/helper'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import styles from './styles.scss'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
@@ -64,22 +67,40 @@ class CheckoutPageContainer extends Component {
       newCheckoutData.addons = [...newCheckoutData.addons, this.POM]
     }
 
-    this.setState({
-      checkoutData: newCheckoutData,
-      hasPOM: true
-    })
+    this.setState(
+      {
+        checkoutData: newCheckoutData,
+        hasPOM: true
+      },
+      () => {
+        toast.dismiss('remove')
+        toast('Peace of mind policy added!', {
+          toastId: 'add',
+          className: styles.toastAdd
+        })
+      }
+    )
   }
 
   handleRemovePOM() {
     const { checkoutData } = this.state
 
-    this.setState({
-      checkoutData: {
-        ...checkoutData,
-        addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
+    this.setState(
+      {
+        checkoutData: {
+          ...checkoutData,
+          addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
+        },
+        hasPOM: false
       },
-      hasPOM: false
-    })
+      () => {
+        toast.dismiss('add')
+        toast('Peace of mind policy removed.', {
+          toastId: 'remove',
+          className: styles.toastRemove
+        })
+      }
+    )
   }
 
   handlePOMToggleClick() {
@@ -103,19 +124,27 @@ class CheckoutPageContainer extends Component {
     } = this.state
 
     return (
-      <StripeProvider apiKey={this.stripePublicKey}>
-        <Elements>
-          <CheckoutPage
-            checkoutData={checkoutData}
-            loading={loading}
-            supplier={supplier}
-            instantBook={instantBook}
-            trainings={trainings}
-            handlePOMToggleClick={this.handlePOMToggleClick}
-            hasPOM={hasPOM}
-          />
-        </Elements>
-      </StripeProvider>
+      <React.Fragment>
+        <ToastContainer
+          autoClose={2000}
+          hideProgressBar={true}
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
+        />
+        <StripeProvider apiKey={this.stripePublicKey}>
+          <Elements>
+            <CheckoutPage
+              checkoutData={checkoutData}
+              loading={loading}
+              supplier={supplier}
+              instantBook={instantBook}
+              trainings={trainings}
+              handlePOMToggleClick={this.handlePOMToggleClick}
+              hasPOM={hasPOM}
+            />
+          </Elements>
+        </StripeProvider>
+      </React.Fragment>
     )
   }
 }

@@ -52,3 +52,18 @@
     background: transparent;
   }
 }
+
+.toastAdd,
+.toastRemove {
+  font-family: var(--font-proxima) !important;
+}
+
+.toastAdd {
+  background: var(--primary-color) !important;
+  color: #fff !important;
+  font-weight: bold !important;
+}
+
+.toastRemove {
+  // background: var(--grey-color) !important;
+}
