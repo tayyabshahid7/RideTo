@@ -1,9 +1,11 @@
 import React, { Fragment } from 'react'
 import styles from './styles.scss'
-import DatePicker from 'react-datepicker'
+import DatePicker, { registerLocale } from 'react-datepicker'
+import enGB from 'date-fns/locale/en-GB'
 import classnames from 'classnames'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import moment from 'moment'
+registerLocale('en-GB', enGB)
 
 function Input({ value, name, onChange, icon, placeholder }) {
   return (
@@ -60,6 +62,7 @@ function Input({ value, name, onChange, icon, placeholder }) {
               }}
             />
             <DatePicker
+              locale="en-GB"
               className={styles.input}
               required
               name={name}
