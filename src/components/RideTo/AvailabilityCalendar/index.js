@@ -45,7 +45,9 @@ class AvailabilityCalendar extends Component {
   async findFirstMonth(days) {
     const { handleNextMonth } = this.props
 
-    if (!days.some(({ disabled }) => !disabled)) {
+    console.log(days)
+
+    if (days.length && !days.some(({ disabled }) => !disabled)) {
       const {
         course,
         courseType,
