@@ -387,6 +387,8 @@ class ResultPage extends Component {
                 flashDiv('choose-times')
                 return
               }
+
+              return
             }
 
             if (isFullLicence && !showDayOfWeekPicker) {
