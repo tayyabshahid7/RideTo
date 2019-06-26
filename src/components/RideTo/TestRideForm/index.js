@@ -58,6 +58,7 @@ class TestRideForm extends Component {
       showInitialBack: true,
       loading: false,
       submitted: false,
+      // submitted: true,
       error: ''
     }
 
@@ -162,9 +163,11 @@ class TestRideForm extends Component {
   }
 
   handleBackClick() {
-    const { step } = this.state
+    const { step, submitted } = this.state
 
-    if (step === 1) {
+    if (submitted) {
+      window.location = '/bike-reviews'
+    } else if (step === 1) {
       window.history.back()
     } else {
       this.setState({
@@ -270,11 +273,11 @@ class TestRideForm extends Component {
             )}
           </form>
           <div className={styles.footer}>
-            {!submitted && !(step === 1 && !showInitialBack) && (
+            {!(step === 1 && !showInitialBack) && (
               <button
                 className={styles.backButton}
                 onClick={this.handleBackClick}>
-                Back
+                {!submitted ? 'Back' : 'Back to bikes'}
               </button>
             )}
           </div>
