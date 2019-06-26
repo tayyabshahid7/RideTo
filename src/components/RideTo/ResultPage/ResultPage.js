@@ -34,7 +34,6 @@ import {
 } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
-
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
 
