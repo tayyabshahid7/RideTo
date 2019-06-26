@@ -73,7 +73,7 @@ class ResultPage extends Component {
 
     window.sessionStorage.removeItem('trainings')
 
-    this.selectButton = React.createRef()
+    this.bottomAnchor = React.createRef()
   }
 
   async componentDidMount() {
@@ -183,7 +183,7 @@ class ResultPage extends Component {
 
     if (instantDate && data.bike_hire && courseType !== 'FULL_LICENCE') {
       setTimeout(() => {
-        this.selectButton.current.scrollIntoView({
+        this.bottomAnchor.current.scrollIntoView({
           behavior: 'smooth',
           block: 'end'
         })
@@ -333,53 +333,55 @@ class ResultPage extends Component {
     showDayOfWeekPicker
   ) {
     return (
-      <RideToButton
-        ref={this.selectButton}
-        className={classnames(
-          styles.action,
-          bookNowDisabled &&
-            this.state.activeTab === 3 &&
-            isFullLicence &&
-            styles.bookNowDisabled,
-          this.state.activeTab === 3 && styles.actionStatic
-        )}
-        onClick={() => {
-          if (this.state.activeTab !== 3) {
-            this.setState({ activeTab: 3 })
-          } else {
-            if (isFullLicence && !showDayOfWeekPicker) {
-              this.setState({ showDayOfWeekPicker: true })
-              return
-            }
-            if (!bookNowDisabled) {
-              this.onBookNow()
+      <React.Fragment>
+        <RideToButton
+          className={classnames(
+            styles.action,
+            bookNowDisabled &&
+              this.state.activeTab === 3 &&
+              isFullLicence &&
+              styles.bookNowDisabled,
+            this.state.activeTab === 3 && styles.actionStatic
+          )}
+          onClick={() => {
+            if (this.state.activeTab !== 3) {
+              this.setState({ activeTab: 3 })
             } else {
-              let chooseTimeDiv = document.getElementById(
-                'choose-time-validate'
-              )
-
-              if (!instantDate) {
-                let chooseDateDiv = document.getElementById('choose-date')
-                chooseDateDiv.classList.remove('highlight-required')
-                chooseDateDiv.scrollIntoView()
-                chooseDateDiv.classList.add('highlight-required')
+              if (isFullLicence && !showDayOfWeekPicker) {
+                this.setState({ showDayOfWeekPicker: true })
+                return
               }
-              if (!instantCourse && chooseTimeDiv) {
-                chooseTimeDiv.classList.remove('highlight-required')
-                chooseTimeDiv.scrollIntoView()
-                chooseTimeDiv.classList.add('highlight-required')
-              } else if (!bike_hire) {
-                let bikeTypeDiv = document.getElementById('choose-bike')
-                bikeTypeDiv.classList.remove('highlight-required')
-                bikeTypeDiv.scrollIntoView()
-                bikeTypeDiv.classList.add('highlight-required')
+              if (!bookNowDisabled) {
+                this.onBookNow()
+              } else {
+                let chooseTimeDiv = document.getElementById(
+                  'choose-time-validate'
+                )
+
+                if (!instantDate) {
+                  let chooseDateDiv = document.getElementById('choose-date')
+                  chooseDateDiv.classList.remove('highlight-required')
+                  chooseDateDiv.scrollIntoView()
+                  chooseDateDiv.classList.add('highlight-required')
+                }
+                if (!instantCourse && chooseTimeDiv) {
+                  chooseTimeDiv.classList.remove('highlight-required')
+                  chooseTimeDiv.scrollIntoView()
+                  chooseTimeDiv.classList.add('highlight-required')
+                } else if (!bike_hire) {
+                  let bikeTypeDiv = document.getElementById('choose-bike')
+                  bikeTypeDiv.classList.remove('highlight-required')
+                  bikeTypeDiv.scrollIntoView()
+                  bikeTypeDiv.classList.add('highlight-required')
+                }
               }
             }
-          }
-        }}>
-        <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
-        <img src={ButtonArrowWhite} alt="arrow" />
-      </RideToButton>
+          }}>
+          <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
+          <img src={ButtonArrowWhite} alt="arrow" />
+        </RideToButton>
+        <div ref={this.bottomAnchor}></div>
+      </React.Fragment>
     )
   }
 
