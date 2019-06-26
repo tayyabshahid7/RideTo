@@ -245,6 +245,8 @@ class CourseAvailabilityComponent extends React.Component {
             disablePreviousDates
             course={course}
             courseType={courseType}
+            checkFutureMonth
+            loading={loadingCourses}
           />
           <BikePicker
             isCbt={isCbt}
