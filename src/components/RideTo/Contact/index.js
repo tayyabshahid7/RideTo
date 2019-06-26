@@ -5,6 +5,7 @@ import chat from 'assets/icons/contact/chat.svg'
 import MapComponent from 'components/RideTo/MapComponent'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import { post } from 'services/api'
+import MediaQuery from 'react-responsive'
 
 function Contact() {
   const [name, setName] = useState('')
@@ -41,20 +42,20 @@ function Contact() {
           <div className={styles.keyInfo}>
             <div className={styles.keyInfoItem}>
               <img src={chat} alt="Chat" />
-              <div>
+              <div className={styles.keyInfoItemText}>
                 <h2>Chat with us</h2>
                 <p>Mon-Sat 9am - 6pm • Sun Closed</p>
               </div>
+              <div className={styles.keyInfoItemTextMobile}>Chat</div>
             </div>
-            <div className={styles.keyInfoItem}>
+            <a className={styles.keyInfoItem} href="tel:+442036039652">
               <img src={call} alt="Call" />
-              <div>
+              <div className={styles.keyInfoItemText}>
                 <h2>020 3603 9652</h2>
-                <p className={styles.callTimes}>
-                  Mon-Sat 9am - 6pm • Sun Closed
-                </p>
+                <p>Mon-Sat 9am - 6pm • Sun Closed</p>
               </div>
-            </div>
+              <div className={styles.keyInfoItemTextMobile}>Call</div>
+            </a>
           </div>
         </div>
       </section>
@@ -63,54 +64,67 @@ function Contact() {
           <div className={styles.bodyRow}>
             <div className={styles.formCol}>
               <h2 className={styles.formTitle}>Send us a message</h2>
-              <p>
+              <p className={styles.introText}>
                 Got a question? We love to talk motorbikes, marketing and ideas,
                 especially over a good coffee. Drop us a line and one of the
                 team will be in touch.
               </p>
               {!sent ? (
-                <form className={styles.form} onSubmit={handleSubmit}>
-                  <div>
-                    <label htmlFor="name">Name</label>
-                    <input
-                      required
-                      type="text"
-                      id="name"
-                      onChange={event => setName(event.target.value)}
-                      value={name}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="email">Email Address</label>
-                    <input
-                      required
-                      type="text"
-                      id="email"
-                      onChange={event => setEmail(event.target.value)}
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="message">
-                      Tell us what you want to discuss...
-                    </label>
-                    <textarea
-                      required
-                      type="text"
-                      id="message"
-                      onChange={event =>
-                        setMessage(event.target.value)
-                      }></textarea>
-                  </div>
-                  <button type="submit" className={styles.submitButton}>
-                    <span className={styles.submitButtonText}>
-                      Send us your message
-                    </span>
-                    <span>
-                      <img src={ButtonArrowWhite} alt="Go" />
-                    </span>
-                  </button>
-                  {error && <div className={styles.error}>{error}</div>}
-                </form>
+                <MediaQuery minWidth={769}>
+                  {matches => {
+                    return (
+                      <form className={styles.form} onSubmit={handleSubmit}>
+                        <div>
+                          <label htmlFor="name">Name</label>
+                          <input
+                            required
+                            type="text"
+                            id="name"
+                            onChange={event => setName(event.target.value)}
+                            value={name}
+                            placeholder={matches ? '' : 'Name'}
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="email">Email Address</label>
+                          <input
+                            required
+                            type="text"
+                            id="email"
+                            onChange={event => setEmail(event.target.value)}
+                            placeholder={matches ? '' : 'Email Address'}
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="message">
+                            Tell us what you want to discuss...
+                          </label>
+                          <textarea
+                            placeholder={
+                              matches
+                                ? ''
+                                : 'Tell us what you want to discuss...'
+                            }
+                            required
+                            type="text"
+                            id="message"
+                            onChange={event =>
+                              setMessage(event.target.value)
+                            }></textarea>
+                        </div>
+                        <button type="submit" className={styles.submitButton}>
+                          <span className={styles.submitButtonText}>
+                            Send us your message
+                          </span>
+                          <span>
+                            <img src={ButtonArrowWhite} alt="Go" />
+                          </span>
+                        </button>
+                        {error && <div className={styles.error}>{error}</div>}
+                      </form>
+                    )
+                  }}
+                </MediaQuery>
               ) : (
                 <div className={styles.form}>
                   <div className={styles.successMessage}>
@@ -161,7 +175,7 @@ function Contact() {
                     Friday <span>9am - 6pm</span>
                   </li>
                   <li>
-                    Saturday <span>Closed</span>
+                    Saturday <span>9am - 6pm</span>
                   </li>
                   <li>
                     Sunday <span>Closed</span>
