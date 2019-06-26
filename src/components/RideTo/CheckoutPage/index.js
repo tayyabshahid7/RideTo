@@ -8,6 +8,7 @@ import { createPOM } from 'utils/helper'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styles from './styles.scss'
+import { capitalizeFirstLetter } from 'utils/helper'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
@@ -57,6 +58,7 @@ class CheckoutPageContainer extends Component {
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
     this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
+    this.showPromoNotification = this.showPromoNotification.bind(this)
 
     this.POM = createPOM()
   }
@@ -77,40 +79,22 @@ class CheckoutPageContainer extends Component {
       newCheckoutData.addons = [...newCheckoutData.addons, this.POM]
     }
 
-    this.setState(
-      {
-        checkoutData: newCheckoutData,
-        hasPOM: true
-      },
-      () => {
-        toast.dismiss('remove')
-        toast('Peace of mind policy added!', {
-          toastId: 'add',
-          className: styles.toastAdd
-        })
-      }
-    )
+    this.setState({
+      checkoutData: newCheckoutData,
+      hasPOM: true
+    })
   }
 
   handleRemovePOM() {
     const { checkoutData } = this.state
 
-    this.setState(
-      {
-        checkoutData: {
-          ...checkoutData,
-          addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
-        },
-        hasPOM: false
+    this.setState({
+      checkoutData: {
+        ...checkoutData,
+        addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
       },
-      () => {
-        toast.dismiss('add')
-        toast('Peace of mind policy removed.', {
-          toastId: 'remove',
-          className: styles.toastRemove
-        })
-      }
-    )
+      hasPOM: false
+    })
   }
 
   handlePOMToggleClick() {
@@ -121,6 +105,13 @@ class CheckoutPageContainer extends Component {
     } else {
       this.handleAddPOM()
     }
+  }
+
+  showPromoNotification(text = 'Promo code applied!', type = 'add') {
+    toast(text, {
+      toastId: 'add',
+      className: styles[`toast${capitalizeFirstLetter(type)}`]
+    })
   }
 
   render() {
@@ -151,6 +142,7 @@ class CheckoutPageContainer extends Component {
               trainings={trainings}
               handlePOMToggleClick={this.handlePOMToggleClick}
               hasPOM={hasPOM}
+              showPromoNotification={this.showPromoNotification}
             />
           </Elements>
         </StripeProvider>

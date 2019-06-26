@@ -54,16 +54,16 @@
 }
 
 .toastAdd,
-.toastRemove {
+.toastError {
   font-family: var(--font-proxima) !important;
+  font-weight: bold !important;
+  color: #fff !important;
 }
 
 .toastAdd {
   background: var(--primary-color) !important;
-  color: #fff !important;
-  font-weight: bold !important;
 }
 
-.toastRemove {
-  // background: var(--grey-color) !important;
+.toastError {
+  background: var(--danger-color) !important;
 }
