@@ -287,3 +287,10 @@
     padding-bottom: 2rem;
   }
 }
+
+.discountRow {
+  @media (max-width: 768px) {
+    padding-right: 30px;
+    padding-left: 30px;
+  }
+}

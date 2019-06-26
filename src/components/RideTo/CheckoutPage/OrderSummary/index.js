@@ -57,13 +57,17 @@ class OrderSummary extends Component {
     let price = getExpectedPrice(priceInfo, addons, checkoutData)
     return (
       <div>
-        {priceInfo.discount
-          ? this.renderRow(
+        {priceInfo.discount ? (
+          <div className={styles.discountRow}>
+            {this.renderRow(
               'Discount',
               `- £${(priceInfo.discount / 100.0).toFixed(2)}`,
               200
-            )
-          : ''}
+            )}
+          </div>
+        ) : (
+          ''
+        )}
         <div className={styles.totalPriceRow}>
           <div className={styles.priceLabel}>Total:</div>
           <div className={styles.totalPrice}>{`£${(price / 100).toFixed(
