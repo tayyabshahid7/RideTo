@@ -28,6 +28,7 @@ class AvailabilityCalendar extends Component {
       days,
       isInstantBook
     } = this.props
+    console.log('mount', this.props.days)
     // For non instant booking calendars
     if (
       !isInstantBook &&
@@ -37,15 +38,13 @@ class AvailabilityCalendar extends Component {
       this.setFirstAvailableDate(days, isInstantBook)
     }
 
-    if (!selectedDate) {
+    if (!isInstantBook && !selectedDate) {
       this.findFirstMonth(days)
     }
   }
 
   async findFirstMonth(days) {
     const { handleNextMonth } = this.props
-
-    console.log(days)
 
     if (days.length && !days.some(({ disabled }) => !disabled)) {
       const {
@@ -76,6 +75,8 @@ class AvailabilityCalendar extends Component {
       courses,
       handleTimeSelect
     } = this.props
+
+    console.log('update', this.props.days)
 
     // For instant booking calendars
     if (isInstantBook && courses.length > 0 && !this.state.dateAlreadyChecked) {
