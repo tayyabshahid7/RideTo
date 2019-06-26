@@ -161,7 +161,7 @@ function Contact() {
                     Friday <span>9am - 6pm</span>
                   </li>
                   <li>
-                    Saturday <span>Closed</span>
+                    Saturday <span>9am - 6pm</span>
                   </li>
                   <li>
                     Sunday <span>Closed</span>
