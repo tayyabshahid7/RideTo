@@ -30,6 +30,8 @@ import { getCourseIdFromSearch, findResultsCourseWithId } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import smoothscroll from 'smoothscroll-polyfill'
+smoothscroll.polyfill()
 
 function flashDiv(id) {
   let el = document.getElementById(id)
@@ -37,9 +39,6 @@ function flashDiv(id) {
   el.scrollIntoView()
   el.classList.add('highlight-required')
 }
-
-import smoothscroll from 'smoothscroll-polyfill'
-smoothscroll.polyfill()
 
 class ResultPage extends Component {
   constructor(props) {
