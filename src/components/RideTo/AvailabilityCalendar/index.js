@@ -18,7 +18,8 @@ class AvailabilityCalendar extends Component {
     super(props)
     this.state = {
       dateAlreadyChecked: false,
-      bankHolidays: null
+      bankHolidays: null,
+      futureChecked: false
     }
   }
 
@@ -26,9 +27,11 @@ class AvailabilityCalendar extends Component {
     const {
       calendar: { selectedDate },
       days,
-      isInstantBook
+      isInstantBook,
+      checkFutureMonth
     } = this.props
-    console.log('mount', this.props.days)
+    const { futureChecked } = this.state
+
     // For non instant booking calendars
     if (
       !isInstantBook &&
@@ -38,13 +41,17 @@ class AvailabilityCalendar extends Component {
       this.setFirstAvailableDate(days, isInstantBook)
     }
 
-    if (!isInstantBook && !selectedDate) {
+    if (checkFutureMonth && !isInstantBook && !selectedDate && !futureChecked) {
       this.findFirstMonth(days)
     }
   }
 
   async findFirstMonth(days) {
     const { handleNextMonth } = this.props
+
+    this.setState({
+      futureChecked: true
+    })
 
     if (days.length && !days.some(({ disabled }) => !disabled)) {
       const {
@@ -73,10 +80,22 @@ class AvailabilityCalendar extends Component {
       days,
       isInstantBook,
       courses,
-      handleTimeSelect
+      handleTimeSelect,
+      loading,
+      checkFutureMonth
     } = this.props
+    const { futureChecked } = this.state
 
-    console.log('update', this.props.days)
+    if (
+      checkFutureMonth &&
+      isInstantBook &&
+      !selectedDate &&
+      loading !== prevProps.loading &&
+      !loading &&
+      !futureChecked
+    ) {
+      this.findFirstMonth(days)
+    }
 
     // For instant booking calendars
     if (isInstantBook && courses.length > 0 && !this.state.dateAlreadyChecked) {
