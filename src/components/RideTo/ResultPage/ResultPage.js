@@ -80,7 +80,7 @@ class ResultPage extends Component {
 
     window.sessionStorage.removeItem('trainings')
 
-    this.selectButton = React.createRef()
+    this.bottomAnchor = React.createRef()
   }
 
   showCourseTypeInfo() {
@@ -205,7 +205,7 @@ class ResultPage extends Component {
 
     if (instantDate && data.bike_hire && courseType !== 'FULL_LICENCE') {
       setTimeout(() => {
-        this.selectButton.current.scrollIntoView({
+        this.bottomAnchor.current.scrollIntoView({
           behavior: 'smooth',
           block: 'end'
         })
@@ -355,66 +355,68 @@ class ResultPage extends Component {
     showDayOfWeekPicker
   ) {
     return (
-      <RideToButton
-        ref={this.selectButton}
-        className={classnames(
-          styles.action,
-          this.state.activeTab === 3 && styles.actionStatic
-        )}
-        onClick={() => {
-          if (this.state.activeTab !== 3) {
-            this.setState({ activeTab: 3 })
-          } else {
-            if (isFullLicence && bookNowDisabled) {
-              if (!bike_hire) {
-                flashDiv('choose-bike')
-              }
+      <React.Fragment>
+        <RideToButton
+          className={classnames(
+            styles.action,
+            this.state.activeTab === 3 && styles.actionStatic
+          )}
+          onClick={() => {
+            if (this.state.activeTab !== 3) {
+              this.setState({ activeTab: 3 })
+            } else {
+              if (isFullLicence && bookNowDisabled) {
+                if (!bike_hire) {
+                  flashDiv('choose-bike')
+                }
 
-              if (!this.state.selectedLicenceType) {
-                flashDiv('choose-licence')
-              }
+                if (!this.state.selectedLicenceType) {
+                  flashDiv('choose-licence')
+                }
 
-              if (!this.state.selectedPackageHours) {
-                flashDiv('choose-package')
+                if (!this.state.selectedPackageHours) {
+                  flashDiv('choose-package')
+                  return
+                }
+
+                if (
+                  showDayOfWeekPicker &&
+                  this.state.selectedTimeDays.length < 1
+                ) {
+                  flashDiv('choose-times')
+                  return
+                }
+
                 return
               }
 
-              if (
-                showDayOfWeekPicker &&
-                this.state.selectedTimeDays.length < 1
-              ) {
-                flashDiv('choose-times')
+              if (isFullLicence && !showDayOfWeekPicker) {
+                this.setState({ showDayOfWeekPicker: true })
                 return
               }
+              if (!bookNowDisabled) {
+                this.onBookNow()
+              } else if (!isFullLicence) {
+                let chooseTimeDiv = document.getElementById(
+                  'choose-time-validate'
+                )
 
-              return
-            }
-
-            if (isFullLicence && !showDayOfWeekPicker) {
-              this.setState({ showDayOfWeekPicker: true })
-              return
-            }
-            if (!bookNowDisabled) {
-              this.onBookNow()
-            } else if (!isFullLicence) {
-              let chooseTimeDiv = document.getElementById(
-                'choose-time-validate'
-              )
-
-              if (!instantDate) {
-                flashDiv('choose-date')
-              }
-              if (!instantCourse && chooseTimeDiv) {
-                flashDiv('choose-time-validate')
-              } else if (!bike_hire) {
-                flashDiv('choose-bike')
+                if (!instantDate) {
+                  flashDiv('choose-date')
+                }
+                if (!instantCourse && chooseTimeDiv) {
+                  flashDiv('choose-time-validate')
+                } else if (!bike_hire) {
+                  flashDiv('choose-bike')
+                }
               }
             }
-          }
-        }}>
-        <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
-        <img src={ButtonArrowWhite} alt="arrow" />
-      </RideToButton>
+          }}>
+          <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
+          <img src={ButtonArrowWhite} alt="arrow" />
+        </RideToButton>
+        <div ref={this.bottomAnchor}></div>
+      </React.Fragment>
     )
   }
 
