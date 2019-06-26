@@ -57,8 +57,16 @@ class AvailabilityCalendar extends Component {
       const {
         course,
         courseType,
-        calendar: { year, month }
+        calendar: { year, month },
+        isInstantBook
       } = this.props
+
+      // If it isn't instant book, go to the next month
+      if (!isInstantBook) {
+        handleNextMonth()
+        return
+      }
+
       let momentDate = moment(new Date(year, month, 1)).add(1, 'months')
 
       const courses = await fetchWidgetCourses(
