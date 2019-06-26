@@ -55,7 +55,10 @@ class TestRideForm extends Component {
       date: '',
       email: '',
       time: '',
-      showInitialBack: true
+      showInitialBack: true,
+      loading: false,
+      submitted: false,
+      error: ''
     }
 
     this.submitForm = this.submitForm.bind(this)
@@ -165,7 +168,8 @@ class TestRideForm extends Component {
       window.history.back()
     } else {
       this.setState({
-        step: step - 1
+        step: step - 1,
+        error: ''
       })
     }
   }
