@@ -98,6 +98,12 @@ class TestRideForm extends Component {
     })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.step !== prevState.step) {
+      window.scrollTo(0, 0)
+    }
+  }
+
   async submitForm() {
     const {
       bike: { name },
