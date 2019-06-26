@@ -55,7 +55,10 @@ class TestRideForm extends Component {
       date: '',
       email: '',
       time: '',
-      showInitialBack: true
+      showInitialBack: true,
+      loading: false,
+      submitted: false,
+      error: ''
     }
 
     this.submitForm = this.submitForm.bind(this)
