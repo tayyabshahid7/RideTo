@@ -8,6 +8,7 @@ import { createPOM } from 'utils/helper'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styles from './styles.scss'
+import { capitalizeFirstLetter } from 'utils/helper'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
@@ -96,10 +97,10 @@ class CheckoutPageContainer extends Component {
     }
   }
 
-  showPromoNotification() {
-    toast('Promo code applied!', {
+  showPromoNotification(text = 'Promo code applied!', type = 'add') {
+    toast(text, {
       toastId: 'add',
-      className: styles.toastAdd
+      className: styles[`toast${capitalizeFirstLetter(type)}`]
     })
   }
 
