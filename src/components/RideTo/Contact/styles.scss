@@ -92,13 +92,32 @@
 }
 
 .formTitle {
-  margin-bottom: 1rem;
+  margin-bottom: -0.5rem;
+
+  @media (min-width: 769px) {
+    margin-bottom: 1rem;
+  }
+}
+
+.introText {
+  display: none;
+
+  @media (min-width: 769px) {
+    display: block;
+  }
 }
 
 .mapCol,
 .successMessage {
   background-color: #fff;
   box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+}
+
+.mapCol {
+  @media (max-width: 768px) {
+    background-color: transparent;
+    box-shadow: none;
+  }
 }
 
 .mapCol {
@@ -119,7 +138,11 @@
 }
 
 .mapColInfo {
-  padding: 2rem;
+  padding-top: 1.5rem;
+
+  @media (min-width: 769px) {
+    padding: 2rem;
+  }
 }
 
 .map {
@@ -140,12 +163,20 @@
   }
 
   label {
-    display: block;
+    display: none;
     opacity: 0.5;
     color: #141414;
     font-size: 15px;
     line-height: 24px;
     margin-bottom: 0.5rem;
+
+    @media (min-width: 769px) {
+      display: block;
+
+      &::placeholder {
+        color: transparent;
+      }
+    }
   }
 
   input,
