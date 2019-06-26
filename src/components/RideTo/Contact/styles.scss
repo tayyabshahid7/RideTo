@@ -25,8 +25,8 @@
 }
 
 .header {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 
   @media (min-width: 769px) {
     padding-top: 3rem;
@@ -43,13 +43,42 @@
   display: flex;
   align-items: center;
   width: 50%;
+  justify-content: center;
 
-  img {
-    display: none;
-    margin-right: 1.75rem;
+  flex-direction: column;
+
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  &,
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @media (min-width: 769px) {
+    padding-top: 0;
+    justify-content: flex-start;
+
+    flex-direction: row;
+  }
+
+  &:first-child {
+    border-right: 1px solid #d8d8d8;
 
     @media (min-width: 769px) {
-      display: block;
+      border-right: 0;
+    }
+  }
+
+  img {
+    display: block;
+    width: 31px;
+    height: 31px;
+
+    @media (min-width: 769px) {
+      margin-right: 1.75rem;
+      width: auto;
     }
   }
 
@@ -58,11 +87,27 @@
   }
 }
 
-.callTimes {
+.keyInfoItemText {
   display: none;
 
   @media (min-width: 769px) {
     display: block;
+  }
+}
+
+.keyInfoItemTextMobile {
+  display: block;
+
+  font-family: var(--font-rift);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 24px;
+  line-height: 29px;
+
+  margin-top: 1rem;
+
+  @media (min-width: 769px) {
+    display: none;
   }
 }
 

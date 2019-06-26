@@ -42,20 +42,20 @@ function Contact() {
           <div className={styles.keyInfo}>
             <div className={styles.keyInfoItem}>
               <img src={chat} alt="Chat" />
-              <div>
+              <div className={styles.keyInfoItemText}>
                 <h2>Chat with us</h2>
                 <p>Mon-Sat 9am - 6pm • Sun Closed</p>
               </div>
+              <div className={styles.keyInfoItemTextMobile}>Chat</div>
             </div>
-            <div className={styles.keyInfoItem}>
+            <a className={styles.keyInfoItem} href="tel:+442036039652">
               <img src={call} alt="Call" />
-              <div>
+              <div className={styles.keyInfoItemText}>
                 <h2>020 3603 9652</h2>
-                <p className={styles.callTimes}>
-                  Mon-Sat 9am - 6pm • Sun Closed
-                </p>
+                <p>Mon-Sat 9am - 6pm • Sun Closed</p>
               </div>
-            </div>
+              <div className={styles.keyInfoItemTextMobile}>Call</div>
+            </a>
           </div>
         </div>
       </section>
