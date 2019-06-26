@@ -128,7 +128,7 @@ class TestRideForm extends Component {
     })
 
     try {
-      await post(path, data)
+      await post(path, data, false)
 
       this.setState({
         loading: false,
