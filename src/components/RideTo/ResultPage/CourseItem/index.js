@@ -5,7 +5,7 @@ import styles from './styles.scss'
 import StarsComponent from 'components/RideTo/StarsComponent'
 import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
-import { getFeatureInfo } from 'services/course'
+import { getFeatureInfo, getMediumCourseType } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 // import { loadTypeformScript } from 'utils/helper'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
@@ -98,7 +98,9 @@ class CourseItem extends Component {
             <LazyLoadImage
               src={course.image_thumbnail || course.image}
               className={styles.image}
-              alt="logo"
+              alt={`${getMediumCourseType({
+                constant: courseType
+              })} ${course.location_slug.replace('-', ' ')} Logo`}
             />
           </div>
           <div className={styles.info}>

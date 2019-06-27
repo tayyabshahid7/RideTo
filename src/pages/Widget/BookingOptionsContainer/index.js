@@ -480,9 +480,16 @@ class BookingOptionsContainer extends React.Component {
         ) : null}
 
         {((isFullLicence &&
+          !showDayOfWeekPicker &&
           selectedBikeHire &&
           selectedLicenceType &&
           selectedPackageHours) ||
+          (isFullLicence &&
+            showDayOfWeekPicker &&
+            selectedBikeHire &&
+            selectedLicenceType &&
+            selectedPackageHours &&
+            selectedTimeDays.length) ||
           (!isFullLicence && selectedCourse)) && (
           <button onClick={this.handleSubmitClick} className="WidgetBtn">
             {isFullLicence ? 'Continue' : 'Book Now'}
