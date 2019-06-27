@@ -235,6 +235,9 @@ export const getShortCourseType = courseType => {
       return 'Bike Hire'
     case 'TFL_ONE_ON_ONE':
       return 'TFL'
+    case 'OFF_ROAD_TEST':
+    case 'OFF_ROAD_TRAINING':
+      return 'Off Road Training'
     default:
       return 'CBT'
   }
@@ -264,6 +267,9 @@ export const getMediumCourseType = courseType => {
       return 'Bike Hire'
     case 'TFL_ONE_ON_ONE':
       return 'TFL'
+    case 'OFF_ROAD_TEST':
+    case 'OFF_ROAD_TRAINING':
+      return 'Off Road Training'
     default:
       return 'CBT'
   }
@@ -289,6 +295,9 @@ export const getCourseTitle = courseTypeConstant => {
       return 'Full Licence Module 2 Test'
     case 'TFL_ONE_ON_ONE':
       return 'Free 1-2-1 Skills course'
+    case 'OFF_ROAD_TEST':
+    case 'OFF_ROAD_TRAINING':
+      return 'Off Road Training'
     default:
       return 'CBT Training'
   }

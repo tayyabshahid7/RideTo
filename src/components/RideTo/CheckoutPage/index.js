@@ -5,6 +5,10 @@ import CheckoutPage from './CheckoutPage'
 import { Elements, StripeProvider } from 'react-stripe-elements'
 import { getSupplier, isInstantBook } from 'services/page'
 import { createPOM } from 'utils/helper'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import styles from './styles.scss'
+import { capitalizeFirstLetter } from 'utils/helper'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
@@ -15,6 +19,12 @@ function addCheckoutToHeader() {
       'afterend',
       '<style>@media(max-width: 768px) { #checkout-title { display: none; } }</style><div id="checkout-title" style="font-size: 2rem; color: #fff; position: relative; left: -25px;">Checkout</div>'
     )
+}
+
+function backToResults(postcode) {
+  const path = `/course-location/?postcode=${postcode}&courseType=LICENCE_CBT`
+
+  window.location = path
 }
 
 class CheckoutPageContainer extends Component {
@@ -31,6 +41,10 @@ class CheckoutPageContainer extends Component {
     }
     const supplier = getSupplier()
 
+    if (!this.trainings) {
+      backToResults(supplier.postcode)
+    }
+
     this.state = {
       loading: false,
       checkoutData: this.checkoutData || { addons: [] },
@@ -44,6 +58,7 @@ class CheckoutPageContainer extends Component {
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
     this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
+    this.showPromoNotification = this.showPromoNotification.bind(this)
 
     this.POM = createPOM()
   }
@@ -92,6 +107,13 @@ class CheckoutPageContainer extends Component {
     }
   }
 
+  showPromoNotification(text = 'Promo code applied!', type = 'add') {
+    toast(text, {
+      toastId: 'add',
+      className: styles[`toast${capitalizeFirstLetter(type)}`]
+    })
+  }
+
   render() {
     const {
       checkoutData,
@@ -103,19 +125,28 @@ class CheckoutPageContainer extends Component {
     } = this.state
 
     return (
-      <StripeProvider apiKey={this.stripePublicKey}>
-        <Elements>
-          <CheckoutPage
-            checkoutData={checkoutData}
-            loading={loading}
-            supplier={supplier}
-            instantBook={instantBook}
-            trainings={trainings}
-            handlePOMToggleClick={this.handlePOMToggleClick}
-            hasPOM={hasPOM}
-          />
-        </Elements>
-      </StripeProvider>
+      <React.Fragment>
+        <ToastContainer
+          autoClose={2000}
+          hideProgressBar={true}
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
+        />
+        <StripeProvider apiKey={this.stripePublicKey}>
+          <Elements>
+            <CheckoutPage
+              checkoutData={checkoutData}
+              loading={loading}
+              supplier={supplier}
+              instantBook={instantBook}
+              trainings={trainings}
+              handlePOMToggleClick={this.handlePOMToggleClick}
+              hasPOM={hasPOM}
+              showPromoNotification={this.showPromoNotification}
+            />
+          </Elements>
+        </StripeProvider>
+      </React.Fragment>
     )
   }
 }

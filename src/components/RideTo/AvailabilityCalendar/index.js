@@ -7,6 +7,7 @@ import CalendarTime from './CalendarTime'
 import CalendarSpacesAvailable from './CalendarSpacesAvailable'
 import moment from 'moment'
 import { BANK_HOLIDAYS } from 'common/constants'
+import { fetchWidgetCourses } from 'services/course'
 
 const isBankHoliday = date => {
   return BANK_HOLIDAYS.includes(date)
@@ -17,7 +18,8 @@ class AvailabilityCalendar extends Component {
     super(props)
     this.state = {
       dateAlreadyChecked: false,
-      bankHolidays: null
+      bankHolidays: null,
+      futureChecked: false
     }
   }
 
@@ -25,8 +27,11 @@ class AvailabilityCalendar extends Component {
     const {
       calendar: { selectedDate },
       days,
-      isInstantBook
+      isInstantBook,
+      checkFutureMonth
     } = this.props
+    const { futureChecked } = this.state
+
     // For non instant booking calendars
     if (
       !isInstantBook &&
@@ -34,6 +39,46 @@ class AvailabilityCalendar extends Component {
       this.isSelectedDateDisabled(selectedDate, days)
     ) {
       this.setFirstAvailableDate(days, isInstantBook)
+    }
+
+    if (checkFutureMonth && !isInstantBook && !selectedDate && !futureChecked) {
+      this.findFirstMonth(days)
+    }
+  }
+
+  async findFirstMonth(days) {
+    const { handleNextMonth } = this.props
+
+    this.setState({
+      futureChecked: true
+    })
+
+    if (days.length && !days.some(({ disabled }) => !disabled)) {
+      const {
+        course,
+        courseType,
+        calendar: { year, month },
+        isInstantBook
+      } = this.props
+
+      // If it isn't instant book, go to the next month
+      if (!isInstantBook) {
+        handleNextMonth()
+        return
+      }
+
+      let momentDate = moment(new Date(year, month, 1)).add(1, 'months')
+
+      const courses = await fetchWidgetCourses(
+        course.id,
+        momentDate.format('YYYY-MM-DD'),
+        momentDate.endOf('month').format('YYYY-MM-DD'),
+        courseType
+      )
+
+      if (courses.length) {
+        handleNextMonth()
+      }
     }
   }
 
@@ -43,8 +88,22 @@ class AvailabilityCalendar extends Component {
       days,
       isInstantBook,
       courses,
-      handleTimeSelect
+      handleTimeSelect,
+      loading,
+      checkFutureMonth
     } = this.props
+    const { futureChecked } = this.state
+
+    if (
+      checkFutureMonth &&
+      isInstantBook &&
+      !selectedDate &&
+      loading !== prevProps.loading &&
+      !loading &&
+      !futureChecked
+    ) {
+      this.findFirstMonth(days)
+    }
 
     // For instant booking calendars
     if (isInstantBook && courses.length > 0 && !this.state.dateAlreadyChecked) {

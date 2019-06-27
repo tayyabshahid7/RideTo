@@ -9,8 +9,7 @@ const NavigationItem = ({
   disabled = false,
   fullWidth = false,
   onClick,
-  className,
-  dropDown
+  className
 }) => {
   return (
     <div
@@ -31,13 +30,7 @@ const NavigationItem = ({
         {title}
       </div>
       <div className={classnames(styles.subtitle, disabled && styles.disabled)}>
-        {disabled ? (
-          '-'
-        ) : (
-          <div className={styles.subtitleInner}>
-            {subtitle} <i className="fas fa-chevron-down fa-lg" />
-          </div>
-        )}
+        {disabled ? '-' : subtitle}
       </div>
     </div>
   )

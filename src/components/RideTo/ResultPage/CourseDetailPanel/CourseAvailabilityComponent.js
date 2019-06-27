@@ -6,6 +6,9 @@ import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicke
 import Loading from 'components/Loading'
 import { fetchWidgetCourses } from 'services/course'
 
+import smoothscroll from 'smoothscroll-polyfill'
+smoothscroll.polyfill()
+
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
     super(props)
@@ -18,6 +21,8 @@ class CourseAvailabilityComponent extends React.Component {
       courses: [],
       loadingCourses: false
     }
+
+    this.bikePicker = React.createRef()
   }
 
   componentDidMount() {
@@ -179,6 +184,13 @@ class CourseAvailabilityComponent extends React.Component {
       this.props.instantDate === instantDate ? this.props.instantCourse : null
     this.setState({ calendar: { ...calendar } })
     onUpdate({ instantCourse, instantDate })
+
+    setTimeout(() => {
+      this.bikePicker.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'end'
+      })
+    }, 99)
   }
 
   handleTimeSelect(instantCourse) {
@@ -231,6 +243,10 @@ class CourseAvailabilityComponent extends React.Component {
             showChooseDate={true}
             courses={courses}
             disablePreviousDates
+            course={course}
+            courseType={courseType}
+            checkFutureMonth
+            loading={loadingCourses}
           />
           <BikePicker
             isCbt={isCbt}
@@ -243,6 +259,7 @@ class CourseAvailabilityComponent extends React.Component {
             isManualFull={isManualFull}
             has_auto_bikes={course.has_auto_bikes}
             has_manual_bikes={course.has_manual_bikes}
+            ref={this.bikePicker}
           />
         </div>
       </Loading>

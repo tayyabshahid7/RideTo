@@ -184,8 +184,12 @@ class CheckoutPage extends Component {
         let response = await getPrice(params)
         if (voucher_code && response.discount) {
           details.voucher_code = voucher_code
+          this.props.showPromoNotification('Promo code applied!', 'add')
         } else {
           details.voucher_code = ''
+          if (voucher_code) {
+            this.props.showPromoNotification('Invalid promo code.', 'error')
+          }
         }
         this.setState({
           priceInfo: { ...response },

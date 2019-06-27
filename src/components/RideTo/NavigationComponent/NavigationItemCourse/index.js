@@ -52,6 +52,7 @@ class NavigationItemCourse extends Component {
       courseTypesOptions
     } = this.props
     const { courseType, editable, subtitle } = this.state
+    console.log(this.props)
 
     return (
       <div
@@ -88,12 +89,7 @@ class NavigationItemCourse extends Component {
               )}
             </div>
           ) : (
-            <div className={styles.subtitleInner}>
-              {subtitle}{' '}
-              <span>
-                <i className="fas fa-chevron-down fa-lg" />
-              </span>
-            </div>
+            subtitle
           )}
         </div>
       </div>

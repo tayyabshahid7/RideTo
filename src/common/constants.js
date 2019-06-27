@@ -92,12 +92,16 @@ export const FULL_LICENCE_MODULES = [
 ]
 
 export const COURSETYPE_ORDER = [
-  'INTRO_TO_MOTORCYCLING',
   'LICENCE_CBT',
   'LICENCE_CBT_RENEWAL',
   'FULL_LICENCE',
+  'INTRO_TO_MOTORCYCLING',
   'TFL_ONE_ON_ONE'
 ]
+
+export const COURSETYPE_ORDER_SLIDER = COURSETYPE_ORDER.filter(
+  course => course !== 'TFL_ONE_ON_ONE'
+)
 
 export const TEST_STATUS_CHOICES = {
   TEST_STATUS_NO_BOOKING: 'No Booking',
