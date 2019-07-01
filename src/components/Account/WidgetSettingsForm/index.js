@@ -5,6 +5,7 @@ import styles from './styles.scss'
 import { ConnectTextArea, Button } from 'components/ConnectForm'
 import Loading from 'components/Loading'
 import classnames from 'classnames'
+import WidgetPromoCodes from './WidgetPromoCodes'
 
 class WidgetSettingsForm extends React.Component {
   constructor(props) {
@@ -137,6 +138,12 @@ class WidgetSettingsForm extends React.Component {
     return (
       <div className={styles.container}>
         <Loading loading={saving}>
+          <div className={classnames(styles.box, styles.boxVertical)}>
+            <div>
+              <h3 className={styles.title}>Promo codes</h3>
+              <WidgetPromoCodes />
+            </div>
+          </div>
           <Form onSubmit={this.handleSave.bind(this)}>
             <div className={styles.box}>
               <div className={styles.leftCol}>
