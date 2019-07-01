@@ -119,3 +119,7 @@ export function deleteParam(search, name) {
   params.delete(name)
   return `?${params.toString()}`
 }
+
+export function uniqueId() {
+  return new Date().valueOf()
+}

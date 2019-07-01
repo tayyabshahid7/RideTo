@@ -67,7 +67,8 @@ export function ConnectInput(props) {
     name,
     disabled,
     required,
-    basic
+    basic,
+    ...rest
   } = props
 
   if (type === 'time') {
@@ -124,6 +125,7 @@ export function ConnectInput(props) {
         </label>
       )}
       <input
+        {...rest}
         name={name}
         className={classnames(styles.input, basic && styles.basic)}
         id={id || name}
