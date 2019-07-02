@@ -19,10 +19,10 @@ class PromoCode extends Component {
       loadingPrice,
       handleVoucherApply,
       onChange,
-      widget,
-      widget: { widget_color }
+      widget
     } = this.props
     const { showPromo } = this.state
+    const widget_color = widget && widget.widget_color
 
     return (
       <div
