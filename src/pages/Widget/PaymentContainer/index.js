@@ -6,7 +6,11 @@ import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
 import BookingSummary from 'pages/Widget/components/BookingSummary'
-import { fetchWidgetSingleCourse, getPrice } from 'services/course'
+import {
+  fetchWidgetSingleCourse,
+  fetchWidgetSingleCourseWithDiscount,
+  getPrice
+} from 'services/course'
 import {
   createOrder,
   getTotalOrderPrice,
@@ -59,16 +63,22 @@ class PaymentContainer extends React.Component {
       },
       trainings: JSON.parse(window.sessionStorage.getItem('widgetTrainings')),
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
-      totalPrice: 0
+      totalPrice: 0,
+      voucher_code: '',
+      discount: 0
     }
 
     this.handlePayment = this.handlePayment.bind(this)
     this.handleChangeDetails = this.handleChangeDetails.bind(this)
+    this.handleVoucherApply = this.handleVoucherApply.bind(this)
+    this.handleVoucherCodeChange = this.handleVoucherCodeChange.bind(this)
+
+    this.setPrice = this.setPrice.bind(this)
 
     window.document.body.scrollIntoView()
   }
 
-  async componentDidMount() {
+  async setPrice(voucher_code) {
     const { match } = this.props
     const { courseId } = match.params
     const { isFullLicence, trainings, hire } = this.state
@@ -76,6 +86,7 @@ class PaymentContainer extends React.Component {
     let course
     let supplier
     let totalPrice
+    let discount = 0
 
     if (isFullLicence) {
       const training = trainings[0]
@@ -93,21 +104,47 @@ class PaymentContainer extends React.Component {
         supplierId: training.supplier_id,
         course_type: training.course_type,
         hours: training.package_hours,
-        full_licence_course_id: training.school_course_id
+        full_licence_course_id: training.school_course_id,
+        ...(voucher_code && { voucher_code })
       })
 
       totalPrice = response.price
+      discount = response.discount
     } else {
       course = await fetchWidgetSingleCourse(0, courseId)
+      if (voucher_code) {
+        discount = await fetchWidgetSingleCourseWithDiscount(
+          0,
+          courseId,
+          voucher_code
+        )
+      }
       supplier = this.suppliers.filter(({ id }) => id === course.supplier)[0]
-      totalPrice = getTotalOrderPrice(course, hire)
+      totalPrice = getTotalOrderPrice(course, hire, discount)
     }
 
     this.setState({
       course,
       supplier,
-      totalPrice
+      totalPrice,
+      discount
     })
+  }
+
+  componentDidMount() {
+    this.setPrice()
+  }
+
+  handleVoucherCodeChange({ voucher_code }) {
+    this.setState({
+      voucher_code
+    })
+  }
+
+  handleVoucherApply() {
+    const { voucher_code } = this.state
+
+    this.setPrice(voucher_code)
   }
 
   handleChangeDetails(details, errors = {}) {
@@ -235,7 +272,9 @@ class PaymentContainer extends React.Component {
       isSaving,
       totalPrice,
       isFullLicence,
-      trainings
+      trainings,
+      voucher_code,
+      discount
     } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
 
@@ -275,6 +314,9 @@ class PaymentContainer extends React.Component {
                   isSaving={isSaving}
                   onChange={this.handleChangeDetails}
                   onSubmit={this.handlePayment}
+                  voucher_code={voucher_code}
+                  handleVoucherApply={this.handleVoucherApply}
+                  onVoucherCodeChange={this.handleVoucherCodeChange}
                 />
               </Elements>
             </div>
@@ -284,6 +326,7 @@ class PaymentContainer extends React.Component {
         <div className={styles.orderDetails}>
           <h3 className={styles.heading}>Your Training</h3>
           <OrderDetails
+            discount={discount}
             isFullLicence={isFullLicence}
             totalPrice={totalPrice}
             course={course}
