@@ -43,7 +43,7 @@ export const getMotorbikeLabel = (bikeHire, isFullLicence) => {
   return getBikeHireOptions(isFullLicence)[bikeHire]
 }
 
-export const getTotalOrderPrice = (course, bikeHire, discount) => {
+export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
   const { pricing } = course
   const subTotal =
     bikeHire && bikeHire !== 'no'
