@@ -91,7 +91,7 @@ export const CONTENT = {
             pulling away from behind a parked car and a hill start.
           </p>
         </div>
-        <a href="/">
+        <a href="https://rideto.typeform.com/to/lyVAhc">
           <img
             src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/fast-track.png"
             className={styles.fastTrackAdvert}
