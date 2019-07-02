@@ -44,7 +44,6 @@ function WidgetPromoCodes({ schoolId }) {
   const [codes, setCodes] = useState([])
 
   useEffect(() => {
-    console.log('hello')
     setCodes(fetchPromoCodes(schoolId))
   }, [schoolId])
 
@@ -89,8 +88,10 @@ function WidgetPromoCodes({ schoolId }) {
   }
 
   const removeCode = id => {
-    setCodes(prevstate => prevstate.filter(code => code.id !== id))
-    deletePromoCode(schoolId, id)
+    if (window.confirm('Are you sure you want to remove this code?')) {
+      setCodes(prevstate => prevstate.filter(code => code.id !== id))
+      deletePromoCode(schoolId, id)
+    }
   }
 
   if (codes.length < 1) {
