@@ -1,7 +1,6 @@
 import React from 'react'
 import moment from 'moment'
 import { Elements, StripeProvider } from 'react-stripe-elements'
-
 import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
@@ -18,8 +17,10 @@ import {
   getInitialSuppliers
 } from 'services/widget'
 import { parseQueryString } from 'services/api'
-
 import styles from './PaymentContainer.scss'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { capitalizeFirstLetter } from 'utils/helper'
 
 const REQUIRED_FIELDS = [
   'first_name',
@@ -262,6 +263,23 @@ class PaymentContainer extends React.Component {
     this.setState({ errors, isSaving: false })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.discount !== prevState.discount) {
+      if (this.state.discount > 0) {
+        this.showPromoNotification('Promo code applied!', 'add')
+      } else {
+        this.showPromoNotification('Invalid promo code.', 'error')
+      }
+    }
+  }
+
+  showPromoNotification(text = 'Promo code applied!', type = 'add') {
+    toast(text, {
+      toastId: 'add',
+      className: styles[`toast${capitalizeFirstLetter(type)}`]
+    })
+  }
+
   render() {
     const {
       course,
@@ -279,64 +297,72 @@ class PaymentContainer extends React.Component {
     const isLoading = !Boolean(course) || !Boolean(supplier)
 
     return (
-      <div className={styles.paymentContainer}>
-        <BookingSummary
-          totalPrice={totalPrice}
-          course={course}
-          supplier={supplier}
-          hire={hire}
-          isLoading={isLoading}
-          isFullLicence={isFullLicence}
-          trainings={trainings}
+      <React.Fragment>
+        <ToastContainer
+          autoClose={2000}
+          hideProgressBar={true}
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
         />
-        <div className={styles.paymentDetails}>
-          <h3 className={styles.heading}>Contact Details</h3>
-          <CustomerDetailsForm
-            details={details}
-            trainingDate={course && course.date}
-            errors={errors}
-            fullLicenceType={trainings[0].full_licence_type}
-            onChange={this.handleChangeDetails}
-          />
-
-          <StripeProvider apiKey={this.stripePublicKey}>
-            <div>
-              <h3 className={styles.heading}>Payment Details</h3>
-              <div className={styles.cardSecure}>
-                Your card details are stored with our secure payment provider
-                Stripe.
-              </div>
-              <Elements>
-                <CheckoutForm
-                  widget={this.widget}
-                  details={details}
-                  errors={errors}
-                  isSaving={isSaving}
-                  onChange={this.handleChangeDetails}
-                  onSubmit={this.handlePayment}
-                  voucher_code={voucher_code}
-                  handleVoucherApply={this.handleVoucherApply}
-                  onVoucherCodeChange={this.handleVoucherCodeChange}
-                />
-              </Elements>
-            </div>
-          </StripeProvider>
-        </div>
-
-        <div className={styles.orderDetails}>
-          <h3 className={styles.heading}>Your Training</h3>
-          <OrderDetails
-            discount={discount}
-            isFullLicence={isFullLicence}
+        <div className={styles.paymentContainer}>
+          <BookingSummary
             totalPrice={totalPrice}
             course={course}
             supplier={supplier}
             hire={hire}
             isLoading={isLoading}
+            isFullLicence={isFullLicence}
             trainings={trainings}
           />
+          <div className={styles.paymentDetails}>
+            <h3 className={styles.heading}>Contact Details</h3>
+            <CustomerDetailsForm
+              details={details}
+              trainingDate={course && course.date}
+              errors={errors}
+              fullLicenceType={trainings[0].full_licence_type}
+              onChange={this.handleChangeDetails}
+            />
+
+            <StripeProvider apiKey={this.stripePublicKey}>
+              <div>
+                <h3 className={styles.heading}>Payment Details</h3>
+                <div className={styles.cardSecure}>
+                  Your card details are stored with our secure payment provider
+                  Stripe.
+                </div>
+                <Elements>
+                  <CheckoutForm
+                    widget={this.widget}
+                    details={details}
+                    errors={errors}
+                    isSaving={isSaving}
+                    onChange={this.handleChangeDetails}
+                    onSubmit={this.handlePayment}
+                    voucher_code={voucher_code}
+                    handleVoucherApply={this.handleVoucherApply}
+                    onVoucherCodeChange={this.handleVoucherCodeChange}
+                  />
+                </Elements>
+              </div>
+            </StripeProvider>
+          </div>
+
+          <div className={styles.orderDetails}>
+            <h3 className={styles.heading}>Your Training</h3>
+            <OrderDetails
+              discount={discount}
+              isFullLicence={isFullLicence}
+              totalPrice={totalPrice}
+              course={course}
+              supplier={supplier}
+              hire={hire}
+              isLoading={isLoading}
+              trainings={trainings}
+            />
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }
