@@ -34,8 +34,10 @@
 .widgetPromoInput {
   height: 46px !important;
   border: 1px solid #ced4da !important;
+  box-sizing: border-box;
 }
 
 .widgetApplyBtn {
-  line-height: 1;
+  height: 46px !important;
+  padding: 0 !important;
 }
