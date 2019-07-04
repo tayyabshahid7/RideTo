@@ -9,7 +9,7 @@ import DashboardPage from 'components/RideTo/Account/DashboardPage'
 const Account = () => {
   return (
     <BrowserRouter>
-      <div>
+      <div style={{ background: '#f9f9f9', overflow: 'hidden' }}>
         <Route path="/account" component={LandingPage} exact />
         <Route path="/account/signup" component={SignupPage} />
         <Route path="/account/login" component={LoginPage} />

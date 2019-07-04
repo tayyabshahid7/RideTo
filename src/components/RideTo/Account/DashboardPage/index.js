@@ -7,6 +7,7 @@ import OrderDetails from 'components/RideTo/Account/OrderDetails'
 import DashboardChecklist from 'components/RideTo/Account/DashboardChecklist'
 import DashboardAdvice from 'components/RideTo/Account/DashboardAdvice'
 import DashboardOrders from 'components/RideTo/Account/DashboardOrders'
+import DashboardReferral from 'components/RideTo/Account/DashboardReferral'
 import { fetchOrder, fetchOrders, getChecklist } from 'services/user'
 import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { getDashboardAdvice } from 'services/page'
@@ -108,6 +109,7 @@ class DashboardPage extends React.Component {
               )}
             </Col>
             <Col sm="8">
+              <DashboardReferral />
               <DashboardAdvice items={getDashboardAdvice()} />
             </Col>
           </Row>
