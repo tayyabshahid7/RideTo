@@ -496,22 +496,27 @@ class BookingOptionsContainer extends React.Component {
           </React.Fragment>
         ) : null}
 
-        {isFirstFullLicencePanelComplete ||
-        isSecondFullLicencePanelComplete ||
-        (!isFullLicence && selectedCourse) ? (
-          <button onClick={this.handleSubmitClick} className="WidgetBtn">
-            {isFullLicence ? 'Continue' : 'Book Now'}
-          </button>
-        ) : (
-          isFullLicence && (
-            <button
-              onClick={this.handleSubmitClick}
-              className={classnames('WidgetBtn', styles.WidgetBtnDisabled)}
-              disabled>
+        <div className={showDayOfWeekPicker && styles.hasBackButton}>
+          {showDayOfWeekPicker && (
+            <button className={styles.backButton}>Back</button>
+          )}
+          {isFirstFullLicencePanelComplete ||
+          isSecondFullLicencePanelComplete ||
+          (!isFullLicence && selectedCourse) ? (
+            <button onClick={this.handleSubmitClick} className="WidgetBtn">
               {isFullLicence ? 'Continue' : 'Book Now'}
             </button>
-          )
-        )}
+          ) : (
+            isFullLicence && (
+              <button
+                onClick={this.handleSubmitClick}
+                className={classnames('WidgetBtn', styles.WidgetBtnDisabled)}
+                disabled>
+                {isFullLicence ? 'Continue' : 'Book Now'}
+              </button>
+            )
+          )}
+        </div>
       </div>
     )
   }
