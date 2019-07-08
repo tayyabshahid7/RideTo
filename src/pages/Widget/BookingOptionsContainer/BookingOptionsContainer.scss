@@ -47,3 +47,9 @@
     width: 325px;
   }
 }
+
+.WidgetBtnDisabled {
+  opacity: 0.35;
+  cursor: default;
+  background: darkgrey !important;
+}

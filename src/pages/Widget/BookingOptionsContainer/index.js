@@ -17,6 +17,8 @@ import { LICENCE_TYPES } from 'common/constants'
 
 import styles from './BookingOptionsContainer.scss'
 
+import classnames from 'classnames'
+
 const getSchoolCoursesByDate = (selectedDate, courses) => {
   if (!selectedDate) {
     return []
@@ -388,6 +390,21 @@ class BookingOptionsContainer extends React.Component {
       availableCourses
     )
 
+    const isFirstFullLicencePanelComplete =
+      isFullLicence &&
+      !showDayOfWeekPicker &&
+      selectedBikeHire &&
+      selectedLicenceType &&
+      selectedPackageHours
+
+    const isSecondFullLicencePanelComplete =
+      isFullLicence &&
+      showDayOfWeekPicker &&
+      selectedBikeHire &&
+      selectedLicenceType &&
+      selectedPackageHours &&
+      selectedTimeDays.length
+
     if (submit) {
       return <Redirect push to={submit} />
     }
@@ -479,21 +496,21 @@ class BookingOptionsContainer extends React.Component {
           </React.Fragment>
         ) : null}
 
-        {((isFullLicence &&
-          !showDayOfWeekPicker &&
-          selectedBikeHire &&
-          selectedLicenceType &&
-          selectedPackageHours) ||
-          (isFullLicence &&
-            showDayOfWeekPicker &&
-            selectedBikeHire &&
-            selectedLicenceType &&
-            selectedPackageHours &&
-            selectedTimeDays.length) ||
-          (!isFullLicence && selectedCourse)) && (
+        {isFirstFullLicencePanelComplete ||
+        isSecondFullLicencePanelComplete ||
+        (!isFullLicence && selectedCourse) ? (
           <button onClick={this.handleSubmitClick} className="WidgetBtn">
             {isFullLicence ? 'Continue' : 'Book Now'}
           </button>
+        ) : (
+          isFullLicence && (
+            <button
+              onClick={this.handleSubmitClick}
+              className={classnames('WidgetBtn', styles.WidgetBtnDisabled)}
+              disabled>
+              {isFullLicence ? 'Continue' : 'Book Now'}
+            </button>
+          )
         )}
       </div>
     )
