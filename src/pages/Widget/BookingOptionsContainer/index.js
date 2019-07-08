@@ -82,6 +82,7 @@ class BookingOptionsContainer extends React.Component {
     this.onSelectPackageHours = this.onSelectPackageHours.bind(this)
     this.handleSubmitClick = this.handleSubmitClick.bind(this)
     this.timeDayChange = this.timeDayChange.bind(this)
+    this.handleBackClick = this.handleBackClick.bind(this)
 
     window.sessionStorage.removeItem('widgetTrainings')
 
@@ -369,6 +370,13 @@ class BookingOptionsContainer extends React.Component {
     })
   }
 
+  handleBackClick() {
+    this.setState({
+      showDayOfWeekPicker: false,
+      selectedTimeDays: []
+    })
+  }
+
   render() {
     const { widget, selectedSupplier, suppliers, onChangeSupplier } = this.props
     const {
@@ -498,7 +506,9 @@ class BookingOptionsContainer extends React.Component {
 
         <div className={showDayOfWeekPicker && styles.hasBackButton}>
           {showDayOfWeekPicker && (
-            <button className={styles.backButton}>Back</button>
+            <button onClick={this.handleBackClick} className="backButton">
+              Back
+            </button>
           )}
           {isFirstFullLicencePanelComplete ||
           isSecondFullLicencePanelComplete ||
