@@ -1,0 +1,102 @@
+.container {
+  background-color: #fff;
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.1);
+  font-family: var(--font-proxima);
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+    margin-bottom: 3rem;
+  }
+
+  h4 {
+    font-family: var(--font-rift);
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    margin-bottom: 0.75rem;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+}
+
+.banner {
+  width: 100%;
+  height: 168px;
+  object-fit: cover;
+}
+
+.body {
+  padding: 1.5rem 2rem;
+}
+
+.sharers {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  @media (min-width: 768px) {
+    flex-wrap: none;
+  }
+}
+
+.inputContainer {
+  position: relative;
+  width: 100%;
+  height: 40px;
+
+  @media (min-width: 768px) {
+    flex-grow: 1;
+    width: auto;
+    max-width: 320px;
+  }
+}
+
+.input {
+  display: block;
+  height: 100%;
+  width: 100%;
+  padding-right: 0.5rem;
+  padding-left: 0.5rem;
+}
+
+.copyButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  appearance: none;
+  background: transparent;
+  color: var(--primary-color);
+  border: 0;
+  padding: 0 10px;
+  line-height: 38px;
+}
+
+.socialButtons {
+  display: flex;
+  margin-top: 0.75rem;
+
+  @media (min-width: 768px) {
+    margin-top: 0;
+  }
+}
+
+.shareButton {
+  cursor: pointer;
+  margin-right: 0.75rem;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  @media (min-width: 768px) {
+    margin-left: 0.75rem;
+    margin-right: 0;
+  }
+}
