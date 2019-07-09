@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -356,6 +357,11 @@ class ResultPage extends Component {
   ) {
     return (
       <React.Fragment>
+        {showDayOfWeekPicker && (
+          <button className={styles.backButton}>
+            <img src={ArrowLeftGreen} alt="Back" title="Back" />
+          </button>
+        )}
         <RideToButton
           className={classnames(
             styles.action,
