@@ -326,3 +326,24 @@
 .noMargin {
   margin-top: 0;
 }
+
+.backButton {
+  margin-top: -40px;
+  margin-left: 25px;
+  height: 64px;
+  appearance: none;
+  background-color: #fff;
+  border: 0;
+  cursor: pointer;
+  border: var(--light-grey-color);
+  width: 64px;
+
+  + button {
+    margin-left: 5px;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: -60px;
+    height: 64px;
+  }
+}
