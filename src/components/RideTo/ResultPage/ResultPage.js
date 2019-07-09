@@ -78,10 +78,18 @@ class ResultPage extends Component {
 
     this.showCourseTypeInfo = this.showCourseTypeInfo.bind(this)
     this.hideCourseTypeInfo = this.hideCourseTypeInfo.bind(this)
+    this.handleBackClick = this.handleBackClick.bind(this)
 
     window.sessionStorage.removeItem('trainings')
 
     this.bottomAnchor = React.createRef()
+  }
+
+  handleBackClick() {
+    this.setState({
+      showDayOfWeekPicker: false,
+      selectedTimeDays: []
+    })
   }
 
   showCourseTypeInfo() {
@@ -358,7 +366,7 @@ class ResultPage extends Component {
     return (
       <React.Fragment>
         {showDayOfWeekPicker && (
-          <button className={styles.backButton}>
+          <button onClick={this.handleBackClick} className={styles.backButton}>
             <img src={ArrowLeftGreen} alt="Back" title="Back" />
           </button>
         )}
