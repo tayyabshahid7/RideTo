@@ -7,9 +7,10 @@ import {
 import { FacebookIcon, WhatsappIcon, EmailIcon } from 'react-share'
 import styles from './styles.scss'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import brighton from 'assets/images/rideto-brighton.jpg'
 
 function DashboardReferral() {
+  const img =
+    'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideto-brighton.jpg'
   const url = 'https://bit.ly/2CY17It'
   const size = 38
   const inputEl = useRef(null)
@@ -32,7 +33,7 @@ function DashboardReferral() {
 
   return (
     <div className={styles.container}>
-      <img className={styles.banner} src={brighton} alt="" />
+      <img className={styles.banner} src={img} alt="" />
       <div className={styles.body}>
         <h4>Riding is better with friends - GET THEM STARTED!</h4>
         <p>Share your invite link</p>
