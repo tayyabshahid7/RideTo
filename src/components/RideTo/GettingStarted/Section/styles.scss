@@ -1,0 +1,35 @@
+.sectionImage {
+  display: block;
+  width: 100%;
+  height: 222px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.sectionTitle {
+  color: #1c1c1c;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.sectionContent {
+  padding: 2rem;
+}
+
+.sectionButtons {
+  margin-top: -0.25rem;
+}
+
+p + .sectionButtons {
+  margin-top: 1.5rem;
+}
+
+.sectionButton {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+}
