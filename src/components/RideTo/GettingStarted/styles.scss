@@ -75,6 +75,21 @@
   }
 }
 
+.menu {
+  position: sticky;
+  padding: 1rem 2rem;
+  top: 0;
+  background-color: #fff;
+}
+
+.menuCurrent {
+  font-family: var(--font-rift);
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 24px;
+  color: var(--primary-color);
+}
+
 .sectionImage {
   display: block;
   width: 100%;
