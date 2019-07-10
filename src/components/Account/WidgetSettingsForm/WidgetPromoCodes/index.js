@@ -10,7 +10,7 @@ import {
   updatePromoCode,
   deletePromoCode
 } from 'services/promo-codes'
-import { connect } from 'react-redux'
+import { getSettings } from 'services/settings'
 
 const styles = {
   ...parentStyles,
@@ -27,20 +27,35 @@ const BLANK_CODE = {
   isNew: true
 }
 
-function WidgetPromoCodes({ schoolId }) {
+function WidgetPromoCodes() {
   const [codes, setCodes] = useState([])
+  const [schoolProfile, setSchoolProfile] = useState(null)
+
+  useEffect(() => {
+    async function fetchSchoolProfile() {
+      const response = await getSettings()
+
+      if (response) {
+        setSchoolProfile(response.school_profile)
+      }
+    }
+
+    fetchSchoolProfile()
+  }, [])
 
   useEffect(() => {
     async function fetchCodes() {
-      const response = await fetchPromoCodes(schoolId)
+      const response = await fetchPromoCodes(schoolProfile)
 
       if (response) {
         setCodes(response)
       }
     }
 
-    fetchCodes()
-  }, [schoolId])
+    if (schoolProfile !== null) {
+      fetchCodes()
+    }
+  }, [schoolProfile])
 
   const addCode = () => {
     setCodes(prevstate => [
@@ -77,7 +92,7 @@ function WidgetPromoCodes({ schoolId }) {
 
     if (code.isNew) {
       try {
-        const response = await createPromoCode(schoolId, code)
+        const response = await createPromoCode(schoolProfile, code)
 
         if (response) {
           setCodes(prevstate =>
@@ -98,14 +113,14 @@ function WidgetPromoCodes({ schoolId }) {
         alert('Voucher with this code already exists')
       }
     } else {
-      updatePromoCode(schoolId, id, code)
+      updatePromoCode(schoolProfile, id, code)
     }
   }
 
   const removeCode = id => {
     if (window.confirm('Are you sure you want to remove this code?')) {
       setCodes(prevstate => prevstate.filter(code => code.id !== id))
-      deletePromoCode(schoolId, id)
+      deletePromoCode(schoolProfile, id)
     }
   }
 
@@ -135,10 +150,5 @@ function WidgetPromoCodes({ schoolId }) {
     </div>
   )
 }
-const mapStateToProps = state => {
-  return {
-    schoolId: state.auth.schoolId
-  }
-}
 
-export default connect(mapStateToProps)(WidgetPromoCodes)
+export default WidgetPromoCodes
