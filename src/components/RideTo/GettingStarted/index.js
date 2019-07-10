@@ -12,6 +12,7 @@ function GettingStarted() {
 
   const scrollTo = index => {
     const el = sectionRefs.current[index].current
+
     el.scrollIntoView({
       behavior: 'smooth',
       block: 'start'
