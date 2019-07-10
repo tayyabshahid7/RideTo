@@ -10,7 +10,7 @@ const Section = React.forwardRef(function(
   { data, index, setCurrentSection },
   ref
 ) {
-  const { name, img, title, text, faqs, links } = data
+  const { name, img, title, text = null, faqs = {}, links = [] } = data
 
   const handleEnter = () => {
     setCurrentSection(index)
@@ -24,15 +24,15 @@ const Section = React.forwardRef(function(
         <div className={styles.sectionContent}>
           <h3 className={styles.sectionName}>{name}</h3>
           <h2 className={styles.sectionTitle}>{title}</h2>
-          {text && <p>{text}</p>}
-          {Object.keys(faqs).length && (
+          {!!text && <p>{text}</p>}
+          {!!Object.keys(faqs).length && (
             <CourseTypeDetails
               courseType={{ details: faqs }}
               minimal
               spacedOut
             />
           )}
-          {links.length && (
+          {!!links.length && (
             <div className={styles.sectionButtons}>
               {links.map(({ url, text, alt }, i) => (
                 <RideToButton

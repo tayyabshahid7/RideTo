@@ -52,6 +52,54 @@ class CourseTypeDetails extends React.Component {
         )}
 
         <div className={styles.accordion}>
+          {details.whatLicenceDoYouNeed && (
+            <DetailsAccordionItem
+              spacedOut={spacedOut}
+              title="What licence do you need? "
+              content={details.whatLicenceDoYouNeed}
+              isOpen={opened.indexOf('whatLicenceDoYouNeed') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('whatLicenceDoYouNeed', isOpen)
+              }
+            />
+          )}
+
+          {details.whatIsACBTLicence && (
+            <DetailsAccordionItem
+              spacedOut={spacedOut}
+              title="What is a CBT licence? "
+              content={details.whatIsACBTLicence}
+              isOpen={opened.indexOf('whatIsACBTLicence') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('whatIsACBTLicence', isOpen)
+              }
+            />
+          )}
+
+          {details.passingYourTheoryTest && (
+            <DetailsAccordionItem
+              spacedOut={spacedOut}
+              title="Passing your theory test"
+              content={details.passingYourTheoryTest}
+              isOpen={opened.indexOf('passingYourTheoryTest') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('passingYourTheoryTest', isOpen)
+              }
+            />
+          )}
+
+          {details.gettingYourFullLicence && (
+            <DetailsAccordionItem
+              spacedOut={spacedOut}
+              title="Getting your full licence"
+              content={details.gettingYourFullLicence}
+              isOpen={opened.indexOf('gettingYourFullLicence') > -1}
+              onToggle={isOpen =>
+                this.handleToggleAccordion('gettingYourFullLicence', isOpen)
+              }
+            />
+          )}
+
           {details.howMuchTraining && (
             <DetailsAccordionItem
               spacedOut={spacedOut}
