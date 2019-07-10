@@ -18,3 +18,7 @@ Object.assign = require('object-assign')
 if (process.env.NODE_ENV === 'test') {
   require('raf').polyfill(global)
 }
+
+// Allow smooth scrolling everywhere
+var smoothscroll = require('smoothscroll-polyfill')
+smoothscroll.polyfill()

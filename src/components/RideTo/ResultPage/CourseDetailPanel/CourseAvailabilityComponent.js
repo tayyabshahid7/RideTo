@@ -6,9 +6,6 @@ import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicke
 import Loading from 'components/Loading'
 import { fetchWidgetCourses } from 'services/course'
 
-import smoothscroll from 'smoothscroll-polyfill'
-smoothscroll.polyfill()
-
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
     super(props)

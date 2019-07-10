@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from 'react'
-import { Waypoint } from 'react-waypoint'
+import React, { Fragment, useState, useRef, createRef } from 'react'
 import Splash from './Splash'
 import Menu from './Menu'
 import Section from './Section'
@@ -9,11 +8,14 @@ import content from './content'
 
 function GettingStarted() {
   const [currentSection, setCurrentSection] = useState(content[0].name)
+  const sectionRefs = useRef(content.map(() => createRef()))
 
-  console.log(currentSection, setCurrentSection, Waypoint)
-
-  const scrollTo = id => {
-    console.log(id)
+  const scrollTo = index => {
+    const el = sectionRefs.current[index].current
+    el.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    })
   }
 
   return (
@@ -24,8 +26,14 @@ function GettingStarted() {
       <div className={styles.container}>
         <Splash scrollTo={scrollTo} />
         <Menu currentSection={currentSection} />
-        {content.map(data => (
-          <Section key={data.name} data={data} />
+        {content.map((data, i) => (
+          <Section
+            key={i}
+            index={i}
+            ref={sectionRefs.current[i]}
+            data={data}
+            setCurrentSection={setCurrentSection}
+          />
         ))}
       </div>
     </Fragment>

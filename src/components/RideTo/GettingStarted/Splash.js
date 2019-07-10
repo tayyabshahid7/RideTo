@@ -3,6 +3,10 @@ import styles from './styles.scss'
 import WhiteArrowDown from 'assets/images/rideto/WhiteArrowDown.svg'
 
 function Splash({ scrollTo }) {
+  const handleButtonClick = () => {
+    scrollTo(0)
+  }
+
   return (
     <div className={styles.splash}>
       <h1 className={styles.splashTitle}>Learn to Ride</h1>
@@ -14,9 +18,7 @@ function Splash({ scrollTo }) {
       <button
         className={styles.splashButton}
         title="Scroll down"
-        onClick={() => {
-          scrollTo(1)
-        }}>
+        onClick={handleButtonClick}>
         <img src={WhiteArrowDown} alt="" />
         <img src={WhiteArrowDown} alt="" />
       </button>

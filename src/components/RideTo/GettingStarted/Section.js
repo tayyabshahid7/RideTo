@@ -4,10 +4,18 @@ import RideToButton from 'components/RideTo/Button'
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import { Waypoint } from 'react-waypoint'
 
-function Section({ data: { name, img, title, text, faqs, links } }) {
+const Section = React.forwardRef(function({ data, setCurrentSection }, ref) {
+  const { name, img, title, text, faqs, links } = data
+
+  const handleEnter = () => {
+    setCurrentSection(name)
+  }
+
   return (
-    <div>
+    <div ref={ref}>
+      <Waypoint onEnter={handleEnter} />
       <img className={styles.sectionImage} src={img} alt={name} />
       <div className={styles.sectionContent}>
         <h2 className={styles.sectionTitle}>{title}</h2>
@@ -32,6 +40,6 @@ function Section({ data: { name, img, title, text, faqs, links } }) {
       </div>
     </div>
   )
-}
+})
 
 export default Section
