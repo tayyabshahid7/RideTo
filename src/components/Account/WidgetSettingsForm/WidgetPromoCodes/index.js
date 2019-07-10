@@ -5,25 +5,12 @@ import PromoCode from './SinglePromoCode.js'
 import { Button } from 'components/ConnectForm'
 import { uniqueId } from 'utils/helper'
 import {
-  // fetchPromoCodes,
+  fetchPromoCodes,
   createPromoCode,
   updatePromoCode,
   deletePromoCode
 } from 'services/promo-codes'
 import { connect } from 'react-redux'
-
-// Just for dev, delete this
-const fetchPromoCodes = () => [
-  {
-    id: 27928374928374,
-    text: 'coolcode123',
-    price: 50,
-    uses: 7,
-    expireDate: '2019-07-10',
-    isActive: true,
-    isNew: false
-  }
-]
 
 const styles = {
   ...parentStyles,
@@ -32,11 +19,11 @@ const styles = {
 
 const BLANK_CODE = {
   id: null,
-  text: '',
-  price: '',
-  uses: '',
-  expireDate: '',
-  isActive: true,
+  code: '',
+  discount: '',
+  num_of_uses_available: '',
+  expire_date: '',
+  is_active: true,
   isNew: true
 }
 
@@ -44,7 +31,15 @@ function WidgetPromoCodes({ schoolId }) {
   const [codes, setCodes] = useState([])
 
   useEffect(() => {
-    setCodes(fetchPromoCodes(schoolId))
+    async function fetchCodes() {
+      const response = await fetchPromoCodes(schoolId)
+
+      if (response) {
+        setCodes(response)
+      }
+    }
+
+    fetchCodes()
   }, [schoolId])
 
   const addCode = () => {
@@ -75,13 +70,33 @@ function WidgetPromoCodes({ schoolId }) {
     )
   }
 
-  const submitCode = (event, id) => {
+  const submitCode = async (event, id) => {
     const code = codes.find(code => code.id === id)
 
     event.preventDefault()
 
     if (code.isNew) {
-      createPromoCode(schoolId, code)
+      try {
+        const response = await createPromoCode(schoolId, code)
+
+        if (response) {
+          setCodes(prevstate =>
+            prevstate.map(code => {
+              if (code.id !== id) {
+                return code
+              }
+
+              return {
+                ...code,
+                id: response.id,
+                isNew: false
+              }
+            })
+          )
+        }
+      } catch (error) {
+        alert('Voucher with this code already exists')
+      }
     } else {
       updatePromoCode(schoolId, id, code)
     }

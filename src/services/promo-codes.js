@@ -1,7 +1,7 @@
 import { get, destroy, post, put } from 'services/api'
 
 export const fetchPromoCodes = async schoolId => {
-  const path = `school/${schoolId}/promo-codes`
+  const path = `o/voucher-school`
 
   const response = await get(path)
 
@@ -9,7 +9,7 @@ export const fetchPromoCodes = async schoolId => {
 }
 
 export const createPromoCode = async (schoolId, data) => {
-  const path = `school/${schoolId}/promo-codes`
+  const path = `o/voucher-school`
 
   const response = await post(path, data)
 
@@ -17,7 +17,7 @@ export const createPromoCode = async (schoolId, data) => {
 }
 
 export const updatePromoCode = async (schoolId, id, data) => {
-  const path = `school/${schoolId}/promo-codes/${id}`
+  const path = `o/voucher-school/${id}`
 
   const response = await put(path, data)
 
@@ -25,7 +25,7 @@ export const updatePromoCode = async (schoolId, id, data) => {
 }
 
 export const deletePromoCode = async (schoolId, id) => {
-  const path = `school/${schoolId}/promo-codes/${id}`
+  const path = `o/voucher-school/${id}`
 
   const response = await destroy(path)
 

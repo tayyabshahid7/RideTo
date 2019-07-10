@@ -2,8 +2,16 @@ import React, { useState } from 'react'
 import { ConnectInput, ConnectCheckbox, Button } from 'components/ConnectForm'
 import styles from './styles.scss'
 
-function PromoCode({ code, updateCode, removeCode, submitCode }) {
-  const { text, price, uses, expireDate, isActive, id, isNew } = code
+function PromoCode({ code: codeObj, updateCode, removeCode, submitCode }) {
+  const {
+    code,
+    discount,
+    num_of_uses_available,
+    expire_date,
+    is_active,
+    id,
+    isNew
+  } = codeObj
   const [changed, setChanged] = useState(false)
   const isSaveable = changed || isNew
 
@@ -22,16 +30,16 @@ function PromoCode({ code, updateCode, removeCode, submitCode }) {
       <ConnectInput
         required
         label="Code"
-        name="text"
-        value={text}
-        type="text"
+        name="code"
+        value={code}
+        type="code"
         onChange={handleChange}
       />
       <ConnectInput
         required
-        label="Price (£)"
-        name="price"
-        value={price}
+        label="Discount (£)"
+        name="discount"
+        value={discount}
         type="number"
         onChange={handleChange}
         min="0.00"
@@ -41,25 +49,26 @@ function PromoCode({ code, updateCode, removeCode, submitCode }) {
       <ConnectInput
         required
         label="Uses"
-        name="uses"
-        value={uses}
+        name="num_of_uses_available"
+        value={num_of_uses_available}
         type="number"
         onChange={handleChange}
       />
       <ConnectInput
         required
         label="Expiry Date"
-        name="expireDate"
-        value={expireDate}
+        name="expire_date"
+        value={expire_date}
         type="date"
         onChange={handleChange}
+        iso
       />
       <ConnectCheckbox
         required
         label="Active"
-        name="isActive"
+        name="is_active"
         type="checkbox"
-        checked={isActive}
+        checked={is_active}
         onChange={handleChange}
       />
       <Button small type="submit" disabled={!isSaveable}>
