@@ -17,29 +17,36 @@ const Section = React.forwardRef(function(
   }
 
   return (
-    <div ref={ref}>
+    <div className={styles.section} ref={ref}>
       <Waypoint onEnter={handleEnter} />
-      <img className={styles.sectionImage} src={img} alt={name} />
-      <div className={styles.sectionContent}>
-        <h2 className={styles.sectionTitle}>{title}</h2>
-        {text && <p>{text}</p>}
-        {Object.keys(faqs).length && (
-          <CourseTypeDetails courseType={{ details: faqs }} minimal spacedOut />
-        )}
-        {links.length && (
-          <div className={styles.sectionButtons}>
-            {links.map(({ url, text, alt }, i) => (
-              <RideToButton
-                className={styles.sectionButton}
-                key={i}
-                href={url}
-                alt={alt}>
-                <span>{text}</span>
-                <img src={alt ? ArrowRight : ButtonArrowWhite} alt="arrow" />
-              </RideToButton>
-            ))}
-          </div>
-        )}
+      <div className={styles.sectionInner}>
+        <img className={styles.sectionImage} src={img} alt={name} />
+        <div className={styles.sectionContent}>
+          <h3 className={styles.sectionName}>{name}</h3>
+          <h2 className={styles.sectionTitle}>{title}</h2>
+          {text && <p>{text}</p>}
+          {Object.keys(faqs).length && (
+            <CourseTypeDetails
+              courseType={{ details: faqs }}
+              minimal
+              spacedOut
+            />
+          )}
+          {links.length && (
+            <div className={styles.sectionButtons}>
+              {links.map(({ url, text, alt }, i) => (
+                <RideToButton
+                  className={styles.sectionButton}
+                  key={i}
+                  href={url}
+                  alt={alt}>
+                  <span>{text}</span>
+                  <img src={alt ? ArrowRight : ButtonArrowWhite} alt="arrow" />
+                </RideToButton>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

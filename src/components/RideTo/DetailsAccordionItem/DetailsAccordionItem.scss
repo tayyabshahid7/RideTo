@@ -49,6 +49,12 @@
     border-bottom: 0;
   }
 
+  @media (min-width: 933px) {
+    &:first-child {
+      border-top: 0;
+    }
+  }
+
   .title {
     font-family: var(--font-rift-bold);
     font-size: 20px;

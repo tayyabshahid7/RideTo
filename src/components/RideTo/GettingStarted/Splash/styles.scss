@@ -29,6 +29,10 @@
     );
   }
 
+  @media (min-width: 801px) {
+    height: calc(100vh - 80px);
+  }
+
   @media (min-width: 933px) {
     height: calc(100vh - 80px - 89px);
   }

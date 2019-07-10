@@ -5,17 +5,22 @@ import Section from './Section'
 import styles from './styles.scss'
 import Helmet from 'react-helmet'
 import content from './content'
+import { useMediaQuery } from 'react-responsive'
 
 function GettingStarted() {
   const [currentSection, setCurrentSection] = useState(content[0].name)
+
   const sectionRefs = useRef(content.map(() => createRef()))
+
+  const isDesktop = useMediaQuery({ query: '(min-width: 933px)' })
 
   const scrollTo = index => {
     const el = sectionRefs.current[index].current
+    const offset = el.offsetTop - (isDesktop ? 89 : 56)
 
-    el.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
+    window.scrollTo({
+      top: offset,
+      behavior: 'smooth'
     })
   }
 
