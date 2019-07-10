@@ -111,7 +111,7 @@ function WidgetPromoCodes() {
           )
         }
       } catch (error) {
-        alert('Voucher with this code already exists')
+        alert('Failed to save promo code.')
       }
     } else {
       updatePromoCode(schoolProfile, id, code)
