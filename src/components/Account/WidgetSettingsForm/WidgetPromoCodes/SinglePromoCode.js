@@ -34,6 +34,7 @@ function PromoCode({ code: codeObj, updateCode, removeCode, submitCode }) {
         value={code}
         type="code"
         onChange={handleChange}
+        maxlength="16"
       />
       <ConnectInput
         required
@@ -53,6 +54,7 @@ function PromoCode({ code: codeObj, updateCode, removeCode, submitCode }) {
         value={num_of_uses_available}
         type="number"
         onChange={handleChange}
+        min="0"
       />
       <ConnectInput
         required

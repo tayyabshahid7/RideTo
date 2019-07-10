@@ -79,7 +79,8 @@ function WidgetPromoCodes() {
 
         return {
           ...code,
-          [name]: value
+          [name]: value,
+          ...(name === 'code' && { code: value.toUpperCase() })
         }
       })
     )
