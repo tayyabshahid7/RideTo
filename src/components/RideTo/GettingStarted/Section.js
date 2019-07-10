@@ -6,11 +6,14 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { Waypoint } from 'react-waypoint'
 
-const Section = React.forwardRef(function({ data, setCurrentSection }, ref) {
+const Section = React.forwardRef(function(
+  { data, index, setCurrentSection },
+  ref
+) {
   const { name, img, title, text, faqs, links } = data
 
   const handleEnter = () => {
-    setCurrentSection(name)
+    setCurrentSection(index)
   }
 
   return (

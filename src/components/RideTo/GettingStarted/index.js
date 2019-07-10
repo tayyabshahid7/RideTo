@@ -26,7 +26,11 @@ function GettingStarted() {
       </Helmet>
       <div className={styles.container}>
         <Splash scrollTo={scrollTo} />
-        <Menu currentSection={currentSection} />
+        <Menu
+          names={content.map(({ name }) => name)}
+          currentSection={currentSection}
+          scrollTo={scrollTo}
+        />
         {content.map((data, i) => (
           <Section
             key={i}

@@ -82,12 +82,35 @@
   background-color: #fff;
 }
 
-.menuCurrent {
+.menuList {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.menuListItem {
+  display: none;
+}
+
+.menuListButton {
+  appearance: none;
+  border: 0;
+  background: transparent;
   font-family: var(--font-rift);
   font-weight: bold;
   font-size: 20px;
   line-height: 24px;
-  color: var(--primary-color);
+  padding: 0;
+}
+
+.menuListItemCurrent {
+  display: block;
+
+  button {
+    color: var(--primary-color);
+    cursor: default;
+  }
 }
 
 .sectionImage {
