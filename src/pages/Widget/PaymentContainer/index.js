@@ -5,11 +5,7 @@ import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
 import BookingSummary from 'pages/Widget/components/BookingSummary'
-import {
-  fetchWidgetSingleCourse,
-  fetchWidgetSingleCourseWithDiscount,
-  getPrice
-} from 'services/course'
+import { fetchWidgetSingleCourse, getPrice } from 'services/course'
 import {
   createOrder,
   getTotalOrderPrice,
@@ -114,11 +110,18 @@ class PaymentContainer extends React.Component {
     } else {
       course = await fetchWidgetSingleCourse(0, courseId)
       if (voucher_code) {
-        discount = await fetchWidgetSingleCourseWithDiscount(
-          0,
-          courseId,
-          voucher_code
-        )
+        const training = trainings[0]
+
+        let response = await getPrice({
+          supplierId: training.supplier_id,
+          course_type: training.course_type,
+          full_licence_course_id: training.school_course_id,
+          ...(voucher_code && { voucher_code })
+        })
+
+        if (response.discount > 0) {
+          discount = response.discount
+        }
       }
       supplier = this.suppliers.filter(({ id }) => id === course.supplier)[0]
       totalPrice = getTotalOrderPrice(course, hire, discount)
