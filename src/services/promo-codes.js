@@ -11,7 +11,11 @@ export const fetchPromoCodes = async schoolId => {
 export const createPromoCode = async (schoolId, data) => {
   const path = `o/voucher-school`
 
-  const response = await post(path, data)
+  const response = await post(path, {
+    ...data,
+    id: undefined,
+    school_profile: schoolId
+  })
 
   return response
 }
