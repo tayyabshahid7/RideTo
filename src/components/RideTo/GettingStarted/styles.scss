@@ -1,0 +1,72 @@
+.container {
+  font-family: var(--font-stack);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.splash {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: calc(100vh - 56px);
+  min-height: 320px;
+  padding: 2rem;
+  background-color: purple;
+  text-align: center;
+  color: #ffffff;
+
+  &::after {
+    position: absolute;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(20, 20, 20, 0.6);
+    background: linear-gradient(
+      231.06deg,
+      rgba(20, 20, 20, 0) 0%,
+      #141414 100%
+    );
+  }
+}
+
+.splashTitle,
+.splashLead {
+  position: relative;
+  z-index: 1;
+}
+
+.splashTitle {
+  font-family: var(--font-rift);
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 1;
+  margin-top: -50px;
+  margin-bottom: 1rem;
+}
+
+.splashLead {
+  margin-bottom: 0;
+}
+
+.splashButton {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  z-index: 1;
+  bottom: 10%;
+  left: 50%;
+  margin-left: -16.5px;
+
+  img + img {
+    margin-top: -3px;
+  }
+}
