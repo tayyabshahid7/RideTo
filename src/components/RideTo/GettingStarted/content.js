@@ -1,6 +1,6 @@
 const GET_A_LICENCE = {
   name: 'Get a licence',
-  img: 'https://via.placeholder.com/350x150',
+  img: '',
   title: "We'll get you the right training for your riding ambitions",
   faqs: {
     whatLicenceDoYouNeed:
@@ -17,7 +17,7 @@ const GET_A_LICENCE = {
 
 const GET_A_BIKE = {
   name: 'Get a bike',
-  img: 'https://via.placeholder.com/350x150',
+  img: '',
   title: 'So many bikes but which to choose?',
   text:
     "The choice of bikes available is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride with your dream machine."
@@ -25,7 +25,7 @@ const GET_A_BIKE = {
 
 const GET_INSURED = {
   name: 'Get insured',
-  img: 'https://via.placeholder.com/350x150',
+  img: '',
   title: "We'll beat your best insurance quote guaranteed*",
   text:
     "The least exciting, but important part of riding is getting the right cover. We've partnered with The Bike Insurer to get you the best price guaranteed on your insurance. Click to get a quick quote and be on the road in no time. ",
@@ -34,7 +34,7 @@ const GET_INSURED = {
 
 const GET_THE_GEAR = {
   name: 'Get the gear',
-  img: 'https://via.placeholder.com/350x150',
+  img: '',
   title: 'Get the look, be protected.',
   text:
     "Our clothing partners SportsBikeShop bring you the biggest selection of riding gear. From helmets to gloves and boots. Get kitted out at the best price with the best gear. Unsure what's right for you? Check out our latest gear reviews. ",
@@ -46,7 +46,7 @@ const GET_THE_GEAR = {
 
 const JOIN_THE_COMMUNITY = {
   name: 'Join the community',
-  img: 'https://via.placeholder.com/350x150',
+  img: '',
   title: 'Be part of something epic, make friends for life. ',
   text:
     "Riding is a unique community of some of the most diverse, interesting and awesome people you can meet. We're passionate about cultivating this for new riders and regularly organise events, meetups and ride outs. No matter what you ride, get involved. ",
