@@ -1,0 +1,104 @@
+.section {
+  @media (min-width: 933px) {
+    &:nth-child(odd) {
+      background-color: rgba(#c2c2c2, 0.1);
+
+      .sectionInner {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+}
+
+.sectionInner {
+  @media (min-width: 933px) {
+    display: flex;
+    padding: 40px;
+    margin: 0 auto;
+    max-width: 1400px;
+  }
+}
+
+.sectionImage {
+  display: block;
+  width: 100%;
+  height: 222px;
+  object-fit: cover;
+  object-position: center;
+
+  @media (min-width: 933px) {
+    width: 48%;
+    height: auto;
+  }
+}
+
+.sectionName {
+  display: none;
+
+  @media (min-width: 933px) {
+    display: block;
+    font-size: 20px;
+    line-height: 24px;
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+
+    &::after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 16px;
+      border-top: 1px solid #2cceac;
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+.sectionTitle {
+  color: #1c1c1c;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 1rem;
+
+  @media (min-width: 933px) {
+    font-size: 40px;
+  }
+}
+
+.sectionContent {
+  padding: 2rem;
+
+  @media (min-width: 933px) {
+    width: 52%;
+    padding: 5%;
+  }
+
+  @media (min-width: 1200px) {
+    padding: 5% 9%;
+  }
+}
+
+.sectionButtons {
+  margin-top: -0.25rem;
+
+  @media (min-width: 933px) {
+    margin-top: 2rem;
+  }
+}
+
+p + .sectionButtons {
+  margin-top: 1.5rem;
+
+  @media (min-width: 933px) {
+    margin-top: 3rem;
+  }
+}
+
+.sectionButton {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+}

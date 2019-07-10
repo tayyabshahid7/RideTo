@@ -25,3 +25,9 @@
     text-decoration: none;
   }
 }
+
+.buttonAlt {
+  border: 1px solid var(--primary-color);
+  background-color: white;
+  color: var(--primary-color) !important;
+}
