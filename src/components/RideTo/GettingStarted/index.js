@@ -4,6 +4,8 @@ import Section from './Section'
 import styles from './styles.scss'
 import Helmet from 'react-helmet'
 
+import content from './content'
+
 function GettingStarted() {
   const scrollTo = id => {
     console.log(id)
@@ -16,7 +18,9 @@ function GettingStarted() {
       </Helmet>
       <div className={styles.container}>
         <Splash scrollTo={scrollTo} />
-        <Section />
+        {content.map(data => (
+          <Section key={data.name} data={data} />
+        ))}
       </div>
     </Fragment>
   )

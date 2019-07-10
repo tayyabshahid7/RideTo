@@ -2,6 +2,11 @@
   font-family: var(--font-stack);
   font-size: 15px;
   line-height: 1.6;
+
+  h1,
+  h2 {
+    font-family: var(--font-rift);
+  }
 }
 
 .splash {
@@ -42,10 +47,9 @@
 }
 
 .splashTitle {
-  font-family: var(--font-rift);
   font-size: 40px;
   font-weight: bold;
-  line-height: 1;
+  line-height: 1.1;
   margin-top: -50px;
   margin-bottom: 1rem;
 }
@@ -69,4 +73,40 @@
   img + img {
     margin-top: -3px;
   }
+}
+
+.sectionImage {
+  display: block;
+  width: 100%;
+  height: 222px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.sectionTitle {
+  color: #1c1c1c;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 1rem;
+}
+
+.sectionContent {
+  padding: 2rem;
+}
+
+.sectionButtons {
+  margin-top: -0.25rem;
+}
+
+p + .sectionButtons {
+  margin-top: 1.5rem;
+}
+
+.sectionButton {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
 }
