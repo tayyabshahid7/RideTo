@@ -1,7 +1,6 @@
 import React from 'react'
 import moment from 'moment'
 import { Elements, StripeProvider } from 'react-stripe-elements'
-
 import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
@@ -14,8 +13,10 @@ import {
   getInitialSuppliers
 } from 'services/widget'
 import { parseQueryString } from 'services/api'
-
 import styles from './PaymentContainer.scss'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { capitalizeFirstLetter } from 'utils/helper'
 
 const REQUIRED_FIELDS = [
   'first_name',
@@ -59,16 +60,22 @@ class PaymentContainer extends React.Component {
       },
       trainings: JSON.parse(window.sessionStorage.getItem('widgetTrainings')),
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
-      totalPrice: 0
+      totalPrice: 0,
+      voucher_code: '',
+      discount: 0
     }
 
     this.handlePayment = this.handlePayment.bind(this)
     this.handleChangeDetails = this.handleChangeDetails.bind(this)
+    this.handleVoucherApply = this.handleVoucherApply.bind(this)
+    this.handleVoucherCodeChange = this.handleVoucherCodeChange.bind(this)
+
+    this.setPrice = this.setPrice.bind(this)
 
     window.document.body.scrollIntoView()
   }
 
-  async componentDidMount() {
+  async setPrice(voucher_code) {
     const { match } = this.props
     const { courseId } = match.params
     const { isFullLicence, trainings, hire } = this.state
@@ -76,6 +83,7 @@ class PaymentContainer extends React.Component {
     let course
     let supplier
     let totalPrice
+    let discount = 0
 
     if (isFullLicence) {
       const training = trainings[0]
@@ -93,21 +101,54 @@ class PaymentContainer extends React.Component {
         supplierId: training.supplier_id,
         course_type: training.course_type,
         hours: training.package_hours,
-        full_licence_course_id: training.school_course_id
+        full_licence_course_id: training.school_course_id,
+        ...(voucher_code && { voucher_code })
       })
 
       totalPrice = response.price
+      discount = response.discount
     } else {
       course = await fetchWidgetSingleCourse(0, courseId)
+      if (voucher_code) {
+        const training = trainings[0]
+
+        let response = await getPrice({
+          supplierId: training.supplier_id,
+          course_type: training.course_type,
+          full_licence_course_id: training.school_course_id,
+          ...(voucher_code && { voucher_code })
+        })
+
+        if (response.discount > 0) {
+          discount = response.discount
+        }
+      }
       supplier = this.suppliers.filter(({ id }) => id === course.supplier)[0]
-      totalPrice = getTotalOrderPrice(course, hire)
+      totalPrice = getTotalOrderPrice(course, hire, discount)
     }
 
     this.setState({
       course,
       supplier,
-      totalPrice
+      totalPrice,
+      discount
     })
+  }
+
+  componentDidMount() {
+    this.setPrice()
+  }
+
+  handleVoucherCodeChange({ voucher_code }) {
+    this.setState({
+      voucher_code
+    })
+  }
+
+  handleVoucherApply() {
+    const { voucher_code } = this.state
+
+    this.setPrice(voucher_code)
   }
 
   handleChangeDetails(details, errors = {}) {
@@ -225,6 +266,23 @@ class PaymentContainer extends React.Component {
     this.setState({ errors, isSaving: false })
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.discount !== prevState.discount) {
+      if (this.state.discount > 0) {
+        this.showPromoNotification('Promo code applied!', 'add')
+      } else {
+        this.showPromoNotification('Invalid promo code.', 'error')
+      }
+    }
+  }
+
+  showPromoNotification(text = 'Promo code applied!', type = 'add') {
+    toast(text, {
+      toastId: 'add',
+      className: styles[`toast${capitalizeFirstLetter(type)}`]
+    })
+  }
+
   render() {
     const {
       course,
@@ -235,65 +293,79 @@ class PaymentContainer extends React.Component {
       isSaving,
       totalPrice,
       isFullLicence,
-      trainings
+      trainings,
+      voucher_code,
+      discount
     } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
 
     return (
-      <div className={styles.paymentContainer}>
-        <BookingSummary
-          totalPrice={totalPrice}
-          course={course}
-          supplier={supplier}
-          hire={hire}
-          isLoading={isLoading}
-          isFullLicence={isFullLicence}
-          trainings={trainings}
+      <React.Fragment>
+        <ToastContainer
+          autoClose={2000}
+          hideProgressBar={true}
+          pauseOnHover={false}
+          pauseOnFocusLoss={false}
         />
-        <div className={styles.paymentDetails}>
-          <h3 className={styles.heading}>Contact Details</h3>
-          <CustomerDetailsForm
-            details={details}
-            trainingDate={course && course.date}
-            errors={errors}
-            fullLicenceType={trainings[0].full_licence_type}
-            onChange={this.handleChangeDetails}
-          />
-
-          <StripeProvider apiKey={this.stripePublicKey}>
-            <div>
-              <h3 className={styles.heading}>Payment Details</h3>
-              <div className={styles.cardSecure}>
-                Your card details are stored with our secure payment provider
-                Stripe.
-              </div>
-              <Elements>
-                <CheckoutForm
-                  widget={this.widget}
-                  details={details}
-                  errors={errors}
-                  isSaving={isSaving}
-                  onChange={this.handleChangeDetails}
-                  onSubmit={this.handlePayment}
-                />
-              </Elements>
-            </div>
-          </StripeProvider>
-        </div>
-
-        <div className={styles.orderDetails}>
-          <h3 className={styles.heading}>Your Training</h3>
-          <OrderDetails
-            isFullLicence={isFullLicence}
+        <div className={styles.paymentContainer}>
+          <BookingSummary
             totalPrice={totalPrice}
             course={course}
             supplier={supplier}
             hire={hire}
             isLoading={isLoading}
+            isFullLicence={isFullLicence}
             trainings={trainings}
           />
+          <div className={styles.paymentDetails}>
+            <h3 className={styles.heading}>Contact Details</h3>
+            <CustomerDetailsForm
+              details={details}
+              trainingDate={course && course.date}
+              errors={errors}
+              fullLicenceType={trainings[0].full_licence_type}
+              onChange={this.handleChangeDetails}
+            />
+
+            <StripeProvider apiKey={this.stripePublicKey}>
+              <div>
+                <h3 className={styles.heading}>Payment Details</h3>
+                <div className={styles.cardSecure}>
+                  Your card details are stored with our secure payment provider
+                  Stripe.
+                </div>
+                <Elements>
+                  <CheckoutForm
+                    widget={this.widget}
+                    details={details}
+                    errors={errors}
+                    isSaving={isSaving}
+                    onChange={this.handleChangeDetails}
+                    onSubmit={this.handlePayment}
+                    voucher_code={voucher_code}
+                    handleVoucherApply={this.handleVoucherApply}
+                    onVoucherCodeChange={this.handleVoucherCodeChange}
+                  />
+                </Elements>
+              </div>
+            </StripeProvider>
+          </div>
+
+          <div className={styles.orderDetails}>
+            <h3 className={styles.heading}>Your Training</h3>
+            <OrderDetails
+              discount={discount}
+              isFullLicence={isFullLicence}
+              totalPrice={totalPrice}
+              course={course}
+              supplier={supplier}
+              hire={hire}
+              isLoading={isLoading}
+              trainings={trainings}
+            />
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 }

@@ -18,7 +18,8 @@ function MyDatePicker({
   disabled,
   required,
   basic,
-  maxDate
+  maxDate,
+  iso
 }) {
   return (
     <React.Fragment>
@@ -40,7 +41,8 @@ function MyDatePicker({
           onChange({
             target: {
               name: name,
-              value: moment(date).format('YYYY-MM-DD')
+              value: moment(date).format('YYYY-MM-DD'),
+              ...(iso && { value: moment(date).toISOString() })
             }
           })
         }}
@@ -67,7 +69,8 @@ export function ConnectInput(props) {
     name,
     disabled,
     required,
-    basic
+    basic,
+    ...rest
   } = props
 
   if (type === 'time') {
@@ -124,6 +127,7 @@ export function ConnectInput(props) {
         </label>
       )}
       <input
+        {...rest}
         name={name}
         className={classnames(styles.input, basic && styles.basic)}
         id={id || name}

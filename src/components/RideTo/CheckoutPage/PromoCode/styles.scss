@@ -25,3 +25,23 @@
   flex: 1 1 auto;
   border: 2px solid #e3e3e3 !important;
 }
+
+.widgetPromoWrapper {
+  padding: 0;
+  margin: (16px + 4px) 0 (16px - 4px);
+}
+
+.widgetPromoInput {
+  height: 46px !important;
+  border: 1px solid #ced4da !important;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: #aab7c4;
+  }
+}
+
+.widgetApplyBtn {
+  height: 46px !important;
+  padding: 0 !important;
+}

@@ -15,7 +15,8 @@ const OrderDetails = ({
   isLoading,
   totalPrice,
   isFullLicence,
-  trainings
+  trainings,
+  discount
 }) => {
   if (isLoading) {
     return (
@@ -70,6 +71,11 @@ const OrderDetails = ({
           </ul>
         </div>
       </div>
+      {discount > 0 && (
+        <div className={styles.discountRow}>
+          Discount: -{asPoundSterling(discount)}
+        </div>
+      )}
       <div className={styles.price}>Total: {displayPrice}</div>
     </React.Fragment>
   )
