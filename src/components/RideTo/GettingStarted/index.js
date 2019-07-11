@@ -8,15 +8,15 @@ import content from './content'
 import { useMediaQuery } from 'react-responsive'
 
 function GettingStarted() {
-  const [currentSection, setCurrentSection] = useState(content[0].name)
+  const [currentSection, setCurrentSection] = useState(0)
 
   const sectionRefs = useRef(content.map(() => createRef()))
 
-  const isDesktop = useMediaQuery({ query: '(min-width: 933px)' })
+  const menuHeight = useMediaQuery({ query: '(min-width: 933px)' }) ? 89 : 56
 
   const scrollTo = index => {
     const el = sectionRefs.current[index].current
-    const offset = el.offsetTop - (isDesktop ? 89 : 56)
+    const offset = el.offsetTop - menuHeight
 
     window.scrollTo({
       top: offset,
@@ -43,6 +43,7 @@ function GettingStarted() {
             ref={sectionRefs.current[i]}
             data={data}
             setCurrentSection={setCurrentSection}
+            menuHeight={menuHeight}
           />
         ))}
       </div>

@@ -7,18 +7,34 @@ import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { Waypoint } from 'react-waypoint'
 
 const Section = React.forwardRef(function(
-  { data, index, setCurrentSection },
+  { data, index, setCurrentSection, menuHeight },
   ref
 ) {
   const { name, img, title, text = null, faqs = {}, links = [] } = data
 
-  const handleEnter = () => {
-    setCurrentSection(index)
+  const handleEnter = ({ currentPosition, previousPosition }) => {
+    if (currentPosition === 'inside' && previousPosition === 'above') {
+      setCurrentSection(index)
+    }
+  }
+
+  const handleLeave = ({ currentPosition, previousPosition }) => {
+    if (
+      currentPosition === 'above' &&
+      previousPosition === 'inside' &&
+      index < 4
+    ) {
+      setCurrentSection(index + 1)
+    }
   }
 
   return (
     <div className={styles.section} ref={ref}>
-      <Waypoint onEnter={handleEnter}>
+      <Waypoint
+        onEnter={handleEnter}
+        onLeave={handleLeave}
+        topOffset={menuHeight + 1}
+        bottomOffset={menuHeight + 1}>
         <div className={styles.sectionInner}>
           <div className={styles.sectionImageWrap}>
             <img className={styles.sectionImage} src={img} alt={name} />
