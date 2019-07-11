@@ -43,6 +43,14 @@
     height: 100%;
     z-index: -1;
   }
+
+  @media (min-width: 933px) {
+    max-height: 597px;
+  }
+
+  @media (min-width: 1200px) {
+    max-height: 665px;
+  }
 }
 
 .sectionName {
@@ -84,11 +92,13 @@
 
   @media (min-width: 933px) {
     width: 52%;
-    padding: 5%;
+    // padding: 5%;
+    padding: 42px 5%;
   }
 
   @media (min-width: 1200px) {
-    padding: 5% 9%;
+    // padding: 5% 9%;
+    padding: 56px 9%;
   }
 }
 
