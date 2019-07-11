@@ -19,6 +19,13 @@
   }
 }
 
+.sectionImageWrap {
+  @media (min-width: 933px) {
+    position: relative;
+    width: 48%;
+  }
+}
+
 .sectionImage {
   display: block;
   width: 100%;
@@ -27,8 +34,12 @@
   object-position: center;
 
   @media (min-width: 933px) {
-    width: 48%;
-    height: auto;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
   }
 }
 
