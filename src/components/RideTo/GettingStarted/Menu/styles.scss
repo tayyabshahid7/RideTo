@@ -38,6 +38,10 @@
   line-height: 24px;
   padding: 1rem 0;
 
+  &:focus {
+    outline: 0;
+  }
+
   @media (min-width: 933px) {
     padding: 2rem 0;
   }

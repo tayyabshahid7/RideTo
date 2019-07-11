@@ -1,8 +1,13 @@
-import image1 from './images/getting-started-1.jpg'
-import image2 from './images/getting-started-2.jpg'
-import image3 from './images/getting-started-3.jpg'
-import image4 from './images/getting-started-4.jpg'
-import image5 from './images/getting-started-5.jpg'
+const image1 =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-1.jpg'
+const image2 =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-2.jpg'
+const image3 =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-3.jpg'
+const image4 =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-4.jpg'
+const image5 =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-5.jpg'
 
 const GET_A_LICENCE = {
   name: 'Get a licence',
@@ -51,7 +56,8 @@ const GET_THE_GEAR = {
     {
       url: 'https://www.sportsbikeshop.co.uk/#/23639,0,0',
       text: 'Shop Gear',
-      external: true
+      external: true,
+      alt: true
     }
   ]
 }

@@ -1,9 +1,9 @@
 import React from 'react'
 import styles from './styles.scss'
 import WhiteArrowDown from 'assets/images/rideto/WhiteArrowDown.svg'
-import imageSplash from '../images/getting-started-splash.jpg'
 
-console.log(imageSplash)
+const imageSplash =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-splash.jpg'
 
 function Splash({ scrollTo }) {
   const handleButtonClick = () => {
