@@ -118,12 +118,12 @@ p + .sectionButtons {
   cursor: pointer;
   justify-content: space-between;
 
+  span {
+    white-space: nowrap;
+  }
+
   @media (min-width: 933px) {
     width: auto;
-
-    span {
-      white-space: nowrap;
-    }
 
     img {
       margin-left: 0.75rem;

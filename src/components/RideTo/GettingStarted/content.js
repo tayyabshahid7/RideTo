@@ -23,7 +23,7 @@ const GET_A_LICENCE = {
     gettingYourFullLicence:
       "Once you have your CBT and theory test certificates it's time to book in for a full motorcycle licence course. Depending on your experience this can usually be completed over 4 - 6 separate days of training including 2 tests. Give us a call to discuss the right package for you. "
   },
-  links: [{ url: '/', text: 'Try the licence calculator' }]
+  links: [{ url: '/', text: 'Licence calculator' }]
 }
 
 const GET_A_BIKE = {
@@ -31,7 +31,8 @@ const GET_A_BIKE = {
   img: image2,
   title: 'So many bikes but which to choose?',
   text:
-    "The choice of bikes available is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride with your dream machine."
+    "The choice of bikes available is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride with your dream machine.",
+  links: [{ url: '/bike-reviews', text: 'See the bikes' }]
 }
 
 const GET_INSURED = {
