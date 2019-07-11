@@ -326,3 +326,13 @@
 .noMargin {
   margin-top: 0;
 }
+
+.nonPartnerResultsMessage {
+  width: calc(100% - 424px - 20px);
+  margin-bottom: -2rem;
+
+  @media (max-width: 995px) {
+    width: 100%;
+    margin-bottom: -1rem;
+  }
+}
