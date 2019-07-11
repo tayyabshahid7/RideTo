@@ -1,6 +1,9 @@
 import React from 'react'
 import styles from './styles.scss'
 import WhiteArrowDown from 'assets/images/rideto/WhiteArrowDown.svg'
+import imageSplash from '../images/getting-started-splash.jpg'
+
+console.log(imageSplash)
 
 function Splash({ scrollTo }) {
   const handleButtonClick = () => {
@@ -8,7 +11,9 @@ function Splash({ scrollTo }) {
   }
 
   return (
-    <div className={styles.splash}>
+    <div
+      className={styles.splash}
+      style={{ backgroundImage: `url(${imageSplash})` }}>
       <h1 className={styles.splashTitle}>Learn to Ride</h1>
       <p className={styles.splashLead}>
         It's time to ride. Whether you're new to bikes or a regular rider,

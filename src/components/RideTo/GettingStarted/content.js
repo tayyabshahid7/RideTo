@@ -1,6 +1,12 @@
+import image1 from './images/getting-started-1.jpg'
+import image2 from './images/getting-started-2.jpg'
+import image3 from './images/getting-started-3.jpg'
+import image4 from './images/getting-started-4.jpg'
+import image5 from './images/getting-started-5.jpg'
+
 const GET_A_LICENCE = {
   name: 'Get a licence',
-  img: '',
+  img: image1,
   title: "We'll get you the right training for your riding ambitions",
   faqs: {
     whatLicenceDoYouNeed:
@@ -17,7 +23,7 @@ const GET_A_LICENCE = {
 
 const GET_A_BIKE = {
   name: 'Get a bike',
-  img: '',
+  img: image2,
   title: 'So many bikes but which to choose?',
   text:
     "The choice of bikes available is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride with your dream machine."
@@ -25,32 +31,44 @@ const GET_A_BIKE = {
 
 const GET_INSURED = {
   name: 'Get insured',
-  img: '',
+  img: image3,
   title: "We'll beat your best insurance quote guaranteed*",
   text:
     "The least exciting, but important part of riding is getting the right cover. We've partnered with The Bike Insurer to get you the best price guaranteed on your insurance. Click to get a quick quote and be on the road in no time. ",
-  links: [{ url: 'http://tidd.ly/a35e0aed', text: 'Get a quote' }]
+  links: [
+    { url: 'http://tidd.ly/a35e0aed', text: 'Get a quote', external: true }
+  ]
 }
 
 const GET_THE_GEAR = {
   name: 'Get the gear',
-  img: '',
+  img: image4,
   title: 'Get the look, be protected.',
   text:
     "Our clothing partners SportsBikeShop bring you the biggest selection of riding gear. From helmets to gloves and boots. Get kitted out at the best price with the best gear. Unsure what's right for you? Check out our latest gear reviews. ",
   links: [
-    { url: '/', text: 'See Gear Reviews' },
-    { url: '/', text: 'Shop Gear' }
+    { url: '/blog/gear-guide-for-new-motorcyclists', text: 'See Gear Reviews' },
+    {
+      url: 'https://www.sportsbikeshop.co.uk/#/23639,0,0',
+      text: 'Shop Gear',
+      external: true
+    }
   ]
 }
 
 const JOIN_THE_COMMUNITY = {
   name: 'Join the community',
-  img: '',
+  img: image5,
   title: 'Be part of something epic, make friends for life. ',
   text:
     "Riding is a unique community of some of the most diverse, interesting and awesome people you can meet. We're passionate about cultivating this for new riders and regularly organise events, meetups and ride outs. No matter what you ride, get involved. ",
-  links: [{ url: '/', text: 'Join the community ' }]
+  links: [
+    {
+      url: 'https://www.facebook.com/groups/newmotorcyclists/',
+      text: 'Join the community ',
+      external: true
+    }
+  ]
 }
 
 const data = [
