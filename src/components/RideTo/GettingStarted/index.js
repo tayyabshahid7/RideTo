@@ -6,6 +6,7 @@ import styles from './styles.scss'
 import Helmet from 'react-helmet'
 import content from './content'
 import { useMediaQuery } from 'react-responsive'
+import Ready from './Ready'
 
 function GettingStarted() {
   const [currentSection, setCurrentSection] = useState(0)
@@ -49,6 +50,7 @@ function GettingStarted() {
             setInitialWaypointSet={setInitialWaypointSet}
           />
         ))}
+        <Ready />
       </div>
     </Fragment>
   )

@@ -1,4 +1,6 @@
 .section {
+  background-color: rgba(#c2c2c2, 0.1);
+
   @media (min-width: 933px) {
     &:nth-child(odd) {
       background-color: rgba(#c2c2c2, 0.1);
