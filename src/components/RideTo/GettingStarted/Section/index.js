@@ -32,7 +32,6 @@ const Section = React.forwardRef(function(
   }
 
   const handleLeave = ({ currentPosition, previousPosition }) => {
-    console.log('leave', index, currentPosition, previousPosition)
     if (
       currentPosition === 'above' &&
       previousPosition === 'inside' &&
