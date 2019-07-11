@@ -14,7 +14,8 @@ import {
   asPoundSterling
 } from 'services/widget'
 import { LICENCE_TYPES } from 'common/constants'
-
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
 import styles from './BookingOptionsContainer.scss'
 
 import classnames from 'classnames'
@@ -506,15 +507,29 @@ class BookingOptionsContainer extends React.Component {
 
         <div className={showDayOfWeekPicker && styles.hasBackButton}>
           {showDayOfWeekPicker && (
-            <button onClick={this.handleBackClick} className="backButton">
-              Back
+            <button
+              onClick={this.handleBackClick}
+              className="backButton"
+              title="Back">
+              <img src={ArrowLeft} alt="Back" />
             </button>
           )}
           {isFirstFullLicencePanelComplete ||
           isSecondFullLicencePanelComplete ||
           (!isFullLicence && selectedCourse) ? (
             <button onClick={this.handleSubmitClick} className="WidgetBtn">
-              {isFullLicence ? 'Continue' : 'Book Now'}
+              {isFullLicence ? (
+                <React.Fragment>
+                  <span>Continue</span>
+                  <img
+                    style={{ marginLeft: '5px', verticalAlign: 'middle' }}
+                    src={ButtonArrowWhite}
+                    alt="arrow"
+                  />
+                </React.Fragment>
+              ) : (
+                'Book Now'
+              )}
             </button>
           ) : (
             isFullLicence && (
@@ -522,7 +537,18 @@ class BookingOptionsContainer extends React.Component {
                 onClick={this.handleSubmitClick}
                 className={classnames('WidgetBtn', styles.WidgetBtnDisabled)}
                 disabled>
-                {isFullLicence ? 'Continue' : 'Book Now'}
+                {isFullLicence ? (
+                  <React.Fragment>
+                    <span>Continue</span>
+                    <img
+                      style={{ marginLeft: '5px', verticalAlign: 'middle' }}
+                      src={ButtonArrowWhite}
+                      alt="arrow"
+                    />
+                  </React.Fragment>
+                ) : (
+                  'Book Now'
+                )}
               </button>
             )
           )}
