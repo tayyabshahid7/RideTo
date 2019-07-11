@@ -9,6 +9,7 @@ import { useMediaQuery } from 'react-responsive'
 
 function GettingStarted() {
   const [currentSection, setCurrentSection] = useState(0)
+  const [initialWaypointSet, setInitialWaypointSet] = useState(false)
 
   const sectionRefs = useRef(content.map(() => createRef()))
 
@@ -44,6 +45,8 @@ function GettingStarted() {
             data={data}
             setCurrentSection={setCurrentSection}
             menuHeight={menuHeight}
+            initialWaypointSet={initialWaypointSet}
+            setInitialWaypointSet={setInitialWaypointSet}
           />
         ))}
       </div>

@@ -7,18 +7,32 @@ import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { Waypoint } from 'react-waypoint'
 
 const Section = React.forwardRef(function(
-  { data, index, setCurrentSection, menuHeight },
+  {
+    data,
+    index,
+    setCurrentSection,
+    menuHeight,
+    initialWaypointSet,
+    setInitialWaypointSet
+  },
   ref
 ) {
   const { name, img, title, text = null, faqs = {}, links = [] } = data
 
   const handleEnter = ({ currentPosition, previousPosition }) => {
+    if (previousPosition === undefined && !initialWaypointSet) {
+      setCurrentSection(index)
+      setInitialWaypointSet(true)
+      return
+    }
+
     if (currentPosition === 'inside' && previousPosition === 'above') {
       setCurrentSection(index)
     }
   }
 
   const handleLeave = ({ currentPosition, previousPosition }) => {
+    console.log('leave', index, currentPosition, previousPosition)
     if (
       currentPosition === 'above' &&
       previousPosition === 'inside' &&
