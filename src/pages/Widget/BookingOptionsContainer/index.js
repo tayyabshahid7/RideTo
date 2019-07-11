@@ -14,8 +14,8 @@ import {
   asPoundSterling
 } from 'services/widget'
 import { LICENCE_TYPES } from 'common/constants'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
-import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
+import ButtonArrowWhite from '../../../assets/images/rideto/ButtonArrowWhite.svg'
+import ArrowLeft from '../../../assets/images/rideto/ArrowLeft.svg'
 import styles from './BookingOptionsContainer.scss'
 
 import classnames from 'classnames'
