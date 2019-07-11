@@ -12,6 +12,7 @@ function Ready() {
         action="/course-type-selection"
         method="get">
         <input
+          name="postcode"
           className={styles.input}
           placeholder="Enter a place or postcode"
         />
