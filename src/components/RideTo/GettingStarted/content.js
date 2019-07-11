@@ -56,7 +56,8 @@ const GET_THE_GEAR = {
     {
       url: 'https://www.sportsbikeshop.co.uk/#/23639,0,0',
       text: 'Shop Gear',
-      external: true
+      external: true,
+      alt: true
     }
   ]
 }

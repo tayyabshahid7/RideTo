@@ -94,6 +94,8 @@
   margin-top: -0.25rem;
 
   @media (min-width: 933px) {
+    display: flex;
+    flex-wrap: wrap;
     margin-top: 2rem;
   }
 }
@@ -106,10 +108,27 @@ p + .sectionButtons {
   }
 }
 
-.sectionButton {
-  display: block;
+.sectionButton.sectionButton {
+  display: flex;
   margin-top: 1rem;
   font-weight: bold;
   width: 100%;
   cursor: pointer;
+  justify-content: space-between;
+
+  @media (min-width: 933px) {
+    width: auto;
+
+    span {
+      white-space: nowrap;
+    }
+
+    img {
+      margin-left: 0.75rem;
+    }
+
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
 }
