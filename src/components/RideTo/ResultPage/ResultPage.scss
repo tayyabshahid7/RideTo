@@ -337,6 +337,7 @@
   cursor: pointer;
   border: 1px solid black;
   width: 64px;
+  flex: 0 0 64px;
 
   + button {
     margin-left: 5px;
@@ -345,5 +346,16 @@
   @media (max-width: 768px) {
     margin-top: -60px;
     height: 58px;
+    flex: 0 0 58px;
+  }
+}
+
+.nonPartnerResultsMessage {
+  width: calc(100% - 424px - 20px);
+  margin-bottom: -2rem;
+
+  @media (max-width: 995px) {
+    width: 100%;
+    margin-bottom: -1rem;
   }
 }

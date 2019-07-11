@@ -116,6 +116,7 @@ class ResultPage extends Component {
     )
 
     if (
+      courseTypes.length &&
       !courseTypes.some(
         courseTypeOption => courseTypeOption.constant === courseType
       )
@@ -701,7 +702,7 @@ class ResultPage extends Component {
                       )}
                     </React.Fragment>
                   ) : (
-                    <div className={styles.nonParnetResultMessage}>
+                    <div className={styles.nonPartnerResultsMessage}>
                       We don't have any partner schools to book with in your
                       area, however feel free to use our directory to contact a
                       school near you.
@@ -772,6 +773,21 @@ class ResultPage extends Component {
                                   key={course.id}
                                 />
                               )
+                            )}
+                          </React.Fragment>
+                        )}
+                        {!hasPartnerResults && courses.available.length > 0 && (
+                          <React.Fragment>
+                            {courses.available.map(
+                              (course, index) =>
+                                !course.is_partner && (
+                                  <CourseItemNonPartner
+                                    id={`card-course-${course.id}`}
+                                    course={course}
+                                    className="mt-3"
+                                    key={course.id}
+                                  />
+                                )
                             )}
                           </React.Fragment>
                         )}
