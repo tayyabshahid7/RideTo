@@ -764,7 +764,7 @@ class ResultPage extends Component {
                             )}
                           </React.Fragment>
                         )}
-                        {courses.available.length > 0 && (
+                        {!hasPartnerResults && courses.available.length > 0 && (
                           <React.Fragment>
                             {courses.available.map(
                               (course, index) =>
