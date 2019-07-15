@@ -23,7 +23,13 @@ const GET_A_LICENCE = {
     gettingYourFullLicence:
       "Once you have your CBT and theory test certificates it's time to book in for a full motorcycle licence course. Depending on your experience this can usually be completed over 4 - 6 separate days of training including 2 tests. Give us a call to discuss the right package for you. "
   },
-  links: [{ url: '/', text: 'Licence calculator' }]
+  links: [
+    {
+      url: 'https://rideto.typeform.com/to/XeXuVE',
+      text: 'Licence calculator',
+      typeform: true
+    }
+  ]
 }
 
 const GET_A_BIKE = {

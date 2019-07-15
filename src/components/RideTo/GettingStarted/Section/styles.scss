@@ -61,7 +61,8 @@
     font-size: 20px;
     line-height: 24px;
     color: var(--primary-color);
-    font-weight: bold;
+    font-family: var(--font-rift-bold);
+    font-weight: normal;
     margin-bottom: 1.5rem;
 
     &::after {
@@ -78,7 +79,8 @@
 .sectionTitle {
   color: #1c1c1c;
   font-size: 24px;
-  font-weight: bold;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
   line-height: 1;
   margin-bottom: 1rem;
 
@@ -123,7 +125,8 @@ p + .sectionButtons {
 .sectionButton.sectionButton {
   display: flex;
   margin-top: 1rem;
-  font-weight: bold;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
   width: 100%;
   cursor: pointer;
   justify-content: space-between;

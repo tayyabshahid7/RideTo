@@ -59,7 +59,8 @@
     @media (min-width: 933px) {
       display: inline;
       line-height: 1;
-      font-weight: bold;
+      font-family: var(--font-rift-bold);
+      font-weight: normal;
       margin-right: 0.75rem;
     }
   }
