@@ -46,6 +46,7 @@ function PromoCode({ code: codeObj, updateCode, removeCode, submitCode }) {
         min="0.00"
         max="10000.00"
         step="0.01"
+        noWrapLabel
       />
       <ConnectInput
         required
@@ -64,6 +65,7 @@ function PromoCode({ code: codeObj, updateCode, removeCode, submitCode }) {
         type="date"
         onChange={handleChange}
         iso
+        noWrapLabel
       />
       <ConnectCheckbox
         required
