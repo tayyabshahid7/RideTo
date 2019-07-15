@@ -1,34 +1,31 @@
 import React from 'react'
 import styles from './styles.scss'
 import WhiteArrowDown from 'assets/images/rideto/WhiteArrowDown.svg'
-import Div100vh from 'react-div-100vh'
-import { useMediaQuery } from 'react-responsive'
+// import Div100vh from 'react-div-100vh'
+// import { useMediaQuery } from 'react-responsive'
 
 const imageSplash =
   'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-splash.jpg'
 
 function Splash({ scrollTo }) {
-  let height = 'calc(100rvh - 56px)'
+  // let height = 'calc(100rvh - 56px)'
 
-  if (useMediaQuery({ query: '(min-width: 801px)' })) {
-    height = 'calc(100rvh - 80px)'
-  }
+  // if (useMediaQuery({ query: '(min-width: 801px)' })) {
+  //   height = 'calc(100rvh - 80px)'
+  // }
 
-  if (useMediaQuery({ query: '(min-width: 933px' })) {
-    height = 'calc(100rvh - 80px - 89px)'
-  }
+  // if (useMediaQuery({ query: '(min-width: 933px' })) {
+  //   height = 'calc(100rvh - 80px - 89px)'
+  // }
 
   const handleButtonClick = () => {
     scrollTo(0)
   }
 
   return (
-    <Div100vh
+    <div
       className={styles.splash}
-      style={{
-        backgroundImage: `url(${imageSplash})`,
-        height
-      }}>
+      style={{ backgroundImage: `url(${imageSplash})` }}>
       <h1 className={styles.splashTitle}>Learn to Ride</h1>
       <p className={styles.splashLead}>
         It's time to ride. Whether you're new to bikes or a regular rider,
@@ -42,7 +39,7 @@ function Splash({ scrollTo }) {
         <img src={WhiteArrowDown} alt="" />
         <img src={WhiteArrowDown} alt="" />
       </button>
-    </Div100vh>
+    </div>
   )
 }
 
