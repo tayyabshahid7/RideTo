@@ -217,7 +217,8 @@ class PaymentContainer extends React.Component {
       details,
       hire,
       trainings,
-      totalPrice
+      totalPrice,
+      voucher_code
     } = this.state
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
     const data = {
@@ -238,8 +239,8 @@ class PaymentContainer extends React.Component {
       accept_equipment_responsibility: true, // TODO Needs to be removed
       source: 'WIDGET',
       rider_type: 'RIDER_TYPE_SOCIAL',
-      voucher_code: '',
-      trainings: trainings
+      trainings: trainings,
+      voucher_code
     }
 
     try {
