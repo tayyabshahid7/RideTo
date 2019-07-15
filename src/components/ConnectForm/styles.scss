@@ -11,6 +11,10 @@
   cursor: pointer;
 }
 
+.labelNoWrap {
+  white-space: nowrap;
+}
+
 .labelCheckbox {
   display: flex;
   align-items: center;

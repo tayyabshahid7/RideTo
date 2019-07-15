@@ -11,6 +11,19 @@
   > * {
     padding: 0 0.5rem;
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    border-bottom: 1px solid #e4e4e4;
+    margin-bottom: 2rem;
+
+    > *,
+    > div {
+      padding: 0;
+      margin-bottom: 0.5rem;
+    }
+  }
 }
 
 .promoList {
