@@ -8,11 +8,28 @@
   // height: calc(100vh - 56px);
   min-height: 320px;
   padding: 2rem;
-  background-size: cover;
+  // background-size: cover;
+  background-size: 1000px 720px;
   background-repeat: no-repeat;
   background-position: center;
   text-align: center;
   color: #ffffff;
+
+  @media (min-width: 1000px), (min-height: 776px) {
+    background-size: cover;
+  }
+
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (-webkit-device-pixel-ratio: 3) {
+    background-size: 1250px 900px;
+  }
+
+  @media (min-width: 801px) {
+    // height: calc(100vh - 80px);
+  }
+
+  @media (min-width: 933px) {
+    // height: calc(100vh - 80px - 89px);
+  }
 
   &::after {
     position: absolute;
@@ -29,14 +46,6 @@
       rgba(20, 20, 20, 0) 0%,
       #141414 100%
     );
-  }
-
-  @media (min-width: 801px) {
-    // height: calc(100vh - 80px);
-  }
-
-  @media (min-width: 933px) {
-    // height: calc(100vh - 80px - 89px);
   }
 }
 
