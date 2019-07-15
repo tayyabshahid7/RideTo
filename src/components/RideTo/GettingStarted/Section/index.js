@@ -5,6 +5,8 @@ import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { Waypoint } from 'react-waypoint'
+import classnames from 'classnames'
+import { loadTypeformScript } from 'utils/helper'
 
 const Section = React.forwardRef(function(
   {
@@ -65,20 +67,29 @@ const Section = React.forwardRef(function(
             )}
             {!!links.length && (
               <div className={styles.sectionButtons}>
-                {links.map(({ url, text, alt, external }, i) => (
-                  <RideToButton
-                    className={styles.sectionButton}
-                    key={i}
-                    href={url}
-                    alt={alt}
-                    target={external ? '_blank' : undefined}>
-                    <span>{text}</span>
-                    <img
-                      src={alt ? ArrowRight : ButtonArrowWhite}
-                      alt="arrow"
-                    />
-                  </RideToButton>
-                ))}
+                {links.map(({ url, text, alt, external, typeform }, i) => {
+                  if (typeform) {
+                    loadTypeformScript()
+                  }
+
+                  return (
+                    <RideToButton
+                      className={classnames(
+                        typeform && 'typeform-share',
+                        styles.sectionButton
+                      )}
+                      key={i}
+                      href={url}
+                      alt={alt}
+                      target={external ? '_blank' : undefined}>
+                      <span>{text}</span>
+                      <img
+                        src={alt ? ArrowRight : ButtonArrowWhite}
+                        alt="arrow"
+                      />
+                    </RideToButton>
+                  )
+                })}
               </div>
             )}
           </div>
