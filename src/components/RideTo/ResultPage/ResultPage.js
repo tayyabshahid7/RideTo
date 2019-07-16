@@ -32,6 +32,7 @@ import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { getStaticData } from 'services/page'
+import FullLicenceGuide from './FullLicenceGuide'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
@@ -847,6 +848,8 @@ class ResultPage extends Component {
             </Col>
           </Row>
         </Container>
+
+        {isFullLicence && <FullLicenceGuide />}
 
         {isShowCourseTypeInfo && (
           <SidePanel

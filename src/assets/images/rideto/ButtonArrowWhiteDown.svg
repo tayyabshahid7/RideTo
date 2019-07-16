@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="20"
+   height="29"
+   viewBox="0 0 20 29"
+   version="1.1"
+   id="svg17"
+   sodipodi:docname="ButtonArrowWhiteDown.svg"
+   inkscape:version="0.92.4 (unknown)">
+  <metadata
+     id="metadata21">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>DC25C33C-BDEA-4A6B-9D23-1F6515A4828E</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1052"
+     id="namedview19"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="11.793103"
+     inkscape:cx="10"
+     inkscape:cy="14.5"
+     inkscape:window-x="1366"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg17" />
+  <!-- Generator: sketchtool 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+  <title
+     id="title2">DC25C33C-BDEA-4A6B-9D23-1F6515A4828E</title>
+  <desc
+     id="desc4">Created with sketchtool.</desc>
+  <defs
+     id="defs6" />
+  <g
+     id="Screens"
+     transform="rotate(90,9.5,9.5)"
+     style="fill:none;fill-rule:evenodd;stroke:none;stroke-width:1">
+    <g
+       id="Course-06a"
+       transform="translate(-752,-752)">
+      <g
+         id="Group-8"
+         transform="translate(432,736)">
+        <g
+           id="Group"
+           transform="translate(190,11)">
+          <g
+             id="Icons/ButtonArrowWhite"
+             transform="translate(130,4)">
+            <rect
+               id="Background"
+               x="0"
+               y="0"
+               width="29"
+               height="20" />
+            <path
+               d="M 1,10 H 28"
+               id="Shape"
+               inkscape:connector-curvature="0"
+               style="stroke:#ffffff;stroke-linecap:round;stroke-linejoin:round" />
+            <polyline
+               id="polyline10"
+               points="19 1 28 10 19 19"
+               style="stroke:#ffffff;stroke-linecap:round;stroke-linejoin:round" />
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>
