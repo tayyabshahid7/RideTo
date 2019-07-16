@@ -733,6 +733,15 @@ class ResultPage extends Component {
                         isFullLicence && styles.noMargin
                       )}>
                       <div className={styles.coursesPanel}>
+                        {isFullLicence && (
+                          <a href="https://rideto.typeform.com/to/lyVAhc">
+                            <img
+                              src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/fast-track.png"
+                              className={styles.fastTrackAdvert}
+                              alt="Full licence fast-track package"
+                            />
+                          </a>
+                        )}
                         {courses.available.length > 0 && (
                           <React.Fragment>
                             {courses.available.map(
