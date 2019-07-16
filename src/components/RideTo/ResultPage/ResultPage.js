@@ -30,6 +30,7 @@ import { getCourseIdFromSearch, findResultsCourseWithId } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import { getStaticData } from 'services/page'
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
 
@@ -107,6 +108,19 @@ class ResultPage extends Component {
     const courseTypes = result.results.filter(
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
     )
+    const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
+
+    // If there are no courseTypes for this area just throw in all the course
+    // course types for the 'non partner results' page
+    if (courseTypes.length === 0) {
+      this.setState({
+        courseTypesOptions: staticCourseTypes,
+        selectedCourseType: staticCourseTypes.find(
+          course => course.constant === this.props.courseType
+        )
+      })
+      return
+    }
 
     if (
       courseTypes.length &&
