@@ -1,6 +1,11 @@
 .background {
   width: 100%;
   background-color: rgba(20, 20, 20, 0.8);
+  margin-top: 3.5rem;
+
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
 }
 
 .form.form {
