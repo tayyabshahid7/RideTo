@@ -11,7 +11,8 @@ const DetailsAccordionItem = ({
   isOpen,
   onToggle,
   className,
-  spacedOut
+  spacedOut,
+  fullLicenceFaqs
 }) => {
   const contentClassName = classnames(styles.content, isOpen && styles.open)
   return (
@@ -19,6 +20,7 @@ const DetailsAccordionItem = ({
       className={classnames(
         styles.detailsAccordionItem,
         spacedOut && styles.detailsAccordionItemSpaced,
+        fullLicenceFaqs && styles.detailsAccordionFullLicenceFaqs,
         className
       )}>
       <div className={styles.heading} onClick={() => onToggle(!isOpen)}>

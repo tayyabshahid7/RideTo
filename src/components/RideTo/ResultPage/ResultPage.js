@@ -34,6 +34,7 @@ import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { getStaticData } from 'services/page'
 import FullLicenceGuide from './FullLicenceGuide'
 import FullLicenceIncluded from './FullLicenceIncluded'
+import FullLicenceFaq from './FullLicenceFaq'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
@@ -853,6 +854,8 @@ class ResultPage extends Component {
         {isFullLicence && <FullLicenceGuide />}
 
         {isFullLicence && <FullLicenceIncluded />}
+
+        {isFullLicence && <FullLicenceFaq />}
 
         {isShowCourseTypeInfo && (
           <SidePanel
