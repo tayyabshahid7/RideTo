@@ -12,13 +12,15 @@ function MyDatePicker({
   label,
   type = 'text',
   onChange,
+  noWrapLabel,
   value,
   id,
   name,
   disabled,
   required,
   basic,
-  maxDate
+  maxDate,
+  iso
 }) {
   return (
     <React.Fragment>
@@ -40,7 +42,8 @@ function MyDatePicker({
           onChange({
             target: {
               name: name,
-              value: moment(date).format('YYYY-MM-DD')
+              value: moment(date).format('YYYY-MM-DD'),
+              ...(iso && { value: moment(date).toISOString() })
             }
           })
         }}
@@ -62,19 +65,26 @@ export function ConnectInput(props) {
     label,
     type = 'text',
     onChange,
+    noWrapLabel,
     value,
     id,
     name,
     disabled,
     required,
-    basic
+    basic,
+    ...rest
   } = props
 
   if (type === 'time') {
     return (
       <div className={styles.formGroup}>
         {label && (
-          <label className={styles.label} htmlFor={id || name}>
+          <label
+            className={classnames(
+              styles.label,
+              noWrapLabel && styles.labelNoWrap
+            )}
+            htmlFor={id || name}>
             {label}
           </label>
         )}
@@ -107,7 +117,12 @@ export function ConnectInput(props) {
     return (
       <div className={styles.formGroup}>
         {label && (
-          <label className={styles.label} htmlFor={id || name}>
+          <label
+            className={classnames(
+              styles.label,
+              noWrapLabel && styles.labelNoWrap
+            )}
+            htmlFor={id || name}>
             {label}
           </label>
         )}
@@ -119,11 +134,17 @@ export function ConnectInput(props) {
   return (
     <div className={styles.formGroup}>
       {label && (
-        <label className={styles.label} htmlFor={id || name}>
+        <label
+          className={classnames(
+            styles.label,
+            noWrapLabel && styles.labelNoWrap
+          )}
+          htmlFor={id || name}>
           {label}
         </label>
       )}
       <input
+        {...rest}
         name={name}
         className={classnames(styles.input, basic && styles.basic)}
         id={id || name}
@@ -138,12 +159,17 @@ export function ConnectInput(props) {
 }
 
 export function ConnectAgeInput(props) {
-  const { label, id, name, value, hideAge } = props
+  const { label, id, name, value, hideAge, noWrapLabel } = props
 
   return (
     <div className={styles.formGroup}>
       {label && (
-        <label className={styles.label} htmlFor={id || name}>
+        <label
+          className={classnames(
+            styles.label,
+            noWrapLabel && styles.labelNoWrap
+          )}
+          htmlFor={id || name}>
           {label}
         </label>
       )}
@@ -160,6 +186,7 @@ export function ConnectAgeInput(props) {
 export function ConnectSelect({
   label,
   onChange,
+  noWrapLabel,
   selected,
   value,
   id,
@@ -182,7 +209,12 @@ export function ConnectSelect({
   return (
     <div className={styles.formGroup}>
       {label && (
-        <label className={styles.label} htmlFor={id || name}>
+        <label
+          className={classnames(
+            styles.label,
+            noWrapLabel && styles.labelNoWrap
+          )}
+          htmlFor={id || name}>
           {label}
         </label>
       )}
@@ -228,10 +260,24 @@ export function ConnectSelect({
   )
 }
 
-export function ConnectLabeledContent({ label, children, disabled, basic }) {
+export function ConnectLabeledContent({
+  label,
+  children,
+  disabled,
+  basic,
+  noWrapLabel
+}) {
   return (
     <div className={styles.formGroup}>
-      {label && <label className={styles.label}>{label}</label>}
+      {label && (
+        <label
+          className={classnames(
+            styles.label,
+            noWrapLabel && styles.labelNoWrap
+          )}>
+          {label}
+        </label>
+      )}
       <div
         className={classnames(
           styles.input,
@@ -251,6 +297,7 @@ export function ConnectCheckbox({
   disabled,
   checked = false,
   onChange,
+  noWrapLabel,
   name
 }) {
   return (
@@ -302,13 +349,22 @@ export class ConnectTextArea extends Component {
       type,
       disabled,
       onChange,
+      noWrapLabel,
       autoHeight,
       noBorder
     } = this.props
 
     return (
       <div className={styles.formGroup}>
-        {label && <label className={styles.label}>{label}</label>}
+        {label && (
+          <label
+            className={classnames(
+              styles.label,
+              noWrapLabel && styles.labelNoWrap
+            )}>
+            {label}
+          </label>
+        )}
         <textarea
           ref={this.el}
           className={classnames(

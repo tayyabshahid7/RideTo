@@ -4,7 +4,12 @@ import Script from 'react-load-script'
 import classnames from 'classnames'
 import ShowMore from './ShowMore'
 import { getStaticData } from 'services/page'
-import { SLUG_COURSE_TYPES, getLocations, CONTENT } from './contents'
+import {
+  SLUG_COURSE_TYPES,
+  getLocations,
+  CONTENT,
+  landingPageUrl
+} from './contents'
 import { getCourseTitle } from 'services/course'
 import { Helmet } from 'react-helmet'
 import buttonArrowWhite from 'assets/images/rideto/ButtonArrowWhiteThick.svg'
@@ -230,7 +235,7 @@ class CourseTypeLanding extends React.Component {
                           <a
                             href={
                               courseType.constant !== 'TFL_ONE_ON_ONE'
-                                ? `/course-location/?postcode=${location}&courseType=${courseType.constant}`
+                                ? landingPageUrl(location, courseType)
                                 : 'https://rideto.typeform.com/to/axybpw'
                             }>
                             {location}
@@ -245,8 +250,7 @@ class CourseTypeLanding extends React.Component {
                           .slice(5)
                           .map(location => (
                             <li className={styles.location} key={location}>
-                              <a
-                                href={`/course-location/?postcode=${location}&courseType=${courseType.constant}`}>
+                              <a href={landingPageUrl(location, courseType)}>
                                 {location}
                               </a>
                             </li>

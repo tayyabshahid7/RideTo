@@ -37,3 +37,34 @@
 .title {
   padding-right: 10px;
 }
+
+.detailsAccordionItemSpaced {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+  margin-bottom: -1px;
+  border-top: 1px solid rgba(#141414, 0.1);
+  border-bottom: 1px solid rgba(#141414, 0.1);
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  @media (min-width: 933px) {
+    &:first-child {
+      border-top: 0;
+    }
+  }
+
+  .title {
+    font-family: var(--font-rift-bold);
+    font-size: 20px;
+    line-height: inherit;
+    line-height: 1.1;
+  }
+
+  .content {
+    font-size: 15px;
+    line-height: 20px;
+    opacity: 1;
+  }
+}

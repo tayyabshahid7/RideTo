@@ -845,3 +845,8 @@ export const LOCATIONS = {
 export function getLocations({ constant }) {
   return LOCATIONS[constant]
 }
+
+export function landingPageUrl(location, { constant }) {
+  const a = SLUG_COURSE_TYPES
+  return `/${Object.keys(a).find(key => a[key] === constant)}/${location}`
+}

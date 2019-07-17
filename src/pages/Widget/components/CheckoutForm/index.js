@@ -17,6 +17,8 @@ import cardMaestro from 'assets/images/card-maestro.png'
 
 import styles from './CheckoutForm.scss'
 
+import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
+
 const CARD_IMAGES = [
   cardVisa,
   cardAmex,
@@ -37,7 +39,10 @@ const CheckoutForm = ({
   stripe,
   isSaving,
   onChange,
-  onSubmit
+  onSubmit,
+  voucher_code,
+  handleVoucherApply,
+  onVoucherCodeChange
 }) => {
   const labelStyle = {
     marginTop: '16px',
@@ -109,6 +114,14 @@ const CheckoutForm = ({
           error={errors.card_zip}>
           <PostalCodeElement style={inputStyle} />
         </LabelField>
+        <PromoCode
+          widget={widget}
+          voucher_code={voucher_code}
+          // loadingPrice={loadingPrice}
+          loadingPrice={false}
+          handleVoucherApply={handleVoucherApply}
+          onChange={onVoucherCodeChange}
+        />
       </div>
 
       <div className={styles.terms}>

@@ -14,8 +14,11 @@ import {
   asPoundSterling
 } from 'services/widget'
 import { LICENCE_TYPES } from 'common/constants'
-
+import ButtonArrowWhite from '../../../assets/images/rideto/ButtonArrowWhite.svg'
+import ArrowLeft from '../../../assets/images/rideto/ArrowLeft.svg'
 import styles from './BookingOptionsContainer.scss'
+
+import classnames from 'classnames'
 
 const getSchoolCoursesByDate = (selectedDate, courses) => {
   if (!selectedDate) {
@@ -80,6 +83,7 @@ class BookingOptionsContainer extends React.Component {
     this.onSelectPackageHours = this.onSelectPackageHours.bind(this)
     this.handleSubmitClick = this.handleSubmitClick.bind(this)
     this.timeDayChange = this.timeDayChange.bind(this)
+    this.handleBackClick = this.handleBackClick.bind(this)
 
     window.sessionStorage.removeItem('widgetTrainings')
 
@@ -367,6 +371,13 @@ class BookingOptionsContainer extends React.Component {
     })
   }
 
+  handleBackClick() {
+    this.setState({
+      showDayOfWeekPicker: false,
+      selectedTimeDays: []
+    })
+  }
+
   render() {
     const { widget, selectedSupplier, suppliers, onChangeSupplier } = this.props
     const {
@@ -387,6 +398,21 @@ class BookingOptionsContainer extends React.Component {
       selectedDate,
       availableCourses
     )
+
+    const isFirstFullLicencePanelComplete =
+      isFullLicence &&
+      !showDayOfWeekPicker &&
+      selectedBikeHire &&
+      selectedLicenceType &&
+      selectedPackageHours
+
+    const isSecondFullLicencePanelComplete =
+      isFullLicence &&
+      showDayOfWeekPicker &&
+      selectedBikeHire &&
+      selectedLicenceType &&
+      selectedPackageHours &&
+      selectedTimeDays.length
 
     if (submit) {
       return <Redirect push to={submit} />
@@ -479,22 +505,54 @@ class BookingOptionsContainer extends React.Component {
           </React.Fragment>
         ) : null}
 
-        {((isFullLicence &&
-          !showDayOfWeekPicker &&
-          selectedBikeHire &&
-          selectedLicenceType &&
-          selectedPackageHours) ||
-          (isFullLicence &&
-            showDayOfWeekPicker &&
-            selectedBikeHire &&
-            selectedLicenceType &&
-            selectedPackageHours &&
-            selectedTimeDays.length) ||
-          (!isFullLicence && selectedCourse)) && (
-          <button onClick={this.handleSubmitClick} className="WidgetBtn">
-            {isFullLicence ? 'Continue' : 'Book Now'}
-          </button>
-        )}
+        <div className={showDayOfWeekPicker && styles.hasBackButton}>
+          {showDayOfWeekPicker && (
+            <button
+              onClick={this.handleBackClick}
+              className="backButton"
+              title="Back">
+              <img src={ArrowLeft} alt="Back" />
+            </button>
+          )}
+          {isFirstFullLicencePanelComplete ||
+          isSecondFullLicencePanelComplete ||
+          (!isFullLicence && selectedCourse) ? (
+            <button onClick={this.handleSubmitClick} className="WidgetBtn">
+              {isFullLicence ? (
+                <React.Fragment>
+                  <span>Continue</span>
+                  <img
+                    style={{ marginLeft: '5px', verticalAlign: 'middle' }}
+                    src={ButtonArrowWhite}
+                    alt="arrow"
+                  />
+                </React.Fragment>
+              ) : (
+                'Book Now'
+              )}
+            </button>
+          ) : (
+            isFullLicence && (
+              <button
+                onClick={this.handleSubmitClick}
+                className={classnames('WidgetBtn', styles.WidgetBtnDisabled)}
+                disabled>
+                {isFullLicence ? (
+                  <React.Fragment>
+                    <span>Continue</span>
+                    <img
+                      style={{ marginLeft: '5px', verticalAlign: 'middle' }}
+                      src={ButtonArrowWhite}
+                      alt="arrow"
+                    />
+                  </React.Fragment>
+                ) : (
+                  'Book Now'
+                )}
+              </button>
+            )
+          )}
+        </div>
       </div>
     )
   }

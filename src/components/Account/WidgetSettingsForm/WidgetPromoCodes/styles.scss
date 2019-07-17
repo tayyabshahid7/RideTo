@@ -1,0 +1,31 @@
+.promoForm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem -0.5rem;
+
+  > div {
+    margin-bottom: 0;
+  }
+
+  > * {
+    padding: 0 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    border-bottom: 1px solid #e4e4e4;
+    margin-bottom: 2rem;
+
+    > *,
+    > div {
+      padding: 0;
+      margin-bottom: 0.5rem;
+    }
+  }
+}
+
+.promoList {
+  margin-bottom: 1rem;
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
+import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -30,6 +31,8 @@ import { getCourseIdFromSearch, findResultsCourseWithId } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import { getStaticData } from 'services/page'
+
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
 
@@ -77,10 +80,18 @@ class ResultPage extends Component {
 
     this.showCourseTypeInfo = this.showCourseTypeInfo.bind(this)
     this.hideCourseTypeInfo = this.hideCourseTypeInfo.bind(this)
+    this.handleBackClick = this.handleBackClick.bind(this)
 
     window.sessionStorage.removeItem('trainings')
 
     this.bottomAnchor = React.createRef()
+  }
+
+  handleBackClick() {
+    this.setState({
+      showDayOfWeekPicker: false,
+      selectedTimeDays: []
+    })
   }
 
   showCourseTypeInfo() {
@@ -107,8 +118,22 @@ class ResultPage extends Component {
     const courseTypes = result.results.filter(
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
     )
+    const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
+
+    // If there are no courseTypes for this area just throw in all the course
+    // course types for the 'non partner results' page
+    if (courseTypes.length === 0) {
+      this.setState({
+        courseTypesOptions: staticCourseTypes,
+        selectedCourseType: staticCourseTypes.find(
+          course => course.constant === this.props.courseType
+        )
+      })
+      return
+    }
 
     if (
+      courseTypes.length &&
       !courseTypes.some(
         courseTypeOption => courseTypeOption.constant === courseType
       )
@@ -356,6 +381,11 @@ class ResultPage extends Component {
   ) {
     return (
       <React.Fragment>
+        {showDayOfWeekPicker && (
+          <button onClick={this.handleBackClick} className={styles.backButton}>
+            <img src={ArrowLeftGreen} alt="Back" title="Back" />
+          </button>
+        )}
         <RideToButton
           className={classnames(
             styles.action,
@@ -689,7 +719,7 @@ class ResultPage extends Component {
                       )}
                     </React.Fragment>
                   ) : (
-                    <div className={styles.nonParnetResultMessage}>
+                    <div className={styles.nonPartnerResultsMessage}>
                       We don't have any partner schools to book with in your
                       area, however feel free to use our directory to contact a
                       school near you.
@@ -760,6 +790,21 @@ class ResultPage extends Component {
                                   key={course.id}
                                 />
                               )
+                            )}
+                          </React.Fragment>
+                        )}
+                        {!hasPartnerResults && courses.available.length > 0 && (
+                          <React.Fragment>
+                            {courses.available.map(
+                              (course, index) =>
+                                !course.is_partner && (
+                                  <CourseItemNonPartner
+                                    id={`card-course-${course.id}`}
+                                    course={course}
+                                    className="mt-3"
+                                    key={course.id}
+                                  />
+                                )
                             )}
                           </React.Fragment>
                         )}

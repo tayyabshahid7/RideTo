@@ -1,0 +1,149 @@
+.section {
+  background-color: rgba(#c2c2c2, 0.1);
+
+  @media (min-width: 933px) {
+    &:nth-child(odd) {
+      background-color: rgba(#c2c2c2, 0.1);
+
+      .sectionInner {
+        flex-direction: row-reverse;
+      }
+    }
+  }
+}
+
+.sectionInner {
+  @media (min-width: 933px) {
+    display: flex;
+    padding: 40px;
+    margin: 0 auto;
+    max-width: 1400px;
+  }
+}
+
+.sectionImageWrap {
+  @media (min-width: 933px) {
+    position: relative;
+    width: 48%;
+  }
+}
+
+.sectionImage {
+  display: block;
+  width: 100%;
+  height: 222px;
+  object-fit: cover;
+  object-position: center;
+
+  @media (min-width: 933px) {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 100%;
+    z-index: -1;
+  }
+
+  @media (min-width: 933px) {
+    max-height: 597px;
+  }
+
+  @media (min-width: 1200px) {
+    max-height: 665px;
+  }
+}
+
+.sectionName {
+  display: none;
+
+  @media (min-width: 933px) {
+    display: block;
+    font-size: 20px;
+    line-height: 24px;
+    color: var(--primary-color);
+    font-family: var(--font-rift-bold);
+    font-weight: normal;
+    margin-bottom: 1.5rem;
+
+    &::after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 16px;
+      border-top: 1px solid #2cceac;
+      margin-top: 1.5rem;
+    }
+  }
+}
+
+.sectionTitle {
+  color: #1c1c1c;
+  font-size: 24px;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
+  line-height: 1;
+  margin-bottom: 1rem;
+
+  @media (min-width: 933px) {
+    font-size: 40px;
+  }
+}
+
+.sectionContent {
+  padding: 2rem;
+
+  @media (min-width: 933px) {
+    width: 52%;
+    // padding: 5%;
+    padding: 42px 5%;
+  }
+
+  @media (min-width: 1200px) {
+    // padding: 5% 9%;
+    padding: 56px 9%;
+  }
+}
+
+.sectionButtons {
+  margin-top: -0.25rem;
+
+  @media (min-width: 933px) {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+  }
+}
+
+p + .sectionButtons {
+  margin-top: 1.5rem;
+
+  @media (min-width: 933px) {
+    margin-top: 3rem;
+  }
+}
+
+.sectionButton.sectionButton {
+  display: flex;
+  margin-top: 1rem;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
+  width: 100%;
+  cursor: pointer;
+  justify-content: space-between;
+
+  span {
+    white-space: nowrap;
+  }
+
+  @media (min-width: 933px) {
+    width: auto;
+
+    img {
+      margin-left: 0.75rem;
+    }
+
+    &:not(:last-child) {
+      margin-right: 1rem;
+    }
+  }
+}
