@@ -198,14 +198,16 @@
   line-height: 18px;
   font-family: var(--font-proxima);
   cursor: pointer;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .licenceBtnType {
   width: 45px;
   padding-right: 6px;
   margin-right: 6px;
-  font-size: 30px;
-  line-height: 40px;
+  font-size: 20px;
+  line-height: 46px;
   text-align: center;
   border-right: 1px solid #000;
 }
@@ -217,8 +219,15 @@
 
 .licenceBtnInfo {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   text-align: left;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 0 5px;
+
+  span:first-of-type {
+    font-weight: bold;
+  }
 }
 
 .activeBtn {
