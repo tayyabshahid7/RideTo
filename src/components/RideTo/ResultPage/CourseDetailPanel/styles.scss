@@ -596,3 +596,25 @@ select.widgetSelect {
   vertical-align: middle;
   margin-right: 1rem;
 }
+
+.helpFormChecks {
+  label {
+    display: block;
+    font-size: 15px;
+    line-height: 32px;
+    font-family: var(--font-proxima);
+  }
+
+  input {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+  }
+}
+
+.bothRequired {
+  margin-bottom: -0.5rem;
+  color: rgba(#141414, 0.5);
+  font-family: var(--font-proxima);
+}

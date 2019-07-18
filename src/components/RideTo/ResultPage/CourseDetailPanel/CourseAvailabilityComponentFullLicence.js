@@ -10,6 +10,7 @@ import classnames from 'classnames'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
+import HelpForm from 'components/RideTo/ResultPage/CourseDetailPanel/HelpForm'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -112,8 +113,12 @@ class CourseAvailabilityComponentFullLicence extends Component {
               }}
             />
             <hr style={{ marginTop: '1.5rem', marginBottom: '1.75rem' }} />
-            <ToggleQuiz isWidget={isWidget} updateState={this.updateState} />
-            {needsHelp === true && <div>need help</div>}
+            <ToggleQuiz
+              isWidget={isWidget}
+              updateState={this.updateState}
+              needsHelp={needsHelp}
+            />
+            {needsHelp === true && <HelpForm />}
             {needsHelp === false && (
               <Fragment>
                 <BikePicker
