@@ -7,6 +7,8 @@ import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/Packag
 import DayOfWeekPicker from 'components/RideTo/ResultPage/CourseDetailPanel/DayOfWeekPicker'
 import classnames from 'classnames'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -55,6 +57,14 @@ class CourseAvailabilityComponentFullLicence extends Component {
       manualLicences
     } = this.state
 
+    const included = {
+      'What will I learn?':
+        'Aute in ut ad culpa ullamco voluptate officia consectetur sed enim incididunt irure fugiat laboris.',
+      "What's included?": <OrderIncluded fullLicence isWidget={isWidget} />,
+      'What can I ride after?':
+        'Aute in ut ad culpa ullamco voluptate officia consectetur sed enim incididunt irure fugiat laboris.'
+    }
+
     return (
       <div
         className={classnames(
@@ -64,25 +74,35 @@ class CourseAvailabilityComponentFullLicence extends Component {
         {!showDayOfWeekPicker ? (
           <Fragment>
             {!isWidget && (
-              <div className={styles.subtitle1}>Select a package</div>
+              <div className={styles.dasSubtitle}>
+                Customise your training package
+              </div>
             )}
             <p
               className={classnames(
                 styles.dasInfo,
                 isWidget && styles.dasInfoWidget
               )}>
-              Select the right package for your riding ambitions. The instructor
-              will be in touch within 24 hours to book the training and test
-              dates which work for you.
+              Customise the right package for your riding ambitions. The
+              instructor will be in touch within 24 hours to book the training
+              and test dates which work for you.
             </p>
-            <p
-              className={classnames(
-                styles.dasInfo,
-                isWidget && styles.dasInfoWidget
-              )}>
-              Included as standard:
-            </p>
-            <OrderIncluded fullLicence isWidget={isWidget} />
+            <CourseTypeDetails
+              courseType={{ details: included }}
+              minimal
+              useKeysAsTitle
+              titleStyle={{
+                fontWeight: 500,
+                marginBottom: '-10px'
+              }}
+              contentStyle={{
+                opacity: 1,
+                fontSize: '15px',
+                lineHeight: '24px',
+                textAlign: 'left'
+              }}
+            />
+            <hr style={{ marginTop: '1.5rem', marginBottom: '1.75rem' }} />
             <BikePicker
               isWidget={isWidget}
               isFullLicence
@@ -134,6 +154,13 @@ class CourseAvailabilityComponentFullLicence extends Component {
             />
           </Fragment>
         )}
+        <hr
+          style={{ marginTop: 'calc(2.5rem - 1px)', marginBottom: '0.5rem' }}
+        />
+        <FullLicencePayment
+          pricePerHour={course.price}
+          hours={selectedPackageHours}
+        />
       </div>
     )
   }

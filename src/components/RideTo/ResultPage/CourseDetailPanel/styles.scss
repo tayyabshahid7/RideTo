@@ -88,6 +88,7 @@
   font-size: 18px;
   line-height: 24px;
   font-weight: 500;
+  font-weight: bold;
   font-family: var(--font-rift);
 }
 
@@ -419,9 +420,15 @@ select.widgetSelect {
 
   > span {
     display: block;
-    font-weight: bold;
-    font-size: 17px;
+    font-family: var(--font-proxima-bold);
+    font-size: 15px;
     margin-bottom: 2px;
+
+    + span {
+      font-family: var(--font-proxima);
+      font-weight: normal;
+      margin-bottom: 0.75rem;
+    }
   }
 }
 
@@ -549,4 +556,34 @@ select.widgetSelect {
   span {
     vertical-align: middle;
   }
+}
+
+.dasSubtitle {
+  font-size: 24px;
+  line-height: 29px;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
+}
+
+.dasInfo {
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.stepNumber {
+  height: 24px;
+  width: 24px;
+  border-radius: 13px;
+  background-color: #2dceab;
+
+  color: #ffffff;
+  font-family: var(--font-proxima);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 1rem;
 }

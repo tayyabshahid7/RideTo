@@ -396,3 +396,11 @@ export const getCourseIdFromSearch = search => {
   const courseId = parseInt(params.get('courseId'), 10)
   return courseId || null
 }
+
+export const calcFullLicencePrices = (pricePerHour, hours) => {
+  const total = (pricePerHour / 100) * hours
+  const now = 25
+  const later = total - now
+
+  return [now, later]
+}

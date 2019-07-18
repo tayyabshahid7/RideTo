@@ -36,7 +36,9 @@ class CourseTypeDetails extends React.Component {
       minimal,
       spacedOut = false,
       useKeysAsTitle,
-      fullLicenceFaqs
+      fullLicenceFaqs,
+      contentStyle,
+      titleStyle
     } = this.props
     const { opened } = this.state
     const { details, tags } = courseType
@@ -62,14 +64,17 @@ class CourseTypeDetails extends React.Component {
           <div className={styles.accordion}>
             {Object.entries(details).map(([title, text]) => (
               <DetailsAccordionItem
+                titleStyle={titleStyle}
+                contentStyle={contentStyle}
                 key={title}
                 spacedOut={spacedOut}
                 fullLicenceFaqs={fullLicenceFaqs}
                 title={title}
                 content={text}
                 isOpen={opened.indexOf(title) > -1}
-                onToggle={isOpen => this.handleToggleAccordion(title, isOpen)}
-              />
+                onToggle={isOpen => this.handleToggleAccordion(title, isOpen)}>
+                {text}
+              </DetailsAccordionItem>
             ))}
           </div>
         ) : (

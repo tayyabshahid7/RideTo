@@ -1,6 +1,28 @@
 import React, { Component } from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
+import { calcFullLicencePrices } from 'services/course'
+
+const packages = [
+  {
+    name: 'Introduction',
+    hours: 16,
+    desc:
+      'Velit duis non laborum officia excepteur nulla non velit sed et laboris nisi ex cillum nostrud esse ad do proident qui enim ullamco incididunt deserunt nisi aliquip laborum minim anim dolore in irure magna dolor in.'
+  },
+  {
+    name: 'Experienced',
+    hours: 30,
+    desc:
+      'Velit duis non laborum officia excepteur nulla non velit sed et laboris nisi ex cillum nostrud esse ad do proident qui enim ullamco incididunt deserunt nisi aliquip laborum minim anim dolore in irure magna dolor in.'
+  },
+  {
+    name: 'Intermediate',
+    hours: 40,
+    desc:
+      'Velit duis non laborum officia excepteur nulla non velit sed et laboris nisi ex cillum nostrud esse ad do proident qui enim ullamco incididunt deserunt nisi aliquip laborum minim anim dolore in irure magna dolor in.'
+  }
+]
 
 class PackagePicker extends Component {
   constructor(props) {
@@ -12,6 +34,12 @@ class PackagePicker extends Component {
     const { onSelectPackage } = this.props
 
     onSelectPackage(event.target.value)
+  }
+
+  displayPrice(pricePerHour, hours) {
+    const [now, later] = calcFullLicencePrices(pricePerHour, hours)
+
+    return `£${now} now, £${later} later`
   }
 
   render() {
@@ -29,57 +57,27 @@ class PackagePicker extends Component {
           isWidget && styles.packageWrapperWidget
         )}>
         <label id="choose-package" className={styles.subtitle1}>
-          Training Package
+          <span className={styles.stepNumber}>4</span> Choose course duration
         </label>
         <ul className={styles.packageButtonList}>
-          <li>
-            <button
-              className={classnames(
-                styles.packageButton,
-                selectedPackageHours === 16 && styles.packageButtonActive
-              )}
-              onClick={() => {
-                onSelectPackage(16)
-              }}>
-              <span>
-                16 hours | £{(pricePerHour / 100) * 16} - Introduction Course
-              </span>
-              2 days of training without tests. Suitable for riders to start
-              learning.
-            </button>
-          </li>
-          <li>
-            <button
-              className={classnames(
-                styles.packageButton,
-                selectedPackageHours === 32 && styles.packageButtonActive
-              )}
-              onClick={() => {
-                onSelectPackage(32)
-              }}>
-              <span>
-                32 hours | £{(pricePerHour / 100) * 32} - Experienced Rider
-              </span>
-              4 Days of training to learn and take both module 1 and 2 tests.
-              Suitable for experienced riders only.
-            </button>
-          </li>
-          <li>
-            <button
-              className={classnames(
-                styles.packageButton,
-                selectedPackageHours === 40 && styles.packageButtonActive
-              )}
-              onClick={() => {
-                onSelectPackage(40)
-              }}>
-              <span>
-                40 hours | £{(pricePerHour / 100) * 40} - Intermediate Rider
-              </span>
-              5 days of training to learn and take both module 1 and 2 tests.
-              Suitable for riders with experience on a CBT licence.
-            </button>
-          </li>
+          {packages.map(({ name, hours, desc }) => (
+            <li key={name}>
+              <button
+                className={classnames(
+                  styles.packageButton,
+                  selectedPackageHours === hours && styles.packageButtonActive
+                )}
+                onClick={() => {
+                  onSelectPackage(hours)
+                }}>
+                <span>
+                  {name} ({hours} hours)
+                </span>
+                <span>{this.displayPrice(pricePerHour, hours)}</span>
+                {desc}
+              </button>
+            </li>
+          ))}
         </ul>
       </div>
     )
