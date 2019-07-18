@@ -404,3 +404,43 @@ export const calcFullLicencePrices = (pricePerHour, hours) => {
 
   return [now, later]
 }
+
+export const getDefaultFullLicencePackage = ({
+  old,
+  long,
+  miles,
+  bike,
+  size
+}) => {
+  let bikeHire = 'manual'
+  let licenceType = null
+  let packageHours = null
+
+  if (old === '17-18') {
+    licenceType = 'A1'
+  } else if (old === '19-23') {
+    licenceType = 'A2'
+  } else {
+    licenceType = 'A'
+  }
+
+  if (long === '0-3 Months' || ['None', 'Less than 500'].includes(miles)) {
+    packageHours = 16
+  } else if (long === '3-6 Months') {
+    packageHours = 40
+  } else if (long === '6+ Months') {
+    if (bike === 'Automatic') {
+      packageHours = 40
+    } else if (miles === '500-1,500') {
+      if (size === '125cc') {
+        packageHours = 40
+      } else if (size === 'More than 125cc') {
+        packageHours = 30
+      }
+    } else if (miles === '1,500+') {
+      packageHours = 30
+    }
+  }
+
+  return [bikeHire, licenceType, packageHours]
+}

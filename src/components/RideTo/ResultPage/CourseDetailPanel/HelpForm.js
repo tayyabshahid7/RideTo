@@ -1,6 +1,7 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import { getDefaultFullLicencePackage } from 'services/course'
 
 const QUESTIONS = [
   {
@@ -11,7 +12,7 @@ const QUESTIONS = [
   {
     id: 'long',
     name: 'How long have you been riding?',
-    options: ['Not stated', '0-3 Months', '3-6 Months', '6+ Months']
+    options: ['Not started', '0-3 Months', '3-6 Months', '6+ Months']
   },
   {
     id: 'miles',
@@ -30,7 +31,7 @@ const QUESTIONS = [
   }
 ]
 
-function HelpForm({ isWidget }) {
+function HelpForm({ isWidget, onUpdate, onSelectPackage }) {
   const [values, setValues] = useState({
     old: '',
     long: '',
@@ -55,10 +56,35 @@ function HelpForm({ isWidget }) {
     }
   }
 
+  useEffect(() => {
+    if (!cbtSelected || !theorySelected) {
+      onUpdate({
+        bike_hire: null,
+        selectedLicenceType: null
+      })
+      onSelectPackage(null)
+      return
+    }
+
+    if (!Object.values(values).every(Boolean)) {
+      return
+    }
+
+    const [bikeHire, licenceType, packageHours] = getDefaultFullLicencePackage(
+      values
+    )
+
+    onUpdate({
+      bike_hire: bikeHire,
+      selectedLicenceType: licenceType
+    })
+    onSelectPackage(packageHours)
+  }, [values, cbtSelected, theorySelected, onUpdate, onSelectPackage])
+
   return (
     <Fragment>
       {QUESTIONS.map(({ id, name, options }, i) => (
-        <div key={id} style={{ marginTop: '2rem' }}>
+        <div key={id} style={{ marginTop: '24px' }}>
           <label className={styles.subtitle1}>
             <span className={styles.stepNumber}>{i + 2}</span> {name}
           </label>
@@ -83,7 +109,7 @@ function HelpForm({ isWidget }) {
           </div>
         </div>
       ))}
-      <div style={{ marginTop: '2rem' }}>
+      <div style={{ marginTop: '24px' }}>
         <label className={styles.subtitle1}>
           <span className={styles.stepNumber}>{QUESTIONS.length + 2}</span> What
           valid certificates do you have?
@@ -93,7 +119,7 @@ function HelpForm({ isWidget }) {
             <input
               type="checkbox"
               name="cbt"
-              onClick={handleCheckboxClick}
+              onChange={handleCheckboxClick}
               checked={cbtSelected}
             />{' '}
             Compulsory Basic Training
@@ -102,7 +128,7 @@ function HelpForm({ isWidget }) {
             <input
               type="checkbox"
               name="theory"
-              onClick={handleCheckboxClick}
+              onChange={handleCheckboxClick}
               checked={theorySelected}
             />{' '}
             Motorcyle Theory

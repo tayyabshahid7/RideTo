@@ -118,8 +118,11 @@ class CourseAvailabilityComponentFullLicence extends Component {
               updateState={this.updateState}
               needsHelp={needsHelp}
             />
-            {needsHelp === true && <HelpForm />}
-            {needsHelp === false && (
+            {needsHelp === true && (
+              <HelpForm onUpdate={onUpdate} onSelectPackage={onSelectPackage} />
+            )}
+            {needsHelp === false ||
+            (bike_hire && selectedLicenceType && selectedPackageHours) ? (
               <Fragment>
                 <BikePicker
                   isWidget={isWidget}
@@ -152,7 +155,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
                   />
                 </Fragment>
               </Fragment>
-            )}
+            ) : null}
           </Fragment>
         ) : (
           <Fragment>
