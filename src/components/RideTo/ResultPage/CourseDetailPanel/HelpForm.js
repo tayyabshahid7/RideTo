@@ -71,6 +71,9 @@ function HelpForm({ isWidget }) {
                   isWidget && styles.widgetBtn,
                   values[id] === option && styles.activeBtn
                 )}
+                style={{
+                  marginTop: '2%'
+                }}
                 onClick={() => {
                   handleInputChange(id, option)
                 }}>
