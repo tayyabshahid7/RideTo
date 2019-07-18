@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react'
 import styles from './styles.scss'
 import { getDasBikeTypes } from 'services/course'
+import ToggleQuiz from 'components/RideTo/ResultPage/CourseDetailPanel/ToggleQuiz'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
 import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
@@ -18,8 +19,11 @@ class CourseAvailabilityComponentFullLicence extends Component {
       hasAutoBikes: false,
       hasManualBikes: false,
       autoLicences: [],
-      manualLicences: []
+      manualLicences: [],
+      needsHelp: null
     }
+
+    this.updateState = this.updateState.bind(this)
   }
 
   async componentDidMount() {
@@ -33,6 +37,10 @@ class CourseAvailabilityComponentFullLicence extends Component {
       autoLicences: Object.keys(automatic).filter(key => automatic[key]),
       manualLicences: Object.keys(manual).filter(key => manual[key])
     })
+  }
+
+  updateState(state) {
+    this.setState(state)
   }
 
   render() {
@@ -54,7 +62,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       hasAutoBikes,
       hasManualBikes,
       autoLicences,
-      manualLicences
+      manualLicences,
+      needsHelp
     } = this.state
 
     const included = {
@@ -103,36 +112,42 @@ class CourseAvailabilityComponentFullLicence extends Component {
               }}
             />
             <hr style={{ marginTop: '1.5rem', marginBottom: '1.75rem' }} />
-            <BikePicker
-              isWidget={isWidget}
-              isFullLicence
-              bike_hire={bike_hire}
-              onUpdate={onUpdate}
-              course={course}
-              has_auto_bikes={hasAutoBikes}
-              has_manual_bikes={hasManualBikes}
-              loading={loading}
-            />
-            <Fragment>
-              <LicencePicker
-                isWidget={isWidget}
-                selectedLicenceType={selectedLicenceType}
-                onUpdate={onUpdate}
-                licences={
-                  bike_hire === 'manual' ? manualLicences : autoLicences
-                }
-              />
-              <PackagePicker
-                pricePerHour={course.price}
-                schoolId={course.id}
-                isWidget={isWidget}
-                bike_hire={bike_hire}
-                selectedLicenceType={selectedLicenceType}
-                selectedPackageDays={selectedPackageDays}
-                selectedPackageHours={selectedPackageHours}
-                onSelectPackage={onSelectPackage}
-              />
-            </Fragment>
+            <ToggleQuiz isWidget={isWidget} updateState={this.updateState} />
+            {needsHelp === true && <div>need help</div>}
+            {needsHelp === false && (
+              <Fragment>
+                <BikePicker
+                  isWidget={isWidget}
+                  isFullLicence
+                  bike_hire={bike_hire}
+                  onUpdate={onUpdate}
+                  course={course}
+                  has_auto_bikes={hasAutoBikes}
+                  has_manual_bikes={hasManualBikes}
+                  loading={loading}
+                />
+                <Fragment>
+                  <LicencePicker
+                    isWidget={isWidget}
+                    selectedLicenceType={selectedLicenceType}
+                    onUpdate={onUpdate}
+                    licences={
+                      bike_hire === 'manual' ? manualLicences : autoLicences
+                    }
+                  />
+                  <PackagePicker
+                    pricePerHour={course.price}
+                    schoolId={course.id}
+                    isWidget={isWidget}
+                    bike_hire={bike_hire}
+                    selectedLicenceType={selectedLicenceType}
+                    selectedPackageDays={selectedPackageDays}
+                    selectedPackageHours={selectedPackageHours}
+                    onSelectPackage={onSelectPackage}
+                  />
+                </Fragment>
+              </Fragment>
+            )}
           </Fragment>
         ) : (
           <Fragment>
