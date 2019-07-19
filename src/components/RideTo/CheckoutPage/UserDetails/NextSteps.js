@@ -3,6 +3,10 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 
 function NextSteps({ isFullLicence }) {
+  if (!isFullLicence) {
+    return null
+  }
+
   return (
     <div>
       <div className={classnames(styles.title, styles.titleOrderSummary)}>

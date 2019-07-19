@@ -8,19 +8,19 @@ const packages = [
     name: 'Introduction',
     hours: 16,
     desc:
-      'Velit duis non laborum officia excepteur nulla non velit sed et laboris nisi ex cillum nostrud esse ad do proident qui enim ullamco incididunt deserunt nisi aliquip laborum minim anim dolore in irure magna dolor in.'
+      '2 days of training without tests. Suitable for riders to start learning the core skills of riding and prepare for the full motorcycle module 1 and 2 tests. You’ll usually start off on a smaller bike to get to grips with gears and balance such as slow control. Then moving onto the full bike size for the category of your licence; typically a 500cc for an A2 licence and 650cc for full A licence. The introduction course is perfect for a new rider looking to start their learning without committing to test dates.'
   },
   {
     name: 'Experienced',
     hours: 30,
     desc:
-      'Velit duis non laborum officia excepteur nulla non velit sed et laboris nisi ex cillum nostrud esse ad do proident qui enim ullamco incididunt deserunt nisi aliquip laborum minim anim dolore in irure magna dolor in.'
+      '4 Days of training to learn and take both module 1 and 2 tests. Suitable for experienced riders only. The first section of the course will be focused on preparing you for Module 1. Plenty of off-road balance and control practice for the required maneuvers of the module 1 test. Once you’ve passed the module 1 test, you’ll then start training for the module 2 test. Similar to the driving test, this involves road riding through various conditions, assessing your awareness and progress. The experienced rider course is only for riders with a large amount of experience riding a geared motorcycle on the UK roads.'
   },
   {
     name: 'Intermediate',
     hours: 40,
     desc:
-      'Velit duis non laborum officia excepteur nulla non velit sed et laboris nisi ex cillum nostrud esse ad do proident qui enim ullamco incididunt deserunt nisi aliquip laborum minim anim dolore in irure magna dolor in.'
+      '5 days of training to learn and take both module 1 and 2 tests. Suitable for riders with experience on a CBT licence. You’ll usually start off on a smaller bike to get to grips with gears and balance such as slow control. The first section of the course will be focused on preparing you for Module 1. Plenty of off-road balance and control practice for the required maneuvers of the module 1 test. Once you’ve passed the module 1 test, you’ll then start training for the module 2 test. Similar to the driving test, this involves road riding through various conditions, assessing your awareness and progress'
   }
 ]
 
