@@ -87,6 +87,7 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
       selectedLicenceType: licenceType,
       selectedPackageHours: packageHours
     })
+    // eslint-disable-next-line
   }, [values, cbtSelected, theorySelected])
 
   return (
