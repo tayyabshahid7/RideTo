@@ -194,7 +194,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
             />
           </Fragment>
         )}
-        {!showDayOfWeekPicker && (
+        {!showDayOfWeekPicker && !isWidget && (
           <Fragment>
             <hr
               style={{
