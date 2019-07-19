@@ -127,6 +127,16 @@ class CourseAvailabilityComponentFullLicence extends Component {
                 updateContainerState={this.updateState}
               />
             )}
+            {needsHelp === true && formCompleted && (
+              <Fragment>
+                <hr style={{ marginTop: '2rem', marginBottom: '1.75rem' }} />
+                <div
+                  className={styles.dasSubtitle}
+                  style={{ marginBottom: '-0.5rem' }}>
+                  Here's our recommendation
+                </div>
+              </Fragment>
+            )}
             {needsHelp === false || (needsHelp === true && formCompleted) ? (
               <Fragment>
                 <BikePicker
@@ -167,16 +177,15 @@ class CourseAvailabilityComponentFullLicence extends Component {
           </Fragment>
         ) : (
           <Fragment>
-            <div className={styles.subtitle1} style={{ textAlign: 'center' }}>
-              Your Availability
-            </div>
+            <div className={styles.dasSubtitle}>Your availability</div>
             <p
               className={classnames(
                 styles.dasInfo,
                 isWidget && styles.dasInfoWidget
               )}>
               Select the times you can train on, the more flexible the sooner
-              you can train.
+              you can train. Top instructors have busy schedules, so select as
+              many slots as possible to get the best choice of dates.
             </p>
             <DayOfWeekPicker
               isWidget={isWidget}
@@ -185,13 +194,20 @@ class CourseAvailabilityComponentFullLicence extends Component {
             />
           </Fragment>
         )}
-        <hr
-          style={{ marginTop: 'calc(2.5rem - 1px)', marginBottom: '0.5rem' }}
-        />
-        <FullLicencePayment
-          pricePerHour={course.price}
-          hours={selectedPackageHours}
-        />
+        {!showDayOfWeekPicker && (
+          <Fragment>
+            <hr
+              style={{
+                marginTop: 'calc(2.5rem - 1px)',
+                marginBottom: '0.5rem'
+              }}
+            />
+            <FullLicencePayment
+              pricePerHour={course.price}
+              hours={selectedPackageHours}
+            />
+          </Fragment>
+        )}
       </div>
     )
   }

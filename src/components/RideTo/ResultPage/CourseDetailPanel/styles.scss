@@ -463,89 +463,56 @@ select.widgetSelect {
   color: #fff;
 }
 
+.timeOfDay {
+  font-family: var(--font-proxima-bold);
+  font-weight: normal;
+  font-size: 14px;
+  margin-top: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
 .dayWeekTable {
   table-layout: fixed;
   border-collapse: collapse;
-  width: 100%;
+  width: 108.5%;
+  margin: 0 -4.25% -0.5rem;
 
   th,
   td {
-    padding: 10px 5px;
+    font-weight: normal;
+    padding: 4px 0;
     width: auto;
+    font-size: 15px;
+    font-family: var(--font-proxima-nova);
 
     input[type='checkbox'] {
       vertical-align: middle;
       appearance: none;
-      border: 1px solid lightgrey;
+      border: 1px solid black;
       background-color: white;
       width: 24px;
       height: 24px;
       cursor: pointer;
 
       @media (max-width: 444px) {
-        width: 16px;
-        height: 16px;
+        // width: 16px;
+        // height: 16px;
       }
 
       &:checked {
-        // box-shadow: inset 0 0 0 3px #fff;
-        // background-color: var(--primary-color);
-        background-image: url('assets/icons/tick.svg');
-        background-size: 20px 20px;
+        background-color: black;
+        background-image: url('assets/icons/tickWhite.svg');
+        background-size: 15px 15px;
         background-repeat: no-repeat;
         background-position: center center;
       }
     }
   }
 
-  th {
-    text-align: center;
-
-    @media (max-width: 444px) {
-      position: relative;
-    }
-
-    > span {
-      position: absolute;
-      margin-top: 3px;
-      margin-left: 3px;
-
-      @media (max-width: 444px) {
-        top: -10px;
-        left: 50%;
-        margin-left: -9px;
-      }
-    }
-  }
-
-  td {
-    background-color: #f7f7fa;
-    border-top: 1px solid #fff;
-  }
-
-  td:not(:first-child) {
-    text-align: center;
-  }
-
   th,
   td {
-    &:first-child {
-      width: 85px;
-      padding: 10px;
-
-      > span {
-        position: absolute;
-        margin-top: 3px;
-        margin-left: 5px;
-      }
-    }
+    text-align: center;
   }
-
-  // tr:last-child {
-  //   td {
-  //     background-color: #eef2f6;
-  //   }
-  // }
 }
 
 .availabilityWrapper {
@@ -576,8 +543,11 @@ select.widgetSelect {
 
 .peakMessage {
   margin-top: 1rem;
-  text-align: center;
+  text-align: left;
   font-family: var(--font-proxima);
+  font-size: 15px;
+  line-height: 24px;
+  color: rgba(#141414, 0.5);
 
   span {
     vertical-align: middle;

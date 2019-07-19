@@ -1,29 +1,22 @@
 import React, { Component, Fragment } from 'react'
 import styles from './styles.scss'
-import classnames from 'classnames'
-import { capitalizeFirstLetter } from 'utils/helper'
 import moment from 'moment'
+import FullLicenceAvailability from './FullLicenceAvailability'
 
 const DAYS_OF_WEEK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 const TIMES_OF_DAY = ['Morning', 'Afternoon']
 const AVAILABILITY_TEXTS = {
-  empty: 'Select all time slots you can do',
-  moderate: 'Moderate availability',
-  good: 'Good availability'
+  moderate: 'Moderate',
+  good: 'Good'
 }
 function Zap(style) {
   return (
     <span
       style={{
         display: 'inline-block',
-        background: 'var(--primary-color)',
-        color: '#fff',
-        borderRadius: '50%',
+        color: 'var(--primary-color)',
         textAlign: 'center',
-        lineHeight: '18px',
-        width: '18px',
-        height: '18px',
-        fontSize: '9.5px',
+        fontSize: '14px',
         fontWeight: 'normal',
         verticalAlign: 'middle',
         ...style
@@ -70,67 +63,56 @@ class DayOfWeekPicker extends Component {
     if (availability !== 'empty') {
       estimate = moment()
         .add(availability === 'moderate' ? 60 : 40, 'days')
-        .format('dddd Do MMMM')
+        .format('dddd, Do MMMM')
     }
 
     return (
       <Fragment>
-        <div id="choose-times" className={styles.availabilityWrapper}>
-          <div
-            className={classnames(
-              styles.availabilityText,
-              styles[`availabilityText${capitalizeFirstLetter(availability)}`]
-            )}>
-            {AVAILABILITY_TEXTS[availability]}
-          </div>
-        </div>
-        <p className={styles.estimate}>Estimated Pass Date: {estimate}</p>
-        <p
-          className={classnames(
-            styles.dasInfo,
-            isWidget && styles.dasInfoWidget,
-            styles.dasInfoCenter
-          )}>
-          Top instructors have busy schedules, so select{' '}
-          <strong>as many slots as possible</strong> to ensure you get the best
-          choice of dates.
-        </p>
-        <table className={styles.dayWeekTable}>
-          <thead>
-            <tr>
-              <th />
-              {DAYS_OF_WEEK.map(day => (
-                <th key={day}>
-                  {day} {['Sat', 'Sun'].includes(day) && !isWidget && <Zap />}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {TIMES_OF_DAY.map(time => (
-              <tr key={time}>
-                <td>
-                  {time} {time === 'Evening' && !isWidget && <Zap />}
-                </td>
-                {DAYS_OF_WEEK.map(day => (
-                  <td key={day}>
-                    <input
-                      type="checkbox"
-                      onChange={event => {
-                        const { checked } = event.target
-                        timeDayChange({ time, day, status: checked })
-                      }}
-                    />
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
         {!isWidget && (
-          <p className={styles.peakMessage}>
-            Peak times, reduced availability = <Zap />
-          </p>
+          <Fragment>
+            <p className={styles.peakMessage}>
+              <Zap /> = Peak times, reduced availability
+            </p>
+            <hr style={{ marginTop: '1.5rem' }} />
+          </Fragment>
+        )}
+        {TIMES_OF_DAY.map(time => (
+          <Fragment>
+            <div className={styles.timeOfDay}>{time}</div>
+            <table key={time} className={styles.dayWeekTable}>
+              <thead>
+                <tr>
+                  {DAYS_OF_WEEK.map(day => (
+                    <th key={day}>
+                      {day.charAt(0)}{' '}
+                      {['Sat', 'Sun'].includes(day) && !isWidget && <Zap />}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  {DAYS_OF_WEEK.map(day => (
+                    <td key={day}>
+                      <input
+                        type="checkbox"
+                        onChange={event => {
+                          const { checked } = event.target
+                          timeDayChange({ time, day, status: checked })
+                        }}
+                      />
+                    </td>
+                  ))}
+                </tr>
+              </tbody>
+            </table>
+          </Fragment>
+        ))}
+        {availability !== 'empty' && (
+          <FullLicenceAvailability
+            availability={AVAILABILITY_TEXTS[availability]}
+            date={estimate}
+          />
         )}
       </Fragment>
     )
