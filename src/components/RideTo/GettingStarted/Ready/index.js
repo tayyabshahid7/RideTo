@@ -2,26 +2,41 @@ import React from 'react'
 import styles from './styles.scss'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import RideToButton from 'components/RideTo/Button'
+import classnames from 'classnames'
 
-function Ready() {
+function Ready({
+  type = 'text',
+  className,
+  titleClassName,
+  inputClassName,
+  titleText = 'Ready to get started?',
+  placeholderText = 'Enter a place or postcode',
+  buttonText = 'Learn to ride',
+  onSubmit,
+  name = 'postcode',
+  buttonClassName,
+  buttonIcon = false
+}) {
   return (
-    <div className={styles.container}>
-      <h2 className={styles.title}>Ready to get started?</h2>
+    <div className={classnames(styles.container, className)}>
+      <h2 className={classnames(styles.title, titleClassName)}>{titleText}</h2>
       <form
+        onSubmit={onSubmit}
         className={styles.form}
         action="/course-type-selection"
         method="get">
         <input
-          name="postcode"
-          className={styles.input}
-          placeholder="Enter a place or postcode"
+          type={type}
+          name={name}
+          className={classnames(styles.input, inputClassName)}
+          placeholder={placeholderText}
         />
         <RideToButton
-          className={styles.button}
+          className={classnames(styles.button, buttonClassName)}
           type="submit"
-          title="Learn to ride">
-          <span>Learn to ride</span>
-          <img src={ButtonArrowWhite} alt="Submit" />
+          title={buttonText}>
+          <span>{buttonText}</span>
+          <img src={buttonIcon || ButtonArrowWhite} alt="Submit" />
         </RideToButton>
       </form>
     </div>

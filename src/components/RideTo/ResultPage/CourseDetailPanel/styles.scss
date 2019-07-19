@@ -88,7 +88,25 @@
   font-size: 18px;
   line-height: 24px;
   font-weight: 500;
+  font-weight: bold;
   font-family: var(--font-rift);
+
+  display: flex;
+  align-items: center;
+}
+
+.showAllButton {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: right;
+  font-size: 16px;
+  color: rgba(#141414, 0.5);
+  font-family: var(--font-proxima);
+  text-decoration: underline;
+
+  margin-left: auto;
 }
 
 .location {
@@ -197,14 +215,16 @@
   line-height: 18px;
   font-family: var(--font-proxima);
   cursor: pointer;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .licenceBtnType {
   width: 45px;
   padding-right: 6px;
   margin-right: 6px;
-  font-size: 30px;
-  line-height: 40px;
+  font-size: 20px;
+  line-height: 46px;
   text-align: center;
   border-right: 1px solid #000;
 }
@@ -216,8 +236,15 @@
 
 .licenceBtnInfo {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   text-align: left;
+  flex-grow: 1;
+  justify-content: space-between;
+  padding: 0 5px;
+
+  span:first-of-type {
+    font-weight: bold;
+  }
 }
 
 .activeBtn {
@@ -419,9 +446,15 @@ select.widgetSelect {
 
   > span {
     display: block;
-    font-weight: bold;
-    font-size: 17px;
+    font-family: var(--font-proxima-bold);
+    font-size: 15px;
     margin-bottom: 2px;
+
+    + span {
+      font-family: var(--font-proxima);
+      font-weight: normal;
+      margin-bottom: 0.75rem;
+    }
   }
 }
 
@@ -430,89 +463,56 @@ select.widgetSelect {
   color: #fff;
 }
 
+.timeOfDay {
+  font-family: var(--font-proxima-bold);
+  font-weight: normal;
+  font-size: 14px;
+  margin-top: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
 .dayWeekTable {
   table-layout: fixed;
   border-collapse: collapse;
-  width: 100%;
+  width: 108.5%;
+  margin: 0 -4.25% -0.5rem;
 
   th,
   td {
-    padding: 10px 5px;
+    font-weight: normal;
+    padding: 4px 0;
     width: auto;
+    font-size: 15px;
+    font-family: var(--font-proxima-nova);
 
     input[type='checkbox'] {
       vertical-align: middle;
       appearance: none;
-      border: 1px solid lightgrey;
+      border: 1px solid black;
       background-color: white;
       width: 24px;
       height: 24px;
       cursor: pointer;
 
       @media (max-width: 444px) {
-        width: 16px;
-        height: 16px;
+        // width: 16px;
+        // height: 16px;
       }
 
       &:checked {
-        // box-shadow: inset 0 0 0 3px #fff;
-        // background-color: var(--primary-color);
-        background-image: url('assets/icons/tick.svg');
-        background-size: 20px 20px;
+        background-color: black;
+        background-image: url('assets/icons/tickWhite.svg');
+        background-size: 15px 15px;
         background-repeat: no-repeat;
         background-position: center center;
       }
     }
   }
 
-  th {
-    text-align: center;
-
-    @media (max-width: 444px) {
-      position: relative;
-    }
-
-    > span {
-      position: absolute;
-      margin-top: 3px;
-      margin-left: 3px;
-
-      @media (max-width: 444px) {
-        top: -10px;
-        left: 50%;
-        margin-left: -9px;
-      }
-    }
-  }
-
-  td {
-    background-color: #f7f7fa;
-    border-top: 1px solid #fff;
-  }
-
-  td:not(:first-child) {
-    text-align: center;
-  }
-
   th,
   td {
-    &:first-child {
-      width: 85px;
-      padding: 10px;
-
-      > span {
-        position: absolute;
-        margin-top: 3px;
-        margin-left: 5px;
-      }
-    }
+    text-align: center;
   }
-
-  // tr:last-child {
-  //   td {
-  //     background-color: #eef2f6;
-  //   }
-  // }
 }
 
 .availabilityWrapper {
@@ -543,10 +543,65 @@ select.widgetSelect {
 
 .peakMessage {
   margin-top: 1rem;
-  text-align: center;
+  text-align: left;
   font-family: var(--font-proxima);
+  font-size: 15px;
+  line-height: 24px;
+  color: rgba(#141414, 0.5);
 
   span {
     vertical-align: middle;
   }
+}
+
+.dasSubtitle {
+  font-size: 24px;
+  line-height: 29px;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
+}
+
+.dasInfo {
+  font-size: 15px;
+  line-height: 24px;
+}
+
+.stepNumber {
+  height: 24px;
+  width: 24px;
+  border-radius: 13px;
+  background-color: #2dceab;
+
+  color: #ffffff;
+  font-family: var(--font-proxima);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 1rem;
+}
+
+.helpFormChecks {
+  label {
+    display: block;
+    font-size: 15px;
+    line-height: 32px;
+    font-family: var(--font-proxima);
+  }
+
+  input {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+  }
+}
+
+.bothRequired {
+  margin-bottom: -0.5rem;
+  color: rgba(#141414, 0.5);
+  font-family: var(--font-proxima);
 }

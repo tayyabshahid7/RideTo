@@ -32,6 +32,9 @@ import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { getStaticData } from 'services/page'
+import FullLicenceGuide from './FullLicenceGuide'
+import FullLicenceIncluded from './FullLicenceIncluded'
+import FullLicenceFaq from './FullLicenceFaq'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
@@ -733,6 +736,15 @@ class ResultPage extends Component {
                         isFullLicence && styles.noMargin
                       )}>
                       <div className={styles.coursesPanel}>
+                        {isFullLicence && (
+                          <a href="https://rideto.typeform.com/to/lyVAhc">
+                            <img
+                              src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/fast-track.png"
+                              className={styles.fastTrackAdvert}
+                              alt="Full licence fast-track package"
+                            />
+                          </a>
+                        )}
                         {courses.available.length > 0 && (
                           <React.Fragment>
                             {courses.available.map(
@@ -838,6 +850,12 @@ class ResultPage extends Component {
             </Col>
           </Row>
         </Container>
+
+        {isFullLicence && <FullLicenceGuide />}
+
+        {isFullLicence && <FullLicenceIncluded />}
+
+        {isFullLicence && <FullLicenceFaq />}
 
         {isShowCourseTypeInfo && (
           <SidePanel

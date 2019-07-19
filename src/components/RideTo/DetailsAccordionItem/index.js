@@ -11,7 +11,11 @@ const DetailsAccordionItem = ({
   isOpen,
   onToggle,
   className,
-  spacedOut
+  spacedOut,
+  fullLicenceFaqs,
+  children,
+  titleStyle,
+  contentStyle
 }) => {
   const contentClassName = classnames(styles.content, isOpen && styles.open)
   return (
@@ -19,10 +23,13 @@ const DetailsAccordionItem = ({
       className={classnames(
         styles.detailsAccordionItem,
         spacedOut && styles.detailsAccordionItemSpaced,
+        fullLicenceFaqs && styles.detailsAccordionFullLicenceFaqs,
         className
       )}>
       <div className={styles.heading} onClick={() => onToggle(!isOpen)}>
-        <div className={styles.title}>{title}</div>
+        <div className={styles.title} style={titleStyle}>
+          {title}
+        </div>
         <div className={styles.action}>
           {isOpen ? (
             <img src={closeImg} alt="Close" />
@@ -31,10 +38,17 @@ const DetailsAccordionItem = ({
           )}
         </div>
       </div>
-      <div
-        className={contentClassName}
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+      {typeof content === 'string' ? (
+        <div
+          className={contentClassName}
+          style={contentStyle}
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
+      ) : (
+        <div className={contentClassName} style={contentStyle}>
+          {children}
+        </div>
+      )}
     </div>
   )
 }

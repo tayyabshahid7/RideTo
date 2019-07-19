@@ -19,7 +19,8 @@ const BikePicker = React.forwardRef(
       has_manual_bikes,
       isFullLicence,
       loading,
-      isWidget
+      isWidget,
+      needsHelp
     },
     ref
   ) => {
@@ -37,7 +38,14 @@ const BikePicker = React.forwardRef(
       <Loading loading={loading}>
         <div className={styles.bikeHireWrapper} ref={ref}>
           <label id="choose-bike" className={styles.subtitle1}>
-            {!isFullLicence ? 'Choose A Bike to Hire:' : 'Type of Bike'}
+            {!isFullLicence ? (
+              'Choose A Bike to Hire:'
+            ) : (
+              <React.Fragment>
+                {!needsHelp && <span className={styles.stepNumber}>2</span>}{' '}
+                Bike type
+              </React.Fragment>
+            )}
           </label>
 
           {isCbtRenewal && (

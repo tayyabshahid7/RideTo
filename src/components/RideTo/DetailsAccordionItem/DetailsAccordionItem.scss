@@ -68,3 +68,38 @@
     opacity: 1;
   }
 }
+
+.detailsAccordionFullLicenceFaqs {
+  @media (min-width: 933px) {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    margin-bottom: -1px;
+    border-top: 1px solid rgba(#141414, 0.1);
+    border-bottom: 1px solid rgba(#141414, 0.1);
+
+    &:first-child {
+      border-top: 0;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  .title {
+    font-weight: 500;
+  }
+
+  .open {
+    font-size: 15px;
+    line-height: 24px;
+    color: #141414;
+    opacity: 1;
+    margin-bottom: 2rem;
+
+    @media (min-width: 933px) {
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+}

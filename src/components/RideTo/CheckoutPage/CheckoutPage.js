@@ -610,6 +610,7 @@ class CheckoutPage extends Component {
   }
 
   render() {
+    const { courseType } = this.props.checkoutData
     const {
       details,
       manualAddress,
@@ -648,6 +649,7 @@ class CheckoutPage extends Component {
               loadingPrice={loadingPrice}
               handleVoucherApply={this.handleVoucherApply}
               showCardDetails={showCardDetails}
+              isFullLicence={courseType === 'FULL_LICENCE'}
             />
           </div>
           <div className={styles.rightPanel}>
