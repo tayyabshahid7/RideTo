@@ -129,6 +129,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
             {needsHelp === false || (needsHelp === true && formCompleted) ? (
               <Fragment>
                 <BikePicker
+                  needsHelp={needsHelp}
                   isWidget={isWidget}
                   isFullLicence
                   bike_hire={bike_hire}
@@ -140,6 +141,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
                 />
                 <Fragment>
                   <LicencePicker
+                    needsHelp={needsHelp}
                     isWidget={isWidget}
                     selectedLicenceType={selectedLicenceType}
                     onUpdate={onUpdate}
@@ -148,6 +150,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
                     }
                   />
                   <PackagePicker
+                    needsHelp={needsHelp}
                     pricePerHour={course.price}
                     schoolId={course.id}
                     isWidget={isWidget}

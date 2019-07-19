@@ -19,7 +19,8 @@ const BikePicker = React.forwardRef(
       has_manual_bikes,
       isFullLicence,
       loading,
-      isWidget
+      isWidget,
+      needsHelp
     },
     ref
   ) => {
@@ -41,7 +42,8 @@ const BikePicker = React.forwardRef(
               'Choose A Bike to Hire:'
             ) : (
               <React.Fragment>
-                <span className={styles.stepNumber}>2</span> Choose bike type
+                {!needsHelp && <span className={styles.stepNumber}>2</span>}{' '}
+                Bike type
               </React.Fragment>
             )}
           </label>

@@ -90,6 +90,23 @@
   font-weight: 500;
   font-weight: bold;
   font-family: var(--font-rift);
+
+  display: flex;
+  align-items: center;
+}
+
+.showAllButton {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: right;
+  font-size: 16px;
+  color: rgba(#141414, 0.5);
+  font-family: var(--font-proxima);
+  text-decoration: underline;
+
+  margin-left: auto;
 }
 
 .location {

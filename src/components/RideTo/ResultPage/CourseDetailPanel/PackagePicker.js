@@ -27,7 +27,13 @@ const packages = [
 class PackagePicker extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      showAll: !this.props.needsHelp
+    }
+
     this.handleChange = this.handleChange.bind(this)
+    this.onShowAllClick = this.onShowAllClick.bind(this)
   }
 
   handleChange(event) {
@@ -42,13 +48,36 @@ class PackagePicker extends Component {
     return `£${now} now, £${later} later`
   }
 
+  onShowAllClick() {
+    this.setState({
+      showAll: true
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.needsHelp !== this.props.needsHelp) {
+      this.setState({
+        showAll: !this.props.needsHelp
+      })
+    }
+  }
+
   render() {
     const {
       pricePerHour,
       onSelectPackage,
       selectedPackageHours,
-      isWidget
+      isWidget,
+      needsHelp
     } = this.props
+    const { showAll } = this.state
+    let filteredPackages = packages
+
+    if (!showAll && selectedPackageHours) {
+      filteredPackages = packages.filter(
+        ({ hours }) => selectedPackageHours === hours
+      )
+    }
 
     return (
       <div
@@ -57,10 +86,18 @@ class PackagePicker extends Component {
           isWidget && styles.packageWrapperWidget
         )}>
         <label id="choose-package" className={styles.subtitle1}>
-          <span className={styles.stepNumber}>4</span> Choose course duration
+          {!needsHelp && <span className={styles.stepNumber}>4</span>} Course
+          duration{' '}
+          {needsHelp && !showAll && (
+            <button
+              className={styles.showAllButton}
+              onClick={this.onShowAllClick}>
+              Show all
+            </button>
+          )}
         </label>
         <ul className={styles.packageButtonList}>
-          {packages.map(({ name, hours, desc }) => (
+          {filteredPackages.map(({ name, hours, desc }) => (
             <li key={name}>
               <button
                 className={classnames(

@@ -1,15 +1,44 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './styles.scss'
 import LicenceButton from './LicenceButton'
 
-function LicencePicker({ selectedLicenceType, onUpdate, licences, isWidget }) {
+function LicencePicker({
+  selectedLicenceType,
+  onUpdate,
+  licences,
+  isWidget,
+  needsHelp = false
+}) {
+  const [showAll, setShowAll] = useState(!needsHelp)
+  let filteredLicences = licences
+
+  useEffect(() => {
+    setShowAll(!needsHelp)
+  }, [needsHelp])
+
+  const onShowAllClick = () => {
+    setShowAll(true)
+  }
+
+  if (!showAll && selectedLicenceType) {
+    filteredLicences = licences.filter(
+      licence => selectedLicenceType.toLowerCase() === licence
+    )
+  }
+
   return (
     <div className={styles.licenceWrapper}>
       <label id="choose-licence" className={styles.subtitle1}>
-        <span className={styles.stepNumber}>3</span> Choose licence type
+        {!needsHelp && <span className={styles.stepNumber}>3</span>} Licence
+        type{' '}
+        {needsHelp && !showAll && (
+          <button className={styles.showAllButton} onClick={onShowAllClick}>
+            Show all
+          </button>
+        )}
       </label>
       <div>
-        {licences.includes('a1') && (
+        {filteredLicences.includes('a1') && (
           <LicenceButton
             isWidget={isWidget}
             type="A1"
@@ -19,7 +48,7 @@ function LicencePicker({ selectedLicenceType, onUpdate, licences, isWidget }) {
             onUpdate={onUpdate}
           />
         )}
-        {licences.includes('a2') && (
+        {filteredLicences.includes('a2') && (
           <LicenceButton
             isWidget={isWidget}
             type="A2"
@@ -29,7 +58,7 @@ function LicencePicker({ selectedLicenceType, onUpdate, licences, isWidget }) {
             onUpdate={onUpdate}
           />
         )}
-        {licences.includes('a') && (
+        {filteredLicences.includes('a') && (
           <LicenceButton
             isWidget={isWidget}
             type="A"
