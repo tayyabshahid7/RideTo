@@ -15,6 +15,7 @@ import Select from 'components/RideTo/Select'
 import { getCurrentLicenceOptions } from 'services/customer'
 import styles from './styles.scss'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
+import NextSteps from './NextSteps'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -115,6 +116,7 @@ class UserDetails extends Component {
 
     return (
       <div>
+        <NextSteps />
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
             Order Summary
