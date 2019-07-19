@@ -58,7 +58,6 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
 
   useEffect(() => {
     if (!cbtSelected || !theorySelected) {
-      console.log('reset')
       updateContainerState({
         formCompleted: false
       })
@@ -78,7 +77,6 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
       values
     )
 
-    console.log('update')
     updateContainerState({
       formCompleted: true
     })
