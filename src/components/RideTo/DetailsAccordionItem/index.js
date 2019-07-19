@@ -2,8 +2,8 @@ import React from 'react'
 import classnames from 'classnames'
 
 import styles from './DetailsAccordionItem.scss'
-import expandImg from 'assets/images/rideto/Expand.svg'
-import closeImg from 'assets/images/rideto/CloseDark.svg'
+import expandImg from '../../../assets/images/rideto/Expand.svg'
+import closeImg from '../../../assets/images/rideto/CloseDark.svg'
 
 const DetailsAccordionItem = ({
   title,

@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './FullLicencePayment.scss'
 import { calcFullLicencePrices } from 'services/course'
 
-function FullLicencePayment({ pricePerHour, hours, style }) {
+function FullLicencePayment({ pricePerHour, hours, style, isWidget }) {
   if (!hours) {
     return null
   }
