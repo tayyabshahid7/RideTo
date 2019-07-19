@@ -109,14 +109,15 @@ class UserDetails extends Component {
       handleMapButtonClick,
       trainings,
       handlePOMToggleClick,
-      hasPOM
+      hasPOM,
+      isFullLicence
     } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
       <div>
-        <NextSteps />
+        <NextSteps isFullLicence={isFullLicence} />
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
             Order Summary

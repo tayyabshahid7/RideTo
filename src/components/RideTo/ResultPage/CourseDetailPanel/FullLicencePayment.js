@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './FullLicencePayment.scss'
 import { calcFullLicencePrices } from 'services/course'
 
-function FullLicencePayment({ pricePerHour, hours }) {
+function FullLicencePayment({ pricePerHour, hours, style }) {
   if (!hours) {
     return null
   }
@@ -10,7 +10,7 @@ function FullLicencePayment({ pricePerHour, hours }) {
   const [now, later] = calcFullLicencePrices(pricePerHour, hours)
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={style}>
       <div className={styles.row}>
         <span className={styles.payToday}>Pay today</span>{' '}
         <span className={styles.payTodayPrice}>Only £{now}</span>
