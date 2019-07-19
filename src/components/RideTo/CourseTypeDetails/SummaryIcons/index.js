@@ -1,7 +1,7 @@
 import React from 'react'
 // import classnames from 'classnames'
 import styles from './SummaryIcons.scss'
-import * as summaryIcons from 'assets/icons/courseSummary'
+import * as summaryIcons from '../../../../assets/icons/courseSummary'
 import { getFiltersTag } from 'services/course-type'
 
 const getTagImage = tag => {
