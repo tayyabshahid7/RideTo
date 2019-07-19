@@ -3,7 +3,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 
 const ToggleQuiz = React.forwardRef(
-  ({ isWidget, updateState, needsHelp }, ref) => {
+  ({ isWidget, updateState, needsHelp, onUpdate }, ref) => {
     return (
       <div className={styles.bikeHireWrapper} ref={ref}>
         <label id="choose-quiz" className={styles.subtitle1}>
@@ -22,6 +22,11 @@ const ToggleQuiz = React.forwardRef(
               updateState({
                 needsHelp: true
               })
+              onUpdate({
+                bike_hire: null,
+                selectedLicenceType: null,
+                selectedPackageHours: null
+              })
             }}>
             Yes
           </button>
@@ -34,6 +39,11 @@ const ToggleQuiz = React.forwardRef(
             onClick={() => {
               updateState({
                 needsHelp: false
+              })
+              onUpdate({
+                bike_hire: null,
+                selectedLicenceType: null,
+                selectedPackageHours: null
               })
             }}>
             No

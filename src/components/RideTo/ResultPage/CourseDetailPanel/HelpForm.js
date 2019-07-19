@@ -90,7 +90,12 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
 
   return (
     <Fragment>
-      {QUESTIONS.map(({ id, name, options }, i) => (
+      {QUESTIONS.filter((question, i) => {
+        if (values.long === 'Not started' && i > 1) {
+          return false
+        }
+        return true
+      }).map(({ id, name, options }, i) => (
         <div key={id} style={{ marginTop: '24px' }}>
           <label className={styles.subtitle1}>
             <span className={styles.stepNumber}>{i + 2}</span> {name}
@@ -116,35 +121,42 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
           </div>
         </div>
       ))}
-      <div style={{ marginTop: '24px' }}>
-        <label className={styles.subtitle1}>
-          <span className={styles.stepNumber}>{QUESTIONS.length + 2}</span> What
-          valid certificates do you have?
-        </label>
-        <div className={styles.helpFormChecks}>
-          <label>
-            <input
-              type="checkbox"
-              name="cbt"
-              onChange={handleCheckboxClick}
-              checked={cbtSelected}
-            />{' '}
-            Compulsory Basic Training
+      {values.long !== 'Not started' ? (
+        <div style={{ marginTop: '24px' }}>
+          <label className={styles.subtitle1}>
+            <span className={styles.stepNumber}>{QUESTIONS.length + 2}</span>{' '}
+            What valid certificates do you have?
           </label>
-          <label>
-            <input
-              type="checkbox"
-              name="theory"
-              onChange={handleCheckboxClick}
-              checked={theorySelected}
-            />{' '}
-            Motorcyle Theory
-          </label>
+          <div className={styles.helpFormChecks}>
+            <label>
+              <input
+                type="checkbox"
+                name="cbt"
+                onChange={handleCheckboxClick}
+                checked={cbtSelected}
+              />{' '}
+              Compulsory Basic Training
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                name="theory"
+                onChange={handleCheckboxClick}
+                checked={theorySelected}
+              />{' '}
+              Motorcycle Theory
+            </label>
+          </div>
+          <div className={styles.bothRequired}>
+            Both certificates are required in order to book
+          </div>
         </div>
-        <div className={styles.bothRequired}>
-          Both certificates are required in order to book
-        </div>
-      </div>
+      ) : (
+        <p style={{ marginTop: '1rem', marginBottom: '-0.5rem' }}>
+          If you're new to riding and yet to get on a bike, you'll need to start
+          with the CBT course.
+        </p>
+      )}
     </Fragment>
   )
 }

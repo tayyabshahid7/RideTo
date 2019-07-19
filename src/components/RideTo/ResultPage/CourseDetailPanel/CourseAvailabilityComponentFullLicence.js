@@ -119,6 +119,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
               isWidget={isWidget}
               updateState={this.updateState}
               needsHelp={needsHelp}
+              onUpdate={onUpdate}
             />
             {needsHelp === true && (
               <HelpForm
