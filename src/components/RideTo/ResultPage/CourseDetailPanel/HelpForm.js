@@ -60,9 +60,9 @@ function HelpForm({ isWidget, onUpdate, onSelectPackage }) {
     if (!cbtSelected || !theorySelected) {
       onUpdate({
         bike_hire: null,
-        selectedLicenceType: null
+        selectedLicenceType: null,
+        selectedPackageHours: null
       })
-      onSelectPackage(null)
       return
     }
 
@@ -76,10 +76,10 @@ function HelpForm({ isWidget, onUpdate, onSelectPackage }) {
 
     onUpdate({
       bike_hire: bikeHire,
-      selectedLicenceType: licenceType
+      selectedLicenceType: licenceType,
+      selectedPackageHours: packageHours
     })
-    onSelectPackage(packageHours)
-  }, [values, cbtSelected, theorySelected, onUpdate, onSelectPackage])
+  }, [values, cbtSelected, theorySelected])
 
   return (
     <Fragment>
