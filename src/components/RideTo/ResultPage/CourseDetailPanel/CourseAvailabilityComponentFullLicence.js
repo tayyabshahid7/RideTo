@@ -21,7 +21,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       hasManualBikes: false,
       autoLicences: [],
       manualLicences: [],
-      needsHelp: null
+      needsHelp: null,
+      formCompleted: false
     }
 
     this.updateState = this.updateState.bind(this)
@@ -64,7 +65,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       hasManualBikes,
       autoLicences,
       manualLicences,
-      needsHelp
+      needsHelp,
+      formCompleted
     } = this.state
 
     const included = {
@@ -119,10 +121,12 @@ class CourseAvailabilityComponentFullLicence extends Component {
               needsHelp={needsHelp}
             />
             {needsHelp === true && (
-              <HelpForm onUpdate={onUpdate} onSelectPackage={onSelectPackage} />
+              <HelpForm
+                onUpdate={onUpdate}
+                updateContainerState={this.updateState}
+              />
             )}
-            {needsHelp === false ||
-            (bike_hire && selectedLicenceType && selectedPackageHours) ? (
+            {needsHelp === false || (needsHelp === true && formCompleted) ? (
               <Fragment>
                 <BikePicker
                   isWidget={isWidget}

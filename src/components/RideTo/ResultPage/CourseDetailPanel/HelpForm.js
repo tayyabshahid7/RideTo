@@ -31,7 +31,7 @@ const QUESTIONS = [
   }
 ]
 
-function HelpForm({ isWidget, onUpdate, onSelectPackage }) {
+function HelpForm({ isWidget, onUpdate, updateContainerState }) {
   const [values, setValues] = useState({
     old: '',
     long: '',
@@ -58,6 +58,10 @@ function HelpForm({ isWidget, onUpdate, onSelectPackage }) {
 
   useEffect(() => {
     if (!cbtSelected || !theorySelected) {
+      console.log('reset')
+      updateContainerState({
+        formCompleted: false
+      })
       onUpdate({
         bike_hire: null,
         selectedLicenceType: null,
@@ -74,6 +78,10 @@ function HelpForm({ isWidget, onUpdate, onSelectPackage }) {
       values
     )
 
+    console.log('update')
+    updateContainerState({
+      formCompleted: true
+    })
     onUpdate({
       bike_hire: bikeHire,
       selectedLicenceType: licenceType,
