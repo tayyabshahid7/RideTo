@@ -41,9 +41,12 @@ smoothscroll.polyfill()
 
 function flashDiv(id) {
   let el = document.getElementById(id)
-  el.classList.remove('highlight-required')
-  el.scrollIntoView()
-  el.classList.add('highlight-required')
+
+  if (el) {
+    el.classList.remove('highlight-required')
+    el.scrollIntoView()
+    el.classList.add('highlight-required')
+  }
 }
 
 class ResultPage extends Component {
