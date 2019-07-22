@@ -29,8 +29,6 @@ class CourseAvailabilityComponentFullLicence extends Component {
       ).details
     }
 
-    console.log(this.state.staticCourseTypesData)
-
     this.updateState = this.updateState.bind(this)
   }
 
