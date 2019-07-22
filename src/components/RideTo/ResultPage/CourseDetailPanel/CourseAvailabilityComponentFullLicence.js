@@ -29,20 +29,32 @@ class CourseAvailabilityComponentFullLicence extends Component {
       ).details
     }
 
+    this._isMounted = false
+
     this.updateState = this.updateState.bind(this)
   }
 
   async componentDidMount() {
     const { id } = this.props.course
-    const { automatic, manual } = await getDasBikeTypes(id)
+    this._isMounted = true
 
-    this.setState({
-      loading: false,
-      hasAutoBikes: Object.values(automatic).includes(true),
-      hasManualBikes: Object.values(manual).includes(true),
-      autoLicences: Object.keys(automatic).filter(key => automatic[key]),
-      manualLicences: Object.keys(manual).filter(key => manual[key])
-    })
+    if (this._isMounted) {
+      const { automatic, manual } = await getDasBikeTypes(id)
+
+      if (this._isMounted) {
+        this.setState({
+          loading: false,
+          hasAutoBikes: Object.values(automatic).includes(true),
+          hasManualBikes: Object.values(manual).includes(true),
+          autoLicences: Object.keys(automatic).filter(key => automatic[key]),
+          manualLicences: Object.keys(manual).filter(key => manual[key])
+        })
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   updateState(state) {
