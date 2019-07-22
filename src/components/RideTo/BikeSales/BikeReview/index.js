@@ -40,9 +40,7 @@ class BikeReview extends Component {
   }
 
   handleResize() {
-    this.keyInfo.current.style.width = `${
-      this.rightPanel.current.offsetWidth
-    }px`
+    this.keyInfo.current.style.width = `${this.rightPanel.current.offsetWidth}px`
   }
 
   init() {
@@ -112,7 +110,7 @@ class BikeReview extends Component {
       requiredLicence,
       insuranceGroup
     } = bikes.find(bike => bike.slug === match.params.slug)
-    const insuranceLink = 'https://www.lexhaminsurance.co.uk/?aff=LEX6327'
+    const insuranceLink = 'http://tidd.ly/a35e0aed'
     const trainingLink = `/${Object.keys(SLUG_COURSE_TYPES).find(key => {
       return SLUG_COURSE_TYPES[key] === requiredLicence
     })}`
