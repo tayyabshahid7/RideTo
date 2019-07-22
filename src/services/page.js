@@ -28,3 +28,13 @@ export const getCourseTypesData = () => {
   const staticData = getStaticData('RIDETO_PAGE')
   return staticData.courseTypes
 }
+
+export const flashDiv = id => {
+  let el = document.getElementById(id)
+
+  if (el) {
+    el.classList.remove('highlight-required')
+    el.scrollIntoView()
+    el.classList.add('highlight-required')
+  }
+}

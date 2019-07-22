@@ -1,9 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import { flashDiv } from 'services/page'
 
 const ToggleQuiz = React.forwardRef(
-  ({ isWidget, updateState, needsHelp, onUpdate }, ref) => {
+  ({ isWidget, updateState, needsHelp, onUpdate, isErrored }, ref) => {
+    useEffect(() => {
+      if (isErrored && needsHelp === null) {
+        flashDiv('choose-quiz')
+      }
+    }, [isErrored, needsHelp])
+
     return (
       <div className={styles.bikeHireWrapper} ref={ref}>
         <label id="choose-quiz" className={styles.subtitle1}>
@@ -25,7 +32,8 @@ const ToggleQuiz = React.forwardRef(
               onUpdate({
                 bike_hire: null,
                 selectedLicenceType: null,
-                selectedPackageHours: null
+                selectedPackageHours: null,
+                isErrored: false
               })
             }}>
             Yes
@@ -43,7 +51,8 @@ const ToggleQuiz = React.forwardRef(
               onUpdate({
                 bike_hire: null,
                 selectedLicenceType: null,
-                selectedPackageHours: null
+                selectedPackageHours: null,
+                isErrored: false
               })
             }}>
             No

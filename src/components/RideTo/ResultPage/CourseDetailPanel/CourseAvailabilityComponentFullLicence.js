@@ -73,7 +73,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       selectedPackageHours,
       showDayOfWeekPicker,
       timeDayChange,
-      selectedTimeDays
+      selectedTimeDays,
+      isErrored
     } = this.props
     const {
       loading,
@@ -135,9 +136,11 @@ class CourseAvailabilityComponentFullLicence extends Component {
               updateState={this.updateState}
               needsHelp={needsHelp}
               onUpdate={onUpdate}
+              isErrored={isErrored}
             />
             {needsHelp === true && (
               <HelpForm
+                isErrored={isErrored}
                 onUpdate={onUpdate}
                 updateContainerState={this.updateState}
               />

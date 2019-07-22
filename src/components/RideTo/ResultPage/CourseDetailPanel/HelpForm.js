@@ -2,6 +2,8 @@ import React, { Fragment, useState, useEffect } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
 import { getDefaultFullLicencePackage } from 'services/course'
+import { flashDiv } from 'services/page'
+import { parseQueryString } from 'services/api'
 
 const QUESTIONS = [
   {
@@ -31,7 +33,7 @@ const QUESTIONS = [
   }
 ]
 
-function HelpForm({ isWidget, onUpdate, updateContainerState }) {
+function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
   const [values, setValues] = useState({
     old: '',
     long: '',
@@ -41,6 +43,7 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
   })
   const [cbtSelected, setCbtSelected] = useState(false)
   const [theorySelected, setTheorySelected] = useState(false)
+  const [showCBTLink, setShowCBTLink] = useState(false)
 
   const handleInputChange = (name, value) => {
     setValues({ ...values, [name]: value })
@@ -88,6 +91,23 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
     // eslint-disable-next-line
   }, [values, cbtSelected, theorySelected])
 
+  useEffect(() => {
+    if (isErrored) {
+      Object.entries(values).forEach(([key, value]) => {
+        if (!value) {
+          flashDiv(`choose-quiz-${key}`)
+        }
+      })
+      if (!cbtSelected) {
+        setShowCBTLink(true)
+      }
+      if (!cbtSelected && !theorySelected) {
+        flashDiv('choose-quiz-checks')
+      }
+    }
+    // eslint-disable-next-line
+  }, [isErrored])
+
   return (
     <Fragment>
       {QUESTIONS.filter((question, i) => {
@@ -96,7 +116,7 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
         }
         return true
       }).map(({ id, name, options }, i) => (
-        <div key={id} style={{ marginTop: '24px' }}>
+        <div id={`choose-quiz-${id}`} key={id} style={{ marginTop: '24px' }}>
           <label className={styles.subtitle1}>
             <span className={styles.stepNumber}>{i + 2}</span> {name}
           </label>
@@ -122,7 +142,7 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
         </div>
       ))}
       {values.long !== 'Not started' ? (
-        <div style={{ marginTop: '24px' }}>
+        <div id="choose-quiz-checks" style={{ marginTop: '24px' }}>
           <label className={styles.subtitle1}>
             <span className={styles.stepNumber}>{QUESTIONS.length + 2}</span>{' '}
             What valid certificates do you have?
@@ -150,6 +170,18 @@ function HelpForm({ isWidget, onUpdate, updateContainerState }) {
           <div className={styles.bothRequired}>
             Both certificates are required in order to book
           </div>
+          {showCBTLink && (
+            <div className={styles.cbtRequired}>
+              You first need to complete the CBT course.{' '}
+              <a
+                href={`/course-location/?postcode=${
+                  parseQueryString(window.location.search.slice(1)).postcode
+                }&courseType=LICENCE_CBT`}>
+                View CBT courses
+              </a>
+              .
+            </div>
+          )}
         </div>
       ) : (
         <p style={{ marginTop: '1rem', marginBottom: '-0.5rem' }}>
