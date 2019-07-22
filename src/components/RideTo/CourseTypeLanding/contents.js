@@ -797,7 +797,7 @@ export const LOCATIONS = {
     'london',
     'birmingham',
     'swansea',
-    'bristol',
+    // 'bristol',
     'essex',
     'exeter',
     'portsmouth',
