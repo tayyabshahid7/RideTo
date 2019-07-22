@@ -23,3 +23,8 @@ export const isInstantBook = () => {
   const staticData = getStaticData('RIDETO_PAGE')
   return staticData.checkout.instant_book
 }
+
+export const getCourseTypesData = () => {
+  const staticData = getStaticData('RIDETO_PAGE')
+  return staticData.courseTypes
+}

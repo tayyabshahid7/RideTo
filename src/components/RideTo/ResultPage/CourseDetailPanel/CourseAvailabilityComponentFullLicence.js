@@ -11,6 +11,7 @@ import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 import HelpForm from 'components/RideTo/ResultPage/CourseDetailPanel/HelpForm'
+import { getCourseTypesData } from 'services/page'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -22,8 +23,13 @@ class CourseAvailabilityComponentFullLicence extends Component {
       autoLicences: [],
       manualLicences: [],
       needsHelp: null,
-      formCompleted: false
+      formCompleted: false,
+      staticCourseDetails: getCourseTypesData().find(
+        data => data.constant === 'FULL_LICENCE'
+      ).details
     }
+
+    console.log(this.state.staticCourseTypesData)
 
     this.updateState = this.updateState.bind(this)
   }
@@ -66,15 +72,14 @@ class CourseAvailabilityComponentFullLicence extends Component {
       autoLicences,
       manualLicences,
       needsHelp,
-      formCompleted
+      formCompleted,
+      staticCourseDetails
     } = this.state
 
     const included = {
-      'What will I learn?':
-        'Aute in ut ad culpa ullamco voluptate officia consectetur sed enim incididunt irure fugiat laboris.',
+      'What will I learn?': staticCourseDetails.learn,
       "What's included?": <OrderIncluded fullLicence isWidget={isWidget} />,
-      'What can I ride after?':
-        'Aute in ut ad culpa ullamco voluptate officia consectetur sed enim incididunt irure fugiat laboris.'
+      'What can I ride after?': staticCourseDetails.ride_after
     }
 
     return (
