@@ -11,6 +11,7 @@ import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 import HelpForm from 'components/RideTo/ResultPage/CourseDetailPanel/HelpForm'
+import { getCourseTypesData } from 'services/page'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -22,23 +23,38 @@ class CourseAvailabilityComponentFullLicence extends Component {
       autoLicences: [],
       manualLicences: [],
       needsHelp: null,
-      formCompleted: false
+      formCompleted: false,
+      staticCourseDetails: getCourseTypesData().find(
+        data => data.constant === 'FULL_LICENCE'
+      ).details
     }
+
+    this._isMounted = false
 
     this.updateState = this.updateState.bind(this)
   }
 
   async componentDidMount() {
     const { id } = this.props.course
-    const { automatic, manual } = await getDasBikeTypes(id)
+    this._isMounted = true
 
-    this.setState({
-      loading: false,
-      hasAutoBikes: Object.values(automatic).includes(true),
-      hasManualBikes: Object.values(manual).includes(true),
-      autoLicences: Object.keys(automatic).filter(key => automatic[key]),
-      manualLicences: Object.keys(manual).filter(key => manual[key])
-    })
+    if (this._isMounted) {
+      const { automatic, manual } = await getDasBikeTypes(id)
+
+      if (this._isMounted) {
+        this.setState({
+          loading: false,
+          hasAutoBikes: Object.values(automatic).includes(true),
+          hasManualBikes: Object.values(manual).includes(true),
+          autoLicences: Object.keys(automatic).filter(key => automatic[key]),
+          manualLicences: Object.keys(manual).filter(key => manual[key])
+        })
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   updateState(state) {
@@ -57,7 +73,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
       selectedPackageHours,
       showDayOfWeekPicker,
       timeDayChange,
-      selectedTimeDays
+      selectedTimeDays,
+      isErrored
     } = this.props
     const {
       loading,
@@ -66,15 +83,14 @@ class CourseAvailabilityComponentFullLicence extends Component {
       autoLicences,
       manualLicences,
       needsHelp,
-      formCompleted
+      formCompleted,
+      staticCourseDetails
     } = this.state
 
     const included = {
-      'What will I learn?':
-        'Aute in ut ad culpa ullamco voluptate officia consectetur sed enim incididunt irure fugiat laboris.',
+      'What will I learn?': staticCourseDetails.learn,
       "What's included?": <OrderIncluded fullLicence isWidget={isWidget} />,
-      'What can I ride after?':
-        'Aute in ut ad culpa ullamco voluptate officia consectetur sed enim incididunt irure fugiat laboris.'
+      'What can I ride after?': staticCourseDetails.ride_after
     }
 
     return (
@@ -120,9 +136,11 @@ class CourseAvailabilityComponentFullLicence extends Component {
               updateState={this.updateState}
               needsHelp={needsHelp}
               onUpdate={onUpdate}
+              isErrored={isErrored}
             />
             {needsHelp === true && (
               <HelpForm
+                isErrored={isErrored}
                 onUpdate={onUpdate}
                 updateContainerState={this.updateState}
               />

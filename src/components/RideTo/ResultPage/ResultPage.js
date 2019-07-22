@@ -31,20 +31,13 @@ import { getCourseIdFromSearch, findResultsCourseWithId } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
-import { getStaticData } from 'services/page'
+import { getStaticData, flashDiv } from 'services/page'
 import FullLicenceGuide from './FullLicenceGuide'
 import FullLicenceIncluded from './FullLicenceIncluded'
 import FullLicenceFaq from './FullLicenceFaq'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
-
-function flashDiv(id) {
-  let el = document.getElementById(id)
-  el.classList.remove('highlight-required')
-  el.scrollIntoView()
-  el.classList.add('highlight-required')
-}
 
 class ResultPage extends Component {
   constructor(props) {
@@ -67,7 +60,8 @@ class ResultPage extends Component {
       addCourseIdParam: false,
       removeCourseIdParam: false,
       noRedirect: false,
-      isShowCourseTypeInfo: false
+      isShowCourseTypeInfo: false,
+      isErrored: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -399,6 +393,17 @@ class ResultPage extends Component {
               this.setState({ activeTab: 3 })
             } else {
               if (isFullLicence && bookNowDisabled) {
+                this.setState(
+                  {
+                    isErrored: true
+                  },
+                  () => {
+                    this.setState({
+                      isErrored: false
+                    })
+                  }
+                )
+
                 if (!bike_hire) {
                   flashDiv('choose-bike')
                 }
@@ -424,10 +429,13 @@ class ResultPage extends Component {
               }
 
               if (isFullLicence && !showDayOfWeekPicker) {
-                this.setState({ showDayOfWeekPicker: true })
+                this.setState({ isErrored: false, showDayOfWeekPicker: true })
                 return
               }
               if (!bookNowDisabled) {
+                this.setState({
+                  isErrored: false
+                })
                 this.onBookNow()
               } else if (!isFullLicence) {
                 let chooseTimeDiv = document.getElementById(
@@ -595,7 +603,8 @@ class ResultPage extends Component {
       removeCourseIdParam,
       noRedirect,
       isShowCourseTypeInfo,
-      selectedCourseType
+      selectedCourseType,
+      isErrored
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -899,6 +908,7 @@ class ResultPage extends Component {
                 showDayOfWeekPicker={showDayOfWeekPicker}
                 timeDayChange={this.timeDayChange}
                 selectedTimeDays={selectedTimeDays}
+                isErrored={isErrored}
               />
             )}
           </SidePanel>

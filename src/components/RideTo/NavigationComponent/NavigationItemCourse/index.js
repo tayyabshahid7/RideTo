@@ -52,7 +52,6 @@ class NavigationItemCourse extends Component {
       courseTypesOptions
     } = this.props
     const { courseType, editable, subtitle } = this.state
-    console.log(this.props)
 
     return (
       <div

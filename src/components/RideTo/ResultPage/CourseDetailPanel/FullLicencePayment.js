@@ -16,7 +16,8 @@ function FullLicencePayment({ pricePerHour, hours, style, isWidget }) {
         <span className={styles.payTodayPrice}>Only £{now}</span>
       </div>
       <div className={styles.row}>
-        <span>To pay after your first lesson</span> <span>£{later}</span>
+        <span>To pay after booking your first lesson</span>{' '}
+        <span>£{later}</span>
       </div>
     </div>
   )

@@ -24,6 +24,10 @@ function LicencePicker({
     filteredLicences = licences.filter(
       licence => selectedLicenceType.toLowerCase() === licence
     )
+
+    if (filteredLicences.length === 0) {
+      setShowAll(true)
+    }
   }
 
   return (

@@ -600,8 +600,14 @@ select.widgetSelect {
   }
 }
 
-.bothRequired {
+.bothRequired,
+.cbtRequired {
   margin-bottom: -0.5rem;
   color: rgba(#141414, 0.5);
   font-family: var(--font-proxima);
+}
+
+.cbtRequired {
+  margin-top: 1rem;
+  margin-bottom: -0.5rem;
 }

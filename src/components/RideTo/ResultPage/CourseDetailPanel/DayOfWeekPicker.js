@@ -77,9 +77,9 @@ class DayOfWeekPicker extends Component {
           </Fragment>
         )}
         {TIMES_OF_DAY.map(time => (
-          <Fragment>
+          <Fragment key={time}>
             <div className={styles.timeOfDay}>{time}</div>
-            <table key={time} className={styles.dayWeekTable}>
+            <table className={styles.dayWeekTable}>
               <thead>
                 <tr>
                   {DAYS_OF_WEEK.map(day => (
