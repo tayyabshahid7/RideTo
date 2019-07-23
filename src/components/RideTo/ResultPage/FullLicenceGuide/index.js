@@ -1,13 +1,34 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Row, Col } from 'reactstrap'
 import styles from './styles.scss'
 import WideForm from 'components/RideTo/GettingStarted/Ready'
 import ButtonArrowWhiteDown from 'assets/images/rideto/ButtonArrowWhiteDown.svg'
+import { post } from 'services/api'
 
 function FullLicenceGuide() {
-  const handleSubmit = event => {
-    // TODO. Hit an endpoint
+  const [value, setValue] = useState('')
+  const [sent, setSent] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async event => {
     event.preventDefault()
+
+    if (!value.trim()) {
+      return
+    }
+
+    setError('')
+
+    try {
+      await post('contact-email/', { email: value })
+      setSent(true)
+    } catch ({ message }) {
+      setError(message)
+    }
+  }
+
+  const handleOnChange = event => {
+    setValue(event.target.value)
   }
 
   return (
@@ -16,6 +37,8 @@ function FullLicenceGuide() {
         <Row>
           <Col>
             <WideForm
+              error={error}
+              sent={sent}
               name="email"
               type="email"
               className={styles.form}
@@ -27,6 +50,8 @@ function FullLicenceGuide() {
               onSubmit={handleSubmit}
               buttonClassName={styles.button}
               buttonIcon={ButtonArrowWhiteDown}
+              value={value}
+              onChange={handleOnChange}
             />
           </Col>
         </Row>

@@ -65,3 +65,14 @@
     }
   }
 }
+
+.sentMessage,
+.error {
+  color: #fff;
+  font-size: 18px;
+  margin-top: 0.5rem;
+}
+
+.error {
+  color: var(--danger-color);
+}
