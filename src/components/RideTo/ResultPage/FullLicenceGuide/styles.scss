@@ -1,6 +1,7 @@
 .background {
   width: 100%;
   background-color: rgba(20, 20, 20, 0.8);
+  background-image: url(https://bike-tests.s3.amazonaws.com/static/images/home-page-image-3.jpg);
   margin-top: 3.5rem;
 
   @media (max-width: 768px) {
@@ -47,6 +48,11 @@
   background-color: transparent;
   font-weight: 500;
   margin-right: 32px;
+  color: white;
+
+  &::placeholder {
+    color: rgba(#fff, 0.8);
+  }
 
   @media (max-width: 768px) {
     font-size: 20px;
