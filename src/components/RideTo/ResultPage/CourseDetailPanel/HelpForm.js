@@ -68,7 +68,8 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
       onUpdate({
         bike_hire: null,
         selectedLicenceType: null,
-        selectedPackageHours: null
+        selectedPackageHours: null,
+        formCompletedWithoutTheory: false
       })
       return
     }

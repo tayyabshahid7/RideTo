@@ -570,7 +570,7 @@ select.widgetSelect {
   height: 24px;
   width: 24px;
   border-radius: 13px;
-  background-color: #2dceab;
+  background-color: var(--primary-color);
 
   color: #ffffff;
   font-family: var(--font-proxima);
