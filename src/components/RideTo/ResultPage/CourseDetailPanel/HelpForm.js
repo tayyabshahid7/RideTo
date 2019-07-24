@@ -98,11 +98,14 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
           flashDiv(`choose-quiz-${key}`)
         }
       })
-      if (!cbtSelected) {
+      if (cbtSelected) {
+        setShowCBTLink(false)
+      } else {
         setShowCBTLink(true)
+        flashDiv('choose-cbt')
       }
-      if (!cbtSelected && !theorySelected) {
-        flashDiv('choose-quiz-checks')
+      if (!theorySelected) {
+        flashDiv('choose-both')
       }
     }
     // eslint-disable-next-line
@@ -142,7 +145,7 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
         </div>
       ))}
       {values.long !== 'Not started' ? (
-        <div id="choose-quiz-checks" style={{ marginTop: '24px' }}>
+        <div style={{ marginTop: '24px' }}>
           <label className={styles.subtitle1}>
             <span className={styles.stepNumber}>{QUESTIONS.length + 2}</span>{' '}
             What valid certificates do you have?
@@ -167,11 +170,13 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
               Motorcycle Theory
             </label>
           </div>
-          <div className={styles.bothRequired}>
+          <div id="choose-both" className={styles.bothRequired}>
             Both certificates are required in order to book
           </div>
           {showCBTLink && (
-            <div className={styles.cbtRequired}>
+            <div
+              id="choose-cbt"
+              className={classnames(styles.cbtRequired, 'highlight-required')}>
               You first need to complete the CBT course.{' '}
               <a
                 href={`/course-location/?postcode=${
