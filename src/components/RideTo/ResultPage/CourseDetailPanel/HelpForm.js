@@ -74,6 +74,8 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
       return
     }
 
+    setShowCBTLink(false)
+
     if (!Object.values(values).every(Boolean)) {
       return
     }
