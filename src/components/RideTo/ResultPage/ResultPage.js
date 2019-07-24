@@ -61,7 +61,8 @@ class ResultPage extends Component {
       removeCourseIdParam: false,
       noRedirect: false,
       isShowCourseTypeInfo: false,
-      isErrored: false
+      isErrored: false,
+      formCompletedWithoutTheory: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -404,6 +405,10 @@ class ResultPage extends Component {
                   }
                 )
 
+                if (this.state.formCompletedWithoutTheory) {
+                  flashDiv('choose-both')
+                }
+
                 if (!bike_hire) {
                   flashDiv('choose-bike')
                 }
@@ -604,7 +609,8 @@ class ResultPage extends Component {
       noRedirect,
       isShowCourseTypeInfo,
       selectedCourseType,
-      isErrored
+      isErrored,
+      formCompletedWithoutTheory
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -633,6 +639,10 @@ class ResultPage extends Component {
     }
 
     if (showDayOfWeekPicker && selectedTimeDays.length < 1) {
+      bookNowDisabled = true
+    }
+
+    if (formCompletedWithoutTheory) {
       bookNowDisabled = true
     }
 

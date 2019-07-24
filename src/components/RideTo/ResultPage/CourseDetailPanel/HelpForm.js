@@ -60,7 +60,8 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
   }
 
   useEffect(() => {
-    if (!cbtSelected || !theorySelected) {
+    // if (!cbtSelected || !theorySelected) {
+    if (!cbtSelected) {
       updateContainerState({
         formCompleted: false
       })
@@ -86,7 +87,8 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
     onUpdate({
       bike_hire: bikeHire,
       selectedLicenceType: licenceType,
-      selectedPackageHours: packageHours
+      selectedPackageHours: packageHours,
+      formCompletedWithoutTheory: !theorySelected
     })
     // eslint-disable-next-line
   }, [values, cbtSelected, theorySelected])
