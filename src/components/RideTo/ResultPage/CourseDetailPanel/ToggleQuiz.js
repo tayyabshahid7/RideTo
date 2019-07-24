@@ -33,7 +33,8 @@ const ToggleQuiz = React.forwardRef(
                 bike_hire: null,
                 selectedLicenceType: null,
                 selectedPackageHours: null,
-                isErrored: false
+                isErrored: false,
+                formCompletedWithoutTheory: false
               })
             }}>
             Yes
@@ -52,7 +53,8 @@ const ToggleQuiz = React.forwardRef(
                 bike_hire: null,
                 selectedLicenceType: null,
                 selectedPackageHours: null,
-                isErrored: false
+                isErrored: false,
+                formCompletedWithoutTheory: false
               })
             }}>
             No
