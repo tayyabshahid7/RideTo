@@ -1,0 +1,89 @@
+.background {
+  width: 100%;
+  background-color: rgba(20, 20, 20, 0.8);
+  background-image: url(https://bike-tests.s3.amazonaws.com/static/images/home-page-image-3.jpg);
+  margin-top: 3.5rem;
+
+  @media (max-width: 768px) {
+    margin-top: 1rem;
+  }
+}
+
+.form.form {
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  font-family: var(--font-stack);
+  font-size: 15px;
+  line-height: 1.6;
+  border-bottom: 0;
+
+  h2 {
+    font-family: var(--font-rift-bold);
+    font-weight: normal;
+    text-align: left;
+    color: #fff;
+    max-width: none;
+    line-height: 1;
+  }
+
+  form {
+    max-width: none;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      height: auto;
+    }
+  }
+}
+
+.title.title {
+  margin-bottom: 0;
+
+  @media (max-width: 768px) {
+    font-size: 24px;
+  }
+}
+
+.input.input {
+  background-color: transparent;
+  font-weight: 500;
+  margin-right: 32px;
+  color: white;
+
+  &::placeholder {
+    color: rgba(#fff, 0.8);
+  }
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+    margin-top: 5px;
+    margin-right: 0;
+  }
+}
+
+button.button.button {
+  justify-content: space-between;
+
+  padding-right: 24px;
+  padding-left: 24px;
+
+  span {
+    display: block;
+    font-family: var(--font-rift-bold);
+  }
+
+  img {
+    width: 20px;
+    padding: 0 3.5px 4px;
+    border-bottom: 1px solid #fff;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  @media (min-width: 769px) {
+    flex: 0 1 248px;
+  }
+}

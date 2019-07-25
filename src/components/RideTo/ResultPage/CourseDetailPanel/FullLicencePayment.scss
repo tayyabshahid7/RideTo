@@ -1,0 +1,28 @@
+.container {
+  width: 100%;
+  margin-top: 2rem;
+  font-size: 15px;
+  line-height: 18px;
+  color: #141414;
+  font-family: var(--font-proxima);
+  font-weight: normal;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.row:first-of-type {
+  margin-bottom: 0.75rem;
+}
+
+.payToday {
+  font-size: 24px;
+  font-family: var(--font-rift-bold);
+}
+
+.payTodayPrice {
+  font-size: 24px;
+  font-family: var(--font-proxima-bold);
+}

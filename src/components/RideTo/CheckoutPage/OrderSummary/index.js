@@ -14,6 +14,7 @@ import { checkAllowedDate } from 'services/date'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
 import { capitalizeFirstLetter } from 'utils/helper'
+import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 
 class OrderSummary extends Component {
   componentDidUpdate(prevProps) {
@@ -51,8 +52,8 @@ class OrderSummary extends Component {
     )
   }
 
-  renderPrices() {
-    const { checkoutData, priceInfo } = this.props
+  renderPrices(isFullLicence) {
+    const { checkoutData, priceInfo, trainings } = this.props
     const { addons } = checkoutData
     let price = getExpectedPrice(priceInfo, addons, checkoutData)
     return (
@@ -69,10 +70,20 @@ class OrderSummary extends Component {
           ''
         )}
         <div className={styles.totalPriceRow}>
-          <div className={styles.priceLabel}>Total:</div>
-          <div className={styles.totalPrice}>{`£${(price / 100).toFixed(
-            2
-          )}`}</div>
+          {!isFullLicence ? (
+            <React.Fragment>
+              <div className={styles.priceLabel}>Total:</div>
+              <div className={styles.totalPrice}>{`£${(price / 100).toFixed(
+                2
+              )}`}</div>
+            </React.Fragment>
+          ) : (
+            <FullLicencePayment
+              pricePerHour={price / trainings[0].package_hours}
+              hours={trainings[0].package_hours}
+              style={{ marginTop: '3px' }}
+            />
+          )}
         </div>
       </div>
     )
@@ -197,7 +208,7 @@ class OrderSummary extends Component {
             </Checkbox>
           </div>
         </div>
-        {this.renderPrices()}
+        {this.renderPrices(isFullLicence)}
         {errors.paymentError && (
           <div className={styles.paymentError}>
             {typeof errors.paymentError === 'string' ? (

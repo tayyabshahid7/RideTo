@@ -71,7 +71,8 @@ class BookingOptionsContainer extends React.Component {
       submit: false,
       loadedMonths: {},
       showDayOfWeekPicker: false,
-      selectedTimeDays: []
+      selectedTimeDays: [],
+      formCompletedWithoutTheory: false
     }
 
     this.handleChangeCourseType = this.handleChangeCourseType.bind(this)
@@ -374,7 +375,8 @@ class BookingOptionsContainer extends React.Component {
   handleBackClick() {
     this.setState({
       showDayOfWeekPicker: false,
-      selectedTimeDays: []
+      selectedTimeDays: [],
+      formCompletedWithoutTheory: false
     })
   }
 
@@ -392,7 +394,8 @@ class BookingOptionsContainer extends React.Component {
       isFullLicence,
       submit,
       showDayOfWeekPicker,
-      selectedTimeDays
+      selectedTimeDays,
+      formCompletedWithoutTheory
     } = this.state
     const selectedCourses = getSchoolCoursesByDate(
       selectedDate,
@@ -505,7 +508,7 @@ class BookingOptionsContainer extends React.Component {
           </React.Fragment>
         ) : null}
 
-        <div className={showDayOfWeekPicker && styles.hasBackButton}>
+        <div className={showDayOfWeekPicker ? styles.hasBackButton : undefined}>
           {showDayOfWeekPicker && (
             <button
               onClick={this.handleBackClick}
@@ -514,7 +517,7 @@ class BookingOptionsContainer extends React.Component {
               <img src={ArrowLeft} alt="Back" />
             </button>
           )}
-          {isFirstFullLicencePanelComplete ||
+          {(isFirstFullLicencePanelComplete && !formCompletedWithoutTheory) ||
           isSecondFullLicencePanelComplete ||
           (!isFullLicence && selectedCourse) ? (
             <button onClick={this.handleSubmitClick} className="WidgetBtn">

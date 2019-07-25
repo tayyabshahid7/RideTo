@@ -45,9 +45,6 @@ function Input({
               className={styles.input}
               onChange={onChange}
               disabled={disabled}
-              onClick={() => {
-                console.log('asdf')
-              }}
             />
           )}
         </label>

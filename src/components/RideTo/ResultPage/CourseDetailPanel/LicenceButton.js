@@ -19,8 +19,8 @@ function Button({ type, age, size, onUpdate, selectedLicenceType, isWidget }) {
       }>
       <span className={styles.licenceBtnType}>{type}</span>
       <span className={styles.licenceBtnInfo}>
-        <span>Age: {age}</span>
-        <span>Bike size: {size}</span>
+        <span>Age {age}</span>
+        <span>{size}</span>
       </span>
     </button>
   )

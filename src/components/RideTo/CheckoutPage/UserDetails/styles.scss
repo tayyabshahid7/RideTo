@@ -285,3 +285,74 @@
     text-decoration: underline;
   }
 }
+
+.nextStepsList {
+  position: relative;
+  list-style: none;
+  padding: 0;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+  margin-left: 11px;
+
+  &::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 100%;
+    border: 1px dashed var(--primary-color);
+  }
+
+  @media (max-width: 768px) {
+    margin: 0 40px 1.5rem;
+    padding: 0;
+  }
+
+  li {
+    position: relative;
+    padding-left: 25px;
+    line-height: 20px;
+    font-size: 15px;
+
+    &::before {
+      z-index: 1;
+      position: absolute;
+      display: block;
+      content: '';
+      width: 23px;
+      height: 23px;
+      border-radius: 50%;
+      background-image: url('assets/icons/tickWhite.svg');
+      background-color: var(--primary-color);
+      line-height: 23px;
+
+      background-size: 12px;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      top: 0;
+      left: -11px;
+    }
+
+    + li {
+      margin-top: 1rem;
+    }
+
+    &:last-child {
+      &::after {
+        content: '';
+        display: block;
+        width: 2px;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        // background-color: inherit;
+        position: absolute;
+        background-color: #f8f8f8;
+      }
+    }
+  }
+}
