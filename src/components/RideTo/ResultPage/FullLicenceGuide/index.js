@@ -20,7 +20,7 @@ function FullLicenceGuide() {
     setError('')
 
     try {
-      await post('contact-email/', { email: value })
+      await post('contact-email/', { email: value }, false)
       setSent(true)
     } catch ({ message }) {
       setError(message)
