@@ -2,7 +2,7 @@
   max-width: 480px;
 
   @media (min-width: 769px) {
-    padding-right: 30px;
+    // padding-right: 30px;
   }
 }
 
@@ -15,7 +15,7 @@
 
   @media (max-width: 768px) {
     margin-top: -10px;
-    margin-left: 30px;
+    // margin-left: 30px;
     margin-bottom: 20px;
   }
 }
@@ -60,7 +60,7 @@
 
   @media (max-width: 768px) {
     background-color: #fff;
-    padding: 0 20px 24px;
+    padding: 0 0 24px;
 
     input,
     select,
@@ -307,7 +307,7 @@
   }
 
   @media (max-width: 768px) {
-    margin: 0 40px 1.5rem;
+    margin: 0 0 1.5rem 11px;
     padding: 0;
   }
 
@@ -351,7 +351,8 @@
         bottom: 0;
         // background-color: inherit;
         position: absolute;
-        background-color: #f8f8f8;
+        // background-color: #f8f8f8;
+        background-color: #fff;
       }
     }
   }
