@@ -59,7 +59,6 @@
   line-height: 16px;
   font-family: var(--font-proxima);
   opacity: 0.5;
-  margin-top: 36px;
 }
 
 .guaranteeInfo {
@@ -77,13 +76,13 @@
 }
 
 .guaranteeLogo {
-  flex: 0 0 80px;
+  flex: 0 0 65px;
 }
 
 .guarenteeContent {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  // justify-content: space-around;
   margin-left: 16px;
 }
 
@@ -99,6 +98,7 @@
   line-height: 24px;
   color: var(--dark-color);
   text-decoration: underline;
+  opacity: 0.5;
 }
 
 .action {
@@ -127,7 +127,7 @@
   @media (max-width: 768px) {
     background-color: #fff;
     padding: 30px 20px 20px;
-    margin-top: -40px;
+    // margin-top: -40px;
   }
 }
 
@@ -135,12 +135,12 @@
   @media (max-width: 768px) {
     padding: 0;
     background-color: transparent;
-    margin-top: -50px;
+    // margin-top: -50px;
   }
 }
 
 .acceptTerms {
-  margin-bottom: 30px;
+  margin-bottom: 25px;
   text-align: left;
   font-size: 15px;
 
@@ -196,10 +196,10 @@
 .terms {
   ul {
     margin: 0;
+    padding-left: 16px;
   }
   font-size: 12px;
   margin-top: 20px;
-  margin-left: 23px;
 }
 
 .mapButton {
@@ -253,13 +253,28 @@
   font-size: 24px;
   border-top: 1px solid #ececec;
   border-bottom: 1px solid #ececec;
-  padding: 30px 0;
-  margin-bottom: 2.5rem;
+  align-items: center;
 
   @media (max-width: 768px) {
     border: 0;
     background-color: #fff;
     margin-top: 1.5rem;
+  }
+
+  div {
+    color: #141414;
+    font-family: var(--font-rift);
+    font-size: 24px;
+    font-weight: bold;
+    line-height: 29px;
+
+    + div {
+      color: #141414;
+      font-family: var(--font-proxima-bold);
+      font-size: 20px;
+      line-height: 24px;
+      text-align: right;
+    }
   }
 }
 
@@ -268,7 +283,7 @@
   // padding-left: 30px;
 
   @media (max-width: 768px) {
-    margin-top: 40px;
+    margin-top: 20px;
     background-color: #fff;
     padding-bottom: 10px;
   }
@@ -294,4 +309,8 @@
     padding-right: 30px;
     padding-left: 30px;
   }
+}
+
+.cards {
+  margin-top: 1.5rem;
 }
