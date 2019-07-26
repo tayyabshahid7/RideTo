@@ -16,6 +16,7 @@ import { getCurrentLicenceOptions } from 'services/customer'
 import styles from './styles.scss'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 import NextSteps from './NextSteps'
+import addBlack from 'assets/images/rideto/AddBlack.svg'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -133,8 +134,11 @@ class UserDetails extends Component {
             hasPOM={hasPOM}
           />
         </div>
-        <div id="checkout-your-details" className={styles.title}>
-          Riders Details
+        <div
+          id="checkout-your-details"
+          className={styles.title}
+          style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
+          Rider's Details
         </div>
         <div className={styles.rowItem}>
           <Input
@@ -298,7 +302,12 @@ class UserDetails extends Component {
   }
 
   renderPaymentForm() {
-    const { details, errors = {}, showCardDetails } = this.props
+    const {
+      details,
+      errors = {},
+      showCardDetails,
+      handlePaymentButtonClick
+    } = this.props
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -308,14 +317,15 @@ class UserDetails extends Component {
     }
     return (
       <div className={styles.checkForm} ref={this.cardDetails}>
-        <div
+        <button
+          onClick={handlePaymentButtonClick}
           id="checkout-payment-details"
-          className={classnames(
-            styles.title,
-            !showCardDetails && styles.fadeTitle
-          )}>
+          className={classnames(styles.title, styles.paymentButton)}>
           Payment Details
-        </div>
+          {!showCardDetails && (
+            <img src={addBlack} alt="Add" width="15" height="15" />
+          )}
+        </button>
         <div
           className={classnames(
             styles.rowItem,

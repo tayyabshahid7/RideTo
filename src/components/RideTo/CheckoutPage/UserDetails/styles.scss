@@ -358,3 +358,13 @@
     }
   }
 }
+
+.paymentButton {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
