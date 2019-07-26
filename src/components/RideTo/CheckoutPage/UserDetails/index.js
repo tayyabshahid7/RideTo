@@ -194,7 +194,6 @@ class UserDetails extends Component {
               required
             />
           </div>
-          <div className={styles.subtext}>DD/MM/YYYY</div>
           {errors.user_birthdate && (
             <div className={styles.error}>{errors.user_birthdate}</div>
           )}
@@ -233,7 +232,9 @@ class UserDetails extends Component {
               ))}
             </Select>
           </div>
-          <div className={styles.subtext}>Select the licence you have</div>
+          <div className={styles.subtext}>
+            Which licence do you currently have?
+          </div>
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
@@ -260,7 +261,9 @@ class UserDetails extends Component {
               ))}
             </Select>
           </div>
-          <div className={styles.subtext} />
+          <div className={styles.subtext}>
+            Do you have any riding experience?
+          </div>
           {errors.riding_experience && (
             <div className={styles.error}>{errors.riding_experience}</div>
           )}
@@ -285,7 +288,7 @@ class UserDetails extends Component {
               ))}
             </Select>
           </div>
-          <div className={styles.subtext}>Why you are learning to ride</div>
+          <div className={styles.subtext}>Why you are learning to ride?</div>
           {errors.rider_type && (
             <div className={styles.error}>{errors.rider_type}</div>
           )}
