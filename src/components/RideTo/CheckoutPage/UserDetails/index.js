@@ -120,7 +120,7 @@ class UserDetails extends Component {
         <NextSteps isFullLicence={isFullLicence} />
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
-            Order Summary
+            Your Booking
           </div>
           <CourseInformation
             checkoutData={checkoutData}
@@ -134,10 +134,11 @@ class UserDetails extends Component {
           />
         </div>
         <div id="checkout-your-details" className={styles.title}>
-          Your Details
+          Riders Details
         </div>
         <div className={styles.rowItem}>
           <Input
+            label="First Name"
             placeholder="First name"
             name="first_name"
             value={details.first_name}
@@ -151,6 +152,7 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.first_name}</div>
           )}
           <Input
+            label="Last Name"
             placeholder="Last name"
             name="last_name"
             value={details.last_name}
@@ -164,6 +166,7 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.last_name}</div>
           )}
           <Input
+            label="Email Address"
             type="email"
             placeholder="E-mail address"
             name="email"
@@ -181,6 +184,7 @@ class UserDetails extends Component {
               styles.input
             )}>
             <DateInput
+              label="Date of Birth"
               placeholder="Date of Birth"
               id="user_birthdate"
               name="user_birthdate"
@@ -200,6 +204,7 @@ class UserDetails extends Component {
               errors.phone && styles.inputError
             )}>
             <PhoneInput
+              label="Telephone Number"
               placeholder="Telephone Number"
               name="phone"
               value={details.phone}
@@ -210,6 +215,7 @@ class UserDetails extends Component {
           {errors.phone && <div className={styles.error}>{errors.phone}</div>}
           <div className={styles.selectElement}>
             <Select
+              label="Current Licence"
               value={details.current_licence}
               name="current_licence"
               className={classnames(
@@ -233,6 +239,7 @@ class UserDetails extends Component {
           )}
           <div className={styles.selectElement}>
             <Select
+              label="Riding Experience"
               value={details.riding_experience}
               name="riding_experience"
               className={classnames(
@@ -259,6 +266,7 @@ class UserDetails extends Component {
           )}
           <div className={styles.selectElement}>
             <Select
+              label="Rider Type"
               value={details.rider_type}
               name="rider_type"
               className={classnames(
@@ -282,65 +290,6 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.rider_type}</div>
           )}
         </div>
-
-        {/*
-
-        {addons.length > 0 && (
-          <React.Fragment>
-            <div id="checkout-delivery-address" className={styles.title}>
-              Delivery Address
-            </div>
-            {!manualAddress && (
-              <div className={styles.rowItem}>
-                <div
-                  className={classnames(
-                    styles.input,
-                    styles.searchPostcodeInput,
-                    postcodeLookingup && styles.waiting,
-                    errors.postcode && styles.inputError
-                  )}>
-                  <Input
-                    id="postcodeSearch"
-                    placeholder="Postcode"
-                    name="postcode"
-                    className={styles.findPostcodeInput}
-                    onChange={this.handleChange}
-                    onKeyUp={event =>
-                      event.key === 'Enter' &&
-                      onPostalCodeSubmit(event.target.value)
-                    }
-                    disabled={postcodeLookingup}
-                    required
-                  />
-                  <Button
-                    className={styles.postcodeSearchButton}
-                    onClick={this.handleSearchPostcode}>
-                    Search Address
-                  </Button>
-                </div>
-                {errors.postcode && !postcodeLookingup && (
-                  <div className={styles.error}>{errors.postcode}</div>
-                )}
-                <div
-                  className={styles.actionDiv}
-                  onClick={() => onChange({ manualAddress: true })}>
-                  Enter address manually
-                </div>
-              </div>
-            )}
-            {manualAddress && (
-              <div className={styles.rowItem}>
-                <AddressForm
-                  address={details.address}
-                  onChange={this.handleAddressChange}
-                  errors={errors.address}
-                />
-              </div>
-            )}
-          </React.Fragment>
-        )}
-
-        */}
       </div>
     )
   }

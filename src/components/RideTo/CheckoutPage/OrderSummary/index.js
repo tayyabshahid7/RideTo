@@ -15,6 +15,7 @@ import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/Cours
 import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
 import { capitalizeFirstLetter } from 'utils/helper'
 import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
+import POMSelector from 'components/RideTo/CheckoutPage/POMSelector'
 
 class OrderSummary extends Component {
   componentDidUpdate(prevProps) {
@@ -111,10 +112,14 @@ class OrderSummary extends Component {
       hasPOM,
       showCardDetails
     } = this.props
+    const { courseType } = checkoutData
     let confirmDisabled =
       saving || !details.accept_terms || !this.isValidDate() || !showCardDetails
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
     const isRenewal = checkoutData.courseType === 'LICENCE_CBT_RENEWAL'
+    const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(
+      courseType
+    )
 
     return (
       <div className={styles.container}>
@@ -131,6 +136,14 @@ class OrderSummary extends Component {
             hasPOM={hasPOM}
           />
         </div>
+        {offersPOM ? (
+          <POMSelector
+            handlePOMToggleClick={handlePOMToggleClick}
+            hasPOM={hasPOM}
+          />
+        ) : (
+          <div className={styles.POMPlaceholder} />
+        )}
         <div
           className={classnames(
             styles.acceptTermsWrapper,

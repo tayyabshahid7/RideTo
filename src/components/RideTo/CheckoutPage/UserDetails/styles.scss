@@ -9,14 +9,14 @@
 .title {
   font-size: 24px;
   line-height: 29px;
-  font-family: var(--font-rift);
-  font-weight: bold;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
   // margin-top: 32px;
 
   @media (max-width: 768px) {
-    margin-top: -10px;
+    // margin-top: -10px;
     // margin-left: 30px;
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
   }
 }
 
@@ -37,11 +37,11 @@
 }
 
 .subtext {
-  padding-left: 15px;
+  // padding-left: 15px;
   text-align: left;
   font-size: 12px;
   color: var(--grey-color);
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .rowContainer {
@@ -66,8 +66,9 @@
     select,
     .cardElementWrapper {
       appearance: none;
-      border: 2px solid #e3e3e3 !important;
-      border-radius: 2px;
+      // border: 2px solid #e3e3e3 !important;
+      // border-radius: 2px;
+      border: 1px solid #141414 !important;
     }
 
     .cardElementWrapper {

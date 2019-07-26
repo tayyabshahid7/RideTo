@@ -7,9 +7,9 @@
 
 .title {
   font-size: 24px;
-  font-weight: bold;
   line-height: 29px;
-  font-family: var(--font-rift);
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
 }
 
 .rowContainer {
@@ -20,7 +20,8 @@
   @media (max-width: 768px) {
     margin-top: 0;
     background-color: #fff;
-    padding: 20px 0;
+    // padding: 20px 0;
+    padding: 0;
   }
 }
 
@@ -211,9 +212,8 @@
   cursor: pointer;
   text-decoration: underline;
   font-size: 15px;
-  font-weight: bold;
   margin-bottom: 0.5rem;
-  text-align: left;
+  text-align: right;
 
   &:hover {
     color: #1f8f77;
