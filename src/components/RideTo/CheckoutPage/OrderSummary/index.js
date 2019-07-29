@@ -263,7 +263,7 @@ class OrderSummary extends Component {
             </div>
           )}
           <SectionSplitter />
-          <div style={{ margin: '1.5rem 0' }}>
+          <div style={{ margin: '1.5rem 0' }} className={styles.boxShadow}>
             <div className={styles.title} style={{ marginBottom: '1rem' }}>
               100% money back guarantee
             </div>

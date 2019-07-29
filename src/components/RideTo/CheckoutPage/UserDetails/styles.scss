@@ -52,6 +52,10 @@
   margin-bottom: 32px;
   &:last-of-type {
     margin-bottom: 0.5rem;
+
+    @media (min-width: 769px) {
+      margin-bottom: 1.5rem;
+    }
   }
 
   background-color: #fff;
