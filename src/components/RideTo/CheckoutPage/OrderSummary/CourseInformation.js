@@ -4,7 +4,6 @@ import styles from './styles.scss'
 import { getCourseTitle } from 'services/course'
 import MapComponent from 'components/RideTo/MapComponent'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
-import POMSelector from 'components/RideTo/CheckoutPage/POMSelector'
 import classnames from 'classnames'
 
 function renderRow(title, content, index, priceHighlight = false) {
@@ -38,13 +37,17 @@ function CourseInformation({
   const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
   const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
   const isFullLicence = courseType === 'FULL_LICENCE'
-  const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(courseType)
 
   return (
     <Fragment>
       <div className={styles.rowContainer}>
+        <OrderIncluded
+          bikeHire={bike_hire}
+          hasGloves={gloves_jacket_included}
+        />
+
         {isFullLicence && (
-          <div className="mb-2">
+          <div style={{ marginTop: '1rem' }}>
             {renderRow(
               'Course',
               `Full Licence (${trainings[0].package_hours} hours)`
@@ -72,29 +75,19 @@ function CourseInformation({
         )}
 
         {!isFullLicence && (
-          <div className={styles.coursePrice}>
-            <div>{getCourseTitle(courseType)}</div>
-            {priceInfo.training_price && (
-              <div>{`£${(priceInfo.training_price / 100.0).toFixed(2)}`}</div>
-            )}
-          </div>
-        )}
-
-        {!isFullLicence && (
-          <div className={styles.dateLimit}>
-            <div>
-              <div>
-                {moment(date).format('ddd D MMMM')}: {requested_time}
-              </div>
-            </div>
-            <div className={styles.limitedWarning}>Limited spaces left</div>
+          <div style={{ marginTop: '1rem' }}>
+            {renderRow('Course', getCourseTitle(courseType))}
           </div>
         )}
 
         <div>
-          <button className={styles.mapButton} onClick={handleMapButtonClick}>
-            {`${supplier.address_1}, ${supplier.postcode}`}
-          </button>
+          {renderRow(
+            'Location',
+            <button className={styles.mapButton} onClick={handleMapButtonClick}>
+              {`${supplier.address_1}, ${supplier.postcode}`}
+            </button>
+          )}
+
           {showMap && (
             <MapComponent
               userLocation={{ lat, lng }}
@@ -105,10 +98,14 @@ function CourseInformation({
           )}
         </div>
 
-        <OrderIncluded
-          bikeHire={bike_hire}
-          hasGloves={gloves_jacket_included}
-        />
+        {!isFullLicence &&
+          renderRow(
+            'Date & Time',
+            `${moment(date).format('ddd D MMMM')}: ${requested_time}`
+          )}
+        <div className={styles.limitedWarning}>
+          <span>Last few spaces</span>
+        </div>
 
         {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no' ? (
           <div className={styles.bikeHireCost}>
@@ -120,14 +117,6 @@ function CourseInformation({
           </div>
         ) : null}
       </div>
-      {offersPOM ? (
-        <POMSelector
-          handlePOMToggleClick={handlePOMToggleClick}
-          hasPOM={hasPOM}
-        />
-      ) : (
-        <div className={styles.POMPlaceholder} />
-      )}
     </Fragment>
   )
 }

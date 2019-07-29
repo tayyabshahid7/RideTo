@@ -609,6 +609,12 @@ class CheckoutPage extends Component {
     }
   }
 
+  handlePaymentButtonClick = () => {
+    this.setState({
+      showCardDetails: true
+    })
+  }
+
   render() {
     const { courseType } = this.props.checkoutData
     const {
@@ -650,6 +656,7 @@ class CheckoutPage extends Component {
               handleVoucherApply={this.handleVoucherApply}
               showCardDetails={showCardDetails}
               isFullLicence={courseType === 'FULL_LICENCE'}
+              handlePaymentButtonClick={this.handlePaymentButtonClick}
             />
           </div>
           <div className={styles.rightPanel}>

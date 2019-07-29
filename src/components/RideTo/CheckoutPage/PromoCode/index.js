@@ -61,7 +61,7 @@ class PromoCode extends Component {
             className={styles.promoAction}
             onClick={() => this.setState({ showPromo: true })}
             style={widget && { color: widget_color }}>
-            I have a promo code
+            Add a promo code
           </div>
         )}
       </div>
