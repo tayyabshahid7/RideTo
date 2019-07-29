@@ -59,12 +59,21 @@ class OrderSummary extends Component {
   }
 
   renderPrices(isFullLicence) {
-    const { checkoutData, priceInfo, trainings } = this.props
+    const { checkoutData, priceInfo, trainings, hasPOM } = this.props
     const { addons } = checkoutData
     let price = getExpectedPrice(priceInfo, addons, checkoutData)
     return (
       <div>
-        {priceInfo.discount ? (
+        {hasPOM && (
+          <div className={styles.discountRow}>
+            {this.renderRow(
+              addons[0].name,
+              `£${(addons[0].weekday_price_pence / 100.0).toFixed(2)}`,
+              200
+            )}
+          </div>
+        )}
+        {priceInfo.discount > 0 && (
           <div className={styles.discountRow}>
             {this.renderRow(
               'Discount',
@@ -72,8 +81,6 @@ class OrderSummary extends Component {
               200
             )}
           </div>
-        ) : (
-          ''
         )}
         <div className={styles.totalPriceRow}>
           {!isFullLicence ? (
