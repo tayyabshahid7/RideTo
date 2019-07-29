@@ -35,6 +35,7 @@ import { getStaticData, flashDiv } from 'services/page'
 import FullLicenceGuide from './FullLicenceGuide'
 import FullLicenceIncluded from './FullLicenceIncluded'
 import FullLicenceFaq from './FullLicenceFaq'
+import POMBanner from './POMBanner'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
@@ -624,6 +625,7 @@ class ResultPage extends Component {
 
     const hasPartnerResults = this.checkPartnerResults(courses)
     const isFullLicence = courseType === 'FULL_LICENCE'
+    const hasPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(courseType)
 
     if (isFullLicence) {
       bookNowDisabled = true
@@ -755,6 +757,7 @@ class ResultPage extends Component {
                         isFullLicence && styles.noMargin
                       )}>
                       <div className={styles.coursesPanel}>
+                        {hasPOM && <POMBanner />}
                         {isFullLicence && (
                           <a href="https://rideto.typeform.com/to/lyVAhc">
                             <img
