@@ -16,8 +16,11 @@ import { capitalizeFirstLetter } from 'utils/helper'
 import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 import POMSelector from 'components/RideTo/CheckoutPage/POMSelector'
 import Script from 'react-load-script'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import SectionSplitter from '../SectionSplitter'
 
 import { PoweredByStripe } from '../../../../assets/icons'
+import FAQS from './faqs'
 
 class OrderSummary extends Component {
   componentDidUpdate(prevProps) {
@@ -259,7 +262,8 @@ class OrderSummary extends Component {
               </p>
             </div>
           )}
-          <div>
+          <SectionSplitter />
+          <div style={{ margin: '1.5rem 0' }}>
             <div className={styles.title} style={{ marginBottom: '1rem' }}>
               100% money back guarantee
             </div>
@@ -303,6 +307,20 @@ class OrderSummary extends Component {
               </a>
             </div>
             <Script url="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" />
+          </div>
+          <SectionSplitter />
+          <div>
+            <div
+              className={styles.title}
+              style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>
+              Frequently asked questions
+            </div>
+            <CourseTypeDetails
+              courseType={{ details: FAQS }}
+              minimal
+              useKeysAsTitle
+              fullLicenceFaqs
+            />
           </div>
         </div>
       </div>

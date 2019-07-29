@@ -17,6 +17,7 @@ import styles from './styles.scss'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 import NextSteps from './NextSteps'
 import addBlack from 'assets/images/rideto/AddBlack.svg'
+import SectionSplitter from '../SectionSplitter'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -134,6 +135,7 @@ class UserDetails extends Component {
             hasPOM={hasPOM}
           />
         </div>
+        <SectionSplitter />
         <div
           id="checkout-your-details"
           className={styles.title}
@@ -432,6 +434,7 @@ class UserDetails extends Component {
     return (
       <div className={styles.container}>
         {this.renderUserInfo()}
+        <SectionSplitter />
         {this.renderPaymentForm()}
       </div>
     )

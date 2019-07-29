@@ -103,6 +103,9 @@ function CourseInformation({
             'Date & Time',
             `${moment(date).format('ddd D MMMM')}: ${requested_time}`
           )}
+        <div className={styles.limitedWarning}>
+          <span>Last few spaces</span>
+        </div>
 
         {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no' ? (
           <div className={styles.bikeHireCost}>
