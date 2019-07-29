@@ -1,9 +1,5 @@
 .container {
-  max-width: 480px;
-
-  @media (min-width: 769px) {
-    // padding-right: 30px;
-  }
+  width: 100%;
 }
 
 .title {
@@ -58,23 +54,23 @@
     margin-bottom: 0.5rem;
   }
 
-  @media (max-width: 768px) {
-    background-color: #fff;
-    padding: 0 0 24px;
+  background-color: #fff;
+  padding: 0 0 24px;
 
-    input,
-    select,
-    .cardElementWrapper {
-      appearance: none;
-      // border: 2px solid #e3e3e3 !important;
-      // border-radius: 2px;
-      border: 1px solid #141414 !important;
-    }
+  @media (min-width: 769px) {
+    padding-bottom: 0;
+  }
 
-    .cardElementWrapper {
-      input {
-        border: 0 !important;
-      }
+  input,
+  select,
+  .cardElementWrapper {
+    appearance: none;
+    border: 1px solid #141414 !important;
+  }
+
+  .cardElementWrapper {
+    input {
+      border: 0 !important;
     }
   }
 }
@@ -116,7 +112,7 @@
 }
 
 .checkForm {
-  margin-top: 3rem;
+  margin-top: 2rem;
 
   @media (max-width: 768px) {
     margin-top: 33px;

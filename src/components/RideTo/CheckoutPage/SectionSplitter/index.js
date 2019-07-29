@@ -1,4 +1,5 @@
 import React from 'react'
+import { useMediaQuery } from 'react-responsive'
 
 const style = {
   display: 'block',
@@ -8,8 +9,21 @@ const style = {
   height: '1rem'
 }
 
-function SectionSplitter(props) {
-  return <div style={{ ...style, ...props.style }} />
+const styleDesktop = {
+  ...style,
+  marginRight: '-2.5rem',
+  marginLeft: '-2.5rem',
+  height: '1.5rem'
+}
+
+function SectionSplitter({ hideDesktop }) {
+  const isDesktop = useMediaQuery({ query: '(min-width: 769px)' })
+
+  if (isDesktop && hideDesktop) {
+    return null
+  }
+
+  return <div style={isDesktop ? styleDesktop : style} />
 }
 
 export default SectionSplitter

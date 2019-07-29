@@ -135,7 +135,7 @@ class UserDetails extends Component {
             hasPOM={hasPOM}
           />
         </div>
-        <SectionSplitter />
+        <SectionSplitter hideDesktop />
         <div
           id="checkout-your-details"
           className={styles.title}
