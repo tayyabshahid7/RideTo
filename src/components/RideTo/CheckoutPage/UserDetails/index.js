@@ -113,14 +113,15 @@ class UserDetails extends Component {
       trainings,
       handlePOMToggleClick,
       hasPOM,
-      isFullLicence
+      isFullLicence,
+      instantBook
     } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
       <div>
-        <NextSteps isFullLicence={isFullLicence} />
+        <NextSteps isFullLicence={isFullLicence} instantBook={instantBook} />
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
             Your Booking
