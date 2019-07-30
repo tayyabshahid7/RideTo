@@ -17,6 +17,7 @@ import styles from './styles.scss'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 import NextSteps from './NextSteps'
 import addBlack from 'assets/images/rideto/AddBlack.svg'
+import closeDark from 'assets/images/rideto/CloseDark.svg'
 import SectionSplitter from '../SectionSplitter'
 
 class UserDetails extends Component {
@@ -36,7 +37,7 @@ class UserDetails extends Component {
   componentDidUpdate(prevProps) {
     const { showCardDetails } = this.props
 
-    if (prevProps.showCardDetails !== showCardDetails) {
+    if (prevProps.showCardDetails !== showCardDetails && showCardDetails) {
       setTimeout(() => {
         const cardDetails = this.cardDetails.current
 
@@ -112,14 +113,15 @@ class UserDetails extends Component {
       trainings,
       handlePOMToggleClick,
       hasPOM,
-      isFullLicence
+      isFullLicence,
+      instantBook
     } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
       <div>
-        <NextSteps isFullLicence={isFullLicence} />
+        <NextSteps isFullLicence={isFullLicence} instantBook={instantBook} />
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
             Your Booking
@@ -324,8 +326,10 @@ class UserDetails extends Component {
           id="checkout-payment-details"
           className={classnames(styles.title, styles.paymentButton)}>
           Payment Details
-          {!showCardDetails && (
+          {!showCardDetails ? (
             <img src={addBlack} alt="Add" width="15" height="15" />
+          ) : (
+            <img src={closeDark} alt="Close" width="15" height="15" />
           )}
         </button>
         <div

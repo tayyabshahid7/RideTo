@@ -18,6 +18,7 @@ class DateInput extends React.Component {
             size="7"
             onChange={this.props.onChange}
             placeholder="DD/MM/YY"
+            type="tel"
           />
         </label>
       )

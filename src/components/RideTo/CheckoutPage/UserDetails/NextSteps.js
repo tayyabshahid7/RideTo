@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
 
-function NextSteps({ isFullLicence }) {
+function NextSteps({ isFullLicence, instantBook }) {
   return (
     <Fragment>
       <div>
@@ -12,8 +12,11 @@ function NextSteps({ isFullLicence }) {
         <ul className={styles.nextStepsList}>
           <li>Securely complete your booking </li>
           <li>
-            Get confirmation from the instructor within {isFullLicence ? 24 : 3}{' '}
-            working hours{' '}
+            {instantBook && !isFullLicence
+              ? 'Instantly receive confirmation from the instructor.'
+              : `Get confirmation from the instructor within ${
+                  isFullLicence ? 24 : 3
+                } working hours`}
           </li>
           <li>Prepare for your training with our online guides</li>
         </ul>

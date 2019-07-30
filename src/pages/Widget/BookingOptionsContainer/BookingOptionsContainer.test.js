@@ -51,13 +51,13 @@ describe('Initial Render', () => {
 
   it('Sets earliest date', () => {
     expect(moment(wrapper.state('selectedDate')).format('YYYY-MM-DD')).toBe(
-      '2019-07-27'
+      '2019-08-14'
     )
   })
 
   it('Selects first course', () => {
-    expect(wrapper.state('selectedCourse').date).toBe('2019-07-27')
-    expect(wrapper.state('selectedCourse').time).toBe('06:00:00')
+    expect(wrapper.state('selectedCourse').date).toBe('2019-08-14')
+    expect(wrapper.state('selectedCourse').time).toBe('08:00:00')
   })
 
   it('Renders course details', () => {
@@ -76,7 +76,7 @@ describe('Change Date', () => {
   })
 
   it('Updates the selected course', () => {
-    expect(wrapper.state('selectedCourse').date).toBe('2019-07-27')
+    expect(wrapper.state('selectedCourse').date).toBe('2019-08-14')
     wrapper.instance().handleChangeDate(moment('2019-08-14', 'YYYY-MM-DD'))
     wrapper.setState({})
     expect(wrapper.state('selectedCourse').date).toBe('2019-08-14')

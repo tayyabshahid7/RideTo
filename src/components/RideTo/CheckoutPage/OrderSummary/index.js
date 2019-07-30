@@ -285,8 +285,8 @@ class OrderSummary extends Component {
               </div>
               <div className={styles.guarenteeContent}>
                 <div className={styles.guarantee1}>
-                  Get a full refund if you cancel your booking with{' '}
-                  {isFullLicence ? '12' : '3'} working days.
+                  Cancel with {isFullLicence ? '12' : '3'} working days notice
+                  to get a full refund.
                 </div>
                 <a
                   href="https://www.rideto.com/terms#cancellations"

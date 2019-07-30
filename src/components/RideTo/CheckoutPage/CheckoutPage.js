@@ -611,7 +611,7 @@ class CheckoutPage extends Component {
 
   handlePaymentButtonClick = () => {
     this.setState({
-      showCardDetails: true
+      showCardDetails: !this.state.showCardDetails
     })
   }
 
