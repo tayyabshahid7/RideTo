@@ -67,3 +67,10 @@
 .toastError {
   background: var(--danger-color) !important;
 }
+
+.modalContent {
+  > div {
+    border-radius: 0;
+    border: 0;
+  }
+}

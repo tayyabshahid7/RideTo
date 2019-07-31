@@ -343,6 +343,7 @@ class CheckoutPage extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    const { handeUpdateOption } = this.props
     const { details, showCardDetails } = this.state
 
     if (
@@ -352,6 +353,17 @@ class CheckoutPage extends Component {
     ) {
       this.setState({
         showCardDetails: true
+      })
+    }
+
+    if (
+      prevState.details.riding_experience !== details.riding_experience &&
+      ['Cycling experience', 'Off road motorcycling'].includes(
+        details.riding_experience
+      )
+    ) {
+      handeUpdateOption({
+        isPOMPopupVisible: true
       })
     }
   }

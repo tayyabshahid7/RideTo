@@ -9,6 +9,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styles from './styles.scss'
 import { capitalizeFirstLetter } from 'utils/helper'
+import { Modal } from 'reactstrap'
+import POMModal from './POMModal'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
@@ -51,7 +53,9 @@ class CheckoutPageContainer extends Component {
       trainings: this.trainings,
       supplier,
       instantBook: isInstantBook(),
-      hasPOM: false
+      hasPOM: false,
+      // isPOMPopupVisible: false
+      isPOMPopupVisible: true
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
@@ -121,7 +125,8 @@ class CheckoutPageContainer extends Component {
       supplier,
       instantBook,
       trainings,
-      hasPOM
+      hasPOM,
+      isPOMPopupVisible
     } = this.state
 
     return (
@@ -132,6 +137,13 @@ class CheckoutPageContainer extends Component {
           pauseOnHover={false}
           pauseOnFocusLoss={false}
         />
+        <Modal
+          isOpen={isPOMPopupVisible}
+          size="md"
+          className={styles.modalContent}
+          contentClassname={styles.modalContent}>
+          <POMModal />
+        </Modal>
         <StripeProvider apiKey={this.stripePublicKey}>
           <Elements>
             <CheckoutPage
@@ -143,6 +155,7 @@ class CheckoutPageContainer extends Component {
               handlePOMToggleClick={this.handlePOMToggleClick}
               hasPOM={hasPOM}
               showPromoNotification={this.showPromoNotification}
+              handeUpdateOption={this.handeUpdateOption}
             />
           </Elements>
         </StripeProvider>
