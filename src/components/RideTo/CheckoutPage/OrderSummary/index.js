@@ -21,6 +21,7 @@ import SectionSplitter from '../SectionSplitter'
 import CardIcons from '../CardIcons'
 
 import { PoweredByStripe } from '../../../../assets/icons'
+import moneyBack from '../../../../assets/icons/money-back.svg'
 import FAQS from './faqs'
 
 class OrderSummary extends Component {
@@ -278,12 +279,7 @@ class OrderSummary extends Component {
             </div>
             <div className={styles.guaranteeInfo}>
               <div className={styles.guaranteeLogo}>
-                <div
-                  style={{
-                    width: '58px',
-                    height: '58px',
-                    background: 'lightgrey'
-                  }}></div>
+                <img alt="" src={moneyBack} />
               </div>
               <div className={styles.guarenteeContent}>
                 <div className={styles.guarantee1}>

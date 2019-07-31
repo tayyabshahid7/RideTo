@@ -88,7 +88,10 @@
 }
 
 .guaranteeLogo {
-  flex: 0 0 65px;
+  img {
+    width: 58px;
+    height: 58px;
+  }
 }
 
 .guarenteeContent {
