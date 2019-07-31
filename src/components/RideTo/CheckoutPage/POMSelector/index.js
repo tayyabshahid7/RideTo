@@ -3,7 +3,7 @@ import styles from './styles.scss'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import classnames from 'classnames'
 import { createPOM } from 'utils/helper'
-import shield from 'assets/images/pom-shield.svg'
+import shield from 'assets/images/security.svg'
 
 function POMSelector({ handlePOMToggleClick, hasPOM }) {
   const { discount_price } = createPOM()
