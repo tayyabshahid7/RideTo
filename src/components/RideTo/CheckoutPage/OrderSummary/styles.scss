@@ -73,6 +73,7 @@
 
   @media (max-width: 768px) {
     margin-top: 0.8rem;
+    margin-bottom: 0.5rem;
   }
 
   @media (min-width: 769px) {
@@ -87,7 +88,10 @@
 }
 
 .guaranteeLogo {
-  flex: 0 0 65px;
+  img {
+    width: 58px;
+    height: 58px;
+  }
 }
 
 .guarenteeContent {
@@ -343,5 +347,11 @@
 }
 
 .cards {
+  display: flex;
+  align-items: center;
   margin-top: 1.5rem;
+
+  ul {
+    margin-left: 8px;
+  }
 }
