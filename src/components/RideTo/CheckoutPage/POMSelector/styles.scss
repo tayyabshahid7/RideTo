@@ -1,7 +1,6 @@
 .container {
   position: relative;
-  background-color: #eaf6fa;
-  background-color: rgba(#59b1ce, 0.2);
+  background-color: #deeff5;
   margin: 4rem -2.5rem 2rem;
   padding: 1rem 2.5rem 2rem;
 
@@ -19,6 +18,30 @@
   @media (min-width: 769px) {
     float: right;
     margin-top: -40px;
+  }
+}
+
+.containerPopup.containerPopup {
+  position: relative;
+  margin: 0;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    padding: 0 1rem;
+  }
+
+  .pomShield {
+    display: block;
+    float: none;
+    margin: 0;
+    position: absolute;
+    top: 35px;
+    right: 2.5rem;
+
+    @media (max-width: 768px) {
+      display: none;
+      right: 2rem;
+    }
   }
 }
 
@@ -55,23 +78,6 @@
   font-weight: normal;
 
   margin-bottom: 1.5rem;
-
-  // @media (max-width: 768px) {
-  //   margin-bottom: 0;
-  //   font-size: 15px;
-  // }
-
-  // &::before {
-  //   position: absolute;
-  //   top: -2px;
-  //   left: -33px;
-  //   content: '';
-  //   display: block;
-  //   width: 27px;
-  //   height: 32px;
-  //   background-image: url(assets/images/pom-shield.svg);
-  //   background-size: 27px 32px;
-  // }
 }
 
 .price {
@@ -81,6 +87,11 @@
   margin-top: 1.2rem;
   display: block;
   margin-bottom: 0.25rem;
+}
+
+.priceBold {
+  font-family: var(--font-proxima-bold);
+  color: #141414;
 }
 
 .tAndC {
