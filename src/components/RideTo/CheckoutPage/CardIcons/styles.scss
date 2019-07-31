@@ -1,0 +1,24 @@
+.list {
+  display: flex;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+
+  > li {
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+
+    img {
+      width: 22px;
+      height: auto;
+    }
+  }
+}
+
+.cardTypeSelected {
+  img:not(.selected) {
+    filter: grayscale(1);
+    opacity: 0.25;
+  }
+}

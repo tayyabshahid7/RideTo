@@ -19,10 +19,15 @@ import NextSteps from './NextSteps'
 import addBlack from 'assets/images/rideto/AddBlack.svg'
 import closeDark from 'assets/images/rideto/CloseDark.svg'
 import SectionSplitter from '../SectionSplitter'
+import CardIcons from '../CardIcons'
 
 class UserDetails extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      cardBrand: null
+    }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -79,10 +84,16 @@ class UserDetails extends Component {
 
   stripeElementChange(element, name) {
     const { onDetailChange } = this.props
+    const { brand, elementType } = element
     if (!element.empty && element.complete) {
       onDetailChange(name, true)
     } else {
       onDetailChange(name, false)
+    }
+    if (elementType === 'cardNumber') {
+      this.setState({
+        cardBrand: brand
+      })
     }
   }
 
@@ -312,6 +323,7 @@ class UserDetails extends Component {
       showCardDetails,
       handlePaymentButtonClick
     } = this.props
+    const { cardBrand } = this.state
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -354,6 +366,7 @@ class UserDetails extends Component {
                 }
               />
             </div>
+            <CardIcons selected={cardBrand} />
           </label>
           <label className={styles.cardLabel}>
             <span>Name on card</span>
