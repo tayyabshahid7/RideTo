@@ -18,6 +18,7 @@ import POMSelector from 'components/RideTo/CheckoutPage/POMSelector'
 import Script from 'react-load-script'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import SectionSplitter from '../SectionSplitter'
+import CardIcons from '../CardIcons'
 
 import { PoweredByStripe } from '../../../../assets/icons'
 import FAQS from './faqs'
@@ -251,6 +252,7 @@ class OrderSummary extends Component {
         </Loading>
         <div className={styles.cards}>
           <PoweredByStripe fill="#141414" opacity="1" />
+          <CardIcons size="large" />
         </div>
         {!this.isValidDate() && (
           <div className={styles.dateError}>

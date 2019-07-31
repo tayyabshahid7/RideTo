@@ -3,6 +3,7 @@ import amex from 'assets/icons/cards/amex.svg'
 import mastercard from 'assets/icons/cards/mastercard.svg'
 import visa from 'assets/icons/cards/visa.svg'
 import styles from './styles.scss'
+import classnames from 'classnames'
 
 const CARDS = [
   { name: 'mastercard', image: mastercard },
@@ -10,13 +11,17 @@ const CARDS = [
   { name: 'amex', image: amex }
 ]
 
-function CardIcons({ selected = false }) {
+function CardIcons({ selected = false, size }) {
   return (
     <div
       className={
         selected && selected !== 'unknown' ? styles.cardTypeSelected : undefined
       }>
-      <ul className={styles.list}>
+      <ul
+        className={classnames(
+          styles.list,
+          size === 'large' && styles.listLarge
+        )}>
         {CARDS.map(({ name, image }) => (
           <li key={name}>
             <img

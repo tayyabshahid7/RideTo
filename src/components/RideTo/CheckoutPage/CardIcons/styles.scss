@@ -16,6 +16,18 @@
   }
 }
 
+.listLarge {
+  > li {
+    &:not(:last-child) {
+      margin-right: 8px;
+    }
+
+    img {
+      width: 35px;
+    }
+  }
+}
+
 .cardTypeSelected {
   img:not(.selected) {
     filter: grayscale(1);
