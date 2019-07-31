@@ -54,8 +54,7 @@ class CheckoutPageContainer extends Component {
       supplier,
       instantBook: isInstantBook(),
       hasPOM: false,
-      // isPOMPopupVisible: false
-      isPOMPopupVisible: true
+      isPOMPopupVisible: false
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
@@ -63,6 +62,7 @@ class CheckoutPageContainer extends Component {
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
     this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
     this.showPromoNotification = this.showPromoNotification.bind(this)
+    this.handleAddPOM = this.handleAddPOM.bind(this)
 
     this.POM = createPOM()
   }
@@ -85,7 +85,8 @@ class CheckoutPageContainer extends Component {
 
     this.setState({
       checkoutData: newCheckoutData,
-      hasPOM: true
+      hasPOM: true,
+      isPOMPopupVisible: false
     })
   }
 
@@ -97,7 +98,8 @@ class CheckoutPageContainer extends Component {
         ...checkoutData,
         addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
       },
-      hasPOM: false
+      hasPOM: false,
+      isPOMPopupVisible: false
     })
   }
 
@@ -115,6 +117,12 @@ class CheckoutPageContainer extends Component {
     toast(text, {
       toastId: 'add',
       className: styles[`toast${capitalizeFirstLetter(type)}`]
+    })
+  }
+
+  closePOMModal = () => {
+    this.setState({
+      isPOMPopupVisible: false
     })
   }
 
@@ -138,11 +146,13 @@ class CheckoutPageContainer extends Component {
           pauseOnFocusLoss={false}
         />
         <Modal
-          isOpen={isPOMPopupVisible}
+          isOpen={isPOMPopupVisible && !hasPOM}
           size="md"
-          className={styles.modalContent}
-          contentClassname={styles.modalContent}>
-          <POMModal />
+          className={styles.modalContent}>
+          <POMModal
+            closeModal={this.closePOMModal}
+            handleAddPOM={this.handleAddPOM}
+          />
         </Modal>
         <StripeProvider apiKey={this.stripePublicKey}>
           <Elements>
