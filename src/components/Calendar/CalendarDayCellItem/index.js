@@ -8,7 +8,7 @@ const CalendarDayCellItem = ({ item }) => {
   const className = classnames(
     styles.calendarDayCellItem,
     availableSpaces === 1 && styles.warning,
-    availableSpaces === 0 && styles.danger
+    availableSpaces <= 0 && styles.danger
   )
 
   return (
