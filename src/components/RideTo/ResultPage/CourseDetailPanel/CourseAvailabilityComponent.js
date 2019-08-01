@@ -256,6 +256,8 @@ class CourseAvailabilityComponent extends React.Component {
             isManualFull={isManualFull}
             has_auto_bikes={course.has_auto_bikes}
             has_manual_bikes={course.has_manual_bikes}
+            has_auto_bikes_125cc={course.has_auto_bikes_125cc}
+            has_manual_50cc={course.has_manual_50cc}
             ref={this.bikePicker}
           />
         </div>
