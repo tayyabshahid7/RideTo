@@ -41,44 +41,46 @@ function CourseInformation({
   return (
     <Fragment>
       <div className={styles.rowContainer}>
-        <OrderIncluded
-          bikeHire={bike_hire}
-          hasGloves={gloves_jacket_included}
-        />
+        <div className={styles.orderTopSection}>
+          <OrderIncluded
+            bikeHire={bike_hire}
+            hasGloves={gloves_jacket_included}
+          />
 
-        {isFullLicence && (
-          <div style={{ marginTop: '1rem' }}>
-            {renderRow(
-              'Course',
-              `Full Licence (${trainings[0].package_hours} hours)`
-            )}
-            {trainings.map((training, index) => {
-              if (training.price) {
-                return (
-                  <div key={index}>
-                    {renderRow(
-                      getCourseTitle(training.course_type).replace(
-                        'Full Licence ',
-                        ''
-                      ),
-                      `${training.requested_time.slice(0, -3)} ${moment(
-                        training.requested_date
-                      ).format('ddd D, MMMM')}`
-                    )}
-                  </div>
-                )
-              } else {
-                return null
-              }
-            })}
-          </div>
-        )}
+          {isFullLicence && (
+            <div style={{ marginTop: '1rem' }}>
+              {renderRow(
+                'Course',
+                `Full Licence (${trainings[0].package_hours} hours)`
+              )}
+              {trainings.map((training, index) => {
+                if (training.price) {
+                  return (
+                    <div key={index}>
+                      {renderRow(
+                        getCourseTitle(training.course_type).replace(
+                          'Full Licence ',
+                          ''
+                        ),
+                        `${training.requested_time.slice(0, -3)} ${moment(
+                          training.requested_date
+                        ).format('ddd D, MMMM')}`
+                      )}
+                    </div>
+                  )
+                } else {
+                  return null
+                }
+              })}
+            </div>
+          )}
 
-        {!isFullLicence && (
-          <div style={{ marginTop: '1rem' }}>
-            {renderRow('Course', getCourseTitle(courseType))}
-          </div>
-        )}
+          {!isFullLicence && (
+            <div style={{ marginTop: '1rem' }}>
+              {renderRow('Course', getCourseTitle(courseType))}
+            </div>
+          )}
+        </div>
 
         <div>
           {renderRow(
