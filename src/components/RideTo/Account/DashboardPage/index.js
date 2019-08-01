@@ -12,6 +12,7 @@ import { fetchOrder, fetchOrders, getChecklist } from 'services/user'
 import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { getDashboardAdvice } from 'services/page'
 import styles from './DashboardPage.scss'
+import POMBanner from 'components/RideTo/ResultPage/POMBanner'
 
 class DashboardPage extends React.Component {
   constructor(props) {
@@ -89,6 +90,8 @@ class DashboardPage extends React.Component {
     const headingImage = selectedOrder
       ? selectedOrder.training_location.image
       : ''
+    const needsPom = true
+
     return (
       <React.Fragment>
         {recentOrder && (
@@ -109,6 +112,14 @@ class DashboardPage extends React.Component {
               )}
             </Col>
             <Col sm="8">
+              {needsPom && (
+                <a
+                  href="https://rideto.typeform.com/to/u1Wxve"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <POMBanner discount />
+                </a>
+              )}
               <DashboardReferral />
               <DashboardAdvice items={getDashboardAdvice()} />
             </Col>

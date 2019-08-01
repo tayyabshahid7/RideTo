@@ -5,14 +5,29 @@ const mobile =
 const desktop =
   'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner-02.jpg'
 
+const mobileDiscount =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner_Buy+Now_Mobile_600x300px.jpg'
+const desktopDiscount =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner_Buy+Now_1000x400px.jpg'
+
 const style = {
   width: '100%',
   height: 'auto',
   marginBottom: '24px'
 }
 
-function POMBanner() {
+function POMBanner({ discount }) {
   const isDesktop = useMediaQuery({ query: '(min-width: 769px)' })
+
+  if (discount) {
+    return (
+      <img
+        style={style}
+        src={isDesktop ? desktopDiscount : mobileDiscount}
+        alt="Book a POM"
+      />
+    )
+  }
 
   return (
     <img style={style} src={isDesktop ? desktop : mobile} alt="Book a POM" />
