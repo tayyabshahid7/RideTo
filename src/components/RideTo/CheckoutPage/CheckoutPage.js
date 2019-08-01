@@ -363,7 +363,7 @@ class CheckoutPage extends Component {
       )
     ) {
       handeUpdateOption({
-        isPOMPopupVisible: true
+        isInexperienced: true
       })
     }
   }

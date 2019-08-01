@@ -54,7 +54,7 @@ class CheckoutPageContainer extends Component {
       supplier,
       instantBook: isInstantBook(),
       hasPOM: false,
-      isPOMPopupVisible: false
+      isInexperienced: false
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
@@ -86,7 +86,7 @@ class CheckoutPageContainer extends Component {
     this.setState({
       checkoutData: newCheckoutData,
       hasPOM: true,
-      isPOMPopupVisible: false
+      isInexperienced: false
     })
   }
 
@@ -99,7 +99,7 @@ class CheckoutPageContainer extends Component {
         addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
       },
       hasPOM: false,
-      isPOMPopupVisible: false
+      isInexperienced: false
     })
   }
 
@@ -122,7 +122,7 @@ class CheckoutPageContainer extends Component {
 
   closePOMModal = () => {
     this.setState({
-      isPOMPopupVisible: false
+      isInexperienced: false
     })
   }
 
@@ -134,8 +134,11 @@ class CheckoutPageContainer extends Component {
       instantBook,
       trainings,
       hasPOM,
-      isPOMPopupVisible
+      isInexperienced
     } = this.state
+    const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(
+      checkoutData.courseType
+    )
 
     return (
       <React.Fragment>
@@ -146,7 +149,7 @@ class CheckoutPageContainer extends Component {
           pauseOnFocusLoss={false}
         />
         <Modal
-          isOpen={isPOMPopupVisible && !hasPOM}
+          isOpen={offersPOM && isInexperienced && !hasPOM}
           size="md"
           className={styles.modalContent}>
           <POMModal
