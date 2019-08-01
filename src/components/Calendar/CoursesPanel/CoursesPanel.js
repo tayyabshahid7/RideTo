@@ -16,6 +16,9 @@ class CoursesPanel extends React.Component {
 
           {courses
             .filter(course => !addingOrder || course.id === addingOrder)
+            .sort(({ time: timeA }, { time: timeB }) =>
+              timeA.localeCompare(timeB)
+            )
             .map(course => (
               <CoursesPanelItem
                 key={course.id}
