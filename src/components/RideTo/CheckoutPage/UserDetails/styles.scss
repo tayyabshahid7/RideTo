@@ -1,5 +1,11 @@
 .container {
   width: 100%;
+
+  > div:first-child {
+    @media (min-width: 769px) {
+      margin-bottom: 1.5rem;
+    }
+  }
 }
 
 .title {
@@ -54,7 +60,7 @@
     margin-bottom: 0.5rem;
 
     @media (min-width: 769px) {
-      margin-bottom: 1.5rem;
+      margin-bottom: 0;
     }
   }
 
@@ -129,29 +135,74 @@
 
 .cardDetails {
   margin-top: 0.7rem;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-right: -8px;
+    margin-left: -8px;
+
+    .col {
+      padding: 0 8px;
+      flex-grow: 1;
+    }
+  }
 }
 
 .hideCardDetails {
   display: none;
 }
 
+// .cardLabel {
+//   width: 100%;
+//   margin-top: 1rem;
+
+//   span {
+//     display: block;
+//     margin-bottom: 0.5em;
+//     color: rgba(#070707, 0.8);
+
+//     @media (max-width: 768px) {
+//       font-size: 15px;
+//       margin-bottom: 0.25rem;
+//     }
+//   }
+
+//   .input {
+//     margin-top: 0;
+//   }
+// }
+
 .cardLabel {
+  position: relative;
+  display: block;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 
   span {
-    display: block;
-    margin-bottom: 0.5em;
-    color: rgba(#070707, 0.8);
-
-    @media (max-width: 768px) {
-      font-size: 15px;
-      margin-bottom: 0.25rem;
-    }
+    position: absolute;
+    font-size: 14px;
+    line-height: 14px;
+    background-color: #fff;
+    top: -6px;
+    left: 10px;
+    padding: 0 8px;
   }
 
   .input {
     margin-top: 0;
+    width: 100%;
+    height: 48px;
+    border: none;
+    background: white;
+    padding-left: 16px;
+
+    color: var(--dark-color);
+    font-family: var(--font-proxima);
+    font-size: 15px;
+    &::placeholder {
+      color: var(--placeholder-color);
+    }
   }
 }
 
@@ -210,11 +261,11 @@
   background: white;
 }
 
-.cvvElementWrapper {
-  background-image: url('assets/images/cvc.png');
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-}
+// .cvvElementWrapper {
+//   background-image: url('assets/images/cvc.png');
+//   background-repeat: no-repeat;
+//   background-position: right 0.5rem center;
+// }
 
 .actionDiv {
   margin-top: 10px;
@@ -369,4 +420,8 @@
   align-items: center;
   padding-right: 0;
   padding-left: 0;
+
+  &:focus {
+    outline: 0;
+  }
 }

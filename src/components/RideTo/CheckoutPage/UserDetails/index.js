@@ -6,7 +6,6 @@ import {
   CardCVCElement,
   PostalCodeElement
 } from 'react-stripe-elements'
-import { Row, Col } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Input from 'components/RideTo/Input'
@@ -350,9 +349,12 @@ class UserDetails extends Component {
             styles.cardDetails,
             !showCardDetails && styles.hideCardDetails
           )}>
-          <label className={styles.cardLabel}>
+          <label
+            className={styles.cardLabel}
+            style={{ marginBottom: '1.75rem' }}>
             <span>Card number</span>
             <div
+              style={{ marginBottom: '5px' }}
               className={classnames(
                 styles.cardElementWrapper,
                 errors.card_number && styles.inputError
@@ -382,8 +384,8 @@ class UserDetails extends Component {
               required
             />
           </label>
-          <Row>
-            <Col>
+          <div className={styles.row}>
+            <div className={styles.col}>
               <label className={styles.cardLabel}>
                 <span>Expiry date</span>
                 <div
@@ -394,16 +396,15 @@ class UserDetails extends Component {
                   <CardExpiryElement
                     style={inputStyle}
                     required
-                    placeholder=""
+                    placeholder="MM/YY"
                     onChange={element =>
                       this.stripeElementChange(element, 'expiry_date')
                     }
                   />
                 </div>
-                <div className={styles.subtext}>MM/YY</div>
               </label>
-            </Col>
-            <Col>
+            </div>
+            <div className={styles.col}>
               <label className={styles.cardLabel}>
                 <span>CVV/CV2</span>
                 <div
@@ -422,8 +423,8 @@ class UserDetails extends Component {
                   />
                 </div>
               </label>
-            </Col>
-          </Row>
+            </div>
+          </div>
 
           <label className={styles.cardLabel}>
             <span>Billing postcode</span>
