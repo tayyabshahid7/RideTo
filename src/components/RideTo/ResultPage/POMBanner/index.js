@@ -1,7 +1,9 @@
 import React from 'react'
 import { useMediaQuery } from 'react-responsive'
-import mobile from 'assets/images/results-pom-mobile.jpg'
-import desktop from 'assets/images/results-pom-desktop.jpg'
+const mobile =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner_Mobile-01.jpg'
+const desktop =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner-02.jpg'
 
 const style = {
   width: '100%',
