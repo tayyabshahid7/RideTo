@@ -20,7 +20,9 @@ const BikePicker = React.forwardRef(
       isFullLicence,
       loading,
       isWidget,
-      needsHelp
+      needsHelp,
+      has_auto_bikes_125cc,
+      has_manual_50cc
     },
     ref
   ) => {
@@ -87,6 +89,48 @@ const BikePicker = React.forwardRef(
                 {isAutoFull ? fullText : null}
               </button>
             )}
+            {!isFullLicence && has_manual_50cc && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  isWidget && styles.widgetBtn,
+                  bike_hire === 'MANUAL_50CC' && styles.activeBtn
+                )}
+                onClick={() =>
+                  onUpdate({
+                    bike_hire: 'MANUAL_50CC',
+                    selectedLicenceType: null,
+                    selectedPackageDays: '',
+                    selectedPackageDates: []
+                  })
+                }
+                disabled={isManualFull}>
+                {getMotorbikeLabel('MANUAL_50CC', isFullLicence)}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {isManualFull ? fullText : null}
+              </button>
+            )}
+            {!isFullLicence && has_auto_bikes_125cc && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  isWidget && styles.widgetBtn,
+                  bike_hire === 'AUTO_125CC' && styles.activeBtn
+                )}
+                onClick={() =>
+                  onUpdate({
+                    bike_hire: 'AUTO_125CC',
+                    selectedLicenceType: null,
+                    selectedPackageDays: '',
+                    selectedPackageDates: []
+                  })
+                }
+                disabled={isAutoFull}>
+                {getMotorbikeLabel('AUTO_125CC', isFullLicence)}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {isAutoFull ? fullText : null}
+              </button>
+            )}
             {has_manual_bikes && (
               <button
                 className={classnames(
@@ -109,7 +153,10 @@ const BikePicker = React.forwardRef(
               </button>
             )}
           </div>
-          {isCbt && bike_hire === 'manual' && !isItm && manualText}
+          {isCbt &&
+            ['manual', 'MANUAL_50CC'].includes(bike_hire) &&
+            !isItm &&
+            manualText}
           {isFullLicence &&
             !has_manual_bikes &&
             !has_auto_bikes &&
