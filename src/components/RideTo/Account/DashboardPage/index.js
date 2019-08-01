@@ -13,6 +13,7 @@ import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { getDashboardAdvice } from 'services/page'
 import styles from './DashboardPage.scss'
 import POMBanner from 'components/RideTo/ResultPage/POMBanner'
+import moment from 'moment'
 
 class DashboardPage extends React.Component {
   constructor(props) {
@@ -24,6 +25,7 @@ class DashboardPage extends React.Component {
       orders: []
     }
 
+    this.needsPom = this.needsPom.bind(this)
     this.handleDetails = this.handleDetails.bind(this)
     this.recordGAEcommerceData = this.recordGAEcommerceData.bind(this)
   }
@@ -85,12 +87,39 @@ class DashboardPage extends React.Component {
     }
   }
 
+  needsPom() {
+    const { recentOrder } = this.state
+
+    if (!recentOrder) {
+      return false
+    }
+
+    const offersPOM = ['CBT Training', 'CBT Training Renewal'].includes(
+      recentOrder.course_title
+    )
+
+    if (!offersPOM) {
+      return false
+    }
+
+    const trainingDate =
+      recentOrder.trainings[0].date || recentOrder.trainings[0].requested_date
+
+    if (
+      !recentOrder.pom_purchased === false &&
+      trainingDate > moment().format('YYYY-MM-DD')
+    ) {
+      return true
+    }
+
+    return false
+  }
+
   render() {
     const { recentOrder, selectedOrder, orders } = this.state
     const headingImage = selectedOrder
       ? selectedOrder.training_location.image
       : ''
-    const needsPom = true
 
     return (
       <React.Fragment>
@@ -112,7 +141,7 @@ class DashboardPage extends React.Component {
               )}
             </Col>
             <Col sm="8">
-              {needsPom && (
+              {this.needsPom() && (
                 <a
                   href="https://rideto.typeform.com/to/u1Wxve"
                   target="_blank"
