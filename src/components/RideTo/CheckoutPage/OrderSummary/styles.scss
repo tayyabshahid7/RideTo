@@ -5,6 +5,16 @@
   top: 16px;
 }
 
+.orderTopSection {
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: column-reverse;
+    margin-top: -1.75rem;
+  }
+}
+
 .title {
   font-size: 24px;
   line-height: 29px;
