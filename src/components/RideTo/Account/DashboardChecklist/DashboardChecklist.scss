@@ -5,6 +5,10 @@
     text-transform: uppercase;
     margin-bottom: 28px;
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 1rem;
+  }
 }
 
 .checkbox {
