@@ -110,27 +110,6 @@ const BikePicker = React.forwardRef(
                 {isManualFull ? fullText : null}
               </button>
             )}
-            {!isFullLicence && has_auto_bikes_125cc && (
-              <button
-                className={classnames(
-                  styles.bikeHireBtn,
-                  isWidget && styles.widgetBtn,
-                  bike_hire === 'AUTO_125CC' && styles.activeBtn
-                )}
-                onClick={() =>
-                  onUpdate({
-                    bike_hire: 'AUTO_125CC',
-                    selectedLicenceType: null,
-                    selectedPackageDays: '',
-                    selectedPackageDates: []
-                  })
-                }
-                disabled={isAutoFull}>
-                {getMotorbikeLabel('AUTO_125CC', isFullLicence)}{' '}
-                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-                {isAutoFull ? fullText : null}
-              </button>
-            )}
             {has_manual_bikes && (
               <button
                 className={classnames(
