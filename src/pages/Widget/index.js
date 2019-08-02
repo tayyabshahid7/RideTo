@@ -33,13 +33,15 @@ class Widget extends React.Component {
       <Router>
         <div className={styles.widget}>
           <div className={styles.header}>
-            <h1 className={styles.heading}>
-              <img
-                alt="School Logo"
-                className={styles.logo}
-                src={this.widget.logo}
-              />
-            </h1>
+            {this.widget.logo && (
+              <h1 className={styles.heading}>
+                <img
+                  alt="School Logo"
+                  className={styles.logo}
+                  src={this.widget.logo}
+                />
+              </h1>
+            )}
           </div>
 
           <Route
