@@ -11,13 +11,13 @@ function NextSteps({ isFullLicence, instantBook }) {
         </div>
         <ul className={styles.nextStepsList}>
           <li>Securely complete your booking </li>
-          {instantBook && !isFullLicence ? null : (
-            <li>
-              {`Get confirmation from the instructor within ${
-                isFullLicence ? 24 : 3
-              } working hours`}
-            </li>
-          )}
+          <li>
+            {instantBook && !isFullLicence
+              ? 'Instantly receive confirmation from the instructor'
+              : `Get confirmation from the instructor within ${
+                  isFullLicence ? 24 : 3
+                } working hours`}
+          </li>
           <li>Prepare for your training with our online guides</li>
         </ul>
       </div>
