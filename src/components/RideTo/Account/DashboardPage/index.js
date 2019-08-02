@@ -106,7 +106,7 @@ class DashboardPage extends React.Component {
       recentOrder.trainings[0].date || recentOrder.trainings[0].requested_date
 
     if (
-      !recentOrder.pom_purchased === false &&
+      recentOrder.pom_purchased === false &&
       trainingDate > moment().format('YYYY-MM-DD')
     ) {
       return true
