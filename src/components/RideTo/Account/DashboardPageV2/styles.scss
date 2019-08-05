@@ -1,0 +1,30 @@
+.page {
+  font-family: var(--font-proxima);
+
+  h1,
+  h2,
+  h3 {
+    color: inherit;
+    font-family: var(--font-rift-bold);
+    font-weight: normal;
+    line-height: 2rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    line-height: 1.5rem;
+  }
+}
+
+.container {
+  padding: 0 2rem;
+  background: #fff;
+}
