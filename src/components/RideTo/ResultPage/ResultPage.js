@@ -757,7 +757,7 @@ class ResultPage extends Component {
                         isFullLicence && styles.noMargin
                       )}>
                       <div className={styles.coursesPanel}>
-                        {hasPOM && <POMBanner />}
+                        {hasPOM && hasPartnerResults && <POMBanner />}
                         {isFullLicence && (
                           <a href="https://rideto.typeform.com/to/lyVAhc">
                             <img
