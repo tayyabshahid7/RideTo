@@ -4,6 +4,7 @@ import Welcome from './Welcome'
 import RouteToFreedom from './RouteToFreedom'
 import NextStep from './NextStep'
 import Achievements from './Achievements'
+import GuidesAdvice from './GuidesAdvice'
 
 function DashboardPageV2() {
   return (
@@ -17,6 +18,9 @@ function DashboardPageV2() {
       </div>
       <div className={styles.pageItem}>
         <Achievements />
+      </div>
+      <div className={styles.pageItem}>
+        <GuidesAdvice />
       </div>
     </div>
   )
