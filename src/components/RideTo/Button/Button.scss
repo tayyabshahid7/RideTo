@@ -31,3 +31,12 @@
   background-color: white;
   color: var(--primary-color) !important;
 }
+
+.buttonModern {
+  width: 100%;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
+  justify-content: space-between;
+  border: 1px solid var(--primary-color);
+  padding: 12px 2rem !important;
+}
