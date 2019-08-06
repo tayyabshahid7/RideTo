@@ -67,7 +67,7 @@ function Achievements() {
         ))}
       </ul>
       <button onClick={handleViewAllClick} className={styles.viewAll}>
-        View all achievements
+        View {visibleLength === totalLength ? 'less' : 'all'} achievements
       </button>
     </div>
   )
