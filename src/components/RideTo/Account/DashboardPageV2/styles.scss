@@ -1,3 +1,7 @@
+:global(:root) {
+  --dashboard-green: #30cb75;
+}
+
 .page {
   font-family: var(--font-proxima);
 
@@ -24,7 +28,8 @@
   }
 }
 
-.container {
+.pageItem {
   padding: 0 2rem;
+  margin-bottom: 1rem;
   background: #fff;
 }

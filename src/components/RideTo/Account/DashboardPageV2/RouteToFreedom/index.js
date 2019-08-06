@@ -16,16 +16,22 @@ function RouteToFreedom() {
         <div className={styles.formGroup}>
           <Select
             value={goal}
+            onChange={event => console.log(event)}
             className={classnames(styles.input, styles.inputSelect)}
             label="My Riding Goal">
+            <option>Asdf</option>
+            <option>Asdf</option>
             <option>Asdf</option>
           </Select>
         </div>
         <div className={styles.formGroup}>
           <Select
             value={style}
+            onChange={event => console.log(event)}
             className={classnames(styles.input, styles.inputSelect)}
             label="My Riding Style">
+            <option>Asdf</option>
+            <option>Asdf</option>
             <option>Asdf</option>
           </Select>
         </div>
