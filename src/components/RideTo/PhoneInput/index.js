@@ -22,7 +22,27 @@ import styles from './PhoneInput.scss'
 
 class PhoneInput extends React.Component {
   render() {
-    const { value } = this.props
+    const { value, label } = this.props
+
+    if (label) {
+      return (
+        <label className={styles.label}>
+          <span className={styles.spanLabel}>{label}</span>
+          <BasicPhoneInput
+            {...this.props}
+            inputClassName={styles.input}
+            value={value}
+            onChange={this.props.onChange}
+            country="GB"
+            countries={['GB']}
+            international={false}
+            showCountrySelect={false}
+            placeholder=""
+          />
+        </label>
+      )
+    }
+
     return (
       <BasicPhoneInput
         {...this.props}

@@ -1,5 +1,13 @@
 .container {
   display: flex;
+  background-color: #fff;
+
+  @media (min-width: 769px) {
+    justify-content: center;
+    background-color: rgba(#c2c2c2, 0.1);
+    padding: 3rem 2.5rem;
+    align-items: flex-start;
+  }
 }
 
 .header {
@@ -16,16 +24,18 @@
 }
 
 .leftPanel {
-  flex: 1 1 480px;
+  flex: 0 1 632px;
   display: flex;
   justify-content: center;
-  padding: 50px 3px 40px 30px;
+  background-color: #fff;
+  padding: 2rem 2.5rem;
+  margin-right: 2.5rem;
 }
 
 .rightPanel {
-  flex: 0 1 528px;
-  padding: 50px 60px 40px 60px;
+  flex: 0 1 440px;
   background: white;
+  padding: 2rem 2.5rem;
 }
 
 @media (max-width: 768px) {
@@ -36,6 +46,7 @@
 
   .leftPanel {
     flex: 1 1 auto;
+    margin-right: 0;
   }
 
   .rightPanel {
@@ -44,12 +55,18 @@
 
   .leftPanel,
   .rightPanel {
-    padding: 25px 10px;
+    // padding: 25px 10px;
+    padding: 2rem;
+  }
+
+  .leftPanel {
+    padding-bottom: 0;
   }
 
   .rightPanel {
-    padding: 25px 5px;
+    // padding: 25px 5px;
     background: transparent;
+    padding-top: 0;
   }
 }
 
@@ -66,4 +83,11 @@
 
 .toastError {
   background: var(--danger-color) !important;
+}
+
+.modalContent {
+  > div {
+    border-radius: 0;
+    border: 0;
+  }
 }

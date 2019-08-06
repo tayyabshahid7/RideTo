@@ -3,35 +3,41 @@ import styles from './styles.scss'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import classnames from 'classnames'
 import { createPOM } from 'utils/helper'
+import shield from 'assets/images/security.svg'
 
-function POMSelector({ handlePOMToggleClick, hasPOM }) {
+function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
   const { discount_price } = createPOM()
 
   return (
-    <div className={styles.container}>
-      <div className={styles.tailored}>
-        <span>Tailored for this course</span>
+    <div
+      className={classnames(styles.container, popup && styles.containerPopup)}>
+      <div>
+        <img src={shield} alt="Shield" className={styles.pomShield} />
+      </div>
+      <div className={classnames(styles.price, popup && styles.priceBold)}>
+        Only £{discount_price}
       </div>
       <div className={styles.header}>
         <div className={styles.headerText}>
-          <div>
-            Peace of mind policy{' '}
-            <span className={styles.price}>only £{discount_price}</span>{' '}
-          </div>
-          <div className={styles.tAndC}>
-            T&C's apply. Does not cover lack of highway code understanding
-          </div>
+          <div>Peace of mind policy</div>
         </div>
-        <button
-          className={classnames(
-            styles.headerSwitch,
-            hasPOM && styles.headerSwitchSelected
-          )}
-          onClick={handlePOMToggleClick}>
-          <div className={styles.headerSwitchSlider} />
-        </button>
+        {!popup && (
+          <button
+            className={classnames(
+              styles.headerSwitch,
+              hasPOM && styles.headerSwitchSelected
+            )}
+            onClick={handlePOMToggleClick}>
+            <div className={styles.headerSwitchSlider} />
+          </button>
+        )}
       </div>
       <OrderIncluded pom />
+      <div className={styles.tAndC}>
+        Terms and conditions apply.
+        <br />
+        Does not cover lack of highway code understanding.
+      </div>
     </div>
   )
 }

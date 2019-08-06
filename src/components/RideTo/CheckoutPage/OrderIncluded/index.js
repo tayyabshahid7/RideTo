@@ -1,5 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
+import { getMotorbikeLabel } from 'services/widget'
+import { capitalizeFirstLetter } from 'utils/helper'
 
 function OrderIncluded({
   bikeHire,
@@ -94,7 +96,7 @@ function OrderIncluded({
               <i className="fa fa-check" />
             </span>{' '}
             <span className={styles.text}>
-              {bikeHire === 'auto' ? 'Automatic scooter' : 'Manual motorcycle'}{' '}
+              {capitalizeFirstLetter(getMotorbikeLabel(bikeHire, fullLicence))}{' '}
               hire
             </span>
           </li>

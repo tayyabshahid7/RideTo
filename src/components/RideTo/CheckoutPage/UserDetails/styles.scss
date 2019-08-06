@@ -1,22 +1,24 @@
 .container {
-  max-width: 480px;
+  width: 100%;
 
-  @media (min-width: 769px) {
-    padding-right: 30px;
+  > div:first-child {
+    @media (min-width: 769px) {
+      margin-bottom: 1.5rem;
+    }
   }
 }
 
 .title {
   font-size: 24px;
   line-height: 29px;
-  font-family: var(--font-rift);
-  font-weight: bold;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
   // margin-top: 32px;
 
   @media (max-width: 768px) {
-    margin-top: -10px;
-    margin-left: 30px;
-    margin-bottom: 20px;
+    // margin-top: -10px;
+    // margin-left: 30px;
+    margin-bottom: 1rem;
   }
 }
 
@@ -37,11 +39,11 @@
 }
 
 .subtext {
-  padding-left: 15px;
+  // padding-left: 15px;
   text-align: left;
   font-size: 12px;
   color: var(--grey-color);
-  margin-top: 4px;
+  margin-top: 8px;
 }
 
 .rowContainer {
@@ -55,25 +57,30 @@
   margin-top: 8px;
   margin-bottom: 32px;
   &:last-of-type {
-    margin-bottom: 18px;
+    margin-bottom: 0.5rem;
+
+    @media (min-width: 769px) {
+      margin-bottom: 0;
+    }
   }
 
-  @media (max-width: 768px) {
-    background-color: #fff;
-    padding: 0 20px 24px;
+  background-color: #fff;
+  padding: 0 0 24px;
 
-    input,
-    select,
-    .cardElementWrapper {
-      appearance: none;
-      border: 2px solid #e3e3e3 !important;
-      border-radius: 2px;
-    }
+  @media (min-width: 769px) {
+    padding-bottom: 0;
+  }
 
-    .cardElementWrapper {
-      input {
-        border: 0 !important;
-      }
+  input,
+  select,
+  .cardElementWrapper {
+    appearance: none;
+    border: 1px solid #141414 !important;
+  }
+
+  .cardElementWrapper {
+    input {
+      border: 0 !important;
     }
   }
 }
@@ -115,10 +122,10 @@
 }
 
 .checkForm {
-  margin-top: 3rem;
+  margin-top: 2rem;
 
   @media (max-width: 768px) {
-    margin-top: 35px;
+    margin-top: 33px;
   }
 }
 
@@ -128,29 +135,74 @@
 
 .cardDetails {
   margin-top: 0.7rem;
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-right: -8px;
+    margin-left: -8px;
+
+    .col {
+      padding: 0 8px;
+      flex-grow: 1;
+    }
+  }
 }
 
 .hideCardDetails {
   display: none;
 }
 
+// .cardLabel {
+//   width: 100%;
+//   margin-top: 1rem;
+
+//   span {
+//     display: block;
+//     margin-bottom: 0.5em;
+//     color: rgba(#070707, 0.8);
+
+//     @media (max-width: 768px) {
+//       font-size: 15px;
+//       margin-bottom: 0.25rem;
+//     }
+//   }
+
+//   .input {
+//     margin-top: 0;
+//   }
+// }
+
 .cardLabel {
+  position: relative;
+  display: block;
   width: 100%;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 
   span {
-    display: block;
-    margin-bottom: 0.5em;
-    color: rgba(#070707, 0.8);
-
-    @media (max-width: 768px) {
-      font-size: 15px;
-      margin-bottom: 0.25rem;
-    }
+    position: absolute;
+    font-size: 14px;
+    line-height: 14px;
+    background-color: #fff;
+    top: -6px;
+    left: 10px;
+    padding: 0 8px;
   }
 
   .input {
     margin-top: 0;
+    width: 100%;
+    height: 48px;
+    border: none;
+    background: white;
+    padding-left: 16px;
+
+    color: var(--dark-color);
+    font-family: var(--font-proxima);
+    font-size: 15px;
+    &::placeholder {
+      color: var(--placeholder-color);
+    }
   }
 }
 
@@ -209,11 +261,11 @@
   background: white;
 }
 
-.cvvElementWrapper {
-  background-image: url('assets/images/cvc.png');
-  background-repeat: no-repeat;
-  background-position: right 0.5rem center;
-}
+// .cvvElementWrapper {
+//   background-image: url('assets/images/cvc.png');
+//   background-repeat: no-repeat;
+//   background-position: right 0.5rem center;
+// }
 
 .actionDiv {
   margin-top: 10px;
@@ -307,7 +359,7 @@
   }
 
   @media (max-width: 768px) {
-    margin: 0 40px 1.5rem;
+    margin: 0 0 1.5rem 11px;
     padding: 0;
   }
 
@@ -351,8 +403,25 @@
         bottom: 0;
         // background-color: inherit;
         position: absolute;
-        background-color: #f8f8f8;
+        // background-color: #f8f8f8;
+        background-color: #fff;
       }
     }
+  }
+}
+
+.paymentButton {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 0;
+  padding-left: 0;
+
+  &:focus {
+    outline: 0;
   }
 }

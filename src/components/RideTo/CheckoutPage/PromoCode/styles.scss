@@ -1,7 +1,6 @@
 .promoAction {
   cursor: pointer;
-  color: var(--primary-color);
-  font-weight: bold;
+  text-decoration: underline;
 
   @media (max-width: 768px) {
     font-size: 15px;
@@ -9,8 +8,9 @@
 }
 
 .promoWrapper {
-  margin-top: 16px;
-  padding: 0 30px;
+  margin-top: 10px;
+  // padding: 0 30px;
+  margin-bottom: 1rem;
 }
 
 .promoContainer {

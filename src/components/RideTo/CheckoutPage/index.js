@@ -9,6 +9,8 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styles from './styles.scss'
 import { capitalizeFirstLetter } from 'utils/helper'
+import { Modal } from 'reactstrap'
+import POMModal from './POMModal'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
@@ -17,7 +19,7 @@ function addCheckoutToHeader() {
   logoPhone &&
     logoPhone.insertAdjacentHTML(
       'afterend',
-      '<style>@media(max-width: 768px) { #checkout-title { display: none; } }</style><div id="checkout-title" style="font-size: 2rem; color: #fff; position: relative; left: -25px;">Checkout</div>'
+      '<style>@media(max-width: 768px) { #checkout-title { display: none; } }</style><div id="checkout-title" style="color: rgba(255, 255, 255, 0.5); font-size: 20px; font-family: var(--font-rift-bold); margin-left: -32px;">Checkout</div>'
     )
 }
 
@@ -51,7 +53,8 @@ class CheckoutPageContainer extends Component {
       trainings: this.trainings,
       supplier,
       instantBook: isInstantBook(),
-      hasPOM: false
+      hasPOM: false,
+      isInexperienced: false
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
@@ -59,6 +62,7 @@ class CheckoutPageContainer extends Component {
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
     this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
     this.showPromoNotification = this.showPromoNotification.bind(this)
+    this.handleAddPOM = this.handleAddPOM.bind(this)
 
     this.POM = createPOM()
   }
@@ -81,7 +85,8 @@ class CheckoutPageContainer extends Component {
 
     this.setState({
       checkoutData: newCheckoutData,
-      hasPOM: true
+      hasPOM: true,
+      isInexperienced: false
     })
   }
 
@@ -93,7 +98,8 @@ class CheckoutPageContainer extends Component {
         ...checkoutData,
         addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
       },
-      hasPOM: false
+      hasPOM: false,
+      isInexperienced: false
     })
   }
 
@@ -114,6 +120,12 @@ class CheckoutPageContainer extends Component {
     })
   }
 
+  closePOMModal = () => {
+    this.setState({
+      isInexperienced: false
+    })
+  }
+
   render() {
     const {
       checkoutData,
@@ -121,8 +133,12 @@ class CheckoutPageContainer extends Component {
       supplier,
       instantBook,
       trainings,
-      hasPOM
+      hasPOM,
+      isInexperienced
     } = this.state
+    const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(
+      checkoutData.courseType
+    )
 
     return (
       <React.Fragment>
@@ -132,6 +148,15 @@ class CheckoutPageContainer extends Component {
           pauseOnHover={false}
           pauseOnFocusLoss={false}
         />
+        <Modal
+          isOpen={offersPOM && isInexperienced && !hasPOM}
+          size="md"
+          className={styles.modalContent}>
+          <POMModal
+            closeModal={this.closePOMModal}
+            handleAddPOM={this.handleAddPOM}
+          />
+        </Modal>
         <StripeProvider apiKey={this.stripePublicKey}>
           <Elements>
             <CheckoutPage
@@ -143,6 +168,7 @@ class CheckoutPageContainer extends Component {
               handlePOMToggleClick={this.handlePOMToggleClick}
               hasPOM={hasPOM}
               showPromoNotification={this.showPromoNotification}
+              handeUpdateOption={this.handeUpdateOption}
             />
           </Elements>
         </StripeProvider>

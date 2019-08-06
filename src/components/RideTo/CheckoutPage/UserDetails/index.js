@@ -6,7 +6,6 @@ import {
   CardCVCElement,
   PostalCodeElement
 } from 'react-stripe-elements'
-import { Row, Col } from 'reactstrap'
 import DateInput from 'components/RideTo/DateInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Input from 'components/RideTo/Input'
@@ -16,10 +15,18 @@ import { getCurrentLicenceOptions } from 'services/customer'
 import styles from './styles.scss'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 import NextSteps from './NextSteps'
+import addBlack from 'assets/images/rideto/AddBlack.svg'
+import closeDark from 'assets/images/rideto/CloseDark.svg'
+import SectionSplitter from '../SectionSplitter'
+import CardIcons from '../CardIcons'
 
 class UserDetails extends Component {
   constructor(props) {
     super(props)
+
+    this.state = {
+      cardBrand: null
+    }
 
     this.handleChange = this.handleChange.bind(this)
     this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -34,7 +41,7 @@ class UserDetails extends Component {
   componentDidUpdate(prevProps) {
     const { showCardDetails } = this.props
 
-    if (prevProps.showCardDetails !== showCardDetails) {
+    if (prevProps.showCardDetails !== showCardDetails && showCardDetails) {
       setTimeout(() => {
         const cardDetails = this.cardDetails.current
 
@@ -76,10 +83,16 @@ class UserDetails extends Component {
 
   stripeElementChange(element, name) {
     const { onDetailChange } = this.props
+    const { brand, elementType } = element
     if (!element.empty && element.complete) {
       onDetailChange(name, true)
     } else {
       onDetailChange(name, false)
+    }
+    if (elementType === 'cardNumber') {
+      this.setState({
+        cardBrand: brand
+      })
     }
   }
 
@@ -110,17 +123,18 @@ class UserDetails extends Component {
       trainings,
       handlePOMToggleClick,
       hasPOM,
-      isFullLicence
+      isFullLicence,
+      instantBook
     } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
       <div>
-        <NextSteps isFullLicence={isFullLicence} />
+        <NextSteps isFullLicence={isFullLicence} instantBook={instantBook} />
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
-            Order Summary
+            Your Booking
           </div>
           <CourseInformation
             checkoutData={checkoutData}
@@ -133,11 +147,16 @@ class UserDetails extends Component {
             hasPOM={hasPOM}
           />
         </div>
-        <div id="checkout-your-details" className={styles.title}>
-          Your Details
+        <SectionSplitter hideDesktop />
+        <div
+          id="checkout-your-details"
+          className={styles.title}
+          style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
+          Rider's Details
         </div>
         <div className={styles.rowItem}>
           <Input
+            label="First Name"
             placeholder="First name"
             name="first_name"
             value={details.first_name}
@@ -151,6 +170,7 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.first_name}</div>
           )}
           <Input
+            label="Last Name"
             placeholder="Last name"
             name="last_name"
             value={details.last_name}
@@ -164,6 +184,7 @@ class UserDetails extends Component {
             <div className={styles.error}>{errors.last_name}</div>
           )}
           <Input
+            label="Email Address"
             type="email"
             placeholder="E-mail address"
             name="email"
@@ -181,6 +202,7 @@ class UserDetails extends Component {
               styles.input
             )}>
             <DateInput
+              label="Date of Birth"
               placeholder="Date of Birth"
               id="user_birthdate"
               name="user_birthdate"
@@ -190,7 +212,6 @@ class UserDetails extends Component {
               required
             />
           </div>
-          <div className={styles.subtext}>DD/MM/YYYY</div>
           {errors.user_birthdate && (
             <div className={styles.error}>{errors.user_birthdate}</div>
           )}
@@ -200,6 +221,7 @@ class UserDetails extends Component {
               errors.phone && styles.inputError
             )}>
             <PhoneInput
+              label="Telephone Number"
               placeholder="Telephone Number"
               name="phone"
               value={details.phone}
@@ -210,6 +232,7 @@ class UserDetails extends Component {
           {errors.phone && <div className={styles.error}>{errors.phone}</div>}
           <div className={styles.selectElement}>
             <Select
+              label="Current Licence"
               value={details.current_licence}
               name="current_licence"
               className={classnames(
@@ -227,12 +250,15 @@ class UserDetails extends Component {
               ))}
             </Select>
           </div>
-          <div className={styles.subtext}>Select the licence you have</div>
+          <div className={styles.subtext}>
+            Which licence do you currently have?
+          </div>
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
           <div className={styles.selectElement}>
             <Select
+              label="Riding Experience"
               value={details.riding_experience}
               name="riding_experience"
               className={classnames(
@@ -253,12 +279,15 @@ class UserDetails extends Component {
               ))}
             </Select>
           </div>
-          <div className={styles.subtext} />
+          <div className={styles.subtext}>
+            Do you have any riding experience?
+          </div>
           {errors.riding_experience && (
             <div className={styles.error}>{errors.riding_experience}</div>
           )}
           <div className={styles.selectElement}>
             <Select
+              label="Rider Type"
               value={details.rider_type}
               name="rider_type"
               className={classnames(
@@ -277,76 +306,23 @@ class UserDetails extends Component {
               ))}
             </Select>
           </div>
-          <div className={styles.subtext}>Why you are learning to ride</div>
+          <div className={styles.subtext}>Why you are learning to ride?</div>
           {errors.rider_type && (
             <div className={styles.error}>{errors.rider_type}</div>
           )}
         </div>
-
-        {/*
-
-        {addons.length > 0 && (
-          <React.Fragment>
-            <div id="checkout-delivery-address" className={styles.title}>
-              Delivery Address
-            </div>
-            {!manualAddress && (
-              <div className={styles.rowItem}>
-                <div
-                  className={classnames(
-                    styles.input,
-                    styles.searchPostcodeInput,
-                    postcodeLookingup && styles.waiting,
-                    errors.postcode && styles.inputError
-                  )}>
-                  <Input
-                    id="postcodeSearch"
-                    placeholder="Postcode"
-                    name="postcode"
-                    className={styles.findPostcodeInput}
-                    onChange={this.handleChange}
-                    onKeyUp={event =>
-                      event.key === 'Enter' &&
-                      onPostalCodeSubmit(event.target.value)
-                    }
-                    disabled={postcodeLookingup}
-                    required
-                  />
-                  <Button
-                    className={styles.postcodeSearchButton}
-                    onClick={this.handleSearchPostcode}>
-                    Search Address
-                  </Button>
-                </div>
-                {errors.postcode && !postcodeLookingup && (
-                  <div className={styles.error}>{errors.postcode}</div>
-                )}
-                <div
-                  className={styles.actionDiv}
-                  onClick={() => onChange({ manualAddress: true })}>
-                  Enter address manually
-                </div>
-              </div>
-            )}
-            {manualAddress && (
-              <div className={styles.rowItem}>
-                <AddressForm
-                  address={details.address}
-                  onChange={this.handleAddressChange}
-                  errors={errors.address}
-                />
-              </div>
-            )}
-          </React.Fragment>
-        )}
-
-        */}
       </div>
     )
   }
 
   renderPaymentForm() {
-    const { details, errors = {}, showCardDetails } = this.props
+    const {
+      details,
+      errors = {},
+      showCardDetails,
+      handlePaymentButtonClick
+    } = this.props
+    const { cardBrand } = this.state
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -356,23 +332,29 @@ class UserDetails extends Component {
     }
     return (
       <div className={styles.checkForm} ref={this.cardDetails}>
-        <div
+        <button
+          onClick={handlePaymentButtonClick}
           id="checkout-payment-details"
-          className={classnames(
-            styles.title,
-            !showCardDetails && styles.fadeTitle
-          )}>
+          className={classnames(styles.title, styles.paymentButton)}>
           Payment Details
-        </div>
+          {!showCardDetails ? (
+            <img src={addBlack} alt="Add" width="15" height="15" />
+          ) : (
+            <img src={closeDark} alt="Close" width="15" height="15" />
+          )}
+        </button>
         <div
           className={classnames(
             styles.rowItem,
             styles.cardDetails,
             !showCardDetails && styles.hideCardDetails
           )}>
-          <label className={styles.cardLabel}>
+          <label
+            className={styles.cardLabel}
+            style={{ marginBottom: '1.75rem' }}>
             <span>Card number</span>
             <div
+              style={{ marginBottom: '5px' }}
               className={classnames(
                 styles.cardElementWrapper,
                 errors.card_number && styles.inputError
@@ -386,6 +368,7 @@ class UserDetails extends Component {
                 }
               />
             </div>
+            <CardIcons selected={cardBrand} />
           </label>
           <label className={styles.cardLabel}>
             <span>Name on card</span>
@@ -401,8 +384,8 @@ class UserDetails extends Component {
               required
             />
           </label>
-          <Row>
-            <Col>
+          <div className={styles.row}>
+            <div className={styles.col}>
               <label className={styles.cardLabel}>
                 <span>Expiry date</span>
                 <div
@@ -413,16 +396,15 @@ class UserDetails extends Component {
                   <CardExpiryElement
                     style={inputStyle}
                     required
-                    placeholder=""
+                    placeholder="MM/YY"
                     onChange={element =>
                       this.stripeElementChange(element, 'expiry_date')
                     }
                   />
                 </div>
-                <div className={styles.subtext}>MM/YY</div>
               </label>
-            </Col>
-            <Col>
+            </div>
+            <div className={styles.col}>
               <label className={styles.cardLabel}>
                 <span>CVV/CV2</span>
                 <div
@@ -441,8 +423,8 @@ class UserDetails extends Component {
                   />
                 </div>
               </label>
-            </Col>
-          </Row>
+            </div>
+          </div>
 
           <label className={styles.cardLabel}>
             <span>Billing postcode</span>
@@ -470,6 +452,7 @@ class UserDetails extends Component {
     return (
       <div className={styles.container}>
         {this.renderUserInfo()}
+        <SectionSplitter />
         {this.renderPaymentForm()}
       </div>
     )

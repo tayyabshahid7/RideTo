@@ -10,16 +10,27 @@ import {
 export const BikeHires = [
   { value: BIKE_HIRE.MANUAL, title: 'Manual' },
   { value: BIKE_HIRE.AUTO, title: 'Automatic' },
-  { value: BIKE_HIRE.NO, title: 'No' }
+  { value: BIKE_HIRE.NO, title: 'No' },
+  { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' },
+  { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' }
 ]
 
 export function formatBikeConstant(constant) {
   switch (constant) {
     case 'BIKE_TYPE_AUTO':
     case 'auto':
+    case 'Auto':
+    case 'automatic':
+    case 'Automatic':
+    case 'AUTO_125CC':
+    case 'BIKE_TYPE_AUTO_125CC':
+    case 'BIKE_TYPE_BIKE_125CC':
       return BIKE_HIRE.AUTO
     case 'BIKE_TYPE_MANUAL':
     case 'manual':
+    case 'Manual':
+    case 'MANUAL_50CC':
+    case 'BIKE_TYPE_MANUAL_50CC':
       return BIKE_HIRE.MANUAL
     case 'BIKE_TYPE_NONE':
     case 'none':

@@ -21,7 +21,9 @@ export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 export const BIKE_HIRE = {
   MANUAL: 'manual',
   AUTO: 'auto',
-  NO: 'no'
+  NO: 'no',
+  AUTO_125CC: 'AUTO_125CC',
+  MANUAL_50CC: 'MANUAL_50CC'
 }
 
 export const RIDING_EXPERIENCE = {
