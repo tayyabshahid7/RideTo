@@ -20,7 +20,7 @@ const ITEMS = [
 function GuidesAdvice() {
   return (
     <div className={styles.container}>
-      <h2 className={styles.title}>Gudies & advice</h2>
+      <h2 className={styles.title}>Guides & advice</h2>
       <CircleList items={ITEMS} />
     </div>
   )
