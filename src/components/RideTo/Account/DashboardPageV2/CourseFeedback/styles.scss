@@ -14,6 +14,7 @@
   padding: 0 1.5rem;
   font-size: 15px;
   line-height: 1;
+  text-align: left;
 
   + .button {
     margin-top: 1rem;
@@ -41,6 +42,11 @@
 
   p:last-child {
     margin-bottom: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
   }
 }
 
