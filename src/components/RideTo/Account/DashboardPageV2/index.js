@@ -5,7 +5,7 @@ import RouteToFreedom from './RouteToFreedom'
 import NextStep from './NextStep'
 import Achievements from './Achievements'
 import GuidesAdvice from './GuidesAdvice'
-import CostCalc from './CostCalc'
+// import CostCalc from './CostCalc'
 
 function DashboardPageV2() {
   return (
@@ -22,9 +22,6 @@ function DashboardPageV2() {
       </div>
       <div className={styles.pageItem}>
         <GuidesAdvice />
-      </div>
-      <div className={styles.pageItem}>
-        <CostCalc />
       </div>
     </div>
   )

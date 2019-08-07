@@ -22,7 +22,7 @@ function GuidesAdvice() {
       <h2 className={styles.title}>Gudies & advice</h2>
       <ul className={styles.list}>
         {ITEMS.map(({ title, url }, i) => (
-          <li>
+          <li key={i}>
             <a href={url}>
               <span className={styles.circle}>{i + 1}</span>
               <span className={styles.linkTitle}>{title}</span>

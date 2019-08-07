@@ -5,6 +5,7 @@ import Button from 'components/RideTo/Button'
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Input from 'components/RideTo/Input'
+import Checkbox from 'components/Checkbox'
 
 function NextStep() {
   return (
@@ -34,6 +35,14 @@ function NextStep() {
           <img src={ButtonArrowWhite} alt="" />
         </Button>
       </form>
+      <div>
+        <Checkbox
+          extraClass={styles.dashboardCheck}
+          size="smallBlack"
+          onChange={event => console.log(event)}>
+          <div>I have completed this step</div>
+        </Checkbox>
+      </div>
     </div>
   )
 }
