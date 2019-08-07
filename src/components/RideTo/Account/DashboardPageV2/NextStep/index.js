@@ -10,6 +10,7 @@ import CircleList from '../CircleList'
 import FAQs from '../FAQs'
 import UpComingCourse from '../UpComingCourse'
 import CourseFeedback from '../CourseFeedback'
+import Slider from '../Slider'
 
 function NextStep() {
   return (
@@ -60,6 +61,7 @@ function NextStep() {
           <img src={ButtonArrowWhite} alt="" />
         </Button>
       </form>
+      <Slider />
       <div>
         <Checkbox
           extraClass={styles.dashboardCheck}
