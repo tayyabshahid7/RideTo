@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 import Expander from './Expander'
+import Steps from './Steps'
 import Select from 'components/RideTo/Select'
 import classnames from 'classnames'
 
@@ -39,7 +40,7 @@ function RouteToFreedom() {
       <Expander
         title={`${percentComplete}% complete`}
         percentComplete={percentComplete}>
-        <div>asdf</div>
+        <Steps />
       </Expander>
     </div>
   )

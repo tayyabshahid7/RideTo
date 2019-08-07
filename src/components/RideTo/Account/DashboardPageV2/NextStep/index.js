@@ -11,12 +11,13 @@ import FAQs from '../FAQs'
 import UpComingCourse from '../UpComingCourse'
 import CourseFeedback from '../CourseFeedback'
 import Slider from '../Slider'
+import StatusIcon from '../StatusIcon'
 
 function NextStep() {
   return (
     <div className={styles.container}>
-      <div>
-        <div className={styles.ring}></div>
+      <div className={styles.header}>
+        <StatusIcon status="Next Step" />
       </div>
       <h2 className={styles.title}>
         Next step <span>Full Licence</span>

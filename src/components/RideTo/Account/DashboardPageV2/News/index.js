@@ -26,8 +26,8 @@ function News() {
     <div className={styles.container}>
       <h2 className={styles.title}>Latest advice and guides</h2>
       <ul className={styles.list}>
-        {NEWS.map(item => (
-          <NewsItem key={item.url} news={item} />
+        {NEWS.map((item, i) => (
+          <NewsItem key={i} news={item} />
         ))}
       </ul>
       <Button alt modern className={styles.loadMore}>

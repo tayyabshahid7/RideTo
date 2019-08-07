@@ -1,0 +1,23 @@
+.ring {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--dashboard-green);
+  border-radius: 50%;
+  text-align: center;
+  font-size: 13px;
+}
+
+.complete {
+  background-color: var(--dashboard-green);
+}
+
+.nextStep {
+}
+
+.notStarted {
+  border-color: #d8d8d8;
+}
+
+.tick {
+  color: #fff;
+}

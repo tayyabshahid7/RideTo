@@ -5,7 +5,8 @@ import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import ProgressBar from '../ProgressBar'
 
 function Expander({ children, title, percentComplete }) {
-  const [isOpen, setIsOpen] = useState(false)
+  // const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(true)
 
   const handleClick = () => {
     setIsOpen(!isOpen)
