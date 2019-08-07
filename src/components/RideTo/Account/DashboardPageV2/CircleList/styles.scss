@@ -1,0 +1,53 @@
+.list {
+  padding: 0;
+  list-style: none;
+
+  li {
+    a {
+      display: flex;
+      align-items: center;
+      color: inherit;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    + li {
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.circle {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--primary-color);
+  color: #fff;
+  text-align: center;
+  margin-right: 0.75rem;
+}
+
+.linkTitle {
+  text-decoration: underline;
+}
+
+.listSmall {
+  li {
+    font-size: 15px;
+
+    + li {
+      margin-top: 0.1rem;
+    }
+  }
+
+  .circle {
+    width: 15px;
+    height: 15px;
+    margin-right: 0.5rem;
+    font-size: 12px;
+    line-height: 1.3;
+  }
+}

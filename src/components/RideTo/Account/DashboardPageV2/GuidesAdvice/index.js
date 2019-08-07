@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './styles.scss'
+import CircleList from '../CircleList'
 
 const ITEMS = [
   {
@@ -20,16 +21,7 @@ function GuidesAdvice() {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>Gudies & advice</h2>
-      <ul className={styles.list}>
-        {ITEMS.map(({ title, url }, i) => (
-          <li key={i}>
-            <a href={url}>
-              <span className={styles.circle}>{i + 1}</span>
-              <span className={styles.linkTitle}>{title}</span>
-            </a>
-          </li>
-        ))}
-      </ul>
+      <CircleList items={ITEMS} />
     </div>
   )
 }

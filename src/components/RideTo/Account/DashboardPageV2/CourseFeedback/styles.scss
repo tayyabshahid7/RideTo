@@ -1,0 +1,49 @@
+.container {
+}
+
+.subtitle {
+  margin: 1.5rem 0 1rem;
+}
+
+.button {
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  height: 48px;
+  border: 1px solid var(--dark-color);
+  padding: 0 1.5rem;
+  font-size: 15px;
+  line-height: 1;
+
+  + .button {
+    margin-top: 1rem;
+  }
+}
+
+.buttonActive {
+  background-color: var(--dark-color);
+  color: #fff;
+}
+
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem 2.5rem;
+  margin-top: 2rem;
+  background-color: rgba(#c2c2c2, 0.1);
+  text-align: center;
+
+  p {
+    font-size: 15px;
+    line-height: 1.5rem;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.messageIcon {
+  margin-bottom: 1.5rem;
+}
