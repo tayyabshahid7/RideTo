@@ -1,57 +1,27 @@
 import React from 'react'
 import styles from './styles.scss'
 import Step from './Step'
+import ProgressBar from '../ProgressBar'
+import { useMediaQuery } from 'react-responsive'
 
-const STEPS = [
-  {
-    name: 'Start',
-    status: 'Start'
-  },
-  {
-    name: 'Licence',
-    status: 'Complete'
-  },
-  {
-    name: 'ITM',
-    status: 'Complete'
-  },
-  {
-    name: 'Revise',
-    status: 'Complete'
-  },
-  {
-    name: 'CBT',
-    status: 'Complete'
-  },
-  {
-    name: 'Theory Test',
-    status: 'Next Step'
-  },
-  {
-    name: 'Full Licence',
-    status: 'Not Started'
-  },
-  {
-    name: 'Bike',
-    status: 'Not Started'
-  },
-  {
-    name: 'Insure',
-    status: 'Not Started'
-  },
-  {
-    name: 'Ride',
-    status: 'Ride'
-  }
-]
+function Steps({ steps, percentComplete }) {
+  const isDesktop = useMediaQuery({ minWidth: 1025 })
 
-function Steps() {
   return (
-    <ul className={styles.list}>
-      {STEPS.map(step => (
-        <Step key={step.name} step={step} />
-      ))}
-    </ul>
+    <div className={styles.container}>
+      <ul className={styles.list}>
+        {steps.map(step => (
+          <Step key={step.name} step={step} />
+        ))}
+      </ul>
+      {isDesktop && (
+        <ProgressBar
+          percent={percentComplete}
+          bgColor="#d8d8d8"
+          className={styles.stepsBar}
+        />
+      )}
+    </div>
   )
 }
 

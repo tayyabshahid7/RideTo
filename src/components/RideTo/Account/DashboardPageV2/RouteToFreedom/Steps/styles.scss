@@ -1,5 +1,21 @@
+.container {
+  @media (min-width: 1025px) {
+    position: relative;
+  }
+}
+
 .list {
   padding: 0;
   margin: 1.5rem 0 0;
   list-style: none;
+
+  @media (min-width: 1025px) {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.stepsBar {
+  position: absolute;
+  top: 11px;
 }

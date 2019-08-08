@@ -3,8 +3,15 @@ import styles from './styles.scss'
 import Expand from 'assets/images/rideto/Expand.svg'
 import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import ProgressBar from '../ProgressBar'
+import classnames from 'classnames'
 
-function Expander({ children, title, percentComplete }) {
+function Expander({
+  children,
+  title,
+  percentComplete,
+  className,
+  contentClassName
+}) {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleClick = () => {
@@ -12,7 +19,7 @@ function Expander({ children, title, percentComplete }) {
   }
 
   return (
-    <div>
+    <div className={className}>
       <button className={styles.button} onClick={handleClick}>
         <h2>{title}</h2>
         <img
@@ -23,7 +30,7 @@ function Expander({ children, title, percentComplete }) {
       </button>
       {percentComplete && <ProgressBar percent={percentComplete} />}
       <div
-        className={styles.content}
+        className={classnames(styles.content, contentClassName)}
         style={{ display: isOpen ? 'block' : undefined }}>
         {children}
       </div>

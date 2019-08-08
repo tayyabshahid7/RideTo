@@ -7,17 +7,42 @@
   + .item {
     margin-top: 1rem;
   }
+
+  @media (min-width: 1025px) {
+    position: relative;
+    z-index: 1;
+
+    + .item {
+      margin-top: 0;
+    }
+  }
 }
 
 .main {
   display: flex;
   align-items: center;
+
+  @media (min-width: 1025px) {
+    flex-direction: column;
+    width: 24px;
+  }
 }
 
 .name {
   margin-left: 0.75rem;
+
+  @media (min-width: 1025px) {
+    margin-top: 0.5rem;
+    margin-left: 0;
+    text-align: center;
+    white-space: nowrap;
+  }
 }
 
 .status {
   color: rgba(#111111, 0.4);
+
+  @media (min-width: 1025px) {
+    display: none;
+  }
 }

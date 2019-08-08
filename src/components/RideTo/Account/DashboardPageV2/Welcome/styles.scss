@@ -6,6 +6,17 @@
   text-align: center;
 
   border-bottom: 1px solid var(--dark-color);
+
+  @media (min-width: 1025px) {
+    padding: 1.5rem 2rem;
+    border-bottom-color: #e4e4e4;
+  }
+}
+
+.infoCircle {
+  font-size: 1.15em;
+  vertical-align: middle;
+  margin-right: 0.25rem;
 }
 
 .link {

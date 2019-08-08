@@ -1,9 +1,14 @@
 import React from 'react'
 import styles from './styles.scss'
+import classnames from 'classnames'
 
-function ProgressBar({ percent }) {
+function ProgressBar({ percent, bgColor, className }) {
   return (
-    <div className={styles.bar}>
+    <div
+      className={classnames(styles.bar, className)}
+      style={{
+        backgroundColor: bgColor
+      }}>
       <div
         className={styles.progress}
         style={{
