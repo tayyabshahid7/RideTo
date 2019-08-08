@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import styles from './styles.scss'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import classnames from 'classnames'
 
 function FAQs({ questions }) {
   return (
-    <Fragment>
+    <div>
       <h3 className={classnames(styles.subtitle, styles.subtitleFaq)}>FAQs</h3>
       <CourseTypeDetails
         courseType={{
@@ -24,7 +24,7 @@ function FAQs({ questions }) {
           textAlign: 'left'
         }}
       />
-    </Fragment>
+    </div>
   )
 }
 

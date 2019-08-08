@@ -3,7 +3,7 @@ import styles from './styles.scss'
 import { camelCase } from 'lodash'
 import classnames from 'classnames'
 
-function StatusIcon({ status }) {
+function StatusIcon({ status, transparent }) {
   const camelStatus = camelCase(status)
 
   if (camelStatus === 'start') {
@@ -15,7 +15,12 @@ function StatusIcon({ status }) {
   }
 
   return (
-    <div className={classnames(styles.ring, styles[camelStatus])}>
+    <div
+      className={classnames(
+        styles.ring,
+        styles[camelStatus],
+        transparent && styles.ringTransparent
+      )}>
       {camelStatus === 'complete' && (
         <span className={styles.tick}>
           <i className="fa fa-check" />

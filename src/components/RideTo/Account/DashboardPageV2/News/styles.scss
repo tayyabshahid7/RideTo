@@ -11,4 +11,9 @@
   margin-top: 2rem;
   justify-content: center;
   background-color: transparent;
+
+  @media (min-width: 1025px) {
+    width: auto;
+    margin: 3rem auto 0;
+  }
 }

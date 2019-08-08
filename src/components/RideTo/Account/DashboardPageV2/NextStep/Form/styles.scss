@@ -1,0 +1,39 @@
+.container {
+  @media (min-width: 1025px) {
+    padding: 2rem;
+    background-color: #f9f9f9;
+
+    form > label > span {
+      background-color: #f9f9f9;
+    }
+  }
+}
+
+.icon {
+  margin: 2rem 0 1rem;
+  display: flex;
+  justify-content: center;
+
+  @media (min-width: 1025px) {
+    margin-top: 1rem;
+  }
+}
+
+.input {
+  margin-top: 24px;
+  background-clip: padding-box;
+  appearance: none;
+  border: 1px solid #141414 !important;
+  margin-bottom: 0.5rem;
+
+  @media (min-width: 1025px) {
+    background-color: #f9f9f9;
+  }
+}
+
+.button {
+  @media (min-width: 1025px) {
+    padding-right: 1.5rem !important;
+    padding-left: 1.5rem !important;
+  }
+}
