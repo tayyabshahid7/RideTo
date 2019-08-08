@@ -13,6 +13,50 @@ import Slider from '../Slider'
 import StatusIcon from '../StatusIcon'
 import { useMediaQuery } from 'react-responsive'
 import WithTitle from './WithTitle'
+import classnames from 'classnames'
+
+const GEAR = [
+  {
+    name: 'Bikes',
+    link: '/',
+    image: 'https://via.placeholder.com/120x62'
+  },
+  {
+    name: 'Gloves',
+    link: '/',
+    image: 'https://via.placeholder.com/62x120'
+  },
+  {
+    name: 'Bikes',
+    link: '/',
+    image: 'https://via.placeholder.com/120x62'
+  },
+  {
+    name: 'Gloves',
+    link: '/',
+    image: 'https://via.placeholder.com/62x120'
+  },
+  {
+    name: 'Bikes',
+    link: '/',
+    image: 'https://via.placeholder.com/120x62'
+  },
+  {
+    name: 'Gloves',
+    link: '/',
+    image: 'https://via.placeholder.com/62x120'
+  },
+  {
+    name: 'Bikes',
+    link: '/',
+    image: 'https://via.placeholder.com/120x62'
+  },
+  {
+    name: 'Gloves',
+    link: '/',
+    image: 'https://via.placeholder.com/62x120'
+  }
+]
 
 const NEXT_STEP = {
   title: 'Theory Test',
@@ -27,24 +71,25 @@ const NEXT_STEP = {
   //   title: 'What you need',
   //   items: ['Bike & helmet hire', 'Test fees & fuel']
   // },
-  guides: {
-    title: 'Useful guides',
-    items: [{ title: 'What to Prepare For Your CBT Training?', url: '/' }]
-  },
+  // guides: {
+  //   title: 'Useful guides',
+  //   items: [{ title: 'What to Prepare For Your CBT Training?', url: '/' }]
+  // },
   // faqs: {
   //   "What's included?": 'Ut in.',
   //   'What do I need to bring?': 'Lorem ipsum sit dolore anim.'
   // }
-  form: {
-    icon: '',
-    label: 'Postcode',
-    action: '/',
-    buttonText: 'Book local instructor'
-  },
+  // form: {
+  //   icon: '',
+  //   label: 'Postcode',
+  //   action: '/',
+  //   buttonText: 'Book local instructor'
+  // },
   cta: {
     href: '/',
     text: 'Labore excepteur '
-  }
+  },
+  gear: GEAR
 }
 
 function NextStep() {
@@ -57,7 +102,8 @@ function NextStep() {
     guides,
     faqs,
     form,
-    cta
+    cta,
+    gear
   } = NEXT_STEP
   const isDesktop = useMediaQuery({ minWidth: 1025 })
 
@@ -114,11 +160,11 @@ function NextStep() {
           <div className={styles.rightCol}>
             <Form form={form} />
           </div>
-        ) : (
-          <div className={styles.rightCol}>
-            <Slider />
+        ) : gear ? (
+          <div className={classnames(styles.rightCol, styles.rightColSlider)}>
+            <Slider gear={gear} />
           </div>
-        )}
+        ) : null}
         {!isDesktop && (
           <Checkbox
             extraClass={styles.dashboardCheck}
