@@ -51,9 +51,10 @@ const STEPS = [
 ]
 
 function RouteToFreedom() {
-  const stepsLength = STEPS.length
-  const currentStepIndex = STEPS.findIndex(step => step.status === 'Next Step')
-  const percentComplete = (currentStepIndex / stepsLength) * 100
+  const steps = STEPS
+  const stepsLength = steps.length
+  const currentStep = steps.findIndex(step => step.status === 'Next Step')
+  const percentComplete = (currentStep / stepsLength) * 100
   const goal = 'Asdf'
   const style = 'Asdf'
   const isDesktop = useMediaQuery({ minWidth: 1025 })
@@ -96,7 +97,11 @@ function RouteToFreedom() {
       <Expander
         title={`${percentComplete}% complete`}
         percentComplete={!isDesktop && percentComplete}>
-        <Steps steps={STEPS} percentComplete={percentComplete} />
+        <Steps
+          steps={steps}
+          percentComplete={percentComplete}
+          currentStep={currentStep}
+        />
       </Expander>
     </div>
   )

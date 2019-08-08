@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { forwardRef } from 'react'
 import styles from './styles.scss'
 import StatusIcon from '../../../StatusIcon'
 
-function Step({ step: { name, status } }) {
+const Step = forwardRef(({ step: { name, status } }, ref) => {
   const visualStatus = ['Start', 'Ride', 'Not Started'].includes(status)
     ? '–'
     : status
 
   return (
-    <li className={styles.item}>
+    <li ref={ref} className={styles.item}>
       <span className={styles.main}>
         <StatusIcon status={status} />
         <span className={styles.name}>{name}</span>
@@ -16,6 +16,6 @@ function Step({ step: { name, status } }) {
       <span className={styles.status}>{visualStatus}</span>
     </li>
   )
-}
+})
 
 export default Step
