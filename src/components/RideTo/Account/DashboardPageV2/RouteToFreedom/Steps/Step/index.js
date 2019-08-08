@@ -9,6 +9,9 @@ const Step = forwardRef(({ step: { name, status } }, ref) => {
 
   return (
     <li ref={ref} className={styles.item}>
+      {status === 'Next Step' && (
+        <span className={styles.nextStep}>Next Step</span>
+      )}
       <span className={styles.main}>
         <StatusIcon status={status} />
         <span className={styles.name}>{name}</span>

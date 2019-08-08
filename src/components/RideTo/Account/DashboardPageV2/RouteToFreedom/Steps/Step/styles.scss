@@ -46,3 +46,35 @@
     display: none;
   }
 }
+
+.nextStep {
+  display: none;
+  position: absolute;
+  white-space: nowrap;
+  top: -40px;
+  left: -24px;
+  font-size: 13px;
+  color: #fff;
+  background-color: var(--dashboard-green);
+  padding: 0.5rem;
+  line-height: 1.3;
+
+  &::after {
+    top: 100%;
+    left: 50%;
+    border: solid transparent;
+    content: ' ';
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+    border-color: rgba(0, 0, 0, 0);
+    border-top-color: var(--dashboard-green);
+    border-width: 5px;
+    margin-left: -5px;
+  }
+
+  @media (min-width: 1025px) {
+    display: block;
+  }
+}
