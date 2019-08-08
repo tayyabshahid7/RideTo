@@ -6,57 +6,15 @@ import Select from 'components/RideTo/Select'
 import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import PercentCircle from './PercentCircle'
-
-const STEPS = [
-  {
-    name: 'Start',
-    status: 'Start'
-  },
-  {
-    name: 'Licence',
-    status: 'Complete'
-  },
-  {
-    name: 'ITM',
-    status: 'Complete'
-  },
-  {
-    name: 'Revise',
-    status: 'Complete'
-  },
-  {
-    name: 'CBT',
-    status: 'Complete'
-  },
-  {
-    name: 'Theory Test',
-    status: 'Next Step'
-  },
-  {
-    name: 'Full Licence',
-    status: 'Not Started'
-  },
-  {
-    name: 'Bike',
-    status: 'Not Started'
-  },
-  {
-    name: 'Insure',
-    status: 'Not Started'
-  },
-  {
-    name: 'Ride',
-    status: 'Ride'
-  }
-]
+import { STEPS, GOALS, STYLES } from './content'
 
 function RouteToFreedom() {
   const steps = STEPS
   const stepsLength = steps.length
   const currentStep = steps.findIndex(step => step.status === 'Next Step')
   const percentComplete = (currentStep / stepsLength) * 100
-  const goal = 'Asdf'
-  const style = 'Asdf'
+  const selectedGoal = GOALS[0]
+  const selectedStyle = STYLES[0]
   const isDesktop = useMediaQuery({ minWidth: 1025 })
 
   return (
@@ -70,24 +28,24 @@ function RouteToFreedom() {
             contentClassName={styles.filtersContent}>
             <div className={styles.formGroup}>
               <Select
-                value={goal}
-                onChange={event => console.log(event)}
+                value={selectedGoal}
+                onChange={event => console.log(event.target.value)}
                 className={classnames(styles.input, styles.inputSelect)}
                 label="My Riding Goal">
-                <option>Asdf</option>
-                <option>Asdf</option>
-                <option>Asdf</option>
+                {GOALS.map(goal => (
+                  <option key={goal}>{goal}</option>
+                ))}
               </Select>
             </div>
             <div className={styles.formGroup}>
               <Select
-                value={style}
-                onChange={event => console.log(event)}
+                value={selectedStyle}
+                onChange={event => console.log(event.target.value)}
                 className={classnames(styles.input, styles.inputSelect)}
                 label="My Riding Style">
-                <option>Asdf</option>
-                <option>Asdf</option>
-                <option>Asdf</option>
+                {STYLES.map(style => (
+                  <option key={style}>{style}</option>
+                ))}
               </Select>
             </div>
           </Expander>
