@@ -31,7 +31,7 @@
 }
 
 .message {
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   padding: 3rem 2.5rem;
@@ -52,8 +52,34 @@
     color: inherit;
     text-decoration: underline;
   }
+
+  @media (min-width: 1025px) {
+    display: flex;
+    margin-top: 0;
+    height: 100%;
+    justify-content: center;
+    padding: 0 10.5%;
+  }
 }
 
 .messageIcon {
   margin-bottom: 1.5rem;
+}
+
+.messageSelected {
+  display: flex;
+}
+
+.row {
+  @media (min-width: 1025px) {
+    display: flex;
+    margin: 0 -1rem;
+  }
+}
+
+.col {
+  @media (min-width: 1025px) {
+    flex: 1;
+    padding: 0 1rem;
+  }
 }

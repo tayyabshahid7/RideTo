@@ -3,9 +3,10 @@ import styles from './styles.scss'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Input from 'components/RideTo/Input'
 import Button from 'components/RideTo/Button'
+import classnames from 'classnames'
 
 function Form({ form }) {
-  const { action, label, buttonText, icon } = form
+  const { action, label, buttonText, icon, href } = form
 
   return (
     <div className={styles.container}>
@@ -17,13 +18,23 @@ function Form({ form }) {
           height="62"
         />
       </div>
-      <form action={action}>
-        <Input className={styles.input} label={label} />
-        <Button type="submit" modern className={styles.button}>
+      {action && label ? (
+        <form action={action}>
+          <Input className={styles.input} label={label} />
+          <Button type="submit" modern className={styles.button}>
+            <span>{buttonText}</span>
+            <img src={ButtonArrowWhite} alt="" />
+          </Button>
+        </form>
+      ) : href ? (
+        <Button
+          href={href}
+          modern
+          className={classnames(styles.button, styles.linkButton)}>
           <span>{buttonText}</span>
           <img src={ButtonArrowWhite} alt="" />
         </Button>
-      </form>
+      ) : null}
     </div>
   )
 }

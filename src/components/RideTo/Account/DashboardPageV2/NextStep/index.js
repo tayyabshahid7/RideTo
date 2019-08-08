@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styles from './styles.scss'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import Button from 'components/RideTo/Button'
@@ -15,53 +15,10 @@ import { useMediaQuery } from 'react-responsive'
 import WithTitle from './WithTitle'
 import classnames from 'classnames'
 
-const GEAR = [
-  {
-    name: 'Bikes',
-    link: '/',
-    image: 'https://via.placeholder.com/120x62'
-  },
-  {
-    name: 'Gloves',
-    link: '/',
-    image: 'https://via.placeholder.com/62x120'
-  },
-  {
-    name: 'Bikes',
-    link: '/',
-    image: 'https://via.placeholder.com/120x62'
-  },
-  {
-    name: 'Gloves',
-    link: '/',
-    image: 'https://via.placeholder.com/62x120'
-  },
-  {
-    name: 'Bikes',
-    link: '/',
-    image: 'https://via.placeholder.com/120x62'
-  },
-  {
-    name: 'Gloves',
-    link: '/',
-    image: 'https://via.placeholder.com/62x120'
-  },
-  {
-    name: 'Bikes',
-    link: '/',
-    image: 'https://via.placeholder.com/120x62'
-  },
-  {
-    name: 'Gloves',
-    link: '/',
-    image: 'https://via.placeholder.com/62x120'
-  }
-]
-
 const NEXT_STEP = {
   title: 'Theory Test',
   // course: null,
-  // feedBack: null,
+  // feedBack: true,
   introduction: {
     title: 'Introduction',
     text:
@@ -71,25 +28,37 @@ const NEXT_STEP = {
   //   title: 'What you need',
   //   items: ['Bike & helmet hire', 'Test fees & fuel']
   // },
-  // guides: {
-  //   title: 'Useful guides',
-  //   items: [{ title: 'What to Prepare For Your CBT Training?', url: '/' }]
-  // },
+  guides: {
+    title: 'Useful guides',
+    items: [{ title: 'What to Prepare For Your CBT Training?', url: '/' }]
+  },
   // faqs: {
   //   "What's included?": 'Ut in.',
   //   'What do I need to bring?': 'Lorem ipsum sit dolore anim.'
   // }
-  // form: {
-  //   icon: '',
-  //   label: 'Postcode',
-  //   action: '/',
-  //   buttonText: 'Book local instructor'
-  // },
-  cta: {
+  form: {
+    icon: '',
+    // label: 'Postcode',
+    // action: '/',
     href: '/',
-    text: 'Labore excepteur '
-  },
-  gear: GEAR
+    buttonText: 'Book local instructor'
+  }
+  // cta: {
+  //   href: '/',
+  //   text: 'Labore excepteur '
+  // }
+  // gear: [
+  //   {
+  //     name: 'Bikes',
+  //     link: '/',
+  //     image: 'https://via.placeholder.com/120x62'
+  //   },
+  //   {
+  //     name: 'Gloves',
+  //     link: '/',
+  //     image: 'https://via.placeholder.com/62x120'
+  //   }
+  // ]
 }
 
 function NextStep() {
@@ -112,7 +81,7 @@ function NextStep() {
       <div className={styles.header}>
         <div className={styles.headerTitle}>
           <div className={styles.iconWrap}>
-            <StatusIcon status="Next Step" transparent />
+            <StatusIcon status="Next Step" transparent pulsate />
           </div>
           <h2 className={styles.title}>
             Next step <span>{title}</span>
@@ -130,24 +99,29 @@ function NextStep() {
       <div className={styles.main}>
         <div className={styles.leftCol}>
           <div className={styles.row}>
-            {course && <UpComingCourse />}
-            {feedBack && <CourseFeedback />}
-            {introduction && (
-              <WithTitle title={introduction.title}>
-                <p>{introduction.text}</p>
-              </WithTitle>
+            {feedBack ? (
+              <CourseFeedback />
+            ) : (
+              <Fragment>
+                {course && <UpComingCourse />}
+                {introduction && (
+                  <WithTitle title={introduction.title}>
+                    <p>{introduction.text}</p>
+                  </WithTitle>
+                )}
+                {included && (
+                  <WithTitle title={included.title}>
+                    <OrderIncluded items={included.items} />
+                  </WithTitle>
+                )}
+                {guides && (
+                  <WithTitle title={guides.title}>
+                    <CircleList size="small" items={guides.items} />
+                  </WithTitle>
+                )}
+                {faqs && <FAQs questions={faqs} />}
+              </Fragment>
             )}
-            {included && (
-              <WithTitle title={included.title}>
-                <OrderIncluded items={included.items} />
-              </WithTitle>
-            )}
-            {guides && (
-              <WithTitle title={guides.title}>
-                <CircleList size="small" items={guides.items} />
-              </WithTitle>
-            )}
-            {faqs && <FAQs questions={faqs} />}
           </div>
           {cta && (
             <Button href={cta.href} alt modern className={styles.cta}>
