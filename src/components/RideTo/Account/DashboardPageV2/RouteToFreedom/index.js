@@ -25,7 +25,10 @@ function RouteToFreedom() {
           <Expander
             title="My goal"
             className={styles.filters}
-            contentClassName={styles.filtersContent}>
+            contentClassName={styles.filtersContent}
+            selectedGoal={selectedGoal}
+            selectedStyle={selectedStyle}
+            summary>
             <div className={styles.formGroup}>
               <Select
                 value={selectedGoal}

@@ -3,16 +3,22 @@ import styles from './styles.scss'
 import Expand from 'assets/images/rideto/Expand.svg'
 import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import ProgressBar from '../ProgressBar'
+import Summary from '../Summary'
 import classnames from 'classnames'
+import { useMediaQuery } from 'react-responsive'
 
 function Expander({
   children,
   title,
   percentComplete,
   className,
-  contentClassName
+  contentClassName,
+  summary,
+  selectedGoal,
+  selectedStyle
 }) {
   const [isOpen, setIsOpen] = useState(false)
+  const isDesktop = useMediaQuery({ minWidth: 1025 })
 
   const handleClick = () => {
     setIsOpen(!isOpen)
@@ -34,6 +40,9 @@ function Expander({
         style={{ display: isOpen ? 'block' : undefined }}>
         {children}
       </div>
+      {summary && !isOpen && !isDesktop && (
+        <Summary selectedGoal={selectedGoal} selectedStyle={selectedStyle} />
+      )}
     </div>
   )
 }
