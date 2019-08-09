@@ -68,6 +68,11 @@
   border: none;
   background: white url('assets/icons/dropdownLine.svg') no-repeat
     calc(100% - 24px) center !important;
+  font-family: var(--font-proxima-bold);
+
+  option {
+    font-family: var(--font-proxima);
+  }
 
   @media (min-width: 1025px) {
     height: 56px;

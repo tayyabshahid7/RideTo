@@ -28,6 +28,10 @@ export const STEPS = [
     status: 'Not Started'
   },
   {
+    name: 'Gear',
+    status: 'Not Started'
+  },
+  {
     name: 'Bike',
     status: 'Not Started'
   },

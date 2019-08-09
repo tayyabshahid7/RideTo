@@ -12,7 +12,7 @@ function RouteToFreedom() {
   const steps = STEPS
   const stepsLength = steps.length
   const currentStep = steps.findIndex(step => step.status === 'Next Step')
-  const percentComplete = (currentStep / stepsLength) * 100
+  const percentComplete = Math.round((currentStep / stepsLength) * 100)
   const selectedGoal = GOALS[0]
   const selectedStyle = STYLES[0]
   const isDesktop = useMediaQuery({ minWidth: 1025 })

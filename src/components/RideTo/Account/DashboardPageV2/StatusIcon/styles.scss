@@ -46,3 +46,10 @@
   animation-iteration-count: infinite;
   opacity: 0;
 }
+
+.endIcon {
+  @media (min-width: 1025px) {
+    margin-top: -1.25rem;
+    margin-bottom: 1.25rem;
+  }
+}
