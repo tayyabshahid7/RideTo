@@ -15,6 +15,18 @@ import { useMediaQuery } from 'react-responsive'
 import WithTitle from './WithTitle'
 import classnames from 'classnames'
 
+function MyCheckbox({ handleCompletedClick, id }) {
+  return (
+    <Checkbox
+      key={id}
+      extraClass={styles.dashboardCheck}
+      size="smallBlack"
+      onChange={() => handleCompletedClick(id)}>
+      <div>I have completed this step</div>
+    </Checkbox>
+  )
+}
+
 function NextStep({ nextStep, handleCompletedClick }) {
   const {
     title,
@@ -26,7 +38,8 @@ function NextStep({ nextStep, handleCompletedClick }) {
     faqs,
     form,
     cta,
-    gear
+    gear,
+    id
   } = nextStep
   const isDesktop = useMediaQuery({ minWidth: 1025 })
 
@@ -42,12 +55,7 @@ function NextStep({ nextStep, handleCompletedClick }) {
           </h2>
         </div>
         {isDesktop && (
-          <Checkbox
-            extraClass={styles.dashboardCheck}
-            size="smallBlack"
-            onChange={handleCompletedClick}>
-            <div>I have completed this step</div>
-          </Checkbox>
+          <MyCheckbox handleCompletedClick={handleCompletedClick} id={id} />
         )}
       </div>
       <div className={styles.main}>
@@ -94,12 +102,7 @@ function NextStep({ nextStep, handleCompletedClick }) {
           </div>
         ) : null}
         {!isDesktop && (
-          <Checkbox
-            extraClass={styles.dashboardCheck}
-            size="smallBlack"
-            onChange={handleCompletedClick}>
-            <div>I have completed this step</div>
-          </Checkbox>
+          <MyCheckbox handleCompletedClick={handleCompletedClick} id={id} />
         )}
       </div>
     </div>

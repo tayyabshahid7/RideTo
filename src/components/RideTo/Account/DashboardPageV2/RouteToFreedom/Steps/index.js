@@ -4,7 +4,7 @@ import Step from './Step'
 import ProgressBar from '../ProgressBar'
 import { useMediaQuery } from 'react-responsive'
 
-function Steps({ steps, percentComplete, currentStep }) {
+function Steps({ steps, percentComplete }) {
   const reducedSteps = steps.reduce((acc, step) => {
     if (['NEXT_STEP_CBT'].includes(step.id)) {
       const bookedStatus = steps.find(
@@ -34,6 +34,12 @@ function Steps({ steps, percentComplete, currentStep }) {
 
     return acc
   }, [])
+  let completed = false
+  let currentStep = reducedSteps.findIndex(step => step.status === 'Next Step')
+  if (currentStep === -1) {
+    completed = true
+    currentStep = reducedSteps.length - 1
+  }
   const isDesktop = useMediaQuery({ minWidth: 1025 })
   const stepRefs = useRef(reducedSteps.map(() => createRef()))
   const currentStepRef = useRef(null)
@@ -63,7 +69,8 @@ function Steps({ steps, percentComplete, currentStep }) {
       </ul>
       {isDesktop && (
         <ProgressBar
-          width={progressWidth}
+          width={!completed && progressWidth}
+          parcent={completed && 100}
           bgColor="#d8d8d8"
           className={styles.stepsBar}
         />

@@ -9,13 +9,16 @@ import PercentCircle from './PercentCircle'
 import { GOALS, STYLES } from './content'
 
 function RouteToFreedom({ nextSteps }) {
-  // const stepNames = uniqBy(nextSteps, 'name')
   const stepsLength = nextSteps.length
   const currentStep = nextSteps.findIndex(step => step.status === 'Next Step')
-  const percentComplete = Math.round((currentStep / stepsLength) * 100)
+  let percentComplete = Math.round((currentStep / stepsLength) * 100)
   const [selectedGoal, setSelectedGoal] = useState(GOALS[0])
   const [selectedStyle, setselectedStyle] = useState(STYLES[0])
   const isDesktop = useMediaQuery({ minWidth: 1025 })
+
+  if (percentComplete < 0) {
+    percentComplete = 100
+  }
 
   const handleGoalChange = event => {
     setSelectedGoal(event.target.value)
@@ -66,11 +69,7 @@ function RouteToFreedom({ nextSteps }) {
       <Expander
         title={`${percentComplete}% complete`}
         percentComplete={!isDesktop && percentComplete}>
-        <Steps
-          steps={nextSteps}
-          percentComplete={percentComplete}
-          currentStep={currentStep}
-        />
+        <Steps steps={nextSteps} percentComplete={percentComplete} />
       </Expander>
     </div>
   )
