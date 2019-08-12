@@ -36,7 +36,7 @@ const reduceSteps = steps => {
   }, [])
 }
 
-function Steps({ steps, percentComplete }) {
+function Steps({ steps, percentComplete, handleCompletedClick }) {
   const reducedSteps = reduceSteps(steps)
   let completed = false
   let currentStep = reducedSteps.findIndex(step => {
@@ -74,7 +74,12 @@ function Steps({ steps, percentComplete }) {
     <div className={styles.container}>
       <ul className={styles.list}>
         {reducedSteps.map((step, i) => (
-          <Step ref={stepRefs.current[i]} key={i} step={step} />
+          <Step
+            handleCompletedClick={handleCompletedClick}
+            ref={stepRefs.current[i]}
+            key={i}
+            step={step}
+          />
         ))}
       </ul>
       {isDesktop && (

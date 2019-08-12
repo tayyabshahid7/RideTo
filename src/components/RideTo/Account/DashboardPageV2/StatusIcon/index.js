@@ -5,7 +5,13 @@ import classnames from 'classnames'
 import finish from './finish.svg'
 import start from './start.svg'
 
-function StatusIcon({ status, transparent, pulsate }) {
+function StatusIcon({
+  id,
+  status,
+  transparent,
+  pulsate,
+  handleCompletedClick
+}) {
   const camelStatus = camelCase(status)
 
   if (camelStatus === 'start') {
@@ -16,8 +22,29 @@ function StatusIcon({ status, transparent, pulsate }) {
     return <img className={styles.endIcon} src={finish} alt="Finish icon" />
   }
 
+  if (pulsate) {
+    return (
+      <div
+        className={classnames(
+          styles.ring,
+          styles[camelStatus],
+          transparent && styles.ringTransparent,
+          styles.ringPulsate
+        )}>
+        {camelStatus === 'complete' && (
+          <span className={styles.tick}>
+            <i className="fa fa-check" />
+          </span>
+        )}
+      </div>
+    )
+  }
+
   return (
-    <div
+    <button
+      onClick={() => {
+        handleCompletedClick(id, false)
+      }}
       className={classnames(
         styles.ring,
         styles[camelStatus],
@@ -29,7 +56,7 @@ function StatusIcon({ status, transparent, pulsate }) {
           <i className="fa fa-check" />
         </span>
       )}
-    </div>
+    </button>
   )
 }
 

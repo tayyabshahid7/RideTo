@@ -13,7 +13,8 @@ function RouteToFreedom({
   selectedGoal,
   selectedStyle,
   handleGoalChange,
-  handleStyleChange
+  handleStyleChange,
+  handleCompletedClick
 }) {
   const stepsLength = nextSteps.length
   const currentStep = nextSteps.findIndex(step => step.status === 'Next Step')
@@ -65,7 +66,11 @@ function RouteToFreedom({
       <Expander
         title={`${percentComplete}% complete`}
         percentComplete={!isDesktop && percentComplete}>
-        <Steps steps={nextSteps} percentComplete={percentComplete} />
+        <Steps
+          steps={nextSteps}
+          percentComplete={percentComplete}
+          handleCompletedClick={handleCompletedClick}
+        />
       </Expander>
     </div>
   )

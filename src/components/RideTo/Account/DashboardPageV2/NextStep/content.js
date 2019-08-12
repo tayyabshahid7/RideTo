@@ -316,7 +316,7 @@ export const NEXT_STEP_BIKE = {
   id: 'NEXT_STEP_BIKE'
 }
 
-export const INSURANCE = {
+export const NEXT_STEP_INSURANCE = {
   name: 'Insurance',
   title: 'Insurance',
   introduction: {
@@ -341,7 +341,7 @@ export const INSURANCE = {
     buttonText: 'Get a quote'
   },
   status: 'Not Started',
-  id: 'INSURANCE'
+  id: 'NEXT_STEP_INSURANCE'
 }
 
 export const NEXT_STEP_RIDE = {
@@ -364,7 +364,7 @@ const NEXT_STEPS = [
   // NEXT_STEP_POST_FULL_LICENCE,
   NEXT_STEP_GEAR,
   NEXT_STEP_BIKE,
-  INSURANCE,
+  NEXT_STEP_INSURANCE,
   NEXT_STEP_RIDE
 ]
 

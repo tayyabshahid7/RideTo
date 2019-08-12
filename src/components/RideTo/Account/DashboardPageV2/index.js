@@ -41,9 +41,47 @@ function DashboardPageV2() {
     setselectedStyle(event.target.value)
   }
 
-  const updateSteps = id => {
+  const updateSteps = (id, instant) => {
     setNextSteps(prevState => {
       let nextIndex = null
+
+      if (instant) {
+        let found = false
+
+        return prevState.map((step, i) => {
+          if (['Start', 'Ride'].includes(step.status)) {
+            return step
+          }
+
+          if (id === step.id) {
+            found = true
+            nextIndex = i + 1
+            return {
+              ...step,
+              status: 'Completed'
+            }
+          }
+
+          if (i === nextIndex) {
+            return {
+              ...step,
+              status: 'Next Step'
+            }
+          }
+
+          if (found) {
+            return {
+              ...step,
+              status: 'Not Started'
+            }
+          }
+
+          return {
+            ...step,
+            status: 'Completed'
+          }
+        })
+      }
 
       return prevState
         .map((step, i) => {
@@ -92,10 +130,13 @@ function DashboardPageV2() {
     })
   }
 
-  const handleCompletedClick = id => {
-    setTimeout(() => {
-      updateSteps(id)
-    }, 100)
+  const handleCompletedClick = (id, delay = true) => {
+    setTimeout(
+      () => {
+        updateSteps(id, !delay)
+      },
+      delay ? 100 : 0
+    )
   }
 
   return (
@@ -109,6 +150,7 @@ function DashboardPageV2() {
             selectedStyle={selectedStyle}
             handleGoalChange={handleGoalChange}
             handleStyleChange={handleStyleChange}
+            handleCompletedClick={handleCompletedClick}
           />
         </div>
       </div>
