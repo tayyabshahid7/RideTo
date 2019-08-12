@@ -24,7 +24,7 @@ const matchStepsToGoal = (isFullLicenceGoal, nextSteps) => {
 }
 
 function DashboardPageV2() {
-  const [selectedGoal, setSelectedGoal] = useState(GOALS[0])
+  const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
   const [selectedStyle, setselectedStyle] = useState(STYLES[0])
   const isFullLicenceGoal = selectedGoal === 'Social Rider - Any Bike'
   const [nextSteps, setNextSteps] = useState(NEXT_STEPS)
@@ -46,6 +46,7 @@ function DashboardPageV2() {
       let nextIndex = null
 
       if (instant) {
+        let isCBTCompleted = false
         let found = false
 
         return prevState.map((step, i) => {
@@ -56,9 +57,57 @@ function DashboardPageV2() {
           if (id === step.id) {
             found = true
             nextIndex = i + 1
+
+            isCBTCompleted = id === 'NEXT_STEP_CBT'
+
             return {
               ...step,
               status: 'Completed'
+            }
+          }
+
+          if (
+            isCBTCompleted &&
+            ['NEXT_STEP_CBT_BOOKED', 'NEXT_STEP_POST_CBT'].includes(step.id)
+          ) {
+            return {
+              ...step,
+              status: 'Completed'
+            }
+          }
+
+          if (
+            !isFullLicenceGoal &&
+            isCBTCompleted &&
+            ['NEXT_STEP_THEORY_TEST', 'NEXT_STEP_FULL_LICENCE'].includes(
+              step.id
+            )
+          ) {
+            return {
+              ...step,
+              status: 'Completed'
+            }
+          }
+
+          if (
+            isFullLicenceGoal &&
+            isCBTCompleted &&
+            step.id === 'NEXT_STEP_THEORY_TEST'
+          ) {
+            return {
+              ...step,
+              status: 'Next Step'
+            }
+          }
+
+          if (
+            !isFullLicenceGoal &&
+            isCBTCompleted &&
+            step.id === 'NEXT_STEP_GEAR'
+          ) {
+            return {
+              ...step,
+              status: 'Next Step'
             }
           }
 

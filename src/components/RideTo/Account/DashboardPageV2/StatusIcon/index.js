@@ -32,7 +32,7 @@ function StatusIcon({
           styles.ringPulsate
         )}>
         {camelStatus === 'complete' && (
-          <span className={styles.tick}>
+          <span key={`${id}-${camelStatus}`} className={styles.tick}>
             <i className="fa fa-check" />
           </span>
         )}
@@ -51,8 +51,8 @@ function StatusIcon({
         transparent && styles.ringTransparent,
         pulsate && styles.ringPulsate
       )}>
-      {camelStatus === 'complete' && (
-        <span className={styles.tick}>
+      {camelStatus === 'completed' && (
+        <span key={`${id}-${camelStatus}`} className={styles.tick}>
           <i className="fa fa-check" />
         </span>
       )}

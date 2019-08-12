@@ -3,8 +3,9 @@ import styles from './styles.scss'
 import Step from './Step'
 import ProgressBar from '../ProgressBar'
 import { useMediaQuery } from 'react-responsive'
+import { range } from 'lodash'
 
-const reduceSteps = steps => {
+const reduceStepsFilter = steps => {
   return steps.reduce((acc, step) => {
     if (['NEXT_STEP_CBT'].includes(step.id)) {
       const bookedStatus = steps.find(
@@ -37,17 +38,24 @@ const reduceSteps = steps => {
 }
 
 function Steps({ steps, percentComplete, handleCompletedClick }) {
-  const reducedSteps = reduceSteps(steps)
+  const reducedSteps = reduceStepsFilter(steps)
   let completed = false
   let currentStep = reducedSteps.findIndex(step => {
     return step.status === 'Next Step'
   })
   if (currentStep === -1) {
-    completed = true
-    currentStep = reducedSteps.length - 1
+    const lastCompletedIndex = reducedSteps
+      .map(step => step.status)
+      .lastIndexOf('Completed')
+
+    currentStep = lastCompletedIndex + 1
+
+    if (currentStep === reducedSteps.length - 1) {
+      completed = true
+    }
   }
   const isDesktop = useMediaQuery({ minWidth: 1025 })
-  const stepRefs = useRef(reducedSteps.map(() => createRef()))
+  const stepRefs = useRef(range(steps.length).map(() => createRef()))
   const currentStepRef = useRef(null)
   const [progressWidth, setProgressWidth] = useState(0)
 
@@ -60,10 +68,6 @@ function Steps({ steps, percentComplete, handleCompletedClick }) {
     currentStepRef.current = stepRefs.current[currentStep].current
     handleResize()
   }, [currentStep, reducedSteps])
-
-  useEffect(() => {
-    stepRefs.current = reducedSteps.map(() => createRef())
-  }, [reducedSteps])
 
   useEffect(() => {
     window.addEventListener('resize', handleResize)
