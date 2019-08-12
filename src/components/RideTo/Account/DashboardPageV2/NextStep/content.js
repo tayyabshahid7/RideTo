@@ -45,7 +45,7 @@ export const NEXT_STEP_ITM = {
   },
   form: {
     icon: '',
-    name: 'Postcode',
+    label: 'Postcode',
     action: '/',
     buttonText: 'Book ITM course'
   },
@@ -102,7 +102,7 @@ export const NEXT_STEP_CBT = {
   },
   form: {
     icon: '',
-    name: 'Postcode',
+    label: 'Postcode',
     action: '/',
     buttonText: 'Book CBT course'
   },
@@ -143,7 +143,7 @@ export const NEXT_STEP_CBT_BOOKED = {
 export const NEXT_STEP_POST_CBT = {
   name: 'CBT',
   title: 'Post CBT',
-  feedback: true,
+  feedBack: true,
   status: 'Not Started',
   id: 'NEXT_STEP_POST_CBT'
 }
@@ -197,7 +197,7 @@ export const NEXT_STEP_FULL_LICENCE = {
   },
   form: {
     icon: '',
-    name: 'Postcode',
+    label: 'Postcode',
     action: '/',
     buttonText: 'Book Full Licence course'
   },
@@ -238,7 +238,7 @@ export const NEXT_STEP_FULL_LICENCE_BOOKED = {
 export const NEXT_STEP_POST_FULL_LICENCE = {
   name: 'Full Licence',
   title: 'Post Full Licence',
-  feedback: true,
+  feedBack: true,
   id: 'NEXT_STEP_POST_FULL_LICENCE',
   status: 'Not Started'
 }
@@ -246,7 +246,7 @@ export const NEXT_STEP_POST_FULL_LICENCE = {
 export const NEXT_STEP_GEAR = {
   name: 'Gear',
   title: 'Gear',
-  advice: {
+  guides: {
     title: 'Advice',
     items: [
       { title: 'Best Helmets for Beginners', url: '/' },
@@ -259,12 +259,22 @@ export const NEXT_STEP_GEAR = {
   },
   gear: [
     {
-      name: 'Gloves',
+      name: 'Gear 1',
       link: '/',
-      image: 'https://via.placeholder.com/62x120'
+      image: 'https://via.placeholder.com/120x62'
     },
     {
-      name: 'Boots',
+      name: 'Gear 2',
+      link: '/',
+      image: 'https://via.placeholder.com/120x62'
+    },
+    {
+      name: 'Gear 3',
+      link: '/',
+      image: 'https://via.placeholder.com/120x62'
+    },
+    {
+      name: 'Gear 4',
       link: '/',
       image: 'https://via.placeholder.com/120x62'
     }
@@ -276,7 +286,7 @@ export const NEXT_STEP_GEAR = {
 export const NEXT_STEP_BIKE = {
   name: 'Bike',
   title: 'Bike',
-  advice: {
+  guides: {
     title: 'Advice',
     items: [{ title: 'Best Bikes for Beginners', url: '/' }]
   },

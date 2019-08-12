@@ -4,8 +4,8 @@ import Step from './Step'
 import ProgressBar from '../ProgressBar'
 import { useMediaQuery } from 'react-responsive'
 
-function Steps({ steps, percentComplete }) {
-  const reducedSteps = steps.reduce((acc, step) => {
+const reduceSteps = steps => {
+  return steps.reduce((acc, step) => {
     if (['NEXT_STEP_CBT'].includes(step.id)) {
       const bookedStatus = steps.find(
         step => step.id === 'NEXT_STEP_CBT_BOOKED'
@@ -34,8 +34,14 @@ function Steps({ steps, percentComplete }) {
 
     return acc
   }, [])
+}
+
+function Steps({ steps, percentComplete }) {
+  const reducedSteps = reduceSteps(steps)
   let completed = false
-  let currentStep = reducedSteps.findIndex(step => step.status === 'Next Step')
+  let currentStep = reducedSteps.findIndex(step => {
+    return step.status === 'Next Step'
+  })
   if (currentStep === -1) {
     completed = true
     currentStep = reducedSteps.length - 1
@@ -53,7 +59,11 @@ function Steps({ steps, percentComplete }) {
   useEffect(() => {
     currentStepRef.current = stepRefs.current[currentStep].current
     handleResize()
-  }, [currentStep])
+  }, [currentStep, reducedSteps])
+
+  useEffect(() => {
+    stepRefs.current = reducedSteps.map(() => createRef())
+  }, [reducedSteps])
 
   useEffect(() => {
     window.addEventListener('resize', handleResize)

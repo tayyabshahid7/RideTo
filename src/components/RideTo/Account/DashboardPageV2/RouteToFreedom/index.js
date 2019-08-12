@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styles from './styles.scss'
 import Expander from './Expander'
 import Steps from './Steps'
@@ -8,24 +8,20 @@ import { useMediaQuery } from 'react-responsive'
 import PercentCircle from './PercentCircle'
 import { GOALS, STYLES } from './content'
 
-function RouteToFreedom({ nextSteps }) {
+function RouteToFreedom({
+  nextSteps,
+  selectedGoal,
+  selectedStyle,
+  handleGoalChange,
+  handleStyleChange
+}) {
   const stepsLength = nextSteps.length
   const currentStep = nextSteps.findIndex(step => step.status === 'Next Step')
   let percentComplete = Math.round((currentStep / stepsLength) * 100)
-  const [selectedGoal, setSelectedGoal] = useState(GOALS[0])
-  const [selectedStyle, setselectedStyle] = useState(STYLES[0])
   const isDesktop = useMediaQuery({ minWidth: 1025 })
 
   if (percentComplete < 0) {
     percentComplete = 100
-  }
-
-  const handleGoalChange = event => {
-    setSelectedGoal(event.target.value)
-  }
-
-  const handleStyleChange = event => {
-    setselectedStyle(event.target.value)
   }
 
   return (

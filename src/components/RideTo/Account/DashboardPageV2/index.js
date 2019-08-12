@@ -8,36 +8,87 @@ import GuidesAdvice from './GuidesAdvice'
 import News from './News'
 import classnames from 'classnames'
 import NEXT_STEPS from './NextStep/content'
+import { GOALS, STYLES } from './RouteToFreedom/content'
+
+const matchStepsToGoal = (isFullLicenceGoal, nextSteps) => {
+  return nextSteps.filter(step => {
+    if (
+      !isFullLicenceGoal &&
+      ['NEXT_STEP_THEORY_TEST', 'NEXT_STEP_FULL_LICENCE'].includes(step.id)
+    ) {
+      return false
+    }
+
+    return true
+  })
+}
 
 function DashboardPageV2() {
+  const [selectedGoal, setSelectedGoal] = useState(GOALS[0])
+  const [selectedStyle, setselectedStyle] = useState(STYLES[0])
+  const isFullLicenceGoal = selectedGoal === 'Social Rider - Any Bike'
   const [nextSteps, setNextSteps] = useState(NEXT_STEPS)
-  const nextStep = nextSteps.find(step => step.status === 'Next Step')
+  const filteredNextSteps = matchStepsToGoal(isFullLicenceGoal, nextSteps)
+  const nextStep = filteredNextSteps.find(step => step.status === 'Next Step')
+
+  const handleGoalChange = event => {
+    const goal = event.target.value
+
+    setSelectedGoal(goal)
+  }
+
+  const handleStyleChange = event => {
+    setselectedStyle(event.target.value)
+  }
 
   const updateSteps = id => {
     setNextSteps(prevState => {
       let nextIndex = null
 
-      return prevState.map((step, i) => {
-        if (id === step.id) {
-          nextIndex = i + 1
+      return prevState
+        .map((step, i) => {
+          if (id === step.id) {
+            nextIndex = i + 1
 
-          return {
-            ...step,
-            ...(!['Start', 'Ride'].includes(step.status) && {
-              status: 'Completed'
-            })
+            return {
+              ...step,
+              ...(!['Start', 'Ride'].includes(step.status) && {
+                status: 'Completed'
+              })
+            }
+          } else if (i === nextIndex) {
+            return {
+              ...step,
+              ...(!['Start', 'Ride'].includes(step.status) && {
+                status: 'Next Step'
+              })
+            }
+          } else {
+            return step
           }
-        } else if (i === nextIndex) {
-          return {
-            ...step,
-            ...(!['Start', 'Ride'].includes(step.status) && {
-              status: 'Next Step'
-            })
+        })
+        .map((step, i) => {
+          if (!isFullLicenceGoal && id === 'NEXT_STEP_POST_CBT') {
+            if (
+              ['NEXT_STEP_THEORY_TEST', 'NEXT_STEP_FULL_LICENCE'].includes(
+                step.id
+              )
+            ) {
+              return {
+                ...step,
+                status: 'Completed'
+              }
+            }
+            if (step.id === 'NEXT_STEP_GEAR') {
+              return {
+                ...step,
+                status: 'Next Step'
+              }
+            }
           }
-        } else {
+
           return step
-        }
-      })
+        })
     })
   }
 
@@ -52,7 +103,13 @@ function DashboardPageV2() {
       <Welcome />
       <div className={styles.pageItemFullWidthWrapper}>
         <div className={styles.pageItem}>
-          <RouteToFreedom nextSteps={nextSteps} />
+          <RouteToFreedom
+            nextSteps={filteredNextSteps}
+            selectedGoal={selectedGoal}
+            selectedStyle={selectedStyle}
+            handleGoalChange={handleGoalChange}
+            handleStyleChange={handleStyleChange}
+          />
         </div>
       </div>
       {nextStep && (
