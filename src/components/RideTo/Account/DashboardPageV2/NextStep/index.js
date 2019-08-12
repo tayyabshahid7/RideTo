@@ -15,53 +15,7 @@ import { useMediaQuery } from 'react-responsive'
 import WithTitle from './WithTitle'
 import classnames from 'classnames'
 
-const NEXT_STEP = {
-  title: 'Theory Test',
-  // course: null,
-  // feedBack: true,
-  introduction: {
-    title: 'Introduction',
-    text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
-  },
-  // included: {
-  //   title: 'What you need',
-  //   items: ['Bike & helmet hire', 'Test fees & fuel']
-  // },
-  guides: {
-    title: 'Useful guides',
-    items: [{ title: 'What to Prepare For Your CBT Training?', url: '/' }]
-  },
-  // faqs: {
-  //   "What's included?": 'Ut in.',
-  //   'What do I need to bring?': 'Lorem ipsum sit dolore anim.'
-  // }
-  form: {
-    icon: '',
-    // label: 'Postcode',
-    // action: '/',
-    href: '/',
-    buttonText: 'Book local instructor'
-  }
-  // cta: {
-  //   href: '/',
-  //   text: 'Labore excepteur '
-  // }
-  // gear: [
-  //   {
-  //     name: 'Bikes',
-  //     link: '/',
-  //     image: 'https://via.placeholder.com/120x62'
-  //   },
-  //   {
-  //     name: 'Gloves',
-  //     link: '/',
-  //     image: 'https://via.placeholder.com/62x120'
-  //   }
-  // ]
-}
-
-function NextStep() {
+function NextStep({ nextStep, handleCompletedClick }) {
   const {
     title,
     course,
@@ -73,7 +27,7 @@ function NextStep() {
     form,
     cta,
     gear
-  } = NEXT_STEP
+  } = nextStep
   const isDesktop = useMediaQuery({ minWidth: 1025 })
 
   return (
@@ -91,7 +45,7 @@ function NextStep() {
           <Checkbox
             extraClass={styles.dashboardCheck}
             size="smallBlack"
-            onChange={event => console.log(event)}>
+            onChange={handleCompletedClick}>
             <div>I have completed this step</div>
           </Checkbox>
         )}
@@ -143,7 +97,7 @@ function NextStep() {
           <Checkbox
             extraClass={styles.dashboardCheck}
             size="smallBlack"
-            onChange={event => console.log(event)}>
+            onChange={handleCompletedClick}>
             <div>I have completed this step</div>
           </Checkbox>
         )}

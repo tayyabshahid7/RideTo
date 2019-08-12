@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './styles.scss'
 import Expander from './Expander'
 import Steps from './Steps'
@@ -6,16 +6,24 @@ import Select from 'components/RideTo/Select'
 import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import PercentCircle from './PercentCircle'
-import { STEPS, GOALS, STYLES } from './content'
+import { GOALS, STYLES } from './content'
 
-function RouteToFreedom() {
-  const steps = STEPS
-  const stepsLength = steps.length
-  const currentStep = steps.findIndex(step => step.status === 'Next Step')
+function RouteToFreedom({ nextSteps }) {
+  // const stepNames = uniqBy(nextSteps, 'name')
+  const stepsLength = nextSteps.length
+  const currentStep = nextSteps.findIndex(step => step.status === 'Next Step')
   const percentComplete = Math.round((currentStep / stepsLength) * 100)
-  const selectedGoal = GOALS[0]
-  const selectedStyle = STYLES[0]
+  const [selectedGoal, setSelectedGoal] = useState(GOALS[0])
+  const [selectedStyle, setselectedStyle] = useState(STYLES[0])
   const isDesktop = useMediaQuery({ minWidth: 1025 })
+
+  const handleGoalChange = event => {
+    setSelectedGoal(event.target.value)
+  }
+
+  const handleStyleChange = event => {
+    setselectedStyle(event.target.value)
+  }
 
   return (
     <div className={styles.container}>
@@ -32,7 +40,7 @@ function RouteToFreedom() {
             <div className={styles.formGroup}>
               <Select
                 value={selectedGoal}
-                onChange={event => console.log(event.target.value)}
+                onChange={handleGoalChange}
                 className={classnames(styles.input, styles.inputSelect)}
                 label="My Riding Goal">
                 {GOALS.map(goal => (
@@ -43,7 +51,7 @@ function RouteToFreedom() {
             <div className={styles.formGroup}>
               <Select
                 value={selectedStyle}
-                onChange={event => console.log(event.target.value)}
+                onChange={handleStyleChange}
                 className={classnames(styles.input, styles.inputSelect)}
                 label="My Riding Style">
                 {STYLES.map(style => (
@@ -59,7 +67,7 @@ function RouteToFreedom() {
         title={`${percentComplete}% complete`}
         percentComplete={!isDesktop && percentComplete}>
         <Steps
-          steps={steps}
+          steps={nextSteps}
           percentComplete={percentComplete}
           currentStep={currentStep}
         />
