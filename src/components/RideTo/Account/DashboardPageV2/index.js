@@ -21,9 +21,33 @@ import {
   updateUserDetail
 } from 'services/dashboard'
 
+const recordGAEcommerceData = order => {
+  if (order && window.localStorage.getItem('gaok') === 'true') {
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      transactionId: order.friendly_id,
+      transactionAffiliation: 'RideTo',
+      transactionTotal: order.revenue,
+      transactionProducts: [
+        {
+          sku: order.friendly_id,
+          name: order.selected_licence,
+          category: order.supplier_name,
+          price: order.revenue,
+          quantity: 1
+        }
+      ],
+      event: 'rideto.ecom-purchase.completed'
+    })
+    window.localStorage.removeItem('gaok')
+  }
+}
+
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
   const [selectedStyle, setSelectedStyle] = useState(STYLES[0])
+  const [cbtStatus, setCbtStatus] = useState(null)
+  const [dasStatus, setDasStatus] = useState(null)
   const [nextSteps, setNextSteps] = useState([])
   const [recentOrder, setRecentOrder] = useState(null)
   const [orders, setOrders] = useState([])
@@ -97,28 +121,6 @@ function DashboardPageV2({ match }) {
     )
   }
 
-  const recordGAEcommerceData = order => {
-    if (order && window.localStorage.getItem('gaok') === 'true') {
-      window.dataLayer = window.dataLayer || []
-      window.dataLayer.push({
-        transactionId: order.friendly_id,
-        transactionAffiliation: 'RideTo',
-        transactionTotal: order.revenue,
-        transactionProducts: [
-          {
-            sku: order.friendly_id,
-            name: order.selected_licence,
-            category: order.supplier_name,
-            price: order.revenue,
-            quantity: 1
-          }
-        ],
-        event: 'rideto.ecom-purchase.completed'
-      })
-      window.localStorage.removeItem('gaok')
-    }
-  }
-
   useEffect(() => {
     const { params } = match
     const { orderId } = params
@@ -130,10 +132,14 @@ function DashboardPageV2({ match }) {
       setRecentOrder(recentOrder)
       recordGAEcommerceData(recentOrder)
 
-      if (course_title === 'CBT Training') {
-        updateSteps('STEP_REVISE')
-      } else if (course_title.startsWith('Full Licence')) {
-        updateSteps('STEP_THEORY_TEST')
+      if (!isAuthenticated) {
+        if (course_title === 'CBT Training') {
+          // One step before the actual CBT step
+          updateSteps('STEP_REVISE')
+        } else if (course_title.startsWith('Full Licence')) {
+          // One step before the actual full licence step
+          updateSteps('STEP_THEORY_TEST')
+        }
       }
     }
 
@@ -141,11 +147,22 @@ function DashboardPageV2({ match }) {
       const result = await fetchOrders(username)
 
       setOrders(result.results)
+
+      if (!orderId) {
+        setRecentOrder(result.results[0])
+      }
     }
 
     const loadUserDetails = async userId => {
       const result = await fetchUserDetails(userId)
-      const { riding_goal, riding_style, timeline, achievements } = result
+      const {
+        riding_goal,
+        riding_style,
+        timeline,
+        achievements,
+        course_completed_cbt,
+        course_completed_das
+      } = result
 
       if (riding_goal) {
         setSelectedGoal(GOALS.find(goal => goal.constant === riding_goal))
@@ -154,6 +171,9 @@ function DashboardPageV2({ match }) {
       if (riding_style) {
         setSelectedStyle(STYLES.find(style => style.constant === riding_style))
       }
+
+      setCbtStatus(course_completed_cbt)
+      setDasStatus(course_completed_das)
 
       if (timeline.length) {
         setNextSteps(
@@ -178,6 +198,8 @@ function DashboardPageV2({ match }) {
 
     setNextSteps(DEFAULT_TIMELINE)
 
+    console.log(isAuthenticated, orderId)
+
     if (isAuthenticated) {
       const user = getUserProfile(getToken())
 
@@ -185,11 +207,15 @@ function DashboardPageV2({ match }) {
         loadUserDetails(user.user_id)
         loadOrders(user.username)
       }
-    } else if (orderId) {
+    }
+
+    if (orderId) {
       loadSingleOrder(orderId)
       const next = `/account/dashboard/${orderId}`
       window.sessionStorage.setItem('login-next', JSON.stringify(next))
-    } else {
+    }
+
+    if (!isAuthenticated && !orderId) {
       window.location = '/account/login'
     }
   }, [match, isAuthenticated])
@@ -222,6 +248,8 @@ function DashboardPageV2({ match }) {
             handleCompletedClick={handleCompletedClick}
             recentOrder={recentOrder}
             orders={orders}
+            cbtStatus={cbtStatus}
+            dasStatus={dasStatus}
           />
         </div>
       )}

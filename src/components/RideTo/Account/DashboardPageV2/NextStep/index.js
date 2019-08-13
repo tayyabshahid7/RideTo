@@ -19,10 +19,11 @@ import MyCheckbox from './MyCheckbox'
 function NextStep({
   nextStep,
   handleCompletedClick,
-  cbtTrainingStatus,
-  fullLicenceTrainingStatus
+  recentOrder,
+  cbtStatus,
+  dasStatus
 }) {
-  const constant = getNextStepConstant(nextStep)
+  const constant = getNextStepConstant(nextStep, recentOrder)
   const {
     title,
     course,
@@ -37,6 +38,8 @@ function NextStep({
     id
   } = getNextStep(constant)
   const isDesktop = useMediaQuery({ minWidth: 1025 })
+  const status = constant === 'STEP_CBT_POST' ? cbtStatus : dasStatus
+  const feedBackCourseType = constant === 'STEP_CBT_POST' ? 'cbt' : 'das'
 
   return (
     <div className={styles.container}>
@@ -57,10 +60,12 @@ function NextStep({
         <div className={styles.leftCol}>
           <div className={styles.row}>
             {feedBack ? (
-              <CourseFeedback />
+              <CourseFeedback status={status} courseType={feedBackCourseType} />
             ) : (
               <Fragment>
-                {course && <UpComingCourse />}
+                {course && recentOrder && (
+                  <UpComingCourse course={recentOrder} />
+                )}
                 {introduction && (
                   <WithTitle title={introduction.title}>
                     <p>{introduction.text}</p>

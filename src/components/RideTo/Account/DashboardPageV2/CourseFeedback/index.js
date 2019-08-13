@@ -1,24 +1,25 @@
 import React, { useState, Fragment } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import { updateUserDetail } from 'services/dashboard'
 
 const OPTIONS = [
   {
-    id: 'completed',
+    id: 'COMPLETED_COURSE',
     text: 'I completed the course!',
     message:
       'Congratulations! That\'s great news, onto the next step! <a href="/">Leave us a review on TrustPilot</a>',
     icon: 'happy'
   },
   {
-    id: 'didntComplete',
+    id: 'NO_COMPLETED_COURSE',
     text: "I didn't complete the course",
     message:
       'Sorry to hear that, email us at <a href="mailto:hello@rideto.com">hello@rideto.com</a> to organise further training.',
     icon: 'sad'
   },
   {
-    id: 'unableToStart',
+    id: 'UNABLE_COMPLETED_COURSE',
     text: 'I was unable to start the course',
     message:
       'Sorry to hear that, email us at <a href="mailto:hello@rideto.com">hello@rideto.com</a> to rebook.',
@@ -26,8 +27,8 @@ const OPTIONS = [
   }
 ]
 
-function CourseFeedback() {
-  const [selected, setSelected] = useState(null)
+function CourseFeedback({ status, courseType }) {
+  const [selected, setSelected] = useState(status)
   const selectedOption = OPTIONS.find(({ id }) => id === selected)
 
   return (
@@ -46,6 +47,7 @@ function CourseFeedback() {
               )}
               onClick={() => {
                 setSelected(id)
+                updateUserDetail(`course_completed_${courseType}`, id)
               }}>
               {text}
             </button>
