@@ -21,10 +21,6 @@ export const fetchOrder = async orderId => {
   return await get(`users/order/${orderId}`, {}, false)
 }
 
-export const fetchUserDetails = async userId => {
-  return await get(`dashboard/${userId}/`)
-}
-
 export const getChecklist = () => {
   return [
     {

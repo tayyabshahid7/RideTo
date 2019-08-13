@@ -8,13 +8,14 @@ import News from './News'
 import classnames from 'classnames'
 import { GOALS, STYLES } from './RouteToFreedom/constants'
 import { matchStepsToGoal } from './util'
-import { fetchOrder, fetchOrders, fetchUserDetails } from 'services/user'
+import { fetchOrder, fetchOrders } from 'services/user'
 import {
   getUserProfile,
   getToken,
   isAuthenticated as getIsAuthenticated
 } from 'services/auth'
 import { DEFAULT_TIMELINE } from './constants'
+import { updateTimelineStep, fetchUserDetails } from 'services/dashboard'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -45,6 +46,7 @@ function DashboardPageV2({ match }) {
       return prevState.map(step => {
         if (step.constant === constant) {
           found = true
+          updateTimelineStep(step.name, step.constant, true)
           return {
             ...step,
             is_completed: true
@@ -52,12 +54,14 @@ function DashboardPageV2({ match }) {
         }
 
         if (found) {
+          updateTimelineStep(step.name, step.constant, false)
           return {
             ...step,
             is_completed: false
           }
         }
 
+        updateTimelineStep(step.name, step.constant, true)
         return {
           ...step,
           is_completed: true
