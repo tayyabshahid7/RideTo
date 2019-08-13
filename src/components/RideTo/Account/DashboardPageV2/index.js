@@ -15,7 +15,11 @@ import {
   isAuthenticated as getIsAuthenticated
 } from 'services/auth'
 import { DEFAULT_TIMELINE } from './constants'
-import { updateTimelineStep, fetchUserDetails } from 'services/dashboard'
+import {
+  updateTimelineStep,
+  fetchUserDetails,
+  updateUserDetail
+} from 'services/dashboard'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -29,14 +33,18 @@ function DashboardPageV2({ match }) {
 
   const handleGoalChange = event => {
     const { value } = event.target
+    const goal = GOALS.find(goal => goal.constant === value)
 
-    setSelectedGoal(GOALS.find(goal => goal.constant === value))
+    setSelectedGoal(goal)
+    updateUserDetail('riding_goal', goal.constant)
   }
 
   const handleStyleChange = event => {
     const { value } = event.target
+    const style = STYLES.find(style => style.constant === value)
 
-    setSelectedStyle(STYLES.find(style => style.constant === value))
+    setSelectedStyle(style)
+    updateUserDetail('riding_style', style.constant)
   }
 
   const updateSteps = constant => {

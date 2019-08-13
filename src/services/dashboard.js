@@ -36,6 +36,22 @@ export const updateTimelineStep = async (name, constant, is_completed) => {
   return await put(path, params)
 }
 
+export const updateUserDetail = async (key, value) => {
+  const isAuthenticated = getIsAuthenticated()
+
+  if (!isAuthenticated) {
+    return
+  }
+
+  const { user_id } = getUserProfile(getToken())
+  const path = `dashboard/${user_id}/`
+  const params = {
+    [key]: value
+  }
+
+  return await put(path, params)
+}
+
 export const fetchUserDetails = async userId => {
   return await get(`dashboard/${userId}/`)
 }
