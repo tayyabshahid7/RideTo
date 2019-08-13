@@ -70,6 +70,8 @@
 
     max-width: 1112px;
     margin: 0 auto 1.75rem;
+
+    width: calc(100% - 4rem);
   }
 }
 
@@ -86,6 +88,8 @@
     display: flex;
     max-width: 1112px;
     margin: 0 auto 3.5rem;
+
+    width: calc(100% - 4rem);
   }
 }
 
