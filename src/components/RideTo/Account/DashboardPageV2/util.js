@@ -7,14 +7,15 @@ export const matchStepsToGoal = (goal, userSteps) => {
 
   return route.map(routeStep => {
     const userStep = userSteps.find(userStep => routeStep === userStep.constant)
-    const isCompleted = userStep.is_completed
+    const isCompleted = userStep && userStep.is_completed
+    const userConstant = userStep && userStep.constant
 
     return {
       ...userStep,
       status: 'Not Started',
       ...(isCompleted && { status: 'Completed ' }),
-      ...(userStep.constant === 'STEP_START' && { status: 'Start' }),
-      ...(userStep.constant === 'STEP_RIDE' && { status: 'Ride' })
+      ...(userConstant === 'STEP_START' && { status: 'Start' }),
+      ...(userConstant === 'STEP_RIDE' && { status: 'Ride' })
     }
   })
 }

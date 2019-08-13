@@ -2,9 +2,9 @@ import React from 'react'
 import styles from './styles.scss'
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 
-function NewsItem({ news: { image, title, url } }) {
+function NewsItem({ news: { image, title, slug } }) {
   return (
-    <a className={styles.container} href={url}>
+    <a className={styles.container} href={`/blog/${slug}`}>
       <div className={styles.image}>
         <img src={image} alt={title} />
       </div>

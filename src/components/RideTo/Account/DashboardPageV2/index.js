@@ -24,8 +24,6 @@ function DashboardPageV2({ match }) {
   const [orders, setOrders] = useState([])
   const [achivements, setAchivements] = useState([])
 
-  console.log(recentOrder, orders)
-
   const isAuthenticated = getIsAuthenticated()
 
   const handleGoalChange = event => {
@@ -146,7 +144,19 @@ function DashboardPageV2({ match }) {
       }
 
       if (timeline.length) {
-        setNextSteps(result.timeline)
+        setNextSteps(
+          DEFAULT_TIMELINE.map(defaultStep => {
+            const userStep = timeline.find(
+              userStep => userStep.constant === defaultStep.constant
+            )
+
+            if (userStep) {
+              return userStep
+            } else {
+              return defaultStep
+            }
+          })
+        )
       }
 
       if (achievements.length) {
@@ -198,6 +208,8 @@ function DashboardPageV2({ match }) {
           <NextStep
             nextStep={nextStep}
             handleCompletedClick={handleCompletedClick}
+            recentOrder={recentOrder}
+            orders={orders}
           />
         </div>
       )}
@@ -215,7 +227,7 @@ function DashboardPageV2({ match }) {
         <div className={styles.rightCol}>
           <div
             className={classnames(styles.pageItem, styles.pageItemTransparent)}>
-            <News />
+            <News selectedGoal={selectedGoal} selectedStyle={selectedStyle} />
           </div>
         </div>
       </div>
