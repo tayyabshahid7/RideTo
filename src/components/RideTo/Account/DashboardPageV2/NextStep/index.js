@@ -4,7 +4,6 @@ import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import Button from 'components/RideTo/Button'
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 import Form from './Form'
-import Checkbox from 'components/Checkbox'
 import CircleList from '../CircleList'
 import FAQs from '../FAQs'
 import UpComingCourse from '../UpComingCourse'
@@ -14,20 +13,16 @@ import StatusIcon from '../StatusIcon'
 import { useMediaQuery } from 'react-responsive'
 import WithTitle from './WithTitle'
 import classnames from 'classnames'
+import { getNextStep, getNextStepConstant } from './util'
+import MyCheckbox from './MyCheckbox'
 
-function MyCheckbox({ handleCompletedClick, id }) {
-  return (
-    <Checkbox
-      key={id}
-      extraClass={styles.dashboardCheck}
-      size="smallBlack"
-      onChange={() => handleCompletedClick(id)}>
-      <div>I have completed this step</div>
-    </Checkbox>
-  )
-}
-
-function NextStep({ nextStep, handleCompletedClick }) {
+function NextStep({
+  nextStep,
+  handleCompletedClick,
+  cbtTrainingStatus,
+  fullLicenceTrainingStatus
+}) {
+  const constant = getNextStepConstant(nextStep)
   const {
     title,
     course,
@@ -40,7 +35,7 @@ function NextStep({ nextStep, handleCompletedClick }) {
     cta,
     gear,
     id
-  } = nextStep
+  } = getNextStep(constant)
   const isDesktop = useMediaQuery({ minWidth: 1025 })
 
   return (

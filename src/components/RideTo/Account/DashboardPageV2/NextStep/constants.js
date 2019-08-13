@@ -1,10 +1,10 @@
-export const NEXT_STEP_START = {
+export const STEP_START = {
   name: 'Start',
   status: 'Start',
-  id: 'NEXT_STEP_START'
+  id: 'STEP_START'
 }
 
-export const NEXT_STEP_LICENCE = {
+export const STEP_LICENCE = {
   name: 'Licence',
   title: 'Licence',
   introduction: {
@@ -25,10 +25,10 @@ export const NEXT_STEP_LICENCE = {
     buttonText: 'Open licence calculator'
   },
   status: 'Next Step',
-  id: 'NEXT_STEP_LICENCE'
+  id: 'STEP_LICENCE'
 }
 
-export const NEXT_STEP_ITM = {
+export const STEP_ITM = {
   name: 'ITM',
   title: 'Introduction to motorcycling',
   introduction: {
@@ -50,10 +50,10 @@ export const NEXT_STEP_ITM = {
     buttonText: 'Book ITM course'
   },
   status: 'Not Started',
-  id: 'NEXT_STEP_ITM'
+  id: 'STEP_ITM'
 }
 
-export const NEXT_STEP_REVISE = {
+export const STEP_REVISE = {
   name: 'Revise',
   title: 'Revision',
   introduction: {
@@ -78,10 +78,10 @@ export const NEXT_STEP_REVISE = {
     buttonText: 'Start revision'
   },
   status: 'Not Started',
-  id: 'NEXT_STEP_REVISE'
+  id: 'STEP_REVISE'
 }
 
-export const NEXT_STEP_CBT = {
+export const STEP_CBT_BEFORE = {
   name: 'CBT',
   title: 'CBT',
   introduction: {
@@ -107,10 +107,10 @@ export const NEXT_STEP_CBT = {
     buttonText: 'Book CBT course'
   },
   status: 'Not Started',
-  id: 'NEXT_STEP_CBT'
+  id: 'STEP_CBT_BEFORE'
 }
 
-export const NEXT_STEP_CBT_BOOKED = {
+export const STEP_CBT_BOOKED = {
   name: 'CBT',
   title: 'CBT',
   course: true,
@@ -137,18 +137,18 @@ export const NEXT_STEP_CBT_BOOKED = {
     ]
   },
   status: 'Not Started',
-  id: 'NEXT_STEP_CBT_BOOKED'
+  id: 'STEP_CBT_BOOKED'
 }
 
-export const NEXT_STEP_POST_CBT = {
+export const STEP_CBT_POST = {
   name: 'CBT',
   title: 'Post CBT',
   feedBack: true,
   status: 'Not Started',
-  id: 'NEXT_STEP_POST_CBT'
+  id: 'STEP_CBT_POST'
 }
 
-export const NEXT_STEP_THEORY_TEST = {
+export const STEP_THEORY_TEST = {
   name: 'Theory test',
   title: 'Theory test',
   introduction: {
@@ -173,10 +173,10 @@ export const NEXT_STEP_THEORY_TEST = {
     buttonText: 'Book theory test'
   },
   status: 'Not Started',
-  id: 'NEXT_STEP_THEORY_TEST'
+  id: 'STEP_THEORY_TEST'
 }
 
-export const NEXT_STEP_FULL_LICENCE = {
+export const STEP_FULL_LICENCE_BEFORE = {
   name: 'Full Licence',
   title: 'Full Licence',
   introduction: {
@@ -202,10 +202,10 @@ export const NEXT_STEP_FULL_LICENCE = {
     buttonText: 'Book Full Licence course'
   },
   status: 'Not Started',
-  id: 'NEXT_STEP_FULL_LICENCE'
+  id: 'STEP_FULL_LICENCE_BEFORE'
 }
 
-export const NEXT_STEP_FULL_LICENCE_BOOKED = {
+export const STEP_FULL_LICENCE_BOOKED = {
   name: 'Full Licence',
   title: 'Full Licence',
   course: true,
@@ -232,18 +232,18 @@ export const NEXT_STEP_FULL_LICENCE_BOOKED = {
     ]
   },
   status: 'Not Started',
-  id: 'NEXT_STEP_FULL_LICENCE_BOOKED'
+  id: 'STEP_FULL_LICENCE_BOOKED'
 }
 
-export const NEXT_STEP_POST_FULL_LICENCE = {
+export const STEP_FULL_LICENCE_POST = {
   name: 'Full Licence',
   title: 'Post Full Licence',
   feedBack: true,
-  id: 'NEXT_STEP_POST_FULL_LICENCE',
+  id: 'STEP_FULL_LICENCE_POST',
   status: 'Not Started'
 }
 
-export const NEXT_STEP_GEAR = {
+export const STEP_GEAR = {
   name: 'Gear',
   title: 'Gear',
   guides: {
@@ -280,10 +280,10 @@ export const NEXT_STEP_GEAR = {
     }
   ],
   status: 'Not Started',
-  id: 'NEXT_STEP_GEAR'
+  id: 'STEP_GEAR'
 }
 
-export const NEXT_STEP_BIKE = {
+export const STEP_BIKE = {
   name: 'Bike',
   title: 'Bike',
   guides: {
@@ -313,10 +313,10 @@ export const NEXT_STEP_BIKE = {
     }
   ],
   status: 'Not Started',
-  id: 'NEXT_STEP_BIKE'
+  id: 'STEP_BIKE'
 }
 
-export const NEXT_STEP_INSURANCE = {
+export const STEP_INSURE = {
   name: 'Insurance',
   title: 'Insurance',
   introduction: {
@@ -341,31 +341,31 @@ export const NEXT_STEP_INSURANCE = {
     buttonText: 'Get a quote'
   },
   status: 'Not Started',
-  id: 'NEXT_STEP_INSURANCE'
+  id: 'STEP_INSURE'
 }
 
-export const NEXT_STEP_RIDE = {
+export const STEP_RIDE = {
   name: 'Ride',
   status: 'Ride',
-  id: 'NEXT_STEP_RIDE'
+  id: 'STEP_RIDE'
 }
 
 const NEXT_STEPS = [
-  NEXT_STEP_START,
-  NEXT_STEP_LICENCE,
-  NEXT_STEP_ITM,
-  NEXT_STEP_REVISE,
-  NEXT_STEP_CBT,
-  NEXT_STEP_CBT_BOOKED,
-  NEXT_STEP_POST_CBT,
-  NEXT_STEP_THEORY_TEST,
-  NEXT_STEP_FULL_LICENCE,
-  // NEXT_STEP_FULL_LICENCE_BOOKED,
-  // NEXT_STEP_POST_FULL_LICENCE,
-  NEXT_STEP_GEAR,
-  NEXT_STEP_BIKE,
-  NEXT_STEP_INSURANCE,
-  NEXT_STEP_RIDE
+  STEP_START,
+  STEP_LICENCE,
+  STEP_ITM,
+  STEP_REVISE,
+  STEP_CBT_BEFORE,
+  STEP_CBT_BOOKED,
+  STEP_CBT_POST,
+  STEP_THEORY_TEST,
+  STEP_FULL_LICENCE_BEFORE,
+  STEP_FULL_LICENCE_BOOKED,
+  STEP_FULL_LICENCE_POST,
+  STEP_GEAR,
+  STEP_BIKE,
+  STEP_INSURE,
+  STEP_RIDE
 ]
 
 export default NEXT_STEPS

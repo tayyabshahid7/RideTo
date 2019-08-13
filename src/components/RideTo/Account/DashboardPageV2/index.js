@@ -14,7 +14,7 @@ const LOADED_TIMELINE = [
   { constant: 'STEP_START', name: 'Start', is_completed: true },
   { constant: 'STEP_LICENCE', name: 'Licence', is_completed: true },
   { constant: 'STEP_ITM', name: 'ITM', is_completed: true },
-  { constant: 'STEP_REVISE', name: 'Revise', is_completed: true },
+  { constant: 'STEP_REVISE', name: 'Revise', is_completed: false },
   { constant: 'STEP_CBT', name: 'CBT', is_completed: false },
   { constant: 'STEP_THEORY_TEST', name: 'Theory Test', is_completed: false },
   { constant: 'STEP_FULL_LICENCE', name: 'Full Licence', is_completed: false },
@@ -41,44 +41,51 @@ function DashboardPageV2() {
     setSelectedStyle(STYLES.find(style => style.constant === value))
   }
 
-  const updateSteps = constant => {
-    setNextSteps(prevState => {
-      let found = false
+  const handleCompletedClick = (clickedConstant, delay = true) => {
+    let constant = clickedConstant
 
-      return prevState.map(step => {
-        if (step.constant === constant) {
-          found = true
-          return {
-            ...step,
-            is_completed: true
-          }
-        }
+    if (constant.startsWith('STEP_CBT_')) {
+      constant = 'STEP_CBT'
+    }
 
-        if (found) {
-          return {
-            ...step,
-            is_completed: false
-          }
-        }
+    if (constant.startsWith('STEP_FULL_LICENCE_')) {
+      constant = 'STEP_FULL_LICENCE'
+    }
 
-        return {
-          ...step,
-          is_completed: true
-        }
-      })
-    })
-  }
-
-  const handleCompletedClick = (constant, delay = true) => {
     setTimeout(
       () => {
-        updateSteps(constant)
+        setNextSteps(prevState => {
+          let found = false
+
+          return prevState.map(step => {
+            if (step.constant === constant) {
+              found = true
+              return {
+                ...step,
+                is_completed: true
+              }
+            }
+
+            if (found) {
+              return {
+                ...step,
+                is_completed: false
+              }
+            }
+
+            return {
+              ...step,
+              is_completed: true
+            }
+          })
+        })
       },
       delay ? 100 : 0
     )
   }
 
   const matchedNextSteps = matchStepsToGoal(selectedGoal, nextSteps)
+  const nextStep = matchedNextSteps.find(step => step.status === 'Not Started')
 
   return (
     <div className={styles.page}>
@@ -95,10 +102,10 @@ function DashboardPageV2() {
           />
         </div>
       </div>
-      {null && (
+      {nextStep && (
         <div className={classnames(styles.pageItem, styles.pageItemNextStep)}>
           <NextStep
-            nextStep={null}
+            nextStep={nextStep}
             handleCompletedClick={handleCompletedClick}
           />
         </div>
