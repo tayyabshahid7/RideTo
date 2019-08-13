@@ -1,53 +1,27 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './styles.scss'
+import { ALL_ACHIEVMENTS } from './content'
 
-const ACHIVEMENTS = [
-  {
-    name: 'Asdf 1',
-    achieved: true
-  },
-  {
-    name: 'Asdf 2',
-    achieved: false
-  },
-  {
-    name: 'Asdf 3',
-    achieved: true
-  },
-  {
-    name: 'Asdf4 ',
-    achieved: true
-  },
-  {
-    name: 'Asdf5',
-    achieved: true
-  },
-  {
-    name: 'Asdf 6',
-    achieved: false
-  },
-  {
-    name: 'Asdf 7',
-    achieved: false
-  },
-  {
-    name: 'Asdf 8',
-    achieved: false
-  },
-  {
-    name: 'Asdf 9',
-    achieved: false
-  },
-  {
-    name: 'Asdf 10',
-    achieved: false
-  }
-]
+function Achievements({ achivements }) {
+  const mergedAchievements = ALL_ACHIEVMENTS.map(defaultA => {
+    const userA = achivements.find(({ constant }) => {
+      return constant === defaultA.constant
+    })
 
-function Achievements() {
-  ACHIVEMENTS.sort(({ achieved: a }, { achieved: b }) => b - a)
-  const totalLength = ACHIVEMENTS.length
-  const achievedLength = ACHIVEMENTS.filter(a => a.achieved).length
+    if (userA) {
+      return {
+        ...defaultA,
+        ...userA,
+        achieved: true
+      }
+    }
+
+    return defaultA
+  })
+
+  mergedAchievements.sort(({ achieved: a }, { achieved: b }) => b - a)
+  const totalLength = mergedAchievements.length
+  const achievedLength = mergedAchievements.filter(a => a.achieved).length
   const [visibleLength, setVisibleLength] = useState(achievedLength)
 
   const handleViewAllClick = () => {
@@ -56,13 +30,19 @@ function Achievements() {
     )
   }
 
+  useEffect(() => {
+    if (visibleLength !== totalLength) {
+      setVisibleLength(achievedLength)
+    }
+  }, [visibleLength, totalLength, achievedLength])
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>
-        Your achivements ({achievedLength}/{totalLength})
+        Your achievments ({achievedLength}/{totalLength})
       </h2>
       <ul className={styles.list}>
-        {ACHIVEMENTS.slice(0, visibleLength).map((achivement, i) => (
+        {mergedAchievements.slice(0, visibleLength).map((achivement, i) => (
           <li key={i}>{achivement.name}</li>
         ))}
       </ul>

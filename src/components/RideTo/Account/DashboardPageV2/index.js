@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styles from './styles.scss'
 import Welcome from './Welcome'
 import RouteToFreedom from './RouteToFreedom'
@@ -9,11 +9,17 @@ import News from './News'
 import classnames from 'classnames'
 import { GOALS, STYLES } from './RouteToFreedom/constants'
 import { matchStepsToGoal } from './util'
+import { fetchOrder, fetchOrders, fetchUserDetails } from 'services/user'
+import {
+  getUserProfile,
+  getToken,
+  isAuthenticated as getIsAuthenticated
+} from 'services/auth'
 
-const LOADED_TIMELINE = [
+const DEFAULT_TIMELINE = [
   { constant: 'STEP_START', name: 'Start', is_completed: true },
-  { constant: 'STEP_LICENCE', name: 'Licence', is_completed: true },
-  { constant: 'STEP_ITM', name: 'ITM', is_completed: true },
+  { constant: 'STEP_LICENCE', name: 'Licence', is_completed: false },
+  { constant: 'STEP_ITM', name: 'ITM', is_completed: false },
   { constant: 'STEP_REVISE', name: 'Revise', is_completed: false },
   { constant: 'STEP_CBT', name: 'CBT', is_completed: false },
   { constant: 'STEP_THEORY_TEST', name: 'Theory Test', is_completed: false },
@@ -24,10 +30,17 @@ const LOADED_TIMELINE = [
   { constant: 'STEP_RIDE', name: 'Ride', is_completed: false }
 ]
 
-function DashboardPageV2() {
+function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
   const [selectedStyle, setSelectedStyle] = useState(STYLES[0])
-  const [nextSteps, setNextSteps] = useState(LOADED_TIMELINE)
+  const [nextSteps, setNextSteps] = useState([])
+  const [recentOrder, setRecentOrder] = useState(null)
+  const [orders, setOrders] = useState([])
+  const [achivements, setAchivements] = useState([])
+
+  console.log(recentOrder, orders)
+
+  const isAuthenticated = getIsAuthenticated()
 
   const handleGoalChange = event => {
     const { value } = event.target
@@ -39,6 +52,34 @@ function DashboardPageV2() {
     const { value } = event.target
 
     setSelectedStyle(STYLES.find(style => style.constant === value))
+  }
+
+  const updateSteps = constant => {
+    setNextSteps(prevState => {
+      let found = false
+
+      return prevState.map(step => {
+        if (step.constant === constant) {
+          found = true
+          return {
+            ...step,
+            is_completed: true
+          }
+        }
+
+        if (found) {
+          return {
+            ...step,
+            is_completed: false
+          }
+        }
+
+        return {
+          ...step,
+          is_completed: true
+        }
+      })
+    })
   }
 
   const handleCompletedClick = (clickedConstant, delay = true) => {
@@ -54,34 +95,99 @@ function DashboardPageV2() {
 
     setTimeout(
       () => {
-        setNextSteps(prevState => {
-          let found = false
-
-          return prevState.map(step => {
-            if (step.constant === constant) {
-              found = true
-              return {
-                ...step,
-                is_completed: true
-              }
-            }
-
-            if (found) {
-              return {
-                ...step,
-                is_completed: false
-              }
-            }
-
-            return {
-              ...step,
-              is_completed: true
-            }
-          })
-        })
+        updateSteps(constant)
       },
       delay ? 100 : 0
     )
+  }
+
+  const recordGAEcommerceData = order => {
+    if (order && window.localStorage.getItem('gaok') === 'true') {
+      window.dataLayer = window.dataLayer || []
+      window.dataLayer.push({
+        transactionId: order.friendly_id,
+        transactionAffiliation: 'RideTo',
+        transactionTotal: order.revenue,
+        transactionProducts: [
+          {
+            sku: order.friendly_id,
+            name: order.selected_licence,
+            category: order.supplier_name,
+            price: order.revenue,
+            quantity: 1
+          }
+        ],
+        event: 'rideto.ecom-purchase.completed'
+      })
+      window.localStorage.removeItem('gaok')
+    }
+  }
+
+  useEffect(() => {
+    const { params } = match
+    const { orderId } = params
+
+    const loadSingleOrder = async orderId => {
+      const recentOrder = await fetchOrder(orderId)
+      const { course_title } = recentOrder
+
+      setRecentOrder(recentOrder)
+      recordGAEcommerceData(recentOrder)
+
+      if (course_title === 'CBT Training') {
+        updateSteps('STEP_REVISE')
+      } else if (course_title.startsWith('Full Licence')) {
+        updateSteps('STEP_THEORY_TEST')
+      }
+    }
+
+    const loadOrders = async username => {
+      const result = await fetchOrders(username)
+
+      setOrders(result.results)
+    }
+
+    const loadUserDetails = async userId => {
+      const result = await fetchUserDetails(userId)
+      const { riding_goal, riding_style, timeline, achivements } = result
+
+      if (riding_goal) {
+        setSelectedGoal(GOALS.find(goal => goal.constant === riding_goal))
+      }
+
+      if (riding_style) {
+        setSelectedStyle(STYLES.find(style => style.constant === riding_style))
+      }
+
+      if (timeline.length) {
+        setNextSteps(result.timeline)
+      }
+
+      if (achivements.length) {
+        setAchivements(achivements)
+      }
+    }
+
+    setNextSteps(DEFAULT_TIMELINE)
+
+    if (isAuthenticated) {
+      const user = getUserProfile(getToken())
+
+      if (user) {
+        loadUserDetails(user.user_id)
+        loadOrders(user.username)
+      }
+    } else if (orderId) {
+      loadSingleOrder(orderId)
+      const next = `/account/dashboard/${orderId}`
+      window.sessionStorage.setItem('login-next', JSON.stringify(next))
+    } else {
+      window.location = '/account/login'
+    }
+  }, [match, isAuthenticated])
+
+  if (!nextSteps.length) {
+    return null
   }
 
   const matchedNextSteps = matchStepsToGoal(selectedGoal, nextSteps)
@@ -112,9 +218,11 @@ function DashboardPageV2() {
       )}
       <div className={styles.row}>
         <div className={styles.leftCol}>
-          <div className={styles.pageItem}>
-            <Achievements />
-          </div>
+          {isAuthenticated && (
+            <div className={styles.pageItem}>
+              <Achievements achivements={achivements} />
+            </div>
+          )}
           <div className={styles.pageItem}>
             <GuidesAdvice />
           </div>
