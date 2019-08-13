@@ -5,56 +5,12 @@ import ProgressBar from '../ProgressBar'
 import { useMediaQuery } from 'react-responsive'
 import { range } from 'lodash'
 
-const reduceStepsFilter = steps => {
-  return steps.reduce((acc, step) => {
-    if (['NEXT_STEP_CBT'].includes(step.id)) {
-      const bookedStatus = steps.find(
-        step => step.id === 'NEXT_STEP_CBT_BOOKED'
-      ).status
-      const postStatus = steps.find(step => step.id === 'NEXT_STEP_POST_CBT')
-        .status
-
-      acc.push({
-        ...step,
-        ...(['Next Step', 'Completed'].includes(bookedStatus) && {
-          status: bookedStatus
-        }),
-        ...(['Next Step', 'Completed'].includes(postStatus) && {
-          status: postStatus
-        })
-      })
-    }
-
-    if (
-      !['NEXT_STEP_CBT', 'NEXT_STEP_CBT_BOOKED', 'NEXT_STEP_POST_CBT'].includes(
-        step.id
-      )
-    ) {
-      acc.push(step)
-    }
-
-    return acc
-  }, [])
-}
-
 function Steps({ steps, percentComplete, handleCompletedClick }) {
-  const reducedSteps = reduceStepsFilter(steps)
-  let completed = false
-  let currentStep = reducedSteps.findIndex(step => {
-    return step.status === 'Next Step'
-  })
-  if (currentStep === -1) {
-    const lastCompletedIndex = reducedSteps
-      .map(step => step.status)
-      .lastIndexOf('Completed')
-
-    currentStep = lastCompletedIndex + 1
-
-    if (currentStep === reducedSteps.length - 1) {
-      completed = true
-    }
-  }
   const isDesktop = useMediaQuery({ minWidth: 1025 })
+  console.log(steps)
+  const currentStepIndex = steps.findIndex(
+    step => step.status === 'Not Started'
+  )
   const stepRefs = useRef(range(steps.length).map(() => createRef()))
   const currentStepRef = useRef(null)
   const [progressWidth, setProgressWidth] = useState(0)
@@ -65,9 +21,9 @@ function Steps({ steps, percentComplete, handleCompletedClick }) {
   }
 
   useEffect(() => {
-    currentStepRef.current = stepRefs.current[currentStep].current
+    currentStepRef.current = stepRefs.current[currentStepIndex].current
     handleResize()
-  }, [currentStep, reducedSteps])
+  }, [currentStepIndex, steps])
 
   useEffect(() => {
     window.addEventListener('resize', handleResize)
@@ -77,8 +33,9 @@ function Steps({ steps, percentComplete, handleCompletedClick }) {
   return (
     <div className={styles.container}>
       <ul className={styles.list}>
-        {reducedSteps.map((step, i) => (
+        {steps.map((step, i) => (
           <Step
+            isNextStep={currentStepIndex === i}
             handleCompletedClick={handleCompletedClick}
             ref={stepRefs.current[i]}
             key={i}
@@ -88,8 +45,7 @@ function Steps({ steps, percentComplete, handleCompletedClick }) {
       </ul>
       {isDesktop && (
         <ProgressBar
-          width={!completed && progressWidth}
-          parcent={completed && 100}
+          width={progressWidth}
           bgColor="#d8d8d8"
           className={styles.stepsBar}
         />

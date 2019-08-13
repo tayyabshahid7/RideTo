@@ -7,186 +7,78 @@ import Achievements from './Achievements'
 import GuidesAdvice from './GuidesAdvice'
 import News from './News'
 import classnames from 'classnames'
-import NEXT_STEPS from './NextStep/content'
-import { GOALS, STYLES } from './RouteToFreedom/content'
+import { GOALS, STYLES } from './RouteToFreedom/constants'
+import { matchStepsToGoal } from './util'
 
-const matchStepsToGoal = (isFullLicenceGoal, nextSteps) => {
-  return nextSteps.filter(step => {
-    if (
-      !isFullLicenceGoal &&
-      ['NEXT_STEP_THEORY_TEST', 'NEXT_STEP_FULL_LICENCE'].includes(step.id)
-    ) {
-      return false
-    }
-
-    return true
-  })
-}
+const LOADED_TIMELINE = [
+  { constant: 'STEP_START', name: 'Start', is_completed: true },
+  { constant: 'STEP_LICENCE', name: 'Licence', is_completed: true },
+  { constant: 'STEP_ITM', name: 'ITM', is_completed: true },
+  { constant: 'STEP_REVISE', name: 'Revise', is_completed: true },
+  { constant: 'STEP_CBT', name: 'CBT', is_completed: false },
+  { constant: 'STEP_THEORY_TEST', name: 'Theory Test', is_completed: false },
+  { constant: 'STEP_FULL_LICENCE', name: 'Full Licence', is_completed: false },
+  { constant: 'STEP_BIKE', name: 'Bike', is_completed: false },
+  { constant: 'STEP_GEAR', name: 'Gear', is_completed: false },
+  { constant: 'STEP_INSURE', name: 'Insure', is_completed: false },
+  { constant: 'STEP_RIDE', name: 'Ride', is_completed: false }
+]
 
 function DashboardPageV2() {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
-  const [selectedStyle, setselectedStyle] = useState(STYLES[0])
-  const isFullLicenceGoal = selectedGoal === 'Social Rider - Any Bike'
-  const [nextSteps, setNextSteps] = useState(NEXT_STEPS)
-  const filteredNextSteps = matchStepsToGoal(isFullLicenceGoal, nextSteps)
-  const nextStep = filteredNextSteps.find(step => step.status === 'Next Step')
+  const [selectedStyle, setSelectedStyle] = useState(STYLES[0])
+  const [nextSteps, setNextSteps] = useState(LOADED_TIMELINE)
 
   const handleGoalChange = event => {
-    const goal = event.target.value
+    const { value } = event.target
 
-    setSelectedGoal(goal)
+    setSelectedGoal(GOALS.find(goal => goal.constant === value))
   }
 
   const handleStyleChange = event => {
-    setselectedStyle(event.target.value)
+    const { value } = event.target
+
+    setSelectedStyle(STYLES.find(style => style.constant === value))
   }
 
-  const updateSteps = (id, instant) => {
+  const updateSteps = constant => {
     setNextSteps(prevState => {
-      let nextIndex = null
+      let found = false
 
-      if (instant) {
-        let isCBTCompleted = false
-        let found = false
-
-        return prevState.map((step, i) => {
-          if (['Start', 'Ride'].includes(step.status)) {
-            return step
-          }
-
-          if (id === step.id) {
-            found = true
-            nextIndex = i + 1
-
-            isCBTCompleted = id === 'NEXT_STEP_CBT'
-
-            return {
-              ...step,
-              status: 'Completed'
-            }
-          }
-
-          if (
-            isCBTCompleted &&
-            ['NEXT_STEP_CBT_BOOKED', 'NEXT_STEP_POST_CBT'].includes(step.id)
-          ) {
-            return {
-              ...step,
-              status: 'Completed'
-            }
-          }
-
-          if (
-            !isFullLicenceGoal &&
-            isCBTCompleted &&
-            ['NEXT_STEP_THEORY_TEST', 'NEXT_STEP_FULL_LICENCE'].includes(
-              step.id
-            )
-          ) {
-            return {
-              ...step,
-              status: 'Completed'
-            }
-          }
-
-          if (
-            isFullLicenceGoal &&
-            isCBTCompleted &&
-            step.id === 'NEXT_STEP_THEORY_TEST'
-          ) {
-            return {
-              ...step,
-              status: 'Next Step'
-            }
-          }
-
-          if (
-            !isFullLicenceGoal &&
-            isCBTCompleted &&
-            step.id === 'NEXT_STEP_GEAR'
-          ) {
-            return {
-              ...step,
-              status: 'Next Step'
-            }
-          }
-
-          if (i === nextIndex) {
-            return {
-              ...step,
-              status: 'Next Step'
-            }
-          }
-
-          if (found) {
-            return {
-              ...step,
-              status: 'Not Started'
-            }
-          }
-
+      return prevState.map(step => {
+        if (step.constant === constant) {
+          found = true
           return {
             ...step,
-            status: 'Completed'
+            is_completed: true
           }
-        })
-      }
+        }
 
-      return prevState
-        .map((step, i) => {
-          if (id === step.id) {
-            nextIndex = i + 1
-
-            return {
-              ...step,
-              ...(!['Start', 'Ride'].includes(step.status) && {
-                status: 'Completed'
-              })
-            }
-          } else if (i === nextIndex) {
-            return {
-              ...step,
-              ...(!['Start', 'Ride'].includes(step.status) && {
-                status: 'Next Step'
-              })
-            }
-          } else {
-            return step
+        if (found) {
+          return {
+            ...step,
+            is_completed: false
           }
-        })
-        .map((step, i) => {
-          if (!isFullLicenceGoal && id === 'NEXT_STEP_POST_CBT') {
-            if (
-              ['NEXT_STEP_THEORY_TEST', 'NEXT_STEP_FULL_LICENCE'].includes(
-                step.id
-              )
-            ) {
-              return {
-                ...step,
-                status: 'Completed'
-              }
-            }
-            if (step.id === 'NEXT_STEP_GEAR') {
-              return {
-                ...step,
-                status: 'Next Step'
-              }
-            }
-          }
+        }
 
-          return step
-        })
+        return {
+          ...step,
+          is_completed: true
+        }
+      })
     })
   }
 
-  const handleCompletedClick = (id, delay = true) => {
+  const handleCompletedClick = (constant, delay = true) => {
     setTimeout(
       () => {
-        updateSteps(id, !delay)
+        updateSteps(constant)
       },
       delay ? 100 : 0
     )
   }
+
+  const matchedNextSteps = matchStepsToGoal(selectedGoal, nextSteps)
 
   return (
     <div className={styles.page}>
@@ -194,7 +86,7 @@ function DashboardPageV2() {
       <div className={styles.pageItemFullWidthWrapper}>
         <div className={styles.pageItem}>
           <RouteToFreedom
-            nextSteps={filteredNextSteps}
+            nextSteps={matchedNextSteps}
             selectedGoal={selectedGoal}
             selectedStyle={selectedStyle}
             handleGoalChange={handleGoalChange}
@@ -203,10 +95,10 @@ function DashboardPageV2() {
           />
         </div>
       </div>
-      {nextStep && (
+      {null && (
         <div className={classnames(styles.pageItem, styles.pageItemNextStep)}>
           <NextStep
-            nextStep={nextStep}
+            nextStep={null}
             handleCompletedClick={handleCompletedClick}
           />
         </div>

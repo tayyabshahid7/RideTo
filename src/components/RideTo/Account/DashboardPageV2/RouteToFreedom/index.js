@@ -6,7 +6,7 @@ import Select from 'components/RideTo/Select'
 import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import PercentCircle from './PercentCircle'
-import { GOALS, STYLES } from './content'
+import { GOALS, STYLES } from './constants'
 
 function RouteToFreedom({
   nextSteps,
@@ -39,23 +39,27 @@ function RouteToFreedom({
             summary>
             <div className={styles.formGroup}>
               <Select
-                value={selectedGoal}
+                value={selectedGoal.constant}
                 onChange={handleGoalChange}
                 className={classnames(styles.input, styles.inputSelect)}
                 label="My Riding Goal">
                 {GOALS.map(goal => (
-                  <option key={goal}>{goal}</option>
+                  <option value={goal.constant} key={goal.constant}>
+                    {goal.title}
+                  </option>
                 ))}
               </Select>
             </div>
             <div className={styles.formGroup}>
               <Select
-                value={selectedStyle}
+                value={selectedStyle.constant}
                 onChange={handleStyleChange}
                 className={classnames(styles.input, styles.inputSelect)}
                 label="My Riding Style">
                 {STYLES.map(style => (
-                  <option key={style}>{style}</option>
+                  <option value={style.constant} key={style.constant}>
+                    {style.title}
+                  </option>
                 ))}
               </Select>
             </div>

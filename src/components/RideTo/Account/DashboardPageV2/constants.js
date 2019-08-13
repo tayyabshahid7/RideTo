@@ -1,0 +1,25 @@
+export const CBT_ROUTE = [
+  'STEP_START',
+  'STEP_LICENCE',
+  'STEP_ITM',
+  'STEP_REVISE',
+  'STEP_CBT',
+  'STEP_BIKE',
+  'STEP_GEAR',
+  'STEP_INSURE',
+  'STEP_RIDE'
+]
+
+export const FULL_LICENCE_ROUTE = [
+  'STEP_START',
+  'STEP_LICENCE',
+  'STEP_ITM',
+  'STEP_REVISE',
+  'STEP_CBT',
+  'STEP_THEORY_TEST',
+  'STEP_FULL_LICENCE',
+  'STEP_BIKE',
+  'STEP_GEAR',
+  'STEP_INSURE',
+  'STEP_RIDE'
+]

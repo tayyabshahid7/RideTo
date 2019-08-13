@@ -5,10 +5,10 @@ function Summary({ selectedGoal, selectedStyle }) {
   return (
     <ul className={styles.list}>
       <li>
-        Goal <span>{selectedGoal}</span>
+        Goal <span>{selectedGoal.title}</span>
       </li>
       <li>
-        Style <span>{selectedStyle}</span>
+        Style <span>{selectedStyle.title}</span>
       </li>
     </ul>
   )
