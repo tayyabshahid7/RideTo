@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import styles from './styles.scss'
-import Welcome from './Welcome'
 import RouteToFreedom from './RouteToFreedom'
 import NextStep from './NextStep'
 import Achievements from './Achievements'
@@ -15,20 +14,7 @@ import {
   getToken,
   isAuthenticated as getIsAuthenticated
 } from 'services/auth'
-
-const DEFAULT_TIMELINE = [
-  { constant: 'STEP_START', name: 'Start', is_completed: true },
-  { constant: 'STEP_LICENCE', name: 'Licence', is_completed: false },
-  { constant: 'STEP_ITM', name: 'ITM', is_completed: false },
-  { constant: 'STEP_REVISE', name: 'Revise', is_completed: false },
-  { constant: 'STEP_CBT', name: 'CBT', is_completed: false },
-  { constant: 'STEP_THEORY_TEST', name: 'Theory Test', is_completed: false },
-  { constant: 'STEP_FULL_LICENCE', name: 'Full Licence', is_completed: false },
-  { constant: 'STEP_BIKE', name: 'Bike', is_completed: false },
-  { constant: 'STEP_GEAR', name: 'Gear', is_completed: false },
-  { constant: 'STEP_INSURE', name: 'Insure', is_completed: false },
-  { constant: 'STEP_RIDE', name: 'Ride', is_completed: false }
-]
+import { DEFAULT_TIMELINE } from './constants'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -149,7 +135,7 @@ function DashboardPageV2({ match }) {
 
     const loadUserDetails = async userId => {
       const result = await fetchUserDetails(userId)
-      const { riding_goal, riding_style, timeline, achivements } = result
+      const { riding_goal, riding_style, timeline, achievements } = result
 
       if (riding_goal) {
         setSelectedGoal(GOALS.find(goal => goal.constant === riding_goal))
@@ -163,8 +149,8 @@ function DashboardPageV2({ match }) {
         setNextSteps(result.timeline)
       }
 
-      if (achivements.length) {
-        setAchivements(achivements)
+      if (achievements.length) {
+        setAchivements(achievements)
       }
     }
 
@@ -195,7 +181,6 @@ function DashboardPageV2({ match }) {
 
   return (
     <div className={styles.page}>
-      <Welcome />
       <div className={styles.pageItemFullWidthWrapper}>
         <div className={styles.pageItem}>
           <RouteToFreedom

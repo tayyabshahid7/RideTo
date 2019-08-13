@@ -10,6 +10,30 @@
   padding: 0 0 1rem;
   list-style: none;
   border-bottom: 1px solid rgba(#d8d8d8, 0.5);
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    + li {
+      margin-top: 0.5rem;
+    }
+
+    span {
+      display: flex;
+      align-items: center;
+    }
+
+    img {
+      margin-right: 0.75rem;
+    }
+  }
+}
+
+.timeCompleted {
+  text-align: right;
+  color: rgba(#111111, 0.5);
 }
 
 .viewAll {
