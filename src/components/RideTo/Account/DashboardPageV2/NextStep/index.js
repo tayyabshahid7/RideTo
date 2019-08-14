@@ -69,6 +69,13 @@ function NextStep({
                 {introduction && (
                   <WithTitle title={introduction.title}>
                     <p>{introduction.text}</p>
+                    {introduction.list && (
+                      <ul className={styles.introductionList}>
+                        {introduction.list.map(item => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    )}
                   </WithTitle>
                 )}
                 {included && (

@@ -1,21 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 import CircleList from '../CircleList'
-
-const ITEMS = [
-  {
-    title: 'Riding Guide',
-    url: 'http://google.com'
-  },
-  {
-    title: 'Maintenance Guide',
-    url: 'http://google.com'
-  },
-  {
-    title: 'Bikes Guide',
-    url: 'http://google.com'
-  }
-]
+import { ITEMS } from './content'
 
 function GuidesAdvice() {
   return (

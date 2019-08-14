@@ -15,14 +15,17 @@ export const STEP_LICENCE = {
   introduction: {
     title: 'Introduction',
     text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+      'The first thing you need to get started is the right licence. To ride a scooter or motorcycle you need at least a UK Provisional or Driving Licence. Or an EU Licence with a UK licence counterpart number.'
   },
   faqs: {
-    "What's included?": '',
-    'What do I need to bring?': '',
-    'What happens next?': '',
-    'Is my payment secure?': '',
-    'Can I pay in cash?': ''
+    'I have an EU licence, what do I need?':
+      "You'll need to complete a D91 form with the government to get a UK counterpart licence number OR apply for a UK Provisional/Driving Licence.",
+    "I don't have a licence/ I have non-EU licence, what do I need?":
+      'You\'ll need to apply for a UK Provisional licence with the government <a href="https://www.gov.uk/apply-first-provisional-driving-licence" target="_blank">here</a>.',
+    'How do I pass the CBT test?':
+      "A common misunderstanding - there is no CBT test, it's a training course, which the 5 elements need to be completed in order to gain the certificate. Therefore, if you want a CBT ‘licence', book the CBT training.",
+    'What is the ITM course? Do I need to take it?':
+      'The Introduction to motorcycling course is the perfect first session for complete beginners to spend time on a motorcycle with an instructor, learning the core basics of riding. It is not mandatory but recommended for new riders, especially those planning to ride manual motorcycles for the first time.'
   },
   form: {
     icon: calculator,
@@ -39,17 +42,25 @@ export const STEP_ITM = {
   introduction: {
     title: 'Introduction',
     text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+      'The Introduction To Motorcycling (ITM) course is a 2 hour beginners course, to give new riders experience before the CBT:',
+    list: [
+      'Focus on the core skills and controls of riding a motorcycle',
+      'Experience the fun and freedom before committing to the CBT course',
+      'Learn the basics of clutch and gear controls'
+    ]
   },
   faqs: {
-    "What's included?": '',
-    'What do I need to bring?': '',
-    'What happens next?': '',
-    'Is my payment secure?': '',
-    'Can I pay in cash?': ''
+    'Do I need to take an ITM?':
+      "If you've never ridden a motorcycle or scooter before and your expectation is to complete your CBT within 1 day, we'd recommend considering the ITM course first.",
+    'What will I do during the ITM?':
+      "The ITM is tailored to your needs. You'll focus all the time on bike control and handling, getting to grips with balancing, stopping, starting and turning.",
+    'How far in advance should I book?':
+      'ITM classes have a restricted number of places in each course. Due to the popular demand, you should aim to book at least 1 - 2  weeks in advance in order to get a convenient date.',
+    "I can't see any Introduction courses in my area?":
+      "Not all of our instructors have their introduction courses live online. If you can't find a local ITM course to you, give us a call and we can arrange something for you."
   },
   cta: {
-    href: '/',
+    href: '/introduction-to-motorcycling',
     text: 'About the course'
   },
   form: {
@@ -71,7 +82,7 @@ export const STEP_REVISE = {
   introduction: {
     title: 'Introduction',
     text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+      "Time to get prepared for your CBT course. The CBT course contains 5 parts including 3 theory section, so it's important that you have a good understanding of the Highway Code and motorcycling basics before. Get ready with our handy online guides."
   },
   guides: {
     title: 'Revision guides',
@@ -169,22 +180,31 @@ export const STEP_THEORY_TEST = {
   introduction: {
     title: 'Introduction',
     text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+      'Once you’ve completed the CBT, there’s one more certificate you need to get before you can get started with training for the ultimate freedom of a full motorcycle licence. The motorcycle theory test is the same format as the car theory, containing a multiple choice section of 50 questions and a hazard perception test of 14 videos. The test is booked online directly at the .Gov website.'
   },
   guides: {
     title: 'Revision guides',
     items: [
-      { title: 'What to Prepare For Your CBT Training?', url: '/' },
-      { title: 'Motorcycle Controls and Overview', url: '/' },
-      { title: 'Road Signs', url: '/' },
-      { title: 'Roundabouts', url: '/' },
-      { title: 'Traffic Lights', url: '/' },
-      { title: 'Road Riding Theory and Safety', url: '/' }
+      {
+        title: '​Motorcycle Theory Test - What’s Involved',
+        url:
+          'https://www.rideto.com/blog/motorcycle-theory-and-hazard-perception-tests'
+      },
+      {
+        title: 'Road Riding Theory and Safety',
+        url: 'https://www.rideto.com/blog/Road-Riding-Theory-and-Safety'
+      },
+      { title: 'Road Signs', url: 'https://www.rideto.com/blog/road-signs' },
+      {
+        title: '5 Step Guide to Getting Your Motorcycle Licence',
+        url:
+          'https://www.rideto.com/blog/5-Steps-to-Getting-Your-Motorcycle-Licence'
+      }
     ]
   },
   form: {
     icon: revise,
-    href: '/',
+    href: 'https://www.gov.uk/book-theory-test',
     buttonText: 'Book theory test'
   },
   status: 'Not Started',
@@ -197,7 +217,7 @@ export const STEP_FULL_LICENCE_BEFORE = {
   introduction: {
     title: 'Introduction',
     text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+      'Want to carry passengers, ride a bigger bike and get rid of the L Plates? It’s time to get your full motorcycle licence! This multi-day course will teach you to ride and pass the 2 tests on the right bike for the licence you wish to obtain. Either an A1, A2 or A (unrestricted) licence depending on your age and the bike you take the tests on.'
   },
   included: {
     title: 'What you need',
@@ -268,20 +288,22 @@ export const STEP_FULL_LICENCE_POST = {
 export const STEP_GEAR = {
   name: 'Gear',
   title: 'Gear',
-  introduction: {
-    title: 'Introduction',
-    text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
-  },
   guides: {
     title: 'Advice',
     items: [
-      { title: 'Best Helmets for Beginners', url: '/' },
-      { title: 'Best Gloves for Beginners', url: '/' },
-      { title: 'What Bike to Buy', url: '/' },
-      { title: 'Best Helmets for Beginners', url: '/' },
-      { title: 'Best Gloves for Beginners', url: '/' },
-      { title: 'What Bike to Buy', url: '/' }
+      {
+        title: 'Essential Guide To Gear for New Motorcyclists',
+        url: 'https://www.rideto.com/blog/gear-guide-for-new-motorcyclists'
+      },
+      {
+        title: '5 Step Guide to Buying a Motorcycle Helmet',
+        url:
+          'https://www.rideto.com/blog/5-tips-when-buying-a-motorcycle-helmet'
+      },
+      {
+        title: '​Which Type of Motorcycle Denim is Best?',
+        url: 'https://www.rideto.com/blog/which-motorcycle-denim-is-best'
+      }
     ]
   },
   gear: [
@@ -318,10 +340,6 @@ export const STEP_BIKE = {
     text:
       "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
   },
-  guides: {
-    title: 'Advice',
-    items: [{ title: 'Best Bikes for Beginners', url: '/' }]
-  },
   gear: [
     {
       name: 'Bike 1',
@@ -352,24 +370,37 @@ export const STEP_INSURE = {
   name: 'Insurance',
   title: 'Insurance',
   introduction: {
-    title: 'Introduction',
+    title: 'Description',
     text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+      'Insurance is a legal requirement for every bike and rider on the road. Every insurance policy is unique to the individual, get a quick quote and the best price guaranteed with our Insurance Partner The Biker Insurer.'
   },
   guides: {
-    title: 'Revision guides',
+    title: 'Advice',
     items: [
-      { title: 'What to Prepare For Your CBT Training?', url: '/' },
-      { title: 'Motorcycle Controls and Overview', url: '/' },
-      { title: 'Road Signs', url: '/' },
-      { title: 'Roundabouts', url: '/' },
-      { title: 'Traffic Lights', url: '/' },
-      { title: 'Road Riding Theory and Safety', url: '/' }
+      {
+        title: '10 Things to Consider Before Buying Motorcycle Insurance',
+        url:
+          'https://www.rideto.com/blog/10-things-to-consider-before-buying-motorcycle-insurance'
+      },
+      {
+        title: 'Top Tips to Keeping Your Motorcycle Safe',
+        url:
+          'https://www.rideto.com/blog/top-tips-to-keeping-your-motorcycle-safe'
+      },
+      {
+        title: 'How Much Does It Cost To Ride A Motorcycle?',
+        url:
+          'https://www.rideto.com/blog/how-much-does-it-cost-to-ride-a-motorcycle'
+      },
+      {
+        title: 'Safety Tips for New Motorcycle Riders',
+        url: 'https://www.rideto.com/blog/safety-tips-for-new-motorcycle-riders'
+      }
     ]
   },
   form: {
     icon: quote,
-    href: '/',
+    href: 'http://tidd.ly/a35e0aed',
     buttonText: 'Get a quote'
   },
   status: 'Not Started',

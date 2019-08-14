@@ -26,12 +26,14 @@
 .heading {
   cursor: pointer;
   font-size: 18px;
-  line-height: 40px;
+  // line-height: 40px;
   font-weight: 500;
   font-family: var(--font-rift);
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  min-height: 40px;
 }
 
 .title {
