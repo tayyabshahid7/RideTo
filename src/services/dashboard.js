@@ -56,6 +56,10 @@ export const fetchUserDetails = async userId => {
   return await get(`dashboard/${userId}/`)
 }
 
+export const fetchIsPasswordSet = async () => {
+  return await get('users/has-password-set/')
+}
+
 export const recordGAEcommerceData = order => {
   if (order && window.localStorage.getItem('gaok') === 'true') {
     window.dataLayer = window.dataLayer || []
