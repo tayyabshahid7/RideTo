@@ -88,11 +88,20 @@ export const STEP_REVISE = {
     title: 'Revision guides',
     items: [
       { title: 'What to Prepare For Your CBT Training?', url: '/' },
-      { title: 'Motorcycle Controls and Overview', url: '/' },
-      { title: 'Road Signs', url: '/' },
-      { title: 'Roundabouts', url: '/' },
-      { title: 'Traffic Lights', url: '/' },
-      { title: 'Road Riding Theory and Safety', url: '/' }
+      {
+        title: 'Motorcycle Controls and Overview',
+        url: 'https://www.rideto.com/blog/motorcycle-controls'
+      },
+      { title: 'Road Signs', url: 'https://www.rideto.com/blog/road-signs' },
+      { title: 'Roundabouts', url: 'https://www.rideto.com/blog/roundabouts' },
+      {
+        title: 'Traffic Lights',
+        url: 'https://www.rideto.com/blog/traffic-lights'
+      },
+      {
+        title: 'Road Riding Theory and Safety',
+        url: 'https://www.rideto.com/blog/Road-Riding-Theory-and-Safety'
+      }
     ]
   },
   form: {
@@ -154,12 +163,24 @@ export const STEP_CBT_BOOKED = {
   guides: {
     title: 'Useful guides',
     items: [
-      { title: 'What to Prepare For Your CBT Training?', url: '/' },
-      { title: 'Motorcycle Controls and Overview', url: '/' },
-      { title: 'Road Signs', url: '/' },
-      { title: 'Roundabouts', url: '/' },
-      { title: 'Traffic Lights', url: '/' },
-      { title: 'Road Riding Theory and Safety', url: '/' }
+      {
+        title: 'What to Prepare For Your CBT Training?',
+        url: 'https://www.rideto.com/blog/prepare-for-cbt-training'
+      },
+      {
+        title: 'Motorcycle Controls and Overview',
+        url: 'https://www.rideto.com/blog/motorcycle-controls'
+      },
+      { title: 'Road Signs', url: 'https://www.rideto.com/blog/road-signs' },
+      { title: 'Roundabouts', url: 'https://www.rideto.com/blog/roundabouts' },
+      {
+        title: 'Traffic Lights',
+        url: 'https://www.rideto.com/blog/traffic-lights'
+      },
+      {
+        title: 'Road Riding Theory and Safety',
+        url: 'https://www.rideto.com/blog/Road-Riding-Theory-and-Safety'
+      }
     ]
   },
   status: 'Not Started',
@@ -231,7 +252,7 @@ export const STEP_FULL_LICENCE_BEFORE = {
     ]
   },
   cta: {
-    href: '/',
+    href: '/motorcycle-licence',
     text: 'About the course'
   },
   form: {
@@ -266,11 +287,20 @@ export const STEP_FULL_LICENCE_BOOKED = {
     title: 'Revision guides',
     items: [
       { title: 'What to Prepare For Your Full Licence Training?', url: '/' },
-      { title: 'Motorcycle Controls and Overview', url: '/' },
-      { title: 'Road Signs', url: '/' },
-      { title: 'Roundabouts', url: '/' },
-      { title: 'Traffic Lights', url: '/' },
-      { title: 'Road Riding Theory and Safety', url: '/' }
+      {
+        title: 'Motorcycle Controls and Overview',
+        url: 'https://www.rideto.com/blog/motorcycle-controls'
+      },
+      { title: 'Road Signs', url: 'https://www.rideto.com/blog/road-signs' },
+      { title: 'Roundabouts', url: 'https://www.rideto.com/blog/roundabouts' },
+      {
+        title: 'Traffic Lights',
+        url: 'https://www.rideto.com/blog/traffic-lights'
+      },
+      {
+        title: 'Road Riding Theory and Safety',
+        url: 'https://www.rideto.com/blog/Road-Riding-Theory-and-Safety'
+      }
     ]
   },
   status: 'Not Started',
