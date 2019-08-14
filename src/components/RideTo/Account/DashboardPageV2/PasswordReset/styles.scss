@@ -1,0 +1,43 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(#141414, 0.8);
+}
+
+.title {
+  color: inherit;
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
+  line-height: 2rem;
+  font-size: 1.5rem;
+  margin-top: -0.5rem;
+}
+
+.modal {
+  background: #fff;
+  width: 90%;
+  max-width: 616px;
+  padding: 2rem;
+
+  @media (min-width: 1025px) {
+    padding: 2.5rem;
+  }
+}
+
+.input {
+  appearance: none;
+  border: 1px solid #141414 !important;
+  margin-top: 24px;
+  background-clip: padding-box;
+}
+
+.cta {
+  margin-top: 1.5rem;
+}

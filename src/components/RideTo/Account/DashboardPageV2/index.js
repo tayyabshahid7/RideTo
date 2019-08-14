@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import styles from './styles.scss'
 import RouteToFreedom from './RouteToFreedom'
 import NextStep from './NextStep'
@@ -21,6 +21,7 @@ import {
   updateUserDetail,
   recordGAEcommerceData
 } from 'services/dashboard'
+import PasswordReset from './PasswordReset'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -207,50 +208,56 @@ function DashboardPageV2({ match }) {
   const nextStep = matchedNextSteps.find(step => step.status === 'Not Started')
 
   return (
-    <div className={styles.page}>
-      <div className={styles.pageItemFullWidthWrapper}>
-        <div className={styles.pageItem}>
-          <RouteToFreedom
-            nextSteps={matchedNextSteps}
-            selectedGoal={selectedGoal}
-            selectedStyle={selectedStyle}
-            handleGoalChange={handleGoalChange}
-            handleStyleChange={handleStyleChange}
-            handleCompletedClick={handleCompletedClick}
-          />
-        </div>
-      </div>
-      {nextStep && (
-        <div className={classnames(styles.pageItem, styles.pageItemNextStep)}>
-          <NextStep
-            nextStep={nextStep}
-            handleCompletedClick={handleCompletedClick}
-            recentOrder={recentOrder}
-            orders={orders}
-            cbtStatus={cbtStatus}
-            dasStatus={dasStatus}
-          />
-        </div>
-      )}
-      <div className={styles.row}>
-        <div className={styles.leftCol}>
-          {isAuthenticated && (
-            <div className={styles.pageItem}>
-              <Achievements achivements={achivements} />
-            </div>
-          )}
+    <Fragment>
+      <PasswordReset isVisible />
+      <div className={styles.page}>
+        <div className={styles.pageItemFullWidthWrapper}>
           <div className={styles.pageItem}>
-            <GuidesAdvice />
+            <RouteToFreedom
+              nextSteps={matchedNextSteps}
+              selectedGoal={selectedGoal}
+              selectedStyle={selectedStyle}
+              handleGoalChange={handleGoalChange}
+              handleStyleChange={handleStyleChange}
+              handleCompletedClick={handleCompletedClick}
+            />
           </div>
         </div>
-        <div className={styles.rightCol}>
-          <div
-            className={classnames(styles.pageItem, styles.pageItemTransparent)}>
-            <News selectedGoal={selectedGoal} selectedStyle={selectedStyle} />
+        {nextStep && (
+          <div className={classnames(styles.pageItem, styles.pageItemNextStep)}>
+            <NextStep
+              nextStep={nextStep}
+              handleCompletedClick={handleCompletedClick}
+              recentOrder={recentOrder}
+              orders={orders}
+              cbtStatus={cbtStatus}
+              dasStatus={dasStatus}
+            />
+          </div>
+        )}
+        <div className={styles.row}>
+          <div className={styles.leftCol}>
+            {isAuthenticated && (
+              <div className={styles.pageItem}>
+                <Achievements achivements={achivements} />
+              </div>
+            )}
+            <div className={styles.pageItem}>
+              <GuidesAdvice />
+            </div>
+          </div>
+          <div className={styles.rightCol}>
+            <div
+              className={classnames(
+                styles.pageItem,
+                styles.pageItemTransparent
+              )}>
+              <News selectedGoal={selectedGoal} selectedStyle={selectedStyle} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   )
 }
 
