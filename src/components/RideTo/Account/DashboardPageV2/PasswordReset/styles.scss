@@ -1,14 +1,22 @@
 .overlay {
   position: fixed;
-  top: 0;
+  top: 56px;
   right: 0;
   bottom: 0;
   left: 0;
   z-index: 1;
   display: flex;
   justify-content: center;
-  align-items: center;
   background-color: rgba(#141414, 0.8);
+
+  @media (min-width: 801px) {
+    top: 80px;
+  }
+
+  @media (min-width: 1025px) {
+    top: 0;
+    align-items: center;
+  }
 }
 
 .title {
@@ -21,17 +29,24 @@
 }
 
 .modal {
-  width: 90%;
-  max-width: 616px;
+  width: 100%;
+
+  @media (min-width: 1025px) {
+    width: 90%;
+    max-width: 616px;
+    height: auto;
+  }
 }
 
 .inner {
   overflow: auto;
   background: #fff;
   padding: 2rem;
+  height: 100%;
 
   @media (min-width: 1025px) {
     padding: 2.5rem;
+    height: auto;
   }
 }
 
