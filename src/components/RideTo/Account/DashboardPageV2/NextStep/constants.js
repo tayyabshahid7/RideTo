@@ -55,7 +55,10 @@ export const STEP_ITM = {
   form: {
     icon: instructor,
     label: 'Postcode',
-    action: '/',
+    action: '/course-location',
+    params: {
+      courseType: 'INTRO_TO_MOTORCYCLING'
+    },
     buttonText: 'Book ITM course'
   },
   status: 'Not Started',
@@ -112,7 +115,10 @@ export const STEP_CBT_BEFORE = {
   form: {
     icon: instructor,
     label: 'Postcode',
-    action: '/',
+    action: '/course-location',
+    params: {
+      courseType: 'LICENCE_CBT'
+    },
     buttonText: 'Book CBT course'
   },
   status: 'Not Started',
@@ -211,7 +217,10 @@ export const STEP_FULL_LICENCE_BEFORE = {
   form: {
     icon: instructor,
     label: 'Postcode',
-    action: '/',
+    action: '/course-location',
+    params: {
+      courseType: 'FULL_LICENCE'
+    },
     buttonText: 'Book local instructor'
   },
   status: 'Not Started',

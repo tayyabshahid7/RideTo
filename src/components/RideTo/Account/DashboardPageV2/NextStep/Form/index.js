@@ -6,7 +6,7 @@ import Button from 'components/RideTo/Button'
 import classnames from 'classnames'
 
 function Form({ form }) {
-  const { action, label, buttonText, icon, href } = form
+  const { action, label, buttonText, icon, href, params = {} } = form
 
   return (
     <div className={styles.container}>
@@ -15,7 +15,14 @@ function Form({ form }) {
       </div>
       {action && label ? (
         <form action={action}>
-          <Input className={styles.input} label={label} />
+          {Object.entries(params).map(([key, value]) => (
+            <input key={key} type="hidden" name={key} value={value} />
+          ))}
+          <Input
+            className={styles.input}
+            label={label}
+            name={label.toLowerCase()}
+          />
           <Button type="submit" modern className={styles.button}>
             <span>{buttonText}</span>
             <img src={ButtonArrowWhite} alt="" />
