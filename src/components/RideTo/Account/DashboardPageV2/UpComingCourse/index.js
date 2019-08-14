@@ -33,12 +33,16 @@ function UpComingCourse({ course, title, handleClick }) {
       <div>
         <h4>Location</h4>
         <p>
-          <a
-            href={`https://www.google.com/maps?q=${name} ${postcode}`}
-            target="_blank"
-            rel="noopener noreferrer">
-            {address_1}, {postcode}
-          </a>
+          {handleClick ? (
+            `${address_1}, ${postcode}`
+          ) : (
+            <a
+              href={`https://www.google.com/maps?q=${name} ${postcode}`}
+              target="_blank"
+              rel="noopener noreferrer">
+              {address_1}, {postcode}
+            </a>
+          )}
         </p>
       </div>
       {!isFullLicence && (
