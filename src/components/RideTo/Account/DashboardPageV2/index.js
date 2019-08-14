@@ -111,7 +111,8 @@ function DashboardPageV2({ match }) {
       setRecentOrder(recentOrder)
       recordGAEcommerceData(recentOrder)
 
-      if (!isAuthenticated) {
+      // Set to show order if there is one
+      if (orderId) {
         if (course_title === 'CBT Training') {
           // One step before the actual CBT step
           updateSteps('STEP_REVISE')
