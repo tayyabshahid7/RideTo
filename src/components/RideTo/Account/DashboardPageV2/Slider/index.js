@@ -11,10 +11,8 @@ function Slider({ gear }) {
   const settings = {
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    slidesToShow: isDesktop ? 3 : 1
+    slidesToShow: isDesktop ? Math.min(gear.length, 3) : 1
   }
-
-  console.log(gear)
 
   return (
     <div className={styles.container}>
