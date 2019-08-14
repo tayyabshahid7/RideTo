@@ -3,6 +3,14 @@ import instructor from './images/instructor.svg'
 import quote from './images/quote.svg'
 import revise from './images/revise.svg'
 
+import boots from './contentImages/boots.jpg'
+import gloves from './contentImages/gloves.jpg'
+import helmets from './contentImages/helmets.jpg'
+import jackets from './contentImages/jackets.jpg'
+import jeans from './contentImages/jeans.jpg'
+import locks from './contentImages/locks.jpg'
+import luggage from './contentImages/luggage.jpg'
+
 export const STEP_START = {
   name: 'Start',
   status: 'Start',
@@ -338,24 +346,46 @@ export const STEP_GEAR = {
   },
   gear: [
     {
-      name: 'Gear 1',
-      link: '/',
-      image: 'https://via.placeholder.com/120x62'
+      name: 'Helmets',
+      image: helmets,
+      link:
+        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/797/#/23639,2834,1102'
     },
     {
-      name: 'Gear 2',
-      link: '/',
-      image: 'https://via.placeholder.com/120x62'
+      name: 'Gloves',
+      image: gloves,
+      link:
+        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/314/#/23639,2834,1102'
     },
     {
-      name: 'Gear 3',
-      link: '/',
-      image: 'https://via.placeholder.com/120x62'
+      name: 'Jackets',
+      image: jackets,
+      link:
+        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/975/#/23639,2834,1102'
     },
     {
-      name: 'Gear 4',
-      link: '/',
-      image: 'https://via.placeholder.com/120x62'
+      name: 'Jeans',
+      image: jeans,
+      link:
+        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/976/#/23639,2834,1102'
+    },
+    {
+      name: 'Boots',
+      image: boots,
+      link:
+        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/1590/#/23639,2834,1102'
+    },
+    {
+      name: 'Locks',
+      image: locks,
+      link:
+        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/69/#/23639,2834,1102'
+    },
+    {
+      name: 'Luggage',
+      image: luggage,
+      link:
+        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/941/#/23639,2834,1102'
     }
   ],
   status: 'Not Started',

@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick-theme.css'
 import { NextArrow, PrevArrow } from './Arrows'
 import { useMediaQuery } from 'react-responsive'
 
-function Slider({ gear }) {
+function Slider({ gear, constant }) {
   const isDesktop = useMediaQuery({ minWidth: 1025 })
   const settings = {
     nextArrow: <NextArrow />,
@@ -22,7 +22,9 @@ function Slider({ gear }) {
             <a key={name} href={link}>
               <div className={styles.slide}>
                 <img src={image} alt="" />
-                <h4 className={styles.title}>Shop {name}</h4>
+                <h4 className={styles.title}>
+                  {constant !== 'STEP_BIKE' && 'Shop'} {name}
+                </h4>
               </div>
             </a>
           ))}

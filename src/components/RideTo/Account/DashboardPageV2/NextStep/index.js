@@ -131,7 +131,10 @@ function NextStep({
           </div>
         ) : gear ? (
           <div className={classnames(styles.rightCol, styles.rightColSlider)}>
-            <Slider gear={constant === 'STEP_BIKE' ? bikes : gear} />
+            <Slider
+              gear={constant === 'STEP_BIKE' ? bikes : gear}
+              constant={constant}
+            />
           </div>
         ) : null}
         {!isDesktop && constant !== 'STEP_RIDE' && (
