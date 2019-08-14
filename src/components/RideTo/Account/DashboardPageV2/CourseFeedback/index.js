@@ -2,6 +2,8 @@ import React, { useState, Fragment } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
 import { updateUserDetail } from 'services/dashboard'
+import happy from './images/happy.svg'
+import unhappy from './images/unhappy.svg'
 
 const OPTIONS = [
   {
@@ -9,21 +11,21 @@ const OPTIONS = [
     text: 'I completed the course!',
     message:
       'Congratulations! That\'s great news, onto the next step! <a href="/">Leave us a review on TrustPilot</a>',
-    icon: 'happy'
+    icon: happy
   },
   {
     id: 'NO_COMPLETED_COURSE',
     text: "I didn't complete the course",
     message:
       'Sorry to hear that, email us at <a href="mailto:hello@rideto.com">hello@rideto.com</a> to organise further training.',
-    icon: 'sad'
+    icon: unhappy
   },
   {
     id: 'UNABLE_COMPLETED_COURSE',
     text: 'I was unable to start the course',
     message:
       'Sorry to hear that, email us at <a href="mailto:hello@rideto.com">hello@rideto.com</a> to rebook.',
-    icon: 'sad'
+    icon: unhappy
   }
 ]
 
@@ -63,10 +65,9 @@ function CourseFeedback({ status, courseType }) {
               <Fragment>
                 <img
                   className={styles.messageIcon}
-                  src="https://via.placeholder.com/58x58"
+                  src={selectedOption.icon}
                   alt="Icon"
                   width="58"
-                  height="58"
                 />
                 <p
                   dangerouslySetInnerHTML={{ __html: selectedOption.message }}

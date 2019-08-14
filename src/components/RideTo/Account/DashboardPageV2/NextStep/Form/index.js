@@ -11,12 +11,7 @@ function Form({ form }) {
   return (
     <div className={styles.container}>
       <div className={styles.icon}>
-        <img
-          src={`https://via.placeholder.com/62x62/?=${icon}`}
-          alt="Icon"
-          width="62"
-          height="62"
-        />
+        <img src={icon} alt="Icon" width="62" />
       </div>
       {action && label ? (
         <form action={action}>

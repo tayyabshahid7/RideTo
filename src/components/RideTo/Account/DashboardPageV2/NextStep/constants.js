@@ -1,3 +1,8 @@
+import calculator from './images/calculator.svg'
+import instructor from './images/instructor.svg'
+import quote from './images/quote.svg'
+import revise from './images/revise.svg'
+
 export const STEP_START = {
   name: 'Start',
   status: 'Start',
@@ -20,7 +25,7 @@ export const STEP_LICENCE = {
     'Can I pay in cash?': ''
   },
   form: {
-    icon: '',
+    icon: calculator,
     href: '/',
     buttonText: 'Open licence calculator'
   },
@@ -44,7 +49,7 @@ export const STEP_ITM = {
     'Can I pay in cash?': ''
   },
   form: {
-    icon: '',
+    icon: instructor,
     label: 'Postcode',
     action: '/',
     buttonText: 'Book ITM course'
@@ -73,7 +78,7 @@ export const STEP_REVISE = {
     ]
   },
   form: {
-    icon: '',
+    icon: revise,
     href: '/',
     buttonText: 'Start revision'
   },
@@ -101,7 +106,7 @@ export const STEP_CBT_BEFORE = {
     ]
   },
   form: {
-    icon: '',
+    icon: instructor,
     label: 'Postcode',
     action: '/',
     buttonText: 'Book CBT course'
@@ -168,7 +173,7 @@ export const STEP_THEORY_TEST = {
     ]
   },
   form: {
-    icon: '',
+    icon: revise,
     href: '/',
     buttonText: 'Book theory test'
   },
@@ -196,7 +201,7 @@ export const STEP_FULL_LICENCE_BEFORE = {
     ]
   },
   form: {
-    icon: '',
+    icon: instructor,
     label: 'Postcode',
     action: '/',
     buttonText: 'Book Full Licence course'
@@ -336,7 +341,7 @@ export const STEP_INSURE = {
     ]
   },
   form: {
-    icon: '',
+    icon: quote,
     href: '/',
     buttonText: 'Get a quote'
   },

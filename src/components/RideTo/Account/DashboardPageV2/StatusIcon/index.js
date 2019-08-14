@@ -15,7 +15,16 @@ function StatusIcon({
   const camelStatus = camelCase(status)
 
   if (camelStatus === 'start') {
-    return <img className={styles.endIcon} src={start} alt="Start icon" />
+    return (
+      <img
+        className={styles.endIcon}
+        src={start}
+        alt="Start icon"
+        onClick={() => {
+          handleCompletedClick(id, false)
+        }}
+      />
+    )
   }
 
   if (camelStatus === 'ride') {
