@@ -55,3 +55,25 @@ export const updateUserDetail = async (key, value) => {
 export const fetchUserDetails = async userId => {
   return await get(`dashboard/${userId}/`)
 }
+
+export const recordGAEcommerceData = order => {
+  if (order && window.localStorage.getItem('gaok') === 'true') {
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      transactionId: order.friendly_id,
+      transactionAffiliation: 'RideTo',
+      transactionTotal: order.revenue,
+      transactionProducts: [
+        {
+          sku: order.friendly_id,
+          name: order.selected_licence,
+          category: order.supplier_name,
+          price: order.revenue,
+          quantity: 1
+        }
+      ],
+      event: 'rideto.ecom-purchase.completed'
+    })
+    window.localStorage.removeItem('gaok')
+  }
+}

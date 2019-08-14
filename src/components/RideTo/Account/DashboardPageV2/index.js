@@ -18,30 +18,9 @@ import { DEFAULT_TIMELINE } from './constants'
 import {
   updateTimelineStep,
   fetchUserDetails,
-  updateUserDetail
+  updateUserDetail,
+  recordGAEcommerceData
 } from 'services/dashboard'
-
-const recordGAEcommerceData = order => {
-  if (order && window.localStorage.getItem('gaok') === 'true') {
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push({
-      transactionId: order.friendly_id,
-      transactionAffiliation: 'RideTo',
-      transactionTotal: order.revenue,
-      transactionProducts: [
-        {
-          sku: order.friendly_id,
-          name: order.selected_licence,
-          category: order.supplier_name,
-          price: order.revenue,
-          quantity: 1
-        }
-      ],
-      event: 'rideto.ecom-purchase.completed'
-    })
-    window.localStorage.removeItem('gaok')
-  }
-}
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -122,8 +101,7 @@ function DashboardPageV2({ match }) {
   }
 
   useEffect(() => {
-    const { params } = match
-    const { orderId } = params
+    const { orderId } = match.params
 
     const loadSingleOrder = async orderId => {
       const recentOrder = await fetchOrder(orderId)
@@ -198,8 +176,7 @@ function DashboardPageV2({ match }) {
 
     setNextSteps(DEFAULT_TIMELINE)
 
-    console.log(isAuthenticated, orderId)
-
+    // If user is logged in load all ordres
     if (isAuthenticated) {
       const user = getUserProfile(getToken())
 
@@ -209,18 +186,20 @@ function DashboardPageV2({ match }) {
       }
     }
 
+    // If there is an order id in url load it as recentOrder
     if (orderId) {
       loadSingleOrder(orderId)
       const next = `/account/dashboard/${orderId}`
       window.sessionStorage.setItem('login-next', JSON.stringify(next))
     }
 
+    // If logged out with no order id in url then go to login page
     if (!isAuthenticated && !orderId) {
       window.location = '/account/login'
     }
   }, [match, isAuthenticated])
 
-  if (!nextSteps.length) {
+  if (!nextSteps.length || (!isAuthenticated && !match.params.orderId)) {
     return null
   }
 
