@@ -370,28 +370,7 @@ export const STEP_BIKE = {
     text:
       "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
   },
-  gear: [
-    {
-      name: 'Bike 1',
-      link: '/',
-      image: 'https://via.placeholder.com/120x62'
-    },
-    {
-      name: 'Bike 2',
-      link: '/',
-      image: 'https://via.placeholder.com/120x62'
-    },
-    {
-      name: 'Bike 3',
-      link: '/',
-      image: 'https://via.placeholder.com/120x62'
-    },
-    {
-      name: 'Bike 4',
-      link: '/',
-      image: 'https://via.placeholder.com/120x62'
-    }
-  ],
+  gear: true,
   status: 'Not Started',
   id: 'STEP_BIKE'
 }

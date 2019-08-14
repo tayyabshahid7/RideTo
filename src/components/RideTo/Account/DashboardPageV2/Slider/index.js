@@ -14,18 +14,22 @@ function Slider({ gear }) {
     slidesToShow: isDesktop ? 3 : 1
   }
 
+  console.log(gear)
+
   return (
     <div className={styles.container}>
-      <Slick {...settings}>
-        {gear.map(({ name, link, image }) => (
-          <a key={name} href={link}>
-            <div className={styles.slide}>
-              <img src={image} alt="" />
-              <h4 className={styles.title}>Shop {name}</h4>
-            </div>
-          </a>
-        ))}
-      </Slick>
+      {gear.length > 0 && (
+        <Slick {...settings}>
+          {gear.map(({ name, link, image }) => (
+            <a key={name} href={link}>
+              <div className={styles.slide}>
+                <img src={image} alt="" />
+                <h4 className={styles.title}>Shop {name}</h4>
+              </div>
+            </a>
+          ))}
+        </Slick>
+      )}
     </div>
   )
 }

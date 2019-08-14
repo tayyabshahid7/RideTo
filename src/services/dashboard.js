@@ -77,6 +77,19 @@ export const updateUserPassword = async password => {
   return response
 }
 
+export const fetchBikes = async ({ constant }) => {
+  const licence =
+    constant === 'GOAL_SOCIAL_ANY_BIKE' ? 'FULL_LICENCE' : 'LICENCE_CBT'
+  const path = `dashboard/dashboard-bike/`
+  const params = {
+    licence
+  }
+
+  const response = await get(path, params, false)
+
+  return response
+}
+
 export const recordGAEcommerceData = order => {
   if (order && window.localStorage.getItem('gaok') === 'true') {
     window.dataLayer = window.dataLayer || []

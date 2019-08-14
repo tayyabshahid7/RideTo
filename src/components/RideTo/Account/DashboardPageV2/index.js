@@ -234,6 +234,7 @@ function DashboardPageV2({ match }) {
               orders={orders}
               cbtStatus={cbtStatus}
               dasStatus={dasStatus}
+              selectedGoal={selectedGoal}
             />
           </div>
         )}

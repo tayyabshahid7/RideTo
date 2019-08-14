@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import styles from './styles.scss'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import Button from 'components/RideTo/Button'
@@ -15,13 +15,15 @@ import WithTitle from './WithTitle'
 import classnames from 'classnames'
 import { getNextStep, getNextStepConstant } from './util'
 import MyCheckbox from './MyCheckbox'
+import { fetchBikes } from 'services/dashboard'
 
 function NextStep({
   nextStep,
   handleCompletedClick,
   recentOrder,
   cbtStatus,
-  dasStatus
+  dasStatus,
+  selectedGoal
 }) {
   const constant = getNextStepConstant(nextStep, recentOrder)
   const {
@@ -40,6 +42,27 @@ function NextStep({
   const isDesktop = useMediaQuery({ minWidth: 1025 })
   const status = constant === 'STEP_CBT_POST' ? cbtStatus : dasStatus
   const feedBackCourseType = constant === 'STEP_CBT_POST' ? 'cbt' : 'das'
+  const [bikes, setBikes] = useState([])
+
+  useEffect(() => {
+    if (constant === 'STEP_BIKE') {
+      async function fetchMyBikes() {
+        const response = await fetchBikes(selectedGoal)
+
+        setBikes(
+          response.results.map(bike => {
+            return {
+              name: bike.bike_model,
+              link: bike.url,
+              image: bike.images[0].image
+            }
+          })
+        )
+      }
+
+      fetchMyBikes()
+    }
+  }, [constant, selectedGoal])
 
   return (
     <div className={styles.container}>
@@ -108,7 +131,7 @@ function NextStep({
           </div>
         ) : gear ? (
           <div className={classnames(styles.rightCol, styles.rightColSlider)}>
-            <Slider gear={gear} />
+            <Slider gear={constant === 'STEP_BIKE' ? bikes : gear} />
           </div>
         ) : null}
         {!isDesktop && constant !== 'STEP_RIDE' && (
