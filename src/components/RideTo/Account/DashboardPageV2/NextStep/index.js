@@ -52,7 +52,7 @@ function NextStep({
             Next step <span>{title}</span>
           </h2>
         </div>
-        {isDesktop && (
+        {isDesktop && constant !== 'STEP_RIDE' && (
           <MyCheckbox handleCompletedClick={handleCompletedClick} id={id} />
         )}
       </div>
@@ -68,7 +68,10 @@ function NextStep({
                 )}
                 {introduction && (
                   <WithTitle title={introduction.title}>
-                    <p>{introduction.text}</p>
+                    <p
+                      dangerouslySetInnerHTML={{
+                        __html: introduction.text
+                      }}></p>
                     {introduction.list && (
                       <ul className={styles.introductionList}>
                         {introduction.list.map(item => (
@@ -108,7 +111,7 @@ function NextStep({
             <Slider gear={gear} />
           </div>
         ) : null}
-        {!isDesktop && (
+        {!isDesktop && constant !== 'STEP_RIDE' && (
           <MyCheckbox handleCompletedClick={handleCompletedClick} id={id} />
         )}
       </div>

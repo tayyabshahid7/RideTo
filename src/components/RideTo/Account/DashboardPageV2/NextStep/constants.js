@@ -409,8 +409,50 @@ export const STEP_INSURE = {
 
 export const STEP_RIDE = {
   name: 'Ride',
+  title: 'Ride!',
   status: 'Ride',
-  id: 'STEP_RIDE'
+  id: 'STEP_RIDE',
+  introduction: {
+    title: 'Introduction',
+    text:
+      'Congratulations!!! You made it! Riding a bike is like nothing else. The fun, freedom and community of two wheels is unique and we’re psyched you’ve become apart of it with RideTo. Now it’s all about making the most of your bike. Join our <a href="https://www.facebook.com/groups/newmotorcyclists/?ref=bookmarks">Facebook group</a> to get involved with the community and check back soon for the latest ride outs and events.'
+  },
+  guides: {
+    title: 'Advice',
+    items: [
+      {
+        title: 'Top 5 Mistakes That New Motorcyclists Make',
+        url:
+          'https://www.rideto.com/blog/top-five-mistakes-new-motorcyclists-make'
+      },
+      {
+        title: 'Top Motorcycle Rides 2019',
+        url: 'https://www.rideto.com/blog/top-motorcycle-rides-uk-2019'
+      },
+      {
+        title: 'Top Motorcycle Festivals In 2019',
+        url: 'https://www.rideto.com/blog/top-motorcycle-festivals-2019'
+      },
+      {
+        title: 'Motorcycle Day Trips From London',
+        url: 'https://www.rideto.com/blog/motorcycle-day-trips-from-london'
+      },
+      {
+        title: '​10 Instagram Accounts Every Biker Should Follow',
+        url:
+          'https://www.rideto.com/blog/10-instagram-accounts-every-biker-should-follow'
+      },
+      {
+        title: 'Rider Stories - WHY we ride',
+        url: 'https://www.rideto.com/blog/category/rider-stories'
+      }
+    ]
+  },
+  form: {
+    icon: revise,
+    href: 'https://www.facebook.com/groups/newmotorcyclists/?ref=bookmarks',
+    buttonText: 'Join the community'
+  }
 }
 
 const NEXT_STEPS = [

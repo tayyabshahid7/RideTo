@@ -205,7 +205,9 @@ function DashboardPageV2({ match }) {
   }
 
   const matchedNextSteps = matchStepsToGoal(selectedGoal, nextSteps)
-  const nextStep = matchedNextSteps.find(step => step.status === 'Not Started')
+  let nextStep =
+    matchedNextSteps.find(step => step.status === 'Not Started') ||
+    matchedNextSteps.find(step => step.status === 'Ride')
 
   return (
     <Fragment>

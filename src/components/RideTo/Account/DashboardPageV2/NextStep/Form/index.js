@@ -30,6 +30,7 @@ function Form({ form }) {
         </form>
       ) : href ? (
         <Button
+          target="_blank"
           href={href}
           modern
           className={classnames(styles.button, styles.linkButton)}>
