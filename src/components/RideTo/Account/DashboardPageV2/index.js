@@ -19,8 +19,7 @@ import {
   updateTimelineStep,
   fetchUserDetails,
   updateUserDetail,
-  recordGAEcommerceData,
-  fetchIsPasswordSet
+  recordGAEcommerceData
 } from 'services/dashboard'
 import PasswordReset from './PasswordReset'
 
@@ -33,7 +32,6 @@ function DashboardPageV2({ match }) {
   const [recentOrder, setRecentOrder] = useState(null)
   const [orders, setOrders] = useState([])
   const [achivements, setAchivements] = useState([])
-  const [isPasswordSet, setIsPasswordSet] = useState(true)
 
   const isAuthenticated = getIsAuthenticated()
 
@@ -102,19 +100,6 @@ function DashboardPageV2({ match }) {
       delay ? 100 : 0
     )
   }
-
-  useEffect(() => {
-    async function fetchIsMyPasswordSet() {
-      const response = await fetchIsPasswordSet()
-      const { has_password_set } = response
-
-      setIsPasswordSet(has_password_set)
-    }
-
-    if (isAuthenticated) {
-      fetchIsMyPasswordSet()
-    }
-  }, [isAuthenticated])
 
   useEffect(() => {
     const { orderId } = match.params
@@ -224,7 +209,7 @@ function DashboardPageV2({ match }) {
 
   return (
     <Fragment>
-      <PasswordReset isVisible={!isPasswordSet} />
+      <PasswordReset isAuthenticated={isAuthenticated} />
       <div className={styles.page}>
         <div className={styles.pageItemFullWidthWrapper}>
           <div className={styles.pageItem}>

@@ -21,9 +21,13 @@
 }
 
 .modal {
-  background: #fff;
   width: 90%;
   max-width: 616px;
+}
+
+.inner {
+  overflow: auto;
+  background: #fff;
   padding: 2rem;
 
   @media (min-width: 1025px) {
@@ -36,6 +40,16 @@
   border: 1px solid #141414 !important;
   margin-top: 24px;
   background-clip: padding-box;
+}
+
+.warning,
+.errror {
+  font-size: 0.875rem;
+  margin-bottom: -0.5rem;
+}
+
+.error {
+  color: var(--danger-color);
 }
 
 .cta {

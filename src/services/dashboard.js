@@ -60,6 +60,23 @@ export const fetchIsPasswordSet = async () => {
   return await get('users/has-password-set/')
 }
 
+export const updateUserPassword = async password => {
+  const isAuthenticated = getIsAuthenticated()
+
+  if (!isAuthenticated) {
+    return
+  }
+
+  const path = 'users/password-reset-token/'
+  const params = {
+    new_password: password
+  }
+
+  const response = await put(path, params)
+
+  return response
+}
+
 export const recordGAEcommerceData = order => {
   if (order && window.localStorage.getItem('gaok') === 'true') {
     window.dataLayer = window.dataLayer || []
