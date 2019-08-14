@@ -593,7 +593,8 @@ class CheckoutPage extends Component {
       if (response) {
         const { order, token: userToken } = response
         if (userToken !== null) {
-          window.localStorage.setItem('token', JSON.stringify(userToken))
+          // window.localStorage.setItem('token', JSON.stringify(userToken))
+          window.localStorage.setItem('token', userToken)
         }
         window.localStorage.setItem('gaok', true) // Set Google Analytics Flag
         window.location.href = `/account/dashboard/${order.id}`
