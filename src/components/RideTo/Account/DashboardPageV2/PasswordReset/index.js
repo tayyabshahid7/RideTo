@@ -65,7 +65,7 @@ function PasswordReset({ isAuthenticated }) {
         <form onSubmit={handleSubmit}>
           <Input
             type="password"
-            label="Password"
+            label="Set your Password"
             placeholder=""
             name="password"
             value={password}

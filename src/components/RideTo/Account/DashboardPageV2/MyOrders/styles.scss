@@ -1,0 +1,25 @@
+.container {
+  padding: 1.5rem 0 2rem;
+}
+
+.title {
+  margin-bottom: 1rem;
+}
+
+.list {
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 1rem;
+
+    h3 {
+      margin-bottom: 0.5rem;
+    }
+
+    h4,
+    p {
+      margin-bottom: 0.25rem;
+    }
+  }
+}

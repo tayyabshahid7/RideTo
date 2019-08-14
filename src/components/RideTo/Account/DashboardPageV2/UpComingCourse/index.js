@@ -5,7 +5,7 @@ import moment from 'moment'
 // (40 Hours) for DAS
 // <p>Within 3 days</p>
 
-function UpComingCourse({ course }) {
+function UpComingCourse({ course, title, handleClick }) {
   const training = course.trainings[0]
   const { course_type } = training
   const isFullLicence = course_type === 'Full Licence Training'
@@ -13,7 +13,19 @@ function UpComingCourse({ course }) {
 
   return (
     <div className={styles.container}>
-      <h3 className={styles.subtitle}>Your course</h3>
+      <h3 className={styles.subtitle}>
+        {title && handleClick ? (
+          <button
+            onClick={() => {
+              handleClick(course)
+            }}
+            className={styles.orderButton}>
+            {title}
+          </button>
+        ) : (
+          'Your course'
+        )}
+      </h3>
       <div>
         <h4>Course</h4>
         <p>{course_type}</p>

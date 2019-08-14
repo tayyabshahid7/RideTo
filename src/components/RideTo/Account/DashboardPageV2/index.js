@@ -22,6 +22,7 @@ import {
   recordGAEcommerceData
 } from 'services/dashboard'
 import PasswordReset from './PasswordReset'
+import MyOrders from './MyOrders'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -232,7 +233,6 @@ function DashboardPageV2({ match }) {
               nextStep={nextStep}
               handleCompletedClick={handleCompletedClick}
               recentOrder={recentOrder}
-              orders={orders}
               cbtStatus={cbtStatus}
               dasStatus={dasStatus}
               selectedGoal={selectedGoal}
@@ -248,6 +248,9 @@ function DashboardPageV2({ match }) {
             )}
             <div className={styles.pageItem}>
               <GuidesAdvice />
+            </div>
+            <div className={styles.pageItem}>
+              <MyOrders orders={orders} />
             </div>
           </div>
           <div className={styles.rightCol}>

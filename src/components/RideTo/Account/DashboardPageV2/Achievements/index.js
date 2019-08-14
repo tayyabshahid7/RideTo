@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styles from './styles.scss'
-import { ALL_ACHIEVMENTS } from './constants'
+import { ALL_ACHIEVEMENTS } from './constants'
 import trophyDone from './trophyDone.svg'
 import trophyTodo from './trophyTodo.svg'
 import moment from 'moment'
 
 function Achievements({ achivements }) {
-  const mergedAchievements = ALL_ACHIEVMENTS.map(defaultA => {
+  const mergedAchievements = ALL_ACHIEVEMENTS.map(defaultA => {
     const userA = achivements.find(({ constant }) => {
       return constant === defaultA.constant
     })
@@ -42,7 +42,7 @@ function Achievements({ achivements }) {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>
-        My achievments ({achievedLength}/{totalLength})
+        My achievements ({achievedLength}/{totalLength})
       </h2>
       <ul className={styles.list}>
         {mergedAchievements

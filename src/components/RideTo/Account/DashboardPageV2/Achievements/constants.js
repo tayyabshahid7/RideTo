@@ -1,4 +1,4 @@
-export const ALL_ACHIEVMENTS = [
+export const ALL_ACHIEVEMENTS = [
   {
     constant: 'ACHIEVEMENT_CREATE_PROFILE',
     name: 'Create profile',
