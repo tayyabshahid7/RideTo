@@ -10,7 +10,7 @@ const OPTIONS = [
     id: 'COMPLETED_COURSE',
     text: 'I completed the course!',
     message:
-      'Congratulations! That\'s great news, onto the next step! <a href="/">Leave us a review on TrustPilot</a>',
+      'Congratulations! That\'s great news, onto the next step! <a target="_blank" href="https://uk.trustpilot.com/review/rideto.com">Leave us a review on TrustPilot</a>',
     icon: happy
   },
   {
