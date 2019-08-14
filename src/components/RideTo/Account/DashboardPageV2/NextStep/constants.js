@@ -48,6 +48,10 @@ export const STEP_ITM = {
     'Is my payment secure?': '',
     'Can I pay in cash?': ''
   },
+  cta: {
+    href: '/',
+    text: 'About the course'
+  },
   form: {
     icon: instructor,
     label: 'Postcode',
@@ -120,7 +124,7 @@ export const STEP_CBT_BOOKED = {
   title: 'CBT',
   course: true,
   included: {
-    title: 'What you need',
+    title: "What's included",
     items: [
       'Bike & helmet hire',
       'Test fees & fuel',
@@ -131,7 +135,7 @@ export const STEP_CBT_BOOKED = {
     ]
   },
   guides: {
-    title: 'Revision guides',
+    title: 'Useful guides',
     items: [
       { title: 'What to Prepare For Your CBT Training?', url: '/' },
       { title: 'Motorcycle Controls and Overview', url: '/' },
@@ -200,11 +204,15 @@ export const STEP_FULL_LICENCE_BEFORE = {
       'Dedicated support team'
     ]
   },
+  cta: {
+    href: '/',
+    text: 'About the course'
+  },
   form: {
     icon: instructor,
     label: 'Postcode',
     action: '/',
-    buttonText: 'Book Full Licence course'
+    buttonText: 'Book local instructor'
   },
   status: 'Not Started',
   id: 'STEP_FULL_LICENCE_BEFORE'
@@ -251,6 +259,11 @@ export const STEP_FULL_LICENCE_POST = {
 export const STEP_GEAR = {
   name: 'Gear',
   title: 'Gear',
+  introduction: {
+    title: 'Introduction',
+    text:
+      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+  },
   guides: {
     title: 'Advice',
     items: [
@@ -291,6 +304,11 @@ export const STEP_GEAR = {
 export const STEP_BIKE = {
   name: 'Bike',
   title: 'Bike',
+  introduction: {
+    title: 'Introduction',
+    text:
+      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+  },
   guides: {
     title: 'Advice',
     items: [{ title: 'Best Bikes for Beginners', url: '/' }]
@@ -330,7 +348,7 @@ export const STEP_INSURE = {
       "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
   },
   guides: {
-    title: 'Insurance guides',
+    title: 'Revision guides',
     items: [
       { title: 'What to Prepare For Your CBT Training?', url: '/' },
       { title: 'Motorcycle Controls and Overview', url: '/' },

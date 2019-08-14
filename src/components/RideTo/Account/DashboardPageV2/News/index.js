@@ -36,7 +36,7 @@ function News({ selectedGoal, selectedStyle }) {
       {news.length > 0 && (
         <Fragment>
           {' '}
-          <h2 className={styles.title}>Latest advice and guides</h2>
+          <h2 className={styles.title}>News Feed</h2>
           <ul className={styles.list}>
             {news.map((item, i) => (
               <NewsItem key={i} news={item} />

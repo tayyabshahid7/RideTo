@@ -42,7 +42,7 @@ function Achievements({ achivements }) {
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>
-        Your achievments ({achievedLength}/{totalLength})
+        My achievments ({achievedLength}/{totalLength})
       </h2>
       <ul className={styles.list}>
         {mergedAchievements
