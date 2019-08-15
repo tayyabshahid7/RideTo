@@ -16,8 +16,24 @@ class UserMenuItem extends React.Component {
       menuOpen: false
     }
 
+    this.element = React.createRef()
+
     this.handleMenuToggle = this.handleMenuToggle.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
+    this.handleDocumentClick = this.handleDocumentClick.bind(this)
+  }
+
+  handleDocumentClick(event) {
+    if (
+      this.state.menuOpen &&
+      !event.target.closest(`#${this.element.current.id}`) &&
+      window.matchMedia('(min-width: 801px)').matches
+    ) {
+      event.preventDefault()
+      this.setState({
+        menuOpen: false
+      })
+    }
   }
 
   componentDidMount() {
@@ -25,6 +41,12 @@ class UserMenuItem extends React.Component {
       const user = getUserProfile(getToken())
       this.setState({ user: user })
     }
+
+    document.addEventListener('click', this.handleDocumentClick)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleDocumentClick)
   }
 
   handleMenuToggle() {
@@ -43,9 +65,11 @@ class UserMenuItem extends React.Component {
     return (
       <React.Fragment>
         {!user ? (
-          <a href="/account/login">Login</a>
+          <a ref={this.element} href="/account/login">
+            Login
+          </a>
         ) : (
-          <div>
+          <div ref={this.element} id="user-menu-item">
             <div
               className={classnames(styles.userName, styles.hiddenOnMobile)}
               onClick={this.handleMenuToggle}>
