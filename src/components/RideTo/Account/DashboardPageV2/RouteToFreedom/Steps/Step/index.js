@@ -3,10 +3,8 @@ import styles from './styles.scss'
 import StatusIcon from '../../../StatusIcon'
 
 const Step = forwardRef(
-  (
-    { step: { name, status, constant }, handleCompletedClick, isNextStep },
-    ref
-  ) => {
+  ({ step, handleCompletedClick, handlePreviewClick, isNextStep }, ref) => {
+    const { name, status, constant } = step
     const visualStatus = ['Start', 'Ride', 'Not Started'].includes(status)
       ? '–'
       : status
@@ -20,7 +18,17 @@ const Step = forwardRef(
             status={isNextStep ? 'Next Step' : status}
             handleCompletedClick={handleCompletedClick}
           />
-          <span className={styles.name}>{name}</span>
+          {constant === 'STEP_START' ? (
+            <span className={styles.name}>{name}</span>
+          ) : (
+            <button
+              className={styles.name}
+              onClick={() => {
+                handlePreviewClick(constant)
+              }}>
+              {name}
+            </button>
+          )}
         </span>{' '}
         <span className={styles.status}>{visualStatus}</span>
       </li>

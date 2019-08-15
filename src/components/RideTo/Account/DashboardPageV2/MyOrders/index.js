@@ -5,8 +5,6 @@ import SidePanel from 'components/RideTo/SidePanel'
 import OrderDetails from 'components/RideTo/Account/OrderDetails'
 
 function MyOrders({ orders }) {
-  console.log(orders)
-
   const [selectedOrder, setSelectedOrder] = useState(null)
   const headingImage = selectedOrder
     ? selectedOrder.training_location.image

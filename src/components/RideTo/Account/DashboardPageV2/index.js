@@ -30,9 +30,11 @@ function DashboardPageV2({ match }) {
   const [cbtStatus, setCbtStatus] = useState(null)
   const [dasStatus, setDasStatus] = useState(null)
   const [nextSteps, setNextSteps] = useState([])
+  const [matchedNextSteps, setMatchedNextSteps] = useState([])
   const [recentOrder, setRecentOrder] = useState(null)
   const [orders, setOrders] = useState([])
   const [achivements, setAchivements] = useState([])
+  const [nextStep, setNextStep] = useState(null)
 
   const isAuthenticated = getIsAuthenticated()
 
@@ -52,38 +54,57 @@ function DashboardPageV2({ match }) {
     updateUserDetail('riding_style', style.constant)
   }
 
-  const updateSteps = constant => {
-    setNextSteps(prevState => {
-      let found = false
+  const updateSteps = (constant, isCompleted = true) => {
+    console.log(isCompleted)
 
+    setNextSteps(prevState => {
       return prevState.map(step => {
         if (step.constant === constant) {
-          found = true
-          updateTimelineStep(step.name, step.constant, true)
+          updateTimelineStep(step.name, step.constant, isCompleted)
           return {
             ...step,
-            is_completed: true
+            is_completed: isCompleted
           }
         }
 
-        if (found) {
-          updateTimelineStep(step.name, step.constant, false)
-          return {
-            ...step,
-            is_completed: false
-          }
-        }
-
-        updateTimelineStep(step.name, step.constant, true)
-        return {
-          ...step,
-          is_completed: true
-        }
+        return step
       })
+
+      // @TODO DELETE ME
+      // let found = false
+
+      // return prevState.map(step => {
+      //   if (step.constant === constant) {
+      //     found = true
+      //     updateTimelineStep(step.name, step.constant, true)
+      //     return {
+      //       ...step,
+      //       is_completed: true
+      //     }
+      //   }
+
+      //   if (found) {
+      //     updateTimelineStep(step.name, step.constant, false)
+      //     return {
+      //       ...step,
+      //       is_completed: false
+      //     }
+      //   }
+
+      //   updateTimelineStep(step.name, step.constant, true)
+      //   return {
+      //     ...step,
+      //     is_completed: true
+      //   }
+      // })
     })
   }
 
-  const handleCompletedClick = (clickedConstant, delay = true) => {
+  const handleCompletedClick = (
+    clickedConstant,
+    isCompleted,
+    delay = false
+  ) => {
     let constant = clickedConstant
 
     if (constant.startsWith('STEP_CBT_')) {
@@ -94,12 +115,22 @@ function DashboardPageV2({ match }) {
       constant = 'STEP_FULL_LICENCE'
     }
 
+    console.log(isCompleted)
+
     setTimeout(
       () => {
-        updateSteps(constant)
+        updateSteps(constant, isCompleted)
       },
       delay ? 100 : 0
     )
+  }
+
+  const handlePreviewClick = clickedConstant => {
+    const clickedStep = matchedNextSteps.find(
+      step => step.constant === clickedConstant
+    )
+
+    setNextStep(clickedStep)
   }
 
   useEffect(() => {
@@ -202,14 +233,21 @@ function DashboardPageV2({ match }) {
     }
   }, [match, isAuthenticated])
 
-  if (!nextSteps.length || (!isAuthenticated && !match.params.orderId)) {
+  useEffect(() => {
+    if (nextSteps.length) {
+      const matchedSteps = matchStepsToGoal(selectedGoal, nextSteps)
+      const selectedNextStep =
+        matchedSteps.find(step => step.status === 'Not Started') ||
+        matchedSteps.find(step => step.status === 'Ride')
+
+      setMatchedNextSteps(matchedSteps)
+      setNextStep(selectedNextStep)
+    }
+  }, [selectedGoal, nextSteps])
+
+  if (!matchedNextSteps.length || (!isAuthenticated && !match.params.orderId)) {
     return null
   }
-
-  const matchedNextSteps = matchStepsToGoal(selectedGoal, nextSteps)
-  let nextStep =
-    matchedNextSteps.find(step => step.status === 'Not Started') ||
-    matchedNextSteps.find(step => step.status === 'Ride')
 
   return (
     <Fragment>
@@ -224,6 +262,7 @@ function DashboardPageV2({ match }) {
               handleGoalChange={handleGoalChange}
               handleStyleChange={handleStyleChange}
               handleCompletedClick={handleCompletedClick}
+              handlePreviewClick={handlePreviewClick}
             />
           </div>
         </div>

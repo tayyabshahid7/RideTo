@@ -13,7 +13,7 @@ export const matchStepsToGoal = (goal, userSteps) => {
     return {
       ...userStep,
       status: 'Not Started',
-      ...(isCompleted && { status: 'Completed ' }),
+      ...(isCompleted && { status: 'Completed' }),
       ...(userConstant === 'STEP_START' && { status: 'Start' }),
       ...(userConstant === 'STEP_RIDE' && { status: 'Ride' })
     }

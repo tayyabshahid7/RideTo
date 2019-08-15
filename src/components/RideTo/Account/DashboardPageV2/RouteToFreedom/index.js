@@ -7,7 +7,6 @@ import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import PercentCircle from './PercentCircle'
 import { GOALS, STYLES } from './constants'
-import { findCurrentStepIndex } from './util'
 
 function RouteToFreedom({
   nextSteps,
@@ -15,11 +14,14 @@ function RouteToFreedom({
   selectedStyle,
   handleGoalChange,
   handleStyleChange,
-  handleCompletedClick
+  handleCompletedClick,
+  handlePreviewClick
 }) {
   const stepsLength = nextSteps.length
-  let currentStepIndex = findCurrentStepIndex(nextSteps)
-  let percentComplete = Math.round(((currentStepIndex + 1) / stepsLength) * 100)
+  const completedStepsLength = nextSteps.filter(({ status }) =>
+    ['Completed', 'Start', 'Ride'].includes(status)
+  ).length
+  let percentComplete = Math.round((completedStepsLength / stepsLength) * 100)
   const isDesktop = useMediaQuery({ minWidth: 1025 })
 
   return (
@@ -71,6 +73,7 @@ function RouteToFreedom({
           steps={nextSteps}
           percentComplete={percentComplete}
           handleCompletedClick={handleCompletedClick}
+          handlePreviewClick={handlePreviewClick}
         />
       </Expander>
     </div>

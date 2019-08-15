@@ -16,14 +16,13 @@ function StatusIcon({
 
   if (camelStatus === 'start') {
     return (
-      <img
-        className={styles.endIcon}
-        src={start}
-        alt="Start icon"
+      <button
+        className={styles.iconButton}
         onClick={() => {
-          handleCompletedClick(id, false)
-        }}
-      />
+          handleCompletedClick(id)
+        }}>
+        <img className={styles.endIcon} src={start} alt="Start icon" />
+      </button>
     )
   }
 
@@ -52,7 +51,7 @@ function StatusIcon({
   return (
     <button
       onClick={() => {
-        handleCompletedClick(id, false)
+        handleCompletedClick(id)
       }}
       className={classnames(
         styles.ring,

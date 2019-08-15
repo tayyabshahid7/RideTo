@@ -4,11 +4,16 @@ import Step from './Step'
 import ProgressBar from '../ProgressBar'
 import { useMediaQuery } from 'react-responsive'
 import { range } from 'lodash'
-import { findCurrentStepIndex } from '../util'
+import { findLastStepIndex } from '../util'
 
-function Steps({ steps, percentComplete, handleCompletedClick }) {
+function Steps({
+  steps,
+  percentComplete,
+  handleCompletedClick,
+  handlePreviewClick
+}) {
   const isDesktop = useMediaQuery({ minWidth: 1025 })
-  const currentStepIndex = findCurrentStepIndex(steps)
+  const currentStepIndex = findLastStepIndex(steps)
   const stepRefs = useRef(range(steps.length).map(() => createRef()))
   const currentStepRef = useRef(null)
   const [progressWidth, setProgressWidth] = useState(0)
@@ -35,6 +40,7 @@ function Steps({ steps, percentComplete, handleCompletedClick }) {
           <Step
             isNextStep={currentStepIndex === i && step.status !== 'Ride'}
             handleCompletedClick={handleCompletedClick}
+            handlePreviewClick={handlePreviewClick}
             ref={stepRefs.current[i]}
             key={i}
             step={step}

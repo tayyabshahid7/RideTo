@@ -76,7 +76,11 @@ function NextStep({
           </h2>
         </div>
         {isDesktop && constant !== 'STEP_RIDE' && (
-          <MyCheckbox handleCompletedClick={handleCompletedClick} id={id} />
+          <MyCheckbox
+            handleCompletedClick={handleCompletedClick}
+            id={id}
+            checked={nextStep.is_completed}
+          />
         )}
       </div>
       <div className={styles.main}>
@@ -138,7 +142,11 @@ function NextStep({
           </div>
         ) : null}
         {!isDesktop && constant !== 'STEP_RIDE' && (
-          <MyCheckbox handleCompletedClick={handleCompletedClick} id={id} />
+          <MyCheckbox
+            handleCompletedClick={handleCompletedClick}
+            id={id}
+            checked={nextStep.is_completed}
+          />
         )}
       </div>
     </div>
