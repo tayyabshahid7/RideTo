@@ -17,8 +17,14 @@
   justify-content: center;
 
   img {
-    max-width: 120px;
-    max-height: 120px;
+    // max-width: 120px;
+    // max-height: 120px;
+    max-width: calc(100% - 1rem);
+    max-height: 195px;
+
+    @media (min-width: 1025px) {
+      max-height: 139px;
+    }
   }
 
   @media (min-width: 1025px) {
