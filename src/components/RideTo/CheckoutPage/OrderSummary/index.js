@@ -68,7 +68,7 @@ class OrderSummary extends Component {
       <div>
         {addons.length > 0 &&
           addons.map(addon => (
-            <div className={styles.discountRow}>
+            <div key={addon.id} className={styles.discountRow}>
               {this.renderRow(
                 addon.name,
                 `£${parseFloat(addon.discount_price).toFixed(2)}`,
@@ -95,6 +95,7 @@ class OrderSummary extends Component {
             </React.Fragment>
           ) : (
             <FullLicencePayment
+              addons={addons}
               pricePerHour={price / trainings[0].package_hours}
               hours={trainings[0].package_hours}
               style={{ marginTop: '3px' }}

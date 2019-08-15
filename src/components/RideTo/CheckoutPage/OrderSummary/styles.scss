@@ -355,6 +355,10 @@
 .discountRow {
   margin-top: 1rem;
   margin-bottom: -1rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: -1.5rem;
+  }
 }
 
 .cards {

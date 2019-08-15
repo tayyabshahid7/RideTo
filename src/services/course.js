@@ -397,12 +397,16 @@ export const getCourseIdFromSearch = search => {
   return courseId || null
 }
 
-export const calcFullLicencePrices = (pricePerHour, hours) => {
+export const calcFullLicencePrices = (pricePerHour, hours, addons) => {
+  const addonsPrice = addons.reduce(
+    (total, addon) => (total += parseFloat(addon.discount_price)),
+    0
+  )
   const total = (pricePerHour / 100) * hours
   const now = 25
   const later = total - now
 
-  return [now, later]
+  return [now + addonsPrice, later]
 }
 
 export const getDefaultFullLicencePackage = ({
