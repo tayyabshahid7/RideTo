@@ -18,14 +18,15 @@ const NavigationItem = ({
         styles.navigationItem,
         active && styles.active,
         disabled && styles.disabledItem,
-        !active && !disabled && styles.clickable,
+        // !active && !disabled && styles.clickable,
         fullWidth && styles.fullWidth
       )}
-      onClick={() => {
-        if (!disabled && !active) {
-          onClick()
-        }
-      }}>
+      // onClick={() => {
+      //   if (!disabled && !active) {
+      //     onClick()
+      //   }
+      // }}
+    >
       <div className={classnames(styles.title, disabled && styles.disabled)}>
         {title}
       </div>

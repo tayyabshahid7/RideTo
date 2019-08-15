@@ -24,7 +24,7 @@ const AddonSizes = ({ sizes, selected, onClick, sizeRequired }) => {
           </div>
         ))}
       </div>
-      {error && <div class={styles.error}>Please select a size</div>}
+      {error && <div className={styles.error}>Please select a size</div>}
     </Fragment>
   )
 }

@@ -311,7 +311,18 @@ class ResultPage extends Component {
 
     window.sessionStorage.setItem('trainings', JSON.stringify(trainings))
 
-    const next = `/${selectedCourse.supplier_slug}/checkout`
+    // const next = `/${selectedCourse.supplier_slug}/checkout`
+    let next
+
+    if (courseType === 'FULL_LICENCE') {
+      next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${selectedCourse.id}`
+    } else if (selectedCourse.instant_book) {
+      if (instantCourse) {
+        next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&courseId=${instantCourse.id}&supplierId=${selectedCourse.id}&date=${instantDate}`
+      }
+    } else {
+      next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${selectedCourse.id}&date=${instantDate}`
+    }
 
     let checkoutData = {
       postcode,

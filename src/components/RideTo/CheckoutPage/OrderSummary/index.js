@@ -61,20 +61,21 @@ class OrderSummary extends Component {
   }
 
   renderPrices(isFullLicence) {
-    const { checkoutData, priceInfo, trainings, hasPOM } = this.props
+    const { checkoutData, priceInfo, trainings } = this.props
     const { addons } = checkoutData
     let price = getExpectedPrice(priceInfo, addons, checkoutData)
     return (
       <div>
-        {hasPOM && (
-          <div className={styles.discountRow}>
-            {this.renderRow(
-              addons[0].name,
-              `£${(addons[0].weekday_price_pence / 100.0).toFixed(2)}`,
-              200
-            )}
-          </div>
-        )}
+        {addons.length > 0 &&
+          addons.map(addon => (
+            <div className={styles.discountRow}>
+              {this.renderRow(
+                addon.name,
+                `£${parseFloat(addon.discount_price).toFixed(2)}`,
+                200
+              )}
+            </div>
+          ))}
         {priceInfo.discount > 0 && (
           <div className={styles.discountRow}>
             {this.renderRow(
