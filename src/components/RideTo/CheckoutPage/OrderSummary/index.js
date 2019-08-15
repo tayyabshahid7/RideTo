@@ -96,7 +96,7 @@ class OrderSummary extends Component {
           ) : (
             <FullLicencePayment
               addons={addons}
-              pricePerHour={price / trainings[0].package_hours}
+              pricePerHour={priceInfo.price / trainings[0].package_hours}
               hours={trainings[0].package_hours}
               style={{ marginTop: '3px' }}
             />
