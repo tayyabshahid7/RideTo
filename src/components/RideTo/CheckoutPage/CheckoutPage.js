@@ -57,7 +57,7 @@ const NO_ADDONS_ADDRESS = {
   postcode: 'no'
 }
 
-// const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
+const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
 
 class CheckoutPage extends Component {
   constructor(props) {
@@ -370,7 +370,9 @@ class CheckoutPage extends Component {
 
   validateDetails(details) {
     const { trainings } = this.props
-    // const addonsCount = this.props.checkoutData.addons.length
+    const physicalAddonsCount = this.props.checkoutData.addons.filter(
+      addon => addon.name !== 'Peace Of Mind Policy'
+    ).length
     const { courseType } = this.props.checkoutData
     const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
@@ -386,8 +388,8 @@ class CheckoutPage extends Component {
 
     // Check delivery address only if there are addons
     // DISABLE THIS WHILE POM IS THE ONLY ADDON WE SELL
-    /*
-    if (addonsCount > 0) {
+
+    if (physicalAddonsCount > 0) {
       // Check postcode serach field only if
       // manual address form is not open
       if (!details['postcode'] && !this.state.manualAddress) {
@@ -412,7 +414,6 @@ class CheckoutPage extends Component {
         })
       }
     }
-    */
 
     if (!details.phone.match(/^\+44\d{10}$/)) {
       errors['phone'] = 'Invalid phone number'
