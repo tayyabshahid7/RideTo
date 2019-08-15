@@ -22,17 +22,21 @@ function MyOrders({ orders }) {
     <Fragment>
       <div className={styles.container}>
         <h2 className={styles.title}>My orders</h2>
-        <ul className={styles.list}>
-          {orders.map(order => (
-            <li key={order.friendly_id}>
-              <UpComingCourse
-                course={order}
-                title={`Order #${order.friendly_id}`}
-                handleClick={handleClick}
-              />
-            </li>
-          ))}
-        </ul>
+        {orders.length > 0 ? (
+          <ul className={styles.list}>
+            {orders.map(order => (
+              <li key={order.friendly_id}>
+                <UpComingCourse
+                  course={order}
+                  title={`Order #${order.friendly_id}`}
+                  handleClick={handleClick}
+                />
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className={styles.noOrders}>No orders yet</p>
+        )}
       </div>
       <SidePanel
         visible={selectedOrder}

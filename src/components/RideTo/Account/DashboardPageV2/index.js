@@ -281,11 +281,13 @@ function DashboardPageV2({ match }) {
                 <Achievements achivements={achivements} />
               </div>
             )}
-            {(orders.length > 0 || recentOrder) && (
-              <div className={styles.pageItem}>
-                <MyOrders orders={orders.length > 0 ? orders : [recentOrder]} />
-              </div>
-            )}
+            <div className={styles.pageItem}>
+              <MyOrders
+                orders={
+                  orders.length > 0 ? orders : recentOrder ? [recentOrder] : []
+                }
+              />
+            </div>
             <div className={styles.pageItem}>
               <GuidesAdvice />
             </div>
