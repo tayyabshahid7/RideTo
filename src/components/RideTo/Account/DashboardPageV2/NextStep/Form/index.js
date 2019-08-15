@@ -11,7 +11,7 @@ function Form({ form }) {
   return (
     <div className={styles.container}>
       <div className={styles.icon}>
-        <img src={icon} alt="Icon" width="62" />
+        <img src={icon} alt="Icon" width="74" />
       </div>
       {action && label ? (
         <form action={action}>

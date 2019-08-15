@@ -2,6 +2,7 @@ import calculator from './images/calculator.svg'
 import instructor from './images/instructor.svg'
 import quote from './images/quote.svg'
 import revise from './images/revise.svg'
+import finish from './images/finish.svg'
 
 import boots from './contentImages/boots.jpg'
 import gloves from './contentImages/gloves.jpg'
@@ -488,7 +489,7 @@ export const STEP_RIDE = {
     ]
   },
   form: {
-    icon: revise,
+    icon: finish,
     href: 'https://www.facebook.com/groups/newmotorcyclists/?ref=bookmarks',
     buttonText: 'Join the community'
   }
