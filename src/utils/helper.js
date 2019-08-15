@@ -123,3 +123,12 @@ export function deleteParam(search, name) {
 export function uniqueId() {
   return new Date().valueOf()
 }
+
+export function isExternalLink(link) {
+  let isInternal = false
+  isInternal = link.includes(window.location.host.replace('www.', ''))
+  isInternal = link.includes('rideto.com')
+  isInternal = link.startsWith('/')
+
+  return !isInternal
+}

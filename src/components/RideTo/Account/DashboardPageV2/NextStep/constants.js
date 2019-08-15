@@ -455,7 +455,7 @@ export const STEP_RIDE = {
   introduction: {
     title: 'Introduction',
     text:
-      'Congratulations!!! You made it! Riding a bike is like nothing else. The fun, freedom and community of two wheels is unique and we’re psyched you’ve become apart of it with RideTo. Now it’s all about making the most of your bike. Join our <a href="https://www.facebook.com/groups/newmotorcyclists/?ref=bookmarks">Facebook group</a> to get involved with the community and check back soon for the latest ride outs and events.'
+      'Congratulations!!! You made it! Riding a bike is like nothing else. The fun, freedom and community of two wheels is unique and we’re psyched you’ve become apart of it with RideTo. Now it’s all about making the most of your bike. Join our <a target="_blank" href="https://www.facebook.com/groups/newmotorcyclists/?ref=bookmarks">Facebook group</a> to get involved with the community and check back soon for the latest ride outs and events.'
   },
   guides: {
     title: 'Advice',

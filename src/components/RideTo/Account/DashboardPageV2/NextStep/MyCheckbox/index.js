@@ -7,7 +7,7 @@ function MyCheckbox({ handleCompletedClick, id, checked }) {
 
   const handleCheckboxClick = event => {
     setLocalChecked(event.target.checked)
-    handleCompletedClick(id, !checked, true)
+    handleCompletedClick(id, event.target.checked, true)
   }
 
   useEffect(() => {
