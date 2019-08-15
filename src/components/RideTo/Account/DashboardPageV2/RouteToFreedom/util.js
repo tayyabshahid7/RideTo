@@ -15,7 +15,5 @@ export const findLastStepIndex = nextSteps => {
   let lastStepIndex =
     nextSteps.map(({ status }) => status).lastIndexOf('Completed') + 1
 
-  console.log(lastStepIndex)
-
   return lastStepIndex
 }

@@ -55,11 +55,9 @@ function DashboardPageV2({ match }) {
   }
 
   const updateSteps = (constant, isCompleted = true) => {
-    console.log(isCompleted)
-
     setNextSteps(prevState => {
       return prevState.map(step => {
-        if (step.constant === constant) {
+        if (step.constant === constant && step.is_completed !== isCompleted) {
           updateTimelineStep(step.name, step.constant, isCompleted)
           return {
             ...step,
@@ -114,8 +112,6 @@ function DashboardPageV2({ match }) {
     if (constant.startsWith('STEP_FULL_LICENCE_')) {
       constant = 'STEP_FULL_LICENCE'
     }
-
-    console.log(isCompleted)
 
     setTimeout(
       () => {
