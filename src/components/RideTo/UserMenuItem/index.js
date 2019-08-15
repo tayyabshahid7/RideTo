@@ -40,6 +40,13 @@ class UserMenuItem extends React.Component {
     if (isAuthenticated()) {
       const user = getUserProfile(getToken())
       this.setState({ user: user })
+
+      // Hacky way to hide For Schools nav item
+      const forSchoolsEl = document.querySelector(
+        '.heading--nav-item[href="/schools"]'
+      )
+
+      forSchoolsEl.remove()
     }
 
     document.addEventListener('click', this.handleDocumentClick)
