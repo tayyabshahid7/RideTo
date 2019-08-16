@@ -5,11 +5,10 @@ import { parseQueryString } from 'services/api'
 import { getSupplier, getAddons } from 'services/page'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
-import SidePanel from 'components/RideTo/SidePanel'
-import AddonDetails from 'components/RideTo/AddonDetails'
 import styles from './AddonSelection.scss'
 import { getCourseTitle } from 'services/course'
 import { IconArrowRight } from 'assets/icons'
+import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 
 class AddonSelection extends React.Component {
   constructor(props) {
@@ -94,6 +93,7 @@ class AddonSelection extends React.Component {
     this.handleDetails = this.handleDetails.bind(this)
     this.handleContinue = this.handleContinue.bind(this)
     this.handleSizeUpdate = this.handleSizeUpdate.bind(this)
+    this.updateAddonSize = this.updateAddonSize.bind(this)
   }
 
   handleAddAddon(addon) {
@@ -126,9 +126,27 @@ class AddonSelection extends React.Component {
     })
   }
 
+  updateAddonSize(arr, addon, selectedSize) {
+    return arr.map(a => {
+      if (a.id === addon.id) {
+        return {
+          ...a,
+          selectedSize,
+          sizeRequired: false
+        }
+      }
+
+      return a
+    })
+  }
+
   handleSizeUpdate(addon, selectedSize) {
-    addon.selectedSize = selectedSize
-    this.setState({ addons: this.state.addons })
+    const { addons, selectedAddons } = this.state
+
+    this.setState({
+      addons: this.updateAddonSize(addons, addon, selectedSize),
+      selectedAddons: this.updateAddonSize(selectedAddons, addon, selectedSize)
+    })
   }
 
   async handleContinue() {
@@ -175,34 +193,34 @@ class AddonSelection extends React.Component {
     // Kill the addons page so no one can land here
     // return null
 
-    const { detailsAddon, addons, navigation } = this.state
-    const detailsImage = detailsAddon ? detailsAddon.images[0] : null
+    const { addons, navigation } = this.state
 
     return (
       <React.Fragment>
         <NavigationComponent navigation={navigation} showIcons={false} />
         <Container>
           <Row>
-            <Col sm="6">
-              <h2 className={styles.heading}>Choose Extras</h2>
+            <Col md="6">
+              <h1 className={styles.heading}>New Rider Essentials</h1>
               <div className={styles.subHeading}>
-                Optional purchases with FREE delivery, to get on the road faster
-                (not required for training).
+                Get on the road faster with the rider gear you need delivered to
+                your door. FREE delivery with ALL orders.
               </div>
             </Col>
-            <Col sm="6" className={styles.checkoutButtonTop}>
-              <Button
-                color="primary"
-                className={styles.checkoutButton}
-                onClick={this.handleContinue}>
-                <span>Continue To Checkout</span>
-                <IconArrowRight className={styles.arrowIcon} />
-              </Button>
+            <Col md="6" className={styles.skipLink}>
+              <a href={`/${getSupplier().slug}/checkout`}>
+                Skip extras{' '}
+                <img
+                  src={ArrowRight}
+                  alt="Right"
+                  className={styles.skipArrow}
+                />
+              </a>
             </Col>
           </Row>
           <Row>
             {addons.map((addon, i) => (
-              <Col sm="4" key={i}>
+              <Col xs="12" key={i}>
                 <AddonSelectionItem
                   addon={addon}
                   isAdded={this.isAddonSelected(addon)}
@@ -214,18 +232,17 @@ class AddonSelection extends React.Component {
               </Col>
             ))}
           </Row>
-          <Row className={styles.checkoutWrapper}>
-            <Col sm="12" className={styles.checkoutContent}>
-              <Button
-                color="primary"
-                className={styles.checkoutButton}
-                onClick={this.handleContinue}>
-                <span>Continue To Checkout</span>
-                <IconArrowRight className={styles.arrowIcon} />
-              </Button>
-            </Col>
-          </Row>
+          <div className={styles.checkoutWrapper}>
+            <Button
+              color="primary"
+              className={styles.checkoutButton}
+              onClick={this.handleContinue}>
+              <span>Continue To Checkout</span>
+              <IconArrowRight className={styles.arrowIcon} />
+            </Button>
+          </div>
         </Container>
+        {/*
         <SidePanel
           visible={detailsAddon !== null}
           headingImage={detailsImage}
@@ -239,6 +256,7 @@ class AddonSelection extends React.Component {
             />
           )}
         </SidePanel>
+        */}
       </React.Fragment>
     )
   }

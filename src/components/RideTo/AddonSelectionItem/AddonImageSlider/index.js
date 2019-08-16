@@ -27,27 +27,30 @@ const AddonImageSlider = ({ images, addon, onDetails }) => {
   const settings = {
     dots: false,
     slidesToShow: 1,
-    slidesToScroll: 1,
-    infinite: true,
+    // slidesToScroll: 1,
+    infinite: false,
     className: styles.slider,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />
   }
 
   return (
-    <RideToSlider settings={settings}>
-      {images.map(image => (
-        <img
-          key={image}
-          src={image}
-          className={styles.addonImage}
-          alt=""
-          onClick={() => {
-            onDetails(addon)
-          }}
-        />
-      ))}
-    </RideToSlider>
+    <div className={styles.wrap}>
+      <RideToSlider settings={settings}>
+        {images.map(image => (
+          <img
+            key={image}
+            // src={image}
+            src="https://via.placeholder.com/350x150"
+            className={styles.addonImage}
+            alt=""
+            onClick={() => {
+              onDetails(addon)
+            }}
+          />
+        ))}
+      </RideToSlider>
+    </div>
   )
 }
 
