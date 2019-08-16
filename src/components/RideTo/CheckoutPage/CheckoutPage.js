@@ -111,7 +111,10 @@ class CheckoutPage extends Component {
       loadingPrice: false,
       showMap: false,
       trainings: this.props.trainings,
-      showCardDetails: false
+      showCardDetails: false,
+      physicalAddonsCount: this.props.checkoutData.addons.filter(
+        addon => addon.name !== 'Peace Of Mind Policy'
+      ).length
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -369,10 +372,8 @@ class CheckoutPage extends Component {
   }
 
   validateDetails(details) {
+    const { physicalAddonsCount } = this.state
     const { trainings } = this.props
-    const physicalAddonsCount = this.props.checkoutData.addons.filter(
-      addon => addon.name !== 'Peace Of Mind Policy'
-    ).length
     const { courseType } = this.props.checkoutData
     const errors = { address: {}, billingAddress: {}, divId: false }
     let hasError = false
@@ -392,8 +393,10 @@ class CheckoutPage extends Component {
     if (physicalAddonsCount > 0) {
       // Check postcode serach field only if
       // manual address form is not open
-      if (!details['postcode'] && !this.state.manualAddress) {
-        errors['postcode'] = 'This field is required.'
+      if (!details['postcode'] || !this.state.manualAddress) {
+        errors['postcode'] = !details['postcode']
+          ? 'This field is required.'
+          : 'Please search for address'
         if (!errors.divId) errors.divId = 'checkout-delivery-address'
         hasError = true
       }
@@ -491,17 +494,13 @@ class CheckoutPage extends Component {
   }
 
   async handlePayment() {
-    const { details } = this.state
-    const {
-      stripe
-      // checkoutData: { addons }
-    } = this.props
+    const { details, physicalAddonsCount } = this.state
+    const { stripe } = this.props
 
-    // WHILE POM IS THE ONLY ONE WE SELL
-    // if (addons.length <= 0) {
-    //   details.address = NO_ADDONS_ADDRESS
-    // }
-    details.address = NO_ADDONS_ADDRESS
+    if (physicalAddonsCount <= 0) {
+      details.address = NO_ADDONS_ADDRESS
+    }
+    // details.address = NO_ADDONS_ADDRESS
 
     this.setState({ saving: true })
 
@@ -643,7 +642,8 @@ class CheckoutPage extends Component {
       loadingPrice,
       showMap,
       trainings,
-      showCardDetails
+      showCardDetails,
+      physicalAddonsCount
     } = this.state
 
     return (
@@ -670,6 +670,7 @@ class CheckoutPage extends Component {
               showCardDetails={showCardDetails}
               isFullLicence={courseType === 'FULL_LICENCE'}
               handlePaymentButtonClick={this.handlePaymentButtonClick}
+              needsAddress={physicalAddonsCount > 0}
             />
           </div>
           <div className={styles.rightPanel}>

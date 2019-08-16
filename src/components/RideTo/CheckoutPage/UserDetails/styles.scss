@@ -22,6 +22,11 @@
   }
 }
 
+.titleAddress {
+  margin-top: 2rem;
+  margin-bottom: 0;
+}
+
 .titleOrderSummary {
   @media (max-width: 768px) {
     margin-top: -0.2rem;
@@ -271,7 +276,7 @@
   margin-top: 10px;
   font-size: 15px;
   font-family: var(--font-proxima);
-  line-break: 24px;
+  line-height: 24px;
   text-decoration: underline;
   cursor: pointer;
 }
@@ -298,17 +303,30 @@
 
 .postcodeSearchButton {
   font-size: 15px;
-  width: 40%;
   padding: 5px;
   justify-content: center;
+
+  height: 48px;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  width: 250px;
+  line-height: 1;
 }
 
 .findPostcodeInput {
-  width: 60%;
+  width: 100%;
+  margin-top: 24px;
 }
 
 .searchPostcodeInput {
   display: flex;
+  margin-top: -0.5rem;
+  align-items: flex-end;
+
+  > label {
+    flex-grow: 1;
+    margin-bottom: 0;
+  }
 }
 
 .hiddenOnDesktop {

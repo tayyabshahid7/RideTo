@@ -13,7 +13,8 @@ const AddressForm = ({ address, onChange, errors = {} }) => {
     <div className={styles.container}>
       <div className={styles.row}>
         <Input
-          placeholder="Address"
+          placeholder=""
+          label="Address"
           name="address_1"
           value={address.address_1}
           className={classnames(
@@ -27,7 +28,8 @@ const AddressForm = ({ address, onChange, errors = {} }) => {
           <div className={styles.error}>{errors.address_1}</div>
         )}
         <Input
-          placeholder="Address 2"
+          placeholder=""
+          label="Address 2"
           name="address_2"
           value={address.address_2}
           className={classnames(
@@ -40,7 +42,8 @@ const AddressForm = ({ address, onChange, errors = {} }) => {
           <div className={styles.error}>{errors.address_2}</div>
         )}
         <Input
-          placeholder="Town/City"
+          placeholder=""
+          label="Town/City"
           name="town"
           value={address.town}
           className={classnames(styles.input, errors.town && styles.inputError)}
@@ -48,7 +51,8 @@ const AddressForm = ({ address, onChange, errors = {} }) => {
         />
         {errors.town && <div className={styles.error}>{errors.town}</div>}
         <Input
-          placeholder="Postcode"
+          placeholder=""
+          label="Postcode"
           name="postcode"
           value={address.postcode}
           className={classnames(

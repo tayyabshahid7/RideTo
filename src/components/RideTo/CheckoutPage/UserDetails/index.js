@@ -19,6 +19,8 @@ import addBlack from 'assets/images/rideto/AddBlack.svg'
 import closeDark from 'assets/images/rideto/CloseDark.svg'
 import SectionSplitter from '../SectionSplitter'
 import CardIcons from '../CardIcons'
+import AddressForm from 'components/AddressForm'
+import Button from 'components/RideTo/Button'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -124,7 +126,12 @@ class UserDetails extends Component {
       handlePOMToggleClick,
       hasPOM,
       isFullLicence,
-      instantBook
+      instantBook,
+      needsAddress,
+      manualAddress,
+      postcodeLookingup,
+      onChange,
+      onPostalCodeSubmit
     } = this.props
 
     const currentLicenceOptions = getCurrentLicenceOptions()
@@ -309,6 +316,63 @@ class UserDetails extends Component {
           <div className={styles.subtext}>Why you are learning to ride?</div>
           {errors.rider_type && (
             <div className={styles.error}>{errors.rider_type}</div>
+          )}
+          {needsAddress && (
+            <React.Fragment>
+              <div
+                id="checkout-delivery-address"
+                className={classnames(styles.title, styles.titleAddress)}>
+                Delivery Address
+              </div>
+              {!manualAddress && (
+                <React.Fragment>
+                  <div
+                    className={classnames(
+                      styles.input,
+                      styles.searchPostcodeInput,
+                      postcodeLookingup && styles.waiting
+                    )}>
+                    <Input
+                      id="postcodeSearch"
+                      placeholder=""
+                      label="Postcode"
+                      name="postcode"
+                      className={classnames(
+                        styles.findPostcodeInput,
+                        errors.postcode && styles.inputError
+                      )}
+                      onChange={this.handleChange}
+                      onKeyUp={event =>
+                        event.key === 'Enter' &&
+                        onPostalCodeSubmit(event.target.value)
+                      }
+                      disabled={postcodeLookingup}
+                      required
+                    />
+                    <Button
+                      className={styles.postcodeSearchButton}
+                      onClick={this.handleSearchPostcode}>
+                      Search Address
+                    </Button>
+                  </div>
+                  {errors.postcode && !postcodeLookingup && (
+                    <div className={styles.error}>{errors.postcode}</div>
+                  )}
+                  <div
+                    className={styles.actionDiv}
+                    onClick={() => onChange({ manualAddress: true })}>
+                    Enter address manually
+                  </div>
+                </React.Fragment>
+              )}
+              {manualAddress && (
+                <AddressForm
+                  address={details.address}
+                  onChange={this.handleAddressChange}
+                  errors={errors.address}
+                />
+              )}
+            </React.Fragment>
           )}
         </div>
       </div>
