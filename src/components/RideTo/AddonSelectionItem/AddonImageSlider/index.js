@@ -40,8 +40,7 @@ const AddonImageSlider = ({ images, addon, onDetails }) => {
         {images.map(image => (
           <img
             key={image}
-            // src={image}
-            src="https://via.placeholder.com/350x150"
+            src={image}
             className={styles.addonImage}
             alt=""
             onClick={() => {
