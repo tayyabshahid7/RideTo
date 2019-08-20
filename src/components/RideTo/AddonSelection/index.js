@@ -67,7 +67,9 @@ class AddonSelection extends React.Component {
       }
     ]
 
-    let addons = getAddons()
+    let addons = getAddons().filter(
+      ({ name }) => name !== 'Peace Of Mind Policy'
+    )
     addons.forEach(addon => {
       if (addon.sizes && addon.sizes.length > 0) {
         addon.selectedSize = null
