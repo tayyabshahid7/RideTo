@@ -27,8 +27,8 @@ const AddonImageSlider = ({ images, addon, onDetails }) => {
   const settings = {
     dots: false,
     slidesToShow: 1,
-    // slidesToScroll: 1,
-    infinite: false,
+    slidesToScroll: 1,
+    infinite: true,
     className: styles.slider,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />
