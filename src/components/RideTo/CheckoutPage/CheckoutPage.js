@@ -347,11 +347,24 @@ class CheckoutPage extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { handeUpdateOption } = this.props
-    const { details, showCardDetails } = this.state
+    const { details, showCardDetails, physicalAddonsCount } = this.state
+    const needsAddress = physicalAddonsCount > 0
 
     if (
+      !needsAddress &&
       USER_FIELDS.some(key => prevState.details[key] !== details[key]) &&
       USER_FIELDS.every(key => details[key]) &&
+      !showCardDetails
+    ) {
+      this.setState({
+        showCardDetails: true
+      })
+    }
+
+    if (
+      needsAddress &&
+      USER_FIELDS.every(key => details[key]) &&
+      REQUIRED_ADDRESS_FIELDS.every(key => details.address[key]) &&
       !showCardDetails
     ) {
       this.setState({
