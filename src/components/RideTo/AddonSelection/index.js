@@ -8,7 +8,6 @@ import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
 import styles from './AddonSelection.scss'
 import { getCourseTitle } from 'services/course'
 import { IconArrowRight } from 'assets/icons'
-import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 
 class AddonSelection extends React.Component {
   constructor(props) {
@@ -210,14 +209,13 @@ class AddonSelection extends React.Component {
               </div>
             </Col>
             <Col md="6" className={styles.skipLink}>
-              <a href={`/${getSupplier().slug}/checkout`}>
-                Skip extras{' '}
-                <img
-                  src={ArrowRight}
-                  alt="Right"
-                  className={styles.skipArrow}
-                />
-              </a>
+              <Button
+                color="primary"
+                className={styles.checkoutButton}
+                onClick={this.handleContinue}>
+                <span>Continue To Checkout</span>
+                <IconArrowRight className={styles.arrowIcon} />
+              </Button>
             </Col>
           </Row>
           <Row>
