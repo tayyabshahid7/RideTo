@@ -6,6 +6,7 @@ import MapComponent from 'components/RideTo/MapComponent'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import { post } from 'services/api'
 import MediaQuery from 'react-responsive'
+import { Helmet } from 'react-helmet'
 
 function Contact() {
   const [name, setName] = useState('')
@@ -37,6 +38,9 @@ function Contact() {
 
   return (
     <Fragment>
+      <Helmet>
+        <title>Rideto | Conact Us</title>
+      </Helmet>
       <section className={styles.header}>
         <div className={styles.container}>
           <div className={styles.keyInfo}>
@@ -178,7 +182,7 @@ function Contact() {
                     Saturday <span>9am - 6pm</span>
                   </li>
                   <li>
-                    Sunday <span>Closed</span>
+                    Sunday <span>9am - 6pm</span>
                   </li>
                 </ol>
               </div>
