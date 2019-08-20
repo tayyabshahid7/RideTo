@@ -393,7 +393,7 @@ class CheckoutPage extends Component {
     if (physicalAddonsCount > 0) {
       // Check postcode serach field only if
       // manual address form is not open
-      if (!details['postcode'] || !this.state.manualAddress) {
+      if (!this.state.manualAddress) {
         errors['postcode'] = !details['postcode']
           ? 'This field is required.'
           : 'Please search for address'
