@@ -104,13 +104,17 @@
   @media (min-width: 992px) {
     width: 30%;
   }
+
+  .smallTitle {
+    margin-bottom: 1rem;
+  }
 }
 
 .price {
   @extend .title;
   color: #50c56b;
   font-family: var(--font-proxima-bold);
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
   line-height: 1;
 }
 
