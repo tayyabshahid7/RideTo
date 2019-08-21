@@ -53,6 +53,11 @@ class CheckoutPageContainer extends Component {
       trainings: this.trainings,
       supplier,
       instantBook: isInstantBook(),
+      // hasPOM: this.checkoutData.addons.find(
+      //   ({ name }) => name === 'Peace Of Mind Policy'
+      // )
+      //   ? true
+      //   : false,
       hasPOM: false,
       isInexperienced: false
     }

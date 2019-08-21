@@ -1,10 +1,8 @@
 import React from 'react'
-import classnames from 'classnames'
-
-import Info from 'assets/images/rideto/Info.svg'
 import AddonSizes from './AddonSizes'
 import AddonImageSlider from './AddonImageSlider'
 import styles from './AddonSelectionItem.scss'
+import RideToButton from 'components/RideTo/Button'
 
 class AddonSelectionItem extends React.Component {
   constructor(props) {
@@ -25,55 +23,52 @@ class AddonSelectionItem extends React.Component {
       addon.discount_price &&
       addon.full_price > addon.discount_price
     const price = addon.discount_price || addon.full_price
-    const ctaClassName = classnames(styles.cta, isAdded && styles.added)
     const onClick = isAdded ? onRemove : onAdd
 
     return (
       <div className={styles.addonSelectionItem}>
-        <div className={styles.image}>
-          <AddonImageSlider
-            addon={addon}
-            onDetails={onDetails}
-            images={images}
-          />
-        </div>
+        <h2 className={styles.title}>{addon.name}</h2>
 
-        <div className={styles.content}>
-          <div className={styles.info}>
-            <h5>{addon.name}</h5>
-            {sizes.length ? (
-              <div className={styles.sizes}>
-                {sizes.length > 1 && (
-                  <AddonSizes
-                    sizes={sizes}
-                    selected={selectedSize}
-                    onClick={this.handleSelectSize}
-                    sizeRequired={sizeRequired}
-                  />
-                )}
-                <div
-                  className={classnames(
-                    styles.details,
-                    sizes.length === 1 && styles.singleSizeDetails
-                  )}
-                  onClick={() => onDetails(addon)}>
-                  <img src={Info} alt="Info" />
-                  Details
-                </div>
-              </div>
-            ) : (
-              <div className={styles.description}>{addon.description}</div>
-            )}
+        <div className={styles.row}>
+          <div className={styles.headerWrap}>
+            <AddonImageSlider
+              addon={addon}
+              onDetails={onDetails}
+              images={images}
+            />
           </div>
-          <div className={ctaClassName} onClick={() => onClick(addon)}>
-            <div className={styles.prices}>
-              {isDiscount && (
-                <div className={styles.fullPrice}>£{addon.full_price}</div>
-              )}
+
+          <div className={styles.descriptionWrap}>
+            <h3 className={styles.smallTitle}>Description</h3>
+            <div className={styles.description}>{addon.description}</div>
+          </div>
+
+          <div className={styles.priceWrap}>
+            <h3 className={styles.smallTitle}>Our Price</h3>
+
+            <div>
               <div className={styles.price}>£{price}</div>
+              {isDiscount && (
+                <div className={styles.fullPrice}>Was £{addon.full_price}</div>
+              )}
+              <div className={styles.freeDelivery}>Includes FREE delivery</div>
             </div>
-            <div className={styles.action}>
-              {!isAdded ? 'Select' : 'Remove'}
+
+            <div>
+              {sizes.length > 1 && (
+                <AddonSizes
+                  sizes={sizes}
+                  selected={selectedSize}
+                  onClick={this.handleSelectSize}
+                  sizeRequired={sizeRequired}
+                />
+              )}
+              <RideToButton
+                alt={isAdded}
+                className={styles.selectButton}
+                onClick={() => onClick(addon)}>
+                <span>{!isAdded ? 'Select' : 'Remove'}</span>
+              </RideToButton>
             </div>
           </div>
         </div>

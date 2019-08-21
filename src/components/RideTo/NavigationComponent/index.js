@@ -5,6 +5,7 @@ import NavigationItemPostcode from './NavigationItemPostcode'
 import NavigationItemCourse from './NavigationItemCourse'
 import ArrowLeft from 'assets/images/rideto/ArrowLeft.svg'
 import { fetchCoursesTypes } from 'services/course-type'
+import MediaQuery from 'react-responsive'
 
 class NavigationComponent extends React.Component {
   constructor(props) {
@@ -60,48 +61,50 @@ class NavigationComponent extends React.Component {
     const fullWidth = navigation.length === 1
 
     return (
-      <div className={styles.container}>
-        {onNavBack && (
-          <div className={styles.backItem} onClick={onNavBack}>
-            <img src={ArrowLeft} alt="" />
-          </div>
-        )}
+      <MediaQuery minWidth={768}>
+        <div className={styles.container}>
+          {onNavBack && (
+            <div className={styles.backItem} onClick={onNavBack}>
+              <img src={ArrowLeft} alt="" />
+            </div>
+          )}
 
-        {navigation.map((naviItem, index) => {
-          if (index === 0 && naviItem.title.toUpperCase() === 'POSTCODE') {
-            return (
-              <NavigationItemPostcode
-                {...naviItem}
-                fullWidth={fullWidth}
-                onPostcodeUpdate={postcode =>
-                  this.handleNavPostcodeClick(postcode)
-                }
-                key={naviItem.title}
-              />
-            )
-          } else if (naviItem.title.toUpperCase() === 'COURSE') {
-            return (
-              <NavigationItemCourse
-                {...naviItem}
-                fullWidth={fullWidth}
-                courseType={courseType}
-                courseTypesOptions={courseTypesOptions}
-                onCourseUpdate={course => this.handleNavCourseClick(course)}
-                key={naviItem.title}
-              />
-            )
-          } else {
-            return (
-              <NavigationItem
-                {...naviItem}
-                fullWidth={fullWidth}
-                onClick={() => this.handleNavClick(index, fullWidth)}
-                key={naviItem.title}
-              />
-            )
-          }
-        })}
-      </div>
+          {navigation.map((naviItem, index) => {
+            if (index === 0 && naviItem.title.toUpperCase() === 'POSTCODE') {
+              return (
+                <NavigationItemPostcode
+                  {...naviItem}
+                  fullWidth={fullWidth}
+                  onPostcodeUpdate={postcode =>
+                    this.handleNavPostcodeClick(postcode)
+                  }
+                  key={naviItem.title}
+                />
+              )
+            } else if (naviItem.title.toUpperCase() === 'COURSE') {
+              return (
+                <NavigationItemCourse
+                  {...naviItem}
+                  fullWidth={fullWidth}
+                  courseType={courseType}
+                  courseTypesOptions={courseTypesOptions}
+                  onCourseUpdate={course => this.handleNavCourseClick(course)}
+                  key={naviItem.title}
+                />
+              )
+            } else {
+              return (
+                <NavigationItem
+                  {...naviItem}
+                  fullWidth={fullWidth}
+                  onClick={() => this.handleNavClick(index, fullWidth)}
+                  key={naviItem.title}
+                />
+              )
+            }
+          })}
+        </div>
+      </MediaQuery>
     )
   }
 }

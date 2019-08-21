@@ -35,19 +35,21 @@ const AddonImageSlider = ({ images, addon, onDetails }) => {
   }
 
   return (
-    <RideToSlider settings={settings}>
-      {images.map(image => (
-        <img
-          key={image}
-          src={image}
-          className={styles.addonImage}
-          alt=""
-          onClick={() => {
-            onDetails(addon)
-          }}
-        />
-      ))}
-    </RideToSlider>
+    <div className={styles.wrap}>
+      <RideToSlider settings={settings}>
+        {images.map(image => (
+          <img
+            key={image}
+            src={image}
+            className={styles.addonImage}
+            alt=""
+            onClick={() => {
+              onDetails(addon)
+            }}
+          />
+        ))}
+      </RideToSlider>
+    </div>
   )
 }
 

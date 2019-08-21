@@ -1,30 +1,34 @@
 import React, { Fragment } from 'react'
-import classnames from 'classnames'
-
+import Select from 'components/RideTo/Select'
 import styles from './AddonSizes.scss'
 
 const AddonSizes = ({ sizes, selected, onClick, sizeRequired }) => {
   const error = sizeRequired && !selected
 
+  const handleChange = event => {
+    const size = sizes.find(({ code }) => code === event.target.value)
+
+    if (size.quantity) {
+      onClick(size)
+    }
+  }
+
   return (
     <Fragment>
-      <div className={styles.addonSizes}>
+      <Select
+        className={styles.selectSize}
+        value={selected ? selected.code : ''}
+        onChange={handleChange}>
+        <option value="" hidden disabled>
+          Select Size
+        </option>
         {sizes.map(size => (
-          <div
-            key={size.code}
-            title={size.name}
-            onClick={() => size.quantity && onClick(size)}
-            className={classnames(
-              styles.size,
-              size.quantity === 0 && styles.disabled,
-              selected === size && styles.selected,
-              error && styles.required
-            )}>
+          <option key={size.code} value={size.code}>
             {size.code}
-          </div>
+          </option>
         ))}
-      </div>
-      {error && <div class={styles.error}>Please select a size</div>}
+      </Select>
+      {error && <div className={styles.error}>Please select a size</div>}
     </Fragment>
   )
 }
