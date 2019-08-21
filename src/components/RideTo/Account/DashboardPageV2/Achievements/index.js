@@ -5,9 +5,9 @@ import trophyDone from './trophyDone.svg'
 import trophyTodo from './trophyTodo.svg'
 import moment from 'moment'
 
-function Achievements({ achivements }) {
+function Achievements({ achievements }) {
   const mergedAchievements = ALL_ACHIEVEMENTS.map(defaultA => {
-    const userA = achivements.find(({ constant }) => {
+    const userA = achievements.find(({ constant }) => {
       return constant === defaultA.constant
     })
 

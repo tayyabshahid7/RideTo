@@ -17,12 +17,14 @@ import {
 import { DEFAULT_TIMELINE } from './constants'
 import {
   updateTimelineStep,
+  updateAchievement,
   fetchUserDetails,
   updateUserDetail,
   recordGAEcommerceData
 } from 'services/dashboard'
 import PasswordReset from './PasswordReset'
 import MyOrders from './MyOrders'
+import { ALL_ACHIEVEMENTS } from './Achievements/constants'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -33,7 +35,7 @@ function DashboardPageV2({ match }) {
   const [matchedNextSteps, setMatchedNextSteps] = useState([])
   const [recentOrder, setRecentOrder] = useState(null)
   const [orders, setOrders] = useState([])
-  const [achivements, setAchivements] = useState([])
+  const [achievements, setAchivements] = useState([])
   const [nextStep, setNextStep] = useState(null)
 
   const isAuthenticated = getIsAuthenticated()
@@ -54,11 +56,33 @@ function DashboardPageV2({ match }) {
     updateUserDetail('riding_style', style.constant)
   }
 
-  const updateSteps = (constant, isCompleted = true) => {
+  const updateAchievements = achievement => {
+    if (!achievements.find(({ constant }) => constant === achievement)) {
+      setAchivements(prevState => [
+        ...prevState,
+        {
+          ...ALL_ACHIEVEMENTS.find(({ constant }) => constant === achievement),
+          create_at: new Date().toISOString()
+        }
+      ])
+      updateAchievement(achievement)
+    }
+  }
+
+  const updateSteps = (constant, isCompleted = true, save = true) => {
     setNextSteps(prevState => {
       return prevState.map(step => {
         if (step.constant === constant && step.is_completed !== isCompleted) {
-          updateTimelineStep(step.name, step.constant, isCompleted)
+          // @TODO Work out why this fires twice when updating achievement as well
+          if (save) {
+            updateTimelineStep(step.name, step.constant, isCompleted)
+
+            if (isCompleted) {
+              step.achievements.forEach(achievement =>
+                updateAchievements(achievement)
+              )
+            }
+          }
           return {
             ...step,
             is_completed: isCompleted
@@ -67,34 +91,6 @@ function DashboardPageV2({ match }) {
 
         return step
       })
-
-      // @TODO DELETE ME
-      // let found = false
-
-      // return prevState.map(step => {
-      //   if (step.constant === constant) {
-      //     found = true
-      //     updateTimelineStep(step.name, step.constant, true)
-      //     return {
-      //       ...step,
-      //       is_completed: true
-      //     }
-      //   }
-
-      //   if (found) {
-      //     updateTimelineStep(step.name, step.constant, false)
-      //     return {
-      //       ...step,
-      //       is_completed: false
-      //     }
-      //   }
-
-      //   updateTimelineStep(step.name, step.constant, true)
-      //   return {
-      //     ...step,
-      //     is_completed: true
-      //   }
-      // })
     })
   }
 
@@ -143,10 +139,12 @@ function DashboardPageV2({ match }) {
       if (orderId) {
         if (course_title === 'CBT Training') {
           // One step before the actual CBT step
-          updateSteps('STEP_REVISE')
+          updateSteps('STEP_CBT', false, false)
+          updateSteps('STEP_REVISE', true, false)
         } else if (course_title.startsWith('Full Licence')) {
           // One step before the actual full licence step
-          updateSteps('STEP_THEORY_TEST')
+          updateSteps('STEP_FULL_LICENCE', false, false)
+          updateSteps('STEP_THEORY_TEST', true, false)
         }
       }
     }
@@ -191,7 +189,10 @@ function DashboardPageV2({ match }) {
             )
 
             if (userStep) {
-              return userStep
+              return {
+                ...defaultStep,
+                ...userStep
+              }
             } else {
               return defaultStep
             }
@@ -227,6 +228,8 @@ function DashboardPageV2({ match }) {
     if (!isAuthenticated && !orderId) {
       window.location = '/account/login'
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match, isAuthenticated])
 
   useEffect(() => {
@@ -278,7 +281,7 @@ function DashboardPageV2({ match }) {
           <div className={styles.leftCol}>
             {isAuthenticated && (
               <div className={styles.pageItem}>
-                <Achievements achivements={achivements} />
+                <Achievements achievements={achievements} />
               </div>
             )}
             <div className={styles.pageItem}>
