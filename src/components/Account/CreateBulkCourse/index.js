@@ -61,11 +61,29 @@ class CreateBulkCourse extends React.Component {
       loadCourseTypes,
       schoolId
     } = this.props
+
     if (!info.courseTypes || info.courseTypes.length === 0) {
       loadCourseTypes({ schoolId: schoolId })
+    } else {
+      this.setState({
+        course: {
+          ...this.state.course,
+          course_type_id: info.courseTypes
+            .filter(filterExtraCourses)[0]
+            .id.toString()
+        }
+      })
     }
+
     if (!instructors || instructors.length === 0) {
       getInstructors(schoolId)
+    } else {
+      this.setState({
+        course: {
+          ...this.state.course,
+          instructor_id: instructors[0].id.toString()
+        }
+      })
     }
   }
 
@@ -74,10 +92,11 @@ class CreateBulkCourse extends React.Component {
       saving,
       error,
       history,
-      info: { courseTypes }
+      info: { courseTypes },
+      instructors
     } = this.props
     const {
-      course: { course_type_id }
+      course: { course_type_id, instructor_id }
     } = this.state
 
     if (prevProps.saving && !saving) {
@@ -88,9 +107,11 @@ class CreateBulkCourse extends React.Component {
     }
 
     if (
+      // course_type_id === '' &&
+      // courseTypes.length !== prevProps.info.courseTypes.length &&
+      // prevProps.info.courseTypes.length === 0
       course_type_id === '' &&
-      courseTypes.length !== prevProps.info.courseTypes.length &&
-      prevProps.info.courseTypes.length === 0
+      courseTypes.length
     ) {
       this.setState({
         course: {
@@ -98,6 +119,21 @@ class CreateBulkCourse extends React.Component {
           course_type_id: courseTypes
             .filter(filterExtraCourses)[0]
             .id.toString()
+        }
+      })
+    }
+
+    if (
+      // instructor_id === '' &&
+      // instructors.length !== prevProps.instructors.length &&
+      // prevProps.instructors.length === 0
+      instructor_id === '' &&
+      instructors.length
+    ) {
+      this.setState({
+        course: {
+          ...this.state.course,
+          instructor_id: instructors[0].id.toString()
         }
       })
     }
