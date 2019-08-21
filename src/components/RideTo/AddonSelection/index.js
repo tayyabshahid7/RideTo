@@ -1,19 +1,28 @@
 import React from 'react'
-// import { Container, Row, Col, Button } from 'reactstrap'
+import { Container, Row, Col, Button } from 'reactstrap'
 import moment from 'moment'
 import { parseQueryString } from 'services/api'
 import { getSupplier, getAddons } from 'services/page'
-// import NavigationComponent from 'components/RideTo/NavigationComponent'
-// import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
-// import SidePanel from 'components/RideTo/SidePanel'
-// import AddonDetails from 'components/RideTo/AddonDetails'
-// import styles from './AddonSelection.scss'
+import NavigationComponent from 'components/RideTo/NavigationComponent'
+import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
+import styles from './AddonSelection.scss'
 import { getCourseTitle } from 'services/course'
-// import { IconArrowRight } from 'assets/icons'
+import { IconArrowRight } from 'assets/icons'
 
 class AddonSelection extends React.Component {
   constructor(props) {
     super(props)
+
+    // Clear addons on landing on page
+    const checkoutData = JSON.parse(sessionStorage.getItem('checkout-data'))
+    sessionStorage.setItem(
+      'checkout-data',
+      JSON.stringify({
+        ...checkoutData,
+        addons: []
+      })
+    )
+
     const qs = parseQueryString(window.location.search.slice(1))
 
     let step3Params = [`date=${qs.date}`, `bike_hire=${qs.bike_hire}`]
@@ -57,7 +66,9 @@ class AddonSelection extends React.Component {
       }
     ]
 
-    let addons = getAddons()
+    let addons = getAddons().filter(
+      ({ name }) => name !== 'Peace Of Mind Policy'
+    )
     addons.forEach(addon => {
       if (addon.sizes && addon.sizes.length > 0) {
         addon.selectedSize = null
@@ -83,6 +94,7 @@ class AddonSelection extends React.Component {
     this.handleDetails = this.handleDetails.bind(this)
     this.handleContinue = this.handleContinue.bind(this)
     this.handleSizeUpdate = this.handleSizeUpdate.bind(this)
+    this.updateAddonSize = this.updateAddonSize.bind(this)
   }
 
   handleAddAddon(addon) {
@@ -115,25 +127,52 @@ class AddonSelection extends React.Component {
     })
   }
 
+  updateAddonSize(arr, addon, selectedSize) {
+    return arr.map(a => {
+      if (a.id === addon.id) {
+        return {
+          ...a,
+          selectedSize,
+          sizeRequired: false
+        }
+      }
+
+      return a
+    })
+  }
+
   handleSizeUpdate(addon, selectedSize) {
-    addon.selectedSize = selectedSize
-    this.setState({ addons: this.state.addons })
+    const { addons, selectedAddons } = this.state
+
+    this.setState({
+      addons: this.updateAddonSize(addons, addon, selectedSize),
+      selectedAddons: this.updateAddonSize(selectedAddons, addon, selectedSize)
+    })
   }
 
   async handleContinue() {
     const supplier = getSupplier()
     const next = `/${supplier.slug}/checkout`
-    const { qs, selectedAddons } = this.state
-    let addons = selectedAddons.map(addon => {
-      return {
-        id: addon.id,
-        selectedSize: addon.selectedSize,
-        price: addon.discount_price || addon.full_price,
-        name: addon.name
-      }
-    })
+    const { selectedAddons } = this.state
 
-    let checkoutData = { ...qs, addons }
+    const resultsCheckoutData = JSON.parse(
+      sessionStorage.getItem('checkout-data')
+    )
+
+    // let addons = selectedAddons.map(addon => {
+    //   return {
+    //     id: addon.id,
+    //     selectedSize: addon.selectedSize,
+    //     price: addon.discount_price || addon.full_price,
+    //     name: addon.name
+    //   }
+    // })
+
+    let checkoutData = {
+      ...resultsCheckoutData,
+      addons: selectedAddons
+      // addons
+    }
     sessionStorage.setItem('checkout-data', JSON.stringify(checkoutData))
     sessionStorage.setItem('login-next', JSON.stringify(next))
     window.location = next
@@ -153,74 +192,73 @@ class AddonSelection extends React.Component {
 
   render() {
     // Kill the addons page so no one can land here
-    return null
+    // return null
 
-    // const { detailsAddon, addons, navigation } = this.state
-    // const detailsImage = detailsAddon ? detailsAddon.images[0] : null
+    const { addons, navigation } = this.state
 
-    // return (
-    //   <React.Fragment>
-    //     <NavigationComponent navigation={navigation} showIcons={false} />
-    //     <Container>
-    //       <Row>
-    //         <Col sm="6">
-    //           <h2 className={styles.heading}>Choose Extras</h2>
-    //           <div className={styles.subHeading}>
-    //             Optional purchases with FREE delivery, to get on the road faster
-    //             (not required for training).
-    //           </div>
-    //         </Col>
-    //         <Col sm="6" className={styles.checkoutButtonTop}>
-    //           <Button
-    //             color="primary"
-    //             className={styles.checkoutButton}
-    //             onClick={this.handleContinue}>
-    //             <span>Continue To Checkout</span>
-    //             <IconArrowRight className={styles.arrowIcon} />
-    //           </Button>
-    //         </Col>
-    //       </Row>
-    //       <Row>
-    //         {addons.map(addon => (
-    //           <Col sm="4">
-    //             <AddonSelectionItem
-    //               addon={addon}
-    //               isAdded={this.isAddonSelected(addon)}
-    //               onAdd={this.handleAddAddon}
-    //               onRemove={this.handleRemoveAddon}
-    //               onSizeUpdate={this.handleSizeUpdate}
-    //               onDetails={this.handleDetails}
-    //             />
-    //           </Col>
-    //         ))}
-    //       </Row>
-    //       <Row className={styles.checkoutWrapper}>
-    //         <Col sm="12" className={styles.checkoutContent}>
-    //           <Button
-    //             color="primary"
-    //             className={styles.checkoutButton}
-    //             onClick={this.handleContinue}>
-    //             <span>Continue To Checkout</span>
-    //             <IconArrowRight className={styles.arrowIcon} />
-    //           </Button>
-    //         </Col>
-    //       </Row>
-    //     </Container>
-    //     <SidePanel
-    //       visible={detailsAddon !== null}
-    //       headingImage={detailsImage}
-    //       onDismiss={() => this.handleDetails(null)}>
-    //       {detailsAddon && (
-    //         <AddonDetails
-    //           isAdded={this.isAddonSelected(detailsAddon)}
-    //           addon={detailsAddon}
-    //           onAdd={this.handleAddAddon}
-    //           onRemove={this.handleRemoveAddon}
-    //         />
-    //       )}
-    //     </SidePanel>
-    //   </React.Fragment>
-    // )
+    return (
+      <React.Fragment>
+        <NavigationComponent navigation={navigation} showIcons={false} />
+        <Container>
+          <Row>
+            <Col md="6">
+              <h1 className={styles.heading}>New Rider Essentials</h1>
+              <div className={styles.subHeading}>
+                Get on the road faster with the rider gear you need delivered to
+                your door. FREE delivery with ALL orders.
+              </div>
+            </Col>
+            <Col md="6" className={styles.skipLink}>
+              <Button
+                color="primary"
+                className={styles.checkoutButton}
+                onClick={this.handleContinue}>
+                <span>Continue To Checkout</span>
+                <IconArrowRight className={styles.arrowIcon} />
+              </Button>
+            </Col>
+          </Row>
+          <Row>
+            {addons.map((addon, i) => (
+              <Col xs="12" key={i}>
+                <AddonSelectionItem
+                  addon={addon}
+                  isAdded={this.isAddonSelected(addon)}
+                  onAdd={this.handleAddAddon}
+                  onRemove={this.handleRemoveAddon}
+                  onSizeUpdate={this.handleSizeUpdate}
+                  onDetails={this.handleDetails}
+                />
+              </Col>
+            ))}
+          </Row>
+          <div className={styles.checkoutWrapper}>
+            <Button
+              color="primary"
+              className={styles.checkoutButton}
+              onClick={this.handleContinue}>
+              <span>Continue To Checkout</span>
+              <IconArrowRight className={styles.arrowIcon} />
+            </Button>
+          </div>
+        </Container>
+        {/*
+        <SidePanel
+          visible={detailsAddon !== null}
+          headingImage={detailsImage}
+          onDismiss={() => this.handleDetails(null)}>
+          {detailsAddon && (
+            <AddonDetails
+              isAdded={this.isAddonSelected(detailsAddon)}
+              addon={detailsAddon}
+              onAdd={this.handleAddAddon}
+              onRemove={this.handleRemoveAddon}
+            />
+          )}
+        </SidePanel>
+        */}
+      </React.Fragment>
+    )
   }
 }
 

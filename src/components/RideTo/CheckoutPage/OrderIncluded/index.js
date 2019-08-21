@@ -58,7 +58,7 @@ function OrderIncluded({
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
-            <span className={styles.text}>Helmet, gloves and jacket</span>
+            <span className={styles.text}>Helmet and gloves</span>
           </li>
           <li>
             <span className={styles.tick}>

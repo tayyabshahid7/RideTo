@@ -128,7 +128,11 @@ export const getTrainingStatusOptions = () => {
 export const getExpectedPrice = (priceInfo, addons = [], checkoutData = {}) => {
   return (
     priceInfo.price +
-    addons.reduce((total, { price }) => (total += price * 100), 0) +
+    addons.reduce(
+      (total, { discount_price }) =>
+        (total += parseFloat(discount_price) * 100),
+      0
+    ) +
     (shouldAddBikeHire(checkoutData) ? priceInfo.bike_hire_cost : 0)
   )
 }
