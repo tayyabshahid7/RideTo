@@ -58,14 +58,18 @@ function DashboardPageV2({ match }) {
 
   const updateAchievements = achievement => {
     if (!achievements.find(({ constant }) => constant === achievement)) {
+      const newAchievement = ALL_ACHIEVEMENTS.find(
+        ({ constant }) => constant === achievement
+      )
+
       setAchivements(prevState => [
         ...prevState,
         {
-          ...ALL_ACHIEVEMENTS.find(({ constant }) => constant === achievement),
+          ...newAchievement,
           create_at: new Date().toISOString()
         }
       ])
-      updateAchievement(achievement)
+      updateAchievement(newAchievement)
     }
   }
 
@@ -228,7 +232,6 @@ function DashboardPageV2({ match }) {
     if (!isAuthenticated && !orderId) {
       window.location = '/account/login'
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [match, isAuthenticated])
 
@@ -262,6 +265,7 @@ function DashboardPageV2({ match }) {
               handleStyleChange={handleStyleChange}
               handleCompletedClick={handleCompletedClick}
               handlePreviewClick={handlePreviewClick}
+              updateAchievements={updateAchievements}
             />
           </div>
         </div>

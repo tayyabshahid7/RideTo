@@ -4,7 +4,6 @@ import {
   getToken,
   isAuthenticated as getIsAuthenticated
 } from 'services/auth'
-import { ALL_ACHIEVEMENTS } from 'components/RideTo/Account/DashboardPageV2/Achievements/constants'
 
 export const fetchArticles = async (page, style, goal) => {
   const path = `dashboard/dashboard-advice/`
@@ -37,17 +36,13 @@ export const updateTimelineStep = async (name, constant, is_completed) => {
   return await put(path, params)
 }
 
-export const updateAchievement = async achievement => {
+export const updateAchievement = async ({ name, constant }) => {
   const isAuthenticated = getIsAuthenticated()
 
   if (!isAuthenticated) {
     return
   }
 
-  const achievementDetails = ALL_ACHIEVEMENTS.find(
-    ({ constant }) => constant === achievement
-  )
-  const { name, constant } = achievementDetails
   const { user_id } = getUserProfile(getToken())
   const path = `dashboard/${user_id}/achievement/`
   const params = {

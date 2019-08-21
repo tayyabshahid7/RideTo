@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './styles.scss'
 import Expander from './Expander'
 import Steps from './Steps'
@@ -15,7 +15,8 @@ function RouteToFreedom({
   handleGoalChange,
   handleStyleChange,
   handleCompletedClick,
-  handlePreviewClick
+  handlePreviewClick,
+  updateAchievements
 }) {
   const stepsLength = nextSteps.length
   const completedStepsLength = nextSteps.filter(({ status }) =>
@@ -23,6 +24,13 @@ function RouteToFreedom({
   ).length
   let percentComplete = Math.round((completedStepsLength / stepsLength) * 100)
   const isDesktop = useMediaQuery({ minWidth: 1025 })
+
+  useEffect(() => {
+    if (percentComplete === 100) {
+      updateAchievements('ACHIEVEMENT_NEW_RIDER_JOURNEY_COMPLETE')
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [percentComplete])
 
   return (
     <div className={styles.container}>
