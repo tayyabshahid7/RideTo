@@ -20,7 +20,10 @@ function Slider({ gear, constant }) {
       {gear.length > 0 && (
         <Slick {...settings}>
           {gear.map(({ name, link, image }) => (
-            <a key={name} href={link} target={isExternalLink(link) && '_blank'}>
+            <a
+              key={name}
+              href={link}
+              target={isExternalLink(link) ? '_blank' : undefined}>
               <div className={styles.slide}>
                 <img src={image} alt="" />
                 <h4 className={styles.title}>
