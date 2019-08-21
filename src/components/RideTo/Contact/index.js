@@ -6,6 +6,7 @@ import MapComponent from 'components/RideTo/MapComponent'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import { post } from 'services/api'
 import MediaQuery from 'react-responsive'
+import { Helmet } from 'react-helmet'
 
 function Contact() {
   const [name, setName] = useState('')
@@ -37,6 +38,9 @@ function Contact() {
 
   return (
     <Fragment>
+      <Helmet>
+        <title>Rideto | Conact Us</title>
+      </Helmet>
       <section className={styles.header}>
         <div className={styles.container}>
           <div className={styles.keyInfo}>
@@ -44,7 +48,7 @@ function Contact() {
               <img src={chat} alt="Chat" />
               <div className={styles.keyInfoItemText}>
                 <h2>Chat with us</h2>
-                <p>Mon-Sat 9am - 6pm • Sun Closed</p>
+                <p>Mon-Sun 9am - 6pm</p>
               </div>
               <div className={styles.keyInfoItemTextMobile}>Chat</div>
             </div>
@@ -52,7 +56,7 @@ function Contact() {
               <img src={call} alt="Call" />
               <div className={styles.keyInfoItemText}>
                 <h2>020 3603 9652</h2>
-                <p>Mon-Sat 9am - 6pm • Sun Closed</p>
+                <p>Mon-Sun 9am - 6pm</p>
               </div>
               <div className={styles.keyInfoItemTextMobile}>Call</div>
             </a>
@@ -178,7 +182,7 @@ function Contact() {
                     Saturday <span>9am - 6pm</span>
                   </li>
                   <li>
-                    Sunday <span>Closed</span>
+                    Sunday <span>9am - 6pm</span>
                   </li>
                 </ol>
               </div>
