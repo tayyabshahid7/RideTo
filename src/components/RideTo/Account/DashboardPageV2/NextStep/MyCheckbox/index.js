@@ -12,12 +12,11 @@ function MyCheckbox({ handleCompletedClick, id, checked }) {
 
   useEffect(() => {
     setLocalChecked(checked)
-  }, [checked])
+  }, [checked, id])
 
   return (
     <Checkbox
       checked={localChecked}
-      key={id}
       extraClass={styles.dashboardCheck}
       size="smallBlack"
       onChange={handleCheckboxClick}>
