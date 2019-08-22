@@ -13,7 +13,8 @@ class UserMenuItem extends React.Component {
     super(props)
     this.state = {
       user: null,
-      menuOpen: false
+      menuOpen: false,
+      displayName: window.localStorage.getItem('username')
     }
 
     this.element = React.createRef()
@@ -68,7 +69,8 @@ class UserMenuItem extends React.Component {
   }
 
   render() {
-    const { menuOpen, user } = this.state
+    const { menuOpen, user, displayName } = this.state
+    console.log(user)
     return (
       <React.Fragment>
         {!user ? (
@@ -80,7 +82,7 @@ class UserMenuItem extends React.Component {
             <div
               className={classnames(styles.userName, styles.hiddenOnMobile)}
               onClick={this.handleMenuToggle}>
-              {user.username}
+              {displayName || user.username}
             </div>
             <div
               className={classnames(
