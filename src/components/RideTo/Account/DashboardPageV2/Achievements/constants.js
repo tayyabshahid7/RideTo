@@ -6,6 +6,12 @@ export const ALL_ACHIEVEMENTS = [
     achieved: false
   },
   {
+    constant: 'ACHIEVEMENT_COMPLETED_REVISION',
+    name: 'Completed revision',
+    create_at: null,
+    achieved: false
+  },
+  {
     constant: 'ACHIEVEMENT_COMPLETED_CBT',
     name: 'Completed CBT',
     create_at: null,
@@ -14,12 +20,6 @@ export const ALL_ACHIEVEMENTS = [
   {
     constant: 'ACHIEVEMENT_COMPLETED_ITM',
     name: 'Completed ITM',
-    create_at: null,
-    achieved: false
-  },
-  {
-    constant: 'ACHIEVEMENT_COMPLETED_REVISION',
-    name: 'Completed revision',
     create_at: null,
     achieved: false
   },
