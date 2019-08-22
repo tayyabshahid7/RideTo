@@ -2,11 +2,12 @@ import React, { useState, Fragment } from 'react'
 import MapComponent from 'components/RideTo/MapComponent'
 import styles from './styles.scss'
 import moment from 'moment'
+import { getTrainingStatus } from 'services/course'
 
 function UpComingCourse({ course, title, handleClick }) {
   const [isMapVisible, setIsMapVisible] = useState(false)
   const training = course.trainings[0]
-  const { course_type } = training
+  const { course_type, status } = training
   const isFullLicence = course_type === 'Full Licence Training'
   const { address_1, postcode, latitude, longitude } = course.training_location
 
@@ -63,9 +64,11 @@ function UpComingCourse({ course, title, handleClick }) {
       {!isFullLicence && (
         <div>
           <h4>Date & time</h4>
-          {moment(training.date || training.requested_date).format(
-            'ddd Do MMMM YYYY'
-          )}
+          {status === 'TRAINING_CONFIRMED'
+            ? moment(training.date || training.requested_date).format(
+                'ddd Do MMMM YYYY'
+              )
+            : getTrainingStatus(status)}
         </div>
       )}
     </div>
