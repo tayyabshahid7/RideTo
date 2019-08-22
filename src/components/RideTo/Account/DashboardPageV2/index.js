@@ -25,6 +25,9 @@ import {
 import PasswordReset from './PasswordReset'
 import MyOrders from './MyOrders'
 import { ALL_ACHIEVEMENTS } from './Achievements/constants'
+import BookingCompleteBanner from 'components/RideTo/Account/BookingCompleteBanner'
+import SidePanel from 'components/RideTo/SidePanel'
+import OrderDetails from 'components/RideTo/Account/OrderDetails'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -39,6 +42,20 @@ function DashboardPageV2({ match }) {
   const [nextStep, setNextStep] = useState(null)
 
   const isAuthenticated = getIsAuthenticated()
+  const isConfirmationPage = match.params.orderId
+
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const headingImage = selectedOrder
+    ? selectedOrder.training_location.image
+    : ''
+
+  const handleOrderClick = course => {
+    setSelectedOrder(course)
+  }
+
+  const handleCloseClick = () => {
+    setSelectedOrder(null)
+  }
 
   const handleGoalChange = event => {
     const { value } = event.target
@@ -247,7 +264,7 @@ function DashboardPageV2({ match }) {
     }
   }, [selectedGoal, nextSteps])
 
-  if (!matchedNextSteps.length || (!isAuthenticated && !match.params.orderId)) {
+  if (!matchedNextSteps.length || (!isAuthenticated && !isConfirmationPage)) {
     return null
   }
 
@@ -255,6 +272,12 @@ function DashboardPageV2({ match }) {
     <Fragment>
       <PasswordReset isAuthenticated={isAuthenticated} />
       <div className={styles.page}>
+        {isConfirmationPage && recentOrder && (
+          <BookingCompleteBanner
+            order={recentOrder}
+            onDetails={handleOrderClick}
+          />
+        )}
         <div className={styles.pageItemFullWidthWrapper}>
           <div className={styles.pageItem}>
             <RouteToFreedom
@@ -293,6 +316,7 @@ function DashboardPageV2({ match }) {
                 orders={
                   orders.length > 0 ? orders : recentOrder ? [recentOrder] : []
                 }
+                handleClick={handleOrderClick}
               />
             </div>
             <div className={styles.pageItem}>
@@ -310,6 +334,12 @@ function DashboardPageV2({ match }) {
           </div>
         </div>
       </div>
+      <SidePanel
+        visible={selectedOrder}
+        headingImage={headingImage}
+        onDismiss={handleCloseClick}>
+        {selectedOrder && <OrderDetails order={selectedOrder} />}
+      </SidePanel>
     </Fragment>
   )
 }

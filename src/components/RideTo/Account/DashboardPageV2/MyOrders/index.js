@@ -1,23 +1,8 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import styles from './styles.scss'
 import UpComingCourse from '../UpComingCourse'
-import SidePanel from 'components/RideTo/SidePanel'
-import OrderDetails from 'components/RideTo/Account/OrderDetails'
 
-function MyOrders({ orders }) {
-  const [selectedOrder, setSelectedOrder] = useState(null)
-  const headingImage = selectedOrder
-    ? selectedOrder.training_location.image
-    : ''
-
-  const handleClick = course => {
-    setSelectedOrder(course)
-  }
-
-  const handleCloseClick = () => {
-    setSelectedOrder(null)
-  }
-
+function MyOrders({ orders, handleClick }) {
   return (
     <Fragment>
       <div className={styles.container}>
@@ -38,12 +23,6 @@ function MyOrders({ orders }) {
           <p className={styles.noOrders}>No orders yet</p>
         )}
       </div>
-      <SidePanel
-        visible={selectedOrder}
-        headingImage={headingImage}
-        onDismiss={handleCloseClick}>
-        {selectedOrder && <OrderDetails order={selectedOrder} />}
-      </SidePanel>
     </Fragment>
   )
 }
