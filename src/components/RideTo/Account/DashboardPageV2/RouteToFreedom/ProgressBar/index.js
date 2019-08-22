@@ -2,27 +2,47 @@ import React from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
 
-function ProgressBar({ percent, width, bgColor, className }) {
+function ProgressBar({
+  percent,
+  measurement,
+  bgColor,
+  className,
+  direction = 'horizontal'
+}) {
   let cssWidth = null
+  let cssHeight = null
 
-  if (width) {
-    cssWidth = `${width}px`
+  if (direction === 'horizontal') {
+    if (measurement) {
+      cssWidth = `${measurement}px`
+    }
+
+    if (percent) {
+      cssWidth = `${percent}%`
+    }
   }
 
-  if (percent) {
-    cssWidth = `${percent}%`
+  if (direction === 'vertical') {
+    if (measurement) {
+      cssHeight = `${measurement}px`
+    }
+
+    if (percent) {
+      cssHeight = `${percent}%`
+    }
   }
 
   return (
     <div
-      className={classnames(styles.bar, className)}
+      className={classnames(styles.bar, styles[direction], className)}
       style={{
         backgroundColor: bgColor
       }}>
       <div
         className={styles.progress}
         style={{
-          width: cssWidth
+          width: cssWidth,
+          height: cssHeight
         }}></div>
     </div>
   )

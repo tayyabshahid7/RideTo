@@ -35,11 +35,11 @@ function Expander({
         />
       </button>
       {percentComplete && <ProgressBar percent={percentComplete} />}
-      <div
-        className={classnames(styles.content, contentClassName)}
-        style={{ display: isOpen ? 'block' : undefined }}>
-        {children}
-      </div>
+      {(isOpen || isDesktop) && (
+        <div className={classnames(styles.content, contentClassName)}>
+          {children}
+        </div>
+      )}
       {summary && !isOpen && !isDesktop && (
         <Summary selectedGoal={selectedGoal} selectedStyle={selectedStyle} />
       )}

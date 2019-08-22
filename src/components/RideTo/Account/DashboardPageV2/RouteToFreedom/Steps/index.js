@@ -1,4 +1,10 @@
-import React, { useRef, createRef, useEffect, useState } from 'react'
+import React, {
+  useRef,
+  createRef,
+  useEffect,
+  useState,
+  useCallback
+} from 'react'
 import styles from './styles.scss'
 import Step from './Step'
 import ProgressBar from '../ProgressBar'
@@ -16,22 +22,25 @@ function Steps({
   const currentStepIndex = findLastStepIndex(steps)
   const stepRefs = useRef(range(steps.length).map(() => createRef()))
   const currentStepRef = useRef(null)
-  const [progressWidth, setProgressWidth] = useState(0)
+  const [progress, setProgress] = useState(0)
 
-  const handleResize = () => {
-    const currentStepOffset = currentStepRef.current.offsetLeft
-    setProgressWidth(currentStepOffset)
-  }
+  const handleResize = useCallback(() => {
+    const { current } = currentStepRef
+    const currentStepOffset = current[isDesktop ? 'offsetLeft' : 'offsetTop']
+
+    console.log(currentStepOffset)
+    setProgress(currentStepOffset)
+  }, [isDesktop])
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [handleResize])
 
   useEffect(() => {
     currentStepRef.current = stepRefs.current[currentStepIndex].current
     handleResize()
-  }, [currentStepIndex, steps])
-
-  useEffect(() => {
-    window.addEventListener('resize', handleResize)
-    return () => window.removeEventListener(('resize', handleResize))
-  }, [])
+  }, [currentStepIndex, steps, handleResize])
 
   return (
     <div className={styles.container}>
@@ -47,14 +56,13 @@ function Steps({
           />
         ))}
       </ul>
-      {isDesktop && (
-        <ProgressBar
-          width={progressWidth}
-          percent={percentComplete === 100 ? percentComplete : undefined}
-          bgColor="#d8d8d8"
-          className={styles.stepsBar}
-        />
-      )}
+      <ProgressBar
+        measurement={progress}
+        percent={percentComplete === 100 ? percentComplete : undefined}
+        bgColor="#d8d8d8"
+        className={styles.stepsBar}
+        direction={isDesktop ? 'horizontal' : 'vertical'}
+      />
     </div>
   )
 }
