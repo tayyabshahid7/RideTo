@@ -593,7 +593,6 @@ class CheckoutPage extends Component {
       if (response) {
         const { order, token: userToken } = response
         if (userToken !== null) {
-          console.log(response)
           // window.localStorage.setItem('token', JSON.stringify(userToken))
           window.localStorage.setItem('token', userToken)
           window.localStorage.setItem('username', response.username)
