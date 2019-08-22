@@ -3,6 +3,7 @@ import MapComponent from 'components/RideTo/MapComponent'
 import styles from './styles.scss'
 import moment from 'moment'
 import { getTrainingStatus } from 'services/course'
+import classnames from 'classnames'
 
 function UpComingCourse({ course, title, handleClick }) {
   const [isMapVisible, setIsMapVisible] = useState(false)
@@ -70,6 +71,15 @@ function UpComingCourse({ course, title, handleClick }) {
               )
             : getTrainingStatus(status)}
         </div>
+      )}
+      {handleClick && (
+        <button
+          onClick={() => {
+            handleClick(course)
+          }}
+          className={classnames(styles.orderButton, styles.viewDetails)}>
+          View details
+        </button>
       )}
     </div>
   )
