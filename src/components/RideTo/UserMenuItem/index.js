@@ -70,7 +70,6 @@ class UserMenuItem extends React.Component {
 
   render() {
     const { menuOpen, user, displayName } = this.state
-    console.log(user)
     return (
       <React.Fragment>
         {!user ? (
