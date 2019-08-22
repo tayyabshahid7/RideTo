@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useState, Fragment } from 'react'
+import MapComponent from 'components/RideTo/MapComponent'
 import styles from './styles.scss'
 import moment from 'moment'
 
-// (40 Hours) for DAS
-// <p>Within 3 days</p>
-
 function UpComingCourse({ course, title, handleClick }) {
+  const [isMapVisible, setIsMapVisible] = useState(false)
   const training = course.trainings[0]
   const { course_type } = training
   const isFullLicence = course_type === 'Full Licence Training'
-  const { name, address_1, postcode } = course.training_location
+  const { address_1, postcode, latitude, longitude } = course.training_location
+
+  const showMap = () => {
+    setIsMapVisible(prevState => !prevState)
+  }
 
   return (
     <div className={styles.container}>
@@ -36,14 +39,26 @@ function UpComingCourse({ course, title, handleClick }) {
           {handleClick ? (
             `${address_1}, ${postcode}`
           ) : (
-            <a
-              href={`https://www.google.com/maps?q=${name} ${postcode}`}
-              target="_blank"
-              rel="noopener noreferrer">
-              {address_1}, {postcode}
-            </a>
+            <Fragment>
+              <button className={styles.mapButton} onClick={showMap}>
+                {address_1}, {postcode}
+              </button>
+            </Fragment>
           )}
         </p>
+        {isMapVisible && (
+          <div className={styles.mapWrap}>
+            <MapComponent
+              userLocation={{
+                lat: parseInt(latitude),
+                lng: parseInt(longitude)
+              }}
+              width={'auto'}
+              height={200}
+              checkout
+            />
+          </div>
+        )}
       </div>
       {!isFullLicence && (
         <div>

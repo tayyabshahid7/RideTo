@@ -28,7 +28,6 @@ function Steps({
     const { current } = currentStepRef
     const currentStepOffset = current[isDesktop ? 'offsetLeft' : 'offsetTop']
 
-    console.log(currentStepOffset)
     setProgress(currentStepOffset)
   }, [isDesktop])
 
