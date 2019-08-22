@@ -28,6 +28,7 @@ import { ALL_ACHIEVEMENTS } from './Achievements/constants'
 import BookingCompleteBanner from 'components/RideTo/Account/BookingCompleteBanner'
 import SidePanel from 'components/RideTo/SidePanel'
 import OrderDetails from 'components/RideTo/Account/OrderDetails'
+import { findLastStepIndex } from './RouteToFreedom/util'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -255,9 +256,10 @@ function DashboardPageV2({ match }) {
   useEffect(() => {
     if (nextSteps.length) {
       const matchedSteps = matchStepsToGoal(selectedGoal, nextSteps)
-      const selectedNextStep =
-        matchedSteps.find(step => step.status === 'Not Started') ||
-        matchedSteps.find(step => step.status === 'Ride')
+      // const selectedNextStep =
+      //   matchedSteps.find(step => step.status === 'Not Started') ||
+      //   matchedSteps.find(step => step.status === 'Ride')
+      const selectedNextStep = matchedSteps[findLastStepIndex(matchedSteps)]
 
       setMatchedNextSteps(matchedSteps)
       setNextStep(selectedNextStep)
