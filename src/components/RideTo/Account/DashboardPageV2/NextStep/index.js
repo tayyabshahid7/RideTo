@@ -110,7 +110,13 @@ function NextStep({
                 )}
                 {included && (
                   <WithTitle title={included.title}>
-                    <OrderIncluded items={included.items} />
+                    {recentOrder && (
+                      <OrderIncluded
+                        fullLicence={included.type === 'das'}
+                        bikeHire={recentOrder.bike_type.toLowerCase()}
+                        hasGloves={recentOrder.gloves_jacket_included}
+                      />
+                    )}
                   </WithTitle>
                 )}
                 {guides && (

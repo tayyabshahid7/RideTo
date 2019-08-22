@@ -131,15 +131,9 @@ export const STEP_CBT_BEFORE = {
       "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
   },
   included: {
-    title: 'What you need',
-    items: [
-      'Bike & helmet hire',
-      'Test fees & fuel',
-      'Online pre-training',
-      'Free cancellation',
-      '135 training locations UK wide',
-      'Dedicated support team'
-    ]
+    title: "What's included",
+    items: [],
+    type: 'cbt'
   },
   form: {
     icon: instructor,
@@ -160,14 +154,8 @@ export const STEP_CBT_BOOKED = {
   course: true,
   included: {
     title: "What's included",
-    items: [
-      'Bike & helmet hire',
-      'Test fees & fuel',
-      'Online pre-training',
-      'Free cancellation',
-      '135 training locations UK wide',
-      'Dedicated support team'
-    ]
+    items: [],
+    type: 'cbt'
   },
   guides: {
     title: 'Useful guides',
@@ -250,15 +238,9 @@ export const STEP_FULL_LICENCE_BEFORE = {
       'Want to carry passengers, ride a bigger bike and get rid of the L Plates? It’s time to get your full motorcycle licence! This multi-day course will teach you to ride and pass the 2 tests on the right bike for the licence you wish to obtain. Either an A1, A2 or A (unrestricted) licence depending on your age and the bike you take the tests on.'
   },
   included: {
-    title: 'What you need',
-    items: [
-      'Bike & helmet hire',
-      'Test fees & fuel',
-      'Online pre-training',
-      'Free cancellation',
-      '135 training locations UK wide',
-      'Dedicated support team'
-    ]
+    title: "What's included",
+    items: [],
+    type: 'das'
   },
   cta: {
     href: '/motorcycle-licence',
@@ -282,15 +264,9 @@ export const STEP_FULL_LICENCE_BOOKED = {
   title: 'Full Licence',
   course: true,
   included: {
-    title: 'What you need',
-    items: [
-      'Bike & helmet hire',
-      'Test fees & fuel',
-      'Online pre-training',
-      'Free cancellation',
-      '135 training locations UK wide',
-      'Dedicated support team'
-    ]
+    title: "What's included",
+    items: [],
+    type: 'das'
   },
   guides: {
     title: 'Revision guides',
