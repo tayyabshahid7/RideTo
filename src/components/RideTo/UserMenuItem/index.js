@@ -7,6 +7,7 @@ import {
   isAuthenticated,
   removeToken
 } from 'services/auth'
+import UserIcon from './UserIcon'
 
 class UserMenuItem extends React.Component {
   constructor(props) {
@@ -82,6 +83,7 @@ class UserMenuItem extends React.Component {
               className={classnames(styles.userName, styles.hiddenOnMobile)}
               onClick={this.handleMenuToggle}>
               {displayName || user.username}
+              <UserIcon />
             </div>
             <div
               className={classnames(

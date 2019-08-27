@@ -82,3 +82,9 @@
     }
   }
 }
+
+.userName {
+  @media (min-width: 769px) {
+    display: flex;
+  }
+}
