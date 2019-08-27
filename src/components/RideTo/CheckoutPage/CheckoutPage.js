@@ -598,6 +598,11 @@ class CheckoutPage extends Component {
         }
         if (username) {
           window.localStorage.setItem('username', username)
+        } else {
+          const { user_name } = order
+          const firstName = user_name.split(' ')[0]
+
+          window.localStorage.setItem('username', firstName)
         }
         window.localStorage.setItem('gaok', true) // Set Google Analytics Flag
         window.location.href = `/account/dashboard/${order.id}`
