@@ -8,9 +8,8 @@ import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 import styles from './BookingCompleteBanner.scss'
 
 const BookingCompleteBanner = ({ order, onDetails }) => {
-  console.log(order)
-  const isFullLicence =
-    order.course_title && order.course_title.includes('Full Licence')
+  const course_title = order.course_title || order.trainings[0].course_type
+  const isFullLicence = course_title && course_title.includes('Full Licence')
   const training = order.trainings[0]
   const date = moment(training.requested_date, 'YYYY-MM-DD').format(
     'dddd Do MMMM'
@@ -22,8 +21,8 @@ const BookingCompleteBanner = ({ order, onDetails }) => {
       : ''
   // const selectedPackage = `${order.trainings.length} day package`
   const subTitle = isFullLicence
-    ? `${order.course_title}`
-    : `${order.course_title} on ${date} ${time}`
+    ? `${course_title}`
+    : `${course_title} on ${date} ${time}`
   const disclaimer = `You won't be charged until your booking is confirmed, we'll just reserve the amount on your card. Bookings require confirmation from the instructor, usually within ${
     isFullLicence ? '24' : '3'
   } working hours.`

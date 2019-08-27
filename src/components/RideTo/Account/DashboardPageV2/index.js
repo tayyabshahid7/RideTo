@@ -152,7 +152,8 @@ function DashboardPageV2({ match }) {
 
     const loadSingleOrder = async orderId => {
       const recentOrder = await fetchOrder(orderId)
-      const { course_title } = recentOrder
+      const course_title =
+        recentOrder.course_title || recentOrder.trainings[0].course_type
 
       setRecentOrder(recentOrder)
       recordGAEcommerceData(recentOrder)
