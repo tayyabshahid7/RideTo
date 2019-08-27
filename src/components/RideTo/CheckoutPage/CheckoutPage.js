@@ -590,7 +590,6 @@ class CheckoutPage extends Component {
 
     try {
       const response = await createOrder(data)
-      debugger
       if (response) {
         const { order, token: userToken, username } = response
         if (userToken !== null) {
