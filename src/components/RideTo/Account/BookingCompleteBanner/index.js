@@ -8,7 +8,9 @@ import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
 import styles from './BookingCompleteBanner.scss'
 
 const BookingCompleteBanner = ({ order, onDetails }) => {
-  const isFullLicence = order.course_title.includes('Full Licence')
+  console.log(order)
+  const isFullLicence =
+    order.course_title && order.course_title.includes('Full Licence')
   const training = order.trainings[0]
   const date = moment(training.requested_date, 'YYYY-MM-DD').format(
     'dddd Do MMMM'
