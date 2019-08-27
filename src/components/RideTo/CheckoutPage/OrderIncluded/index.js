@@ -11,22 +11,22 @@ function OrderIncluded({
   isWidget = false,
   items
 }) {
-  // if (items) {
-  //   return (
-  //     <div className={styles.wrapper}>
-  //       <ul className={styles.list}>
-  //         {items.map(item => (
-  //           <li key={item}>
-  //             <span className={styles.tick}>
-  //               <i className="fa fa-check" />
-  //             </span>{' '}
-  //             <span className={styles.text}>{item}</span>
-  //           </li>
-  //         ))}
-  //       </ul>
-  //     </div>
-  //   )
-  // }
+  if (items) {
+    return (
+      <div className={styles.wrapper}>
+        <ul className={styles.list}>
+          {items.map(item => (
+            <li key={item}>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
 
   if (pom) {
     return (

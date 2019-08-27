@@ -256,9 +256,6 @@ function DashboardPageV2({ match }) {
   useEffect(() => {
     if (nextSteps.length) {
       const matchedSteps = matchStepsToGoal(selectedGoal, nextSteps)
-      // const selectedNextStep =
-      //   matchedSteps.find(step => step.status === 'Not Started') ||
-      //   matchedSteps.find(step => step.status === 'Ride')
       const selectedNextStep = matchedSteps[findLastStepIndex(matchedSteps)]
 
       setMatchedNextSteps(matchedSteps)

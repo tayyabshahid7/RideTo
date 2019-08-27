@@ -132,7 +132,11 @@ export const STEP_CBT_BEFORE = {
   },
   included: {
     title: "What's included",
-    items: [],
+    items: [
+      'Bike hire and fuel',
+      'Helmet provided',
+      'Gloves & jacket provided'
+    ],
     type: 'cbt'
   },
   form: {
@@ -154,7 +158,11 @@ export const STEP_CBT_BOOKED = {
   course: true,
   included: {
     title: "What's included",
-    items: [],
+    items: [
+      'Bike hire and fuel',
+      'Helmet provided',
+      'Gloves & jacket provided'
+    ],
     type: 'cbt'
   },
   guides: {
@@ -239,7 +247,12 @@ export const STEP_FULL_LICENCE_BEFORE = {
   },
   included: {
     title: "What's included",
-    items: [],
+    items: [
+      'Bike hire and fuel',
+      'Helmet, gloves and jacket',
+      'Test fees and escort to and from test centres',
+      '12 working day free cancellation'
+    ],
     type: 'das'
   },
   cta: {
@@ -265,7 +278,12 @@ export const STEP_FULL_LICENCE_BOOKED = {
   course: true,
   included: {
     title: "What's included",
-    items: [],
+    items: [
+      'Bike hire and fuel',
+      'Helmet, gloves and jacket',
+      'Test fees and escort to and from test centres',
+      '12 working day free cancellation'
+    ],
     type: 'das'
   },
   guides: {
