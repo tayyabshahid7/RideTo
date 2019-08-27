@@ -13,6 +13,7 @@ function StatusIcon({
   handleCompletedClick
 }) {
   const camelStatus = camelCase(status)
+  const isCompleted = camelStatus === 'completed'
 
   if (camelStatus === 'start') {
     return (
@@ -51,7 +52,7 @@ function StatusIcon({
   return (
     <button
       onClick={() => {
-        handleCompletedClick(id)
+        handleCompletedClick(id, !isCompleted)
       }}
       className={classnames(
         styles.ring,
@@ -59,7 +60,7 @@ function StatusIcon({
         transparent && styles.ringTransparent,
         pulsate && styles.ringPulsate
       )}>
-      {camelStatus === 'completed' && (
+      {isCompleted && (
         <span key={`${id}-${camelStatus}`} className={styles.tick}>
           <i className="fa fa-check" />
         </span>
