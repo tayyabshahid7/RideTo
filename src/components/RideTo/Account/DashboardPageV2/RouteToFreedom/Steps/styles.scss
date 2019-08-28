@@ -1,0 +1,41 @@
+.container {
+  position: relative;
+}
+
+.list {
+  padding: 0;
+  margin: 1.5rem 0 0;
+  list-style: none;
+
+  @media (min-width: 1025px) {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  li {
+    &:first-child,
+    &:last-child {
+      background-color: #fff;
+
+      @media (min-width: 1025px) {
+        background-color: transparent;
+      }
+    }
+  }
+}
+
+.stepsBar {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  bottom: 0;
+  height: auto;
+
+  @media (min-width: 1025px) {
+    top: 11px;
+    left: auto;
+    bottom: auto;
+  }
+}

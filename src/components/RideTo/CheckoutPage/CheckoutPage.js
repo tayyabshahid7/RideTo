@@ -604,9 +604,18 @@ class CheckoutPage extends Component {
     try {
       const response = await createOrder(data)
       if (response) {
-        const { order, token: userToken } = response
+        const { order, token: userToken, username } = response
         if (userToken !== null) {
-          window.localStorage.setItem('token', JSON.stringify(userToken))
+          // window.localStorage.setItem('token', JSON.stringify(userToken))
+          window.localStorage.setItem('token', userToken)
+        }
+        if (username) {
+          window.localStorage.setItem('username', username)
+        } else {
+          const { user_name } = order
+          const firstName = user_name.split(' ')[0]
+
+          window.localStorage.setItem('username', firstName)
         }
         window.localStorage.setItem('gaok', true) // Set Google Analytics Flag
         window.location.href = `/account/dashboard/${order.id}`

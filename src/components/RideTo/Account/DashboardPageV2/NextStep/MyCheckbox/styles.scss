@@ -1,0 +1,18 @@
+.dashboardCheck {
+  margin-top: 2rem;
+  font-size: 15px;
+
+  label {
+    padding-left: 2.25rem;
+
+    &:before {
+      border-width: 2px;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    flex-basis: 210px;
+    margin: 0;
+    justify-self: end;
+  }
+}

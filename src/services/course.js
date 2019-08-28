@@ -454,3 +454,15 @@ export const getDefaultFullLicencePackage = ({
 
   return [bikeHire, licenceType, packageHours]
 }
+
+export const getTrainingStatus = status => {
+  if (status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION') {
+    return 'Pending Instructor Confirmation'
+  } else if (status === 'TRAINING_WAITING_RIDER_CONFIRMATION') {
+    return 'Date Unavailable. Please check your email'
+  } else if (status === 'TRAINING_CONFIRMED') {
+    return 'Training Confirmed'
+  } else if (status === 'TRAINING_CANCELLED') {
+    return 'Training Cancelled'
+  }
+}

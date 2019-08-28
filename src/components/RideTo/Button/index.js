@@ -4,10 +4,22 @@ import classnames from 'classnames'
 import styles from './Button.scss'
 
 const Button = React.forwardRef(
-  ({ children, href, className, onClick, target = null, alt = false }, ref) => {
+  (
+    {
+      children,
+      href,
+      className,
+      onClick,
+      target = null,
+      alt = false,
+      modern = false
+    },
+    ref
+  ) => {
     const classes = classnames(
       styles.button,
       alt && styles.buttonAlt,
+      modern && styles.buttonModern,
       className
     )
 

@@ -1,0 +1,36 @@
+.button {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 1rem 0 0.5rem;
+
+  &:focus {
+    outline: 0;
+  }
+
+  h2 {
+    margin-bottom: 0;
+  }
+
+  @media (min-width: 1025px) {
+    display: none;
+  }
+}
+
+.expandIcon {
+  width: 15px;
+  height: 15px;
+}
+
+.content {
+  // display: none;
+
+  @media (min-width: 1025px) {
+    display: block;
+  }
+}

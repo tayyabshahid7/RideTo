@@ -39,6 +39,7 @@ export const verifyToken = async token => {
 
 export const removeToken = () => {
   localStorage.removeItem('token')
+  window.localStorage.removeItem('username')
 }
 
 export const isTokenExpiring = token => {
@@ -53,6 +54,7 @@ export const isTokenExpiring = token => {
 export const requestToken = async (email, password) => {
   const response = await post('users/login/', { email, password }, false)
   setToken(response.token)
+  window.localStorage.setItem('username', response.username)
   return response
 }
 
