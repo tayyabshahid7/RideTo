@@ -1,0 +1,135 @@
+.container {
+  padding: 2rem 0;
+
+  @media (min-width: 1025px) {
+    padding: 0;
+  }
+}
+
+.header {
+  @media (min-width: 1025px) {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5em;
+    justify-content: space-between;
+  }
+}
+
+.headerTitle {
+  @media (min-width: 1025px) {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+  }
+}
+
+.iconWrap {
+  margin-bottom: 1rem;
+
+  @media (min-width: 1025px) {
+    margin-right: 1rem;
+    margin-bottom: 0;
+  }
+}
+
+.title {
+  span {
+    color: var(--dashboard-green);
+  }
+
+  @media (min-width: 1025px) {
+    margin-bottom: 0;
+  }
+}
+
+.main {
+  @media (min-width: 1025px) {
+    background: #fff;
+    box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.05);
+    padding: 2rem;
+    display: flex;
+  }
+}
+
+.leftCol {
+  @media (min-width: 1025px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+  }
+}
+
+.rightCol {
+  @media (min-width: 1025px) {
+    flex: 0 0 33.3333333333%;
+    padding-left: 2rem;
+    margin-top: -1rem;
+    margin-right: -1rem;
+    margin-bottom: -1rem;
+  }
+}
+
+.rightColSlider {
+  @media (min-width: 1025px) {
+    flex: 0 0 66.6666666666%;
+    max-width: 66.6666666666%;
+    // flex: 0 0 50%;
+    // max-width: 50%;
+  }
+}
+
+.subtitle {
+  margin: 1.5rem 0 1rem;
+
+  @media (min-width: 1025px) {
+    margin-top: 0;
+  }
+}
+
+.subtitleFaq {
+  margin-bottom: 0.25rem;
+}
+
+.cta {
+  margin-top: 1rem;
+
+  @media (min-width: 1025px) {
+    margin-bottom: 1rem;
+  }
+}
+
+.icon {
+  margin: 2rem 0 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.input {
+  margin-top: 24px;
+  background-clip: padding-box;
+  appearance: none;
+  border: 1px solid #141414 !important;
+  margin-bottom: 0.5rem;
+}
+
+.row {
+  @media (min-width: 1025px) {
+    display: flex;
+    margin-right: -2rem;
+    margin-left: -2rem;
+    justify-content: space-between;
+
+    > div {
+      flex: 1;
+      // max-width: 33.3333333333%;
+      padding-right: 2rem;
+      padding-left: 2rem;
+      font-size: 15px;
+    }
+  }
+}
+
+.introductionList {
+  padding-left: 1rem;
+}

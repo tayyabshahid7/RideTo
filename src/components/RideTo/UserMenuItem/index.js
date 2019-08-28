@@ -7,24 +7,55 @@ import {
   isAuthenticated,
   removeToken
 } from 'services/auth'
+import UserIcon from './UserIcon'
 
 class UserMenuItem extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       user: null,
-      menuOpen: false
+      menuOpen: false,
+      displayName: window.localStorage.getItem('username')
     }
+
+    this.element = React.createRef()
 
     this.handleMenuToggle = this.handleMenuToggle.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
+    this.handleDocumentClick = this.handleDocumentClick.bind(this)
+  }
+
+  handleDocumentClick(event) {
+    if (
+      this.state.menuOpen &&
+      !event.target.closest(`#${this.element.current.id}`) &&
+      window.matchMedia('(min-width: 801px)').matches
+    ) {
+      event.preventDefault()
+      this.setState({
+        menuOpen: false
+      })
+    }
   }
 
   componentDidMount() {
     if (isAuthenticated()) {
       const user = getUserProfile(getToken())
       this.setState({ user: user })
+
+      // Hacky way to hide For Schools nav item
+      const forSchoolsEl = document.querySelector(
+        '.heading--nav-item[href="/schools"]'
+      )
+
+      forSchoolsEl.remove()
     }
+
+    document.addEventListener('click', this.handleDocumentClick)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleDocumentClick)
   }
 
   handleMenuToggle() {
@@ -39,17 +70,20 @@ class UserMenuItem extends React.Component {
   }
 
   render() {
-    const { menuOpen, user } = this.state
+    const { menuOpen, user, displayName } = this.state
     return (
       <React.Fragment>
         {!user ? (
-          <a href="/account/login">Login</a>
+          <a ref={this.element} href="/account/login">
+            Login
+          </a>
         ) : (
-          <div>
+          <div ref={this.element} id="user-menu-item">
             <div
               className={classnames(styles.userName, styles.hiddenOnMobile)}
               onClick={this.handleMenuToggle}>
-              {user.username}
+              {displayName || user.username}
+              <UserIcon />
             </div>
             <div
               className={classnames(

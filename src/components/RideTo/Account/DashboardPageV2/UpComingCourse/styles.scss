@@ -1,0 +1,38 @@
+.container {
+  h4 {
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+}
+
+.subtitle {
+  margin: 1.5rem 0 1rem;
+
+  @media (min-width: 1025px) {
+    margin-top: 0;
+  }
+}
+
+.orderButton,
+.mapButton {
+  padding: 0;
+  appearance: none;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: var(--primary-color);
+  text-align: left;
+}
+
+.mapWrap {
+  margin-bottom: 1rem;
+}
+
+.viewDetails {
+  color: var(--primary-color);
+  font-family: var(--font-rift-bold);
+  font-weight: normal;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
+  margin-bottom: 0.5rem;
+}

@@ -82,7 +82,7 @@ class OrderDetails extends React.Component {
       lat: parseFloat(training_location.latitude),
       lng: parseFloat(training_location.longitude)
     }
-    const courseTitle = order.course_title
+    const courseTitle = order.course_title || order.trainings[0].course_type
     const trainingBikeType =
       order.trainings && order.trainings[0] && order.trainings[0].bike_type
 
