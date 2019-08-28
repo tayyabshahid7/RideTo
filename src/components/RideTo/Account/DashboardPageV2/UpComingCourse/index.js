@@ -52,8 +52,8 @@ function UpComingCourse({ course, title, handleClick }) {
           <div className={styles.mapWrap}>
             <MapComponent
               userLocation={{
-                lat: parseInt(latitude),
-                lng: parseInt(longitude)
+                lat: parseFloat(latitude),
+                lng: parseFloat(longitude)
               }}
               width={'auto'}
               height={200}
