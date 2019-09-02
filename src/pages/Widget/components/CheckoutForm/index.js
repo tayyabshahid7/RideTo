@@ -14,6 +14,7 @@ import cardAmex from 'assets/images/card-amex.jpg'
 import cardElectron from 'assets/images/card-electron.png'
 import cardMastercard from 'assets/images/card-mastercard.jpg'
 import cardMaestro from 'assets/images/card-maestro.png'
+import Loading from 'components/Loading'
 
 import styles from './CheckoutForm.scss'
 
@@ -168,12 +169,14 @@ const CheckoutForm = ({
         </div>
       )}
 
-      <button
-        className={btnClass}
-        disabled={isSaving}
-        onClick={() => onSubmit(stripe)}>
-        Confirm and Pay
-      </button>
+      <Loading loading={isSaving}>
+        <button
+          className={btnClass}
+          disabled={isSaving}
+          onClick={() => onSubmit(stripe)}>
+          Confirm and Pay
+        </button>
+      </Loading>
     </div>
   )
 }
