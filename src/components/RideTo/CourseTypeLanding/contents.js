@@ -39,13 +39,13 @@ const CBT_FAQS = {
 
 const ITM_FAQ = {
   doINeed:
-    'If you’ve never ridden a motorcycle or scooter before and your expectation is to complete your CBT within 1 day, we’d recommend considering the ITM or beginners course first.',
+    "If you've never ridden a motorcycle or scooter before and your expectation is to complete your CBT within 1 day, we'd recommend considering the ITM or beginners course first.",
   whatWillIdO:
-    'The ITM is tailored to your needs. You’ll focus all the time on bike control and handling, getting to grips with balancing, stopping, starting and turning.',
+    "The ITM is tailored to your needs. You'll focus all the time on bike control and handling, getting to grips with balancing, stopping, starting and turning.",
   howFarAdvance:
     'ITM classes have a restricted number of places in each course. Due to the popular demand, you should aim to book at least 1 week in advance in order to get a convenient date.',
   iCantSee:
-    'Not all of our instructors have their introduction courses live online. If you can’t find a local ITM course to you, give us a call and we can arrange something for you.'
+    "Not all of our instructors have their introduction courses live online. If you can't find a local ITM course to you, give us a call and we can arrange something for you."
 }
 
 export const CONTENT = {
@@ -229,6 +229,52 @@ export const CONTENT = {
             Once your booking is confirmed, we can cancel and refund you in full
             as long as you give us at least 12 working days notice before your
             training starts.
+          </p>
+        </div>
+        <div>
+          <h2>Training Packages</h2>
+          <p>
+            Each instructor tailors their training based on the needs of the
+            student. However when booking a course, you have choice of 3
+            training packages. If you're unsure which course is right for you,{' '}
+            <a href="/contact">contact a member of our friendly team</a>.
+          </p>
+          <h3>Introduction Course: 16 Hours/ 2 Sessions</h3>
+          <p>
+            2 days of training without tests. Suitable for riders to start
+            learning the core skills of riding and prepare for the full
+            motorcycle module 1 and 2 tests. You'll usually start off on a
+            smaller bike to get to grips with gears and balance such as slow
+            control. Then moving onto the full bike size for the category of
+            your licence; typically a 500cc for an A2 licence and 650cc for full
+            A licence. The introduction course is perfect for a new rider
+            looking to start their learning without committing to test dates.
+          </p>
+          <h3>Intermediate Rider Course: 40 Hours / 5 Sessions</h3>
+          <p>
+            5 days of training to learn and take both module 1 and 2 tests.
+            Suitable for riders with experience on a CBT licence. You'll usually
+            start off on a smaller bike to get to grips with gears and balance
+            such as slow control. The first section of the course will be
+            focused on preparing you for module 1. Plenty of off-road balance
+            and control practice for the required manoeuvres of the module 1
+            test. Once you've passed module 1, you'll then start training for
+            the module 2 test. Similar to the driving test, this involves road
+            riding through various conditions, assessing your awareness and
+            progress.
+          </p>
+          <h3>Experienced Rider Course: 32 Hours / 4 Sessions</h3>
+          <p>
+            4 Days of training to learn and take both module 1 and 2 tests.
+            Suitable for experienced riders only. The first section of the
+            course will be focused on preparing you for Module 1. Plenty of
+            off-road balance and control practice for the required manoeuvres of
+            the module 1 test. Once you've passed module 1, you'll then start
+            training for the module 2 test. Similar to the driving test, this
+            involves road riding through various conditions, assessing your
+            awareness and progress. The experienced rider course is recommended
+            for riders with a large amount of experience riding a geared
+            motorcycle on the UK roads.
           </p>
         </div>
       </Fragment>
