@@ -1,6 +1,7 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
 import { FULL_LICENCE_MODULES } from 'common/constants'
+import moment from 'moment'
 
 export const createStripeToken = async (stripe, data) => {
   return await stripe.createToken({ ...data })
@@ -59,4 +60,51 @@ export const asPoundSterling = pennies => {
 
 export const showOwnBikeHire = courseType => {
   return courseType.name === 'CBT Training Renewal'
+}
+
+export const getValidCourses = courses => {
+  const dates = courses
+    .filter(({ date, time }) => {
+      const isToday = date === moment().format('YYYY-MM-DD')
+
+      if (
+        isToday &&
+        time >
+          moment()
+            .add(2, 'hours')
+            .format('HH:mm:ss')
+      ) {
+        return true
+      }
+
+      if (
+        !isToday &&
+        date >
+          moment()
+            .subtract(1, 'days')
+            .format('YYYY-MM-DD')
+      ) {
+        return true
+      }
+
+      return false
+    })
+    .sort(
+      (a, b) =>
+        new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)
+    )
+
+  return dates
+}
+
+export const getEarliestCourse = courses => {
+  const dates = getValidCourses(courses)
+
+  return dates.length ? dates[0] : null
+}
+
+export const getEarliestDate = courses => {
+  const course = getEarliestCourse(courses)
+
+  return course ? moment(course.date, 'YYYY-MM-DD') : null
 }

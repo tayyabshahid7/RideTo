@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import { getEarliestCourse } from 'services/widget'
 import { SingleDatePicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
 
@@ -30,22 +31,20 @@ const renderDayContents = (day, courses) => {
 
 const isDayBlocked = (day, courses) => {
   const formatted = day.format('YYYY-MM-DD')
+  const todaysCourses = courses.filter(({ date }) => date === formatted)
 
-  if (moment().isSame(day, 'day')) {
+  if (todaysCourses.length === 0) {
     return true
   }
 
-  if (
-    (moment().hour() >= 18 ||
-      (moment().hour() >= 17 && moment().minute() >= 30)) &&
-    day.format('YYYY-MM-DD') ===
-      moment()
-        .add(1, 'day')
-        .format('YYYY-MM-DD')
-  ) {
-    return true
-  } else {
-    return courses.filter(({ date }) => date === formatted).length === 0
+  if (moment().isSame(day, 'day')) {
+    const courseToday = getEarliestCourse(todaysCourses)
+
+    console.log({ courseToday })
+
+    if (!courseToday) {
+      return true
+    }
   }
 }
 
