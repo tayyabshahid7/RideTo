@@ -40,8 +40,6 @@ const isDayBlocked = (day, courses) => {
   if (moment().isSame(day, 'day')) {
     const courseToday = getEarliestCourse(todaysCourses)
 
-    console.log({ courseToday })
-
     if (!courseToday) {
       return true
     }
