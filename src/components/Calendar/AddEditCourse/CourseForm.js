@@ -587,10 +587,13 @@ class CourseForm extends React.Component {
                     disabled={!isEditable}
                     onChange={this.handleChangeRawEvent.bind(this)}
                     raw
-                    options={instructors.map(instructor => ({
-                      ...instructor,
-                      name: `${instructor.first_name} ${instructor.last_name}`
-                    }))}
+                    options={[
+                      { id: '', name: 'Select' },
+                      ...instructors.map(instructor => ({
+                        ...instructor,
+                        name: `${instructor.first_name} ${instructor.last_name}`
+                      }))
+                    ]}
                   />
                 </Col>
               </Row>
