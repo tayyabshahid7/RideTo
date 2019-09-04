@@ -17,6 +17,10 @@
     padding: 13px 32px;
     justify-content: space-between;
   }
+
+  > * {
+    pointer-events: none;
+  }
 }
 
 @media (hover: hover) {
