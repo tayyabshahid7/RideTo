@@ -6,7 +6,8 @@ import styles from './styles.scss'
 import UserDetails from './UserDetails'
 import OrderSummary from './OrderSummary'
 import { fetchAddressWithPostcode } from 'services/misc'
-import { createOrder, createStripeToken } from 'services/widget'
+import { createOrder } from 'services/widget'
+import { handleStripePayment } from 'services/stripe'
 import { getPrice, getLicenceAge } from 'services/course'
 import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { fetchUser } from 'services/user'
@@ -114,7 +115,8 @@ class CheckoutPage extends Component {
       showCardDetails: false,
       physicalAddonsCount: this.props.checkoutData.addons.filter(
         addon => addon.name !== 'Peace Of Mind Policy'
-      ).length
+      ).length,
+      cardElement: null
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -507,7 +509,7 @@ class CheckoutPage extends Component {
   }
 
   async handlePayment() {
-    const { details, physicalAddonsCount } = this.state
+    const { details, physicalAddonsCount, cardElement } = this.state
     const { stripe } = this.props
 
     if (physicalAddonsCount <= 0) {
@@ -537,8 +539,12 @@ class CheckoutPage extends Component {
 
     this.setState({ errors: {}, saving: true })
     try {
-      const response = await createStripeToken(stripe, {
-        name: details.card_name
+      const response = await handleStripePayment({
+        stripe,
+        cardElement,
+        full_name: details.card_name,
+        email: details.email,
+        phone: details.phone
       })
 
       if (response.error) {
@@ -649,6 +655,12 @@ class CheckoutPage extends Component {
     })
   }
 
+  setCardElement = cardElement => {
+    this.setState({
+      cardElement
+    })
+  }
+
   render() {
     const { courseType } = this.props.checkoutData
     const {
@@ -693,6 +705,7 @@ class CheckoutPage extends Component {
               isFullLicence={courseType === 'FULL_LICENCE'}
               handlePaymentButtonClick={this.handlePaymentButtonClick}
               needsAddress={physicalAddonsCount > 0}
+              setCardElement={this.setCardElement}
             />
           </div>
           <div className={styles.rightPanel}>
