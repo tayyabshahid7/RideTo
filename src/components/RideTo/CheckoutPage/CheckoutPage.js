@@ -16,15 +16,6 @@ import { getExpectedPrice } from 'services/order'
 import AddressSelectModal from 'components/RideTo/AddressSelectModal'
 import { tldExists } from 'tldjs'
 
-const getStripeError = error => {
-  const field = error.code.split('_').slice(-1)[0]
-  const errorId = `card_${field}`
-
-  return {
-    [errorId]: error.message
-  }
-}
-
 const REQUIRED_FIELDS = [
   'user_birthdate',
   'phone',
@@ -539,7 +530,7 @@ class CheckoutPage extends Component {
 
     this.setState({ errors: {}, saving: true })
     try {
-      const response = await handleStripePayment({
+      const { error, token } = await handleStripePayment({
         stripe,
         cardElement,
         full_name: details.card_name,
@@ -547,17 +538,16 @@ class CheckoutPage extends Component {
         phone: details.phone
       })
 
-      if (response.error) {
+      if (error) {
         this.handleErrors({
           ...this.state.errors,
-          ...getStripeError(response.error)
+          paymentError: error.message
         })
       } else {
-        const { token } = response
         this.submitOrder(token)
       }
     } catch (error) {
-      console.log('Error', error)
+      console.log('Error:', error)
       this.setState({ saving: false })
     }
   }
