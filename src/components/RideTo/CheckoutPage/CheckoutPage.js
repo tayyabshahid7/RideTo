@@ -543,6 +543,7 @@ class CheckoutPage extends Component {
           ...this.state.errors,
           paymentError: error.message
         })
+        this.setState({ saving: false })
       } else {
         this.submitOrder(token)
       }

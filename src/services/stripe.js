@@ -8,7 +8,7 @@ const handleServerResponse = async ({
   phone
 }) => {
   if (response.error) {
-    console.log('Error', response.error)
+    console.log('response.error', response.error)
     return { error: response.error }
   } else if (response.requires_action) {
     const { error: errorAction, paymentIntent } = await stripe.handleCardAction(
@@ -16,19 +16,23 @@ const handleServerResponse = async ({
     )
 
     if (errorAction) {
-      console.log('Error', errorAction)
-      return { error: response.error }
+      console.log('errorAction', errorAction)
+      return { error: errorAction }
     } else {
-      const serverResponse = await post('payment-intent', {
+      const serverResponse = await post('payment-intent/', {
         payment_intent_id: paymentIntent.id,
         full_name,
         email,
         phone
       })
 
-      handleServerResponse(
-        await { stripe, serverResponse, full_name, email, phone }
-      )
+      return await handleServerResponse({
+        stripe,
+        response: serverResponse,
+        full_name,
+        email,
+        phone
+      })
     }
   } else {
     return { token: { id: response.customer_id } }
@@ -55,16 +59,22 @@ export const handleStripePayment = async ({
   )
 
   if (error) {
-    console.log('Error', error)
+    console.log('error', error)
     return { error }
   } else {
-    const response = await post('payment-intent', {
+    const response = await post('payment-intent/', {
       payment_method_id: paymentMethod.id,
       full_name,
       email,
       phone
     })
 
-    handleServerResponse({ stripe, response, full_name, email, phone })
+    return await handleServerResponse({
+      stripe,
+      response,
+      full_name,
+      email,
+      phone
+    })
   }
 }
