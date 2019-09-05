@@ -44,7 +44,8 @@ function CheckoutForm({
   cardName,
   handleCardNameChange,
   handleStripeElementChange,
-  singlePage = false
+  singlePage = false,
+  setCardElement
 }) {
   return (
     <div className={styles.checkout}>

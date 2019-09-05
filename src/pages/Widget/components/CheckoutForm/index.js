@@ -42,7 +42,8 @@ const CheckoutForm = ({
   onSubmit,
   voucher_code,
   handleVoucherApply,
-  onVoucherCodeChange
+  onVoucherCodeChange,
+  setCardElement
 }) => {
   const labelStyle = {
     marginTop: '16px',
@@ -78,7 +79,10 @@ const CheckoutForm = ({
           name="card_number"
           style={labelStyle}
           error={errors.card_number}>
-          <CardNumberElement style={inputStyle} />
+          <CardNumberElement
+            style={inputStyle}
+            onReady={el => setCardElement(el)}
+          />
         </LabelField>
         <LabelField
           label="Name On Card"

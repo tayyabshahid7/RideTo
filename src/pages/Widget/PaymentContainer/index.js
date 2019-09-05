@@ -9,7 +9,6 @@ import { fetchWidgetSingleCourse, getPrice } from 'services/course'
 import {
   createOrder,
   getTotalOrderPrice,
-  createStripeToken,
   getInitialSuppliers
 } from 'services/widget'
 import { parseQueryString } from 'services/api'
@@ -17,6 +16,7 @@ import styles from './PaymentContainer.scss'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { capitalizeFirstLetter } from 'utils/helper'
+import { handleStripePayment } from 'services/stripe'
 
 const REQUIRED_FIELDS = [
   'first_name',
@@ -28,15 +28,6 @@ const REQUIRED_FIELDS = [
   'riding_experience',
   'card_name'
 ]
-
-const getStripeError = error => {
-  const field = error.code.split('_').slice(-1)[0]
-  const errorId = `card_${field}`
-
-  return {
-    [errorId]: error.message
-  }
-}
 
 class PaymentContainer extends React.Component {
   constructor(props) {
@@ -62,7 +53,8 @@ class PaymentContainer extends React.Component {
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
       totalPrice: 0,
       voucher_code: '',
-      discount: 0
+      discount: 0,
+      cardElement: null
     }
 
     this.handlePayment = this.handlePayment.bind(this)
@@ -187,23 +179,27 @@ class PaymentContainer extends React.Component {
   }
 
   async handlePayment(stripe) {
-    const { details } = this.state
+    const { details, cardElement } = this.state
     if (!this.validateDetails(details)) {
       return
     }
 
     this.setState({ errors: {}, isSaving: true })
-    const response = await createStripeToken(stripe, {
-      name: details.card_name
+
+    const { error, token } = await handleStripePayment({
+      stripe,
+      cardElement,
+      full_name: details.card_name,
+      email: details.email,
+      phone: details.phone
     })
 
-    if (response.error) {
+    if (error) {
       this.handleErrors({
         ...this.state.errors,
-        ...getStripeError(response.error)
+        paymentError: error.message
       })
     } else {
-      const { token } = response
       this.createOrder(token)
     }
   }
@@ -284,6 +280,13 @@ class PaymentContainer extends React.Component {
     })
   }
 
+  setCardElement = cardElement => {
+    console.log(cardElement)
+    this.setState({
+      cardElement
+    })
+  }
+
   render() {
     const {
       course,
@@ -346,6 +349,7 @@ class PaymentContainer extends React.Component {
                     voucher_code={voucher_code}
                     handleVoucherApply={this.handleVoucherApply}
                     onVoucherCodeChange={this.handleVoucherCodeChange}
+                    setCardElement={this.setCardElement}
                   />
                 </Elements>
               </div>
