@@ -281,7 +281,6 @@ class PaymentContainer extends React.Component {
   }
 
   setCardElement = cardElement => {
-    console.log(cardElement)
     this.setState({
       cardElement
     })

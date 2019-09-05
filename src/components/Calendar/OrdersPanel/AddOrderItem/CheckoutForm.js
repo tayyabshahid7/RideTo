@@ -74,6 +74,7 @@ function CheckoutForm({
             className={styles.input}
             {...options}
             onChange={el => handleStripeElementChange(el, 'Number')}
+            onReady={el => setCardElement(el)}
           />
         </label>
       </div>

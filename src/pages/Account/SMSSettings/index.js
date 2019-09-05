@@ -29,6 +29,7 @@ const mapStateToProps = (state, ownProps) => {
     saving: state.settings.widget.saving,
     settings: state.settings.widget.settings,
     error: state.settings.widget.error,
+    user: state.auth.user,
 
     smsLoading: state.sms.loading,
     credit_unit: state.sms.credit_unit,
