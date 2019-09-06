@@ -770,7 +770,7 @@ class ResultPage extends Component {
                       <div className={styles.coursesPanel}>
                         {hasPOM && hasPartnerResults && <POMBanner />}
                         {isFullLicence && (
-                          <a href="https://rideto.typeform.com/to/lyVAhc">
+                          <a href="https://rideto.typeform.com/to/CvduD4">
                             <img
                               src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/fast-track.png"
                               className={styles.fastTrackAdvert}
