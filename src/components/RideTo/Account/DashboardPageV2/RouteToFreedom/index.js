@@ -16,7 +16,8 @@ function RouteToFreedom({
   handleStyleChange,
   handleCompletedClick,
   handlePreviewClick,
-  updateAchievements
+  updateAchievements,
+  skipItm
 }) {
   const stepsLength = nextSteps.length
   const completedStepsLength = nextSteps.filter(({ status }) =>
@@ -82,6 +83,7 @@ function RouteToFreedom({
           percentComplete={percentComplete}
           handleCompletedClick={handleCompletedClick}
           handlePreviewClick={handlePreviewClick}
+          skipItm={skipItm}
         />
       </Expander>
     </div>

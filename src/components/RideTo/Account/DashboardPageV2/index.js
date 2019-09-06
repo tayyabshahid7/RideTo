@@ -41,6 +41,7 @@ function DashboardPageV2({ match }) {
   const [orders, setOrders] = useState([])
   const [achievements, setAchivements] = useState([])
   const [nextStep, setNextStep] = useState(null)
+  const [skipItm, setSkipItm] = useState(false)
 
   const isAuthenticated = getIsAuthenticated()
   const isConfirmationPage = match.params.orderId
@@ -162,8 +163,9 @@ function DashboardPageV2({ match }) {
       if (orderId) {
         if (course_title === 'CBT Training') {
           // One step before the actual CBT step
+          updateSteps('STEP_LICENCE', true, false)
           updateSteps('STEP_CBT', false, false)
-          updateSteps('STEP_REVISE', true, false)
+          updateSteps('STEP_REVISE', false, false)
         } else if (course_title.startsWith('Full Licence')) {
           // One step before the actual full licence step
           updateSteps('STEP_FULL_LICENCE', false, false)
@@ -257,12 +259,29 @@ function DashboardPageV2({ match }) {
   useEffect(() => {
     if (nextSteps.length) {
       const matchedSteps = matchStepsToGoal(selectedGoal, nextSteps)
-      const selectedNextStep = matchedSteps[findLastStepIndex(matchedSteps)]
+      const selectedNextStep =
+        matchedSteps[findLastStepIndex(matchedSteps, skipItm)]
 
       setMatchedNextSteps(matchedSteps)
       setNextStep(selectedNextStep)
     }
-  }, [selectedGoal, nextSteps])
+  }, [selectedGoal, nextSteps, skipItm])
+
+  useEffect(() => {
+    if (!recentOrder) {
+      return
+    }
+
+    const course_title =
+      recentOrder.course_title || recentOrder.trainings[0].course_type
+
+    if (
+      course_title === 'CBT Training' ||
+      course_title.startsWith('Full Licence')
+    ) {
+      setSkipItm(true)
+    }
+  }, [recentOrder])
 
   if (!matchedNextSteps.length || (!isAuthenticated && !isConfirmationPage)) {
     return null
@@ -289,6 +308,7 @@ function DashboardPageV2({ match }) {
               handleCompletedClick={handleCompletedClick}
               handlePreviewClick={handlePreviewClick}
               updateAchievements={updateAchievements}
+              skipItm={skipItm}
             />
           </div>
         </div>
