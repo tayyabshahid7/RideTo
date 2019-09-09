@@ -29,6 +29,7 @@ import BookingCompleteBanner from 'components/RideTo/Account/BookingCompleteBann
 import SidePanel from 'components/RideTo/SidePanel'
 import OrderDetails from 'components/RideTo/Account/OrderDetails'
 import { findLastStepIndex } from './RouteToFreedom/util'
+import Loading from 'components/Loading'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -50,6 +51,8 @@ function DashboardPageV2({ match }) {
   const headingImage = selectedOrder
     ? selectedOrder.training_location.image
     : ''
+
+  const [isLoading, setIsLoading] = useState(true)
 
   const handleOrderClick = course => {
     setSelectedOrder(course)
@@ -177,10 +180,14 @@ function DashboardPageV2({ match }) {
     const loadOrders = async username => {
       const result = await fetchOrders(username)
 
-      setOrders(result.results)
+      if (result.results.length > 0) {
+        setOrders(result.results)
 
-      if (!orderId) {
-        setRecentOrder(result.results[0])
+        if (!orderId) {
+          setRecentOrder(result.results[0])
+        }
+      } else {
+        setIsLoading(false)
       }
     }
 
@@ -281,6 +288,8 @@ function DashboardPageV2({ match }) {
     ) {
       setSkipItm(true)
     }
+
+    setIsLoading(false)
   }, [recentOrder])
 
   if (!matchedNextSteps.length || (!isAuthenticated && !isConfirmationPage)) {
@@ -290,70 +299,82 @@ function DashboardPageV2({ match }) {
   return (
     <Fragment>
       <PasswordReset isAuthenticated={isAuthenticated} />
-      <div className={styles.page}>
-        {isConfirmationPage && recentOrder && (
-          <BookingCompleteBanner
-            order={recentOrder}
-            onDetails={handleOrderClick}
-          />
-        )}
-        <div className={styles.pageItemFullWidthWrapper}>
-          <div className={styles.pageItem}>
-            <RouteToFreedom
-              nextSteps={matchedNextSteps}
-              selectedGoal={selectedGoal}
-              selectedStyle={selectedStyle}
-              handleGoalChange={handleGoalChange}
-              handleStyleChange={handleStyleChange}
-              handleCompletedClick={handleCompletedClick}
-              handlePreviewClick={handlePreviewClick}
-              updateAchievements={updateAchievements}
-              skipItm={skipItm}
+      <Loading loading={isLoading} position="top">
+        <div className={styles.page}>
+          {isConfirmationPage && recentOrder && (
+            <BookingCompleteBanner
+              order={recentOrder}
+              onDetails={handleOrderClick}
             />
-          </div>
-        </div>
-        {nextStep && (
-          <div className={classnames(styles.pageItem, styles.pageItemNextStep)}>
-            <NextStep
-              nextStep={nextStep}
-              handleCompletedClick={handleCompletedClick}
-              recentOrder={recentOrder}
-              cbtStatus={cbtStatus}
-              dasStatus={dasStatus}
-              selectedGoal={selectedGoal}
-            />
-          </div>
-        )}
-        <div className={styles.row}>
-          <div className={styles.leftCol}>
-            {isAuthenticated && (
+          )}
+          {!isLoading && (
+            <div className={styles.pageItemFullWidthWrapper}>
               <div className={styles.pageItem}>
-                <Achievements achievements={achievements} />
+                <RouteToFreedom
+                  nextSteps={matchedNextSteps}
+                  selectedGoal={selectedGoal}
+                  selectedStyle={selectedStyle}
+                  handleGoalChange={handleGoalChange}
+                  handleStyleChange={handleStyleChange}
+                  handleCompletedClick={handleCompletedClick}
+                  handlePreviewClick={handlePreviewClick}
+                  updateAchievements={updateAchievements}
+                  skipItm={skipItm}
+                />
               </div>
-            )}
-            <div className={styles.pageItem}>
-              <MyOrders
-                orders={
-                  orders.length > 0 ? orders : recentOrder ? [recentOrder] : []
-                }
-                handleClick={handleOrderClick}
+            </div>
+          )}
+          {nextStep && !isLoading && (
+            <div
+              className={classnames(styles.pageItem, styles.pageItemNextStep)}>
+              <NextStep
+                nextStep={nextStep}
+                handleCompletedClick={handleCompletedClick}
+                recentOrder={recentOrder}
+                cbtStatus={cbtStatus}
+                dasStatus={dasStatus}
+                selectedGoal={selectedGoal}
               />
             </div>
-            <div className={styles.pageItem}>
-              <GuidesAdvice />
+          )}
+          <div className={styles.row}>
+            <div className={styles.leftCol}>
+              {isAuthenticated && (
+                <div className={styles.pageItem}>
+                  <Achievements achievements={achievements} />
+                </div>
+              )}
+              <div className={styles.pageItem}>
+                <MyOrders
+                  orders={
+                    orders.length > 0
+                      ? orders
+                      : recentOrder
+                      ? [recentOrder]
+                      : []
+                  }
+                  handleClick={handleOrderClick}
+                />
+              </div>
+              <div className={styles.pageItem}>
+                <GuidesAdvice />
+              </div>
             </div>
-          </div>
-          <div className={styles.rightCol}>
-            <div
-              className={classnames(
-                styles.pageItem,
-                styles.pageItemTransparent
-              )}>
-              <News selectedGoal={selectedGoal} selectedStyle={selectedStyle} />
+            <div className={styles.rightCol}>
+              <div
+                className={classnames(
+                  styles.pageItem,
+                  styles.pageItemTransparent
+                )}>
+                <News
+                  selectedGoal={selectedGoal}
+                  selectedStyle={selectedStyle}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </Loading>
       <SidePanel
         visible={selectedOrder}
         headingImage={headingImage}
