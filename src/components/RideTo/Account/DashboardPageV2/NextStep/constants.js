@@ -4,13 +4,20 @@ import quote from './images/quote.svg'
 import revise from './images/revise.svg'
 import finish from './images/finish.svg'
 
-import boots from './contentImages/boots.jpg'
-import gloves from './contentImages/gloves.jpg'
-import helmets from './contentImages/helmets.jpg'
-import jackets from './contentImages/jackets.jpg'
-import jeans from './contentImages/jeans.jpg'
-import locks from './contentImages/locks.jpg'
-import luggage from './contentImages/luggage.jpg'
+const boots =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/boots.d137b94c.jpg'
+const gloves =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/gloves.7be989ec.jpg'
+const helmets =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/helmets.6a4fbdb6.jpg'
+const jackets =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/jackets.64cfde3b.jpg'
+const jeans =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/jeans.37322ea1.jpg'
+const locks =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/locks.03d39d75.jpg'
+const luggage =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/luggage.1e304f60.jpg'
 
 export const STEP_START = {
   name: 'Start',
