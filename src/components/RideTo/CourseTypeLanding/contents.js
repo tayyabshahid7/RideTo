@@ -217,21 +217,6 @@ export const CONTENT = {
           </ShowMore>
         </div>
         <div>
-          <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails
-            courseType={{ details: FULL_LICENCE_FAQS }}
-            minimal
-          />
-        </div>
-        <div>
-          <h2>Cancellation policy</h2>
-          <p>
-            Once your booking is confirmed, we can cancel and refund you in full
-            as long as you give us at least 12 working days notice before your
-            training starts.
-          </p>
-        </div>
-        <div>
           <h2>Training Packages</h2>
           <p>
             Each instructor tailors their training based on the needs of the
@@ -275,6 +260,21 @@ export const CONTENT = {
             awareness and progress. The experienced rider course is recommended
             for riders with a large amount of experience riding a geared
             motorcycle on the UK roads.
+          </p>
+        </div>
+        <div>
+          <h2>Frequently Asked Questions</h2>
+          <CourseTypeDetails
+            courseType={{ details: FULL_LICENCE_FAQS }}
+            minimal
+          />
+        </div>
+        <div>
+          <h2>Cancellation policy</h2>
+          <p>
+            Once your booking is confirmed, we can cancel and refund you in full
+            as long as you give us at least 12 working days notice before your
+            training starts.
           </p>
         </div>
       </Fragment>
