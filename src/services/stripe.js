@@ -19,12 +19,16 @@ const handleServerResponse = async ({
       console.log('errorAction', errorAction)
       return { error: errorAction }
     } else {
-      const serverResponse = await post('payment-intent/', {
-        payment_intent_id: paymentIntent.id,
-        full_name,
-        email,
-        phone
-      })
+      const serverResponse = await post(
+        'payment-intent/',
+        {
+          payment_intent_id: paymentIntent.id,
+          full_name,
+          email,
+          phone
+        },
+        false
+      )
 
       return await handleServerResponse({
         stripe,
@@ -62,12 +66,16 @@ export const handleStripePayment = async ({
     console.log('error', error)
     return { error }
   } else {
-    const response = await post('payment-intent/', {
-      payment_method_id: paymentMethod.id,
-      full_name,
-      email,
-      phone
-    })
+    const response = await post(
+      'payment-intent/',
+      {
+        payment_method_id: paymentMethod.id,
+        full_name,
+        email,
+        phone
+      },
+      false
+    )
 
     return await handleServerResponse({
       stripe,
