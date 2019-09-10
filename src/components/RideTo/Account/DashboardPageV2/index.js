@@ -178,15 +178,19 @@ function DashboardPageV2({ match }) {
     }
 
     const loadOrders = async username => {
-      const result = await fetchOrders(username)
+      try {
+        const result = await fetchOrders(username)
 
-      if (result.results.length > 0) {
-        setOrders(result.results)
+        if (result.results.length > 0) {
+          setOrders(result.results)
 
-        if (!orderId) {
-          setRecentOrder(result.results[0])
+          if (!orderId) {
+            setRecentOrder(result.results[0])
+          }
+        } else {
+          setIsLoading(false)
         }
-      } else {
+      } catch (error) {
         setIsLoading(false)
       }
     }
