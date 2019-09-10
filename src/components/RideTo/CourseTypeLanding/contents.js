@@ -94,7 +94,7 @@ export const CONTENT = {
         </div>
         <FullLicenceBanner
           className={styles.fastTrackAdvert}
-          href="https://rideto.typeform.com/to/lyVAhc"
+          href="https://rideto.typeform.com/to/CvduD4"
         />
         <div>
           <h2>Requirements</h2>
