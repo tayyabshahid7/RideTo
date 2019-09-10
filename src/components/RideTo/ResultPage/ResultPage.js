@@ -36,7 +36,7 @@ import FullLicenceGuide from './FullLicenceGuide'
 import FullLicenceIncluded from './FullLicenceIncluded'
 import FullLicenceFaq from './FullLicenceFaq'
 import POMBanner from './POMBanner'
-import { Desktop, Mobile } from 'common/breakpoints'
+import FullLicenceBanner from './FullLicenceBanner'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
@@ -771,26 +771,10 @@ class ResultPage extends Component {
                       <div className={styles.coursesPanel}>
                         {hasPOM && hasPartnerResults && <POMBanner />}
                         {isFullLicence && (
-                          <React.Fragment>
-                            <Mobile>
-                              <a href="https://rideto.typeform.com/to/CvduD4">
-                                <img
-                                  src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/Full%20licence_Pay%20Monthly_600x300px.jpg"
-                                  className={styles.fastTrackAdvert}
-                                  alt="Full licence fast-track package"
-                                />
-                              </a>
-                            </Mobile>
-                            <Desktop>
-                              <a href="https://rideto.typeform.com/to/CvduD4">
-                                <img
-                                  src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/Full%20licence_Pay%20Monthly_1036x312px.jpg"
-                                  className={styles.fastTrackAdvert}
-                                  alt="Full licence fast-track package"
-                                />
-                              </a>
-                            </Desktop>
-                          </React.Fragment>
+                          <FullLicenceBanner
+                            className={styles.fastTrackAdvert}
+                            href="https://rideto.typeform.com/to/CvduD4"
+                          />
                         )}
                         {courses.available.length > 0 && (
                           <React.Fragment>

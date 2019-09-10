@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import styles from './styles.scss'
 import ShowMore from './ShowMore'
+import FullLicenceBanner from 'components/RideTo/ResultPage/FullLicenceBanner'
 
 export const SLUG_COURSE_TYPES = {
   'introduction-to-motorcycling': 'INTRO_TO_MOTORCYCLING',
@@ -91,13 +92,10 @@ export const CONTENT = {
             pulling away from behind a parked car and a hill start.
           </p>
         </div>
-        <a href="https://rideto.typeform.com/to/lyVAhc">
-          <img
-            src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/fast-track.png"
-            className={styles.fastTrackAdvert}
-            alt="Full licence fast-track package"
-          />
-        </a>
+        <FullLicenceBanner
+          className={styles.fastTrackAdvert}
+          href="https://rideto.typeform.com/to/lyVAhc"
+        />
         <div>
           <h2>Requirements</h2>
           <p>
