@@ -179,8 +179,8 @@ class PaymentContainer extends React.Component {
   }
 
   async handlePayment(stripe) {
-    const { details, cardElement } = this.state
-    if (!this.validateDetails(details)) {
+    const { details, isSaving, cardElement } = this.state
+    if (isSaving || !this.validateDetails(details)) {
       return
     }
 
