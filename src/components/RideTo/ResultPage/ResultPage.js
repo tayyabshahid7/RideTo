@@ -872,7 +872,7 @@ class ResultPage extends Component {
                   ) : (
                     !loading && (
                       <div className={styles.noResults}>
-                        No results, please try another date.
+                        No results, try another location or course
                       </div>
                     )
                   )}
