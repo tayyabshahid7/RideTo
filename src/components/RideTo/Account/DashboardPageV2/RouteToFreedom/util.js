@@ -11,9 +11,13 @@ export const findCurrentStepIndex = nextSteps => {
   return currentStepIndex
 }
 
-export const findLastStepIndex = nextSteps => {
+export const findLastStepIndex = (nextSteps, skipItm) => {
   let lastStepIndex =
     nextSteps.map(({ status }) => status).lastIndexOf('Completed') + 1
+
+  if (skipItm && nextSteps[lastStepIndex].constant === 'STEP_ITM') {
+    ++lastStepIndex
+  }
 
   return lastStepIndex
 }

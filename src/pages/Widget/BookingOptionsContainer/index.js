@@ -11,7 +11,9 @@ import { fetchWidgetCourses } from 'services/course'
 import {
   showOwnBikeHire,
   getTotalOrderPrice,
-  asPoundSterling
+  asPoundSterling,
+  getEarliestDate,
+  getValidCourses
 } from 'services/widget'
 import { LICENCE_TYPES } from 'common/constants'
 import ButtonArrowWhite from '../../../assets/images/rideto/ButtonArrowWhite.svg'
@@ -26,27 +28,7 @@ const getSchoolCoursesByDate = (selectedDate, courses) => {
   }
   const formatted = selectedDate.format('YYYY-MM-DD')
 
-  return courses.filter(({ date }) => date === formatted)
-}
-
-const getEarliestDate = courses => {
-  let dates = courses
-    .map(({ date }) => date)
-    .sort()
-    .filter(date => date > moment().format('YYYY-MM-DD'))
-
-  if (
-    (moment().hour() >= 18 ||
-      (moment().hour() >= 17 && moment().minute() >= 30)) &&
-    moment(dates[0]).format('YYYY-MM-DD') ===
-      moment()
-        .add(1, 'day')
-        .format('YYYY-MM-DD')
-  ) {
-    dates.shift()
-  }
-
-  return dates.length ? moment(dates[0], 'YYYY-MM-DD') : null
+  return getValidCourses(courses).filter(({ date }) => date === formatted)
 }
 
 class BookingOptionsContainer extends React.Component {
