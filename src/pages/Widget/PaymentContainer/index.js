@@ -179,11 +179,7 @@ class PaymentContainer extends React.Component {
   }
 
   async handlePayment(stripe) {
-    const {
-      details,
-      cardElement,
-      supplier: { id: supplier_id }
-    } = this.state
+    const { details, cardElement } = this.state
     if (!this.validateDetails(details)) {
       return
     }
@@ -195,8 +191,7 @@ class PaymentContainer extends React.Component {
       cardElement,
       full_name: details.card_name,
       email: details.email,
-      phone: details.phone,
-      supplier_id
+      phone: details.phone
     })
 
     if (error) {
