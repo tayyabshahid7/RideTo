@@ -272,6 +272,11 @@ class OrderSummary extends Component {
                 from the instructor, usually within {isFullLicence ? '24' : '3'}{' '}
                 working hours.
               </p>
+              <p>
+                I authorise RideTo to send instructions to the financial
+                institution that issued my card to take payments from my card
+                account in accordance with the terms of my agreement with you.
+              </p>
             </div>
           )}
           <SectionSplitter />
