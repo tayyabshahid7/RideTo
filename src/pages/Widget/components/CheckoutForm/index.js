@@ -179,12 +179,6 @@ const CheckoutForm = ({
         onClick={() => onSubmit(stripe)}>
         Confirm and Pay
       </button>
-
-      <p className={styles.mandate}>
-        I authorise {supplierName} to send instructions to the financial
-        institution that issued my card to take payments from my card account in
-        accordance with the terms of my agreement with you.
-      </p>
     </div>
   )
 }
