@@ -221,7 +221,7 @@ class AddOrderItem extends React.Component {
     } = this.props
     const {
       isFullLicence,
-      userDetailsValid,
+      // userDetailsValid,
       showPayment,
       showPaymentConfirmation,
       cardName,
@@ -414,6 +414,7 @@ class AddOrderItem extends React.Component {
             )}
             <Row>
               <Col className="mt-3 text-right">
+                {/*
                 {!showPayment && (
                   <Button
                     disabled={!userDetailsValid}
@@ -423,6 +424,7 @@ class AddOrderItem extends React.Component {
                     Payment
                   </Button>
                 )}
+                */}
                 <Button
                   type="submit"
                   color="primary"
