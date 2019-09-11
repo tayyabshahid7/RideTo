@@ -67,3 +67,52 @@
     flex-basis: 94px;
   }
 }
+
+.header {
+  display: flex;
+  padding: 1rem 1.5rem;
+  align-items: center;
+}
+
+.meta {
+  h3 {
+    margin-bottom: 0;
+  }
+}
+
+.profilePic {
+  margin-right: 1rem;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+}
+
+.intro {
+  padding: 0 1.5rem 1rem;
+}
+
+.poster {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+}
+
+.readButton {
+  padding: 10px 32px;
+}
+
+.readMore {
+  color: var(--primary-color);
+  display: inline;
+  padding: 0;
+  appearance: none;
+  border: 0;
+  background: 0;
+}

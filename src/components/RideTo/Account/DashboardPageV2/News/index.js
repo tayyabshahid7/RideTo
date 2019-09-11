@@ -12,11 +12,18 @@ function News({ selectedGoal, selectedStyle }) {
   const [filter, setFilter] = useState(null)
 
   useEffect(() => {
+    setPage(1)
+    setNews([])
+    setNext(true)
+  }, [selectedGoal, selectedStyle, filter])
+
+  useEffect(() => {
     async function fetchMyArticles() {
       const response = await fetchArticles(
         page,
         selectedGoal.slug,
-        selectedStyle.slug
+        selectedStyle.slug,
+        filter
       )
 
       setNews(prevState => {
@@ -26,8 +33,7 @@ function News({ selectedGoal, selectedStyle }) {
     }
 
     fetchMyArticles()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page])
+  }, [page, selectedGoal, selectedStyle, filter])
 
   const handleLoadMoreClick = () => {
     setPage(prevPage => prevPage + 1)
@@ -43,20 +49,20 @@ function News({ selectedGoal, selectedStyle }) {
 
   return (
     <div className={styles.container}>
-      {news.length > 0 && (
-        <Fragment>
-          <h2 className={styles.title}>News Feed</h2>
-          <Filters
-            selectedFilter={filter}
-            handleFilterClick={handleFilterClick}
-          />
+      <Fragment>
+        <h2 className={styles.title}>News Feed</h2>
+        <Filters
+          selectedFilter={filter}
+          handleFilterClick={handleFilterClick}
+        />
+        {news.length > 0 && (
           <ul className={styles.list}>
             {news.map((item, i) => (
               <NewsItem key={i} news={item} />
             ))}
           </ul>
-        </Fragment>
-      )}
+        )}
+      </Fragment>
       {next && (
         <Button
           alt
