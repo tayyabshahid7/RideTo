@@ -12,7 +12,7 @@ const packages = [
   },
   {
     name: 'Experienced Rider',
-    hours: 30,
+    hours: 32,
     desc:
       '4 Days of training to learn and take both module 1 and 2 tests. Suitable for experienced riders only. The first section of the course will be focused on preparing you for Module 1. Plenty of off-road balance and control practice for the required maneuvers of the module 1 test. Once you’ve passed the module 1 test, you’ll then start training for the module 2 test. Similar to the driving test, this involves road riding through various conditions, assessing your awareness and progress. The experienced rider course is only for riders with a large amount of experience riding a geared motorcycle on the UK roads.'
   },
