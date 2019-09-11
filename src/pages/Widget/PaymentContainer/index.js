@@ -354,6 +354,7 @@ class PaymentContainer extends React.Component {
                     handleVoucherApply={this.handleVoucherApply}
                     onVoucherCodeChange={this.handleVoucherCodeChange}
                     setCardElement={this.setCardElement}
+                    supplierName={supplier && supplier.name}
                   />
                 </Elements>
               </div>
