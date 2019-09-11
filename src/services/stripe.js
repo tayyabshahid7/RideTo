@@ -5,7 +5,8 @@ const handleServerResponse = async ({
   response,
   full_name,
   email,
-  phone
+  phone,
+  supplier_id
 }) => {
   if (response.error) {
     console.log('response.error', response.error)
@@ -25,7 +26,8 @@ const handleServerResponse = async ({
           payment_intent_id: paymentIntent.id,
           full_name,
           email,
-          phone
+          phone,
+          supplier_id
         },
         false
       )
@@ -35,7 +37,8 @@ const handleServerResponse = async ({
         response: serverResponse,
         full_name,
         email,
-        phone
+        phone,
+        supplier_id
       })
     }
   } else {
@@ -48,7 +51,8 @@ export const handleStripePayment = async ({
   cardElement,
   full_name,
   email,
-  phone
+  phone,
+  supplier_id = null
 }) => {
   const { paymentMethod, error } = await stripe.createPaymentMethod(
     'card',
@@ -72,7 +76,8 @@ export const handleStripePayment = async ({
         payment_method_id: paymentMethod.id,
         full_name,
         email,
-        phone
+        phone,
+        supplier_id
       },
       false
     )
@@ -82,7 +87,8 @@ export const handleStripePayment = async ({
       response,
       full_name,
       email,
-      phone
+      phone,
+      supplier_id
     })
   }
 }
