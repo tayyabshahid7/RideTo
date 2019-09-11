@@ -7,6 +7,7 @@ import { checkCustomerExists } from 'services/customer'
 import { injectStripe } from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
+import { handleStripePayment } from 'services/stripe'
 
 import {
   ConnectInput,
@@ -48,7 +49,8 @@ class AddOrderItem extends React.Component {
       cardNumberComplete: false,
       cardDateComplete: false,
       cardCVCComplete: false,
-      cardPostCodeComplete: false
+      cardPostCodeComplete: false,
+      cardElement: null
     }
 
     this.scrollIntoView = React.createRef()
@@ -145,22 +147,33 @@ class AddOrderItem extends React.Component {
         pricing: { price }
       }
     } = this.props
-    const { order, cardName, orderResponse } = this.state
+    const { order, cardName, orderResponse, cardElement } = this.state
 
     if (!stripe) {
       console.log("Stripe.js hasn't loaded yet.")
     } else {
-      const { token } = await stripe.createToken({ name: cardName })
-      const paymentResponse = await onPayment(
-        orderResponse,
-        token,
-        price,
-        order.user_email
-      )
-      if (paymentResponse) {
-        this.setState({
-          showPaymentConfirmation: true
-        })
+      const { error, token } = await handleStripePayment({
+        stripe,
+        cardElement,
+        full_name: cardName,
+        email: order.user_email,
+        phone: order.user_phone
+      })
+
+      if (error) {
+        console.log('Error', error)
+      } else {
+        const paymentResponse = await onPayment(
+          orderResponse,
+          token,
+          price,
+          order.user_email
+        )
+        if (paymentResponse) {
+          this.setState({
+            showPaymentConfirmation: true
+          })
+        }
       }
     }
   }
@@ -211,6 +224,12 @@ class AddOrderItem extends React.Component {
 
   handleStripeElementChange(el, name) {
     this.setState({ [`card${name}Complete`]: !el.empty && el.complete })
+  }
+
+  setCardElement = cardElement => {
+    this.setState({
+      cardElement
+    })
   }
 
   render() {
@@ -409,6 +428,7 @@ class AddOrderItem extends React.Component {
                   cardName={cardName}
                   handleCardNameChange={this.handleCardNameChange}
                   handleStripeElementChange={this.handleStripeElementChange}
+                  setCardElement={this.setCardElement}
                 />
               </div>
             )}
