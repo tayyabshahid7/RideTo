@@ -12,7 +12,8 @@ const Button = React.forwardRef(
       onClick,
       target = null,
       alt = false,
-      modern = false
+      modern = false,
+      id
     },
     ref
   ) => {
@@ -24,11 +25,11 @@ const Button = React.forwardRef(
     )
 
     return href ? (
-      <a href={href} className={classes} target={target} ref={ref}>
+      <a href={href} className={classes} target={target} ref={ref} id={id}>
         {children}
       </a>
     ) : (
-      <button onClick={onClick} className={classes} ref={ref}>
+      <button onClick={onClick} className={classes} ref={ref} id={id}>
         {children}
       </button>
     )

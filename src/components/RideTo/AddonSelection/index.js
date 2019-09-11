@@ -210,6 +210,7 @@ class AddonSelection extends React.Component {
             </Col>
             <Col md="6" className={styles.skipLink}>
               <Button
+                id="addons-checkout-button"
                 color="primary"
                 className={styles.checkoutButton}
                 onClick={this.handleContinue}>
@@ -234,6 +235,7 @@ class AddonSelection extends React.Component {
           </Row>
           <div className={styles.checkoutWrapper}>
             <Button
+              id="addons-checkout-button"
               color="primary"
               className={styles.checkoutButton}
               onClick={this.handleContinue}>

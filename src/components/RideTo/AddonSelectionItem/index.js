@@ -3,6 +3,7 @@ import AddonSizes from './AddonSizes'
 import AddonImageSlider from './AddonImageSlider'
 import styles from './AddonSelectionItem.scss'
 import RideToButton from 'components/RideTo/Button'
+import { kebabCase } from 'lodash'
 
 class AddonSelectionItem extends React.Component {
   constructor(props) {
@@ -64,6 +65,7 @@ class AddonSelectionItem extends React.Component {
                 />
               )}
               <RideToButton
+                id={`addon-${kebabCase(addon.name)}`}
                 alt={isAdded}
                 className={styles.selectButton}
                 onClick={() => onClick(addon)}>
