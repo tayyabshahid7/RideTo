@@ -45,7 +45,9 @@ function DashboardPageV2({ match }) {
   const [skipItm, setSkipItm] = useState(false)
 
   const isAuthenticated = getIsAuthenticated()
-  const isConfirmationPage = match.params.orderId
+  const isConfirmationPage = !!match.params.orderId
+
+  const [hasBanner, setHasBanner] = useState(isConfirmationPage)
 
   const [selectedOrder, setSelectedOrder] = useState(null)
   const headingImage = selectedOrder
@@ -296,6 +298,21 @@ function DashboardPageV2({ match }) {
     setIsLoading(false)
   }, [recentOrder])
 
+  useEffect(() => {
+    const { orderId } = match.params
+    const staleConfirmations =
+      JSON.parse(window.localStorage.getItem('staleConfirmations')) || []
+
+    if (staleConfirmations.includes(orderId)) {
+      setHasBanner(false)
+    } else {
+      window.localStorage.setItem(
+        'staleConfirmations',
+        JSON.stringify([orderId, ...staleConfirmations])
+      )
+    }
+  }, [match])
+
   if (!matchedNextSteps.length || (!isAuthenticated && !isConfirmationPage)) {
     return null
   }
@@ -305,7 +322,7 @@ function DashboardPageV2({ match }) {
       <PasswordReset isAuthenticated={isAuthenticated} />
       <Loading loading={isLoading} position="top">
         <div className={styles.page}>
-          {isConfirmationPage && recentOrder && (
+          {hasBanner && recentOrder && (
             <BookingCompleteBanner
               order={recentOrder}
               onDetails={handleOrderClick}
