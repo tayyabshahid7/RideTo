@@ -2,25 +2,22 @@ import React, { useState } from 'react'
 import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
 import truncate from 'lodash/truncate'
-
-/*
-<a className={styles.container} href={`/blog/${slug}`}>
-  <div className={styles.image}>
-    <img src={image} alt={title} />
-  </div>
-  <div className={styles.content}>
-    <h3 className={styles.title}>{title}</h3>
-    <div className={styles.button}>
-      <img src={ArrowRight} alt="" />
-    </div>
-  </div>
-</a>
-*/
+import RideToScore from 'components/RideTo/BikeSales/BikeReview/RideToScore'
 
 const INTRO =
   'Aliqua incididunt ut exercitation culpa id duis dolor commodo nisi do cillum aliqua pariatur sed occaecat ut mollit cupidatat incididunt velit magna commodo aliqua officia ut occaecat duis ut ut pariatur non esse pariatur voluptate.'
 
-function NewsItem({ news: { image, title, slug } }) {
+const CONTENT_TYPE_CTAS = {
+  'Latest Blogs': 'Read Blog',
+  'How Tos': null,
+  Reviews: 'Read Review',
+  Bikes: 'View Bike',
+  Rides: 'See Route',
+  Fun: 'Read Article',
+  Events: 'View Event'
+}
+
+function NewsItem({ news: { image, title, slug }, contentType }) {
   const [isReadingMore, setIsReadingMore] = useState(false)
   const intro = isReadingMore
     ? INTRO
@@ -43,24 +40,33 @@ function NewsItem({ news: { image, title, slug } }) {
           <div className={styles.time}>28th August 17:36</div>
         </div>
       </div>
-      <div className={styles.intro}>
-        {intro}{' '}
-        {!isReadingMore && (
-          <button onClick={handleReadMoreClick} className={styles.readMore}>
-            Read More
-          </button>
-        )}
-      </div>
-      <img src={image} alt={title} className={styles.poster} />
-      <div className={styles.footer}>
-        <div className={styles.description}>
-          <h2>Voluptate sed nisi esse.</h2>
-          <div className={styles.domain}>Rideto.com</div>
+      {intro && (
+        <div className={styles.intro}>
+          {intro}{' '}
+          {!isReadingMore && (
+            <button onClick={handleReadMoreClick} className={styles.readMore}>
+              Read More
+            </button>
+          )}
         </div>
-        <RideToButton href={`/blog/${slug}`} className={styles.readButton}>
-          Read Blog
-        </RideToButton>
+      )}
+      <div className={styles.media}>
+        <img src={image} alt={title} />
       </div>
+      {contentType !== 'How Tos' && (
+        <div className={styles.footer}>
+          <div className={styles.description}>
+            <h2 className={styles.footerTitle}>Voluptate sed nisi esse.</h2>
+            <div className={styles.footerSubtitle}>Rideto.com</div>
+          </div>
+          {contentType === 'Reviews' && <RideToScore score={90} small />}
+          <div className={styles.footerButton}>
+            <RideToButton href={`/blog/${slug}`} className={styles.readButton}>
+              {CONTENT_TYPE_CTAS[contentType]}
+            </RideToButton>
+          </div>
+        </div>
+      )}
     </article>
   )
 }

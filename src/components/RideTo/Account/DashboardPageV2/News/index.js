@@ -9,7 +9,7 @@ function News({ selectedGoal, selectedStyle }) {
   const [page, setPage] = useState(1)
   const [news, setNews] = useState([])
   const [next, setNext] = useState(true)
-  const [filter, setFilter] = useState(null)
+  const [filter, setFilter] = useState('Latest Blogs')
 
   useEffect(() => {
     setPage(1)
@@ -58,7 +58,7 @@ function News({ selectedGoal, selectedStyle }) {
         {news.length > 0 && (
           <ul className={styles.list}>
             {news.map((item, i) => (
-              <NewsItem key={i} news={item} />
+              <NewsItem key={i} news={item} contentType={filter} />
             ))}
           </ul>
         )}

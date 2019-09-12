@@ -3,11 +3,11 @@ import classnames from 'classnames'
 import containerStyles from '../styles.scss'
 import summaryStyles from '../BikeSummary/styles.scss'
 import componentStyles from './styles.scss'
-import Circle from 'react-circle'
 import { getShortCourseType } from 'services/course'
 import { SLUG_COURSE_TYPES } from 'common/constants'
 import stickybits from 'stickybits'
 import Helmet from 'react-helmet'
+import RideToScore from './RideToScore'
 
 const styles = {
   ...containerStyles,
@@ -159,22 +159,7 @@ class BikeReview extends Component {
                       RRP £{(price / 100).toLocaleString()}
                     </div>
                   </div>
-                  <div className={styles.score}>
-                    <div>RideTo Score</div>
-                    <div className={styles.circle}>
-                      <span className={styles.scoreNum}>
-                        {Math.round(score) / 10}/10
-                      </span>
-                      <Circle
-                        progress={score}
-                        roundedStrike={true}
-                        progressColor="green"
-                        animate={false}
-                        responsive={true}
-                        showPercentage={false}
-                      />
-                    </div>
-                  </div>
+                  <RideToScore score={score} />
                 </div>
                 <div className={styles.infoRow}>
                   {engine} - {bhp} bhp

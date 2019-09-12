@@ -68,10 +68,16 @@
   }
 }
 
+// New stuff
+
 .header {
   display: flex;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
   align-items: center;
+
+  @media (min-width: 768px) {
+    padding: 1rem 1.5rem;
+  }
 }
 
 .meta {
@@ -88,20 +94,75 @@
 }
 
 .intro {
-  padding: 0 1.5rem 1rem;
+  padding: 0 1rem 1rem;
+
+  @media (min-width: 768px) {
+    padding: 0 1.5rem 1rem;
+  }
 }
 
-.poster {
+.media {
+  position: relative;
   display: block;
   width: 100%;
-  height: auto;
+  height: 0;
+  padding-bottom: 42%;
+  background: cyan;
+
+  > * {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
+  padding: 1rem;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    padding: 1rem 1.5rem;
+    flex-direction: row;
+    align-items: center;
+
+    > * {
+      flex: 1;
+    }
+  }
+}
+
+.description {
+  display: flex;
+  align-items: flex-end;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+.footerTitle {
+  margin-bottom: 0;
+  margin-right: 0.5rem;
+
+  @media (min-width: 768px) {
+    margin-bottom: 0.5rem;
+    margin-right: 0;
+  }
+}
+
+.footerButton {
+  margin-top: 1rem;
+
+  @media (min-width: 768px) {
+    display: flex;
+    justify-content: flex-end;
+    margin: 0;
+  }
 }
 
 .readButton {
