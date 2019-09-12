@@ -107,9 +107,10 @@
   width: 100%;
   height: 0;
   padding-bottom: 42%;
-  background: cyan;
+  background: rgba(lightgrey, 0.5);
 
-  > * {
+  > *,
+  iframe {
     position: absolute;
     top: 0;
     right: 0;

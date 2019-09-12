@@ -3,6 +3,7 @@ import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
 import truncate from 'lodash/truncate'
 import RideToScore from 'components/RideTo/BikeSales/BikeReview/RideToScore'
+import YouTube from 'react-youtube'
 
 const INTRO =
   'Aliqua incididunt ut exercitation culpa id duis dolor commodo nisi do cillum aliqua pariatur sed occaecat ut mollit cupidatat incididunt velit magna commodo aliqua officia ut occaecat duis ut ut pariatur non esse pariatur voluptate.'
@@ -51,7 +52,11 @@ function NewsItem({ news: { image, title, slug }, contentType }) {
         </div>
       )}
       <div className={styles.media}>
-        <img src={image} alt={title} />
+        {contentType !== 'How Tos' ? (
+          <img src={image} alt={title} />
+        ) : (
+          <YouTube videoId="9zAh9RZAJBo" />
+        )}
       </div>
       {contentType !== 'How Tos' && (
         <div className={styles.footer}>
