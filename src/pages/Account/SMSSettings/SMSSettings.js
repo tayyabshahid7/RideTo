@@ -2,6 +2,7 @@ import React, { Fragment, Component } from 'react'
 import styles from './styles.scss'
 import { Row, Col, Modal, ModalBody } from 'reactstrap'
 import classnames from 'classnames'
+import { handleStripePayment } from 'services/stripe'
 import { Button, ConnectTextArea } from 'components/ConnectForm'
 import CheckoutForm from 'components/Calendar/OrdersPanel/AddOrderItem/CheckoutForm'
 import { injectStripe } from 'react-stripe-elements'
@@ -31,7 +32,8 @@ class SMSSettings extends Component {
       settings: this.defaultSettings,
       cbt_booking_confirmationEditable: false,
       full_licence_booking_confirmationEditable: false,
-      post_cbt_feedbackEditable: false
+      post_cbt_feedbackEditable: false,
+      cardElement: null
     }
 
     this.cbt_booking_confirmationEl = React.createRef()
@@ -81,23 +83,32 @@ class SMSSettings extends Component {
   }
 
   async handleSave(event) {
-    const { stripe, purchaseCredits, schoolId } = this.props
-    const { cardName, selectedValue } = this.state
+    const { stripe, purchaseCredits, schoolId, user } = this.props
+    const { cardName, selectedValue, cardElement } = this.state
 
     event.preventDefault()
 
     if (!stripe) {
       console.log("Stripe.js hasn't loaded yet.")
     } else {
-      const { token } = await stripe.createToken({ name: cardName })
-
-      const paymentResponse = await purchaseCredits(schoolId, {
-        token: token.id,
-        sms_credit: String(selectedValue * 100)
+      const { error, token } = await handleStripePayment({
+        stripe,
+        cardElement,
+        full_name: cardName,
+        email: user.email
       })
 
-      if (paymentResponse) {
-        this.handleCancel()
+      if (error) {
+        console.log('Error', error)
+      } else {
+        const paymentResponse = await purchaseCredits(schoolId, {
+          token: token.id,
+          sms_credit: String(selectedValue * 100)
+        })
+
+        if (paymentResponse) {
+          this.handleCancel()
+        }
       }
     }
   }
@@ -144,6 +155,13 @@ class SMSSettings extends Component {
     })
     updateWidgetSettings({
       sms_active: newState
+    })
+  }
+
+  setCardElement = cardElement => {
+    console.log(cardElement)
+    this.setState({
+      cardElement
     })
   }
 
@@ -366,6 +384,7 @@ class SMSSettings extends Component {
                   handleCardNameChange={this.handleCardNameChange}
                   handleStripeElementChange={this.handleStripeElementChange}
                   singlePage={true}
+                  setCardElement={this.setCardElement}
                 />
                 <Row>
                   <Col className="mt-3 text-right">

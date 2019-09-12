@@ -14,6 +14,7 @@ import cardAmex from 'assets/images/card-amex.jpg'
 import cardElectron from 'assets/images/card-electron.png'
 import cardMastercard from 'assets/images/card-mastercard.jpg'
 import cardMaestro from 'assets/images/card-maestro.png'
+import Loading from 'components/Loading'
 
 import styles from './CheckoutForm.scss'
 
@@ -42,7 +43,9 @@ const CheckoutForm = ({
   onSubmit,
   voucher_code,
   handleVoucherApply,
-  onVoucherCodeChange
+  onVoucherCodeChange,
+  setCardElement,
+  supplierName
 }) => {
   const labelStyle = {
     marginTop: '16px',
@@ -78,7 +81,10 @@ const CheckoutForm = ({
           name="card_number"
           style={labelStyle}
           error={errors.card_number}>
-          <CardNumberElement style={inputStyle} />
+          <CardNumberElement
+            style={inputStyle}
+            onReady={el => setCardElement(el)}
+          />
         </LabelField>
         <LabelField
           label="Name On Card"
@@ -168,12 +174,14 @@ const CheckoutForm = ({
         </div>
       )}
 
-      <button
-        className={btnClass}
-        disabled={isSaving}
-        onClick={() => onSubmit(stripe)}>
-        Confirm and Pay
-      </button>
+      <Loading loading={isSaving}>
+        <button
+          className={btnClass}
+          disabled={isSaving}
+          onClick={() => onSubmit(stripe)}>
+          Confirm and Pay
+        </button>
+      </Loading>
     </div>
   )
 }

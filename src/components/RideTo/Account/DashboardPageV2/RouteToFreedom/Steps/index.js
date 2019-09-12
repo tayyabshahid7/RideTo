@@ -16,10 +16,11 @@ function Steps({
   steps,
   percentComplete,
   handleCompletedClick,
-  handlePreviewClick
+  handlePreviewClick,
+  skipItm
 }) {
   const isDesktop = useMediaQuery({ minWidth: 1025 })
-  const currentStepIndex = findLastStepIndex(steps)
+  const currentStepIndex = findLastStepIndex(steps, skipItm)
   const stepRefs = useRef(range(steps.length).map(() => createRef()))
   const currentStepRef = useRef(null)
   const [progress, setProgress] = useState(0)

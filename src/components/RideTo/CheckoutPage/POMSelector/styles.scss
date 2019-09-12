@@ -118,6 +118,10 @@
     background-color: darken(#bdc8ca, 5%);
     border: 2px solid darken(#bdc8ca, 5%);
   }
+
+  > * {
+    pointer-events: none;
+  }
 }
 
 .headerSwitchSlider {

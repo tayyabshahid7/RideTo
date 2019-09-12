@@ -23,6 +23,7 @@ function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
         </div>
         {!popup && (
           <button
+            id="pom-switch"
             className={classnames(
               styles.headerSwitch,
               hasPOM && styles.headerSwitchSelected

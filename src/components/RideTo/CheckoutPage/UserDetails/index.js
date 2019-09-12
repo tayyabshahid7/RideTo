@@ -384,7 +384,8 @@ class UserDetails extends Component {
       details,
       errors = {},
       showCardDetails,
-      handlePaymentButtonClick
+      handlePaymentButtonClick,
+      setCardElement
     } = this.props
     const { cardBrand } = this.state
     const inputStyle = {
@@ -430,6 +431,7 @@ class UserDetails extends Component {
                 onChange={element =>
                   this.stripeElementChange(element, 'card_number')
                 }
+                onReady={element => setCardElement(element)}
               />
             </div>
             <CardIcons selected={cardBrand} />

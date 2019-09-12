@@ -36,6 +36,7 @@ import FullLicenceGuide from './FullLicenceGuide'
 import FullLicenceIncluded from './FullLicenceIncluded'
 import FullLicenceFaq from './FullLicenceFaq'
 import POMBanner from './POMBanner'
+import FullLicenceBanner from './FullLicenceBanner'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
@@ -770,13 +771,10 @@ class ResultPage extends Component {
                       <div className={styles.coursesPanel}>
                         {hasPOM && hasPartnerResults && <POMBanner />}
                         {isFullLicence && (
-                          <a href="https://rideto.typeform.com/to/lyVAhc">
-                            <img
-                              src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/fast-track.png"
-                              className={styles.fastTrackAdvert}
-                              alt="Full licence fast-track package"
-                            />
-                          </a>
+                          <FullLicenceBanner
+                            className={styles.fastTrackAdvert}
+                            href="https://rideto.typeform.com/to/CvduD4"
+                          />
                         )}
                         {courses.available.length > 0 && (
                           <React.Fragment>
@@ -874,7 +872,7 @@ class ResultPage extends Component {
                   ) : (
                     !loading && (
                       <div className={styles.noResults}>
-                        No results, please try another date.
+                        No results, try another location or course
                       </div>
                     )
                   )}

@@ -110,7 +110,7 @@ class BikeReview extends Component {
       requiredLicence,
       insuranceGroup
     } = bikes.find(bike => bike.slug === match.params.slug)
-    const insuranceLink = 'http://tidd.ly/a35e0aed'
+    const insuranceLink = 'http://tidd.ly/7b623335'
     const trainingLink = `/${Object.keys(SLUG_COURSE_TYPES).find(key => {
       return SLUG_COURSE_TYPES[key] === requiredLicence
     })}`

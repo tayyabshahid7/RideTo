@@ -44,7 +44,8 @@ function CheckoutForm({
   cardName,
   handleCardNameChange,
   handleStripeElementChange,
-  singlePage = false
+  singlePage = false,
+  setCardElement
 }) {
   return (
     <div className={styles.checkout}>
@@ -73,6 +74,7 @@ function CheckoutForm({
             className={styles.input}
             {...options}
             onChange={el => handleStripeElementChange(el, 'Number')}
+            onReady={el => setCardElement(el)}
           />
         </label>
       </div>
