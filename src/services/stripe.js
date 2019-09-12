@@ -1,5 +1,5 @@
 import { get, post } from 'services/api'
-/*
+
 const handleServerResponse = async ({
   stripe,
   response,
@@ -50,51 +50,6 @@ export const handleStripePayment = async ({
   email,
   phone
 }) => {
-  const { paymentMethod, error } = await stripe.createPaymentMethod(
-    'card',
-    cardElement,
-    {
-      billing_details: {
-        name: full_name,
-        email,
-        phone
-      }
-    }
-  )
-
-  if (error) {
-    console.log('error', error)
-    return { error }
-  } else {
-    const response = await post(
-      'payment-intent/',
-      {
-        payment_method_id: paymentMethod.id,
-        full_name,
-        email,
-        phone
-      },
-      false
-    )
-
-    return await handleServerResponse({
-      stripe,
-      response,
-      full_name,
-      email,
-      phone
-    })
-  }
-}
-*/
-
-export const handleStripePayment = async ({
-  stripe,
-  cardElement,
-  full_name,
-  email,
-  phone
-}) => {
   const { client_secret } = await get('get-intent/', {}, false)
 
   const { setupIntent, error } = await stripe.handleCardSetup(
@@ -116,7 +71,7 @@ export const handleStripePayment = async ({
     const response = await post(
       'payment-intent/',
       {
-        setup_id: setupIntent.id,
+        payment_method_id: setupIntent.id,
         full_name,
         email,
         phone
@@ -124,6 +79,12 @@ export const handleStripePayment = async ({
       false
     )
 
-    return { token: { id: response.customer_id } }
+    return await handleServerResponse({
+      stripe,
+      response,
+      full_name,
+      email,
+      phone
+    })
   }
 }
