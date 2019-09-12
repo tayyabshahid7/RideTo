@@ -39,7 +39,17 @@ const handleServerResponse = async ({
       })
     }
   } else {
-    return { token: { id: response.customer_id } }
+    const { customer_id } = await post(
+      'create-customer-id/',
+      {
+        name: full_name,
+        email,
+        phone
+      },
+      false
+    )
+
+    return { token: { id: customer_id } }
   }
 }
 
