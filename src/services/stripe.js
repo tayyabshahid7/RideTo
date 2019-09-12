@@ -65,10 +65,12 @@ export const handleStripePayment = async ({
     client_secret,
     cardElement,
     {
-      billing_details: {
-        name: full_name,
-        email,
-        phone
+      payment_method_data: {
+        billing_details: {
+          name: full_name,
+          email,
+          phone
+        }
       }
     }
   )
