@@ -48,7 +48,7 @@ const handleServerResponse = async ({
       false
     )
 
-    return { token: { id: customer_id } }
+    return { token: customer_id }
   }
 }
 
