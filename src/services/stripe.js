@@ -1,5 +1,5 @@
-import { post } from 'services/api'
-
+import { get, post } from 'services/api'
+/*
 const handleServerResponse = async ({
   stripe,
   response,
@@ -84,5 +84,46 @@ export const handleStripePayment = async ({
       email,
       phone
     })
+  }
+}
+*/
+
+export const handleStripePayment = async ({
+  stripe,
+  cardElement,
+  full_name,
+  email,
+  phone
+}) => {
+  const { client_secret } = await get('get-intent/', {}, false)
+
+  const { setupIntent, error } = await stripe.handleCardSetup(
+    client_secret,
+    cardElement,
+    {
+      billing_details: {
+        name: full_name,
+        email,
+        phone
+      }
+    }
+  )
+
+  if (error) {
+    console.log('error', error)
+    return { error }
+  } else {
+    const response = await post(
+      'payment-intent/',
+      {
+        setup_id: setupIntent.id,
+        full_name,
+        email,
+        phone
+      },
+      false
+    )
+
+    return { token: { id: response.customer_id } }
   }
 }
