@@ -22,7 +22,7 @@ mountComponent('ReviewSlider', 'rideto-home-reviews')
 
 mountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
-mountComponent('UserMenuItem', 'rideto-nav-account')
+mountComponent('UserMenuItem', 'rideto-nav-account', {}, false)
 
 mountComponent('CourseTypeSelection', 'rideto-course-type-selection', {}, false)
 

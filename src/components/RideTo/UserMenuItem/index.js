@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import ReactDOM from 'react-dom'
 import classnames from 'classnames'
 import styles from './UserMenuItem.scss'
 import {
@@ -8,6 +9,28 @@ import {
   removeToken
 } from 'services/auth'
 import UserIcon from './UserIcon'
+import { useMediaQuery } from 'react-responsive'
+
+const portalEl = document.getElementById('signup-portal')
+
+function SignUpButton() {
+  const isMobile = useMediaQuery({ maxWidth: 768 })
+
+  if (isMobile) {
+    return ReactDOM.createPortal(
+      <a className={styles.joinButton} href="/account/signup">
+        Sign Up
+      </a>,
+      portalEl
+    )
+  }
+
+  return (
+    <a className={styles.joinButton} href="/account/signup">
+      Sign Up
+    </a>
+  )
+}
 
 class UserMenuItem extends React.Component {
   constructor(props) {
@@ -80,9 +103,7 @@ class UserMenuItem extends React.Component {
               href="/account/login">
               Login
             </a>
-            <a className={styles.joinButton} href="/account/signup">
-              Sign Up
-            </a>
+            <SignUpButton />
           </div>
         ) : (
           <div ref={this.element} id="user-menu-item">
