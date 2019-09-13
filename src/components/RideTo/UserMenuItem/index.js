@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import classnames from 'classnames'
 import styles from './UserMenuItem.scss'
 import {
@@ -72,11 +72,18 @@ class UserMenuItem extends React.Component {
   render() {
     const { menuOpen, user, displayName } = this.state
     return (
-      <React.Fragment>
+      <Fragment>
         {!user ? (
-          <a ref={this.element} href="/account/login">
-            Login
-          </a>
+          <div ref={this.element} className={styles.joinButtons}>
+            <a
+              className={classnames(styles.joinButton, styles.loginButton)}
+              href="/account/login">
+              Login
+            </a>
+            <a className={styles.joinButton} href="/account/signup">
+              Sign Up
+            </a>
+          </div>
         ) : (
           <div ref={this.element} id="user-menu-item">
             <div
@@ -113,7 +120,7 @@ class UserMenuItem extends React.Component {
             )}
           </div>
         )}
-      </React.Fragment>
+      </Fragment>
     )
   }
 }

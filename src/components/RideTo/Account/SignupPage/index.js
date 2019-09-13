@@ -29,6 +29,8 @@ class SignupPage extends React.Component {
       }
     ]
 
+    this.loginNext = JSON.parse(sessionStorage.getItem('login-next'))
+
     this.state = {
       first_name: '',
       last_name: '',
@@ -36,7 +38,11 @@ class SignupPage extends React.Component {
       password: '',
       errors: {},
       terms: false,
-      newsletter: false
+      newsletter: false,
+      hasCheckoutData:
+        this.loginNext &&
+        this.loginNext.endsWith('/checkout') &&
+        JSON.parse(sessionStorage.getItem('checkout-data'))
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -89,7 +95,7 @@ class SignupPage extends React.Component {
 
     try {
       await saveUser({ first_name, last_name, email, password })
-      const next = JSON.parse(sessionStorage.getItem('login-next'))
+      const next = this.loginNext || '/account/dashboard'
       window.location.href = next
     } catch (error) {
       const { response } = error
@@ -120,13 +126,16 @@ class SignupPage extends React.Component {
       password,
       terms,
       newsletter,
-      errors
+      errors,
+      hasCheckoutData
     } = this.state
 
     return (
       <React.Fragment>
         <NavigationComponent
-          navigation={this.navigation}
+          navigation={
+            hasCheckoutData ? this.navigation : [{ title: '', subtitle: '' }]
+          }
           onNavBack={this.handleBack}
         />
         <div className={styles.signupPage}>
@@ -202,7 +211,7 @@ class SignupPage extends React.Component {
               name="terms">
               <span>
                 I confirm I have read and accept RideTo’s{' '}
-                <a classnAME={styles.termsLink} href="/terms" target="_blank">
+                <a className={styles.termsLink} href="/terms" target="_blank">
                   terms & conditions
                 </a>{' '}
                 and agree to RideTo’s condition of use & sale.
@@ -220,7 +229,9 @@ class SignupPage extends React.Component {
             </Checkbox>
 
             <button type="submit" className={styles.signup}>
-              <span>Continue to Checkout</span>
+              <span>
+                {hasCheckoutData ? 'Continue to Checkout' : 'Sign Up'}
+              </span>
               <img src={ButtonArrowWhite} alt="" />
             </button>
           </form>
