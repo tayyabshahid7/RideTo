@@ -30,6 +30,7 @@ import SidePanel from 'components/RideTo/SidePanel'
 import OrderDetails from 'components/RideTo/Account/OrderDetails'
 import { findLastStepIndex } from './RouteToFreedom/util'
 import Loading from 'components/Loading'
+import { useMediaQuery } from 'react-responsive'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -55,6 +56,8 @@ function DashboardPageV2({ match }) {
     : ''
 
   const [isLoading, setIsLoading] = useState(true)
+  const [isSticky, setIsSticky] = useState(false)
+  const isDesktop = useMediaQuery({ minWidth: 1025 })
 
   const handleOrderClick = course => {
     setSelectedOrder(course)
@@ -152,6 +155,17 @@ function DashboardPageV2({ match }) {
 
     setNextStep(clickedStep)
   }
+
+  const updateSticky = status => {
+    setIsSticky(status)
+  }
+
+  useEffect(() => {
+    if ('scrollRestoration' in window) {
+      window.scrollRestoration = 'manual'
+    }
+    window.scrollTo(0, 0)
+  }, [])
 
   useEffect(() => {
     const { orderId } = match.params
@@ -317,6 +331,8 @@ function DashboardPageV2({ match }) {
     return null
   }
 
+  const isStuck = isDesktop && !isLoading && isSticky
+
   return (
     <Fragment>
       <PasswordReset isAuthenticated={isAuthenticated} />
@@ -360,25 +376,31 @@ function DashboardPageV2({ match }) {
           )}
           <div className={styles.row}>
             <div className={styles.leftCol}>
-              {isAuthenticated && (
+              <div
+                className={classnames(
+                  styles.leftColInner,
+                  isStuck && styles.leftColInnerStuck
+                )}>
+                {isAuthenticated && (
+                  <div className={styles.pageItem}>
+                    <Achievements achievements={achievements} />
+                  </div>
+                )}
                 <div className={styles.pageItem}>
-                  <Achievements achievements={achievements} />
+                  <MyOrders
+                    orders={
+                      orders.length > 0
+                        ? orders
+                        : recentOrder
+                        ? [recentOrder]
+                        : []
+                    }
+                    handleClick={handleOrderClick}
+                  />
                 </div>
-              )}
-              <div className={styles.pageItem}>
-                <MyOrders
-                  orders={
-                    orders.length > 0
-                      ? orders
-                      : recentOrder
-                      ? [recentOrder]
-                      : []
-                  }
-                  handleClick={handleOrderClick}
-                />
-              </div>
-              <div className={styles.pageItem}>
-                <GuidesAdvice />
+                <div className={styles.pageItem}>
+                  <GuidesAdvice />
+                </div>
               </div>
             </div>
             <div className={styles.rightCol}>
@@ -390,6 +412,8 @@ function DashboardPageV2({ match }) {
                 <News
                   selectedGoal={selectedGoal}
                   selectedStyle={selectedStyle}
+                  updateSticky={updateSticky}
+                  isStuck={isStuck}
                 />
               </div>
             </div>

@@ -1,5 +1,39 @@
 .container {
   padding: 2rem 0;
+
+  @media (min-width: 1025px) {
+    min-height: 100vh;
+  }
+}
+
+.titleFiltersStuck {
+  @media (min-width: 1025px) {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+    background: #f9f9f9;
+
+    .titleFiltersInner {
+      display: flex;
+      justify-content: flex-end;
+      max-width: 1111px;
+      margin: 0 auto;
+      width: calc(100% - 4rem);
+    }
+
+    .titleFiltersInnerWrap {
+      width: calc(100% - 8% - 286px);
+    }
+
+    + .list {
+      padding-top: 56px;
+    }
+  }
 }
 
 .list {

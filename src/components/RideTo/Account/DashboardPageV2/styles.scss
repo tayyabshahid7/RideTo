@@ -95,7 +95,17 @@
 
 .leftCol {
   @media (min-width: 1025px) {
+    position: relative;
+    z-index: 2;
     flex: 0 0 286px;
+  }
+}
+
+.leftColInnerStuck {
+  @media (min-width: 1025px) {
+    position: fixed;
+    top: 0;
+    width: 286px;
   }
 }
 
