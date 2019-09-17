@@ -51,7 +51,7 @@ class ChangeDate extends Component {
 
     if (!init) {
       this.setState({
-        time: this.props.times[0].time
+        time: this.props.times.length ? this.props.times[0].time : null
       })
     }
   }
