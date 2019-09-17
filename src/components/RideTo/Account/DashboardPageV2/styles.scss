@@ -106,7 +106,14 @@
   @media (min-width: 1025px) {
     position: fixed;
     top: 0;
-    width: 286px;
+    // width: 286px;
+    width: calc(286px + 1rem);
+    max-height: 100vh;
+    overflow-y: auto;
+
+    .leftColInnerStuckInner {
+      max-width: 286px;
+    }
   }
 }
 

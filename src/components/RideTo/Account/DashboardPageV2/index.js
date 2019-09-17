@@ -381,25 +381,27 @@ function DashboardPageV2({ match }) {
                   styles.leftColInner,
                   isStuck && styles.leftColInnerStuck
                 )}>
-                {isAuthenticated && (
+                <div className={styles.leftColInnerStuckInner}>
+                  {isAuthenticated && (
+                    <div className={styles.pageItem}>
+                      <Achievements achievements={achievements} />
+                    </div>
+                  )}
                   <div className={styles.pageItem}>
-                    <Achievements achievements={achievements} />
+                    <MyOrders
+                      orders={
+                        orders.length > 0
+                          ? orders
+                          : recentOrder
+                          ? [recentOrder]
+                          : []
+                      }
+                      handleClick={handleOrderClick}
+                    />
                   </div>
-                )}
-                <div className={styles.pageItem}>
-                  <MyOrders
-                    orders={
-                      orders.length > 0
-                        ? orders
-                        : recentOrder
-                        ? [recentOrder]
-                        : []
-                    }
-                    handleClick={handleOrderClick}
-                  />
-                </div>
-                <div className={styles.pageItem}>
-                  <GuidesAdvice />
+                  <div className={styles.pageItem}>
+                    <GuidesAdvice />
+                  </div>
                 </div>
               </div>
             </div>
