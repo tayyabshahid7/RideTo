@@ -160,15 +160,13 @@ function DashboardPageV2({ match }) {
     setIsSticky(status)
   }
 
-  const scrollTop = () => {
-    if ('scrollRestoration' in window) {
-      window.scrollRestoration = 'manual'
-    }
-    window.scrollTo(0, 0)
-  }
-
   useEffect(() => {
-    scrollTop()
+    if (isDesktop) {
+      if ('scrollRestoration' in window) {
+        window.scrollRestoration = 'manual'
+      }
+      window.scrollTo(0, 0)
+    }
   }, [isLoading])
 
   useEffect(() => {
