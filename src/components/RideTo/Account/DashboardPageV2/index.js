@@ -160,12 +160,16 @@ function DashboardPageV2({ match }) {
     setIsSticky(status)
   }
 
-  useEffect(() => {
+  const scrollTop = () => {
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
     }
     window.scrollTo(0, 0)
-  }, [])
+  }
+
+  useEffect(() => {
+    scrollTop()
+  }, [isLoading])
 
   useEffect(() => {
     const { orderId } = match.params
