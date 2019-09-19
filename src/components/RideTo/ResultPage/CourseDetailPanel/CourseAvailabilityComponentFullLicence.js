@@ -113,8 +113,8 @@ class CourseAvailabilityComponentFullLicence extends Component {
               )}>
               Customise the right package for your riding ambitions. The
               instructor will be in touch within 24 hours to book the training
-              and test dates which work for you. To discuss what course if for
-              you or paying on finance,{' '}
+              and test dates which work for you. To discuss what course is right
+              for you or paying on finance,{' '}
               <a href="/contact">please get in touch</a>.
             </p>
             <CourseTypeDetails
