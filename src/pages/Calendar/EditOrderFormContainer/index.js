@@ -39,10 +39,6 @@ class EditOrderFormContainer extends React.Component {
       order.school_course = courseId // add in the course id
     }
 
-    if (updateDate) {
-      order.training_date_time = order.start_time
-    }
-
     let response = await updateOrder({ schoolId, trainingId, order })
 
     await this.props.updateCourse({
