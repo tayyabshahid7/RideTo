@@ -5,7 +5,7 @@ import {
   isAuthenticated as getIsAuthenticated
 } from 'services/auth'
 
-export const fetchArticles = async (page, style, goal, category) => {
+export const fetchArticles = async (page, goal, style, category) => {
   const path = `dashboard/dashboard-advice/`
   let params = {
     page,
