@@ -18,7 +18,13 @@ const FILTERS = {
   Events: 11
 }
 
-function News({ selectedGoal, selectedStyle, updateSticky, isStuck }) {
+function News({
+  selectedGoal,
+  selectedStyle,
+  updateSticky,
+  isStuck,
+  isUserDetailsLoaded
+}) {
   const [page, setPage] = useState(1)
   const [news, setNews] = useState([])
   const [next, setNext] = useState(true)
@@ -78,17 +84,18 @@ function News({ selectedGoal, selectedStyle, updateSticky, isStuck }) {
       }
     }, 100)
 
+    window.removeEventListener('scroll', debouncedScroll)
     window.addEventListener('scroll', debouncedScroll)
 
     return () => {
       window.removeEventListener('scroll', debouncedScroll)
     }
-  }, [])
+  }, [isLoading, next])
 
   useEffect(() => {
-    setPage(1)
     setNews([])
     setNext(true)
+    setPage(1)
   }, [selectedGoal, selectedStyle, filter])
 
   useEffect(() => {
@@ -101,25 +108,40 @@ function News({ selectedGoal, selectedStyle, updateSticky, isStuck }) {
       } else {
         const categoryId = FILTERS[filter]
 
-        response = await fetchArticles(
-          page,
-          selectedGoal.slug,
-          selectedStyle.slug,
-          categoryId
-        )
+        try {
+          response = await fetchArticles(
+            page,
+            selectedGoal.slug,
+            selectedStyle.slug,
+            categoryId
+          )
+        } catch (error) {
+          setNews([])
+          setNext(true)
+          setPage(1)
+          response = await fetchArticles(
+            1,
+            selectedGoal.slug,
+            selectedStyle.slug,
+            categoryId
+          )
+        }
       }
 
-      setNews(prevState => {
-        return [...prevState, ...response.results]
-      })
-      setNext(response.next)
+      if (response) {
+        setNews(prevState => {
+          return [...prevState, ...response.results]
+        })
+        setNext(response.next)
+      }
+
       setIsLoading(false)
     }
 
-    if (!isLoading) {
+    if (!isLoading && isUserDetailsLoaded) {
       fetchMyArticles()
     }
-  }, [page, selectedGoal, selectedStyle, filter])
+  }, [page, selectedGoal, selectedStyle, filter, isUserDetailsLoaded])
 
   const handleLoadMoreClick = () => {
     setPage(prevPage => prevPage + 1)

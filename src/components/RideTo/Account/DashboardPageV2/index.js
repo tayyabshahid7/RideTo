@@ -55,6 +55,7 @@ function DashboardPageV2({ match }) {
     ? selectedOrder.training_location.image
     : ''
 
+  const [isUserDetailsLoaded, setIsUserDetailsLoaded] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isSticky, setIsSticky] = useState(false)
   const isDesktop = useMediaQuery({ minWidth: 1025 })
@@ -257,6 +258,8 @@ function DashboardPageV2({ match }) {
       if (achievements.length) {
         setAchivements(achievements)
       }
+
+      setIsUserDetailsLoaded(true)
     }
 
     setNextSteps(DEFAULT_TIMELINE)
@@ -268,6 +271,8 @@ function DashboardPageV2({ match }) {
       if (user) {
         loadUserDetails(user.user_id)
         loadOrders(user.username)
+      } else {
+        setIsUserDetailsLoaded(true)
       }
     }
 
@@ -418,6 +423,7 @@ function DashboardPageV2({ match }) {
                   selectedStyle={selectedStyle}
                   updateSticky={updateSticky}
                   isStuck={isStuck}
+                  isUserDetailsLoaded={isUserDetailsLoaded}
                 />
               </div>
             </div>
