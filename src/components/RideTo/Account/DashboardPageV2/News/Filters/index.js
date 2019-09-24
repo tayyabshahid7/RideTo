@@ -2,20 +2,10 @@ import React from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
 
-const FILTERS = [
-  'Latest Blogs',
-  'How Tos',
-  'Reviews',
-  'Bikes',
-  'Rides',
-  'Fun',
-  'Events'
-]
-
-function Filters({ selectedFilter, handleFilterClick }) {
+function Filters({ selectedFilter, handleFilterClick, filters }) {
   return (
     <ul className={styles.list}>
-      {FILTERS.map(filter => (
+      {filters.map(filter => (
         <li className={styles.listItem} key={filter}>
           <button
             className={classnames(

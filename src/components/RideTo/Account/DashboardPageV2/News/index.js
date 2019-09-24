@@ -6,6 +6,17 @@ import { fetchArticles } from 'services/dashboard'
 import Filters from './Filters'
 import classnames from 'classnames'
 import { debounce } from 'lodash'
+import { fetchBikes } from 'services/dashboard'
+
+const FILTERS = {
+  'Latest Blogs': null,
+  'How Tos': 9,
+  Reviews: null,
+  Bikes: 6,
+  Rides: 12,
+  Fun: 10,
+  Events: 11
+}
 
 function News({ selectedGoal, selectedStyle, updateSticky, isStuck }) {
   const [page, setPage] = useState(1)
@@ -83,12 +94,20 @@ function News({ selectedGoal, selectedStyle, updateSticky, isStuck }) {
   useEffect(() => {
     async function fetchMyArticles() {
       setIsLoading(true)
-      const response = await fetchArticles(
-        page,
-        selectedGoal.slug,
-        selectedStyle.slug,
-        filter
-      )
+      let response = null
+
+      if (filter === 'Reviews') {
+        response = await fetchBikes(selectedGoal)
+      } else {
+        const categoryId = FILTERS[filter]
+
+        response = await fetchArticles(
+          page,
+          selectedGoal.slug,
+          selectedStyle.slug,
+          categoryId
+        )
+      }
 
       setNews(prevState => {
         return [...prevState, ...response.results]
@@ -132,18 +151,21 @@ function News({ selectedGoal, selectedStyle, updateSticky, isStuck }) {
             <div className={styles.titleFiltersInnerWrap}>
               <h2 className={styles.title}>News Feed</h2>
               <Filters
+                filters={Object.keys(FILTERS)}
                 selectedFilter={filter}
                 handleFilterClick={handleFilterClick}
               />
             </div>
           </div>
         </div>
-        {news.length > 0 && (
+        {news.length > 0 ? (
           <ul className={styles.list}>
             {news.map((item, i) => (
               <NewsItem key={i} news={item} contentType={filter} />
             ))}
           </ul>
+        ) : (
+          <p className={styles.noArticles}>No articles available...</p>
         )}
       </Fragment>
       {next && (

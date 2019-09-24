@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, Fragment } from 'react'
 import styles from './styles.scss'
 import RideToButton from 'components/RideTo/Button'
 import truncate from 'lodash/truncate'
 import RideToScore from 'components/RideTo/BikeSales/BikeReview/RideToScore'
 import YouTube from 'react-youtube'
-
-const INTRO =
-  'Aliqua incididunt ut exercitation culpa id duis dolor commodo nisi do cillum aliqua pariatur sed occaecat ut mollit cupidatat incididunt velit magna commodo aliqua officia ut occaecat duis ut ut pariatur non esse pariatur voluptate.'
+import isURL from 'is-url'
+import moment from 'moment'
+import getYouTubeID from 'get-youtube-id'
 
 const CONTENT_TYPE_CTAS = {
   'Latest Blogs': 'Read Blog',
@@ -18,55 +18,94 @@ const CONTENT_TYPE_CTAS = {
   Events: 'View Event'
 }
 
-function NewsItem({ news: { image, title, slug }, contentType }) {
+function NewsItem({ news, contentType }) {
+  let {
+    image,
+    title,
+    slug,
+    content,
+    created,
+    author,
+    extra_url,
+    author_image
+  } = news
+  const youtubeId = getYouTubeID(extra_url)
+
+  if (content) {
+    content = new DOMParser()
+      .parseFromString(content, 'text/html')
+      .querySelector('p').textContent
+  }
+
   const [isReadingMore, setIsReadingMore] = useState(false)
   const intro = isReadingMore
-    ? INTRO
-    : truncate(INTRO, { separator: ' ', length: 140 })
+    ? content
+    : truncate(content, { separator: ' ', length: 140 })
+  const isReviews = contentType === 'Reviews'
 
   const handleReadMoreClick = () => {
     setIsReadingMore(true)
   }
 
+  if (isReviews) {
+    image = news.images && news.images[0].image
+    title = news.bike_model
+    slug = news.url
+  }
+
+  let hostname = isURL(slug) ? new URL(slug).hostname : 'rideto.com'
+
   return (
     <article className={styles.container}>
-      <div className={styles.header}>
-        <img
-          className={styles.profilePic}
-          src="https://via.placeholder.com/66x66"
-          alt="Profile"
-        />
-        <div className={styles.meta}>
-          <h3>James B | RideTo</h3>
-          <div className={styles.time}>28th August 17:36</div>
-        </div>
-      </div>
-      {intro && (
-        <div className={styles.intro}>
-          {intro}{' '}
-          {!isReadingMore && (
-            <button onClick={handleReadMoreClick} className={styles.readMore}>
-              Read More
-            </button>
+      {!isReviews && (
+        <Fragment>
+          <div className={styles.header}>
+            {author_image && (
+              <img
+                className={styles.profilePic}
+                src={author_image}
+                alt="Profile"
+              />
+            )}
+            <div className={styles.meta}>
+              <h3>{author} | RideTo</h3>
+              <div className={styles.time}>
+                {moment(created).format('Do MMMM HH:mm')}
+              </div>
+            </div>
+          </div>
+          {intro && (
+            <div className={styles.intro}>
+              {intro}{' '}
+              {!isReadingMore && content.length > intro.length && (
+                <button
+                  onClick={handleReadMoreClick}
+                  className={styles.readMore}>
+                  Read More
+                </button>
+              )}
+            </div>
           )}
-        </div>
+        </Fragment>
       )}
       <div className={styles.media}>
         {contentType !== 'How Tos' ? (
           <img src={image} alt={title} />
         ) : (
-          <YouTube videoId="9zAh9RZAJBo" />
+          youtubeId && <YouTube videoId={youtubeId} />
         )}
       </div>
       {contentType !== 'How Tos' && (
         <div className={styles.footer}>
           <div className={styles.description}>
-            <h2 className={styles.footerTitle}>Voluptate sed nisi esse.</h2>
-            <div className={styles.footerSubtitle}>Rideto.com</div>
+            <h2 className={styles.footerTitle}>{title}</h2>
+            <div className={styles.footerSubtitle}>{hostname}</div>
           </div>
           {contentType === 'Reviews' && <RideToScore score={90} small />}
           <div className={styles.footerButton}>
-            <RideToButton href={`/blog/${slug}`} className={styles.readButton}>
+            <RideToButton
+              href={isReviews ? slug : `/blog/${slug}`}
+              className={styles.readButton}>
               {CONTENT_TYPE_CTAS[contentType]}
             </RideToButton>
           </div>
