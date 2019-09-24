@@ -42,6 +42,7 @@ function NewsItem({ news, contentType }) {
     ? content
     : truncate(content, { separator: ' ', length: 140 })
   const isReviews = contentType === 'Reviews'
+  const isBikes = contentType === 'Bikes'
 
   const handleReadMoreClick = () => {
     setIsReadingMore(true)
@@ -54,6 +55,10 @@ function NewsItem({ news, contentType }) {
   }
 
   let hostname = isURL(slug) ? new URL(slug).hostname : 'rideto.com'
+
+  if (isBikes && extra_url) {
+    hostname = new URL(extra_url).hostname
+  }
 
   return (
     <article className={styles.container}>
@@ -104,7 +109,7 @@ function NewsItem({ news, contentType }) {
           {contentType === 'Reviews' && <RideToScore score={90} small />}
           <div className={styles.footerButton}>
             <RideToButton
-              href={isReviews ? slug : `/blog/${slug}`}
+              href={isReviews ? slug : isBikes ? extra_url : `/blog/${slug}`}
               className={styles.readButton}>
               {CONTENT_TYPE_CTAS[contentType]}
             </RideToButton>

@@ -165,7 +165,11 @@ function News({ selectedGoal, selectedStyle, updateSticky, isStuck }) {
             ))}
           </ul>
         ) : (
-          <p className={styles.noArticles}>No articles available...</p>
+          <Fragment>
+            {!isLoading && (
+              <p className={styles.noArticles}>No articles available...</p>
+            )}
+          </Fragment>
         )}
       </Fragment>
       {next && (
