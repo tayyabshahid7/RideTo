@@ -180,19 +180,21 @@ function News({
             </div>
           </div>
         </div>
-        {news.length > 0 ? (
-          <ul className={styles.list}>
-            {news.map((item, i) => (
-              <NewsItem key={i} news={item} contentType={filter} />
-            ))}
-          </ul>
-        ) : (
-          <Fragment>
-            {!isLoading && (
-              <p className={styles.noArticles}>No articles available...</p>
-            )}
-          </Fragment>
-        )}
+        <div className={styles.results}>
+          {news.length > 0 ? (
+            <ul className={styles.list}>
+              {news.map((item, i) => (
+                <NewsItem key={i} news={item} contentType={filter} />
+              ))}
+            </ul>
+          ) : (
+            <Fragment>
+              {!isLoading && (
+                <p className={styles.noArticles}>No articles available...</p>
+              )}
+            </Fragment>
+          )}
+        </div>
       </Fragment>
       {next && (
         <Button
