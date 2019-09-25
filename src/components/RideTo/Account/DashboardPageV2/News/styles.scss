@@ -8,6 +8,16 @@
   }
 }
 
+.titleFilters {
+  margin-right: -1rem;
+  margin-left: -1rem;
+
+  @media (min-width: 768px) {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
 .titleFiltersStuck {
   @media (min-width: 1025px) {
     position: fixed;
