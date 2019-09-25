@@ -143,21 +143,33 @@
 }
 
 .description {
-  display: flex;
-  align-items: flex-end;
+  // display: flex;
+  // align-items: flex-end;
 
-  @media (min-width: 768px) {
-    display: block;
-  }
+  // @media (min-width: 768px) {
+  //   display: block;
+  // }
+
+  display: block;
 }
 
 .footerTitle {
   margin-bottom: 0;
   margin-right: 0.5rem;
+  font-size: 1.25rem;
 
   @media (min-width: 768px) {
     margin-bottom: 0.5rem;
     margin-right: 0;
+    font-size: 1.5rem;
+  }
+}
+
+.footerTitle.footerTitle {
+  font-size: 1.25rem;
+
+  @media (min-width: 768px) {
+    font-size: 1.5rem;
   }
 }
 
