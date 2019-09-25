@@ -1,10 +1,5 @@
 :global(#signup-portal) {
-  margin-left: auto;
-  margin-right: 45px;
-
-  @media (min-width: 769px) {
-    display: none;
-  }
+  display: none;
 }
 
 .overlay {
@@ -114,10 +109,8 @@
     text-decoration: none;
   }
 
-  @media (min-width: 768px) {
-    &:last-child {
-      margin-left: 0.75rem;
-    }
+  &:last-child {
+    margin-left: 0.75rem;
   }
 }
 
