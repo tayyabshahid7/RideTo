@@ -15,7 +15,7 @@ function Filters({ selectedFilter, handleFilterClick, filters }) {
             onClick={() => {
               handleFilterClick(filter)
             }}>
-            {filter}
+            {filter.replace('How Tos', "How To's")}
           </button>
         </li>
       ))}
