@@ -74,7 +74,7 @@ export const fetchUserDetails = async userId => {
 }
 
 export const fetchIsPasswordSet = async username => {
-  return await get('users/has-password-set', { username }, false)
+  return await get('users/has-password-set/', { username }, false)
 }
 
 export const updateUserPassword = async password => {
