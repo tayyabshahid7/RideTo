@@ -7,6 +7,7 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import zxcvbn from 'zxcvbn'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import { fetchIsPasswordSet, updateUserPassword } from 'services/dashboard'
+import { getUserProfile, getToken } from 'services/auth'
 
 Modal.setAppElement('#rideto-account-page')
 
@@ -19,15 +20,19 @@ function PasswordReset({ isAuthenticated }) {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    async function fetchIsMyPasswordSet() {
-      const response = await fetchIsPasswordSet()
+    async function fetchIsMyPasswordSet(username) {
+      const response = await fetchIsPasswordSet(username)
       const { has_password_set } = response
 
       setIsPasswordSet(has_password_set)
     }
 
     if (isAuthenticated) {
-      fetchIsMyPasswordSet()
+      const user = getUserProfile(getToken())
+
+      if (user) {
+        fetchIsMyPasswordSet(user.username)
+      }
     }
   }, [isAuthenticated])
 
