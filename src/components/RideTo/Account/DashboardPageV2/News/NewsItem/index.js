@@ -7,6 +7,7 @@ import YouTube from 'react-youtube'
 import isURL from 'is-url'
 import moment from 'moment'
 import getYouTubeID from 'get-youtube-id'
+import { isExternalLink } from 'utils/helper'
 
 const CONTENT_TYPE_CTAS = {
   'Latest Blogs': 'Read Blog',
@@ -60,6 +61,8 @@ function NewsItem({ news, contentType }) {
     hostname = new URL(extra_url).hostname
   }
 
+  const link = isReviews ? slug : isBikes ? extra_url : `/blog/${slug}`
+
   return (
     <article className={styles.container}>
       {!isReviews && (
@@ -108,11 +111,14 @@ function NewsItem({ news, contentType }) {
           </div>
           {contentType === 'Reviews' && <RideToScore score={90} small />}
           <div className={styles.footerButton}>
-            <RideToButton
-              href={isReviews ? slug : isBikes ? extra_url : `/blog/${slug}`}
-              className={styles.readButton}>
-              {CONTENT_TYPE_CTAS[contentType]}
-            </RideToButton>
+            {link && (
+              <RideToButton
+                href={link}
+                className={styles.readButton}
+                target={isExternalLink(link) ? '_blank' : undefined}>
+                {CONTENT_TYPE_CTAS[contentType]}
+              </RideToButton>
+            )}
           </div>
         </div>
       )}
