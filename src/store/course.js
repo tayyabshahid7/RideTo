@@ -166,6 +166,12 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
       }
     })
     notificationActions.dispatchSuccess(dispatch, 'Order added')
+    if (response.email_success) {
+      notificationActions.dispatchSuccess(dispatch, 'Email sent')
+    }
+    if (response.sms_success) {
+      notificationActions.dispatchSuccess(dispatch, 'SMS sent')
+    }
     dispatch(
       getSingleCourse({
         schoolId,
