@@ -135,14 +135,23 @@ export const STEP_CBT_BEFORE = {
   introduction: {
     title: 'Introduction',
     text:
-      "The choice of bikes available now is immense. Whether you're looking for a city commuter, weekend cruiser or track day racer, our bike chooser will help you find and book a test ride."
+      'A 1 day course designed to prepare new riders to ride up to a 125cc motorcycle or scooter.',
+    list: [
+      'Ride on dual carriageways',
+      'You cannot ride on motorways or take passengers',
+      'You must display L plates',
+      'Valid for 2 years'
+    ]
   },
   included: {
     title: "What's included",
     items: [
-      'Bike hire and fuel',
-      'Helmet provided',
-      'Gloves & jacket provided'
+      'Bike & helmet hire',
+      'Test fees & fuel',
+      'Online pre-training',
+      'Free cancellation',
+      '135 training locations UK wide',
+      'Dedicated support team'
     ],
     type: 'cbt'
   },
