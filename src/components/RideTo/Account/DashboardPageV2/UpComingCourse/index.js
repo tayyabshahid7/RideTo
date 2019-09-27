@@ -66,9 +66,11 @@ function UpComingCourse({ course, title, handleClick }) {
         <div>
           <h4>Date & time</h4>
           {status === 'TRAINING_CONFIRMED'
-            ? moment(training.date || training.requested_date).format(
-                'ddd Do MMMM YYYY'
-              )
+            ? moment(
+                training.training_date_time ||
+                  training.date ||
+                  training.requested_date
+              ).format('ddd Do MMMM YYYY')
             : getTrainingStatus(status)}
         </div>
       )}

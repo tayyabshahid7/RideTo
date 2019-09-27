@@ -30,6 +30,7 @@ import SidePanel from 'components/RideTo/SidePanel'
 import OrderDetails from 'components/RideTo/Account/OrderDetails'
 import { findLastStepIndex } from './RouteToFreedom/util'
 import Loading from 'components/Loading'
+import { useMediaQuery } from 'react-responsive'
 
 function DashboardPageV2({ match }) {
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
@@ -54,7 +55,10 @@ function DashboardPageV2({ match }) {
     ? selectedOrder.training_location.image
     : ''
 
+  const [isUserDetailsLoaded, setIsUserDetailsLoaded] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [isSticky, setIsSticky] = useState(false)
+  const isDesktop = useMediaQuery({ minWidth: 1025 })
 
   const handleOrderClick = course => {
     setSelectedOrder(course)
@@ -153,6 +157,19 @@ function DashboardPageV2({ match }) {
     setNextStep(clickedStep)
   }
 
+  const updateSticky = status => {
+    setIsSticky(status)
+  }
+
+  useEffect(() => {
+    if (isDesktop) {
+      if ('scrollRestoration' in window) {
+        window.scrollRestoration = 'manual'
+      }
+      window.scrollTo(0, 0)
+    }
+  }, [isLoading])
+
   useEffect(() => {
     const { orderId } = match.params
 
@@ -241,6 +258,8 @@ function DashboardPageV2({ match }) {
       if (achievements.length) {
         setAchivements(achievements)
       }
+
+      setIsUserDetailsLoaded(true)
     }
 
     setNextSteps(DEFAULT_TIMELINE)
@@ -252,6 +271,8 @@ function DashboardPageV2({ match }) {
       if (user) {
         loadUserDetails(user.user_id)
         loadOrders(user.username)
+      } else {
+        setIsUserDetailsLoaded(true)
       }
     }
 
@@ -317,6 +338,8 @@ function DashboardPageV2({ match }) {
     return null
   }
 
+  const isStuck = isDesktop && !isLoading && isSticky
+
   return (
     <Fragment>
       <PasswordReset isAuthenticated={isAuthenticated} />
@@ -360,25 +383,33 @@ function DashboardPageV2({ match }) {
           )}
           <div className={styles.row}>
             <div className={styles.leftCol}>
-              {isAuthenticated && (
-                <div className={styles.pageItem}>
-                  <Achievements achievements={achievements} />
+              <div
+                className={classnames(
+                  styles.leftColInner,
+                  isStuck && styles.leftColInnerStuck
+                )}>
+                <div className={styles.leftColInnerStuckInner}>
+                  {isAuthenticated && (
+                    <div className={styles.pageItem}>
+                      <Achievements achievements={achievements} />
+                    </div>
+                  )}
+                  <div className={styles.pageItem}>
+                    <MyOrders
+                      orders={
+                        orders.length > 0
+                          ? orders
+                          : recentOrder
+                          ? [recentOrder]
+                          : []
+                      }
+                      handleClick={handleOrderClick}
+                    />
+                  </div>
+                  <div className={styles.pageItem}>
+                    <GuidesAdvice />
+                  </div>
                 </div>
-              )}
-              <div className={styles.pageItem}>
-                <MyOrders
-                  orders={
-                    orders.length > 0
-                      ? orders
-                      : recentOrder
-                      ? [recentOrder]
-                      : []
-                  }
-                  handleClick={handleOrderClick}
-                />
-              </div>
-              <div className={styles.pageItem}>
-                <GuidesAdvice />
               </div>
             </div>
             <div className={styles.rightCol}>
@@ -390,6 +421,9 @@ function DashboardPageV2({ match }) {
                 <News
                   selectedGoal={selectedGoal}
                   selectedStyle={selectedStyle}
+                  updateSticky={updateSticky}
+                  isStuck={isStuck}
+                  isUserDetailsLoaded={isUserDetailsLoaded}
                 />
               </div>
             </div>

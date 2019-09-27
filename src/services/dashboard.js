@@ -5,12 +5,20 @@ import {
   isAuthenticated as getIsAuthenticated
 } from 'services/auth'
 
-export const fetchArticles = async (page, style, goal) => {
+export const fetchArticles = async (page, goal, style, category) => {
   const path = `dashboard/dashboard-advice/`
-  const params = {
+  let params = {
     page,
-    style,
-    goal
+    category,
+    count: 5
+  }
+
+  if (category === null) {
+    params = {
+      ...params,
+      style,
+      goal
+    }
   }
 
   const response = await get(path, params, false)
@@ -73,8 +81,8 @@ export const fetchUserDetails = async userId => {
   return await get(`dashboard/${userId}/`)
 }
 
-export const fetchIsPasswordSet = async () => {
-  return await get('users/has-password-set/')
+export const fetchIsPasswordSet = async username => {
+  return await get('users/has-password-set/', { username }, false)
 }
 
 export const updateUserPassword = async password => {

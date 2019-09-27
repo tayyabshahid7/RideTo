@@ -1,5 +1,13 @@
 .container {
   padding: 1.5rem 0 2rem;
+
+  @media (min-width: 1025px) {
+    padding: 0.5rem 0;
+
+    h2 {
+      margin-bottom: 0.25rem;
+    }
+  }
 }
 
 .title {
@@ -24,6 +32,19 @@
     p {
       margin-bottom: 0.25rem;
     }
+  }
+}
+
+.viewAll {
+  font-size: 0.875rem;
+  line-height: 1.5rem;
+  appearance: none;
+  padding: 0;
+  background: transparent;
+  border: 0;
+
+  @media (min-width: 1025px) {
+    display: block;
   }
 }
 

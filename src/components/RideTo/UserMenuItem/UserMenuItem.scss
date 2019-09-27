@@ -1,3 +1,7 @@
+:global(#signup-portal) {
+  display: none;
+}
+
 .overlay {
   position: fixed;
   // top: 90px;
@@ -86,5 +90,36 @@
 .userName {
   @media (min-width: 769px) {
     display: flex;
+  }
+}
+
+.joinButtons {
+  display: flex;
+}
+
+.joinButton {
+  flex-shrink: 0;
+  padding: 0.25rem 1rem;
+  background-color: var(--primary-color);
+  color: #fff;
+  font-weight: bold;
+
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+
+  &:last-child {
+    margin-left: 0.75rem;
+  }
+}
+
+.loginButton {
+  border: 1px solid var(--primary-color);
+  background-color: transparent;
+
+  &,
+  &:hover {
+    color: var(--primary-color);
   }
 }
