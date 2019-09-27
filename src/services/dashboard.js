@@ -73,8 +73,8 @@ export const fetchUserDetails = async userId => {
   return await get(`dashboard/${userId}/`)
 }
 
-export const fetchIsPasswordSet = async () => {
-  return await get('users/has-password-set/')
+export const fetchIsPasswordSet = async username => {
+  return await get('users/has-password-set/', { username }, false)
 }
 
 export const updateUserPassword = async password => {
