@@ -9363,6 +9363,13 @@ react-addons-shallow-compare@^15.6.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-beforeunload@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-beforeunload/-/react-beforeunload-2.1.0.tgz#549eaf801cc2457e0702a11f6e07f24c38328b8e"
+  integrity sha512-D/raQTUUQNuPDBmouSFtWypnfhWSFTz8w/Lfm+9WEazmmqSC10rZBYAANLAju5QQWhYRqCuIUs3yFYlt43Y5Iw==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-circle@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/react-circle/-/react-circle-1.1.1.tgz#f97ccf3e2a37a91ea50280ea8262420e0d1de60c"

@@ -6,7 +6,7 @@ import {
   PostalCodeElement,
   injectStripe
 } from 'react-stripe-elements'
-
+import { useBeforeunload } from 'react-beforeunload'
 import LabelField from 'pages/Widget/components/LabelField'
 import AcceptCheckbox from 'pages/Widget/components/AcceptCheckbox'
 import cardVisa from 'assets/images/card-visa.jpg'
@@ -63,6 +63,8 @@ const CheckoutForm = ({
   const optinLabel =
     widget.email_optin_label ||
     'Add me to the mailing list for the latest news and special offers'
+
+  useBeforeunload(() => 'Changes that you made may not be saved.')
 
   return (
     <div className={styles.checkForm}>
