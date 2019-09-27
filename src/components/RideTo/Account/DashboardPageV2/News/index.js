@@ -23,7 +23,9 @@ function News({
   selectedStyle,
   updateSticky,
   isStuck,
-  isUserDetailsLoaded
+  isUserDetailsLoaded,
+  copyrightRef,
+  setCopyrightHeight
 }) {
   const [page, setPage] = useState(1)
   const [news, setNews] = useState([])
@@ -37,6 +39,7 @@ function News({
 
     const handleScroll = () => {
       const { current } = feedEl
+      const { current: currentCopyright } = copyrightRef
 
       frameId = 0
 
@@ -50,6 +53,14 @@ function News({
         updateSticky(true)
       } else {
         updateSticky(false)
+      }
+
+      const copyrightRect = currentCopyright.getBoundingClientRect()
+
+      if (copyrightRect.y < window.innerHeight) {
+        setCopyrightHeight(window.innerHeight - copyrightRect.y)
+      } else {
+        setCopyrightHeight(0)
       }
     }
 
@@ -76,7 +87,7 @@ function News({
     const debouncedScroll = debounce(() => {
       if (
         window.innerHeight + document.documentElement.scrollTop >
-        document.documentElement.offsetHeight - 250
+        document.documentElement.offsetHeight - 333
       ) {
         if (!isLoading && next) {
           handleLoadMoreClick()
