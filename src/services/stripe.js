@@ -1,8 +1,9 @@
-import { post } from 'services/api'
+import { get, post } from 'services/api'
 
 const handleServerResponse = async ({
   stripe,
   response,
+  setup_id,
   full_name,
   email,
   phone
@@ -11,7 +12,7 @@ const handleServerResponse = async ({
     console.log('response.error', response.error)
     return { error: response.error }
   } else if (response.requires_action) {
-    const { error: errorAction, paymentIntent } = await stripe.handleCardAction(
+    const { error: errorAction } = await stripe.handleCardAction(
       response.payment_intent_client_secret
     )
 
@@ -22,10 +23,7 @@ const handleServerResponse = async ({
       const serverResponse = await post(
         'payment-intent/',
         {
-          payment_intent_id: paymentIntent.id,
-          full_name,
-          email,
-          phone
+          setup_id
         },
         false
       )
@@ -39,7 +37,18 @@ const handleServerResponse = async ({
       })
     }
   } else {
-    return { token: { id: response.customer_id } }
+    const { customer_id } = await post(
+      'create-customer-id/',
+      {
+        setup_id,
+        name: full_name,
+        email,
+        phone
+      },
+      false
+    )
+
+    return { token: { id: customer_id } }
   }
 }
 
@@ -50,14 +59,18 @@ export const handleStripePayment = async ({
   email,
   phone
 }) => {
-  const { paymentMethod, error } = await stripe.createPaymentMethod(
-    'card',
+  const { client_secret } = await get('get-intent/', {}, false)
+
+  const { setupIntent, error } = await stripe.handleCardSetup(
+    client_secret,
     cardElement,
     {
-      billing_details: {
-        name: full_name,
-        email,
-        phone
+      payment_method_data: {
+        billing_details: {
+          name: full_name,
+          email,
+          phone
+        }
       }
     }
   )
@@ -66,13 +79,11 @@ export const handleStripePayment = async ({
     console.log('error', error)
     return { error }
   } else {
+    const setup_id = setupIntent.id
     const response = await post(
       'payment-intent/',
       {
-        payment_method_id: paymentMethod.id,
-        full_name,
-        email,
-        phone
+        setup_id
       },
       false
     )
@@ -80,6 +91,7 @@ export const handleStripePayment = async ({
     return await handleServerResponse({
       stripe,
       response,
+      setup_id,
       full_name,
       email,
       phone
