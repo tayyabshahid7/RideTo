@@ -9,7 +9,10 @@ export const getNextStepConstant = (nextStep, recentOrder) => {
   if (constant === 'STEP_CBT') {
     if (recentTrainingCourseType === 'CBT Training') {
       const recentTraining = recentOrder.trainings[0]
-      const date = recentTraining.date || recentTraining.requested_date
+      const date =
+        recentTraining.training_date_time ||
+        recentTraining.date ||
+        recentTraining.requested_date
       const today = moment().format('YYYY-MM-DD')
 
       if (today > date) {
