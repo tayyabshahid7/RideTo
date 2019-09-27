@@ -5,12 +5,20 @@ import {
   isAuthenticated as getIsAuthenticated
 } from 'services/auth'
 
-export const fetchArticles = async (page, style, goal) => {
+export const fetchArticles = async (page, goal, style, category) => {
   const path = `dashboard/dashboard-advice/`
-  const params = {
+  let params = {
     page,
-    style,
-    goal
+    category,
+    count: 5
+  }
+
+  if (category === null) {
+    params = {
+      ...params,
+      style,
+      goal
+    }
   }
 
   const response = await get(path, params, false)

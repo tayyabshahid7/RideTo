@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styles from './styles.scss'
 import { ALL_ACHIEVEMENTS } from './constants'
 import trophyDone from './trophyDone.svg'
 import trophyTodo from './trophyTodo.svg'
 import moment from 'moment'
+
+const DEFAULT_LENGTH = 2
 
 function Achievements({ achievements }) {
   const mergedAchievements = ALL_ACHIEVEMENTS.map(defaultA => {
@@ -25,19 +27,17 @@ function Achievements({ achievements }) {
   mergedAchievements.sort(({ achieved: a }, { achieved: b }) => b - a)
   const totalLength = mergedAchievements.length
   const achievedLength = mergedAchievements.filter(a => a.achieved).length
-  const [visibleLength, setVisibleLength] = useState(achievedLength)
+  const [visibleLength, setVisibleLength] = useState(DEFAULT_LENGTH)
 
   const handleViewAllClick = () => {
-    setVisibleLength(
-      visibleLength === totalLength ? achievedLength : totalLength
-    )
-  }
-
-  useEffect(() => {
-    if (visibleLength !== totalLength) {
+    if (visibleLength === DEFAULT_LENGTH) {
       setVisibleLength(achievedLength)
     }
-  }, [visibleLength, totalLength, achievedLength])
+
+    if (visibleLength === achievedLength) {
+      setVisibleLength(totalLength)
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -59,9 +59,13 @@ function Achievements({ achievements }) {
             </li>
           ))}
       </ul>
-      <button onClick={handleViewAllClick} className={styles.viewAll}>
-        View {visibleLength === totalLength ? 'less' : 'all'} achievements
-      </button>
+      {visibleLength !== totalLength && (
+        <button onClick={handleViewAllClick} className={styles.viewAll}>
+          {visibleLength === DEFAULT_LENGTH
+            ? 'Show more'
+            : 'View all achievements'}
+        </button>
+      )}
     </div>
   )
 }
