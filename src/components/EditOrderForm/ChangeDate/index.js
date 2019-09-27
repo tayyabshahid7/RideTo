@@ -66,9 +66,9 @@ class ChangeDate extends Component {
   handleUpdateClick() {
     const { onSave, times } = this.props
     const { date, time } = this.state
-    const start_time = `${date}T${time}Z`
+    const training_date_time = `${date}T${time}Z`
     const { course_id } = times.find(t => t.time === time)
-    onSave({ start_time, school_course: course_id }, true)
+    onSave({ training_date_time, school_course: course_id }, true)
   }
 
   render() {
