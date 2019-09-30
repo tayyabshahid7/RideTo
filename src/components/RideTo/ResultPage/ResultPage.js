@@ -14,7 +14,6 @@ import ResultsHeader from './ResultsHeader'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
-import CourseItemNonPartner from './CourseItemNonPartner'
 import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
@@ -47,6 +46,8 @@ const CourseTypeDetails = loadable(() =>
   import('components/RideTo/CourseTypeDetails')
 )
 const CourseDetailPanel = loadable(() => import('./CourseDetailPanel'))
+
+const CourseItemNonPartner = loadable(() => import('./CourseItemNonPartner'))
 
 class ResultPage extends Component {
   constructor(props) {
