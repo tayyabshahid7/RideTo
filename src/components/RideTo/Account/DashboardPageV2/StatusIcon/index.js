@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './styles.scss'
-import { camelCase } from 'lodash'
+import camelCase from 'lodash/camelCase'
 import classnames from 'classnames'
 import finish from './finish.svg'
 import start from './start.svg'

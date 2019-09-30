@@ -5,7 +5,7 @@ import BikeSummary from '../BikeSummary'
 import Sort from '../Sort'
 import Filters from '../Filters'
 import 'react-sliding-pane-spread-props/dist/react-sliding-pane.css'
-import { isEqual } from 'lodash'
+import isEqual from 'lodash/isEqual'
 import MySlidingPane from '../MySlidingPane'
 import {
   SORT_OPTIONS,

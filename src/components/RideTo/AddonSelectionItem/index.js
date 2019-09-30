@@ -3,7 +3,7 @@ import AddonSizes from './AddonSizes'
 import AddonImageSlider from './AddonImageSlider'
 import styles from './AddonSelectionItem.scss'
 import RideToButton from 'components/RideTo/Button'
-import { kebabCase } from 'lodash'
+import kebabCase from 'lodash/kebabCase'
 
 class AddonSelectionItem extends React.Component {
   constructor(props) {
