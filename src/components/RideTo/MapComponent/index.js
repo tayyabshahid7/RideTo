@@ -27,6 +27,8 @@ class MapComponent extends Component {
       viewport: {}
     }
 
+    console.log("hello it's me the map")
+
     this.updateViewport = this.updateViewport.bind(this)
     this.renderMarker = this.renderMarker.bind(this)
     this.renderPin = this.renderPin.bind(this)

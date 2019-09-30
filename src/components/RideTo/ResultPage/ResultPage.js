@@ -14,7 +14,6 @@ import ResultsHeader from './ResultsHeader'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
-import MapComponent from 'components/RideTo/MapComponent'
 import CourseItemNonPartner from './CourseItemNonPartner'
 import SidePanel from 'components/RideTo/SidePanel'
 import CourseDetailPanel from './CourseDetailPanel'
@@ -37,9 +36,13 @@ import FullLicenceIncluded from './FullLicenceIncluded'
 import FullLicenceFaq from './FullLicenceFaq'
 import POMBanner from './POMBanner'
 import FullLicenceBanner from './FullLicenceBanner'
+import loadable from '@loadable/component'
+import MediaQuery from 'react-responsive'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
+
+const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 
 class ResultPage extends Component {
   constructor(props) {
@@ -859,13 +862,15 @@ class ResultPage extends Component {
                           </div>
                         )}
                         {courses && userLocation && (
-                          <MapComponent
-                            className={styles.mapWrapper}
-                            courses={courses}
-                            userLocation={userLocation}
-                            width="100%"
-                            hiddenOnMobile
-                          />
+                          <MediaQuery minWidth={769}>
+                            <MapComponent
+                              className={styles.mapWrapper}
+                              courses={courses}
+                              userLocation={userLocation}
+                              width="100%"
+                              hiddenOnMobile
+                            />
+                          </MediaQuery>
                         )}
                       </div>
                     </div>
