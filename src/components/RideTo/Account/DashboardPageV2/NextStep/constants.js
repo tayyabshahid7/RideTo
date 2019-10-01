@@ -45,7 +45,7 @@ export const STEP_LICENCE = {
   },
   form: {
     icon: calculator,
-    href: '/',
+    href: 'https://rideto.typeform.com/to/XeXuVE',
     buttonText: 'Open licence calculator'
   },
   status: 'Next Step',
@@ -103,7 +103,10 @@ export const STEP_REVISE = {
   guides: {
     title: 'Revision guides',
     items: [
-      { title: 'What to Prepare For Your CBT Training?', url: '/' },
+      {
+        title: 'What to Prepare For Your CBT Training?',
+        url: 'https://www.rideto.com/blog/prepare-for-cbt-training'
+      },
       {
         title: 'Motorcycle Controls and Overview',
         url: 'https://www.rideto.com/blog/motorcycle-controls'
@@ -122,7 +125,7 @@ export const STEP_REVISE = {
   },
   form: {
     icon: revise,
-    href: '/',
+    href: 'https://www.rideto.com/blog/prepare-for-cbt-training',
     buttonText: 'Start revision'
   },
   status: 'Not Started',
