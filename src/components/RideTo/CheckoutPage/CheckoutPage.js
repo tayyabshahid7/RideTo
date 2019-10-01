@@ -14,8 +14,12 @@ import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { fetchUser } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
-import AddressSelectModal from 'components/RideTo/AddressSelectModal'
 import { tldExists } from 'tldjs'
+import loadable from '@loadable/component'
+
+const AddressSelectModal = loadable(() =>
+  import('components/RideTo/AddressSelectModal')
+)
 
 const REQUIRED_FIELDS = [
   'user_birthdate',
