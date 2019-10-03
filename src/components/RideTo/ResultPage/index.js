@@ -54,7 +54,7 @@ class ResultPageContainer extends Component {
       navigation: this.navigation,
       page: 1,
       page_size: window.matchMedia('(min-width: 769px)').matches ? 8 : 3,
-      next: true
+      next: false
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
@@ -83,7 +83,8 @@ class ResultPageContainer extends Component {
     const { date, sortByOption, page } = this.state
     if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
       this.setState({
-        page: 1
+        page: 1,
+        next: false
       })
     }
 
