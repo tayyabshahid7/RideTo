@@ -31,7 +31,8 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
 }
 
 export const fetchRidetoCourses = async params => {
-  const path = `courses/`
+  // const path = `courses/`
+  const path = `courses-new/`
 
   const response = await get(path, params, false)
 

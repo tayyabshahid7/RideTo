@@ -91,16 +91,19 @@ class ResultPageContainer extends Component {
       const { date, sortByOption, courseType, postcode } = this.state
 
       this.setState({ loading: true })
-      let response = await fetchRidetoCourses({
+      let { results } = await fetchRidetoCourses({
         course_type: courseType,
         postcode: postcode,
         radius_miles: 15,
         date,
         ordering: sortByOption
       })
-      if (response) {
+      if (results) {
         this.setState({
-          courses: response,
+          courses: {
+            available: results.filter(({ is_available_on: a }) => a),
+            unavailable: results.filter(({ is_available_on: a }) => !a)
+          },
           loading: false
         })
       } else {
