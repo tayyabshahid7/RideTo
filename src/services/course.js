@@ -2,6 +2,8 @@ import moment from 'moment'
 import { get, destroy, post, put, patch } from 'services/api'
 import { s } from 'utils/helper'
 import { Features } from 'common/info'
+import { parseQueryString } from 'services/api'
+import { getStaticData } from 'services/page'
 
 export const getCourseSpaceText = course => {
   const availableSpaces = course.spaces - course.orders.length
@@ -35,6 +37,19 @@ export const fetchRidetoCourses = async params => {
   const path = `courses-new/`
 
   const response = await get(path, params, false)
+
+  return response
+}
+
+export const fetchSingleRidetoCourse = async id => {
+  const staticData = getStaticData('RIDETO_PAGE')
+  const qs = parseQueryString(window.location.search.slice(1))
+  const postcode = staticData.postcode || qs.postcode || ''
+  const courseType = staticData.courseType || qs.courseType || ''
+
+  const path = `courses-new/${id}/`
+
+  const response = await get(path, { course_type: courseType, postcode }, false)
 
   return response
 }
