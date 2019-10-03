@@ -51,7 +51,9 @@ class ResultPageContainer extends Component {
       courseType,
       courses: null,
       loading: false,
-      navigation: this.navigation
+      navigation: this.navigation,
+      page: 1,
+      page_size: window.matchMedia('(min-width: 769px)').matches ? 8 : 3
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
@@ -88,7 +90,14 @@ class ResultPageContainer extends Component {
 
   async loadCourses() {
     try {
-      const { date, sortByOption, courseType, postcode } = this.state
+      const {
+        date,
+        sortByOption,
+        courseType,
+        postcode,
+        page,
+        page_size
+      } = this.state
 
       this.setState({ loading: true })
       let { results } = await fetchRidetoCourses({
@@ -96,7 +105,9 @@ class ResultPageContainer extends Component {
         postcode: postcode,
         radius_miles: 15,
         date,
-        ordering: sortByOption
+        ordering: sortByOption,
+        page,
+        page_size
       })
       if (results) {
         this.setState({
