@@ -30,6 +30,7 @@ import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
 import { fetchSingleRidetoCourse } from 'services/course'
+import InfiniteScroll from 'react-infinite-scroller'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
@@ -622,7 +623,10 @@ class ResultPage extends Component {
       loading,
       userLocation,
       sortByOption,
-      location: { pathname, search }
+      location: { pathname, search },
+      loadMore,
+      hasNext,
+      page
     } = this.props
     const {
       selectedCourse,
@@ -726,7 +730,7 @@ class ResultPage extends Component {
           <Row>
             <Col>
               <Loading
-                loading={loading}
+                loading={loading && hasNext === true}
                 position="top"
                 className={styles.contentWrapper}
                 cover>
@@ -788,88 +792,101 @@ class ResultPage extends Component {
                         isFullLicence && styles.noMargin
                       )}>
                       <div className={styles.coursesPanel}>
-                        {hasPOM && hasPartnerResults && <POMBanner />}
-                        {isFullLicence && (
-                          <FullLicenceBanner
-                            className={styles.fastTrackAdvert}
-                            href="https://rideto.typeform.com/to/CvduD4"
-                          />
-                        )}
-                        {courses.available.length > 0 && (
-                          <React.Fragment>
-                            {courses.available.map(
-                              (course, index) =>
-                                course.is_partner && (
-                                  <CourseItem
-                                    showCallMessage={
-                                      index === 2 ||
-                                      (courses.available.length < 3 &&
-                                        index === courses.available.length - 1)
-                                    }
-                                    courseType={courseType}
-                                    id={`card-course-${course.id}`}
-                                    course={course}
-                                    className={styles.courseSpacing}
-                                    key={course.id}
-                                    handleDetailClick={this.handleDetailClick}
-                                    handlePriceClick={this.handlePriceClick}
-                                    handleReviewClick={this.handleReviewClick}
-                                  />
-                                )
+                        <InfiniteScroll
+                          loadMore={loadMore}
+                          hasMore={!loading && !!hasNext}>
+                          {hasPOM && hasPartnerResults && <POMBanner />}
+                          {isFullLicence && (
+                            <FullLicenceBanner
+                              className={styles.fastTrackAdvert}
+                              href="https://rideto.typeform.com/to/CvduD4"
+                            />
+                          )}
+                          {courses.available.length > 0 && (
+                            <React.Fragment>
+                              {courses.available.map(
+                                (course, index) =>
+                                  course.is_partner && (
+                                    <CourseItem
+                                      showCallMessage={
+                                        index === 2 ||
+                                        (courses.available.length < 3 &&
+                                          index ===
+                                            courses.available.length - 1)
+                                      }
+                                      courseType={courseType}
+                                      id={`card-course-${course.id}`}
+                                      course={course}
+                                      className={styles.courseSpacing}
+                                      key={course.id}
+                                      handleDetailClick={this.handleDetailClick}
+                                      handlePriceClick={this.handlePriceClick}
+                                      handleReviewClick={this.handleReviewClick}
+                                    />
+                                  )
+                              )}
+                            </React.Fragment>
+                          )}
+                          {courses.unavailable &&
+                            courses.unavailable.length > 0 && (
+                              <React.Fragment>
+                                {hasPartnerResults && (
+                                  <div className={styles.subTitle}>
+                                    Available on other dates
+                                  </div>
+                                )}
+                                {courses.unavailable.map((course, index) =>
+                                  course.is_partner ? (
+                                    <CourseItem
+                                      showCallMessage={
+                                        index === 2 ||
+                                        (courses.unavailable.length < 3 &&
+                                          index ===
+                                            courses.unavailable.length - 1)
+                                      }
+                                      courseType={courseType}
+                                      id={`card-course-${course.id}`}
+                                      unavaiableDate={true}
+                                      course={course}
+                                      className={styles.courseSpacing}
+                                      key={course.id}
+                                      handleDetailClick={this.handleDetailClick}
+                                      handlePriceClick={this.handlePriceClick}
+                                      handleReviewClick={this.handleReviewClick}
+                                    />
+                                  ) : (
+                                    <CourseItemNonPartner
+                                      id={`card-course-${course.id}`}
+                                      course={course}
+                                      className="mt-3"
+                                      key={course.id}
+                                    />
+                                  )
+                                )}
+                              </React.Fragment>
                             )}
-                          </React.Fragment>
-                        )}
-                        {courses.unavailable && courses.unavailable.length > 0 && (
-                          <React.Fragment>
-                            {hasPartnerResults && (
-                              <div className={styles.subTitle}>
-                                Available on other dates
-                              </div>
+                          {!hasPartnerResults &&
+                            courses.available.length > 0 && (
+                              <React.Fragment>
+                                {courses.available.map(
+                                  (course, index) =>
+                                    !course.is_partner && (
+                                      <CourseItemNonPartner
+                                        id={`card-course-${course.id}`}
+                                        course={course}
+                                        className="mt-3"
+                                        key={course.id}
+                                      />
+                                    )
+                                )}
+                              </React.Fragment>
                             )}
-                            {courses.unavailable.map((course, index) =>
-                              course.is_partner ? (
-                                <CourseItem
-                                  showCallMessage={
-                                    index === 2 ||
-                                    (courses.unavailable.length < 3 &&
-                                      index === courses.unavailable.length - 1)
-                                  }
-                                  courseType={courseType}
-                                  id={`card-course-${course.id}`}
-                                  unavaiableDate={true}
-                                  course={course}
-                                  className={styles.courseSpacing}
-                                  key={course.id}
-                                  handleDetailClick={this.handleDetailClick}
-                                  handlePriceClick={this.handlePriceClick}
-                                  handleReviewClick={this.handleReviewClick}
-                                />
-                              ) : (
-                                <CourseItemNonPartner
-                                  id={`card-course-${course.id}`}
-                                  course={course}
-                                  className="mt-3"
-                                  key={course.id}
-                                />
-                              )
-                            )}
-                          </React.Fragment>
-                        )}
-                        {!hasPartnerResults && courses.available.length > 0 && (
-                          <React.Fragment>
-                            {courses.available.map(
-                              (course, index) =>
-                                !course.is_partner && (
-                                  <CourseItemNonPartner
-                                    id={`card-course-${course.id}`}
-                                    course={course}
-                                    className="mt-3"
-                                    key={course.id}
-                                  />
-                                )
-                            )}
-                          </React.Fragment>
-                        )}
+                          {loading && !!hasNext && (
+                            <Loading loading={true} key={page}>
+                              {' '}
+                            </Loading>
+                          )}
+                        </InfiniteScroll>
                       </div>
                       <div className={styles.mapPanel}>
                         {hasPartnerResults && (
