@@ -83,10 +83,17 @@ class ResultPageContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { date, sortByOption, page } = this.state
     if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
-      this.setState({
-        page: 1,
-        next: false
-      })
+      this.setState(
+        {
+          page: 0,
+          next: false
+        },
+        () => {
+          this.setState({
+            page: 1
+          })
+        }
+      )
     }
 
     if (page !== prevState.page) {
@@ -109,6 +116,10 @@ class ResultPageContainer extends Component {
         page_size,
         courses
       } = this.state
+
+      if (page === 0) {
+        return
+      }
 
       this.setState({ loading: true })
       let { results, next, count } = await fetchRidetoCourses({
