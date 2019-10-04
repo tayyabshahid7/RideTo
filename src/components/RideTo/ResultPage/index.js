@@ -54,7 +54,8 @@ class ResultPageContainer extends Component {
       navigation: this.navigation,
       page: 1,
       page_size: window.matchMedia('(min-width: 769px)').matches ? 8 : 3,
-      next: false
+      next: false,
+      count: 0
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
@@ -110,10 +111,10 @@ class ResultPageContainer extends Component {
       } = this.state
 
       this.setState({ loading: true })
-      let { results, next } = await fetchRidetoCourses({
+      let { results, next, count } = await fetchRidetoCourses({
         course_type: courseType,
         postcode: postcode,
-        radius_miles: 15,
+        radius_miles: 30,
         date,
         ordering: sortByOption,
         page,
@@ -127,7 +128,8 @@ class ResultPageContainer extends Component {
               available: results.filter(({ is_available_on: a }) => a),
               unavailable: results.filter(({ is_available_on: a }) => !a)
             },
-            loading: false
+            loading: false,
+            count
           })
         } else {
           this.setState({
@@ -142,7 +144,8 @@ class ResultPageContainer extends Component {
                 ...results.filter(({ is_available_on: a }) => !a)
               ]
             },
-            loading: false
+            loading: false,
+            count
           })
         }
       } else {
@@ -183,7 +186,8 @@ class ResultPageContainer extends Component {
       postcode,
       navigation,
       next,
-      page
+      page,
+      count
     } = this.state
 
     return (
@@ -205,6 +209,7 @@ class ResultPageContainer extends Component {
               loadMore={this.loadMore}
               hasNext={next}
               page={page}
+              count={count}
             />
           )}
         />

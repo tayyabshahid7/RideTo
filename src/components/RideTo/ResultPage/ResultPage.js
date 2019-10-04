@@ -626,7 +626,8 @@ class ResultPage extends Component {
       location: { pathname, search },
       loadMore,
       hasNext,
-      page
+      page,
+      count: resultsCount
     } = this.props
     const {
       selectedCourse,
@@ -683,14 +684,14 @@ class ResultPage extends Component {
       bookNowDisabled = true
     }
 
-    let resultsCount = 0
+    // let resultsCount = 0
 
-    if (courses) {
-      const unavailableCount = courses.unavailable
-        ? courses.unavailable.length
-        : 0
-      resultsCount = courses.available.length + unavailableCount
-    }
+    // if (courses) {
+    //   const unavailableCount = courses.unavailable
+    //     ? courses.unavailable.length
+    //     : 0
+    //   resultsCount = courses.available.length + unavailableCount
+    // }
 
     if (addCourseIdParam) {
       return (
