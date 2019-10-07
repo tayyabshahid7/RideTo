@@ -32,6 +32,7 @@ function Form({ form }) {
         <Button
           target="_blank"
           href={href}
+          rel="noopener noreferrer"
           modern
           className={classnames(styles.button, styles.linkButton)}>
           <span>{buttonText}</span>
