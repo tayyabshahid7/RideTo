@@ -39,7 +39,7 @@ function Contact() {
   return (
     <Fragment>
       <Helmet>
-        <title>Rideto | Conact Us</title>
+        <title>Contact Us | RideTo</title>
       </Helmet>
       <section className={styles.header}>
         <div className={styles.container}>
