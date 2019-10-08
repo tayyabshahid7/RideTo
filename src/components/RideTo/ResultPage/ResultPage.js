@@ -14,22 +14,22 @@ import ResultsHeader from './ResultsHeader'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
-import CourseItemNonPartner from './CourseItemNonPartner'
 import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
 import { fetchCoursesTypes } from 'services/course-type'
-import { isEqual } from 'lodash'
+import isEqual from 'lodash/isEqual'
 import { isBankHoliday } from 'services/misc'
-import { getCourseIdFromSearch, findResultsCourseWithId } from 'services/course'
+import { getCourseIdFromSearch } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
 import { getStaticData, flashDiv } from 'services/page'
 import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
+import { fetchSingleRidetoCourse } from 'services/course'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
@@ -47,6 +47,8 @@ const CourseTypeDetails = loadable(() =>
   import('components/RideTo/CourseTypeDetails')
 )
 const CourseDetailPanel = loadable(() => import('./CourseDetailPanel'))
+
+const CourseItemNonPartner = loadable(() => import('./CourseItemNonPartner'))
 
 class ResultPage extends Component {
   constructor(props) {
@@ -157,25 +159,31 @@ class ResultPage extends Component {
     })
   }
 
-  handleDetailClick(course) {
+  async handleDetailClick(course) {
+    const selectedCourse = await fetchSingleRidetoCourse(course.id)
+
     this.setState({
-      selectedCourse: course,
+      selectedCourse,
       activeTab: 1,
       instantDate: this.props.date
     })
   }
 
-  handlePriceClick(course) {
+  async handlePriceClick(course) {
+    const selectedCourse = await fetchSingleRidetoCourse(course.id)
+
     this.setState({
-      selectedCourse: course,
+      selectedCourse,
       activeTab: 3,
       instantDate: this.props.date
     })
   }
 
-  handleReviewClick(course) {
+  async handleReviewClick(course) {
+    const selectedCourse = await fetchSingleRidetoCourse(course.id)
+
     this.setState({
-      selectedCourse: course,
+      selectedCourse,
       activeTab: 2,
       instantDate: this.props.date
     })
@@ -504,7 +512,7 @@ class ResultPage extends Component {
     return true
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     if (!this.props.courses) {
       return
     }
@@ -529,8 +537,10 @@ class ResultPage extends Component {
     // On initial page load, open the sidebar if courseId is set as param
     if (!this.state.initialLoaded) {
       if (courseId) {
+        const selectedCourse = await fetchSingleRidetoCourse(courseId)
+
         this.setState({
-          selectedCourse: findResultsCourseWithId(this.props.courses, courseId),
+          selectedCourse,
           activeTab: 3,
           instantDate: this.props.date,
           initialLoaded: true
@@ -581,8 +591,10 @@ class ResultPage extends Component {
         })
       }
       if (courseId && this.state.selectedCourse === null) {
+        const selectedCourse = await fetchSingleRidetoCourse(courseId)
+
         this.setState({
-          selectedCourse: findResultsCourseWithId(this.props.courses, courseId)
+          selectedCourse
         })
       }
     }

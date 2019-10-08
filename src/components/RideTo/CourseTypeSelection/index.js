@@ -1,12 +1,10 @@
 import React from 'react'
 import { Container, Row, Col } from 'reactstrap'
-
+import loadable from '@loadable/component'
 import { parseQueryString } from 'services/api'
 import { fetchCoursesTypes, getFilters } from 'services/course-type'
 import CourseTypeItem from 'components/RideTo/CourseTypeItem'
 import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFilters'
-import SidePanel from 'components/RideTo/SidePanel'
-import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import Button from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import classnames from 'classnames'
@@ -16,6 +14,11 @@ import Loading from 'components/Loading'
 import styles from './CourseTypeSelection.scss'
 
 import { COURSETYPE_ORDER } from 'common/constants'
+
+const SidePanel = loadable(() => import('components/RideTo/SidePanel'))
+const CourseTypeDetails = loadable(() =>
+  import('components/RideTo/CourseTypeDetails')
+)
 
 const getBookUrl = (courseType, postcode) => {
   if (courseType === 'TFL_ONE_ON_ONE') {
@@ -185,15 +188,17 @@ class CourseTypeSelection extends React.Component {
             </Row>
           </Container>
         </Loading>
-        <SidePanel
-          footer={footer}
-          visible={selectedCourseType !== null}
-          headingImage={detailsImage}
-          onDismiss={() => this.handleDetails(null)}>
-          {selectedCourseType && (
-            <CourseTypeDetails courseType={selectedCourseType} />
-          )}
-        </SidePanel>
+        {selectedCourseType && (
+          <SidePanel
+            footer={footer}
+            visible={selectedCourseType !== null}
+            headingImage={detailsImage}
+            onDismiss={() => this.handleDetails(null)}>
+            {selectedCourseType && (
+              <CourseTypeDetails courseType={selectedCourseType} />
+            )}
+          </SidePanel>
+        )}
       </React.Fragment>
     )
   }

@@ -5,7 +5,7 @@ import Button from 'components/RideTo/Button'
 import { fetchArticles } from 'services/dashboard'
 import Filters from './Filters'
 import classnames from 'classnames'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 import { fetchBikes } from 'services/dashboard'
 
 const FILTERS = {
