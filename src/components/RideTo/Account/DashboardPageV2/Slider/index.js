@@ -5,7 +5,6 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { NextArrow, PrevArrow } from './Arrows'
 import { useMediaQuery } from 'react-responsive'
-import { isExternalLink } from 'utils/helper'
 
 function Slider({ gear, constant }) {
   const isDesktop = useMediaQuery({ minWidth: 1025 })
@@ -20,10 +19,7 @@ function Slider({ gear, constant }) {
       {gear.length > 0 && (
         <Slick {...settings}>
           {gear.map(({ name, link, image }) => (
-            <a
-              key={name}
-              href={link}
-              target={isExternalLink(link) ? '_blank' : undefined}>
+            <a key={name} href={link} target="_blank" rel="noopener noreferrer">
               <div className={styles.slide}>
                 <img src={image} alt="" />
                 <h4 className={styles.title}>

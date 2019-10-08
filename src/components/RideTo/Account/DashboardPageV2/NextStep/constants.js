@@ -37,7 +37,7 @@ export const STEP_LICENCE = {
     'I have an EU licence, what do I need?':
       "You'll need to complete a D91 form with the government to get a UK counterpart licence number OR apply for a UK Provisional/Driving Licence.",
     "I don't have a licence/ I have non-EU licence, what do I need?":
-      'You\'ll need to apply for a UK Provisional licence with the government <a href="https://www.gov.uk/apply-first-provisional-driving-licence" target="_blank">here</a>.',
+      'You\'ll need to apply for a UK Provisional licence with the government <a href="https://www.gov.uk/apply-first-provisional-driving-licence" target="_blank" rel="noopener noreferrer">here</a>.',
     'How do I pass the CBT test?':
       "A common misunderstanding - there is no CBT test, it's a training course, which the 5 elements need to be completed in order to gain the certificate. Therefore, if you want a CBT ‘licence', book the CBT training.",
     'What is the ITM course? Do I need to take it?':
@@ -468,7 +468,7 @@ export const STEP_RIDE = {
   introduction: {
     title: 'Introduction',
     text:
-      'Congratulations!!! You made it! Riding a bike is like nothing else. The fun, freedom and community of two wheels is unique and we’re psyched you’ve become apart of it with RideTo. Now it’s all about making the most of your bike. Join our <a target="_blank" href="https://www.facebook.com/groups/newmotorcyclists/?ref=bookmarks">Facebook group</a> to get involved with the community and check back soon for the latest ride outs and events.'
+      'Congratulations!!! You made it! Riding a bike is like nothing else. The fun, freedom and community of two wheels is unique and we’re psyched you’ve become apart of it with RideTo. Now it’s all about making the most of your bike. Join our <a target="_blank" rel="noopener noreferrer" href="https://www.facebook.com/groups/newmotorcyclists/?ref=bookmarks">Facebook group</a> to get involved with the community and check back soon for the latest ride outs and events.'
   },
   guides: {
     title: 'Advice',

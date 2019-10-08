@@ -7,7 +7,6 @@ import YouTube from 'react-youtube'
 import isURL from 'is-url'
 import moment from 'moment'
 import getYouTubeID from 'get-youtube-id'
-import { isExternalLink } from 'utils/helper'
 
 const CONTENT_TYPE_CTAS = {
   'Latest Blogs': 'Read Blog',
@@ -115,7 +114,8 @@ function NewsItem({ news, contentType }) {
               <RideToButton
                 href={link}
                 className={styles.readButton}
-                target={isExternalLink(link) ? '_blank' : undefined}>
+                target="_blank"
+                rel="noopener noreferrer">
                 {CONTENT_TYPE_CTAS[contentType]}
               </RideToButton>
             )}
