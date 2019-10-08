@@ -372,9 +372,11 @@ class CheckoutPage extends Component {
 
     if (
       prevState.details.riding_experience !== details.riding_experience &&
-      ['Cycling experience', 'Off road motorcycling'].includes(
-        details.riding_experience
-      )
+      [
+        'Cycling experience',
+        'On road motorcycling',
+        'Off road motorcycling'
+      ].includes(details.riding_experience)
     ) {
       handeUpdateOption({
         isInexperienced: true
