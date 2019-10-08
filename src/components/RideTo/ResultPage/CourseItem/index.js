@@ -7,7 +7,7 @@ import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
-// import { loadTypeformScript } from 'utils/helper'
+import { loadTypeformScript } from 'utils/helper'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 
 class CourseItem extends Component {
@@ -53,16 +53,11 @@ class CourseItem extends Component {
     )
   }
 
-  // isFullLicenceTypeform(course) {
-  //   const { courseType } = this.props
-  //   const { instant_book } = course
+  isFullLicenceTypeform({ price }) {
+    const { courseType } = this.props
 
-  //   if (courseType === 'FULL_LICENCE' && instant_book === false) {
-  //     return true
-  //   } else {
-  //     return false
-  //   }
-  // }
+    return !+price && courseType === 'FULL_LICENCE'
+  }
 
   render() {
     const {
@@ -77,11 +72,11 @@ class CourseItem extends Component {
       courseType
     } = this.props
 
-    // const isTypeform = this.isFullLicenceTypeform(course)
+    const isTypeform = this.isFullLicenceTypeform(course)
 
-    // if (isTypeform) {
-    //   loadTypeformScript()
-    // }
+    if (isTypeform) {
+      loadTypeformScript()
+    }
 
     const isFullLicence = courseType === 'FULL_LICENCE'
 
@@ -148,32 +143,30 @@ class CourseItem extends Component {
             </div>
           </div>
           <div className={styles.footer}>
-            {course.price && (
-              <div className={styles.price}>
-                £{parseInt(course.price / 100.0, 10)}
-                {courseType === 'FULL_LICENCE' && '/Hr'}
-              </div>
-            )}
-            {/*
-            {isTypeform ? (
+            {!isTypeform ? (
+              <Fragment>
+                <div className={styles.price}>
+                  £{parseInt(course.price / 100.0, 10)}
+                  {courseType === 'FULL_LICENCE' && '/Hr'}
+                </div>
+                <div
+                  className={classnames(
+                    styles.cta,
+                    unavaiableDate && styles.ctaDateUnavailable
+                  )}
+                  onClick={() => handlePriceClick(course)}>
+                  <div>Select</div>
+                  <IconArrowRight className={styles.arrowIcon} />
+                </div>
+              </Fragment>
+            ) : (
               <a
                 href="https://rideto.typeform.com/to/U9apGA"
                 className={classnames(styles.cta, 'typeform-share')}>
                 <div>Enquire</div>
                 <IconArrowRight className={styles.arrowIcon} />
               </a>
-            ) : (
             )}
-            */}
-            <div
-              className={classnames(
-                styles.cta,
-                unavaiableDate && styles.ctaDateUnavailable
-              )}
-              onClick={() => handlePriceClick(course)}>
-              <div>Select</div>
-              <IconArrowRight className={styles.arrowIcon} />
-            </div>
           </div>
         </div>
         {showCallMessage && (
