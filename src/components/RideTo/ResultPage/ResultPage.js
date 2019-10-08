@@ -14,11 +14,7 @@ import ResultsHeader from './ResultsHeader'
 import styles from './ResultPage.scss'
 import DateSelector from './DateSelector'
 import CourseItem from './CourseItem'
-import MapComponent from 'components/RideTo/MapComponent'
 import CourseItemNonPartner from './CourseItemNonPartner'
-import SidePanel from 'components/RideTo/SidePanel'
-import CourseDetailPanel from './CourseDetailPanel'
-import DateSelectorModal from './DateSelectorModal'
 import RideToButton from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
@@ -30,16 +26,27 @@ import { isBankHoliday } from 'services/misc'
 import { getCourseIdFromSearch, findResultsCourseWithId } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam } from 'utils/helper'
-import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import { getStaticData, flashDiv } from 'services/page'
-import FullLicenceGuide from './FullLicenceGuide'
-import FullLicenceIncluded from './FullLicenceIncluded'
-import FullLicenceFaq from './FullLicenceFaq'
 import POMBanner from './POMBanner'
-import FullLicenceBanner from './FullLicenceBanner'
+import loadable from '@loadable/component'
+import MediaQuery from 'react-responsive'
 
 import smoothscroll from 'smoothscroll-polyfill'
 smoothscroll.polyfill()
+
+const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
+const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
+
+const FullLicenceGuide = loadable(() => import('./FullLicenceGuide'))
+const FullLicenceIncluded = loadable(() => import('./FullLicenceIncluded'))
+const FullLicenceFaq = loadable(() => import('./FullLicenceFaq'))
+const FullLicenceBanner = loadable(() => import('./FullLicenceBanner'))
+
+const SidePanel = loadable(() => import('components/RideTo/SidePanel'))
+const CourseTypeDetails = loadable(() =>
+  import('components/RideTo/CourseTypeDetails')
+)
+const CourseDetailPanel = loadable(() => import('./CourseDetailPanel'))
 
 class ResultPage extends Component {
   constructor(props) {
@@ -859,13 +866,15 @@ class ResultPage extends Component {
                           </div>
                         )}
                         {courses && userLocation && (
-                          <MapComponent
-                            className={styles.mapWrapper}
-                            courses={courses}
-                            userLocation={userLocation}
-                            width="100%"
-                            hiddenOnMobile
-                          />
+                          <MediaQuery minWidth={769}>
+                            <MapComponent
+                              className={styles.mapWrapper}
+                              courses={courses}
+                              userLocation={userLocation}
+                              width="100%"
+                              hiddenOnMobile
+                            />
+                          </MediaQuery>
                         )}
                       </div>
                     </div>
