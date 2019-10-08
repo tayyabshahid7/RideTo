@@ -14,8 +14,8 @@ const FILTERS = {
   Reviews: null,
   Bikes: 6,
   Rides: 12,
-  Fun: 10,
-  Events: 11
+  Fun: 10
+  // Events: 11
 }
 
 function News({
