@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useState, useEffect, Fragment, useRef } from 'react'
 import styles from './styles.scss'
 import RouteToFreedom from './RouteToFreedom'
 import NextStep from './NextStep'
@@ -59,6 +59,9 @@ function DashboardPageV2({ match }) {
   const [isLoading, setIsLoading] = useState(true)
   const [isSticky, setIsSticky] = useState(false)
   const isDesktop = useMediaQuery({ minWidth: 1025 })
+
+  const copyrightRef = useRef(null)
+  const [copyrightHeight, setCopyrightHeight] = useState(0)
 
   const handleOrderClick = course => {
     setSelectedOrder(course)
@@ -387,7 +390,12 @@ function DashboardPageV2({ match }) {
                 className={classnames(
                   styles.leftColInner,
                   isStuck && styles.leftColInnerStuck
-                )}>
+                )}
+                style={
+                  isStuck
+                    ? { maxHeight: `calc(100vh - ${copyrightHeight}px)` }
+                    : undefined
+                }>
                 <div className={styles.leftColInnerStuckInner}>
                   {isAuthenticated && (
                     <div className={styles.pageItem}>
@@ -424,8 +432,28 @@ function DashboardPageV2({ match }) {
                   updateSticky={updateSticky}
                   isStuck={isStuck}
                   isUserDetailsLoaded={isUserDetailsLoaded}
+                  copyrightRef={copyrightRef}
+                  setCopyrightHeight={setCopyrightHeight}
                 />
               </div>
+            </div>
+          </div>
+          <div
+            ref={copyrightRef}
+            className={classnames(styles.pageItem, styles.pageItemFooter)}>
+            <div className={styles.copyFooter}>
+              © 2019 RideTo Ltd. Registered company number 10454345. Registered
+              office: Dunsden Green, Reading, Oxfordshire RG4 9QD
+              <br />
+              This information is given to you as a guide to support you in your
+              choice of licence and RideTo has made every attempt to ensure the
+              accuracy and reliability of the information provided about
+              motorcycle licence and training requirements. However, RideTo
+              cannot guarantee the information is up to date, correct and
+              complete and is therefore provided on an "as is" basis only.
+              RideTo accepts no liability whatsoever for any loss or damage
+              howsoever arising. We recommend that you verify the current
+              licence and training requirements by checking the DVSA website.
             </div>
           </div>
         </div>
