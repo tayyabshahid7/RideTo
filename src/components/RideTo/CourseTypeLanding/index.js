@@ -12,7 +12,8 @@ import {
 } from './contents'
 import { getCourseTitle } from 'services/course'
 import { Helmet } from 'react-helmet'
-import buttonArrowWhite from 'assets/images/rideto/ButtonArrowWhiteThick.svg'
+import CourseTypeLandingForm from './CourseTypeLandingForm'
+import MediaQuery from 'react-responsive'
 
 class CourseTypeLanding extends React.Component {
   constructor(props) {
@@ -80,10 +81,17 @@ class CourseTypeLanding extends React.Component {
     const { courseType, search } = this.state
     const { header, body } = CONTENT[courseType.constant]
 
+    console.log(courseType.constant)
+
     return (
       <React.Fragment>
         <Helmet>
-          <title>RideTo | {getCourseTitle(courseType.constant)}</title>
+          <title>
+            {courseType.constant === 'FULL_LICENCE'
+              ? 'Motorcycle Full Licence'
+              : getCourseTitle(courseType.constant)}{' '}
+            | RideTo
+          </title>
         </Helmet>
         <div ref={this.background} className={styles.background} />
         <div>
@@ -136,26 +144,11 @@ class CourseTypeLanding extends React.Component {
                         alt="Placeholder"
                       />
                       <div className={styles.bookInfoText}>
-                        <h4>Book a local instructor</h4>
-                        <form
-                          className={styles.bookForm}
-                          onSubmit={this.handleSubmit}>
-                          <input
-                            onChange={this.handleInputChange}
-                            placeholder="Your postcode"
-                            type="text"
-                            value={search}
-                          />
-                          <button>
-                            Search{' '}
-                            <img
-                              src={buttonArrowWhite}
-                              alt="Arrow right"
-                              width="16"
-                              height="11"
-                            />
-                          </button>
-                        </form>
+                        <CourseTypeLandingForm
+                          search={search}
+                          handleSubmit={this.handleSubmit}
+                          handleInputChange={this.handleInputChange}
+                        />
                         <h5>We include as standard:</h5>
                         <ul>
                           <li>
@@ -259,6 +252,15 @@ class CourseTypeLanding extends React.Component {
                     </ShowMore>
                   )}
                 </div>
+                <MediaQuery maxWidth={767}>
+                  <div className={styles.bottomSearch}>
+                    <CourseTypeLandingForm
+                      search={search}
+                      handleSubmit={this.handleSubmit}
+                      handleInputChange={this.handleInputChange}
+                    />
+                  </div>
+                </MediaQuery>
               </div>
             </div>
           </section>

@@ -131,7 +131,13 @@ function NextStep({
             )}
           </div>
           {cta && (
-            <Button href={cta.href} alt modern className={styles.cta}>
+            <Button
+              href={cta.href}
+              alt
+              modern
+              className={styles.cta}
+              target="_blank"
+              rel="noopener noreferrer">
               <span>{cta.text}</span>
               <img src={ArrowRight} alt="" />
             </Button>

@@ -5,7 +5,7 @@ import Button from 'components/RideTo/Button'
 import { fetchArticles } from 'services/dashboard'
 import Filters from './Filters'
 import classnames from 'classnames'
-import { debounce } from 'lodash'
+import debounce from 'lodash/debounce'
 import { fetchBikes } from 'services/dashboard'
 
 const FILTERS = {
@@ -14,8 +14,8 @@ const FILTERS = {
   Reviews: null,
   Bikes: 6,
   Rides: 12,
-  Fun: 10,
-  Events: 11
+  Fun: 10
+  // Events: 11
 }
 
 function News({
@@ -23,7 +23,9 @@ function News({
   selectedStyle,
   updateSticky,
   isStuck,
-  isUserDetailsLoaded
+  isUserDetailsLoaded,
+  copyrightRef,
+  setCopyrightHeight
 }) {
   const [page, setPage] = useState(1)
   const [news, setNews] = useState([])
@@ -37,6 +39,7 @@ function News({
 
     const handleScroll = () => {
       const { current } = feedEl
+      const { current: currentCopyright } = copyrightRef
 
       frameId = 0
 
@@ -50,6 +53,14 @@ function News({
         updateSticky(true)
       } else {
         updateSticky(false)
+      }
+
+      const copyrightRect = currentCopyright.getBoundingClientRect()
+
+      if (copyrightRect.y < window.innerHeight) {
+        setCopyrightHeight(window.innerHeight - copyrightRect.y)
+      } else {
+        setCopyrightHeight(0)
       }
     }
 
@@ -76,7 +87,7 @@ function News({
     const debouncedScroll = debounce(() => {
       if (
         window.innerHeight + document.documentElement.scrollTop >
-        document.documentElement.offsetHeight - 250
+        document.documentElement.offsetHeight - 333
       ) {
         if (!isLoading && next) {
           handleLoadMoreClick()

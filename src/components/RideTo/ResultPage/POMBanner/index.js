@@ -13,7 +13,8 @@ const desktopDiscount =
 const style = {
   width: '100%',
   height: 'auto',
-  marginBottom: '24px'
+  marginBottom: '24px',
+  maxWidth: '666px'
 }
 
 function POMBanner({ discount }) {

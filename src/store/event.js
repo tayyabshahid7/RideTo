@@ -9,7 +9,7 @@ import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 import { actions as notificationActions } from './notification'
 
-import { uniqBy } from 'lodash'
+import uniqBy from 'lodash/uniqBy'
 
 const FETCH_ALL = createRequestTypes('rideto/event/FETCH/ALL')
 const FETCH_FOR_DAY = createRequestTypes('rideto/event/FETCH/DAY')

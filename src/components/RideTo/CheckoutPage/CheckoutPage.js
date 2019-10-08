@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { injectStripe } from 'react-stripe-elements'
 import moment from 'moment'
-import { omit, set } from 'lodash'
+import omit from 'lodash/omit'
+import set from 'lodash/set'
 import styles from './styles.scss'
 import UserDetails from './UserDetails'
 import OrderSummary from './OrderSummary'
@@ -13,8 +14,12 @@ import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
 import { fetchUser } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
-import AddressSelectModal from 'components/RideTo/AddressSelectModal'
 import { tldExists } from 'tldjs'
+import loadable from '@loadable/component'
+
+const AddressSelectModal = loadable(() =>
+  import('components/RideTo/AddressSelectModal')
+)
 
 const REQUIRED_FIELDS = [
   'user_birthdate',
@@ -367,9 +372,11 @@ class CheckoutPage extends Component {
 
     if (
       prevState.details.riding_experience !== details.riding_experience &&
-      ['Cycling experience', 'Off road motorcycling'].includes(
-        details.riding_experience
-      )
+      [
+        'Cycling experience',
+        'On road motorcycling',
+        'Off road motorcycling'
+      ].includes(details.riding_experience)
     ) {
       handeUpdateOption({
         isInexperienced: true

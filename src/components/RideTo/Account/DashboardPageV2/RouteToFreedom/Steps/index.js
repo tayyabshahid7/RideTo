@@ -9,7 +9,7 @@ import styles from './styles.scss'
 import Step from './Step'
 import ProgressBar from '../ProgressBar'
 import { useMediaQuery } from 'react-responsive'
-import { range } from 'lodash'
+import range from 'lodash/range'
 import { findLastStepIndex } from '../util'
 
 function Steps({

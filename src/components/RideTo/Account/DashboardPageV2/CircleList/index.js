@@ -8,7 +8,7 @@ function CircleList({ items, size }) {
       className={classnames(styles.list, size === 'small' && styles.listSmall)}>
       {items.map(({ title, url }, i) => (
         <li key={i}>
-          <a href={url}>
+          <a href={url} target="_blank" rel="noopener noreferrer">
             <span className={styles.circle}>{i + 1}</span>
             <span className={styles.linkTitle}>{title}</span>
           </a>

@@ -1,12 +1,24 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './styles.scss'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Input from 'components/RideTo/Input'
 import Button from 'components/RideTo/Button'
 import classnames from 'classnames'
+import { loadTypeformScript } from 'utils/helper'
+
+const linkIsTypeform = href => {
+  return href && href.includes('rideto.typeform.com')
+}
 
 function Form({ form }) {
   const { action, label, buttonText, icon, href, params = {} } = form
+  const isTypeform = linkIsTypeform(href)
+
+  useEffect(() => {
+    if (isTypeform) {
+      loadTypeformScript()
+    }
+  }, [isTypeform])
 
   return (
     <div className={styles.container}>
@@ -32,8 +44,13 @@ function Form({ form }) {
         <Button
           target="_blank"
           href={href}
+          rel="noopener noreferrer"
           modern
-          className={classnames(styles.button, styles.linkButton)}>
+          className={classnames(
+            styles.button,
+            styles.linkButton,
+            isTypeform && 'typeform-share'
+          )}>
           <span>{buttonText}</span>
           <img src={ButtonArrowWhite} alt="" />
         </Button>
