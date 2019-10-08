@@ -51,16 +51,11 @@ class ResultPageContainer extends Component {
       courseType,
       courses: null,
       loading: false,
-      navigation: this.navigation,
-      page: 1,
-      page_size: window.matchMedia('(min-width: 769px)').matches ? 8 : 3,
-      next: false,
-      count: 0
+      navigation: this.navigation
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handeUpdateOption = this.handeUpdateOption.bind(this)
-    this.loadMore = this.loadMore.bind(this)
   }
 
   async componentDidMount() {
@@ -81,22 +76,8 @@ class ResultPageContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { date, sortByOption, page } = this.state
+    const { date, sortByOption } = this.state
     if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
-      this.setState(
-        {
-          page: 0,
-          next: false
-        },
-        () => {
-          this.setState({
-            page: 1
-          })
-        }
-      )
-    }
-
-    if (page !== prevState.page) {
       this.loadData()
     }
   }
@@ -107,58 +88,24 @@ class ResultPageContainer extends Component {
 
   async loadCourses() {
     try {
-      const {
-        date,
-        sortByOption,
-        courseType,
-        postcode,
-        page,
-        page_size,
-        courses
-      } = this.state
-
-      if (page === 0) {
-        return
-      }
+      const { date, sortByOption, courseType, postcode } = this.state
 
       this.setState({ loading: true })
-      let { results, next, count } = await fetchRidetoCourses({
+      let results = await fetchRidetoCourses({
         course_type: courseType,
         postcode: postcode,
         radius_miles: 30,
         date,
-        ordering: sortByOption,
-        page,
-        page_size
+        ordering: sortByOption
       })
       if (results) {
-        if (page === 1) {
-          this.setState({
-            next,
-            courses: {
-              available: results.filter(({ is_available_on: a }) => a),
-              unavailable: results.filter(({ is_available_on: a }) => !a)
-            },
-            loading: false,
-            count
-          })
-        } else {
-          this.setState({
-            next,
-            courses: {
-              available: [
-                ...courses.available,
-                ...results.filter(({ is_available_on: a }) => a)
-              ],
-              unavailable: [
-                ...courses.unavailable,
-                ...results.filter(({ is_available_on: a }) => !a)
-              ]
-            },
-            loading: false,
-            count
-          })
-        }
+        this.setState({
+          courses: {
+            available: results.filter(({ is_available_on: a }) => a),
+            unavailable: results.filter(({ is_available_on: a }) => !a)
+          },
+          loading: false
+        })
       } else {
         this.setState({ courses: null, loading: false })
       }
@@ -175,17 +122,6 @@ class ResultPageContainer extends Component {
     this.setState({ ...data })
   }
 
-  loadMore() {
-    const { loading, page } = this.state
-
-    if (!loading) {
-      this.setState({
-        loading: true,
-        page: page + 1
-      })
-    }
-  }
-
   render() {
     const {
       date,
@@ -195,10 +131,7 @@ class ResultPageContainer extends Component {
       loading,
       courseType,
       postcode,
-      navigation,
-      next,
-      page,
-      count
+      navigation
     } = this.state
 
     return (
@@ -217,10 +150,6 @@ class ResultPageContainer extends Component {
               handeUpdateOption={this.handeUpdateOption}
               navigation={navigation}
               userLocation={userLocation}
-              loadMore={this.loadMore}
-              hasNext={next}
-              page={page}
-              count={count}
             />
           )}
         />
