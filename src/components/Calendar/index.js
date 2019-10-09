@@ -11,6 +11,7 @@ import CalendarWeekView from './CalendarWeekView'
 import Loading from 'components/Loading'
 import SchoolSelect from 'components/SchoolSelect'
 import CalendarDateChanger from './CalendarDateChanger'
+import CalendarViewChanger from './CalendarViewChanger'
 
 class CalendarComponent extends Component {
   renderOverview() {
@@ -21,59 +22,22 @@ class CalendarComponent extends Component {
       <div className={classnames(styles.overview)}>
         <Row>
           <Col>
-            <SchoolSelect className="Test" />
-            <div className={styles.changeCalendarWrapper}>
-              {viewMode === CALENDAR_VIEW.MONTH && (
-                <CalendarDateChanger
-                  calendar={calendar}
-                  handleChangeDate={handleChangeDate}
+            <div className={styles.filtersWrap}>
+              <SchoolSelect className="Test" />
+              <div className={styles.changeCalendarWrapper}>
+                {viewMode === CALENDAR_VIEW.MONTH && (
+                  <CalendarDateChanger
+                    calendar={calendar}
+                    handleChangeDate={handleChangeDate}
+                  />
+                )}
+                <CalendarViewChanger
+                  viewMode={viewMode}
+                  handleCustomEvent={handleCustomEvent}
                 />
-              )}
-              <div>
-                <span
-                  className={
-                    viewMode === CALENDAR_VIEW.MONTH
-                      ? styles.calendarTypeActive
-                      : styles.calendarTypeInactive
-                  }>
-                  <button
-                    onClick={() =>
-                      handleCustomEvent('change-calendar-setting', {
-                        viewMode: CALENDAR_VIEW.WEEK
-                      })
-                    }>
-                    View Week
-                  </button>
-                </span>{' '}
-                |{' '}
-                <span
-                  className={
-                    viewMode === CALENDAR_VIEW.WEEK
-                      ? styles.calendarTypeActive
-                      : styles.calendarTypeInactive
-                  }>
-                  <button
-                    onClick={() =>
-                      handleCustomEvent('change-calendar-setting', {
-                        viewMode: CALENDAR_VIEW.MONTH
-                      })
-                    }>
-                    {' '}
-                    View Month
-                  </button>
-                </span>
               </div>
             </div>
           </Col>
-          {/*
-          <Col className={styles.rightButtons}>
-            <Link
-              to={`/calendar/courses/create`}
-              className={styles.addCourseBtn}>
-              <Button color="primary">Add Course</Button>
-            </Link>
-          </Col>
-          */}
         </Row>
       </div>
     )
