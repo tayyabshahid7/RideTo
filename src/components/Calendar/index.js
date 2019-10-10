@@ -4,7 +4,6 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { Row, Col } from 'reactstrap'
 import CalendarMonthView from './CalendarMonthView'
-import CalendarHeader from './CalendarHeader'
 import styles from './index.scss'
 import { CALENDAR_VIEW } from '../../common/constants'
 import CalendarWeekView from './CalendarWeekView'
@@ -12,6 +11,7 @@ import Loading from 'components/Loading'
 import SchoolSelect from 'components/SchoolSelect'
 import CalendarDateChanger from './CalendarDateChanger'
 import CalendarViewChanger from './CalendarViewChanger'
+import CalendarArrowsSwitcher from './CalendarArrowsSwitcher'
 
 class CalendarComponent extends Component {
   renderOverview() {
@@ -25,12 +25,11 @@ class CalendarComponent extends Component {
             <div className={styles.filtersWrap}>
               <SchoolSelect className="Test" />
               <div className={styles.changeCalendarWrapper}>
-                {viewMode === CALENDAR_VIEW.MONTH && (
-                  <CalendarDateChanger
-                    calendar={calendar}
-                    handleChangeDate={handleChangeDate}
-                  />
-                )}
+                <CalendarArrowsSwitcher handleCustomEvent={handleCustomEvent} />
+                <CalendarDateChanger
+                  calendar={calendar}
+                  handleChangeDate={handleChangeDate}
+                />
                 <CalendarViewChanger
                   viewMode={viewMode}
                   handleCustomEvent={handleCustomEvent}
@@ -43,17 +42,10 @@ class CalendarComponent extends Component {
     )
   }
   render() {
-    let { days, calendar, handleCustomEvent, history } = this.props
+    let { days, calendar, history } = this.props
     return (
       <div className={classnames(styles.container)}>
         {this.renderOverview()}
-
-        {calendar.viewMode === CALENDAR_VIEW.WEEK && (
-          <CalendarHeader
-            calendar={calendar}
-            handleCustomEvent={handleCustomEvent}
-          />
-        )}
 
         <Loading loading={calendar.loading} className={styles.calendarWrapper}>
           {calendar.viewMode === CALENDAR_VIEW.WEEK ? (

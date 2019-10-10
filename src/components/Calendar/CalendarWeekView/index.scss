@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  overflow-x: scroll;
+  // overflow-x: scroll;
   // margin-right: -15px;
   li {
     list-style: none;
@@ -16,24 +16,24 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  overflow-x: scroll;
+  // overflow-x: scroll;
 }
 .weekDays {
   flex: 0 0 50px;
-  width: fit-content;
+  // width: fit-content;
   // margin-left: 50px;
   // margin-right: 15px;
 }
 .timelineWrapper {
   position: relative;
   margin-top: 50px;
-  overflow: hidden;
+  // overflow: hidden;
   flex: 0 0 50px;
 }
 .weekviewContent {
   flex: 1 1 auto;
   overflow-y: scroll;
-  width: fit-content;
+  // width: fit-content;
 
   &::-webkit-scrollbar {
     display: none;
@@ -61,21 +61,31 @@
     position: relative;
     height: 50px;
     // list-style-type: none;
-    ::after {
+    &::after {
       /* this is used to create the table horizontal lines */
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 100%;
-      height: 1px;
+      // width: 100%;
+      width: 100vw;
+      height: 2px;
       background: #eaeaea;
+      z-index: 2;
     }
     &:last-of-type::after {
       display: none;
     }
     span {
       // display: none;
+      background-color: #fff;
+      position: absolute;
+      left: 0;
+      top: -10px;
+      z-index: 3;
+      padding-right: 5px;
+      padding-left: 5px;
+      font-size: 12px;
     }
   }
 }
@@ -91,11 +101,16 @@
   padding: 0 5%;
   > a {
     display: inline-block;
-    line-height: 50px;
+    // line-height: 50px;
     // font-weight: bold;
     font-size: 13px;
     width: 100%;
     text-align: center;
+
+    @media (min-width: 769px) {
+      font-size: 16px;
+      font-weight: bold;
+    }
   }
 }
 
@@ -135,24 +150,34 @@
   width: 100%;
 }
 .weekDaysHeader {
-  width: 14%;
-  min-width: 250px;
+  width: 14.2857142857%;
+  // min-width: 250px;
   float: left;
-  border: 1px solid #eaeaea;
+  // border: 1px solid #eaeaea;
+  // border-top: 0;
   /* reset style */
   margin-bottom: 0;
   &:not(:first-of-type) {
     border-left-width: 0;
   }
 }
+.bgHighlight {
+  background: #f7f7f7dd;
+}
+.todayDate {
+  a {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+}
 .eventsGroup {
-  width: 14%;
+  width: 14.2857142857%;
   float: left;
   border: 1px solid #eaeaea;
   /* reset style */
   margin-bottom: 0;
   padding: 2px;
-  min-width: 250px;
+  // min-width: 250px;
   &:not(:first-of-type) {
     border-left-width: 0;
   }

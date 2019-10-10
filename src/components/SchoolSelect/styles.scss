@@ -7,13 +7,17 @@
   @media (max-width: 768px) {
     display: block;
     width: 100%;
-    max-width: 422px;
+    // max-width: 422px;
+    max-width: 352px;
   }
 }
 
 .containerLarge {
   width: 100%;
-  max-width: 285px;
+
+  @media (min-width: 769px) {
+    max-width: 285px;
+  }
 }
 
 .select {

@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+
+  @media (min-width: 768px) {
+    margin-right: 0.5rem;
+  }
+}
+
+.prev,
+.next {
+  padding: 0 0.5rem;
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-size: 1.75rem;
+  line-height: 1;
+
+  &:focus {
+    outline: 0;
+  }
+}

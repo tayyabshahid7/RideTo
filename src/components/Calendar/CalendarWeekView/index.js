@@ -46,7 +46,8 @@ class CalendarWeekView extends Component {
               className={classnames(
                 styles.weekDaysHeader,
                 calendar.selectedDate ===
-                  moment(day.date).format('YYYY-MM-DD') && 'bg-highlight'
+                  moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight,
+                moment(day.date).isSame(moment(), 'day') && styles.todayDate
               )}
               key={index}>
               <div className={styles.topInfo}>
@@ -57,7 +58,9 @@ class CalendarWeekView extends Component {
                     {moment(day.date).format('ddd')}
                   </span>
                   <span className={styles.desktopVisible}>
-                    {moment(day.date).format('ddd D')}
+                    {moment(day.date).format('dddd')}
+                    <br />
+                    {moment(day.date).format('Do')}
                   </span>
                 </Link>
               </div>
@@ -141,7 +144,7 @@ class CalendarWeekView extends Component {
               className={classnames(
                 styles.eventsGroup,
                 calendar.selectedDate ===
-                  moment(day.date).format('YYYY-MM-DD') && 'bg-highlight'
+                  moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight
               )}
               key={index}>
               {/* <div className={styles.topInfo}>
