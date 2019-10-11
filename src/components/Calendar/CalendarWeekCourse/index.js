@@ -4,6 +4,7 @@ import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS } from 'common/constants'
 import { getShortCourseType } from 'services/course'
+import moment from 'moment'
 
 const CalendarWeekCourse = ({
   course,
@@ -37,7 +38,7 @@ const CalendarWeekCourse = ({
     // Then it is event
     return (
       <li
-        className={styles.singleEvent}
+        className={classnames(styles.singleEvent, styles.singleEventEvent)}
         style={style}
         onClick={() => history.push(`/calendar/events/${course.id}/edit`)}>
         <div
@@ -45,7 +46,13 @@ const CalendarWeekCourse = ({
             styles.content,
             calendar.selectedCourse === `event-${course.id}` && styles.primary
           )}>
-          <span className={styles.eventName}>{course.name} |</span>
+          <span className={styles.eventName}>{course.name}</span>
+          {course.start_time && course.end_time && (
+            <span className={styles.eventTime}>
+              {moment(course.start_time).format('HH:mm')} -{' '}
+              {moment(course.end_time).format('HH:mm')}
+            </span>
+          )}
         </div>
       </li>
     )

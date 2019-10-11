@@ -3,8 +3,7 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  // overflow-x: scroll;
-  // margin-right: -15px;
+
   li {
     list-style: none;
   }
@@ -16,24 +15,20 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  // overflow-x: scroll;
+  position: relative;
+  z-index: 2;
 }
 .weekDays {
   flex: 0 0 50px;
-  // width: fit-content;
-  // margin-left: 50px;
-  // margin-right: 15px;
 }
 .timelineWrapper {
   position: relative;
   margin-top: 50px;
-  // overflow: hidden;
   flex: 0 0 50px;
 }
 .weekviewContent {
   flex: 1 1 auto;
   overflow-y: scroll;
-  // width: fit-content;
 
   &::-webkit-scrollbar {
     display: none;
@@ -49,18 +44,13 @@
 }
 .timeline {
   display: block;
-  // position: absolute;
   flex: 0 0 50px;
-  // top: 0;
-  // left: 0;
   height: 100%;
   width: 50px; //100%;
   position: absolute;
-  // padding-top: 50px;
   li {
     position: relative;
     height: 50px;
-    // list-style-type: none;
     &::after {
       /* this is used to create the table horizontal lines */
       content: '';
@@ -101,8 +91,7 @@
   padding: 0 5%;
   > a {
     display: inline-block;
-    // line-height: 50px;
-    // font-weight: bold;
+
     font-size: 13px;
     width: 100%;
     text-align: center;
@@ -151,10 +140,7 @@
 }
 .weekDaysHeader {
   width: 14.2857142857%;
-  // min-width: 250px;
   float: left;
-  // border: 1px solid #eaeaea;
-  // border-top: 0;
   /* reset style */
   margin-bottom: 0;
   &:not(:first-of-type) {
@@ -173,11 +159,13 @@
 .eventsGroup {
   width: 14.2857142857%;
   float: left;
-  border: 1px solid #eaeaea;
+  border: 2px solid #eaeaea;
   /* reset style */
   margin-bottom: 0;
   padding: 2px;
-  // min-width: 250px;
+
+  padding: 0 12px 0 0;
+
   &:not(:first-of-type) {
     border-left-width: 0;
   }
@@ -186,17 +174,12 @@
     /* reset style */
     position: relative;
     /* force its children to stay on one line */
-    // display: -webkit-box;
-    // display: -ms-flexbox;
-    // display: flex;
     display: block;
     overflow: visible;
     padding: 0;
-    // overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
+
     &::after {
-      // display: inline-block;
-      // content: '-';
       width: 1px;
       height: 100%;
       opacity: 0;
@@ -212,23 +195,6 @@
     }
   }
 }
-
-// .eventsGroup {
-//   > ul {
-//     display: flex;
-//     overflow-x: scroll;
-//     -webkit-overflow-scrolling: touch;
-//     &::after {
-//       /* never visible - used to add a right padding to .events-group > ul */
-//       display: inline-block;
-//       content: '-';
-//       width: 1px;
-//       height: 100%;
-//       opacity: 0;
-//       color: transparent;
-//     }
-//   }
-// }
 
 .topInfo {
   /* vertically center its content */
@@ -278,8 +244,6 @@
 @media only screen and (min-width: 1000px) {
   .events {
     /* 60px is the .timeline element width */
-    // width:calc(100% - 60px);
-    // margin-left: 60px;
   }
 }
 
