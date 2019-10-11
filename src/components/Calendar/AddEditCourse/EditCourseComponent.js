@@ -17,6 +17,7 @@ import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
 import DateHeading from 'components/Calendar/DateHeading'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import { loadCourseTypes } from 'store/info'
+import isEqual from 'lodash/isEqual'
 
 class EditCourseComponent extends Component {
   constructor(props) {
@@ -32,7 +33,20 @@ class EditCourseComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, error, course, history, schoolId } = this.props
+    const {
+      saving,
+      error,
+      course,
+      history,
+      schoolId,
+      match,
+      getSingleCourse
+    } = this.props
+
+    if (!isEqual(match.params, prevProps.match.params)) {
+      getSingleCourse({ schoolId, courseId: match.params.courseId })
+      return
+    }
 
     if (schoolId !== prevProps.schoolId) {
       if (course) {

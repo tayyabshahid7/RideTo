@@ -26,26 +26,34 @@ const CalendarWeekCourse = ({
   }
   let left = `${(100 / barCount) * position}%`
   let width = `${100 / barCount}%`
+
+  if (position > 0) {
+    left = `calc(${(100 / barCount) * position}% - 12px)`
+    width = `calc(${100 / barCount}% + 12px)`
+  }
+
   // let borderColor = 'black'
   let style = {
     height: `${height}px`,
     top: `${top}px`,
     left,
-    width
+    width,
+    zIndex: position
   }
 
   if (!course.course_type) {
     // Then it is event
     return (
       <li
-        className={classnames(styles.singleEvent, styles.singleEventEvent)}
+        className={classnames(
+          styles.singleEvent,
+          styles.singleEventEvent,
+          calendar.selectedCourse === `event-${course.id}` &&
+            styles.clickedCourse
+        )}
         style={style}
         onClick={() => history.push(`/calendar/events/${course.id}/edit`)}>
-        <div
-          className={classnames(
-            styles.content,
-            calendar.selectedCourse === `event-${course.id}` && styles.primary
-          )}>
+        <div className={classnames(styles.content)}>
           <span className={styles.eventName}>{course.name}</span>
           {course.start_time && course.end_time && (
             <span className={styles.eventTime}>
@@ -61,7 +69,11 @@ const CalendarWeekCourse = ({
   const availableSpaces = course.spaces - course.orders.length
   return (
     <li
-      className={styles.singleEvent}
+      className={classnames(
+        styles.singleEvent,
+        calendar.selectedCourse === `course-${course.id}` &&
+          styles.clickedCourse
+      )}
       style={style}
       onClick={() =>
         history.push(`/calendar/${course.date}/courses/${course.id}/edit`)
@@ -70,8 +82,7 @@ const CalendarWeekCourse = ({
         className={classnames(
           styles.content,
           availableSpaces === 1 && styles.warning,
-          availableSpaces === 0 && styles.danger,
-          calendar.selectedCourse === `course-${course.id}` && styles.primary
+          availableSpaces === 0 && styles.danger
         )}>
         <span className={styles.eventName}>
           {course.time.substring(0, 5)} |{' '}
