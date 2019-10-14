@@ -1,10 +1,15 @@
 import React from 'react'
-import { getCourseSpaceText } from 'services/course'
+import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
-import { WEEK_VIEW_START_TIME, WORK_HOURS } from 'common/constants'
+import {
+  WEEK_VIEW_START_TIME,
+  WORK_HOURS,
+  CALENDAR_COLOURS
+} from 'common/constants'
 import { getShortCourseType } from 'services/course'
 import moment from 'moment'
+import personIcon from './person.png'
 
 const CalendarWeekCourse = ({
   course,
@@ -25,7 +30,7 @@ const CalendarWeekCourse = ({
     }
   }
   let left = `${(100 / barCount) * position}%`
-  let width = `${100 / barCount}%`
+  let width = `calc(${100 / barCount}% + 12px)`
 
   if (position > 0) {
     left = `calc(${(100 / barCount) * position}% - 12px)`
@@ -67,6 +72,7 @@ const CalendarWeekCourse = ({
   }
 
   const availableSpaces = course.spaces - course.orders.length
+
   return (
     <li
       className={classnames(
@@ -80,31 +86,57 @@ const CalendarWeekCourse = ({
       }>
       <div
         className={classnames(
-          styles.content,
-          availableSpaces === 1 && styles.warning,
-          availableSpaces === 0 && styles.danger
-        )}>
+          styles.content
+          // availableSpaces === 1 && styles.warning,
+          // availableSpaces === 0 && styles.danger
+        )}
+        style={{
+          background: CALENDAR_COLOURS[course.course_type.constant]
+        }}>
         <span className={styles.eventName}>
-          {course.time.substring(0, 5)} |{' '}
           {getShortCourseType(course.course_type)}
         </span>
+        <div className={styles.eventTime}>
+          {course.time.substring(0, 5)} -{' '}
+          {moment(`${course.date} ${course.time}`)
+            .add(course.duration / 60, 'hours')
+            .format('HH:mm')}
+        </div>
+        {course.instructor && (
+          <div className={styles.eventInst}>
+            <img src={personIcon} alt="" className={styles.instructorIcon} />{' '}
+            {course.instructor.first_name} {course.instructor.last_name}
+          </div>
+        )}
         <span
           className={classnames(
-            styles.courseSpace,
+            styles.eventSpaces,
+            availableSpaces === 2 && styles.textMildWarning,
             availableSpaces === 1 && styles.textWarning,
             availableSpaces === 0 && styles.textDanger
           )}>
-          {getCourseSpaceText(course)}
+          {getCourseSpaceTextShort(course)}
         </span>
         <div>
-          {course.orders.map(order => (
-            <div className={styles.order} key={order.friendly_id}>
-              <span>#{order.friendly_id}</span>
-              <span>{order.bike_hire}</span>
-              <span>{order.user_name}</span>
-            </div>
-          ))}
+          <div>
+            <b>Orders:</b>
+          </div>
+          {course.orders.length > 0
+            ? course.orders.map(order => (
+                <div className={styles.order} key={order.friendly_id}>
+                  <span>{order.customer_name}</span>
+                </div>
+              ))
+            : 'No orders'}
         </div>
+        {course.notes && (
+          <div className={styles.eventsNotes}>
+            <div>
+              <b>Notes:</b>
+            </div>
+            <div className={styles.notesContent}>{course.notes}</div>
+          </div>
+        )}
       </div>
     </li>
   )

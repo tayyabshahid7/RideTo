@@ -12,6 +12,13 @@ export const getCourseSpaceText = course => {
     : `${availableSpaces} space${s(availableSpaces)} available`
 }
 
+export const getCourseSpaceTextShort = course => {
+  const availableSpaces = course.spaces - course.orders.length
+  return availableSpaces === 0
+    ? 'Full'
+    : `${availableSpaces} Space${s(availableSpaces)} left`
+}
+
 export const getCoursesOnDay = (days, dateStr) => {
   let day = days.find(day => moment(day.date).format('YYYY-MM-DD') === dateStr)
   if (!day) {

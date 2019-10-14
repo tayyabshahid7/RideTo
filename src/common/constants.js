@@ -120,3 +120,14 @@ export const SLUG_COURSE_TYPES = {
   'motorcycle-licence': 'FULL_LICENCE',
   '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
 }
+
+export const CALENDAR_COLOURS = {
+  LICENCE_CBT: '#ffcfa0',
+  LICENCE_CBT_RENEWAL: '#f3dad8',
+  FULL_LICENCE_MOD1_TRAINING: '#9fe6ea',
+  FULL_LICENCE_MOD1_TEST: '#d6d9ce',
+  FULL_LICENCE_MOD2_TRAINING: '#cfcfea',
+  FULL_LICENCE_MOD2_TEST: '#caffd0',
+  INTRO_TO_MOTORCYCLING: '#c9e4e7',
+  TFL_ONE_ON_ONE: '#84dcc6'
+}

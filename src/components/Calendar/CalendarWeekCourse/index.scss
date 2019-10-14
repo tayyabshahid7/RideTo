@@ -13,6 +13,8 @@
   cursor: pointer;
   border-radius: 2px;
 
+  // min-width: 82px;
+
   &::before {
     position: absolute;
     top: 0;
@@ -40,7 +42,7 @@
   -webkit-transition: opacity 0.2s, background 0.2s;
   transition: opacity 0.2s, background 0.2s;
   border: 1px solid #fff;
-  font-size: 0.8rem;
+  font-size: 11px;
   -ms-flex-negative: 1;
   margin-right: 0;
   overflow: hidden;
@@ -78,32 +80,42 @@
 .primary {
   border: 1px solid var(--primary-color);
 }
-.textWarning {
+.textMildWarning {
   color: var(--warning-color);
+}
+.textWarning {
+  color: var(--danger-color);
 }
 .textDanger {
   color: var(--danger-color);
 }
+
+.eventName {
+  font-weight: bold;
+}
+
 .eventName,
 .eventDate,
-.eventTime {
+.eventTime,
+.eventInst,
+.eventSpaces {
   display: block;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin-bottom: 0.25rem;
 }
 
-.eventName,
-.eventTime {
-  font-size: 0.8rem;
+.eventInst {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
 }
 
-.eventDate {
-  /* they are not included in the the HTML but added using JavScript */
-  font-size: 1rem;
-  opacity: 0.7;
-  line-height: 1.2;
-  margin-bottom: 0.2em;
+.eventSpaces {
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
+
 .order {
   display: flex;
   flex-direction: column;
@@ -112,7 +124,7 @@
 @media (max-width: 768px) {
   .content {
     background: var(--grey-color);
-    border-radius: 10px;
+    // border-radius: 10px;
     > span {
       display: none;
     }
@@ -129,4 +141,18 @@
   .primary {
     background: var(--primary-color);
   }
+}
+
+.eventsNotes {
+  margin-top: 1rem;
+}
+
+.notesContent {
+  font-size: 10px;
+  font-style: italic;
+}
+
+.instructorIcon {
+  width: 17px;
+  vertical-align: text-bottom;
 }
