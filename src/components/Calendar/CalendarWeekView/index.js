@@ -18,16 +18,21 @@ class CalendarWeekView extends Component {
     return (
       <div className={styles.timeline} ref="timelineDiv">
         <ul>
+          <li className={styles.allDayTimelineItem}>
+            <span>All day</span>
+          </li>
           {Array.apply(null, { length: WORK_HOURS * 2 }).map((val, index) => (
             <li key={index}>
-              <span>
-                {moment(
-                  new Date(
-                    new Date('2000-01-01T00:00:00Z') -
-                      (WEEK_VIEW_START_TIME + index * 30 * 60) * -1000
-                  )
-                ).format('HH:mm')}
-              </span>
+              {index > 0 && (
+                <span>
+                  {moment(
+                    new Date(
+                      new Date('2000-01-01T00:00:00Z') -
+                        (WEEK_VIEW_START_TIME + index * 30 * 60) * -1000
+                    )
+                  ).format('HH:mm')}
+                </span>
+              )}
             </li>
           ))}
         </ul>
@@ -176,12 +181,40 @@ class CalendarWeekView extends Component {
     )
   }
 
+  renderAllDay() {
+    const { days, calendar } = this.props
+    let daysInfo = this.evaluateData(days)
+
+    return (
+      <div className={styles.events}>
+        <ul
+          className={classnames(
+            styles.eventsContainer,
+            styles.eventsContainrAllDay
+          )}>
+          {daysInfo.map((day, index) => (
+            <li
+              className={classnames(
+                styles.eventsGroup,
+                calendar.selectedDate ===
+                  moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight
+              )}
+              key={index}>
+              {' '}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className={styles.container}>
         <div className={styles.timelineWrapper}>{this.renderTimeline()}</div>
         <div className={styles.mainContent}>
           {this.renderWeekdays()}
+          {this.renderAllDay()}
           <div
             className={styles.weekviewContent}
             onScroll={this.listenScrollEvent.bind(this)}>
