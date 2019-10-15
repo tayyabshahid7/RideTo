@@ -489,3 +489,11 @@ export const getTrainingStatus = status => {
     return 'Training Cancelled'
   }
 }
+
+export const filterExtraCourses = type => {
+  return (
+    !(
+      type.constant.startsWith('FULL_LICENCE') && type.constant.endsWith('TEST')
+    ) && type.constant !== 'FULL_LICENCE'
+  )
+}

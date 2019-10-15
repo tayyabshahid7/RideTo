@@ -4,6 +4,7 @@ import moment from 'moment'
 import styles from './styles.scss'
 import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 import classnames from 'classnames'
+import CalendarLabels from './CalendarLabels'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
@@ -153,6 +154,15 @@ class AvailabilityCourses extends React.Component {
           )}
         </div>
         <div className={styles.box}>{this.renderDefaultDays()}</div>
+        <div className={styles.box}>
+          <CalendarLabels
+            instructors={instructors}
+            getInstructors={getInstructors}
+            schoolId={schoolId}
+            info={info}
+            loadCourseTypes={loadCourseTypes}
+          />
+        </div>
       </Fragment>
     )
   }
