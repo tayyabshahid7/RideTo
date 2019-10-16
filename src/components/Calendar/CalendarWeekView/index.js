@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
-import { WORK_HOURS, WEEK_VIEW_START_TIME } from 'common/constants'
+import {
+  WORK_HOURS,
+  WEEK_VIEW_START_TIME,
+  CALENDAR_COLOURS
+} from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 
 class CalendarWeekView extends Component {
@@ -200,7 +204,11 @@ class CalendarWeekView extends Component {
                   moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight
               )}
               key={index}>
-              {' '}
+              <div
+                className={styles.allDayEvent}
+                style={{ background: CALENDAR_COLOURS['INSTRUCTOR'] }}>
+                Custom Event Title
+              </div>
             </li>
           ))}
         </ul>

@@ -259,6 +259,14 @@
   visibility: hidden;
 }
 
+.allDayEvent {
+  width: calc(100% - 12px);
+  height: 22px;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px;
+}
+
 @media only screen and (min-width: 1000px) {
   .events {
     /* 60px is the .timeline element width */

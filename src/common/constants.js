@@ -129,5 +129,6 @@ export const CALENDAR_COLOURS = {
   FULL_LICENCE_MOD2_TRAINING: '#cfcfea',
   FULL_LICENCE_MOD2_TEST: '#caffd0',
   INTRO_TO_MOTORCYCLING: '#c9e4e7',
-  TFL_ONE_ON_ONE: '#84dcc6'
+  TFL_ONE_ON_ONE: '#84dcc6',
+  INSTRUCTOR: '#a5bbff'
 }
