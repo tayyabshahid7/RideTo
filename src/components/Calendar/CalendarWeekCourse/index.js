@@ -16,7 +16,8 @@ const CalendarWeekCourse = ({
   position,
   barCount,
   history,
-  calendar
+  calendar,
+  match
 }) => {
   let height = (course.duration / 60) * 100 // Duration is in mins
   let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
@@ -53,11 +54,14 @@ const CalendarWeekCourse = ({
         className={classnames(
           styles.singleEvent,
           styles.singleEventEvent,
+          parseInt(match.params.id) === course.id &&
+            match.params.type === 'events' &&
+            styles.clickedCourse,
           calendar.selectedCourse === `event-${course.id}` &&
             styles.clickedCourse
         )}
         style={style}
-        onClick={() => history.push(`/calendar/events/${course.id}/edit`)}>
+        onClick={() => history.push(`/calendar/events/${course.id}`)}>
         <div className={classnames(styles.content)}>
           <span className={styles.eventName}>{course.name}</span>
           {course.start_time && course.end_time && (
@@ -77,19 +81,18 @@ const CalendarWeekCourse = ({
     <li
       className={classnames(
         styles.singleEvent,
+        parseInt(match.params.id) === course.id &&
+          match.params.type === 'courses' &&
+          styles.clickedCourse,
         calendar.selectedCourse === `course-${course.id}` &&
           styles.clickedCourse
       )}
       style={style}
       onClick={() =>
-        history.push(`/calendar/${course.date}/courses/${course.id}/edit`)
+        history.push(`/calendar/${course.date}/courses/${course.id}`)
       }>
       <div
-        className={classnames(
-          styles.content
-          // availableSpaces === 1 && styles.warning,
-          // availableSpaces === 0 && styles.danger
-        )}
+        className={classnames(styles.content)}
         style={{
           background: CALENDAR_COLOURS[course.course_type.constant]
         }}>

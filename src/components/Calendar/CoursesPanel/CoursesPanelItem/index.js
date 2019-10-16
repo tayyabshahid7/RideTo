@@ -32,23 +32,26 @@ const CoursesPanelItem = ({
   deleteOrderTraining,
   updateCourse,
   updateAdding,
-  addingOrder
+  addingOrder,
+  courseId
 }) => {
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
-  const className = classnames(
-    styles.course
-    // availableSpaces === 1 && styles.warning,
-    // availableSpaces <= 0 && styles.danger
-  )
+  const className = classnames(styles.course)
   const isTestCourse =
     course.course_type.constant.includes('FULL_LICENCE') &&
     course.course_type.constant.includes('TEST')
   const { notes = '', instructor } = course
   const truncated = notes.length > 200 ? `${notes}...` : notes
+  const isSelected = parseInt(courseId) === course.id
+
   return (
     <div className={styles.coursesPanelItem}>
-      <div className={styles.heading}>
+      <div
+        className={classnames(
+          styles.heading,
+          isSelected && styles.headingSelected
+        )}>
         <div
           className={classnames(styles.container, className)}
           style={{ background: CALENDAR_COLOURS[course.course_type.constant] }}>

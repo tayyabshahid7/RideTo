@@ -259,7 +259,7 @@ class CalendarPage extends Component {
   }
 
   render() {
-    const { calendar, eventCalendar, history, location } = this.props
+    const { calendar, eventCalendar, history, location, match } = this.props
     let days = this.generateDaysDataFromCalendar(calendar, eventCalendar)
     let calendarPath = location.pathname === '/calendar'
     return (
@@ -277,12 +277,18 @@ class CalendarPage extends Component {
             handleChangeDate={this.handleChangeDate.bind(this)}
             history={history}
             calendarPath={calendarPath}
+            match={match}
           />
         </div>
         <RightPanel location={location}>
           <Route
             exact
             path="/calendar/:date"
+            render={routeProps => <CoursesPanel {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/courses/:courseId"
             render={routeProps => <CoursesPanel {...routeProps} />}
           />
           <Route

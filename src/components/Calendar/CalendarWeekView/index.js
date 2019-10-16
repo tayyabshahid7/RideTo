@@ -143,7 +143,7 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { days, history, calendar } = this.props
+    const { days, history, calendar, match } = this.props
     let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.events}>
@@ -156,14 +156,6 @@ class CalendarWeekView extends Component {
                   moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight
               )}
               key={index}>
-              {/* <div className={styles.topInfo}>
-                <Link to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}>
-                  <span>
-                    {this.showMonth(day)}
-                    {moment(day.date).format('ddd D')}
-                  </span>
-                </Link>
-              </div> */}
               <ul>
                 {day.courses &&
                   day.courses.length > 0 &&
@@ -175,6 +167,7 @@ class CalendarWeekView extends Component {
                       history={history}
                       calendar={calendar}
                       key={index}
+                      match={match}
                     />
                   ))}
               </ul>

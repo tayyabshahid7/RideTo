@@ -7,7 +7,14 @@ import styles from './CoursesPanel.scss'
 
 class CoursesPanel extends React.Component {
   render() {
-    const { courses, date, events = [], addingOrder, updateAdding } = this.props
+    const {
+      courses,
+      date,
+      events = [],
+      addingOrder,
+      updateAdding,
+      courseId
+    } = this.props
 
     return (
       <div className={styles.coursesPanel}>
@@ -35,6 +42,7 @@ class CoursesPanel extends React.Component {
             )
             .map(course => (
               <CoursesPanelItem
+                courseId={courseId}
                 key={course.id}
                 date={date}
                 course={course}

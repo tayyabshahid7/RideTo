@@ -42,7 +42,7 @@ class CalendarComponent extends Component {
     )
   }
   render() {
-    let { days, calendar, history } = this.props
+    let { days, calendar, history, match } = this.props
     return (
       <div className={classnames(styles.container)}>
         {this.renderOverview()}
@@ -50,6 +50,7 @@ class CalendarComponent extends Component {
         <Loading loading={calendar.loading} className={styles.calendarWrapper}>
           {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
             <CalendarWeekView
+              match={match}
               days={days}
               calendar={calendar}
               history={history}

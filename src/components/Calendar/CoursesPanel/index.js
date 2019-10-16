@@ -51,7 +51,7 @@ class CoursesPanelContainer extends React.Component {
   render() {
     const { courses, loading, match, events } = this.props
     const {
-      params: { date }
+      params: { date, courseId }
     } = match
     const { addingOrder } = this.state
 
@@ -59,6 +59,7 @@ class CoursesPanelContainer extends React.Component {
       <Loading loading={loading}>
         <DateHeading date={moment(date, 'YYYY-MM-DD')} backLink={`/calendar`} />
         <CoursesPanel
+          courseId={courseId}
           addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
