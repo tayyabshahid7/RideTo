@@ -14,8 +14,10 @@ import {
   deleteOrderTraining,
   updateCourse
 } from 'store/course'
-import { TEST_STATUS_CHOICES } from 'common/constants'
+import { TEST_STATUS_CHOICES, CALENDAR_COLOURS } from 'common/constants'
 import styles from './CoursesPanelItem.scss'
+import personIcon from 'assets/images/person.png'
+import { getCourseSpaceTextShort } from 'services/course'
 
 const CoursesPanelItem = ({
   course,
@@ -35,9 +37,9 @@ const CoursesPanelItem = ({
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
   const className = classnames(
-    styles.course,
-    availableSpaces === 1 && styles.warning,
-    availableSpaces <= 0 && styles.danger
+    styles.course
+    // availableSpaces === 1 && styles.warning,
+    // availableSpaces <= 0 && styles.danger
   )
   const isTestCourse =
     course.course_type.constant.includes('FULL_LICENCE') &&
@@ -47,36 +49,62 @@ const CoursesPanelItem = ({
   return (
     <div className={styles.coursesPanelItem}>
       <div className={styles.heading}>
-        <div className={classnames(styles.container, className)}>
-          <div className={styles.title}>
-            <div>
-              {course.time.substring(0, 5)} | {name}{' '}
-              {isTestCourse &&
-                course.application_reference_number &&
-                `(${course.application_reference_number})`}
-            </div>
-            {instructor && (
+        <div
+          className={classnames(styles.container, className)}
+          style={{ background: CALENDAR_COLOURS[course.course_type.constant] }}>
+          <div className={styles.top}>
+            <div className={styles.title}>
               <div>
-                Instructor: {instructor.first_name} {instructor.last_name}
+                <span className={styles.name}>{name}</span> |{' '}
+                {course.time.substring(0, 5)} -{' '}
+                {moment(`${course.date} ${course.time}`)
+                  .add(course.duration / 60, 'hours')
+                  .format('HH:mm')}
+                {isTestCourse &&
+                  course.application_reference_number &&
+                  `(${course.application_reference_number})`}
               </div>
-            )}
-            {isTestCourse && (
-              <div className={styles.testNotes}>
-                <b>{TEST_STATUS_CHOICES[course.status]}</b>
-                <br />
-                {course.test_centre_name}
-                <br />
-                Last day to cancel:{' '}
-                {moment(course.last_date_cancel).format('Do MMM YYYY')}
-              </div>
-            )}
-            {notes && <div className={styles.notes}>{truncated}</div>}
+              {isTestCourse && (
+                <div className={styles.testNotes}>
+                  <b>{TEST_STATUS_CHOICES[course.status]}</b>
+                  <br />
+                  {course.test_centre_name}
+                  <br />
+                  Last day to cancel:{' '}
+                  {moment(course.last_date_cancel).format('Do MMM YYYY')}
+                </div>
+              )}
+            </div>
+            <Link
+              className={styles.editButton}
+              to={`/calendar/${date}/courses/${course.id}/edit`}>
+              Edit
+            </Link>
           </div>
-          <Link
-            className={styles.editButton}
-            to={`/calendar/${date}/courses/${course.id}/edit`}>
-            Edit
-          </Link>
+          <div className={styles.instAndSpaces}>
+            {instructor && (
+              <div className={styles.inst}>
+                <img
+                  className={styles.personIcon}
+                  src={personIcon}
+                  alt="Instructor:"
+                  width="12"
+                  height="12"
+                />{' '}
+                {instructor.first_name} {instructor.last_name}
+              </div>
+            )}
+            <span
+              className={classnames(
+                styles.eventSpaces,
+                availableSpaces === 2 && styles.textMildWarning,
+                availableSpaces === 1 && styles.textWarning,
+                availableSpaces === 0 && styles.textDanger
+              )}>
+              {getCourseSpaceTextShort(course)}
+            </span>
+          </div>
+          {notes && <div className={styles.notes}>{truncated}</div>}
         </div>
       </div>
 

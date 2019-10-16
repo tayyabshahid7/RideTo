@@ -11,6 +11,20 @@ class CoursesPanel extends React.Component {
 
     return (
       <div className={styles.coursesPanel}>
+        {!addingOrder && (
+          <div className={styles.staff}>
+            <div className={styles.title}>Staff</div>
+
+            <div></div>
+
+            <Link
+              className={styles.addEvent}
+              to={`/calendar/staff/create?date=${date}`}>
+              Add Staff
+            </Link>
+          </div>
+        )}
+
         <div className={styles.courses}>
           <div className={styles.title}>Courses</div>
 

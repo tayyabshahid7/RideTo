@@ -9,7 +9,7 @@ import {
 } from 'common/constants'
 import { getShortCourseType } from 'services/course'
 import moment from 'moment'
-import personIcon from './person.png'
+import personIcon from 'assets/images/person.png'
 
 const CalendarWeekCourse = ({
   course,
