@@ -5,7 +5,8 @@ import classnames from 'classnames'
 import {
   WEEK_VIEW_START_TIME,
   WORK_HOURS,
-  CALENDAR_COLOURS
+  CALENDAR_COLOURS,
+  DATE_FORMAT
 } from 'common/constants'
 import { getShortCourseType } from 'services/course'
 import moment from 'moment'
@@ -61,7 +62,13 @@ const CalendarWeekCourse = ({
             styles.clickedCourse
         )}
         style={style}
-        onClick={() => history.push(`/calendar/events/${course.id}`)}>
+        onClick={() =>
+          history.push(
+            `/calendar/${moment(course.start_time).format(
+              DATE_FORMAT
+            )}/events/${course.id}`
+          )
+        }>
         <div className={classnames(styles.content)}>
           <span className={styles.eventName}>{course.name}</span>
           {course.start_time && course.end_time && (

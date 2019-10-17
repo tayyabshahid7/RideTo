@@ -308,7 +308,12 @@ class CalendarPage extends Component {
           />
           <Route
             exact
-            path="/calendar/events/:eventId/edit"
+            path="/calendar/:date/events/:eventId"
+            render={routeProps => <CoursesPanel {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/events/:eventId/edit"
             render={routeProps => <EditEventComponent {...routeProps} />}
           />
         </RightPanel>

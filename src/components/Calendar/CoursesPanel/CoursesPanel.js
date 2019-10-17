@@ -13,7 +13,8 @@ class CoursesPanel extends React.Component {
       events = [],
       addingOrder,
       updateAdding,
-      courseId
+      courseId,
+      eventId
     } = this.props
 
     return (
@@ -66,7 +67,12 @@ class CoursesPanel extends React.Component {
 
             <div>
               {events.map(event => (
-                <EventPanelItem key={event.id} date={date} event={event} />
+                <EventPanelItem
+                  key={event.id}
+                  date={date}
+                  event={event}
+                  eventId={eventId}
+                />
               ))}
             </div>
 

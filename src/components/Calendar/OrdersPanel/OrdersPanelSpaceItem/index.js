@@ -9,9 +9,9 @@ const OrdersPanelSpaceItem = ({ onAdd, onRemove }) => {
       <Button
         color="primary"
         onClick={onAdd}
-        className="mr-1 btn-padding-md"
+        className={`mr-1 btn-padding-md ${styles.button}`}
         size="sm">
-        Add
+        Add order
       </Button>
     </div>
   )

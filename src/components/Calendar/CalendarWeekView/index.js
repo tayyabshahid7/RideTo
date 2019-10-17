@@ -10,8 +10,17 @@ import {
   CALENDAR_COLOURS
 } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
+import MediaQuery from 'react-responsive'
 
 class CalendarWeekView extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      mobileDayOfWeek: 3
+    }
+  }
+
   listenScrollEvent(event) {
     if (this.refs.timelineDiv) {
       this.refs.timelineDiv.style.top = `-${event.target.scrollTop}px`
@@ -62,9 +71,9 @@ class CalendarWeekView extends Component {
               <div className={styles.topInfo}>
                 <Link to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}>
                   <span className={styles.mobileVisible}>
-                    {moment(day.date).format('D')}
+                    {moment(day.date).format('dd')[0]}
                     <br />
-                    {moment(day.date).format('ddd')}
+                    {moment(day.date).format('D')}
                   </span>
                   <span className={styles.desktopVisible}>
                     {moment(day.date).format('dddd')}
@@ -144,35 +153,48 @@ class CalendarWeekView extends Component {
 
   renderDays() {
     const { days, history, calendar, match } = this.props
+    const { mobileDayOfWeek } = this.state
     let daysInfo = this.evaluateData(days)
+
     return (
       <div className={styles.events}>
         <ul className={styles.eventsContainer}>
-          {daysInfo.map((day, index) => (
-            <li
-              className={classnames(
-                styles.eventsGroup,
-                calendar.selectedDate ===
-                  moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight
-              )}
-              key={index}>
-              <ul>
-                {day.courses &&
-                  day.courses.length > 0 &&
-                  day.courses.map((course, index) => (
-                    <CalendarWeekCourse
-                      course={course}
-                      position={day.coursePositions[index]}
-                      barCount={day.barCount}
-                      history={history}
-                      calendar={calendar}
-                      key={index}
-                      match={match}
-                    />
-                  ))}
-              </ul>
-            </li>
-          ))}
+          <MediaQuery maxWidth={767}>
+            {matches =>
+              daysInfo.map((day, index) => {
+                if (!matches || index === mobileDayOfWeek) {
+                  return (
+                    <li
+                      className={classnames(
+                        styles.eventsGroup,
+                        calendar.selectedDate ===
+                          moment(day.date).format('YYYY-MM-DD') &&
+                          styles.bgHighlight
+                      )}
+                      key={index}>
+                      <ul>
+                        {day.courses &&
+                          day.courses.length > 0 &&
+                          day.courses.map((course, index) => (
+                            <CalendarWeekCourse
+                              course={course}
+                              position={day.coursePositions[index]}
+                              barCount={day.barCount}
+                              history={history}
+                              calendar={calendar}
+                              key={index}
+                              match={match}
+                            />
+                          ))}
+                      </ul>
+                    </li>
+                  )
+                }
+
+                return null
+              })
+            }
+          </MediaQuery>
         </ul>
       </div>
     )
@@ -180,6 +202,7 @@ class CalendarWeekView extends Component {
 
   renderAllDay() {
     const { days, calendar } = this.props
+    const { mobileDayOfWeek } = this.state
     let daysInfo = this.evaluateData(days)
 
     return (
@@ -189,21 +212,32 @@ class CalendarWeekView extends Component {
             styles.eventsContainer,
             styles.eventsContainrAllDay
           )}>
-          {daysInfo.map((day, index) => (
-            <li
-              className={classnames(
-                styles.eventsGroup,
-                calendar.selectedDate ===
-                  moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight
-              )}
-              key={index}>
-              <div
-                className={styles.allDayEvent}
-                style={{ background: CALENDAR_COLOURS['INSTRUCTOR'] }}>
-                Custom Event Title
-              </div>
-            </li>
-          ))}
+          <MediaQuery maxWidth={767}>
+            {matches =>
+              daysInfo.map((day, index) => {
+                if (!matches || index === mobileDayOfWeek) {
+                  return (
+                    <li
+                      className={classnames(
+                        styles.eventsGroup,
+                        calendar.selectedDate ===
+                          moment(day.date).format('YYYY-MM-DD') &&
+                          styles.bgHighlight
+                      )}
+                      key={index}>
+                      <div
+                        className={styles.allDayEvent}
+                        style={{ background: CALENDAR_COLOURS['INSTRUCTOR'] }}>
+                        Custom Event Title
+                      </div>
+                    </li>
+                  )
+                }
+
+                return null
+              })
+            }
+          </MediaQuery>
         </ul>
       </div>
     )

@@ -56,6 +56,13 @@
       span {
         top: 12px;
       }
+
+      &::after {
+        @media (max-width: 768px) {
+          content: '';
+          display: block;
+        }
+      }
     }
 
     &::after {
@@ -69,6 +76,11 @@
       height: 2px;
       background: #eaeaea;
       z-index: 2;
+
+      @media (max-width: 768px) {
+        content: none;
+        display: none;
+      }
     }
     &:last-of-type::after {
       display: none;
@@ -145,6 +157,10 @@
   height: 50px;
   margin-bottom: 0;
 
+  @media (max-width: 768px) {
+    // display: none;
+  }
+
   .eventsGroup {
     border-top: 0;
     border-bottom: 0;
@@ -183,6 +199,10 @@
   padding: 0 12px 0 0;
 
   border-top: 0;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
   &:not(:first-of-type) {
     border-left-width: 0;
@@ -303,6 +323,8 @@
 @media (max-width: 768px) {
   .weekDays {
     width: 100%;
+    width: calc(100vw - 15px);
+    margin-left: -50px;
   }
   .weekviewContent {
     width: 100%;
@@ -318,5 +340,10 @@
   }
   .desktopVisible {
     display: none;
+  }
+  .topInfo {
+    span {
+      font-weight: bold;
+    }
   }
 }

@@ -1,7 +1,7 @@
 .container {
   display: flex;
   padding: 1px 12px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   background-color: #fafafa;
   align-items: center;
   padding-right: 0;
@@ -12,7 +12,12 @@
 }
 
 .info {
-  font-size: 14px;
+  font-size: 12px;
   flex-grow: 1;
   font-weight: bold;
+}
+
+.button {
+  font-size: 12px !important;
+  font-weight: bold !important;
 }
