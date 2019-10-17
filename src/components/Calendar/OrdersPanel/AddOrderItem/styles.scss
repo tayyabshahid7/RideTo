@@ -1,8 +1,14 @@
 .container {
-  font-size: 14px;
+  // font-size: 14px;
+  // font-size: 11px;
   background-color: rgba(#e4e4e4, 0.2);
   padding: 1rem;
   margin-bottom: 1rem;
+
+  &,
+  * {
+    font-size: 11px;
+  }
 
   label {
     width: 100%;
@@ -45,8 +51,8 @@
 .title {
   margin-right: 15px;
   margin-bottom: 0;
-  font-size: 18px;
-  line-height: 23px;
+  font-size: 12px;
+  // line-height: 23px;
   font-weight: bold;
   color: #707070;
 }

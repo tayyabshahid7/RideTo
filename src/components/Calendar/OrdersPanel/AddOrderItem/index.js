@@ -274,7 +274,7 @@ class AddOrderItem extends React.Component {
               <span className={styles.leftCol}>
                 <h3 className={styles.title}>Add Order</h3>
               </span>
-              <span>Step 1 of 2</span>
+              {/* <span>Step 1 of 2</span> */}
             </div>
           ))}
         {!showPaymentConfirmation ? (
@@ -437,6 +437,7 @@ class AddOrderItem extends React.Component {
                 {/*
                 {!showPayment && (
                   <Button
+                    small
                     disabled={!userDetailsValid}
                     type="button"
                     color="primary"
@@ -446,6 +447,7 @@ class AddOrderItem extends React.Component {
                 )}
                 */}
                 <Button
+                  small
                   type="submit"
                   color="primary"
                   disabled={
@@ -458,7 +460,7 @@ class AddOrderItem extends React.Component {
                   }>
                   {showPayment ? 'Take Payment' : 'Save'}
                 </Button>
-                <Button color="white" onClick={this.handleCancel}>
+                <Button small color="white" onClick={this.handleCancel}>
                   Cancel
                 </Button>
               </Col>
@@ -473,7 +475,7 @@ class AddOrderItem extends React.Component {
             </p>
             <p>Confirmation Email sent.</p>
             <p>
-              <Button color="white" onClick={onCancel}>
+              <Button small color="white" onClick={onCancel}>
                 Close
               </Button>
             </p>

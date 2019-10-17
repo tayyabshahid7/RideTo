@@ -27,7 +27,7 @@
 .actions {
   display: flex;
 
-  button:last-child {
+  button:nth-child(3) {
     margin-left: auto;
   }
 }
