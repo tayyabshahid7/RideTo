@@ -6,8 +6,8 @@ import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
 import {
   WORK_HOURS,
-  WEEK_VIEW_START_TIME,
-  CALENDAR_COLOURS
+  WEEK_VIEW_START_TIME
+  // CALENDAR_COLOURS
 } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
@@ -201,7 +201,7 @@ class CalendarWeekView extends Component {
   }
 
   renderAllDay() {
-    const { days, calendar } = this.props
+    const { days } = this.props
     const { mobileDayOfWeek } = this.state
     let daysInfo = this.evaluateData(days)
 
@@ -216,24 +216,24 @@ class CalendarWeekView extends Component {
             {matches =>
               daysInfo.map((day, index) => {
                 if (!matches || index === mobileDayOfWeek) {
-                  return (
-                    <li
-                      className={classnames(
-                        styles.eventsGroup,
-                        calendar.selectedDate ===
-                          moment(day.date).format('YYYY-MM-DD') &&
-                          styles.bgHighlight
-                      )}
-                      key={index}>
-                      <div
-                        className={styles.allDayEvent}
-                        style={{ background: CALENDAR_COLOURS['INSTRUCTOR'] }}>
-                        Custom Event Title
-                      </div>
-                    </li>
-                  )
+                  return null
+                  // return (
+                  //   <li
+                  //     className={classnames(
+                  //       styles.eventsGroup,
+                  //       calendar.selectedDate ===
+                  //         moment(day.date).format('YYYY-MM-DD') &&
+                  //         styles.bgHighlight
+                  //     )}
+                  //     key={index}>
+                  //     <div
+                  //       className={styles.allDayEvent}
+                  //       style={{ background: CALENDAR_COLOURS['INSTRUCTOR'] }}>
+                  //       Custom Event Title
+                  //     </div>
+                  //   </li>
+                  // )
                 }
-
                 return null
               })
             }
