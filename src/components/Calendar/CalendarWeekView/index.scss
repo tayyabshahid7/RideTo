@@ -181,6 +181,10 @@
 }
 .bgHighlight {
   background: #f7f7f7dd;
+
+  @media (max-width: 768px) {
+    background-color: transparent;
+  }
 }
 .todayDate {
   a {

@@ -201,7 +201,7 @@ class CalendarWeekView extends Component {
   }
 
   renderAllDay() {
-    const { days } = this.props
+    const { days, calendar } = this.props
     const { mobileDayOfWeek } = this.state
     let daysInfo = this.evaluateData(days)
 
@@ -216,23 +216,26 @@ class CalendarWeekView extends Component {
             {matches =>
               daysInfo.map((day, index) => {
                 if (!matches || index === mobileDayOfWeek) {
-                  return null
-                  // return (
-                  //   <li
-                  //     className={classnames(
-                  //       styles.eventsGroup,
-                  //       calendar.selectedDate ===
-                  //         moment(day.date).format('YYYY-MM-DD') &&
-                  //         styles.bgHighlight
-                  //     )}
-                  //     key={index}>
-                  //     <div
-                  //       className={styles.allDayEvent}
-                  //       style={{ background: CALENDAR_COLOURS['INSTRUCTOR'] }}>
-                  //       Custom Event Title
-                  //     </div>
-                  //   </li>
-                  // )
+                  return (
+                    <li
+                      className={classnames(
+                        styles.eventsGroup,
+                        calendar.selectedDate ===
+                          moment(day.date).format('YYYY-MM-DD') &&
+                          styles.bgHighlight
+                      )}
+                      key={index}>
+                      {/*
+
+                      <div
+                        className={styles.allDayEvent}
+                        style={{ background: CALENDAR_COLOURS['INSTRUCTOR'] }}>
+                        Custom Event Title
+                      </div>
+
+                      */}
+                    </li>
+                  )
                 }
                 return null
               })

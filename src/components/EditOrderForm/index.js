@@ -3,11 +3,7 @@ import { Link } from 'react-router-dom'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 
-import {
-  ConnectSelect,
-  ConnectLabeledContent,
-  Button
-} from 'components/ConnectForm'
+import { ConnectSelect, Button } from 'components/ConnectForm'
 
 import { BikeHires, formatBikeConstant, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions, getTrainingStatusOptions } from 'services/order'
@@ -102,24 +98,11 @@ class EditOrderForm extends React.Component {
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave}>
-          <div className={styles.deleteWrap}>
-            <Button color="danger" onClick={onDelete}>
-              Delete
-            </Button>
-          </div>
           <div className={styles.topSection}>
-            <div>
-              <div className={styles.header}>
-                <h4>Edit Order {direct_friendly_id}</h4>
-              </div>
-              <ConnectLabeledContent label="Customer" disabled basic>
-                <b>
-                  <Link to={`/customers/${id}`}>
-                    {first_name} {last_name}
-                  </Link>
-                </b>
-              </ConnectLabeledContent>
-            </div>
+            <Link to={`/customers/${id}`}>
+              {first_name} {last_name}
+            </Link>
+            <span>{direct_friendly_id}</span>
           </div>
 
           <ChangeDate
@@ -135,7 +118,7 @@ class EditOrderForm extends React.Component {
           {!showChangeDate && (
             <div>
               <Row>
-                <Col sm="8">
+                <Col sm="10">
                   <ConnectSelect
                     name="bike_type"
                     selected={bike_type}
@@ -172,7 +155,7 @@ class EditOrderForm extends React.Component {
                 </Row>
               )}
               <Row>
-                <Col sm="6">
+                <Col sm="10">
                   <ConnectSelect
                     label="Training status"
                     options={getTrainingStatusOptions()}
@@ -184,7 +167,9 @@ class EditOrderForm extends React.Component {
                     }}
                   />
                 </Col>
-                <Col sm="6">
+              </Row>
+              <Row>
+                <Col sm="10">
                   <ConnectSelect
                     name="order.payment_status"
                     selected={payment_status}
@@ -203,12 +188,12 @@ class EditOrderForm extends React.Component {
               </Row>
               {/* TODO PRODEV-1112 Needs BACKEND
               <Row>
-                <Col sm="6">
+                <Col sm="10">
                   <ConnectLabeledContent label="Price paid" disabled basic>
                     {`£${parseFloat(0).toFixed(2)}`}
                   </ConnectLabeledContent>
                 </Col>
-                <Col sm="6">
+                <Col sm="10">
                   <ConnectLabeledContent label="Stripe link" disabled basic>
                     <a href={0} target="_blank" rel="noopener noreferrer">
                       Open
@@ -219,6 +204,7 @@ class EditOrderForm extends React.Component {
               */}
               <div className={styles.comms}>
                 <Button
+                  small
                   disabled={isSending}
                   color="primary"
                   outline
@@ -226,12 +212,19 @@ class EditOrderForm extends React.Component {
                   Send Confirmation
                 </Button>
               </div>
-              <div>
-                <Button type="submit" color="primary" disabled={!isChanged}>
+              <div className={styles.buttons}>
+                <Button
+                  small
+                  type="submit"
+                  color="primary"
+                  disabled={!isChanged}>
                   Save
                 </Button>
-                <Button color="white" onClick={onCancel}>
+                <Button small color="white" onClick={onCancel}>
                   Cancel
+                </Button>
+                <Button small color="danger" onClick={onDelete}>
+                  Delete
                 </Button>
               </div>
             </div>

@@ -3,6 +3,17 @@
   color: var(--grey-color);
   padding: 1rem;
   margin-bottom: 10px;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+    0 3px 5px -1px rgba(0, 0, 0, 0.2);
+
+  &,
+  * {
+    font-size: 11px;
+  }
+
+  button {
+    min-height: 30px;
+  }
 }
 
 .header {
@@ -21,8 +32,15 @@ button.toggleButton {
 }
 
 .topSection {
-  // display: flex;
-  // justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 1rem;
+
+  &,
+  * {
+    font-size: 12px;
+  }
 }
 
 .comms {
@@ -32,4 +50,12 @@ button.toggleButton {
 .deleteWrap {
   text-align: right;
   margin-bottom: 0.5rem;
+}
+
+.buttons {
+  display: flex;
+
+  button:last-of-type {
+    margin-left: auto;
+  }
 }
