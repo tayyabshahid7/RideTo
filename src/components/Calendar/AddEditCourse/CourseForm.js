@@ -166,7 +166,8 @@ class CourseForm extends React.Component {
     )
 
     this.setState({
-      course: { ...course, duration }
+      course: { ...course, duration },
+      edited: true
     })
   }
 
