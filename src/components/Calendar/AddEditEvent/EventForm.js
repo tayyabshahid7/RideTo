@@ -119,15 +119,6 @@ class EventForm extends React.Component {
       <div className={styles.container}>
         {this.renderTitle()}
         <Loading loading={saving}>
-          {this.props.event && (
-            <Row>
-              <Col className={styles.actions}>
-                <Button onClick={onRemove} color="danger">
-                  Remove Event
-                </Button>
-              </Col>
-            </Row>
-          )}
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
               <Col>
@@ -185,19 +176,23 @@ class EventForm extends React.Component {
                 />
               </Col>
             </Row>
-            <Row>
-              <Col className="mt-3 text-right">
-                <Button type="submit" color="primary">
-                  Save
+            <div className={styles.actions}>
+              <Button small type="submit" color="primary">
+                Save
+              </Button>
+              <Button
+                small
+                type="button"
+                color="white"
+                onClick={this.handleCancel.bind(this)}>
+                Cancel
+              </Button>
+              {this.props.event && (
+                <Button small onClick={onRemove} color="danger">
+                  Remove Event
                 </Button>
-                <Button
-                  type="button"
-                  color=""
-                  onClick={this.handleCancel.bind(this)}>
-                  Cancel
-                </Button>
-              </Col>
-            </Row>
+              )}
+            </div>
           </Form>
         </Loading>
       </div>

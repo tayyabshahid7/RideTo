@@ -1,5 +1,6 @@
 .formGroup {
-  margin-bottom: 1.5rem;
+  // margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   font-size: 14px;
 }
 
@@ -135,6 +136,8 @@ select {
   // border: 0;
   width: 100%;
   min-height: 65px;
+  border: 1px solid #e4e4e4;
+  color: #707070;
 }
 
 .textareaAutoHeight {
@@ -217,6 +220,8 @@ select {
 .buttonSmall {
   min-width: 62px;
   height: 23px;
+
+  min-height: 30px;
 }
 
 .buttonLarge {

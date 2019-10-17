@@ -4,9 +4,16 @@
   width: 100%;
   background-color: #fafafa;
   padding: 1rem;
+
+  &,
+  * {
+    font-size: 11px;
+  }
 }
+
 .addEvent {
 }
+
 .title {
   text-align: center;
   font-size: 1.5rem;
@@ -18,5 +25,9 @@
 }
 
 .actions {
-  text-align: right;
+  display: flex;
+
+  button:last-child {
+    margin-left: auto;
+  }
 }

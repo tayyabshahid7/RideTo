@@ -1,5 +1,6 @@
 import React from 'react'
-import { Button } from 'components/ConnectForm'
+import moment from 'moment'
+import { CALENDAR_COLOURS } from 'common/constants'
 
 import styles from './CourseHeading.scss'
 
@@ -8,17 +9,26 @@ const CourseHeading = ({ course, onRemove }) => {
     return null
   }
 
-  const actions =
-    course.orders.length === 0 ? (
-      <Button onClick={onRemove} color="danger">
-        Delete
-      </Button>
-    ) : null
+  // const actions =
+  //   course.orders.length === 0 ? (
+  //     <Button onClick={onRemove} color="danger">
+  //       Delete
+  //     </Button>
+  //   ) : null
 
   return (
-    <div className={styles.courseHeading}>
-      <div className={styles.title}>Edit Course</div>
-      <div className={styles.actions}>{actions}</div>
+    <div
+      className={styles.courseHeading}
+      style={{
+        background: CALENDAR_COLOURS[course.course_type.constant]
+      }}>
+      <div className={styles.title}>
+        <span>Edit {course.course_type.name}</span>|{' '}
+        {course.time.substring(0, 5)} -{' '}
+        {moment(`${course.date} ${course.time}`)
+          .add(course.duration / 60, 'hours')
+          .format('HH:mm')}
+      </div>
     </div>
   )
 }

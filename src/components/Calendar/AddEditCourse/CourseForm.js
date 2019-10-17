@@ -238,7 +238,8 @@ class CourseForm extends React.Component {
       saving,
       instructors,
       testCentres,
-      pricing
+      pricing,
+      onRemove
     } = this.props
     const { edited } = this.state
     const {
@@ -287,6 +288,7 @@ class CourseForm extends React.Component {
             <Row>
               <Col sm="8">
                 <ConnectSelect
+                  label="Course type"
                   basic
                   name="course_type_id"
                   value={course_type_id}
@@ -295,6 +297,26 @@ class CourseForm extends React.Component {
                   onChange={this.handleChangeRawEvent.bind(this)}
                   raw
                   options={courseTypes}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col sm="8">
+                <ConnectSelect
+                  basic
+                  label="Instructor"
+                  name="instructor_id"
+                  value={instructor_id}
+                  disabled={!isEditable}
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  raw
+                  options={[
+                    { id: '', name: 'Select' },
+                    ...instructors.map(instructor => ({
+                      ...instructor,
+                      name: `${instructor.first_name} ${instructor.last_name}`
+                    }))
+                  ]}
                 />
               </Col>
             </Row>
@@ -316,7 +338,7 @@ class CourseForm extends React.Component {
                 </Row>
               )}
               <Row>
-                <Col sm="4">
+                <Col sm="6">
                   <ConnectInput
                     label="Start Time"
                     basic
@@ -330,7 +352,7 @@ class CourseForm extends React.Component {
                     required
                   />
                 </Col>
-                <Col sm="4">
+                <Col sm="6">
                   <ConnectInput
                     label="Finish Time"
                     basic
@@ -577,26 +599,6 @@ class CourseForm extends React.Component {
                   )}
                 </React.Fragment>
               )}
-              <Row>
-                <Col sm="8">
-                  <ConnectSelect
-                    basic
-                    label="Instructor"
-                    name="instructor_id"
-                    value={instructor_id}
-                    disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    raw
-                    options={[
-                      { id: '', name: 'Select' },
-                      ...instructors.map(instructor => ({
-                        ...instructor,
-                        name: `${instructor.first_name} ${instructor.last_name}`
-                      }))
-                    ]}
-                  />
-                </Col>
-              </Row>
               {!isFullLicence && (
                 <ConnectInput
                   label="Course Price"
@@ -622,11 +624,18 @@ class CourseForm extends React.Component {
               />
               {isEditable && (
                 <div className={styles.actions}>
-                  <Button type="submit" color="primary" disabled={!edited}>
+                  <Button
+                    small
+                    type="submit"
+                    color="primary"
+                    disabled={!edited}>
                     Save
                   </Button>
-                  <Button color="white" onClick={this.handleToggleEdit}>
+                  <Button small color="white" onClick={this.handleToggleEdit}>
                     Cancel
+                  </Button>
+                  <Button small color="danger" onClick={onRemove}>
+                    Delete
                   </Button>
                 </div>
               )}

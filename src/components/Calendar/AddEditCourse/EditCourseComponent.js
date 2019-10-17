@@ -137,6 +137,7 @@ class EditCourseComponent extends Component {
               this.handleSetEditable(isEditable, course.date)
             }
             onSubmit={this.onSave.bind(this)}
+            onRemove={this.handleRemoveCourseClick.bind(this)}
           />
         </div>
 
