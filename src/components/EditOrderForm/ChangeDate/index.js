@@ -136,6 +136,7 @@ class ChangeDate extends Component {
           <Row>
             <Col className="mb-3">
               <Button
+                small
                 type="button"
                 color="primary"
                 onClick={this.handleUpdateClick}>

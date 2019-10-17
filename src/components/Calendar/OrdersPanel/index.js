@@ -81,9 +81,7 @@ class OrdersPanel extends React.Component {
   async handleDeleteTraining(training) {
     if (
       window.confirm(
-        `Are you sure you want to delete the training from Order ${
-          training.direct_friendly_id
-        }?`
+        `Are you sure you want to delete the training from Order ${training.direct_friendly_id}?`
       )
     ) {
       const { deleteOrderTraining, schoolId } = this.props
@@ -117,19 +115,7 @@ class OrdersPanel extends React.Component {
           <div className={styles.orders}>
             {course.orders.map((training, index) => (
               <React.Fragment key={index}>
-                <OrdersPanelItem
-                  training={training}
-                  onEdit={() => this.handleShowEditForm(index)}
-                  onDelete={() => this.handleDeleteTraining(training)}
-                  showEditButton={
-                    // TODO-man-ord If change Orders models in webapp change this too
-                    (training.is_manual_order ||
-                      (training.direct_friendly_id &&
-                        training.direct_friendly_id.startsWith('DIRECT'))) &&
-                    showEditButton
-                  }
-                />
-                {editOrderIndex === index && (
+                {editOrderIndex === index ? (
                   <EditOrderFormContainer
                     updateCourse={this.props.updateCourse}
                     onCancel={() =>
@@ -145,6 +131,19 @@ class OrdersPanel extends React.Component {
                     date={course.date}
                     time={course.time}
                     onDelete={() => this.handleDeleteTraining(training)}
+                  />
+                ) : (
+                  <OrdersPanelItem
+                    training={training}
+                    onEdit={() => this.handleShowEditForm(index)}
+                    onDelete={() => this.handleDeleteTraining(training)}
+                    showEditButton={
+                      // TODO-man-ord If change Orders models in webapp change this too
+                      (training.is_manual_order ||
+                        (training.direct_friendly_id &&
+                          training.direct_friendly_id.startsWith('DIRECT'))) &&
+                      showEditButton
+                    }
                   />
                 )}
               </React.Fragment>
