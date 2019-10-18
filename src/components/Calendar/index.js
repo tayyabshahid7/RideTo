@@ -39,6 +39,7 @@ class CalendarComponent extends Component {
               <CalendarMobileBackButton
                 handleCustomEvent={handleCustomEvent}
                 viewMode={viewMode}
+                calendar={calendar}
               />
             </div>
           </Col>

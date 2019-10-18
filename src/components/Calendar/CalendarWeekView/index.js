@@ -15,7 +15,6 @@ import isEqual from 'lodash/isEqual'
 
 function getDayOfWeek({ day, month, year }) {
   const momentDate = moment(`${year}-${month + 1}-${day}`, 'YYYY-M-D')
-  console.log(momentDate)
   const dayOfWeek = momentDate.day() - 1
 
   if (dayOfWeek === -1) {
