@@ -47,7 +47,7 @@ class CalendarComponent extends Component {
     )
   }
   render() {
-    let { days, calendar, history, match } = this.props
+    let { days, calendar, history, match, handleMobileCellClick } = this.props
     return (
       <div className={classnames(styles.container)}>
         {this.renderOverview()}
@@ -59,12 +59,14 @@ class CalendarComponent extends Component {
               days={days}
               calendar={calendar}
               history={history}
+              handleMobileCellClick={handleMobileCellClick}
             />
           ) : (
             <CalendarMonthView
               days={days}
               calendar={calendar}
               history={history}
+              handleMobileCellClick={handleMobileCellClick}
             />
           )}
         </Loading>

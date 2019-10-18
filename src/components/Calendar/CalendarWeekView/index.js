@@ -11,17 +11,34 @@ import {
 } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
+import isEqual from 'lodash/isEqual'
+
+function getDayOfWeek({ day, month, year }) {
+  const momentDate = moment(`${year}-${month + 1}-${day}`, 'YYYY-M-D')
+  console.log(momentDate)
+  const dayOfWeek = momentDate.day() - 1
+
+  if (dayOfWeek === -1) {
+    return 6
+  }
+
+  return dayOfWeek
+}
 
 class CalendarWeekView extends Component {
   constructor(props) {
     super(props)
 
-    const { selectedDate } = this.props.calendar
-
     this.state = {
-      mobileDayOfWeek: selectedDate
-        ? moment(selectedDate).day()
-        : moment().day()
+      mobileDayOfWeek: getDayOfWeek(this.props.calendar)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(this.props.calendar, prevProps.calendar)) {
+      this.setState({
+        mobileDayOfWeek: getDayOfWeek(this.props.calendar)
+      })
     }
   }
 
@@ -58,7 +75,7 @@ class CalendarWeekView extends Component {
   }
 
   renderWeekdays() {
-    const { days, calendar } = this.props
+    const { days, calendar, handleMobileCellClick } = this.props
     let daysInfo = this.evaluateData(days)
     return (
       <div className={styles.weekDays}>
@@ -69,22 +86,48 @@ class CalendarWeekView extends Component {
                 styles.weekDaysHeader,
                 calendar.selectedDate ===
                   moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight,
-                moment(day.date).isSame(moment(), 'day') && styles.todayDate
+                moment(day.date).isSame(moment(), 'day') && styles.todayDate,
+                moment(day.date).isSame(
+                  moment(
+                    `${calendar.year}-${calendar.month + 1}-${calendar.day}`,
+                    'YYYY-M-D'
+                  ),
+                  'day'
+                ) && styles.mobileSameDate
               )}
               key={index}>
               <div className={styles.topInfo}>
-                <Link to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}>
-                  <span className={styles.mobileVisible}>
-                    {moment(day.date).format('dd')[0]}
-                    <br />
-                    {moment(day.date).format('D')}
-                  </span>
-                  <span className={styles.desktopVisible}>
-                    {moment(day.date).format('dddd')}
-                    <br />
-                    {moment(day.date).format('Do')}
-                  </span>
-                </Link>
+                <MediaQuery maxWidth={767}>
+                  {matches => {
+                    if (matches) {
+                      return (
+                        <button
+                          onClick={() => {
+                            handleMobileCellClick(day.date)
+                          }}>
+                          <span className={styles.mobileVisible}>
+                            {moment(day.date).format('dd')[0]}
+                            <br />
+                            {moment(day.date).format('D')}
+                          </span>
+                        </button>
+                      )
+                    }
+
+                    return (
+                      <Link
+                        to={`/calendar/${moment(day.date).format(
+                          'YYYY-MM-DD'
+                        )}`}>
+                        <span className={styles.desktopVisible}>
+                          {moment(day.date).format('dddd')}
+                          <br />
+                          {moment(day.date).format('Do')}
+                        </span>
+                      </Link>
+                    )
+                  }}
+                </MediaQuery>
               </div>
             </li>
           ))}
@@ -166,7 +209,7 @@ class CalendarWeekView extends Component {
           <MediaQuery maxWidth={767}>
             {matches =>
               daysInfo.map((day, index) => {
-                if (!matches || index === mobileDayOfWeek - 1) {
+                if (!matches || index === mobileDayOfWeek) {
                   return (
                     <li
                       className={classnames(
@@ -219,7 +262,7 @@ class CalendarWeekView extends Component {
           <MediaQuery maxWidth={767}>
             {matches =>
               daysInfo.map((day, index) => {
-                if (!matches || index === mobileDayOfWeek - 1) {
+                if (!matches || index === mobileDayOfWeek) {
                   return (
                     <li
                       className={classnames(

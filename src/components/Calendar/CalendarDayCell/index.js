@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
-
+import { useMediaQuery } from 'react-responsive'
 import CalendarDayCellItem from 'components/Calendar/CalendarDayCellItem'
 import { getStarTimeForEventForDate } from 'utils/helper'
 import { getShortCourseType } from 'services/course'
@@ -32,7 +32,7 @@ const getDayItems = (day, dateStr) => {
   return items.sort((a, b) => a.time > b.time)
 }
 
-const CalendarDayCell = ({ day, calendar, history }) => {
+const CalendarDayCell = ({ day, calendar, history, handleMobileCellClick }) => {
   const dateStr = moment(day.date).format('YYYY-MM-DD')
   const items = getDayItems(day, dateStr)
   const selectedDay = dateStr === calendar.selectedDate
@@ -47,6 +47,15 @@ const CalendarDayCell = ({ day, calendar, history }) => {
     now.getFullYear() === day.date.getFullYear() &&
     now.getMonth() === day.date.getMonth() &&
     now.getDate() === day.date.getDate()
+  const isMobile = useMediaQuery({ maxWidth: 767 })
+
+  const handleClick = () => {
+    if (isMobile) {
+      handleMobileCellClick(dateStr)
+    } else {
+      history.push(`/calendar/${dateStr}`)
+    }
+  }
 
   return (
     <li
@@ -55,7 +64,7 @@ const CalendarDayCell = ({ day, calendar, history }) => {
         selectedDay && styles.selectedDay,
         isAxisDate && 'axis-date'
       )}
-      onClick={() => history.push(`/calendar/${dateStr}`)}>
+      onClick={handleClick}>
       <div
         className={classnames(
           isOtherMonthDate && styles.otherMonthDate,

@@ -258,6 +258,21 @@ class CalendarPage extends Component {
     })
   }
 
+  handleMobileCellClick(dateStr) {
+    const { updateCalendarSetting } = this.props
+    const date = moment(dateStr)
+
+    updateCalendarSetting({
+      year: date.year(),
+      month: date.month(),
+      day: date.date()
+    })
+
+    this.handleCustomEvent('change-calendar-setting', {
+      viewMode: CALENDAR_VIEW.WEEK
+    })
+  }
+
   render() {
     const { calendar, eventCalendar, history, location, match } = this.props
     let days = this.generateDaysDataFromCalendar(calendar, eventCalendar)
@@ -278,6 +293,7 @@ class CalendarPage extends Component {
             history={history}
             calendarPath={calendarPath}
             match={match}
+            handleMobileCellClick={this.handleMobileCellClick.bind(this)}
           />
         </div>
         <RightPanel location={location}>
