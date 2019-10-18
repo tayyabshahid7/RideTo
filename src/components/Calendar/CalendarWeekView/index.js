@@ -16,8 +16,12 @@ class CalendarWeekView extends Component {
   constructor(props) {
     super(props)
 
+    const { selectedDate } = this.props.calendar
+
     this.state = {
-      mobileDayOfWeek: 3
+      mobileDayOfWeek: selectedDate
+        ? moment(selectedDate).day()
+        : moment().day()
     }
   }
 
@@ -162,7 +166,7 @@ class CalendarWeekView extends Component {
           <MediaQuery maxWidth={767}>
             {matches =>
               daysInfo.map((day, index) => {
-                if (!matches || index === mobileDayOfWeek) {
+                if (!matches || index === mobileDayOfWeek - 1) {
                   return (
                     <li
                       className={classnames(
@@ -215,7 +219,7 @@ class CalendarWeekView extends Component {
           <MediaQuery maxWidth={767}>
             {matches =>
               daysInfo.map((day, index) => {
-                if (!matches || index === mobileDayOfWeek) {
+                if (!matches || index === mobileDayOfWeek - 1) {
                   return (
                     <li
                       className={classnames(

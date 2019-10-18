@@ -1,18 +1,17 @@
 import React from 'react'
-import classnames from 'classnames'
+import { CALENDAR_COLOURS } from 'common/constants'
 
 import styles from './CalendarDayCellItem.scss'
 
 const CalendarDayCellItem = ({ item }) => {
-  const availableSpaces = item.course ? item.spaces - item.orders.length : null
-  const className = classnames(
-    styles.calendarDayCellItem,
-    availableSpaces === 1 && styles.warning,
-    availableSpaces <= 0 && styles.danger
-  )
+  const constant = item.course_type ? item.course_type.constant : 'EVENT'
 
   return (
-    <div className={className}>
+    <div
+      className={styles.calendarDayCellItem}
+      style={{
+        background: CALENDAR_COLOURS[constant]
+      }}>
       {item.time} | {item.name}
     </div>
   )

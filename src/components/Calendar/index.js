@@ -12,6 +12,7 @@ import SchoolSelect from 'components/SchoolSelect'
 import CalendarDateChanger from './CalendarDateChanger'
 import CalendarViewChanger from './CalendarViewChanger'
 import CalendarArrowsSwitcher from './CalendarArrowsSwitcher'
+import CalendarMobileBackButton from './CalendarMobileBackButton'
 
 class CalendarComponent extends Component {
   renderOverview() {
@@ -35,6 +36,10 @@ class CalendarComponent extends Component {
                   handleCustomEvent={handleCustomEvent}
                 />
               </div>
+              <CalendarMobileBackButton
+                handleCustomEvent={handleCustomEvent}
+                viewMode={viewMode}
+              />
             </div>
           </Col>
         </Row>

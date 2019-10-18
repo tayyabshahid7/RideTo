@@ -19,11 +19,19 @@
   z-index: 2;
 }
 .weekDays {
-  flex: 0 0 50px;
+  flex: 0 0 66px;
+  background: #fcfcfc;
+  padding-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    flex: 0 0 50px;
+    background: transparent;
+    padding-bottom: 0;
+  }
 }
 .timelineWrapper {
   position: relative;
-  margin-top: 50px;
+  margin-top: 66px;
   flex: 0 0 50px;
 }
 .weekviewContent {
@@ -54,7 +62,7 @@
 
     &.allDayTimelineItem {
       span {
-        top: 12px;
+        top: 14px;
       }
 
       &::after {
