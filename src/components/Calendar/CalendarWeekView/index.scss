@@ -33,6 +33,10 @@
   position: relative;
   margin-top: 66px;
   flex: 0 0 50px;
+
+  @media (min-width: 768px) {
+    margin-top: 50px;
+  }
 }
 .weekviewContent {
   flex: 1 1 auto;
@@ -171,7 +175,7 @@
 .eventsContainer {
   display: flex;
 }
-.eventsContainrAllDay {
+.eventsContainerAllDay {
   height: 50px;
   margin-bottom: 0;
 
@@ -221,6 +225,8 @@
   padding: 0 12px 0 0;
 
   border-top: 0;
+
+  cursor: pointer;
 
   @media (max-width: 768px) {
     width: 100%;

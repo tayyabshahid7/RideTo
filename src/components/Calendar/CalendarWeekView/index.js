@@ -211,14 +211,27 @@ class CalendarWeekView extends Component {
                 if (!matches || index === mobileDayOfWeek) {
                   return (
                     <li
+                      onClick={event => {
+                        const { target } = event
+
+                        if (
+                          target.classList.contains('day-li') ||
+                          target.classList.contains('day-ul')
+                        ) {
+                          history.push(
+                            `/calendar/${moment(day.date).format('YYYY-MM-DD')}`
+                          )
+                        }
+                      }}
                       className={classnames(
+                        'day-li',
                         styles.eventsGroup,
                         calendar.selectedDate ===
                           moment(day.date).format('YYYY-MM-DD') &&
                           styles.bgHighlight
                       )}
                       key={index}>
-                      <ul>
+                      <ul className="day-ul">
                         {day.courses &&
                           day.courses.length > 0 &&
                           day.courses.map((course, index) => (
@@ -256,7 +269,7 @@ class CalendarWeekView extends Component {
         <ul
           className={classnames(
             styles.eventsContainer,
-            styles.eventsContainrAllDay
+            styles.eventsContainerAllDay
           )}>
           <MediaQuery maxWidth={767}>
             {matches =>
