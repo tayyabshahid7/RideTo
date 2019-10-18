@@ -24,8 +24,13 @@ class CalendarComponent extends Component {
         <Row>
           <Col>
             <div className={styles.filtersWrap}>
-              <SchoolSelect className="Test" />
-              <div className={styles.changeCalendarWrapper}>
+              <SchoolSelect />
+              <div
+                className={classnames(
+                  styles.changeCalendarWrapper,
+                  viewMode === CALENDAR_VIEW.MONTH &&
+                    styles.changeCalendarWrapperMonth
+                )}>
                 <CalendarArrowsSwitcher handleCustomEvent={handleCustomEvent} />
                 <CalendarDateChanger
                   calendar={calendar}

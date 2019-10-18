@@ -11,6 +11,7 @@ import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseCompo
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
 import AddEventComponent from 'components/Calendar/AddEditEvent/AddEventComponent'
 import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventComponent'
+import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponent'
 import styles from './styles.scss'
 import { getCourses, updateCalendarSetting } from 'store/course'
 import { getEvents } from 'store/event'
@@ -331,6 +332,11 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date/events/:eventId/edit"
             render={routeProps => <EditEventComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/staff/create"
+            render={routeProps => <AddStaffComponent {...routeProps} />}
           />
         </RightPanel>
       </div>

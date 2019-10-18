@@ -87,6 +87,10 @@
   }
 }
 
+.changeCalendarWrapperMonth {
+  display: flex;
+}
+
 .filtersWrap {
   @media (min-width: 768px) {
     display: flex;
