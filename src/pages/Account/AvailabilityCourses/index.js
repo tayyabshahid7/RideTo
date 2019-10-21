@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import AvailabilityCourses from './AvailabilityCourses'
 import { createBulkCourse } from 'store/course'
 import { loadCourseTypes } from 'store/info'
-import { getInstructors } from 'store/instructor'
+import { getInstructors, editInstructor } from 'store/instructor'
 import { fetchSettings, updateSettings } from 'store/settings'
 
 class AvailabilityCoursesContainer extends React.Component {
@@ -46,7 +46,8 @@ const mapDispatchToProps = dispatch =>
       loadCourseTypes,
       getInstructors,
       fetchSettings,
-      updateSettings
+      updateSettings,
+      editInstructor
     },
     dispatch
   )

@@ -8,11 +8,15 @@ class CalendarLabels extends Component {
     super(props)
 
     this.state = {
-      changedColors: {}
+      changedColors: {},
+      changedStaffColors: []
     }
 
     this.handleColorChange = this.handleColorChange.bind(this)
     this.handleSaveColors = this.handleSaveColors.bind(this)
+
+    this.handleStaffColorChange = this.handleStaffColorChange.bind(this)
+    this.handleStaffSaveColors = this.handleStaffSaveColors.bind(this)
   }
 
   componentDidMount() {
@@ -51,9 +55,32 @@ class CalendarLabels extends Component {
     updateSettings({ ...settings, ...changedColors })
   }
 
+  handleStaffColorChange(instructor, colour) {
+    this.setState({
+      changedStaffColors: [
+        ...this.state.changedStaffColors.filter(
+          ({ id }) => instructor.id !== id
+        ),
+        {
+          ...instructor,
+          colour
+        }
+      ]
+    })
+  }
+
+  handleStaffSaveColors() {
+    const { editInstructor } = this.props
+    const { changedStaffColors } = this.state
+
+    changedStaffColors.forEach(instructor => {
+      editInstructor(instructor.supplier, instructor)
+    })
+  }
+
   render() {
     const { info, instructors, settings } = this.props
-    const { changedColors } = this.state
+    const { changedColors, changedStaffColors } = this.state
 
     return (
       <div className={styles.colorLabels}>
@@ -62,14 +89,24 @@ class CalendarLabels extends Component {
           <b>Instructors</b>
         </div>
         <ul className={styles.labelList}>
-          {instructors.map(({ first_name, last_name, id }) => (
-            <li key={id}>
-              <span>
-                {first_name} {last_name}
-              </span>{' '}
-              <input type="color" />
-            </li>
-          ))}
+          {instructors.map(instructor => {
+            const { first_name, last_name, id, colour } = instructor
+
+            return (
+              <li key={id}>
+                <span>
+                  {first_name} {last_name}
+                </span>{' '}
+                <input
+                  type="color"
+                  defaultValue={colour}
+                  onChange={({ target }) => {
+                    this.handleStaffColorChange(instructor, target.value)
+                  }}
+                />
+              </li>
+            )
+          })}
         </ul>
         <div>
           <b>Course types</b>
@@ -93,8 +130,14 @@ class CalendarLabels extends Component {
         <div className={styles.bottomRow}>
           <Button
             color="primary mt-2"
-            disabled={!Object.keys(changedColors).length}
-            onClick={this.handleSaveColors}>
+            disabled={
+              !Object.keys(changedColors).length &&
+              !Object.keys(changedStaffColors).length
+            }
+            onClick={() => {
+              this.handleSaveColors()
+              this.handleStaffSaveColors()
+            }}>
             Save
           </Button>
         </div>
