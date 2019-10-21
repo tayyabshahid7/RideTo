@@ -18,12 +18,17 @@ import { getEvents } from 'store/event'
 import { getInstructors } from 'store/instructor'
 import { getTestCentres } from 'store/testCentre'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
+import { fetchSettings } from 'store/settings'
 
 class CalendarPage extends Component {
   componentDidMount() {
     this.loadData()
     this.loadInstructors()
     this.props.getTestCentres()
+
+    if (!this.props.settings) {
+      this.props.fetchSettings()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -360,7 +365,8 @@ const mapStateToProps = (state, ownProps) => {
   return {
     schoolId,
     calendar,
-    eventCalendar
+    eventCalendar,
+    settings: state.settings.settings
   }
 }
 
@@ -371,7 +377,8 @@ const mapDispatchToProps = dispatch =>
       getEvents,
       getInstructors,
       getTestCentres,
-      updateCalendarSetting
+      updateCalendarSetting,
+      fetchSettings
     },
     dispatch
   )

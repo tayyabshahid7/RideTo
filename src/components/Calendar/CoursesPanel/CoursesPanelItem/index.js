@@ -33,7 +33,8 @@ const CoursesPanelItem = ({
   updateCourse,
   updateAdding,
   addingOrder,
-  courseId
+  courseId,
+  settings
 }) => {
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
@@ -134,7 +135,8 @@ const mapStateToProps = (state, ownProps) => {
     schoolId: state.auth.schoolId,
     loading: state.course.single.loading,
     saving: state.course.single.saving,
-    info: state.info
+    info: state.info,
+    settings: state.settings.widget.settings
   }
 }
 

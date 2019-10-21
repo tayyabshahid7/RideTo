@@ -129,7 +129,9 @@ class AvailabilityCourses extends React.Component {
       getInstructors,
       history,
       saving,
-      error
+      error,
+      settings,
+      updateSettings
     } = this.props
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
@@ -156,11 +158,13 @@ class AvailabilityCourses extends React.Component {
         <div className={styles.box}>{this.renderDefaultDays()}</div>
         <div className={styles.box}>
           <CalendarLabels
+            settings={settings}
             instructors={instructors}
             getInstructors={getInstructors}
             schoolId={schoolId}
             info={info}
             loadCourseTypes={loadCourseTypes}
+            updateSettings={updateSettings}
           />
         </div>
       </Fragment>

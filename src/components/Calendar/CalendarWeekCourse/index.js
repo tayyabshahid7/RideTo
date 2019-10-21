@@ -2,15 +2,11 @@ import React from 'react'
 import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
-import {
-  WEEK_VIEW_START_TIME,
-  WORK_HOURS,
-  CALENDAR_COLOURS,
-  DATE_FORMAT
-} from 'common/constants'
+import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
 import { getShortCourseType } from 'services/course'
 import moment from 'moment'
 import personIcon from 'assets/images/person.png'
+import { mapLabelColoursWithContant } from 'services/settings'
 
 const CalendarWeekCourse = ({
   course,
@@ -18,7 +14,8 @@ const CalendarWeekCourse = ({
   barCount,
   history,
   calendar,
-  match
+  match,
+  settings
 }) => {
   let height = (course.duration / 60) * 100 // Duration is in mins
   let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
@@ -101,7 +98,10 @@ const CalendarWeekCourse = ({
       <div
         className={classnames(styles.content)}
         style={{
-          background: CALENDAR_COLOURS[course.course_type.constant]
+          background: mapLabelColoursWithContant(
+            settings,
+            course.course_type.constant
+          )
         }}>
         <span className={styles.eventName}>
           {getShortCourseType(course.course_type)}

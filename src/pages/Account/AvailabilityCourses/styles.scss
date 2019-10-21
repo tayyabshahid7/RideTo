@@ -2,7 +2,8 @@
   margin-top: 16px;
 }
 
-.defaultDays {
+.defaultDays,
+.colorLabels {
   width: 100%;
 }
 
@@ -90,4 +91,15 @@
 .labelList {
   padding: 0;
   list-style: none;
+
+  > li {
+    > span {
+      display: inline-block;
+      min-width: 208px;
+    }
+  }
+
+  > li + li {
+    margin-top: 0.5rem;
+  }
 }

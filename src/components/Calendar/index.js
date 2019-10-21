@@ -53,7 +53,15 @@ class CalendarComponent extends Component {
     )
   }
   render() {
-    let { days, calendar, history, match, handleMobileCellClick } = this.props
+    let {
+      days,
+      calendar,
+      history,
+      match,
+      handleMobileCellClick,
+      settings
+    } = this.props
+
     return (
       <div className={classnames(styles.container)}>
         {this.renderOverview()}
@@ -66,6 +74,7 @@ class CalendarComponent extends Component {
               calendar={calendar}
               history={history}
               handleMobileCellClick={handleMobileCellClick}
+              settings={settings}
             />
           ) : (
             <CalendarMonthView
@@ -82,7 +91,9 @@ class CalendarComponent extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    settings: state.settings.settings
+  }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
