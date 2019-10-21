@@ -9,7 +9,12 @@ import pick from 'lodash/pick'
 
 import { getTimeFromDateTime } from 'utils/helper'
 
-import { ConnectInput, ConnectTextArea, Button } from 'components/ConnectForm'
+import {
+  ConnectInput,
+  ConnectTextArea,
+  Button,
+  ConnectCheckbox
+} from 'components/ConnectForm'
 
 class EventForm extends React.Component {
   constructor(props) {
@@ -18,12 +23,20 @@ class EventForm extends React.Component {
       name: '',
       start_time: '',
       end_time: '',
-      notes: ''
+      notes: '',
+      all_day: false
     }
     if (this.props.event) {
       Object.assign(
         event,
-        pick(this.props.event, 'name', 'start_time', 'end_time', 'notes')
+        pick(
+          this.props.event,
+          'name',
+          'start_time',
+          'end_time',
+          'notes',
+          'all_day'
+        )
       )
       event.start_time = moment(event.start_time).format(DAY_FORMAT3)
       event.end_time = moment(event.end_time).format(DAY_FORMAT3)
@@ -51,8 +64,13 @@ class EventForm extends React.Component {
   handleChangeRawEvent(e) {
     let name = e.target.name
     let { event } = this.state
-    event[name] = e.target.value
-    this.setState({ event })
+
+    this.setState({
+      event: {
+        ...event,
+        [name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value
+      }
+    })
   }
 
   handleChangeTime(field, value) {
@@ -110,10 +128,21 @@ class EventForm extends React.Component {
     return <DateHeading date={moment(date)} title={title} backLink={backLink} />
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(this.state.event.all_day, prevState.event.all_day)
+
+    if (
+      this.state.event.all_day !== prevState.event.all_day &&
+      this.state.event.all_day
+    ) {
+      this.handleChangeTime('endTime', '23:59')
+    }
+  }
+
   render() {
     const { saving, onRemove } = this.props
     const { startTime, endTime } = this.state
-    const { name, notes } = this.state.event
+    const { name, notes, all_day } = this.state.event
 
     return (
       <div className={styles.container}>
@@ -163,6 +192,17 @@ class EventForm extends React.Component {
                   required
                 />
               </Col>
+              <Col>
+                <ConnectCheckbox
+                  basic
+                  vertical
+                  name="all_day"
+                  checked={all_day}
+                  label="All day"
+                  className="form-group"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+              </Col>
             </Row>
             <Row>
               <Col>
@@ -189,7 +229,7 @@ class EventForm extends React.Component {
               </Button>
               {this.props.event && (
                 <Button small onClick={onRemove} color="danger">
-                  Remove Event
+                  Delete
                 </Button>
               )}
             </div>

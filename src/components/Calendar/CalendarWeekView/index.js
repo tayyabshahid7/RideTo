@@ -4,11 +4,7 @@ import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
-import {
-  WORK_HOURS,
-  WEEK_VIEW_START_TIME
-  // CALENDAR_COLOURS
-} from 'common/constants'
+import { WORK_HOURS, WEEK_VIEW_START_TIME } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
 import isEqual from 'lodash/isEqual'
@@ -157,12 +153,14 @@ class CalendarWeekView extends Component {
             )
           }
         }),
-        ...dayObj.events.map(event => {
-          return {
-            ...event,
-            ...secondsForDayAndDurationForEvent(event, dayObj.date)
-          }
-        })
+        ...dayObj.events
+          .filter(({ all_day }) => !all_day)
+          .map(event => {
+            return {
+              ...event,
+              ...secondsForDayAndDurationForEvent(event, dayObj.date)
+            }
+          })
       ]
 
       let barMap = []
@@ -261,7 +259,7 @@ class CalendarWeekView extends Component {
   }
 
   renderAllDay() {
-    const { days, calendar } = this.props
+    const { days, calendar, history } = this.props
     const { mobileDayOfWeek } = this.state
     let daysInfo = this.evaluateData(days)
 
@@ -269,6 +267,7 @@ class CalendarWeekView extends Component {
       <div className={styles.events}>
         <ul
           className={classnames(
+            'day-ul',
             styles.eventsContainer,
             styles.eventsContainerAllDay
           )}>
@@ -279,21 +278,37 @@ class CalendarWeekView extends Component {
                   return (
                     <li
                       className={classnames(
+                        'day-li',
                         styles.eventsGroup,
                         calendar.selectedDate ===
                           moment(day.date).format('YYYY-MM-DD') &&
                           styles.bgHighlight
                       )}
-                      key={index}>
-                      {/*
+                      key={index}
+                      onClick={event => {
+                        const { target } = event
 
-                      <div
-                        className={styles.allDayEvent}
-                        style={{ background: CALENDAR_COLOURS['INSTRUCTOR'] }}>
-                        Custom Event Title
-                      </div>
-
-                      */}
+                        if (
+                          target.classList.contains('day-li') ||
+                          target.classList.contains('day-ul')
+                        ) {
+                          history.push(
+                            `/calendar/${moment(day.date).format('YYYY-MM-DD')}`
+                          )
+                        }
+                      }}>
+                      {day.events
+                        .filter(({ all_day }) => all_day)
+                        .map((event, index) => (
+                          <div
+                            key={index}
+                            className={styles.allDayEvent}
+                            style={{
+                              background: '#fff'
+                            }}>
+                            {event.name}
+                          </div>
+                        ))}
                     </li>
                   )
                 }

@@ -298,12 +298,18 @@ export function ConnectCheckbox({
   checked = false,
   onChange,
   noWrapLabel,
-  name
+  name,
+  vertical = false
 }) {
   return (
     <div className={styles.formGroup}>
       {label && (
-        <label className={classnames(styles.label, styles.labelCheckbox)}>
+        <label
+          className={classnames(
+            styles.label,
+            styles.labelCheckbox,
+            vertical && styles.labelCheckboxVertical
+          )}>
           <input
             name={name}
             checked={checked}
