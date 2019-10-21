@@ -38,6 +38,10 @@ export const mapLabelColours = (settings, slug) => {
 }
 
 export const mapLabelColoursWithContant = (settings, constant) => {
+  if (!settings) {
+    return CALENDAR_COLOURS[constant]
+  }
+
   switch (constant) {
     case 'LICENCE_CBT':
       return settings.cbt_training_color
