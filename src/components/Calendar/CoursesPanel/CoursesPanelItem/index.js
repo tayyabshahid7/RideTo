@@ -14,7 +14,8 @@ import {
   deleteOrderTraining,
   updateCourse
 } from 'store/course'
-import { TEST_STATUS_CHOICES, CALENDAR_COLOURS } from 'common/constants'
+import { TEST_STATUS_CHOICES } from 'common/constants'
+import { mapLabelColoursWithContant } from 'services/settings'
 import styles from './CoursesPanelItem.scss'
 import personIcon from 'assets/images/person.png'
 import { getCourseSpaceTextShort } from 'services/course'
@@ -55,7 +56,12 @@ const CoursesPanelItem = ({
         )}>
         <div
           className={classnames(styles.container, className)}
-          style={{ background: CALENDAR_COLOURS[course.course_type.constant] }}>
+          style={{
+            background: mapLabelColoursWithContant(
+              settings,
+              course.course_type.constant
+            )
+          }}>
           <div className={styles.top}>
             <div className={styles.title}>
               <div>
@@ -136,7 +142,7 @@ const mapStateToProps = (state, ownProps) => {
     loading: state.course.single.loading,
     saving: state.course.single.saving,
     info: state.info,
-    settings: state.settings.widget.settings
+    settings: state.settings.settings
   }
 }
 

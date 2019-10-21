@@ -1,26 +1,22 @@
 import React from 'react'
 import moment from 'moment'
-import { CALENDAR_COLOURS } from 'common/constants'
-
+import { mapLabelColoursWithContant } from 'services/settings'
+import { connect } from 'react-redux'
 import styles from './CourseHeading.scss'
 
-const CourseHeading = ({ course, onRemove }) => {
+const CourseHeading = ({ course, onRemove, settings }) => {
   if (!course) {
     return null
   }
-
-  // const actions =
-  //   course.orders.length === 0 ? (
-  //     <Button onClick={onRemove} color="danger">
-  //       Delete
-  //     </Button>
-  //   ) : null
 
   return (
     <div
       className={styles.courseHeading}
       style={{
-        background: CALENDAR_COLOURS[course.course_type.constant]
+        background: mapLabelColoursWithContant(
+          settings,
+          course.course_type.constant
+        )
       }}>
       <div className={styles.title}>
         <span>Edit {course.course_type.name}</span>|{' '}
@@ -33,4 +29,10 @@ const CourseHeading = ({ course, onRemove }) => {
   )
 }
 
-export default CourseHeading
+const mapStateToProps = (state, ownProps) => {
+  return {
+    settings: state.settings.settings
+  }
+}
+
+export default connect(mapStateToProps)(CourseHeading)
