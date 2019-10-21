@@ -8,6 +8,7 @@ import { WORK_HOURS, WEEK_VIEW_START_TIME } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
 import isEqual from 'lodash/isEqual'
+import { mapLabelColoursWithContant } from 'services/settings'
 
 function getDayOfWeek({ day, month, year }) {
   const momentDate = moment(`${year}-${month + 1}-${day}`, 'YYYY-M-D')
@@ -301,10 +302,20 @@ class CalendarWeekView extends Component {
                         .filter(({ all_day }) => all_day)
                         .map((event, index) => (
                           <div
+                            onClick={() =>
+                              history.push(
+                                `/calendar/${moment(event.start_date).format(
+                                  'YYYY-MM-DD'
+                                )}/events/${event.id}/edit`
+                              )
+                            }
                             key={index}
                             className={styles.allDayEvent}
                             style={{
-                              background: '#fff'
+                              background: mapLabelColoursWithContant(
+                                {},
+                                'EVENT'
+                              )
                             }}>
                             {event.name}
                           </div>
