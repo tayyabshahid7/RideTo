@@ -15,6 +15,7 @@ import upload from './upload'
 import email from './email'
 import sms from './sms'
 import staff from './staff'
+import user from './user'
 
 const appReducer = combineReducers({
   auth,
@@ -32,6 +33,7 @@ const appReducer = combineReducers({
   upload,
   email,
   sms,
-  staff
+  staff,
+  user
 })
 export default appReducer
