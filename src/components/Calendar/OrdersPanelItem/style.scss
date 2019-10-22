@@ -38,3 +38,16 @@
     text-decoration: underline;
   }
 }
+
+.partial,
+.pending {
+  font-style: italic;
+}
+
+.partial {
+  color: var(--warning-color);
+}
+
+.pending {
+  color: var(--danger-color);
+}

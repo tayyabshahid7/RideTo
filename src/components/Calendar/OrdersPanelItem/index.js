@@ -1,7 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { getTrainingStatus } from 'services/course'
+import { getPaymentOptions } from 'services/order'
 import styles from './style.scss'
+import classnames from 'classnames'
 
 const OrdersPanelItem = ({
   training,
@@ -9,6 +11,8 @@ const OrdersPanelItem = ({
   onDelete,
   showEditButton = false
 }) => {
+  const { payment_status } = training
+
   return (
     <div className={styles.container} key={training.id}>
       <div className={styles.row}>
@@ -28,6 +32,22 @@ const OrdersPanelItem = ({
         {training.status && (
           <div className={styles.status}>
             {getTrainingStatus(training.status)}
+          </div>
+        )}
+      </div>
+      <div className={styles.row}>
+        {training.rider_experience && <div>{training.rider_experience}</div>}
+        {training.payment_status && (
+          <div
+            className={classnames(
+              payment_status === 'PARTIAL_PAYMENT' && styles.partial,
+              payment_status === 'PENDING' && styles.pending
+            )}>
+            {
+              getPaymentOptions().find(
+                ({ id }) => id === training.payment_status
+              ).name
+            }
           </div>
         )}
       </div>
