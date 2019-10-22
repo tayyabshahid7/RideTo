@@ -125,6 +125,19 @@ export const getTrainingStatusOptions = () => {
   ]
 }
 
+export const getNonCompleteOptions = () => {
+  return [
+    { id: 'LATE_ATTENDANCE', name: 'Late attendance' },
+    { id: 'INCORRECT_DOCUMENT', name: 'Incorrect document' },
+    { id: 'EYE_TEST', name: 'Eye test' },
+    { id: 'LANGUAGE', name: 'Langauge' },
+    { id: 'HIGHWAY_CODE_KNOWLEDGE', name: 'Highway code knowledge' },
+    { id: 'BALANCE_CONTROL', name: 'Balance control' },
+    { id: 'ROAD_AWARENESS', name: 'Road awareness' },
+    { id: 'OTHER', name: 'Other' }
+  ]
+}
+
 export const getExpectedPrice = (priceInfo, addons = [], checkoutData = {}) => {
   return (
     priceInfo.price +

@@ -6,7 +6,11 @@ import { Row, Col, Form } from 'reactstrap'
 import { ConnectSelect, Button } from 'components/ConnectForm'
 
 import { BikeHires, formatBikeConstant, FullLicenceTypes } from 'common/info'
-import { getPaymentOptions, getTrainingStatusOptions } from 'services/order'
+import {
+  getPaymentOptions,
+  getTrainingStatusOptions,
+  getNonCompleteOptions
+} from 'services/order'
 import ChangeDate from './ChangeDate/'
 
 class EditOrderForm extends React.Component {
@@ -89,7 +93,12 @@ class EditOrderForm extends React.Component {
 
     const { first_name, last_name, id } = this.state.order.customer
     const { direct_friendly_id, payment_status } = this.state.order.order
-    const { bike_type, full_licence_type, status } = this.state.order
+    const {
+      bike_type,
+      full_licence_type,
+      status,
+      non_completion_reason
+    } = this.state.order
     const isFullLicence = this.state.order.course_type.startsWith(
       'FULL_LICENCE'
     )
@@ -168,6 +177,23 @@ class EditOrderForm extends React.Component {
                   />
                 </Col>
               </Row>
+              {status === 'TRAINING_FAILED' && (
+                <Row>
+                  <Col sm="10">
+                    <ConnectSelect
+                      placeholder
+                      label="Non-Completion Reason"
+                      options={getNonCompleteOptions()}
+                      selected={non_completion_reason}
+                      name="non_completion_reason"
+                      basic
+                      onChange={value => {
+                        this.handleChange('non_completion_reason', value)
+                      }}
+                    />
+                  </Col>
+                </Row>
+              )}
               <Row>
                 <Col sm="10">
                   <ConnectSelect
