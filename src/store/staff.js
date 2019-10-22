@@ -56,11 +56,15 @@ export const getDayStaff = ({ schoolId, date }) => async dispatch => {
   }
 }
 
-export const deleteStaff = ({ schoolId, staffId }) => async dispatch => {
+export const deleteStaff = ({
+  schoolId,
+  staffId,
+  diaryId
+}) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    await deleteSingleStaff(schoolId, staffId)
+    await deleteSingleStaff(schoolId, staffId, diaryId)
     notificationActions.dispatchSuccess(dispatch, 'Staff deleted')
     dispatch({
       type: DELETE[SUCCESS],
@@ -99,12 +103,19 @@ export const getStaff = ({
 export const updateStaff = ({
   schoolId,
   staffId,
+  diaryId,
   data,
   fullUpdate = false
 }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolStaff(schoolId, staffId, data, fullUpdate)
+    let response = await updateSchoolStaff(
+      schoolId,
+      staffId,
+      diaryId,
+      data,
+      fullUpdate
+    )
     dispatch({
       type: UPDATE[SUCCESS],
       data: { staff: response }

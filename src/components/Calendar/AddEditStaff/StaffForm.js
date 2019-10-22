@@ -25,7 +25,8 @@ class EventForm extends React.Component {
       start_time: '',
       end_time: '',
       notes: '',
-      all_day: false
+      all_day: false,
+      date: ''
     }
     if (this.props.staff) {
       Object.assign(
@@ -36,11 +37,12 @@ class EventForm extends React.Component {
           'start_time',
           'end_time',
           'notes',
-          'all_day'
+          'all_day',
+          'date'
         )
       )
-      staff.start_time = moment(staff.start_time).format(DAY_FORMAT3)
-      staff.end_time = moment(staff.end_time).format(DAY_FORMAT3)
+      staff.start_time = `${staff.date}T${staff.start_time}`
+      staff.end_time = `${staff.date}T${staff.end_time}`
     } else if (this.props.date) {
       staff.date = this.props.date
     }
@@ -78,7 +80,7 @@ class EventForm extends React.Component {
     this.setState({
       staff: {
         ...this.state.staff,
-        name: id
+        instructor: id
       }
     })
   }
@@ -133,7 +135,7 @@ class EventForm extends React.Component {
     }
     return (
       <DateHeading
-        date={date ? moment(date) : moment(staff.date)}
+        date={moment(staff.date)}
         title={title}
         backLink={backLink}
       />

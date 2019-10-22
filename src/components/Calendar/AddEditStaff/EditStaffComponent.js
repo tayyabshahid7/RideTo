@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import moment from 'moment'
 import StaffForm from './StaffForm'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import { getSingleStaff, updateStaff, deleteStaff } from 'store/staff'
 import { unsetSelectedCourse } from 'store/course'
-import { DATE_FORMAT } from '../../../common/constants'
 
 class EditStaffComponent extends Component {
   constructor(props) {
@@ -35,19 +33,14 @@ class EditStaffComponent extends Component {
     const { saving, staff, history, error, schoolId } = this.props
 
     if (prevProps.staff && !staff) {
-      const date = moment(new Date(prevProps.staff.start_time)).format(
-        DATE_FORMAT
-      )
-
+      const date = prevProps.staff.date
       history.push(`/calendar/${date}`)
       return
     }
 
     if (schoolId !== prevProps.schoolId) {
       if (staff) {
-        history.push(
-          `/calendar/${moment(new Date(staff.start_time)).format(DATE_FORMAT)}`
-        )
+        history.push(`/calendar/${staff.date}`)
       } else {
         history.push(`/calendar`)
       }
@@ -56,9 +49,7 @@ class EditStaffComponent extends Component {
 
     if (prevProps.saving === true && saving === false) {
       if (staff) {
-        history.push(
-          `/calendar/${moment(new Date(staff.start_time)).format(DATE_FORMAT)}`
-        )
+        history.push(`/calendar/${staff.date}`)
       } else {
         console.log('Error', error)
       }
@@ -70,6 +61,7 @@ class EditStaffComponent extends Component {
     updateStaff({
       schoolId,
       staffId: match.params.staffId,
+      diaryId: match.params.diaryId,
       data: { ...data, supplier: schoolId.toString() },
       fullUpdate: true
     })
@@ -79,7 +71,8 @@ class EditStaffComponent extends Component {
     const { schoolId, match } = this.props
     this.props.deleteStaff({
       schoolId,
-      staffId: parseInt(match.params.staffId, 10)
+      staffId: parseInt(match.params.staffId, 10),
+      diaryId: parseInt(match.params.diaryId, 10)
     })
   }
 
