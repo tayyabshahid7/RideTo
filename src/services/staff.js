@@ -1,7 +1,7 @@
 import { get, destroy, post, put, patch } from 'services/api'
 
 export const fetchStaff = async (schoolId, startDate, endDate) => {
-  const path = `school/${schoolId}/instructor`
+  const path = `school/${schoolId}/diary`
   const params = {
     sdate: startDate,
     edate: endDate
@@ -12,13 +12,11 @@ export const fetchStaff = async (schoolId, startDate, endDate) => {
   return response
 }
 
-export const fetchSingleStaff = async (schoolId, staffId, date) => {
-  const path = `school/${schoolId}/instructor/${staffId}`
+export const fetchSingleStaff = async (schoolId, staffId, diaryId) => {
+  // const path = `school/${schoolId}/instructor/${staffId}`
+  const path = `school/${schoolId}/instructor/${staffId}/diary/${diaryId}`
 
-  const response = await get(path, {
-    date,
-    eate: date
-  })
+  const response = await get(path)
 
   return response
 }

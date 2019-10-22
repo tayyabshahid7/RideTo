@@ -3,8 +3,7 @@ import {
   fetchStaff,
   deleteSingleStaff,
   updateSchoolStaff,
-  createSchoolStaff,
-  reduceDiary
+  createSchoolStaff
 } from 'services/staff'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
@@ -23,12 +22,12 @@ export const getSingleStaff = ({
   schoolId,
   staffId,
   reset = false,
-  date
+  diaryId
 }) => async dispatch => {
   dispatch({ type: FETCH_SINGLE[REQUEST], reset })
 
   try {
-    const staff = await fetchSingleStaff(schoolId, staffId, date)
+    const staff = await fetchSingleStaff(schoolId, staffId, diaryId)
     dispatch({
       type: FETCH_SINGLE[SUCCESS],
       data: {
@@ -44,7 +43,7 @@ export const getDayStaff = ({ schoolId, date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {
-    const staff = await fetchStaff(schoolId, date, date)
+    const { results: staff } = await fetchStaff(schoolId, date, date)
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],
@@ -84,7 +83,7 @@ export const getStaff = ({
   dispatch({ type: FETCH_ALL[REQUEST] })
 
   try {
-    const staff = await fetchStaff(schoolId, firstDate, lastDate)
+    const { results: staff } = await fetchStaff(schoolId, firstDate, lastDate)
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
@@ -221,7 +220,7 @@ export default function reducer(state = initialState, action) {
         day: {
           ...state.day,
           loading: false,
-          staff: [...action.data.staff.reduce(reduceDiary, [])],
+          staff: [...action.data.staff],
           error: null
         }
       }
@@ -248,13 +247,7 @@ export default function reducer(state = initialState, action) {
         calendar: {
           ...state.calendar,
           loading: false,
-          staff: uniqBy(
-            [
-              ...state.calendar.staff,
-              ...action.data.staff.diary.reduce(reduceDiary, [])
-            ],
-            'id'
-          ),
+          staff: uniqBy([...state.calendar.staff, ...action.data.staff], 'id'),
           error: null,
           loadedMonths: [...state.calendar.loadedMonths, action.data.month]
         }

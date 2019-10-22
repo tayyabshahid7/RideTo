@@ -351,7 +351,7 @@ class CalendarPage extends Component {
           />
           <Route
             exact
-            path="/calendar/:date/staff/:staffId/edit"
+            path="/calendar/:date/staff/:staffId/:diaryId/edit"
             render={routeProps => <EditStaffComponent {...routeProps} />}
           />
         </RightPanel>

@@ -21,7 +21,7 @@ class EventForm extends React.Component {
   constructor(props) {
     super(props)
     const staff = {
-      name: '',
+      instructor: '',
       start_time: '',
       end_time: '',
       notes: '',
@@ -32,7 +32,7 @@ class EventForm extends React.Component {
         staff,
         pick(
           this.props.staff,
-          'name',
+          'instructor',
           'start_time',
           'end_time',
           'notes',
@@ -95,9 +95,7 @@ class EventForm extends React.Component {
     if (date) {
       history.push(`/calendar/${date}`)
     } else if (staff) {
-      history.push(
-        `/calendar/${moment(new Date(staff.start_time)).format(DATE_FORMAT)}`
-      )
+      history.push(`/calendar/${staff.date}`)
     } else {
       history.push(`/calendar`)
     }
@@ -127,15 +125,19 @@ class EventForm extends React.Component {
     let backLink = '/calendar'
 
     if (staff) {
-      title = moment(new Date(staff.start_time)).format(DAY_FORMAT2)
-      backLink = `/calendar/${moment(new Date(staff.start_time)).format(
-        DATE_FORMAT
-      )}`
+      title = moment(staff.date).format(DAY_FORMAT2)
+      backLink = `/calendar/${moment(staff.date).format(DATE_FORMAT)}`
     } else if (date) {
-      title = moment(new Date(date)).format(DAY_FORMAT2)
+      title = moment(date).format(DAY_FORMAT2)
       backLink = `/calendar/${date}`
     }
-    return <DateHeading date={moment(date)} title={title} backLink={backLink} />
+    return (
+      <DateHeading
+        date={date ? moment(date) : moment(staff.date)}
+        title={title}
+        backLink={backLink}
+      />
+    )
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -150,7 +152,7 @@ class EventForm extends React.Component {
   render() {
     const { saving, onRemove, instructors } = this.props
     const { startTime, endTime } = this.state
-    const { name, notes, all_day } = this.state.staff
+    const { instructor, notes, all_day } = this.state.staff
 
     return (
       <div className={styles.container}>
@@ -161,8 +163,8 @@ class EventForm extends React.Component {
               <Col>
                 <ConnectSelect
                   basic
-                  name="name"
-                  value={name}
+                  name="instructor"
+                  value={instructor}
                   label="Instructor"
                   className="form-group"
                   type="text"

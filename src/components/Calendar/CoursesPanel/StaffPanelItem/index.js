@@ -7,8 +7,6 @@ const StaffPanelItem = ({ event, date, eventId }) => {
   const { all_day } = event
   const isSelected = parseInt(eventId) === event.id
 
-  console.log(event)
-
   return (
     <div className={styles.eventsPanelItem}>
       <div
@@ -16,10 +14,10 @@ const StaffPanelItem = ({ event, date, eventId }) => {
           styles.heading,
           isSelected && styles.headingSelected
         )}>
-        <div className={styles.title} style={{ background: event.color }}>
+        <div className={styles.title} style={{ background: event.colour }}>
           <div className={styles.body}>
             <img src={personIcon} alt="" className={styles.instructorIcon} />{' '}
-            <div className={styles.name}>{event.instructorName}</div>
+            <div className={styles.name}>{event.instructor_name}</div>
             <span className={styles.pipe}>|</span>
             <span className={styles.time}>
               {all_day ? (
@@ -34,7 +32,7 @@ const StaffPanelItem = ({ event, date, eventId }) => {
           </div>
           <a
             className={styles.editLink}
-            href={`/calendar/${date}/staff/${event.instructor}/edit`}>
+            href={`/calendar/${date}/staff/${event.instructor}/${event.id}/edit`}>
             Edit
           </a>
         </div>

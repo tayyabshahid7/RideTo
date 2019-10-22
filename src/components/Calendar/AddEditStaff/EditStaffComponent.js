@@ -19,10 +19,10 @@ class EditStaffComponent extends Component {
 
   componentDidMount() {
     const { getSingleStaff, schoolId, match } = this.props
+
     getSingleStaff({
       schoolId,
-      staffId: match.params.staffId,
-      date: match.params.date
+      ...match.params
     })
   }
 
