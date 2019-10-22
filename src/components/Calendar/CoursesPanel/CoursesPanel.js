@@ -13,7 +13,8 @@ function CoursesPanel({
   updateAdding,
   courseId,
   eventId,
-  staff
+  staff,
+  isAdmin
 }) {
   return (
     <div className={styles.coursesPanel}>
@@ -56,10 +57,11 @@ function CoursesPanel({
               course={course}
               addingOrder={addingOrder}
               updateAdding={updateAdding}
+              canEdit={isAdmin}
             />
           ))}
 
-        {!addingOrder && (
+        {!addingOrder && isAdmin && (
           <Link
             className={styles.addCourse}
             to={`/calendar/courses/create?date=${date}`}>

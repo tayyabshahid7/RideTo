@@ -35,7 +35,8 @@ const CoursesPanelItem = ({
   updateAdding,
   addingOrder,
   courseId,
-  settings
+  settings,
+  canEdit
 }) => {
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
@@ -85,11 +86,13 @@ const CoursesPanelItem = ({
                 </div>
               )}
             </div>
-            <Link
-              className={styles.editButton}
-              to={`/calendar/${date}/courses/${course.id}/edit`}>
-              Edit
-            </Link>
+            {canEdit && (
+              <Link
+                className={styles.editButton}
+                to={`/calendar/${date}/courses/${course.id}/edit`}>
+                Edit
+              </Link>
+            )}
           </div>
           <div className={styles.instAndSpaces}>
             {instructor && (

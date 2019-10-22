@@ -80,3 +80,7 @@ export const updatePassword = async ({ old_password, new_password }) => {
   })
   return response
 }
+
+export const isAdmin = ({ permission_level }) => {
+  return permission_level === 'USER_ADMIN'
+}

@@ -9,6 +9,7 @@ import { getDayStaff } from 'store/staff'
 import Loading from 'components/Loading'
 import DateHeading from 'components/Calendar/DateHeading'
 import CoursesPanel from './CoursesPanel'
+import { isAdmin } from 'services/auth'
 
 class CoursesPanelContainer extends React.Component {
   constructor(props) {
@@ -57,7 +58,7 @@ class CoursesPanelContainer extends React.Component {
   }
 
   render() {
-    const { courses, loading, match, events, staff } = this.props
+    const { courses, loading, match, events, staff, isAdmin } = this.props
     const {
       params: { date, courseId, eventId }
     } = match
@@ -75,6 +76,7 @@ class CoursesPanelContainer extends React.Component {
           events={events.sort((a, b) => a.start_time > b.start_time)}
           updateAdding={this.updateAdding}
           staff={staff}
+          isAdmin={isAdmin}
         />
       </Loading>
     )
@@ -89,7 +91,8 @@ const mapStateToProps = (state, ownProps) => {
     events: state.event.day.events,
     eventLoading: state.event.day.loading,
     staff: state.staff.day.staff,
-    staffLoading: state.staff.day.loading
+    staffLoading: state.staff.day.loading,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 

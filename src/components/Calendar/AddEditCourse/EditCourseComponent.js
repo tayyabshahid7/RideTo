@@ -18,6 +18,7 @@ import DateHeading from 'components/Calendar/DateHeading'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import { loadCourseTypes } from 'store/info'
 import isEqual from 'lodash/isEqual'
+import { isAdmin } from 'services/auth'
 
 class EditCourseComponent extends Component {
   constructor(props) {
@@ -107,8 +108,12 @@ class EditCourseComponent extends Component {
   }
 
   render() {
-    const { loading, course } = this.props
+    const { loading, course, isAdmin } = this.props
     const { showDeleteCourseConfirmModal } = this.state
+
+    if (!isAdmin) {
+      return <div>No access</div>
+    }
 
     if (loading) {
       return <div>Loading...</div>
@@ -164,7 +169,8 @@ const mapStateToProps = (state, ownProps) => {
     instructors: state.instructor.instructors,
     testCentres: state.testCentre.testCentres,
     pricing: state.course.pricing,
-    info: state.info
+    info: state.info,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 
