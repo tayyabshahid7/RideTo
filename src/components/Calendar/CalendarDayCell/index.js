@@ -8,7 +8,7 @@ import { getShortCourseType } from 'services/course'
 import styles from './index.scss'
 
 const getDayItems = (day, dateStr) => {
-  const { courses = [], events = [] } = day
+  const { courses = [], events = [], staff = [] } = day
 
   const items = courses
     .map(course => {
@@ -25,6 +25,17 @@ const getDayItems = (day, dateStr) => {
           ...event,
           event: true,
           time: getStarTimeForEventForDate(event, dateStr)
+        }
+      })
+    )
+    .concat(
+      staff.map(s => {
+        return {
+          ...s,
+          s: true,
+          time: getStarTimeForEventForDate(s, dateStr),
+          name: s.instructor_name,
+          color: s.colour
         }
       })
     )
