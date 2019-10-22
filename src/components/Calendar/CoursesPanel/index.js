@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 import { getDayCourses } from 'store/course'
 import { getDayEvents } from 'store/event'
+import { getDayStaff } from 'store/staff'
 import Loading from 'components/Loading'
 import DateHeading from 'components/Calendar/DateHeading'
 import CoursesPanel from './CoursesPanel'
@@ -40,16 +41,23 @@ class CoursesPanelContainer extends React.Component {
   }
 
   loadData() {
-    const { getDayCourses, getDayEvents, match, schoolId } = this.props
+    const {
+      getDayCourses,
+      getDayEvents,
+      match,
+      schoolId,
+      getDayStaff
+    } = this.props
     const {
       params: { date }
     } = match
     getDayCourses({ schoolId, date })
     getDayEvents({ schoolId, date })
+    getDayStaff({ schoolId, date })
   }
 
   render() {
-    const { courses, loading, match, events } = this.props
+    const { courses, loading, match, events, staff } = this.props
     const {
       params: { date, courseId, eventId }
     } = match
@@ -66,6 +74,7 @@ class CoursesPanelContainer extends React.Component {
           courses={courses.sort((a, b) => a.time > b.time)}
           events={events.sort((a, b) => a.start_time > b.start_time)}
           updateAdding={this.updateAdding}
+          staff={staff}
         />
       </Loading>
     )
@@ -78,7 +87,9 @@ const mapStateToProps = (state, ownProps) => {
     courses: state.course.day.courses,
     loading: state.course.day.loading,
     events: state.event.day.events,
-    eventLoading: state.event.day.loading
+    eventLoading: state.event.day.loading,
+    staff: state.staff.day.staff,
+    staffLoading: state.staff.day.loading
   }
 }
 
@@ -86,7 +97,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getDayCourses,
-      getDayEvents
+      getDayEvents,
+      getDayStaff
     },
     dispatch
   )

@@ -3,7 +3,8 @@ import {
   fetchStaff,
   deleteSingleStaff,
   updateSchoolStaff,
-  createSchoolStaff
+  createSchoolStaff,
+  reduceDiary
 } from 'services/staff'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
@@ -21,12 +22,13 @@ const CREATE = createRequestTypes('rideto/staff/CREATE')
 export const getSingleStaff = ({
   schoolId,
   staffId,
-  reset = false
+  reset = false,
+  date
 }) => async dispatch => {
   dispatch({ type: FETCH_SINGLE[REQUEST], reset })
 
   try {
-    const staff = await fetchSingleStaff(schoolId, staffId)
+    const staff = await fetchSingleStaff(schoolId, staffId, date)
     dispatch({
       type: FETCH_SINGLE[SUCCESS],
       data: {
@@ -219,7 +221,7 @@ export default function reducer(state = initialState, action) {
         day: {
           ...state.day,
           loading: false,
-          staff: [...action.data.staff],
+          staff: [...action.data.staff.reduce(reduceDiary, [])],
           error: null
         }
       }
@@ -246,7 +248,13 @@ export default function reducer(state = initialState, action) {
         calendar: {
           ...state.calendar,
           loading: false,
-          staff: uniqBy([...state.calendar.staff, ...action.data.staff], 'id'),
+          staff: uniqBy(
+            [
+              ...state.calendar.staff,
+              ...action.data.staff.diary.reduce(reduceDiary, [])
+            ],
+            'id'
+          ),
           error: null,
           loadedMonths: [...state.calendar.loadedMonths, action.data.month]
         }

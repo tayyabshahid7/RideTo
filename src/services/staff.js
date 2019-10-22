@@ -12,10 +12,13 @@ export const fetchStaff = async (schoolId, startDate, endDate) => {
   return response
 }
 
-export const fetchSingleStaff = async (schoolId, staffId) => {
+export const fetchSingleStaff = async (schoolId, staffId, date) => {
   const path = `school/${schoolId}/instructor/${staffId}`
 
-  const response = await get(path, {})
+  const response = await get(path, {
+    date,
+    eate: date
+  })
 
   return response
 }
@@ -48,4 +51,15 @@ export const createSchoolStaff = async (schoolId, data) => {
   const path = `school/${schoolId}/instructor/${data.name}/diary`
   const response = await post(path, data)
   return response
+}
+
+export const reduceDiary = (arr, item) => {
+  return [
+    ...arr,
+    ...item.diary.map(d => ({
+      ...d,
+      instructorName: `${item.first_name} ${item.last_name}`,
+      color: item.colour
+    }))
+  ]
 }

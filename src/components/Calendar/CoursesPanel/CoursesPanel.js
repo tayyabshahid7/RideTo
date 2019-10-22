@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import CoursesPanelItem from './CoursesPanelItem'
 import EventPanelItem from './EventPanelItem'
+import StaffPanelItem from './StaffPanelItem'
 import styles from './CoursesPanel.scss'
 
 function CoursesPanel({
@@ -11,7 +12,8 @@ function CoursesPanel({
   addingOrder,
   updateAdding,
   courseId,
-  eventId
+  eventId,
+  staff
 }) {
   return (
     <div className={styles.coursesPanel}>
@@ -19,7 +21,16 @@ function CoursesPanel({
         <div className={styles.staff}>
           <div className={styles.title}>Staff</div>
 
-          <div></div>
+          <div>
+            {staff.map(item => (
+              <StaffPanelItem
+                key={item.id}
+                date={date}
+                event={item}
+                eventId={eventId}
+              />
+            ))}
+          </div>
 
           <Link
             className={styles.addEvent}
