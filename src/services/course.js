@@ -487,6 +487,8 @@ export const getTrainingStatus = status => {
     return 'Training Confirmed'
   } else if (status === 'TRAINING_CANCELLED') {
     return 'Training Cancelled'
+  } else if (status === 'TRAINING_FAILED') {
+    return 'Training Failed'
   }
 }
 
