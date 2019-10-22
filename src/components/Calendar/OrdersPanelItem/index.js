@@ -51,6 +51,7 @@ const OrdersPanelItem = ({
           </div>
         )}
       </div>
+      {training.notes && <div className={styles.notes}>{training.notes}</div>}
     </div>
   )
 }

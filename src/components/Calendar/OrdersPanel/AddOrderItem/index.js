@@ -14,7 +14,8 @@ import {
   ConnectSelect,
   Button,
   ConnectCheckbox,
-  ConnectAgeInput
+  ConnectAgeInput,
+  ConnectTextArea
 } from 'components/ConnectForm'
 
 class AddOrderItem extends React.Component {
@@ -35,7 +36,8 @@ class AddOrderItem extends React.Component {
         full_licence_type: '',
         start_time: `${this.props.course.date}T${this.props.course.time}Z`,
         tandcs_agreed: false,
-        email_optin: false
+        email_optin: false,
+        notes: ''
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
@@ -260,7 +262,8 @@ class AddOrderItem extends React.Component {
         user_last_name,
         user_phone,
         tandcs_agreed,
-        email_optin
+        email_optin,
+        notes
       }
     } = this.state
     const price = pricing && pricing.price
@@ -418,6 +421,16 @@ class AddOrderItem extends React.Component {
                 label="Email Opt In"
                 checked={email_optin}
                 name="email_optin"
+                onChange={this.handleChangeRawEvent.bind(this)}
+              />
+
+              <ConnectTextArea
+                basic
+                name="notes"
+                value={notes}
+                label="Notes"
+                className="form-group"
+                type="text"
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
             </div>

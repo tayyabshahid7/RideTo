@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 
-import { ConnectSelect, Button } from 'components/ConnectForm'
+import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
 import { BikeHires, formatBikeConstant, FullLicenceTypes } from 'common/info'
 import {
@@ -97,7 +97,8 @@ class EditOrderForm extends React.Component {
       bike_type,
       full_licence_type,
       status,
-      non_completion_reason
+      non_completion_reason,
+      notes
     } = this.state.order
     const isFullLicence = this.state.order.course_type.startsWith(
       'FULL_LICENCE'
@@ -208,6 +209,21 @@ class EditOrderForm extends React.Component {
                     basic
                     onChange={value => {
                       this.handleChange('order.payment_status', value)
+                    }}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm="10">
+                  <ConnectTextArea
+                    basic
+                    name="notes"
+                    value={notes}
+                    label="Notes"
+                    className="form-group"
+                    type="text"
+                    onChange={({ target: { value } }) => {
+                      this.handleChange('notes', value)
                     }}
                   />
                 </Col>
