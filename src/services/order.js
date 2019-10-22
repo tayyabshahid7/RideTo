@@ -130,7 +130,7 @@ export const getNonCompleteOptions = () => {
     { id: 'LATE_ATTENDANCE', name: 'Late attendance' },
     { id: 'INCORRECT_DOCUMENT', name: 'Incorrect document' },
     { id: 'EYE_TEST', name: 'Eye test' },
-    { id: 'LANGUAGE', name: 'Langauge' },
+    { id: 'LANGUAGE', name: 'Language' },
     { id: 'HIGHWAY_CODE_KNOWLEDGE', name: 'Highway code knowledge' },
     { id: 'BALANCE_CONTROL', name: 'Balance control' },
     { id: 'ROAD_AWARENESS', name: 'Road awareness' },
