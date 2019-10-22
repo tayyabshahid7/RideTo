@@ -6,7 +6,7 @@ import personIcon from 'assets/images/person.png'
 
 const CalendarDayCellItem = ({ item, settings }) => {
   const constant = item.course_type ? item.course_type.constant : 'EVENT'
-  const isInstructor = item.instructor
+  const isInstructor = item.instructor_name
 
   return (
     <div

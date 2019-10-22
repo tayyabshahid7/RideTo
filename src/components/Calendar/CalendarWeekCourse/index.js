@@ -45,6 +45,49 @@ const CalendarWeekCourse = ({
     zIndex: position
   }
 
+  if (course.instructor_name) {
+    // Then it is staff
+    return (
+      <li
+        className={classnames(
+          styles.singleEvent,
+          styles.singleEventEvent,
+          parseInt(match.params.id) === course.id &&
+            match.params.type === 'staff' &&
+            styles.clickedCourse,
+          calendar.selectedCourse === `staff-${course.id}` &&
+            styles.clickedCourse
+        )}
+        style={style}
+        onClick={() =>
+          history.push(
+            `/calendar/${moment(course.start_time).format(DATE_FORMAT)}/staff/${
+              course.id
+            }`
+          )
+        }>
+        <div
+          className={classnames(styles.content)}
+          style={{ background: course.colour }}>
+          <span className={styles.eventName}>
+            <img
+              src={personIcon}
+              alt=""
+              className={styles.instructorIconSmall}
+            />{' '}
+            {course.instructor_name}
+          </span>
+          {course.start_time && course.end_time && (
+            <span className={styles.eventTime}>
+              {moment(course.start_time).format('HH:mm')} -{' '}
+              {moment(course.end_time).format('HH:mm')}
+            </span>
+          )}
+        </div>
+      </li>
+    )
+  }
+
   if (!course.course_type) {
     // Then it is event
     return (

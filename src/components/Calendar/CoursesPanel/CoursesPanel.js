@@ -13,6 +13,7 @@ function CoursesPanel({
   updateAdding,
   courseId,
   eventId,
+  staffId,
   staff,
   isAdmin
 }) {
@@ -28,7 +29,7 @@ function CoursesPanel({
                 key={item.id}
                 date={date}
                 event={item}
-                eventId={eventId}
+                staffId={staffId}
               />
             ))}
           </div>

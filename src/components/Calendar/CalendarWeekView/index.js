@@ -161,6 +161,14 @@ class CalendarWeekView extends Component {
               ...event,
               ...secondsForDayAndDurationForEvent(event, dayObj.date)
             }
+          }),
+        ...dayObj.staff
+          .filter(({ all_day }) => !all_day)
+          .map(s => {
+            return {
+              ...s,
+              ...secondsForDayAndDurationForEvent(s, dayObj.date)
+            }
           })
       ]
 

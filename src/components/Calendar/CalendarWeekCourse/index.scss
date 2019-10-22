@@ -156,3 +156,8 @@
   width: 17px;
   vertical-align: text-bottom;
 }
+
+.instructorIconSmall {
+  @extend .instructorIcon;
+  width: 14px;
+}

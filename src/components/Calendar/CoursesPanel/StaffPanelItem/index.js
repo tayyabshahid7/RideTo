@@ -3,9 +3,11 @@ import classnames from 'classnames'
 import styles from './StaffPanelItem.scss'
 import personIcon from 'assets/images/person.png'
 
-const StaffPanelItem = ({ event, date, eventId }) => {
+const StaffPanelItem = ({ event, date, staffId }) => {
   const { all_day } = event
-  const isSelected = parseInt(eventId) === event.id
+  const isSelected = parseInt(staffId) === event.id
+
+  console.log(staffId, event.id)
 
   return (
     <div className={styles.eventsPanelItem}>

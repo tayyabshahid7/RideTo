@@ -60,7 +60,7 @@ class CoursesPanelContainer extends React.Component {
   render() {
     const { courses, loading, match, events, staff, isAdmin } = this.props
     const {
-      params: { date, courseId, eventId }
+      params: { date, courseId, eventId, staffId }
     } = match
     const { addingOrder } = this.state
 
@@ -70,6 +70,7 @@ class CoursesPanelContainer extends React.Component {
         <CoursesPanel
           courseId={courseId}
           eventId={eventId}
+          staffId={staffId}
           addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}

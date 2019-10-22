@@ -174,11 +174,16 @@ class CalendarPage extends Component {
           new Date(event.start_time) < oneDayLater &&
           new Date(event.end_time) > date
       )
-      let staffForDate = staff.filter(
-        s =>
-          new Date(`${s.date}T${s.start_time}`) < oneDayLater &&
-          new Date(`${s.date}T${s.end_time}`) > date
-      )
+      let staffForDate = staff
+        .map(s => ({
+          ...s,
+          start_time: `${s.date}T${s.start_time}`,
+          end_time: `${s.date}T${s.end_time}`
+        }))
+        .filter(
+          s =>
+            new Date(s.start_time) < oneDayLater && new Date(s.end_time) > date
+        )
       return {
         date,
         courses: coursesForDate,
