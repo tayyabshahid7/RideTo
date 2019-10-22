@@ -178,6 +178,7 @@
 .eventsContainerAllDay {
   height: 50px;
   margin-bottom: 0;
+  overflow: hidden;
 
   @media (max-width: 768px) {
     // display: none;
@@ -315,6 +316,7 @@
   font-weight: bold;
   padding: 3px;
   white-space: nowrap;
+  overflow: hidden;
 }
 
 @media only screen and (min-width: 1000px) {
@@ -380,4 +382,9 @@
       font-weight: bold;
     }
   }
+}
+
+.instructorIcon {
+  width: 12px;
+  vertical-align: -2px;
 }

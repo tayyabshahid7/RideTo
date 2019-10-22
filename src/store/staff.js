@@ -69,7 +69,8 @@ export const deleteStaff = ({
     dispatch({
       type: DELETE[SUCCESS],
       data: {
-        staffId
+        staffId,
+        diaryId
       }
     })
   } catch (error) {
@@ -204,13 +205,11 @@ export default function reducer(state = initialState, action) {
         single: { loading: true }
       }
     case DELETE[SUCCESS]:
-      console.log(action.date.staffId)
-
       dayStaff = state.day.staff.filter(
-        staff => staff.id !== action.data.staffId
+        staff => staff.id !== action.data.diaryId
       )
       calendarStaff = state.calendar.staff.filter(
-        staff => staff.id !== action.data.staffId
+        staff => staff.id !== action.data.diaryId
       )
 
       return {

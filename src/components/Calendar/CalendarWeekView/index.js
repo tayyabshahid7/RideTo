@@ -9,6 +9,7 @@ import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
 import isEqual from 'lodash/isEqual'
 import { mapLabelColoursWithContant } from 'services/settings'
+import personIcon from 'assets/images/person.png'
 
 function getDayOfWeek({ day, month, year }) {
   const momentDate = moment(`${year}-${month + 1}-${day}`, 'YYYY-M-D')
@@ -306,15 +307,37 @@ class CalendarWeekView extends Component {
                           )
                         }
                       }}>
+                      {day.staff
+                        .filter(({ all_day }) => all_day)
+                        .map((s, index) => (
+                          <div
+                            onClick={() =>
+                              history.push(
+                                `/calendar/${moment(day.date).format(
+                                  'YYYY-MM-DD'
+                                )}/staff/${s.id}`
+                              )
+                            }
+                            key={index}
+                            className={styles.allDayEvent}
+                            style={{ background: s.colour }}>
+                            <img
+                              src={personIcon}
+                              alt=""
+                              className={styles.instructorIcon}
+                            />{' '}
+                            {s.instructor_name}
+                          </div>
+                        ))}
                       {day.events
                         .filter(({ all_day }) => all_day)
                         .map((event, index) => (
                           <div
                             onClick={() =>
                               history.push(
-                                `/calendar/${moment(event.start_date).format(
+                                `/calendar/${moment(day.date).format(
                                   'YYYY-MM-DD'
-                                )}/events/${event.id}/edit`
+                                )}/events/${event.id}`
                               )
                             }
                             key={index}

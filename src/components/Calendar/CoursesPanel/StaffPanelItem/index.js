@@ -7,8 +7,6 @@ const StaffPanelItem = ({ event, date, staffId }) => {
   const { all_day } = event
   const isSelected = parseInt(staffId) === event.id
 
-  console.log(staffId, event.id)
-
   return (
     <div className={styles.eventsPanelItem}>
       <div

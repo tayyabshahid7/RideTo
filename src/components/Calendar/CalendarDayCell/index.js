@@ -39,6 +39,7 @@ const getDayItems = (day, dateStr) => {
         }
       })
     )
+    .sort((a, b) => b.all_day - a.all_day)
 
   return items.sort((a, b) => a.time > b.time)
 }
