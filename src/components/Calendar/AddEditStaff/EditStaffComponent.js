@@ -5,6 +5,7 @@ import StaffForm from './StaffForm'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import { getSingleStaff, updateStaff, deleteStaff } from 'store/staff'
 import { unsetSelectedCourse } from 'store/course'
+import { isAdmin } from 'services/auth'
 
 class EditStaffComponent extends Component {
   constructor(props) {
@@ -83,8 +84,12 @@ class EditStaffComponent extends Component {
   }
 
   render() {
-    let { loading, staff } = this.props
+    let { loading, staff, isAdmin } = this.props
     const { showDeleteConfirmModal } = this.state
+
+    if (!isAdmin) {
+      return <div>No access</div>
+    }
 
     if (loading) {
       return <div>Loading...</div>
@@ -122,7 +127,8 @@ const mapStateToProps = (state, ownProps) => {
     saving: state.staff.single.saving,
     instructors: state.instructor.instructors,
     pricing: state.staff.pricing,
-    info: state.info
+    info: state.info,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 

@@ -33,11 +33,13 @@ function CoursesPanel({
             ))}
           </div>
 
-          <Link
-            className={styles.addEvent}
-            to={`/calendar/staff/create?date=${date}`}>
-            Add Staff
-          </Link>
+          {isAdmin && (
+            <Link
+              className={styles.addEvent}
+              to={`/calendar/staff/create?date=${date}`}>
+              Add Staff
+            </Link>
+          )}
         </div>
       )}
 

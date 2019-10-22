@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import { createStaff } from 'store/staff'
 import StaffForm from './StaffForm'
+import { isAdmin } from 'services/auth'
 
 class AddStaffComponent extends Component {
   componentDidUpdate(prevProps) {
@@ -40,9 +41,14 @@ class AddStaffComponent extends Component {
   }
 
   render() {
-    let { staff, location, ...rest } = this.props
+    let { staff, location, isAdmin, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
+
+    if (!isAdmin) {
+      return <div>No access</div>
+    }
+
     return <StaffForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
   }
 }
@@ -56,7 +62,8 @@ const mapStateToProps = (state, ownProps) => {
     error: state.staff.single.error,
     pricing: state.staff.pricing,
     info: state.info,
-    instructors: state.instructor.instructors
+    instructors: state.instructor.instructors,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 
