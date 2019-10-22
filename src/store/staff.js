@@ -204,6 +204,8 @@ export default function reducer(state = initialState, action) {
         single: { loading: true }
       }
     case DELETE[SUCCESS]:
+      console.log(action.date.staffId)
+
       dayStaff = state.day.staff.filter(
         staff => staff.id !== action.data.staffId
       )

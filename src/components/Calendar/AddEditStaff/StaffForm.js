@@ -135,7 +135,7 @@ class EventForm extends React.Component {
     }
     return (
       <DateHeading
-        date={moment(staff.date)}
+        date={staff ? moment(staff.date) : moment(date)}
         title={title}
         backLink={backLink}
       />
