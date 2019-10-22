@@ -129,8 +129,6 @@ class EventForm extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.state.event.all_day, prevState.event.all_day)
-
     if (
       this.state.event.all_day !== prevState.event.all_day &&
       this.state.event.all_day
