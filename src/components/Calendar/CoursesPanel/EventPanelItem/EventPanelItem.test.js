@@ -28,5 +28,5 @@ it('Renders Event title and link', () => {
       .find('a')
       .at(0)
       .prop('href')
-  ).toContain('/calendar/events/1/edit')
+  ).toContain('/calendar/2018-01-01/events/1/edit')
 })
