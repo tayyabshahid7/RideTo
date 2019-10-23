@@ -123,6 +123,7 @@ class EditOrderForm extends React.Component {
             onCancel={this.handleToggleDateClick}
             times={times}
             loadTimes={loadTimes}
+            courseType={this.state.order.course_type}
           />
 
           {!showChangeDate && (
@@ -218,7 +219,7 @@ class EditOrderForm extends React.Component {
                   <ConnectTextArea
                     basic
                     name="notes"
-                    value={notes}
+                    value={notes || ''}
                     label="Notes"
                     className="form-group"
                     type="text"

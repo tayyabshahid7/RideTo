@@ -4,9 +4,11 @@ import { getAge } from 'utils/helper'
 import classnames from 'classnames'
 import TimeField from 'react-simple-timefield'
 import moment from 'moment'
-
-import DatePicker from 'react-datepicker'
+import enGB from 'date-fns/locale/en-GB'
+import DatePicker, { registerLocale } from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+
+registerLocale('en-GB', enGB)
 
 function MyDatePicker({
   label,
@@ -20,7 +22,8 @@ function MyDatePicker({
   required,
   basic,
   maxDate,
-  iso
+  iso,
+  highlightDates
 }) {
   return (
     <React.Fragment>
@@ -55,6 +58,8 @@ function MyDatePicker({
         autoComplete="off"
         dropdownMode="select"
         maxDate={maxDate}
+        highlightDates={highlightDates}
+        locale="en-GB"
       />
     </React.Fragment>
   )
