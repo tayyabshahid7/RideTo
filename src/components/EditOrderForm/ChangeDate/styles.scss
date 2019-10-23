@@ -22,9 +22,13 @@
     flex-grow: 1;
   }
 
-  button {
+  > button {
     height: 30px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+  }
+
+  button {
+    min-height: 0;
   }
 }
