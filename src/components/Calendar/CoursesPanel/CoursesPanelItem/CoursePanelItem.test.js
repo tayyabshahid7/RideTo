@@ -54,7 +54,7 @@ it('Renders Course title and link', () => {
       .find('a')
       .first()
       .prop('href')
-  ).toContain('/calendar/2018-01-01/courses/1/edit')
+  ).toContain('/customers/123')
 })
 
 it('Renders orders list', () => {

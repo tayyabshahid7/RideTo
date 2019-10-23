@@ -17,7 +17,7 @@ import {
 import { TEST_STATUS_CHOICES } from 'common/constants'
 import { mapLabelColoursWithContant } from 'services/settings'
 import styles from './CoursesPanelItem.scss'
-import personIcon from 'assets/images/person.png'
+import personIcon from '../../../../assets/images/person.png'
 import { getCourseSpaceTextShort } from 'services/course'
 
 const CoursesPanelItem = ({

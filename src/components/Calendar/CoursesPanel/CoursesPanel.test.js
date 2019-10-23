@@ -68,7 +68,12 @@ it('Renders courses list', () => {
   const wrapper = mount(
     <Provider store={store}>
       <MemoryRouter>
-        <CoursesPanel courses={COURSES} date="2018-01-01" />
+        <CoursesPanel
+          courses={COURSES}
+          staff={[]}
+          events={[]}
+          date="2018-01-01"
+        />
       </MemoryRouter>
     </Provider>
   )

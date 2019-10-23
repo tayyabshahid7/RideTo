@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import styles from './StaffPanelItem.scss'
-import personIcon from 'assets/images/person.png'
+import personIcon from '../../../../assets/images/person.png'
 
 const StaffPanelItem = ({ event, date, staffId }) => {
   const { all_day } = event
