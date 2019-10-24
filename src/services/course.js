@@ -151,7 +151,8 @@ export const fetchSchoolOrder = async (schoolId, trainingId) => {
 }
 
 export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
-  const path = `school/${schoolId}/course/order/${friendlyId}`
+  // const path = `school/${schoolId}/course/order/${friendlyId}`
+  const path = `o/${friendlyId}`
   const response = await put(path, order)
   return response
 }
