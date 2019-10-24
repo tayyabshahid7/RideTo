@@ -83,6 +83,14 @@ const CalendarWeekCourse = ({
               {moment(course.end_time).format('HH:mm')}
             </span>
           )}
+          {course.notes && (
+            <div className={styles.eventsNotes}>
+              <div>
+                <b>Notes:</b>
+              </div>
+              <div className={styles.notesContent}>{course.notes}</div>
+            </div>
+          )}
         </div>
       </li>
     )
@@ -116,6 +124,14 @@ const CalendarWeekCourse = ({
               {moment(course.start_time).format('HH:mm')} -{' '}
               {moment(course.end_time).format('HH:mm')}
             </span>
+          )}
+          {course.notes && (
+            <div className={styles.eventsNotes}>
+              <div>
+                <b>Notes:</b>
+              </div>
+              <div className={styles.notesContent}>{course.notes}</div>
+            </div>
           )}
         </div>
       </li>
