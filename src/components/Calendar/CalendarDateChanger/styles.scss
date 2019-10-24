@@ -31,4 +31,9 @@
   color: #707070;
   border-radius: 0;
   border: 1px solid #e4e4e4;
+
+  @media (min-width: 992px) {
+    padding-right: 2rem;
+    padding-left: 1rem;
+  }
 }
