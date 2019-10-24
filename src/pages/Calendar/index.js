@@ -269,6 +269,12 @@ class CalendarPage extends Component {
         month: nextDate.getMonth(),
         day: nextDate.getDate()
       })
+    } else if (type === 'today') {
+      updateCalendarSetting({
+        year: new Date().getFullYear(),
+        month: new Date().getMonth(),
+        day: new Date().getDate()
+      })
     }
   }
 

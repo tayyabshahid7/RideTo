@@ -7,7 +7,8 @@
 }
 
 .prev,
-.next {
+.next,
+.today {
   padding: 0 0.5rem;
   appearance: none;
   border: 0;
@@ -18,4 +19,8 @@
   &:focus {
     outline: 0;
   }
+}
+
+.today {
+  font-size: 1rem;
 }
