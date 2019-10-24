@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 // import Header from '../Header'
 import UserMenu from '../UserMenu'
@@ -118,4 +119,4 @@ const mapStateToProps = (state, ownProps) => {
     user: state.auth.user
   }
 }
-export default connect(mapStateToProps)(NavigationBar)
+export default withRouter(connect(mapStateToProps)(NavigationBar))
