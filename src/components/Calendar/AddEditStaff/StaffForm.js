@@ -17,7 +17,7 @@ import {
   ConnectSelect
 } from 'components/ConnectForm'
 
-class EventForm extends React.Component {
+class StaffForm extends React.Component {
   constructor(props) {
     super(props)
     const staff = {
@@ -259,4 +259,4 @@ class EventForm extends React.Component {
   }
 }
 
-export default EventForm
+export default StaffForm
