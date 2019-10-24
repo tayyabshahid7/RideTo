@@ -39,7 +39,14 @@ class EditOrderFormContainer extends React.Component {
       order.school_course = courseId // add in the course id
     }
 
-    let response = await updateOrder({ schoolId, trainingId, order })
+    let response = await updateOrder({
+      schoolId,
+      trainingId,
+      order: {
+        ...order,
+        full_edit: updateDate
+      }
+    })
 
     await this.props.updateCourse({
       schoolId,
