@@ -54,9 +54,13 @@
   font-size: 12px;
   font-weight: bold;
 
-  display: flex;
-
   padding: 12px 12px;
+}
+
+.top {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
 }
 
 .time,
