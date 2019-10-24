@@ -48,7 +48,7 @@ function Contact() {
               <img src={chat} alt="Chat" />
               <div className={styles.keyInfoItemText}>
                 <h2>Chat with us</h2>
-                <p>Mon-Sat 9am - 6pm, Sun 12pm - 4pm</p>
+                <p>Mon-Sat 9am - 6pm, Sun 12pm - 6pm</p>
               </div>
               <div className={styles.keyInfoItemTextMobile}>Chat</div>
             </div>
@@ -56,7 +56,7 @@ function Contact() {
               <img src={call} alt="Call" />
               <div className={styles.keyInfoItemText}>
                 <h2>020 3603 9652</h2>
-                <p>Mon-Sat 9am - 6pm, Sun 12pm - 4pm</p>
+                <p>Mon-Sat 9am - 6pm, Sun 12pm - 6pm</p>
               </div>
               <div className={styles.keyInfoItemTextMobile}>Call</div>
             </a>
@@ -182,7 +182,7 @@ function Contact() {
                     Saturday <span>9am - 6pm</span>
                   </li>
                   <li>
-                    Sunday <span>12pm - 4pm</span>
+                    Sunday <span>12pm - 6pm</span>
                   </li>
                 </ol>
               </div>
