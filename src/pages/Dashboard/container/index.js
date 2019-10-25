@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
-import { Col, Row } from 'reactstrap'
+import { Col } from 'reactstrap'
 import {
   getPendingOrders,
   getUnallocatedTests,
@@ -53,43 +53,37 @@ class Dashboard extends Component {
   render() {
     return (
       <div className={classnames(styles.container)}>
-        <Row>
-          <Col
-            lg="8"
-            className={classnames(styles.leftColumn, commonStyles.mainContent)}>
-            <h2 className={styles.dashboardTitle}>Dashboard</h2>
-            <Loading loading={this.props.loading}>
-              {this.props.unallocatedTests && (
-                <div>
-                  <h3 className={styles.dashboardSubTitle}>
-                    Unallocated Tests
-                  </h3>
-                  <UnallocatedTestsTable
-                    tests={this.props.unallocatedTests.results}
-                    hideNotification={this.hideNotification}
-                  />
-                </div>
-              )}
-              <h3 className={styles.dashboardSubTitlePending}>
-                Pending Orders
-              </h3>
-              {this.props.pendingOrders &&
-              this.props.pendingOrders.results.length > 0 ? (
-                <div className={styles.main}>
-                  <PendingOrdersTable
-                    orders={this.props.pendingOrders.results}
-                    sortingChange={this.handleSorting}
-                  />
-                </div>
-              ) : (
-                <div className={styles.noResults}>No pending orders</div>
-              )}
-            </Loading>
-          </Col>
-          <Col lg="4" className={styles.rightPanel}>
-            <FaqsPanel />
-          </Col>
-        </Row>
+        <Col
+          lg="8"
+          className={classnames(styles.leftColumn, commonStyles.mainContent)}>
+          <h2 className={styles.dashboardTitle}>Dashboard</h2>
+          <Loading loading={this.props.loading}>
+            {this.props.unallocatedTests && (
+              <div>
+                <h3 className={styles.dashboardSubTitle}>Unallocated Tests</h3>
+                <UnallocatedTestsTable
+                  tests={this.props.unallocatedTests.results}
+                  hideNotification={this.hideNotification}
+                />
+              </div>
+            )}
+            <h3 className={styles.dashboardSubTitlePending}>Pending Orders</h3>
+            {this.props.pendingOrders &&
+            this.props.pendingOrders.results.length > 0 ? (
+              <div className={styles.main}>
+                <PendingOrdersTable
+                  orders={this.props.pendingOrders.results}
+                  sortingChange={this.handleSorting}
+                />
+              </div>
+            ) : (
+              <div className={styles.noResults}>No pending orders</div>
+            )}
+          </Loading>
+        </Col>
+        <Col lg="4" className={styles.rightPanel}>
+          <FaqsPanel />
+        </Col>
       </div>
     )
   }
