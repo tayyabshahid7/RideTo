@@ -6,6 +6,7 @@ import { createBulkCourse } from 'store/course'
 import { loadCourseTypes } from 'store/info'
 import { getInstructors, editInstructor } from 'store/instructor'
 import { fetchSettings, updateSettings } from 'store/settings'
+import { updateDiaryColor } from 'store/staff'
 
 class AvailabilityCoursesContainer extends React.Component {
   componentDidMount() {
@@ -47,7 +48,8 @@ const mapDispatchToProps = dispatch =>
       getInstructors,
       fetchSettings,
       updateSettings,
-      editInstructor
+      editInstructor,
+      updateDiaryColor
     },
     dispatch
   )

@@ -18,6 +18,15 @@ const DELETE = createRequestTypes('rideto/staff/DELETE')
 const UPDATE = createRequestTypes('rideto/staff/UPDATE')
 const CREATE = createRequestTypes('rideto/staff/CREATE')
 
+export const updateDiaryColor = instructor => dispatch => {
+  dispatch({
+    type: 'UPDATE_DIARY_COLOR',
+    data: {
+      instructor
+    }
+  })
+}
+
 export const getSingleStaff = ({
   schoolId,
   staffId,
@@ -167,6 +176,37 @@ export default function reducer(state = initialState, action) {
   let dayStaff
   let calendarStaff
   switch (action.type) {
+    case 'UPDATE_DIARY_COLOR':
+      const { id, colour } = action.data.instructor
+      return {
+        ...state,
+        calendar: {
+          ...state.calendar,
+          staff: state.calendar.staff.map(staff => {
+            if (staff.instructor === id) {
+              return {
+                ...staff,
+                colour
+              }
+            }
+
+            return staff
+          })
+        },
+        day: {
+          ...state.day,
+          staff: state.day.staff.map(staff => {
+            if (staff.instructor === id) {
+              return {
+                ...staff,
+                colour
+              }
+            }
+
+            return staff
+          })
+        }
+      }
     case FETCH_SINGLE[REQUEST]:
       if (action.reset) {
         return {

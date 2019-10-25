@@ -70,11 +70,12 @@ class CalendarLabels extends Component {
   }
 
   handleStaffSaveColors() {
-    const { editInstructor } = this.props
+    const { editInstructor, updateDiaryColor } = this.props
     const { changedStaffColors } = this.state
 
     changedStaffColors.forEach(instructor => {
       editInstructor(instructor.supplier, instructor)
+      updateDiaryColor(instructor)
     })
   }
 

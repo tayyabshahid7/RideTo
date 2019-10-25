@@ -132,7 +132,8 @@ class AvailabilityCourses extends React.Component {
       error,
       settings,
       updateSettings,
-      editInstructor
+      editInstructor,
+      updateDiaryColor
     } = this.props
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
@@ -167,6 +168,7 @@ class AvailabilityCourses extends React.Component {
             loadCourseTypes={loadCourseTypes}
             updateSettings={updateSettings}
             editInstructor={editInstructor}
+            updateDiaryColor={updateDiaryColor}
           />
         </div>
       </Fragment>
