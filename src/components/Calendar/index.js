@@ -16,11 +16,15 @@ import CalendarMobileBackButton from './CalendarMobileBackButton'
 
 class CalendarComponent extends Component {
   renderOverview() {
-    const { calendar } = this.props
+    const { calendar, sideBarOpen } = this.props
     const { viewMode } = calendar
     const { handleCustomEvent, handleChangeDate } = this.props
     return (
-      <div className={classnames(styles.overview)}>
+      <div
+        className={classnames(
+          styles.overview,
+          sideBarOpen && styles.sideBarOpen
+        )}>
         <Row>
           <Col>
             <div className={styles.filtersWrap}>
@@ -59,7 +63,8 @@ class CalendarComponent extends Component {
       history,
       match,
       handleMobileCellClick,
-      settings
+      settings,
+      sideBarOpen
     } = this.props
 
     return (
@@ -75,6 +80,7 @@ class CalendarComponent extends Component {
               history={history}
               handleMobileCellClick={handleMobileCellClick}
               settings={settings}
+              sideBarOpen={sideBarOpen}
             />
           ) : (
             <CalendarMonthView

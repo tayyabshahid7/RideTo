@@ -359,6 +359,7 @@ class CalendarPage extends Component {
             calendarPath={calendarPath}
             match={match}
             handleMobileCellClick={this.handleMobileCellClick.bind(this)}
+            sideBarOpen={!calendarPath}
           />
         </div>
         <RightPanel location={location}>

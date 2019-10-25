@@ -15,6 +15,10 @@
   // margin-right: -17px;
 
   flex-grow: 1;
+
+  @media (min-width: 768px) {
+    margin-top: 79px;
+  }
 }
 
 .overview {
@@ -24,9 +28,21 @@
   background: #fcfcfc;
 
   @media (min-width: 768px) {
-    background: transparent;
+    background: #fff;
     padding: 1.5rem 2.5rem 1rem;
     border-bottom: 1px solid #eaeaea;
+
+    position: fixed;
+    top: 56px;
+    right: 0;
+    left: 0;
+    z-index: 4;
+  }
+}
+
+.sideBarOpen {
+  @media (min-width: 1082px) {
+    right: 315px;
   }
 }
 
