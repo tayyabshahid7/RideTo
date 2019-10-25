@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
-import { WORK_HOURS, WEEK_VIEW_START_TIME } from 'common/constants'
+import {
+  WORK_HOURS,
+  WEEK_VIEW_START_TIME,
+  WEEK_VIEW_WORKING_DAY_TIME_STRING
+} from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
 import isEqual from 'lodash/isEqual'
@@ -29,6 +33,21 @@ class CalendarWeekView extends Component {
     this.state = {
       mobileDayOfWeek: getDayOfWeek(this.props.calendar)
     }
+
+    this.startTime = React.createRef()
+  }
+
+  componentDidMount() {
+    const startEl = this.startTime.current
+    const offsetTop = startEl.offsetTop
+
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual'
+    }
+
+    setTimeout(() => {
+      window.scrollTo(0, offsetTop)
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -52,20 +71,21 @@ class CalendarWeekView extends Component {
           <li className={styles.allDayTimelineItem}>
             <span>All day</span>
           </li>
-          {Array.apply(null, { length: WORK_HOURS * 2 }).map((val, index) => (
-            <li key={index}>
-              {index > 0 && (
-                <span>
-                  {moment(
-                    new Date(
-                      new Date('2000-01-01T00:00:00Z') -
-                        (WEEK_VIEW_START_TIME + index * 30 * 60) * -1000
-                    )
-                  ).format('HH:mm')}
-                </span>
-              )}
-            </li>
-          ))}
+          {Array.apply(null, { length: WORK_HOURS * 2 }).map((val, index) => {
+            const time = moment(
+              new Date(
+                new Date('2000-01-01T00:00:00Z') -
+                  (WEEK_VIEW_START_TIME + index * 30 * 60) * -1000
+              )
+            ).format('HH:mm')
+            const isStartTime = time === WEEK_VIEW_WORKING_DAY_TIME_STRING
+
+            return (
+              <li key={index} ref={isStartTime ? this.startTime : undefined}>
+                {index > 0 && <span>{time}</span>}
+              </li>
+            )
+          })}
         </ul>
       </div>
     )

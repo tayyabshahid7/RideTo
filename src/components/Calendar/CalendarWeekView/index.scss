@@ -55,7 +55,7 @@
 }
 .weekviewContent {
   flex: 1 1 auto;
-  overflow-y: scroll;
+  // overflow-y: scroll;
 
   &::-webkit-scrollbar {
     display: none;
@@ -258,7 +258,8 @@
     border-left-width: 0;
   }
   > ul {
-    height: 1200px;
+    // height: 1200px;
+    height: 2396px;
     /* reset style */
     position: relative;
     /* force its children to stay on one line */

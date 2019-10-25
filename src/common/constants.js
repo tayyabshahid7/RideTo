@@ -11,9 +11,10 @@ export const DAY_FORMAT3 = 'YYYY-MM-DDTHH:mm'
 export const DAY_FORMAT4 = 'YYYY-MM-DDTHH:mm:ssZ'
 export const DAY_FORMAT5 = 'ddd Do MMMM'
 
-export const WEEK_VIEW_START_TIME = 60 * 60 * 7 // 9 AM
-export const WEEK_VIEW_START_TIME_STRING = '07:00'
-export const WORK_HOURS = 12
+export const WEEK_VIEW_START_TIME = 60 * 60 * 0 // Midnight
+export const WEEK_VIEW_START_TIME_STRING = '00:00'
+export const WEEK_VIEW_WORKING_DAY_TIME_STRING = '07:00'
+export const WORK_HOURS = 24
 export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 
 // export const COLOR_RED_1 = '#fa0e0e'
