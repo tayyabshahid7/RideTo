@@ -38,15 +38,15 @@ class CalendarWeekView extends Component {
   }
 
   componentDidMount() {
-    const startEl = this.startTime.current
-    const offsetTop = startEl.offsetTop
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches
+    const offset = isDesktop ? 745 : 905
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
 
     setTimeout(() => {
-      window.scrollTo(0, offsetTop)
+      window.scrollTo(0, offset)
     })
   }
 
