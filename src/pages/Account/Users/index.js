@@ -6,7 +6,7 @@ import { getUsers, editUser, newUser, deleteUser } from 'store/user'
 
 class UsersContainer extends React.Component {
   componentDidMount() {
-    // this.props.getUsers(this.props.schoolId)
+    this.props.getUsers(this.props.schoolId)
   }
 
   render() {

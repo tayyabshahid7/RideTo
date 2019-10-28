@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { ConnectInput, Button } from 'components/ConnectForm'
+import { ConnectInput, Button, ConnectCheckbox } from 'components/ConnectForm'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
@@ -35,10 +35,13 @@ class Users extends React.Component {
   }
 
   handleChange(event) {
-    const { name, value } = event.target
+    const { name, value, type, checked } = event.target
     const { selectedUser } = this.state
     this.setState({
-      selectedUser: { ...selectedUser, [name]: value }
+      selectedUser: {
+        ...selectedUser,
+        [name]: type === 'checkbox' ? checked : value
+      }
     })
   }
 
@@ -49,7 +52,8 @@ class Users extends React.Component {
         last_name: '',
         email: '',
         password: '',
-        permission_level: 'USER_STAFF'
+        permission_level: 'USER_STAFF',
+        is_activate: true
       },
       addNew: true
     })
@@ -61,7 +65,7 @@ class Users extends React.Component {
     )
     if (confirm) {
       const { deleteUser, schoolId } = this.props
-      deleteUser(schoolId, user.id)
+      deleteUser(schoolId, user.user)
     }
   }
 
@@ -82,9 +86,7 @@ class Users extends React.Component {
               </Button>
             </div>
           </div>
-          <div
-            className={classnames(styles.box, styles.header)}
-            style={{ display: 'none' }}>
+          <div className={classnames(styles.box, styles.header)}>
             <div className={styles.headerText}>
               <h3 className={styles.title}>Current users</h3>
               <p>Edit the details of exisiting users</p>
@@ -130,7 +132,7 @@ class Users extends React.Component {
                   label="First Name"
                   className="form-group"
                   onChange={this.handleChange}
-                  required
+                  required={addNew}
                 />
                 <ConnectInput
                   name="last_name"
@@ -138,7 +140,7 @@ class Users extends React.Component {
                   label="Last Name"
                   className="form-group"
                   onChange={this.handleChange}
-                  required
+                  required={addNew}
                 />
                 <ConnectInput
                   name="email"
@@ -146,7 +148,7 @@ class Users extends React.Component {
                   label="Email"
                   className="form-group"
                   onChange={this.handleChange}
-                  required
+                  required={addNew}
                 />
                 <ConnectInput
                   name="password"
@@ -154,10 +156,20 @@ class Users extends React.Component {
                   label="Password"
                   className="form-group"
                   onChange={this.handleChange}
-                  required
+                  required={addNew}
                   type="password"
                   minLength="6"
                 />
+                {!addNew && (
+                  <ConnectCheckbox
+                    required={addNew}
+                    label="Active"
+                    name="is_activate"
+                    type="checkbox"
+                    checked={selectedUser.is_activate}
+                    onChange={this.handleChange}
+                  />
+                )}
                 <Button color="primary" type="submit" disabled={saving}>
                   {addNew ? 'Add' : 'Save'}
                 </Button>

@@ -67,7 +67,10 @@ export const deleteUser = (schoolId, userId) => async dispatch => {
     const result = await removeUser(schoolId, userId)
     dispatch({
       type: DELETE[SUCCESS],
-      data: result
+      data: {
+        ...result,
+        user: userId
+      }
     })
     notificationActions.dispatchSuccess(dispatch, 'User deleted.')
   } catch (error) {
@@ -149,8 +152,8 @@ export default function reducer(state = initialState, action) {
         saving: true
       }
     case DELETE[SUCCESS]:
-      const deletedId = action.data.id
-      const newUsers = state.users.filter(user => user.id !== deletedId)
+      const deletedId = action.data.user
+      const newUsers = state.users.filter(user => user.user !== deletedId)
       return {
         ...state,
         users: [...newUsers],
