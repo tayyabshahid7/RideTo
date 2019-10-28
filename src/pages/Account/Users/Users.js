@@ -166,7 +166,7 @@ class Users extends React.Component {
                     label="Active"
                     name="is_activate"
                     type="checkbox"
-                    checked={selectedUser.is_activate}
+                    checked={selectedUser.is_activate || true}
                     onChange={this.handleChange}
                   />
                 )}
