@@ -81,7 +81,7 @@ class Dashboard extends Component {
             )}
           </Loading>
         </Col>
-        <Col lg="4" className={styles.rightPanel}>
+        <Col className={styles.rightPanel}>
           <FaqsPanel />
         </Col>
       </div>
