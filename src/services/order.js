@@ -107,19 +107,20 @@ export const getPaymentOptions = () => {
   ]
 }
 
-export const getTrainingStatusOptions = () => {
+export const getTrainingStatusOptions = (isRideTo = false) => {
+  if (isRideTo) {
+    return [
+      { id: 'TRAINING_CONFIRMED', name: 'Confirmed' },
+      { id: 'TRAINING_FAILED', name: 'Not completed' },
+      { id: 'TRAINING_NO_SHOW', name: 'Not attended' },
+      { id: 'TRAINING_PASSED', name: 'Completed' }
+    ]
+  }
+
   return [
     { id: 'TRAINING_CONFIRMED', name: 'Confirmed' },
     { id: 'TRAINING_FAILED', name: 'Not completed' },
     { id: 'TRAINING_CANCELLED', name: 'Cancelled' },
-    // {
-    //   id: 'TRAINING_WAITING_SCHOOL_CONFIRMATION',
-    //   name: 'Waiting for school confirmation'
-    // },
-    // {
-    //   id: 'TRAINING_WAITING_RIDER_CONFIRMATION',
-    //   name: 'Waiting for rider confirmation'
-    // },
     { id: 'TRAINING_NO_SHOW', name: 'Not attended' },
     { id: 'TRAINING_PASSED', name: 'Completed' }
   ]

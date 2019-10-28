@@ -92,7 +92,7 @@ class ChangeDate extends Component {
   }
 
   render() {
-    const { times } = this.props
+    const { times, disabled } = this.props
     const { date, time, showTimes, isTimeChanged, availableDate } = this.state
 
     return (
@@ -109,6 +109,7 @@ class ChangeDate extends Component {
                 onChange={this.handleDateChange}
                 className={styles.dateInput}
                 highlightDates={availableDate}
+                disabled={disabled}
               />
               {/*
               <Button
@@ -149,7 +150,7 @@ class ChangeDate extends Component {
                   labelField="title"
                   noSelectOption
                   onChange={this.handleTimeChange}
-                  disabled={!showTimes || !times.length}
+                  disabled={!showTimes || !times.length || disabled}
                 />
               )}
             </Col>

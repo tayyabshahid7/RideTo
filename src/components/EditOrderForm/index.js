@@ -103,6 +103,9 @@ class EditOrderForm extends React.Component {
     const isFullLicence = this.state.order.course_type.startsWith(
       'FULL_LICENCE'
     )
+    const isRideTo =
+      !direct_friendly_id.includes('DIRECT') &&
+      !direct_friendly_id.includes('WIDGET')
 
     return (
       <div className={styles.container}>
@@ -124,6 +127,7 @@ class EditOrderForm extends React.Component {
             times={times}
             loadTimes={loadTimes}
             courseType={this.state.order.course_type}
+            disabled={isRideTo}
           />
 
           {!showChangeDate && (
@@ -131,6 +135,7 @@ class EditOrderForm extends React.Component {
               <Row>
                 <Col sm="10">
                   <ConnectSelect
+                    disabled={isRideTo}
                     name="bike_type"
                     selected={bike_type}
                     label="Bike hire"
@@ -150,6 +155,7 @@ class EditOrderForm extends React.Component {
                 <Row>
                   <Col sm="8">
                     <ConnectSelect
+                      disabled={isRideTo}
                       name="full_licence_type"
                       selected={full_licence_type}
                       label="Licence Type *"
@@ -169,7 +175,7 @@ class EditOrderForm extends React.Component {
                 <Col sm="10">
                   <ConnectSelect
                     label="Training status"
-                    options={getTrainingStatusOptions()}
+                    options={getTrainingStatusOptions(isRideTo)}
                     selected={status}
                     name="status"
                     basic
@@ -199,6 +205,7 @@ class EditOrderForm extends React.Component {
               <Row>
                 <Col sm="10">
                   <ConnectSelect
+                    disabled={isRideTo}
                     name="order.payment_status"
                     selected={payment_status}
                     label="Payment status"
