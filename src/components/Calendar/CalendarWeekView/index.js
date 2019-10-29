@@ -39,7 +39,7 @@ class CalendarWeekView extends Component {
 
   componentDidMount() {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
-    const offset = isDesktop ? 745 : 905
+    const offset = isDesktop ? 390 : 550
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
@@ -71,11 +71,11 @@ class CalendarWeekView extends Component {
           <li className={styles.allDayTimelineItem}>
             <span>All day</span>
           </li>
-          {Array.apply(null, { length: WORK_HOURS * 2 }).map((val, index) => {
+          {Array.apply(null, { length: WORK_HOURS }).map((val, index) => {
             const time = moment(
               new Date(
                 new Date('2000-01-01T00:00:00Z') -
-                  (WEEK_VIEW_START_TIME + index * 30 * 60) * -1000
+                  (WEEK_VIEW_START_TIME + index * 60 * 60) * -1000
               )
             ).format('HH:mm')
             const isStartTime = time === WEEK_VIEW_WORKING_DAY_TIME_STRING

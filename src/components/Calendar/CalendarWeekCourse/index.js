@@ -38,8 +38,8 @@ const CalendarWeekCourse = ({
 
   // let borderColor = 'black'
   let style = {
-    height: `${height}px`,
-    top: `${top}px`,
+    height: `${height / 2}px`,
+    top: `${top / 2}px`,
     left,
     width,
     zIndex: position
