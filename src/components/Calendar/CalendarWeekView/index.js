@@ -39,7 +39,7 @@ class CalendarWeekView extends Component {
 
   componentDidMount() {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
-    const offset = isDesktop ? 390 : 550
+    const offset = isDesktop ? 340 : 550
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
