@@ -80,7 +80,14 @@ class SignupPage extends React.Component {
 
   async handleSubmit(event) {
     event.preventDefault()
-    const { terms, first_name, last_name, email, password } = this.state
+    const {
+      terms,
+      first_name,
+      last_name,
+      email,
+      password,
+      newsletter
+    } = this.state
     const pattern = /(?=^.{6,}$)(?=.*\d)(?![.\n])(?=.*[A-Za-z]).*$/
 
     if (!password.match(pattern)) {
@@ -94,7 +101,13 @@ class SignupPage extends React.Component {
     }
 
     try {
-      await saveUser({ first_name, last_name, email, password })
+      await saveUser({
+        first_name,
+        last_name,
+        email,
+        password,
+        email_optin: newsletter
+      })
       const next = this.loginNext || '/account/dashboard'
       window.location.href = next
     } catch (error) {
