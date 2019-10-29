@@ -479,6 +479,7 @@ export const getDefaultFullLicencePackage = ({
 }
 
 export const getTrainingStatus = status => {
+  console.log(status)
   if (status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION') {
     return 'Pending Instructor Confirmation'
   } else if (status === 'TRAINING_WAITING_RIDER_CONFIRMATION') {
@@ -489,6 +490,12 @@ export const getTrainingStatus = status => {
     return 'Training Cancelled'
   } else if (status === 'TRAINING_FAILED') {
     return 'Training Not Completed'
+  } else if (status === 'TRAINING_NO_SHOW') {
+    return 'Not attended'
+  } else if (status === 'TRAINING_PASSED') {
+    return 'Completed'
+  } else {
+    return status
   }
 }
 
