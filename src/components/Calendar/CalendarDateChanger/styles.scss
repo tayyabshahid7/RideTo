@@ -39,3 +39,11 @@
     padding-left: 1rem;
   }
 }
+
+.viewModeChange {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}

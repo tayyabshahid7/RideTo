@@ -13,6 +13,7 @@ import CalendarDateChanger from './CalendarDateChanger'
 import CalendarViewChanger from './CalendarViewChanger'
 import CalendarArrowsSwitcher from './CalendarArrowsSwitcher'
 import CalendarMobileBackButton from './CalendarMobileBackButton'
+import { Desktop } from 'common/breakpoints'
 
 class CalendarComponent extends Component {
   renderOverview() {
@@ -35,11 +36,17 @@ class CalendarComponent extends Component {
                   viewMode === CALENDAR_VIEW.MONTH &&
                     styles.changeCalendarWrapperMonth
                 )}>
-                <CalendarArrowsSwitcher handleCustomEvent={handleCustomEvent} />
-                <CalendarDateChanger
+                <CalendarArrowsSwitcher
+                  handleCustomEvent={handleCustomEvent}
                   calendar={calendar}
                   handleChangeDate={handleChangeDate}
                 />
+                <Desktop>
+                  <CalendarDateChanger
+                    calendar={calendar}
+                    handleChangeDate={handleChangeDate}
+                  />
+                </Desktop>
                 <CalendarViewChanger
                   viewMode={viewMode}
                   handleCustomEvent={handleCustomEvent}
