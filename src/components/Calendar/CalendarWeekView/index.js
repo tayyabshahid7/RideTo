@@ -174,7 +174,7 @@ class CalendarWeekView extends Component {
           return {
             ...course,
             secondsForDay: parseInt(
-              new Date(`${date} ${course.time}`) / 1000 - baseDate / 1000,
+              new Date(`${date}T${course.time}`) / 1000 - baseDate / 1000,
               10
             )
           }
