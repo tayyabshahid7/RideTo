@@ -293,12 +293,17 @@ class CalendarWeekView extends Component {
   }
 
   renderAllDay() {
-    const { days, calendar, history } = this.props
+    const { days, calendar, history, sideBarOpen } = this.props
     const { mobileDayOfWeek } = this.state
     let daysInfo = this.evaluateData(days)
 
     return (
-      <div className={classnames(styles.events, styles.allDayEvents)}>
+      <div
+        className={classnames(
+          styles.events,
+          styles.allDayEvents,
+          sideBarOpen && styles.sideBarOpen
+        )}>
         <ul
           className={classnames(
             'day-ul',
