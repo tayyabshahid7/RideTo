@@ -119,7 +119,7 @@ function DashboardPageV2({ match }) {
     })
 
     nextSteps.forEach(step => {
-      if (step.constant === constant && step.is_completed !== isCompleted) {
+      if (step.constant === constant && isCompleted) {
         if (save) {
           updateTimelineStep(step.name, step.constant, isCompleted)
 
