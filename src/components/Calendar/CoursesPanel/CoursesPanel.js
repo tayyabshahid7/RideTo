@@ -15,7 +15,8 @@ function CoursesPanel({
   eventId,
   staffId,
   staff,
-  isAdmin
+  isAdmin,
+  loadCourses
 }) {
   return (
     <div className={styles.coursesPanel}>
@@ -61,6 +62,7 @@ function CoursesPanel({
               addingOrder={addingOrder}
               updateAdding={updateAdding}
               canEdit={isAdmin}
+              loadCourses={loadCourses}
             />
           ))}
 

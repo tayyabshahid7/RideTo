@@ -56,6 +56,8 @@ class EditOrderFormContainer extends React.Component {
 
     if (updateDate) {
       this.props.getDayCourses({ schoolId, date })
+      this.props.loadCourses(true)
+      // update calendar here
     }
     return response
   }

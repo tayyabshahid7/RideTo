@@ -58,12 +58,12 @@ class CalendarPage extends Component {
     this.loadStaff()
   }
 
-  loadCourses() {
+  loadCourses(reset = false) {
     const { getCourses, schoolId, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
     const month = `${calendar.year}-${calendar.month}-${schoolId}`
 
-    if (calendar.loadedMonths.includes(month)) {
+    if (!reset && calendar.loadedMonths.includes(month)) {
       return
     }
 
@@ -71,7 +71,8 @@ class CalendarPage extends Component {
       schoolId,
       firstDate: moment(firstDate).format(DATE_FORMAT),
       lastDate: moment(lastDate).format(DATE_FORMAT),
-      month
+      month,
+      reset
     })
   }
 
@@ -371,7 +372,12 @@ class CalendarPage extends Component {
           <Route
             exact
             path="/calendar/:date/courses/:courseId"
-            render={routeProps => <CoursesPanel {...routeProps} />}
+            render={routeProps => (
+              <CoursesPanel
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact

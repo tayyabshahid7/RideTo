@@ -104,7 +104,8 @@ class OrdersPanel extends React.Component {
       saving,
       loading,
       updateAdding,
-      addingOrder
+      addingOrder,
+      loadCourses
     } = this.props
     const { orderIndex, editOrderIndex, showEditButton } = this.state
     const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
@@ -131,6 +132,7 @@ class OrdersPanel extends React.Component {
                     date={course.date}
                     time={course.time}
                     onDelete={() => this.handleDeleteTraining(training)}
+                    loadCourses={loadCourses}
                   />
                 ) : (
                   <OrdersPanelItem

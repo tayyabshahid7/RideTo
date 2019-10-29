@@ -58,7 +58,15 @@ class CoursesPanelContainer extends React.Component {
   }
 
   render() {
-    const { courses, loading, match, events, staff, isAdmin } = this.props
+    const {
+      courses,
+      loading,
+      match,
+      events,
+      staff,
+      isAdmin,
+      loadCourses
+    } = this.props
     const {
       params: { date, courseId, eventId, staffId }
     } = match
@@ -78,6 +86,7 @@ class CoursesPanelContainer extends React.Component {
           updateAdding={this.updateAdding}
           staff={staff}
           isAdmin={isAdmin}
+          loadCourses={loadCourses}
         />
       </Loading>
     )

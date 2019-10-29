@@ -123,7 +123,8 @@ export const getCourses = ({
   schoolId,
   firstDate,
   lastDate,
-  month
+  month,
+  reset
 }) => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
@@ -133,7 +134,8 @@ export const getCourses = ({
       type: FETCH_ALL[SUCCESS],
       data: {
         courses,
-        month
+        month,
+        reset
       }
     })
   } catch (error) {
@@ -551,6 +553,19 @@ export default function reducer(state = initialState, action) {
         }
       }
     case FETCH_ALL[SUCCESS]:
+      if (action.data.reset) {
+        return {
+          ...state,
+          calendar: {
+            ...state.calendar,
+            loading: false,
+            courses: [...action.data.courses],
+            error: null,
+            loadedMonths: [action.data.month]
+          }
+        }
+      }
+
       return {
         ...state,
         calendar: {

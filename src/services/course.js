@@ -479,7 +479,6 @@ export const getDefaultFullLicencePackage = ({
 }
 
 export const getTrainingStatus = status => {
-  console.log(status)
   if (status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION') {
     return 'Pending Instructor Confirmation'
   } else if (status === 'TRAINING_WAITING_RIDER_CONFIRMATION') {

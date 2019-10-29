@@ -36,7 +36,8 @@ const CoursesPanelItem = ({
   addingOrder,
   courseId,
   settings,
-  canEdit
+  canEdit,
+  loadCourses
 }) => {
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
@@ -134,6 +135,7 @@ const CoursesPanelItem = ({
         saving={saving}
         addingOrder={addingOrder}
         updateAdding={updateAdding}
+        loadCourses={loadCourses}
       />
     </div>
   )
