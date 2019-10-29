@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { ConnectInput, Button, ConnectCheckbox } from 'components/ConnectForm'
+import { ConnectInput, Button } from 'components/ConnectForm'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
@@ -89,7 +89,10 @@ class Users extends React.Component {
           <div className={classnames(styles.box, styles.header)}>
             <div className={styles.headerText}>
               <h3 className={styles.title}>Current users</h3>
-              <p>Edit the details of exisiting users</p>
+              <p>
+                Manage existing users. All users have staff permissions by
+                default
+              </p>
             </div>
             <ul className={styles.list}>
               {users.map((user, key) => {
@@ -160,16 +163,6 @@ class Users extends React.Component {
                   type="password"
                   minLength="6"
                 />
-                {!addNew && (
-                  <ConnectCheckbox
-                    required={addNew}
-                    label="Active"
-                    name="is_activate"
-                    type="checkbox"
-                    checked={selectedUser.is_activate || true}
-                    onChange={this.handleChange}
-                  />
-                )}
                 <Button color="primary" type="submit" disabled={saving}>
                   {addNew ? 'Add' : 'Save'}
                 </Button>
