@@ -108,16 +108,6 @@ function DashboardPageV2({ match }) {
     setNextSteps(prevState => {
       return prevState.map(step => {
         if (step.constant === constant && step.is_completed !== isCompleted) {
-          // @TODO Work out why this fires twice when updating achievement as well
-          if (save) {
-            updateTimelineStep(step.name, step.constant, isCompleted)
-
-            if (isCompleted) {
-              step.achievements.forEach(achievement =>
-                updateAchievements(achievement)
-              )
-            }
-          }
           return {
             ...step,
             is_completed: isCompleted
@@ -126,6 +116,20 @@ function DashboardPageV2({ match }) {
 
         return step
       })
+    })
+
+    nextSteps.forEach(step => {
+      if (step.constant === constant && step.is_completed !== isCompleted) {
+        if (save) {
+          updateTimelineStep(step.name, step.constant, isCompleted)
+
+          if (isCompleted) {
+            step.achievements.forEach(achievement =>
+              updateAchievements(achievement)
+            )
+          }
+        }
+      }
     })
   }
 
