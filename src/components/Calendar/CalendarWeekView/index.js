@@ -166,17 +166,17 @@ class CalendarWeekView extends Component {
 
   evaluateData(days) {
     let date = '2000-01-01'
-    let baseDate = new Date('2000-01-01T00:00:00Z')
     let results = days.map(day => {
       let dayObj = { ...day }
       dayObj.courses = [
         ...dayObj.courses.map(course => {
+          const time = moment(`${date} ${course.time}`)
+          const startOfDay = moment(time).startOf('day')
+          const secondsForDay = time.diff(startOfDay, 'seconds')
+
           return {
             ...course,
-            secondsForDay: parseInt(
-              new Date(`${date}T${course.time}`) / 1000 - baseDate / 1000,
-              10
-            )
+            secondsForDay
           }
         }),
         ...dayObj.events
