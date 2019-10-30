@@ -28,7 +28,8 @@ function NewsItem({ news, contentType }) {
     created,
     author,
     extra_url,
-    author_image
+    author_image,
+    rideto_score
   } = news
   const youtubeId = getYouTubeID(extra_url)
 
@@ -109,7 +110,9 @@ function NewsItem({ news, contentType }) {
             <h2 className={styles.footerTitle}>{title}</h2>
             <div className={styles.footerSubtitle}>{hostname}</div>
           </div>
-          {contentType === 'Reviews' && <RideToScore score={90} small />}
+          {contentType === 'Reviews' && (
+            <RideToScore score={rideto_score} small />
+          )}
           <div className={styles.footerButton}>
             {link && (
               <RideToButton
