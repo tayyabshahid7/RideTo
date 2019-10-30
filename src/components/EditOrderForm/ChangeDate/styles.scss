@@ -20,11 +20,26 @@
 
   > div {
     flex-grow: 1;
+
+    > div:first-of-type {
+      display: block;
+      width: 100%;
+
+      > div:first-of-type {
+        display: block;
+        width: 100%;
+      }
+    }
   }
 
-  button {
+  > button {
     height: 30px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    margin-top: 4px;
+  }
+
+  button {
+    min-height: 0;
   }
 }

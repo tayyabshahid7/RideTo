@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 // import Header from '../Header'
 import UserMenu from '../UserMenu'
@@ -7,8 +8,10 @@ import styles from './styles.scss'
 // import IconRideToLogo from '../../assets/icons/IconRideToLogo'
 import { ConnectLogo } from '../../assets/icons/'
 // import { Button } from 'reactstrap'
+import { connect } from 'react-redux'
+import { isAdmin } from 'services/auth'
 
-let NavigationBar = ({ history }) => {
+let NavigationBar = ({ history, user }) => {
   const { pathname } = history.location
   const [, first, second] = pathname.split('/')
   let date
@@ -78,25 +81,29 @@ let NavigationBar = ({ history }) => {
               Customers
             </NavLink>
           </li>
-          <li className={classnames('nav-item', styles.navItem)}>
-            <NavLink
-              className={styles.navLink}
-              activeClassName={styles.activeNavLink}
-              to="/account/availability">
-              Account
-            </NavLink>
-          </li>
+          {isAdmin(user) && (
+            <li className={classnames('nav-item', styles.navItem)}>
+              <NavLink
+                className={styles.navLink}
+                activeClassName={styles.activeNavLink}
+                to="/account/availability">
+                Account
+              </NavLink>
+            </li>
+          )}
         </ul>
         <div className={styles.navTools}>
-          <Link
-            to={
-              date
-                ? `/calendar/courses/create?date=${date}`
-                : `/calendar/courses/create`
-            }
-            className={classnames(styles.addCourse)}>
-            Add Course
-          </Link>
+          {isAdmin(user) && (
+            <Link
+              to={
+                date
+                  ? `/calendar/courses/create?date=${date}`
+                  : `/calendar/courses/create`
+              }
+              className={classnames(styles.addCourse)}>
+              Add Course
+            </Link>
+          )}
           <form
             className={classnames('form-inline my-2 my-lg-0', styles.authMenu)}>
             <UserMenu history={history} />
@@ -107,4 +114,9 @@ let NavigationBar = ({ history }) => {
   )
 }
 
-export default NavigationBar
+const mapStateToProps = (state, ownProps) => {
+  return {
+    user: state.auth.user
+  }
+}
+export default withRouter(connect(mapStateToProps)(NavigationBar))

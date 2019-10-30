@@ -1,0 +1,106 @@
+.eventsPanelItem {
+  margin-bottom: 12px;
+  font-size: 11px;
+}
+
+.eventsPanelItem:last-child {
+  margin-bottom: 24px;
+}
+
+.heading {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    display: block;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
+      0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 100ms linear;
+  }
+}
+
+.headingSelected {
+  &::before {
+    opacity: 1;
+  }
+}
+
+.notes {
+  font-size: 11px;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  color: #707070;
+  line-height: 1;
+  font-weight: normal;
+}
+
+.title {
+  flex-grow: 1;
+
+  background-color: #fafafa;
+  color: #707070;
+  font-size: 12px;
+  font-weight: bold;
+
+  padding: 12px 12px;
+}
+
+.top {
+  flex-grow: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.time,
+.name {
+  font-size: 12px;
+}
+
+.orders td {
+  padding: 8px;
+}
+
+.orders td:last-child {
+  margin-right: 0;
+}
+
+.order {
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+
+.body {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.pipe {
+  font-weight: bold;
+  margin: 0 0.5rem;
+}
+
+.time {
+  font-weight: normal;
+}
+
+.editLink {
+  color: inherit;
+}
+
+.instructorIcon {
+  width: 14px;
+  margin-right: 0.5rem;
+}

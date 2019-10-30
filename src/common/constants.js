@@ -11,9 +11,10 @@ export const DAY_FORMAT3 = 'YYYY-MM-DDTHH:mm'
 export const DAY_FORMAT4 = 'YYYY-MM-DDTHH:mm:ssZ'
 export const DAY_FORMAT5 = 'ddd Do MMMM'
 
-export const WEEK_VIEW_START_TIME = 60 * 60 * 7 // 9 AM
-export const WEEK_VIEW_START_TIME_STRING = '07:00'
-export const WORK_HOURS = 12
+export const WEEK_VIEW_START_TIME = 60 * 60 * 0 // Midnight
+export const WEEK_VIEW_START_TIME_STRING = '00:00'
+export const WEEK_VIEW_WORKING_DAY_TIME_STRING = '07:00'
+export const WORK_HOURS = 24
 export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 
 // export const COLOR_RED_1 = '#fa0e0e'
@@ -119,4 +120,17 @@ export const SLUG_COURSE_TYPES = {
   'blog/cbt-renewal': 'LICENCE_CBT_RENEWAL',
   'motorcycle-licence': 'FULL_LICENCE',
   '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
+}
+
+export const CALENDAR_COLOURS = {
+  LICENCE_CBT: '#ffcfa0',
+  LICENCE_CBT_RENEWAL: '#f3dad8',
+  FULL_LICENCE_MOD1_TRAINING: '#9fe6ea',
+  FULL_LICENCE_MOD1_TEST: '#d6d9ce',
+  FULL_LICENCE_MOD2_TRAINING: '#cfcfea',
+  FULL_LICENCE_MOD2_TEST: '#caffd0',
+  INTRO_TO_MOTORCYCLING: '#c9e4e7',
+  TFL_ONE_ON_ONE: '#84dcc6',
+  INSTRUCTOR: '#a5bbff',
+  EVENT: '#ebebeb'
 }

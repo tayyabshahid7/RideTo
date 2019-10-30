@@ -4,7 +4,6 @@ import {
   WEEK_VIEW_START_TIME_STRING,
   DAY_FORMAT3,
   WEEK_VIEW_START_TIME,
-  SINGLE_DAY_IN_SECONDS,
   WORK_HOURS,
   DAY_FORMAT4
 } from 'common/constants'
@@ -24,25 +23,25 @@ export function getStarTimeForEventForDate(event, date) {
   return WEEK_VIEW_START_TIME_STRING
 }
 
-export function secondsForDayAndDurationForEvent(event, date) {
-  let baseDate = new Date('2000-01-01 00:00:00')
+export function getTimeOfDayInSeconds(time) {
+  return moment(time).diff(moment(time).startOf('day'), 'seconds')
+}
+
+export function secondsForDayAndDurationForEvent(event, fullDate) {
+  let date = moment(new Date(fullDate)).format(DATE_FORMAT)
   let eventDate = moment(new Date(event.start_time)).format(DATE_FORMAT)
   let eventEndDate = moment(new Date(event.end_time)).format(DATE_FORMAT)
   let secondsForDay = WEEK_VIEW_START_TIME
   if (eventDate === date) {
-    secondsForDay =
-      parseInt(new Date(event.start_time) / 1000 - baseDate / 1000, 10) %
-      SINGLE_DAY_IN_SECONDS
+    secondsForDay = getTimeOfDayInSeconds(event.start_time)
   }
 
   let endTime = WEEK_VIEW_START_TIME + WORK_HOURS * 3600
   if (eventEndDate === date) {
-    endTime =
-      parseInt(new Date(event.end_time) / 1000 - baseDate / 1000, 10) %
-      SINGLE_DAY_IN_SECONDS
+    endTime = getTimeOfDayInSeconds(event.end_time)
   }
 
-  return { secondsForDay, duration: endTime - secondsForDay }
+  return { secondsForDay, duration: (endTime - secondsForDay) / 60 }
 }
 
 export const getTime = dateTime => {

@@ -19,7 +19,12 @@ class AccountPage extends Component {
   // }
 
   render() {
-    const { history, schoolId } = this.props
+    const { history, schoolId, isAdmin } = this.props
+
+    if (!isAdmin) {
+      return <div>No access</div>
+    }
+
     return (
       <div className={styles.container}>
         <AccountSubNavbar history={history} />

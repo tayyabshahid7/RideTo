@@ -4,6 +4,7 @@ import moment from 'moment'
 import styles from './styles.scss'
 import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 import classnames from 'classnames'
+import CalendarLabels from './CalendarLabels'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
@@ -128,7 +129,11 @@ class AvailabilityCourses extends React.Component {
       getInstructors,
       history,
       saving,
-      error
+      error,
+      settings,
+      updateSettings,
+      editInstructor,
+      updateDiaryColor
     } = this.props
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
@@ -153,6 +158,19 @@ class AvailabilityCourses extends React.Component {
           )}
         </div>
         <div className={styles.box}>{this.renderDefaultDays()}</div>
+        <div className={styles.box}>
+          <CalendarLabels
+            settings={settings}
+            instructors={instructors}
+            getInstructors={getInstructors}
+            schoolId={schoolId}
+            info={info}
+            loadCourseTypes={loadCourseTypes}
+            updateSettings={updateSettings}
+            editInstructor={editInstructor}
+            updateDiaryColor={updateDiaryColor}
+          />
+        </div>
       </Fragment>
     )
   }

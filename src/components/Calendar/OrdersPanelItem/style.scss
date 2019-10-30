@@ -1,35 +1,26 @@
 .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
   padding: 6px 12px;
   margin-bottom: 6px;
 
   background-color: #fafafa;
   white-space: now;
 
-  font-size: 14px;
+  font-size: 12px;
 }
 
-.col {
-  margin-right: 8px;
-}
-
-.bikeType {
-  font-weight: bold;
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .name {
-  // flex-grow: 1;
   font-weight: bold;
-  text-align: left;
-  margin-right: 8px;
-  text-align: right;
 }
 
-.inlineButton {
-  padding: 0 10px !important;
+.bikeType,
+.status {
+  font-weight: bold;
 }
 
 .editButton {
@@ -39,11 +30,28 @@
   color: var(--primary-color);
   padding: 0;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
 
   &:hover {
     color: #1f8f77;
     text-decoration: underline;
   }
+}
+
+.partial,
+.pending {
+  font-style: italic;
+}
+
+.partial {
+  color: var(--warning-color);
+}
+
+.pending {
+  color: var(--danger-color);
+}
+
+.notes {
+  font-style: italic;
 }

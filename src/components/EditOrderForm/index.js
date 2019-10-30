@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 
-import {
-  ConnectSelect,
-  ConnectLabeledContent,
-  Button
-} from 'components/ConnectForm'
+import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
 import { BikeHires, formatBikeConstant, FullLicenceTypes } from 'common/info'
-import { getPaymentOptions, getTrainingStatusOptions } from 'services/order'
+import {
+  getPaymentOptions,
+  getTrainingStatusOptions,
+  getNonCompleteOptions
+} from 'services/order'
 import ChangeDate from './ChangeDate/'
 
 class EditOrderForm extends React.Component {
@@ -93,33 +93,29 @@ class EditOrderForm extends React.Component {
 
     const { first_name, last_name, id } = this.state.order.customer
     const { direct_friendly_id, payment_status } = this.state.order.order
-    const { bike_type, full_licence_type, status } = this.state.order
+    const {
+      bike_type,
+      full_licence_type,
+      status,
+      non_completion_reason,
+      notes
+    } = this.state.order
     const isFullLicence = this.state.order.course_type.startsWith(
       'FULL_LICENCE'
     )
+    const isRideTo =
+      !direct_friendly_id.includes('DIRECT') &&
+      !direct_friendly_id.includes('WIDGET')
 
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave}>
-          <div className={styles.deleteWrap}>
-            <Button color="danger" onClick={onDelete}>
-              Delete
-            </Button>
-          </div>
           <div className={styles.topSection}>
-            <div>
-              <div className={styles.header}>
-                <h4>Edit Order {direct_friendly_id}</h4>
-              </div>
-              <ConnectLabeledContent label="Customer" disabled basic>
-                <b>
-                  <Link to={`/customers/${id}`}>
-                    {first_name} {last_name}
-                  </Link>
-                </b>
-              </ConnectLabeledContent>
-            </div>
+            <Link to={`/customers/${id}`}>
+              {first_name} {last_name}
+            </Link>
+            <span>{direct_friendly_id}</span>
           </div>
 
           <ChangeDate
@@ -130,13 +126,16 @@ class EditOrderForm extends React.Component {
             onCancel={this.handleToggleDateClick}
             times={times}
             loadTimes={loadTimes}
+            courseType={this.state.order.course_type}
+            disabled={isRideTo}
           />
 
           {!showChangeDate && (
             <div>
               <Row>
-                <Col sm="8">
+                <Col sm="10">
                   <ConnectSelect
+                    disabled={isRideTo}
                     name="bike_type"
                     selected={bike_type}
                     label="Bike hire"
@@ -156,6 +155,7 @@ class EditOrderForm extends React.Component {
                 <Row>
                   <Col sm="8">
                     <ConnectSelect
+                      disabled={isRideTo}
                       name="full_licence_type"
                       selected={full_licence_type}
                       label="Licence Type *"
@@ -172,10 +172,10 @@ class EditOrderForm extends React.Component {
                 </Row>
               )}
               <Row>
-                <Col sm="6">
+                <Col sm="10">
                   <ConnectSelect
                     label="Training status"
-                    options={getTrainingStatusOptions()}
+                    options={getTrainingStatusOptions(isRideTo)}
                     selected={status}
                     name="status"
                     basic
@@ -184,8 +184,28 @@ class EditOrderForm extends React.Component {
                     }}
                   />
                 </Col>
-                <Col sm="6">
+              </Row>
+              {status === 'TRAINING_FAILED' && (
+                <Row>
+                  <Col sm="10">
+                    <ConnectSelect
+                      placeholder
+                      label="Non-Completion Reason"
+                      options={getNonCompleteOptions()}
+                      selected={non_completion_reason}
+                      name="non_completion_reason"
+                      basic
+                      onChange={value => {
+                        this.handleChange('non_completion_reason', value)
+                      }}
+                    />
+                  </Col>
+                </Row>
+              )}
+              <Row>
+                <Col sm="10">
                   <ConnectSelect
+                    disabled={isRideTo}
                     name="order.payment_status"
                     selected={payment_status}
                     label="Payment status"
@@ -201,14 +221,29 @@ class EditOrderForm extends React.Component {
                   />
                 </Col>
               </Row>
+              <Row>
+                <Col sm="10">
+                  <ConnectTextArea
+                    basic
+                    name="notes"
+                    value={notes || ''}
+                    label="Notes"
+                    className="form-group"
+                    type="text"
+                    onChange={({ target: { value } }) => {
+                      this.handleChange('notes', value)
+                    }}
+                  />
+                </Col>
+              </Row>
               {/* TODO PRODEV-1112 Needs BACKEND
               <Row>
-                <Col sm="6">
+                <Col sm="10">
                   <ConnectLabeledContent label="Price paid" disabled basic>
                     {`£${parseFloat(0).toFixed(2)}`}
                   </ConnectLabeledContent>
                 </Col>
-                <Col sm="6">
+                <Col sm="10">
                   <ConnectLabeledContent label="Stripe link" disabled basic>
                     <a href={0} target="_blank" rel="noopener noreferrer">
                       Open
@@ -219,6 +254,7 @@ class EditOrderForm extends React.Component {
               */}
               <div className={styles.comms}>
                 <Button
+                  small
                   disabled={isSending}
                   color="primary"
                   outline
@@ -226,12 +262,19 @@ class EditOrderForm extends React.Component {
                   Send Confirmation
                 </Button>
               </div>
-              <div>
-                <Button type="submit" color="primary" disabled={!isChanged}>
+              <div className={styles.buttons}>
+                <Button
+                  small
+                  type="submit"
+                  color="primary"
+                  disabled={!isChanged}>
                   Save
                 </Button>
-                <Button color="white" onClick={onCancel}>
+                <Button small color="white" onClick={onCancel}>
                   Cancel
+                </Button>
+                <Button small color="danger" onClick={onDelete}>
+                  Delete
                 </Button>
               </div>
             </div>

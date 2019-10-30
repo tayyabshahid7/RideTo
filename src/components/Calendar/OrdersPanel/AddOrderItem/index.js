@@ -14,7 +14,8 @@ import {
   ConnectSelect,
   Button,
   ConnectCheckbox,
-  ConnectAgeInput
+  ConnectAgeInput,
+  ConnectTextArea
 } from 'components/ConnectForm'
 
 class AddOrderItem extends React.Component {
@@ -35,7 +36,8 @@ class AddOrderItem extends React.Component {
         full_licence_type: '',
         start_time: `${this.props.course.date}T${this.props.course.time}Z`,
         tandcs_agreed: false,
-        email_optin: false
+        email_optin: false,
+        notes: ''
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
@@ -260,7 +262,8 @@ class AddOrderItem extends React.Component {
         user_last_name,
         user_phone,
         tandcs_agreed,
-        email_optin
+        email_optin,
+        notes
       }
     } = this.state
     const price = pricing && pricing.price
@@ -274,7 +277,7 @@ class AddOrderItem extends React.Component {
               <span className={styles.leftCol}>
                 <h3 className={styles.title}>Add Order</h3>
               </span>
-              <span>Step 1 of 2</span>
+              {/* <span>Step 1 of 2</span> */}
             </div>
           ))}
         {!showPaymentConfirmation ? (
@@ -420,6 +423,16 @@ class AddOrderItem extends React.Component {
                 name="email_optin"
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
+
+              <ConnectTextArea
+                basic
+                name="notes"
+                value={notes}
+                label="Notes"
+                className="form-group"
+                type="text"
+                onChange={this.handleChangeRawEvent.bind(this)}
+              />
             </div>
             {showPayment && (
               <div>
@@ -437,6 +450,7 @@ class AddOrderItem extends React.Component {
                 {/*
                 {!showPayment && (
                   <Button
+                    small
                     disabled={!userDetailsValid}
                     type="button"
                     color="primary"
@@ -446,6 +460,7 @@ class AddOrderItem extends React.Component {
                 )}
                 */}
                 <Button
+                  small
                   type="submit"
                   color="primary"
                   disabled={
@@ -458,7 +473,7 @@ class AddOrderItem extends React.Component {
                   }>
                   {showPayment ? 'Take Payment' : 'Save'}
                 </Button>
-                <Button color="white" onClick={this.handleCancel}>
+                <Button small color="white" onClick={this.handleCancel}>
                   Cancel
                 </Button>
               </Col>
@@ -473,7 +488,7 @@ class AddOrderItem extends React.Component {
             </p>
             <p>Confirmation Email sent.</p>
             <p>
-              <Button color="white" onClick={onCancel}>
+              <Button small color="white" onClick={onCancel}>
                 Close
               </Button>
             </p>

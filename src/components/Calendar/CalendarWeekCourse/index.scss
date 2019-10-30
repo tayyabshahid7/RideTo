@@ -1,29 +1,34 @@
 .singleEvent {
   position: absolute;
-  // background: white;
-  // float: left;
-  // -webkit-transition: opacity 0.2s, background 0.2s;
-  // transition: opacity 0.2s, background 0.2s;
-  // border: 1px solid black;
-  // font-size: 0.8rem;
 
   z-index: 3;
-  // /* top position and height will be set using js */
-  // // width: calc(100% + 2px);
-  // left: -1px;
-  // box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
-  // /* reset style */
-  // -ms-flex-negative: 1;
   flex-shrink: 1;
-  // // height: auto;
-  // // max-width: none;
-  // margin-right: 0;
-  // overflow: hidden;
-
-  padding: 3px;
 
   &:last-of-type {
     margin-right: 0;
+  }
+
+  border: 1px solid #fff;
+
+  cursor: pointer;
+  border-radius: 2px;
+
+  // min-width: 82px;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    display: block;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
+      0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 100ms linear;
   }
 }
 .selectedEvent {
@@ -36,25 +41,34 @@
   float: left;
   -webkit-transition: opacity 0.2s, background 0.2s;
   transition: opacity 0.2s, background 0.2s;
-  border: 1px solid var(--grey-color);
-  font-size: 0.8rem;
-
-  // z-index: 3;
-  /* top position and height will be set using js */
-  // width: calc(100% + 2px);
-  // left: -1px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
-  /* reset style */
+  border: 1px solid #fff;
+  font-size: 11px;
   -ms-flex-negative: 1;
-  // flex-shrink: 1;
-  // height: auto;
-  // max-width: none;
   margin-right: 0;
   overflow: hidden;
   word-break: break-all;
   padding: 3px;
   width: 100%;
   height: 100%;
+}
+
+.singleEventEvent {
+  .content {
+    background-color: #ebebeb;
+    border: 0;
+
+    .eventName {
+      font-weight: bold;
+    }
+  }
+}
+
+.clickedCourse {
+  z-index: 99 !important;
+
+  &::before {
+    opacity: 1;
+  }
 }
 
 .warning {
@@ -66,59 +80,84 @@
 .primary {
   border: 1px solid var(--primary-color);
 }
-.textWarning {
+.textMildWarning {
   color: var(--warning-color);
+}
+.textWarning {
+  color: var(--danger-color);
 }
 .textDanger {
   color: var(--danger-color);
 }
-.eventName,
-.eventDate {
-  display: block;
-  // color: white;
-  // font-weight: bold;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 
 .eventName {
-  font-size: 0.8rem;
+  font-weight: bold;
 }
 
-.eventDate {
-  /* they are not included in the the HTML but added using JavScript */
-  font-size: 1rem;
-  opacity: 0.7;
-  line-height: 1.2;
-  margin-bottom: 0.2em;
+.eventName,
+.eventDate,
+.eventTime,
+.eventInst,
+.eventSpaces {
+  display: block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-bottom: 0.25rem;
 }
+
+.eventInst {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.eventSpaces {
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
 .order {
   display: flex;
   flex-direction: column;
 }
 
-@media (max-width: 768px) {
-  .content {
-    background: var(--grey-color);
-    border-radius: 10px;
-    > span {
-      display: none;
-    }
-    > div {
-      display: none;
-    }
-  }
-  .warning {
-    background: var(--warning-color);
-  }
-  .danger {
-    background: var(--danger-color);
-  }
-  .primary {
-    background: var(--primary-color);
-  }
+// @media (max-width: 768px) {
+//   .content {
+//     background: var(--grey-color);
+//     // border-radius: 10px;
+//     > span {
+//       display: none;
+//     }
+//     > div {
+//       display: none;
+//     }
+//   }
+//   .warning {
+//     background: var(--warning-color);
+//   }
+//   .danger {
+//     background: var(--danger-color);
+//   }
+//   .primary {
+//     background: var(--primary-color);
+//   }
+// }
 
-  // .courseContainer {
-  //   flex-direction: column;
-  // }
+.eventsNotes {
+  margin-top: 1rem;
+}
+
+.notesContent {
+  font-size: 10px;
+  font-style: italic;
+}
+
+.instructorIcon {
+  width: 17px;
+  vertical-align: text-bottom;
+}
+
+.instructorIconSmall {
+  @extend .instructorIcon;
+  width: 14px;
 }

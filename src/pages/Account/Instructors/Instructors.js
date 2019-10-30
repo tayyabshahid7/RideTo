@@ -51,9 +51,7 @@ class Instructors extends React.Component {
 
   handleDelete(instructor) {
     const confirm = window.confirm(
-      `Are you sure you whant to delete instructor ${instructor.first_name} ${
-        instructor.last_name
-      }`
+      `Are you sure you whant to delete instructor ${instructor.first_name} ${instructor.last_name}`
     )
     if (confirm) {
       const { deleteInstructor, schoolId } = this.props

@@ -7,6 +7,9 @@ import OrdersPanel from './index'
 import CoursesPanelItem from '../OrdersPanelItem'
 import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 
+import { Provider } from 'react-redux'
+import configureStore from '../../../store'
+
 Enzyme.configure({ adapter: new Adapter() })
 
 const COURSE1 = {
@@ -34,10 +37,14 @@ const COURSE1 = {
 }
 
 it('Renders orders and space list', () => {
+  const store = configureStore()
+
   const wrapper = mount(
-    <MemoryRouter>
-      <OrdersPanel course={COURSE1} />
-    </MemoryRouter>
+    <Provider store={store}>
+      <MemoryRouter>
+        <OrdersPanel course={COURSE1} />
+      </MemoryRouter>
+    </Provider>
   )
 
   const rows = wrapper.find(CoursesPanelItem)

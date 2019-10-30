@@ -159,7 +159,6 @@ class SMSSettings extends Component {
   }
 
   setCardElement = cardElement => {
-    console.log(cardElement)
     this.setState({
       cardElement
     })

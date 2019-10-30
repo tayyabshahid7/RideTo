@@ -3,7 +3,7 @@ import React from 'react'
 import CalendarDayCell from '../CalendarDayCell'
 import styles from './index.scss'
 
-const CalendarDays = ({ days, calendar, history }) => (
+const CalendarDays = ({ days, calendar, history, handleMobileCellClick }) => (
   <ul className={styles.calendarDays}>
     {days.map((day, index) => (
       <CalendarDayCell
@@ -11,6 +11,7 @@ const CalendarDays = ({ days, calendar, history }) => (
         calendar={calendar}
         key={index}
         history={history}
+        handleMobileCellClick={handleMobileCellClick}
       />
     ))}
   </ul>

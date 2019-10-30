@@ -11,18 +11,26 @@ import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseCompo
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
 import AddEventComponent from 'components/Calendar/AddEditEvent/AddEventComponent'
 import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventComponent'
+import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponent'
+import EditStaffComponent from 'components/Calendar/AddEditStaff/EditStaffComponent'
 import styles from './styles.scss'
 import { getCourses, updateCalendarSetting } from 'store/course'
 import { getEvents } from 'store/event'
+import { getStaff } from 'store/staff'
 import { getInstructors } from 'store/instructor'
 import { getTestCentres } from 'store/testCentre'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
+import { fetchSettings } from 'store/settings'
 
 class CalendarPage extends Component {
   componentDidMount() {
     this.loadData()
     this.loadInstructors()
     this.props.getTestCentres()
+
+    if (!this.props.settings) {
+      this.props.fetchSettings()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -47,6 +55,25 @@ class CalendarPage extends Component {
   loadData() {
     this.loadCourses()
     this.loadEvents()
+    this.loadStaff()
+  }
+
+  loadCourses(reset = false) {
+    const { getCourses, schoolId, calendar } = this.props
+    const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+    const month = `${calendar.year}-${calendar.month}-${schoolId}`
+
+    if (!reset && calendar.loadedMonths.includes(month)) {
+      return
+    }
+
+    getCourses({
+      schoolId,
+      firstDate: moment(firstDate).format(DATE_FORMAT),
+      lastDate: moment(lastDate).format(DATE_FORMAT),
+      month,
+      reset
+    })
   }
 
   loadEvents() {
@@ -66,16 +93,16 @@ class CalendarPage extends Component {
     })
   }
 
-  loadCourses() {
-    const { getCourses, schoolId, calendar } = this.props
+  loadStaff() {
+    const { getStaff, schoolId, calendar, staffCalendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
     const month = `${calendar.year}-${calendar.month}-${schoolId}`
 
-    if (calendar.loadedMonths.includes(month)) {
+    if (staffCalendar.loadedMonths.includes(month)) {
       return
     }
 
-    getCourses({
+    getStaff({
       schoolId,
       firstDate: moment(firstDate).format(DATE_FORMAT),
       lastDate: moment(lastDate).format(DATE_FORMAT),
@@ -114,8 +141,13 @@ class CalendarPage extends Component {
     return { firstDate: firstDateInWeekCalendar, lastDate: date }
   }
 
-  generateDaysDataFromCalendar({ courses, ...calendar }, eventCalendar) {
+  generateDaysDataFromCalendar(
+    { courses, ...calendar },
+    eventCalendar,
+    staffCalendar
+  ) {
     const { events } = eventCalendar
+    const { staff } = staffCalendar
     let dates = []
     if (calendar.viewMode === CALENDAR_VIEW.MONTH) {
       dates = this.generateCalendarDaysForMonth(calendar)
@@ -143,7 +175,22 @@ class CalendarPage extends Component {
           new Date(event.start_time) < oneDayLater &&
           new Date(event.end_time) > date
       )
-      return { date, courses: coursesForDate, events: eventsForDate }
+      let staffForDate = staff
+        .map(s => ({
+          ...s,
+          start_time: `${s.date}T${s.start_time}`,
+          end_time: `${s.date}T${s.end_time}`
+        }))
+        .filter(
+          s =>
+            new Date(s.start_time) < oneDayLater && new Date(s.end_time) > date
+        )
+      return {
+        date,
+        courses: coursesForDate,
+        events: eventsForDate,
+        staff: staffForDate
+      }
     })
   }
 
@@ -223,6 +270,12 @@ class CalendarPage extends Component {
         month: nextDate.getMonth(),
         day: nextDate.getDate()
       })
+    } else if (type === 'today') {
+      updateCalendarSetting({
+        year: new Date().getFullYear(),
+        month: new Date().getMonth(),
+        day: new Date().getDate()
+      })
     }
   }
 
@@ -258,10 +311,37 @@ class CalendarPage extends Component {
     })
   }
 
+  handleMobileCellClick(dateStr) {
+    const { updateCalendarSetting } = this.props
+    const date = moment(dateStr)
+
+    updateCalendarSetting({
+      year: date.year(),
+      month: date.month(),
+      day: date.date()
+    })
+
+    this.handleCustomEvent('change-calendar-setting', {
+      viewMode: CALENDAR_VIEW.WEEK
+    })
+  }
+
   render() {
-    const { calendar, eventCalendar, history, location } = this.props
-    let days = this.generateDaysDataFromCalendar(calendar, eventCalendar)
+    const {
+      calendar,
+      eventCalendar,
+      staffCalendar,
+      history,
+      location,
+      match
+    } = this.props
+    let days = this.generateDaysDataFromCalendar(
+      calendar,
+      eventCalendar,
+      staffCalendar
+    )
     let calendarPath = location.pathname === '/calendar'
+
     return (
       <div className={styles.calendar}>
         <div
@@ -273,10 +353,14 @@ class CalendarPage extends Component {
             days={days}
             calendar={calendar}
             eventCalendar={eventCalendar}
+            staffCalendar={staffCalendar}
             handleCustomEvent={this.handleCustomEvent.bind(this)}
             handleChangeDate={this.handleChangeDate.bind(this)}
             history={history}
             calendarPath={calendarPath}
+            match={match}
+            handleMobileCellClick={this.handleMobileCellClick.bind(this)}
+            sideBarOpen={!calendarPath}
           />
         </div>
         <RightPanel location={location}>
@@ -284,6 +368,16 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date"
             render={routeProps => <CoursesPanel {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/courses/:courseId"
+            render={routeProps => (
+              <CoursesPanel
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
@@ -302,8 +396,28 @@ class CalendarPage extends Component {
           />
           <Route
             exact
-            path="/calendar/events/:eventId/edit"
+            path="/calendar/:date/events/:eventId"
+            render={routeProps => <CoursesPanel {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/events/:eventId/edit"
             render={routeProps => <EditEventComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/staff/create"
+            render={routeProps => <AddStaffComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/staff/:staffId"
+            render={routeProps => <CoursesPanel {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/staff/:staffId/:diaryId/edit"
+            render={routeProps => <EditStaffComponent {...routeProps} />}
           />
         </RightPanel>
       </div>
@@ -312,7 +426,7 @@ class CalendarPage extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  const { auth, course, event } = state
+  const { auth, course, event, staff } = state
   const schoolId = auth.schoolId || auth.user.suppliers[0].id
   const isSupplier = course => course.supplier === parseInt(schoolId)
   const calendar = {
@@ -323,11 +437,17 @@ const mapStateToProps = (state, ownProps) => {
     ...event.calendar,
     events: event.calendar.events.filter(isSupplier)
   }
+  const staffCalendar = {
+    ...staff.calendar,
+    staffs: staff.calendar.staff.filter(isSupplier)
+  }
 
   return {
     schoolId,
     calendar,
-    eventCalendar
+    eventCalendar,
+    staffCalendar,
+    settings: state.settings.settings
   }
 }
 
@@ -336,9 +456,11 @@ const mapDispatchToProps = dispatch =>
     {
       getCourses,
       getEvents,
+      getStaff,
       getInstructors,
       getTestCentres,
-      updateCalendarSetting
+      updateCalendarSetting,
+      fetchSettings
     },
     dispatch
   )

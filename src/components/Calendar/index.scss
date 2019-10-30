@@ -4,6 +4,8 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+
+  overflow: hidden;
 }
 
 .calendarWrapper {
@@ -13,10 +15,42 @@
   // margin-right: -17px;
 
   flex-grow: 1;
+
+  @media (min-width: 768px) {
+    margin-top: 79px;
+  }
 }
+
 .overview {
-  flex: 0 0 60px;
-  margin-bottom: 1rem;
+  // flex: 0 0 60px;
+  padding-bottom: 1rem;
+  padding: 1rem 1rem 1rem;
+  background: #fcfcfc;
+
+  select {
+    @media (min-width: 768px) {
+      text-align: center;
+      text-align-last: center;
+    }
+  }
+
+  @media (min-width: 768px) {
+    background: #fff;
+    padding: 1.5rem 2.5rem 1rem;
+    border-bottom: 1px solid #eaeaea;
+
+    position: fixed;
+    top: 56px;
+    right: 0;
+    left: 0;
+    z-index: 4;
+  }
+}
+
+.sideBarOpen {
+  @media (min-width: 1082px) {
+    right: 317px;
+  }
 }
 
 .calendarTypeInactive,
@@ -63,12 +97,27 @@
 }
 
 .changeCalendarWrapper {
-  margin-top: 0.75rem;
+  margin-top: 0.5rem;
   font-size: 16px;
+
+  align-items: center;
+
+  display: none;
 
   @media (min-width: 768px) {
     display: flex;
-    align-items: center;
+    margin-top: 0;
+  }
+}
+
+.changeCalendarWrapperMonth {
+  display: flex;
+}
+
+.filtersWrap {
+  @media (min-width: 768px) {
+    display: flex;
+    justify-content: space-between;
   }
 }
 

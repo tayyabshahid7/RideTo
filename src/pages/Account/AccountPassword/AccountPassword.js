@@ -3,6 +3,7 @@ import { Row, Col } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
 import { ConnectInput, Button } from 'components/ConnectForm'
+import Users from '../Users'
 
 class AccountPassword extends React.Component {
   constructor(props) {
@@ -56,82 +57,86 @@ class AccountPassword extends React.Component {
       showForm
     } = this.state
     return (
-      <div className={classnames(styles.box, styles.boxVertical)}>
-        <div className={styles.topRow}>
-          <div className={styles.leftCol}>
-            <h3 className={styles.title}>Admin settings</h3>
-            <p>If you need to change your password you can so here</p>
+      <React.Fragment>
+        <div className={classnames(styles.box, styles.boxVertical)}>
+          <div className={styles.topRow}>
+            <div className={styles.leftCol}>
+              <h3 className={styles.title}>Admin settings</h3>
+              <p>If you need to change your password you can do so here</p>
+            </div>
+            <div className={styles.rightCol}>
+              <Button
+                onClick={() => {
+                  this.setState({
+                    showForm: !showForm,
+                    new_password: '',
+                    old_password: '',
+                    new_password_copy: ''
+                  })
+                }}
+                color={showForm ? 'white' : 'primary'}>
+                {showForm ? 'Cancel' : 'Update Password'}
+              </Button>
+            </div>
           </div>
-          <div className={styles.rightCol}>
-            <Button
-              onClick={() => {
-                this.setState({
-                  showForm: !showForm,
-                  new_password: '',
-                  old_password: '',
-                  new_password_copy: ''
-                })
-              }}
-              color={showForm ? 'white' : 'primary'}>
-              {showForm ? 'Cancel' : 'Update Password'}
-            </Button>
-          </div>
+
+          {showForm && (
+            <Row className={styles.container}>
+              <Col>
+                <h3 className={styles.title}>Update Password</h3>
+                <form
+                  className={styles.passwordResetForm}
+                  onSubmit={this.handleFormSubmit}>
+                  <Row>
+                    <Col>
+                      <ConnectInput
+                        name="old_password"
+                        value={old_password}
+                        label="Old Password"
+                        className="form-group"
+                        type="password"
+                        onChange={this.handleChange.bind(this)}
+                        required
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <ConnectInput
+                        name="new_password"
+                        value={new_password}
+                        label="New Password"
+                        className="form-group"
+                        type="password"
+                        onChange={this.handleChange.bind(this)}
+                        required
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <ConnectInput
+                        name="new_password_copy"
+                        value={new_password_copy}
+                        label="Confirm Password"
+                        className="form-group"
+                        type="password"
+                        onChange={this.handleChange.bind(this)}
+                        required
+                      />
+                    </Col>
+                  </Row>
+                  <Button color="primary" type="submit">
+                    Save
+                  </Button>
+                </form>
+              </Col>
+            </Row>
+          )}
         </div>
 
-        {showForm && (
-          <Row className={styles.container}>
-            <Col>
-              <h3 className={styles.title}>Update Password</h3>
-              <form
-                className={styles.passwordResetForm}
-                onSubmit={this.handleFormSubmit}>
-                <Row>
-                  <Col>
-                    <ConnectInput
-                      name="old_password"
-                      value={old_password}
-                      label="Old Password"
-                      className="form-group"
-                      type="password"
-                      onChange={this.handleChange.bind(this)}
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <ConnectInput
-                      name="new_password"
-                      value={new_password}
-                      label="New Password"
-                      className="form-group"
-                      type="password"
-                      onChange={this.handleChange.bind(this)}
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <ConnectInput
-                      name="new_password_copy"
-                      value={new_password_copy}
-                      label="Confirm Password"
-                      className="form-group"
-                      type="password"
-                      onChange={this.handleChange.bind(this)}
-                      required
-                    />
-                  </Col>
-                </Row>
-                <Button color="primary" type="submit">
-                  Save
-                </Button>
-              </form>
-            </Col>
-          </Row>
-        )}
-      </div>
+        <Users />
+      </React.Fragment>
     )
   }
 }

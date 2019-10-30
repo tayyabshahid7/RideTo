@@ -3,8 +3,7 @@
   display: flex;
   flex-direction: row;
   position: relative;
-  overflow-x: scroll;
-  // margin-right: -15px;
+
   li {
     list-style: none;
   }
@@ -16,24 +15,52 @@
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
-  overflow-x: scroll;
+  position: relative;
+  z-index: 2;
 }
 .weekDays {
-  flex: 0 0 50px;
-  width: fit-content;
-  // margin-left: 50px;
-  // margin-right: 15px;
+  flex: 0 0 66px;
+  background: #fcfcfc;
+  padding-bottom: 1rem;
+
+  @media (min-width: 768px) {
+    flex: 0 0 50px;
+    background: #fff;
+    padding-bottom: 0;
+
+    position: fixed;
+    top: 135px;
+    // width: calc(100% - 50px);
+    width: 100%;
+    padding-left: 50px;
+    right: 0;
+    left: 0;
+
+    z-index: 5;
+  }
+}
+.sideBarOpen {
+  @media (min-width: 1082px) {
+    width: calc(100% - 317px);
+  }
 }
 .timelineWrapper {
   position: relative;
-  margin-top: 50px;
-  overflow: hidden;
+  margin-top: 66px;
   flex: 0 0 50px;
+
+  @media (min-width: 768px) {
+    margin-top: 50px;
+  }
 }
 .weekviewContent {
+  @media (min-width: 768px) {
+    margin-top: 100px;
+    position: relative;
+  }
+
   flex: 1 1 auto;
-  overflow-y: scroll;
-  width: fit-content;
+  // overflow-y: scroll;
 
   &::-webkit-scrollbar {
     display: none;
@@ -49,33 +76,72 @@
 }
 .timeline {
   display: block;
-  // position: absolute;
   flex: 0 0 50px;
-  // top: 0;
-  // left: 0;
   height: 100%;
   width: 50px; //100%;
   position: absolute;
-  // padding-top: 50px;
+
+  @media (min-width: 768px) {
+    margin-top: 50px;
+    background: #fff;
+  }
+
   li {
     position: relative;
     height: 50px;
-    // list-style-type: none;
-    ::after {
+
+    &.allDayTimelineItem {
+      @media (min-width: 768px) {
+        position: fixed;
+        top: 185px;
+        width: 50px;
+        background: #fff;
+        z-index: 3;
+      }
+
+      span {
+        top: 14px;
+      }
+
+      &::after {
+        @media (max-width: 768px) {
+          content: '';
+          display: block;
+        }
+      }
+    }
+
+    &::after {
       /* this is used to create the table horizontal lines */
       content: '';
       position: absolute;
       bottom: 0;
       left: 0;
-      width: 100%;
-      height: 1px;
+      // width: 100%;
+      width: 100vw;
+      height: 2px;
       background: #eaeaea;
+      // z-index: 2;
+      z-index: 0;
+
+      @media (max-width: 768px) {
+        content: none;
+        display: none;
+      }
     }
     &:last-of-type::after {
       display: none;
     }
     span {
       // display: none;
+      background-color: #fff;
+      position: absolute;
+      left: 0;
+      top: -10px;
+      // z-index: 3;
+      padding-right: 5px;
+      padding-left: 5px;
+      font-size: 12px;
     }
   }
 }
@@ -89,13 +155,27 @@
 .topInfo {
   width: 100%;
   padding: 0 5%;
-  > a {
+  > a,
+  > button {
     display: inline-block;
-    line-height: 50px;
-    // font-weight: bold;
+
     font-size: 13px;
     width: 100%;
     text-align: center;
+
+    border: 0;
+    background: transparent;
+    padding: 0;
+    appearance: none;
+
+    &:focus {
+      outline: 0;
+    }
+
+    @media (min-width: 769px) {
+      font-size: 16px;
+      font-weight: bold;
+    }
   }
 }
 
@@ -130,48 +210,100 @@
 .eventsContainer {
   display: flex;
 }
+.eventsContainerAllDay {
+  height: 50px;
+  margin-bottom: 0;
+  overflow: hidden;
+
+  @media (max-width: 768px) {
+    // display: none;
+  }
+
+  .eventsGroup {
+    border-top: 0;
+    border-bottom: 0;
+  }
+}
 .events {
   float: left;
   width: 100%;
 }
+.allDayEvents {
+  @media (min-width: 768px) {
+    position: fixed;
+    top: 183px;
+    right: 0;
+    left: 50px;
+    width: calc(100% - 50px);
+
+    z-index: 99;
+
+    background: #fff;
+    border-bottom: 2px solid #eaeaea;
+  }
+
+  &.sideBarOpen {
+    @media (min-width: 1082px) {
+      width: calc(100% - 317px - 50px + 1px);
+    }
+  }
+}
 .weekDaysHeader {
-  width: 14%;
-  min-width: 250px;
+  width: 14.2857142857%;
   float: left;
-  border: 1px solid #eaeaea;
   /* reset style */
   margin-bottom: 0;
   &:not(:first-of-type) {
     border-left-width: 0;
   }
 }
+.bgHighlight {
+  background: #f7f7f7dd;
+
+  @media (max-width: 768px) {
+    background-color: transparent;
+  }
+}
+.todayDate {
+  a {
+    color: var(--primary-color);
+    text-decoration: underline;
+  }
+}
 .eventsGroup {
-  width: 14%;
+  width: 14.2857142857%;
   float: left;
-  border: 1px solid #eaeaea;
+  border: 2px solid #eaeaea;
   /* reset style */
   margin-bottom: 0;
   padding: 2px;
-  min-width: 250px;
+
+  padding: 0 12px 0 0;
+
+  border-top: 0;
+
+  cursor: pointer;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+
   &:not(:first-of-type) {
     border-left-width: 0;
   }
   > ul {
+    // height: 1200px;
+    // height: 2396px;
     height: 1200px;
     /* reset style */
     position: relative;
     /* force its children to stay on one line */
-    // display: -webkit-box;
-    // display: -ms-flexbox;
-    // display: flex;
     display: block;
     overflow: visible;
     padding: 0;
-    // overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
+
     &::after {
-      // display: inline-block;
-      // content: '-';
       width: 1px;
       height: 100%;
       opacity: 0;
@@ -188,30 +320,14 @@
   }
 }
 
-// .eventsGroup {
-//   > ul {
-//     display: flex;
-//     overflow-x: scroll;
-//     -webkit-overflow-scrolling: touch;
-//     &::after {
-//       /* never visible - used to add a right padding to .events-group > ul */
-//       display: inline-block;
-//       content: '-';
-//       width: 1px;
-//       height: 100%;
-//       opacity: 0;
-//       color: transparent;
-//     }
-//   }
-// }
-
 .topInfo {
   /* vertically center its content */
   display: table;
   height: 50px;
-  border-bottom: 1px solid #eaeaea;
+  // border-bottom: 1px solid #eaeaea;
   /* reset style */
   padding: 0;
+
   > span {
     /* vertically center inside its parent */
     display: table-cell;
@@ -250,11 +366,19 @@
   visibility: hidden;
 }
 
+.allDayEvent {
+  width: calc(100% - 12px);
+  height: 22px;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 @media only screen and (min-width: 1000px) {
   .events {
     /* 60px is the .timeline element width */
-    // width:calc(100% - 60px);
-    // margin-left: 60px;
   }
 }
 
@@ -285,8 +409,15 @@
 }
 
 @media (max-width: 768px) {
+  .mobileSameDate {
+    span {
+      color: var(--primary-color);
+    }
+  }
   .weekDays {
     width: 100%;
+    width: calc(100vw - 15px);
+    margin-left: -50px;
   }
   .weekviewContent {
     width: 100%;
@@ -303,4 +434,14 @@
   .desktopVisible {
     display: none;
   }
+  .topInfo {
+    span {
+      font-weight: bold;
+    }
+  }
+}
+
+.instructorIcon {
+  width: 12px;
+  vertical-align: -2px;
 }

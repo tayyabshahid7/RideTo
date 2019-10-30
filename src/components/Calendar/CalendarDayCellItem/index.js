@@ -1,21 +1,32 @@
 import React from 'react'
-import classnames from 'classnames'
-
+import { mapLabelColoursWithContant } from 'services/settings'
+import { connect } from 'react-redux'
 import styles from './CalendarDayCellItem.scss'
+import personIcon from 'assets/images/person.png'
 
-const CalendarDayCellItem = ({ item }) => {
-  const availableSpaces = item.course ? item.spaces - item.orders.length : null
-  const className = classnames(
-    styles.calendarDayCellItem,
-    availableSpaces === 1 && styles.warning,
-    availableSpaces <= 0 && styles.danger
-  )
+const CalendarDayCellItem = ({ item, settings }) => {
+  const constant = item.course_type ? item.course_type.constant : 'EVENT'
+  const isInstructor = item.instructor_name
 
   return (
-    <div className={className}>
-      {item.time} | {item.name}
+    <div
+      className={styles.calendarDayCellItem}
+      style={{
+        background:
+          item.colour || mapLabelColoursWithContant(settings, constant)
+      }}>
+      {isInstructor && (
+        <img src={personIcon} alt="" className={styles.instructorIcon} />
+      )}{' '}
+      {item.all_day ? 'All day' : item.time} | {item.name}
     </div>
   )
 }
 
-export default CalendarDayCellItem
+const mapStateToProps = (state, ownProps) => {
+  return {
+    settings: state.settings.settings
+  }
+}
+
+export default connect(mapStateToProps)(CalendarDayCellItem)

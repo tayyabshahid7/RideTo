@@ -8,6 +8,7 @@ import CourseForm from './CourseForm'
 import DateHeading from 'components/Calendar/DateHeading'
 import { createCourse, fetchPrice, resetPrice } from 'store/course'
 import { loadCourseTypes } from 'store/info'
+import { isAdmin } from 'services/auth'
 
 class AddCourseComponent extends Component {
   componentDidMount() {
@@ -23,7 +24,6 @@ class AddCourseComponent extends Component {
     if (schoolId !== prevProps.schoolId) {
       let parsed = queryString.parse(location.search)
       let date = parsed.date
-      console.log('UPDATE', date)
       if (date) {
         history.push(`/calendar/${date}`)
       } else {
@@ -57,10 +57,14 @@ class AddCourseComponent extends Component {
   }
 
   render() {
-    let { course, location, ...rest } = this.props
+    let { course, location, isAdmin, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
     let backLink = date === '' ? '/calendar' : `/calendar/${date}`
+
+    if (!isAdmin) {
+      return <div>No access</div>
+    }
 
     return (
       <div className={styles.addCourse}>
@@ -93,7 +97,8 @@ const mapStateToProps = (state, ownProps) => {
     testCentres: state.testCentre.testCentres,
     error: state.course.single.error,
     pricing: state.course.pricing,
-    info: state.info
+    info: state.info,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 
