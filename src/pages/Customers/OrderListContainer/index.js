@@ -88,11 +88,13 @@ class OrderListContainer extends React.Component {
             )}
             {emails.length > 0 ? (
               <ul className={styles.list}>
-                {emails.map(email => (
-                  <li key={email.id} className={styles.listItem}>
-                    <Email email={email} />
-                  </li>
-                ))}
+                {emails
+                  .filter(({ body }) => body)
+                  .map(email => (
+                    <li key={email.id} className={styles.listItem}>
+                      <Email email={email} />
+                    </li>
+                  ))}
               </ul>
             ) : (
               <div className={styles.noOrder}>No emails</div>
