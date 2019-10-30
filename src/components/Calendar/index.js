@@ -4,105 +4,97 @@ import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { Row, Col } from 'reactstrap'
 import CalendarMonthView from './CalendarMonthView'
-import CalendarHeader from './CalendarHeader'
 import styles from './index.scss'
 import { CALENDAR_VIEW } from '../../common/constants'
 import CalendarWeekView from './CalendarWeekView'
 import Loading from 'components/Loading'
 import SchoolSelect from 'components/SchoolSelect'
 import CalendarDateChanger from './CalendarDateChanger'
+import CalendarViewChanger from './CalendarViewChanger'
+import CalendarArrowsSwitcher from './CalendarArrowsSwitcher'
+import CalendarMobileBackButton from './CalendarMobileBackButton'
+import { Desktop } from 'common/breakpoints'
 
 class CalendarComponent extends Component {
   renderOverview() {
-    const { calendar } = this.props
+    const { calendar, sideBarOpen } = this.props
     const { viewMode } = calendar
     const { handleCustomEvent, handleChangeDate } = this.props
     return (
-      <div className={classnames(styles.overview)}>
+      <div
+        className={classnames(
+          styles.overview,
+          sideBarOpen && styles.sideBarOpen
+        )}>
         <Row>
           <Col>
-            <SchoolSelect className="Test" />
-            <div className={styles.changeCalendarWrapper}>
-              {viewMode === CALENDAR_VIEW.MONTH && (
-                <CalendarDateChanger
+            <div className={styles.filtersWrap}>
+              <SchoolSelect />
+              <div
+                className={classnames(
+                  styles.changeCalendarWrapper,
+                  viewMode === CALENDAR_VIEW.MONTH &&
+                    styles.changeCalendarWrapperMonth
+                )}>
+                <CalendarArrowsSwitcher
+                  handleCustomEvent={handleCustomEvent}
                   calendar={calendar}
                   handleChangeDate={handleChangeDate}
                 />
-              )}
-              <div>
-                <span
-                  className={
-                    viewMode === CALENDAR_VIEW.MONTH
-                      ? styles.calendarTypeActive
-                      : styles.calendarTypeInactive
-                  }>
-                  <button
-                    onClick={() =>
-                      handleCustomEvent('change-calendar-setting', {
-                        viewMode: CALENDAR_VIEW.WEEK
-                      })
-                    }>
-                    View Week
-                  </button>
-                </span>{' '}
-                |{' '}
-                <span
-                  className={
-                    viewMode === CALENDAR_VIEW.WEEK
-                      ? styles.calendarTypeActive
-                      : styles.calendarTypeInactive
-                  }>
-                  <button
-                    onClick={() =>
-                      handleCustomEvent('change-calendar-setting', {
-                        viewMode: CALENDAR_VIEW.MONTH
-                      })
-                    }>
-                    {' '}
-                    View Month
-                  </button>
-                </span>
+                <Desktop>
+                  <CalendarDateChanger
+                    calendar={calendar}
+                    handleChangeDate={handleChangeDate}
+                  />
+                </Desktop>
+                <CalendarViewChanger
+                  viewMode={viewMode}
+                  handleCustomEvent={handleCustomEvent}
+                />
               </div>
+              <CalendarMobileBackButton
+                handleCustomEvent={handleCustomEvent}
+                viewMode={viewMode}
+                calendar={calendar}
+              />
             </div>
           </Col>
-          {/*
-          <Col className={styles.rightButtons}>
-            <Link
-              to={`/calendar/courses/create`}
-              className={styles.addCourseBtn}>
-              <Button color="primary">Add Course</Button>
-            </Link>
-          </Col>
-          */}
         </Row>
       </div>
     )
   }
   render() {
-    let { days, calendar, handleCustomEvent, history } = this.props
+    let {
+      days,
+      calendar,
+      history,
+      match,
+      handleMobileCellClick,
+      settings,
+      sideBarOpen
+    } = this.props
+
     return (
       <div className={classnames(styles.container)}>
         {this.renderOverview()}
 
-        {calendar.viewMode === CALENDAR_VIEW.WEEK && (
-          <CalendarHeader
-            calendar={calendar}
-            handleCustomEvent={handleCustomEvent}
-          />
-        )}
-
         <Loading loading={calendar.loading} className={styles.calendarWrapper}>
           {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
             <CalendarWeekView
+              match={match}
               days={days}
               calendar={calendar}
               history={history}
+              handleMobileCellClick={handleMobileCellClick}
+              settings={settings}
+              sideBarOpen={sideBarOpen}
             />
           ) : (
             <CalendarMonthView
               days={days}
               calendar={calendar}
               history={history}
+              handleMobileCellClick={handleMobileCellClick}
             />
           )}
         </Loading>
@@ -112,7 +104,9 @@ class CalendarComponent extends Component {
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    settings: state.settings.settings
+  }
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)

@@ -81,8 +81,6 @@ class CourseTypeLanding extends React.Component {
     const { courseType, search } = this.state
     const { header, body } = CONTENT[courseType.constant]
 
-    console.log(courseType.constant)
-
     return (
       <React.Fragment>
         <Helmet>

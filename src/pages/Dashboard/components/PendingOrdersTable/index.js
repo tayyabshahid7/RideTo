@@ -100,7 +100,7 @@ class FilteredTable extends Component {
             {this.props.orders.map((order, index) => (
               <tr
                 className={index % 2 ? styles.trEven : styles.trOdd}
-                key={order.friendly_id}>
+                key={index}>
                 <td>
                   <a
                     className={styles.respondLink}

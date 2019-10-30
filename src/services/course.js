@@ -12,6 +12,13 @@ export const getCourseSpaceText = course => {
     : `${availableSpaces} space${s(availableSpaces)} available`
 }
 
+export const getCourseSpaceTextShort = course => {
+  const availableSpaces = course.spaces - course.orders.length
+  return availableSpaces === 0
+    ? 'Full'
+    : `${availableSpaces} Space${s(availableSpaces)} left`
+}
+
 export const getCoursesOnDay = (days, dateStr) => {
   let day = days.find(day => moment(day.date).format('YYYY-MM-DD') === dateStr)
   if (!day) {
@@ -480,5 +487,21 @@ export const getTrainingStatus = status => {
     return 'Training Confirmed'
   } else if (status === 'TRAINING_CANCELLED') {
     return 'Training Cancelled'
+  } else if (status === 'TRAINING_FAILED') {
+    return 'Training Not Completed'
+  } else if (status === 'TRAINING_NO_SHOW') {
+    return 'Not attended'
+  } else if (status === 'TRAINING_PASSED') {
+    return 'Completed'
+  } else {
+    return status
   }
+}
+
+export const filterExtraCourses = type => {
+  return (
+    !(
+      type.constant.startsWith('FULL_LICENCE') && type.constant.endsWith('TEST')
+    ) && type.constant !== 'FULL_LICENCE'
+  )
 }

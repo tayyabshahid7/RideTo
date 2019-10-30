@@ -10,13 +10,7 @@ import classnames from 'classnames'
 
 import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
 
-function filterExtraCourses(type) {
-  return (
-    !(
-      type.constant.startsWith('FULL_LICENCE') && type.constant.endsWith('TEST')
-    ) && type.constant !== 'FULL_LICENCE'
-  )
-}
+import { filterExtraCourses } from 'services/course'
 
 class CreateBulkCourse extends React.Component {
   constructor(props) {

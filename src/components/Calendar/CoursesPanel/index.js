@@ -5,9 +5,11 @@ import { connect } from 'react-redux'
 
 import { getDayCourses } from 'store/course'
 import { getDayEvents } from 'store/event'
+import { getDayStaff } from 'store/staff'
 import Loading from 'components/Loading'
 import DateHeading from 'components/Calendar/DateHeading'
 import CoursesPanel from './CoursesPanel'
+import { isAdmin } from 'services/auth'
 
 class CoursesPanelContainer extends React.Component {
   constructor(props) {
@@ -40,18 +42,33 @@ class CoursesPanelContainer extends React.Component {
   }
 
   loadData() {
-    const { getDayCourses, getDayEvents, match, schoolId } = this.props
+    const {
+      getDayCourses,
+      getDayEvents,
+      match,
+      schoolId,
+      getDayStaff
+    } = this.props
     const {
       params: { date }
     } = match
     getDayCourses({ schoolId, date })
     getDayEvents({ schoolId, date })
+    getDayStaff({ schoolId, date })
   }
 
   render() {
-    const { courses, loading, match, events } = this.props
     const {
-      params: { date }
+      courses,
+      loading,
+      match,
+      events,
+      staff,
+      isAdmin,
+      loadCourses
+    } = this.props
+    const {
+      params: { date, courseId, eventId, staffId }
     } = match
     const { addingOrder } = this.state
 
@@ -59,11 +76,17 @@ class CoursesPanelContainer extends React.Component {
       <Loading loading={loading}>
         <DateHeading date={moment(date, 'YYYY-MM-DD')} backLink={`/calendar`} />
         <CoursesPanel
+          courseId={courseId}
+          eventId={eventId}
+          staffId={staffId}
           addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
           events={events.sort((a, b) => a.start_time > b.start_time)}
           updateAdding={this.updateAdding}
+          staff={staff}
+          isAdmin={isAdmin}
+          loadCourses={loadCourses}
         />
       </Loading>
     )
@@ -76,7 +99,10 @@ const mapStateToProps = (state, ownProps) => {
     courses: state.course.day.courses,
     loading: state.course.day.loading,
     events: state.event.day.events,
-    eventLoading: state.event.day.loading
+    eventLoading: state.event.day.loading,
+    staff: state.staff.day.staff,
+    staffLoading: state.staff.day.loading,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 
@@ -84,7 +110,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getDayCourses,
-      getDayEvents
+      getDayEvents,
+      getDayStaff
     },
     dispatch
   )

@@ -1,16 +1,21 @@
 import React from 'react'
-import { getCourseSpaceText } from 'services/course'
+import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
-import { WEEK_VIEW_START_TIME, WORK_HOURS } from 'common/constants'
+import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
 import { getShortCourseType } from 'services/course'
+import moment from 'moment'
+import personIcon from 'assets/images/person.png'
+import { mapLabelColoursWithContant } from 'services/settings'
 
 const CalendarWeekCourse = ({
   course,
   position,
   barCount,
   history,
-  calendar
+  calendar,
+  match,
+  settings
 }) => {
   let height = (course.duration / 60) * 100 // Duration is in mins
   let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
@@ -24,69 +29,183 @@ const CalendarWeekCourse = ({
     }
   }
   let left = `${(100 / barCount) * position}%`
-  let width = `${100 / barCount}%`
+  let width = `calc(${100 / barCount}% + 12px)`
+
+  if (position > 0) {
+    left = `calc(${(100 / barCount) * position}% - 12px)`
+    width = `calc(${100 / barCount}% + 12px)`
+  }
+
   // let borderColor = 'black'
   let style = {
-    height: `${height}px`,
-    top: `${top}px`,
+    height: `${height / 2}px`,
+    top: `${top / 2}px`,
     left,
-    width
+    width,
+    zIndex: position
+  }
+
+  if (course.instructor_name) {
+    // Then it is staff
+    return (
+      <li
+        className={classnames(
+          styles.singleEvent,
+          styles.singleEventEvent,
+          parseInt(match.params.id) === course.id &&
+            match.params.type === 'staff' &&
+            styles.clickedCourse,
+          calendar.selectedCourse === `staff-${course.id}` &&
+            styles.clickedCourse
+        )}
+        style={style}
+        onClick={() =>
+          history.push(
+            `/calendar/${moment(course.start_time).format(DATE_FORMAT)}/staff/${
+              course.id
+            }`
+          )
+        }>
+        <div
+          className={classnames(styles.content)}
+          style={{ background: course.colour }}>
+          <span className={styles.eventName}>
+            <img
+              src={personIcon}
+              alt=""
+              className={styles.instructorIconSmall}
+            />{' '}
+            {course.instructor_name}
+          </span>
+          {course.start_time && course.end_time && (
+            <span className={styles.eventTime}>
+              {moment(course.start_time).format('HH:mm')} -{' '}
+              {moment(course.end_time).format('HH:mm')}
+            </span>
+          )}
+          {course.notes && (
+            <div className={styles.eventsNotes}>
+              <div>
+                <b>Notes:</b>
+              </div>
+              <div className={styles.notesContent}>{course.notes}</div>
+            </div>
+          )}
+        </div>
+      </li>
+    )
   }
 
   if (!course.course_type) {
     // Then it is event
     return (
       <li
-        className={styles.singleEvent}
+        className={classnames(
+          styles.singleEvent,
+          styles.singleEventEvent,
+          parseInt(match.params.id) === course.id &&
+            match.params.type === 'events' &&
+            styles.clickedCourse,
+          calendar.selectedCourse === `event-${course.id}` &&
+            styles.clickedCourse
+        )}
         style={style}
-        onClick={() => history.push(`/calendar/events/${course.id}/edit`)}>
-        <div
-          className={classnames(
-            styles.content,
-            calendar.selectedCourse === `event-${course.id}` && styles.primary
-          )}>
-          <span className={styles.eventName}>{course.name} |</span>
+        onClick={() =>
+          history.push(
+            `/calendar/${moment(course.start_time).format(
+              DATE_FORMAT
+            )}/events/${course.id}`
+          )
+        }>
+        <div className={classnames(styles.content)}>
+          <span className={styles.eventName}>{course.name}</span>
+          {course.start_time && course.end_time && (
+            <span className={styles.eventTime}>
+              {moment(course.start_time).format('HH:mm')} -{' '}
+              {moment(course.end_time).format('HH:mm')}
+            </span>
+          )}
+          {course.notes && (
+            <div className={styles.eventsNotes}>
+              <div>
+                <b>Notes:</b>
+              </div>
+              <div className={styles.notesContent}>{course.notes}</div>
+            </div>
+          )}
         </div>
       </li>
     )
   }
 
   const availableSpaces = course.spaces - course.orders.length
+
   return (
     <li
-      className={styles.singleEvent}
+      className={classnames(
+        styles.singleEvent,
+        parseInt(match.params.id) === course.id &&
+          match.params.type === 'courses' &&
+          styles.clickedCourse,
+        calendar.selectedCourse === `course-${course.id}` &&
+          styles.clickedCourse
+      )}
       style={style}
       onClick={() =>
-        history.push(`/calendar/${course.date}/courses/${course.id}/edit`)
+        history.push(`/calendar/${course.date}/courses/${course.id}`)
       }>
       <div
-        className={classnames(
-          styles.content,
-          availableSpaces === 1 && styles.warning,
-          availableSpaces === 0 && styles.danger,
-          calendar.selectedCourse === `course-${course.id}` && styles.primary
-        )}>
+        className={classnames(styles.content)}
+        style={{
+          background: mapLabelColoursWithContant(
+            settings,
+            course.course_type.constant
+          )
+        }}>
         <span className={styles.eventName}>
-          {course.time.substring(0, 5)} |{' '}
           {getShortCourseType(course.course_type)}
         </span>
+        <div className={styles.eventTime}>
+          {course.time.substring(0, 5)} -{' '}
+          {moment(`${course.date} ${course.time}`)
+            .add(course.duration / 60, 'hours')
+            .format('HH:mm')}
+        </div>
+        {course.instructor && (
+          <div className={styles.eventInst}>
+            <img src={personIcon} alt="" className={styles.instructorIcon} />{' '}
+            {course.instructor.first_name} {course.instructor.last_name}
+          </div>
+        )}
         <span
           className={classnames(
-            styles.courseSpace,
+            styles.eventSpaces,
+            availableSpaces === 2 && styles.textMildWarning,
             availableSpaces === 1 && styles.textWarning,
             availableSpaces === 0 && styles.textDanger
           )}>
-          {getCourseSpaceText(course)}
+          {getCourseSpaceTextShort(course)}
         </span>
         <div>
-          {course.orders.map(order => (
-            <div className={styles.order} key={order.friendly_id}>
-              <span>#{order.friendly_id}</span>
-              <span>{order.bike_hire}</span>
-              <span>{order.user_name}</span>
-            </div>
-          ))}
+          <div>
+            <b>Orders:</b>
+          </div>
+          {course.orders.length > 0
+            ? course.orders.map(order => (
+                <div className={styles.order} key={order.friendly_id}>
+                  <span>{order.customer_name}</span>
+                </div>
+              ))
+            : 'No orders'}
         </div>
+        {course.notes && (
+          <div className={styles.eventsNotes}>
+            <div>
+              <b>Notes:</b>
+            </div>
+            <div className={styles.notesContent}>{course.notes}</div>
+          </div>
+        )}
       </div>
     </li>
   )

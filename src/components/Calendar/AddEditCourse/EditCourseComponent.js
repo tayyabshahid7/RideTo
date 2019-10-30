@@ -17,6 +17,8 @@ import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
 import DateHeading from 'components/Calendar/DateHeading'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import { loadCourseTypes } from 'store/info'
+import isEqual from 'lodash/isEqual'
+import { isAdmin } from 'services/auth'
 
 class EditCourseComponent extends Component {
   constructor(props) {
@@ -32,7 +34,20 @@ class EditCourseComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, error, course, history, schoolId } = this.props
+    const {
+      saving,
+      error,
+      course,
+      history,
+      schoolId,
+      match,
+      getSingleCourse
+    } = this.props
+
+    if (!isEqual(match.params, prevProps.match.params)) {
+      getSingleCourse({ schoolId, courseId: match.params.courseId })
+      return
+    }
 
     if (schoolId !== prevProps.schoolId) {
       if (course) {
@@ -93,8 +108,12 @@ class EditCourseComponent extends Component {
   }
 
   render() {
-    const { loading, course } = this.props
+    const { loading, course, isAdmin } = this.props
     const { showDeleteCourseConfirmModal } = this.state
+
+    if (!isAdmin) {
+      return <div>No access</div>
+    }
 
     if (loading) {
       return <div>Loading...</div>
@@ -123,6 +142,7 @@ class EditCourseComponent extends Component {
               this.handleSetEditable(isEditable, course.date)
             }
             onSubmit={this.onSave.bind(this)}
+            onRemove={this.handleRemoveCourseClick.bind(this)}
           />
         </div>
 
@@ -149,7 +169,8 @@ const mapStateToProps = (state, ownProps) => {
     instructors: state.instructor.instructors,
     testCentres: state.testCentre.testCentres,
     pricing: state.course.pricing,
-    info: state.info
+    info: state.info,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 

@@ -107,21 +107,35 @@ export const getPaymentOptions = () => {
   ]
 }
 
-export const getTrainingStatusOptions = () => {
+export const getTrainingStatusOptions = (isRideTo = false) => {
+  if (isRideTo) {
+    return [
+      { id: 'TRAINING_CONFIRMED', name: 'Confirmed' },
+      { id: 'TRAINING_FAILED', name: 'Not completed' },
+      { id: 'TRAINING_NO_SHOW', name: 'Not attended' },
+      { id: 'TRAINING_PASSED', name: 'Completed' }
+    ]
+  }
+
   return [
     { id: 'TRAINING_CONFIRMED', name: 'Confirmed' },
     { id: 'TRAINING_FAILED', name: 'Not completed' },
     { id: 'TRAINING_CANCELLED', name: 'Cancelled' },
-    // {
-    //   id: 'TRAINING_WAITING_SCHOOL_CONFIRMATION',
-    //   name: 'Waiting for school confirmation'
-    // },
-    // {
-    //   id: 'TRAINING_WAITING_RIDER_CONFIRMATION',
-    //   name: 'Waiting for rider confirmation'
-    // },
     { id: 'TRAINING_NO_SHOW', name: 'Not attended' },
     { id: 'TRAINING_PASSED', name: 'Completed' }
+  ]
+}
+
+export const getNonCompleteOptions = () => {
+  return [
+    { id: 'LATE_ATTENDANCE', name: 'Late attendance' },
+    { id: 'INCORRECT_DOCUMENT', name: 'Incorrect document' },
+    { id: 'EYE_TEST', name: 'Eye test' },
+    { id: 'LANGUAGE', name: 'Language' },
+    { id: 'HIGHWAY_CODE_KNOWLEDGE', name: 'Highway code knowledge' },
+    { id: 'BALANCE_CONTROL', name: 'Balance control' },
+    { id: 'ROAD_AWARENESS', name: 'Road awareness' },
+    { id: 'OTHER', name: 'Other' }
   ]
 }
 

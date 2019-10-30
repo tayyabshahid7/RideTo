@@ -26,7 +26,7 @@ const MainLayout = ({ history, location: { pathname } }) => {
         id="body-container">
         <Switch>
           <Route path="/orders" component={Orders} />
-          <Route path="/calendar" component={Calendar} />
+          <Route path="/calendar/:date?/:type?/:id?" component={Calendar} />
           <Route path="/customers" component={CustomerListContainer} exact />
           <Route
             path="/customers/:id"

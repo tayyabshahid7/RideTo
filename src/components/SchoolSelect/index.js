@@ -2,7 +2,6 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { changeSchool } from 'store/auth'
-import { DownCaret } from 'assets/icons'
 import styles from './styles.scss'
 import classnames from 'classnames'
 
@@ -15,9 +14,13 @@ const SchoolSelect = ({
   small
 }) => {
   return (
-    <div className={styles.container}>
+    <div
+      className={classnames(styles.container, !small && styles.containerLarge)}>
       <select
-        className={classnames(styles.select, small && styles.selectSmall)}
+        className={classnames(
+          styles.select,
+          small ? styles.selectSmall : styles.selectLarge
+        )}
         value={selected}
         onChange={e =>
           onChange(
@@ -35,11 +38,6 @@ const SchoolSelect = ({
           </option>
         ))}
       </select>
-      <DownCaret
-        className={classnames(styles.caret, styles.caretSmall)}
-        width="48"
-        height="26"
-      />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import styles from './styles.scss'
 import { Row, Col } from 'reactstrap'
-
+import { connect } from 'react-redux'
 import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
 
 class ChangeDate extends Component {
@@ -12,27 +12,47 @@ class ChangeDate extends Component {
       time: this.props.time,
       showTimes: true,
       isDateChanged: false,
-      isTimeChanged: false
+      isTimeChanged: false,
+      availableDate: []
     }
 
     this.handleDateChange = this.handleDateChange.bind(this)
     this.handleTimeChange = this.handleTimeChange.bind(this)
     this.handleFetchTimes = this.handleFetchTimes.bind(this)
     this.handleUpdateClick = this.handleUpdateClick.bind(this)
+    this.filterDates = this.filterDates.bind(this)
+  }
+
+  filterDates() {
+    const { calendarCourses, courseType } = this.props
+    const availableDate = calendarCourses
+      .filter(course => courseType === course.course_type.constant)
+      .filter(course => course.spaces > course.orders.length)
+      .map(({ date }) => new Date(date))
+
+    this.setState({
+      availableDate
+    })
   }
 
   componentDidMount() {
+    this.filterDates()
     this.handleFetchTimes({ init: true })
   }
 
   handleDateChange(event) {
-    this.setState({
-      date: event.target.value,
-      time: '',
-      showTimes: false,
-      isDateChanged: true,
-      isTimeChanged: true
-    })
+    this.setState(
+      {
+        date: event.target.value,
+        time: '',
+        showTimes: false,
+        isDateChanged: true,
+        isTimeChanged: true
+      },
+      () => {
+        this.handleFetchTimes({ init: false })
+      }
+    )
   }
 
   async handleFetchTimes({ init }) {
@@ -72,13 +92,13 @@ class ChangeDate extends Component {
   }
 
   render() {
-    const { times } = this.props
-    const { date, time, showTimes, isDateChanged, isTimeChanged } = this.state
+    const { times, disabled } = this.props
+    const { date, time, showTimes, isTimeChanged, availableDate } = this.state
 
     return (
       <div className={styles.form}>
         <Row>
-          <Col>
+          <Col sm="10">
             <div className={styles.addon}>
               <ConnectInput
                 basic
@@ -88,21 +108,25 @@ class ChangeDate extends Component {
                 type="date"
                 onChange={this.handleDateChange}
                 className={styles.dateInput}
+                highlightDates={availableDate}
+                disabled={disabled}
               />
+              {/*
               <Button
                 disabled={!isDateChanged}
                 small
                 type="button"
                 color="primary"
                 onClick={this.handleFetchTimes}>
-                Search
+                Update
               </Button>
+              */}
             </div>
           </Col>
         </Row>
         {showTimes && (
           <Row>
-            <Col>
+            <Col sm="10">
               {!times.length ? (
                 <span className={styles.noTimes}>
                   No times available on this date
@@ -126,7 +150,7 @@ class ChangeDate extends Component {
                   labelField="title"
                   noSelectOption
                   onChange={this.handleTimeChange}
-                  disabled={!showTimes || !times.length}
+                  disabled={!showTimes || !times.length || disabled}
                 />
               )}
             </Col>
@@ -136,6 +160,7 @@ class ChangeDate extends Component {
           <Row>
             <Col className="mb-3">
               <Button
+                small
                 type="button"
                 color="primary"
                 onClick={this.handleUpdateClick}>
@@ -149,4 +174,10 @@ class ChangeDate extends Component {
   }
 }
 
-export default ChangeDate
+const mapStateToProps = (state, ownProps) => {
+  return {
+    calendarCourses: state.course.calendar.courses
+  }
+}
+
+export default connect(mapStateToProps)(ChangeDate)
