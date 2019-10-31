@@ -73,22 +73,19 @@
 }
 
 .warning {
-  border: 1px solid var(--warning-color);
+  border: 1px solid darken(#ffcfa0, 10%);
 }
 .danger {
-  border: 1px solid var(--danger-color);
+  border: 1px solid darken(#fe9898, 10%);
 }
 .primary {
   border: 1px solid var(--primary-color);
 }
-.textMildWarning {
-  // color: var(--warning-color);
-}
 .textWarning {
-  color: var(--warning-color);
+  color: darken(#ffcfa0, 10%);
 }
 .textDanger {
-  color: var(--danger-color);
+  color: darken(#fe9898, 10%);
 }
 
 .eventName {

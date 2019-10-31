@@ -1,23 +1,23 @@
 import React from 'react'
 import moment from 'moment'
-import { mapLabelColoursWithContant } from 'services/settings'
 import { connect } from 'react-redux'
 import styles from './CourseHeading.scss'
+import classnames from 'classnames'
 
 const CourseHeading = ({ course, onRemove, settings }) => {
   if (!course) {
     return null
   }
 
+  const availableSpaces = course.spaces - course.orders.length
+
   return (
     <div
-      className={styles.courseHeading}
-      style={{
-        background: mapLabelColoursWithContant(
-          settings,
-          course.course_type.constant
-        )
-      }}>
+      className={classnames(
+        styles.courseHeading,
+        availableSpaces === 1 && styles.warning,
+        availableSpaces === 0 && styles.danger
+      )}>
       <div className={styles.title}>
         <span>Edit {course.course_type.name}</span>|{' '}
         {course.time.substring(0, 5)} -{' '}
