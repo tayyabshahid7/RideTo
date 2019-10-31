@@ -1,5 +1,8 @@
 @import '../../../../bootstrap';
 
+$warning: #fed697;
+$danger: #fe9898;
+
 .courseHeading {
   display: flex;
   justify-content: space-between;
@@ -25,4 +28,12 @@
   button {
     margin-left: 8px;
   }
+}
+
+.warning {
+  background-color: $warning;
+}
+
+.danger {
+  background-color: $danger;
 }

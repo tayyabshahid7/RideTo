@@ -1,5 +1,4 @@
 import { get, put } from 'services/api'
-import { CALENDAR_COLOURS } from 'common/constants'
 
 export const getSettings = async () => {
   const path = `school/settings/`
@@ -38,23 +37,9 @@ export const mapLabelColours = (settings, slug) => {
 }
 
 export const mapLabelColoursWithContant = (settings, constant) => {
-  if (!settings) {
-    return CALENDAR_COLOURS[constant]
+  if (constant === 'EVENT') {
+    return '#ebebeb'
   }
 
-  switch (constant) {
-    case 'LICENCE_CBT':
-      return settings.cbt_training_color
-    case 'LICENCE_CBT_RENEWAL':
-      return settings.cbt_renewal_color
-    case 'FULL_LICENCE_MOD1_TRAINING':
-    case 'FULL_LICENCE_MOD1_TEST':
-    case 'FULL_LICENCE_MOD2_TRAINING':
-    case 'FULL_LICENCE_MOD2_TEST':
-      return settings.das_training_color
-    case 'INTRO_TO_MOTORCYCLING':
-      return settings.itm_training_color
-    default:
-      return CALENDAR_COLOURS[constant]
-  }
+  return '#fff'
 }
