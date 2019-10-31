@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import styles from './styles.scss'
-import { mapLabelColours } from 'services/settings'
 import { Button } from 'components/ConnectForm'
 
 class CalendarLabels extends Component {
@@ -80,7 +79,7 @@ class CalendarLabels extends Component {
   }
 
   render() {
-    const { info, instructors, settings } = this.props
+    const { instructors } = this.props
     const { changedColors, changedStaffColors } = this.state
 
     return (
@@ -109,6 +108,7 @@ class CalendarLabels extends Component {
             )
           })}
         </ul>
+        {/*
         <div>
           <b>Course types</b>
         </div>
@@ -128,6 +128,7 @@ class CalendarLabels extends Component {
             )
           })}
         </ul>
+        */}
         <div className={styles.bottomRow}>
           <Button
             color="primary mt-2"
