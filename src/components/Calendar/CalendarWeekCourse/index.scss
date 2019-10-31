@@ -50,6 +50,7 @@
   padding: 3px;
   width: 100%;
   height: 100%;
+  border: 1px solid var(--grey-color);
 }
 
 .singleEventEvent {
@@ -81,10 +82,10 @@
   border: 1px solid var(--primary-color);
 }
 .textMildWarning {
-  color: var(--warning-color);
+  // color: var(--warning-color);
 }
 .textWarning {
-  color: var(--danger-color);
+  color: var(--warning-color);
 }
 .textDanger {
   color: var(--danger-color);

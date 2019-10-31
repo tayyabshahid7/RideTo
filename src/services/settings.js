@@ -37,5 +37,9 @@ export const mapLabelColours = (settings, slug) => {
 }
 
 export const mapLabelColoursWithContant = (settings, constant) => {
+  if (constant === 'EVENT') {
+    return '#ebebeb'
+  }
+
   return '#fff'
 }

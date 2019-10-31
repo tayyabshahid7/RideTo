@@ -6,7 +6,6 @@ import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
 import { getShortCourseType } from 'services/course'
 import moment from 'moment'
 import personIcon from 'assets/images/person.png'
-import { mapLabelColoursWithContant } from 'services/settings'
 
 const CalendarWeekCourse = ({
   course,
@@ -155,13 +154,11 @@ const CalendarWeekCourse = ({
         history.push(`/calendar/${course.date}/courses/${course.id}`)
       }>
       <div
-        className={classnames(styles.content)}
-        style={{
-          background: mapLabelColoursWithContant(
-            settings,
-            course.course_type.constant
-          )
-        }}>
+        className={classnames(
+          styles.content,
+          availableSpaces === 1 && styles.warning,
+          availableSpaces === 0 && styles.danger
+        )}>
         <span className={styles.eventName}>
           {getShortCourseType(course.course_type)}
         </span>
