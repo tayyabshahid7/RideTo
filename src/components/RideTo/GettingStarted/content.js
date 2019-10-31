@@ -61,7 +61,8 @@ const GET_THE_GEAR = {
   links: [
     { url: '/blog/gear-guide-for-new-motorcyclists', text: 'See Gear Reviews' },
     {
-      url: 'https://www.sportsbikeshop.co.uk/#/23639,0,0',
+      url:
+        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/579/#/23639,2834,1126',
       text: 'Shop Gear',
       external: true,
       alt: true
