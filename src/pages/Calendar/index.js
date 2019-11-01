@@ -61,7 +61,9 @@ class CalendarPage extends Component {
   loadCourses(reset = false) {
     const { getCourses, schoolId, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
-    const month = `${calendar.year}-${calendar.month}-${schoolId}`
+    const formatedFirstDate = moment(firstDate).format(DATE_FORMAT)
+    const formatedLastDate = moment(lastDate).format(DATE_FORMAT)
+    const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
 
     if (!reset && calendar.loadedMonths.includes(month)) {
       return
@@ -69,8 +71,8 @@ class CalendarPage extends Component {
 
     getCourses({
       schoolId,
-      firstDate: moment(firstDate).format(DATE_FORMAT),
-      lastDate: moment(lastDate).format(DATE_FORMAT),
+      firstDate: formatedFirstDate,
+      lastDate: formatedLastDate,
       month,
       reset
     })
