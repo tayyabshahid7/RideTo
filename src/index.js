@@ -1,4 +1,5 @@
 import React from 'react'
+import * as Sentry from '@sentry/browser'
 import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 
@@ -6,6 +7,10 @@ import { loadState } from 'services/localStorage'
 import './index.scss'
 import App from './App'
 import configureStore from './store'
+
+Sentry.init({
+  dsn: 'https://5af978d41ecb4c2e97317c94021d4fbb@sentry.io/1398378'
+})
 
 const store = configureStore(loadState())
 
