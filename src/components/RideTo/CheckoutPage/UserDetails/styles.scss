@@ -6,6 +6,12 @@
       margin-bottom: 1.5rem;
     }
   }
+
+  > div:not(:last-child) {
+    @media (min-width: 769px) {
+      margin-bottom: 1.5rem;
+    }
+  }
 }
 
 .title {
@@ -441,5 +447,46 @@
 
   &:focus {
     outline: 0;
+  }
+}
+
+.addOnInput {
+  display: flex;
+  align-items: flex-end;
+
+  label {
+    width: auto;
+    flex-grow: 1;
+  }
+
+  button {
+    padding: 9px 1rem;
+    margin-bottom: 0.5rem;
+    height: 48px;
+  }
+}
+
+.hideDetails {
+  padding-bottom: 1rem;
+  opacity: 0.5;
+  pointer-events: none;
+
+  @media (max-width: 768px) {
+    padding-bottom: 2.25rem;
+  }
+
+  > .rowItem {
+    display: none;
+  }
+}
+
+.hidePayment {
+  opacity: 0.5;
+  pointer-events: none;
+
+  > button {
+    > img {
+      display: none;
+    }
   }
 }

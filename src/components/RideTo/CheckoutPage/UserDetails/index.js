@@ -27,7 +27,8 @@ class UserDetails extends Component {
     super(props)
 
     this.state = {
-      cardBrand: null
+      cardBrand: null,
+      emailSubmitted: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -36,6 +37,7 @@ class UserDetails extends Component {
     this.handlePhoneChange = this.handlePhoneChange.bind(this)
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
+    this.handleEmailSubmit = this.handleEmailSubmit.bind(this)
 
     this.cardDetails = React.createRef()
   }
@@ -98,6 +100,12 @@ class UserDetails extends Component {
     }
   }
 
+  handleEmailSubmit() {
+    this.setState({
+      emailSubmitted: true
+    })
+  }
+
   renderRow(title, content, index, priceHighlight = false) {
     return (
       <div className={styles.rowItemOrderSummary} key={index}>
@@ -113,7 +121,7 @@ class UserDetails extends Component {
     )
   }
 
-  renderUserInfo() {
+  renderEmail() {
     const {
       details,
       errors = {},
@@ -126,15 +134,8 @@ class UserDetails extends Component {
       handlePOMToggleClick,
       hasPOM,
       isFullLicence,
-      instantBook,
-      needsAddress,
-      manualAddress,
-      postcodeLookingup,
-      onChange,
-      onPostalCodeSubmit
+      instantBook
     } = this.props
-
-    const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
       <div>
@@ -159,9 +160,53 @@ class UserDetails extends Component {
           id="checkout-your-details"
           className={styles.title}
           style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
-          Rider's Details
+          Email Address
         </div>
         <div className={styles.rowItem}>
+          <div className={styles.addOnInput}>
+            <Input
+              label="Email Address"
+              type="email"
+              placeholder="E-mail address"
+              name="email"
+              value={details.email}
+              className={classnames(
+                styles.input,
+                errors.email && styles.inputError
+              )}
+              onChange={this.handleChange}
+            />
+            <Button onClick={this.handleEmailSubmit}>Add email</Button>
+          </div>
+          {errors.email && <div className={styles.error}>{errors.email}</div>}
+        </div>
+      </div>
+    )
+  }
+
+  renderUserInfo() {
+    const {
+      details,
+      errors = {},
+      needsAddress,
+      manualAddress,
+      postcodeLookingup,
+      onChange,
+      onPostalCodeSubmit
+    } = this.props
+    const { emailSubmitted } = this.state
+
+    const currentLicenceOptions = getCurrentLicenceOptions()
+
+    return (
+      <div className={classnames(!emailSubmitted && styles.hideDetails)}>
+        <div
+          id="checkout-your-details"
+          className={styles.title}
+          style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
+          Rider's Details
+        </div>
+        <div className={classnames(styles.rowItem)}>
           <Input
             label="First Name"
             placeholder="First name"
@@ -190,19 +235,6 @@ class UserDetails extends Component {
           {errors.last_name && (
             <div className={styles.error}>{errors.last_name}</div>
           )}
-          <Input
-            label="Email Address"
-            type="email"
-            placeholder="E-mail address"
-            name="email"
-            value={details.email}
-            className={classnames(
-              styles.input,
-              errors.email && styles.inputError
-            )}
-            onChange={this.handleChange}
-          />
-          {errors.email && <div className={styles.error}>{errors.email}</div>}
           <div
             className={classnames(
               errors.user_birthdate && styles.inputError,
@@ -387,7 +419,7 @@ class UserDetails extends Component {
       handlePaymentButtonClick,
       setCardElement
     } = this.props
-    const { cardBrand } = this.state
+    const { cardBrand, emailSubmitted } = this.state
     const inputStyle = {
       base: {
         fontSize: '15px',
@@ -396,7 +428,12 @@ class UserDetails extends Component {
       }
     }
     return (
-      <div className={styles.checkForm} ref={this.cardDetails}>
+      <div
+        className={classnames(
+          styles.checkForm,
+          !emailSubmitted && styles.hidePayment
+        )}
+        ref={this.cardDetails}>
         <button
           onClick={handlePaymentButtonClick}
           id="checkout-payment-details"
@@ -517,6 +554,8 @@ class UserDetails extends Component {
   render() {
     return (
       <div className={styles.container}>
+        {this.renderEmail()}
+        <SectionSplitter />
         {this.renderUserInfo()}
         <SectionSplitter />
         {this.renderPaymentForm()}
