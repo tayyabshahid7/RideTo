@@ -76,7 +76,7 @@ function DashboardPageV2({ match }) {
     const goal = GOALS.find(goal => goal.constant === value)
 
     setSelectedGoal(goal)
-    updateUserDetail('riding_goal', goal.constant)
+    updateUserDetails('riding_goal', goal.constant)
   }
 
   const handleStyleChange = event => {
@@ -84,7 +84,16 @@ function DashboardPageV2({ match }) {
     const style = STYLES.find(style => style.constant === value)
 
     setSelectedStyle(style)
-    updateUserDetail('riding_style', style.constant)
+    updateUserDetails('riding_style', style.constant)
+  }
+
+  const updateUserDetails = (key, value) => {
+    updateUserDetail(key, value, {
+      course_completed_cbt: cbtStatus,
+      course_completed_das: dasStatus,
+      riding_goal: selectedGoal.constant,
+      riding_style: selectedStyle.constant
+    })
   }
 
   const updateAchievements = achievement => {
@@ -385,6 +394,7 @@ function DashboardPageV2({ match }) {
                 cbtStatus={cbtStatus}
                 dasStatus={dasStatus}
                 selectedGoal={selectedGoal}
+                updateUserDetails={updateUserDetails}
               />
             </div>
           )}
