@@ -21,6 +21,7 @@ import SectionSplitter from '../SectionSplitter'
 import CardIcons from '../CardIcons'
 import AddressForm from 'components/AddressForm'
 import Button from 'components/RideTo/Button'
+import { isAuthenticated } from 'services/auth'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ class UserDetails extends Component {
 
     this.state = {
       cardBrand: null,
-      emailSubmitted: false
+      userAuthenticated: isAuthenticated()
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -37,7 +38,6 @@ class UserDetails extends Component {
     this.handlePhoneChange = this.handlePhoneChange.bind(this)
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
-    this.handleEmailSubmit = this.handleEmailSubmit.bind(this)
 
     this.cardDetails = React.createRef()
   }
@@ -100,12 +100,6 @@ class UserDetails extends Component {
     }
   }
 
-  handleEmailSubmit() {
-    this.setState({
-      emailSubmitted: true
-    })
-  }
-
   renderRow(title, content, index, priceHighlight = false) {
     return (
       <div className={styles.rowItemOrderSummary} key={index}>
@@ -134,8 +128,11 @@ class UserDetails extends Component {
       handlePOMToggleClick,
       hasPOM,
       isFullLicence,
-      instantBook
+      instantBook,
+      handleEmailSubmit,
+      emailSubmitted
     } = this.props
+    const { userAuthenticated } = this.state
 
     return (
       <div>
@@ -157,7 +154,7 @@ class UserDetails extends Component {
         </div>
         <SectionSplitter hideDesktop />
         <div
-          id="checkout-your-details"
+          id="checkout-your-email"
           className={styles.title}
           style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
           Email Address
@@ -175,8 +172,11 @@ class UserDetails extends Component {
                 errors.email && styles.inputError
               )}
               onChange={this.handleChange}
+              disabled={userAuthenticated || emailSubmitted}
             />
-            <Button onClick={this.handleEmailSubmit}>Add email</Button>
+            {!userAuthenticated && (
+              <Button onClick={handleEmailSubmit}>Add my email</Button>
+            )}
           </div>
           {errors.email && <div className={styles.error}>{errors.email}</div>}
         </div>
@@ -192,14 +192,18 @@ class UserDetails extends Component {
       manualAddress,
       postcodeLookingup,
       onChange,
-      onPostalCodeSubmit
+      onPostalCodeSubmit,
+      emailSubmitted
     } = this.props
-    const { emailSubmitted } = this.state
+    const { userAuthenticated } = this.state
 
     const currentLicenceOptions = getCurrentLicenceOptions()
 
     return (
-      <div className={classnames(!emailSubmitted && styles.hideDetails)}>
+      <div
+        className={classnames(
+          !emailSubmitted && !userAuthenticated && styles.hideDetails
+        )}>
         <div
           id="checkout-your-details"
           className={styles.title}
@@ -417,9 +421,10 @@ class UserDetails extends Component {
       errors = {},
       showCardDetails,
       handlePaymentButtonClick,
-      setCardElement
+      setCardElement,
+      emailSubmitted
     } = this.props
-    const { cardBrand, emailSubmitted } = this.state
+    const { cardBrand } = this.state
     const inputStyle = {
       base: {
         fontSize: '15px',

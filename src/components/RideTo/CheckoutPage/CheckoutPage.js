@@ -11,7 +11,7 @@ import { createOrder } from 'services/widget'
 import { handleStripePayment } from 'services/stripe'
 import { getPrice, getLicenceAge } from 'services/course'
 import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
-import { fetchUser } from 'services/user'
+import { fetchUser, saveCheckoutEmail } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import { tldExists } from 'tldjs'
@@ -112,7 +112,8 @@ class CheckoutPage extends Component {
       physicalAddonsCount: this.props.checkoutData.addons.filter(
         addon => addon.name !== 'Peace Of Mind Policy'
       ).length,
-      cardElement: null
+      cardElement: null,
+      emailSubmitted: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -331,7 +332,7 @@ class CheckoutPage extends Component {
       case 'first_name':
       case 'last_name':
       case 'email':
-        return 'checkout-your-details'
+        return 'checkout-your-email'
       case 'card_name':
       case 'card_number':
       case 'cvv':
@@ -454,6 +455,34 @@ class CheckoutPage extends Component {
     if (validatedDate.error) {
       errors['user_birthdate'] = validatedDate.message
       if (!errors.divId) errors.divId = this.getErrorDivId('user_birthdate')
+      hasError = true
+    }
+
+    if (
+      !details.email.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      ) ||
+      !tldExists(details.email)
+    ) {
+      errors['email'] = 'Invalid email address'
+      if (!errors.divId) errors.divId = this.getErrorDivId('email')
+      hasError = true
+    }
+
+    this.setState({
+      errors: errors
+    })
+
+    return !hasError
+  }
+
+  validateEmail(details) {
+    const errors = { address: {}, billingAddress: {}, divId: false }
+    let hasError = false
+
+    if (!details['email']) {
+      errors['email'] = 'This field is required.'
+      if (!errors.divId) errors.divId = this.getErrorDivId('email')
       hasError = true
     }
 
@@ -659,6 +688,35 @@ class CheckoutPage extends Component {
     })
   }
 
+  handleEmailSubmit = async () => {
+    const { checkoutData } = this.props
+    const { details } = this.state
+
+    //Check if email already exists or user logged in
+    const result = await this.checkEmail(details.email)
+    if (result.error) {
+      this.setState({
+        errors: {
+          email: result.errorMessage,
+          divId: this.getErrorDivId('email')
+        }
+      })
+      return
+    }
+
+    if (!this.validateEmail({ email: details.email })) {
+      return
+    }
+
+    const resultEmail = await saveCheckoutEmail(details.email, checkoutData)
+
+    if (resultEmail) {
+      this.setState({
+        emailSubmitted: true
+      })
+    }
+  }
+
   render() {
     const { courseType } = this.props.checkoutData
     const {
@@ -675,7 +733,8 @@ class CheckoutPage extends Component {
       showMap,
       trainings,
       showCardDetails,
-      physicalAddonsCount
+      physicalAddonsCount,
+      emailSubmitted
     } = this.state
 
     return (
@@ -704,6 +763,8 @@ class CheckoutPage extends Component {
               handlePaymentButtonClick={this.handlePaymentButtonClick}
               needsAddress={physicalAddonsCount > 0}
               setCardElement={this.setCardElement}
+              handleEmailSubmit={this.handleEmailSubmit}
+              emailSubmitted={emailSubmitted}
             />
           </div>
           <div className={styles.rightPanel}>
