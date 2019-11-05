@@ -94,7 +94,8 @@ class PaymentContainer extends React.Component {
         course_type: training.course_type,
         hours: training.package_hours,
         full_licence_course_id: training.school_course_id,
-        ...(voucher_code && { voucher_code })
+        ...(voucher_code && { voucher_code }),
+        order_source: 'WIDGET'
       })
 
       totalPrice = response.price
@@ -108,7 +109,8 @@ class PaymentContainer extends React.Component {
           supplierId: training.supplier_id,
           course_type: training.course_type,
           full_licence_course_id: training.school_course_id,
-          ...(voucher_code && { voucher_code })
+          ...(voucher_code && { voucher_code }),
+          order_source: 'WIDGET'
         })
 
         if (response.discount > 0) {

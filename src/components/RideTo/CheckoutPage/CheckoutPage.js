@@ -153,6 +153,7 @@ class CheckoutPage extends Component {
 
   async loadPrice(voucher_code) {
     try {
+      const { instantBook } = this.props
       const { supplierId, courseId, date, courseType } = this.props.checkoutData
       const { details, trainings } = this.state
       const isFullLicence = courseType === 'FULL_LICENCE'
@@ -161,7 +162,8 @@ class CheckoutPage extends Component {
         courseId,
         date,
         course_type: courseType,
-        voucher_code
+        voucher_code,
+        order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO'
       }
       this.setState({ loadingPrice: true })
       if (isFullLicence) {
@@ -170,7 +172,8 @@ class CheckoutPage extends Component {
           supplierId: training.supplier_id,
           course_type: training.course_type,
           hours: training.package_hours,
-          voucher_code
+          voucher_code,
+          order_source: 'RIDETO'
         })
 
         this.setState({
