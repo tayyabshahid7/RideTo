@@ -15,6 +15,7 @@ import { fetchUser, saveCheckoutEmail } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import { tldExists } from 'tldjs'
+import classnames from 'classnames'
 import loadable from '@loadable/component'
 
 const AddressSelectModal = loadable(() =>
@@ -464,7 +465,7 @@ class CheckoutPage extends Component {
       ) ||
       !tldExists(details.email)
     ) {
-      errors['email'] = 'Invalid email address'
+      errors['email'] = 'Please enter a valid email address'
       if (!errors.divId) errors.divId = this.getErrorDivId('email')
       hasError = true
     }
@@ -492,7 +493,7 @@ class CheckoutPage extends Component {
       ) ||
       !tldExists(details.email)
     ) {
-      errors['email'] = 'Invalid email address'
+      errors['email'] = 'Please enter a valid email address'
       if (!errors.divId) errors.divId = this.getErrorDivId('email')
       hasError = true
     }
@@ -740,7 +741,11 @@ class CheckoutPage extends Component {
     return (
       <React.Fragment>
         <div className={styles.container}>
-          <div className={styles.leftPanel}>
+          <div
+            className={classnames(
+              styles.leftPanel,
+              !emailSubmitted && styles.emailNotSet
+            )}>
             <UserDetails
               {...this.props}
               details={details}
