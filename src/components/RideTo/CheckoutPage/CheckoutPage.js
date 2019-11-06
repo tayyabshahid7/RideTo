@@ -17,6 +17,8 @@ import { getExpectedPrice } from 'services/order'
 import { tldExists } from 'tldjs'
 import classnames from 'classnames'
 import loadable from '@loadable/component'
+import isEqual from 'lodash/isEqual'
+import isEmpty from 'lodash/isEmpty'
 
 const AddressSelectModal = loadable(() =>
   import('components/RideTo/AddressSelectModal')
@@ -48,6 +50,10 @@ const USER_FIELDS = [
   'last_name',
   'email'
 ]
+
+const CARD_FIELDS = REQUIRED_FIELDS.filter(
+  field => !USER_FIELDS.includes(field)
+)
 
 const NO_ADDONS_ADDRESS = {
   address_1: 'no',
@@ -109,6 +115,7 @@ class CheckoutPage extends Component {
       loadingPrice: false,
       showMap: false,
       trainings: this.props.trainings,
+      showUserDetails: false,
       showCardDetails: false,
       physicalAddonsCount: this.props.checkoutData.addons.filter(
         addon => addon.name !== 'Peace Of Mind Policy'
@@ -382,6 +389,40 @@ class CheckoutPage extends Component {
     ) {
       handeUpdateOption({
         isInexperienced: true
+      })
+    }
+
+    if (!isEqual(this.state.errors, prevState.errors)) {
+      const errors = Object.entries(this.state.errors)
+        .filter(([key, value]) => key !== 'divId')
+        .filter(([key, value]) => !isEmpty(value))
+
+      if (!errors.length) {
+        return
+      }
+
+      const userError = errors.some(([key]) => USER_FIELDS.includes(key))
+      const cardError = errors.some(([key]) => CARD_FIELDS.includes(key))
+
+      if (userError) {
+        this.setState({
+          showUserDetails: true
+        })
+      }
+
+      if (cardError) {
+        this.setState({
+          showCardDetails: true
+        })
+      }
+    }
+
+    if (
+      this.state.emailSubmitted !== prevState.emailSubmitted &&
+      this.state.emailSubmitted
+    ) {
+      this.setState({
+        showUserDetails: true
       })
     }
   }
@@ -735,7 +776,8 @@ class CheckoutPage extends Component {
       trainings,
       showCardDetails,
       physicalAddonsCount,
-      emailSubmitted
+      emailSubmitted,
+      showUserDetails
     } = this.state
 
     return (
@@ -744,7 +786,7 @@ class CheckoutPage extends Component {
           <div
             className={classnames(
               styles.leftPanel,
-              !emailSubmitted && styles.emailNotSet
+              !showUserDetails && styles.emailNotSet
             )}>
             <UserDetails
               {...this.props}
@@ -770,6 +812,7 @@ class CheckoutPage extends Component {
               setCardElement={this.setCardElement}
               handleEmailSubmit={this.handleEmailSubmit}
               emailSubmitted={emailSubmitted}
+              showUserDetails={showUserDetails}
             />
           </div>
           <div className={styles.rightPanel}>

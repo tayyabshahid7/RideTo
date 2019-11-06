@@ -193,7 +193,7 @@ class UserDetails extends Component {
       postcodeLookingup,
       onChange,
       onPostalCodeSubmit,
-      emailSubmitted
+      showUserDetails
     } = this.props
     const { userAuthenticated } = this.state
 
@@ -202,7 +202,7 @@ class UserDetails extends Component {
     return (
       <div
         className={classnames(
-          !emailSubmitted && !userAuthenticated && styles.hideDetails
+          !showUserDetails && !userAuthenticated && styles.hideDetails
         )}>
         <div
           id="checkout-your-details"
@@ -422,7 +422,7 @@ class UserDetails extends Component {
       showCardDetails,
       handlePaymentButtonClick,
       setCardElement,
-      emailSubmitted
+      showUserDetails
     } = this.props
     const { cardBrand } = this.state
     const inputStyle = {
@@ -436,7 +436,7 @@ class UserDetails extends Component {
       <div
         className={classnames(
           styles.checkForm,
-          !emailSubmitted && styles.hidePayment
+          !showUserDetails && styles.hidePayment
         )}
         ref={this.cardDetails}>
         <button

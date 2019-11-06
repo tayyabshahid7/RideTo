@@ -248,7 +248,7 @@ class OrderSummary extends Component {
               styles.action,
               confirmDisabled && styles.confirmDisabled
             )}
-            onClick={() => !confirmDisabled && onSubmit()}>
+            onClick={onSubmit}>
             <span>Confirm And Pay</span>
             <img src={ButtonArrowWhite} alt="arrow" />
           </RideToButton>
