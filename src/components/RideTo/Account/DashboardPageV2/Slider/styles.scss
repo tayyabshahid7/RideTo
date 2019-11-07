@@ -42,17 +42,40 @@
   }
 }
 
-.description {
-  position: absolute;
-  right: 0;
-  bottom: 12px;
-  left: 0;
-  margin-bottom: 0;
-  font-size: 0.85rem;
-  line-height: 1;
-  color: var(--dark-color);
+.descSlide {
+  img {
+    margin-top: -4rem;
 
-  @media (min-width: 1025px) {
-    bottom: 5px;
+    @media (min-width: 1025px) {
+      margin-top: -2rem;
+    }
+  }
+
+  .title {
+    bottom: 3.4rem;
+
+    @media (min-width: 1025px) {
+      bottom: 2.9rem;
+    }
+  }
+
+  .description {
+    position: absolute;
+    right: 0;
+    bottom: 16px;
+    left: 0;
+    margin-bottom: 0;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    color: var(--dark-color);
+    min-height: 32px;
+
+    span {
+      color: var(--primary-color);
+    }
+
+    @media (min-width: 1025px) {
+      bottom: 10px;
+    }
   }
 }
