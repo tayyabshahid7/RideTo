@@ -139,7 +139,13 @@ class CheckoutPage extends Component {
       const user = getUserProfile(getToken())
       if (user) {
         const userDetails = await fetchUser(user.username)
-        const details = { ...this.state.details, ...userDetails }
+        const details = {
+          ...this.state.details,
+          ...userDetails,
+          ...(userDetails.birthdate
+            ? { user_birthdate: userDetails.birthdate }
+            : null)
+        }
         const errors = {
           ...this.state.errors,
           first_name: null,
