@@ -4,6 +4,7 @@ import RouteToFreedom from './RouteToFreedom'
 import NextStep from './NextStep'
 import Achievements from './Achievements'
 import GuidesAdvice from './GuidesAdvice'
+import MyCheckList from './MyCheckList'
 import News from './News'
 import classnames from 'classnames'
 import { GOALS, STYLES } from './RouteToFreedom/constants'
@@ -417,6 +418,9 @@ function DashboardPageV2({ match }) {
                       }
                       handleClick={handleOrderClick}
                     />
+                  </div>
+                  <div className={styles.pageItem}>
+                    <MyCheckList />
                   </div>
                   <div className={styles.pageItem}>
                     <GuidesAdvice />
