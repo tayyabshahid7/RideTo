@@ -18,13 +18,16 @@ function Slider({ gear, constant }) {
     <div className={styles.container}>
       {gear.length > 0 && (
         <Slick {...settings}>
-          {gear.map(({ name, link, image }) => (
+          {gear.map(({ name, link, image, description }) => (
             <a key={name} href={link} target="_blank" rel="noopener noreferrer">
               <div className={styles.slide}>
                 <img src={image} alt="" />
                 <h4 className={styles.title}>
                   {constant !== 'STEP_BIKE' && 'Shop'} {name}
                 </h4>
+                {description && (
+                  <p className={styles.description}>{description}</p>
+                )}
               </div>
             </a>
           ))}
