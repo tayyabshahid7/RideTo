@@ -39,11 +39,24 @@ class UserDetails extends Component {
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
 
+    this.userDetails = React.createRef()
     this.cardDetails = React.createRef()
   }
 
   componentDidUpdate(prevProps) {
-    const { showCardDetails } = this.props
+    const { showCardDetails, showUserDetails } = this.props
+
+    if (prevProps.showUserDetails !== showUserDetails && showUserDetails) {
+      setTimeout(() => {
+        const userDetails = this.userDetails.current
+
+        userDetails &&
+          userDetails.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          })
+      }, 99)
+    }
 
     if (prevProps.showCardDetails !== showCardDetails && showCardDetails) {
       setTimeout(() => {
@@ -177,7 +190,11 @@ class UserDetails extends Component {
             />
             {!userAuthenticated &&
               (!emailSubmitted ? (
-                <Button onClick={handleEmailSubmit}>Add my email</Button>
+                <Button
+                  className={styles.submitButton}
+                  onClick={handleEmailSubmit}>
+                  Add my email
+                </Button>
               ) : (
                 <Button
                   className={styles.changeButton}
@@ -213,6 +230,7 @@ class UserDetails extends Component {
           !showUserDetails && !userAuthenticated && styles.hideDetails
         )}>
         <div
+          ref={this.userDetails}
           id="checkout-your-details"
           className={styles.title}
           style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>

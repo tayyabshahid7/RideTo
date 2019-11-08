@@ -496,6 +496,13 @@
   }
 }
 
+.submitButton,
+.changeButton {
+  @media (min-width: 768px) {
+    margin-left: 0.5rem;
+  }
+}
+
 button.changeButton.changeButton {
   color: var(--dark-color) !important;
   background-color: #eee !important;
