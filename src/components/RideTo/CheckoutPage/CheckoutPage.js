@@ -768,9 +768,10 @@ class CheckoutPage extends Component {
   handleChangeEmailClick = () => {
     this.setState({
       details: {
+        ...this.state.details,
         first_name: '',
         last_name: '',
-        email: '',
+        // email: '',
         user_birthdate: '',
         phone: '',
         current_licence: '',
