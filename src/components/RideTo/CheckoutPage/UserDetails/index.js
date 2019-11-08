@@ -130,7 +130,8 @@ class UserDetails extends Component {
       isFullLicence,
       instantBook,
       handleEmailSubmit,
-      emailSubmitted
+      emailSubmitted,
+      handleChangeEmailClick
     } = this.props
     const { userAuthenticated } = this.state
 
@@ -174,9 +175,16 @@ class UserDetails extends Component {
               onChange={this.handleChange}
               disabled={userAuthenticated || emailSubmitted}
             />
-            {!userAuthenticated && (
-              <Button onClick={handleEmailSubmit}>Add my email</Button>
-            )}
+            {!userAuthenticated &&
+              (!emailSubmitted ? (
+                <Button onClick={handleEmailSubmit}>Add my email</Button>
+              ) : (
+                <Button
+                  className={styles.changeButton}
+                  onClick={handleChangeEmailClick}>
+                  Change
+                </Button>
+              ))}
           </div>
           {errors.email && <div className={styles.error}>{errors.email}</div>}
         </div>

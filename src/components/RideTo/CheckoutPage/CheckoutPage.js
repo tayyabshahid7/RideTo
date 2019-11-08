@@ -63,16 +63,16 @@ const NO_ADDONS_ADDRESS = {
 
 const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
 
+const emptyAddress = {
+  address_1: '',
+  address_2: '',
+  town: '',
+  postcode: ''
+}
+
 class CheckoutPage extends Component {
   constructor(props) {
     super(props)
-
-    const emptyAddress = {
-      address_1: '',
-      address_2: '',
-      town: '',
-      postcode: ''
-    }
 
     this.state = {
       details: {
@@ -131,6 +131,7 @@ class CheckoutPage extends Component {
     this.handleValueChange = this.handleValueChange.bind(this)
     this.handleVoucherApply = this.handleVoucherApply.bind(this)
     this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
+    this.handleChangeEmailClick = this.handleChangeEmailClick.bind(this)
   }
 
   onUpdate(data) {
@@ -396,6 +397,7 @@ class CheckoutPage extends Component {
       const errors = Object.entries(this.state.errors)
         .filter(([key, value]) => key !== 'divId')
         .filter(([key, value]) => !isEmpty(value))
+        .filter(([key, value]) => key !== 'email')
 
       if (!errors.length) {
         return
@@ -763,6 +765,39 @@ class CheckoutPage extends Component {
     }
   }
 
+  handleChangeEmailClick = () => {
+    this.setState({
+      details: {
+        first_name: '',
+        last_name: '',
+        email: '',
+        user_birthdate: '',
+        phone: '',
+        current_licence: '',
+        riding_experience: '',
+        rider_type: '',
+        address: { ...emptyAddress },
+        card_name: '',
+        sameAddress: true,
+        billingAddress: { ...emptyAddress },
+        card_number: false,
+        cvv: false,
+        expiry_date: false,
+        postcode: ''
+      },
+      manualAddress: false,
+      addresses: [],
+      errors: {
+        address: {},
+        billingAddress: {},
+        divId: false
+      },
+      showUserDetails: false,
+      showCardDetails: false,
+      emailSubmitted: false
+    })
+  }
+
   render() {
     const { courseType } = this.props.checkoutData
     const {
@@ -817,6 +852,7 @@ class CheckoutPage extends Component {
               handleEmailSubmit={this.handleEmailSubmit}
               emailSubmitted={emailSubmitted}
               showUserDetails={showUserDetails}
+              handleChangeEmailClick={this.handleChangeEmailClick}
             />
           </div>
           <div className={styles.rightPanel}>
