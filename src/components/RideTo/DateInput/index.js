@@ -17,7 +17,7 @@ class DateInput extends React.Component {
             mask={[/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]}
             size="7"
             onChange={this.props.onChange}
-            placeholder="DD/MM/YY"
+            placeholder="DD/MM/YYYY"
             type="tel"
           />
         </label>
