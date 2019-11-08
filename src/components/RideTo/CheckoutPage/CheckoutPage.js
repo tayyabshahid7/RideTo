@@ -567,8 +567,12 @@ class CheckoutPage extends Component {
         } else {
           return {
             error: true,
-            errorMessage:
-              'There is a registered user with this email. Login to continue'
+            errorMessage: (
+              <span>
+                There is a registered user with this email.{' '}
+                <a href="/account/login">Login to continue</a>
+              </span>
+            )
           }
         }
       } catch (error) {
