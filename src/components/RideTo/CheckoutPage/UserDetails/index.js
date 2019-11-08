@@ -46,7 +46,11 @@ class UserDetails extends Component {
   componentDidUpdate(prevProps) {
     const { showCardDetails, showUserDetails } = this.props
 
-    if (prevProps.showUserDetails !== showUserDetails && showUserDetails) {
+    if (
+      prevProps.showUserDetails !== showUserDetails &&
+      showUserDetails &&
+      !isAuthenticated()
+    ) {
       setTimeout(() => {
         const userDetails = this.userDetails.current
 
@@ -58,7 +62,11 @@ class UserDetails extends Component {
       }, 99)
     }
 
-    if (prevProps.showCardDetails !== showCardDetails && showCardDetails) {
+    if (
+      prevProps.showCardDetails !== showCardDetails &&
+      showCardDetails &&
+      !isAuthenticated()
+    ) {
       setTimeout(() => {
         const cardDetails = this.cardDetails.current
 

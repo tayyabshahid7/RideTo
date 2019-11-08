@@ -156,7 +156,13 @@ class CheckoutPage extends Component {
           last_name: null,
           email: null
         }
-        this.setState({ details, errors })
+        this.setState({
+          details,
+          errors,
+          emailSubmitted: true,
+          showUserDetails: true,
+          showCardDetails: true
+        })
       }
     }
   }
