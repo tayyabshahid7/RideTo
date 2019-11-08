@@ -12,6 +12,12 @@
 
 .title {
   margin-bottom: 1.5rem;
+
+  img {
+    margin-left: 0.25rem;
+    height: 1.5rem;
+    vertical-align: baseline;
+  }
 }
 
 .viewAll {
@@ -48,4 +54,9 @@
       margin-top: 0.5rem;
     }
   }
+}
+
+.itemCompleted.itemCompleted {
+  color: var(--primary-color);
+  text-decoration: line-through;
 }

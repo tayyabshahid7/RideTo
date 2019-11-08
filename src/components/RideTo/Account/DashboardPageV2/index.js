@@ -34,6 +34,7 @@ import Loading from 'components/Loading'
 import { useMediaQuery } from 'react-responsive'
 
 function DashboardPageV2({ match }) {
+  const [userDetails, setUserDetails] = useState(null)
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
   const [selectedStyle, setSelectedStyle] = useState(STYLES[0])
   const [cbtStatus, setCbtStatus] = useState(null)
@@ -277,6 +278,7 @@ function DashboardPageV2({ match }) {
       const user = getUserProfile(getToken())
 
       if (user) {
+        setUserDetails(user)
         loadUserDetails(user.user_id)
         loadOrders(user.username)
       } else {
@@ -420,7 +422,7 @@ function DashboardPageV2({ match }) {
                     />
                   </div>
                   <div className={styles.pageItem}>
-                    <MyCheckList />
+                    <MyCheckList userId={userDetails.user_id} />
                   </div>
                   <div className={styles.pageItem}>
                     <GuidesAdvice />
