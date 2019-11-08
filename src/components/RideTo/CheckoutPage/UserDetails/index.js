@@ -290,8 +290,8 @@ class UserDetails extends Component {
               errors.phone && styles.inputError
             )}>
             <PhoneInput
-              label="Telephone Number"
-              placeholder="Telephone Number"
+              label="Mobile Number"
+              placeholder="Mobile Number"
               name="phone"
               value={details.phone}
               onChange={this.handlePhoneChange}
