@@ -10,7 +10,12 @@ import { fetchAddressWithPostcode } from 'services/misc'
 import { createOrder } from 'services/widget'
 import { handleStripePayment } from 'services/stripe'
 import { getPrice, getLicenceAge } from 'services/course'
-import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
+import {
+  getUserProfile,
+  getToken,
+  isAuthenticated,
+  removeToken
+} from 'services/auth'
 import { fetchUser, saveCheckoutEmail } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
@@ -771,7 +776,32 @@ class CheckoutPage extends Component {
     }
   }
 
+  handleSignout = () => {
+    removeToken()
+    sessionStorage.removeItem('login-next')
+    window.location.reload(true)
+  }
+
   handleChangeEmailClick = () => {
+    if (isAuthenticated()) {
+      this.setState({
+        errors: {
+          email: (
+            <React.Fragment>
+              You are currently logged in, to book with a new email{' '}
+              <button
+                className={styles.signoutButton}
+                onClick={this.handleSignout}>
+                sign out
+              </button>
+            </React.Fragment>
+          ),
+          divId: this.getErrorDivId('email')
+        }
+      })
+      return
+    }
+
     this.setState({
       details: {
         ...this.state.details,

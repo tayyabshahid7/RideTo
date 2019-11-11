@@ -190,20 +190,19 @@ class UserDetails extends Component {
               onChange={this.handleChange}
               disabled={userAuthenticated || emailSubmitted}
             />
-            {!userAuthenticated &&
-              (!emailSubmitted ? (
-                <Button
-                  className={styles.submitButton}
-                  onClick={handleEmailSubmit}>
-                  Add my email
-                </Button>
-              ) : (
-                <Button
-                  className={styles.changeButton}
-                  onClick={handleChangeEmailClick}>
-                  Change
-                </Button>
-              ))}
+            {!emailSubmitted ? (
+              <Button
+                className={styles.submitButton}
+                onClick={handleEmailSubmit}>
+                Add my email
+              </Button>
+            ) : (
+              <Button
+                className={styles.changeButton}
+                onClick={handleChangeEmailClick}>
+                Change
+              </Button>
+            )}
           </div>
           {errors.email && <div className={styles.error}>{errors.email}</div>}
         </div>
