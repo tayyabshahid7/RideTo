@@ -7,7 +7,8 @@ export const saveCheckoutEmail = async (email, course) => {
     path,
     {
       email,
-      course
+      course,
+      url: `/course-location/?postcode=${course.postcode}&courseType=${course.courseType}&courseId=${course.supplierId}`
     },
     false
   )
