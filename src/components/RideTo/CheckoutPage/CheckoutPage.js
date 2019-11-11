@@ -143,7 +143,11 @@ class CheckoutPage extends Component {
           ...this.state.details,
           ...userDetails,
           ...(userDetails.birthdate
-            ? { user_birthdate: userDetails.birthdate }
+            ? {
+                user_birthdate: moment(userDetails.birthdate).format(
+                  'DD/MM/YYYY'
+                )
+              }
             : null)
         }
         const errors = {
