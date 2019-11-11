@@ -474,6 +474,12 @@
     @media (min-width: 768px) {
       width: auto;
     }
+
+    span {
+      background: #fff;
+      background-color: #fff !important;
+      z-index: 99;
+    }
   }
 
   button {
