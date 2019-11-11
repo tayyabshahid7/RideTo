@@ -31,9 +31,6 @@ import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
 import { fetchSingleRidetoCourse } from 'services/course'
 
-import smoothscroll from 'smoothscroll-polyfill'
-smoothscroll.polyfill()
-
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
 
