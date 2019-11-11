@@ -50,6 +50,17 @@ const ITM_FAQ = {
     "Not all of our instructors have their introduction courses live online. If you can't find a local ITM course to you, give us a call and we can arrange something for you."
 }
 
+const GEAR_CONVERSION_FAQ = {
+  doINeed:
+    'Some new riders decide to take learning to ride one step at a time and opt to complete their first CBT on an automatic scooter. If you plan to then ride a manual motorcycle, it’s highly recommended you have professional lessons in how to do so, hence the popular Gear Conversion course.',
+  whatWillIdO:
+    'The course is tailored to your needs. You’ll focus all the time on bike control and handling, getting to grips with balancing, stopping, starting and turning with a manual motorcycle. It’s safe to do so, you’ll go out on the roads.',
+  howFarAdvance:
+    'Gear Conversion classes have a restricted number of places in each course. Due to the popular demand, you should aim to book at least 1 week in advance in order to get a convenient date.',
+  iCantSee:
+    'Not all of our instructors have their Gear Conversion courses live online. If you can’t find a local Gear Conversion course to you, give us a call and we can arrange something for you.'
+}
+
 export const CONTENT = {
   FULL_LICENCE: {
     header: courseType => (
@@ -840,17 +851,18 @@ export const CONTENT = {
       <Fragment>
         <h1>Gear Conversion Course</h1>
         <h2>
-          A 2 hour introduction course, to give new riders experience before the
-          CBT
+          A 2 hour course completed after the CBT, to learn how to ride a manual
+          125cc motorcycle with gears.
           <ul>
             <li>
-              Focus on the core skills and controls of riding a motorcycle
+              Focus on the core skills and controls of riding a manual
+              motorcycle
             </li>
+            <li>Learn and master the basics of clutch and gear control</li>
             <li>
-              Experience the fun and freedom before committing to the CBT course
+              A course designed for riders who have already completed the CBT on
+              an automatic scooter or wish to further develop riding with gears
             </li>
-            <li>Learn the basics of clutch and gear controls</li>
-            <li>Not a valid licence to ride on the road</li>
           </ul>
         </h2>
       </Fragment>
@@ -859,25 +871,24 @@ export const CONTENT = {
       <Fragment>
         <div>
           <h2>What you'll learn</h2>
-          <h3>Introduction to basics of motorcycle controls and handling</h3>
+          <h3>Clutch control </h3>
           <p>
-            You'll learn how a motorcycle works; the controls, maintenance and
-            safety checks you should conduct before riding including how to move
-            and park your bike.
+            1 down 4 up, you'll learn how to safely and confidently ride a
+            motorcycle with gears. Understanding how to control the clutch at
+            slow speeds, pulling away and coming to a stop.
           </p>
-          <h3>How to safely ride and control a scooter or motorcycle</h3>
+          <h3>Changing gears with confidence</h3>
           <p>
-            The instructor will start from scratch and teach you the core skills
-            of how to stop, start, turn and brake. You'll also learn the basic
-            observations you should make and spend time learning clutch control
-            and gear changing (on a manual motorcycle).
+            Riding in different scenarios and conditions to learn how to select
+            the right gear for each occasion and to change gear with confidence
+            up and down the gear box.
           </p>
         </div>
         <div>
           <h2>Requirements</h2>
           <p>
-            In order to take the Introduction to motorcycling course, you must
-            meet the following requirements:
+            In order to take the Gear Conversion course, you must meet the
+            following requirements:
           </p>
           <ul>
             <li>
@@ -890,46 +901,46 @@ export const CONTENT = {
             <li>Be able to ride an adult sized bicycle</li>
             <li>
               Wear suitable clothing including thick trousers (such as jeans)
-              and leather boots
+              and boots
             </li>
           </ul>
         </div>
         <div>
           <h2>What you can ride after</h2>
           <p>
-            The introduction to motorcycling course is not a valid licence, so
-            you are not legally entitled to ride a motorcycle on the road after
-            the course. The next step is to complete the CBT course to be able
-            to ride on the road.
+            The Gear Conversion course is not a valid licence, so you are not
+            legally entitled to ride a motorcycle on the road from just this
+            course. You must have completed the CBT course to be able to ride on
+            the road.
           </p>
         </div>
         <div>
           <h2>Course details</h2>
           <p>
-            The introduction motorcycle lesson follows the same format as the
-            beginning of the CBT. Introducing you to the most basic skills and
-            techniques you will need to ride a motorcycle and progress on to the
-            CBT.
+            The Gear Conversion course is a 2 hour bespoke lesson which can be
+            tailored to the needs of the pupils. Up to 2 students to one
+            instructor, you'll spend as much time as possible on the bike
+            learning the skills of controlling the clutch with your left hand
+            and changing the gears with your left foot.
           </p>
           <p>
-            This includes the controls of the motorcycle, how to sit and balance
-            yourself on a motorcycle, how to put the motorcycle on its stand and
-            take it off again too, clutch control and gear selection and how to
-            ride and turn the motorcycle.
+            Depending on how the lesson progresses and the instructors decision,
+            you'll either spend the 2 hour course duration off-road or will
+            progress to on-road riding if the instructor believes you are ready
+            to do so.
           </p>
           <p>
-            It's a relaxed and introductory session designed to give you a
-            taster of what riding on two wheels is like.
-          </p>
-          <p>
-            The course is ideal for anyone looking to practice riding ahead of
-            taking the CBT, especially for new riders planning to ride a geared
-            motorcycle with no previous experience.
+            This course is ideal for riders who have completed the CBT on an
+            automatic scooter or wish to spend more time and instruction riding
+            a geared bike.
           </p>
         </div>
         <div>
           <h2>Frequently Asked Questions</h2>
-          <CourseTypeDetails courseType={{ details: ITM_FAQ }} minimal />
+          <CourseTypeDetails
+            courseType={{ details: GEAR_CONVERSION_FAQ }}
+            minimal
+          />
         </div>
         <div>
           <h2>Cancellation policy</h2>
@@ -995,7 +1006,6 @@ export const LOCATIONS = {
   ],
   GEAR_CONVERSION_COURSE: [
     'london',
-    'bristol',
     'birmingham',
     'manchester',
     'glasgow',
