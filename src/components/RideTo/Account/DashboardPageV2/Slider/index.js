@@ -32,7 +32,7 @@ function Slider({ gear, constant }) {
                 </h4>
                 {description && (
                   <p className={styles.description}>
-                    {description} <span>Read More</span>
+                    {description} <span>Learn More</span>
                   </p>
                 )}
               </div>
