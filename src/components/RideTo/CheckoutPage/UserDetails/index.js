@@ -46,20 +46,22 @@ class UserDetails extends Component {
   componentDidUpdate(prevProps) {
     const { showCardDetails, showUserDetails } = this.props
 
+    function scrollToElement(element) {
+      setTimeout(() => {
+        if (element) {
+          const offset = element.offsetTop
+
+          window.scroll({ top: offset, left: 0, behavior: 'smooth' })
+        }
+      }, 99)
+    }
+
     if (
       prevProps.showUserDetails !== showUserDetails &&
       showUserDetails &&
       !isAuthenticated()
     ) {
-      setTimeout(() => {
-        const userDetails = this.userDetails.current
-
-        userDetails &&
-          userDetails.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          })
-      }, 99)
+      scrollToElement(this.userDetails.current)
     }
 
     if (
@@ -67,15 +69,7 @@ class UserDetails extends Component {
       showCardDetails &&
       !isAuthenticated()
     ) {
-      setTimeout(() => {
-        const cardDetails = this.cardDetails.current
-
-        cardDetails &&
-          cardDetails.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          })
-      }, 99)
+      scrollToElement(this.cardDetails.current)
     }
   }
 
