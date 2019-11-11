@@ -51,7 +51,7 @@ class UserDetails extends Component {
         if (element) {
           const offset = element.offsetTop
 
-          window.scroll({ top: offset, left: 0, behavior: 'smooth' })
+          window.scrollTo({ top: offset, behavior: 'smooth' })
         }
       }, 99)
     }
