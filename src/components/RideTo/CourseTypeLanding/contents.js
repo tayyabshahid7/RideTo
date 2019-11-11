@@ -9,7 +9,8 @@ export const SLUG_COURSE_TYPES = {
   'cbt-training': 'LICENCE_CBT',
   'cbt-training-renewal': 'LICENCE_CBT_RENEWAL',
   'motorcycle-licence': 'FULL_LICENCE',
-  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
+  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE',
+  'gear-conversion-course': 'GEAR_CONVERSION_COURSE'
 }
 
 const FULL_LICENCE_FAQS = {
@@ -833,6 +834,114 @@ export const CONTENT = {
         </div>
       </Fragment>
     )
+  },
+  GEAR_CONVERSION_COURSE: {
+    header: courseType => (
+      <Fragment>
+        <h1>Gear Conversion Course</h1>
+        <h2>
+          A 2 hour introduction course, to give new riders experience before the
+          CBT
+          <ul>
+            <li>
+              Focus on the core skills and controls of riding a motorcycle
+            </li>
+            <li>
+              Experience the fun and freedom before committing to the CBT course
+            </li>
+            <li>Learn the basics of clutch and gear controls</li>
+            <li>Not a valid licence to ride on the road</li>
+          </ul>
+        </h2>
+      </Fragment>
+    ),
+    body: courseType => (
+      <Fragment>
+        <div>
+          <h2>What you'll learn</h2>
+          <h3>Introduction to basics of motorcycle controls and handling</h3>
+          <p>
+            You'll learn how a motorcycle works; the controls, maintenance and
+            safety checks you should conduct before riding including how to move
+            and park your bike.
+          </p>
+          <h3>How to safely ride and control a scooter or motorcycle</h3>
+          <p>
+            The instructor will start from scratch and teach you the core skills
+            of how to stop, start, turn and brake. You'll also learn the basic
+            observations you should make and spend time learning clutch control
+            and gear changing (on a manual motorcycle).
+          </p>
+        </div>
+        <div>
+          <h2>Requirements</h2>
+          <p>
+            In order to take the Introduction to motorcycling course, you must
+            meet the following requirements:
+          </p>
+          <ul>
+            <li>
+              Have the correct licence card: UK driving, UK provisional or EU
+              licence with UK counterpart licence number. Photocopies or images
+              are not accepted.
+            </li>
+            <li>Be able to read a registration plate from 20.5 meters</li>
+            <li>Speak and understand English and the Highway code</li>
+            <li>Be able to ride an adult sized bicycle</li>
+            <li>
+              Wear suitable clothing including thick trousers (such as jeans)
+              and leather boots
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2>What you can ride after</h2>
+          <p>
+            The introduction to motorcycling course is not a valid licence, so
+            you are not legally entitled to ride a motorcycle on the road after
+            the course. The next step is to complete the CBT course to be able
+            to ride on the road.
+          </p>
+        </div>
+        <div>
+          <h2>Course details</h2>
+          <p>
+            The introduction motorcycle lesson follows the same format as the
+            beginning of the CBT. Introducing you to the most basic skills and
+            techniques you will need to ride a motorcycle and progress on to the
+            CBT.
+          </p>
+          <p>
+            This includes the controls of the motorcycle, how to sit and balance
+            yourself on a motorcycle, how to put the motorcycle on its stand and
+            take it off again too, clutch control and gear selection and how to
+            ride and turn the motorcycle.
+          </p>
+          <p>
+            It's a relaxed and introductory session designed to give you a
+            taster of what riding on two wheels is like.
+          </p>
+          <p>
+            The course is ideal for anyone looking to practice riding ahead of
+            taking the CBT, especially for new riders planning to ride a geared
+            motorcycle with no previous experience.
+          </p>
+        </div>
+        <div>
+          <h2>Frequently Asked Questions</h2>
+          <CourseTypeDetails courseType={{ details: ITM_FAQ }} minimal />
+        </div>
+        <div>
+          <h2>Cancellation policy</h2>
+          <p>
+            You won't be charged anything until your booking is confirmed. Once
+            the booking is confirmed, we can cancel or refund you in full as
+            long as you give us at least 3 working days notice before your
+            training.
+          </p>
+        </div>
+      </Fragment>
+    )
   }
 }
 
@@ -875,6 +984,16 @@ export const LOCATIONS = {
   ],
   TFL_ONE_ON_ONE: ['london'],
   INTRO_TO_MOTORCYCLING: [
+    'london',
+    'bristol',
+    'birmingham',
+    'manchester',
+    'glasgow',
+    'southampton',
+    'bournemouth',
+    'portsmouth'
+  ],
+  GEAR_CONVERSION_COURSE: [
     'london',
     'bristol',
     'birmingham',

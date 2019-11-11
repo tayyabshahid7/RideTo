@@ -272,6 +272,8 @@ export const getShortCourseType = courseType => {
     case 'OFF_ROAD_TEST':
     case 'OFF_ROAD_TRAINING':
       return 'Off Road Training'
+    case 'GEAR_CONVERSION_COURSE':
+      return 'Gear Conversion'
     default:
       return 'CBT'
   }
@@ -304,6 +306,8 @@ export const getMediumCourseType = courseType => {
     case 'OFF_ROAD_TEST':
     case 'OFF_ROAD_TRAINING':
       return 'Off Road Training'
+    case 'GEAR_CONVERSION_COURSE':
+      return 'Gear Conversion'
     default:
       return 'CBT'
   }
@@ -332,6 +336,8 @@ export const getCourseTitle = courseTypeConstant => {
     case 'OFF_ROAD_TEST':
     case 'OFF_ROAD_TRAINING':
       return 'Off Road Training'
+    case 'GEAR_CONVERSION_COURSE':
+      return 'Gear Conversion Course'
     default:
       return 'CBT Training'
   }

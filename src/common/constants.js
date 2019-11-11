@@ -66,7 +66,8 @@ export const AVAILABLE_COURSE_TYPES = [
   'INTRO_TO_MOTORCYCLING',
   'LICENCE_CBT',
   'LICENCE_CBT_RENEWAL',
-  'FULL_LICENCE'
+  'FULL_LICENCE',
+  'GEAR_CONVERSION_COURSE'
 ]
 
 export const LICENCE_TYPES = {
@@ -99,7 +100,8 @@ export const COURSETYPE_ORDER = [
   'LICENCE_CBT_RENEWAL',
   'FULL_LICENCE',
   'INTRO_TO_MOTORCYCLING',
-  'TFL_ONE_ON_ONE'
+  'TFL_ONE_ON_ONE',
+  'GEAR_CONVERSION_COURSE'
 ]
 
 export const COURSETYPE_ORDER_SLIDER = COURSETYPE_ORDER.filter(
@@ -119,7 +121,8 @@ export const SLUG_COURSE_TYPES = {
   'cbt-training': 'LICENCE_CBT',
   'blog/cbt-renewal': 'LICENCE_CBT_RENEWAL',
   'motorcycle-licence': 'FULL_LICENCE',
-  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
+  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE',
+  'gear-conversion-course': 'GEAR_CONVERSION_COURSE'
 }
 
 export const CALENDAR_COLOURS = {
@@ -131,6 +134,7 @@ export const CALENDAR_COLOURS = {
   FULL_LICENCE_MOD2_TEST: '#caffd0',
   INTRO_TO_MOTORCYCLING: '#c9e4e7',
   TFL_ONE_ON_ONE: '#84dcc6',
+  GEAR_CONVERSION_COURSE: '#e0fff9',
   INSTRUCTOR: '#a5bbff',
   EVENT: '#ebebeb'
 }
