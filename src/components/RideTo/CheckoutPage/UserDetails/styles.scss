@@ -6,6 +6,12 @@
       margin-bottom: 1.5rem;
     }
   }
+
+  > div:not(:last-child) {
+    @media (min-width: 769px) {
+      margin-bottom: 1.5rem;
+    }
+  }
 }
 
 .title {
@@ -81,6 +87,8 @@
   .cardElementWrapper {
     appearance: none;
     border: 1px solid #141414 !important;
+    -webkit-border-radius: 0 !important;
+    border-radius: 0 !important;
   }
 
   .cardElementWrapper {
@@ -251,6 +259,11 @@
 .error {
   color: var(--danger-color);
   font-size: 12px;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
 }
 
 .inputError {
@@ -442,4 +455,78 @@
   &:focus {
     outline: 0;
   }
+}
+
+.addOnInput {
+  display: flex;
+  align-items: flex-end;
+
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+
+  label {
+    width: 100%;
+    flex-grow: 1;
+
+    @media (min-width: 768px) {
+      width: auto;
+    }
+
+    span {
+      background: #fff;
+      background-color: #fff !important;
+      z-index: 99;
+    }
+  }
+
+  button {
+    text-align: center;
+    padding: 9px 1rem;
+    margin-bottom: 0.5rem;
+    height: 48px;
+    justify-content: center;
+  }
+}
+
+.hideDetails {
+  padding-bottom: 1rem;
+  opacity: 0.5;
+  pointer-events: none;
+
+  @media (max-width: 768px) {
+    padding-bottom: 2.25rem;
+  }
+
+  > .rowItem {
+    display: none;
+  }
+}
+
+.hidePayment {
+  opacity: 0.5;
+  pointer-events: none;
+
+  > button {
+    > img {
+      display: none;
+    }
+  }
+}
+
+.submitButton,
+.changeButton {
+  width: 100%;
+
+  @media (min-width: 768px) {
+    width: 125px;
+    margin-left: 0.5rem;
+  }
+}
+
+button.changeButton.changeButton {
+  color: var(--dark-color) !important;
+  background-color: #eee !important;
 }
