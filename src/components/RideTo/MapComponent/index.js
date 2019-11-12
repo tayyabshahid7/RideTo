@@ -155,19 +155,31 @@ class MapComponent extends Component {
     return null
   }
 
-  highlightResultCard(event) {
-    const idElement = event.currentTarget.id
-    const resultCard = document.getElementById(`card-${idElement}`)
-    resultCard.classList.remove(styles.highlightCard)
-    window.scrollTo({ top: resultCard.offsetTop, behavior: 'smooth' })
-    resultCard.classList.add(styles.highlightCard)
+  highlightResultCard(event, course) {
+    function scrollTo() {
+      const idElement = event.currentTarget.id
+      const resultCard = document.getElementById(`card-${idElement}`)
+      resultCard.classList.remove(styles.highlightCard)
+      window.scrollTo({ top: resultCard.offsetTop, behavior: 'smooth' })
+      resultCard.classList.add(styles.highlightCard)
+    }
+
+    const { handlePinClick } = this.props
+
+    if (!handlePinClick) {
+      scrollTo()
+    } else {
+      handlePinClick(course)
+    }
   }
 
   renderPin(course, available) {
     return (
       <div
         id={`course-${course.id}`}
-        onClick={this.highlightResultCard}
+        onClick={event => {
+          this.highlightResultCard(event, course)
+        }}
         className={styles.coursePin}>
         <IconMapPin
           className={classnames(
