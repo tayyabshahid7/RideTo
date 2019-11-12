@@ -34,14 +34,15 @@ class OrderSummary extends Component {
   }
 
   isValidDate() {
-    const { trainings, checkoutData } = this.props
+    const { trainings, checkoutData, instantBook } = this.props
 
     if (trainings && trainings[0].course_type === 'FULL_LICENCE') {
       return true
     }
 
     return checkAllowedDate(
-      (trainings && trainings[0].requested_date) || checkoutData.date
+      (trainings && trainings[0].requested_date) || checkoutData.date,
+      instantBook
     )
   }
 
@@ -248,7 +249,7 @@ class OrderSummary extends Component {
               styles.action,
               confirmDisabled && styles.confirmDisabled
             )}
-            onClick={onSubmit}>
+            onClick={() => this.isValidDate() && onSubmit()}>
             <span>Confirm And Pay</span>
             <img src={ButtonArrowWhite} alt="arrow" />
           </RideToButton>
