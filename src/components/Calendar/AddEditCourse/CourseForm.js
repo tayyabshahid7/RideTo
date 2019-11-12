@@ -7,6 +7,7 @@ import styles from './styles.scss'
 import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
+import isNil from 'lodash/isNil'
 
 import {
   ConnectInput,
@@ -422,7 +423,7 @@ class CourseForm extends React.Component {
                             basic
                             className={styles.inputNumber}
                             name="auto_bikes"
-                            value={auto_bikes || ''}
+                            value={!isNil(auto_bikes) ? auto_bikes : ''}
                             type="number"
                             disabled={!isEditable}
                             onChange={this.handleChangeRawEvent.bind(this)}
@@ -457,7 +458,7 @@ class CourseForm extends React.Component {
                             basic
                             className={styles.inputNumber}
                             name="manual_bikes"
-                            value={manual_bikes || ''}
+                            value={!isNil(manual_bikes) ? manual_bikes : ''}
                             type="number"
                             disabled={!isEditable}
                             onChange={this.handleChangeRawEvent.bind(this)}
