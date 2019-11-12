@@ -50,6 +50,7 @@
   padding: 3px;
   width: 100%;
   height: 100%;
+  border: 1px solid var(--grey-color);
 }
 
 .singleEventEvent {
@@ -72,22 +73,19 @@
 }
 
 .warning {
-  border: 1px solid var(--warning-color);
+  border: 1px solid darken(#ffcfa0, 10%);
 }
 .danger {
-  border: 1px solid var(--danger-color);
+  border: 1px solid darken(#fe9898, 10%);
 }
 .primary {
   border: 1px solid var(--primary-color);
 }
-.textMildWarning {
-  color: var(--warning-color);
-}
 .textWarning {
-  color: var(--danger-color);
+  color: darken(#ffcfa0, 10%);
 }
 .textDanger {
-  color: var(--danger-color);
+  color: darken(#fe9898, 10%);
 }
 
 .eventName {

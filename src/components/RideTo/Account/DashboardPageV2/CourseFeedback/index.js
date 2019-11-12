@@ -1,7 +1,6 @@
 import React, { useState, Fragment } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
-import { updateUserDetail } from 'services/dashboard'
 import happy from './images/happy.svg'
 import unhappy from './images/unhappy.svg'
 
@@ -29,7 +28,7 @@ const OPTIONS = [
   }
 ]
 
-function CourseFeedback({ status, courseType }) {
+function CourseFeedback({ status, courseType, updateUserDetails }) {
   const [selected, setSelected] = useState(status)
   const selectedOption = OPTIONS.find(({ id }) => id === selected)
 
@@ -49,7 +48,7 @@ function CourseFeedback({ status, courseType }) {
               )}
               onClick={() => {
                 setSelected(id)
-                updateUserDetail(`course_completed_${courseType}`, id)
+                updateUserDetails(`course_completed_${courseType}`, id)
               }}>
               {text}
             </button>

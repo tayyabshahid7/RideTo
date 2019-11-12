@@ -15,7 +15,6 @@ import {
   updateCourse
 } from 'store/course'
 import { TEST_STATUS_CHOICES } from 'common/constants'
-import { mapLabelColoursWithContant } from 'services/settings'
 import styles from './CoursesPanelItem.scss'
 import personIcon from '../../../../assets/images/person.png'
 import { getCourseSpaceTextShort } from 'services/course'
@@ -41,7 +40,11 @@ const CoursesPanelItem = ({
 }) => {
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
-  const className = classnames(styles.course)
+  const className = classnames(
+    styles.course,
+    availableSpaces === 1 && styles.warning,
+    availableSpaces <= 0 && styles.danger
+  )
   const isTestCourse =
     course.course_type.constant.includes('FULL_LICENCE') &&
     course.course_type.constant.includes('TEST')
@@ -56,14 +59,7 @@ const CoursesPanelItem = ({
           styles.heading,
           isSelected && styles.headingSelected
         )}>
-        <div
-          className={classnames(styles.container, className)}
-          style={{
-            background: mapLabelColoursWithContant(
-              settings,
-              course.course_type.constant
-            )
-          }}>
+        <div className={classnames(styles.container, className)}>
           <div className={styles.top}>
             <div className={styles.title}>
               <div>

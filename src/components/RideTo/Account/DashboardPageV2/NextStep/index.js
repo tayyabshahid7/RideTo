@@ -23,7 +23,8 @@ function NextStep({
   recentOrder,
   cbtStatus,
   dasStatus,
-  selectedGoal
+  selectedGoal,
+  updateUserDetails
 }) {
   const constant = getNextStepConstant(nextStep, recentOrder)
   const {
@@ -87,7 +88,11 @@ function NextStep({
         <div className={styles.leftCol}>
           <div className={styles.row}>
             {feedBack ? (
-              <CourseFeedback status={status} courseType={feedBackCourseType} />
+              <CourseFeedback
+                status={status}
+                courseType={feedBackCourseType}
+                updateUserDetails={updateUserDetails}
+              />
             ) : (
               <Fragment>
                 {course && recentOrder && (

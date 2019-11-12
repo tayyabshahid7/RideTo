@@ -61,7 +61,7 @@ export const updateAchievement = async ({ name, constant }) => {
   return await post(path, params)
 }
 
-export const updateUserDetail = async (key, value) => {
+export const updateUserDetail = async (key, value, details) => {
   const isAuthenticated = getIsAuthenticated()
 
   if (!isAuthenticated) {
@@ -71,6 +71,7 @@ export const updateUserDetail = async (key, value) => {
   const { user_id } = getUserProfile(getToken())
   const path = `dashboard/${user_id}/`
   const params = {
+    ...details,
     [key]: value
   }
 
