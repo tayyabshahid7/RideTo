@@ -310,9 +310,7 @@ class UserDetails extends Component {
                 errors.current_licence && styles.inputError
               )}
               onChange={this.handleChange}>
-              <option value="" hidden disabled>
-                Current Licence
-              </option>
+              <option value="" hidden disabled></option>
               {currentLicenceOptions.map(licenseOption => (
                 <option value={licenseOption.id} key={licenseOption.id}>
                   {licenseOption.name}
@@ -337,9 +335,7 @@ class UserDetails extends Component {
               )}
               onChange={this.handleChange}
               required>
-              <option value="" hidden disabled>
-                Riding Experience
-              </option>
+              <option value="" hidden disabled></option>
               {RidingExperiences.map(ridingExperience => (
                 <option
                   value={ridingExperience.value}
@@ -366,9 +362,7 @@ class UserDetails extends Component {
               )}
               onChange={this.handleChange}
               required>
-              <option value="" hidden disabled>
-                Rider Type
-              </option>
+              <option value="" hidden disabled></option>
               {RiderTypes.map(riderType => (
                 <option value={riderType.value} key={riderType.value}>
                   {riderType.title}
