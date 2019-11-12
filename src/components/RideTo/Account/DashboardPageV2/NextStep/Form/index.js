@@ -11,7 +11,7 @@ const linkIsTypeform = href => {
 }
 
 function Form({ form }) {
-  const { action, label, buttonText, icon, href, params = {} } = form
+  const { action, label, buttonText, icon, href, params = {}, text } = form
   const isTypeform = linkIsTypeform(href)
 
   useEffect(() => {
@@ -25,6 +25,7 @@ function Form({ form }) {
       <div className={styles.icon}>
         <img src={icon} alt="Icon" width="74" />
       </div>
+      {text && <div>{text}</div>}
       {action && label ? (
         <form action={action}>
           {Object.entries(params).map(([key, value]) => (
