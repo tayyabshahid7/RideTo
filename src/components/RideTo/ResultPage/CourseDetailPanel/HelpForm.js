@@ -109,9 +109,9 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
         setShowCBTLink(true)
         flashDiv('choose-cbt')
       }
-      if (!theorySelected) {
-        flashDiv('choose-both')
-      }
+      // if (!theorySelected) {
+      //   flashDiv('choose-both')
+      // }
     }
     // eslint-disable-next-line
   }, [isErrored])
@@ -175,9 +175,11 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
               Motorcycle Theory
             </label>
           </div>
+          {/*
           <div id="choose-both" className={styles.bothRequired}>
             Both certificates are required in order to book
           </div>
+        */}
           {showCBTLink && (
             <div
               id="choose-cbt"

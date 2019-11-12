@@ -434,9 +434,9 @@ class ResultPage extends Component {
                   }
                 )
 
-                if (this.state.formCompletedWithoutTheory) {
-                  flashDiv('choose-both')
-                }
+                // if (this.state.formCompletedWithoutTheory) {
+                //   flashDiv('choose-both')
+                // }
 
                 if (!bike_hire) {
                   flashDiv('choose-bike')
@@ -649,7 +649,6 @@ class ResultPage extends Component {
       isShowCourseTypeInfo,
       selectedCourseType,
       isErrored,
-      formCompletedWithoutTheory,
       isMobileMapVisible
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
@@ -683,9 +682,10 @@ class ResultPage extends Component {
       bookNowDisabled = true
     }
 
-    if (formCompletedWithoutTheory) {
-      bookNowDisabled = true
-    }
+    // Don't need theory for now
+    // if (formCompletedWithoutTheory) {
+    //   bookNowDisabled = true
+    // }
 
     let resultsCount = 0
 
