@@ -21,7 +21,7 @@
   font-size: 9px;
 
   li {
-    height: 180px;
+    // height: 180px;
     list-style-type: none;
     margin-bottom: 4px;
 
@@ -31,11 +31,22 @@
     border: 1px solid #ccc;
     margin-right: -1px;
     margin-bottom: -1px;
-    // height: 180px;
 
     &:nth-child(7n) {
       width: calc(14.2857142857%);
     }
+  }
+}
+.calendarDaysFiveRows {
+  li {
+    height: calc((100vh - 154px) / 5);
+    min-height: 129px;
+  }
+}
+.calendarDaysSixRows {
+  li {
+    height: calc((100vh - 154px) / 6);
+    min-height: 107px;
   }
 }
 @media (min-width: 1200px) {

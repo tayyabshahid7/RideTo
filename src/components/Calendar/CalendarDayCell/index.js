@@ -44,11 +44,18 @@ const getDayItems = (day, dateStr) => {
   return items.sort((a, b) => a.time > b.time)
 }
 
-const CalendarDayCell = ({ day, calendar, history, handleMobileCellClick }) => {
+const CalendarDayCell = ({
+  day,
+  calendar,
+  history,
+  handleMobileCellClick,
+  rowsCount
+}) => {
+  const showItems = rowsCount < 6 ? 2 : 1
   const dateStr = moment(day.date).format('YYYY-MM-DD')
   const items = getDayItems(day, dateStr)
   const selectedDay = dateStr === calendar.selectedDate
-  const more = items.length - 3
+  const more = items.length - showItems
   const isOtherMonthDate = day.date.getMonth() !== calendar.month
   const isAxisDate =
     calendar.year === day.date.getFullYear() &&
@@ -86,7 +93,7 @@ const CalendarDayCell = ({ day, calendar, history, handleMobileCellClick }) => {
         {day.date.getDate()}
       </div>
       <div className={styles.courseContainer}>
-        {items.slice(0, 3).map(item => (
+        {items.slice(0, showItems).map(item => (
           <CalendarDayCellItem key={item.id} item={item} />
         ))}
 
