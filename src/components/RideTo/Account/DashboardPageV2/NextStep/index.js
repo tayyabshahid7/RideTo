@@ -50,15 +50,22 @@ function NextStep({
       async function fetchMyBikes() {
         const response = await fetchBikes(selectedGoal)
 
-        setBikes(
-          response.results.map(bike => {
+        setBikes([
+          {
+            name: 'Rent to own bike hire',
+            description: 'Electric delivery bike hire for £79/Week',
+            link: 'https://rideto.typeform.com/to/tt64qL',
+            image:
+              'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/askoll-es3-evolution-3000w--248-p.jpg'
+          },
+          ...response.results.map(bike => {
             return {
               name: bike.bike_model,
               link: bike.url,
               image: bike.images[0].image
             }
           })
-        )
+        ])
       }
 
       fetchMyBikes()

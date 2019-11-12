@@ -5,6 +5,7 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import { NextArrow, PrevArrow } from './Arrows'
 import { useMediaQuery } from 'react-responsive'
+import classnames from 'classnames'
 
 function Slider({ gear, constant }) {
   const isDesktop = useMediaQuery({ minWidth: 1025 })
@@ -18,13 +19,22 @@ function Slider({ gear, constant }) {
     <div className={styles.container}>
       {gear.length > 0 && (
         <Slick {...settings}>
-          {gear.map(({ name, link, image }) => (
+          {gear.map(({ name, link, image, description }) => (
             <a key={name} href={link} target="_blank" rel="noopener noreferrer">
-              <div className={styles.slide}>
+              <div
+                className={classnames(
+                  styles.slide,
+                  description && styles.descSlide
+                )}>
                 <img src={image} alt="" />
                 <h4 className={styles.title}>
                   {constant !== 'STEP_BIKE' && 'Shop'} {name}
                 </h4>
+                {description && (
+                  <p className={styles.description}>
+                    {description} <span>Learn More</span>
+                  </p>
+                )}
               </div>
             </a>
           ))}
