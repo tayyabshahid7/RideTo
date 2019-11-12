@@ -81,9 +81,9 @@ class CourseAvailabilityComponent extends React.Component {
     if (courseLocation.instant_book) {
       tomorrow = moment()
         .add(1, 'days')
-        .hour(20)
-        .minutes(0)
-        .seconds(0)
+        .hour(23)
+        .minutes(59)
+        .seconds(59)
     }
 
     return dates.map(date => {

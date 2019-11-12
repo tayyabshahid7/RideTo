@@ -31,9 +31,6 @@ import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
 import { fetchSingleRidetoCourse } from 'services/course'
 
-import smoothscroll from 'smoothscroll-polyfill'
-smoothscroll.polyfill()
-
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
 
@@ -49,6 +46,8 @@ const CourseTypeDetails = loadable(() =>
 const CourseDetailPanel = loadable(() => import('./CourseDetailPanel'))
 
 const CourseItemNonPartner = loadable(() => import('./CourseItemNonPartner'))
+
+const MobileMap = loadable(() => import('./MobileMap'))
 
 class ResultPage extends Component {
   constructor(props) {
@@ -73,7 +72,8 @@ class ResultPage extends Component {
       noRedirect: false,
       isShowCourseTypeInfo: false,
       isErrored: false,
-      formCompletedWithoutTheory: false
+      formCompletedWithoutTheory: false,
+      isMobileMapVisible: false
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -90,6 +90,7 @@ class ResultPage extends Component {
     this.showCourseTypeInfo = this.showCourseTypeInfo.bind(this)
     this.hideCourseTypeInfo = this.hideCourseTypeInfo.bind(this)
     this.handleBackClick = this.handleBackClick.bind(this)
+    this.handleCloseMap = this.handleCloseMap.bind(this)
 
     window.sessionStorage.removeItem('trainings')
 
@@ -433,9 +434,9 @@ class ResultPage extends Component {
                   }
                 )
 
-                if (this.state.formCompletedWithoutTheory) {
-                  flashDiv('choose-both')
-                }
+                // if (this.state.formCompletedWithoutTheory) {
+                //   flashDiv('choose-both')
+                // }
 
                 if (!bike_hire) {
                   flashDiv('choose-bike')
@@ -612,6 +613,12 @@ class ResultPage extends Component {
     })
   }
 
+  handleCloseMap() {
+    this.setState({
+      isMobileMapVisible: false
+    })
+  }
+
   render() {
     const {
       courses,
@@ -642,7 +649,7 @@ class ResultPage extends Component {
       isShowCourseTypeInfo,
       selectedCourseType,
       isErrored,
-      formCompletedWithoutTheory
+      isMobileMapVisible
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -675,9 +682,10 @@ class ResultPage extends Component {
       bookNowDisabled = true
     }
 
-    if (formCompletedWithoutTheory) {
-      bookNowDisabled = true
-    }
+    // Don't need theory for now
+    // if (formCompletedWithoutTheory) {
+    //   bookNowDisabled = true
+    // }
 
     let resultsCount = 0
 
@@ -757,13 +765,19 @@ class ResultPage extends Component {
                               styles.instruction,
                               isFullLicence && styles.instructionFullLicence
                             )}>
-                            Select a location
+                            <span>Select a location</span>
+                            <button
+                              id="results-mobile-map-button"
+                              className={styles.showMap}
+                              onClick={() => {
+                                this.setState({
+                                  isMobileMapVisible: !isMobileMapVisible
+                                })
+                              }}>
+                              <i class="fas fa-map-marker-alt"></i> Map
+                            </button>
                           </div>
-                          <div
-                            className={classnames(
-                              styles.schoolCount
-                              // styles.schoolCountDesktop
-                            )}>
+                          <div className={classnames(styles.schoolCount)}>
                             {resultsCount} training sites sorted by{' '}
                             {this.renderSortByDropdown(true)}
                             <span className={styles.desktopSortByValue}>
@@ -908,6 +922,20 @@ class ResultPage extends Component {
         {isFullLicence && <FullLicenceIncluded />}
 
         {isFullLicence && <FullLicenceFaq />}
+
+        <MediaQuery maxWidth={768}>
+          {isMobileMapVisible && courses && userLocation && (
+            <MobileMap handleCloseMap={this.handleCloseMap}>
+              <MapComponent
+                courses={courses}
+                userLocation={userLocation}
+                width="100%"
+                hiddenOnMobile
+                handlePinClick={this.handlePriceClick}
+              />
+            </MobileMap>
+          )}
+        </MediaQuery>
 
         {isShowCourseTypeInfo && (
           <SidePanel

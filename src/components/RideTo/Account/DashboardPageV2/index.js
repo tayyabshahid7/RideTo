@@ -4,6 +4,7 @@ import RouteToFreedom from './RouteToFreedom'
 import NextStep from './NextStep'
 import Achievements from './Achievements'
 import GuidesAdvice from './GuidesAdvice'
+import MyCheckList from './MyCheckList'
 import News from './News'
 import classnames from 'classnames'
 import { GOALS, STYLES } from './RouteToFreedom/constants'
@@ -33,6 +34,7 @@ import Loading from 'components/Loading'
 import { useMediaQuery } from 'react-responsive'
 
 function DashboardPageV2({ match }) {
+  const [userDetails, setUserDetails] = useState(null)
   const [selectedGoal, setSelectedGoal] = useState(GOALS[3])
   const [selectedStyle, setSelectedStyle] = useState(STYLES[0])
   const [cbtStatus, setCbtStatus] = useState(null)
@@ -76,7 +78,7 @@ function DashboardPageV2({ match }) {
     const goal = GOALS.find(goal => goal.constant === value)
 
     setSelectedGoal(goal)
-    updateUserDetail('riding_goal', goal.constant)
+    updateUserDetails('riding_goal', goal.constant)
   }
 
   const handleStyleChange = event => {
@@ -84,7 +86,16 @@ function DashboardPageV2({ match }) {
     const style = STYLES.find(style => style.constant === value)
 
     setSelectedStyle(style)
-    updateUserDetail('riding_style', style.constant)
+    updateUserDetails('riding_style', style.constant)
+  }
+
+  const updateUserDetails = (key, value) => {
+    updateUserDetail(key, value, {
+      course_completed_cbt: cbtStatus,
+      course_completed_das: dasStatus,
+      riding_goal: selectedGoal.constant,
+      riding_style: selectedStyle.constant
+    })
   }
 
   const updateAchievements = achievement => {
@@ -276,6 +287,7 @@ function DashboardPageV2({ match }) {
       const user = getUserProfile(getToken())
 
       if (user) {
+        setUserDetails(user)
         loadUserDetails(user.user_id)
         loadOrders(user.username)
       } else {
@@ -385,6 +397,7 @@ function DashboardPageV2({ match }) {
                 cbtStatus={cbtStatus}
                 dasStatus={dasStatus}
                 selectedGoal={selectedGoal}
+                updateUserDetails={updateUserDetails}
               />
             </div>
           )}
@@ -417,6 +430,9 @@ function DashboardPageV2({ match }) {
                       }
                       handleClick={handleOrderClick}
                     />
+                  </div>
+                  <div className={styles.pageItem}>
+                    <MyCheckList userId={userDetails.user_id} />
                   </div>
                   <div className={styles.pageItem}>
                     <GuidesAdvice />

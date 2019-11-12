@@ -1,6 +1,22 @@
 import { get, post } from 'services/api'
 import { requestToken } from 'services/auth'
 
+export const saveCheckoutEmail = async (email, course) => {
+  const path = `save-checkout-email`
+  const response = await post(
+    path,
+    {
+      email,
+      course: {
+        ...course,
+        url: `/course-location/?postcode=${course.postcode}&courseType=${course.courseType}&courseId=${course.supplierId}`
+      }
+    },
+    false
+  )
+  return response
+}
+
 export const saveUser = async user => {
   const path = 'users/signup/'
   const { email, password } = user

@@ -10,12 +10,20 @@ import { fetchAddressWithPostcode } from 'services/misc'
 import { createOrder } from 'services/widget'
 import { handleStripePayment } from 'services/stripe'
 import { getPrice, getLicenceAge } from 'services/course'
-import { getUserProfile, getToken, isAuthenticated } from 'services/auth'
-import { fetchUser } from 'services/user'
+import {
+  getUserProfile,
+  getToken,
+  isAuthenticated,
+  removeToken
+} from 'services/auth'
+import { fetchUser, saveCheckoutEmail } from 'services/user'
 import { isInstantBook } from 'services/page'
 import { getExpectedPrice } from 'services/order'
 import { tldExists } from 'tldjs'
+import classnames from 'classnames'
 import loadable from '@loadable/component'
+import isEqual from 'lodash/isEqual'
+import isEmpty from 'lodash/isEmpty'
 
 const AddressSelectModal = loadable(() =>
   import('components/RideTo/AddressSelectModal')
@@ -48,6 +56,10 @@ const USER_FIELDS = [
   'email'
 ]
 
+const CARD_FIELDS = REQUIRED_FIELDS.filter(
+  field => !USER_FIELDS.includes(field)
+)
+
 const NO_ADDONS_ADDRESS = {
   address_1: 'no',
   town: 'no',
@@ -56,16 +68,16 @@ const NO_ADDONS_ADDRESS = {
 
 const REQUIRED_ADDRESS_FIELDS = ['address_1', 'town', 'postcode']
 
+const emptyAddress = {
+  address_1: '',
+  address_2: '',
+  town: '',
+  postcode: ''
+}
+
 class CheckoutPage extends Component {
   constructor(props) {
     super(props)
-
-    const emptyAddress = {
-      address_1: '',
-      address_2: '',
-      town: '',
-      postcode: ''
-    }
 
     this.state = {
       details: {
@@ -108,11 +120,13 @@ class CheckoutPage extends Component {
       loadingPrice: false,
       showMap: false,
       trainings: this.props.trainings,
+      showUserDetails: false,
       showCardDetails: false,
       physicalAddonsCount: this.props.checkoutData.addons.filter(
         addon => addon.name !== 'Peace Of Mind Policy'
       ).length,
-      cardElement: null
+      cardElement: null,
+      emailSubmitted: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -122,6 +136,7 @@ class CheckoutPage extends Component {
     this.handleValueChange = this.handleValueChange.bind(this)
     this.handleVoucherApply = this.handleVoucherApply.bind(this)
     this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
+    this.handleChangeEmailClick = this.handleChangeEmailClick.bind(this)
   }
 
   onUpdate(data) {
@@ -139,20 +154,37 @@ class CheckoutPage extends Component {
       const user = getUserProfile(getToken())
       if (user) {
         const userDetails = await fetchUser(user.username)
-        const details = { ...this.state.details, ...userDetails }
+        const details = {
+          ...this.state.details,
+          ...userDetails,
+          ...(userDetails.birthdate
+            ? {
+                user_birthdate: moment(userDetails.birthdate).format(
+                  'DD/MM/YYYY'
+                )
+              }
+            : null)
+        }
         const errors = {
           ...this.state.errors,
           first_name: null,
           last_name: null,
           email: null
         }
-        this.setState({ details, errors })
+        this.setState({
+          details,
+          errors,
+          emailSubmitted: true,
+          showUserDetails: true,
+          showCardDetails: true
+        })
       }
     }
   }
 
   async loadPrice(voucher_code) {
     try {
+      const { instantBook } = this.props
       const { supplierId, courseId, date, courseType } = this.props.checkoutData
       const { details, trainings } = this.state
       const isFullLicence = courseType === 'FULL_LICENCE'
@@ -161,7 +193,8 @@ class CheckoutPage extends Component {
         courseId,
         date,
         course_type: courseType,
-        voucher_code
+        voucher_code,
+        order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO'
       }
       this.setState({ loadingPrice: true })
       if (isFullLicence) {
@@ -170,7 +203,8 @@ class CheckoutPage extends Component {
           supplierId: training.supplier_id,
           course_type: training.course_type,
           hours: training.package_hours,
-          voucher_code
+          voucher_code,
+          order_source: 'RIDETO'
         })
 
         this.setState({
@@ -331,7 +365,7 @@ class CheckoutPage extends Component {
       case 'first_name':
       case 'last_name':
       case 'email':
-        return 'checkout-your-details'
+        return 'checkout-your-email'
       case 'card_name':
       case 'card_number':
       case 'cvv':
@@ -374,12 +408,47 @@ class CheckoutPage extends Component {
       prevState.details.riding_experience !== details.riding_experience &&
       [
         'Cycling experience',
-        'On road motorcycling',
+        // 'On road motorcycling',
         'Off road motorcycling'
       ].includes(details.riding_experience)
     ) {
       handeUpdateOption({
         isInexperienced: true
+      })
+    }
+
+    if (!isEqual(this.state.errors, prevState.errors)) {
+      const errors = Object.entries(this.state.errors)
+        .filter(([key, value]) => key !== 'divId')
+        .filter(([key, value]) => !isEmpty(value))
+        .filter(([key, value]) => key !== 'email')
+
+      if (!errors.length) {
+        return
+      }
+
+      const userError = errors.some(([key]) => USER_FIELDS.includes(key))
+      const cardError = errors.some(([key]) => CARD_FIELDS.includes(key))
+
+      if (userError) {
+        this.setState({
+          showUserDetails: true
+        })
+      }
+
+      if (cardError) {
+        this.setState({
+          showCardDetails: true
+        })
+      }
+    }
+
+    if (
+      this.state.emailSubmitted !== prevState.emailSubmitted &&
+      this.state.emailSubmitted
+    ) {
+      this.setState({
+        showUserDetails: true
       })
     }
   }
@@ -463,7 +532,35 @@ class CheckoutPage extends Component {
       ) ||
       !tldExists(details.email)
     ) {
-      errors['email'] = 'Invalid email address'
+      errors['email'] = 'Please enter a valid email address'
+      if (!errors.divId) errors.divId = this.getErrorDivId('email')
+      hasError = true
+    }
+
+    this.setState({
+      errors: errors
+    })
+
+    return !hasError
+  }
+
+  validateEmail(details) {
+    const errors = { address: {}, billingAddress: {}, divId: false }
+    let hasError = false
+
+    if (!details['email']) {
+      errors['email'] = 'This field is required.'
+      if (!errors.divId) errors.divId = this.getErrorDivId('email')
+      hasError = true
+    }
+
+    if (
+      !details.email.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      ) ||
+      !tldExists(details.email)
+    ) {
+      errors['email'] = 'Please enter a valid email address'
       if (!errors.divId) errors.divId = this.getErrorDivId('email')
       hasError = true
     }
@@ -496,8 +593,12 @@ class CheckoutPage extends Component {
         } else {
           return {
             error: true,
-            errorMessage:
-              'There is a registered user with this email. Login to continue'
+            errorMessage: (
+              <span>
+                There is a registered user with this email.{' '}
+                <a href="/account/login">Login to continue</a>
+              </span>
+            )
           }
         }
       } catch (error) {
@@ -659,6 +760,94 @@ class CheckoutPage extends Component {
     })
   }
 
+  handleEmailSubmit = async () => {
+    const { checkoutData } = this.props
+    const { details } = this.state
+
+    //Check if email already exists or user logged in
+    const result = await this.checkEmail(details.email)
+    if (result.error) {
+      this.setState({
+        errors: {
+          email: result.errorMessage,
+          divId: this.getErrorDivId('email')
+        }
+      })
+      return
+    }
+
+    if (!this.validateEmail({ email: details.email })) {
+      return
+    }
+
+    const resultEmail = await saveCheckoutEmail(details.email, checkoutData)
+
+    if (resultEmail) {
+      this.setState({
+        emailSubmitted: true
+      })
+    }
+  }
+
+  handleSignout = () => {
+    removeToken()
+    sessionStorage.removeItem('login-next')
+    window.location.reload(true)
+  }
+
+  handleChangeEmailClick = () => {
+    if (isAuthenticated()) {
+      this.setState({
+        errors: {
+          email: (
+            <React.Fragment>
+              You are currently logged in, to book with a new email{' '}
+              <button
+                className={styles.signoutButton}
+                onClick={this.handleSignout}>
+                sign out
+              </button>
+            </React.Fragment>
+          ),
+          divId: this.getErrorDivId('email')
+        }
+      })
+      return
+    }
+
+    this.setState({
+      details: {
+        ...this.state.details,
+        first_name: '',
+        last_name: '',
+        // email: '',
+        user_birthdate: '',
+        phone: '',
+        current_licence: '',
+        riding_experience: '',
+        rider_type: '',
+        address: { ...emptyAddress },
+        card_name: '',
+        sameAddress: true,
+        billingAddress: { ...emptyAddress },
+        card_number: false,
+        cvv: false,
+        expiry_date: false,
+        postcode: ''
+      },
+      manualAddress: false,
+      addresses: [],
+      errors: {
+        address: {},
+        billingAddress: {},
+        divId: false
+      },
+      showUserDetails: false,
+      showCardDetails: false,
+      emailSubmitted: false
+    })
+  }
+
   render() {
     const { courseType } = this.props.checkoutData
     const {
@@ -675,13 +864,19 @@ class CheckoutPage extends Component {
       showMap,
       trainings,
       showCardDetails,
-      physicalAddonsCount
+      physicalAddonsCount,
+      emailSubmitted,
+      showUserDetails
     } = this.state
 
     return (
       <React.Fragment>
         <div className={styles.container}>
-          <div className={styles.leftPanel}>
+          <div
+            className={classnames(
+              styles.leftPanel,
+              !showUserDetails && styles.emailNotSet
+            )}>
             <UserDetails
               {...this.props}
               details={details}
@@ -704,6 +899,10 @@ class CheckoutPage extends Component {
               handlePaymentButtonClick={this.handlePaymentButtonClick}
               needsAddress={physicalAddonsCount > 0}
               setCardElement={this.setCardElement}
+              handleEmailSubmit={this.handleEmailSubmit}
+              emailSubmitted={emailSubmitted}
+              showUserDetails={showUserDetails}
+              handleChangeEmailClick={this.handleChangeEmailClick}
             />
           </div>
           <div className={styles.rightPanel}>

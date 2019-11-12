@@ -21,13 +21,15 @@ import SectionSplitter from '../SectionSplitter'
 import CardIcons from '../CardIcons'
 import AddressForm from 'components/AddressForm'
 import Button from 'components/RideTo/Button'
+import { isAuthenticated } from 'services/auth'
 
 class UserDetails extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      cardBrand: null
+      cardBrand: null,
+      userAuthenticated: isAuthenticated()
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -37,22 +39,37 @@ class UserDetails extends Component {
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
 
+    this.userDetails = React.createRef()
     this.cardDetails = React.createRef()
   }
 
   componentDidUpdate(prevProps) {
-    const { showCardDetails } = this.props
+    const { showCardDetails, showUserDetails } = this.props
 
-    if (prevProps.showCardDetails !== showCardDetails && showCardDetails) {
+    function scrollToElement(element) {
       setTimeout(() => {
-        const cardDetails = this.cardDetails.current
+        if (element) {
+          const offset = element.offsetTop
 
-        cardDetails &&
-          cardDetails.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          })
+          window.scrollTo({ top: offset, behavior: 'smooth' })
+        }
       }, 99)
+    }
+
+    if (
+      prevProps.showUserDetails !== showUserDetails &&
+      showUserDetails &&
+      !isAuthenticated()
+    ) {
+      scrollToElement(this.userDetails.current)
+    }
+
+    if (
+      prevProps.showCardDetails !== showCardDetails &&
+      showCardDetails &&
+      !isAuthenticated()
+    ) {
+      scrollToElement(this.cardDetails.current)
     }
   }
 
@@ -113,7 +130,7 @@ class UserDetails extends Component {
     )
   }
 
-  renderUserInfo() {
+  renderEmail() {
     const {
       details,
       errors = {},
@@ -127,14 +144,11 @@ class UserDetails extends Component {
       hasPOM,
       isFullLicence,
       instantBook,
-      needsAddress,
-      manualAddress,
-      postcodeLookingup,
-      onChange,
-      onPostalCodeSubmit
+      handleEmailSubmit,
+      emailSubmitted,
+      handleChangeEmailClick
     } = this.props
-
-    const currentLicenceOptions = getCurrentLicenceOptions()
+    const { userAuthenticated } = this.state
 
     return (
       <div>
@@ -156,12 +170,74 @@ class UserDetails extends Component {
         </div>
         <SectionSplitter hideDesktop />
         <div
+          id="checkout-your-email"
+          className={styles.title}
+          style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
+          Email Address
+        </div>
+        <div className={styles.rowItem}>
+          <div className={styles.addOnInput}>
+            <Input
+              label="Email Address"
+              type="email"
+              placeholder="E-mail address"
+              name="email"
+              value={details.email}
+              className={classnames(
+                styles.input,
+                errors.email && styles.inputError
+              )}
+              onChange={this.handleChange}
+              disabled={userAuthenticated || emailSubmitted}
+            />
+            {!emailSubmitted ? (
+              <Button
+                className={styles.submitButton}
+                onClick={handleEmailSubmit}>
+                Add my email
+              </Button>
+            ) : (
+              <Button
+                className={styles.changeButton}
+                onClick={handleChangeEmailClick}>
+                Change
+              </Button>
+            )}
+          </div>
+          {errors.email && <div className={styles.error}>{errors.email}</div>}
+        </div>
+      </div>
+    )
+  }
+
+  renderUserInfo() {
+    const {
+      details,
+      errors = {},
+      needsAddress,
+      manualAddress,
+      postcodeLookingup,
+      onChange,
+      onPostalCodeSubmit,
+      showUserDetails
+    } = this.props
+    const { userAuthenticated } = this.state
+
+    const currentLicenceOptions = getCurrentLicenceOptions()
+
+    return (
+      <div
+        className={classnames(
+          !showUserDetails && !userAuthenticated && styles.hideDetails
+        )}>
+        <div
+          ref={this.userDetails}
           id="checkout-your-details"
           className={styles.title}
           style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
           Rider's Details
         </div>
-        <div className={styles.rowItem}>
+        <div className={classnames(styles.rowItem)}>
           <Input
             label="First Name"
             placeholder="First name"
@@ -190,19 +266,6 @@ class UserDetails extends Component {
           {errors.last_name && (
             <div className={styles.error}>{errors.last_name}</div>
           )}
-          <Input
-            label="Email Address"
-            type="email"
-            placeholder="E-mail address"
-            name="email"
-            value={details.email}
-            className={classnames(
-              styles.input,
-              errors.email && styles.inputError
-            )}
-            onChange={this.handleChange}
-          />
-          {errors.email && <div className={styles.error}>{errors.email}</div>}
           <div
             className={classnames(
               errors.user_birthdate && styles.inputError,
@@ -228,8 +291,8 @@ class UserDetails extends Component {
               errors.phone && styles.inputError
             )}>
             <PhoneInput
-              label="Telephone Number"
-              placeholder="Telephone Number"
+              label="Mobile Number"
+              placeholder="Mobile Number"
               name="phone"
               value={details.phone}
               onChange={this.handlePhoneChange}
@@ -247,9 +310,7 @@ class UserDetails extends Component {
                 errors.current_licence && styles.inputError
               )}
               onChange={this.handleChange}>
-              <option value="" hidden disabled>
-                Current Licence
-              </option>
+              <option value="" hidden disabled></option>
               {currentLicenceOptions.map(licenseOption => (
                 <option value={licenseOption.id} key={licenseOption.id}>
                   {licenseOption.name}
@@ -274,9 +335,7 @@ class UserDetails extends Component {
               )}
               onChange={this.handleChange}
               required>
-              <option value="" hidden disabled>
-                Riding Experience
-              </option>
+              <option value="" hidden disabled></option>
               {RidingExperiences.map(ridingExperience => (
                 <option
                   value={ridingExperience.value}
@@ -303,9 +362,7 @@ class UserDetails extends Component {
               )}
               onChange={this.handleChange}
               required>
-              <option value="" hidden disabled>
-                Rider Type
-              </option>
+              <option value="" hidden disabled></option>
               {RiderTypes.map(riderType => (
                 <option value={riderType.value} key={riderType.value}>
                   {riderType.title}
@@ -385,7 +442,8 @@ class UserDetails extends Component {
       errors = {},
       showCardDetails,
       handlePaymentButtonClick,
-      setCardElement
+      setCardElement,
+      showUserDetails
     } = this.props
     const { cardBrand } = this.state
     const inputStyle = {
@@ -396,7 +454,12 @@ class UserDetails extends Component {
       }
     }
     return (
-      <div className={styles.checkForm} ref={this.cardDetails}>
+      <div
+        className={classnames(
+          styles.checkForm,
+          !showUserDetails && styles.hidePayment
+        )}
+        ref={this.cardDetails}>
         <button
           onClick={handlePaymentButtonClick}
           id="checkout-payment-details"
@@ -517,6 +580,8 @@ class UserDetails extends Component {
   render() {
     return (
       <div className={styles.container}>
+        {this.renderEmail()}
+        <SectionSplitter />
         {this.renderUserInfo()}
         <SectionSplitter />
         {this.renderPaymentForm()}
