@@ -132,7 +132,7 @@ class CourseForm extends React.Component {
   loadPricing() {
     const { fetchPrice, schoolId, pricing } = this.props
     const { course_type_id, date, time } = this.state.course
-    if (course_type_id && date && time) {
+    if (course_type_id && date) {
       let datetime = moment(`${date} ${time}`).format(DAY_FORMAT3)
       if (
         pricing.schoolId !== schoolId ||
