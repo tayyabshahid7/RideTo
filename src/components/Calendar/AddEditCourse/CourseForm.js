@@ -102,29 +102,20 @@ class CourseForm extends React.Component {
     this.loadPricing()
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { courseTypes } = this.props.info
-    const { courseTypes: prevCourseTypes } = prevProps.info
     const { course_type_id } = this.state.course
 
-    if (
-      courseTypes &&
-      prevCourseTypes &&
-      courseTypes.length !== prevCourseTypes.length &&
-      course_type_id === ''
-    ) {
-      this.setState(
-        {
-          course: {
-            ...this.state.course,
-            course_type_id: courseTypes
-              .filter(removeFullLicence)[0]
-              .id.toString()
-          }
-        },
-        this.loadPricing()
-      )
-    } else {
+    if (courseTypes.length && course_type_id === '') {
+      this.setState({
+        course: {
+          ...this.state.course,
+          course_type_id: courseTypes.filter(removeFullLicence)[0].id.toString()
+        }
+      })
+    }
+
+    if (course_type_id && course_type_id !== prevState.course.course_type_id) {
       this.loadPricing()
     }
   }
@@ -173,10 +164,16 @@ class CourseForm extends React.Component {
   }
 
   handleChangeRawEvent(event) {
-    let name = event.target.name
-    let { course } = this.state
-    course[name] = event.target.value
-    this.setState({ course, edited: true })
+    const { name, value } = event.target
+    const { course } = this.state
+
+    this.setState({
+      course: {
+        ...course,
+        [name]: value
+      },
+      edited: true
+    })
   }
 
   handleSave(event) {
