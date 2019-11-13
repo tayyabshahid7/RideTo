@@ -15,6 +15,7 @@ import {
   Button
 } from 'components/ConnectForm'
 import classnames from 'classnames'
+import isMobile from 'is-mobile'
 
 class CustomerDetailForm extends React.Component {
   constructor(props) {
@@ -43,13 +44,20 @@ class CustomerDetailForm extends React.Component {
 
     return (
       <Form className={styles.panel} onSubmit={this.handleSubmit}>
-        <ConnectInput
-          name="phone"
-          value={customer.phone || ''}
-          label="Phone"
-          type="phone"
-          onChange={this.handleChange}
-        />
+        <div className={styles.phoneInput}>
+          <ConnectInput
+            name="phone"
+            value={customer.phone || ''}
+            label="Phone"
+            type="phone"
+            onChange={this.handleChange}
+          />
+          {isMobile() && customer.phone && (
+            <a className={styles.callButton} href={`tel:${customer.phone}`}>
+              Call
+            </a>
+          )}
+        </div>
         <ConnectAgeInput
           name="birthdate"
           value={customer.birthdate || ''}
