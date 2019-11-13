@@ -104,7 +104,7 @@ class CourseForm extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { courseTypes } = this.props.info
-    const { course_type_id } = this.state.course
+    const { course_type_id, date } = this.state.course
 
     if (courseTypes.length && course_type_id === '') {
       this.setState({
@@ -117,6 +117,12 @@ class CourseForm extends React.Component {
 
     if (course_type_id && course_type_id !== prevState.course.course_type_id) {
       this.loadPricing()
+      return
+    }
+
+    if (date && date !== prevState.course.date) {
+      this.loadPricing()
+      return
     }
   }
 
