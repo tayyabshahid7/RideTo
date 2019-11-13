@@ -369,7 +369,7 @@ const initialState = {
     year: new Date().getFullYear(),
     day: new Date().getDate(),
     error: null,
-    viewMode: CALENDAR_VIEW.WEEK,
+    viewMode: CALENDAR_VIEW.MONTH,
     rightPanelMode: null,
     selectedDate: null,
     selectedCourse: null,
