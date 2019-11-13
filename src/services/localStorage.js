@@ -13,16 +13,26 @@ export const loadState = () => {
 
 export const saveState = state => {
   try {
-    const serializedState = JSON.stringify(state)
+    const serializedState = JSON.stringify({
+      ...JSON.parse(localStorage.getItem('state')),
+      ...state
+    })
     localStorage.setItem('state', serializedState)
   } catch (err) {
     console.log('Problem saving state') // Ignore error since we don't want to break the app
   }
 }
 
-export const clearState = state => {
+export const clearState = key => {
   try {
-    localStorage.removeItem('state')
+    if (!key) {
+      localStorage.removeItem('state')
+    } else {
+      const oldState = JSON.parse(localStorage.getItem('state'))
+      delete oldState[key]
+      const serializedState = JSON.stringify(oldState)
+      localStorage.setItem('state', serializedState)
+    }
   } catch (err) {
     console.log('Problem clearing state')
   }

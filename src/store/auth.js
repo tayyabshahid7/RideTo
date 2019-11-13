@@ -130,7 +130,7 @@ export default function reducer(state = initialState, action) {
         error: action.error
       }
     case LOGIN_SUCCESS:
-      clearState()
+      clearState('auth')
       persistAuthState(state, {
         user: action.data.user,
         schoolId: action.data.user.suppliers[0].id
@@ -162,7 +162,7 @@ export default function reducer(state = initialState, action) {
         error: action.error
       }
     case LOGOUT:
-      clearState()
+      clearState('auth')
       removeToken()
       return { ...initialState }
     case RESET:
