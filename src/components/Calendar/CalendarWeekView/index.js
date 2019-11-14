@@ -40,7 +40,7 @@ class CalendarWeekView extends Component {
 
   componentDidMount() {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
-    const offset = isDesktop ? 340 : 550
+    let offset = isDesktop ? 340 : 600
 
     console.log(this.firstCourse)
 
