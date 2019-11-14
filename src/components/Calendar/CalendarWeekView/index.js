@@ -35,11 +35,14 @@ class CalendarWeekView extends Component {
     }
 
     this.startTime = React.createRef()
+    this.firstCourse = React.createRef()
   }
 
   componentDidMount() {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
     const offset = isDesktop ? 340 : 550
+
+    console.log(this.firstCourse)
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
@@ -56,6 +59,8 @@ class CalendarWeekView extends Component {
         mobileDayOfWeek: getDayOfWeek(this.props.calendar)
       })
     }
+
+    console.log(this.firstCourse.current)
   }
 
   listenScrollEvent(event) {
@@ -276,6 +281,7 @@ class CalendarWeekView extends Component {
                               key={index}
                               match={match}
                               settings={settings}
+                              ref={index === 0 ? this.firstCourse : undefined}
                             />
                           ))}
                       </ul>
