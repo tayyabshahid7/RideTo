@@ -31,26 +31,18 @@ class CalendarWeekView extends Component {
     super(props)
 
     this.state = {
-      mobileDayOfWeek: getDayOfWeek(this.props.calendar)
+      mobileDayOfWeek: getDayOfWeek(this.props.calendar),
+      scrolled: false
     }
 
     this.startTime = React.createRef()
-    this.firstCourse = React.createRef()
+    this.firstCourse = null
   }
 
   componentDidMount() {
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches
-    let offset = isDesktop ? 340 : 600
-
-    console.log(this.firstCourse)
-
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
-
-    setTimeout(() => {
-      window.scrollTo(0, offset)
-    })
   }
 
   componentDidUpdate(prevProps) {
@@ -60,7 +52,33 @@ class CalendarWeekView extends Component {
       })
     }
 
-    console.log(this.firstCourse.current)
+    if (!isEqual(this.props.days, prevProps.days)) {
+      const { mobileDayOfWeek } = this.state
+      const hasCourses = this.props.days[mobileDayOfWeek].courses.length
+
+      if (!hasCourses) {
+        const { scrolled } = this.state
+        const isDesktop = window.matchMedia('(min-width: 768px)').matches
+        let offset = isDesktop ? 340 : 600
+
+        if (!scrolled) {
+          window.scrollTo(0, offset)
+          this.setState({ scrolled: true })
+        }
+      }
+    }
+  }
+
+  setFirstCourseRef = element => {
+    const { scrolled } = this.state
+    this.firstCourse = element
+
+    if (element && !scrolled) {
+      const top = parseInt(element.style.top.replace('px', ''), 10) + 205
+
+      window.scrollTo(0, top)
+      this.setState({ scrolled: true })
+    }
   }
 
   listenScrollEvent(event) {
@@ -281,7 +299,11 @@ class CalendarWeekView extends Component {
                               key={index}
                               match={match}
                               settings={settings}
-                              ref={index === 0 ? this.firstCourse : undefined}
+                              ref={
+                                matches && index === 0
+                                  ? this.setFirstCourseRef
+                                  : undefined
+                              }
                             />
                           ))}
                       </ul>
