@@ -45,7 +45,7 @@ function MyDatePicker({
           onChange({
             target: {
               name: name,
-              value: moment(date).format('YYYY-MM-DD'),
+              value: date && moment(date).format('YYYY-MM-DD'),
               ...(iso && { value: moment(date).toISOString() })
             }
           })
@@ -165,6 +165,8 @@ export function ConnectInput(props) {
 
 export function ConnectAgeInput(props) {
   const { label, id, name, value, hideAge, noWrapLabel } = props
+
+  console.log(value)
 
   return (
     <div className={styles.formGroup}>
