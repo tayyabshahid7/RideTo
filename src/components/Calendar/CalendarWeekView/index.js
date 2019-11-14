@@ -40,8 +40,16 @@ class CalendarWeekView extends Component {
   }
 
   componentDidMount() {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches
+    const { scrolled } = this.state
+
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
+    }
+
+    if (isDesktop && !scrolled) {
+      window.scrollTo(0, 340)
+      this.setState({ scrolled: true })
     }
   }
 
@@ -53,16 +61,16 @@ class CalendarWeekView extends Component {
     }
 
     if (!isEqual(this.props.days, prevProps.days)) {
+      const isDesktop = window.matchMedia('(min-width: 768px)').matches
+
       const { mobileDayOfWeek } = this.state
       const hasCourses = this.props.days[mobileDayOfWeek].courses.length
 
-      if (!hasCourses) {
+      if (!hasCourses && !isDesktop) {
         const { scrolled } = this.state
-        const isDesktop = window.matchMedia('(min-width: 768px)').matches
-        let offset = isDesktop ? 340 : 600
 
         if (!scrolled) {
-          window.scrollTo(0, offset)
+          window.scrollTo(0, 600)
           this.setState({ scrolled: true })
         }
       }
@@ -70,10 +78,11 @@ class CalendarWeekView extends Component {
   }
 
   setFirstCourseRef = element => {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches
     const { scrolled } = this.state
     this.firstCourse = element
 
-    if (element && !scrolled) {
+    if (element && !scrolled && !isDesktop) {
       const top = parseInt(element.style.top.replace('px', ''), 10) + 205
 
       window.scrollTo(0, top)
