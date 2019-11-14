@@ -166,8 +166,6 @@ export function ConnectInput(props) {
 export function ConnectAgeInput(props) {
   const { label, id, name, value, hideAge, noWrapLabel } = props
 
-  console.log(value)
-
   return (
     <div className={styles.formGroup}>
       {label && (
