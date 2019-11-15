@@ -5,6 +5,7 @@ import styles from './styles.scss'
 import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 import classnames from 'classnames'
 import CalendarLabels from './CalendarLabels'
+import SchoolSelect from 'components/SchoolSelect'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class AvailabilityCourses extends React.Component {
       available_days
     }
     this.handleAvailableDaysChange = this.handleAvailableDaysChange.bind(this)
+    this.handleSupplierChange = this.handleSupplierChange.bind(this)
   }
 
   handleAvailableDaysChange(index) {
@@ -39,6 +41,10 @@ class AvailabilityCourses extends React.Component {
   handleCreateBulkCourse(data) {
     const { createBulkCourse, schoolId } = this.props
     createBulkCourse({ schoolId, data })
+  }
+
+  handleSupplierChange(schoolId, schoolName) {
+    this.props.changeSchool(schoolId, schoolName)
   }
 
   renderCreateCourse() {
@@ -63,7 +69,7 @@ class AvailabilityCourses extends React.Component {
 
   renderDefaultDays() {
     const { available_days } = this.state
-    const { settingsSaving } = this.props
+    const { settingsSaving, user, schoolId } = this.props
     return (
       <div className={styles.defaultDays}>
         <div className={styles.topRow}>
@@ -75,6 +81,14 @@ class AvailabilityCourses extends React.Component {
             </div>
           </div>
           <div>
+            <div className={styles.select}>
+              <SchoolSelect
+                schools={user.suppliers}
+                selected={schoolId}
+                onChange={this.handleSupplierChange}
+                small
+              />
+            </div>
             {available_days.map((day, index) => (
               <div
                 key={index}

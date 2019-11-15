@@ -27,6 +27,7 @@ class AvailabilityCoursesContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    user: state.auth.user,
     schoolId: state.auth.schoolId,
     saving: state.course.bulk.saving,
     error: state.course.bulk.error,
