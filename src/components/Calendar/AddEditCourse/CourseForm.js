@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { Col, Row } from 'reactstrap'
 import classnames from 'classnames'
-
+import range from 'lodash/range'
 import styles from './styles.scss'
 import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
 import Loading from 'components/Loading'
@@ -387,16 +387,22 @@ class CourseForm extends React.Component {
               </Row>
               <Row>
                 <Col sm={!isFullLicence ? '6' : '8'}>
-                  <ConnectInput
+                  <ConnectSelect
+                    required
                     basic
                     label="Course spaces"
-                    className={styles.inputNumber}
                     name="spaces"
                     value={spaces || ''}
-                    type="number"
                     disabled={!isEditable}
                     onChange={this.handleChangeRawEvent.bind(this)}
-                    required
+                    raw
+                    options={[
+                      { id: '', name: 'Select' },
+                      ...range(0, 21).map(num => ({
+                        id: num.toString(),
+                        name: num.toString()
+                      }))
+                    ]}
                   />
                 </Col>
               </Row>
