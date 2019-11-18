@@ -37,7 +37,8 @@ class AddOrderItem extends React.Component {
         start_time: `${this.props.course.date}T${this.props.course.time}Z`,
         tandcs_agreed: false,
         email_optin: false,
-        notes: ''
+        notes: '',
+        third_party_optin: false
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
@@ -263,7 +264,8 @@ class AddOrderItem extends React.Component {
         user_phone,
         tandcs_agreed,
         email_optin,
-        notes
+        notes,
+        third_party_optin
       }
     } = this.state
     const price = pricing && pricing.price
@@ -421,6 +423,13 @@ class AddOrderItem extends React.Component {
                 label="Email Opt In"
                 checked={email_optin}
                 name="email_optin"
+                onChange={this.handleChangeRawEvent.bind(this)}
+              />
+
+              <ConnectCheckbox
+                label="3rd Party Opt In"
+                checked={third_party_optin}
+                name="third_party_optin"
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
 
