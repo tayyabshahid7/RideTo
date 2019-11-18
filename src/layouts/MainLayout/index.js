@@ -8,6 +8,7 @@ import CustomerDetailContainer from 'pages/Customers/DetailContainer'
 import NotificationContainer from 'pages/Notifications/NotificationContainer'
 import Calendar from 'pages/Calendar'
 import Account from 'pages/Account'
+import Terms from 'pages/Terms'
 import Footer from 'components/Footer'
 import styles from './styles.scss'
 import classnames from 'classnames'
@@ -34,6 +35,7 @@ const MainLayout = ({ history, location: { pathname } }) => {
             exact
           />
           <Route path="/account" component={Account} />
+          <Route path="/terms" component={Terms} />
           <Route exact path="/" component={Dashboard} />
         </Switch>
         <Footer />
