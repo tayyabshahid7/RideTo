@@ -330,6 +330,7 @@ class PaymentContainer extends React.Component {
               errors={errors}
               fullLicenceType={trainings[0].full_licence_type}
               onChange={this.handleChangeDetails}
+              bikeType={trainings[0].bike_type}
             />
 
             <StripeProvider apiKey={this.stripePublicKey}>

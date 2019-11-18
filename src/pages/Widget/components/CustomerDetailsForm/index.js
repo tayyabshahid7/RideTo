@@ -21,7 +21,8 @@ const CustomerDetailsForm = ({
   errors,
   onChange,
   trainingDate,
-  fullLicenceType
+  fullLicenceType,
+  bikeType
 }) => {
   const BIRTHDATE_ERROR = `Please enter the date in the format DD/MM/YYYY. You MUST be at least ${
     !fullLicenceType ? '16' : getLicenceAge(fullLicenceType)
@@ -71,7 +72,7 @@ const CustomerDetailsForm = ({
         <DateInput
           trainingDate={trainingDate}
           id="user_birthdate"
-          minYears={16}
+          minYears={bikeType === 'manual' ? 17 : 16}
           maxYears={100}
           today={moment()}
           value={details.user_birthdate || ''}
