@@ -13,12 +13,12 @@ const TIMES = [
     const time = `${hour.toString().padStart(2, '0')}:00`
 
     return {
-      id: time,
+      id: `${time}:00`,
       name: time
     }
   }),
   {
-    id: '23:59',
+    id: '23:59:59',
     name: '23:59'
   }
 ]
