@@ -46,10 +46,15 @@ export const getMotorbikeLabel = (bikeHire, isFullLicence) => {
 
 export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
   const { pricing } = course
-  const subTotal =
-    bikeHire && bikeHire !== 'no'
-      ? pricing.price + pricing.bike_hire_cost
-      : pricing.price
+  let subTotal = pricing.price
+
+  if (bikeHire !== 'no') {
+    subTotal = pricing.price + pricing.bike_hire_cost
+  }
+
+  if (bikeHire === 'manual' && pricing.manual_bike_hire_cost) {
+    subTotal = pricing.price + pricing.manual_bike_hire_cost
+  }
 
   return subTotal - discount
 }
