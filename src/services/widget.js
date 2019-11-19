@@ -63,31 +63,33 @@ export const showOwnBikeHire = courseType => {
 }
 
 export const getValidCourses = courses => {
+  const cutOffTime = window.RIDE_TO_DATA.widget_initial.last_time_book
+  const [cutOffHours, cutOffMinutes, cutOffSeconds] = cutOffTime.split(':')
+
+  let today = moment()
+  let tomorrow = moment()
+    .add(1, 'days')
+    .hours(parseInt(cutOffHours))
+    .minutes(parseInt(cutOffMinutes))
+    .seconds(parseInt(cutOffSeconds))
+
   const dates = courses
     .filter(({ date, time }) => {
-      const isToday = date === moment().format('YYYY-MM-DD')
+      let momentDate = moment(date)
+      let dateInString = momentDate.format('YYYY-MM-DD')
 
-      if (
-        isToday &&
-        time >
-          moment()
-            .add(2, 'hours')
-            .format('HH:mm:ss')
+      if (momentDate.isSameOrBefore(today)) {
+        return false
+      } else if (
+        moment(dateInString).isSame(tomorrow.format('YYYY-MM-DD')) &&
+        (today.hour() > tomorrow.hour() ||
+          (today.hour() === tomorrow.hour() &&
+            today.minute() > tomorrow.minute()))
       ) {
-        return true
+        return false
       }
 
-      if (
-        !isToday &&
-        date >
-          moment()
-            .subtract(1, 'days')
-            .format('YYYY-MM-DD')
-      ) {
-        return true
-      }
-
-      return false
+      return true
     })
     .sort(
       (a, b) =>
