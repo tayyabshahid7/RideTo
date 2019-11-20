@@ -23,6 +23,12 @@ global.window.document.body.scrollIntoView = jest.fn()
 
 coursesService.fetchWidgetCourses = jest.fn(() => courses)
 
+global.RIDE_TO_DATA = {
+  widget_initial: {
+    last_time_book: '09:00:00'
+  }
+}
+
 const { date, time } = courses.find(
   course => course.date > moment().format('YYYY-MM-DD')
 )
