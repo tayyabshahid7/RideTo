@@ -1,5 +1,17 @@
 import { get, put } from 'services/api'
 
+export const getDefaultDays = async schoolId => {
+  const path = `school/${schoolId}/default-open-days`
+  const response = await get(path, {})
+  return response
+}
+
+export const saveDefaultDays = async (params = {}, schoolId) => {
+  const path = `school/${schoolId}/default-open-days`
+  const response = await put(path, params)
+  return response
+}
+
 export const getSettings = async () => {
   const path = `school/settings/`
   const response = await get(path, {})

@@ -6,13 +6,15 @@ import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 import classnames from 'classnames'
 import CalendarLabels from './CalendarLabels'
 import SchoolSelect from 'components/SchoolSelect'
+import isEqual from 'lodash/isEqual'
+import Loading from 'components/Loading'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
     super(props)
     let available_days = ['T', 'T', 'T', 'T', 'T', 'F', 'F']
-    if (this.props.settings.default_open_days) {
-      available_days = this.props.settings.default_open_days.split('')
+    if (this.props.defaultDays.days) {
+      available_days = this.props.defaultDays.days.split('')
     }
     this.state = {
       showCreateBulkCourseForm: false,
@@ -20,6 +22,14 @@ class AvailabilityCourses extends React.Component {
     }
     this.handleAvailableDaysChange = this.handleAvailableDaysChange.bind(this)
     this.handleSupplierChange = this.handleSupplierChange.bind(this)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (!isEqual(this.props.defaultDays.days, prevProps.defaultDays.days)) {
+      this.setState({
+        available_days: this.props.defaultDays.days.split('')
+      })
+    }
   }
 
   handleAvailableDaysChange(index) {
@@ -33,9 +43,9 @@ class AvailabilityCourses extends React.Component {
   }
 
   handleSaveDefaultDays() {
-    const { updateSettings, settings } = this.props
+    const { updateDefaultDays, schoolId } = this.props
     const { available_days } = this.state
-    updateSettings({ ...settings, default_open_days: available_days.join('') })
+    updateDefaultDays({ default_open_days: available_days.join('') }, schoolId)
   }
 
   handleCreateBulkCourse(data) {
@@ -69,67 +79,69 @@ class AvailabilityCourses extends React.Component {
 
   renderDefaultDays() {
     const { available_days } = this.state
-    const { settingsSaving, user, schoolId } = this.props
+    const { settingsSaving, user, schoolId, defaultDays } = this.props
     return (
-      <div className={styles.defaultDays}>
-        <div className={styles.topRow}>
-          <div>
-            <div className={styles.title}>Default Days</div>
+      <Loading loading={defaultDays.loading}>
+        <div className={styles.defaultDays}>
+          <div className={styles.topRow}>
             <div>
-              Set default days for when you run courses. Untick days you are not
-              open
+              <div className={styles.title}>Default Days</div>
+              <div>
+                Set default days for when you run courses. Untick days you are
+                not open
+              </div>
             </div>
-          </div>
-          <div>
-            <div className={styles.select}>
-              <SchoolSelect
-                schools={user.suppliers}
-                selected={schoolId}
-                onChange={this.handleSupplierChange}
-                small
-              />
-            </div>
-            {available_days.map((day, index) => (
-              <div
-                key={index}
-                className={styles.defaultDayRow}
-                onClick={() => this.handleAvailableDaysChange(index)}>
-                <div className="col-6">
-                  {`${moment()
-                    .isoWeekday(index + 1)
-                    .format('dddd')}`}
-                  :
-                </div>
-                <div className="col-6">
-                  <div className="custom-control custom-checkbox">
-                    <input
-                      type="checkbox"
-                      className="custom-control-input"
-                      id={`customCheck${index}`}
-                      checked={day !== 'F'}
-                      readOnly
-                    />
-                    <label
-                      className={`custom-control-label ${
-                        day === 'F' ? '' : 'text-white'
-                      }`}>
-                      {day === 'F' ? 'Closed' : 'Open'}
-                    </label>
+            <div>
+              <div className={styles.select}>
+                <SchoolSelect
+                  schools={user.suppliers}
+                  selected={schoolId}
+                  onChange={this.handleSupplierChange}
+                  small
+                />
+              </div>
+              {available_days.map((day, index) => (
+                <div
+                  key={index}
+                  className={styles.defaultDayRow}
+                  onClick={() => this.handleAvailableDaysChange(index)}>
+                  <div className="col-6">
+                    {`${moment()
+                      .isoWeekday(index + 1)
+                      .format('dddd')}`}
+                    :
+                  </div>
+                  <div className="col-6">
+                    <div className="custom-control custom-checkbox">
+                      <input
+                        type="checkbox"
+                        className="custom-control-input"
+                        id={`customCheck${index}`}
+                        checked={day !== 'F'}
+                        readOnly
+                      />
+                      <label
+                        className={`custom-control-label ${
+                          day === 'F' ? '' : 'text-white'
+                        }`}>
+                        {day === 'F' ? 'Closed' : 'Open'}
+                      </label>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
+          </div>
+          <div className={styles.bottomRow}>
+            <Button
+              color="primary mt-2"
+              onClick={this.handleSaveDefaultDays.bind(this)}
+              disabled={settingsSaving}>
+              Save
+            </Button>
           </div>
         </div>
-        <div className={styles.bottomRow}>
-          <Button
-            color="primary mt-2"
-            onClick={this.handleSaveDefaultDays.bind(this)}
-            disabled={settingsSaving}>
-            Save
-          </Button>
-        </div>
-      </div>
+      </Loading>
     )
   }
 
