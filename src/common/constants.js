@@ -17,8 +17,6 @@ export const WEEK_VIEW_WORKING_DAY_TIME_STRING = '07:00'
 export const WORK_HOURS = 24
 export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 
-// export const COLOR_RED_1 = '#fa0e0e'
-// export const COLOR_YELLOW_1 = '#fa840e'
 export const BIKE_HIRE = {
   MANUAL: 'manual',
   AUTO: 'auto',

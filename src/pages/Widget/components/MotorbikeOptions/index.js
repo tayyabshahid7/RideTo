@@ -1,5 +1,5 @@
 import React from 'react'
-import { BIKE_HIRE } from './constants'
+import { BIKE_HIRE } from 'common/constants'
 import { getMotorbikeLabel, asPoundSterling } from 'services/widget'
 import Checkbox from 'components/Checkbox'
 import styles from './MotorbikeOptions.scss'

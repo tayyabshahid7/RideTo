@@ -4,7 +4,7 @@ import moment from 'moment'
 import styles from './OrderDetails.scss'
 import Loading from 'components/Loading'
 
-import { SHORT_LICENCE_TYPES } from 'common/constants'
+import { SHORT_LICENCE_TYPES, BIKE_HIRE } from 'common/constants'
 import { asPoundSterling } from 'services/widget'
 import { BikeHires } from 'common/info'
 
@@ -29,7 +29,12 @@ const OrderDetails = ({
   const dateStr = `${course.date}T${course.time}`
   const startTime = moment(dateStr, 'YYYY-MM-DDTh:mm:ss')
   const displayPrice = asPoundSterling(totalPrice)
-  const isBikeHire = hire === 'auto' || hire === 'manual'
+  const isBikeHire = [
+    BIKE_HIRE.MANUAL,
+    BIKE_HIRE.AUTO,
+    BIKE_HIRE.MANUAL_50CC,
+    BIKE_HIRE.AUTO_125CC
+  ].includes(hire)
   const fullLicenceType =
     isFullLicence && SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
 

@@ -3,6 +3,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { getMotorbikeLabel } from 'services/widget'
 import Loading from 'components/Loading'
+import { BIKE_HIRE } from 'common/constants'
 
 const BikePicker = React.forwardRef(
   (
@@ -94,18 +95,18 @@ const BikePicker = React.forwardRef(
                 className={classnames(
                   styles.bikeHireBtn,
                   isWidget && styles.widgetBtn,
-                  bike_hire === 'MANUAL_50CC' && styles.activeBtn
+                  bike_hire === BIKE_HIRE.MANUAL_50CC && styles.activeBtn
                 )}
                 onClick={() =>
                   onUpdate({
-                    bike_hire: 'MANUAL_50CC',
+                    bike_hire: BIKE_HIRE.MANUAL_50CC,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
                     selectedPackageDates: []
                   })
                 }
                 disabled={isManualFull}>
-                {getMotorbikeLabel('MANUAL_50CC', isFullLicence)}{' '}
+                {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isManualFull ? fullText : null}
               </button>
@@ -133,7 +134,7 @@ const BikePicker = React.forwardRef(
             )}
           </div>
           {isCbt &&
-            ['manual', 'MANUAL_50CC'].includes(bike_hire) &&
+            ['manual', BIKE_HIRE.MANUAL_50CC].includes(bike_hire) &&
             !isItm &&
             manualText}
           {isFullLicence &&
