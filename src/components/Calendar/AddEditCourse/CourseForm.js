@@ -35,6 +35,8 @@ class CourseForm extends React.Component {
       notes: '',
       auto_bikes: '',
       manual_bikes: '',
+      auto_125cc_bikes: '',
+      manual_50cc_bikes: '',
       a1_auto_bikes: '',
       a2_auto_bikes: '',
       a_auto_bikes: '',
@@ -58,6 +60,8 @@ class CourseForm extends React.Component {
           'instructor_id',
           'auto_bikes',
           'manual_bikes',
+          'auto_125cc_bikes',
+          'manual_50cc_bikes',
           'notes',
           'a1_auto_bikes',
           'a2_auto_bikes',
@@ -218,6 +222,14 @@ class CourseForm extends React.Component {
       course.manual_bikes = 0
     }
 
+    if (!course.auto_125cc_bikes) {
+      course.auto_125cc_bikes = 0
+    }
+
+    if (!course.manual_50cc_bikes) {
+      course.manual_50cc_bikes = 0
+    }
+
     if (!course.a1_auto_bikes) {
       course.a1_auto_bikes = 0
     }
@@ -264,6 +276,46 @@ class CourseForm extends React.Component {
     })
   }
 
+  renderBikeNumberPicker(label, value, id, isEditable) {
+    return (
+      <Row>
+        <Col sm="10">
+          <div className={styles.bikerPicker}>
+            {label}
+            <div className={styles.rightSide}>
+              <button
+                type="button"
+                className={styles.minus}
+                onClick={() => {
+                  this.handleBikeButtonClick(id, -1)
+                }}>
+                -
+              </button>
+              <ConnectInput
+                basic
+                className={styles.inputNumber}
+                name={id}
+                value={value || ''}
+                type="number"
+                disabled={!isEditable}
+                onChange={this.handleChangeRawEvent.bind(this)}
+                required
+              />
+              <button
+                type="button"
+                className={styles.plus}
+                onClick={() => {
+                  this.handleBikeButtonClick(id, 1)
+                }}>
+                +
+              </button>
+            </div>
+          </div>
+        </Col>
+      </Row>
+    )
+  }
+
   render() {
     const {
       isEditable,
@@ -284,6 +336,8 @@ class CourseForm extends React.Component {
       duration,
       notes,
       auto_bikes,
+      auto_125cc_bikes,
+      manual_50cc_bikes,
       manual_bikes,
       a1_auto_bikes,
       a2_auto_bikes,
@@ -448,7 +502,61 @@ class CourseForm extends React.Component {
                     <Col sm="10">
                       <BikeNumberPicker
                         className={styles.numberPicker}
-                        label="Manual"
+                        label="Automatic 50cc"
+                        value={auto_bikes}
+                        id="auto_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('auto_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('auto_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Automatic 125cc"
+                        value={auto_125cc_bikes}
+                        id="auto_125cc_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('auto_125cc_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('auto_125cc_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Manual 50cc"
+                        value={manual_50cc_bikes}
+                        id="manual_50cc_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('manual_50cc_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('manual_50cc_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Manual 125cc"
                         value={manual_bikes}
                         id="manual_bikes"
                         isEditable={isEditable}
