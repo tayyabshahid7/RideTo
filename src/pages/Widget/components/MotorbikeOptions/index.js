@@ -1,10 +1,17 @@
 import React from 'react'
-
-import { getMotorbikeLabel } from 'services/widget'
+import { BIKE_HIRE } from './constants'
+import { getMotorbikeLabel, asPoundSterling } from 'services/widget'
 import Checkbox from 'components/Checkbox'
 import styles from './MotorbikeOptions.scss'
 
 const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
+  let { bike_hire_cost, manual_bike_hire_cost } = course.pricing
+
+  if (!manual_bike_hire_cost) {
+    manual_bike_hire_cost = bike_hire_cost
+  }
+
+  const isFree = !bike_hire_cost && !manual_bike_hire_cost
   const fullText = <span className={styles.full}> - Fully Booked</span>
 
   const isAutoFull = course.auto_count >= course.auto_bikes
@@ -15,54 +22,60 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
   return (
     <div className={styles.motorbikeOptions}>
-      <h4>Bike Hire (Included)</h4>
+      <h4>Bike Hire {isFree && '(Included)'}</h4>
 
       {ownBike && (
         <Checkbox
-          checked={selected === 'no'}
+          checked={selected === BIKE_HIRE.NO}
           extraClass="WidgetCheckbox"
-          onChange={() => onChange('no')}>
-          {getMotorbikeLabel('no')}
+          onChange={() => onChange(BIKE_HIRE.NO)}>
+          {getMotorbikeLabel(BIKE_HIRE.NO)}
         </Checkbox>
       )}
 
       <Checkbox
-        checked={selected === 'auto'}
+        checked={selected === BIKE_HIRE.AUTO}
         extraClass="WidgetCheckbox"
-        onChange={() => onChange('auto')}
+        onChange={() => onChange(BIKE_HIRE.AUTO)}
         disabled={isAutoFull}>
-        {getMotorbikeLabel('auto')}
+        {getMotorbikeLabel(BIKE_HIRE.AUTO)}
         {isAutoFull ? fullText : null}
+        {bike_hire_cost > 0 && ` - ${asPoundSterling(bike_hire_cost)}`}
       </Checkbox>
 
       <Checkbox
-        checked={selected === 'manual'}
+        checked={selected === BIKE_HIRE.MANUAL}
         extraClass="WidgetCheckbox"
-        onChange={() => onChange('manual')}
+        onChange={() => onChange(BIKE_HIRE.MANUAL)}
         disabled={isManualFull}>
-        {getMotorbikeLabel('manual')}
+        {getMotorbikeLabel(BIKE_HIRE.MANUAL)}
         {isManualFull ? fullText : null}
+        {manual_bike_hire_cost > 0 &&
+          ` - ${asPoundSterling(manual_bike_hire_cost)}`}
       </Checkbox>
 
       {course.auto_125cc_bikes && (
         <Checkbox
-          checked={selected === 'AUTO_125CC'}
+          checked={selected === BIKE_HIRE.AUTO_125CC}
           extraClass="WidgetCheckbox"
-          onChange={() => onChange('AUTO_125CC')}
+          onChange={() => onChange(BIKE_HIRE.AUTO_125CC)}
           disabled={isAuto125Full}>
-          {getMotorbikeLabel('AUTO_125CC')}
+          {getMotorbikeLabel(BIKE_HIRE.AUTO_125CC)}
           {isAutoFull ? fullText : null}
+          {bike_hire_cost > 0 && ` - ${asPoundSterling(bike_hire_cost)}`}
         </Checkbox>
       )}
 
       {course.manual_50cc_bikes && (
         <Checkbox
-          checked={selected === 'MANUAL_50CC'}
+          checked={selected === BIKE_HIRE.MANUAL_50CC}
           extraClass="WidgetCheckbox"
-          onChange={() => onChange('MANUAL_50CC')}
+          onChange={() => onChange(BIKE_HIRE.MANUAL_50CC)}
           disabled={isManual50Full}>
-          {getMotorbikeLabel('MANUAL_50CC')}
+          {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC)}
           {isManualFull ? fullText : null}
+          {manual_bike_hire_cost > 0 &&
+            ` - ${asPoundSterling(manual_bike_hire_cost)}`}
         </Checkbox>
       )}
     </div>

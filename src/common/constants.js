@@ -23,8 +23,8 @@ export const BIKE_HIRE = {
   MANUAL: 'manual',
   AUTO: 'auto',
   NO: 'no',
-  AUTO_125CC: 'AUTO_125CC',
-  MANUAL_50CC: 'MANUAL_50CC'
+  AUTO_125CC: 'BIKE_TYPE_AUTO_125CC',
+  MANUAL_50CC: 'BIKE_TYPE_MANUAL_50CC'
 }
 
 export const RIDING_EXPERIENCE = {
