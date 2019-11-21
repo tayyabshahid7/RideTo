@@ -113,13 +113,15 @@ class CourseForm extends React.Component {
       courseTypes.length !== prevCourseTypes.length &&
       course_type_id === ''
     ) {
+      const defaultCourse =
+        courseTypes.find(({ constant }) => constant === 'LICENCE_CBT') ||
+        courseTypes.filter(removeFullLicence)[0]
+
       this.setState(
         {
           course: {
             ...this.state.course,
-            course_type_id: courseTypes
-              .filter(removeFullLicence)[0]
-              .id.toString()
+            course_type_id: defaultCourse.id.toString()
           }
         },
         this.loadPricing()
