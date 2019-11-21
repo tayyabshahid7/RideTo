@@ -63,7 +63,7 @@ export const showOwnBikeHire = courseType => {
 }
 
 export const getValidCourses = courses => {
-  const defaultCutOffTime = '23:59:59'
+  const defaultCutOffTime = '18:00:00'
   const cutOffTime =
     window.RIDE_TO_DATA.widget_initial.last_time_book || defaultCutOffTime
   const [cutOffHours, cutOffMinutes, cutOffSeconds] = cutOffTime.split(':')

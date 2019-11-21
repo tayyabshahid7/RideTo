@@ -34,7 +34,7 @@ class WidgetSettingsForm extends React.Component {
       requirements: '',
       cancellation: '',
       terms: '',
-      last_time_book: '23:59:59'
+      last_time_book: '18:00:00'
     }
     Object.assign(settings, this.props.settings ? this.props.settings : {})
 
