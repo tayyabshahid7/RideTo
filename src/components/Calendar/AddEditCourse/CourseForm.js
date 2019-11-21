@@ -102,17 +102,11 @@ class CourseForm extends React.Component {
     this.loadPricing()
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { courseTypes } = this.props.info
-    const { courseTypes: prevCourseTypes } = prevProps.info
-    const { course_type_id } = this.state.course
+    const { course_type_id, date } = this.state.course
 
-    if (
-      courseTypes &&
-      prevCourseTypes &&
-      courseTypes.length !== prevCourseTypes.length &&
-      course_type_id === ''
-    ) {
+    if (courseTypes.length && course_type_id === '') {
       const defaultCourse =
         courseTypes.find(({ constant }) => constant === 'LICENCE_CBT') ||
         courseTypes.filter(removeFullLicence)[0]
@@ -124,10 +118,21 @@ class CourseForm extends React.Component {
             course_type_id: defaultCourse.id.toString()
           }
         },
-        this.loadPricing()
+        () => {
+          this.loadPricing()
+          return
+        }
       )
-    } else {
+    }
+
+    if (course_type_id && course_type_id !== prevState.course.course_type_id) {
       this.loadPricing()
+      return
+    }
+
+    if (date && date !== prevState.course.date) {
+      this.loadPricing()
+      return
     }
   }
 
