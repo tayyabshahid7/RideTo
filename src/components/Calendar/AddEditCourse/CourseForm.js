@@ -276,46 +276,6 @@ class CourseForm extends React.Component {
     })
   }
 
-  renderBikeNumberPicker(label, value, id, isEditable) {
-    return (
-      <Row>
-        <Col sm="10">
-          <div className={styles.bikerPicker}>
-            {label}
-            <div className={styles.rightSide}>
-              <button
-                type="button"
-                className={styles.minus}
-                onClick={() => {
-                  this.handleBikeButtonClick(id, -1)
-                }}>
-                -
-              </button>
-              <ConnectInput
-                basic
-                className={styles.inputNumber}
-                name={id}
-                value={value || ''}
-                type="number"
-                disabled={!isEditable}
-                onChange={this.handleChangeRawEvent.bind(this)}
-                required
-              />
-              <button
-                type="button"
-                className={styles.plus}
-                onClick={() => {
-                  this.handleBikeButtonClick(id, 1)
-                }}>
-                +
-              </button>
-            </div>
-          </div>
-        </Col>
-      </Row>
-    )
-  }
-
   render() {
     const {
       isEditable,
