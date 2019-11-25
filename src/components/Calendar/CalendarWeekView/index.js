@@ -47,8 +47,13 @@ class CalendarWeekView extends Component {
       window.history.scrollRestoration = 'manual'
     }
 
+    if (!isDesktop && !scrolled) {
+      window.scrollTo(0, 600)
+      this.setState({ scrolled: true })
+    }
+
     if (isDesktop && !scrolled) {
-      window.scrollTo(0, 340)
+      window.scrollTo(0, 385)
       this.setState({ scrolled: true })
     }
   }
