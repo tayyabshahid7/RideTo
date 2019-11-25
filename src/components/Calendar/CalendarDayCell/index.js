@@ -6,6 +6,7 @@ import CalendarDayCellItem from 'components/Calendar/CalendarDayCellItem'
 import { getStarTimeForEventForDate } from 'utils/helper'
 import { getShortCourseType } from 'services/course'
 import styles from './index.scss'
+import pluralize from 'pluralize'
 
 const getDayItems = (day, dateStr) => {
   const { courses = [], events = [], staff = [] } = day
@@ -51,7 +52,9 @@ const CalendarDayCell = ({
   handleMobileCellClick,
   rowsCount
 }) => {
-  const showItems = rowsCount < 6 ? 2 : 1
+  const isLowHeight = useMediaQuery({ maxHeight: 768 })
+  const isVeryLowHeight = useMediaQuery({ maxHeight: 591 })
+  let showItems = isVeryLowHeight ? 0 : isLowHeight ? 1 : rowsCount < 6 ? 2 : 1
   const dateStr = moment(day.date).format('YYYY-MM-DD')
   const items = getDayItems(day, dateStr)
   const selectedDay = dateStr === calendar.selectedDate
@@ -97,7 +100,11 @@ const CalendarDayCell = ({
           <CalendarDayCellItem key={item.id} item={item} />
         ))}
 
-        {more > 0 && <div className={styles.more}>{more} more...</div>}
+        {more > 0 && (
+          <div className={styles.more}>
+            {more} {isVeryLowHeight ? pluralize('item', more) : 'more...'}
+          </div>
+        )}
       </div>
     </li>
   )

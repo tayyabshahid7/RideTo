@@ -1,16 +1,13 @@
 @import '../../../bootstrap';
 
 .calendarDays {
-  // display: flex;
   list-style: none;
-  // padding: 0;
   margin: 0;
   width: 100%;
   display: flex;
 
   flex-wrap: wrap;
   flex: 1 1 auto;
-  // overflow-y: auto;
   overflow: hidden;
 
   border-bottom: 1px solid #ccc;
@@ -21,7 +18,7 @@
   font-size: 9px;
 
   li {
-    // height: 180px;
+    overflow: hidden;
     list-style-type: none;
     margin-bottom: 4px;
 
@@ -40,13 +37,13 @@
 .calendarDaysFiveRows {
   li {
     height: calc((100vh - 154px) / 5);
-    min-height: 129px;
+    // min-height: 129px;
   }
 }
 .calendarDaysSixRows {
   li {
     height: calc((100vh - 154px) / 6);
-    min-height: 107px;
+    // min-height: 107px;
   }
 }
 @media (min-width: 1200px) {
