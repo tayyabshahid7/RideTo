@@ -1,8 +1,11 @@
 import React, { Fragment } from 'react'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-// import InputTextGroup2 from 'components/Forms/InputTextGroup2'
-import { ConnectTextArea, Button } from 'components/ConnectForm'
+import {
+  ConnectTextArea,
+  Button,
+  ConnectCheckbox
+} from 'components/ConnectForm'
 import Loading from 'components/Loading'
 import classnames from 'classnames'
 import WidgetPromoCodes from './WidgetPromoCodes'
@@ -17,7 +20,8 @@ class WidgetSettingsForm extends React.Component {
       intro: '',
       requirements: '',
       cancellation: '',
-      terms: ''
+      terms: '',
+      enable_third_party_optin: false
     }
     Object.assign(settings, this.props.settings ? this.props.settings : {})
 
@@ -42,8 +46,9 @@ class WidgetSettingsForm extends React.Component {
     this.handleSaveClick = this.handleSaveClick.bind(this)
   }
 
-  handleChangeRawEvent(event) {
-    const { name, value } = event.target
+  handleChangeRawEvent({ target }) {
+    const { name, type, checked, value: targetValue } = target
+    const value = type === 'checkbox' ? checked : targetValue
     const { settings } = this.state
     this.setState({ settings: { ...settings, [name]: value }, isChanged: true })
   }
@@ -133,7 +138,8 @@ class WidgetSettingsForm extends React.Component {
       intro,
       requirements,
       cancellation,
-      terms
+      terms,
+      enable_third_party_optin
     } = this.state.settings
     return (
       <div className={styles.container}>
@@ -163,24 +169,50 @@ class WidgetSettingsForm extends React.Component {
                     defaultValue={widget_color}
                   />
                 </div>
-                {isChanged && (
-                  <Fragment>
-                    <div className="mt-3 text-right">
-                      <Button
-                        disabled={!isChanged}
-                        type="submit"
-                        color="primary">
-                        Save
-                      </Button>
-                      <Button
-                        disabled={!isChanged}
-                        color="white"
-                        onClick={this.handleCancel}>
-                        Cancel
-                      </Button>
-                    </div>
-                  </Fragment>
-                )}
+                <Fragment>
+                  <div className="mt-3 text-right">
+                    <Button disabled={!isChanged} type="submit" color="primary">
+                      Save
+                    </Button>
+                    <Button
+                      disabled={!isChanged}
+                      color="white"
+                      onClick={this.handleCancel}>
+                      Cancel
+                    </Button>
+                  </div>
+                </Fragment>
+              </div>
+            </div>
+            <div className={styles.box}>
+              <div className={styles.leftCol}>
+                <h3 className={styles.title}>3rd party opt-in</h3>
+                <p>
+                  Turn on or off whether you ask customers for their permission
+                  to share their data with your partners
+                </p>
+              </div>
+              <div className={styles.rightCol}>
+                <ConnectCheckbox
+                  label="Active"
+                  name="enable_third_party_optin"
+                  type="checkbox"
+                  checked={enable_third_party_optin}
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+                <Fragment>
+                  <div className="mt-3 text-right">
+                    <Button disabled={!isChanged} type="submit" color="primary">
+                      Save
+                    </Button>
+                    <Button
+                      disabled={!isChanged}
+                      color="white"
+                      onClick={this.handleCancel}>
+                      Cancel
+                    </Button>
+                  </div>
+                </Fragment>
               </div>
             </div>
             <div className={classnames(styles.box, styles.boxVertical)}>
