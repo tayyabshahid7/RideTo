@@ -4,7 +4,6 @@ import { Row, Col } from 'reactstrap'
 import { BikeHires, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import { checkCustomerExists } from 'services/customer'
-import { injectStripe } from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
@@ -508,4 +507,4 @@ class AddOrderItem extends React.Component {
   }
 }
 
-export default injectStripe(AddOrderItem)
+export default AddOrderItem
