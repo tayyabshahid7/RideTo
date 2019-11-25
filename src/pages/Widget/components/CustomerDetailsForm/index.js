@@ -22,12 +22,20 @@ const CustomerDetailsForm = ({
   onChange,
   trainingDate,
   fullLicenceType,
-  bikeType
+  bikeType,
+  courseType: { constant }
 }) => {
-  const minAge = bikeType === 'manual' ? 17 : 16
-  const bdayError = `Please enter the date in the format DD/MM/YYYY. You MUST be at least ${
+  const isManual = bikeType === 'manual'
+  const isCBT = constant === 'LICENCE_CBT'
+  const minAge = isManual ? 17 : 16
+  let bdayError = `Please enter the date in the format DD/MM/YYYY. You MUST be at least ${
     !fullLicenceType ? minAge : getLicenceAge(fullLicenceType)
   } years old on the selected training date.`
+
+  if (isManual && isCBT) {
+    bdayError =
+      'In order to take your CBT on a 125cc motorcycle, you must be 17 years old on the day of the course'
+  }
 
   const labelStyle = {
     marginTop: '16px',
