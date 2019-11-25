@@ -26,6 +26,7 @@ const BikePicker = React.forwardRef(
     },
     ref
   ) => {
+    let { bike_hire_cost = 0, manual_bike_hire_cost = 0 } = course
     const fullText = <span className={styles.full}> - Fully Booked</span>
     const manualText = (
       <span className={styles.manualInfo}>
@@ -35,6 +36,10 @@ const BikePicker = React.forwardRef(
         02036039652 to talk to a member of our friendly team.
       </span>
     )
+
+    if (bike_hire_cost && !manual_bike_hire_cost) {
+      manual_bike_hire_cost = bike_hire_cost
+    }
 
     return (
       <Loading loading={loading}>
@@ -85,7 +90,7 @@ const BikePicker = React.forwardRef(
                 }
                 disabled={isAutoFull}>
                 {getMotorbikeLabel('auto', isFullLicence)}{' '}
-                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {bike_hire_cost && ` £${bike_hire_cost / 100}`}
                 {isAutoFull ? fullText : null}
               </button>
             )}
@@ -106,7 +111,7 @@ const BikePicker = React.forwardRef(
                 }
                 disabled={isManualFull}>
                 {getMotorbikeLabel('MANUAL_50CC', isFullLicence)}{' '}
-                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {manual_bike_hire_cost && ` £${manual_bike_hire_cost / 100}`}
                 {isManualFull ? fullText : null}
               </button>
             )}
@@ -127,7 +132,7 @@ const BikePicker = React.forwardRef(
                 }
                 disabled={isManualFull}>
                 {getMotorbikeLabel('manual', isFullLicence)}{' '}
-                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {manual_bike_hire_cost && ` £${manual_bike_hire_cost / 100}`}
                 {isManualFull ? fullText : null}
               </button>
             )}
