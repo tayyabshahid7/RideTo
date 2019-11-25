@@ -108,7 +108,7 @@ class DetailFormContainer extends React.Component {
   }
 
   render() {
-    const { isSaving, customer, id } = this.props
+    const { isSaving, customer, id, isAdmin } = this.props
     const {
       editable,
       isChanged,
@@ -124,7 +124,8 @@ class DetailFormContainer extends React.Component {
     return (
       <Col md="4" className={styles.detailFormContainer}>
         <UserName
-          nameEditable={nameEditable}
+          isAdmin={isAdmin}
+          nameEditable={isAdmin && nameEditable}
           hasActions={hasActions}
           customer={customer}
           editable={editable}
@@ -146,6 +147,7 @@ class DetailFormContainer extends React.Component {
             onChange={this.handleChangeCustomer}
             onSave={this.handleSaveCustomer}
             onCancel={this.handleCancel}
+            isAdmin={isAdmin}
           />
         </Loading>
       </Col>

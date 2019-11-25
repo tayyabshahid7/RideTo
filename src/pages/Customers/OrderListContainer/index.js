@@ -50,7 +50,8 @@ class OrderListContainer extends React.Component {
       user,
       customer,
       emails = [],
-      sendEmail
+      sendEmail,
+      isAdmin
     } = this.props
 
     return (
@@ -70,6 +71,7 @@ class OrderListContainer extends React.Component {
                       loadCourseTypes={loadCourseTypes}
                       isSending={isSending}
                       sendEmailConfirmation={sendEmailConfirmation}
+                      isAdmin={isAdmin}
                     />
                   </li>
                 ))}

@@ -83,7 +83,8 @@ class EditOrderForm extends React.Component {
       courses,
       onSave,
       times,
-      loadTimes
+      loadTimes,
+      isAdmin
     } = this.props
     const { showChangeDate, isChanged } = this.state
 
@@ -273,9 +274,15 @@ class EditOrderForm extends React.Component {
                 <Button small color="white" onClick={onCancel}>
                   Cancel
                 </Button>
-                <Button small color="danger" onClick={onDelete}>
-                  Delete
-                </Button>
+                {isAdmin && (
+                  <Button
+                    small
+                    color="danger"
+                    className={styles.deleteButton}
+                    onClick={onDelete}>
+                    Delete
+                  </Button>
+                )}
               </div>
             </div>
           )}

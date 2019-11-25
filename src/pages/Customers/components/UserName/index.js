@@ -21,7 +21,8 @@ function UserName({
   handleNameClick,
   handleChangeCustomer,
   handleToggleModal,
-  handleDeleteCustomer
+  handleDeleteCustomer,
+  isAdmin
 }) {
   return (
     <div className={styles.panel}>
@@ -74,8 +75,13 @@ function UserName({
           ) : (
             <div>
               <button
-                className={classnames(styles.title, styles.name)}
-                onClick={handleNameClick}>
+                className={classnames(
+                  styles.title,
+                  styles.name,
+                  !isAdmin && styles.nameNoCursor
+                )}
+                onClick={handleNameClick}
+                disabled={!isAdmin}>
                 {editable.first_name} {editable.last_name}
               </button>
               <div className={styles.customerInfo}>
@@ -88,7 +94,7 @@ function UserName({
             </div>
           )}
         </div>
-        {hasActions && (
+        {hasActions && isAdmin && (
           <Button
             color={showActions ? 'white' : 'primary'}
             onClick={handleActionsClick}>

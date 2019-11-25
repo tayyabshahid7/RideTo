@@ -129,7 +129,7 @@ class OrderForm extends React.Component {
   }
 
   render() {
-    const { suppliers, isSaving, courseTypes, isSending } = this.props
+    const { suppliers, isSaving, courseTypes, isSending, isAdmin } = this.props
     const { editable, isChanged, showMore, inputsDisabled } = this.state
     const courses = courseTypes
       ? courseTypes.filter(
@@ -159,21 +159,23 @@ class OrderForm extends React.Component {
             Order {getCustomerTypeShort(editable.source)} #
             {editable.friendly_id}
           </h4>
-          <div className={styles.actions}>
-            {inputsDisabled ? (
-              <Button small color="link" onClick={this.handleEditClick}>
-                Edit
-              </Button>
-            ) : (
-              <Button
-                small
-                color="primary"
-                onClick={this.handleSaveClick}
-                disabled={!isChanged}>
-                Save
-              </Button>
-            )}
-          </div>
+          {isAdmin && (
+            <div className={styles.actions}>
+              {inputsDisabled ? (
+                <Button small color="link" onClick={this.handleEditClick}>
+                  Edit
+                </Button>
+              ) : (
+                <Button
+                  small
+                  color="primary"
+                  onClick={this.handleSaveClick}
+                  disabled={!isChanged}>
+                  Save
+                </Button>
+              )}
+            </div>
+          )}
         </div>
         <Loading loading={isSaving}>
           <Row>
