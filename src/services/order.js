@@ -147,12 +147,15 @@ export const getExpectedPrice = (priceInfo, addons = [], checkoutData = {}) => {
         (total += parseFloat(discount_price) * 100),
       0
     ) +
-    (shouldAddBikeHire(checkoutData) ? priceInfo.bike_hire_cost : 0)
+    (shouldAddBikeHire(checkoutData, priceInfo) ? priceInfo.bike_hire_cost : 0)
   )
 }
 
-export const shouldAddBikeHire = ({ courseType, bike_hire }) => {
-  if (courseType === 'LICENCE_CBT_RENEWAL' && bike_hire !== BIKE_HIRE.NO) {
+export const shouldAddBikeHire = (
+  { courseType, bike_hire },
+  { bike_hire_cost, manual_bike_hire_cost }
+) => {
+  if ((bike_hire_cost || manual_bike_hire_cost) && bike_hire !== BIKE_HIRE.NO) {
     return true
   }
   return false

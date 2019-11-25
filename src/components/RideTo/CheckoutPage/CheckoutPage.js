@@ -126,7 +126,8 @@ class CheckoutPage extends Component {
         addon => addon.name !== 'Peace Of Mind Policy'
       ).length,
       cardElement: null,
-      emailSubmitted: false
+      emailSubmitted: false,
+      bike_type: this.props.trainings[0].bike_type
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -186,7 +187,7 @@ class CheckoutPage extends Component {
     try {
       const { instantBook } = this.props
       const { supplierId, courseId, date, courseType } = this.props.checkoutData
-      const { details, trainings } = this.state
+      const { details, trainings, bike_type } = this.state
       const isFullLicence = courseType === 'FULL_LICENCE'
       let params = {
         supplierId,
@@ -208,7 +209,13 @@ class CheckoutPage extends Component {
         })
 
         this.setState({
-          priceInfo: { ...response },
+          priceInfo: {
+            ...response,
+            ...(bike_type === 'manual' &&
+              response.manual_bike_hire_cost && {
+                bike_hire_cost: response.manual_bike_hire_cost
+              })
+          },
           loadingPrice: false,
           details: {
             ...details,
@@ -227,7 +234,13 @@ class CheckoutPage extends Component {
           }
         }
         this.setState({
-          priceInfo: { ...response },
+          priceInfo: {
+            ...response,
+            ...(bike_type === 'manual' &&
+              response.manual_bike_hire_cost && {
+                bike_hire_cost: response.manual_bike_hire_cost
+              })
+          },
           loadingPrice: false,
           details
         })
