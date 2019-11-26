@@ -41,8 +41,6 @@ class CustomerDetailForm extends React.Component {
   render() {
     const { customer, onChange, isDisabled, onCancel, isAdmin } = this.props
 
-    console.log(isAdmin)
-
     return (
       <Form className={styles.panel} onSubmit={this.handleSubmit}>
         <ConnectInput

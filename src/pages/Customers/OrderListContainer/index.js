@@ -51,7 +51,8 @@ class OrderListContainer extends React.Component {
       customer,
       emails = [],
       sendEmail,
-      isAdmin
+      isAdmin,
+      schoolId
     } = this.props
 
     return (
@@ -86,6 +87,7 @@ class OrderListContainer extends React.Component {
                 customer={customer}
                 user={user}
                 onSendEmail={sendEmail}
+                schoolId={schoolId}
               />
             )}
             {emails.length > 0 ? (

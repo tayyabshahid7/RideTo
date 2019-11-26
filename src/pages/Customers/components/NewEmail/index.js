@@ -9,7 +9,9 @@ class Email extends Component {
     this.state = {
       email: {
         to: this.props.customer.rideto_email,
-        sender: this.props.user.email,
+        sender: this.props.user.suppliers.find(
+          ({ id }) => id === this.props.schoolId
+        ).email,
         subject: '',
         body: ''
       },
