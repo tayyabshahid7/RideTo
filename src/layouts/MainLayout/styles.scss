@@ -10,19 +10,18 @@
 }
 
 .bodyContainer {
-  // width: 70%;
-  // border-right: 1px solid;
   position: relative;
-  // padding: 20px;
-  // padding: 20px 0;
   padding: 0 0 20px;
   padding-bottom: 40px;
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  // overflow: auto;
 }
 
 .bodyContainerGrey {
   background-color: #f6f6f6;
+}
+
+.bodyContainerCalendar {
+  padding-bottom: 0;
 }
