@@ -21,7 +21,7 @@ class WidgetSettingsForm extends React.Component {
       requirements: '',
       cancellation: '',
       terms: '',
-      enable_third_party_optin: true
+      enable_third_party_optin: false
     }
     Object.assign(settings, this.props.settings ? this.props.settings : {})
 
