@@ -12,7 +12,8 @@ import {
   ConnectInput,
   ConnectSelect,
   ConnectTextArea,
-  Button
+  Button,
+  ConnectLabeledContent
 } from 'components/ConnectForm'
 
 function removeFullLicence(type) {
@@ -668,19 +669,13 @@ class CourseForm extends React.Component {
                 </React.Fragment>
               )}
               {!isFullLicence && (
-                <ConnectInput
-                  label="Course Price"
-                  basic
-                  name="price"
-                  value={
-                    pricing.loading
-                      ? '...'
-                      : pricing.info
-                      ? `£${(pricing.info.price / 100.0).toFixed(2)}`
-                      : ''
-                  }
-                  disabled
-                />
+                <ConnectLabeledContent label="Course Price" basic name="price">
+                  {pricing.loading
+                    ? '...'
+                    : pricing.info
+                    ? `£${(pricing.info.price / 100.0).toFixed(2)}`
+                    : ''}
+                </ConnectLabeledContent>
               )}
               <ConnectTextArea
                 label="Notes"
