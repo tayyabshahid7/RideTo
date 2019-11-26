@@ -41,20 +41,23 @@ class CalendarWeekView extends Component {
 
   componentDidMount() {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
-    const { scrolled } = this.state
+    const { scrolled, mobileDayOfWeek } = this.state
+    const hasCourses = this.props.days[mobileDayOfWeek].courses.length
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
 
-    if (!isDesktop && !scrolled) {
-      window.scrollTo(0, 600)
-      this.setState({ scrolled: true })
-    }
+    if (!hasCourses) {
+      if (!isDesktop && !scrolled) {
+        window.scrollTo(0, 600)
+        this.setState({ scrolled: true })
+      }
 
-    if (isDesktop && !scrolled) {
-      window.scrollTo(0, 385)
-      this.setState({ scrolled: true })
+      if (isDesktop && !scrolled) {
+        window.scrollTo(0, 385)
+        this.setState({ scrolled: true })
+      }
     }
   }
 
