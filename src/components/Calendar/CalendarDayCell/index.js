@@ -71,6 +71,10 @@ const CalendarDayCell = ({
     now.getDate() === day.date.getDate()
   const isMobile = useMediaQuery({ maxWidth: 767 })
 
+  if (isMobile) {
+    showItems = 3
+  }
+
   const handleClick = () => {
     if (isMobile) {
       handleMobileCellClick(dateStr)
