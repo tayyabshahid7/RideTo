@@ -128,7 +128,7 @@ class EditOrderForm extends React.Component {
             times={times}
             loadTimes={loadTimes}
             courseType={this.state.order.course_type}
-            disabled={isRideTo}
+            disabled={isRideTo || !isAdmin}
           />
 
           {!showChangeDate && (
@@ -136,7 +136,7 @@ class EditOrderForm extends React.Component {
               <Row>
                 <Col sm="10">
                   <ConnectSelect
-                    disabled={isRideTo}
+                    disabled={isRideTo || !isAdmin}
                     name="bike_type"
                     selected={bike_type}
                     label="Bike hire"
@@ -156,7 +156,7 @@ class EditOrderForm extends React.Component {
                 <Row>
                   <Col sm="8">
                     <ConnectSelect
-                      disabled={isRideTo}
+                      disabled={isRideTo || !isAdmin}
                       name="full_licence_type"
                       selected={full_licence_type}
                       label="Licence Type *"
