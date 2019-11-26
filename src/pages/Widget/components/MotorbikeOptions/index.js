@@ -40,7 +40,8 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
         disabled={isAutoFull}>
         {getMotorbikeLabel(BIKE_HIRE.AUTO)}
         {isAutoFull ? fullText : null}
-        {bike_hire_cost > 0 && ` - ${asPoundSterling(bike_hire_cost)}`}
+        {bike_hire_cost > 0 && ` (+${asPoundSterling(bike_hire_cost)})`}
+        {bike_hire_cost === 0 && manual_bike_hire_cost > 0 && ` (Free)`}
       </Checkbox>
 
       <Checkbox
@@ -51,7 +52,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
         {getMotorbikeLabel(BIKE_HIRE.MANUAL)}
         {isManualFull ? fullText : null}
         {manual_bike_hire_cost > 0 &&
-          ` - ${asPoundSterling(manual_bike_hire_cost)}`}
+          ` (+${asPoundSterling(manual_bike_hire_cost)})`}
       </Checkbox>
 
       {course.auto_125cc_bikes && (
@@ -62,7 +63,8 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           disabled={isAuto125Full}>
           {getMotorbikeLabel(BIKE_HIRE.AUTO_125CC)}
           {isAutoFull ? fullText : null}
-          {bike_hire_cost > 0 && ` - ${asPoundSterling(bike_hire_cost)}`}
+          {bike_hire_cost > 0 && ` (+${asPoundSterling(bike_hire_cost)})`}
+          {bike_hire_cost === 0 && manual_bike_hire_cost > 0 && ` (Free)`}
         </Checkbox>
       )}
 
@@ -75,7 +77,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC)}
           {isManualFull ? fullText : null}
           {manual_bike_hire_cost > 0 &&
-            ` - ${asPoundSterling(manual_bike_hire_cost)}`}
+            ` (+${asPoundSterling(manual_bike_hire_cost)})`}
         </Checkbox>
       )}
     </div>
