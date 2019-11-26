@@ -90,8 +90,8 @@ class OrderListContainer extends React.Component {
               <ul className={styles.list}>
                 {emails
                   .filter(({ body }) => body)
-                  .map(email => (
-                    <li key={email.id} className={styles.listItem}>
+                  .map((email, index) => (
+                    <li key={index} className={styles.listItem}>
                       <Email email={email} />
                     </li>
                   ))}
