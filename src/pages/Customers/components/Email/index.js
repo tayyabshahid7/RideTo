@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styles from 'pages/Customers/components/OrderForm/OrderForm.scss'
 import classnames from 'classnames'
+import stripHtml from 'string-strip-html'
 
 class Email extends Component {
   constructor(props) {
@@ -29,7 +30,7 @@ class Email extends Component {
           <h4 className={styles.title}>{subject}</h4>
           <div className={styles.date}>Sent {email_date}</div>
         </div>
-        {showMore && <div className={styles.body}>{body}</div>}
+        {showMore && <div className={styles.body}>{stripHtml(body)}</div>}
         <div className={styles.showMore}>
           <button
             className={styles.showMoreButton}
