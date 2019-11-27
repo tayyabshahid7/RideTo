@@ -34,6 +34,15 @@
     }
   }
 
+  @media (max-width: 767px) {
+    position: fixed;
+    top: 56px;
+    right: 0;
+    left: 0;
+    z-index: 4;
+    padding: 0.25rem 1rem;
+  }
+
   @media (min-width: 768px) {
     background: #fff;
     padding: 1.5rem 2.5rem 1rem;
@@ -97,7 +106,7 @@
 }
 
 .changeCalendarWrapper {
-  margin-top: 0.5rem;
+  // margin-top: 0.5rem;
   font-size: 16px;
 
   align-items: center;
