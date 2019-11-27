@@ -92,7 +92,7 @@
 
     &.allDayTimelineItem {
       position: fixed;
-      top: 137px;
+      top: 129px;
       width: 50px;
       background: #fff;
       z-index: 3;
@@ -241,7 +241,7 @@
 }
 .allDayEvents {
   position: fixed;
-  top: 137px;
+  top: 129px;
   right: 0;
   left: 50px;
   width: calc(100% - 50px);
@@ -435,7 +435,7 @@
   .weekDays {
     width: auto;
     position: fixed;
-    top: 88px;
+    top: 86px;
     right: 0;
     left: 0;
     z-index: 4;
