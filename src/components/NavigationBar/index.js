@@ -1,15 +1,14 @@
 import React from 'react'
 import { withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
-// import Header from '../Header'
 import UserMenu from '../UserMenu'
 import classnames from 'classnames'
 import styles from './styles.scss'
-// import IconRideToLogo from '../../assets/icons/IconRideToLogo'
 import { ConnectLogo } from '../../assets/icons/'
-// import { Button } from 'reactstrap'
 import { connect } from 'react-redux'
 import { isAdmin } from 'services/auth'
+import SchoolSelect from 'components/SchoolSelect'
+import MediaQuery from 'react-responsive'
 
 let NavigationBar = ({ history, user }) => {
   const { pathname } = history.location
@@ -36,6 +35,11 @@ let NavigationBar = ({ history, user }) => {
           <ConnectLogo className={classnames(styles.logoImage)} />
         </Link>
       </div>
+      <MediaQuery maxWidth={768}>
+        <div className={styles.schoolSelect}>
+          <SchoolSelect />
+        </div>
+      </MediaQuery>
       <button
         className="navbar-toggler"
         type="button"
