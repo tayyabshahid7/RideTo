@@ -50,12 +50,12 @@ class CalendarWeekView extends Component {
 
     if (!hasCourses) {
       if (!isDesktop && !scrolled) {
-        window.scrollTo(0, 600)
+        window.scrollTo(0, 350)
         this.setState({ scrolled: true })
       }
 
       if (isDesktop && !scrolled) {
-        window.scrollTo(0, 385)
+        window.scrollTo(0, 390)
         this.setState({ scrolled: true })
       }
     }
@@ -78,7 +78,7 @@ class CalendarWeekView extends Component {
         const { scrolled } = this.state
 
         if (!scrolled) {
-          window.scrollTo(0, 600)
+          window.scrollTo(0, 350)
           this.setState({ scrolled: true })
         }
       }
@@ -91,7 +91,7 @@ class CalendarWeekView extends Component {
     this.firstCourse = element
 
     if (element && !scrolled && !isDesktop) {
-      const top = parseInt(element.style.top.replace('px', ''), 10) + 205
+      const top = parseInt(element.style.top.replace('px', ''), 10) - 100
 
       window.scrollTo(0, top)
       this.setState({ scrolled: true })
