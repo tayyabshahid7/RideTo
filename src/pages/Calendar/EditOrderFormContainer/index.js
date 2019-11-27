@@ -39,6 +39,10 @@ class EditOrderFormContainer extends React.Component {
       order.school_course = courseId // add in the course id
     }
 
+    if (!order.user_birthdate) {
+      delete order['user_birthdate']
+    }
+
     let response = await updateOrder({
       schoolId,
       trainingId,
