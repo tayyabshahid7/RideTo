@@ -217,7 +217,7 @@ export const getDasAvailableDates = async (
 
 export const getPricingForCourse = async (schoolId, course_type, datetime) => {
   const path = `school/${schoolId}/pricing`
-  const response = await get(path, { course_type, datetime })
+  const response = await get(path, { course_type, datetime }, false)
   return response
 }
 
