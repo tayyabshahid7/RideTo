@@ -444,24 +444,6 @@ class CourseForm extends React.Component {
                     <Col sm="10">
                       <BikeNumberPicker
                         className={styles.numberPicker}
-                        label="Automatic"
-                        value={auto_bikes}
-                        id="auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('auto_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
                         label="Automatic 50cc"
                         value={auto_bikes}
                         id="auto_bikes"

@@ -1,6 +1,11 @@
 .header,
-.body {
+.body,
+.buttons {
   padding: 1rem 2rem;
+}
+
+.buttons {
+  padding-bottom: 2rem;
 }
 
 .header {
@@ -20,4 +25,8 @@
 
 .courseDetails {
   margin-top: 1rem;
+}
+
+.bikePicker {
+  justify-content: center;
 }

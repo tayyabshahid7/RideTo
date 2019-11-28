@@ -2,6 +2,8 @@ import React from 'react'
 import styles from './BikesModal.scss'
 import Modal from 'react-modal'
 import { Table } from 'reactstrap'
+import BikeNumberPicker from 'components/BikeNumberPicker'
+import { Button } from 'components/ConnectForm'
 
 Modal.setAppElement('#root')
 
@@ -17,7 +19,7 @@ const customStyles = {
   }
 }
 
-function DefaultBikesModal({ activeCourse, ...rest }) {
+function DefaultBikesModal({ activeCourse, setActiveCourse, ...rest }) {
   const COURSES = [
     { name: 'Automatic 50cc' },
     { name: 'Automatic 125cc' },
@@ -37,27 +39,42 @@ function DefaultBikesModal({ activeCourse, ...rest }) {
             <b>Course:</b> CBT Training
           </div>
           <div className={styles.courseDetails}>
-            <Table borderless responsive size="sm">
+            <Table borderless size="sm">
               <thead>
                 <tr>
-                  <th className="align-middle">Bikes</th>
-                  <th className="align-middle">Available</th>
-                  <th className="align-middle">Number Available</th>
+                  <th>Bikes</th>
+                  <th className="text-center">Available</th>
+                  <th className="text-center">Number Available</th>
                 </tr>
               </thead>
               <tbody>
-                {COURSES.map(({ name }) => (
-                  <tr>
+                {COURSES.map(({ name }, index) => (
+                  <tr key={index}>
                     <td>{name}</td>
                     <td className="text-center">
                       <input type="checkbox" />
                     </td>
-                    <td>asdf</td>
+                    <td className="text-center">
+                      <BikeNumberPicker className={styles.bikePicker} />
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </Table>
           </div>
+        </div>
+        <div className={styles.buttons}>
+          <Button small type="submit" color="primary">
+            Save
+          </Button>
+          <Button
+            small
+            color="white"
+            onClick={() => {
+              setActiveCourse(null)
+            }}>
+            Cancel
+          </Button>
         </div>
       </div>
     </Modal>

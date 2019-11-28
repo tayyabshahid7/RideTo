@@ -60,6 +60,7 @@ function DefaultBikes({ info, loadCourseTypes, schoolId }) {
           setActiveCourse(null)
         }}
         activeCourse={activeCourse}
+        setActiveCourse={setActiveCourse}
       />
     </Fragment>
   )
