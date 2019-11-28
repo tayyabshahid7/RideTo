@@ -199,7 +199,11 @@ class AvailabilityCourses extends React.Component {
           />
         </div>
         <div className={styles.box}>
-          <DefaultBikes />
+          <DefaultBikes
+            info={info}
+            loadCourseTypes={loadCourseTypes}
+            schoolId={schoolId}
+          />
         </div>
       </Fragment>
     )

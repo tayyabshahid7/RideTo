@@ -5,14 +5,45 @@ import DefaultBikes from './DefaultBikes'
 
 Enzyme.configure({ adapter: new Adapter() })
 
+const info = {
+  courseTypes: [
+    {
+      id: 1,
+      constant: 'LICENCE_CBT',
+      name: 'CBT Training',
+      slug: 'cbt-training'
+    },
+    {
+      id: 3,
+      constant: 'INTRO_TO_MOTORCYCLING',
+      name: 'Introduction To Motorcycling',
+      slug: 'introduction-to-motorcycling'
+    },
+    {
+      id: 4,
+      constant: 'FULL_LICENCE',
+      name: 'Full Licence Training',
+      slug: 'motorcycle-licence'
+    }
+  ]
+}
+
 describe('Default bikes', () => {
   it('renders without crashing', () => {
-    shallow(<DefaultBikes />)
+    shallow(<DefaultBikes info={info} />)
   })
 
   it('contains a table', () => {
-    const wrapper = mount(<DefaultBikes />)
+    const wrapper = mount(<DefaultBikes info={info} />)
 
     expect(wrapper.find('table')).toHaveLength(1)
+  })
+
+  it(`has ${info.courseTypes.length} rows`, () => {
+    const wrapper = mount(<DefaultBikes info={info} />)
+
+    expect(wrapper.find('table > tbody > tr')).toHaveLength(
+      info.courseTypes.length
+    )
   })
 })

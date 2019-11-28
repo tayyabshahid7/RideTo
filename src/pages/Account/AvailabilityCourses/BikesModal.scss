@@ -1,0 +1,23 @@
+.header,
+.body {
+  padding: 1rem 2rem;
+}
+
+.header {
+  background-color: var(--primary-color);
+
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0;
+  }
+}
+
+.courseName,
+.courseDetails {
+  padding: 0.5rem 1rem;
+  border: 1px solid #eaeaea;
+}
+
+.courseDetails {
+  margin-top: 1rem;
+}

@@ -8,7 +8,6 @@ import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 import BikeNumberPicker from 'components/BikeNumberPicker'
-
 import {
   ConnectInput,
   ConnectSelect,
@@ -16,6 +15,7 @@ import {
   Button,
   ConnectLabeledContent
 } from 'components/ConnectForm'
+import BikeNumberPicker from 'components/BikeNumberPicker'
 
 function removeFullLicence(type) {
   return type.constant !== 'FULL_LICENCE'
