@@ -38,6 +38,7 @@
     "font-awesome": "^4.7.0",
     "fs-extra": "7.0.1",
     "get-youtube-id": "^1.0.1",
+    "html-react-parser": "^0.10.0",
     "html-webpack-plugin": "^4.0.0-beta.4",
     "intersection-observer": "^0.5.1",
     "is-url": "^1.2.4",
