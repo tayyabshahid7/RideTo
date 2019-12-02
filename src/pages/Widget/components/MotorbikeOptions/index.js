@@ -55,7 +55,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           ` (+${asPoundSterling(manual_bike_hire_cost)})`}
       </Checkbox>
 
-      {course.auto_125cc_bikes && (
+      {course.auto_125cc_bikes > 0 && (
         <Checkbox
           checked={selected === BIKE_HIRE.AUTO_125CC}
           extraClass="WidgetCheckbox"
@@ -68,7 +68,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
         </Checkbox>
       )}
 
-      {course.manual_50cc_bikes && (
+      {course.manual_50cc_bikes > 0 && (
         <Checkbox
           checked={selected === BIKE_HIRE.MANUAL_50CC}
           extraClass="WidgetCheckbox"
