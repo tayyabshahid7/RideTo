@@ -11,6 +11,7 @@ import SchoolSelect from 'components/SchoolSelect'
 import MediaQuery from 'react-responsive'
 import { logout } from 'store/auth'
 import { useMediaQuery } from 'react-responsive'
+import { MdClose } from 'react-icons/md'
 
 let NavigationBar = ({ history, user, logout }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -65,14 +66,23 @@ let NavigationBar = ({ history, user, logout }) => {
       </MediaQuery>
       <button
         onClick={handleButtonClick}
-        className="navbar-toggler"
+        className={classnames(
+          'navbar-toggler',
+          isOpen && styles.navBarTogglerOpen
+        )}
         type="button"
         data-toggle="collapse"
         data-target="#navbarCollapse"
         aria-controls="navbarCollapse"
         aria-expanded="false"
         aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon" />
+        {isOpen ? (
+          <span className={styles.closeIcon}>
+            <MdClose />
+          </span>
+        ) : (
+          <span className="navbar-toggler-icon" />
+        )}
       </button>
       <div className="collapse navbar-collapse" id="navbarCollapse">
         <ul className={classnames('navbar-nav mr-auto', styles.navbar)}>
