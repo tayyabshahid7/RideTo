@@ -51,13 +51,13 @@ const ITM_FAQ = {
 }
 
 const GEAR_CONVERSION_FAQ = {
-  doINeed:
+  'Do I need to take a Gear Conversion course?':
     'Some new riders decide to take learning to ride one step at a time and opt to complete their first CBT on an automatic scooter. If you plan to then ride a manual motorcycle, it’s highly recommended you have professional lessons in how to do so, hence the popular Gear Conversion course.',
-  whatWillIdO:
+  'What will I do during the Gear Conversion course?':
     'The course is tailored to your needs. You’ll focus all the time on bike control and handling, getting to grips with balancing, stopping, starting and turning with a manual motorcycle. It’s safe to do so, you’ll go out on the roads.',
-  howFarAdvance:
+  'How far in advance should I book?':
     'Gear Conversion classes have a restricted number of places in each course. Due to the popular demand, you should aim to book at least 1 week in advance in order to get a convenient date.',
-  iCantSee:
+  'I can’t see any Gear Conversion courses in my area?':
     'Not all of our instructors have their Gear Conversion courses live online. If you can’t find a local Gear Conversion course to you, give us a call and we can arrange something for you.'
 }
 
@@ -940,6 +940,7 @@ export const CONTENT = {
           <CourseTypeDetails
             courseType={{ details: GEAR_CONVERSION_FAQ }}
             minimal
+            useKeysAsTitle
           />
         </div>
         <div>
