@@ -5,7 +5,9 @@ import { Table } from 'reactstrap'
 import BikeNumberPicker from 'components/BikeNumberPicker'
 import { Button } from 'components/ConnectForm'
 
-Modal.setAppElement('#root')
+if (process.env.NODE_ENV !== 'test') {
+  Modal.setAppElement('#app')
+}
 
 const customStyles = {
   content: {
@@ -29,7 +31,10 @@ function DefaultBikesModal({ activeCourse, setActiveCourse, ...rest }) {
   ]
 
   return (
-    <Modal {...rest} style={customStyles}>
+    <Modal
+      {...rest}
+      style={customStyles}
+      ariaHideApp={!process.env.NODE_ENV === 'test'}>
       <div className={styles.container}>
         <div className={styles.header}>
           <h2>Set Course Default Bikes</h2>
