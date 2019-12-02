@@ -61,7 +61,7 @@ let NavigationBar = ({ history, user, logout }) => {
       </div>
       <MediaQuery maxWidth={768}>
         <div className={styles.schoolSelect}>
-          <SchoolSelect />
+          <SchoolSelect labelField="town" />
         </div>
       </MediaQuery>
       <button
