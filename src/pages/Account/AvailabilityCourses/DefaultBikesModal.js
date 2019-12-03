@@ -6,7 +6,7 @@ import BikeNumberPicker from 'components/BikeNumberPicker'
 import { Button } from 'components/ConnectForm'
 
 if (process.env.NODE_ENV !== 'test') {
-  Modal.setAppElement('#app')
+  Modal.setAppElement('#root')
 }
 
 const customStyles = {
