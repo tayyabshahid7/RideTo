@@ -115,8 +115,8 @@ const BikePicker = React.forwardRef(
                 }
                 disabled={isManualFull}>
                 {getMotorbikeLabel('MANUAL_50CC', isFullLicence)}{' '}
-                {parseInt(bike_hire_cost, 10) > 0 &&
-                  ` (+£${bike_hire_cost / 100})`}
+                {parseInt(manual_bike_hire_cost, 10) > 0 &&
+                  ` (+£${manual_bike_hire_cost / 100})`}
                 {isManualFull ? fullText : null}
               </button>
             )}
