@@ -92,9 +92,9 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           disabled={isManual50Full}>
           {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC)}
           {isManualFull ? fullText : null}
-          {bike_hire_cost > 0 && (
+          {manual_bike_hire_cost > 0 && (
             <div className={styles.price}>
-              {`(+${asPoundSterling(bike_hire_cost)})`}
+              {`(+${asPoundSterling(manual_bike_hire_cost)})`}
             </div>
           )}
         </Checkbox>
