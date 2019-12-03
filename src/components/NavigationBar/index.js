@@ -74,7 +74,8 @@ let NavigationBar = ({ history, user, logout }) => {
       <button
         className={classnames(
           'navbar-toggler',
-          isOpen && styles.navBarTogglerOpen
+          isOpen && styles.navBarTogglerOpen,
+          styles.toggleButton
         )}
         type="button"
         data-toggle="collapse"
