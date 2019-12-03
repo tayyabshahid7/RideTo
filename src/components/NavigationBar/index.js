@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withRouter } from 'react-router'
 import { Link, NavLink } from 'react-router-dom'
 import UserMenu from '../UserMenu'
@@ -12,6 +12,7 @@ import MediaQuery from 'react-responsive'
 import { logout } from 'store/auth'
 import { useMediaQuery } from 'react-responsive'
 import { MdClose } from 'react-icons/md'
+import $ from 'jquery'
 
 let NavigationBar = ({ history, user, logout }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -36,9 +37,15 @@ let NavigationBar = ({ history, user, logout }) => {
     }
   }
 
-  function handleButtonClick() {
-    setIsOpen(prevIsOpen => !prevIsOpen)
-  }
+  useEffect(() => {
+    $('#navbarCollapse').on('show.bs.collapse', function() {
+      setIsOpen(true)
+    })
+
+    $('#navbarCollapse').on('hide.bs.collapse ', function() {
+      setIsOpen(false)
+    })
+  }, [])
 
   return (
     <nav
@@ -65,7 +72,6 @@ let NavigationBar = ({ history, user, logout }) => {
         </div>
       </MediaQuery>
       <button
-        onClick={handleButtonClick}
         className={classnames(
           'navbar-toggler',
           isOpen && styles.navBarTogglerOpen
