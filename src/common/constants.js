@@ -136,3 +136,28 @@ export const CALENDAR_COLOURS = {
   INSTRUCTOR: '#a5bbff',
   EVENT: '#ebebeb'
 }
+
+export const DEFAULT_SETTINGS = {
+  available_auto_50cc_bikes: true,
+  default_number_auto_50cc_bikes: 0,
+  available_auto_125cc_bikes: true,
+  default_number_auto_125cc_bikes: 0,
+  available_manual_50cc_bikes: true,
+  default_number_manual_50cc_bikes: 0,
+  available_manual_125cc_bikes: true,
+  default_number_manual_125cc_bikes: 0,
+  available_own_bike: true,
+  default_number_own_bike: 0,
+  available_a1_auto_bike: true,
+  a1_auto_bikes: 0,
+  available_a1_manual_bike: true,
+  a1_manual_bikes: 0,
+  available_a2_auto_bikes: true,
+  a2_auto_bikes: 0,
+  available_a2_manual_bikes: true,
+  a2_manual_bikes: 0,
+  available_a_auto_bike: true,
+  a_auto_bikes: 0,
+  available_a_manual_bikes: true,
+  a_manual_bikes: 0
+}
