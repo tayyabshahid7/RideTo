@@ -1,8 +1,8 @@
 import React, { useEffect, useState, Fragment } from 'react'
 import styles from './styles.scss'
-import { Button } from 'components/ConnectForm'
 import { Table } from 'reactstrap'
 import DefaultBikesModal from './DefaultBikesModal'
+import RowItem from './RowItem'
 
 function DefaultBikes({ info, loadCourseTypes, schoolId }) {
   const [activeCourse, setActiveCourse] = useState(null)
@@ -31,25 +31,17 @@ function DefaultBikes({ info, loadCourseTypes, schoolId }) {
               </tr>
             </thead>
             <tbody>
-              {info.courseTypes.map(courseType => {
-                const { id, name } = courseType
-
-                return (
-                  <tr key={id}>
-                    <td className="align-middle">{name}</td>
-                    <td className="align-middle">asdf</td>
-                    <td className="align-middle text-center">
-                      <Button
-                        small
-                        onClick={() => {
-                          setActiveCourse(courseType)
-                        }}>
-                        Edit
-                      </Button>
-                    </td>
-                  </tr>
-                )
-              })}
+              {info.courseTypes
+                .filter(({ constant }) => constant !== 'FULL_LICENCE')
+                .map(courseType => {
+                  return (
+                    <RowItem
+                      key={courseType.id}
+                      courseType={courseType}
+                      setActiveCourse={setActiveCourse}
+                    />
+                  )
+                })}
             </tbody>
           </Table>
         </div>
