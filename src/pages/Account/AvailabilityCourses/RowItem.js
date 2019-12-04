@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { Button } from 'components/ConnectForm'
 import { getDefaultBikeHire } from 'services/course'
+import { formatName, filterBikes } from './DefaultBikesModal'
+import startCase from 'lodash/startCase'
 
 const DEFAULT_SETTINGS = {
   available_auto_50cc_bikes: true,
@@ -27,6 +29,14 @@ const DEFAULT_SETTINGS = {
   a_manual_bikes: 0
 }
 
+function formatListItem(key) {
+  return startCase(
+    formatName(key)
+      .replace('bikes', '')
+      .trim()
+  )
+}
+
 function RowItem({ setActiveCourse, courseType }) {
   const { name, constant } = courseType
   const [loading, setLoading] = useState(true)
@@ -50,7 +60,16 @@ function RowItem({ setActiveCourse, courseType }) {
   return (
     <tr>
       <td className="align-middle">{name}</td>
-      <td className="align-middle">asdf</td>
+      <td className="align-middle">
+        {settings &&
+          Object.entries(settings)
+            .filter(
+              ([key, value]) => key.startsWith('available_') && value === true
+            )
+            .filter(bike => filterBikes(courseType, bike))
+            .map(([key, value]) => formatListItem(key))
+            .join(', ')}
+      </td>
       <td className="align-middle text-center">
         <Button
           disabled={loading}

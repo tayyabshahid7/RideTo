@@ -44,6 +44,13 @@ function getCountKey(key) {
   return key.replace('available_', replacement)
 }
 
+export function formatName(key) {
+  return upperFirst(key.replace('available_', '').replace(/_/g, ' '))
+}
+
+export const filterBikes = (activeCourse, [key]) =>
+  isFullLicence(activeCourse.constant) ? isDasBike(key) : !isDasBike(key)
+
 function DefaultBikesModal({ activeCourse, setActiveCourse, ...rest }) {
   const [isChanged, setIsChanged] = useState(false)
 
@@ -54,16 +61,14 @@ function DefaultBikesModal({ activeCourse, setActiveCourse, ...rest }) {
   const { name, settings } = activeCourse
   const courses = Object.entries(settings)
     .filter(([key, value]) => key.startsWith('available'))
-    .filter(([key]) =>
-      isFullLicence(activeCourse.constant) ? isDasBike(key) : !isDasBike(key)
-    )
+    .filter(bike => filterBikes(activeCourse, bike))
     .map(([key, value]) => {
       const countKey = getCountKey(key)
 
       return {
         key,
         countKey,
-        name: upperFirst(key.replace('available_', '').replace(/_/g, ' ')),
+        name: formatName(key),
         available: value,
         count: settings[countKey]
       }
