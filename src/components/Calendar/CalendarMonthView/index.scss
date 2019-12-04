@@ -23,8 +23,10 @@
   .container {
     margin-top: 46px;
 
+    height: calc(100vh - 102px);
+
     li {
-      height: auto !important;
+      // height: auto !important;
       border: 1px solid #ededed;
       // width: 100%;
       padding: 10px;
