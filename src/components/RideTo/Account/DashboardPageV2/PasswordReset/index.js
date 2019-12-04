@@ -50,7 +50,8 @@ function PasswordReset({ isAuthenticated }) {
     event.preventDefault()
 
     try {
-      await updateUserPassword(password)
+      const { username } = getUserProfile(getToken())
+      await updateUserPassword(password, username)
       setIsPasswordSet(true)
       setError('')
       clearAllBodyScrollLocks()

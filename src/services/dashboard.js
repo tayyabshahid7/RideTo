@@ -86,7 +86,7 @@ export const fetchIsPasswordSet = async username => {
   return await get('users/has-password-set/', { username }, false)
 }
 
-export const updateUserPassword = async password => {
+export const updateUserPassword = async (password, username) => {
   const isAuthenticated = getIsAuthenticated()
 
   if (!isAuthenticated) {
@@ -95,7 +95,8 @@ export const updateUserPassword = async password => {
 
   const path = 'users/password-reset-token/'
   const params = {
-    new_password: password
+    new_password: password,
+    username
   }
 
   const response = await put(path, params)
