@@ -36,13 +36,13 @@
 }
 .calendarDaysFiveRows {
   li {
-    height: calc((100vh - 154px - 7px) / 5);
+    height: calc((100vh - var(--vh-offset, 0px) - 154px - 7px) / 5);
     // min-height: 129px;
   }
 }
 .calendarDaysSixRows {
   li {
-    height: calc((100vh - 154px - 7px) / 6);
+    height: calc((100vh - var(--vh-offset, 0px) - 154px - 7px) / 6);
     // min-height: 107px;
   }
 }

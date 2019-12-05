@@ -105,6 +105,7 @@
     "tldjs": "^2.3.1",
     "typeface-pt-sans": "^0.0.72",
     "url-loader": "1.1.2",
+    "vh-check": "^2.0.5",
     "viewport-mercator-project": "^6.1.1",
     "webpack": "^4.31.0",
     "webpack-dev-server": "3.1.10",
