@@ -1,16 +1,23 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './styles.scss'
+import classnames from 'classnames'
+import { loadTypeformScript } from 'utils/helper'
 
 function CallUsCard() {
+  useEffect(() => {
+    loadTypeformScript()
+  }, [])
+
   return (
     <div className={styles.container}>
-      <h3 className={styles.heading}>Want to chat?</h3>
+      <h3 className={styles.heading}>Unsure where to start?</h3>
       <p className={styles.content}>
-        Call a member of our expert team to discuss your riding requirements.
+        Find out what licence and course is right for you.
       </p>
-      <a href="tel:+442036039652" className={styles.button}>
-        <span className={styles.mobileCall}>Call Us</span>
-        <span className={styles.desktopCall}>0203 603 9652</span>
+      <a
+        href="https://rideto.typeform.com/to/XeXuVE"
+        className={classnames(styles.button, 'typeform-share')}>
+        Take quiz now
       </a>
     </div>
   )

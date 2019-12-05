@@ -25,10 +25,10 @@
 .button {
   flex: 0 0 52px;
   display: flex;
-  background: none;
+  background: var(--primary-color);
   font-family: var(--font-rift-bold);
   border: 1px solid var(--primary-color);
-  color: var(--primary-color) !important;
+  color: #fff !important;
   width: 160px;
   height: 56px;
   justify-content: center;

@@ -817,6 +817,7 @@ class ResultPage extends Component {
                                   <CourseItem
                                     showCallMessage={
                                       index === 2 ||
+                                      (index - 2) % 5 === 0 ||
                                       (courses.available.length < 3 &&
                                         index === courses.available.length - 1)
                                     }
