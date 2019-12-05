@@ -1,5 +1,5 @@
 import React from 'react'
-import Enzyme, { shallow, mount } from 'enzyme'
+import Enzyme, { shallow } from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import DefaultBikes from './DefaultBikes'
 
@@ -31,19 +31,5 @@ const info = {
 describe('Default bikes', () => {
   it('renders without crashing', () => {
     shallow(<DefaultBikes info={info} />)
-  })
-
-  it('contains a table', () => {
-    const wrapper = mount(<DefaultBikes info={info} />)
-
-    expect(wrapper.find('table')).toHaveLength(1)
-  })
-
-  it(`has ${info.courseTypes.length} rows`, () => {
-    const wrapper = mount(<DefaultBikes info={info} />)
-
-    expect(wrapper.find('table > tbody > tr')).toHaveLength(
-      info.courseTypes.length
-    )
   })
 })
