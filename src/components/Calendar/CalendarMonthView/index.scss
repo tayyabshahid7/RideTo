@@ -23,7 +23,7 @@
   .container {
     margin-top: 46px;
 
-    height: calc(100vh - 102px);
+    height: calc(100vh - var(--vh-offset, 0px) - 102px);
 
     li {
       // height: auto !important;
