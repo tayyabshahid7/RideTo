@@ -2,8 +2,11 @@ import React from 'react'
 import { NavLink } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './styles.scss'
+import { useMediaQuery } from 'react-responsive'
 
 let AccountSubNavbar = ({ history }) => {
+  const isDesktop = useMediaQuery({ minWidth: 768 })
+
   return (
     <div className={styles.container}>
       <ul className={classnames('navbar-nav', styles.linkContainer)}>
@@ -21,7 +24,7 @@ let AccountSubNavbar = ({ history }) => {
             className={styles.navLink}
             activeClassName={styles.activeNavLink}
             to="/account/account">
-            Account
+            Users
           </NavLink>
         </li>
         <li className="nav-item">
@@ -61,17 +64,19 @@ let AccountSubNavbar = ({ history }) => {
             className={styles.navLink}
             activeClassName={styles.activeNavLink}
             to="/account/instructors">
-            Instructors
+            Staff
           </NavLink>
         </li>
-        <li className="nav-item">
-          <NavLink
-            className={styles.navLink}
-            activeClassName={styles.activeNavLink}
-            to="/account/bikes">
-            Bikes
-          </NavLink>
-        </li>
+        {isDesktop && (
+          <li className="nav-item">
+            <NavLink
+              className={styles.navLink}
+              activeClassName={styles.activeNavLink}
+              to="/account/bikes">
+              Bikes
+            </NavLink>
+          </li>
+        )}
       </ul>
     </div>
   )
