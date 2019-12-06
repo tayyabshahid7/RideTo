@@ -3,6 +3,7 @@ import { ConnectInput, Button } from 'components/ConnectForm'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import Users from '../Users'
 
 class Instructors extends React.Component {
   constructor(props) {
@@ -64,11 +65,12 @@ class Instructors extends React.Component {
     const { addNew, selectedInstructor } = this.state
     return (
       <Fragment>
+        <Users />
         <Fragment>
           <div className={styles.box}>
             <div>
-              <h3 className={styles.title}>Add an instructor</h3>
-              <p>Add a new instructor to assign to courses</p>
+              <h3 className={styles.title}>Add staff</h3>
+              <p>Add a new staff member to assign to courses</p>
             </div>
             <div className={styles.buttons}>
               <Button color="primary" onClick={this.handleAddNew}>
@@ -78,8 +80,8 @@ class Instructors extends React.Component {
           </div>
           <div className={classnames(styles.box, styles.header)}>
             <div className={styles.headerText}>
-              <h3 className={styles.title}>Current instructors</h3>
-              <p>Edit the details of exisiting instructors</p>
+              <h3 className={styles.title}>Current staff</h3>
+              <p>Edit the details of an existing staff member</p>
             </div>
             <ul className={styles.list}>
               {instructors.map((instructor, key) => {

@@ -322,7 +322,7 @@ class CourseForm extends React.Component {
               <Col sm="8">
                 <ConnectSelect
                   basic
-                  label="Instructor"
+                  label="Staff"
                   name="instructor_id"
                   value={instructor_id}
                   disabled={!isEditable}
