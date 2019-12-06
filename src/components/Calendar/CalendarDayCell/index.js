@@ -6,6 +6,7 @@ import CalendarDayCellItem from 'components/Calendar/CalendarDayCellItem'
 import { getStarTimeForEventForDate } from 'utils/helper'
 import { getShortCourseType } from 'services/course'
 import styles from './index.scss'
+import sortBy from 'lodash/sortBy'
 
 const getDayItems = (day, dateStr) => {
   const { courses = [], events = [], staff = [] } = day
@@ -41,7 +42,7 @@ const getDayItems = (day, dateStr) => {
     )
     .sort((a, b) => b.all_day - a.all_day)
 
-  return items.sort((a, b) => a.time > b.time)
+  return sortBy(items, ['time'])
 }
 
 const CalendarDayCell = ({ day, calendar, history, handleMobileCellClick }) => {
