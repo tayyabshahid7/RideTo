@@ -2,14 +2,10 @@ import React from 'react'
 import moment from 'moment'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-// import InputTextGroup from 'components/Forms/InputTextGroup'
-// import InputSelectGroup from 'components/Forms/InputSelectGroup'
-// import Input from 'components/Forms/Input'
 import Loading from 'components/Loading'
 import classnames from 'classnames'
-
+import SchoolSelect from 'components/SchoolSelect'
 import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
-
 import { filterExtraCourses } from 'services/course'
 
 class CreateBulkCourse extends React.Component {
@@ -100,13 +96,7 @@ class CreateBulkCourse extends React.Component {
       }
     }
 
-    if (
-      // course_type_id === '' &&
-      // courseTypes.length !== prevProps.info.courseTypes.length &&
-      // prevProps.info.courseTypes.length === 0
-      course_type_id === '' &&
-      courseTypes.length
-    ) {
+    if (course_type_id === '' && courseTypes.length) {
       this.setState({
         course: {
           ...this.state.course,
@@ -117,13 +107,7 @@ class CreateBulkCourse extends React.Component {
       })
     }
 
-    if (
-      // instructor_id === '' &&
-      // instructors.length !== prevProps.instructors.length &&
-      // prevProps.instructors.length === 0
-      instructor_id === '' &&
-      instructors.length
-    ) {
+    if (instructor_id === '' && instructors.length) {
       this.setState({
         course: {
           ...this.state.course,
@@ -243,7 +227,10 @@ class CreateBulkCourse extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.title}>
-          Create default course for <b>{this.getSchoolName(schoolId)}</b>
+          Create default course for{' '}
+          <div className={styles.select}>
+            <SchoolSelect selected={schoolId} small />
+          </div>
         </div>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>

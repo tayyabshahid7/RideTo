@@ -5,20 +5,44 @@ import AvailabilityCourses from './AvailabilityCourses'
 import { createBulkCourse } from 'store/course'
 import { loadCourseTypes } from 'store/info'
 import { getInstructors, editInstructor } from 'store/instructor'
-import { fetchSettings, updateSettings } from 'store/settings'
+import {
+  fetchSettings,
+  updateSettings,
+  fetchDefaultDays,
+  updateDefaultDays
+} from 'store/settings'
 import { updateDiaryColor } from 'store/staff'
 
 class AvailabilityCoursesContainer extends React.Component {
   componentDidMount() {
-    const { fetchSettings, settings } = this.props
+    const {
+      fetchSettings,
+      settings,
+      fetchDefaultDays,
+      defaultDays: { days },
+      schoolId
+    } = this.props
     if (!settings) {
       fetchSettings()
+    }
+    if (!days) {
+      fetchDefaultDays(schoolId)
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.schoolId !== prevProps.schoolId) {
+      this.props.fetchDefaultDays(this.props.schoolId)
     }
   }
 
   render() {
-    const { settingsLoading, settings } = this.props
-    if (settingsLoading || !settings) {
+    const {
+      settingsLoading,
+      settings,
+      defaultDays: { days }
+    } = this.props
+    if (settingsLoading || !settings || !days) {
       return <div>Loading...</div>
     }
     return <AvailabilityCourses {...this.props} />
@@ -27,6 +51,7 @@ class AvailabilityCoursesContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
+    user: state.auth.user,
     schoolId: state.auth.schoolId,
     saving: state.course.bulk.saving,
     error: state.course.bulk.error,
@@ -36,7 +61,8 @@ const mapStateToProps = (state, ownProps) => {
     settingsLoading: state.settings.loading,
     settingsSaving: state.settings.saving,
     settings: state.settings.settings,
-    settingsError: state.settings.error
+    settingsError: state.settings.error,
+    defaultDays: state.settings.defaultDays
   }
 }
 
@@ -49,7 +75,9 @@ const mapDispatchToProps = dispatch =>
       fetchSettings,
       updateSettings,
       editInstructor,
-      updateDiaryColor
+      updateDiaryColor,
+      fetchDefaultDays,
+      updateDefaultDays
     },
     dispatch
   )
