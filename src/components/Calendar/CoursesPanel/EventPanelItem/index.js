@@ -2,6 +2,7 @@ import React from 'react'
 import classnames from 'classnames'
 import styles from './EventPanelItem.scss'
 import { getTimeFromDateTime } from 'utils/helper'
+import { Link } from 'react-router-dom'
 
 const EventPanelItem = ({ event, date, eventId }) => {
   const { notes = '', all_day } = event
@@ -30,11 +31,11 @@ const EventPanelItem = ({ event, date, eventId }) => {
             <div className={styles.name}>{event.name}</div>
             {notes && <div className={styles.notes}>{truncated}</div>}
           </div>
-          <a
+          <Link
             className={styles.editLink}
-            href={`/calendar/${date}/events/${event.id}/edit`}>
+            to={`/calendar/${date}/events/${event.id}/edit`}>
             Edit
-          </a>
+          </Link>
         </div>
       </div>
     </div>
