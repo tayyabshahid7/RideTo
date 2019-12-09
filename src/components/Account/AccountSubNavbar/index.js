@@ -24,7 +24,7 @@ let AccountSubNavbar = ({ history }) => {
             className={styles.navLink}
             activeClassName={styles.activeNavLink}
             to="/account/account">
-            Users
+            Account
           </NavLink>
         </li>
         <li className="nav-item">
