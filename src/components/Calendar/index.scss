@@ -48,7 +48,7 @@
 }
 
 .sideBarOpen {
-  @media (min-width: 1082px) {
+  @media (min-width: 993px) {
     right: 317px;
   }
 }
@@ -103,6 +103,12 @@
   align-items: center;
 
   display: none;
+
+  button,
+  select,
+  input {
+    color: #707070;
+  }
 
   @media (min-width: 768px) {
     display: flex;

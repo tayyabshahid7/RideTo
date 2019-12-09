@@ -438,8 +438,14 @@ class CalendarWeekView extends Component {
   }
 
   render() {
+    const { sideBarOpen } = this.props
+
     return (
-      <div className={styles.container}>
+      <div
+        className={classnames(
+          styles.container,
+          sideBarOpen && styles.containerSidebar
+        )}>
         <div className={styles.timelineWrapper}>{this.renderTimeline()}</div>
         <div className={styles.mainContent}>
           {this.renderWeekdays()}

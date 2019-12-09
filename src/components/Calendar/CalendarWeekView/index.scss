@@ -3,12 +3,22 @@
   display: flex;
   flex-direction: row;
   position: relative;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    margin-right: 5px;
+  }
 
   li {
     list-style: none;
   }
   a {
     color: #666;
+  }
+}
+.containerSidebar {
+  @media (min-width: 768px) {
+    margin-right: 0;
   }
 }
 .mainContent {
@@ -30,8 +40,7 @@
 
     position: fixed;
     top: 135px;
-    // width: calc(100% - 50px);
-    width: 100%;
+    width: calc(100% - 5px);
     padding-left: 50px;
     right: 0;
     left: 0;
@@ -40,7 +49,7 @@
   }
 }
 .sideBarOpen {
-  @media (min-width: 1082px) {
+  @media (min-width: 993px) {
     width: calc(100% - 317px);
   }
 }
@@ -234,7 +243,7 @@
     top: 183px;
     right: 0;
     left: 50px;
-    width: calc(100% - 50px);
+    width: calc(100% - 50px - 5px);
 
     z-index: 99;
 
@@ -243,7 +252,7 @@
   }
 
   &.sideBarOpen {
-    @media (min-width: 1082px) {
+    @media (min-width: 993px) {
       width: calc(100% - 317px - 50px + 1px);
     }
   }

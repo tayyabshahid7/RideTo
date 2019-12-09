@@ -12,12 +12,16 @@
   padding: 0 0.5rem;
   appearance: none;
   border: 0;
-  background: transparent;
   font-size: 1.75rem;
   line-height: 1;
   border: 1px solid #e4e4e4;
   min-width: 30px;
   min-height: 38px;
+  background: #fff;
+
+  @media (max-width: 768px) {
+    border-radius: 5px;
+  }
 
   &:focus {
     outline: 0;
@@ -26,10 +30,14 @@
 
 .prev {
   border-right: 0;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
 }
 
 .next {
   border-left: 0;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
 }
 
 .today {

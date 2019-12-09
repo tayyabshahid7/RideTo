@@ -1,5 +1,5 @@
 .container {
-  height: 180px;
+  // height: 180px;
   color: #666;
   text-align: left;
   &:hover {
@@ -50,8 +50,9 @@
 .highlight {
   background-color: #2cceac;
   color: #fff;
-  margin-top: -4px;
+  margin-top: 0;
   margin-left: -4px;
+  margin-bottom: 4px;
   border-radius: 50%;
   text-align: center;
   width: 17px;
@@ -72,7 +73,7 @@
 }
 
 .more {
-  margin-top: 12px;
+  margin-top: 0.25rem;
 }
 
 .courseContainer {

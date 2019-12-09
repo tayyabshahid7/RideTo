@@ -14,6 +14,7 @@ import classnames from 'classnames'
 
 const MainLayout = ({ history, location: { pathname } }) => {
   const isGreyBg = pathname.match(/\/customers\/\d+/)
+  const isCalendar = pathname.match(/\/calendar/g)
 
   return (
     <div className={styles.container}>
@@ -21,7 +22,8 @@ const MainLayout = ({ history, location: { pathname } }) => {
       <div
         className={classnames(
           styles.bodyContainer,
-          isGreyBg && styles.bodyContainerGrey
+          isGreyBg && styles.bodyContainerGrey,
+          isCalendar && styles.bodyContainerCalendar
         )}
         id="body-container">
         <Switch>
@@ -36,7 +38,7 @@ const MainLayout = ({ history, location: { pathname } }) => {
           <Route path="/account" component={Account} />
           <Route exact path="/" component={Dashboard} />
         </Switch>
-        <Footer />
+        {!isCalendar && <Footer />}
       </div>
       <NotificationContainer />
     </div>
