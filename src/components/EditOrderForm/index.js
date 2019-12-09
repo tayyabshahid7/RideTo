@@ -83,7 +83,8 @@ class EditOrderForm extends React.Component {
       courses,
       onSave,
       times,
-      loadTimes
+      loadTimes,
+      isAdmin
     } = this.props
     const { showChangeDate, isChanged } = this.state
 
@@ -127,7 +128,7 @@ class EditOrderForm extends React.Component {
             times={times}
             loadTimes={loadTimes}
             courseType={this.state.order.course_type}
-            disabled={isRideTo}
+            disabled={isRideTo || !isAdmin}
           />
 
           {!showChangeDate && (
@@ -135,7 +136,7 @@ class EditOrderForm extends React.Component {
               <Row>
                 <Col sm="10">
                   <ConnectSelect
-                    disabled={isRideTo}
+                    disabled={isRideTo || !isAdmin}
                     name="bike_type"
                     selected={bike_type}
                     label="Bike hire"
@@ -155,7 +156,7 @@ class EditOrderForm extends React.Component {
                 <Row>
                   <Col sm="8">
                     <ConnectSelect
-                      disabled={isRideTo}
+                      disabled={isRideTo || !isAdmin}
                       name="full_licence_type"
                       selected={full_licence_type}
                       label="Licence Type *"
@@ -273,9 +274,15 @@ class EditOrderForm extends React.Component {
                 <Button small color="white" onClick={onCancel}>
                   Cancel
                 </Button>
-                <Button small color="danger" onClick={onDelete}>
-                  Delete
-                </Button>
+                {isAdmin && (
+                  <Button
+                    small
+                    color="danger"
+                    className={styles.deleteButton}
+                    onClick={onDelete}>
+                    Delete
+                  </Button>
+                )}
               </div>
             </div>
           )}

@@ -40,6 +40,10 @@
   line-height: 1;
 }
 
+.nameNoCursor {
+  cursor: initial;
+}
+
 .details {
   @media (min-width: 768px) {
     margin-left: 25px;

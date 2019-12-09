@@ -16,6 +16,10 @@
   white-space: nowrap;
 }
 
+.labelDisabled {
+  cursor: initial;
+}
+
 .labelCheckbox {
   display: flex;
   align-items: center;

@@ -87,7 +87,8 @@ export function ConnectInput(props) {
           <label
             className={classnames(
               styles.label,
-              noWrapLabel && styles.labelNoWrap
+              noWrapLabel && styles.labelNoWrap,
+              disabled && styles.labelDisabled
             )}
             htmlFor={id || name}>
             {label}
@@ -125,7 +126,8 @@ export function ConnectInput(props) {
           <label
             className={classnames(
               styles.label,
-              noWrapLabel && styles.labelNoWrap
+              noWrapLabel && styles.labelNoWrap,
+              disabled && styles.labelDisabled
             )}
             htmlFor={id || name}>
             {label}
@@ -142,7 +144,8 @@ export function ConnectInput(props) {
         <label
           className={classnames(
             styles.label,
-            noWrapLabel && styles.labelNoWrap
+            noWrapLabel && styles.labelNoWrap,
+            disabled && styles.labelDisabled
           )}
           htmlFor={id || name}>
           {label}
@@ -164,7 +167,7 @@ export function ConnectInput(props) {
 }
 
 export function ConnectAgeInput(props) {
-  const { label, id, name, value, hideAge, noWrapLabel } = props
+  const { label, id, name, value, hideAge, noWrapLabel, disabled } = props
 
   return (
     <div className={styles.formGroup}>
@@ -172,7 +175,8 @@ export function ConnectAgeInput(props) {
         <label
           className={classnames(
             styles.label,
-            noWrapLabel && styles.labelNoWrap
+            noWrapLabel && styles.labelNoWrap,
+            disabled && styles.labelDisabled
           )}
           htmlFor={id || name}>
           {label}
@@ -217,7 +221,8 @@ export function ConnectSelect({
         <label
           className={classnames(
             styles.label,
-            noWrapLabel && styles.labelNoWrap
+            noWrapLabel && styles.labelNoWrap,
+            disabled && styles.labelDisabled
           )}
           htmlFor={id || name}>
           {label}
@@ -278,7 +283,8 @@ export function ConnectLabeledContent({
         <label
           className={classnames(
             styles.label,
-            noWrapLabel && styles.labelNoWrap
+            noWrapLabel && styles.labelNoWrap,
+            disabled && styles.labelDisabled
           )}>
           {label}
         </label>
@@ -313,7 +319,8 @@ export function ConnectCheckbox({
           className={classnames(
             styles.label,
             styles.labelCheckbox,
-            vertical && styles.labelCheckboxVertical
+            vertical && styles.labelCheckboxVertical,
+            disabled && styles.labelDisabled
           )}>
           <input
             name={name}
@@ -371,7 +378,8 @@ export class ConnectTextArea extends Component {
           <label
             className={classnames(
               styles.label,
-              noWrapLabel && styles.labelNoWrap
+              noWrapLabel && styles.labelNoWrap,
+              disabled && styles.labelDisabled
             )}>
             {label}
           </label>
@@ -404,11 +412,13 @@ export function Button({
   small,
   large,
   className,
+  outline,
   ...rest
 }) {
   return (
     <button
       {...rest}
+      outline={outline ? outline.toString() : undefined}
       type={type}
       onClick={onClick}
       disabled={disabled}

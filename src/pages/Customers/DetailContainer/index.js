@@ -3,7 +3,7 @@ import { Container, Row } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { selectors } from 'store/customer'
-
+import { isAdmin } from 'services/auth'
 import styles from './DetailContainer.scss'
 
 import DetailFormContainer from 'pages/Customers/DetailFormContainer'
@@ -47,7 +47,7 @@ class CustomerDetailContainer extends React.Component {
   }
 
   render() {
-    const { match, history } = this.props
+    const { match, history, isAdmin } = this.props
     const { id } = match.params
     const { notepad, notepadChanged } = this.state
 
@@ -61,6 +61,7 @@ class CustomerDetailContainer extends React.Component {
           </div>
           <Row className={styles.grey}>
             <DetailFormContainer
+              isAdmin={isAdmin}
               id={id}
               history={history}
               notepad={notepad}
@@ -68,6 +69,7 @@ class CustomerDetailContainer extends React.Component {
               handleNotepadChange={this.handleNotepadChange}
             />
             <OrderListContainer
+              isAdmin={isAdmin}
               id={id}
               notepad={notepad}
               handleNotepadChange={this.handleNotepadChange}
@@ -85,7 +87,8 @@ const mapStateToProps = (state, props) => {
   const { customer } = state
 
   return {
-    customer: selectors.getItem(customer, id)
+    customer: selectors.getItem(customer, id),
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 

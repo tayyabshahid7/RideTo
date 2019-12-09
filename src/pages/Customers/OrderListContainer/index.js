@@ -50,7 +50,9 @@ class OrderListContainer extends React.Component {
       user,
       customer,
       emails = [],
-      sendEmail
+      sendEmail,
+      isAdmin,
+      schoolId
     } = this.props
 
     return (
@@ -70,6 +72,7 @@ class OrderListContainer extends React.Component {
                       loadCourseTypes={loadCourseTypes}
                       isSending={isSending}
                       sendEmailConfirmation={sendEmailConfirmation}
+                      isAdmin={isAdmin}
                     />
                   </li>
                 ))}
@@ -79,11 +82,12 @@ class OrderListContainer extends React.Component {
             )}
           </div>
           <div label="Email">
-            {user && customer && (
+            {user && customer && schoolId && (
               <NewEmail
                 customer={customer}
                 user={user}
                 onSendEmail={sendEmail}
+                schoolId={schoolId}
               />
             )}
             {emails.length > 0 ? (
