@@ -27,13 +27,6 @@
   padding: 1rem 1rem 1rem;
   background: #fcfcfc;
 
-  select {
-    @media (min-width: 768px) {
-      text-align: center;
-      text-align-last: center;
-    }
-  }
-
   @media (max-width: 767px) {
     position: fixed;
     top: 56px;
