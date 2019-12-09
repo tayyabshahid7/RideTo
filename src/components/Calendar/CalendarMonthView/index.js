@@ -4,7 +4,7 @@ import CalendarDays from '../CalendarDays'
 import styles from './index.scss'
 import vhCheck from 'vh-check'
 
-console.log(vhCheck())
+vhCheck()
 
 function CalendarMonthView(props) {
   useEffect(() => {
@@ -15,7 +15,7 @@ function CalendarMonthView(props) {
 
   return (
     <div className={styles.container}>
-      <CalendarWeekdays sideBarOpen={this.props.sideBarOpen} />
+      <CalendarWeekdays sideBarOpen={props.sideBarOpen} />
       <div className={styles.daysContainer}>
         <CalendarDays {...props} />
       </div>
