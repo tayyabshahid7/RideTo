@@ -21,10 +21,10 @@ function Contact() {
     setError('')
 
     try {
-      await post('contact/new-message', { name, email, message })
+      await post('contact/new-message', { name, email, message }, false)
       setSent(true)
-    } catch ({ message }) {
-      setError(message)
+    } catch (error) {
+      setError(Object.values(error.response.data)[0][0])
     }
   }
 
