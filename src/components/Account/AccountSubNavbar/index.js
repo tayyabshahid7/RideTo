@@ -12,7 +12,7 @@ let AccountSubNavbar = ({ history }) => {
             className={styles.navLink}
             activeClassName={styles.activeNavLink}
             exact
-            to="/account/availability">
+            to="/account/">
             Availability &amp; Courses
           </NavLink>
         </li>
