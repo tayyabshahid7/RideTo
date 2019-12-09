@@ -131,13 +131,18 @@ export default function reducer(state = initialState, action) {
       }
     case UPDATE[SUCCESS]:
       const updatedUser = action.data.user
-      const updatedUsers = state.users.filter(
-        user => user.id !== updatedUser.id
-      )
+      const updatedUsers = state.users.map(user => {
+        if (user.user === updatedUser.user) {
+          return updatedUser
+        }
+
+        return user
+      })
+
       return {
         ...state,
         saving: false,
-        users: [...updatedUsers, updatedUser],
+        users: updatedUsers,
         selectedUser: null
       }
     case UPDATE[FAILURE]:
