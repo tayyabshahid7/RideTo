@@ -88,6 +88,7 @@ class CalendarComponent extends Component {
               handleMobileCellClick={handleMobileCellClick}
               settings={settings}
               sideBarOpen={sideBarOpen}
+              loading={calendar.loading}
             />
           ) : (
             <CalendarMonthView
