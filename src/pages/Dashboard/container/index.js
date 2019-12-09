@@ -52,7 +52,7 @@ class Dashboard extends Component {
 
   render() {
     return (
-      <div className={classnames(styles.container)}>
+      <div className={classnames(styles.container, styles.dashboardContainer)}>
         <Col
           lg="8"
           className={classnames(styles.leftColumn, commonStyles.mainContent)}>

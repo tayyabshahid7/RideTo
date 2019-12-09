@@ -53,6 +53,8 @@
     right: 0;
     left: 0;
     z-index: 4;
+
+    height: 79px;
   }
 }
 
@@ -106,8 +108,8 @@
 }
 
 .changeCalendarWrapper {
-  // margin-top: 0.5rem;
-  font-size: 16px;
+  margin-top: 0.5rem;
+  font-size: 1rem;
 
   align-items: center;
 
