@@ -98,9 +98,9 @@ export const Features = [
   {
     value: 'mciac_approved',
     icon: 'Approved',
-    title: 'MCIAC APPROVED',
+    title: 'MCIA APPROVED',
     description:
-      'By choosing an MCIAC accredited training school you can be sure that the standards of training and customer service you receive will be amongst the best on offer.'
+      'By choosing an MCIA RIDE accredited training school you can be sure that the standards of training and customer service you receive will be amongst the best on offer.'
   },
   {
     value: 'bike_hire',
