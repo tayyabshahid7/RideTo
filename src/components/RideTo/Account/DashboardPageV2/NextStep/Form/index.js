@@ -5,6 +5,7 @@ import Input from 'components/RideTo/Input'
 import Button from 'components/RideTo/Button'
 import classnames from 'classnames'
 import { loadTypeformScript } from 'utils/helper'
+import kebabCase from 'lodash/kebabCase'
 
 const linkIsTypeform = href => {
   return href && href.includes('rideto.typeform.com')
@@ -36,13 +37,18 @@ function Form({ form }) {
             label={label}
             name={label.toLowerCase()}
           />
-          <Button type="submit" modern className={styles.button}>
+          <Button
+            type="submit"
+            modern
+            className={styles.button}
+            id={`dashboard-cta-${kebabCase(buttonText)}`}>
             <span>{buttonText}</span>
             <img src={ButtonArrowWhite} alt="" />
           </Button>
         </form>
       ) : href ? (
         <Button
+          id={`dashboard-cta-${kebabCase(buttonText)}`}
           target="_blank"
           href={href}
           rel="noopener noreferrer"

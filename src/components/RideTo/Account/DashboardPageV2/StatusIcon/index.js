@@ -19,6 +19,7 @@ function StatusIcon({
   if (camelStatus === 'start') {
     return (
       <button
+        id={`step-${id}`}
         className={styles.iconButton}
         onClick={() => {
           handleCompletedClick(id)
@@ -52,6 +53,7 @@ function StatusIcon({
 
   return (
     <button
+      id={`step-${id}`}
       onClick={() => {
         handleCompletedClick(id, !isCompleted)
       }}
