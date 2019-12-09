@@ -80,6 +80,7 @@ class AddCourseComponent extends Component {
             onSetEditable={isEditable =>
               this.handleSetEditable(isEditable, date)
             }
+            newCourse
           />
         </div>
       </div>

@@ -162,17 +162,24 @@ class CourseForm extends React.Component {
   }
 
   loadDefaultBikes() {
+    const { newCourse } = this.props
     const { defaultBikes, loadingDefaultBikes } = this.state
     const { course_type_id } = this.state.course
+    const { courseTypes } = this.props.info
 
-    if (!course_type_id) {
+    if (!course_type_id && courseTypes.length) {
       return
     }
 
-    const { courseTypes } = this.props.info
-    const { constant } = courseTypes.find(
+    const activeCourse = courseTypes.find(
       ({ id }) => id === parseInt(course_type_id)
     )
+
+    const constant = activeCourse && activeCourse.constant
+
+    if (!constant) {
+      return
+    }
 
     if (defaultBikes.course_type !== constant && !loadingDefaultBikes) {
       this.setState({
@@ -186,6 +193,23 @@ class CourseForm extends React.Component {
             ...res
           }
         })
+        if (newCourse) {
+          this.setState({
+            course: {
+              ...this.state.course,
+              a1_auto_bikes: res.a1_auto_bikes,
+              a1_manual_bikes: res.a1_manual_bikes,
+              a2_auto_bikes: res.a2_auto_bikes,
+              a2_manual_bikes: res.a2_manual_bikes,
+              a_auto_bikes: res.a_auto_bikes,
+              a_manual_bikes: res.a_manual_bikes,
+              auto_bikes: res.default_number_auto_50cc_bikes,
+              auto_125cc_bikes: res.default_number_auto_125cc_bikes,
+              manual_bikes: res.default_number_manual_125cc_bikes,
+              manual_50cc_bikes: res.default_number_manual_50cc_bikes
+            }
+          })
+        }
       })
     }
   }
