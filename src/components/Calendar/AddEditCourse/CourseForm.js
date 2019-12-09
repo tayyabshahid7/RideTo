@@ -109,12 +109,22 @@ class CourseForm extends React.Component {
     const { course_type_id, date } = this.state.course
 
     if (courseTypes.length && course_type_id === '') {
-      this.setState({
-        course: {
-          ...this.state.course,
-          course_type_id: courseTypes.filter(removeFullLicence)[0].id.toString()
+      const defaultCourse =
+        courseTypes.find(({ constant }) => constant === 'LICENCE_CBT') ||
+        courseTypes.filter(removeFullLicence)[0]
+
+      this.setState(
+        {
+          course: {
+            ...this.state.course,
+            course_type_id: defaultCourse.id.toString()
+          }
+        },
+        () => {
+          this.loadPricing()
+          return
         }
-      })
+      )
     }
 
     if (course_type_id && course_type_id !== prevState.course.course_type_id) {
