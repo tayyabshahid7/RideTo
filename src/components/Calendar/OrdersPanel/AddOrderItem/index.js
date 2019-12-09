@@ -8,6 +8,7 @@ import { injectStripe } from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
+import omit from 'lodash/omit'
 
 import {
   ConnectInput,
@@ -197,7 +198,9 @@ class AddOrderItem extends React.Component {
         if (!confirm) return
       }
 
-      const orderResponse = await onSave(order)
+      const orderResponse = await onSave(
+        !order.user_birthdate ? omit(order, 'user_birthdate') : order
+      )
 
       if (!orderResponse) {
         this.setState({ showPayment: false })
@@ -330,12 +333,11 @@ class AddOrderItem extends React.Component {
                 basic
                 name="user_birthdate"
                 value={user_birthdate}
-                label="Birthdate *"
+                label="Birthdate"
                 className="form-group"
                 type="date"
                 onChange={this.handleChangeRawEvent.bind(this)}
                 // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
-                required
                 hideAge
               />
 

@@ -45,7 +45,7 @@ function MyDatePicker({
           onChange({
             target: {
               name: name,
-              value: moment(date).format('YYYY-MM-DD'),
+              value: date && moment(date).format('YYYY-MM-DD'),
               ...(iso && { value: moment(date).toISOString() })
             }
           })
