@@ -133,7 +133,10 @@ class Users extends React.Component {
               </span>
             </ModalHeader>
             <ModalBody>
-              <form onSubmit={this.handleSave} className={styles.editForm}>
+              <form
+                onSubmit={this.handleSave}
+                className={styles.editForm}
+                autocomplete="off">
                 <ConnectInput
                   name="first_name"
                   value={selectedUser.first_name}
