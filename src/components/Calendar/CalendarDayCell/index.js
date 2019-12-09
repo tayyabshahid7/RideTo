@@ -54,7 +54,16 @@ const CalendarDayCell = ({
 }) => {
   const isLowHeight = useMediaQuery({ maxHeight: 768 })
   const isVeryLowHeight = useMediaQuery({ maxHeight: 591 })
-  let showItems = isVeryLowHeight ? 0 : isLowHeight ? 1 : rowsCount < 6 ? 2 : 1
+  const isLargeHeight = useMediaQuery({ minHeight: 888 })
+  let showItems = isVeryLowHeight
+    ? 0
+    : isLowHeight
+    ? 1
+    : rowsCount < 6
+    ? 2
+    : isLargeHeight
+    ? 2
+    : 1
   const dateStr = moment(day.date).format('YYYY-MM-DD')
   const items = getDayItems(day, dateStr)
   const selectedDay = dateStr === calendar.selectedDate
