@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-// import classnames from 'classnames'
+import React, { useEffect } from 'react'
 import CalendarWeekdays from '../CalendarWeekdays'
 import CalendarDays from '../CalendarDays'
 import styles from './index.scss'
@@ -7,26 +6,21 @@ import vhCheck from 'vh-check'
 
 console.log(vhCheck())
 
-class CalendarMonthView extends Component {
-  componentDidMount() {
+function CalendarMonthView(props) {
+  useEffect(() => {
     setTimeout(() => {
-      let element = document.getElementsByClassName('axis-date')
-      if (element && element.length > 0) {
-        element[element.length - 1].scrollIntoView()
-      }
-    }, 500)
-  }
+      window.scrollTo(0, 0)
+    })
+  }, [])
 
-  render() {
-    return (
-      <div className={styles.container}>
-        <CalendarWeekdays />
-        <div className={styles.daysContainer}>
-          <CalendarDays {...this.props} />
-        </div>
+  return (
+    <div className={styles.container}>
+      <CalendarWeekdays />
+      <div className={styles.daysContainer}>
+        <CalendarDays {...props} />
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default CalendarMonthView

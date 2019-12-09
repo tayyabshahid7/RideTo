@@ -9,6 +9,7 @@ import personIcon from 'assets/images/person.png'
 
 const CalendarWeekCourse = React.forwardRef(
   ({ course, position, barCount, history, calendar, match, settings }, ref) => {
+    const offset = 66
     let height = (course.duration / 60) * 100 // Duration is in mins
     let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
     if (top < 0) {
@@ -31,7 +32,7 @@ const CalendarWeekCourse = React.forwardRef(
     // let borderColor = 'black'
     let style = {
       height: `${height / 2}px`,
-      top: `${top / 2}px`,
+      top: `${top / 2 + offset}px`,
       left,
       width,
       zIndex: position

@@ -77,7 +77,7 @@
   display: flex;
 }
 .mobileVisible {
-  line-height: 25px;
+  line-height: 1.25rem;
   display: none;
 }
 .desktopVisible {
@@ -100,24 +100,35 @@
     height: 50px;
 
     &.allDayTimelineItem {
+      position: fixed;
+      top: 129px;
+      width: 50px;
+      background: #fff;
+      z-index: 3;
+
+      @media (max-width: 768px) {
+        height: 23px;
+        border-bottom: 1px solid #070707;
+      }
+
       @media (min-width: 768px) {
-        position: fixed;
         top: 185px;
-        width: 50px;
-        background: #fff;
-        z-index: 3;
       }
 
       span {
         top: 14px;
-      }
 
-      &::after {
         @media (max-width: 768px) {
-          content: '';
-          display: block;
+          top: 2px;
         }
       }
+
+      // &::after {
+      //   @media (max-width: 768px) {
+      //     content: '';
+      //     display: block;
+      //   }
+      // }
     }
 
     &::after {
@@ -225,7 +236,7 @@
   overflow: hidden;
 
   @media (max-width: 768px) {
-    // display: none;
+    height: 22px;
   }
 
   .eventsGroup {
@@ -238,16 +249,19 @@
   width: 100%;
 }
 .allDayEvents {
+  position: fixed;
+  top: 129px;
+  right: 0;
+  left: 50px;
+  width: calc(100% - 50px - 5px);
+
+  z-index: 99;
+
+  background: #fff;
+  border-bottom: 1px solid #070707;
+
   @media (min-width: 768px) {
-    position: fixed;
     top: 183px;
-    right: 0;
-    left: 50px;
-    width: calc(100% - 50px - 5px);
-
-    z-index: 99;
-
-    background: #fff;
     border-bottom: 2px solid #eaeaea;
   }
 
@@ -337,6 +351,10 @@
   /* reset style */
   padding: 0;
 
+  @media (max-width: 768px) {
+    height: auto;
+  }
+
   > span {
     /* vertically center inside its parent */
     display: table-cell;
@@ -424,9 +442,14 @@
     }
   }
   .weekDays {
-    width: 100%;
-    width: calc(100vw - 15px);
-    margin-left: -50px;
+    width: auto;
+    position: fixed;
+    top: 86px;
+    right: 0;
+    left: 0;
+    z-index: 4;
+    padding-bottom: 0.25rem;
+    border-bottom: 1px solid #707070;
   }
   .weekviewContent {
     width: 100%;
