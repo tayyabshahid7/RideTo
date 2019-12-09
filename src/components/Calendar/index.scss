@@ -27,16 +27,9 @@
   padding: 1rem 1rem 1rem;
   background: #fcfcfc;
 
-  select {
-    @media (min-width: 768px) {
-      text-align: center;
-      text-align-last: center;
-    }
-  }
-
   @media (min-width: 768px) {
     background: #fff;
-    padding: 1.5rem 2.5rem 1rem;
+    padding: 1.5rem 1rem 1rem;
     border-bottom: 1px solid #eaeaea;
 
     position: fixed;
