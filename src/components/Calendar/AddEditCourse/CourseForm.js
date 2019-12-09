@@ -13,7 +13,8 @@ import {
   ConnectInput,
   ConnectSelect,
   ConnectTextArea,
-  Button
+  Button,
+  ConnectLabeledContent
 } from 'components/ConnectForm'
 
 function removeFullLicence(type) {
@@ -103,38 +104,35 @@ class CourseForm extends React.Component {
     this.loadPricing()
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate(prevProps, prevState) {
     const { courseTypes } = this.props.info
-    const { courseTypes: prevCourseTypes } = prevProps.info
-    const { course_type_id } = this.state.course
+    const { course_type_id, date } = this.state.course
 
-    if (
-      courseTypes &&
-      prevCourseTypes &&
-      courseTypes.length !== prevCourseTypes.length &&
-      course_type_id === ''
-    ) {
-      this.setState(
-        {
-          course: {
-            ...this.state.course,
-            course_type_id: courseTypes
-              .filter(removeFullLicence)[0]
-              .id.toString()
-          }
-        },
-        this.loadPricing()
-      )
-    } else {
+    if (courseTypes.length && course_type_id === '') {
+      this.setState({
+        course: {
+          ...this.state.course,
+          course_type_id: courseTypes.filter(removeFullLicence)[0].id.toString()
+        }
+      })
+    }
+
+    if (course_type_id && course_type_id !== prevState.course.course_type_id) {
       this.loadPricing()
+      return
+    }
+
+    if (date && date !== prevState.course.date) {
+      this.loadPricing()
+      return
     }
   }
 
   loadPricing() {
     const { fetchPrice, schoolId, pricing } = this.props
-    const { course_type_id, date, time } = this.state.course
-    if (course_type_id && date && time) {
-      let datetime = moment(`${date} ${time}`).format(DAY_FORMAT3)
+    const { course_type_id, date } = this.state.course
+    if (course_type_id && date) {
+      let datetime = moment(date).format(DAY_FORMAT3)
       if (
         pricing.schoolId !== schoolId ||
         pricing.course_type !== course_type_id ||
@@ -174,10 +172,16 @@ class CourseForm extends React.Component {
   }
 
   handleChangeRawEvent(event) {
-    let name = event.target.name
-    let { course } = this.state
-    course[name] = event.target.value
-    this.setState({ course, edited: true })
+    const { name, value } = event.target
+    const { course } = this.state
+
+    this.setState({
+      course: {
+        ...course,
+        [name]: value
+      },
+      edited: true
+    })
   }
 
   handleSave(event) {
@@ -666,19 +670,13 @@ class CourseForm extends React.Component {
                 </React.Fragment>
               )}
               {!isFullLicence && (
-                <ConnectInput
-                  label="Course Price"
-                  basic
-                  name="price"
-                  value={
-                    pricing.loading
-                      ? '...'
-                      : pricing.info
-                      ? `£${(pricing.info.price / 100.0).toFixed(2)}`
-                      : ''
-                  }
-                  disabled
-                />
+                <ConnectLabeledContent label="Course Price" basic name="price">
+                  {pricing.loading
+                    ? '...'
+                    : pricing.info
+                    ? `£${(pricing.info.price / 100.0).toFixed(2)}`
+                    : ''}
+                </ConnectLabeledContent>
               )}
               <ConnectTextArea
                 label="Notes"
