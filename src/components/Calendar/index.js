@@ -99,6 +99,7 @@ class CalendarComponent extends Component {
               calendar={calendar}
               history={history}
               handleMobileCellClick={handleMobileCellClick}
+              sideBarOpen={sideBarOpen}
             />
           )}
         </Loading>

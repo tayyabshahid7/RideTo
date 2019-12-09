@@ -15,7 +15,7 @@ function CalendarMonthView(props) {
 
   return (
     <div className={styles.container}>
-      <CalendarWeekdays />
+      <CalendarWeekdays sideBarOpen={this.props.sideBarOpen} />
       <div className={styles.daysContainer}>
         <CalendarDays {...props} />
       </div>

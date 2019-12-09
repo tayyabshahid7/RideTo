@@ -21,6 +21,10 @@
   overflow: hidden;
   display: flex;
   flex-grow: 1;
+
+  @media (min-width: 768px) {
+    margin-top: 23px;
+  }
 }
 
 @media (max-width: 768px) {
