@@ -1,11 +1,27 @@
 import React, { Fragment } from 'react'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-// import InputTextGroup2 from 'components/Forms/InputTextGroup2'
 import { ConnectTextArea, Button } from 'components/ConnectForm'
 import Loading from 'components/Loading'
 import classnames from 'classnames'
 import WidgetPromoCodes from './WidgetPromoCodes'
+import { ConnectSelect } from 'components/ConnectForm'
+import range from 'lodash/range'
+
+const TIMES = [
+  ...range(8, 24).map(hour => {
+    const time = `${hour.toString().padStart(2, '0')}:00`
+
+    return {
+      id: `${time}:00`,
+      name: time
+    }
+  }),
+  {
+    id: '23:59:59',
+    name: '23:59'
+  }
+]
 
 class WidgetSettingsForm extends React.Component {
   constructor(props) {
@@ -17,7 +33,8 @@ class WidgetSettingsForm extends React.Component {
       intro: '',
       requirements: '',
       cancellation: '',
-      terms: ''
+      terms: '',
+      last_time_book: '18:00:00'
     }
     Object.assign(settings, this.props.settings ? this.props.settings : {})
 
@@ -50,8 +67,6 @@ class WidgetSettingsForm extends React.Component {
 
   handleCancel(event) {
     event.preventDefault()
-    // const { handleCancel } = this.props
-    // handleCancel()
     this.setState({
       settings: this.props.settings,
       introEditable: false,
@@ -133,7 +148,8 @@ class WidgetSettingsForm extends React.Component {
       intro,
       requirements,
       cancellation,
-      terms
+      terms,
+      last_time_book
     } = this.state.settings
     return (
       <div className={styles.container}>
@@ -330,6 +346,43 @@ class WidgetSettingsForm extends React.Component {
                       </Button>
                     )}
                   </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="mt-3 text-right">
+                  <Button disabled={!isChanged} type="submit" color="primary">
+                    Save
+                  </Button>
+                  <Button
+                    disabled={!isChanged}
+                    color="white"
+                    onClick={this.handleCancel}>
+                    Cancel
+                  </Button>
+                </Col>
+              </Row>
+            </div>
+            <div className={classnames(styles.box, styles.boxVertical)}>
+              <div>
+                <h3 className={styles.title}>Widget booking settings</h3>
+                <p>
+                  Set the cut off time for customers to be able to book courses
+                  the next day. E.g. 22:00Hrs the night before.
+                </p>
+              </div>
+              <Row>
+                <Col sm="3">
+                  <ConnectSelect
+                    basic
+                    name="last_time_book"
+                    value={last_time_book}
+                    label=""
+                    valueArray={TIMES}
+                    noSelectOption
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    raw
+                    required
+                  />
                 </Col>
               </Row>
               <Row>
