@@ -29,11 +29,11 @@ function isFullLicence(constant) {
 
 function isDasBike(key) {
   return [
-    'available_a1_auto_bike',
-    'available_a1_manual_bike',
+    'available_a1_auto_bikes',
+    'available_a1_manual_bikes',
     'available_a2_auto_bikes',
     'available_a2_manual_bikes',
-    'available_a_auto_bike',
+    'available_a_auto_bikes',
     'available_a_manual_bikes'
   ].includes(key)
 }
@@ -93,6 +93,7 @@ function DefaultBikesModal({ activeCourse, setActiveCourse, ...rest }) {
     try {
       setIsChanged(false)
       await updateDefaultBikeHire(activeCourse)
+      setActiveCourse(null)
     } catch {
       setIsChanged(true)
     }

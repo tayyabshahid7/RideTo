@@ -13,7 +13,7 @@ function formatListItem(key) {
   )
 }
 
-function RowItem({ setActiveCourse, courseType }) {
+function RowItem({ activeCourse, setActiveCourse, courseType }) {
   const { name, constant } = courseType
   const [loading, setLoading] = useState(true)
   const [settings, setSettings] = useState(null)
@@ -31,7 +31,7 @@ function RowItem({ setActiveCourse, courseType }) {
     }
 
     fetchSettings()
-  }, [])
+  }, [activeCourse])
 
   return (
     <tr>

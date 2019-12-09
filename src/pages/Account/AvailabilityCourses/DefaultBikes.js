@@ -38,6 +38,7 @@ function DefaultBikes({ info, loadCourseTypes, schoolId }) {
                     <RowItem
                       key={courseType.id}
                       courseType={courseType}
+                      activeCourse={activeCourse}
                       setActiveCourse={setActiveCourse}
                     />
                   )
