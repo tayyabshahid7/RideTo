@@ -13,7 +13,8 @@ const COURSETYPE_ORDER_WIDGET = [
   'FULL_LICENCE',
   'TFL_ONE_ON_ONE',
   'ENHANCED_RIDER_SCHEME',
-  'BIKE_HIRE'
+  'BIKE_HIRE',
+  'GEAR_CONVERSION_COURSE'
 ]
 
 class WidgetContainer extends React.Component {

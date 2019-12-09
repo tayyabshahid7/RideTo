@@ -9,7 +9,8 @@ export const SLUG_COURSE_TYPES = {
   'cbt-training': 'LICENCE_CBT',
   'cbt-training-renewal': 'LICENCE_CBT_RENEWAL',
   'motorcycle-licence': 'FULL_LICENCE',
-  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE'
+  '1-2-1-motorcycle-skills': 'TFL_ONE_ON_ONE',
+  'gear-conversion-course': 'GEAR_CONVERSION_COURSE'
 }
 
 const FULL_LICENCE_FAQS = {
@@ -47,6 +48,17 @@ const ITM_FAQ = {
     'ITM classes have a restricted number of places in each course. Due to the popular demand, you should aim to book at least 1 week in advance in order to get a convenient date.',
   iCantSee:
     "Not all of our instructors have their introduction courses live online. If you can't find a local ITM course to you, give us a call and we can arrange something for you."
+}
+
+const GEAR_CONVERSION_FAQ = {
+  'Do I need to take a Gear Conversion course?':
+    "Some new riders decide to take learning to ride one step at a time and opt to complete their first CBT on an automatic scooter. If you plan to then ride a manual motorcycle, it's highly recommended you have professional lessons in how to do so, hence the popular Gear Conversion course.",
+  'What will I do during the Gear Conversion course?':
+    "The course is tailored to your needs. You'll focus all the time on bike control and handling, getting to grips with balancing, stopping, starting and turning with a manual motorcycle. If it's safe to do so, you'll go out on the roads.",
+  'How far in advance should I book?':
+    'Gear Conversion classes have a restricted number of places in each course. Due to the popular demand, you should aim to book at least 1 week in advance in order to get a convenient date.',
+  "I can't see any Gear Conversion courses in my area?":
+    "Not all of our instructors have their Gear Conversion courses live online. If you can't find a local Gear Conversion course to you, give us a call and we can arrange something for you."
 }
 
 export const CONTENT = {
@@ -833,6 +845,115 @@ export const CONTENT = {
         </div>
       </Fragment>
     )
+  },
+  GEAR_CONVERSION_COURSE: {
+    header: courseType => (
+      <Fragment>
+        <h1>Gear Conversion Course</h1>
+        <h2>
+          A 2 hour course completed after the CBT, to learn how to ride a manual
+          125cc motorcycle with gears.
+          <ul>
+            <li>
+              Focus on the core skills and controls of riding a manual
+              motorcycle
+            </li>
+            <li>Learn and master the basics of clutch and gear control</li>
+            <li>
+              A course designed for riders who have already completed the CBT on
+              an automatic scooter or wish to further develop riding with gears
+            </li>
+          </ul>
+        </h2>
+      </Fragment>
+    ),
+    body: courseType => (
+      <Fragment>
+        <div>
+          <h2>What you'll learn</h2>
+          <h3>Clutch control </h3>
+          <p>
+            1 down 4 up, you'll learn how to safely and confidently ride a
+            motorcycle with gears. Understanding how to control the clutch at
+            slow speeds, pulling away and coming to a stop.
+          </p>
+          <h3>Changing gears with confidence</h3>
+          <p>
+            Riding in different scenarios and conditions to learn how to select
+            the right gear for each occasion and to change gear with confidence
+            up and down the gear box.
+          </p>
+        </div>
+        <div>
+          <h2>Requirements</h2>
+          <p>
+            In order to take the Gear Conversion course, you must meet the
+            following requirements:
+          </p>
+          <ul>
+            <li>
+              Have the correct licence card: UK driving, UK provisional or EU
+              licence with UK counterpart licence number. Photocopies or images
+              are not accepted.
+            </li>
+            <li>Be able to read a registration plate from 20.5 meters</li>
+            <li>Speak and understand English and the Highway code</li>
+            <li>Be able to ride an adult sized bicycle</li>
+            <li>
+              Wear suitable clothing including thick trousers (such as jeans)
+              and boots
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h2>What you can ride after</h2>
+          <p>
+            The Gear Conversion course is not a valid licence, so you are not
+            legally entitled to ride a motorcycle on the road from just this
+            course. You must have completed the CBT course to be able to ride on
+            the road.
+          </p>
+        </div>
+        <div>
+          <h2>Course details</h2>
+          <p>
+            The Gear Conversion course is a 2 hour bespoke lesson which can be
+            tailored to the needs of the pupils. Up to 2 students to one
+            instructor, you'll spend as much time as possible on the bike
+            learning the skills of controlling the clutch with your left hand
+            and changing the gears with your left foot.
+          </p>
+          <p>
+            Depending on how the lesson progresses and the instructors decision,
+            you'll either spend the 2 hour course duration off-road or will
+            progress to on-road riding if the instructor believes you are ready
+            to do so.
+          </p>
+          <p>
+            This course is ideal for riders who have completed the CBT on an
+            automatic scooter or wish to spend more time and instruction riding
+            a geared bike.
+          </p>
+        </div>
+        <div>
+          <h2>Frequently Asked Questions</h2>
+          <CourseTypeDetails
+            courseType={{ details: GEAR_CONVERSION_FAQ }}
+            minimal
+            useKeysAsTitle
+          />
+        </div>
+        <div>
+          <h2>Cancellation policy</h2>
+          <p>
+            You won't be charged anything until your booking is confirmed. Once
+            the booking is confirmed, we can cancel or refund you in full as
+            long as you give us at least 3 working days notice before your
+            training.
+          </p>
+        </div>
+      </Fragment>
+    )
   }
 }
 
@@ -877,6 +998,15 @@ export const LOCATIONS = {
   INTRO_TO_MOTORCYCLING: [
     'london',
     'bristol',
+    'birmingham',
+    'manchester',
+    'glasgow',
+    'southampton',
+    'bournemouth',
+    'portsmouth'
+  ],
+  GEAR_CONVERSION_COURSE: [
+    'london',
     'birmingham',
     'manchester',
     'glasgow',

@@ -185,18 +185,20 @@ class CourseAvailabilityComponent extends React.Component {
 
   handleDateSelect(instantDate) {
     const { calendar } = this.state
-    const { onUpdate } = this.props
+    const { onUpdate, bike_hire } = this.props
     let instantCourse =
       this.props.instantDate === instantDate ? this.props.instantCourse : null
     this.setState({ calendar: { ...calendar } })
     onUpdate({ instantCourse, instantDate })
 
-    setTimeout(() => {
-      this.bikePicker.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'end'
-      })
-    }, 99)
+    if (!bike_hire) {
+      setTimeout(() => {
+        this.bikePicker.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end'
+        })
+      }, 99)
+    }
   }
 
   handleTimeSelect(instantCourse) {
