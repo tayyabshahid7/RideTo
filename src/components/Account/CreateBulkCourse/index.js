@@ -480,7 +480,7 @@ class CreateBulkCourse extends React.Component {
                   basic
                   name="instructor_id"
                   value={instructor_id}
-                  label="Instructor"
+                  label="Staff"
                   valueArray={instructors.map(instructor => ({
                     id: instructor.id,
                     name: `${instructor.first_name} ${instructor.last_name}`

@@ -115,7 +115,7 @@ class Instructors extends React.Component {
           <Modal isOpen={true}>
             <ModalHeader>
               <h3 className={styles.title}>
-                {addNew ? 'Add' : 'Edit'} Instructor Details
+                {addNew ? 'Add' : 'Edit'} Staff Details
               </h3>
             </ModalHeader>
             <ModalBody>
