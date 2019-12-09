@@ -78,7 +78,12 @@ class Users extends React.Component {
           <div className={styles.box}>
             <div>
               <h3 className={styles.title}>Add user</h3>
-              <p>Add a new user account</p>
+              <p>
+                Add a new staff permission user account. Staff users have access
+                to view the full calendar, customers and orders. They can also
+                add notes to customer orders. They can't add or edit orders or
+                courses, but they can add events.
+              </p>
             </div>
             <div className={styles.buttons}>
               <Button color="primary" onClick={this.handleAddNew}>
