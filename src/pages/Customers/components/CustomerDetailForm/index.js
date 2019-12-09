@@ -152,6 +152,20 @@ class CustomerDetailForm extends React.Component {
             onChange({ ...customer, email_optin: value === 'true' })
           }
         />
+        <ConnectSelect
+          textStyle
+          label="Third Party Opt In"
+          name="third_party_optin"
+          options={getBooleanSelectOptions()}
+          selected={
+            (customer.third_party_optin &&
+              customer.third_party_optin.toString()) ||
+            ''
+          }
+          onChange={value =>
+            onChange({ ...customer, third_party_optin: value === 'true' })
+          }
+        />
         <div
           className={classnames(
             styles.saveBar,

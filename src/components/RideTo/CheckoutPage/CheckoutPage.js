@@ -703,7 +703,8 @@ class CheckoutPage extends Component {
       addons: addonIds,
       source: isInstantBook() ? 'RIDETO_INSTANT' : 'RIDETO',
       accept_equipment_responsibility: true,
-      trainings: trainings
+      trainings: trainings,
+      third_party_optin: false
     }
 
     try {

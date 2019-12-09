@@ -47,7 +47,8 @@ class PaymentContainer extends React.Component {
       errors: {},
       details: {
         current_licence: '',
-        riding_experience: ''
+        riding_experience: '',
+        third_party_optin: false
       },
       trainings: JSON.parse(window.sessionStorage.getItem('widgetTrainings')),
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',

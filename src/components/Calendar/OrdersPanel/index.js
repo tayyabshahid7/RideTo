@@ -5,8 +5,7 @@ import AddOrderItem from './AddOrderItem'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import OrdersPanelItem from 'components/Calendar/OrdersPanelItem'
 import Loading from 'components/Loading'
-import { BIKE_HIRE, STRIPE_KEY } from 'common/constants'
-import { StripeProvider, Elements } from 'react-stripe-elements'
+import { BIKE_HIRE } from 'common/constants'
 
 class OrdersPanel extends React.Component {
   constructor(props) {
@@ -152,19 +151,15 @@ class OrdersPanel extends React.Component {
             ))}
             {Array.apply(null, Array(availableSpaces)).map((val, index) =>
               orderIndex === index ? (
-                <StripeProvider apiKey={STRIPE_KEY} key={index}>
-                  <Elements>
-                    <AddOrderItem
-                      onCancel={() => this.setState({ orderIndex: -1 })}
-                      info={info}
-                      course={course}
-                      onSave={this.handleNewOrder.bind(this)}
-                      onPayment={this.handleNewPayment.bind(this)}
-                      saving={saving}
-                      updateAdding={updateAdding}
-                    />
-                  </Elements>
-                </StripeProvider>
+                <AddOrderItem
+                  onCancel={() => this.setState({ orderIndex: -1 })}
+                  info={info}
+                  course={course}
+                  onSave={this.handleNewOrder.bind(this)}
+                  onPayment={this.handleNewPayment.bind(this)}
+                  saving={saving}
+                  updateAdding={updateAdding}
+                />
               ) : (
                 <Fragment key={index}>
                   {!addingOrder && (

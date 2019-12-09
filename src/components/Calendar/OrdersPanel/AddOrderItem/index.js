@@ -4,11 +4,13 @@ import { Row, Col } from 'reactstrap'
 import { BikeHires, FullLicenceTypes } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import { checkCustomerExists } from 'services/customer'
-import { injectStripe } from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
 import omit from 'lodash/omit'
+import { connect } from 'react-redux'
+import { fetchWidgetSettings } from 'store/settings'
+import { bindActionCreators } from 'redux'
 
 import {
   ConnectInput,
@@ -38,7 +40,8 @@ class AddOrderItem extends React.Component {
         start_time: `${this.props.course.date}T${this.props.course.time}Z`,
         tandcs_agreed: false,
         email_optin: false,
-        notes: ''
+        notes: '',
+        third_party_optin: false
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
@@ -67,7 +70,16 @@ class AddOrderItem extends React.Component {
   }
 
   componentDidMount() {
-    const { updateAdding, course } = this.props
+    const {
+      updateAdding,
+      course,
+      widgetSettings,
+      fetchWidgetSettings
+    } = this.props
+
+    if (!widgetSettings) {
+      fetchWidgetSettings()
+    }
 
     this.scrollIntoView.current.scrollIntoView()
 
@@ -241,11 +253,11 @@ class AddOrderItem extends React.Component {
     let {
       onCancel,
       info,
-      course: { pricing }
+      course: { pricing },
+      widgetSettings
     } = this.props
     const {
       isFullLicence,
-      // userDetailsValid,
       showPayment,
       showPaymentConfirmation,
       cardName,
@@ -266,10 +278,13 @@ class AddOrderItem extends React.Component {
         user_phone,
         tandcs_agreed,
         email_optin,
-        notes
+        notes,
+        third_party_optin
       }
     } = this.state
     const price = pricing && pricing.price
+    const enable_third_party_optin =
+      widgetSettings && widgetSettings.enable_third_party_optin
 
     return (
       <div className={styles.container}>
@@ -426,6 +441,15 @@ class AddOrderItem extends React.Component {
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
 
+              {enable_third_party_optin && (
+                <ConnectCheckbox
+                  label="3rd Party Opt In"
+                  checked={third_party_optin}
+                  name="third_party_optin"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+              )}
+
               <ConnectTextArea
                 basic
                 name="notes"
@@ -501,4 +525,21 @@ class AddOrderItem extends React.Component {
   }
 }
 
-export default injectStripe(AddOrderItem)
+const mapStateToProps = (state, ownProps) => {
+  return {
+    widgetSettings: state.settings.widget.settings
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchWidgetSettings
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddOrderItem)
