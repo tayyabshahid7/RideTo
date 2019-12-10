@@ -252,7 +252,7 @@ export function ConnectSelect({
         disabled={disabled}
         required={required}>
         {placeholder && (
-          <option disabled value="">
+          <option disabled value="" data-placeholder>
             {typeof placeholder === 'boolean' ? 'Select' : placeholder}
           </option>
         )}

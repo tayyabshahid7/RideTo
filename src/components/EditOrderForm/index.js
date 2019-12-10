@@ -5,7 +5,11 @@ import { Row, Col, Form } from 'reactstrap'
 
 import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
-import { BikeHires, formatBikeConstant, FullLicenceTypes } from 'common/info'
+import {
+  formatBikeConstant,
+  FullLicenceTypes,
+  getAvailableBikeHires
+} from 'common/info'
 import {
   getPaymentOptions,
   getTrainingStatusOptions,
@@ -84,7 +88,8 @@ class EditOrderForm extends React.Component {
       onSave,
       times,
       loadTimes,
-      isAdmin
+      isAdmin,
+      order
     } = this.props
     const { showChangeDate, isChanged } = this.state
 
@@ -140,7 +145,9 @@ class EditOrderForm extends React.Component {
                     name="bike_type"
                     selected={bike_type}
                     label="Bike hire"
-                    options={BikeHires}
+                    options={getAvailableBikeHires(
+                      courses.find(course => course.id === order.school_course)
+                    )}
                     noSelectOption
                     required
                     valueField="value"

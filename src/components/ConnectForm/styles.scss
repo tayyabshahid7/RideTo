@@ -110,6 +110,12 @@ select {
     &.textStyle:focus:not(:disabled) {
       appearance: menulist-button;
     }
+
+    option[disabled]:not([data-placeholder]),
+    option[disabled] {
+      color: rgba(#707070, 0.4321);
+      text-decoration: line-through;
+    }
   }
 }
 

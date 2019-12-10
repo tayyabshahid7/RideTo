@@ -15,6 +15,35 @@ export const BikeHires = [
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' }
 ]
 
+export function getAvailableBikeHires(course) {
+  const {
+    auto_125cc_bikes,
+    auto_bikes,
+    manual_50cc_bikes,
+    manual_bikes
+  } = course
+
+  return [
+    {
+      value: manual_50cc_bikes ? BIKE_HIRE.MANUAL_50CC : null,
+      title: 'Manual 50cc'
+    },
+    {
+      value: manual_bikes ? BIKE_HIRE.MANUAL : null,
+      title: 'Manual 125cc'
+    },
+    {
+      value: auto_bikes ? BIKE_HIRE.AUTO : null,
+      title: 'Automatic 50cc'
+    },
+    {
+      value: auto_125cc_bikes ? BIKE_HIRE.AUTO_125CC : null,
+      title: 'Automatic 125cc'
+    },
+    { value: BIKE_HIRE.NO, title: 'Own Bike' }
+  ]
+}
+
 export function formatBikeConstant(constant) {
   switch (constant) {
     case 'BIKE_TYPE_AUTO':
@@ -22,16 +51,18 @@ export function formatBikeConstant(constant) {
     case 'Auto':
     case 'automatic':
     case 'Automatic':
+      return BIKE_HIRE.AUTO
     case 'AUTO_125CC':
     case 'BIKE_TYPE_AUTO_125CC':
     case 'BIKE_TYPE_BIKE_125CC':
-      return BIKE_HIRE.AUTO
+      return BIKE_HIRE.AUTO_125CC
     case 'BIKE_TYPE_MANUAL':
     case 'manual':
     case 'Manual':
+      return BIKE_HIRE.MANUAL
     case 'MANUAL_50CC':
     case 'BIKE_TYPE_MANUAL_50CC':
-      return BIKE_HIRE.MANUAL
+      return BIKE_HIRE.MANUAL_50CC
     case 'BIKE_TYPE_NONE':
     case 'none':
     case 'no':

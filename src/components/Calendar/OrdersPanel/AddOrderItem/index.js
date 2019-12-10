@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 import { Row, Col } from 'reactstrap'
-import { BikeHires, FullLicenceTypes } from 'common/info'
+import { FullLicenceTypes, getAvailableBikeHires } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import { checkCustomerExists } from 'services/customer'
 import CheckoutForm from './CheckoutForm'
@@ -253,6 +253,7 @@ class AddOrderItem extends React.Component {
     let {
       onCancel,
       info,
+      course,
       course: { pricing },
       widgetSettings
     } = this.props
@@ -418,7 +419,7 @@ class AddOrderItem extends React.Component {
                 name="bike_hire"
                 selected={bike_hire}
                 label="Bike Hire *"
-                valueArray={BikeHires}
+                valueArray={getAvailableBikeHires(course)}
                 onChange={value => {
                   this.handleChange('bike_hire', value)
                 }}
