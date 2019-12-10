@@ -82,11 +82,11 @@ export const isConnectManual = ({ source }) => {
 
 export const getBikeHireOptions = isFullLicence => {
   return {
-    no: 'Own Bike',
-    auto: !isFullLicence ? 'Automatic Scooter' : 'Automatic',
-    manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
-    AUTO_125CC: 'Automatic 125cc Scooter',
-    MANUAL_50CC: 'Manual 50cc Motorcycle'
+    [BIKE_HIRE.NO]: 'Own Bike',
+    [BIKE_HIRE.AUTO]: !isFullLicence ? 'Automatic Scooter' : 'Automatic',
+    [BIKE_HIRE.MANUAL]: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
+    [BIKE_HIRE.AUTO_125CC]: 'Automatic 125cc Scooter',
+    [BIKE_HIRE.MANUAL_50CC]: 'Manual 50cc Motorcycle'
   }
 }
 
