@@ -34,7 +34,7 @@ export function getAvailableBikeHires(course) {
     },
     {
       value: auto_bikes ? BIKE_HIRE.AUTO : null,
-      title: 'Automatic 50cc'
+      title: 'Automatic Scooter'
     },
     // {
     //   value: auto_125cc_bikes ? BIKE_HIRE.AUTO_125CC : null,
