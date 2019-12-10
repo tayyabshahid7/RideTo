@@ -6,8 +6,8 @@ import styles from './MotorbikeOptions.scss'
 
 const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
   const fullText = <span className={styles.full}> - Fully Booked</span>
-  const isAutoFull = course.auto_count === course.auto_bikes
-  const isManualFull = course.manual_count === course.manual_bikes
+  const isAutoFull = course.auto_count >= course.auto_bikes
+  const isManualFull = course.manual_count >= course.manual_bikes
 
   return (
     <div className={styles.motorbikeOptions}>
