@@ -16,6 +16,10 @@ export const BikeHires = [
 ]
 
 export function getAvailableBikeHires(course) {
+  if (!course) {
+    return []
+  }
+
   const {
     // auto_125cc_bikes,
     auto_bikes,

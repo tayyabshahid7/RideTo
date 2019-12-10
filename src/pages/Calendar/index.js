@@ -369,7 +369,12 @@ class CalendarPage extends Component {
           <Route
             exact
             path="/calendar/:date"
-            render={routeProps => <CoursesPanel {...routeProps} />}
+            render={routeProps => (
+              <CoursesPanel
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
@@ -384,42 +389,82 @@ class CalendarPage extends Component {
           <Route
             exact
             path="/calendar/courses/create"
-            render={routeProps => <AddCourseComponent {...routeProps} />}
+            render={routeProps => (
+              <AddCourseComponent
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
             path="/calendar/:date/courses/:courseId/edit"
-            render={routeProps => <EditCourseComponent {...routeProps} />}
+            render={routeProps => (
+              <EditCourseComponent
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
             path="/calendar/events/create"
-            render={routeProps => <AddEventComponent {...routeProps} />}
+            render={routeProps => (
+              <AddEventComponent
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
             path="/calendar/:date/events/:eventId"
-            render={routeProps => <CoursesPanel {...routeProps} />}
+            render={routeProps => (
+              <CoursesPanel
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
             path="/calendar/:date/events/:eventId/edit"
-            render={routeProps => <EditEventComponent {...routeProps} />}
+            render={routeProps => (
+              <EditEventComponent
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
             path="/calendar/staff/create"
-            render={routeProps => <AddStaffComponent {...routeProps} />}
+            render={routeProps => (
+              <AddStaffComponent
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
             path="/calendar/:date/staff/:staffId"
-            render={routeProps => <CoursesPanel {...routeProps} />}
+            render={routeProps => (
+              <CoursesPanel
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
           <Route
             exact
             path="/calendar/:date/staff/:staffId/:diaryId/edit"
-            render={routeProps => <EditStaffComponent {...routeProps} />}
+            render={routeProps => (
+              <EditStaffComponent
+                {...routeProps}
+                loadCourses={this.loadCourses.bind(this)}
+              />
+            )}
           />
         </RightPanel>
       </div>
