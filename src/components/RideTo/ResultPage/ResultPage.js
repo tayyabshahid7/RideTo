@@ -520,6 +520,27 @@ class ResultPage extends Component {
 
     const courseId = getCourseIdFromSearch(this.props.location.search)
 
+    if (!isEqual(this.state.instantCourse, prevState.instantCourse)) {
+      const isAutoFull =
+        this.state.instantCourse &&
+        this.state.instantCourse.auto_count >=
+          this.state.instantCourse.auto_bikes
+      const isManualFull =
+        this.state.instantCourse &&
+        this.state.instantCourse.manual_count >=
+          this.state.instantCourse.manual_bikes
+
+      if (this.state.bike_hire === 'auto' && isAutoFull) {
+        this.setState({
+          bike_hire: null
+        })
+      } else if (this.state.bike_hire === 'manual' && isManualFull) {
+        this.setState({
+          bike_hire: null
+        })
+      }
+    }
+
     // Reset param changing state
     if (this.state.addCourseIdParam || this.state.removeCourseIdParam) {
       this.setState({
@@ -817,6 +838,7 @@ class ResultPage extends Component {
                                   <CourseItem
                                     showCallMessage={
                                       index === 2 ||
+                                      (index - 2) % 5 === 0 ||
                                       (courses.available.length < 3 &&
                                         index === courses.available.length - 1)
                                     }

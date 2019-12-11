@@ -1,5 +1,12 @@
+:global {
+  html {
+    font-size: 15px;
+  }
+}
+
 .container {
   width: 100%;
+  font-size: 1rem;
 
   @media (min-width: 1200px) {
     display: flex;
@@ -11,13 +18,19 @@
   }
 
   h2 {
-    font-size: 30px;
+    font-size: 1.875rem;
     margin-bottom: 1.5rem;
   }
 
   h3 {
-    font-size: 26px;
+    font-size: 1.625rem;
     margin-bottom: 1.5rem;
+  }
+}
+
+.dashboardContainer {
+  @media (min-width: 768px) {
+    display: flex;
   }
 }
 
@@ -43,8 +56,10 @@
   height: 100%;
 
   @media (min-width: 991.99px) {
-    width: 100%;
-    padding: 0 64px !important;
+    // width: 100%;
+    // padding: 0 64px !important;
+    padding-left: 0 !important;
+    padding-right: 64px !important;
   }
 
   @media (min-width: 1200px) {
@@ -55,7 +70,7 @@
 @media (max-width: 991.98px) {
   .rightPanel {
     margin-top: 32px;
-    padding: 0px 32px !important;
+    padding: 0px 32px 0 0 !important;
   }
 }
 

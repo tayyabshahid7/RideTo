@@ -47,7 +47,8 @@ class PaymentContainer extends React.Component {
       errors: {},
       details: {
         current_licence: '',
-        riding_experience: ''
+        riding_experience: '',
+        third_party_optin: false
       },
       trainings: JSON.parse(window.sessionStorage.getItem('widgetTrainings')),
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
@@ -324,13 +325,17 @@ class PaymentContainer extends React.Component {
           />
           <div className={styles.paymentDetails}>
             <h3 className={styles.heading}>Contact Details</h3>
-            <CustomerDetailsForm
-              details={details}
-              trainingDate={course && course.date}
-              errors={errors}
-              fullLicenceType={trainings[0].full_licence_type}
-              onChange={this.handleChangeDetails}
-            />
+            {!isLoading && (
+              <CustomerDetailsForm
+                details={details}
+                trainingDate={course && course.date}
+                errors={errors}
+                fullLicenceType={trainings[0].full_licence_type}
+                onChange={this.handleChangeDetails}
+                bikeType={trainings[0].bike_type}
+                courseType={course.course_type}
+              />
+            )}
 
             <StripeProvider apiKey={this.stripePublicKey}>
               <div>

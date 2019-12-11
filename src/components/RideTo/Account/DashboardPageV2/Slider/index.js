@@ -20,7 +20,12 @@ function Slider({ gear, constant }) {
       {gear.length > 0 && (
         <Slick {...settings}>
           {gear.map(({ name, link, image, description }) => (
-            <a key={name} href={link} target="_blank" rel="noopener noreferrer">
+            <a
+              id={`gear-slide-item-${name}`}
+              key={name}
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer">
               <div
                 className={classnames(
                   styles.slide,

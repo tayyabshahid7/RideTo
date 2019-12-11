@@ -1,9 +1,32 @@
+.avatar {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  color: #87cdf0;
+  font-weight: bold;
+  border: 2px solid #e4e4e4;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 1.8;
+}
+
 .navigationBar {
   border-bottom: 2px solid var(--light-grey-color);
   text-align: center;
+  background-color: #fff;
+}
+.navbar {
+  @media (max-width: 768px) {
+    margin-top: 0.5rem;
+  }
 }
 .navItem {
   margin: 10px 0px;
+
+  @media (max-width: 768px) {
+    font-weight: bold;
+    text-align: left;
+  }
 }
 .navLinks {
   width: 85%;
@@ -34,9 +57,17 @@
   }
 }
 
+.activeNavLink {
+  color: var(--primary-color);
+  padding-right: 1rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 3px solid var(--primary-color);
+}
+
 @media (min-width: 768px) {
   .navigationBar {
     text-align: left;
+    height: 62px;
   }
   .navItem {
     margin: 0px;
@@ -95,4 +126,43 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.schoolSelect {
+  margin-left: auto;
+  margin-right: 0.5rem;
+  max-width: 177px;
+}
+
+.logoutButton {
+  padding: 0;
+  border: 0;
+  appearance: none;
+  background: transparent;
+  color: var(--primary-color);
+  margin: 0 1rem;
+  font-weight: bold;
+}
+
+.isOpen {
+  @media (max-width: 768px) {
+    background: #fafafa;
+    box-shadow: 0px 3px 6px #00000029;
+  }
+}
+
+.toggleButton {
+  width: 56px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  height: 38px !important;
+}
+
+.navBarTogglerOpen {
+  border-color: transparent !important;
+}
+
+.closeIcon {
+  font-size: 30px;
+  line-height: 20px;
 }

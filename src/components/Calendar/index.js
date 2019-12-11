@@ -14,6 +14,7 @@ import CalendarViewChanger from './CalendarViewChanger'
 import CalendarArrowsSwitcher from './CalendarArrowsSwitcher'
 import CalendarMobileBackButton from './CalendarMobileBackButton'
 import { Desktop } from 'common/breakpoints'
+import MediaQuery from 'react-responsive'
 
 class CalendarComponent extends Component {
   renderOverview() {
@@ -29,7 +30,9 @@ class CalendarComponent extends Component {
         <Row>
           <Col>
             <div className={styles.filtersWrap}>
-              <SchoolSelect />
+              <MediaQuery minWidth={768}>
+                <SchoolSelect />
+              </MediaQuery>
               <div
                 className={classnames(
                   styles.changeCalendarWrapper,
@@ -88,6 +91,7 @@ class CalendarComponent extends Component {
               handleMobileCellClick={handleMobileCellClick}
               settings={settings}
               sideBarOpen={sideBarOpen}
+              loading={calendar.loading}
             />
           ) : (
             <CalendarMonthView
@@ -95,6 +99,7 @@ class CalendarComponent extends Component {
               calendar={calendar}
               history={history}
               handleMobileCellClick={handleMobileCellClick}
+              sideBarOpen={sideBarOpen}
             />
           )}
         </Loading>

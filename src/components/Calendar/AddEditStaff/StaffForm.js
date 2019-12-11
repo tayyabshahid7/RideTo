@@ -167,7 +167,7 @@ class StaffForm extends React.Component {
                   basic
                   name="instructor"
                   value={instructor}
-                  label="Instructor"
+                  label="Staff"
                   className="form-group"
                   type="text"
                   onChange={this.handleChangeInstructor.bind(this)}

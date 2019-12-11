@@ -29,11 +29,11 @@ export const sendEmail = email => async dispatch => {
   dispatch({ type: SEND[REQUEST] })
 
   try {
-    await fireEmail(email)
+    const response = await fireEmail(email)
     dispatch({
       type: SEND[SUCCESS],
       data: {
-        email
+        email: response
       }
     })
     notificationActions.dispatchSuccess(dispatch, 'Email sent')

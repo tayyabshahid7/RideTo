@@ -16,6 +16,7 @@ import classnames from 'classnames'
 import { getNextStep, getNextStepConstant } from './util'
 import MyCheckbox from './MyCheckbox'
 import { fetchBikes } from 'services/dashboard'
+import kebabCase from 'lodash/kebabCase'
 
 function NextStep({
   nextStep,
@@ -144,6 +145,7 @@ function NextStep({
           </div>
           {cta && (
             <Button
+              id={`dashboard-cta-${kebabCase(cta.text)}`}
               href={cta.href}
               alt
               modern

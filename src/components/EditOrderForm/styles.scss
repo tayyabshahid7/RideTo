@@ -55,7 +55,7 @@ button.toggleButton {
 .buttons {
   display: flex;
 
-  button:last-of-type {
+  .deleteButton {
     margin-left: auto;
   }
 }

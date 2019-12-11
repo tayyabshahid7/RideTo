@@ -1,9 +1,13 @@
 import React from 'react'
-// import classnames from 'classnames'
+import classnames from 'classnames'
 import styles from './index.scss'
 
-const CalendarWeekdays = () => (
-  <ul className={styles.calendarWeekdays}>
+const CalendarWeekdays = ({ sideBarOpen }) => (
+  <ul
+    className={classnames(
+      styles.calendarWeekdays,
+      sideBarOpen && styles.calendarWeekdaysSideBarOpen
+    )}>
     <li>Mo</li>
     <li>Tu</li>
     <li>We</li>

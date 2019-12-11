@@ -1,13 +1,16 @@
 import React from 'react'
 import styles from './styles.scss'
 import { Row, Col } from 'reactstrap'
-import { BikeHires, FullLicenceTypes } from 'common/info'
+import { FullLicenceTypes, getAvailableBikeHires } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import { checkCustomerExists } from 'services/customer'
-import { injectStripe } from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
+import omit from 'lodash/omit'
+import { connect } from 'react-redux'
+import { fetchWidgetSettings } from 'store/settings'
+import { bindActionCreators } from 'redux'
 
 import {
   ConnectInput,
@@ -37,7 +40,8 @@ class AddOrderItem extends React.Component {
         start_time: `${this.props.course.date}T${this.props.course.time}Z`,
         tandcs_agreed: false,
         email_optin: false,
-        notes: ''
+        notes: '',
+        third_party_optin: false
       },
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
@@ -66,7 +70,16 @@ class AddOrderItem extends React.Component {
   }
 
   componentDidMount() {
-    const { updateAdding, course } = this.props
+    const {
+      updateAdding,
+      course,
+      widgetSettings,
+      fetchWidgetSettings
+    } = this.props
+
+    if (!widgetSettings) {
+      fetchWidgetSettings()
+    }
 
     this.scrollIntoView.current.scrollIntoView()
 
@@ -197,7 +210,9 @@ class AddOrderItem extends React.Component {
         if (!confirm) return
       }
 
-      const orderResponse = await onSave(order)
+      const orderResponse = await onSave(
+        !order.user_birthdate ? omit(order, 'user_birthdate') : order
+      )
 
       if (!orderResponse) {
         this.setState({ showPayment: false })
@@ -238,11 +253,12 @@ class AddOrderItem extends React.Component {
     let {
       onCancel,
       info,
-      course: { pricing }
+      course,
+      course: { pricing },
+      widgetSettings
     } = this.props
     const {
       isFullLicence,
-      // userDetailsValid,
       showPayment,
       showPaymentConfirmation,
       cardName,
@@ -263,10 +279,13 @@ class AddOrderItem extends React.Component {
         user_phone,
         tandcs_agreed,
         email_optin,
-        notes
+        notes,
+        third_party_optin
       }
     } = this.state
     const price = pricing && pricing.price
+    const enable_third_party_optin =
+      widgetSettings && widgetSettings.enable_third_party_optin
 
     return (
       <div className={styles.container}>
@@ -330,12 +349,11 @@ class AddOrderItem extends React.Component {
                 basic
                 name="user_birthdate"
                 value={user_birthdate}
-                label="Birthdate *"
+                label="Birthdate"
                 className="form-group"
                 type="date"
                 onChange={this.handleChangeRawEvent.bind(this)}
                 // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
-                required
                 hideAge
               />
 
@@ -401,7 +419,7 @@ class AddOrderItem extends React.Component {
                 name="bike_hire"
                 selected={bike_hire}
                 label="Bike Hire *"
-                valueArray={BikeHires}
+                valueArray={getAvailableBikeHires(course)}
                 onChange={value => {
                   this.handleChange('bike_hire', value)
                 }}
@@ -423,6 +441,15 @@ class AddOrderItem extends React.Component {
                 name="email_optin"
                 onChange={this.handleChangeRawEvent.bind(this)}
               />
+
+              {enable_third_party_optin && (
+                <ConnectCheckbox
+                  label="3rd Party Opt In"
+                  checked={third_party_optin}
+                  name="third_party_optin"
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+              )}
 
               <ConnectTextArea
                 basic
@@ -499,4 +526,21 @@ class AddOrderItem extends React.Component {
   }
 }
 
-export default injectStripe(AddOrderItem)
+const mapStateToProps = (state, ownProps) => {
+  return {
+    widgetSettings: state.settings.widget.settings
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      fetchWidgetSettings
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddOrderItem)

@@ -31,23 +31,34 @@ class CalendarWeekView extends Component {
     super(props)
 
     this.state = {
-      mobileDayOfWeek: getDayOfWeek(this.props.calendar)
+      mobileDayOfWeek: getDayOfWeek(this.props.calendar),
+      scrolled: false
     }
 
     this.startTime = React.createRef()
+    this.firstCourse = null
   }
 
   componentDidMount() {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
-    const offset = isDesktop ? 340 : 550
+    const { scrolled, mobileDayOfWeek } = this.state
+    const hasCourses = this.props.days[mobileDayOfWeek].courses.length
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
     }
 
-    setTimeout(() => {
-      window.scrollTo(0, offset)
-    })
+    if (!hasCourses) {
+      if (!isDesktop && !scrolled) {
+        window.scrollTo(0, 350)
+        this.setState({ scrolled: true })
+      }
+
+      if (isDesktop && !scrolled) {
+        window.scrollTo(0, 390)
+        this.setState({ scrolled: true })
+      }
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -55,6 +66,35 @@ class CalendarWeekView extends Component {
       this.setState({
         mobileDayOfWeek: getDayOfWeek(this.props.calendar)
       })
+    }
+
+    if (!isEqual(this.props.days, prevProps.days)) {
+      const isDesktop = window.matchMedia('(min-width: 768px)').matches
+
+      const { mobileDayOfWeek } = this.state
+      const hasCourses = this.props.days[mobileDayOfWeek].courses.length
+
+      if (!hasCourses && !isDesktop) {
+        const { scrolled } = this.state
+
+        if (!scrolled) {
+          window.scrollTo(0, 350)
+          this.setState({ scrolled: true })
+        }
+      }
+    }
+  }
+
+  setFirstCourseRef = element => {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches
+    const { scrolled } = this.state
+    this.firstCourse = element
+
+    if (element && !scrolled && !isDesktop) {
+      const top = parseInt(element.style.top.replace('px', ''), 10) - 100
+
+      window.scrollTo(0, top)
+      this.setState({ scrolled: true })
     }
   }
 
@@ -276,6 +316,11 @@ class CalendarWeekView extends Component {
                               key={index}
                               match={match}
                               settings={settings}
+                              ref={
+                                matches && index === 0
+                                  ? this.setFirstCourseRef
+                                  : undefined
+                              }
                             />
                           ))}
                       </ul>
@@ -393,8 +438,14 @@ class CalendarWeekView extends Component {
   }
 
   render() {
+    const { sideBarOpen } = this.props
+
     return (
-      <div className={styles.container}>
+      <div
+        className={classnames(
+          styles.container,
+          sideBarOpen && styles.containerSidebar
+        )}>
         <div className={styles.timelineWrapper}>{this.renderTimeline()}</div>
         <div className={styles.mainContent}>
           {this.renderWeekdays()}

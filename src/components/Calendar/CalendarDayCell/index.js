@@ -6,6 +6,8 @@ import CalendarDayCellItem from 'components/Calendar/CalendarDayCellItem'
 import { getStarTimeForEventForDate } from 'utils/helper'
 import { getShortCourseType } from 'services/course'
 import styles from './index.scss'
+import pluralize from 'pluralize'
+import sortBy from 'lodash/sortBy'
 
 const getDayItems = (day, dateStr) => {
   const { courses = [], events = [], staff = [] } = day
@@ -41,14 +43,32 @@ const getDayItems = (day, dateStr) => {
     )
     .sort((a, b) => b.all_day - a.all_day)
 
-  return items.sort((a, b) => a.time > b.time)
+  return sortBy(items, ['time'])
 }
 
-const CalendarDayCell = ({ day, calendar, history, handleMobileCellClick }) => {
+const CalendarDayCell = ({
+  day,
+  calendar,
+  history,
+  handleMobileCellClick,
+  rowsCount
+}) => {
+  const isLowHeight = useMediaQuery({ maxHeight: 768 })
+  const isVeryLowHeight = useMediaQuery({ maxHeight: 591 })
+  const isLargeHeight = useMediaQuery({ minHeight: 888 })
+  let showItems = isVeryLowHeight
+    ? 0
+    : isLowHeight
+    ? 1
+    : rowsCount < 6
+    ? 2
+    : isLargeHeight
+    ? 2
+    : 1
   const dateStr = moment(day.date).format('YYYY-MM-DD')
   const items = getDayItems(day, dateStr)
   const selectedDay = dateStr === calendar.selectedDate
-  const more = items.length - 3
+  const more = items.length - showItems
   const isOtherMonthDate = day.date.getMonth() !== calendar.month
   const isAxisDate =
     calendar.year === day.date.getFullYear() &&
@@ -60,6 +80,10 @@ const CalendarDayCell = ({ day, calendar, history, handleMobileCellClick }) => {
     now.getMonth() === day.date.getMonth() &&
     now.getDate() === day.date.getDate()
   const isMobile = useMediaQuery({ maxWidth: 767 })
+
+  if (isMobile) {
+    showItems = 3
+  }
 
   const handleClick = () => {
     if (isMobile) {
@@ -86,11 +110,15 @@ const CalendarDayCell = ({ day, calendar, history, handleMobileCellClick }) => {
         {day.date.getDate()}
       </div>
       <div className={styles.courseContainer}>
-        {items.slice(0, 3).map(item => (
+        {items.slice(0, showItems).map(item => (
           <CalendarDayCellItem key={item.id} item={item} />
         ))}
 
-        {more > 0 && <div className={styles.more}>{more} more...</div>}
+        {more > 0 && (
+          <div className={styles.more}>
+            {more} {isVeryLowHeight ? pluralize('item', more) : 'more...'}
+          </div>
+        )}
       </div>
     </li>
   )

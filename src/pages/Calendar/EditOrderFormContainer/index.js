@@ -10,6 +10,7 @@ import {
 import * as orderModule from 'store/order'
 import EditOrderForm from 'components/EditOrderForm'
 import Loading from 'components/Loading'
+import { isAdmin } from 'services/auth'
 
 class EditOrderFormContainer extends React.Component {
   constructor(props) {
@@ -37,6 +38,10 @@ class EditOrderFormContainer extends React.Component {
     }
     if (!updateDate) {
       order.school_course = courseId // add in the course id
+    }
+
+    if (!order.user_birthdate) {
+      delete order['user_birthdate']
     }
 
     let response = await updateOrder({
@@ -88,7 +93,8 @@ class EditOrderFormContainer extends React.Component {
       times,
       sendEmailConfirmation,
       isSending,
-      onDelete
+      onDelete,
+      isAdmin
     } = this.props
 
     return (
@@ -107,7 +113,7 @@ class EditOrderFormContainer extends React.Component {
             sendEmailConfirmation={sendEmailConfirmation}
             isSending={isSending}
             onDelete={onDelete}
-            // handleChangeOrderDate={this.handleChangeOrderDate}
+            isAdmin={isAdmin}
           />
         )}
       </Loading>
@@ -123,7 +129,8 @@ const mapStateToProps = (state, props) => {
     info: state.info,
     courses: state.course.day.courses,
     times: state.course.times.available,
-    isSending: state.order.isSending
+    isSending: state.order.isSending,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 

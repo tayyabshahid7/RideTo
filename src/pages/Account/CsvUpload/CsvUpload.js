@@ -2,6 +2,7 @@ import React from 'react'
 import { Row, Col } from 'reactstrap'
 import { Button } from 'components/ConnectForm'
 import styles from './styles.scss'
+import SchoolSelect from 'components/SchoolSelect'
 
 class CsvUpload extends React.Component {
   constructor(props) {
@@ -67,6 +68,10 @@ class CsvUpload extends React.Component {
               <p>
                 Upload your test dates to your calendar using the DVSA CSV file
               </p>
+              <p>Select the training location to upload your test dates to.</p>
+              <div className={styles.select}>
+                <SchoolSelect small />
+              </div>
             </div>
             <form
               className={styles.csvUploadForm}

@@ -3,7 +3,6 @@ import { Row, Col } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
 import { ConnectInput, Button } from 'components/ConnectForm'
-import Users from '../Users'
 
 class AccountPassword extends React.Component {
   constructor(props) {
@@ -134,8 +133,6 @@ class AccountPassword extends React.Component {
             </Row>
           )}
         </div>
-
-        <Users />
       </React.Fragment>
     )
   }

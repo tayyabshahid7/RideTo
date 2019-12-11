@@ -1,5 +1,5 @@
 .container {
-  height: 180px;
+  // height: 180px;
   color: #666;
   text-align: left;
   &:hover {
@@ -11,6 +11,10 @@
   float: none;
   color: #707070;
   font-size: 14px;
+
+  @media (max-width: 768px) {
+    line-height: 1;
+  }
 }
 
 .otherMonth {
@@ -50,13 +54,18 @@
 .highlight {
   background-color: #2cceac;
   color: #fff;
-  margin-top: -4px;
+  margin-top: 0;
   margin-left: -4px;
+  margin-bottom: 4px;
   border-radius: 50%;
   text-align: center;
   width: 17px;
   height: 17px;
   line-height: 17px;
+
+  @media (max-width: 768px) {
+    margin-bottom: -3px;
+  }
 
   @media (min-width: 1200px) {
     line-height: 23px;
@@ -72,7 +81,7 @@
 }
 
 .more {
-  margin-top: 12px;
+  margin-top: 0.25rem;
 }
 
 .courseContainer {

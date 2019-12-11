@@ -1,0 +1,54 @@
+.bikerPicker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .rightSide {
+    display: flex;
+    align-items: center;
+
+    .minus,
+    .plus {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: var(--primary-color);
+      padding: 0;
+
+      svg {
+        font-size: 1.2rem;
+      }
+
+      &:focus {
+        outline: 0;
+      }
+    }
+
+    .minus {
+      margin-right: 0.5rem;
+    }
+
+    .plus {
+      margin-left: 0.5rem;
+    }
+  }
+
+  > div > div {
+    margin-bottom: 0;
+    width: 1.5rem;
+
+    input[type='number'] {
+      height: 1.25rem;
+      appearance: none;
+      margin: 0;
+    }
+
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      margin: 0;
+    }
+  }
+}

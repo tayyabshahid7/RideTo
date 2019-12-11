@@ -15,6 +15,7 @@ import {
   Button
 } from 'components/ConnectForm'
 import classnames from 'classnames'
+import isMobile from 'is-mobile'
 
 class CustomerDetailForm extends React.Component {
   constructor(props) {
@@ -39,22 +40,31 @@ class CustomerDetailForm extends React.Component {
   }
 
   render() {
-    const { customer, onChange, isDisabled, onCancel } = this.props
+    const { customer, onChange, isDisabled, onCancel, isAdmin } = this.props
 
     return (
       <Form className={styles.panel} onSubmit={this.handleSubmit}>
-        <ConnectInput
-          name="phone"
-          value={customer.phone || ''}
-          label="Phone"
-          type="phone"
-          onChange={this.handleChange}
-        />
+        <div className={styles.phoneInput}>
+          <ConnectInput
+            name="phone"
+            value={customer.phone || ''}
+            label="Phone"
+            type="phone"
+            onChange={this.handleChange}
+            disabled={!isAdmin}
+          />
+          {isMobile() && customer.phone && (
+            <a className={styles.callButton} href={`tel:${customer.phone}`}>
+              Call
+            </a>
+          )}
+        </div>
         <ConnectAgeInput
           name="birthdate"
           value={customer.birthdate || ''}
           label="Birth Date"
           onChange={this.handleChange}
+          disabled={!isAdmin}
         />
         <ConnectSelect
           textStyle
@@ -63,6 +73,7 @@ class CustomerDetailForm extends React.Component {
           options={getCurrentLicenceOptions()}
           selected={customer.current_licence || ''}
           onChange={value => onChange({ ...customer, current_licence: value })}
+          disabled={!isAdmin}
         />
         <ConnectInput
           name="licence_number"
@@ -70,6 +81,7 @@ class CustomerDetailForm extends React.Component {
           label="Licence Number"
           type="text"
           onChange={this.handleChange}
+          disabled={!isAdmin}
         />
         <ConnectInput
           name="national_insurance_number"
@@ -77,6 +89,7 @@ class CustomerDetailForm extends React.Component {
           label="National Insurance"
           type="text"
           onChange={this.handleChange}
+          disabled={!isAdmin}
         />
         <ConnectSelect
           textStyle
@@ -87,6 +100,7 @@ class CustomerDetailForm extends React.Component {
           onChange={value =>
             onChange({ ...customer, riding_experience: value })
           }
+          disabled={!isAdmin}
         />
         {isRideTo(customer) ? (
           <ConnectInput
@@ -104,6 +118,7 @@ class CustomerDetailForm extends React.Component {
             type="email"
             required
             onChange={this.handleChange}
+            disabled={!isAdmin}
           />
         )}
         <ConnectInput
@@ -112,6 +127,7 @@ class CustomerDetailForm extends React.Component {
           label="CBT Passed Date"
           type="date"
           onChange={this.handleChange}
+          disabled={!isAdmin}
         />
         <ConnectInput
           name="theory_test_number"
@@ -119,6 +135,7 @@ class CustomerDetailForm extends React.Component {
           label="Theory Test Number"
           type="text"
           onChange={this.handleChange}
+          disabled={!isAdmin}
         />
         <ConnectSelect
           textStyle
@@ -131,6 +148,7 @@ class CustomerDetailForm extends React.Component {
           onChange={value =>
             onChange({ ...customer, tandcs_agreed: value === 'true' })
           }
+          disabled={!isAdmin}
         />
         <ConnectSelect
           textStyle
@@ -142,6 +160,21 @@ class CustomerDetailForm extends React.Component {
           }
           onChange={value =>
             onChange({ ...customer, email_optin: value === 'true' })
+          }
+          disabled={!isAdmin}
+        />
+        <ConnectSelect
+          textStyle
+          label="Third Party Opt In"
+          name="third_party_optin"
+          options={getBooleanSelectOptions()}
+          selected={
+            (customer.third_party_optin &&
+              customer.third_party_optin.toString()) ||
+            ''
+          }
+          onChange={value =>
+            onChange({ ...customer, third_party_optin: value === 'true' })
           }
         />
         <div

@@ -156,6 +156,19 @@ const CheckoutForm = ({
           onChange={email_optin => onChange({ ...details, email_optin })}>
           <div>{optinLabel}</div>
         </AcceptCheckbox>
+
+        {widget.enable_third_party_optin && (
+          <AcceptCheckbox
+            accepted={details.third_party_optin}
+            error={errors.third_party_optin}
+            onChange={third_party_optin =>
+              onChange({ ...details, third_party_optin })
+            }>
+            <div>
+              I am happy for my details to be shared with 3rd party partners
+            </div>
+          </AcceptCheckbox>
+        )}
       </div>
 
       {errors.paymentError && (

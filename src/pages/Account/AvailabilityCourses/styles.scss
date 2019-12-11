@@ -18,7 +18,7 @@
 }
 
 .title {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: bold;
   line-height: 23px;
   margin-bottom: 0.25rem;
@@ -34,6 +34,10 @@
   @media (max-width: 768px) {
     margin-top: 30px;
     display: block;
+
+    &:first-child {
+      margin-top: 0;
+    }
   }
 }
 
@@ -102,4 +106,8 @@
   > li + li {
     margin-top: 0.5rem;
   }
+}
+
+.select {
+  margin-bottom: 1rem;
 }

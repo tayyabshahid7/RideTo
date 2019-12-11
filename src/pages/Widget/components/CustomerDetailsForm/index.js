@@ -21,11 +21,21 @@ const CustomerDetailsForm = ({
   errors,
   onChange,
   trainingDate,
-  fullLicenceType
+  fullLicenceType,
+  bikeType,
+  courseType: { constant }
 }) => {
-  const BIRTHDATE_ERROR = `Please enter the date in the format DD/MM/YYYY. You MUST be at least ${
-    !fullLicenceType ? '16' : getLicenceAge(fullLicenceType)
+  const isManual = bikeType === 'manual'
+  const isCBT = constant === 'LICENCE_CBT'
+  const minAge = isManual ? 17 : 16
+  let bdayError = `Please enter the date in the format DD/MM/YYYY. You MUST be at least ${
+    !fullLicenceType ? minAge : getLicenceAge(fullLicenceType)
   } years old on the selected training date.`
+
+  if (isManual && isCBT) {
+    bdayError =
+      'In order to take your CBT on a 125cc motorcycle, you must be 17 years old on the day of the course'
+  }
 
   const labelStyle = {
     marginTop: '16px',
@@ -71,7 +81,7 @@ const CustomerDetailsForm = ({
         <DateInput
           trainingDate={trainingDate}
           id="user_birthdate"
-          minYears={16}
+          minYears={minAge}
           maxYears={100}
           today={moment()}
           value={details.user_birthdate || ''}
@@ -79,7 +89,7 @@ const CustomerDetailsForm = ({
             onChange({ ...details, [id]: value }, { ...errors, [id]: null })
           }}
           onError={id => {
-            onChange(details, { ...errors, [id]: BIRTHDATE_ERROR })
+            onChange(details, { ...errors, [id]: bdayError })
           }}
         />
       </LabelField>

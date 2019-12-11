@@ -1,6 +1,6 @@
 import React from 'react'
 import moment from 'moment'
-import { getEarliestCourse } from 'services/widget'
+import { getValidCourses } from 'services/widget'
 import { SingleDatePicker } from 'react-dates'
 import 'react-dates/lib/css/_datepicker.css'
 
@@ -37,12 +37,12 @@ const isDayBlocked = (day, courses) => {
     return true
   }
 
-  if (moment().isSame(day, 'day')) {
-    const courseToday = getEarliestCourse(todaysCourses)
-
-    if (!courseToday) {
-      return true
-    }
+  if (
+    !getValidCourses(courses).some(course => {
+      return course.date === formatted
+    })
+  ) {
+    return true
   }
 }
 

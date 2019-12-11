@@ -1,16 +1,13 @@
 @import '../../../bootstrap';
 
 .calendarDays {
-  // display: flex;
   list-style: none;
-  // padding: 0;
   margin: 0;
   width: 100%;
   display: flex;
 
   flex-wrap: wrap;
   flex: 1 1 auto;
-  // overflow-y: auto;
   overflow: hidden;
 
   border-bottom: 1px solid #ccc;
@@ -21,7 +18,7 @@
   font-size: 9px;
 
   li {
-    height: 180px;
+    overflow: hidden;
     list-style-type: none;
     margin-bottom: 4px;
 
@@ -31,13 +28,32 @@
     border: 1px solid #ccc;
     margin-right: -1px;
     margin-bottom: -1px;
-    // height: 180px;
 
     &:nth-child(7n) {
       width: calc(14.2857142857%);
     }
   }
 }
+
+.calendarDaysFiveRows {
+  li {
+    height: calc((100vh - var(--vh-offset, 0px) - 154px - 7px) / 5);
+
+    @media (max-width: 768px) {
+      height: calc((100vh - var(--vh-offset, 0px) - 102px - 35px) / 5);
+    }
+  }
+}
+.calendarDaysSixRows {
+  li {
+    height: calc((100vh - var(--vh-offset, 0px) - 154px - 7px) / 6);
+
+    @media (max-width: 768px) {
+      height: calc((100vh - var(--vh-offset, 0px) - 102px - 35px) / 6);
+    }
+  }
+}
+
 @media (min-width: 1200px) {
   .calendarDays {
     font-size: 12px;

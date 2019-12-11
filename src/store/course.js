@@ -18,6 +18,7 @@ import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
 import { actions as notificationActions } from './notification'
 import uniqBy from 'lodash/uniqBy'
+import { saveState } from 'services/localStorage'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
@@ -368,7 +369,7 @@ const initialState = {
     year: new Date().getFullYear(),
     day: new Date().getDate(),
     error: null,
-    viewMode: CALENDAR_VIEW.WEEK,
+    viewMode: CALENDAR_VIEW.MONTH,
     rightPanelMode: null,
     selectedDate: null,
     selectedCourse: null,
@@ -536,6 +537,20 @@ export default function reducer(state = initialState, action) {
         }
       }
     case UPDATE_CALENDAR_SETTING:
+      const [key] = Object.entries(action.data)[0]
+
+      if (key === 'viewMode') {
+        saveState({
+          course: {
+            ...initialState,
+            calendar: {
+              ...initialState.calendar,
+              ...action.data
+            }
+          }
+        })
+      }
+
       return {
         ...state,
         calendar: {

@@ -8,12 +8,14 @@ import CustomerDetailContainer from 'pages/Customers/DetailContainer'
 import NotificationContainer from 'pages/Notifications/NotificationContainer'
 import Calendar from 'pages/Calendar'
 import Account from 'pages/Account'
+import Terms from 'pages/Terms'
 import Footer from 'components/Footer'
 import styles from './styles.scss'
 import classnames from 'classnames'
 
 const MainLayout = ({ history, location: { pathname } }) => {
   const isGreyBg = pathname.match(/\/customers\/\d+/)
+  const isCalendar = pathname.match(/\/calendar/g)
 
   return (
     <div className={styles.container}>
@@ -21,7 +23,8 @@ const MainLayout = ({ history, location: { pathname } }) => {
       <div
         className={classnames(
           styles.bodyContainer,
-          isGreyBg && styles.bodyContainerGrey
+          isGreyBg && styles.bodyContainerGrey,
+          isCalendar && styles.bodyContainerCalendar
         )}
         id="body-container">
         <Switch>
@@ -34,9 +37,10 @@ const MainLayout = ({ history, location: { pathname } }) => {
             exact
           />
           <Route path="/account" component={Account} />
+          <Route path="/terms" component={Terms} />
           <Route exact path="/" component={Dashboard} />
         </Switch>
-        <Footer />
+        {!isCalendar && <Footer />}
       </div>
       <NotificationContainer />
     </div>

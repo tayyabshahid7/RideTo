@@ -6,10 +6,16 @@ class Email extends Component {
   constructor(props) {
     super(props)
 
+    const { schoolId, user } = this.props
+    const supplier =
+      user.suppliers &&
+      (user.suppliers.find(({ id }) => id === schoolId) || user.suppliers[0])
+    const sender = (supplier && supplier.email) || user.email
+
     this.state = {
       email: {
         to: this.props.customer.rideto_email,
-        sender: this.props.user.email,
+        sender,
         subject: '',
         body: ''
       },

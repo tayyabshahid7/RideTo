@@ -14,10 +14,6 @@ import { STRIPE_KEY } from 'common/constants'
 import { StripeProvider, Elements } from 'react-stripe-elements'
 
 class AccountPage extends Component {
-  // componentDidMount() {
-  //   this.loadData()
-  // }
-
   render() {
     const { history, schoolId, isAdmin } = this.props
 
