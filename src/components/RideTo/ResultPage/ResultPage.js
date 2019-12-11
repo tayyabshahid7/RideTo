@@ -795,7 +795,7 @@ class ResultPage extends Component {
                                   isMobileMapVisible: !isMobileMapVisible
                                 })
                               }}>
-                              <i class="fas fa-map-marker-alt"></i> Map
+                              <i className="fas fa-map-marker-alt"></i> Map
                             </button>
                           </div>
                           <div className={classnames(styles.schoolCount)}>
