@@ -179,7 +179,6 @@ class EmailSettingsForm extends React.Component {
     const groups = value.match(/\[\[(\w+)\]\]/gi)
 
     for (var code of groups) {
-      console.log(PLACEHOLDERS, code)
       if (!PLACEHOLDERS.includes(code)) {
         return `${code} is not a valid merge field`
       }
