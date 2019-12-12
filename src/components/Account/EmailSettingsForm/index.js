@@ -10,6 +10,18 @@ import Html from 'slate-html-serializer'
 import classnames from 'classnames'
 import { getMediumCourseType } from 'services/course'
 
+const PLACEHOLDERS = [
+  '[[rider_name]]',
+  '[[selected_training]]',
+  '[[training_details]]',
+  '[[location]]',
+  '[[bike_hire]]',
+  '[[school_name]]',
+  '[[school_phone]]',
+  '[[price_paid]]',
+  '[[logo]]'
+]
+
 const DEFAULT_NODE = 'paragraph'
 
 var isBoldHotkey = isKeyHotkey('mod+b')
@@ -157,12 +169,41 @@ class EmailSettingsForm extends React.Component {
     handleCancel()
   }
 
+  isValidBrackets(value) {
+    const bannedStrings = /\[{3,}|\]{3,}|[^[]\[[^[]|[^\]]\][^\]]|^\[[^[]|[^\]]\]$|\[{2,}[^a-z_]|[^a-z_]\]{2,}/gi
+
+    return !bannedStrings.test(value)
+  }
+
+  validateShortCode(value) {
+    const groups = value.match(/\[\[(\w+)\]\]/gi)
+
+    for (var code of groups) {
+      console.log(PLACEHOLDERS, code)
+      if (!PLACEHOLDERS.includes(code)) {
+        return `${code} is not a valid merge field`
+      }
+    }
+
+    return false
+  }
+
   handleSave() {
     const { onSubmit } = this.props
     const { settings, value, activeEmail } = this.state
+    const serializedValue = html.serialize(value)
+    if (!this.isValidBrackets(serializedValue)) {
+      alert('Please check [[ ]] brackets are matching')
+      return
+    }
+    const valShort = this.validateShortCode(serializedValue)
+    if (valShort) {
+      alert(valShort)
+      return
+    }
     onSubmit({
       ...this.props.settings,
-      [activeEmail]: html.serialize(value)
+      [activeEmail]: serializedValue
     })
     this.setState({
       showModal: false,
@@ -465,15 +506,9 @@ class EmailSettingsForm extends React.Component {
                     </p>
                     <h4 className={styles.smallTitle}>Merge place holders</h4>
                     <ul className={styles.list}>
-                      <li>[[rider_name]]</li>
-                      <li>[[selected_training]]</li>
-                      <li>[[training_details]]</li>
-                      <li>[[location]]</li>
-                      <li>[[bike_hire]]</li>
-                      <li>[[school_name]]</li>
-                      <li>[[school_phone]]</li>
-                      <li>[[price_paid]]</li>
-                      <li>[[logo]]</li>
+                      {PLACEHOLDERS.map(placeholder => (
+                        <li key={placeholder}>{placeholder}</li>
+                      ))}
                     </ul>
                   </div>
                 </Col>
