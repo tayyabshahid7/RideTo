@@ -5,6 +5,9 @@ import queryString from 'query-string'
 import { createStaff } from 'store/staff'
 import StaffForm from './StaffForm'
 import { isAdmin } from 'services/auth'
+import styles from './styles.scss'
+import DateHeading from 'components/Calendar/DateHeading'
+import moment from 'moment'
 
 class AddStaffComponent extends Component {
   componentDidUpdate(prevProps) {
@@ -44,12 +47,20 @@ class AddStaffComponent extends Component {
     let { staff, location, isAdmin, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
+    let backLink = date === '' ? '/calendar' : `/calendar/${date}`
 
     if (!isAdmin) {
       return <div>No access</div>
     }
 
-    return <StaffForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
+    return (
+      <div className={styles.addCourse}>
+        <DateHeading date={date ? moment(date) : null} backLink={backLink} />
+        <div className={styles.wrapper}>
+          <StaffForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
+        </div>
+      </div>
+    )
   }
 }
 
