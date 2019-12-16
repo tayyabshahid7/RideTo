@@ -98,6 +98,7 @@
 }
 
 .joinButton {
+  position: relative;
   flex-shrink: 0;
   padding: 0.25rem 1rem;
   background-color: var(--primary-color);
@@ -121,5 +122,14 @@
   &,
   &:hover {
     color: var(--primary-color);
+  }
+}
+
+.loading.loading {
+  position: static;
+  height: 30px;
+  min-height: 30px;
+
+  &::before {
   }
 }
