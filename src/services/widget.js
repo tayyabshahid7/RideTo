@@ -52,12 +52,12 @@ export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
     subTotal = pricing.price + pricing.bike_hire_cost
   }
 
-  if (
-    [BIKE_HIRE.MANUAL, BIKE_HIRE.MANUAL_50CC].includes(bikeHire) &&
-    pricing.manual_bike_hire_cost
-  ) {
-    subTotal = pricing.price + pricing.manual_bike_hire_cost
-  }
+  // if (
+  //   [BIKE_HIRE.MANUAL, BIKE_HIRE.MANUAL_50CC].includes(bikeHire) &&
+  //   pricing.manual_bike_hire_cost
+  // ) {
+  //   subTotal = pricing.price + pricing.manual_bike_hire_cost
+  // }
 
   return subTotal - discount
 }

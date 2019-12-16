@@ -5,13 +5,9 @@ import Checkbox from 'components/Checkbox'
 import styles from './MotorbikeOptions.scss'
 
 const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
-  let { bike_hire_cost, manual_bike_hire_cost } = course.pricing
+  let { bike_hire_cost } = course.pricing
 
-  if (!manual_bike_hire_cost) {
-    manual_bike_hire_cost = bike_hire_cost
-  }
-
-  const isFree = !bike_hire_cost && !manual_bike_hire_cost
+  const isFree = !bike_hire_cost
 
   const fullText = <span className={styles.full}> - Fully Booked</span>
 
@@ -46,9 +42,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
             bike_hire_cost
           )})`}</div>
         )}
-        {bike_hire_cost === 0 && manual_bike_hire_cost > 0 && (
-          <div className={styles.price}>Free</div>
-        )}
+        {bike_hire_cost === 0 && <div className={styles.price}>Free</div>}
       </Checkbox>
 
       <Checkbox
@@ -58,9 +52,9 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
         disabled={isManualFull}>
         {getMotorbikeLabel(BIKE_HIRE.MANUAL)}
         {isManualFull ? fullText : null}
-        {manual_bike_hire_cost > 0 && (
+        {bike_hire_cost > 0 && (
           <div className={styles.price}>
-            {`(+${asPoundSterling(manual_bike_hire_cost)})`}
+            {`(+${asPoundSterling(bike_hire_cost)})`}
           </div>
         )}
       </Checkbox>
@@ -78,9 +72,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
               {`(+${asPoundSterling(bike_hire_cost)})`}
             </div>
           )}
-          {bike_hire_cost === 0 && manual_bike_hire_cost > 0 && (
-            <div className={styles.price}>Free</div>
-          )}
+          {bike_hire_cost === 0 && <div className={styles.price}>Free</div>}
         </Checkbox>
       )}
 
@@ -92,9 +84,9 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           disabled={isManual50Full}>
           {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC)}
           {isManualFull ? fullText : null}
-          {manual_bike_hire_cost > 0 && (
+          {bike_hire_cost > 0 && (
             <div className={styles.price}>
-              {`(+${asPoundSterling(manual_bike_hire_cost)})`}
+              {`(+${asPoundSterling(bike_hire_cost)})`}
             </div>
           )}
         </Checkbox>
