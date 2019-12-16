@@ -217,7 +217,7 @@ class StaffForm extends React.Component {
                   vertical
                   name="all_day"
                   checked={all_day}
-                  label="All day"
+                  label="All Day"
                   className="form-group"
                   onChange={this.handleChangeRawEvent.bind(this)}
                 />

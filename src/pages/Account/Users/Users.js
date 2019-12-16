@@ -77,7 +77,7 @@ class Users extends React.Component {
         <Fragment>
           <div className={styles.box}>
             <div>
-              <h3 className={styles.title}>Add user</h3>
+              <h3 className={styles.title}>Add User</h3>
               <p>
                 Add a new staff permission user account. Staff users have access
                 to view the full calendar, customers and orders. They can also
@@ -93,7 +93,7 @@ class Users extends React.Component {
           </div>
           <div className={classnames(styles.box, styles.header)}>
             <div className={styles.headerText}>
-              <h3 className={styles.title}>Current users</h3>
+              <h3 className={styles.title}>Current Users</h3>
               <p>
                 Manage existing users. All users have staff permissions by
                 default
