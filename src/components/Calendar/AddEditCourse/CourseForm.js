@@ -3,6 +3,7 @@ import moment from 'moment'
 import { Col, Row } from 'reactstrap'
 import classnames from 'classnames'
 import range from 'lodash/range'
+import isEmpty from 'lodash/isEmpty'
 import { getDefaultBikeHire } from 'services/course'
 import styles from './styles.scss'
 import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
@@ -103,6 +104,10 @@ class CourseForm extends React.Component {
   }
 
   componentDidMount() {
+    if (isEmpty(this.state.defaultBikes)) {
+      this.loadDefaultBikes()
+    }
+
     if (
       !this.props.info.courseTypes ||
       this.props.info.courseTypes.length === 0
@@ -115,6 +120,10 @@ class CourseForm extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     const { courseTypes } = this.props.info
     const { course_type_id, date } = this.state.course
+
+    if (isEmpty(this.state.defaultBikes)) {
+      this.loadDefaultBikes()
+    }
 
     if (courseTypes.length && course_type_id === '') {
       const defaultCourse =
@@ -168,6 +177,10 @@ class CourseForm extends React.Component {
     const { defaultBikes, loadingDefaultBikes } = this.state
     const { course_type_id } = this.state.course
     const { courseTypes } = this.props.info
+
+    if (!isEmpty(this.state.defaultBikes)) {
+      return
+    }
 
     if (!course_type_id && courseTypes.length) {
       return
