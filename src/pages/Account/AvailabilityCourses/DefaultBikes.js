@@ -18,7 +18,7 @@ function DefaultBikes({ info, loadCourseTypes, schoolId }) {
       <div className={styles.defaultBikes}>
         <div className={styles.title}>Default Bikes</div>
         <p>
-          Set the default bike hire types and numer available for each course
+          Set the default bike hire types and number available for each course
           type
         </p>
         <div className={styles.tableWrapper}>
