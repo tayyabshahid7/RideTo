@@ -277,6 +277,8 @@ class CourseForm extends React.Component {
     const {
       course: { instructor_id, ...course }
     } = this.state
+    const { defaultBikes } = this.state
+
     if (instructor_id !== '') {
       course.instructor_id = instructor_id
     } else {
@@ -287,44 +289,47 @@ class CourseForm extends React.Component {
       course.course_type_id = info.courseTypes[0].id
     }
 
-    if (!course.auto_bikes) {
+    if (!course.auto_bikes || !defaultBikes.available_auto_50cc_bikes) {
       course.auto_bikes = 0
     }
 
-    if (!course.manual_bikes) {
+    if (!course.manual_bikes || !defaultBikes.available_manual_125cc_bikes) {
       course.manual_bikes = 0
     }
 
-    if (!course.auto_125cc_bikes) {
+    if (!course.auto_125cc_bikes || !defaultBikes.available_auto_125cc_bikes) {
       course.auto_125cc_bikes = 0
     }
 
-    if (!course.manual_50cc_bikes) {
+    if (
+      !course.manual_50cc_bikes ||
+      !defaultBikes.available_manual_50cc_bikes
+    ) {
       course.manual_50cc_bikes = 0
     }
 
-    if (!course.own_bikes) {
+    if (!course.own_bikes || !defaultBikes.available_own_bikes) {
       course.own_bikes = 0
     }
 
-    if (!course.a1_auto_bikes) {
+    if (!course.a1_auto_bikes || !defaultBikes.available_a1_auto_bikes) {
       course.a1_auto_bikes = 0
     }
-    if (!course.a1_manual_bikes) {
+    if (!course.a1_manual_bikes || !defaultBikes.available_a1_manual_bikes) {
       course.a1_manual_bikes = 0
     }
 
-    if (!course.a2_auto_bikes) {
+    if (!course.a2_auto_bikes || !defaultBikes.available_a2_auto_bikes) {
       course.a2_auto_bikes = 0
     }
-    if (!course.a2_manual_bikes) {
+    if (!course.a2_manual_bikes || !defaultBikes.available_a2_manual_bikes) {
       course.a2_manual_bikes = 0
     }
 
-    if (!course.a_auto_bikes) {
+    if (!course.a_auto_bikes || !defaultBikes.available_a_auto_bikes) {
       course.a_auto_bikes = 0
     }
-    if (!course.a_manual_bikes) {
+    if (!course.a_manual_bikes || !defaultBikes.available_a_manual_bikes) {
       course.a_manual_bikes = 0
     }
     if (course.last_date_cancel === '') {
