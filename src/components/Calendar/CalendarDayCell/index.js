@@ -53,9 +53,9 @@ const CalendarDayCell = ({
   handleMobileCellClick,
   rowsCount
 }) => {
-  const isLowHeight = useMediaQuery({ maxHeight: 768 })
+  const isLowHeight = useMediaQuery({ maxHeight: 750 })
   const isVeryLowHeight = useMediaQuery({ maxHeight: 591 })
-  const isLargeHeight = useMediaQuery({ minHeight: 800 })
+  const isLargeHeight = useMediaQuery({ minHeight: 760 })
   let showItems = isVeryLowHeight
     ? 0
     : isLowHeight
