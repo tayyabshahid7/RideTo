@@ -37,6 +37,7 @@ class CourseForm extends React.Component {
       manual_bikes: '',
       auto_125cc_bikes: '',
       manual_50cc_bikes: '',
+      own_bikes: '',
       a1_auto_bikes: '',
       a2_auto_bikes: '',
       a_auto_bikes: '',
@@ -62,6 +63,7 @@ class CourseForm extends React.Component {
           'manual_bikes',
           'auto_125cc_bikes',
           'manual_50cc_bikes',
+          'own_bikes',
           'notes',
           'a1_auto_bikes',
           'a2_auto_bikes',
@@ -206,6 +208,7 @@ class CourseForm extends React.Component {
               auto_bikes: res.default_number_auto_50cc_bikes,
               auto_125cc_bikes: res.default_number_auto_125cc_bikes,
               manual_bikes: res.default_number_manual_125cc_bikes,
+              own_bikes: res.default_number_own_bikes,
               manual_50cc_bikes: res.default_number_manual_50cc_bikes
             }
           })
@@ -287,6 +290,10 @@ class CourseForm extends React.Component {
       course.manual_50cc_bikes = 0
     }
 
+    if (!course.own_bikes) {
+      course.own_bikes = 0
+    }
+
     if (!course.a1_auto_bikes) {
       course.a1_auto_bikes = 0
     }
@@ -356,6 +363,7 @@ class CourseForm extends React.Component {
       auto_125cc_bikes,
       manual_50cc_bikes,
       manual_bikes,
+      own_bikes,
       a1_auto_bikes,
       a2_auto_bikes,
       a_auto_bikes,
@@ -572,6 +580,26 @@ class CourseForm extends React.Component {
                           }}
                           onClickPlus={() => {
                             this.handleBikeButtonClick('manual_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {defaultBikes.available_own_bikes && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Own Bikes"
+                          value={own_bikes}
+                          id="own_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('own_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('own_bikes', 1)
                           }}
                         />
                       </Col>
