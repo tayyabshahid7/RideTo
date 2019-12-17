@@ -230,6 +230,7 @@ class CourseAvailabilityComponent extends React.Component {
     const isItm = courseType === 'INTRO_TO_MOTORCYCLING'
     const isCbt = courseType === 'LICENCE_CBT'
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
+    const isInstantBook = !!course.instant_book
 
     return (
       <Loading loading={loadingCourses}>
@@ -245,7 +246,7 @@ class CourseAvailabilityComponent extends React.Component {
             handlePrevMonth={this.handlePrevMonth.bind(this)}
             handleNextMonth={this.handleNextMonth.bind(this)}
             handleTimeSelect={this.handleTimeSelect.bind(this)}
-            isInstantBook={!!course.instant_book}
+            isInstantBook={isInstantBook}
             nonInstantPrices={course.week_prices}
             nonInstantStartTimes={this.getNonInstantStartTimes(course)}
             showChooseDate={true}
@@ -267,8 +268,8 @@ class CourseAvailabilityComponent extends React.Component {
             isManualFull={isManualFull}
             has_auto_bikes={course.has_auto_bikes}
             has_manual_bikes={course.has_manual_bikes}
-            has_auto_bikes_125cc={course.has_auto_bikes_125cc}
-            has_manual_50cc={course.has_manual_50cc}
+            has_auto_bikes_125cc={isInstantBook && course.has_auto_bikes_125cc}
+            has_manual_50cc={isInstantBook && course.has_manual_50cc}
             ref={this.bikePicker}
           />
         </div>
