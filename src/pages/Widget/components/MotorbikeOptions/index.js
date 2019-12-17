@@ -42,7 +42,6 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
             bike_hire_cost
           )})`}</div>
         )}
-        {bike_hire_cost === 0 && <div className={styles.price}>Free</div>}
       </Checkbox>
 
       <Checkbox
@@ -72,7 +71,6 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
               {`(+${asPoundSterling(bike_hire_cost)})`}
             </div>
           )}
-          {bike_hire_cost === 0 && <div className={styles.price}>Free</div>}
         </Checkbox>
       )}
 
