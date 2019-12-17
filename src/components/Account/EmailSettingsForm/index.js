@@ -176,7 +176,8 @@ class EmailSettingsForm extends React.Component {
   }
 
   validateShortCode(value) {
-    const groups = value.match(/\[\[([\w\s]+)\]\]/gi)
+    // const groups = value.match(/\[\[([\w\s]+)\]\]/gi)
+    const groups = value.match(/\[\[([^\]]+)\]\]/gi)
 
     for (var code of groups) {
       if (!PLACEHOLDERS.includes(code)) {
