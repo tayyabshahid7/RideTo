@@ -53,7 +53,7 @@ export const apiHideUnallocatedTest = (schoolId, testId, token) => {
     baseURL: BASE_URL
   }
   return axios
-    .post(`api/o/${schoolId}/upcoming-tests/hide/`, config)
+    .post(`api/o/${schoolId}/upcoming-tests/hide/`, config.params)
     .catch(error => error)
 }
 
