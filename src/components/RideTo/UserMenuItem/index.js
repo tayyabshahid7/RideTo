@@ -8,7 +8,6 @@ import {
   removeToken
 } from 'services/auth'
 import UserIcon from './UserIcon'
-import Loading from 'components/Loading'
 
 class UserMenuItem extends React.Component {
   constructor(props) {
@@ -16,9 +15,7 @@ class UserMenuItem extends React.Component {
     this.state = {
       user: null,
       menuOpen: false,
-      displayName: window.localStorage.getItem('username'),
-      loginLoading: false,
-      signupLoading: false
+      displayName: window.localStorage.getItem('username')
     }
 
     this.element = React.createRef()
@@ -73,36 +70,18 @@ class UserMenuItem extends React.Component {
   }
 
   render() {
-    const {
-      menuOpen,
-      user,
-      displayName,
-      loginLoading,
-      signupLoading
-    } = this.state
+    const { menuOpen, user, displayName } = this.state
     return (
       <Fragment>
         {!user ? (
           <div ref={this.element} className={styles.joinButtons}>
             <a
-              onClick={() => {
-                this.setState({ loginLoading: true })
-              }}
               className={classnames(styles.joinButton, styles.loginButton)}
               href="/account/login">
-              <Loading className={styles.loading} loading={loginLoading}>
-                Login
-              </Loading>
+              Login
             </a>
-            <a
-              className={styles.joinButton}
-              href="/account/signup"
-              onClick={() => {
-                this.setState({ signupLoading: true })
-              }}>
-              <Loading className={styles.loading} loading={signupLoading}>
-                Sign Up
-              </Loading>
+            <a className={styles.joinButton} href="/account/signup">
+              Sign Up
             </a>
           </div>
         ) : (
