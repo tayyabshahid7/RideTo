@@ -144,7 +144,7 @@ class EditOrderForm extends React.Component {
                     disabled={isRideTo || !isAdmin}
                     name="bike_type"
                     selected={bike_type}
-                    label="Bike hire"
+                    label="Bike Hire"
                     options={getAvailableBikeHires(
                       courses.find(course => course.id === order.school_course)
                     )}
@@ -182,7 +182,7 @@ class EditOrderForm extends React.Component {
               <Row>
                 <Col sm="10">
                   <ConnectSelect
-                    label="Training status"
+                    label="Training Status"
                     options={getTrainingStatusOptions(isRideTo)}
                     selected={status}
                     name="status"
@@ -216,7 +216,7 @@ class EditOrderForm extends React.Component {
                     disabled={isRideTo}
                     name="order.payment_status"
                     selected={payment_status}
-                    label="Payment status"
+                    label="Payment Status"
                     options={getPaymentOptions()}
                     noSelectOption
                     required

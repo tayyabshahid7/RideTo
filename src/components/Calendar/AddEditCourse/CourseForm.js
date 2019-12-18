@@ -321,7 +321,7 @@ class CourseForm extends React.Component {
             <Row>
               <Col sm="8">
                 <ConnectSelect
-                  label="Course type"
+                  label="Course Type"
                   basic
                   name="course_type_id"
                   value={course_type_id}
@@ -405,7 +405,7 @@ class CourseForm extends React.Component {
                   <ConnectSelect
                     required
                     basic
-                    label="Course spaces"
+                    label="Course Spaces"
                     name="spaces"
                     value={spaces || ''}
                     disabled={!isEditable}
@@ -424,7 +424,7 @@ class CourseForm extends React.Component {
               {!isFullLicence && (
                 <React.Fragment>
                   <div className={styles.bikesAvailable}>
-                    <b>Bikes available</b>
+                    <b>Bikes Available</b>
                   </div>
                   <Row>
                     <Col sm="10">

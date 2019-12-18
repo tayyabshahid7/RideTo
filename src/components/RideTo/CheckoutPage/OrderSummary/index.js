@@ -254,7 +254,11 @@ class OrderSummary extends Component {
             <img src={ButtonArrowWhite} alt="arrow" />
           </RideToButton>
         </Loading>
-        <div className={styles.cards}>
+        <div
+          className={classnames(
+            styles.cards,
+            instantBook && styles.cardsInstant
+          )}>
           <PoweredByStripe fill="#141414" opacity="1" />
           <CardIcons size="large" />
         </div>

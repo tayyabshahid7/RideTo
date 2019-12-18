@@ -10,6 +10,18 @@ import Html from 'slate-html-serializer'
 import classnames from 'classnames'
 import { getMediumCourseType } from 'services/course'
 
+const PLACEHOLDERS = [
+  '[[rider_name]]',
+  '[[selected_training]]',
+  '[[training_details]]',
+  '[[location]]',
+  '[[bike_hire]]',
+  '[[school_name]]',
+  '[[school_phone]]',
+  '[[price_paid]]',
+  '[[logo]]'
+]
+
 const DEFAULT_NODE = 'paragraph'
 
 var isBoldHotkey = isKeyHotkey('mod+b')
@@ -157,12 +169,41 @@ class EmailSettingsForm extends React.Component {
     handleCancel()
   }
 
+  isValidBrackets(value) {
+    const bannedStrings = /\[{3,}|\]{3,}|[^[]\[[^[]|[^\]]\][^\]]|^\[[^[]|[^\]]\]$|\[{2,}[^a-z_]|[^a-z_]\]{2,}/gi
+
+    return !bannedStrings.test(value)
+  }
+
+  validateShortCode(value) {
+    // const groups = value.match(/\[\[([\w\s]+)\]\]/gi)
+    const groups = value.match(/\[\[([^\]]+)\]\]/gi)
+
+    for (var code of groups) {
+      if (!PLACEHOLDERS.includes(code)) {
+        return `${code} is not a valid merge field`
+      }
+    }
+
+    return false
+  }
+
   handleSave() {
     const { onSubmit } = this.props
     const { settings, value, activeEmail } = this.state
+    const serializedValue = html.serialize(value)
+    if (!this.isValidBrackets(serializedValue)) {
+      alert('Please check [[ ]] brackets are matching')
+      return
+    }
+    const valShortError = this.validateShortCode(serializedValue)
+    if (valShortError) {
+      alert(valShortError)
+      return
+    }
     onSubmit({
       ...this.props.settings,
-      [activeEmail]: html.serialize(value)
+      [activeEmail]: serializedValue
     })
     this.setState({
       showModal: false,
@@ -398,7 +439,7 @@ class EmailSettingsForm extends React.Component {
     return (
       <Fragment>
         <div className={classnames(styles.box, styles.boxVertical)}>
-          <h3 className={styles.title}>Email templates</h3>
+          <h3 className={styles.title}>Email Templates</h3>
           <p>
             Write the copy that you wish to display in your email communication
             to customers
@@ -406,9 +447,11 @@ class EmailSettingsForm extends React.Component {
           <Loading loading={saving}>
             {courses.map(course => (
               <div key={course} className={styles.formGroup}>
-                <h4 className={styles.titleSmall}>
-                  {getMediumCourseType({ constant: course })} booking
-                  confirmation
+                <h4
+                  className={styles.titleSmall}
+                  style={{ textTransform: 'capitalize' }}>
+                  {getMediumCourseType({ constant: course })} Booking
+                  Confirmation
                 </h4>
                 <Row>
                   <Col
@@ -450,7 +493,7 @@ class EmailSettingsForm extends React.Component {
           <Loading loading={saving}>
             <ModalBody>
               <div className={styles.header}>
-                Booking confirmation email template
+                Booking Confirmation Email Template
               </div>
               <Row>
                 <Col sm="3">
@@ -463,17 +506,11 @@ class EmailSettingsForm extends React.Component {
                       Place holders must match the examples exactly, including
                       [[ ]]
                     </p>
-                    <h4 className={styles.smallTitle}>Merge place holders</h4>
+                    <h4 className={styles.smallTitle}>Merge Place Holders</h4>
                     <ul className={styles.list}>
-                      <li>[[rider_name]]</li>
-                      <li>[[selected_training]]</li>
-                      <li>[[training_details]]</li>
-                      <li>[[location]]</li>
-                      <li>[[bike_hire]]</li>
-                      <li>[[school_name]]</li>
-                      <li>[[school_phone]]</li>
-                      <li>[[price_paid]]</li>
-                      <li>[[logo]]</li>
+                      {PLACEHOLDERS.map(placeholder => (
+                        <li key={placeholder}>{placeholder}</li>
+                      ))}
                     </ul>
                   </div>
                 </Col>

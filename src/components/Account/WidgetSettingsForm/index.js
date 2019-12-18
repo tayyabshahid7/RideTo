@@ -163,14 +163,14 @@ class WidgetSettingsForm extends React.Component {
         <Loading loading={saving}>
           <div className={classnames(styles.box, styles.boxVertical)}>
             <div>
-              <h3 className={styles.title}>Promo codes</h3>
+              <h3 className={styles.title}>Promo Codes</h3>
               <WidgetPromoCodes />
             </div>
           </div>
           <Form onSubmit={this.handleSave.bind(this)}>
             <div className={styles.box}>
               <div className={styles.leftCol}>
-                <h3 className={styles.title}>Widget brand colour</h3>
+                <h3 className={styles.title}>Widget Brand Colour</h3>
                 <p>
                   Select a hex code which represents your brand, this will
                   change the buttons and overall look and feel
@@ -203,7 +203,7 @@ class WidgetSettingsForm extends React.Component {
             </div>
             <div className={styles.box}>
               <div className={styles.leftCol}>
-                <h3 className={styles.title}>3rd party opt-in</h3>
+                <h3 className={styles.title}>3rd Party Opt-In</h3>
                 <p>
                   Turn on or off whether you ask customers for their permission
                   to share their data with your partners
@@ -234,7 +234,7 @@ class WidgetSettingsForm extends React.Component {
             </div>
             <div className={classnames(styles.box, styles.boxVertical)}>
               <div>
-                <h3 className={styles.title}>Widget information</h3>
+                <h3 className={styles.title}>Widget Information</h3>
                 <p>
                   Write the copy that you wish to display in the widget for
                   customers
@@ -353,7 +353,7 @@ class WidgetSettingsForm extends React.Component {
                     autoHeight
                     name="terms"
                     value={terms}
-                    label="Terms of booking"
+                    label="Terms Of Booking"
                     className="form-group"
                     type="text"
                     onChange={this.handleChangeRawEvent.bind(this)}
@@ -397,7 +397,7 @@ class WidgetSettingsForm extends React.Component {
             </div>
             <div className={classnames(styles.box, styles.boxVertical)}>
               <div>
-                <h3 className={styles.title}>Widget booking settings</h3>
+                <h3 className={styles.title}>Widget Booking Settings</h3>
                 <p>
                   Set the cut off time for customers to be able to book courses
                   the next day. E.g. 22:00Hrs the night before.

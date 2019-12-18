@@ -6,6 +6,7 @@ import Input from 'components/RideTo/Input'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
 import { requestToken } from 'services/auth'
 import styles from './LoginPage.scss'
+import Loading from 'components/Loading'
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -63,6 +64,10 @@ class LoginPage extends React.Component {
     event.preventDefault()
     const { email, password } = this.state
 
+    this.setState({
+      loading: true
+    })
+
     try {
       await requestToken(email, password)
       const next = JSON.parse(sessionStorage.getItem('login-next'))
@@ -73,6 +78,9 @@ class LoginPage extends React.Component {
         window.location.href = '/account/dashboard'
       }
     } catch (error) {
+      this.setState({
+        loading: false
+      })
       const { response } = error
       if (response.data) {
         this.setState({
@@ -85,7 +93,7 @@ class LoginPage extends React.Component {
   }
 
   render() {
-    const { email, password, errors, loginButtonText } = this.state
+    const { email, password, errors, loginButtonText, loading } = this.state
 
     return (
       <React.Fragment>
@@ -123,10 +131,12 @@ class LoginPage extends React.Component {
               </a>
             </div>
 
-            <button type="submit" className={styles.login}>
-              <span>{loginButtonText}</span>
-              <img src={ButtonArrowWhite} alt="" />
-            </button>
+            <Loading loading={loading}>
+              <button type="submit" className={styles.login} disabled={loading}>
+                <span>{loginButtonText}</span>
+                <img src={ButtonArrowWhite} alt="" />
+              </button>
+            </Loading>
           </form>
         </div>
       </React.Fragment>

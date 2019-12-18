@@ -139,7 +139,7 @@ class CustomerDetailForm extends React.Component {
         />
         <ConnectSelect
           textStyle
-          label="T&Cs agreed"
+          label="T&Cs Agreed"
           name="tandcs_agreed"
           options={getBooleanSelectOptions()}
           selected={
@@ -152,7 +152,7 @@ class CustomerDetailForm extends React.Component {
         />
         <ConnectSelect
           textStyle
-          label="Email opt in"
+          label="Email Opt In"
           name="email_optin"
           options={getBooleanSelectOptions()}
           selected={

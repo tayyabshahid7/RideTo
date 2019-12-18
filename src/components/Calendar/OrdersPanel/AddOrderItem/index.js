@@ -81,7 +81,10 @@ class AddOrderItem extends React.Component {
       fetchWidgetSettings()
     }
 
-    this.scrollIntoView.current.scrollIntoView()
+    // this.scrollIntoView.current.scrollIntoView()
+    setTimeout(() => {
+      window.scrollTo(0, 0)
+    })
 
     updateAdding(course.id)
   }

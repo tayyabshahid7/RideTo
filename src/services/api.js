@@ -41,22 +41,6 @@ export const apiGetUnallocatedTests = (schoolId, token) => {
     .catch(error => error)
 }
 
-export const apiHideUnallocatedTest = (schoolId, testId, token) => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`
-    },
-    params: {
-      id: testId
-    },
-    baseURL: BASE_URL
-  }
-  return axios
-    .post(`api/o/${schoolId}/upcoming-tests/hide/`, config)
-    .catch(error => error)
-}
-
 const request = async (
   method,
   path,
@@ -122,4 +106,21 @@ export const parseQueryString = queryString => {
     data[bits[0]] = decodeURIComponent(bits[1])
     return data
   }, {})
+}
+
+export const apiHideUnallocatedTest = (schoolId, testId, token) => {
+  // const config = {
+  //   headers: {
+  //     'Content-Type': 'application/json',
+  //     Authorization: `Bearer ${token}`
+  //   },
+  //   params: {
+  //     id: testId
+  //   },
+  //   baseURL: BASE_URL
+  // }
+  // return axios
+  //   .post(`api/o/${schoolId}/upcoming-tests/hide/`, config.params)
+  //   .catch(error => error)
+  post(`o/${schoolId}/upcoming-tests/hide/`, { id: testId })
 }

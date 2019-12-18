@@ -98,11 +98,21 @@
 }
 
 .joinButton {
+  position: relative;
   flex-shrink: 0;
   padding: 0.25rem 1rem;
   background-color: var(--primary-color);
   color: #fff;
   font-weight: bold;
+
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  height: 34px;
+
+  @media (min-width: 769px) {
+    height: 40px;
+  }
 
   &:hover {
     color: #fff;
@@ -121,5 +131,14 @@
   &,
   &:hover {
     color: var(--primary-color);
+  }
+}
+
+.loading.loading {
+  position: static;
+  height: 30px;
+  min-height: 30px;
+
+  &::before {
   }
 }

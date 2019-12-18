@@ -69,6 +69,7 @@ class CourseMenuItem extends React.Component {
     return (
       <React.Fragment>
         <div
+          id="course-header-link-mobile"
           onClick={this.handleToggleCourseLinks}
           className={classnames(styles.courseMenuItem, styles.hiddenOnDesktop)}>
           COURSES
@@ -86,6 +87,7 @@ class CourseMenuItem extends React.Component {
           </div>
         )}
         <div
+          id="course-header-link-desktop"
           onClick={this.handleShowSlider}
           className={classnames(styles.courseMenuItem, styles.hiddenOnMobile)}>
           COURSES
