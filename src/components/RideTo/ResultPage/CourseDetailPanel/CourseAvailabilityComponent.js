@@ -271,6 +271,7 @@ class CourseAvailabilityComponent extends React.Component {
             has_auto_bikes_125cc={isInstantBook && course.has_auto_bikes_125cc}
             has_manual_50cc={isInstantBook && course.has_manual_50cc}
             ref={this.bikePicker}
+            isInstantBook={isInstantBook}
           />
         </div>
       </Loading>

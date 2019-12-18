@@ -23,7 +23,8 @@ const BikePicker = React.forwardRef(
       isWidget,
       needsHelp,
       has_auto_bikes_125cc,
-      has_manual_50cc
+      has_manual_50cc,
+      isInstantBook
     },
     ref
   ) => {
@@ -85,7 +86,7 @@ const BikePicker = React.forwardRef(
                   })
                 }
                 disabled={isAutoFull}>
-                {getMotorbikeLabel('auto', isFullLicence)}{' '}
+                {getMotorbikeLabel('auto', isFullLicence, isInstantBook)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isAutoFull ? fullText : null}
               </button>
