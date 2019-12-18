@@ -119,12 +119,8 @@ export const hideUnallocatedTest = (schoolId, testId) => {
     dispatch(hideUnallocatedTestRequest())
     try {
       const token = localStorage.getItem('token')
-      const response = await apiHideUnallocatedTest(schoolId, testId, token)
-      if (response.status === 200) {
-        dispatch(hideUnallocatedTestSuccess(testId))
-      } else {
-        throw response
-      }
+      await apiHideUnallocatedTest(schoolId, testId, token)
+      dispatch(hideUnallocatedTestSuccess(testId))
     } catch (error) {
       if (error.response) {
         if (error.response.status === 403) {
