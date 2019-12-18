@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 import queryString from 'query-string'
 import EventForm from './EventForm'
 import { createEvent } from 'store/event'
+import styles from './styles.scss'
+import DateHeading from 'components/Calendar/DateHeading'
+import moment from 'moment'
 
 class AddEventComponent extends Component {
   componentDidUpdate(prevProps) {
@@ -43,7 +46,16 @@ class AddEventComponent extends Component {
     let { event, location, ...rest } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
-    return <EventForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
+    let backLink = date === '' ? '/calendar' : `/calendar/${date}`
+
+    return (
+      <div className={styles.addCourse}>
+        <DateHeading date={date ? moment(date) : null} backLink={backLink} />
+        <div className={styles.wrapper}>
+          <EventForm {...rest} date={date} onSubmit={this.onSave.bind(this)} />
+        </div>
+      </div>
+    )
   }
 }
 
