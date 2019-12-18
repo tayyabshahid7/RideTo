@@ -14,6 +14,8 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
   const isAutoFull = course.auto_count >= course.auto_bikes
   const isManualFull = course.manual_count >= course.manual_bikes
 
+  const isOwnFull = course.own_count >= course.own_bikes
+
   const isAuto125Full = course.auto_125cc_count >= course.auto_125cc_bikes
   const isManual50Full = course.manual_50cc_count >= course.manual_50cc_bikes
 
@@ -65,7 +67,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           onChange={() => onChange(BIKE_HIRE.AUTO_125CC)}
           disabled={isAuto125Full}>
           {getMotorbikeLabel(BIKE_HIRE.AUTO_125CC)}
-          {isAutoFull ? fullText : null}
+          {isAuto125Full ? fullText : null}
           {bike_hire_cost > 0 && (
             <div className={styles.price}>
               {`(+${asPoundSterling(bike_hire_cost)})`}
@@ -81,12 +83,23 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           onChange={() => onChange(BIKE_HIRE.MANUAL_50CC)}
           disabled={isManual50Full}>
           {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC)}
-          {isManualFull ? fullText : null}
+          {isManual50Full ? fullText : null}
           {bike_hire_cost > 0 && (
             <div className={styles.price}>
               {`(+${asPoundSterling(bike_hire_cost)})`}
             </div>
           )}
+        </Checkbox>
+      )}
+
+      {course.own_bikes > 0 && (
+        <Checkbox
+          checked={selected === BIKE_HIRE.NO}
+          extraClass="WidgetCheckbox"
+          onChange={() => onChange(BIKE_HIRE.NO)}
+          disabled={isOwnFull}>
+          {getMotorbikeLabel(BIKE_HIRE.NO)}
+          {isOwnFull ? fullText : null}
         </Checkbox>
       )}
     </div>
