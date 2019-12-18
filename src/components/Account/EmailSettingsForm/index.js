@@ -176,7 +176,8 @@ class EmailSettingsForm extends React.Component {
   }
 
   validateShortCode(value) {
-    const groups = value.match(/\[\[(\w+)\]\]/gi)
+    // const groups = value.match(/\[\[([\w\s]+)\]\]/gi)
+    const groups = value.match(/\[\[([^\]]+)\]\]/gi)
 
     for (var code of groups) {
       if (!PLACEHOLDERS.includes(code)) {
@@ -195,9 +196,9 @@ class EmailSettingsForm extends React.Component {
       alert('Please check [[ ]] brackets are matching')
       return
     }
-    const valShort = this.validateShortCode(serializedValue)
-    if (valShort) {
-      alert(valShort)
+    const valShortError = this.validateShortCode(serializedValue)
+    if (valShortError) {
+      alert(valShortError)
       return
     }
     onSubmit({
