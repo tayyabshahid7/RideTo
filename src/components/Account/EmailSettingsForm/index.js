@@ -439,7 +439,7 @@ class EmailSettingsForm extends React.Component {
     return (
       <Fragment>
         <div className={classnames(styles.box, styles.boxVertical)}>
-          <h3 className={styles.title}>Email templates</h3>
+          <h3 className={styles.title}>Email Templates</h3>
           <p>
             Write the copy that you wish to display in your email communication
             to customers
@@ -447,9 +447,11 @@ class EmailSettingsForm extends React.Component {
           <Loading loading={saving}>
             {courses.map(course => (
               <div key={course} className={styles.formGroup}>
-                <h4 className={styles.titleSmall}>
-                  {getMediumCourseType({ constant: course })} booking
-                  confirmation
+                <h4
+                  className={styles.titleSmall}
+                  style={{ textTransform: 'capitalize' }}>
+                  {getMediumCourseType({ constant: course })} Booking
+                  Confirmation
                 </h4>
                 <Row>
                   <Col
@@ -491,7 +493,7 @@ class EmailSettingsForm extends React.Component {
           <Loading loading={saving}>
             <ModalBody>
               <div className={styles.header}>
-                Booking confirmation email template
+                Booking Confirmation Email Template
               </div>
               <Row>
                 <Col sm="3">
@@ -504,7 +506,7 @@ class EmailSettingsForm extends React.Component {
                       Place holders must match the examples exactly, including
                       [[ ]]
                     </p>
-                    <h4 className={styles.smallTitle}>Merge place holders</h4>
+                    <h4 className={styles.smallTitle}>Merge Place Holders</h4>
                     <ul className={styles.list}>
                       {PLACEHOLDERS.map(placeholder => (
                         <li key={placeholder}>{placeholder}</li>

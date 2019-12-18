@@ -60,7 +60,7 @@ class AccountPassword extends React.Component {
         <div className={classnames(styles.box, styles.boxVertical)}>
           <div className={styles.topRow}>
             <div className={styles.leftCol}>
-              <h3 className={styles.title}>Admin settings</h3>
+              <h3 className={styles.title}>Admin Settings</h3>
               <p>If you need to change your password you can do so here</p>
             </div>
             <div className={styles.rightCol}>
