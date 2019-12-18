@@ -18,9 +18,9 @@ export const WORK_HOURS = 24
 export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 
 export const BIKE_HIRE = {
-  MANUAL: 'manual',
-  AUTO: 'auto',
-  NO: 'no',
+  MANUAL: 'BIKE_TYPE_MANUAL',
+  AUTO: 'BIKE_TYPE_AUTO',
+  NO: 'BIKE_TYPE_NONE',
   AUTO_125CC: 'BIKE_TYPE_AUTO_125CC',
   MANUAL_50CC: 'BIKE_TYPE_MANUAL_50CC'
 }
