@@ -8,6 +8,7 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import { saveUser } from 'services/user'
 import styles from './SignupPage.scss'
 import classnames from 'classnames'
+import Loading from 'components/Loading'
 
 const isMobile = () => {
   return window.innerWidth < 768 || window.screen.width < 768
@@ -42,7 +43,8 @@ class SignupPage extends React.Component {
       hasCheckoutData:
         this.loginNext &&
         this.loginNext.endsWith('/checkout') &&
-        JSON.parse(sessionStorage.getItem('checkout-data'))
+        JSON.parse(sessionStorage.getItem('checkout-data')),
+      loading: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -100,6 +102,10 @@ class SignupPage extends React.Component {
       return
     }
 
+    this.setState({
+      loading: true
+    })
+
     try {
       await saveUser({
         first_name,
@@ -112,6 +118,9 @@ class SignupPage extends React.Component {
       window.location.href = next
     } catch (error) {
       const { response } = error
+      this.setState({
+        loading: false
+      })
       if (response) {
         const { data } = response
         const errors = Object.keys(data).reduce((errors, key) => {
@@ -140,7 +149,8 @@ class SignupPage extends React.Component {
       terms,
       newsletter,
       errors,
-      hasCheckoutData
+      hasCheckoutData,
+      loading
     } = this.state
 
     return (
@@ -243,12 +253,17 @@ class SignupPage extends React.Component {
               outs, events and special offers.
             </Checkbox>
 
-            <button type="submit" className={styles.signup}>
-              <span>
-                {hasCheckoutData ? 'Continue to Checkout' : 'Sign Up'}
-              </span>
-              <img src={ButtonArrowWhite} alt="" />
-            </button>
+            <Loading loading={loading}>
+              <button
+                type="submit"
+                className={styles.signup}
+                disabled={loading}>
+                <span>
+                  {hasCheckoutData ? 'Continue to Checkout' : 'Sign Up'}
+                </span>
+                <img src={ButtonArrowWhite} alt="" />
+              </button>
+            </Loading>
           </form>
         </div>
       </React.Fragment>
