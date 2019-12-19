@@ -5,6 +5,7 @@ import Adapter from 'enzyme-adapter-react-16'
 
 import * as coursesService from 'services/course'
 import BookingOptionsContainer from './index'
+import { Redirect } from 'react-router-dom'
 
 import suppliers from 'json/suppliers.json'
 import courses from 'json/widget-courses.json'
@@ -17,7 +18,8 @@ global.localStorage = {
   getItem: jest.fn()
 }
 global.sessionStorage = {
-  removeItem: jest.fn()
+  removeItem: jest.fn(),
+  setItem: jest.fn()
 }
 global.window.document.body.scrollIntoView = jest.fn()
 
@@ -91,5 +93,26 @@ describe('Change Date', () => {
     expect(wrapper.state('selectedCourse').date).toBe(date)
 
     expect(wrapper.find('button').text()).toBe('Book Now')
+  })
+})
+
+describe('Make booking', () => {
+  beforeEach(() => {
+    wrapper.instance().setAvailableCourses(courses, courseType)
+    wrapper.setState({})
+  })
+
+  it('Has selected course', () => {
+    expect(wrapper.state('selectedCourse')).toBeDefined()
+  })
+
+  it('Can click button', () => {
+    wrapper.find('.WidgetBtn').simulate('click')
+    const { id } = wrapper.state('selectedCourse')
+    const selectedBikeHire = wrapper.state('selectedBikeHire')
+    const submit = `/widget/${slug}/payment/${id}?hire=${selectedBikeHire}`
+    expect(wrapper.containsMatchingElement(<Redirect push to={submit} />)).toBe(
+      true
+    )
   })
 })
