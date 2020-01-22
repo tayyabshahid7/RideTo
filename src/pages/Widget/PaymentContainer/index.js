@@ -330,7 +330,7 @@ class PaymentContainer extends React.Component {
                 details={details}
                 trainingDate={course && course.date}
                 errors={errors}
-                fullLicenceType={trainings[0].full_licence_type}
+                fullLicenceType={trainings && trainings[0].full_licence_type}
                 onChange={this.handleChangeDetails}
                 bikeType={trainings[0].bike_type}
                 courseType={course.course_type}
