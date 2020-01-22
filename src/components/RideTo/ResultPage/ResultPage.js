@@ -837,8 +837,8 @@ class ResultPage extends Component {
                                 course.is_partner && (
                                   <CourseItem
                                     showCallMessage={
-                                      index === 2 ||
-                                      (index - 2) % 5 === 0 ||
+                                      index === 1 ||
+                                      (index - 1) % 5 === 0 ||
                                       (courses.available.length < 3 &&
                                         index === courses.available.length - 1)
                                     }
