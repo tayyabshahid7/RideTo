@@ -35,17 +35,11 @@ export function getAvailableBikeHires(course) {
     //   title: 'Manual 50cc'
     // },
     {
-      value:
-        manual_bikes && manual_count && manual_bikes > manual_count
-          ? BIKE_HIRE.MANUAL
-          : null,
+      value: manual_bikes > manual_count ? BIKE_HIRE.MANUAL : null,
       title: 'Manual 125cc'
     },
     {
-      value:
-        auto_bikes && auto_count && auto_bikes > auto_count
-          ? BIKE_HIRE.AUTO
-          : null,
+      value: auto_bikes > auto_count ? BIKE_HIRE.AUTO : null,
       title: 'Automatic Scooter'
     },
     // {
