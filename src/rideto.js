@@ -22,6 +22,8 @@ mountComponent('ReviewSlider', 'rideto-home-reviews')
 
 mountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
+mountComponent('NewsLetterBanner', 'rideto-news-letter-banner')
+
 mountComponent('UserMenuItem', 'rideto-nav-account', {}, false)
 
 mountComponent('CourseTypeSelection', 'rideto-course-type-selection', {}, false)
