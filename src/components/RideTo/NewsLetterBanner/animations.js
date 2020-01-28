@@ -6,7 +6,7 @@ const animations = {
     tl.fromTo(
       `.${styles.newsLetterBannerWrapper}`,
       { autoAlpha: 0, zIndex: 2 },
-      { autoAlpha: 1, zIndex: 2, ease: Power1.easeOut },
+      { autoAlpha: 1, zIndex: 2, ease: Power1.easeOut, display: 'block' },
       0.3
     )
   },
@@ -19,6 +19,7 @@ const animations = {
         autoAlpha: 0,
         zIndex: 2,
         ease: Power1.easeOut,
+        display: 'none',
         onComplete: () =>
           setTimeout(function() {
             callBack()

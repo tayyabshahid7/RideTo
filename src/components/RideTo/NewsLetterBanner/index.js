@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
-
+import { isAuthenticated } from 'services/auth'
 import animations from './animations'
 import styles from './NewsLetterBanner.scss'
 import ridetoLogo from 'assets/images/rideto-white.png'
@@ -30,8 +30,10 @@ class NewsLetterBanner extends React.Component {
   }
 
   fadeIn = () => {
-    disableBodyScroll()
-    animations.fadeIn()
+    if (!isAuthenticated()) {
+      disableBodyScroll()
+      animations.fadeIn()
+    }
   }
 
   fadeOut = () => {
