@@ -23,9 +23,9 @@ const animations = {
         onComplete: () =>
           setTimeout(function() {
             callBack()
-          }, 500)
+          }, 300)
       },
-      0.3
+      0.6
     )
   }
 }

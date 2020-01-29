@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import classnames from 'classnames'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import HubspotForm from 'react-hubspot-form'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { isAuthenticated } from 'services/auth'
 import animations from './animations'
@@ -13,9 +14,6 @@ class NewsLetterBanner extends React.Component {
     super(props)
 
     this.state = { submitted: false }
-  }
-  componentDidMount() {
-    this.fadeIn()
   }
 
   componentWillUnmount() {
@@ -53,7 +51,7 @@ class NewsLetterBanner extends React.Component {
       <div className={styles.newsLetterBannerWrapper}>
         <div className={styles.overlay} />
 
-        <form className={styles.content} onSubmit={this.handleSubmit}>
+        <div className={styles.content}>
           <img
             src={ridetoLogo}
             className={styles.bannerImage}
@@ -67,6 +65,12 @@ class NewsLetterBanner extends React.Component {
             type="text"
             placeholder="Enter email address"
           />
+          <HubspotForm
+            portalId="4630320"
+            formId="a476a7f5-52bb-4ec4-b2f3-44facef36824"
+            onSubmit={this.handleSubmit}
+            onReady={this.fadeIn}
+          />
           <button className={submitButtonClassName} type="submit">
             <span>
               {submitted ? (
@@ -79,7 +83,7 @@ class NewsLetterBanner extends React.Component {
               )}
             </span>
           </button>
-        </form>
+        </div>
       </div>
     )
   }
