@@ -73,6 +73,7 @@ class ResultsHeader extends React.Component {
                 value={postcode}
                 label="Postcode"
                 icon="search"
+                fullWidth={isFullLicence}
                 onChange={this.handlePostcodeChange}
                 onSubmit={this.handlePostcodeSubmit}
               />

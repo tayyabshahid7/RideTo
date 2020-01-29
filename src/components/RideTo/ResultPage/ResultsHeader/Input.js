@@ -36,10 +36,16 @@ function Input({
   disabled,
   button,
   onClick,
-  className
+  className,
+  fullWidth
 }) {
   return (
-    <div className={classnames(styles.formGroup, className)}>
+    <div
+      className={classnames(
+        styles.formGroup,
+        className,
+        fullWidth && styles.fullWidth
+      )}>
       <form className={classnames(styles.formGroupForm)} onSubmit={onSubmit}>
         <label className={styles.clickable}>
           <span className={styles.label}>{label}</span>

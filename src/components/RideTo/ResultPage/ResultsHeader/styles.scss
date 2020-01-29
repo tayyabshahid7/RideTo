@@ -167,6 +167,10 @@
 
   @media (max-width: 769px) {
     flex: 0 50%;
+
+    &.fullWidth {
+      flex: 0 100%;
+    }
   }
 }
 
