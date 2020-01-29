@@ -3,6 +3,28 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { AVAILABLE_COURSE_TYPES } from 'common/constants'
 
+const InputIcon = ({ icon }) => {
+  switch (icon) {
+    case 'search':
+      return (
+        <button type="submit" className={styles.button}>
+          <i className="fa fa-search"></i>
+        </button>
+      )
+    case 'date':
+      return (
+        <button type="submit" className={styles.button}>
+          <i className="fa fa-calendar"></i>
+        </button>
+      )
+    default:
+      return (
+        <span className={classnames(styles.button, styles.chev)}>
+          <i className="fa fa-chevron-down" />
+        </span>
+      )
+  }
+}
 function Input({
   value,
   label,
@@ -10,7 +32,7 @@ function Input({
   options,
   onChange,
   onSubmit,
-  chevron,
+  icon,
   disabled,
   button,
   onClick,
@@ -21,6 +43,7 @@ function Input({
       <form className={classnames(styles.formGroupForm)} onSubmit={onSubmit}>
         <label className={styles.clickable}>
           <span className={styles.label}>{label}</span>
+
           {select ? (
             <select className={styles.input} value={value} onChange={onChange}>
               {options.map(
@@ -48,15 +71,7 @@ function Input({
             />
           )}
         </label>
-        {!chevron ? (
-          <button type="submit" className={styles.button}>
-            <i className="fa fa-search"></i>
-          </button>
-        ) : (
-          <span className={classnames(styles.button, styles.chev)}>
-            <i className="fa fa-chevron-down" />
-          </span>
-        )}
+        <InputIcon icon={icon} />
       </form>
     </div>
   )

@@ -55,11 +55,6 @@ class ResultsHeader extends React.Component {
 
     return (
       <div className={styles.background}>
-        <InfoBox
-          showCourseTypeInfo={showCourseTypeInfo}
-          courseType={courseType}
-          className={styles.hideDesktop}
-        />
         <div className={styles.container}>
           <div className={styles.main}>
             <div className={styles.titles}>
@@ -77,30 +72,36 @@ class ResultsHeader extends React.Component {
               <Input
                 value={postcode}
                 label="Postcode"
+                icon="search"
                 onChange={this.handlePostcodeChange}
                 onSubmit={this.handlePostcodeSubmit}
-              />
-              <Input
-                value={courseType}
-                label="Course"
-                select
-                chevron
-                options={courseTypesOptions}
-                onChange={this.handleCourseChange}
               />
               {!isFullLicence && (
                 <Input
                   value={
-                    date ? moment(date).format('ddd Do MMMM') : 'Select date'
+                    date ? moment(date).format('ddd d MMM') : 'Select date'
                   }
                   label="Date"
-                  chevron
+                  icon="date"
                   disabled
                   button
                   onClick={handleMobileDateClick}
                   className={styles.hideDesktop}
                 />
               )}
+              <Input
+                label="Course"
+                value={courseType}
+                select
+                options={courseTypesOptions}
+                onChange={this.handleCourseChange}
+              />
+              <InfoBox
+                showCourseTypeInfo={showCourseTypeInfo}
+                courseType={courseType}
+                className={styles.hideDesktop}
+              />
+
               <MediaQuery query="(min-width: 769px)">
                 <InfoBox
                   showCourseTypeInfo={showCourseTypeInfo}

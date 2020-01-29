@@ -144,9 +144,15 @@
 .extraInfo {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
   font-size: 14px;
   font-family: var(--font-proxima);
   line-height: 24px;
+  > * {
+    display: flex;
+    flex-wrap: nowrap;
+  }
 }
 
 .detailIcon {
