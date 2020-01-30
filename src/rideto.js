@@ -4,6 +4,7 @@ import menuToggle from 'menuToggle'
 // import 'bootstrap'
 import './rideto_bootstrap.scss'
 import './rideto_constants.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
 setVersionInfo()
 
