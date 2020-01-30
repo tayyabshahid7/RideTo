@@ -2,29 +2,54 @@ import React, { Fragment } from 'react'
 import classnames from 'classnames'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import HubspotForm from 'react-hubspot-form'
 import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import { isAuthenticated } from 'services/auth'
 import animations from './animations'
 import styles from './NewsLetterBanner.scss'
 import ridetoLogo from 'assets/images/rideto-white.png'
 
+import { submitForm } from '../../../services/hubspotAPI'
+
 class NewsLetterBanner extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state = { submitted: false }
+    this.state = {
+      email: '',
+      submitted: false,
+      error: ''
+    }
+  }
+
+  componentDidMount() {
+    this.fadeIn()
   }
 
   componentWillUnmount() {
     this.fadeOut()
   }
 
-  handleSubmit = e => {
+  handleSubmit = async e => {
     e.preventDefault()
-    //send info to backend
-    //show success
-    this.fadeOut()
+    const response = await submitForm(
+      '4630320',
+      'a476a7f5-52bb-4ec4-b2f3-44facef36824',
+      { email: this.state.email }
+    )
+
+    if (response.status === 200) {
+      this.setState({ submitted: true })
+      this.fadeOut()
+    } else {
+      switch (response.status) {
+        case 400:
+          this.setState({ error: 'invalid Input' })
+          break
+        default:
+          this.setState({ error: 'An eror occured.' })
+          break
+      }
+    }
   }
 
   fadeIn = () => {
@@ -35,23 +60,19 @@ class NewsLetterBanner extends React.Component {
   }
 
   fadeOut = () => {
-    this.setState({ submitted: true })
     animations.fadeOut(clearAllBodyScrollLocks)
   }
 
   render() {
-    const { submitted } = this.state
+    const { submitted, error } = this.state
 
-    const submitButtonClassName = classnames(
-      styles.bannerSubmit,
-      submitted && styles.submitted
-    )
+    if (error) alert(error)
 
     return (
       <div className={styles.newsLetterBannerWrapper}>
         <div className={styles.overlay} />
 
-        <div className={styles.content}>
+        <form className={styles.content} onSubmit={this.handleSubmit}>
           <img
             src={ridetoLogo}
             className={styles.bannerImage}
@@ -61,17 +82,18 @@ class NewsLetterBanner extends React.Component {
             Sign Up to RideTo and Get £5 Discount
           </div>
           <input
+            name="email"
+            onChange={e => this.setState({ email: e.target.value })}
             className={styles.bannerInput}
             type="text"
             placeholder="Enter email address"
           />
-          <HubspotForm
-            portalId="4630320"
-            formId="a476a7f5-52bb-4ec4-b2f3-44facef36824"
-            onSubmit={this.handleSubmit}
-            onReady={this.fadeIn}
-          />
-          <button className={submitButtonClassName} type="submit">
+          <button
+            className={classnames(
+              styles.bannerSubmit,
+              submitted && styles.submitted
+            )}
+            type="submit">
             <span>
               {submitted ? (
                 <Fragment>
@@ -83,7 +105,7 @@ class NewsLetterBanner extends React.Component {
               )}
             </span>
           </button>
-        </div>
+        </form>
       </div>
     )
   }
