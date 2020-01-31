@@ -264,15 +264,16 @@
     font-weight: normal;
     margin: 0px;
     text-decoration: none;
+
     > * {
       white-space: nowrap;
     }
-    > i {
-      font-size: 18px;
+    > img {
+      height: 6px;
     }
-    i,
+    img,
     .sortButtonWrap {
-      margin-left: 5px;
+      margin-left: 3px;
     }
     .sortButtonWrap {
       display: inline;

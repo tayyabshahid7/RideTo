@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styles from './styles.scss'
 import { getCourseTitle } from 'services/course'
 import Input from './Input'
@@ -78,17 +78,32 @@ class ResultsHeader extends React.Component {
                 onSubmit={this.handlePostcodeSubmit}
               />
               {!isFullLicence && (
-                <Input
-                  value={
-                    date ? moment(date).format('ddd d MMM') : 'Select date'
-                  }
-                  label="Date"
-                  icon="date"
-                  disabled
-                  button
-                  onClick={handleMobileDateClick}
-                  className={styles.hideDesktop}
-                />
+                <Fragment>
+                  <MediaQuery query="(min-width:  393px)">
+                    <Input
+                      value={
+                        date ? moment(date).format('ddd d MMM') : 'Select date'
+                      }
+                      label="Date"
+                      icon="date"
+                      disabled
+                      button
+                      onClick={handleMobileDateClick}
+                      className={styles.hideDesktop}
+                    />
+                  </MediaQuery>
+                  <MediaQuery query="(max-width: 392px)">
+                    <Input
+                      value={date ? moment(date).format('ddd d MMM') : 'Date'}
+                      label="Date"
+                      icon="date"
+                      disabled
+                      button
+                      onClick={handleMobileDateClick}
+                      className={styles.hideDesktop}
+                    />
+                  </MediaQuery>
+                </Fragment>
               )}
               <Input
                 label="Course"

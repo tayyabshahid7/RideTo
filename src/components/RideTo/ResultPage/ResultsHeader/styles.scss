@@ -3,9 +3,11 @@
   width: 100%;
   border-bottom: 1px solid var(--light-grey-color);
   width: 33.3333333333%;
-  padding: 0 12px;
+  padding: 0 4px;
   border: 0;
   margin-bottom: 10px;
+  font-family: var(--font-proxima);
+  font-size: 14px;
 
   @media (max-width: 769px) {
     flex: 0 50%;
@@ -18,7 +20,7 @@
   appearance: none;
   border: 0;
   background-color: #fff;
-  height: 52px;
+  height: 40px;
   padding-right: 32px;
   padding-left: 32px;
   align-items: center;
@@ -44,10 +46,6 @@
     background-color: #131313;
     padding: 0px 10px;
   }
-}
-
-.infoCircle {
-  margin-right: 0.5rem;
 }
 
 .infoContent {
@@ -158,7 +156,7 @@
 .formGroup {
   margin: 0 0 24px;
   width: 33.3333333333%;
-  padding: 0 12px;
+  padding: 0 4px;
   margin-bottom: 10px;
 
   &:last-child {
@@ -178,7 +176,7 @@
   display: flex;
   position: relative;
   border: 1px solid #000;
-  height: 54px;
+  height: 40px;
 }
 
 .clickable {
@@ -200,6 +198,8 @@
 }
 
 .input {
+  font-family: var(--font-proxima);
+  font-size: 14px;
   width: 100%;
   height: 100%;
   appearance: none;
@@ -207,11 +207,15 @@
   background: transparent;
   padding-right: 20px;
   padding-left: 20px;
-  font-weight: bold;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+
+  @media (max-width: 392px) {
+    padding-right: 30px;
+    padding-left: 10px;
+  }
 }
 
 .inputButton {
@@ -231,7 +235,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  line-height: 52px;
+  line-height: 40px;
   pointer-events: none;
 }
 

@@ -3,6 +3,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { getCourseTitle } from 'services/course'
 import expandImgWhite from 'assets/images/rideto/AddWhite.svg'
+import infoWhite from 'assets/icons/InfoWhite.svg'
 import MediaQuery from 'react-responsive'
 import { getStaticData } from 'services/page'
 
@@ -18,9 +19,8 @@ function InfoBox({ showCourseTypeInfo, courseType, className }) {
         <button className={styles.infoButton} onClick={showCourseTypeInfo}>
           <span>Course Info</span>
           <span className={styles.infoCircle}>
-            <i className="fa fa-info-circle"></i>
+            <img src={infoWhite} alt="info icon" />
           </span>
-          <img className={styles.expandWhite} src={expandImgWhite} alt="Open" />
           <div className={styles.infoContent}>{details.description}</div>
         </button>
       </MediaQuery>
