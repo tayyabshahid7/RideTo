@@ -1,3 +1,0 @@
-diff a/src/components/RideTo/NewsLetterBanner/index.js b/src/components/RideTo/NewsLetterBanner/index.js	(rejected hunks)
-@@ -5 +4,0 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
--import HubspotForm from 'react-hubspot-form'

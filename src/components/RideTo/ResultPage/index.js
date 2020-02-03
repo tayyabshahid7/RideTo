@@ -134,6 +134,7 @@ class ResultPageContainer extends Component {
       navigation
     } = this.state
 
+    console.log(courses)
     return (
       <Router>
         <Route

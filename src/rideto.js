@@ -27,6 +27,11 @@ mountComponent('NewsLetterBanner', 'rideto-news-letter-banner')
 
 mountComponent('CourseAlternativeDatesSelection', 'alternative-dates-root')
 
+mountComponent(
+  'CourseAlternativeDatesSelectionConfirmation',
+  'alternative-dates-confirmation-root'
+)
+
 mountComponent('UserMenuItem', 'rideto-nav-account', {}, false)
 
 mountComponent('CourseTypeSelection', 'rideto-course-type-selection', {}, false)

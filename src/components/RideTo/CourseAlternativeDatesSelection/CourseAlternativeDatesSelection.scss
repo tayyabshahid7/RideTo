@@ -1,0 +1,113 @@
+.container {
+  width: 100%;
+  padding-right: 3rem;
+  padding-left: 3rem;
+  margin: 0 auto;
+  font-size: 15px;
+  line-height: 24px;
+  font-family: var(--font-proxima);
+  color: #141414;
+  display: flex;
+  flex-direction: column;
+  background-color: #f7f7f7;
+
+  @media (max-width: 400px) {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+  .content {
+    margin: auto;
+    max-width: 800px;
+
+    .header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      > * {
+        margin-top: 20px;
+      }
+
+      .headerLogoWrapper {
+        .headerLogo {
+          width: 60px;
+          height: 60px;
+          border-radius: 30px;
+        }
+      }
+
+      .headerTextWrapper {
+        width: 100%;
+      }
+    }
+    .body {
+      .optionsContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .optionWrapper {
+          display: flex;
+          flex-direction: column;
+          padding: 50px 0px;
+
+          &:not(:last-child) {
+            border-bottom: 1px solid #dbdbdb;
+          }
+
+          .optionContent {
+            margin-top: 40px;
+          }
+          .optionFooter {
+            margin-top: 40px;
+          }
+
+          &.alternativeDatesOption {
+            .optionContent {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+
+              .alternativeDateLink {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 55px;
+                width: 80%;
+                max-width: 450px;
+                line-height: 24px;
+                font-size: 20px;
+                font-weight: bold;
+                box-shadow: inset 1px 0 0 0 rgba(44, 206, 172, 0.1);
+                cursor: pointer;
+                color: white;
+                stroke: white;
+                background: var(--primary-color);
+                text-decoration: none;
+                margin-bottom: 15px;
+                padding: 10px;
+
+                &:hover {
+                  text-decoration: none;
+                }
+              }
+            }
+          }
+          &.alternativeLocationsOption {
+            .optionContent {
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+
+              .alternativeLocationCourseItem {
+                margin-bottom: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
