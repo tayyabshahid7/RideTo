@@ -1,0 +1,110 @@
+.warningNotification {
+  color: white;
+  background-color: var(--warning);
+}
+.errorNotification {
+  color: white;
+  background-color: var(--danger);
+}
+
+.newsLetterBannerWrapper {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 2;
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
+
+  .form {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      z-index: 2;
+
+      > * {
+        z-index: 2;
+        margin-bottom: 10px;
+      }
+
+      .closeButtonWrapper {
+        color: white;
+        width: 100%;
+
+        @media (max-width: 550px) {
+          padding: 0px 30px;
+        }
+
+        .closeButton {
+          font-size: 20px;
+          float: right;
+          transition: 0.2s ease-in;
+          &:hover {
+            cursor: pointer;
+            transform: translateY(2px);
+            opacity: 0.8;
+          }
+        }
+      }
+      .bannerImage {
+        height: 50px;
+      }
+
+      .bannerTitle {
+        text-transform: uppercase;
+        font-size: 22px;
+        font-weight: bold;
+      }
+
+      .bannerInput {
+        background: none;
+        border: 4px solid white;
+        text-align: center;
+        padding: 0px 7vw;
+
+        &,
+        &::placeholder {
+          color: white;
+        }
+        &:focus {
+          outline: none;
+        }
+      }
+      .bannerSubmit {
+        text-transform: uppercase;
+        font-weight: 1000;
+        margin-top: 10px;
+        letter-spacing: 4px;
+        padding: 10px 36px;
+        background-color: white;
+        border: none;
+        color: #141414;
+
+        &.submitted {
+          color: white;
+          background-color: #2cceac;
+        }
+      }
+    }
+  }
+}
