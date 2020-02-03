@@ -11,6 +11,9 @@ Discuss endpoints to be hit on submit:
 - alternative dates
 -alternative locations
 
+Adjust style:
+    -fonts
+    -spacing
 */
 
 import React, { useState, useEffect } from 'react'
