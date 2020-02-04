@@ -1,4 +1,6 @@
 import { Power1, TimelineLite } from 'gsap'
+import 'gsap/all'
+
 const animations = {
   fadeIn: () => {
     var tl = new TimelineLite()
