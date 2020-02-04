@@ -1,8 +1,6 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import classnames from 'classnames'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { ToastContainer, toast } from 'react-toastify'
 
 import { isAuthenticated } from 'services/auth'
@@ -10,6 +8,18 @@ import animations from './animations'
 import styles from './NewsLetterBanner.scss'
 import ridetoLogo from 'assets/images/rideto-white.png'
 import { submitForm } from '../../../services/hubspotAPI'
+//
+// const closeButton = ({onClick}) => {
+//   return (
+//     <div className={styles.closeButtonWrapper}>
+//       <FontAwesomeIcon
+//         className={styles.closeButton}
+//         icon={faTimes}
+//         onClick={onClick}
+//         />
+//     </div>
+//   )
+// }
 
 class NewsLetterPopUp extends React.Component {
   constructor(props) {
@@ -89,20 +99,13 @@ class NewsLetterPopUp extends React.Component {
 
         <form className={styles.form} onSubmit={this.handleSubmit}>
           <div className={styles.content}>
-            <div className={styles.closeButtonWrapper}>
-              <FontAwesomeIcon
-                className={styles.closeButton}
-                icon={faTimes}
-                onClick={this.fadeOut}
-              />
-            </div>
             <img
               src={ridetoLogo}
               className={styles.bannerPopUpImage}
               alt="company logo"
             />
             <div className={styles.bannerPopUpTitle}>
-              Sign Up to RideTo and Get £5 Discount
+              Join the community and receive £5 off your first order.
             </div>
             <input
               name="email"
@@ -117,16 +120,7 @@ class NewsLetterPopUp extends React.Component {
                 submitted && styles.submitted
               )}
               type="submit">
-              <span>
-                {submitted ? (
-                  <Fragment>
-                    Submitted
-                    <FontAwesomeIcon icon={faCheck} />
-                  </Fragment>
-                ) : (
-                  'Submit'
-                )}
-              </span>
+              <span>Subscribe</span>
             </button>
           </div>
         </form>

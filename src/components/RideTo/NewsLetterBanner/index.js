@@ -35,7 +35,9 @@ class NewsLetterBanner extends React.Component {
         onClick={() => {
           this.setState({ showPopUp: true })
         }}>
-        <h4 className={styles.bannerText}>subscribe to the newsletter</h4>
+        <h4 className={styles.bannerText}>
+          Sign Up to RideTo and Get £5 Discount
+        </h4>
 
         <ToastContainer />
       </div>
