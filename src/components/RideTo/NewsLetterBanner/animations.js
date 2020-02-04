@@ -8,7 +8,7 @@ const animations = {
   fadeIn: () => {
     var tl = new TimelineLite()
     tl.fromTo(
-      `#news-banner-container`,
+      `#news-banner-pop-up-container`,
       { autoAlpha: 0, zIndex: 2 },
       { autoAlpha: 1, zIndex: 2, ease: Power1.easeOut, display: 'block' },
       0.3
@@ -17,7 +17,7 @@ const animations = {
   fadeOut: callBack => {
     var tl = new TimelineLite()
     tl.fromTo(
-      `#news-banner-container`,
+      `#news-banner-pop-up-container`,
       { autoAlpha: 1, zIndex: 2 },
       {
         autoAlpha: 0,
