@@ -3,14 +3,13 @@
   width: 100%;
   border-bottom: 1px solid var(--light-grey-color);
   width: 33.3333333333%;
-  padding: 0 4px;
+  padding: 0 12px;
   border: 0;
   margin-bottom: 10px;
   font-family: var(--font-proxima);
   font-size: 16px;
 
   @media (max-width: 769px) {
-    padding: 0 12px;
     flex: 0 50%;
   }
 }
@@ -22,10 +21,13 @@
   border: 0;
   background-color: #fff;
   padding: 28px 32px;
-  line-height: 52px;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
+
+  .infoCircle {
+    margin-right: 0.5rem;
+  }
 
   @media (min-width: 769px) {
     text-transform: uppercase;
@@ -197,7 +199,7 @@
   left: 15px;
   background-color: #fff;
   line-height: 1;
-  font-size: 16px;
+  font-size: 14px;
   padding: 0 5px;
   @media (max-width: 769px) {
     display: none;
