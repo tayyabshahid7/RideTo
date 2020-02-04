@@ -107,9 +107,11 @@
 
       .bannerPopUpInput {
         background: none;
-        border: 4px solid white;
+        border: 4px solid #2cceac;
         text-align: center;
-        padding: 0px 7vw;
+        width: 50vw;
+        min-width: 300px;
+        max-width: 600px;
 
         &,
         &::placeholder {
@@ -125,13 +127,11 @@
         margin-top: 10px;
         letter-spacing: 4px;
         padding: 10px 36px;
-        background-color: white;
+        color: white;
+        background-color: #2cceac;
         border: none;
-        color: #141414;
 
         &.submitted {
-          color: white;
-          background-color: #2cceac;
         }
       }
     }
