@@ -1,19 +1,18 @@
 import { Power1, TimelineLite } from 'gsap'
-
 const animations = {
-  fadeIn: newsletterWrapperClass => {
+  fadeIn: () => {
     var tl = new TimelineLite()
     tl.fromTo(
-      `.${newsletterWrapperClass}`,
+      `#news-banner-container`,
       { autoAlpha: 0, zIndex: 2 },
       { autoAlpha: 1, zIndex: 2, ease: Power1.easeOut, display: 'block' },
       0.3
     )
   },
-  fadeOut: (callBack, newsletterWrapperClass) => {
+  fadeOut: callBack => {
     var tl = new TimelineLite()
     tl.fromTo(
-      `.${newsletterWrapperClass}`,
+      `#news-banner-container`,
       { autoAlpha: 1, zIndex: 2 },
       {
         autoAlpha: 0,
