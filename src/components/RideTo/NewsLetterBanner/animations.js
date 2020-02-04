@@ -1,5 +1,8 @@
 import { Power1, TimelineLite } from 'gsap'
-import 'gsap/all'
+import { gsap } from 'gsap/gsap-core'
+import { CSSPlugin } from 'gsap/CSSPlugin'
+
+gsap.registerPlugin(CSSPlugin)
 
 const animations = {
   fadeIn: () => {
