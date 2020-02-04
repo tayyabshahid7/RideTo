@@ -17,12 +17,9 @@ class NewsLetterBanner extends React.Component {
   constructor(props) {
     super(props)
 
-    const newsletterWrapperClass = styles.newsLetterBannerWrapper
-
     this.state = {
       email: '',
-      submitted: false,
-      newsletterWrapperClass
+      submitted: false
     }
   }
 
@@ -72,25 +69,23 @@ class NewsLetterBanner extends React.Component {
   }
 
   fadeIn = () => {
-    const { newsletterWrapperClass } = this.state
-
     if (!isAuthenticated()) {
       disableBodyScroll()
-      animations.fadeIn(newsletterWrapperClass)
+      animations.fadeIn()
     }
   }
 
   fadeOut = () => {
-    const { newsletterWrapperClass } = this.state
-
-    animations.fadeOut(clearAllBodyScrollLocks, newsletterWrapperClass)
+    animations.fadeOut(clearAllBodyScrollLocks)
   }
 
   render() {
-    const { submitted, newsletterWrapperClass } = this.state
+    const { submitted } = this.state
 
     return (
-      <div className={newsletterWrapperClass}>
+      <div
+        className={styles.newsLetterBannerWrapper}
+        id="news-banner-container">
         <div className={styles.overlay} onClick={this.fadeOut} />
 
         <form className={styles.form} onSubmit={this.handleSubmit}>
