@@ -4,8 +4,13 @@ import styles from './styles.scss'
 import Star from 'assets/images/Star.svg'
 import StarEmpty from 'assets/images/StarEmpty.svg'
 
-const StarsComponent = ({ rating = 5, className = '', starClassName = '' }) => (
-  <div className={classnames(styles.container, className)}>
+const StarsComponent = ({
+  rating = 5,
+  className = '',
+  starClassName = '',
+  onClick
+}) => (
+  <div className={classnames(styles.container, className)} onClick={onClick}>
     {[1, 2, 3, 4, 5].map((num, index) => (
       <div key={index} className={starClassName}>
         {rating >= num ? (

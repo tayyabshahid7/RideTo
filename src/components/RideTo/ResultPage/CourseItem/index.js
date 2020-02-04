@@ -105,7 +105,9 @@ class CourseItem extends Component {
                 onClick={() => handleDetailClick(course)}>
                 {course.location_slug.replace('-', ' ')}
               </button>
-              <div className={styles.place}>
+              <div
+                className={styles.place}
+                onClick={() => handleDetailClick(course)}>
                 {course.place}, {course.postcode}
               </div>
               <div className={styles.icons}>
@@ -139,6 +141,7 @@ class CourseItem extends Component {
                 <StarsComponent
                   rating={course.rating}
                   className={styles.starComponent}
+                  onClick={() => handleReviewClick(course)}
                 />
                 <span
                   onClick={() => handleReviewClick(course)}
@@ -151,7 +154,9 @@ class CourseItem extends Component {
           <div className={styles.footer}>
             {!isTypeform ? (
               <Fragment>
-                <div className={styles.price}>
+                <div
+                  className={styles.price}
+                  onClick={() => handlePriceClick(course)}>
                   £{parseInt(course.price / 100.0, 10)}
                   {courseType === 'FULL_LICENCE' && '/Hr'}
                 </div>
