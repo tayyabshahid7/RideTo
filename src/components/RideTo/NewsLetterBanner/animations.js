@@ -1,19 +1,19 @@
-import styles from './NewsLetterBanner.scss'
 import { Power1, TimelineLite } from 'gsap'
+
 const animations = {
-  fadeIn: () => {
+  fadeIn: newsletterWrapperClass => {
     var tl = new TimelineLite()
     tl.fromTo(
-      `.${styles.newsLetterBannerWrapper}`,
+      `.${newsletterWrapperClass}`,
       { autoAlpha: 0, zIndex: 2 },
       { autoAlpha: 1, zIndex: 2, ease: Power1.easeOut, display: 'block' },
       0.3
     )
   },
-  fadeOut: callBack => {
+  fadeOut: (callBack, newsletterWrapperClass) => {
     var tl = new TimelineLite()
     tl.fromTo(
-      `.${styles.newsLetterBannerWrapper}`,
+      `.${newsletterWrapperClass}`,
       { autoAlpha: 1, zIndex: 2 },
       {
         autoAlpha: 0,
