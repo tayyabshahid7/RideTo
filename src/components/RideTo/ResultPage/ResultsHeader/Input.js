@@ -6,7 +6,7 @@ import searchSmall from 'assets/icons/SearchSmall.svg'
 import dropdownSmall from 'assets/icons/DropdownSmall.svg'
 import calendar from 'assets/icons/Calendar.svg'
 
-const InputIcon = ({ icon }) => {
+const InputIcon = ({ icon, onClick }) => {
   switch (icon) {
     case 'search':
       return (
@@ -16,7 +16,7 @@ const InputIcon = ({ icon }) => {
       )
     case 'date':
       return (
-        <button type="submit" className={styles.button}>
+        <button type="button" className={styles.button} onClick={onClick}>
           <img src={calendar} alt="calendar icon" />
         </button>
       )
@@ -80,7 +80,7 @@ function Input({
             />
           )}
         </label>
-        <InputIcon icon={icon} />
+        <InputIcon icon={icon} onClick={onClick} />
       </form>
     </div>
   )

@@ -82,7 +82,7 @@ class ResultsHeader extends React.Component {
                   <MediaQuery query="(min-width:  393px)">
                     <Input
                       value={
-                        date ? moment(date).format('ddd d MMM') : 'Select date'
+                        date ? moment(date).format('ddd D MMM') : 'Select date'
                       }
                       label="Date"
                       icon="date"
@@ -94,7 +94,7 @@ class ResultsHeader extends React.Component {
                   </MediaQuery>
                   <MediaQuery query="(max-width: 392px)">
                     <Input
-                      value={date ? moment(date).format('ddd d MMM') : 'Date'}
+                      value={date ? moment(date).format('ddd D MMM') : 'Date'}
                       label="Date"
                       icon="date"
                       disabled
