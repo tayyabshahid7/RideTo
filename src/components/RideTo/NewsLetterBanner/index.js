@@ -2,6 +2,7 @@ import React from 'react'
 import { isAuthenticated } from 'services/auth'
 import styles from './NewsLetterBanner.scss'
 import NewsLetterPopUp from './NewsLetterPopUp'
+import MediaQuery from 'react-responsive'
 
 class NewsLetterBanner extends React.Component {
   constructor(props) {
@@ -43,9 +44,14 @@ class NewsLetterBanner extends React.Component {
             showPopUp: true
           })
         }}>
-        <h4 className={styles.bannerText}>
-          Sign Up to RideTo and Get £5 Discount
-        </h4>
+        <MediaQuery minWidth={768}>
+          <h4 className={styles.bannerText}>
+            Sign Up to RideTo and Get £5 Discount
+          </h4>
+        </MediaQuery>
+        <MediaQuery maxWidth={767}>
+          <h4 className={styles.bannerText}>SIGN UP TO GET £5 DISCOUNT</h4>
+        </MediaQuery>
       </div>
     )
   }
