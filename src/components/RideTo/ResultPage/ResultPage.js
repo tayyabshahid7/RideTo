@@ -30,7 +30,6 @@ import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
 import { fetchSingleRidetoCourse } from 'services/course'
-import dropdownSmall from 'assets/icons/DropdownSmall.svg'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -817,7 +816,7 @@ class ResultPage extends Component {
                               <div className={classnames(styles.schoolCount)}>
                                 <span>{resultsCount} Results by </span>
                                 {this.renderSortByDropdown(true)}
-                                <img src={dropdownSmall} alt="dropdown icon" />
+                                <i class="fas fa-caret-down"></i>
                                 <span className={styles.desktopSortByValue}>
                                   {sortByOption.replace('-', '')}
                                 </span>
