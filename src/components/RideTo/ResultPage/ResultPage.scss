@@ -134,6 +134,9 @@
 
   letter-spacing: 0.5px;
 
+  @media (min-width: 769px) {
+    font-family: var(--font-rift);
+  }
   @media (max-width: 768px) {
     font-family: inherit !important;
     font-weight: normal !important;
@@ -258,7 +261,7 @@
     font-family: inherit;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
     font-weight: normal;
@@ -271,7 +274,7 @@
     > img {
       height: 6px;
     }
-    img,
+    i,
     .sortButtonWrap {
       margin-left: 3px;
     }
