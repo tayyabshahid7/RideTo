@@ -7,7 +7,7 @@ Discuss endpoint to be hit on load:
 - date
 -url
 -userName
--courseReferenceNumber
+-courseId
 
 Figure out what to do about following click events on course Items:
 - clicked details
@@ -27,6 +27,7 @@ import classnames from 'classnames'
 import styles from './CourseAlternativeDatesSelection.scss'
 import rideToMinimalGreenImg from 'assets/images/rideToMinimalGreen.jpg'
 import CourseItem from './CourseItem'
+import { getStaticData } from 'services/page'
 
 const Header = ({ userName }) => {
   const HeaderText = ({ userName }) => {
@@ -57,11 +58,7 @@ const Header = ({ userName }) => {
   )
 }
 
-const AlternativeDatesOption = ({
-  index,
-  alternativeDates,
-  courseReferenceNumber
-}) => {
+const AlternativeDatesOption = ({ index, alternativeDates, courseId }) => {
   return (
     <div
       className={classnames(
@@ -90,15 +87,15 @@ const AlternativeDatesOption = ({
       </div>
 
       <div className={styles.optionFooter}>
-        <strong>There are also other dates available,</strong>
-        drop us an email to{' '}
+        <strong>There are also other dates available,</strong> drop us an email
+        to{' '}
         <a
-          href={`mailto:hello@rideto.com?Subject=Order#${courseReferenceNumber}%20-%20Course%20dates%20unavailable`}>
+          href={`mailto:hello@rideto.com?Subject=Order#RT${courseId}%20-%20Course%20dates%20unavailable`}>
           hello@rideto.com
         </a>{' '}
-        and quote your order reference {courseReferenceNumber}. A member of the
-        team will be able to find an alternative date at this location which
-        works for you.
+        and quote your order reference RT#{courseId}. A member of the team will
+        be able to find an alternative date at this location which works for
+        you.
       </div>
     </div>
   )
@@ -151,7 +148,7 @@ const AlternativeLocationsOption = ({
     </div>
   )
 }
-const ContactUsOption = ({ index, courseReferenceNumber }) => {
+const ContactUsOption = ({ index, courseId }) => {
   return (
     <div className={classnames(styles.contactUsOption, styles.optionWrapper)}>
       <div className={styles.optionHeader}>
@@ -162,12 +159,12 @@ const ContactUsOption = ({ index, courseReferenceNumber }) => {
         <p className={styles.optionSupTitle}>
           Drop us an email to{' '}
           <a
-            href={`mailto:hello@rideto.com?Subject=Order#${courseReferenceNumber}%20-%20Course%20dates%20unavailable`}>
+            href={`mailto:hello@rideto.com?Subject=Order#RT${courseId}%20-%20Course%20dates%20unavailable`}>
             hello@rideto.com
           </a>{' '}
-          and quote your order reference {courseReferenceNumber}. A member of
-          the team will be able to find an alternative date at this location
-          which works for you.
+          and quote your order reference RT#{courseId}. A member of the team
+          will be able to find an alternative date at this location which works
+          for you.
         </p>
       </div>
     </div>
@@ -180,19 +177,21 @@ const CourseAlternativeDatesSelection = () => {
   const [courseType, setCourseType] = useState(undefined)
   const [alternativeDates, setAlternativeDates] = useState([])
   const [userName, setUserName] = useState(undefined)
-  const [courseReferenceNumber, setcourseReferenceNumber] = useState(undefined)
+  const [courseId, setCourseId] = useState(undefined)
 
   useEffect(() => {
-    const fetchData = async () => {
-      //fetch data here
+    const getFromContext = () => {
+      const context = getStaticData('RIDETO_PAGE')
 
-      setUserName('Test User Name')
+      setUserName(context.first_name)
+      setCourseType(context.course_type)
+      setCourseId(context.friendly_id)
       setAlternativeDates([
         { date: 'Sunday', url: 'https://www.google.com' },
         { date: 'Monday', url: 'https://www.google.com' },
         { date: 'Tuesday', url: 'https://www.google.com' }
       ])
-      setcourseReferenceNumber('RFID#1234')
+
       setCourses([
         {
           id: 44,
@@ -279,10 +278,9 @@ const CourseAlternativeDatesSelection = () => {
           price: 10999
         }
       ])
-      setCourseType('FULL_LICENCE')
       setLoading(false)
     }
-    fetchData()
+    getFromContext()
   }, [])
 
   if (loading) return <div>Loading ...</div>
@@ -296,7 +294,7 @@ const CourseAlternativeDatesSelection = () => {
             <AlternativeDatesOption
               index={1}
               alternativeDates={alternativeDates}
-              courseReferenceNumber={courseReferenceNumber}
+              courseId={courseId}
             />
 
             <AlternativeLocationsOption
@@ -312,10 +310,7 @@ const CourseAlternativeDatesSelection = () => {
               }
             />
 
-            <ContactUsOption
-              index={3}
-              courseReferenceNumber={courseReferenceNumber}
-            />
+            <ContactUsOption index={3} courseId={courseId} />
           </div>
         </div>
       </div>
