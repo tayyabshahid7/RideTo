@@ -1,9 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
-import { ToastContainer, toast } from 'react-toastify'
 
-import { isAuthenticated } from 'services/auth'
 import animations from './animations'
 import styles from './NewsLetterBanner.scss'
 import ridetoLogo from 'assets/images/rideto-white.png'
@@ -27,20 +25,26 @@ class NewsLetterPopUp extends React.Component {
 
     this.state = {
       email: '',
-      submitted: false
+      submitted: false,
+      error: ''
     }
   }
 
   componentDidMount() {
-    document.addEventListener('keydown', this.escFunction, false)
+    // document.addEventListener('keydown', this.escFunction, false)
     this.fadeIn()
   }
 
   componentWillUnmount() {
-    document.removeEventListener('keydown', this.escFunction, false)
-
+    // document.removeEventListener('keydown', this.escFunction, false)
     this.fadeOut()
   }
+
+  // escFunction = event => {
+  //   if (event.keyCode === 27) {
+  //     this.fadeOut()
+  //   }
+  // }
 
   handleSubmit = async e => {
     e.preventDefault()
@@ -52,50 +56,46 @@ class NewsLetterPopUp extends React.Component {
 
     if (response.status === 200) {
       this.setState({ submitted: true })
+      this.props.onSubmitted()
       this.fadeOut()
     } else {
       switch (response.status) {
         case 400:
-          toast.warn('Please enter a valid email address.', {
-            className: styles.warningNotification
-          })
+          this.setState({ error: 'Please enter a valid email address.' })
 
           break
         default:
-          toast.error('An unexpected error occured. Please Try again later.', {
-            className: styles.errorNotification
+          this.setState({
+            error: 'An unexpected error occured. Please Try again later.'
           })
+
           break
       }
     }
   }
 
-  escFunction = event => {
-    if (event.keyCode === 27) {
-      this.fadeOut()
-    }
+  handleExit = () => {
+    this.props.onExit()
+    animations.fadeOut()
   }
 
   fadeIn = () => {
-    if (!isAuthenticated()) {
-      disableBodyScroll()
-      animations.fadeIn()
-    }
+    disableBodyScroll()
+    animations.fadeIn()
   }
 
   fadeOut = () => {
-    this.props.onClose()
     animations.fadeOut(clearAllBodyScrollLocks)
   }
 
   render() {
-    const { submitted } = this.state
+    const { submitted, error } = this.state
 
     return (
       <div
         className={styles.newsLetterPopUpWrapper}
         id="news-banner-pop-up-container">
-        <div className={styles.overlay} onClick={this.fadeOut} />
+        <div className={styles.overlay} onClick={this.handleExit} />
 
         <form className={styles.form} onSubmit={this.handleSubmit}>
           <div className={styles.content}>
@@ -122,9 +122,9 @@ class NewsLetterPopUp extends React.Component {
               type="submit">
               <span>Subscribe</span>
             </button>
+            {error && <div className={styles.error}>{error}</div>}
           </div>
         </form>
-        <ToastContainer />
       </div>
     )
   }

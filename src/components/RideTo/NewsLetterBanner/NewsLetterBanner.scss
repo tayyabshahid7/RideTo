@@ -1,10 +1,5 @@
-.warningNotification {
-  color: white;
-  background-color: var(--warning);
-}
-.errorNotification {
-  color: white;
-  background-color: var(--danger);
+.error {
+  color: var(--danger);
 }
 
 .newsLetterBannerWrapper {
