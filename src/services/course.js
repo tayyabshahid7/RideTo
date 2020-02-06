@@ -156,6 +156,12 @@ export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
   return response
 }
 
+export const updateSchoolTrainingRejection = async (params, orderId) => {
+  const path = `/api/o/alternative-dates/${orderId}/`
+  const response = await put(path, params)
+  return response
+}
+
 export const deleteSchoolOrderTraining = async (schoolId, trainingId) => {
   const path = `school/${schoolId}/course/order/training/${trainingId}`
   const response = await destroy(path, {})
