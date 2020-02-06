@@ -120,6 +120,7 @@ class CourseAlternativeDatesSelection extends React.Component {
       alternativeDates: [],
       courseId: null,
       userName: '',
+      signature: '',
       selectedCourse: null,
       loading: true,
       showDateSelectorModal: false,
@@ -153,7 +154,9 @@ class CourseAlternativeDatesSelection extends React.Component {
         },
         this.state.courseId
       )
+      window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
     } catch (error) {
+      alert('failed')
       console.log(error)
     }
   }
@@ -164,6 +167,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     const courseType = context.courseType
     const courseTypes = context.courseTypes
     const courseId = context.friendlyId
+    const signature = context.signature
     const supplier = context.supplier
     const alternativeDates = JSON.parse(
       context.alternativeDates.replace(/'/g, '"')
@@ -174,6 +178,7 @@ class CourseAlternativeDatesSelection extends React.Component {
 
     this.setState({
       userName,
+      signature,
       supplier,
       courseType,
       courseTypes,
@@ -192,7 +197,8 @@ class CourseAlternativeDatesSelection extends React.Component {
       alternativeDates,
       courseId,
       courseType,
-      courseTypes
+      courseTypes,
+      signature
     } = this.state
 
     if (loading) return <div>Loading ...</div>
@@ -218,6 +224,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                 courseTypes={courseTypes}
                 courseId={courseId}
                 courses={courses}
+                signature={signature}
                 handleDetailClick={this.handleDetailClick}
                 handlePriceClick={this.handlePriceClick}
                 handleReviewClick={this.handleReviewClick}

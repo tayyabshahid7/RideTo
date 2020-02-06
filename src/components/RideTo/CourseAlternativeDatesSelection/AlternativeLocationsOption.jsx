@@ -31,6 +31,7 @@ class CourseAlternativeDatesSelection extends React.Component {
       courseTypes: null,
       alternativeDates: [],
       courseId: null,
+      signature: '',
       userName: '',
       selectedCourse: null,
       loading: true,
@@ -96,7 +97,8 @@ class CourseAlternativeDatesSelection extends React.Component {
     const userName = this.props.firstName
     const courseType = this.props.courseType
     const courseTypes = this.props.courseTypes
-    const courseId = this.props.friendlyId
+    const courseId = this.props.courseId
+    const signature = this.props.signature
     const courses = this.props.courses
 
 
@@ -109,6 +111,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     }
     window.scrollTo(0, 0)
     this.setState({
+      signature,
       loading,
       userName,
       courseId,
@@ -234,10 +237,10 @@ class CourseAlternativeDatesSelection extends React.Component {
         supplier: selectedCourse.id,
         date: instantDate
       },courseId)
-      alert('worked')
+      window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
     }catch(error){
-      console.log(error)
       alert('failed')
+      console.log(error)
     }
   }
 
