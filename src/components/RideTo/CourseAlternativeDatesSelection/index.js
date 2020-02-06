@@ -4,6 +4,8 @@ import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelection.scss'
 import rideToMinimalGreenImg from 'assets/images/rideToMinimalGreen.jpg'
 import AlternativeLocationsOption from './AlternativeLocationsOption'
+import { updateSchoolTrainingRejection } from 'services/course'
+import moment from 'moment'
 
 const Header = ({ userName }) => {
   const HeaderText = ({ userName }) => {
@@ -34,7 +36,12 @@ const Header = ({ userName }) => {
   )
 }
 
-const AlternativeDatesOption = ({ index, alternativeDates, courseId }) => {
+const AlternativeDatesOption = ({
+  index,
+  alternativeDates,
+  courseId,
+  onClick
+}) => {
   return (
     <div
       className={classnames(
@@ -53,11 +60,14 @@ const AlternativeDatesOption = ({ index, alternativeDates, courseId }) => {
       </div>
 
       <div className={styles.optionContent}>
-        {alternativeDates.map(({ date, url }) => {
+        {alternativeDates.map(date => {
           return (
-            <a className={styles.alternativeDateLink} href={url} key={date}>
-              {date}
-            </a>
+            <div
+              className={styles.alternativeDateLink}
+              onClick={() => onClick(date)}
+              key={date}>
+              {moment(date).format('dddd, Do MMMM')}
+            </div>
           )
         })}
       </div>
@@ -117,6 +127,7 @@ class CourseAlternativeDatesSelection extends React.Component {
       instantCourse: null,
       instantDate: null,
       bike_hire: null,
+      supplier: null,
       selectedLicenceType: null,
       courseTypesOptions: [],
       selectedPackageHours: null,
@@ -133,107 +144,37 @@ class CourseAlternativeDatesSelection extends React.Component {
     }
   }
 
+  selectedDate = async date => {
+    try {
+      await updateSchoolTrainingRejection(
+        {
+          supplier: this.state.supplier,
+          date: date
+        },
+        this.state.courseId
+      )
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   componentDidMount() {
     const context = getStaticData('RIDETO_PAGE')
     const userName = context.firstName
     const courseType = context.courseType
     const courseTypes = context.courseTypes
     const courseId = context.friendlyId
-    const alternativeDates = [
-      { date: 'Sunday', url: 'https://www.google.com' },
-      { date: 'Monday', url: 'https://www.google.com' },
-      { date: 'Tuesday', url: 'https://www.google.com' }
-    ]
-    const courses = [
-      {
-        id: 44,
-        is_partner: true,
-        image_thumbnail:
-          '/media/Supplier/ipass-osterley/Motorcycle-Training-London-Osterley-CBT-Training-RideTo-c.jpg',
-        image:
-          '/media/Supplier/ipass-osterley/Motorcycle-Training-London-Osterley-CBT-Training-RideTo-c.jpg',
-        location_slug: 'hounslow',
-        place: 'Indian Gymkhana Club, Osterley',
-        postcode: 'TW7 4NQ',
-        mciac_approved: false,
-        bike_hire: true,
-        helmet_hire: true,
-        gloves_jacket_included: true,
-        on_site_cafe: false,
-        indoor_classroom: true,
-        instant_book: true,
-        distance_miles: 2.27211407159883,
-        rating: 4.6,
-        number_of_reviews: 144,
-        name: 'IPASS CBT Osterley',
-        email: 'james+notification@rideto.com',
-        lat: 51.48073,
-        lng: -0.34851,
-        date: null,
-        is_available_on: true,
-        price: 10999
-      },
-      {
-        id: 689,
-        is_partner: true,
-        image_thumbnail:
-          '/media/Supplier/heathrow-motorcycle-training/Heathrow-Motorcycle-Training-CBT-Test-west-London--1-1-a.jpg',
-        image:
-          '/media/Supplier/heathrow-motorcycle-training/Heathrow-Motorcycle-Training-CBT-Test-west-London--1-1-a.jpg',
-        location_slug: 'hounslow',
-        place: 'Feltham & Hanworth Airparks Leisure, Hanworth, London',
-        postcode: 'TW13 5EG',
-        mciac_approved: false,
-        bike_hire: true,
-        helmet_hire: true,
-        gloves_jacket_included: false,
-        on_site_cafe: false,
-        indoor_classroom: false,
-        instant_book: true,
-        distance_miles: 2.879460403944683,
-        rating: 4.6,
-        number_of_reviews: 64,
-        name: 'Heathrow Motorcycle Training',
-        email: 'james+notification@rideto.com',
-        lat: 51.441285,
-        lng: -0.390585,
-        date: null,
-        is_available_on: true,
-        price: 11599
-      },
-      {
-        id: 995,
-        is_partner: true,
-        image_thumbnail:
-          '/media/Supplier/west-london-motorcycle-training/CBT-Training-West-London-RideTo-3.jpg',
-        image:
-          '/media/Supplier/west-london-motorcycle-training/CBT-Training-West-London-RideTo-3.jpg',
-        location_slug: 'feltham',
-        place: 'Fairholme School, Peacock Avenue,, Feltham',
-        postcode: 'TW14 8ET',
-        mciac_approved: false,
-        bike_hire: true,
-        helmet_hire: true,
-        gloves_jacket_included: false,
-        on_site_cafe: false,
-        indoor_classroom: true,
-        instant_book: false,
-        distance_miles: 4.699913863559448,
-        rating: 4.9,
-        number_of_reviews: 172,
-        name: 'West London Motorcycle Training',
-        email: 'james+notification@rideto.com',
-        lat: 51.448807,
-        lng: -0.434689,
-        date: null,
-        is_available_on: true,
-        price: 10999
-      }
-    ]
+    const supplier = context.supplier
+    const alternativeDates = JSON.parse(
+      context.alternativeDates.replace(/'/g, '"')
+    )['dates']
+    const courses = JSON.parse(context.courses)
+
     const loading = false
 
     this.setState({
       userName,
+      supplier,
       courseType,
       courseTypes,
       courseId,
@@ -249,7 +190,9 @@ class CourseAlternativeDatesSelection extends React.Component {
       userName,
       courses,
       alternativeDates,
-      courseId
+      courseId,
+      courseType,
+      courseTypes
     } = this.state
 
     if (loading) return <div>Loading ...</div>
@@ -263,12 +206,17 @@ class CourseAlternativeDatesSelection extends React.Component {
             <div className={styles.optionsContainer}>
               <AlternativeDatesOption
                 index={1}
+                onClick={this.selectedDate}
                 alternativeDates={alternativeDates}
                 courseId={courseId}
               />
 
               <AlternativeLocationsOption
                 index={2}
+                userName={userName}
+                courseType={courseType}
+                courseTypes={courseTypes}
+                courseId={courseId}
                 courses={courses}
                 handleDetailClick={this.handleDetailClick}
                 handlePriceClick={this.handlePriceClick}

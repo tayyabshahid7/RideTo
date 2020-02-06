@@ -157,7 +157,9 @@ export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
 }
 
 export const updateSchoolTrainingRejection = async (params, orderId) => {
-  const path = `/api/o/alternative-dates/${orderId}/`
+  const path = `o/alternative-dates/${orderId}/`
+  console.log(path)
+  console.log(params)
   const response = await put(path, params)
   return response
 }

@@ -93,106 +93,13 @@ class CourseAlternativeDatesSelection extends React.Component {
   }
 
   componentDidMount() {
-    const context = getStaticData('RIDETO_PAGE')
-    const userName = context.firstName
-    const courseType = context.courseType
-    const courseTypes = context.courseTypes
-    const courseId = context.friendlyId
+    const userName = this.props.firstName
+    const courseType = this.props.courseType
+    const courseTypes = this.props.courseTypes
+    const courseId = this.props.friendlyId
+    const courses = this.props.courses
 
-    //need
-    const alternativeDates = [
-      { date: 'Sunday', url: 'https://www.google.com' },
-      { date: 'Monday', url: 'https://www.google.com' },
-      { date: 'Tuesday', url: 'https://www.google.com' }
-    ]
 
-    //need
-    const courses = [
-      {
-        id: 44,
-        is_partner: true,
-        image_thumbnail:
-        '/media/Supplier/ipass-osterley/Motorcycle-Training-London-Osterley-CBT-Training-RideTo-c.jpg',
-        image:
-        '/media/Supplier/ipass-osterley/Motorcycle-Training-London-Osterley-CBT-Training-RideTo-c.jpg',
-        location_slug: 'hounslow',
-        place: 'Indian Gymkhana Club, Osterley',
-        postcode: 'TW7 4NQ',
-        mciac_approved: false,
-        bike_hire: true,
-        helmet_hire: true,
-        gloves_jacket_included: true,
-        on_site_cafe: false,
-        indoor_classroom: true,
-        instant_book: true,
-        distance_miles: 2.27211407159883,
-        rating: 4.6,
-        number_of_reviews: 144,
-        name: 'IPASS CBT Osterley',
-        email: 'james+notification@rideto.com',
-        lat: 51.48073,
-        lng: -0.34851,
-        date: null,
-        is_available_on: true,
-        price: 10999
-      },
-      {
-        id: 689,
-        is_partner: true,
-        image_thumbnail:
-        '/media/Supplier/heathrow-motorcycle-training/Heathrow-Motorcycle-Training-CBT-Test-west-London--1-1-a.jpg',
-        image:
-        '/media/Supplier/heathrow-motorcycle-training/Heathrow-Motorcycle-Training-CBT-Test-west-London--1-1-a.jpg',
-        location_slug: 'hounslow',
-        place: 'Feltham & Hanworth Airparks Leisure, Hanworth, London',
-        postcode: 'TW13 5EG',
-        mciac_approved: false,
-        bike_hire: true,
-        helmet_hire: true,
-        gloves_jacket_included: false,
-        on_site_cafe: false,
-        indoor_classroom: false,
-        instant_book: true,
-        distance_miles: 2.879460403944683,
-        rating: 4.6,
-        number_of_reviews: 64,
-        name: 'Heathrow Motorcycle Training',
-        email: 'james+notification@rideto.com',
-        lat: 51.441285,
-        lng: -0.390585,
-        date: null,
-        is_available_on: true,
-        price: 11599
-      },
-      {
-        id: 995,
-        is_partner: true,
-        image_thumbnail:
-        '/media/Supplier/west-london-motorcycle-training/CBT-Training-West-London-RideTo-3.jpg',
-        image:
-        '/media/Supplier/west-london-motorcycle-training/CBT-Training-West-London-RideTo-3.jpg',
-        location_slug: 'feltham',
-        place: 'Fairholme School, Peacock Avenue,, Feltham',
-        postcode: 'TW14 8ET',
-        mciac_approved: false,
-        bike_hire: true,
-        helmet_hire: true,
-        gloves_jacket_included: false,
-        on_site_cafe: false,
-        indoor_classroom: true,
-        instant_book: false,
-        distance_miles: 4.699913863559448,
-        rating: 4.9,
-        number_of_reviews: 172,
-        name: 'West London Motorcycle Training',
-        email: 'james+notification@rideto.com',
-        lat: 51.448807,
-        lng: -0.434689,
-        date: null,
-        is_available_on: true,
-        price: 10999
-      }
-    ]
 
     const loading = false
 
@@ -207,7 +114,6 @@ class CourseAlternativeDatesSelection extends React.Component {
       courseId,
       courseType,
       courseTypes,
-      alternativeDates,
       courses,
       courseTypesOptions: courseTypes,
       selectedCourseType: courseTypes.find(
@@ -325,7 +231,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     try{
       await updateSchoolTrainingRejection({
         bike_hire,
-        supplierId: selectedCourse.id,
+        supplier: selectedCourse.id,
         date: instantDate
       },courseId)
       alert('worked')
