@@ -105,7 +105,9 @@ class CourseItem extends Component {
                 onClick={() => handleDetailClick(course)}>
                 {course.location_slug.replace('-', ' ')}
               </button>
-              <div className={styles.place}>
+              <div
+                className={styles.place}
+                onClick={() => handleDetailClick(course)}>
                 {course.place}, {course.postcode}
               </div>
               <div className={styles.icons}>
@@ -122,30 +124,39 @@ class CourseItem extends Component {
               </div>
             </div>
             <div className={styles.extraInfo}>
-              <IconDistance className={styles.mileIcon} />{' '}
-              {course.distance_miles.toFixed(2)}
-              mi
-              <IconInfo className={styles.detailIcon} />{' '}
-              <span
-                onClick={() => handleDetailClick(course)}
-                className={classnames(styles.detail, styles.detailsLink)}>
-                Details
-              </span>
-              <StarsComponent
-                rating={course.rating}
-                className={styles.starComponent}
-              />
-              <span
-                onClick={() => handleReviewClick(course)}
-                className={styles.detail}>
-                {course.number_of_reviews}
-              </span>
+              <div>
+                <IconDistance className={styles.mileIcon} />{' '}
+                {course.distance_miles.toFixed(2)}
+                mi
+              </div>
+              <div>
+                <IconInfo className={styles.detailIcon} />{' '}
+                <span
+                  onClick={() => handleDetailClick(course)}
+                  className={classnames(styles.detail, styles.detailsLink)}>
+                  Details
+                </span>
+              </div>
+              <div>
+                <StarsComponent
+                  rating={course.rating}
+                  className={styles.starComponent}
+                  onClick={() => handleReviewClick(course)}
+                />
+                <span
+                  onClick={() => handleReviewClick(course)}
+                  className={styles.detail}>
+                  {course.number_of_reviews}
+                </span>
+              </div>
             </div>
           </div>
           <div className={styles.footer}>
             {!isTypeform ? (
               <Fragment>
-                <div className={styles.price}>
+                <div
+                  className={styles.price}
+                  onClick={() => handlePriceClick(course)}>
                   £{parseInt(course.price / 100.0, 10)}
                   {courseType === 'FULL_LICENCE' && '/Hr'}
                 </div>

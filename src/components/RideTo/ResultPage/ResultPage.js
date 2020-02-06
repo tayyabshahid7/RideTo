@@ -781,30 +781,58 @@ class ResultPage extends Component {
                       )}
                       {!loading && (
                         <React.Fragment>
-                          <div
-                            className={classnames(
-                              styles.instruction,
-                              isFullLicence && styles.instructionFullLicence
-                            )}>
-                            <span>Select a location</span>
-                            <button
-                              id="results-mobile-map-button"
-                              className={styles.showMap}
-                              onClick={() => {
-                                this.setState({
-                                  isMobileMapVisible: !isMobileMapVisible
-                                })
-                              }}>
-                              <i className="fas fa-map-marker-alt"></i> Map
-                            </button>
-                          </div>
-                          <div className={classnames(styles.schoolCount)}>
-                            {resultsCount} training sites sorted by{' '}
-                            {this.renderSortByDropdown(true)}
-                            <span className={styles.desktopSortByValue}>
-                              {sortByOption.replace('-', '')}
-                            </span>
-                          </div>
+                          <MediaQuery query="(min-width: 769px)">
+                            <div
+                              className={classnames(
+                                styles.instruction,
+                                isFullLicence && styles.instructionFullLicence
+                              )}>
+                              <span>Select a location</span>
+                              <button
+                                id="results-mobile-map-button"
+                                className={styles.showMap}
+                                onClick={() => {
+                                  this.setState({
+                                    isMobileMapVisible: !isMobileMapVisible
+                                  })
+                                }}>
+                                <i className="fas fa-map-marker-alt"></i> Map
+                              </button>
+                            </div>
+                            <div className={classnames(styles.schoolCount)}>
+                              {resultsCount} training sites sorted by{' '}
+                              {this.renderSortByDropdown(true)}
+                              <span className={styles.desktopSortByValue}>
+                                {sortByOption.replace('-', '')}
+                              </span>
+                            </div>
+                          </MediaQuery>
+                          <MediaQuery query="(max-width: 768px)">
+                            <div
+                              className={classnames(
+                                styles.instruction,
+                                isFullLicence && styles.instructionFullLicence
+                              )}>
+                              <div className={classnames(styles.schoolCount)}>
+                                <span>{resultsCount} Results by </span>
+                                {this.renderSortByDropdown(true)}
+                                <i class="fas fa-caret-down"></i>
+                                <span className={styles.desktopSortByValue}>
+                                  {sortByOption.replace('-', '')}
+                                </span>
+                              </div>
+                              <button
+                                id="results-mobile-map-button"
+                                className={styles.showMap}
+                                onClick={() => {
+                                  this.setState({
+                                    isMobileMapVisible: !isMobileMapVisible
+                                  })
+                                }}>
+                                Map View
+                              </button>
+                            </div>
+                          </MediaQuery>
                         </React.Fragment>
                       )}
                     </React.Fragment>
@@ -823,7 +851,9 @@ class ResultPage extends Component {
                         isFullLicence && styles.noMargin
                       )}>
                       <div className={styles.coursesPanel}>
-                        {hasPOM && hasPartnerResults && <POMBanner />}
+                        <MediaQuery query="(min-width: 769px)">
+                          {hasPOM && hasPartnerResults && <POMBanner />}
+                        </MediaQuery>
                         {isFullLicence && (
                           <FullLicenceBanner
                             className={styles.fastTrackAdvert}
