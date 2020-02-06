@@ -11,7 +11,7 @@ import { getCourseIdFromSearch } from 'services/course'
 import { isBankHoliday } from 'services/misc'
 import styles from './CourseAlternativeDatesSelection.scss'
 import classnames from 'classnames'
-import { getStaticData, flashDiv } from 'services/page'
+import { flashDiv } from 'services/page'
 import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import CourseItem from '../ResultPage/CourseItem'
@@ -225,8 +225,6 @@ class CourseAlternativeDatesSelection extends React.Component {
       courseId
     } = this.state
 
-
-    let trainings = []
 
     if (!selectedCourse) {
       return
@@ -510,10 +508,7 @@ class CourseAlternativeDatesSelection extends React.Component {
         const {
           courseType,
           loading,
-          userName,
           courses,
-          alternativeDates,
-          courseId,
           selectedCourse,
           activeTab,
           instantCourse,
