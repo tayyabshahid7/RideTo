@@ -233,34 +233,39 @@ class CourseAlternativeDatesSelection extends React.Component {
     try{
 
       let parsedBikeType
-      console.log(bike_hire)
+
       switch (bike_hire) {
         case 'BIKE_TYPE_AUTO':
         case 'auto':
         case 'Auto':
         case 'automatic':
         case 'Automatic':
-        parsedBikeType = 'Automatic Scooter'
+        case 'Automatic Scooter':
+        parsedBikeType = 'BIKE_TYPE_AUTO'
         break;
         case 'AUTO_125CC':
         case 'BIKE_TYPE_AUTO_125CC':
         case 'BIKE_TYPE_BIKE_125CC':
-        parsedBikeType = 'Automatic 125cc Scooter'
+        case 'Automatic 125cc Scooter':
+        parsedBikeType = 'BIKE_TYPE_AUTO_125CC'
         break;
         case 'BIKE_TYPE_MANUAL':
         case 'manual':
         case 'Manual':
-        parsedBikeType = 'Manual 125cc Motorcycle'
+        case 'Manual 125cc Motorcycle':
+        parsedBikeType = 'BIKE_TYPE_MANUAL'
         break;
         case 'MANUAL_50CC':
         case 'BIKE_TYPE_MANUAL_50CC':
-        parsedBikeType ='Manual 50cc Motorcycle'
+        case 'Manual 50cc Motorcycle':
+        parsedBikeType ='BIKE_TYPE_MANUAL_50CC'
         break;
         case 'BIKE_TYPE_NONE':
         case 'none':
         case 'no':
+        case 'None':
         default:
-        parsedBikeType =  'None'
+        parsedBikeType =  'BIKE_TYPE_NONE'
         break;
       }
 

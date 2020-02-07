@@ -61,14 +61,17 @@ const CourseAlternativeDatesSelectionConfirmation = () => {
           Any booking made through RideTo.com is subject to our 3 working day
           cancellation policy. Full license courses are subject to our 11
           working dayt canellation policy. All bookings are subject to our{' '}
-          <a href="https://wwww.rideto.com">full terms and conditions</a>. This
-          includes any changes to bookings made in writing, email, online or by
-          telephone.
+          <a href="https://www.rideto.com/terms">full terms and conditions</a>.
+          This includes any changes to bookings made in writing, email, online
+          or by telephone.
         </p>
         <p>
           Feel free to take alook at our{' '}
-          <a href="https://wwww.rideto.com"> helpful guides</a> for information
-          on what to wear and bring to your motorcycle training.
+          <a href="https://www.rideto.com/blog/category/guides">
+            {' '}
+            helpful guides
+          </a>{' '}
+          for information on what to wear and bring to your motorcycle training.
         </p>
       </div>
     )
