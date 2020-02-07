@@ -27,6 +27,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     super(props)
 
     this.state = {
+      clicked: false,
       courses: {},
       courseType: null,
       courseTypes: null,
@@ -223,62 +224,67 @@ class CourseAlternativeDatesSelection extends React.Component {
       selectedCourse,
       instantDate,
       bike_hire,
-      courseId
+      courseId,
+      clicked
     } = this.state
 
 
-    if (!selectedCourse) {
+    if (!selectedCourse || clicked) {
       return
     }
-    try{
 
-      let parsedBikeType
+    this.setState({clicked: true}, async () => {
+      try{
+        let parsedBikeType
 
-      switch (bike_hire) {
-        case 'BIKE_TYPE_AUTO':
-        case 'auto':
-        case 'Auto':
-        case 'automatic':
-        case 'Automatic':
-        case 'Automatic Scooter':
-        parsedBikeType = 'BIKE_TYPE_AUTO'
-        break;
-        case 'AUTO_125CC':
-        case 'BIKE_TYPE_AUTO_125CC':
-        case 'BIKE_TYPE_BIKE_125CC':
-        case 'Automatic 125cc Scooter':
-        parsedBikeType = 'BIKE_TYPE_AUTO_125CC'
-        break;
-        case 'BIKE_TYPE_MANUAL':
-        case 'manual':
-        case 'Manual':
-        case 'Manual 125cc Motorcycle':
-        parsedBikeType = 'BIKE_TYPE_MANUAL'
-        break;
-        case 'MANUAL_50CC':
-        case 'BIKE_TYPE_MANUAL_50CC':
-        case 'Manual 50cc Motorcycle':
-        parsedBikeType ='BIKE_TYPE_MANUAL_50CC'
-        break;
-        case 'BIKE_TYPE_NONE':
-        case 'none':
-        case 'no':
-        case 'None':
-        default:
-        parsedBikeType =  'BIKE_TYPE_NONE'
-        break;
+        switch (bike_hire) {
+          case 'BIKE_TYPE_AUTO':
+          case 'auto':
+          case 'Auto':
+          case 'automatic':
+          case 'Automatic':
+          case 'Automatic Scooter':
+          parsedBikeType = 'BIKE_TYPE_AUTO'
+          break;
+          case 'AUTO_125CC':
+          case 'BIKE_TYPE_AUTO_125CC':
+          case 'BIKE_TYPE_BIKE_125CC':
+          case 'Automatic 125cc Scooter':
+          parsedBikeType = 'BIKE_TYPE_AUTO_125CC'
+          break;
+          case 'BIKE_TYPE_MANUAL':
+          case 'manual':
+          case 'Manual':
+          case 'Manual 125cc Motorcycle':
+          parsedBikeType = 'BIKE_TYPE_MANUAL'
+          break;
+          case 'MANUAL_50CC':
+          case 'BIKE_TYPE_MANUAL_50CC':
+          case 'Manual 50cc Motorcycle':
+          parsedBikeType ='BIKE_TYPE_MANUAL_50CC'
+          break;
+          case 'BIKE_TYPE_NONE':
+          case 'none':
+          case 'no':
+          case 'None':
+          default:
+          parsedBikeType =  'BIKE_TYPE_NONE'
+          break;
+        }
+
+        await updateSchoolTrainingRejectionWithAlternativeSchool({
+          bike_hire: parsedBikeType,
+          supplier: selectedCourse.id,
+          date: instantDate
+        },courseId)
+        window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
+      }catch(error){
+        alert('failed')
+        console.log(error)
       }
+      this.setState({clicked: false})
+    })
 
-      await updateSchoolTrainingRejectionWithAlternativeSchool({
-        bike_hire: parsedBikeType,
-        supplier: selectedCourse.id,
-        date: instantDate
-      },courseId)
-      window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
-    }catch(error){
-      alert('failed')
-      console.log(error)
-    }
   }
 
   renderSortByDropdown(shortOptions) {
@@ -640,7 +646,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                 </h5>
 
                 <p className={styles.optionSupTitle}>
-                  In your area we also have the below instant book locations. These are
+                  In your area, we also have the below instant book locations. These are
                   live instructor diaries, so you're guaranteed to get the space shown.
                   Click to move your booking to one of these instructors. Any price
                   difference will be automatically refunded or charged.

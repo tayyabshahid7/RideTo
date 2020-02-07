@@ -114,6 +114,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     super(props)
 
     this.state = {
+      clicked: false,
       courses: {},
       courseType: null,
       courseTypes: null,
@@ -146,17 +147,22 @@ class CourseAlternativeDatesSelection extends React.Component {
   }
 
   selectedDate = async date => {
-    try {
-      await updateSchoolTrainingRejectionWithAlternativeDates(
-        {
-          date: date
-        },
-        this.state.courseId
-      )
-      window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
-    } catch (error) {
-      alert('failed')
-      console.log(error)
+    if (!this.state.clicked) {
+      this.setState({ clicked: true }, async () => {
+        try {
+          await updateSchoolTrainingRejectionWithAlternativeDates(
+            {
+              date: date
+            },
+            this.state.courseId
+          )
+          window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
+        } catch (error) {
+          alert('failed')
+          console.log(error)
+        }
+        this.setState({ clicked: false })
+      })
     }
   }
 
