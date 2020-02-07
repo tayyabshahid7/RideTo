@@ -1,22 +1,5 @@
-/* TODO:
-
-Discuss endpoint to be hit on load:
--userName
-
-Figure out where links should point to:
-- terms and conditions
--helpful guide
-
-Discuss endpoints to be hit on submit:
-- alternative dates
--alternative locations
-
-Adjust style:
-    -fonts
-    -spacing
-*/
-
 import React, { useState, useEffect } from 'react'
+import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelectionConfirmation.scss'
 import rideToMinimalGreenImg from 'assets/images/rideToMinimalGreen.jpg'
 
@@ -41,9 +24,8 @@ const CourseAlternativeDatesSelectionConfirmation = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      //fetch data here
-
-      setUserName('Test User Name')
+      const context = getStaticData('RIDETO_PAGE')
+      setUserName(context.firstName)
       setLoading(false)
     }
     fetchData()
@@ -52,7 +34,7 @@ const CourseAlternativeDatesSelectionConfirmation = () => {
   const ConfirmationText = ({ userName }) => {
     return (
       <div className={styles.headerTextWrapper}>
-        <p>{`Hey ${userName}, thanks we've received your respose and we're working on getting your course booked in for you.`}</p>
+        <p>{`Hey ${userName}, thanks we've received your response and we're working on getting your course booked in for you.`}</p>
         <p>
           Please keep an eye on your emails and SMS for further information and
           booking confirmation.
