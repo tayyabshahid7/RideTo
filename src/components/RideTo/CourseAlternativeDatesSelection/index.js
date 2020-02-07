@@ -2,10 +2,11 @@ import React from 'react'
 import classnames from 'classnames'
 import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelection.scss'
-import rideToMinimalGreenImg from 'assets/images/rideToMinimalGreen.jpg'
 import AlternativeLocationsOption from './AlternativeLocationsOption'
 import { updateSchoolTrainingRejectionWithAlternativeDates } from 'services/course'
 import moment from 'moment'
+const rideToMinimalGreenImg =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
 
 const Header = ({ userName }) => {
   const HeaderText = ({ userName }) => {

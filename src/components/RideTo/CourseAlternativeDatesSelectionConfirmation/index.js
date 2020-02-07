@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelectionConfirmation.scss'
-import rideToMinimalGreenImg from 'assets/images/rideToMinimalGreen.jpg'
-
+const rideToMinimalGreenImg =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
 const Header = ({ userName }) => {
   return (
     <div className={styles.header}>
