@@ -11,7 +11,7 @@ const Header = ({ userName }) => {
   const HeaderText = ({ userName }) => {
     return (
       <div className={styles.headerTextWrapper}>
-        <p>{`Hey ${userName}, unfortunately the data you requested is no longer available with the instructor.`}</p>
+        <p>{`Hey ${userName}, unfortunately, the data you requested is no longer available with the instructor.`}</p>
         <p>
           This happens sometimes when they have received multiple bookings at
           the same time or can no longer offer the date. Not to worry! We have

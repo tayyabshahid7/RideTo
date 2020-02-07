@@ -42,13 +42,13 @@ const CourseAlternativeDatesSelectionConfirmation = () => {
         <p>
           Any booking made through RideTo.com is subject to our 3 working day
           cancellation policy. Full license courses are subject to our 11
-          working dayt canellation policy. All bookings are subject to our{' '}
+          working days cancellation policy. All bookings are subject to our{' '}
           <a href="https://www.rideto.com/terms">full terms and conditions</a>.
           This includes any changes to bookings made in writing, email, online
           or by telephone.
         </p>
         <p>
-          Feel free to take alook at our{' '}
+          Feel free to take a look at our{' '}
           <a href="https://www.rideto.com/blog/category/guides">
             {' '}
             helpful guides
