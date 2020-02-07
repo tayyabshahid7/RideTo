@@ -1,3 +1,4 @@
+
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -17,7 +18,7 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import CourseItem from '../ResultPage/CourseItem'
 import CourseDetailPanel from '../ResultPage/CourseDetailPanel'
 import RideToButton from 'components/RideTo/Button'
-import { fetchSingleRidetoCourse, updateSchoolTrainingRejection } from 'services/course'
+import { fetchSingleRidetoCourse, updateSchoolTrainingRejectionWithAlternativeSchool } from 'services/course'
 import moment from 'moment'
 import SidePanel from 'components/RideTo/SidePanel'
 
@@ -230,8 +231,41 @@ class CourseAlternativeDatesSelection extends React.Component {
       return
     }
     try{
-      await updateSchoolTrainingRejection({
-        bike_hire,
+
+      let parsedBikeType
+      console.log(bike_hire)
+      switch (bike_hire) {
+        case 'BIKE_TYPE_AUTO':
+        case 'auto':
+        case 'Auto':
+        case 'automatic':
+        case 'Automatic':
+        parsedBikeType = 'Automatic Scooter'
+        break;
+        case 'AUTO_125CC':
+        case 'BIKE_TYPE_AUTO_125CC':
+        case 'BIKE_TYPE_BIKE_125CC':
+        parsedBikeType = 'Automatic 125cc Scooter'
+        break;
+        case 'BIKE_TYPE_MANUAL':
+        case 'manual':
+        case 'Manual':
+        parsedBikeType = 'Manual 125cc Motorcycle'
+        break;
+        case 'MANUAL_50CC':
+        case 'BIKE_TYPE_MANUAL_50CC':
+        parsedBikeType ='Manual 50cc Motorcycle'
+        break;
+        case 'BIKE_TYPE_NONE':
+        case 'none':
+        case 'no':
+        default:
+        parsedBikeType =  'None'
+        break;
+      }
+
+      await updateSchoolTrainingRejectionWithAlternativeSchool({
+        bike_hire: parsedBikeType,
         supplier: selectedCourse.id,
         date: instantDate
       },courseId)

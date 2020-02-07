@@ -4,7 +4,7 @@ import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelection.scss'
 import rideToMinimalGreenImg from 'assets/images/rideToMinimalGreen.jpg'
 import AlternativeLocationsOption from './AlternativeLocationsOption'
-import { updateSchoolTrainingRejection } from 'services/course'
+import { updateSchoolTrainingRejectionWithAlternativeDates } from 'services/course'
 import moment from 'moment'
 
 const Header = ({ userName }) => {
@@ -147,9 +147,8 @@ class CourseAlternativeDatesSelection extends React.Component {
 
   selectedDate = async date => {
     try {
-      await updateSchoolTrainingRejection(
+      await updateSchoolTrainingRejectionWithAlternativeDates(
         {
-          supplier: this.state.supplier,
           date: date
         },
         this.state.courseId
