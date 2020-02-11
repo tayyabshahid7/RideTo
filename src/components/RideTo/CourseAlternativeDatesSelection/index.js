@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import classnames from 'classnames'
 import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelection.scss'
@@ -8,16 +8,24 @@ import moment from 'moment'
 const rideToMinimalGreenImg =
   'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
 
-const Header = ({ userName }) => {
-  const HeaderText = ({ userName }) => {
+const Header = ({ userName, alreadyResponded }) => {
+  const HeaderText = ({ userName, alreadyResponded }) => {
     return (
       <div className={styles.headerTextWrapper}>
-        <p>{`Hey ${userName}, unfortunately, the date you requested is no longer available with the instructor.`}</p>
-        <p>
-          This happens sometimes when they have received multiple bookings at
-          the same time or can no longer offer the date. Not to worry! We have
-          some options for you:
-        </p>
+        {alreadyResponded ? (
+          <Fragment>
+            <p>{`Hey ${userName}, you’ve already selected an alternative date or location.`}</p>
+          </Fragment>
+        ) : (
+          <Fragment>
+            <p>{`Hey ${userName}, unfortunately, the date you requested is no longer available with the instructor.`}</p>
+            <p>
+              This happens sometimes when they have received multiple bookings
+              at the same time or can no longer offer the date. Not to worry! We
+              have some options for you:
+            </p>
+          </Fragment>
+        )}
       </div>
     )
   }
@@ -32,7 +40,7 @@ const Header = ({ userName }) => {
         />
       </div>
 
-      <HeaderText userName={userName} />
+      <HeaderText userName={userName} alreadyResponded={alreadyResponded} />
     </div>
   )
 }
@@ -179,6 +187,8 @@ class CourseAlternativeDatesSelection extends React.Component {
     const courseId = context.friendlyId
     const signature = context.signature
     const supplier = context.supplier
+    const alreadyResponded = context.already_responded !== 'False'
+
     const alternativeDates = JSON.parse(
       context.alternativeDates.replace(/'/g, '"')
     )['dates']
@@ -190,6 +200,7 @@ class CourseAlternativeDatesSelection extends React.Component {
       userName,
       signature,
       supplier,
+      alreadyResponded,
       courseType,
       courseTypes,
       courseId,
@@ -203,6 +214,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     const {
       loading,
       userName,
+      alreadyResponded,
       courses,
       alternativeDates,
       courseId,
@@ -217,34 +229,41 @@ class CourseAlternativeDatesSelection extends React.Component {
     return (
       <div className={styles.container}>
         <div className={styles.content}>
-          <Header userName={userName} />
+          {alreadyResponded ? (
+            <Fragment>
+              <Header userName={userName} alreadyResponded />
+            </Fragment>
+          ) : (
+            <Fragment>
+              <Header userName={userName} />
+              <div className={styles.body}>
+                <div className={styles.optionsContainer}>
+                  <AlternativeDatesOption
+                    index={1}
+                    onClick={this.selectedDate}
+                    alternativeDates={alternativeDates}
+                    courseId={courseId}
+                    error={error}
+                  />
 
-          <div className={styles.body}>
-            <div className={styles.optionsContainer}>
-              <AlternativeDatesOption
-                index={1}
-                onClick={this.selectedDate}
-                alternativeDates={alternativeDates}
-                courseId={courseId}
-                error={error}
-              />
+                  <AlternativeLocationsOption
+                    index={2}
+                    userName={userName}
+                    courseType={courseType}
+                    courseTypes={courseTypes}
+                    courseId={courseId}
+                    courses={courses}
+                    signature={signature}
+                    handleDetailClick={this.handleDetailClick}
+                    handlePriceClick={this.handlePriceClick}
+                    handleReviewClick={this.handleReviewClick}
+                  />
 
-              <AlternativeLocationsOption
-                index={2}
-                userName={userName}
-                courseType={courseType}
-                courseTypes={courseTypes}
-                courseId={courseId}
-                courses={courses}
-                signature={signature}
-                handleDetailClick={this.handleDetailClick}
-                handlePriceClick={this.handlePriceClick}
-                handleReviewClick={this.handleReviewClick}
-              />
-
-              <ContactUsOption index={3} courseId={courseId} />
-            </div>
-          </div>
+                  <ContactUsOption index={3} courseId={courseId} />
+                </div>
+              </div>
+            </Fragment>
+          )}
         </div>
       </div>
     )

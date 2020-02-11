@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   background: #c2c2c220;
+  min-height: calc(100vh - 80px);
 }
 .error {
   color: var(--danger-color);
