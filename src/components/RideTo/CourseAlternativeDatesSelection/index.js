@@ -197,7 +197,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     const courseId = context.friendlyId
     const signature = context.signature
     const supplier = context.supplier
-    const alreadyResponded = context.already_responded === 'False'
+    const alreadyResponded = context.already_responded !== 'False'
 
     const alternativeDates = JSON.parse(
       context.alternativeDates.replace(/'/g, '"')
