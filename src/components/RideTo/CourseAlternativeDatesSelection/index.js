@@ -14,7 +14,12 @@ const Header = ({ userName, alreadyResponded }) => {
       <div className={styles.headerTextWrapper}>
         {alreadyResponded ? (
           <Fragment>
-            <p>{`Hey ${userName}, you’ve already selected an alternative date or location.`}</p>
+            <p className={styles.textCenter}>
+              {`Hey ${userName},  we've received your response, please keep an eye on your emails for the updated details of your booking. In the meantime, why not check out our `}
+              <a href="https://www.rideto.com/blog/category/guides">
+                useful guides.
+              </a>
+            </p>
           </Fragment>
         ) : (
           <Fragment>
