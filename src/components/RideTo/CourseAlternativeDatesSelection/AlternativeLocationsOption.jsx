@@ -18,6 +18,7 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import CourseItem from '../ResultPage/CourseItem'
 import CourseDetailPanel from '../ResultPage/CourseDetailPanel'
 import RideToButton from 'components/RideTo/Button'
+import Loading from 'components/Loading'
 import { fetchSingleRidetoCourse, updateSchoolTrainingRejectionWithAlternativeSchool } from 'services/course'
 import moment from 'moment'
 import SidePanel from 'components/RideTo/SidePanel'
@@ -330,91 +331,94 @@ class CourseAlternativeDatesSelection extends React.Component {
         showDayOfWeekPicker
       ) {
         return (
-          <React.Fragment>
-            {showDayOfWeekPicker && (
-              <button onClick={this.handleBackClick} className={styles.backButton}>
-                <img src={ArrowLeftGreen} alt="Back" title="Back" />
-              </button>
-            )}
-            <RideToButton
-              className={classnames(
-                styles.action,
-                this.state.activeTab === 3 && styles.actionStatic
+          <Loading loading={this.state.clicked} className={classnames(styles.alternativeLocationSelectButtonWrapper,this.state.activeTab === 3 && styles.visible)}>
+
+            <React.Fragment>
+              {showDayOfWeekPicker && (
+                <button onClick={this.handleBackClick} className={styles.backButton}>
+                  <img src={ArrowLeftGreen} alt="Back" title="Back" />
+                </button>
               )}
-              onClick={() => {
-                if (this.state.activeTab !== 3) {
-                  this.setState({ activeTab: 3 })
-                } else {
-                  if (isFullLicence && bookNowDisabled) {
-                    this.setState(
-                      {
-                        isErrored: true
-                      },
-                      () => {
-                        this.setState({
-                          isErrored: false
-                        })
+              <RideToButton
+                className={classnames(
+                  styles.action,
+                  this.state.activeTab === 3 && styles.actionStatic
+                )}
+                onClick={() => {
+                  if (this.state.activeTab !== 3) {
+                    this.setState({ activeTab: 3 })
+                  } else {
+                    if (isFullLicence && bookNowDisabled) {
+                      this.setState(
+                        {
+                          isErrored: true
+                        },
+                        () => {
+                          this.setState({
+                            isErrored: false
+                          })
+                        }
+                      )
+
+                      // if (this.state.formCompletedWithoutTheory) {
+                      //   flashDiv('choose-both')
+                      // }
+
+                      if (!bike_hire) {
+                        flashDiv('choose-bike')
                       }
-                    )
 
-                    // if (this.state.formCompletedWithoutTheory) {
-                    //   flashDiv('choose-both')
-                    // }
+                      if (!this.state.selectedLicenceType) {
+                        flashDiv('choose-licence')
+                      }
 
-                    if (!bike_hire) {
-                      flashDiv('choose-bike')
-                    }
+                      if (!this.state.selectedPackageHours) {
+                        flashDiv('choose-package')
+                        return
+                      }
 
-                    if (!this.state.selectedLicenceType) {
-                      flashDiv('choose-licence')
-                    }
+                      if (
+                        showDayOfWeekPicker &&
+                        this.state.selectedTimeDays.length < 1
+                      ) {
+                        flashDiv('choose-times')
+                        return
+                      }
 
-                    if (!this.state.selectedPackageHours) {
-                      flashDiv('choose-package')
                       return
                     }
 
-                    if (
-                      showDayOfWeekPicker &&
-                      this.state.selectedTimeDays.length < 1
-                    ) {
-                      flashDiv('choose-times')
+                    if (isFullLicence && !showDayOfWeekPicker) {
+                      this.setState({ isErrored: false, showDayOfWeekPicker: true })
                       return
                     }
+                    if (!bookNowDisabled) {
+                      this.setState({
+                        isErrored: false
+                      })
+                      this.onBookNow()
+                    } else if (!isFullLicence) {
+                      let chooseTimeDiv = document.getElementById(
+                        'choose-time-validate'
+                      )
 
-                    return
-                  }
-
-                  if (isFullLicence && !showDayOfWeekPicker) {
-                    this.setState({ isErrored: false, showDayOfWeekPicker: true })
-                    return
-                  }
-                  if (!bookNowDisabled) {
-                    this.setState({
-                      isErrored: false
-                    })
-                    this.onBookNow()
-                  } else if (!isFullLicence) {
-                    let chooseTimeDiv = document.getElementById(
-                      'choose-time-validate'
-                    )
-
-                    if (!instantDate) {
-                      flashDiv('choose-date')
-                    }
-                    if (!instantCourse && chooseTimeDiv) {
-                      flashDiv('choose-time-validate')
-                    } else if (!bike_hire) {
-                      flashDiv('choose-bike')
+                      if (!instantDate) {
+                        flashDiv('choose-date')
+                      }
+                      if (!instantCourse && chooseTimeDiv) {
+                        flashDiv('choose-time-validate')
+                      } else if (!bike_hire) {
+                        flashDiv('choose-bike')
+                      }
                     }
                   }
-                }
-              }}>
-              <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
-              <img src={ButtonArrowWhite} alt="arrow" />
-            </RideToButton>
-            <div ref={this.bottomAnchor}></div>
-          </React.Fragment>
+                }}>
+                <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
+                <img src={ButtonArrowWhite} alt="arrow" />
+              </RideToButton>
+              <div ref={this.bottomAnchor}></div>
+            </React.Fragment>
+          </Loading>
         )
       }
 

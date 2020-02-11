@@ -5,6 +5,8 @@ import styles from './CourseAlternativeDatesSelection.scss'
 import AlternativeLocationsOption from './AlternativeLocationsOption'
 import { updateSchoolTrainingRejectionWithAlternativeDates } from 'services/course'
 import moment from 'moment'
+import Loading from 'components/Loading'
+
 const rideToMinimalGreenImg =
   'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
 
@@ -55,6 +57,7 @@ const AlternativeDatesOption = ({
   alternativeDates,
   courseId,
   onClick,
+  clicked,
   error
 }) => {
   return (
@@ -74,18 +77,20 @@ const AlternativeDatesOption = ({
         </p>
       </div>
       {error && <div className={styles.error}>{error}</div>}
-      <div className={styles.optionContent}>
-        {alternativeDates.map(date => {
-          return (
-            <div
-              className={styles.alternativeDateLink}
-              onClick={() => onClick(date)}
-              key={date}>
-              {moment(date).format('dddd, Do MMMM')}
-            </div>
-          )
-        })}
-      </div>
+      <Loading loading={clicked} className={styles.alternativeDateLinkWrapper}>
+        <div className={styles.optionContent}>
+          {alternativeDates.map(date => {
+            return (
+              <div
+                className={styles.alternativeDateLink}
+                onClick={() => onClick(date)}
+                key={date}>
+                {moment(date).format('dddd, Do MMMM')}
+              </div>
+            )
+          })}
+        </div>
+      </Loading>
 
       <div className={styles.optionFooter}>
         <strong>There are also other dates available,</strong> drop us an email
@@ -192,7 +197,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     const courseId = context.friendlyId
     const signature = context.signature
     const supplier = context.supplier
-    const alreadyResponded = context.already_responded !== 'False'
+    const alreadyResponded = context.already_responded === 'False'
 
     const alternativeDates = JSON.parse(
       context.alternativeDates.replace(/'/g, '"')
@@ -245,6 +250,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                 <div className={styles.optionsContainer}>
                   <AlternativeDatesOption
                     index={1}
+                    clicked={this.state.clicked}
                     onClick={this.selectedDate}
                     alternativeDates={alternativeDates}
                     courseId={courseId}
