@@ -41,7 +41,8 @@ const AlternativeDatesOption = ({
   index,
   alternativeDates,
   courseId,
-  onClick
+  onClick,
+  error
 }) => {
   return (
     <div
@@ -59,7 +60,7 @@ const AlternativeDatesOption = ({
           one of these:
         </p>
       </div>
-
+      {error && <div className={styles.error}>{error}</div>}
       <div className={styles.optionContent}>
         {alternativeDates.map(date => {
           return (
@@ -116,6 +117,7 @@ class CourseAlternativeDatesSelection extends React.Component {
 
     this.state = {
       clicked: false,
+      error: '',
       courses: {},
       courseType: null,
       courseTypes: null,
@@ -159,8 +161,10 @@ class CourseAlternativeDatesSelection extends React.Component {
           )
           window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
         } catch (error) {
-          alert('failed')
-          console.log(error)
+          this.setState({
+            error:
+              'Date requested unsuccessful, please contact hello@rideto.com if the problem persists'
+          })
         }
         this.setState({ clicked: false })
       })
@@ -204,7 +208,8 @@ class CourseAlternativeDatesSelection extends React.Component {
       courseId,
       courseType,
       courseTypes,
-      signature
+      signature,
+      error
     } = this.state
 
     if (loading) return <div>Loading ...</div>
@@ -221,6 +226,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                 onClick={this.selectedDate}
                 alternativeDates={alternativeDates}
                 courseId={courseId}
+                error={error}
               />
 
               <AlternativeLocationsOption

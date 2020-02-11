@@ -5,7 +5,10 @@
   align-items: center;
   background: #c2c2c220;
 }
-
+.error {
+  color: var(--danger-color);
+  width: 100%;
+}
 .pageContainer {
   // padding-top: 88px;
   padding-top: 25px;

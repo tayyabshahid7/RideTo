@@ -279,7 +279,6 @@ class CourseAlternativeDatesSelection extends React.Component {
         },courseId)
         window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
       }catch(error){
-        alert('failed')
         console.log(error)
       }
       this.setState({clicked: false})
