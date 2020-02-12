@@ -737,7 +737,6 @@ class ResultPage extends Component {
         />
       )
     }
-
     return (
       <div className={styles.container}>
         <ResultsHeader
@@ -871,6 +870,10 @@ class ResultPage extends Component {
                                       (index - 1) % 5 === 0 ||
                                       (courses.available.length < 3 &&
                                         index === courses.available.length - 1)
+                                    }
+                                    showPomMessage={
+                                      courseType === 'LICENCE_CBT' &&
+                                      index === 3
                                     }
                                     courseType={courseType}
                                     id={`card-course-${course.id}`}

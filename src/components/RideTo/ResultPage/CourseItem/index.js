@@ -6,6 +6,7 @@ import StarsComponent from 'components/RideTo/StarsComponent'
 import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
+import POMCard from 'components/RideTo/ResultPage/POMCard'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 import { loadTypeformScript } from 'utils/helper'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
@@ -69,6 +70,7 @@ class CourseItem extends Component {
       unavaiableDate = false,
       id,
       showCallMessage,
+      showPomMessage,
       courseType
     } = this.props
 
@@ -184,6 +186,11 @@ class CourseItem extends Component {
           <div
             className={classnames(styles.container, className, styles.callUs)}>
             <CallUsCard />
+          </div>
+        )}
+        {showPomMessage && (
+          <div className={classnames(styles.container, className, styles.pom)}>
+            <POMCard />
           </div>
         )}
       </Fragment>
