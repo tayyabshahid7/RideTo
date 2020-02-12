@@ -546,10 +546,7 @@ class AlternativeLocationsOption extends React.Component {
                 </h5>
 
                 <p className={styles.optionSupTitle}>
-                  In your area, we also have the below instant book locations. These are
-                  live instructor diaries, so you're guaranteed to get the space shown.
-                  Click to move your booking to one of these instructors. Any price
-                  difference will be automatically refunded or charged.
+                  We also have the below instant book locations near your chosen instructor. These are live instructor diaries, so you're guaranteed to get the space shown. Click to move your booking to one of these instructors. Any price difference will be automatically refunded or charged.
                 </p>
               </div>
 
