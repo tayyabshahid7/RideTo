@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import pomShield from 'assets/images/pom-shield.svg'
 
-function POMCard() {
+function POMCard({ showCourseTypeInfo }) {
   const isDesktop = useMediaQuery({ minWidth: 768 })
 
   useEffect(() => {
@@ -27,16 +27,11 @@ function POMCard() {
         <p className={styles.content}>
           Find out what the offer is and how it can be of benefit to you.
         </p>
-        <a
-          target={isDesktop ? undefined : '_blank'}
-          id="results-page-take-quiz-now-button"
-          href="https://rideto.typeform.com/to/XeXuVE"
-          className={classnames(
-            styles.button,
-            isDesktop ? 'typeform-share' : undefined
-          )}>
-          Take quiz now
-        </a>
+        <button
+          onClick={showCourseTypeInfo}
+          className={classnames(styles.button)}>
+          More Info
+        </button>
       </div>
     </div>
   )

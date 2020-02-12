@@ -67,6 +67,7 @@ class CourseItem extends Component {
       handleDetailClick,
       handlePriceClick,
       handleReviewClick,
+      showCourseTypeInfo,
       unavaiableDate = false,
       id,
       showCallMessage,
@@ -190,7 +191,7 @@ class CourseItem extends Component {
         )}
         {showPomMessage && (
           <div className={classnames(styles.container, className, styles.pom)}>
-            <POMCard />
+            <POMCard showCourseTypeInfo={showCourseTypeInfo} />
           </div>
         )}
       </Fragment>

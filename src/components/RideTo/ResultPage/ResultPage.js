@@ -880,6 +880,7 @@ class ResultPage extends Component {
                                     course={course}
                                     className={styles.courseSpacing}
                                     key={course.id}
+                                    showCourseTypeInfo={this.showCourseTypeInfo}
                                     handleDetailClick={this.handleDetailClick}
                                     handlePriceClick={this.handlePriceClick}
                                     handleReviewClick={this.handleReviewClick}
