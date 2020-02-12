@@ -224,6 +224,7 @@ class CourseAlternativeDatesSelection extends React.Component {
     const {
       selectedCourse,
       instantDate,
+      instantCourse,
       bike_hire,
       courseId,
       clicked
@@ -272,17 +273,22 @@ class CourseAlternativeDatesSelection extends React.Component {
           parsedBikeType =  'BIKE_TYPE_NONE'
           break;
         }
+        let time = null
+        if(instantCourse){
+            time = instantCourse.time
+        }
 
         await updateSchoolTrainingRejectionWithAlternativeSchool({
           bike_hire: parsedBikeType,
           supplier: selectedCourse.id,
-          date: instantDate
+          date: instantDate,
+          time
         },courseId)
         window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
       }catch(error){
+        this.setState({clicked: false})
         console.log(error)
       }
-      this.setState({clicked: false})
     })
 
   }

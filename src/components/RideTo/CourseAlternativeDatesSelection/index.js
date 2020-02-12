@@ -179,12 +179,12 @@ class CourseAlternativeDatesSelection extends React.Component {
           )
           window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
         } catch (error) {
+          this.setState({ clicked: false })
           this.setState({
             error:
               'Date requested unsuccessful, please contact hello@rideto.com if the problem persists'
           })
         }
-        this.setState({ clicked: false })
       })
     }
   }
