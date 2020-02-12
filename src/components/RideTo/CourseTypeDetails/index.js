@@ -10,7 +10,7 @@ class CourseTypeDetails extends React.Component {
     super(props)
 
     this.state = {
-      opened: []
+      opened: props.opened || []
     }
 
     this.handleToggleAccordion = this.handleToggleAccordion.bind(this)
@@ -343,6 +343,15 @@ class CourseTypeDetails extends React.Component {
                 onToggle={isOpen =>
                   this.handleToggleAccordion('cancellation', isOpen)
                 }
+              />
+            )}
+            {details.pom && (
+              <DetailsAccordionItem
+                spacedOut={spacedOut}
+                title="Peace of Mind Policy"
+                content={details.pom}
+                isOpen={opened.indexOf('pom') > -1}
+                onToggle={isOpen => this.handleToggleAccordion('pom', isOpen)}
               />
             )}
           </div>

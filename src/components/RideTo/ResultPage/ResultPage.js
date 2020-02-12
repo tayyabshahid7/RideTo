@@ -73,7 +73,8 @@ class ResultPage extends Component {
       isShowCourseTypeInfo: false,
       isErrored: false,
       formCompletedWithoutTheory: false,
-      isMobileMapVisible: false
+      isMobileMapVisible: false,
+      openedCourseTypeDetails: []
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -104,8 +105,9 @@ class ResultPage extends Component {
     })
   }
 
-  showCourseTypeInfo() {
+  showCourseTypeInfo(openedCourseTypeDetails = []) {
     this.setState({
+      openedCourseTypeDetails,
       isShowCourseTypeInfo: true
     })
   }
@@ -129,6 +131,11 @@ class ResultPage extends Component {
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
+
+    // needs to be removed
+    courseTypes.find(
+      course => course.constant === this.props.courseType
+    ).details['pom'] = 'POM TEXT'
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -670,7 +677,8 @@ class ResultPage extends Component {
       isShowCourseTypeInfo,
       selectedCourseType,
       isErrored,
-      isMobileMapVisible
+      isMobileMapVisible,
+      openedCourseTypeDetails
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -880,7 +888,9 @@ class ResultPage extends Component {
                                     course={course}
                                     className={styles.courseSpacing}
                                     key={course.id}
-                                    showCourseTypeInfo={this.showCourseTypeInfo}
+                                    showCourseTypeInfo={() =>
+                                      this.showCourseTypeInfo(['pom'])
+                                    }
                                     handleDetailClick={this.handleDetailClick}
                                     handlePriceClick={this.handlePriceClick}
                                     handleReviewClick={this.handleReviewClick}
@@ -998,7 +1008,10 @@ class ResultPage extends Component {
             visible
             headingImage={selectedCourseType.details.image}
             onDismiss={this.hideCourseTypeInfo}>
-            <CourseTypeDetails courseType={selectedCourseType} />
+            <CourseTypeDetails
+              courseType={selectedCourseType}
+              opened={openedCourseTypeDetails}
+            />
           </SidePanel>
         )}
 
