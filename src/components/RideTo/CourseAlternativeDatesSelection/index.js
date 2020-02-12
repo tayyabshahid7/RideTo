@@ -202,7 +202,8 @@ class CourseAlternativeDatesSelection extends React.Component {
     const alternativeDates = JSON.parse(
       context.alternativeDates.replace(/'/g, '"')
     )['dates']
-    const courses = JSON.parse(context.courses)
+    const courses =
+      context.courses !== 'None' ? JSON.parse(context.courses) : null
 
     const loading = false
 
@@ -257,20 +258,25 @@ class CourseAlternativeDatesSelection extends React.Component {
                     error={error}
                   />
 
-                  <AlternativeLocationsOption
-                    index={2}
-                    userName={userName}
-                    courseType={courseType}
-                    courseTypes={courseTypes}
-                    courseId={courseId}
-                    courses={courses}
-                    signature={signature}
-                    handleDetailClick={this.handleDetailClick}
-                    handlePriceClick={this.handlePriceClick}
-                    handleReviewClick={this.handleReviewClick}
-                  />
+                  {courses && (
+                    <AlternativeLocationsOption
+                      index={2}
+                      userName={userName}
+                      courseType={courseType}
+                      courseTypes={courseTypes}
+                      courseId={courseId}
+                      courses={courses}
+                      signature={signature}
+                      handleDetailClick={this.handleDetailClick}
+                      handlePriceClick={this.handlePriceClick}
+                      handleReviewClick={this.handleReviewClick}
+                    />
+                  )}
 
-                  <ContactUsOption index={3} courseId={courseId} />
+                  <ContactUsOption
+                    index={courses ? 3 : 2}
+                    courseId={courseId}
+                  />
                 </div>
               </div>
             </Fragment>
