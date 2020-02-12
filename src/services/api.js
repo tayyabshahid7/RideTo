@@ -92,8 +92,8 @@ export const destroy = async (path, params) => {
   return await request('delete', path, params)
 }
 
-export const put = async (path, data) => {
-  return await request('put', path, {}, data)
+export const put = async (path, data, auth = true) => {
+  return await request('put', path, {}, data, auth)
 }
 
 export const patch = async (path, data) => {
