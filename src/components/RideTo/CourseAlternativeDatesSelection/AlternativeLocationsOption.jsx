@@ -5,10 +5,8 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap'
-import isEqual from 'lodash/isEqual'
 import { SortByOptions, getTitleFor } from 'common/info'
 import React, {Fragment} from 'react'
-import { getCourseIdFromSearch } from 'services/course'
 import { isBankHoliday } from 'services/misc'
 import styles from './CourseAlternativeDatesSelection.scss'
 import classnames from 'classnames'
