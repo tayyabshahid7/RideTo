@@ -22,20 +22,22 @@ function POMCard() {
         alt="pom shield icon"
         className={styles.headerIcon}
       />
-      <h3 className={styles.heading}>WHAT IS THE PEACE OF MIND POLICY?</h3>
-      <p className={styles.content}>
-        Find out what the offer is and how it can be of benefit to you.
-      </p>
-      <a
-        target={isDesktop ? undefined : '_blank'}
-        id="results-page-take-quiz-now-button"
-        href="https://rideto.typeform.com/to/XeXuVE"
-        className={classnames(
-          styles.button,
-          isDesktop ? 'typeform-share' : undefined
-        )}>
-        Take quiz now
-      </a>
+      <div className={styles.contentWrapper}>
+        <h3 className={styles.heading}>WHAT IS THE PEACE OF MIND POLICY?</h3>
+        <p className={styles.content}>
+          Find out what the offer is and how it can be of benefit to you.
+        </p>
+        <a
+          target={isDesktop ? undefined : '_blank'}
+          id="results-page-take-quiz-now-button"
+          href="https://rideto.typeform.com/to/XeXuVE"
+          className={classnames(
+            styles.button,
+            isDesktop ? 'typeform-share' : undefined
+          )}>
+          Take quiz now
+        </a>
+      </div>
     </div>
   )
 }
