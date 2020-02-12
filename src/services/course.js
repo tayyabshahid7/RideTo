@@ -161,7 +161,7 @@ export const updateSchoolTrainingRejectionWithAlternativeDates = async (
   orderId
 ) => {
   const path = `o/alternative-dates/${orderId}/`
-  const response = await put(path, params)
+  const response = await put(path, params, false)
   return response
 }
 
@@ -170,7 +170,7 @@ export const updateSchoolTrainingRejectionWithAlternativeSchool = async (
   orderId
 ) => {
   const path = `o/alternative-schools/${orderId}/`
-  const response = await put(path, params)
+  const response = await put(path, params, false)
   return response
 }
 
