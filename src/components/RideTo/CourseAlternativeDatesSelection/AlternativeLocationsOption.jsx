@@ -282,7 +282,6 @@ class CourseAlternativeDatesSelection extends React.Component {
           bike_hire: parsedBikeType,
           supplier: selectedCourse.id,
           date: instantDate,
-          time
         },courseId)
         window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
       }catch(error){
