@@ -273,10 +273,10 @@ class CourseAlternativeDatesSelection extends React.Component {
           parsedBikeType =  'BIKE_TYPE_NONE'
           break;
         }
-        // let time = null
-        // if(instantCourse){
-        //     time = instantCourse.time
-        // }
+        let time = null
+        if(instantCourse){
+            time = instantCourse.time
+        }
 
         await updateSchoolTrainingRejectionWithAlternativeSchool({
           bike_hire: parsedBikeType,
