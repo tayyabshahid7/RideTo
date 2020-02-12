@@ -23,7 +23,7 @@ import { fetchSingleRidetoCourse, updateSchoolTrainingRejectionWithAlternativeSc
 import moment from 'moment'
 import SidePanel from 'components/RideTo/SidePanel'
 
-class CourseAlternativeDatesSelection extends React.Component {
+class AlternativeLocationsOption extends React.Component {
   constructor(props) {
     super(props)
 
@@ -428,115 +428,6 @@ class CourseAlternativeDatesSelection extends React.Component {
         )
       }
 
-      async componentDidUpdate(prevProps, prevState) {
-        if (!this.props.courses) {
-          return
-        }
-
-        const courseId = getCourseIdFromSearch(this.props.location.search)
-
-        if (!isEqual(this.state.instantCourse, prevState.instantCourse)) {
-          const isAutoFull =
-          this.state.instantCourse &&
-          this.state.instantCourse.auto_count >=
-          this.state.instantCourse.auto_bikes
-          const isManualFull =
-          this.state.instantCourse &&
-          this.state.instantCourse.manual_count >=
-          this.state.instantCourse.manual_bikes
-
-          if (this.state.bike_hire === 'auto' && isAutoFull) {
-            this.setState({
-              bike_hire: null
-            })
-          } else if (this.state.bike_hire === 'manual' && isManualFull) {
-            this.setState({
-              bike_hire: null
-            })
-          }
-        }
-
-        // Reset param changing state
-        if (this.state.addCourseIdParam || this.state.removeCourseIdParam) {
-          this.setState({
-            addCourseIdParam: false,
-            removeCourseIdParam: false
-          })
-        }
-
-        if (this.state.noRedirect) {
-          this.setState({
-            noRedirect: false
-          })
-          return
-        }
-
-        // On initial page load, open the sidebar if courseId is set as param
-        if (!this.state.initialLoaded) {
-          if (courseId) {
-            const selectedCourse = await fetchSingleRidetoCourse(courseId)
-
-            this.setState({
-              selectedCourse,
-              activeTab: 3,
-              instantDate: this.props.date,
-              initialLoaded: true
-            })
-            return
-          }
-          this.setState({
-            initialLoaded: true
-          })
-          return
-        }
-
-        const prevCourseId = getCourseIdFromSearch(prevProps.location.search)
-
-        // If the selectedCourse changes
-        if (
-          this.state.initialLoaded &&
-          !isEqual(this.state.selectedCourse, prevState.selectedCourse)
-        ) {
-          // If we need to close sidebar
-          if (this.state.selectedCourse === null) {
-            this.setState({
-              removeCourseIdParam: true
-            })
-            return
-          }
-
-          // If we need to open the sidebar
-          if (
-            this.state.selectedCourse.id !==
-            getCourseIdFromSearch(this.props.location.search)
-          ) {
-            this.setState({
-              addCourseIdParam: true
-            })
-            return
-          }
-
-          return
-        }
-
-        // if courseId changes
-        if (courseId !== prevCourseId) {
-          if (courseId === null && this.state.selectedCourse !== null) {
-            this.handleDissmiss()
-            this.setState({
-              noRedirect: true
-            })
-          }
-          if (courseId && this.state.selectedCourse === null) {
-            const selectedCourse = await fetchSingleRidetoCourse(courseId)
-
-            this.setState({
-              selectedCourse
-            })
-          }
-        }
-      }
-
       handleDissmiss() {
         this.setState({
           selectedCourse: null,
@@ -688,4 +579,4 @@ class CourseAlternativeDatesSelection extends React.Component {
       }
     }
 
-    export default CourseAlternativeDatesSelection
+    export default AlternativeLocationsOption
