@@ -74,7 +74,7 @@ class ResultPage extends Component {
       isErrored: false,
       formCompletedWithoutTheory: false,
       isMobileMapVisible: false,
-      openedCourseTypeDetails: []
+      openedCourseTypeDetails: null
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -105,7 +105,7 @@ class ResultPage extends Component {
     })
   }
 
-  showCourseTypeInfo(openedCourseTypeDetails = []) {
+  showCourseTypeInfo(openedCourseTypeDetails = null) {
     this.setState({
       openedCourseTypeDetails,
       isShowCourseTypeInfo: true
@@ -131,11 +131,6 @@ class ResultPage extends Component {
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
-
-    // needs to be removed
-    courseTypes.find(
-      course => course.constant === this.props.courseType
-    ).details['pom'] = 'POM TEXT'
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -889,7 +884,7 @@ class ResultPage extends Component {
                                     className={styles.courseSpacing}
                                     key={course.id}
                                     showCourseTypeInfo={() =>
-                                      this.showCourseTypeInfo(['pom'])
+                                      this.showCourseTypeInfo('pom')
                                     }
                                     handleDetailClick={this.handleDetailClick}
                                     handlePriceClick={this.handlePriceClick}

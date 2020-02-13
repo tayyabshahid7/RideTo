@@ -1,19 +1,30 @@
 import React from 'react'
-
 import styles from './CourseTypeDetails.scss'
 import DetailsAccordionItem from 'components/RideTo/DetailsAccordionItem'
 import SummaryIcons from './SummaryIcons'
 import classnames from 'classnames'
+import { scroller } from 'react-scroll'
 
 class CourseTypeDetails extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      opened: props.opened || []
+      opened: [props.opened] || []
     }
 
     this.handleToggleAccordion = this.handleToggleAccordion.bind(this)
+  }
+
+  componentDidMount() {
+    if (this.props.opened) {
+      scroller.scrollTo('pom', {
+        duration: 1500,
+        delay: 300,
+        smooth: true,
+        containerId: 'sidepanel'
+      })
+    }
   }
 
   handleToggleAccordion(name, isOpen) {
@@ -64,6 +75,7 @@ class CourseTypeDetails extends React.Component {
           <div className={styles.accordion}>
             {Object.entries(details).map(([title, text]) => (
               <DetailsAccordionItem
+                name={title}
                 titleStyle={titleStyle}
                 contentStyle={contentStyle}
                 key={title}
@@ -81,6 +93,7 @@ class CourseTypeDetails extends React.Component {
           <div className={styles.accordion}>
             {details.whatLicenceDoYouNeed && (
               <DetailsAccordionItem
+                name="whatLicenceDoYouNeed"
                 spacedOut={spacedOut}
                 title="What licence do you need? "
                 content={details.whatLicenceDoYouNeed}
@@ -93,6 +106,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.whatIsACBTLicence && (
               <DetailsAccordionItem
+                name="whatIsACBTLicence"
                 spacedOut={spacedOut}
                 title="What is a CBT licence? "
                 content={details.whatIsACBTLicence}
@@ -105,6 +119,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.passingYourTheoryTest && (
               <DetailsAccordionItem
+                name="passingYourTheoryTest"
                 spacedOut={spacedOut}
                 title="Passing your theory test"
                 content={details.passingYourTheoryTest}
@@ -117,6 +132,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.gettingYourFullLicence && (
               <DetailsAccordionItem
+                name="gettingYourFullLicence"
                 spacedOut={spacedOut}
                 title="Getting your full licence"
                 content={details.gettingYourFullLicence}
@@ -129,6 +145,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.howMuchTraining && (
               <DetailsAccordionItem
+                name="howMuchTraining"
                 spacedOut={spacedOut}
                 title="How much training do I need?"
                 content={details.howMuchTraining}
@@ -141,6 +158,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.doesTheBike && (
               <DetailsAccordionItem
+                name="doesTheBike"
                 spacedOut={spacedOut}
                 title="Does the bike I train on effect my licence? "
                 content={details.doesTheBike}
@@ -153,6 +171,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.iHaveEU && (
               <DetailsAccordionItem
+                name="iHaveEU"
                 spacedOut={spacedOut}
                 title="I have an EU licence, what do I need? "
                 content={details.iHaveEU}
@@ -165,6 +184,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.howDoIPass && (
               <DetailsAccordionItem
+                name="howDoIPass"
                 spacedOut={spacedOut}
                 title="How do I pass the CBT test? "
                 content={details.howDoIPass}
@@ -177,6 +197,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.iDontHave && (
               <DetailsAccordionItem
+                name="iDontHave"
                 spacedOut={spacedOut}
                 title="I don't have a licence/ have non-EU licence, what do I need? "
                 content={details.iDontHave}
@@ -189,6 +210,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.doINeed && (
               <DetailsAccordionItem
+                name="doINeed"
                 spacedOut={spacedOut}
                 title="Do I need to take an ITM? "
                 content={details.doINeed}
@@ -201,6 +223,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.whatWillIdO && (
               <DetailsAccordionItem
+                name="whatWillIdO"
                 spacedOut={spacedOut}
                 title="What will I do during the ITM?"
                 content={details.whatWillIdO}
@@ -213,6 +236,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.howFarAdvance && (
               <DetailsAccordionItem
+                name="howFarAdvance"
                 spacedOut={spacedOut}
                 title="How far in advance should I book?"
                 content={details.howFarAdvance}
@@ -225,6 +249,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.iCantSee && (
               <DetailsAccordionItem
+                name="iCantSee"
                 spacedOut={spacedOut}
                 title="I can't see any Introduction courses in my area?"
                 content={details.iCantSee}
@@ -237,6 +262,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.canIJustBook && (
               <DetailsAccordionItem
+                name="canIJustBook"
                 spacedOut={spacedOut}
                 title="Can I just book the tests?"
                 content={details.canIJustBook}
@@ -249,6 +275,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.iveCompleted && (
               <DetailsAccordionItem
+                name="iveCompleted"
                 spacedOut={spacedOut}
                 title="I've completed my Module 1 somewhere else, can you help me with Module 2?"
                 content={details.iveCompleted}
@@ -261,6 +288,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.whatSize && (
               <DetailsAccordionItem
+                name="whatSize"
                 spacedOut={spacedOut}
                 title="What size bike can I ride after?"
                 content={details.whatSize}
@@ -273,6 +301,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.duration && (
               <DetailsAccordionItem
+                name="duration"
                 spacedOut={spacedOut}
                 title="How long is the course?"
                 content={details.duration}
@@ -285,6 +314,7 @@ class CourseTypeDetails extends React.Component {
 
             {details.learn && (
               <DetailsAccordionItem
+                name="learn"
                 spacedOut={spacedOut}
                 title="What will I learn?"
                 content={details.learn}
@@ -294,6 +324,7 @@ class CourseTypeDetails extends React.Component {
             )}
             {details.included && (
               <DetailsAccordionItem
+                name="included"
                 spacedOut={spacedOut}
                 title="What's Included?"
                 content={details.included}
@@ -305,6 +336,7 @@ class CourseTypeDetails extends React.Component {
             )}
             {details.ride_after && (
               <DetailsAccordionItem
+                name="ride_after"
                 spacedOut={spacedOut}
                 title="What can I ride after?"
                 content={details.ride_after}
@@ -316,6 +348,7 @@ class CourseTypeDetails extends React.Component {
             )}
             {details.requirements && (
               <DetailsAccordionItem
+                name="requirements"
                 spacedOut={spacedOut}
                 title="Requirements"
                 content={details.requirements}
@@ -327,6 +360,7 @@ class CourseTypeDetails extends React.Component {
             )}
             {details.faqs && (
               <DetailsAccordionItem
+                name="faqs"
                 spacedOut={spacedOut}
                 title="Training FAQs"
                 content={details.faqs}
@@ -336,6 +370,7 @@ class CourseTypeDetails extends React.Component {
             )}
             {details.cancellation && (
               <DetailsAccordionItem
+                name="cancellation"
                 spacedOut={spacedOut}
                 title="Cancellation Policy"
                 content={details.cancellation}
@@ -347,6 +382,7 @@ class CourseTypeDetails extends React.Component {
             )}
             {details.pom && (
               <DetailsAccordionItem
+                name="pom"
                 spacedOut={spacedOut}
                 title="Peace of Mind Policy"
                 content={details.pom}
