@@ -184,6 +184,7 @@ class CourseAlternativeDatesSelection extends React.Component {
             error:
               'Date requested unsuccessful, please contact hello@rideto.com if the problem persists'
           })
+          console.error(error)
         }
       })
     }

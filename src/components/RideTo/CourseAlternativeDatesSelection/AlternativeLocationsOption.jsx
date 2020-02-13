@@ -285,7 +285,7 @@ class AlternativeLocationsOption extends React.Component {
         window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
       }catch(error){
         this.setState({clicked: false})
-        console.log(error)
+        console.error(error)
       }
     })
 
