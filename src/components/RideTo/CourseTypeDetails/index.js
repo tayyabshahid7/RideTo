@@ -18,7 +18,7 @@ class CourseTypeDetails extends React.Component {
 
   componentDidMount() {
     if (this.props.opened) {
-      scroller.scrollTo('pom', {
+      scroller.scrollTo(this.props.opened, {
         duration: 1500,
         delay: 300,
         smooth: true,
