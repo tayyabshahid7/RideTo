@@ -156,6 +156,24 @@ export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
   return response
 }
 
+export const updateSchoolTrainingRejectionWithAlternativeDates = async (
+  params,
+  orderId
+) => {
+  const path = `o/alternative-dates/${orderId}/`
+  const response = await put(path, params, false)
+  return response
+}
+
+export const updateSchoolTrainingRejectionWithAlternativeSchool = async (
+  params,
+  orderId
+) => {
+  const path = `o/alternative-schools/${orderId}/`
+  const response = await put(path, params, false)
+  return response
+}
+
 export const deleteSchoolOrderTraining = async (schoolId, trainingId) => {
   const path = `school/${schoolId}/course/order/training/${trainingId}`
   const response = await destroy(path, {})
