@@ -213,7 +213,7 @@ class SMSSettings extends Component {
               <div className={classnames(styles.box, styles.boxVertical)}>
                 <div>
                   <div>
-                    <h3 className={styles.title}>SMS credits</h3>
+                    <h3 className={styles.title}>SMS Credits</h3>
                     <div className={styles.credits}>
                       <div className={styles.intro}>
                         <p>
@@ -224,7 +224,7 @@ class SMSSettings extends Component {
                       </div>
                       <div className={styles.title}>
                         <span style={{ color: 'var(--primary-color)' }}>
-                          Current credits:
+                          Current Credits:
                         </span>{' '}
                         {Math.trunc(credit_unit)} SMS
                       </div>
@@ -232,7 +232,7 @@ class SMSSettings extends Component {
                   </div>
                 </div>
                 <div>
-                  <h3 className={styles.title}>Purchase SMS credits</h3>
+                  <h3 className={styles.title}>Purchase SMS Credits</h3>
                   <div className={styles.buttonRow}>
                     {[200, 100, 40, 20].map(value => (
                       <Button
@@ -251,7 +251,7 @@ class SMSSettings extends Component {
               </div>
               <Loading loading={saving}>
                 <div className={classnames(styles.box, styles.boxVertical)}>
-                  <h3 className={styles.title}>SMS templates</h3>
+                  <h3 className={styles.title}>SMS Templates</h3>
                   <p className={styles.intro}>
                     Write the copy that you wish to display in your SMS
                     communication to customers
@@ -265,7 +265,7 @@ class SMSSettings extends Component {
                           autoHeight
                           name="cbt_booking_confirmation"
                           value={cbt_booking_confirmation}
-                          label="CBT booking confirmation"
+                          label="CBT Booking Confirmation"
                           type="textarea"
                           onChange={this.handleChangeRawEvent.bind(this)}
                           disabled={!cbt_booking_confirmationEditable}
@@ -300,7 +300,7 @@ class SMSSettings extends Component {
                           autoHeight
                           name="full_licence_booking_confirmation"
                           value={full_licence_booking_confirmation}
-                          label="Full licence booking confirmation"
+                          label="Full Licence Booking Confirmation"
                           type="textarea"
                           onChange={this.handleChangeRawEvent.bind(this)}
                           disabled={!full_licence_booking_confirmationEditable}

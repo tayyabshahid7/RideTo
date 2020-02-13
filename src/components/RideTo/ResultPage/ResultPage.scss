@@ -129,23 +129,27 @@
   color: var(--dark-color) !important;
   font-size: 16px !important;
   line-height: 24px !important;
-  font-family: var(--font-rift);
-  font-weight: 500 !important;
   border: none !important;
+  font-weight: 500 !important;
+
   letter-spacing: 0.5px;
 
+  @media (min-width: 769px) {
+    font-family: var(--font-rift);
+  }
   @media (max-width: 768px) {
+    font-family: inherit !important;
+    font-weight: normal !important;
     appearance: none;
     background-color: transparent !important;
     height: auto;
     letter-spacing: 0;
     font-family: inherit !important;
-    font-size: inherit !important;
+    font-size: 15px !important;
     font-family: inherit !important;
     line-height: inherit !important;
     text-transform: inherit;
     padding: 0;
-    color: var(--primary-color) !important;
     text-decoration: underline;
 
     &:after {
@@ -184,6 +188,8 @@
   margin-bottom: 0;
 
   @media (max-width: 768px) {
+    font-family: var(--font-proxima);
+    text-transform: none;
     margin-top: 10px;
     margin-bottom: 15px;
     display: flex;
@@ -202,6 +208,11 @@
 
 .instructionFullLicence {
   margin-top: 1rem;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .dateSelector {
@@ -246,10 +257,27 @@
   }
 
   @media (max-width: 768px) {
-    margin-top: 0.5rem;
-    margin-bottom: 1em;
-    // text-align: center;
+    font-size: 15px !important;
+    font-family: inherit;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    font-weight: normal;
+    margin: 0px;
+    text-decoration: none;
 
+    > * {
+      white-space: nowrap;
+    }
+    > img {
+      height: 6px;
+    }
+    i,
+    .sortButtonWrap {
+      margin-left: 3px;
+    }
     .sortButtonWrap {
       display: inline;
     }
@@ -376,9 +404,7 @@
   border: 0;
   background: transparent;
   padding: 0;
-  font-family: var(--font-proxima-bold);
   color: var(--dark-color);
-  font-size: 0.85em;
 
   i {
     vertical-align: middle;
@@ -386,5 +412,10 @@
 
   @media (min-width: 769px) {
     display: none;
+  }
+  @media (max-width: 768px) {
+    font-size: 15px !important;
+    font-weight: normal;
+    text-decoration: underline;
   }
 }

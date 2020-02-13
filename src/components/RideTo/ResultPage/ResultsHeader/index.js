@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import styles from './styles.scss'
 import { getCourseTitle } from 'services/course'
 import Input from './Input'
@@ -55,11 +55,6 @@ class ResultsHeader extends React.Component {
 
     return (
       <div className={styles.background}>
-        <InfoBox
-          showCourseTypeInfo={showCourseTypeInfo}
-          courseType={courseType}
-          className={styles.hideDesktop}
-        />
         <div className={styles.container}>
           <div className={styles.main}>
             <div className={styles.titles}>
@@ -77,30 +72,52 @@ class ResultsHeader extends React.Component {
               <Input
                 value={postcode}
                 label="Postcode"
+                icon="search"
+                fullWidth={isFullLicence}
                 onChange={this.handlePostcodeChange}
                 onSubmit={this.handlePostcodeSubmit}
               />
+              {!isFullLicence && (
+                <Fragment>
+                  <MediaQuery query="(min-width:  393px)">
+                    <Input
+                      value={
+                        date ? moment(date).format('ddd D MMM') : 'Select date'
+                      }
+                      label="Date"
+                      icon="date"
+                      disabled
+                      button
+                      onClick={handleMobileDateClick}
+                      className={styles.hideDesktop}
+                    />
+                  </MediaQuery>
+                  <MediaQuery query="(max-width: 392px)">
+                    <Input
+                      value={date ? moment(date).format('ddd D MMM') : 'Date'}
+                      label="Date"
+                      icon="date"
+                      disabled
+                      button
+                      onClick={handleMobileDateClick}
+                      className={styles.hideDesktop}
+                    />
+                  </MediaQuery>
+                </Fragment>
+              )}
               <Input
-                value={courseType}
                 label="Course"
+                value={courseType}
                 select
-                chevron
                 options={courseTypesOptions}
                 onChange={this.handleCourseChange}
               />
-              {!isFullLicence && (
-                <Input
-                  value={
-                    date ? moment(date).format('ddd Do MMMM') : 'Select date'
-                  }
-                  label="Date"
-                  chevron
-                  disabled
-                  button
-                  onClick={handleMobileDateClick}
-                  className={styles.hideDesktop}
-                />
-              )}
+              <InfoBox
+                showCourseTypeInfo={showCourseTypeInfo}
+                courseType={courseType}
+                className={styles.hideDesktop}
+              />
+
               <MediaQuery query="(min-width: 769px)">
                 <InfoBox
                   showCourseTypeInfo={showCourseTypeInfo}

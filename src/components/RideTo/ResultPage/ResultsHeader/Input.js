@@ -2,7 +2,32 @@ import React from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
 import { AVAILABLE_COURSE_TYPES } from 'common/constants'
+import searchSmall from 'assets/icons/SearchSmall.svg'
+import dropdownSmall from 'assets/icons/DropdownSmall.svg'
+import calendar from 'assets/icons/Calendar.svg'
 
+const InputIcon = ({ icon, onClick }) => {
+  switch (icon) {
+    case 'search':
+      return (
+        <button type="submit" className={styles.button}>
+          <img src={searchSmall} alt="search icon" />
+        </button>
+      )
+    case 'date':
+      return (
+        <button type="button" className={styles.button} onClick={onClick}>
+          <img src={calendar} alt="calendar icon" />
+        </button>
+      )
+    default:
+      return (
+        <span className={classnames(styles.button, styles.chev)}>
+          <img src={dropdownSmall} alt="dropdown icon" />
+        </span>
+      )
+  }
+}
 function Input({
   value,
   label,
@@ -10,17 +35,24 @@ function Input({
   options,
   onChange,
   onSubmit,
-  chevron,
+  icon,
   disabled,
   button,
   onClick,
-  className
+  className,
+  fullWidth
 }) {
   return (
-    <div className={classnames(styles.formGroup, className)}>
+    <div
+      className={classnames(
+        styles.formGroup,
+        className,
+        fullWidth && styles.fullWidth
+      )}>
       <form className={classnames(styles.formGroupForm)} onSubmit={onSubmit}>
         <label className={styles.clickable}>
           <span className={styles.label}>{label}</span>
+
           {select ? (
             <select className={styles.input} value={value} onChange={onChange}>
               {options.map(
@@ -37,7 +69,7 @@ function Input({
               type="button"
               className={classnames(styles.input, button && styles.inputButton)}
               onClick={onClick}>
-              {value}
+              <span>{value}</span>
             </button>
           ) : (
             <input
@@ -48,15 +80,7 @@ function Input({
             />
           )}
         </label>
-        {!chevron ? (
-          <button type="submit" className={styles.button}>
-            <i className="fa fa-search"></i>
-          </button>
-        ) : (
-          <span className={classnames(styles.button, styles.chev)}>
-            <i className="fa fa-chevron-down" />
-          </span>
-        )}
+        <InputIcon icon={icon} onClick={onClick} />
       </form>
     </div>
   )

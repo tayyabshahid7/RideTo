@@ -156,6 +156,24 @@ export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
   return response
 }
 
+export const updateSchoolTrainingRejectionWithAlternativeDates = async (
+  params,
+  orderId
+) => {
+  const path = `o/alternative-dates/${orderId}/`
+  const response = await put(path, params, false)
+  return response
+}
+
+export const updateSchoolTrainingRejectionWithAlternativeSchool = async (
+  params,
+  orderId
+) => {
+  const path = `o/alternative-schools/${orderId}/`
+  const response = await put(path, params, false)
+  return response
+}
+
 export const deleteSchoolOrderTraining = async (schoolId, trainingId) => {
   const path = `school/${schoolId}/course/order/training/${trainingId}`
   const response = await destroy(path, {})
@@ -229,7 +247,8 @@ export const getPrice = async ({
   voucher_code = null,
   hours,
   full_licence_course_id,
-  order_source
+  order_source,
+  highway_code = false
 }) => {
   const path = 'get-price'
   let params = courseId
@@ -243,6 +262,7 @@ export const getPrice = async ({
       }
   if (voucher_code) params.voucher_code = voucher_code
   if (order_source) params.order_source = order_source
+  params.highway_code = highway_code
   const response = await get(path, params, false)
   return response
 }

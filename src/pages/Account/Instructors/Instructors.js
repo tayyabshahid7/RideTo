@@ -69,7 +69,7 @@ class Instructors extends React.Component {
         <Fragment>
           <div className={styles.box}>
             <div>
-              <h3 className={styles.title}>Add staff</h3>
+              <h3 className={styles.title}>Add Staff</h3>
               <p>Add a new staff member to assign to courses</p>
             </div>
             <div className={styles.buttons}>
@@ -80,7 +80,7 @@ class Instructors extends React.Component {
           </div>
           <div className={classnames(styles.box, styles.header)}>
             <div className={styles.headerText}>
-              <h3 className={styles.title}>Current staff</h3>
+              <h3 className={styles.title}>Current Staff</h3>
               <p>Edit the details of an existing staff member</p>
             </div>
             <ul className={styles.list}>

@@ -4,6 +4,7 @@ import menuToggle from 'menuToggle'
 // import 'bootstrap'
 import './rideto_bootstrap.scss'
 import './rideto_constants.scss'
+import 'react-toastify/dist/ReactToastify.css'
 
 setVersionInfo()
 
@@ -22,6 +23,14 @@ mountComponent('ReviewSlider', 'rideto-home-reviews')
 
 mountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
+mountComponent('NewsLetterBanner', 'rideto-news-letter-banner')
+
+mountComponent('CourseAlternativeDatesSelection', 'alternative-dates-root')
+
+mountComponent(
+  'CourseAlternativeDatesSelectionConfirmation',
+  'alternative-dates-confirmation-root'
+)
 mountComponent('UserMenuItem', 'rideto-nav-account', {}, false)
 
 mountComponent('CourseTypeSelection', 'rideto-course-type-selection', {}, false)

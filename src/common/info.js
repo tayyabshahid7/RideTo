@@ -22,27 +22,38 @@ export function getAvailableBikeHires(course) {
 
   const {
     auto_125cc_bikes,
+    auto_125cc_bikes_count,
+
     auto_bikes,
+    auto_bikes_count,
+
     manual_50cc_bikes,
-    manual_bikes
+    manual_50cc_bikes_count,
+
+    manual_bikes,
+    manual_bikes_count
   } = course
 
   return [
     {
-      value: manual_50cc_bikes ? BIKE_HIRE.MANUAL_50CC : null,
+      value:
+        auto_125cc_bikes > auto_125cc_bikes_count ? BIKE_HIRE.AUTO_125CC : null,
+      title: 'Automatic 125cc'
+    },
+    {
+      value: auto_bikes > auto_bikes_count ? BIKE_HIRE.AUTO : null,
+      title: 'Automatic Scooter'
+    },
+    {
+      value:
+        manual_50cc_bikes > manual_50cc_bikes_count
+          ? BIKE_HIRE.MANUAL_50CC
+          : null,
       title: 'Manual 50cc'
     },
     {
-      value: manual_bikes ? BIKE_HIRE.MANUAL : null,
+      value: manual_bikes > manual_bikes_count ? BIKE_HIRE.MANUAL : null,
       title: 'Manual 125cc'
-    },
-    {
-      value: auto_bikes ? BIKE_HIRE.AUTO : null,
-      title: 'Automatic 50cc'
-    },
-    {
-      value: auto_125cc_bikes ? BIKE_HIRE.AUTO_125CC : null,
-      title: 'Automatic 125cc'
     },
     { value: BIKE_HIRE.NO, title: 'Own Bike' }
   ]

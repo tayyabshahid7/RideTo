@@ -102,7 +102,7 @@ class ChangeDate extends Component {
             <div className={styles.addon}>
               <ConnectInput
                 basic
-                label="Course date"
+                label="Course Date"
                 name="date"
                 value={date}
                 type="date"

@@ -71,6 +71,10 @@
   line-height: 16px;
   margin-top: 16px;
   max-width: 325px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .footer {
@@ -81,7 +85,10 @@
   justify-content: center;
 
   @media (max-width: 768px) {
-    flex-direction: row;
+    justify-content: space-between;
+
+    flex-direction: row-reverse;
+    justify-content: flex-start;
     justify-content: flex-end;
   }
 
@@ -97,8 +104,20 @@
   font-size: 20px;
   font-weight: bold;
 
+  &:hover {
+    cursor: pointer;
+  }
+
   @media (max-width: 768px) {
-    margin: 0 20px 0 0;
+    font-weight: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin: 0px;
+    padding: 11px 25px;
+    border: 1px solid var(--primary-color);
+    margin: 0px 10px;
   }
 }
 
@@ -128,6 +147,12 @@
   &:hover {
     text-decoration: none;
   }
+
+  @media (max-width: 768px) {
+    justify-content: space-between;
+    width: 100%;
+    padding: 0px 20px;
+  }
 }
 
 .ctaDateUnavailable {
@@ -144,9 +169,15 @@
 .extraInfo {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
   font-size: 14px;
   font-family: var(--font-proxima);
   line-height: 24px;
+  > * {
+    display: flex;
+    flex-wrap: nowrap;
+  }
 }
 
 .detailIcon {
@@ -180,6 +211,10 @@
 .starComponent {
   margin-left: 14px;
   margin-right: 6px;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .icons {

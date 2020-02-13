@@ -1,12 +1,18 @@
 import React, { useEffect } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
-import { loadTypeformScript } from 'utils/helper'
+import { useMediaQuery } from 'react-responsive'
 
 function CallUsCard() {
+  const isDesktop = useMediaQuery({ minWidth: 768 })
+
   useEffect(() => {
-    loadTypeformScript()
-  }, [])
+    if (isDesktop) {
+      import('utils/helper').then(({ loadTypeformScript }) => {
+        loadTypeformScript()
+      })
+    }
+  }, [isDesktop])
 
   return (
     <div className={styles.container}>
@@ -15,8 +21,13 @@ function CallUsCard() {
         Find out what licence and course is right for you.
       </p>
       <a
+        target={isDesktop ? undefined : '_blank'}
+        id="results-page-take-quiz-now-button"
         href="https://rideto.typeform.com/to/XeXuVE"
-        className={classnames(styles.button, 'typeform-share')}>
+        className={classnames(
+          styles.button,
+          isDesktop ? 'typeform-share' : undefined
+        )}>
         Take quiz now
       </a>
     </div>

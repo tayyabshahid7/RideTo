@@ -2,9 +2,8 @@ import React from 'react'
 import moment from 'moment'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-import { DAY_FORMAT2, DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
+import { DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
 import Loading from 'components/Loading'
-import DateHeading from 'components/Calendar/DateHeading'
 import pick from 'lodash/pick'
 
 import { getTimeFromDateTime } from 'utils/helper'
@@ -121,26 +120,26 @@ class StaffForm extends React.Component {
     onSubmit(staff)
   }
 
-  renderTitle() {
-    const { staff, date } = this.props
-    let title = 'Add New Event'
-    let backLink = '/calendar'
-
-    if (staff) {
-      title = moment(staff.date).format(DAY_FORMAT2)
-      backLink = `/calendar/${moment(staff.date).format(DATE_FORMAT)}`
-    } else if (date) {
-      title = moment(date).format(DAY_FORMAT2)
-      backLink = `/calendar/${date}`
-    }
-    return (
-      <DateHeading
-        date={staff ? moment(staff.date) : moment(date)}
-        title={title}
-        backLink={backLink}
-      />
-    )
-  }
+  //   renderTitle() {
+  //     const { staff, date } = this.props
+  //     let title = 'Add New Event'
+  //     let backLink = '/calendar'
+  //
+  //     if (staff) {
+  //       title = moment(staff.date).format(DAY_FORMAT2)
+  //       backLink = `/calendar/${moment(staff.date).format(DATE_FORMAT)}`
+  //     } else if (date) {
+  //       title = moment(date).format(DAY_FORMAT2)
+  //       backLink = `/calendar/${date}`
+  //     }
+  //     return (
+  //       <DateHeading
+  //         date={staff ? moment(staff.date) : moment(date)}
+  //         title={title}
+  //         backLink={backLink}
+  //       />
+  //     )
+  //   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -158,7 +157,7 @@ class StaffForm extends React.Component {
 
     return (
       <div className={styles.container}>
-        {this.renderTitle()}
+        <h4 className={styles.addTitle}>Add Staff</h4>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
@@ -217,7 +216,7 @@ class StaffForm extends React.Component {
                   vertical
                   name="all_day"
                   checked={all_day}
-                  label="All day"
+                  label="All Day"
                   className="form-group"
                   onChange={this.handleChangeRawEvent.bind(this)}
                 />

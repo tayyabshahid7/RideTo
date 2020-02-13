@@ -91,6 +91,8 @@ class EditCourseComponent extends Component {
     const { course, schoolId, deleteCourse } = this.props
     this.setState({ showDeleteCourseConfirmModal: false })
     deleteCourse({ schoolId, courseId: course.id })
+    const link = course && `/calendar/${course.date}`
+    this.props.history.push(link)
   }
 
   closeDeleteCourseConfirmModal() {
@@ -189,7 +191,4 @@ const mapDispatchToProps = dispatch =>
     dispatch
   )
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(EditCourseComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(EditCourseComponent)

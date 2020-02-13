@@ -103,7 +103,7 @@ function Home() {
         <section className={styles.footerBottom}>
           <div className={styles.container}>
             <p className={styles.copyright}>
-              © 2019 RideTo Ltd, Registered Company Number: 10454345, Registered
+              © 2020 RideTo Ltd, Registered Company Number: 10454345, Registered
               Office: Dunsden Green, Reading, Oxfordshire RG4 9QD
             </p>
           </div>

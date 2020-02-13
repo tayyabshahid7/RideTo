@@ -50,7 +50,7 @@
 }
 .sideBarOpen {
   @media (min-width: 993px) {
-    width: calc(100% - 317px);
+    width: calc(100% - 341px);
   }
 }
 .timelineWrapper {
@@ -267,7 +267,7 @@
 
   &.sideBarOpen {
     @media (min-width: 993px) {
-      width: calc(100% - 317px - 50px + 1px);
+      width: calc(100% - 341px - 50px + 1px);
     }
   }
 }

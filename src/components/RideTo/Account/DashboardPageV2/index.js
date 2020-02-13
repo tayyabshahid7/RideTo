@@ -462,7 +462,7 @@ function DashboardPageV2({ match }) {
             ref={copyrightRef}
             className={classnames(styles.pageItem, styles.pageItemFooter)}>
             <div className={styles.copyFooter}>
-              © 2019 RideTo Ltd. Registered company number 10454345. Registered
+              © 2020 RideTo Ltd. Registered company number 10454345. Registered
               office: Dunsden Green, Reading, Oxfordshire RG4 9QD
               <br />
               This information is given to you as a guide to support you in your

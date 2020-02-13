@@ -62,7 +62,7 @@ class AvailabilityCourses extends React.Component {
     return (
       <div className={styles.row}>
         <div className={styles.leftCol}>
-          <h3 className={styles.title}>Bulk create course</h3>
+          <h3 className={styles.title}>Bulk Create Course</h3>
           <div>
             Setup a mass number of courses in your calendar for any time range
           </div>
