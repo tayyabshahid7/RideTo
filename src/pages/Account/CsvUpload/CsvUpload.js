@@ -64,7 +64,7 @@ class CsvUpload extends React.Component {
         <Col>
           <div className={styles.box}>
             <div>
-              <h3 className={styles.title}>Upload DVSA Test Cates</h3>
+              <h3 className={styles.title}>Upload DVSA Test Dates</h3>
               <p>
                 Upload your test dates to your calendar using the DVSA CSV file
               </p>
