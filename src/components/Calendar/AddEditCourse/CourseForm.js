@@ -121,9 +121,7 @@ class CourseForm extends React.Component {
     const { courseTypes } = this.props.info
     const { course_type_id, date } = this.state.course
 
-    if (isEmpty(this.state.defaultBikes)) {
-      this.loadDefaultBikes()
-    }
+    this.loadDefaultBikes()
 
     if (courseTypes.length && course_type_id === '') {
       const defaultCourse =
@@ -177,10 +175,6 @@ class CourseForm extends React.Component {
     const { defaultBikes, loadingDefaultBikes } = this.state
     const { course_type_id } = this.state.course
     const { courseTypes } = this.props.info
-
-    if (!isEmpty(this.state.defaultBikes)) {
-      return
-    }
 
     if (!course_type_id && courseTypes.length) {
       return
