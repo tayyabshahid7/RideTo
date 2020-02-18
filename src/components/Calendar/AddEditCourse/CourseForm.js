@@ -3,7 +3,6 @@ import moment from 'moment'
 import { Col, Row } from 'reactstrap'
 import classnames from 'classnames'
 import range from 'lodash/range'
-import isEmpty from 'lodash/isEmpty'
 import { getDefaultBikeHire } from 'services/course'
 import styles from './styles.scss'
 import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
@@ -104,9 +103,7 @@ class CourseForm extends React.Component {
   }
 
   componentDidMount() {
-    if (isEmpty(this.state.defaultBikes)) {
-      this.loadDefaultBikes()
-    }
+    this.loadDefaultBikes()
 
     if (
       !this.props.info.courseTypes ||
