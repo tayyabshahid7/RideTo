@@ -32,33 +32,25 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
         </Checkbox>
       )}
 
-      <Checkbox
-        checked={selected === BIKE_HIRE.AUTO}
-        extraClass="WidgetCheckbox"
-        onChange={() => onChange(BIKE_HIRE.AUTO)}
-        disabled={isAutoFull}>
-        {getMotorbikeLabel(BIKE_HIRE.AUTO)}
-        {isAutoFull ? fullText : null}
-        {bike_hire_cost > 0 && (
-          <div className={styles.price}>{`(+${asPoundSterling(
-            bike_hire_cost
-          )})`}</div>
-        )}
-      </Checkbox>
+      {/* Auto Bikes 50cc  */}
 
-      <Checkbox
-        checked={selected === BIKE_HIRE.MANUAL}
-        extraClass="WidgetCheckbox"
-        onChange={() => onChange(BIKE_HIRE.MANUAL)}
-        disabled={isManualFull}>
-        {getMotorbikeLabel(BIKE_HIRE.MANUAL)}
-        {isManualFull ? fullText : null}
-        {bike_hire_cost > 0 && (
-          <div className={styles.price}>
-            {`(+${asPoundSterling(bike_hire_cost)})`}
-          </div>
-        )}
-      </Checkbox>
+      {course.auto_bikes > 0 && (
+        <Checkbox
+          checked={selected === BIKE_HIRE.AUTO}
+          extraClass="WidgetCheckbox"
+          onChange={() => onChange(BIKE_HIRE.AUTO)}
+          disabled={isAutoFull}>
+          {getMotorbikeLabel(BIKE_HIRE.AUTO)}
+          {isAutoFull ? fullText : null}
+          {bike_hire_cost > 0 && (
+            <div className={styles.price}>{`(+${asPoundSterling(
+              bike_hire_cost
+            )})`}</div>
+          )}
+        </Checkbox>
+      )}
+
+      {/* Auto Bikes 125cc  */}
 
       {course.auto_125cc_bikes > 0 && (
         <Checkbox
@@ -76,6 +68,8 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
         </Checkbox>
       )}
 
+      {/* Manual Bikes 50cc  */}
+
       {course.manual_50cc_bikes > 0 && (
         <Checkbox
           checked={selected === BIKE_HIRE.MANUAL_50CC}
@@ -84,6 +78,24 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           disabled={isManual50Full}>
           {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC)}
           {isManual50Full ? fullText : null}
+          {bike_hire_cost > 0 && (
+            <div className={styles.price}>
+              {`(+${asPoundSterling(bike_hire_cost)})`}
+            </div>
+          )}
+        </Checkbox>
+      )}
+
+      {/* Manual Bikes 125cc  */}
+
+      {course.manual_bikes > 0 && (
+        <Checkbox
+          checked={selected === BIKE_HIRE.MANUAL}
+          extraClass="WidgetCheckbox"
+          onChange={() => onChange(BIKE_HIRE.MANUAL)}
+          disabled={isManualFull}>
+          {getMotorbikeLabel(BIKE_HIRE.MANUAL)}
+          {isManualFull ? fullText : null}
           {bike_hire_cost > 0 && (
             <div className={styles.price}>
               {`(+${asPoundSterling(bike_hire_cost)})`}
