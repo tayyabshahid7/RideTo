@@ -104,6 +104,8 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
         </Checkbox>
       )}
 
+      {/* Own Bikes  */}
+
       {course.own_bikes > 0 && (
         <Checkbox
           checked={selected === BIKE_HIRE.NO}
