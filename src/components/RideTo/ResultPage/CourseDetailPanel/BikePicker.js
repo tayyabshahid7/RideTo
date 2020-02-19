@@ -14,16 +14,26 @@ const BikePicker = React.forwardRef(
       bike_hire,
       onUpdate,
       course,
+
       isAutoFull,
+      isAuto125Full,
       isManualFull,
+      isManual50Full,
+
+      isAutoAvailable,
+      isAuto125Available,
+      isManualAvailable,
+      isManual50Available,
+
       has_auto_bikes,
+      has_auto_bikes_125cc,
       has_manual_bikes,
+      has_manual_50cc,
+
       isFullLicence,
       loading,
       isWidget,
       needsHelp,
-      has_auto_bikes_125cc,
-      has_manual_50cc,
       isInstantBook
     },
     ref
@@ -70,6 +80,8 @@ const BikePicker = React.forwardRef(
             </div>
           )}
           <div className={isFullLicence && styles.bikeButtons}>
+            {/* auto 50 */}
+
             {has_auto_bikes && (
               <button
                 className={classnames(
@@ -85,33 +97,39 @@ const BikePicker = React.forwardRef(
                     selectedPackageDates: []
                   })
                 }
-                disabled={isAutoFull}>
+                disabled={isAutoFull || !isAutoAvailable}>
                 {getMotorbikeLabel('auto', isFullLicence, isInstantBook)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isAutoFull ? fullText : null}
               </button>
             )}
-            {!isFullLicence && has_manual_50cc && (
+
+            {/* auto 125 */}
+
+            {!isFullLicence && has_auto_bikes_125cc && (
               <button
                 className={classnames(
                   styles.bikeHireBtn,
                   isWidget && styles.widgetBtn,
-                  bike_hire === BIKE_HIRE.MANUAL_50CC && styles.activeBtn
+                  bike_hire === BIKE_HIRE.AUTO_125CC && styles.activeBtn
                 )}
                 onClick={() =>
                   onUpdate({
-                    bike_hire: BIKE_HIRE.MANUAL_50CC,
+                    bike_hire: BIKE_HIRE.AUTO_125CC,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
                     selectedPackageDates: []
                   })
                 }
-                disabled={isManualFull}>
-                {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC, isFullLicence)}{' '}
+                disabled={isAuto125Full || !isAuto125Available}>
+                {getMotorbikeLabel(BIKE_HIRE.AUTO_125CC, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-                {isManualFull ? fullText : null}
+                {isAuto125Full ? fullText : null}
               </button>
             )}
+
+            {/* manual 125 */}
+
             {has_manual_bikes && (
               <button
                 className={classnames(
@@ -127,8 +145,32 @@ const BikePicker = React.forwardRef(
                     selectedPackageDates: []
                   })
                 }
-                disabled={isManualFull}>
+                disabled={isManualFull || !isManual50Available}>
                 {getMotorbikeLabel('manual', isFullLicence)}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {isManualFull ? fullText : null}
+              </button>
+            )}
+
+            {/* manual 50 */}
+
+            {!isFullLicence && has_manual_50cc && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  isWidget && styles.widgetBtn,
+                  bike_hire === BIKE_HIRE.MANUAL_50CC && styles.activeBtn
+                )}
+                onClick={() =>
+                  onUpdate({
+                    bike_hire: BIKE_HIRE.MANUAL_50CC,
+                    selectedLicenceType: null,
+                    selectedPackageDays: '',
+                    selectedPackageDates: []
+                  })
+                }
+                disabled={isManualFull || !isManualAvailable}>
+                {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isManualFull ? fullText : null}
               </button>

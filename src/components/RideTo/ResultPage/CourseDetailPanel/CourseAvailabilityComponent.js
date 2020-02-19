@@ -223,15 +223,50 @@ class CourseAvailabilityComponent extends React.Component {
     const { calendar, courses, loadingCourses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
 
+    // determining course state for auto 50cc bikes
     const isAutoFull =
-      instantCourse && instantCourse.auto_count >= instantCourse.auto_bikes
+      instantCourse &&
+      !!instantCourse.auto_bikes &&
+      instantCourse.auto_count >= instantCourse.auto_bikes
+    const isAutoAvailable =
+      instantCourse &&
+      !!instantCourse.auto_bikes &&
+      instantCourse.auto_bikes > 0
+
+    // determining course state for auto 50cc bikes
+    const isAuto125Full =
+      instantCourse &&
+      !!instantCourse.auto_125cc_bikes &&
+      instantCourse.auto_125cc_count >= instantCourse.auto_125cc_bikes
+    const isAuto125Available =
+      instantCourse &&
+      !!instantCourse.auto_125cc_bikes &&
+      instantCourse.auto_125cc_bikes > 0
+
+    // determining course state for auto 50cc bikes
     const isManualFull =
-      instantCourse && instantCourse.manual_count >= instantCourse.manual_bikes
+      instantCourse &&
+      !!instantCourse.manual_bikes &&
+      instantCourse.manual_count >= instantCourse.manual_bikes
+    const isManualAvailable =
+      instantCourse &&
+      !!instantCourse.manual_bikes &&
+      instantCourse.manual_bikes > 0
+
+    // determining course state for auto 50cc bikes
+    const isManual50Full =
+      instantCourse &&
+      !!instantCourse.manual_50cc_bikes &&
+      instantCourse.manual_50cc_count >= instantCourse.manual_50cc_bikes
+    const isManual50Available =
+      instantCourse &&
+      !!instantCourse.manual_50cc_bikes &&
+      instantCourse.manual_50cc_bikes > 0
+
     const isItm = courseType === 'INTRO_TO_MOTORCYCLING'
     const isCbt = courseType === 'LICENCE_CBT'
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
     const isInstantBook = !!course.instant_book
-
     return (
       <Loading loading={loadingCourses}>
         <div className={styles.content}>
@@ -266,6 +301,12 @@ class CourseAvailabilityComponent extends React.Component {
             course={course}
             isAutoFull={isAutoFull}
             isManualFull={isManualFull}
+            isAuto125Full={isAuto125Full}
+            isManual50Full={isManual50Full}
+            isAutoAvailable={isAutoAvailable}
+            isAuto125Available={isAuto125Available}
+            isManualAvailable={isManualAvailable}
+            isManual50Available={isManual50Available}
             has_auto_bikes={course.has_auto_bikes}
             has_manual_bikes={course.has_manual_bikes}
             has_auto_bikes_125cc={isInstantBook && course.has_auto_bikes_125cc}
