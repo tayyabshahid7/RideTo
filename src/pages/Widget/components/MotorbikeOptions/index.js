@@ -11,13 +11,20 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
   const fullText = <span className={styles.full}> - Fully Booked</span>
 
+  // determining course state for auto 50cc bikes
   const isAutoFull = course.auto_count >= course.auto_bikes
+
+  // determining course state for auto 125cc bikes
+  const isAuto125Full = course.auto_125cc_count >= course.auto_125cc_bikes
+
+  // determining course state for manual 50cc bikes
+  const isManual50Full = course.manual_50cc_count >= course.manual_50cc_bikes
+
+  // determining course state for manual 125cc bikes
   const isManualFull = course.manual_count >= course.manual_bikes
 
-  const isOwnFull = course.own_count >= course.own_bikes
-
-  const isAuto125Full = course.auto_125cc_count >= course.auto_125cc_bikes
-  const isManual50Full = course.manual_50cc_count >= course.manual_50cc_bikes
+  // determining course state for own bikes
+  const isOwnFull = course.own_bikes_count >= course.own_bikes
 
   return (
     <div className={styles.motorbikeOptions}>
