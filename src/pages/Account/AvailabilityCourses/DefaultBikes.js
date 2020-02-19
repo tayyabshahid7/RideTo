@@ -3,15 +3,14 @@ import styles from './styles.scss'
 import { Table } from 'reactstrap'
 import DefaultBikesModal from './DefaultBikesModal'
 import RowItem from './RowItem'
+import { FULL_LICENCE_MODULES } from 'common/constants'
 
-function DefaultBikes({ info, loadCourseTypes, schoolId }) {
+function DefaultBikes({ schoolId, info, loadCourseTypes }) {
   const [activeCourse, setActiveCourse] = useState(null)
 
   useEffect(() => {
-    if (!info.courseTypes.length) {
-      loadCourseTypes({ schoolId: schoolId })
-    }
-  }, [info.courseTypes])
+    loadCourseTypes({ schoolId: schoolId })
+  }, [schoolId])
 
   return (
     <Fragment>
@@ -32,7 +31,11 @@ function DefaultBikes({ info, loadCourseTypes, schoolId }) {
             </thead>
             <tbody>
               {info.courseTypes
-                .filter(({ constant }) => constant !== 'FULL_LICENCE')
+                .filter(
+                  ({ constant }) =>
+                    constant !== 'FULL_LICENCE' &&
+                    !FULL_LICENCE_MODULES.includes(constant)
+                )
                 .map(courseType => {
                   return (
                     <RowItem
