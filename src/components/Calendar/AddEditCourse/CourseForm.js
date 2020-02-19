@@ -360,6 +360,7 @@ class CourseForm extends React.Component {
       onRemove
     } = this.props
     const { edited, defaultBikes } = this.state
+
     const {
       course_type_id,
       instructor_id,
@@ -384,7 +385,6 @@ class CourseForm extends React.Component {
       status,
       application_reference_number
     } = this.state.course
-
     const finishTime = this.getFinishTime(time, duration)
     // const formClass = isEditable ? styles.grey : ''
 
@@ -514,7 +514,7 @@ class CourseForm extends React.Component {
                   <div className={styles.bikesAvailable}>
                     <b>Bikes Available</b>
                   </div>
-                  {defaultBikes.available_auto_50cc_bikes && (
+                  {(defaultBikes.available_auto_50cc_bikes || auto_bikes) && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
@@ -534,7 +534,8 @@ class CourseForm extends React.Component {
                       </Col>
                     </Row>
                   )}
-                  {defaultBikes.available_auto_125cc_bikes && (
+                  {(defaultBikes.available_auto_125cc_bikes ||
+                    auto_125cc_bikes) && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
@@ -554,7 +555,8 @@ class CourseForm extends React.Component {
                       </Col>
                     </Row>
                   )}
-                  {defaultBikes.available_manual_50cc_bikes && (
+                  {(defaultBikes.available_manual_50cc_bikes ||
+                    manual_50cc_bikes) && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
@@ -574,7 +576,8 @@ class CourseForm extends React.Component {
                       </Col>
                     </Row>
                   )}
-                  {defaultBikes.available_manual_125cc_bikes && (
+                  {(defaultBikes.available_manual_125cc_bikes ||
+                    manual_bikes) && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
@@ -594,7 +597,7 @@ class CourseForm extends React.Component {
                       </Col>
                     </Row>
                   )}
-                  {defaultBikes.available_own_bikes && (
+                  {(defaultBikes.available_own_bikes || own_bikes) && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
