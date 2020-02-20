@@ -46,6 +46,7 @@ class ResultsHeader extends React.Component {
   render() {
     const {
       courseType,
+      location,
       searchForLocationRequests,
       date,
       courseTypesOptions,
@@ -130,6 +131,7 @@ class ResultsHeader extends React.Component {
 
             {searchForLocationRequests && (
               <RecentSearchsNotification
+                location={location}
                 searchForLocationRequests={searchForLocationRequests}
               />
             )}

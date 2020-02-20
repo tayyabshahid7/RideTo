@@ -57,6 +57,7 @@ class ResultPage extends Component {
       selectedCourse: null,
       loading: false,
       showDateSelectorModal: false,
+      location: null,
       searchForLocationRequests: null,
       activeTab: 3,
       instantCourse: null,
@@ -131,11 +132,15 @@ class ResultPage extends Component {
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
 
-    // if (searchForLocationRequests > 50) {
-    //   this.setState({
-    //     searchForLocationRequests
-    //   })
-    // }
+    const searchForLocationRequests = 70
+    const location = 'London'
+
+    if (searchForLocationRequests > 50) {
+      this.setState({
+        location,
+        searchForLocationRequests
+      })
+    }
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -665,6 +670,7 @@ class ResultPage extends Component {
       selectedCourse,
       showDateSelectorModal,
       searchForLocationRequests,
+      location,
       activeTab,
       instantCourse,
       instantDate,
@@ -752,6 +758,7 @@ class ResultPage extends Component {
       <div className={styles.container}>
         <ResultsHeader
           searchForLocationRequests={searchForLocationRequests}
+          location={location}
           courseType={courseType}
           postcode={postcode}
           date={date}
