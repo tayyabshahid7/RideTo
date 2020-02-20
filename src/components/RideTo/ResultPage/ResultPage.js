@@ -24,12 +24,15 @@ import isEqual from 'lodash/isEqual'
 import { isBankHoliday } from 'services/misc'
 import { getCourseIdFromSearch } from 'services/course'
 import { Redirect } from 'react-router-dom'
-import { setParam, deleteParam } from 'utils/helper'
+import { setParam, deleteParam, normalizePostCode } from 'utils/helper'
 import { getStaticData, flashDiv } from 'services/page'
 import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
-import { fetchSingleRidetoCourse } from 'services/course'
+import {
+  fetchSingleRidetoCourse,
+  fetchSearchForLocationRequests
+} from 'services/course'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -57,6 +60,7 @@ class ResultPage extends Component {
       selectedCourse: null,
       loading: false,
       showDateSelectorModal: false,
+      searchForLocationRequests: null,
       activeTab: 3,
       instantCourse: null,
       instantDate: null,
@@ -130,6 +134,18 @@ class ResultPage extends Component {
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
 
+    // fetch recent search data
+    const normalizedPostCode = normalizePostCode(postcode)
+    const searchForLocationRequests = await fetchSearchForLocationRequests(
+      normalizedPostCode
+    )
+
+    if (searchForLocationRequests > 50) {
+      this.setState({
+        searchForLocationRequests
+      })
+    }
+
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
     if (courseTypes.length === 0) {
@@ -190,7 +206,7 @@ class ResultPage extends Component {
     })
   }
 
-  handlePostcodeChange(newPostcode) {
+  async handlePostcodeChange(newPostcode) {
     const qs = parseQueryString(window.location.search.slice(1))
     const actualPostcode = qs.postcode ? qs.postcode.toUpperCase() : ''
     const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'

@@ -61,6 +61,16 @@ export const fetchSingleRidetoCourse = async id => {
   return response
 }
 
+export const fetchSearchForLocationRequests = async postcode => {
+  // const path = `courses-new/${id}/`
+
+  // const response = await get(path, { postcode }, false)
+
+  // return response
+  alert(postcode)
+  return 70
+}
+
 export const fetchWidgetCourses = async (
   schoolId,
   startDate,
