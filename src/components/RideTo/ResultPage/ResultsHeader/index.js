@@ -4,6 +4,7 @@ import { getCourseTitle } from 'services/course'
 import Input from './Input'
 import moment from 'moment'
 import InfoBox from './InfoBox'
+import RecentSearchsNotification from './RecentSearchsNotification'
 import MediaQuery from 'react-responsive'
 
 class ResultsHeader extends React.Component {
@@ -45,6 +46,7 @@ class ResultsHeader extends React.Component {
   render() {
     const {
       courseType,
+      searchForLocationRequests,
       date,
       courseTypesOptions,
       isFullLicence,
@@ -125,6 +127,12 @@ class ResultsHeader extends React.Component {
                 />
               </MediaQuery>
             </div>
+
+            {searchForLocationRequests && (
+              <RecentSearchsNotification
+                searchForLocationRequests={searchForLocationRequests}
+              />
+            )}
           </div>
         </div>
       </div>

@@ -10,6 +10,7 @@ import {
   CONTENT,
   landingPageUrl
 } from './contents'
+import { normalizePostCode } from 'utils/helper'
 import { getCourseTitle } from 'services/course'
 import { Helmet } from 'react-helmet'
 import CourseTypeLandingForm from './CourseTypeLandingForm'
@@ -73,8 +74,9 @@ class CourseTypeLanding extends React.Component {
       window.location = 'https://rideto.typeform.com/to/axybpw'
       return
     }
+    const normalizedPostCode = normalizePostCode(search)
 
-    window.location = `/course-location/?postcode=${search}&courseType=${courseType.constant}`
+    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType.constant}`
   }
 
   render() {

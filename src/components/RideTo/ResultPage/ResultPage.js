@@ -29,10 +29,7 @@ import { getStaticData, flashDiv } from 'services/page'
 import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
-import {
-  fetchSingleRidetoCourse,
-  fetchSearchForLocationRequests
-} from 'services/course'
+import { fetchSingleRidetoCourse } from 'services/course'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -134,17 +131,11 @@ class ResultPage extends Component {
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
 
-    // fetch recent search data
-    const normalizedPostCode = normalizePostCode(postcode)
-    const searchForLocationRequests = await fetchSearchForLocationRequests(
-      normalizedPostCode
-    )
-
-    if (searchForLocationRequests > 50) {
-      this.setState({
-        searchForLocationRequests
-      })
-    }
+    // if (searchForLocationRequests > 50) {
+    //   this.setState({
+    //     searchForLocationRequests
+    //   })
+    // }
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -211,7 +202,8 @@ class ResultPage extends Component {
     const actualPostcode = qs.postcode ? qs.postcode.toUpperCase() : ''
     const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     if (actualPostcode !== newPostcode) {
-      window.location = `/course-location/?postcode=${newPostcode}&courseType=${courseType}`
+      const normalizedPostCode = normalizePostCode(newPostcode)
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}`
     }
   }
 
@@ -233,7 +225,8 @@ class ResultPage extends Component {
       actualCourseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     }
     if (actualCourseType !== newCourseType) {
-      window.location = `/course-location/?postcode=${postcode}&courseType=${newCourseType}`
+      const normalizedPostCode = normalizePostCode(postcode)
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${newCourseType}`
     }
   }
 
@@ -671,6 +664,7 @@ class ResultPage extends Component {
     const {
       selectedCourse,
       showDateSelectorModal,
+      searchForLocationRequests,
       activeTab,
       instantCourse,
       instantDate,
@@ -757,6 +751,7 @@ class ResultPage extends Component {
     return (
       <div className={styles.container}>
         <ResultsHeader
+          searchForLocationRequests={searchForLocationRequests}
           courseType={courseType}
           postcode={postcode}
           date={date}

@@ -53,10 +53,7 @@ export const getTimeFromDateTime = dateTime => {
 }
 
 export const normalizePostCode = postcode => {
-  return postcode
-    .toLowerCase()
-    .replace(/\s/g, '')
-    .replace(/-/g, '')
+  return postcode.toLowerCase()
 }
 
 export const generateRandomString = (length = 10) => {
