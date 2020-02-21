@@ -302,27 +302,6 @@ class CourseForm extends React.Component {
     if (!course.own_bikes || !defaultBikes.available_own_bikes) {
       course.own_bikes = 0
     }
-
-    if (!course.a1_auto_bikes || !defaultBikes.available_a1_auto_bikes) {
-      course.a1_auto_bikes = 0
-    }
-    if (!course.a1_manual_bikes || !defaultBikes.available_a1_manual_bikes) {
-      course.a1_manual_bikes = 0
-    }
-
-    if (!course.a2_auto_bikes || !defaultBikes.available_a2_auto_bikes) {
-      course.a2_auto_bikes = 0
-    }
-    if (!course.a2_manual_bikes || !defaultBikes.available_a2_manual_bikes) {
-      course.a2_manual_bikes = 0
-    }
-
-    if (!course.a_auto_bikes || !defaultBikes.available_a_auto_bikes) {
-      course.a_auto_bikes = 0
-    }
-    if (!course.a_manual_bikes || !defaultBikes.available_a_manual_bikes) {
-      course.a_manual_bikes = 0
-    }
     if (course.last_date_cancel === '') {
       course.last_date_cancel = null
     }
@@ -359,7 +338,7 @@ class CourseForm extends React.Component {
       pricing,
       onRemove
     } = this.props
-    const { edited, defaultBikes } = this.state
+    const { edited } = this.state
 
     const {
       course_type_id,
@@ -514,109 +493,96 @@ class CourseForm extends React.Component {
                   <div className={styles.bikesAvailable}>
                     <b>Bikes Available</b>
                   </div>
-                  {(defaultBikes.available_auto_50cc_bikes || auto_bikes) && (
-                    <Row>
-                      <Col sm="10">
-                        <BikeNumberPicker
-                          className={styles.numberPicker}
-                          label="Automatic 50cc"
-                          value={auto_bikes}
-                          id="auto_bikes"
-                          isEditable={isEditable}
-                          onChange={this.handleChangeRawEvent.bind(this)}
-                          onClickMinus={() => {
-                            this.handleBikeButtonClick('auto_bikes', -1)
-                          }}
-                          onClickPlus={() => {
-                            this.handleBikeButtonClick('auto_bikes', 1)
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  )}
-                  {(defaultBikes.available_auto_125cc_bikes ||
-                    auto_125cc_bikes) && (
-                    <Row>
-                      <Col sm="10">
-                        <BikeNumberPicker
-                          className={styles.numberPicker}
-                          label="Automatic 125cc"
-                          value={auto_125cc_bikes}
-                          id="auto_125cc_bikes"
-                          isEditable={isEditable}
-                          onChange={this.handleChangeRawEvent.bind(this)}
-                          onClickMinus={() => {
-                            this.handleBikeButtonClick('auto_125cc_bikes', -1)
-                          }}
-                          onClickPlus={() => {
-                            this.handleBikeButtonClick('auto_125cc_bikes', 1)
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  )}
-                  {(defaultBikes.available_manual_50cc_bikes ||
-                    manual_50cc_bikes) && (
-                    <Row>
-                      <Col sm="10">
-                        <BikeNumberPicker
-                          className={styles.numberPicker}
-                          label="Manual 50cc"
-                          value={manual_50cc_bikes}
-                          id="manual_50cc_bikes"
-                          isEditable={isEditable}
-                          onChange={this.handleChangeRawEvent.bind(this)}
-                          onClickMinus={() => {
-                            this.handleBikeButtonClick('manual_50cc_bikes', -1)
-                          }}
-                          onClickPlus={() => {
-                            this.handleBikeButtonClick('manual_50cc_bikes', 1)
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  )}
-                  {(defaultBikes.available_manual_125cc_bikes ||
-                    manual_bikes) && (
-                    <Row>
-                      <Col sm="10">
-                        <BikeNumberPicker
-                          className={styles.numberPicker}
-                          label="Manual 125cc"
-                          value={manual_bikes}
-                          id="manual_bikes"
-                          isEditable={isEditable}
-                          onChange={this.handleChangeRawEvent.bind(this)}
-                          onClickMinus={() => {
-                            this.handleBikeButtonClick('manual_bikes', -1)
-                          }}
-                          onClickPlus={() => {
-                            this.handleBikeButtonClick('manual_bikes', 1)
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  )}
-                  {(defaultBikes.available_own_bikes || own_bikes) && (
-                    <Row>
-                      <Col sm="10">
-                        <BikeNumberPicker
-                          className={styles.numberPicker}
-                          label="Own Bikes"
-                          value={own_bikes}
-                          id="own_bikes"
-                          isEditable={isEditable}
-                          onChange={this.handleChangeRawEvent.bind(this)}
-                          onClickMinus={() => {
-                            this.handleBikeButtonClick('own_bikes', -1)
-                          }}
-                          onClickPlus={() => {
-                            this.handleBikeButtonClick('own_bikes', 1)
-                          }}
-                        />
-                      </Col>
-                    </Row>
-                  )}
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Automatic 50cc"
+                        value={auto_bikes}
+                        id="auto_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('auto_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('auto_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Automatic 125cc"
+                        value={auto_125cc_bikes}
+                        id="auto_125cc_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('auto_125cc_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('auto_125cc_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Manual 50cc"
+                        value={manual_50cc_bikes}
+                        id="manual_50cc_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('manual_50cc_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('manual_50cc_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Manual 125cc"
+                        value={manual_bikes}
+                        id="manual_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('manual_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('manual_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Own Bikes"
+                        value={own_bikes}
+                        id="own_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('own_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('own_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
                 </React.Fragment>
               )}
               {isFullLicence && (
@@ -633,118 +599,94 @@ class CourseForm extends React.Component {
                           <tr>
                             <td>A1</td>
                             <td>
-                              {defaultBikes.available_a1_auto_bikes && (
-                                <ConnectInput
-                                  basic
-                                  className={styles.inputNumber}
-                                  name="a1_auto_bikes"
-                                  value={a1_auto_bikes || ''}
-                                  type="number"
-                                  min="0"
-                                  max={spaces}
-                                  disabled={!isEditable}
-                                  onChange={this.handleChangeRawEvent.bind(
-                                    this
-                                  )}
-                                  required
-                                />
-                              )}
+                              <ConnectInput
+                                basic
+                                className={styles.inputNumber}
+                                name="a1_auto_bikes"
+                                value={a1_auto_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
                             </td>
                             <td>
-                              {defaultBikes.available_a1_manual_bikes && (
-                                <ConnectInput
-                                  basic
-                                  className={styles.inputNumber}
-                                  name="a1_manual_bikes"
-                                  value={a1_manual_bikes || ''}
-                                  type="number"
-                                  min="0"
-                                  max={spaces}
-                                  disabled={!isEditable}
-                                  onChange={this.handleChangeRawEvent.bind(
-                                    this
-                                  )}
-                                  required
-                                />
-                              )}
+                              <ConnectInput
+                                basic
+                                className={styles.inputNumber}
+                                name="a1_manual_bikes"
+                                value={a1_manual_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
                             </td>
                           </tr>
                           <tr>
                             <td>A2</td>
                             <td>
-                              {defaultBikes.available_a2_auto_bikes && (
-                                <ConnectInput
-                                  basic
-                                  className={styles.inputNumber}
-                                  name="a2_auto_bikes"
-                                  value={a2_auto_bikes || ''}
-                                  type="number"
-                                  min="0"
-                                  max={spaces}
-                                  disabled={!isEditable}
-                                  onChange={this.handleChangeRawEvent.bind(
-                                    this
-                                  )}
-                                  required
-                                />
-                              )}
+                              <ConnectInput
+                                basic
+                                className={styles.inputNumber}
+                                name="a2_auto_bikes"
+                                value={a2_auto_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
                             </td>
                             <td>
-                              {defaultBikes.available_a2_manual_bikes && (
-                                <ConnectInput
-                                  basic
-                                  className={styles.inputNumber}
-                                  name="a2_manual_bikes"
-                                  value={a2_manual_bikes || ''}
-                                  type="number"
-                                  min="0"
-                                  max={spaces}
-                                  disabled={!isEditable}
-                                  onChange={this.handleChangeRawEvent.bind(
-                                    this
-                                  )}
-                                  required
-                                />
-                              )}
+                              <ConnectInput
+                                basic
+                                className={styles.inputNumber}
+                                name="a2_manual_bikes"
+                                value={a2_manual_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
                             </td>
                           </tr>
                           <tr>
                             <td>A</td>
                             <td>
-                              {defaultBikes.available_a_auto_bikes && (
-                                <ConnectInput
-                                  basic
-                                  className={styles.inputNumber}
-                                  name="a_auto_bikes"
-                                  value={a_auto_bikes || ''}
-                                  type="number"
-                                  min="0"
-                                  max={spaces}
-                                  disabled={!isEditable}
-                                  onChange={this.handleChangeRawEvent.bind(
-                                    this
-                                  )}
-                                  required
-                                />
-                              )}
+                              <ConnectInput
+                                basic
+                                className={styles.inputNumber}
+                                name="a_auto_bikes"
+                                value={a_auto_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
                             </td>
                             <td>
-                              {defaultBikes.available_a_manual_bikes && (
-                                <ConnectInput
-                                  basic
-                                  className={styles.inputNumber}
-                                  name="a_manual_bikes"
-                                  value={a_manual_bikes || ''}
-                                  type="number"
-                                  min="0"
-                                  max={spaces}
-                                  disabled={!isEditable}
-                                  onChange={this.handleChangeRawEvent.bind(
-                                    this
-                                  )}
-                                  required
-                                />
-                              )}
+                              <ConnectInput
+                                basic
+                                className={styles.inputNumber}
+                                name="a_manual_bikes"
+                                value={a_manual_bikes || ''}
+                                type="number"
+                                min="0"
+                                max={spaces}
+                                disabled={!isEditable}
+                                onChange={this.handleChangeRawEvent.bind(this)}
+                                required
+                              />
                             </td>
                           </tr>
                         </tbody>
