@@ -1,5 +1,6 @@
 import { get, post } from 'services/api'
 import { requestToken } from 'services/auth'
+import { normalizePostCode } from 'utils/helper'
 
 export const saveCheckoutEmail = async (email, course) => {
   const path = `save-checkout-email`
@@ -9,7 +10,9 @@ export const saveCheckoutEmail = async (email, course) => {
       email,
       course: {
         ...course,
-        url: `/course-location/?postcode=${course.postcode}&courseType=${course.courseType}&courseId=${course.supplierId}`
+        url: `/course-location/?postcode=${normalizePostCode(
+          course.postcode
+        )}&courseType=${course.courseType}&courseId=${course.supplierId}`
       }
     },
     false
