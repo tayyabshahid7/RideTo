@@ -128,7 +128,7 @@ class ResultsHeader extends React.Component {
               </MediaQuery>
             </div>
 
-            {searchForLocationRequests && (
+            {searchForLocationRequests > 0 && (
               <RecentSearchsNotification
                 location={postcode}
                 searchForLocationRequests={searchForLocationRequests}
