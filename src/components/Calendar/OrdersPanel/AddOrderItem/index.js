@@ -3,7 +3,10 @@ import styles from './styles.scss'
 import { Row, Col } from 'reactstrap'
 import { FullLicenceTypes, getAvailableBikeHires } from 'common/info'
 import { getPaymentOptions } from 'services/order'
-import { checkCustomerExists } from 'services/customer'
+import {
+  checkCustomerExists,
+  getCurrentLicenceOptions
+} from 'services/customer'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
@@ -289,7 +292,7 @@ class AddOrderItem extends React.Component {
     const price = pricing && pricing.price
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
-
+    console.log(this.state)
     return (
       <div className={styles.container}>
         <div ref={this.scrollIntoView} />
@@ -376,14 +379,16 @@ class AddOrderItem extends React.Component {
                 />
               )}
 
-              <ConnectInput
+              <ConnectSelect
+                placeholder
                 basic
                 name="user_driving_licence_number"
-                value={user_driving_licence_number}
-                label="Licence Number"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                selected={user_driving_licence_number}
+                label="Current Licence"
+                options={getCurrentLicenceOptions()}
+                onChange={value => {
+                  this.handleChange('user_driving_licence_number', value)
+                }}
               />
 
               <ConnectSelect
