@@ -9,6 +9,11 @@ export const fetchCoursesTypes = async postCode => {
   return await get(path, params, false)
 }
 
+export const fetchSearchForLocationRequests = async params => {
+  const path = `courses-new/`
+  return await get(path, params, false)
+}
+
 export const getFilters = () => {
   return [
     { tag: 'ALL', name: 'All' },

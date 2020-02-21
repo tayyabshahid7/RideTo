@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './styles.scss'
 import getStartedFaster from 'assets/images/rideto/getStartedFaster.svg'
 
-function RecentSearchsNtification({ location, searchForLocationRequests }) {
+function RecentSearchsNotification({ location, searchForLocationRequests }) {
   return (
     <div className={styles.recentSearchContainer}>
       <img
@@ -18,4 +18,4 @@ function RecentSearchsNtification({ location, searchForLocationRequests }) {
   )
 }
 
-export default RecentSearchsNtification
+export default RecentSearchsNotification

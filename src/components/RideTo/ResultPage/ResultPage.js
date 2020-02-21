@@ -19,7 +19,10 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Loading from 'components/Loading'
 import { parseQueryString } from 'services/api'
 import classnames from 'classnames'
-import { fetchCoursesTypes } from 'services/course-type'
+import {
+  fetchCoursesTypes,
+  fetchSearchForLocationRequests
+} from 'services/course-type'
 import isEqual from 'lodash/isEqual'
 import { isBankHoliday } from 'services/misc'
 import { getCourseIdFromSearch } from 'services/course'
@@ -132,15 +135,20 @@ class ResultPage extends Component {
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
 
-    const searchForLocationRequests = 70
-    const location = 'London'
-
-    if (searchForLocationRequests > 50) {
-      this.setState({
-        location,
-        searchForLocationRequests
+    try {
+      let searchForLocationRequests = await fetchSearchForLocationRequests({
+        postcode,
+        course_type: courseType
       })
-    }
+      searchForLocationRequests =
+        searchForLocationRequests[0].percentage_of_searcher
+
+      if (searchForLocationRequests > 50) {
+        this.setState({
+          searchForLocationRequests
+        })
+      }
+    } catch {}
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -670,7 +678,6 @@ class ResultPage extends Component {
       selectedCourse,
       showDateSelectorModal,
       searchForLocationRequests,
-      location,
       activeTab,
       instantCourse,
       instantDate,
@@ -758,7 +765,6 @@ class ResultPage extends Component {
       <div className={styles.container}>
         <ResultsHeader
           searchForLocationRequests={searchForLocationRequests}
-          location={location}
           courseType={courseType}
           postcode={postcode}
           date={date}
