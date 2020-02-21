@@ -533,3 +533,24 @@ export const filterExtraCourses = type => {
     ) && type.constant !== 'FULL_LICENCE'
   )
 }
+
+export const getDefaultBikeHire = async course_type => {
+  const path = 'school/settings/widget/bike-hire-setup/'
+  const params = { course_type }
+
+  const response = await get(path, params, true)
+
+  return response
+}
+
+export const updateDefaultBikeHire = async ({ constant, settings }) => {
+  const path = 'school/settings/widget/bike-hire-setup'
+  const params = {
+    course_type: constant,
+    ...settings
+  }
+
+  const response = await put(path, params, true)
+
+  return response
+}

@@ -1,0 +1,65 @@
+import React, { useEffect, useState, Fragment } from 'react'
+import styles from './styles.scss'
+import { Table } from 'reactstrap'
+import DefaultBikesModal from './DefaultBikesModal'
+import RowItem from './RowItem'
+import { FULL_LICENCE_MODULES } from 'common/constants'
+
+function DefaultBikes({ schoolId, info, loadCourseTypes }) {
+  const [activeCourse, setActiveCourse] = useState(null)
+
+  useEffect(() => {
+    loadCourseTypes({ schoolId: schoolId })
+  }, [schoolId])
+
+  return (
+    <Fragment>
+      <div className={styles.defaultBikes}>
+        <div className={styles.title}>Default Bikes</div>
+        <p>
+          Set the default bike hire types and number available for each course
+          type
+        </p>
+        <div className={styles.tableWrapper}>
+          <Table bordered responsive size="sm">
+            <thead className="thead-light">
+              <tr>
+                <th className="align-middle">Course</th>
+                <th className="align-middle">Bikes available</th>
+                <th className="align-middle"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {info.courseTypes
+                .filter(
+                  ({ constant }) =>
+                    constant !== 'FULL_LICENCE' &&
+                    !FULL_LICENCE_MODULES.includes(constant)
+                )
+                .map(courseType => {
+                  return (
+                    <RowItem
+                      key={courseType.id}
+                      courseType={courseType}
+                      activeCourse={activeCourse}
+                      setActiveCourse={setActiveCourse}
+                    />
+                  )
+                })}
+            </tbody>
+          </Table>
+        </div>
+      </div>
+      <DefaultBikesModal
+        isOpen={!!activeCourse}
+        onRequestClose={() => {
+          setActiveCourse(null)
+        }}
+        activeCourse={activeCourse}
+        setActiveCourse={setActiveCourse}
+      />
+    </Fragment>
+  )
+}
+
+export default DefaultBikes

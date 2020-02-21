@@ -8,6 +8,7 @@ import CalendarLabels from './CalendarLabels'
 import SchoolSelect from 'components/SchoolSelect'
 import isEqual from 'lodash/isEqual'
 import Loading from 'components/Loading'
+import DefaultBikes from './DefaultBikes'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
@@ -195,6 +196,13 @@ class AvailabilityCourses extends React.Component {
             updateSettings={updateSettings}
             editInstructor={editInstructor}
             updateDiaryColor={updateDiaryColor}
+          />
+        </div>
+        <div className={styles.box}>
+          <DefaultBikes
+            info={info}
+            loadCourseTypes={loadCourseTypes}
+            schoolId={schoolId}
           />
         </div>
       </Fragment>

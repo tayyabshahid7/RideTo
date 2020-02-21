@@ -293,15 +293,14 @@ class AddOrderItem extends React.Component {
     return (
       <div className={styles.container}>
         <div ref={this.scrollIntoView} />
-        {!showPayment &&
-          (!showPaymentConfirmation && (
-            <div className={styles.header}>
-              <span className={styles.leftCol}>
-                <h3 className={styles.title}>Add Order</h3>
-              </span>
-              {/* <span>Step 1 of 2</span> */}
-            </div>
-          ))}
+        {!showPayment && !showPaymentConfirmation && (
+          <div className={styles.header}>
+            <span className={styles.leftCol}>
+              <h3 className={styles.title}>Add Order</h3>
+            </span>
+            {/* <span>Step 1 of 2</span> */}
+          </div>
+        )}
         {!showPaymentConfirmation ? (
           <form onSubmit={this.handleSave.bind(this)} ref={this.form}>
             <div className={classnames(showPayment && styles.hideUserForm)}>
