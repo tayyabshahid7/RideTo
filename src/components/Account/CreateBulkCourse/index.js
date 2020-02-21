@@ -24,10 +24,11 @@ class CreateBulkCourse extends React.Component {
       spaces: '',
       duration: '',
       notes: '',
-      auto_bikes: DEFAULT_SETTINGS.default_number_auto_50cc_bikes,
-      manual_bikes: DEFAULT_SETTINGS.default_number_manual_125cc_bikes,
-      auto_125cc_bikes: DEFAULT_SETTINGS.default_number_auto_125cc_bikes,
-      manual_50cc_bikes: DEFAULT_SETTINGS.default_number_manual_50cc_bikes,
+      auto_bikes: '',
+      manual_bikes: '',
+      auto_125cc_bikes: '',
+      manual_50cc_bikes: '',
+      own_bikes: '',
       a1_auto_bikes: '',
       a2_auto_bikes: '',
       a_auto_bikes: '',
@@ -93,10 +94,19 @@ class CreateBulkCourse extends React.Component {
       this.setState({
         settings: response
       })
+      return {
+        ...this.state.course,
+        auto_bikes: response.default_number_auto_50cc_bikes,
+        manual_bikes: response.default_number_manual_125cc_bikes,
+        auto_125cc_bikes: response.default_number_auto_125cc_bikes,
+        manual_50cc_bikes: response.default_number_manual_50cc_bikes,
+        own_bikes: response.default_number_own_bikes
+      }
     } catch (error) {
       this.setState({
         settings: DEFAULT_SETTINGS
       })
+      return null
     }
   }
 
@@ -144,10 +154,11 @@ class CreateBulkCourse extends React.Component {
     let name = event.target.name
     let { course } = this.state
     course[name] = event.target.value
-
     if (name === 'course_type_id') {
-      await this.loadCourseSettings(course.course_type_id)
+      const updatedCourse = await this.loadCourseSettings(course.course_type_id)
+      if (updatedCourse) course = updatedCourse
     }
+    console.log(course)
     this.setState({ course })
   }
 
@@ -173,6 +184,7 @@ class CreateBulkCourse extends React.Component {
       manual_bikes,
       auto_125cc_bikes,
       manual_50cc_bikes,
+      own_bikes,
       a1_auto_bikes,
       a2_auto_bikes,
       a_auto_bikes,
@@ -206,6 +218,7 @@ class CreateBulkCourse extends React.Component {
       manual_bikes: manual_bikes || 0,
       auto_125cc_bikes: auto_125cc_bikes || 0,
       manual_50cc_bikes: manual_50cc_bikes || 0,
+      own_bikes: own_bikes || 0,
       notes,
       duration: duration.toString(),
       supplier: schoolId.toString(),
@@ -243,6 +256,7 @@ class CreateBulkCourse extends React.Component {
       manual_bikes,
       auto_125cc_bikes,
       manual_50cc_bikes,
+      own_bikes,
       a1_auto_bikes,
       a2_auto_bikes,
       a_auto_bikes,
@@ -255,7 +269,8 @@ class CreateBulkCourse extends React.Component {
       default_number_auto_50cc_bikes,
       default_number_auto_125cc_bikes,
       default_number_manual_50cc_bikes,
-      default_number_manual_125cc_bikes
+      default_number_manual_125cc_bikes,
+      default_number_own_bikes
     } = this.state.settings
 
     const courseTypes = info.courseTypes.filter(filterExtraCourses)
@@ -354,6 +369,16 @@ class CreateBulkCourse extends React.Component {
                         manual_50cc_bikes || default_number_manual_50cc_bikes
                       }
                       label="Manual 50cc"
+                      className="form-group"
+                      type="number"
+                      onChange={this.handleChangeRawEvent.bind(this)}
+                      raw
+                    />
+                    <ConnectInput
+                      basic
+                      name="own_bikes"
+                      value={own_bikes || default_number_own_bikes}
+                      label="Own Bikes"
                       className="form-group"
                       type="number"
                       onChange={this.handleChangeRawEvent.bind(this)}
