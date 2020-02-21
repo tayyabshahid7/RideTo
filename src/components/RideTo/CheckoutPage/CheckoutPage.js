@@ -735,7 +735,7 @@ class CheckoutPage extends Component {
           window.localStorage.setItem('username', firstName)
         }
         window.localStorage.setItem('gaok', true) // Set Google Analytics Flag
-        window.location.href = `/account/dashboard/${order.id}`
+        window.location.href = `/${order.id}/thank-you/`
       } else {
         this.setState({ saving: false })
       }

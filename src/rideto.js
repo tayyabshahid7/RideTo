@@ -39,6 +39,11 @@ mountComponent('AddonSelection', 'rideto-addon-selection', {}, false)
 
 mountComponent('CheckoutPage', 'rideto-checkout')
 
+mountComponent(
+  'OrderConfirmationThankYouPage',
+  'order-confirmation-thank-you-root'
+)
+
 mountComponent('FooterLinks', 'rideto-mobile-footer-links')
 
 mountComponent('Faqs', 'rideto-faqs')
