@@ -40,7 +40,7 @@ class WidgetSettingsForm extends React.Component {
       cancellation: '',
       terms: '',
       last_time_book: '18:00:00',
-      current_licence: '',
+      disabled_widget_cuttoff_time: '',
       enable_third_party_optin: false
     }
     Object.assign(settings, this.props.settings ? this.props.settings : {})
@@ -159,7 +159,7 @@ class WidgetSettingsForm extends React.Component {
       cancellation,
       terms,
       last_time_book,
-      current_licence,
+      disabled_widget_cuttoff_time,
       enable_third_party_optin
     } = this.state.settings
     return (
@@ -419,15 +419,15 @@ class WidgetSettingsForm extends React.Component {
                     valueArray={TIMES}
                     noSelectOption
                     onChange={this.handleChangeRawEvent.bind(this)}
-                    disabled={current_licence}
+                    disabled={disabled_widget_cuttoff_time}
                     raw
                     required
                   />
                 </Col>
                 <Col xs="12" sm="6">
                   <Checkbox
-                    name="current_licence"
-                    checked={current_licence}
+                    name="disabled_widget_cuttoff_time"
+                    checked={disabled_widget_cuttoff_time}
                     onChange={this.handleChangeRawEvent.bind(this)}>
                     Disable widget cut off time
                   </Checkbox>
