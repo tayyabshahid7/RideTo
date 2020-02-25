@@ -42,7 +42,7 @@ export const getStartInTime = (now, startTime) => {
 
 export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
   const simpleLabels = {
-    auto: 'Automatic',
+    auto: 'Automatic Scooter',
     manual: 'Manual 125cc Motorcycle',
     no: 'Own Bike'
   }
