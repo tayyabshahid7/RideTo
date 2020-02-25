@@ -31,7 +31,7 @@ class AddOrderItem extends React.Component {
       order: {
         school_course: this.props.course.id,
         user_birthdate: '',
-        user_driving_licence_number: '',
+        current_licence: '',
         user_email: '',
         user_first_name: '',
         user_last_name: '',
@@ -278,7 +278,7 @@ class AddOrderItem extends React.Component {
         payment_status,
         riding_experience,
         user_birthdate,
-        user_driving_licence_number,
+        current_licence,
         user_email,
         user_first_name,
         user_last_name,
@@ -292,7 +292,6 @@ class AddOrderItem extends React.Component {
     const price = pricing && pricing.price
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
-    console.log(this.state)
     return (
       <div className={styles.container}>
         <div ref={this.scrollIntoView} />
@@ -382,12 +381,12 @@ class AddOrderItem extends React.Component {
               <ConnectSelect
                 placeholder
                 basic
-                name="user_driving_licence_number"
-                selected={user_driving_licence_number}
+                name="current_licence"
+                selected={current_licence}
                 label="Current Licence"
                 options={getCurrentLicenceOptions()}
                 onChange={value => {
-                  this.handleChange('user_driving_licence_number', value)
+                  this.handleChange('current_licence', value)
                 }}
               />
 
