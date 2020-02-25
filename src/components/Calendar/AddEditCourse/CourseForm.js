@@ -330,6 +330,7 @@ class CourseForm extends React.Component {
 
   render() {
     const {
+      newCourse,
       isEditable,
       info,
       saving,
@@ -339,6 +340,14 @@ class CourseForm extends React.Component {
       onRemove
     } = this.props
     const { edited } = this.state
+
+    const {
+      available_auto_50cc_bikes,
+      available_auto_125cc_bikes,
+      available_manual_50cc_bikes,
+      available_manual_125cc_bikes,
+      available_own_bikes
+    } = this.state.defaultBikes
 
     const {
       course_type_id,
@@ -364,6 +373,7 @@ class CourseForm extends React.Component {
       status,
       application_reference_number
     } = this.state.course
+
     const finishTime = this.getFinishTime(time, duration)
     // const formClass = isEditable ? styles.grey : ''
 
@@ -493,96 +503,106 @@ class CourseForm extends React.Component {
                   <div className={styles.bikesAvailable}>
                     <b>Bikes Available</b>
                   </div>
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
-                        label="Automatic 50cc"
-                        value={auto_bikes}
-                        id="auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('auto_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
-                        label="Automatic 125cc"
-                        value={auto_125cc_bikes}
-                        id="auto_125cc_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('auto_125cc_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('auto_125cc_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
-                        label="Manual 50cc"
-                        value={manual_50cc_bikes}
-                        id="manual_50cc_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('manual_50cc_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('manual_50cc_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
-                        label="Manual 125cc"
-                        value={manual_bikes}
-                        id="manual_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('manual_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('manual_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
-                        label="Own Bikes"
-                        value={own_bikes}
-                        id="own_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('own_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('own_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
+                  {(!newCourse || available_auto_50cc_bikes) && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Automatic 50cc"
+                          value={auto_bikes}
+                          id="auto_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('auto_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('auto_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {(!newCourse || available_auto_125cc_bikes) && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Automatic 125cc"
+                          value={auto_125cc_bikes}
+                          id="auto_125cc_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('auto_125cc_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('auto_125cc_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {(!newCourse || available_manual_50cc_bikes) && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Manual 50cc"
+                          value={manual_50cc_bikes}
+                          id="manual_50cc_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('manual_50cc_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('manual_50cc_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {(!newCourse || available_manual_125cc_bikes) && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Manual 125cc"
+                          value={manual_bikes}
+                          id="manual_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('manual_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('manual_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {(!newCourse || available_own_bikes) && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Own Bikes"
+                          value={own_bikes}
+                          id="own_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('own_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('own_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
                 </React.Fragment>
               )}
               {isFullLicence && (
