@@ -268,9 +268,6 @@ class CourseForm extends React.Component {
     const {
       course: { instructor_id, ...course }
     } = this.state
-    const { defaultBikes } = this.state
-
-    console.log(defaultBikes)
 
     if (instructor_id !== '') {
       course.instructor_id = instructor_id
