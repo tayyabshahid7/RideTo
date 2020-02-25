@@ -12,7 +12,9 @@ function RecentSearchsNotification({ location, searchForLocationRequests }) {
       />
       <div className={styles.recentSearchText}>
         <strong>{`Courses in ${location} are filling up fast!`} </strong>
-        <span>{`People are searching ${searchForLocationRequests}+% more this week.`}</span>
+        <span>{`People are searching ${Math.round(
+          searchForLocationRequests
+        )}+% more this week.`}</span>
       </div>
     </div>
   )
