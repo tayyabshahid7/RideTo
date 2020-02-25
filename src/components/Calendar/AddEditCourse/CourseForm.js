@@ -270,6 +270,8 @@ class CourseForm extends React.Component {
     } = this.state
     const { defaultBikes } = this.state
 
+    console.log(defaultBikes)
+
     if (instructor_id !== '') {
       course.instructor_id = instructor_id
     } else {
@@ -280,26 +282,23 @@ class CourseForm extends React.Component {
       course.course_type_id = info.courseTypes[0].id
     }
 
-    if (!course.auto_bikes || !defaultBikes.available_auto_50cc_bikes) {
+    if (!course.auto_bikes) {
       course.auto_bikes = 0
     }
 
-    if (!course.manual_bikes || !defaultBikes.available_manual_125cc_bikes) {
+    if (!course.manual_bikes) {
       course.manual_bikes = 0
     }
 
-    if (!course.auto_125cc_bikes || !defaultBikes.available_auto_125cc_bikes) {
+    if (!course.auto_125cc_bikes) {
       course.auto_125cc_bikes = 0
     }
 
-    if (
-      !course.manual_50cc_bikes ||
-      !defaultBikes.available_manual_50cc_bikes
-    ) {
+    if (!course.manual_50cc_bikes) {
       course.manual_50cc_bikes = 0
     }
 
-    if (!course.own_bikes || !defaultBikes.available_own_bikes) {
+    if (!course.own_bikes) {
       course.own_bikes = 0
     }
     if (course.last_date_cancel === '') {
