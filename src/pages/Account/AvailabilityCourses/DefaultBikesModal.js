@@ -18,7 +18,7 @@ const customStyles = {
   },
   content: {
     width: '80%',
-    maxWidth: '700px',
+    maxWidth: '690px',
     top: '50%',
     left: '50%',
     right: 'auto',
