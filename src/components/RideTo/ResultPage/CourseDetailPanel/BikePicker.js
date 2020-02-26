@@ -97,7 +97,10 @@ const BikePicker = React.forwardRef(
                     selectedPackageDates: []
                   })
                 }
-                disabled={isAutoFull || !isAutoAvailable}>
+                disabled={
+                  (isFullLicence && !has_auto_bikes) ||
+                  (!isFullLicence && (isAutoFull || !isAutoAvailable))
+                }>
                 {getMotorbikeLabel('auto', isFullLicence, isInstantBook)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isAutoFull ? fullText : null}
@@ -145,7 +148,10 @@ const BikePicker = React.forwardRef(
                     selectedPackageDates: []
                   })
                 }
-                disabled={isManualFull || !isManualAvailable}>
+                disabled={
+                  (isFullLicence && !has_manual_bikes) ||
+                  (!isFullLicence && (isManualFull || !isManualAvailable))
+                }>
                 {getMotorbikeLabel('manual', isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isManualFull ? fullText : null}
