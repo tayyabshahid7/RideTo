@@ -12,7 +12,13 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 const customStyles = {
+  overlay: {
+    zIndex: 10000,
+    backgroundColor: 'rgba(0,0,0,0.62)'
+  },
   content: {
+    width: '80%',
+    maxWidth: '700px',
     top: '50%',
     left: '50%',
     right: 'auto',
@@ -125,14 +131,14 @@ function DefaultBikesModal({ activeCourse, setActiveCourse, ...rest }) {
           </div>
           <div className={styles.courseDetails}>
             <Table borderless size="sm">
-              <thead>
+              <thead className={styles.tableHead}>
                 <tr>
                   <th>Bikes</th>
                   <th className="text-center">Available</th>
                   <th className="text-center">Number Available</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className={styles.tableBody}>
                 {courses.map(
                   ({ name, available, key, countKey, count }, index) => (
                     <tr key={index}>

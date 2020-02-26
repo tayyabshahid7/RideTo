@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { Button } from 'components/ConnectForm'
 import { getDefaultBikeHire } from 'services/course'
 import { formatName, filterBikes } from './DefaultBikesModal'
 import { DEFAULT_SETTINGS } from 'common/constants'
+import styles from './styles.scss'
 
 function formatListItem(key) {
   return formatName(key)
@@ -32,7 +32,16 @@ function RowItem({ activeCourse, setActiveCourse, courseType }) {
 
   return (
     <tr>
-      <td className="align-middle">{name}</td>
+      <td className="align-middle">
+        <a
+          disabled={loading}
+          className={styles.courseName}
+          onClick={() => {
+            setActiveCourse({ ...courseType, settings })
+          }}>
+          {name}
+        </a>
+      </td>
       <td className="align-middle">
         {settings &&
           Object.entries(settings)
@@ -42,16 +51,6 @@ function RowItem({ activeCourse, setActiveCourse, courseType }) {
             .filter(bike => filterBikes(courseType, bike))
             .map(([key, value]) => formatListItem(key))
             .join(', ')}
-      </td>
-      <td className="align-middle text-center">
-        <Button
-          disabled={loading}
-          small
-          onClick={() => {
-            setActiveCourse({ ...courseType, settings })
-          }}>
-          Edit
-        </Button>
       </td>
     </tr>
   )
