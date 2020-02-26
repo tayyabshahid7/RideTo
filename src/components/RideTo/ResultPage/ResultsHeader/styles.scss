@@ -290,4 +290,9 @@
       padding-right: 0px;
     }
   }
+  @media (max-width: 376px) {
+    .recentSearchText {
+      font-size: 12px;
+    }
+  }
 }
