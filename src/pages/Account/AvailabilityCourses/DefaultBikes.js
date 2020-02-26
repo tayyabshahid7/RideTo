@@ -4,10 +4,14 @@ import { Table } from 'reactstrap'
 import DefaultBikesModal from './DefaultBikesModal'
 import RowItem from './RowItem'
 import { FULL_LICENCE_MODULES } from 'common/constants'
+import SchoolSelect from 'components/SchoolSelect'
 
-function DefaultBikes({ schoolId, info, loadCourseTypes }) {
+function DefaultBikes({ schoolId, info, loadCourseTypes, user }) {
   const [activeCourse, setActiveCourse] = useState(null)
 
+  const handleSupplierChange = (schoolId, schoolName) => {
+    this.props.changeSchool(schoolId, schoolName)
+  }
   useEffect(() => {
     loadCourseTypes({ schoolId: schoolId })
   }, [schoolId])
@@ -16,17 +20,22 @@ function DefaultBikes({ schoolId, info, loadCourseTypes }) {
     <Fragment>
       <div className={styles.defaultBikes}>
         <div className={styles.title}>Default Bikes</div>
-        <p>
-          Set the default bike hire types and number available for each course
-          type
-        </p>
+        <div className="pb-4">
+          <p>Set the default bikes available for each course</p>
+          <SchoolSelect
+            schools={user.suppliers}
+            selected={schoolId}
+            onChange={handleSupplierChange}
+            small
+          />
+        </div>
+
         <div className={styles.tableWrapper}>
           <Table bordered responsive size="sm">
             <thead className="thead-light">
               <tr>
                 <th className="align-middle">Course</th>
                 <th className="align-middle">Bikes available</th>
-                <th className="align-middle"></th>
               </tr>
             </thead>
             <tbody>
