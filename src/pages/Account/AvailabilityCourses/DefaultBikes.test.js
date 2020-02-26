@@ -27,9 +27,12 @@ const info = {
     }
   ]
 }
+const user = {
+  suppliers: [{ id: 1, name: 'test', town: 'testtown' }]
+}
 
 describe('Default bikes', () => {
   it('renders without crashing', () => {
-    shallow(<DefaultBikes info={info} />)
+    shallow(<DefaultBikes info={info} user={user} />)
   })
 })
