@@ -33,14 +33,14 @@ function RowItem({ activeCourse, setActiveCourse, courseType }) {
   return (
     <tr>
       <td className="align-middle">
-        <a
+        <div
           disabled={loading}
           className={styles.courseName}
           onClick={() => {
             setActiveCourse({ ...courseType, settings })
           }}>
           {name}
-        </a>
+        </div>
       </td>
       <td className="align-middle">
         {settings &&
