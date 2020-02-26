@@ -44,7 +44,8 @@ class CreateBulkCourse extends React.Component {
     this.state = {
       settings: DEFAULT_SETTINGS,
       course: course,
-      useDefaultDays: false
+      useDefaultDays: false,
+      useDefaultBikeAmounts: true
     }
     this.getSchoolName = this.getSchoolName.bind(this)
   }
@@ -80,8 +81,6 @@ class CreateBulkCourse extends React.Component {
         }
       })
     }
-
-    await this.loadCourseSettings(this.state.course.course_type_id)
   }
 
   loadCourseSettings = async course_type_id => {
@@ -92,7 +91,8 @@ class CreateBulkCourse extends React.Component {
       ).constant
       const response = await getDefaultBikeHire(currentCourseTypeConstant)
       this.setState({
-        settings: response
+        settings: response,
+        useDefaultBikeAmounts: false
       })
       return {
         ...this.state.course,
@@ -110,7 +110,7 @@ class CreateBulkCourse extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {
     const {
       saving,
       error,
@@ -147,6 +147,14 @@ class CreateBulkCourse extends React.Component {
           instructor_id: instructors[0].id.toString()
         }
       })
+    }
+    if (this.state.course.course_type_id && this.state.useDefaultBikeAmounts) {
+      let { course } = this.state
+      const updatedCourse = await this.loadCourseSettings(
+        this.state.course.course_type_id
+      )
+      if (updatedCourse) course = updatedCourse
+      this.setState({ course })
     }
   }
 
@@ -276,7 +284,6 @@ class CreateBulkCourse extends React.Component {
       default_number_own_bikes,
       available_own_bikes
     } = this.state.settings
-
     const courseTypes = info.courseTypes.filter(filterExtraCourses)
 
     const isFullLicence = courseTypes
