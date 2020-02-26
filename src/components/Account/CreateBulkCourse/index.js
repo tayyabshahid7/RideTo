@@ -158,7 +158,6 @@ class CreateBulkCourse extends React.Component {
       const updatedCourse = await this.loadCourseSettings(course.course_type_id)
       if (updatedCourse) course = updatedCourse
     }
-    console.log(course)
     this.setState({ course })
   }
 
@@ -267,10 +266,15 @@ class CreateBulkCourse extends React.Component {
 
     const {
       default_number_auto_50cc_bikes,
+      available_auto_50cc_bikes,
       default_number_auto_125cc_bikes,
+      available_auto_125cc_bikes,
       default_number_manual_50cc_bikes,
+      available_manual_50cc_bikes,
       default_number_manual_125cc_bikes,
-      default_number_own_bikes
+      available_manual_125cc_bikes,
+      default_number_own_bikes,
+      available_own_bikes
     } = this.state.settings
 
     const courseTypes = info.courseTypes.filter(filterExtraCourses)
@@ -323,68 +327,82 @@ class CreateBulkCourse extends React.Component {
               </Col>
               {!isFullLicence && (
                 <React.Fragment>
-                  <Col>
-                    <ConnectInput
-                      basic
-                      name="auto_bikes"
-                      value={auto_bikes || default_number_auto_50cc_bikes}
-                      label="Automatic 50cc"
-                      className="form-group"
-                      type="number"
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      raw
-                    />
-                  </Col>
-                  <Col>
-                    <ConnectInput
-                      basic
-                      name="manual_bikes"
-                      value={manual_bikes || default_number_manual_125cc_bikes}
-                      label="Manual 125cc"
-                      className="form-group"
-                      type="number"
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      raw
-                    />
-                  </Col>
-                  <Col>
-                    <ConnectInput
-                      basic
-                      name="auto_125cc_bikes"
-                      value={
-                        auto_125cc_bikes || default_number_auto_125cc_bikes
-                      }
-                      label="Auto 125cc"
-                      className="form-group"
-                      type="number"
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      raw
-                    />
-                  </Col>
-                  <Col>
-                    <ConnectInput
-                      basic
-                      name="manual_50cc_bikes"
-                      value={
-                        manual_50cc_bikes || default_number_manual_50cc_bikes
-                      }
-                      label="Manual 50cc"
-                      className="form-group"
-                      type="number"
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      raw
-                    />
-                    <ConnectInput
-                      basic
-                      name="own_bikes"
-                      value={own_bikes || default_number_own_bikes}
-                      label="Own Bikes"
-                      className="form-group"
-                      type="number"
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      raw
-                    />
-                  </Col>
+                  {available_auto_50cc_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="auto_bikes"
+                        value={auto_bikes || default_number_auto_50cc_bikes}
+                        label="Automatic 50cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_manual_125cc_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="manual_bikes"
+                        value={
+                          manual_bikes || default_number_manual_125cc_bikes
+                        }
+                        label="Manual 125cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_auto_125cc_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="auto_125cc_bikes"
+                        value={
+                          auto_125cc_bikes || default_number_auto_125cc_bikes
+                        }
+                        label="Auto 125cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_manual_50cc_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="manual_50cc_bikes"
+                        value={
+                          manual_50cc_bikes || default_number_manual_50cc_bikes
+                        }
+                        label="Manual 50cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_own_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="own_bikes"
+                        value={own_bikes || default_number_own_bikes}
+                        label="Own Bikes"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
                 </React.Fragment>
               )}
             </Row>
