@@ -2,15 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { Button } from 'components/ConnectForm'
 import { getDefaultBikeHire } from 'services/course'
 import { formatName, filterBikes } from './DefaultBikesModal'
-import startCase from 'lodash/startCase'
 import { DEFAULT_SETTINGS } from 'common/constants'
 
 function formatListItem(key) {
-  return startCase(
-    formatName(key)
-      .replace('bikes', '')
-      .trim()
-  )
+  return formatName(key)
+    .replace('bikes', '')
+    .trim()
 }
 
 function RowItem({ activeCourse, setActiveCourse, courseType }) {
