@@ -30,6 +30,7 @@
 }
 
 .courseName {
+  color: #707070;
   padding: 0.5rem 1rem;
   width: fit-content;
   padding-right: 40px;
@@ -40,6 +41,8 @@
 
   .tableHead {
     background-color: #f6f8fa;
+    color: #707070;
+
     tr {
       font-size: 14px;
       border-bottom: 1px solid #eaeaea;
@@ -49,6 +52,7 @@
     }
   }
   .tableBody {
+    color: #707070;
     tr:not(:last-child) {
       border-bottom: 1px solid #eaeaea;
     }
