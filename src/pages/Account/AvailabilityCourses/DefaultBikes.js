@@ -35,7 +35,7 @@ function DefaultBikes({ schoolId, info, loadCourseTypes, user }) {
             <thead className="thead-light">
               <tr>
                 <th className="align-middle">Course</th>
-                <th className="align-middle">Bikes available</th>
+                <th className="align-middle">Bikes Available</th>
               </tr>
             </thead>
             <tbody>

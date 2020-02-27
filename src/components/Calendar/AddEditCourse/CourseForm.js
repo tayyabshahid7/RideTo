@@ -326,7 +326,6 @@ class CourseForm extends React.Component {
 
   render() {
     const {
-      newCourse,
       isEditable,
       info,
       saving,
@@ -499,7 +498,7 @@ class CourseForm extends React.Component {
                   <div className={styles.bikesAvailable}>
                     <b>Bikes Available</b>
                   </div>
-                  {(!newCourse || available_auto_50cc_bikes) && (
+                  {available_auto_50cc_bikes && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
@@ -519,7 +518,7 @@ class CourseForm extends React.Component {
                       </Col>
                     </Row>
                   )}
-                  {(!newCourse || available_auto_125cc_bikes) && (
+                  {available_auto_125cc_bikes && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
@@ -539,7 +538,7 @@ class CourseForm extends React.Component {
                       </Col>
                     </Row>
                   )}
-                  {(!newCourse || available_manual_50cc_bikes) && (
+                  {available_manual_50cc_bikes && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
@@ -559,7 +558,7 @@ class CourseForm extends React.Component {
                       </Col>
                     </Row>
                   )}
-                  {(!newCourse || available_manual_125cc_bikes) && (
+                  {available_manual_125cc_bikes && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
@@ -579,7 +578,7 @@ class CourseForm extends React.Component {
                       </Col>
                     </Row>
                   )}
-                  {(!newCourse || available_own_bikes) && (
+                  {available_own_bikes && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
