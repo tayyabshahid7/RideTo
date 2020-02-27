@@ -64,6 +64,7 @@ function DefaultBikes({ schoolId, info, loadCourseTypes, user }) {
         onRequestClose={() => {
           setActiveCourse(null)
         }}
+        schoolId={schoolId}
         activeCourse={activeCourse}
         setActiveCourse={setActiveCourse}
       />

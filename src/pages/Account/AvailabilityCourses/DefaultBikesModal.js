@@ -57,7 +57,12 @@ export function formatName(key) {
 export const filterBikes = (activeCourse, [key]) =>
   isFullLicence(activeCourse.constant) ? isDasBike(key) : !isDasBike(key)
 
-function DefaultBikesModal({ activeCourse, setActiveCourse, ...rest }) {
+function DefaultBikesModal({
+  activeCourse,
+  setActiveCourse,
+  schoolId,
+  ...rest
+}) {
   const [isChanged, setIsChanged] = useState(false)
 
   if (!activeCourse) {
@@ -98,7 +103,7 @@ function DefaultBikesModal({ activeCourse, setActiveCourse, ...rest }) {
   const handleSave = async () => {
     try {
       setIsChanged(false)
-      await updateDefaultBikeHire(activeCourse)
+      await updateDefaultBikeHire(activeCourse, schoolId)
       setActiveCourse(null)
     } catch {
       setIsChanged(true)
