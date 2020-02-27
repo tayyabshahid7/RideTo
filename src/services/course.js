@@ -543,10 +543,14 @@ export const getDefaultBikeHire = async course_type => {
   return response
 }
 
-export const updateDefaultBikeHire = async ({ constant, settings }) => {
+export const updateDefaultBikeHire = async (
+  { constant, settings },
+  schoolId
+) => {
   const path = 'school/settings/widget/bike-hire-setup'
   const params = {
     course_type: constant,
+    supplier_id: schoolId,
     ...settings
   }
 
