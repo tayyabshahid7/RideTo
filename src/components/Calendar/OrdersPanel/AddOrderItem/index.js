@@ -11,6 +11,8 @@ import omit from 'lodash/omit'
 import { connect } from 'react-redux'
 import { fetchWidgetSettings } from 'store/settings'
 import { bindActionCreators } from 'redux'
+import { getDefaultBikeHire } from 'services/course'
+import { filter } from 'lodash'
 
 import {
   ConnectInput,
@@ -43,6 +45,8 @@ class AddOrderItem extends React.Component {
         notes: '',
         third_party_optin: false
       },
+      defaultSettings: null,
+      availableBikeHireTypes: null,
       isFullLicence: this.props.course.course_type.constant.startsWith(
         'FULL_LICENCE'
       ),
@@ -69,7 +73,7 @@ class AddOrderItem extends React.Component {
     this.sendStripePayment = this.sendStripePayment.bind(this)
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       updateAdding,
       course,
@@ -81,6 +85,58 @@ class AddOrderItem extends React.Component {
       fetchWidgetSettings()
     }
 
+    if (course.course_type.constant.startsWith('FULL_LICENCE')) {
+      const availableBikeHireTypes = getAvailableBikeHires(
+        course.course_type.constant
+      )
+      this.setState({
+        availableBikeHireTypes
+      })
+    } else {
+      const {
+        available_auto_50cc_bikes,
+        available_auto_125cc_bikes,
+        available_manual_50cc_bikes,
+        available_manual_125cc_bikes,
+        available_own_bikes
+      } = await getDefaultBikeHire(course.course_type.constant)
+
+      let availableBikeHireTypes = getAvailableBikeHires(course)
+
+      if (!available_auto_50cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Automatic Scooter'
+        )
+      }
+      if (!available_auto_125cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Automatic 125cc'
+        )
+      }
+      if (!available_manual_50cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Manual 50cc'
+        )
+      }
+      if (!available_manual_125cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Manual 125cc'
+        )
+      }
+      if (!available_own_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Own Bike'
+        )
+      }
+      this.setState({
+        availableBikeHireTypes
+      })
+    }
     // this.scrollIntoView.current.scrollIntoView()
     setTimeout(() => {
       window.scrollTo(0, 0)
@@ -256,7 +312,6 @@ class AddOrderItem extends React.Component {
     let {
       onCancel,
       info,
-      course,
       course: { pricing },
       widgetSettings
     } = this.props
@@ -269,6 +324,7 @@ class AddOrderItem extends React.Component {
       cardDateComplete,
       cardCVCComplete,
       cardPostCodeComplete,
+      availableBikeHireTypes,
       order: {
         bike_hire,
         full_licence_type,
@@ -293,15 +349,14 @@ class AddOrderItem extends React.Component {
     return (
       <div className={styles.container}>
         <div ref={this.scrollIntoView} />
-        {!showPayment &&
-          !showPaymentConfirmation && (
-            <div className={styles.header}>
-              <span className={styles.leftCol}>
-                <h3 className={styles.title}>Add Order</h3>
-              </span>
-              {/* <span>Step 1 of 2</span> */}
-            </div>
-          )}
+        {!showPayment && !showPaymentConfirmation && (
+          <div className={styles.header}>
+            <span className={styles.leftCol}>
+              <h3 className={styles.title}>Add Order</h3>
+            </span>
+            {/* <span>Step 1 of 2</span> */}
+          </div>
+        )}
         {!showPaymentConfirmation ? (
           <form onSubmit={this.handleSave.bind(this)} ref={this.form}>
             <div className={classnames(showPayment && styles.hideUserForm)}>
@@ -422,7 +477,7 @@ class AddOrderItem extends React.Component {
                 name="bike_hire"
                 selected={bike_hire}
                 label="Bike Hire *"
-                valueArray={getAvailableBikeHires(course)}
+                valueArray={availableBikeHireTypes || []}
                 onChange={value => {
                   this.handleChange('bike_hire', value)
                 }}
@@ -543,4 +598,7 @@ const mapDispatchToProps = dispatch =>
     dispatch
   )
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddOrderItem)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddOrderItem)
