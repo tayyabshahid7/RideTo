@@ -63,8 +63,6 @@ export const showOwnBikeHire = courseType => {
 }
 
 export const getValidCourses = courses => {
-  window.RIDE_TO_DATA.widget_initial.set_cut_off = true
-
   if (window.RIDE_TO_DATA.widget_initial.set_cut_off) {
     let currentTime = moment()
     const dates = courses
