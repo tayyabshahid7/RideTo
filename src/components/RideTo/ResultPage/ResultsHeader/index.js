@@ -12,7 +12,8 @@ class ResultsHeader extends React.Component {
     super(props)
 
     this.state = {
-      postcode: this.props.postcode
+      postcode: this.props.postcode,
+      originalPostcode: this.props.postcode
     }
 
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
@@ -53,7 +54,7 @@ class ResultsHeader extends React.Component {
       handleMobileDateClick,
       showCourseTypeInfo
     } = this.props
-    const { postcode } = this.state
+    const { postcode, originalPostcode } = this.state
 
     return (
       <div className={styles.background}>
@@ -130,7 +131,7 @@ class ResultsHeader extends React.Component {
 
             {searchForLocationRequests > 0 && (
               <RecentSearchsNotification
-                location={postcode}
+                location={originalPostcode}
                 searchForLocationRequests={searchForLocationRequests}
               />
             )}
