@@ -1,6 +1,6 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
-import { FULL_LICENCE_MODULES, BIKE_HIRE } from 'common/constants'
+import { FULL_LICENCE_MODULES } from 'common/constants'
 import moment from 'moment'
 
 export const createStripeToken = async (stripe, data) => {
@@ -40,34 +40,16 @@ export const getStartInTime = (now, startTime) => {
     .join(', ')
 }
 
-export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
-  const simpleLabels = {
-    auto: !isFullLicence ? 'Automatic Scooter' : 'Automatic',
-    manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
-    no: 'Own Bike'
-  }
-
-  if (['auto', 'manual', 'no'].includes(bikeHire)) {
-    return simpleLabels[bikeHire]
-  }
-
-  return getBikeHireOptions(isFullLicence, isInstantBook)[bikeHire]
+export const getMotorbikeLabel = (bikeHire, isFullLicence) => {
+  return getBikeHireOptions(isFullLicence)[bikeHire]
 }
 
 export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
   const { pricing } = course
-  let subTotal = pricing.price
-
-  if (bikeHire !== BIKE_HIRE.NO) {
-    subTotal = pricing.price + pricing.bike_hire_cost
-  }
-
-  // if (
-  //   [BIKE_HIRE.MANUAL, BIKE_HIRE.MANUAL_50CC].includes(bikeHire) &&
-  //   pricing.manual_bike_hire_cost
-  // ) {
-  //   subTotal = pricing.price + pricing.manual_bike_hire_cost
-  // }
+  const subTotal =
+    bikeHire && bikeHire !== 'no'
+      ? pricing.price + pricing.bike_hire_cost
+      : pricing.price
 
   return subTotal - discount
 }
@@ -81,8 +63,6 @@ export const showOwnBikeHire = courseType => {
 }
 
 export const getValidCourses = courses => {
-  window.RIDE_TO_DATA.widget_initial.set_cut_off = true
-
   if (window.RIDE_TO_DATA.widget_initial.set_cut_off) {
     let currentTime = moment()
     const dates = courses

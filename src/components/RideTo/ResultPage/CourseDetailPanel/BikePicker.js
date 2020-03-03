@@ -3,7 +3,6 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { getMotorbikeLabel } from 'services/widget'
 import Loading from 'components/Loading'
-import { BIKE_HIRE } from 'common/constants'
 
 const BikePicker = React.forwardRef(
   (
@@ -14,27 +13,16 @@ const BikePicker = React.forwardRef(
       bike_hire,
       onUpdate,
       course,
-
       isAutoFull,
-      isAuto125Full,
       isManualFull,
-      isManual50Full,
-
-      isAutoAvailable,
-      isAuto125Available,
-      isManualAvailable,
-      isManual50Available,
-
       has_auto_bikes,
-      has_auto_bikes_125cc,
       has_manual_bikes,
-      has_manual_50cc,
-
       isFullLicence,
       loading,
       isWidget,
       needsHelp,
-      isInstantBook
+      has_auto_bikes_125cc,
+      has_manual_50cc
     },
     ref
   ) => {
@@ -80,8 +68,6 @@ const BikePicker = React.forwardRef(
             </div>
           )}
           <div className={isFullLicence && styles.bikeButtons}>
-            {/* auto 50 */}
-
             {has_auto_bikes && (
               <button
                 className={classnames(
@@ -97,42 +83,33 @@ const BikePicker = React.forwardRef(
                     selectedPackageDates: []
                   })
                 }
-                disabled={
-                  (isFullLicence && !has_auto_bikes) ||
-                  (!isFullLicence && (isAutoFull || !isAutoAvailable))
-                }>
-                {getMotorbikeLabel('auto', isFullLicence, isInstantBook)}{' '}
+                disabled={isAutoFull}>
+                {getMotorbikeLabel('auto', isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isAutoFull ? fullText : null}
               </button>
             )}
-
-            {/* auto 125 */}
-
-            {!isFullLicence && has_auto_bikes_125cc && (
+            {!isFullLicence && has_manual_50cc && (
               <button
                 className={classnames(
                   styles.bikeHireBtn,
                   isWidget && styles.widgetBtn,
-                  bike_hire === BIKE_HIRE.AUTO_125CC && styles.activeBtn
+                  bike_hire === 'MANUAL_50CC' && styles.activeBtn
                 )}
                 onClick={() =>
                   onUpdate({
-                    bike_hire: BIKE_HIRE.AUTO_125CC,
+                    bike_hire: 'MANUAL_50CC',
                     selectedLicenceType: null,
                     selectedPackageDays: '',
                     selectedPackageDates: []
                   })
                 }
-                disabled={isAuto125Full || !isAuto125Available}>
-                {getMotorbikeLabel(BIKE_HIRE.AUTO_125CC, isFullLicence)}{' '}
+                disabled={isManualFull}>
+                {getMotorbikeLabel('MANUAL_50CC', isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-                {isAuto125Full ? fullText : null}
+                {isManualFull ? fullText : null}
               </button>
             )}
-
-            {/* manual 125 */}
-
             {has_manual_bikes && (
               <button
                 className={classnames(
@@ -148,42 +125,15 @@ const BikePicker = React.forwardRef(
                     selectedPackageDates: []
                   })
                 }
-                disabled={
-                  (isFullLicence && !has_manual_bikes) ||
-                  (!isFullLicence && (isManualFull || !isManualAvailable))
-                }>
+                disabled={isManualFull}>
                 {getMotorbikeLabel('manual', isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isManualFull ? fullText : null}
               </button>
             )}
-
-            {/* manual 50 */}
-
-            {!isFullLicence && has_manual_50cc && (
-              <button
-                className={classnames(
-                  styles.bikeHireBtn,
-                  isWidget && styles.widgetBtn,
-                  bike_hire === BIKE_HIRE.MANUAL_50CC && styles.activeBtn
-                )}
-                onClick={() =>
-                  onUpdate({
-                    bike_hire: BIKE_HIRE.MANUAL_50CC,
-                    selectedLicenceType: null,
-                    selectedPackageDays: '',
-                    selectedPackageDates: []
-                  })
-                }
-                disabled={isManual50Full || !isManual50Available}>
-                {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC, isFullLicence)}{' '}
-                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-                {isManual50Full ? fullText : null}
-              </button>
-            )}
           </div>
           {isCbt &&
-            ['manual', BIKE_HIRE.MANUAL_50CC].includes(bike_hire) &&
+            ['manual', 'MANUAL_50CC'].includes(bike_hire) &&
             !isItm &&
             manualText}
           {isFullLicence &&

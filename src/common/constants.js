@@ -17,12 +17,14 @@ export const WEEK_VIEW_WORKING_DAY_TIME_STRING = '07:00'
 export const WORK_HOURS = 24
 export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 
+// export const COLOR_RED_1 = '#fa0e0e'
+// export const COLOR_YELLOW_1 = '#fa840e'
 export const BIKE_HIRE = {
-  MANUAL: 'BIKE_TYPE_MANUAL',
-  AUTO: 'BIKE_TYPE_AUTO',
-  NO: 'BIKE_TYPE_NONE',
-  AUTO_125CC: 'BIKE_TYPE_AUTO_125CC',
-  MANUAL_50CC: 'BIKE_TYPE_MANUAL_50CC'
+  MANUAL: 'manual',
+  AUTO: 'auto',
+  NO: 'no',
+  AUTO_125CC: 'AUTO_125CC',
+  MANUAL_50CC: 'MANUAL_50CC'
 }
 
 export const RIDING_EXPERIENCE = {
@@ -135,29 +137,4 @@ export const CALENDAR_COLOURS = {
   GEAR_CONVERSION_COURSE: '#e0fff9',
   INSTRUCTOR: '#a5bbff',
   EVENT: '#ebebeb'
-}
-
-export const DEFAULT_SETTINGS = {
-  available_auto_50cc_bikes: true,
-  default_number_auto_50cc_bikes: 0,
-  available_auto_125cc_bikes: true,
-  default_number_auto_125cc_bikes: 0,
-  available_manual_50cc_bikes: true,
-  default_number_manual_50cc_bikes: 0,
-  available_manual_125cc_bikes: true,
-  default_number_manual_125cc_bikes: 0,
-  available_own_bikes: true,
-  default_number_own_bikes: 0,
-  available_a1_auto_bikes: true,
-  a1_auto_bikes: 0,
-  available_a1_manual_bikes: true,
-  a1_manual_bikes: 0,
-  available_a2_auto_bikes: true,
-  a2_auto_bikes: 0,
-  available_a2_manual_bikes: true,
-  a2_manual_bikes: 0,
-  available_a_auto_bikes: true,
-  a_auto_bikes: 0,
-  available_a_manual_bikes: true,
-  a_manual_bikes: 0
 }

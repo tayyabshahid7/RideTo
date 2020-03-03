@@ -8,7 +8,6 @@ import CalendarLabels from './CalendarLabels'
 import SchoolSelect from 'components/SchoolSelect'
 import isEqual from 'lodash/isEqual'
 import Loading from 'components/Loading'
-import DefaultBikes from './DefaultBikes'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
@@ -160,8 +159,7 @@ class AvailabilityCourses extends React.Component {
       settings,
       updateSettings,
       editInstructor,
-      updateDiaryColor,
-      user
+      updateDiaryColor
     } = this.props
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
@@ -197,14 +195,6 @@ class AvailabilityCourses extends React.Component {
             updateSettings={updateSettings}
             editInstructor={editInstructor}
             updateDiaryColor={updateDiaryColor}
-          />
-        </div>
-        <div className={styles.box}>
-          <DefaultBikes
-            user={user}
-            info={info}
-            loadCourseTypes={loadCourseTypes}
-            schoolId={schoolId}
           />
         </div>
       </Fragment>

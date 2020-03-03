@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { Redirect } from 'react-router-dom'
-import { BIKE_HIRE } from 'common/constants'
+
 import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence.js'
 import Calendar from 'pages/Widget/components/Calendar'
 import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
@@ -44,7 +44,7 @@ class BookingOptionsContainer extends React.Component {
       availableCourses: [],
       selectedCourse: null,
       selectedDate: null,
-      selectedBikeHire: !isFullLicence ? BIKE_HIRE.NO : '',
+      selectedBikeHire: !isFullLicence ? 'no' : '',
       month: moment().startOf('month'),
       isLoading: true,
       isFullLicence,
@@ -163,18 +163,16 @@ class BookingOptionsContainer extends React.Component {
       availableCourses
     )
 
-    let selectedBikeHire = showOwnBikeHire(courseType)
-      ? BIKE_HIRE.NO
-      : BIKE_HIRE.AUTO
+    let selectedBikeHire = showOwnBikeHire(courseType) ? 'no' : 'auto'
 
     const defaultCourse = selectedCourses[0]
 
     if (
-      selectedBikeHire === BIKE_HIRE.AUTO &&
+      selectedBikeHire === 'auto' &&
       defaultCourse &&
       defaultCourse.auto_count >= defaultCourse.auto_bikes
     ) {
-      selectedBikeHire = BIKE_HIRE.MANUAL
+      selectedBikeHire = 'manual'
     }
 
     const isFullLicence = courseType.constant === 'FULL_LICENCE'
@@ -221,17 +219,17 @@ class BookingOptionsContainer extends React.Component {
     )
 
     let selectedBikeHire = showOwnBikeHire(this.state.courseType)
-      ? BIKE_HIRE.NO
-      : BIKE_HIRE.AUTO
+      ? 'no'
+      : 'auto'
 
     const defaultCourse = selectedCourses[0]
 
     if (
-      selectedBikeHire === BIKE_HIRE.AUTO &&
+      selectedBikeHire === 'auto' &&
       defaultCourse &&
       defaultCourse.auto_count >= defaultCourse.auto_bikes
     ) {
-      selectedBikeHire = BIKE_HIRE.MANUAL
+      selectedBikeHire = 'manual'
     }
 
     this.setState({
@@ -244,9 +242,7 @@ class BookingOptionsContainer extends React.Component {
   handleChangeCourse(selectedCourse) {
     this.setState({
       selectedCourse,
-      selectedBikeHire: showOwnBikeHire(this.state.courseType)
-        ? BIKE_HIRE.NO
-        : BIKE_HIRE.AUTO
+      selectedBikeHire: showOwnBikeHire(this.state.courseType) ? 'no' : 'auto'
     })
   }
 
