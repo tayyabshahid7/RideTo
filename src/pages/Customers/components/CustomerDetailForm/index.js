@@ -73,7 +73,7 @@ class CustomerDetailForm extends React.Component {
           textStyle
           label="Current Licence"
           name="current_licence"
-          options={getCurrentLicenceOptions()}
+          options={getCurrentLicenceOptions().concat({ id: '', name: '' })}
           selected={currentDriversLicence ? currentDriversLicence.id : ''}
           onChange={value => onChange({ ...customer, current_licence: value })}
           disabled={!isAdmin}
