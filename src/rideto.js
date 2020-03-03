@@ -23,7 +23,7 @@ mountComponent('ReviewSlider', 'rideto-home-reviews')
 
 mountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
-mountComponent('NewsLetterBanner', 'rideto-news-letter-banner')
+// mountComponent('NewsLetterBanner', 'rideto-news-letter-banner')
 
 mountComponent('CourseAlternativeDatesSelection', 'alternative-dates-root')
 
