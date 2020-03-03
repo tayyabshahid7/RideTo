@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { getDefaultFullLicencePackage } from 'services/course'
 import { flashDiv } from 'services/page'
 import { parseQueryString } from 'services/api'
+import { normalizePostCode } from 'utils/helper'
 
 const QUESTIONS = [
   {
@@ -186,9 +187,9 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
               className={classnames(styles.cbtRequired, 'highlight-required')}>
               You first need to complete the CBT course.{' '}
               <a
-                href={`/course-location/?postcode=${
+                href={`/course-location/?postcode=${normalizePostCode(
                   parseQueryString(window.location.search.slice(1)).postcode
-                }&courseType=LICENCE_CBT`}>
+                )}&courseType=LICENCE_CBT`}>
                 View CBT courses
               </a>
               .

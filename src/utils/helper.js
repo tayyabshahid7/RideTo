@@ -52,6 +52,10 @@ export const getTimeFromDateTime = dateTime => {
   return dateTime ? moment(dateTime, DAY_FORMAT4).format('HH:mm') : ''
 }
 
+export const normalizePostCode = postcode => {
+  return postcode.toLowerCase()
+}
+
 export const generateRandomString = (length = 10) => {
   let text = ''
   let possible =

@@ -8,7 +8,8 @@ import { createPOM } from 'utils/helper'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import styles from './styles.scss'
-import { capitalizeFirstLetter } from 'utils/helper'
+import { capitalizeFirstLetter, normalizePostCode } from 'utils/helper'
+
 import { Modal } from 'reactstrap'
 import POMModal from './POMModal'
 
@@ -24,7 +25,8 @@ function addCheckoutToHeader() {
 }
 
 function backToResults(postcode) {
-  const path = `/course-location/?postcode=${postcode}&courseType=LICENCE_CBT`
+  const normalizedPostCode = normalizePostCode(postcode)
+  const path = `/course-location/?postcode=${normalizedPostCode}&courseType=LICENCE_CBT`
 
   window.location = path
 }
