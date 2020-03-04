@@ -27,7 +27,9 @@ const OrdersPanelItem = ({
       </div>
       <div className={styles.row}>
         {training.bike_hire && (
-          <div className={styles.bikeType}>{training.bike_hire}</div>
+          <div className={styles.bikeType}>
+            {training.bike_hire === 'None' ? 'Own Bike' : training.bike_hire}
+          </div>
         )}
         {training.status && (
           <div className={styles.status}>
