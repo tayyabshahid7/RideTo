@@ -272,7 +272,8 @@ class CourseForm extends React.Component {
       instructors,
       testCentres,
       pricing,
-      onRemove
+      onRemove,
+      orderCount
     } = this.props
     const { edited } = this.state
     const {
@@ -680,7 +681,11 @@ class CourseForm extends React.Component {
                   <Button small color="white" onClick={this.handleToggleEdit}>
                     Cancel
                   </Button>
-                  <Button small color="danger" onClick={onRemove}>
+                  <Button
+                    small
+                    color="danger"
+                    onClick={onRemove}
+                    disabled={orderCount > 0}>
                     Delete
                   </Button>
                 </div>
