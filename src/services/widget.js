@@ -81,7 +81,7 @@ export const showOwnBikeHire = courseType => {
 }
 
 export const getValidCourses = courses => {
-  if (window.RIDE_TO_DATA.widget_initial.set_cut_off) {
+  if (window.RIDE_TO_DATA.widget_initial.disabled_widget_cuttoff_time) {
     let currentTime = moment()
     const dates = courses
       .filter(({ date, time }) => {
