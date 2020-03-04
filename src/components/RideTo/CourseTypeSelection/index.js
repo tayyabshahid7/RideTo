@@ -8,6 +8,7 @@ import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFil
 import Button from 'components/RideTo/Button'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import classnames from 'classnames'
+import { normalizePostCode } from 'utils/helper'
 
 import Loading from 'components/Loading'
 
@@ -21,10 +22,12 @@ const CourseTypeDetails = loadable(() =>
 )
 
 const getBookUrl = (courseType, postcode) => {
+  const normalizedPostCode = normalizePostCode(postcode)
+
   if (courseType === 'TFL_ONE_ON_ONE') {
     return 'https://rideto.typeform.com/to/axybpw'
   } else {
-    return `/course-location/?postcode=${postcode}&courseType=${courseType}`
+    return `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}`
   }
 }
 

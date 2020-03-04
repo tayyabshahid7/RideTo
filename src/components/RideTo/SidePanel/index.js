@@ -63,7 +63,7 @@ class SidePanel extends React.Component {
     return (
       <div className={className}>
         <div className={styles.overlay} onClick={onDismiss} />
-        <div className={styles.sidePanel} ref={this.sidePanel}>
+        <div className={styles.sidePanel} ref={this.sidePanel} id="sidepanel">
           <div className={styles.headingImage} style={headingStyle}>
             <img src={closeImg} alt="Close" onClick={onDismiss} />
           </div>

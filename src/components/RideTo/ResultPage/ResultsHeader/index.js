@@ -4,6 +4,7 @@ import { getCourseTitle } from 'services/course'
 import Input from './Input'
 import moment from 'moment'
 import InfoBox from './InfoBox'
+import RecentSearchsNotification from './RecentSearchsNotification'
 import MediaQuery from 'react-responsive'
 
 class ResultsHeader extends React.Component {
@@ -11,7 +12,8 @@ class ResultsHeader extends React.Component {
     super(props)
 
     this.state = {
-      postcode: this.props.postcode
+      postcode: this.props.postcode,
+      originalPostcode: this.props.postcode
     }
 
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
@@ -45,13 +47,14 @@ class ResultsHeader extends React.Component {
   render() {
     const {
       courseType,
+      searchForLocationRequests,
       date,
       courseTypesOptions,
       isFullLicence,
       handleMobileDateClick,
       showCourseTypeInfo
     } = this.props
-    const { postcode } = this.state
+    const { postcode, originalPostcode } = this.state
 
     return (
       <div className={styles.background}>
@@ -125,6 +128,13 @@ class ResultsHeader extends React.Component {
                 />
               </MediaQuery>
             </div>
+
+            {searchForLocationRequests > 0 && (
+              <RecentSearchsNotification
+                location={originalPostcode}
+                searchForLocationRequests={searchForLocationRequests}
+              />
+            )}
           </div>
         </div>
       </div>

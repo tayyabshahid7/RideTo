@@ -10,6 +10,7 @@ import Loading from 'components/Loading'
 import classnames from 'classnames'
 import WidgetPromoCodes from './WidgetPromoCodes'
 import { ConnectSelect } from 'components/ConnectForm'
+import Checkbox from 'components/Checkbox'
 import range from 'lodash/range'
 
 const TIMES = [
@@ -39,6 +40,7 @@ class WidgetSettingsForm extends React.Component {
       cancellation: '',
       terms: '',
       last_time_book: '18:00:00',
+      disabled_widget_cuttoff_time: '',
       enable_third_party_optin: false
     }
     Object.assign(settings, this.props.settings ? this.props.settings : {})
@@ -133,6 +135,7 @@ class WidgetSettingsForm extends React.Component {
   handleSaveClick(el) {
     const { onSubmit } = this.props
     const { settings } = this.state
+
     onSubmit(settings)
     this.setState({
       [`${el}Editable`]: false,
@@ -156,6 +159,7 @@ class WidgetSettingsForm extends React.Component {
       cancellation,
       terms,
       last_time_book,
+      disabled_widget_cuttoff_time,
       enable_third_party_optin
     } = this.state.settings
     return (
@@ -400,11 +404,13 @@ class WidgetSettingsForm extends React.Component {
                 <h3 className={styles.title}>Widget Booking Settings</h3>
                 <p>
                   Set the cut off time for customers to be able to book courses
-                  the next day. E.g. 22:00Hrs the night before.
+                  the next day. E.g. 22:00Hrs the night before. Disable this
+                  feature to set widget cut off time to 2 hours before course
+                  start time.
                 </p>
               </div>
               <Row>
-                <Col sm="3">
+                <Col xs="12" sm="3">
                   <ConnectSelect
                     basic
                     name="last_time_book"
@@ -413,9 +419,18 @@ class WidgetSettingsForm extends React.Component {
                     valueArray={TIMES}
                     noSelectOption
                     onChange={this.handleChangeRawEvent.bind(this)}
+                    disabled={disabled_widget_cuttoff_time}
                     raw
                     required
                   />
+                </Col>
+                <Col xs="12" sm="6">
+                  <Checkbox
+                    name="disabled_widget_cuttoff_time"
+                    checked={disabled_widget_cuttoff_time}
+                    onChange={this.handleChangeRawEvent.bind(this)}>
+                    Disable widget cut off time
+                  </Checkbox>
                 </Col>
               </Row>
               <Row>

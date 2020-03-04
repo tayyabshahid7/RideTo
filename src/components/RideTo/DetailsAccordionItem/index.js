@@ -7,6 +7,7 @@ import closeImg from '../../../assets/images/rideto/CloseDark.svg'
 
 const DetailsAccordionItem = ({
   title,
+  name,
   content,
   isOpen,
   onToggle,
@@ -20,6 +21,7 @@ const DetailsAccordionItem = ({
   const contentClassName = classnames(styles.content, isOpen && styles.open)
   return (
     <div
+      name={name}
       className={classnames(
         styles.detailsAccordionItem,
         spacedOut && styles.detailsAccordionItemSpaced,

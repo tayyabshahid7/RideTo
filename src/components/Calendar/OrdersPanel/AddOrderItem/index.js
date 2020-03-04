@@ -3,7 +3,10 @@ import styles from './styles.scss'
 import { Row, Col } from 'reactstrap'
 import { FullLicenceTypes, getAvailableBikeHires } from 'common/info'
 import { getPaymentOptions } from 'services/order'
-import { checkCustomerExists } from 'services/customer'
+import {
+  checkCustomerExists,
+  getCurrentLicenceOptions
+} from 'services/customer'
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
@@ -28,7 +31,7 @@ class AddOrderItem extends React.Component {
       order: {
         school_course: this.props.course.id,
         user_birthdate: '',
-        user_driving_licence_number: '',
+        current_licence: '',
         user_email: '',
         user_first_name: '',
         user_last_name: '',
@@ -275,7 +278,7 @@ class AddOrderItem extends React.Component {
         payment_status,
         riding_experience,
         user_birthdate,
-        user_driving_licence_number,
+        current_licence,
         user_email,
         user_first_name,
         user_last_name,
@@ -289,7 +292,6 @@ class AddOrderItem extends React.Component {
     const price = pricing && pricing.price
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
-
     return (
       <div className={styles.container}>
         <div ref={this.scrollIntoView} />
@@ -377,14 +379,16 @@ class AddOrderItem extends React.Component {
                 />
               )}
 
-              <ConnectInput
+              <ConnectSelect
+                placeholder
                 basic
-                name="user_driving_licence_number"
-                value={user_driving_licence_number}
-                label="Licence Number"
-                className="form-group"
-                type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                name="current_licence"
+                selected={current_licence}
+                label="Current Licence"
+                options={getCurrentLicenceOptions()}
+                onChange={value => {
+                  this.handleChange('current_licence', value)
+                }}
               />
 
               <ConnectSelect

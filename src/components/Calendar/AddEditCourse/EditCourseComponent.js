@@ -138,6 +138,7 @@ class EditCourseComponent extends Component {
           />
 
           <CourseForm
+            orderCount={course.orders ? course.orders.length : 0}
             {...this.props}
             isEditable={true}
             onSetEditable={isEditable =>

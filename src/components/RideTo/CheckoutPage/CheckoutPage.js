@@ -735,7 +735,7 @@ class CheckoutPage extends Component {
           window.localStorage.setItem('username', firstName)
         }
         window.localStorage.setItem('gaok', true) // Set Google Analytics Flag
-        window.location.href = `/account/dashboard/${order.id}`
+        window.location.href = `/${order.id}/thank-you/`
       } else {
         this.setState({ saving: false })
       }
@@ -794,9 +794,16 @@ class CheckoutPage extends Component {
 
     const resultEmail = await saveCheckoutEmail(details.email, checkoutData)
 
-    if (resultEmail) {
+    if (!resultEmail.error) {
       this.setState({
         emailSubmitted: true
+      })
+    } else if (resultEmail.error) {
+      this.setState({
+        errors: {
+          email: resultEmail.errorMessage,
+          divId: this.getErrorDivId('email')
+        }
       })
     }
   }

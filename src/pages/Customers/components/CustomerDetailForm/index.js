@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form } from 'reactstrap'
-
 import styles from './CustomerDetailForm.scss'
+import { find } from 'lodash'
 import {
   isRideTo,
   getRidingExperienceOptions,
@@ -41,7 +41,10 @@ class CustomerDetailForm extends React.Component {
 
   render() {
     const { customer, onChange, isDisabled, onCancel, isAdmin } = this.props
-
+    let currentDriversLicence = find(
+      getCurrentLicenceOptions(),
+      option => option.id === customer.current_licence
+    )
     return (
       <Form className={styles.panel} onSubmit={this.handleSubmit}>
         <div className={styles.phoneInput}>
@@ -70,8 +73,8 @@ class CustomerDetailForm extends React.Component {
           textStyle
           label="Current Licence"
           name="current_licence"
-          options={getCurrentLicenceOptions()}
-          selected={customer.current_licence || ''}
+          options={getCurrentLicenceOptions().concat({ id: '', name: '' })}
+          selected={currentDriversLicence ? currentDriversLicence.id : ''}
           onChange={value => onChange({ ...customer, current_licence: value })}
           disabled={!isAdmin}
         />

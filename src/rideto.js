@@ -23,7 +23,7 @@ mountComponent('ReviewSlider', 'rideto-home-reviews')
 
 mountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
-mountComponent('NewsLetterBanner', 'rideto-news-letter-banner')
+// mountComponent('NewsLetterBanner', 'rideto-news-letter-banner')
 
 mountComponent('CourseAlternativeDatesSelection', 'alternative-dates-root')
 
@@ -38,6 +38,11 @@ mountComponent('CourseTypeSelection', 'rideto-course-type-selection', {}, false)
 mountComponent('AddonSelection', 'rideto-addon-selection', {}, false)
 
 mountComponent('CheckoutPage', 'rideto-checkout')
+
+mountComponent(
+  'OrderConfirmationThankYouPage',
+  'order-confirmation-thank-you-root'
+)
 
 mountComponent('FooterLinks', 'rideto-mobile-footer-links')
 

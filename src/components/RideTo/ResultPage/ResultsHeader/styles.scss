@@ -261,3 +261,38 @@
     display: none;
   }
 }
+
+.recentSearchContainer {
+  padding-top: 5px;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+
+  .recentSearchIcon {
+    height: 40px;
+    width: auto;
+    padding-right: 10px;
+  }
+
+  .recentSearchText {
+    font-family: var(--font-proxima);
+    font-size: 15px;
+  }
+
+  @media (max-width: 769px) {
+    justify-content: space-between;
+    margin-left: -12px;
+    margin-right: -12px;
+    flex-direction: row-reverse;
+    .recentSearchIcon {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+  }
+  @media (max-width: 376px) {
+    .recentSearchText {
+      font-size: 14px;
+    }
+  }
+}

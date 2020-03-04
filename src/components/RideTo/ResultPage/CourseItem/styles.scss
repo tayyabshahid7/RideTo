@@ -10,10 +10,15 @@
   }
 }
 
-.callUs {
+.callUs,
+.pom {
   @media (max-width: 768px) {
     height: 200px;
   }
+}
+
+.pom {
+  margin-top: 50px;
 }
 
 .photo {

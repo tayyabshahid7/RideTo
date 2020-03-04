@@ -63,44 +63,58 @@ export const showOwnBikeHire = courseType => {
 }
 
 export const getValidCourses = courses => {
-  const defaultCutOffTime = '18:00:00'
-  const cutOffTime =
-    window.RIDE_TO_DATA.widget_initial.last_time_book || defaultCutOffTime
-  const [cutOffHours, cutOffMinutes, cutOffSeconds] = cutOffTime.split(':')
+  if (window.RIDE_TO_DATA.widget_initial.disabled_widget_cuttoff_time) {
+    let currentTime = moment()
+    const dates = courses
+      .filter(({ date, time }) => {
+        const courseStartDate = moment(`${date} ${time}`)
+        return currentTime.isBefore(courseStartDate.subtract({ hours: 2 }))
+      })
+      .sort(
+        (a, b) =>
+          new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)
+      )
 
-  let today = moment()
-  let tomorrow = moment()
-    .add(1, 'days')
-    .hours(parseInt(cutOffHours))
-    .minutes(parseInt(cutOffMinutes))
-    .seconds(parseInt(cutOffSeconds))
+    return dates
+  } else {
+    const defaultCutOffTime = '18:00:00'
+    const cutOffTime =
+      window.RIDE_TO_DATA.widget_initial.last_time_book || defaultCutOffTime
+    const [cutOffHours, cutOffMinutes, cutOffSeconds] = cutOffTime.split(':')
 
-  const dates = courses
-    .filter(({ date, time }) => {
-      let momentDate = moment(date)
-      let dateInString = momentDate.format('YYYY-MM-DD')
+    let today = moment()
+    let tomorrow = moment()
+      .add(1, 'days')
+      .hours(parseInt(cutOffHours))
+      .minutes(parseInt(cutOffMinutes))
+      .seconds(parseInt(cutOffSeconds))
 
-      if (momentDate.isSameOrBefore(today)) {
-        return false
-      } else if (
-        moment(dateInString).isSame(tomorrow.format('YYYY-MM-DD')) &&
-        (today.hour() > tomorrow.hour() ||
-          (today.hour() === tomorrow.hour() &&
-            today.minute() > tomorrow.minute()))
-      ) {
-        return false
-      }
+    const dates = courses
+      .filter(({ date, time }) => {
+        let momentDate = moment(date)
+        let dateInString = momentDate.format('YYYY-MM-DD')
 
-      return true
-    })
-    .sort(
-      (a, b) =>
-        new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)
-    )
+        if (momentDate.isSameOrBefore(today)) {
+          return false
+        } else if (
+          moment(dateInString).isSame(tomorrow.format('YYYY-MM-DD')) &&
+          (today.hour() > tomorrow.hour() ||
+            (today.hour() === tomorrow.hour() &&
+              today.minute() > tomorrow.minute()))
+        ) {
+          return false
+        }
 
-  return dates
+        return true
+      })
+      .sort(
+        (a, b) =>
+          new Date(`${a.date} ${a.time}`) - new Date(`${b.date} ${b.time}`)
+      )
+
+    return dates
+  }
 }
-
 export const getEarliestCourse = courses => {
   const dates = getValidCourses(courses)
 

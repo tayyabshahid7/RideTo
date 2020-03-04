@@ -24,7 +24,7 @@ import isEqual from 'lodash/isEqual'
 import { isBankHoliday } from 'services/misc'
 import { getCourseIdFromSearch } from 'services/course'
 import { Redirect } from 'react-router-dom'
-import { setParam, deleteParam } from 'utils/helper'
+import { setParam, deleteParam, normalizePostCode } from 'utils/helper'
 import { getStaticData, flashDiv } from 'services/page'
 import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
@@ -73,7 +73,8 @@ class ResultPage extends Component {
       isShowCourseTypeInfo: false,
       isErrored: false,
       formCompletedWithoutTheory: false,
-      isMobileMapVisible: false
+      isMobileMapVisible: false,
+      openedCourseTypeDetails: null
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -104,8 +105,9 @@ class ResultPage extends Component {
     })
   }
 
-  showCourseTypeInfo() {
+  showCourseTypeInfo(openedCourseTypeDetails = null) {
     this.setState({
+      openedCourseTypeDetails,
       isShowCourseTypeInfo: true
     })
   }
@@ -190,12 +192,13 @@ class ResultPage extends Component {
     })
   }
 
-  handlePostcodeChange(newPostcode) {
+  async handlePostcodeChange(newPostcode) {
     const qs = parseQueryString(window.location.search.slice(1))
     const actualPostcode = qs.postcode ? qs.postcode.toUpperCase() : ''
     const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     if (actualPostcode !== newPostcode) {
-      window.location = `/course-location/?postcode=${newPostcode}&courseType=${courseType}`
+      const normalizedPostCode = normalizePostCode(newPostcode)
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}`
     }
   }
 
@@ -217,7 +220,8 @@ class ResultPage extends Component {
       actualCourseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     }
     if (actualCourseType !== newCourseType) {
-      window.location = `/course-location/?postcode=${postcode}&courseType=${newCourseType}`
+      const normalizedPostCode = normalizePostCode(postcode)
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${newCourseType}`
     }
   }
 
@@ -670,7 +674,8 @@ class ResultPage extends Component {
       isShowCourseTypeInfo,
       selectedCourseType,
       isErrored,
-      isMobileMapVisible
+      isMobileMapVisible,
+      openedCourseTypeDetails
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -737,10 +742,18 @@ class ResultPage extends Component {
         />
       )
     }
+    let searchForLocationRequests = 0
+    if (courses) {
+      try {
+        searchForLocationRequests =
+          courses['available'][0].percentage_of_searcher
+      } catch {}
+    }
 
     return (
       <div className={styles.container}>
         <ResultsHeader
+          searchForLocationRequests={searchForLocationRequests}
           courseType={courseType}
           postcode={postcode}
           date={date}
@@ -872,11 +885,18 @@ class ResultPage extends Component {
                                       (courses.available.length < 3 &&
                                         index === courses.available.length - 1)
                                     }
+                                    showPomMessage={
+                                      courseType === 'LICENCE_CBT' &&
+                                      index === 3
+                                    }
                                     courseType={courseType}
                                     id={`card-course-${course.id}`}
                                     course={course}
                                     className={styles.courseSpacing}
                                     key={course.id}
+                                    showCourseTypeInfo={() =>
+                                      this.showCourseTypeInfo('pom')
+                                    }
                                     handleDetailClick={this.handleDetailClick}
                                     handlePriceClick={this.handlePriceClick}
                                     handleReviewClick={this.handleReviewClick}
@@ -994,7 +1014,10 @@ class ResultPage extends Component {
             visible
             headingImage={selectedCourseType.details.image}
             onDismiss={this.hideCourseTypeInfo}>
-            <CourseTypeDetails courseType={selectedCourseType} />
+            <CourseTypeDetails
+              courseType={selectedCourseType}
+              opened={openedCourseTypeDetails}
+            />
           </SidePanel>
         )}
 
