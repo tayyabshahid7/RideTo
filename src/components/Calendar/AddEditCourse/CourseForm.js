@@ -168,7 +168,7 @@ class CourseForm extends React.Component {
   }
 
   loadDefaultBikes() {
-    const { newCourse } = this.props
+    const { newCourse, schoolId } = this.props
     const { defaultBikes, loadingDefaultBikes } = this.state
     const { course_type_id } = this.state.course
     const { courseTypes } = this.props.info
@@ -191,7 +191,7 @@ class CourseForm extends React.Component {
       this.setState({
         loadingDefaultBikes: true
       })
-      getDefaultBikeHire(constant).then(res => {
+      getDefaultBikeHire(constant, schoolId).then(res => {
         this.setState({
           loadingDefaultBikes: false,
           defaultBikes: {

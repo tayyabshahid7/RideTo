@@ -81,7 +81,8 @@ class AddOrderItem extends React.Component {
       updateAdding,
       course,
       widgetSettings,
-      fetchWidgetSettings
+      fetchWidgetSettings,
+      schoolId
     } = this.props
 
     if (!widgetSettings) {
@@ -102,7 +103,7 @@ class AddOrderItem extends React.Component {
         available_manual_50cc_bikes,
         available_manual_125cc_bikes,
         available_own_bikes
-      } = await getDefaultBikeHire(course.course_type.constant)
+      } = await getDefaultBikeHire(course.course_type.constant, schoolId)
 
       let availableBikeHireTypes = getAvailableBikeHires(course)
 

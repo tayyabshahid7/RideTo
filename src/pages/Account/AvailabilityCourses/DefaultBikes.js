@@ -49,6 +49,7 @@ function DefaultBikes({ schoolId, info, loadCourseTypes, user }) {
                   return (
                     <RowItem
                       key={courseType.id}
+                      schoolId={schoolId}
                       courseType={courseType}
                       activeCourse={activeCourse}
                       setActiveCourse={setActiveCourse}

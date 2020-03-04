@@ -10,7 +10,7 @@ function formatListItem(key) {
     .trim()
 }
 
-function RowItem({ activeCourse, setActiveCourse, courseType }) {
+function RowItem({ activeCourse, setActiveCourse, courseType, schoolId }) {
   const { name, constant } = courseType
   const [loading, setLoading] = useState(true)
   const [settings, setSettings] = useState(null)
@@ -18,7 +18,7 @@ function RowItem({ activeCourse, setActiveCourse, courseType }) {
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const response = await getDefaultBikeHire(constant)
+        const response = await getDefaultBikeHire(constant, schoolId)
 
         setSettings(response)
       } catch {

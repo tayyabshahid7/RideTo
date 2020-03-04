@@ -83,13 +83,16 @@ class CreateBulkCourse extends React.Component {
     }
   }
 
-  loadCourseSettings = async course_type_id => {
+  loadCourseSettings = async (course_type_id, schoolId) => {
     try {
       const currentCourseTypeConstant = _.find(
         this.props.info.courseTypes,
         courseType => courseType.id.toString() === course_type_id
       ).constant
-      const response = await getDefaultBikeHire(currentCourseTypeConstant)
+      const response = await getDefaultBikeHire(
+        currentCourseTypeConstant,
+        schoolId
+      )
       this.setState({
         settings: response,
         useDefaultBikeAmounts: false
@@ -151,7 +154,8 @@ class CreateBulkCourse extends React.Component {
     if (this.state.course.course_type_id && this.state.useDefaultBikeAmounts) {
       let { course } = this.state
       const updatedCourse = await this.loadCourseSettings(
-        this.state.course.course_type_id
+        this.state.course.course_type_id,
+        this.props.schoolId
       )
       if (updatedCourse) course = updatedCourse
       this.setState({ course })
@@ -163,7 +167,10 @@ class CreateBulkCourse extends React.Component {
     let { course } = this.state
     course[name] = event.target.value
     if (name === 'course_type_id') {
-      const updatedCourse = await this.loadCourseSettings(course.course_type_id)
+      const updatedCourse = await this.loadCourseSettings(
+        course.course_type_id,
+        this.props.schoolId
+      )
       if (updatedCourse) course = updatedCourse
     }
     this.setState({ course })

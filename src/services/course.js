@@ -534,9 +534,12 @@ export const filterExtraCourses = type => {
   )
 }
 
-export const getDefaultBikeHire = async course_type => {
+export const getDefaultBikeHire = async (course_type, schoolId) => {
   const path = 'school/settings/widget/bike-hire-setup/'
-  const params = { course_type }
+  const params = {
+    course_type,
+    supplier_id: schoolId
+  }
 
   const response = await get(path, params, true)
 
