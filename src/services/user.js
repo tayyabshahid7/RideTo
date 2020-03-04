@@ -4,19 +4,26 @@ import { normalizePostCode } from 'utils/helper'
 
 export const saveCheckoutEmail = async (email, course) => {
   const path = `save-checkout-email`
-  const response = await post(
-    path,
-    {
-      email,
-      course: {
-        ...course,
-        url: `/course-location/?postcode=${normalizePostCode(
-          course.postcode
-        )}&courseType=${course.courseType}&courseId=${course.supplierId}`
-      }
-    },
-    false
-  )
+  let response = {}
+  try {
+    response = await post(
+      path,
+      {
+        email,
+        course: {
+          ...course,
+          url: `/course-location/?postcode=${normalizePostCode(
+            course.postcode
+          )}&courseType=${course.courseType}&courseId=${course.supplierId}`
+        }
+      },
+      false
+    )
+  } catch (error) {
+    response.error = true
+    response.errorMessage =
+      'We ran into a technical issue. Please try again later!'
+  }
   return response
 }
 

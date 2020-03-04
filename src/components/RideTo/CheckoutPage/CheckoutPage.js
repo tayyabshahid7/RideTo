@@ -794,9 +794,16 @@ class CheckoutPage extends Component {
 
     const resultEmail = await saveCheckoutEmail(details.email, checkoutData)
 
-    if (resultEmail) {
+    if (!resultEmail.error) {
       this.setState({
         emailSubmitted: true
+      })
+    } else if (resultEmail.error) {
+      this.setState({
+        errors: {
+          email: resultEmail.errorMessage,
+          divId: this.getErrorDivId('email')
+        }
       })
     }
   }
