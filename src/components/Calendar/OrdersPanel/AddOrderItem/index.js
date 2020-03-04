@@ -106,11 +106,10 @@ class AddOrderItem extends React.Component {
       } = await getDefaultBikeHire(course.course_type.constant, schoolId)
 
       let availableBikeHireTypes = getAvailableBikeHires(course)
-
       if (!available_auto_50cc_bikes) {
         availableBikeHireTypes = filter(
           availableBikeHireTypes,
-          bikeHireType => bikeHireType.title !== 'Automatic Scooter'
+          bikeHireType => bikeHireType.title !== 'Automatic 50cc'
         )
       }
       if (!available_auto_125cc_bikes) {

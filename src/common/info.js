@@ -40,7 +40,7 @@ export function getAvailableBikeHires(course) {
     },
     {
       value: auto_bikes > auto_count ? BIKE_HIRE.AUTO : null,
-      title: 'Automatic Scooter'
+      title: 'Automatic 50cc'
     },
     {
       value:
