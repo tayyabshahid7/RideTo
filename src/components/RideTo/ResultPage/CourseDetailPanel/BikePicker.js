@@ -28,7 +28,7 @@ const BikePicker = React.forwardRef(
       isManual50Available,
 
       has_auto_bikes,
-      has_auto_50cc_bikes,
+      has_auto_bikes_50cc,
       has_auto_bikes_125cc,
       has_manual_bikes,
       has_manual_50cc,
@@ -111,7 +111,7 @@ const BikePicker = React.forwardRef(
             )}
             {/* auto 50 */}
 
-            {has_auto_50cc_bikes && (
+            {has_auto_bikes_50cc && (
               <button
                 className={classnames(
                   styles.bikeHireBtn,
@@ -127,7 +127,7 @@ const BikePicker = React.forwardRef(
                   })
                 }
                 disabled={
-                  (isFullLicence && !has_auto_50cc_bikes) ||
+                  (isFullLicence && !has_auto_bikes_50cc) ||
                   (!isFullLicence && (isAuto50Full || !isAutoAvailable))
                 }>
                 {getMotorbikeLabel('auto_50cc', isFullLicence, isInstantBook)}{' '}

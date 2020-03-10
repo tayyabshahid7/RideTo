@@ -326,7 +326,7 @@ class CourseAvailabilityComponent extends React.Component {
             isManualAvailable={isManualAvailable}
             isManual50Available={isManual50Available}
             has_auto_bikes={course.has_auto_bikes}
-            has_auto_50cc_bikes={course.has_auto_50cc_bikes}
+            has_auto_bikes_50cc={course.has_auto_bikes_50cc}
             has_manual_bikes={course.has_manual_bikes}
             has_auto_bikes_125cc={isInstantBook && course.has_auto_bikes_125cc}
             has_manual_50cc={isInstantBook && course.has_manual_50cc}
