@@ -120,6 +120,17 @@ function DefaultBikesModal({
     })
     setIsChanged(true)
   }
+  const courseOrder = {
+    available_auto_bikes: 1,
+    available_auto_50cc_bikes: 2,
+    available_auto_125cc_bikes: 3,
+    available_manual_50cc_bikes: 4,
+    available_manual_125cc_bikes: 5,
+    available_own_bikes: 6
+  }
+  courses.sort((a, b) => {
+    return courseOrder[a.key] > courseOrder[b.key] ? 1 : -1
+  })
 
   return (
     <Modal
