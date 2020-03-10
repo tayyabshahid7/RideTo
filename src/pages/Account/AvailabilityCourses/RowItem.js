@@ -15,19 +15,20 @@ function RowItem({ activeCourse, setActiveCourse, courseType, schoolId }) {
   const [loading, setLoading] = useState(true)
   const [settings, setSettings] = useState(null)
 
-  useEffect(() => {
-    async function fetchSettings() {
-      try {
-        const response = await getDefaultBikeHire(constant, schoolId)
+  const fetchSettings = async () => {
+    try {
+      const response = await getDefaultBikeHire(constant, schoolId)
+      setSettings(response)
+    } catch {
+      setSettings(DEFAULT_SETTINGS)
+    }
+  }
 
-        setSettings(response)
-      } catch {
-        setSettings(DEFAULT_SETTINGS)
-      }
+  useEffect(() => {
+    if (!activeCourse) {
+      fetchSettings()
       setLoading(false)
     }
-
-    fetchSettings()
   }, [activeCourse])
 
   return (
