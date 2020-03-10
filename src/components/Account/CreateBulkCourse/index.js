@@ -25,6 +25,7 @@ class CreateBulkCourse extends React.Component {
       duration: '',
       notes: '',
       auto_bikes: '',
+      auto_50_bikes: '',
       manual_bikes: '',
       auto_125cc_bikes: '',
       manual_50cc_bikes: '',
@@ -99,7 +100,8 @@ class CreateBulkCourse extends React.Component {
       })
       return {
         ...this.state.course,
-        auto_bikes: response.default_number_auto_50cc_bikes,
+        auto_bikes: response.default_number_auto_bikes,
+        auto_50_bikes: response.default_number_auto_50cc_bikes,
         manual_bikes: response.default_number_manual_125cc_bikes,
         auto_125cc_bikes: response.default_number_auto_125cc_bikes,
         manual_50cc_bikes: response.default_number_manual_50cc_bikes,
@@ -195,6 +197,7 @@ class CreateBulkCourse extends React.Component {
       end_time,
       notes,
       auto_bikes,
+      auto_50_bikes,
       manual_bikes,
       auto_125cc_bikes,
       manual_50cc_bikes,
@@ -229,6 +232,7 @@ class CreateBulkCourse extends React.Component {
       time,
       spaces,
       auto_bikes: auto_bikes || 0,
+      auto_50_bikes: auto_50_bikes || 0,
       manual_bikes: manual_bikes || 0,
       auto_125cc_bikes: auto_125cc_bikes || 0,
       manual_50cc_bikes: manual_50cc_bikes || 0,
@@ -267,6 +271,7 @@ class CreateBulkCourse extends React.Component {
       end_time,
       notes,
       auto_bikes,
+      auto_50_bikes,
       manual_bikes,
       auto_125cc_bikes,
       manual_50cc_bikes,
@@ -280,6 +285,8 @@ class CreateBulkCourse extends React.Component {
     } = this.state.course
 
     const {
+      default_number_auto_bikes,
+      available_auto_bikes,
       default_number_auto_50cc_bikes,
       available_auto_50cc_bikes,
       default_number_auto_125cc_bikes,
@@ -345,9 +352,23 @@ class CreateBulkCourse extends React.Component {
                     <Col>
                       <ConnectInput
                         basic
-                        name="auto_bikes"
-                        value={auto_bikes || default_number_auto_50cc_bikes}
+                        name="auto_50_bikes"
+                        value={auto_50_bikes || default_number_auto_50cc_bikes}
                         label="Automatic 50cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_auto_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="auto_bikes"
+                        value={auto_bikes || default_number_auto_bikes}
+                        label="Automatic"
                         className="form-group"
                         type="number"
                         onChange={this.handleChangeRawEvent.bind(this)}

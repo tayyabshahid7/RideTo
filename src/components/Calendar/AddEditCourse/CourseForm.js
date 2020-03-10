@@ -34,6 +34,7 @@ class CourseForm extends React.Component {
       duration: '',
       notes: '',
       auto_bikes: '',
+      auto_50cc_bikes: '',
       manual_bikes: '',
       auto_125cc_bikes: '',
       manual_50cc_bikes: '',
@@ -60,6 +61,7 @@ class CourseForm extends React.Component {
           'duration',
           'instructor_id',
           'auto_bikes',
+          'auto_50cc_bikes',
           'manual_bikes',
           'auto_125cc_bikes',
           'manual_50cc_bikes',
@@ -77,6 +79,7 @@ class CourseForm extends React.Component {
           'application_reference_number'
         )
       )
+
       course.course_type_id =
         typeof this.props.course.course_type === 'string'
           ? this.props.course.course_type
@@ -209,7 +212,8 @@ class CourseForm extends React.Component {
               a2_manual_bikes: res.a2_manual_bikes,
               a_auto_bikes: res.a_auto_bikes,
               a_manual_bikes: res.a_manual_bikes,
-              auto_bikes: res.default_number_auto_50cc_bikes,
+              auto_bikes: res.default_number_auto_bikes,
+              auto_50cc_bikes: res.default_number_auto_50cc_bikes,
               auto_125cc_bikes: res.default_number_auto_125cc_bikes,
               manual_bikes: res.default_number_manual_125cc_bikes,
               own_bikes: res.default_number_own_bikes,
@@ -282,6 +286,9 @@ class CourseForm extends React.Component {
     if (!course.auto_bikes) {
       course.auto_bikes = 0
     }
+    if (!course.auto_50cc_bikes) {
+      course.auto_50cc_bikes = 0
+    }
 
     if (!course.manual_bikes) {
       course.manual_bikes = 0
@@ -338,6 +345,7 @@ class CourseForm extends React.Component {
     const { edited } = this.state
 
     const {
+      available_auto_bikes,
       available_auto_50cc_bikes,
       available_auto_125cc_bikes,
       available_manual_50cc_bikes,
@@ -354,6 +362,7 @@ class CourseForm extends React.Component {
       duration,
       notes,
       auto_bikes,
+      auto_50cc_bikes,
       auto_125cc_bikes,
       manual_50cc_bikes,
       manual_bikes,
@@ -386,7 +395,6 @@ class CourseForm extends React.Component {
           type.constant.endsWith('TEST')
       )
       .some(type => type.id === parseInt(course_type_id, 10))
-
     return (
       <div className={styles.container}>
         <Loading loading={saving}>
@@ -499,12 +507,12 @@ class CourseForm extends React.Component {
                   <div className={styles.bikesAvailable}>
                     <b>Bikes Available</b>
                   </div>
-                  {available_auto_50cc_bikes && (
+                  {available_auto_bikes && (
                     <Row>
                       <Col sm="10">
                         <BikeNumberPicker
                           className={styles.numberPicker}
-                          label="Automatic 50cc"
+                          label="Automatic"
                           value={auto_bikes}
                           id="auto_bikes"
                           isEditable={isEditable}
@@ -514,6 +522,26 @@ class CourseForm extends React.Component {
                           }}
                           onClickPlus={() => {
                             this.handleBikeButtonClick('auto_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {available_auto_50cc_bikes && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Automatic 50cc"
+                          value={auto_50cc_bikes}
+                          id="auto_50cc_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('auto_50cc_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('auto_50cc_bikes', 1)
                           }}
                         />
                       </Col>

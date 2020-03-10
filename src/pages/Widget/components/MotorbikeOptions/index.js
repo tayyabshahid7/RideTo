@@ -14,6 +14,9 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
   // determining course state for auto 50cc bikes
   const isAutoFull = course.auto_count >= course.auto_bikes
 
+  // determining course state for auto 50cc bikes
+  const isAuto50Full = course.auto_50cc_count >= course.auto_50cc_bikes
+
   // determining course state for auto 125cc bikes
   const isAuto125Full = course.auto_125cc_count >= course.auto_125cc_bikes
 
@@ -39,6 +42,23 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
         </Checkbox>
       )}
 
+      {/* Auto Bikes   */}
+
+      {course.auto_50cc_bikes > 0 && (
+        <Checkbox
+          checked={selected === BIKE_HIRE.AUTO_50CC}
+          extraClass="WidgetCheckbox"
+          onChange={() => onChange(BIKE_HIRE.AUTO_50CC)}
+          disabled={isAuto50Full}>
+          {getMotorbikeLabel(BIKE_HIRE.AUTO_50CC)}
+          {isAuto50Full ? fullText : null}
+          {bike_hire_cost > 0 && (
+            <div className={styles.price}>{`(+${asPoundSterling(
+              bike_hire_cost
+            )})`}</div>
+          )}
+        </Checkbox>
+      )}
       {/* Auto Bikes 50cc  */}
 
       {course.auto_bikes > 0 && (

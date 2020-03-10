@@ -43,11 +43,12 @@ export const getStartInTime = (now, startTime) => {
 export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
   const simpleLabels = {
     auto: !isFullLicence ? 'Automatic Scooter' : 'Automatic',
+    auto_50cc: !isFullLicence ? 'Automatic 50cc' : 'Automatic 50cc',
     manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
     no: 'Own Bike'
   }
 
-  if (['auto', 'manual', 'no'].includes(bikeHire)) {
+  if (['auto', 'auto_50cc', 'manual', 'no'].includes(bikeHire)) {
     return simpleLabels[bikeHire]
   }
 
