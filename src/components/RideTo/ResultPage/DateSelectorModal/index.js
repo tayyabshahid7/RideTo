@@ -101,6 +101,7 @@ class DateSelectorModal extends React.Component {
     let days = this.generateDaysDataFromCalendar(calendar)
     return (
       <Modal
+        id="date-selector"
         isOpen={isOpen}
         toggle={onClose}
         size={'md'}
