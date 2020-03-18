@@ -13,6 +13,7 @@ function Filters({ selectedFilter, handleFilterClick, filters }) {
         .map(filter => (
           <li className={styles.listItem} key={filter}>
             <button
+              id={filter.toLowerCase().replace(/\s/g, '-')}
               className={classnames(
                 styles.filterButton,
                 filter === selectedFilter && styles.active
