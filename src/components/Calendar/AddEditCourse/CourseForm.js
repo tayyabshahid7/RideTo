@@ -33,6 +33,7 @@ class CourseForm extends React.Component {
       spaces: '',
       duration: '',
       notes: '',
+      own_bikes: '',
       auto_bikes: '',
       manual_bikes: '',
       a1_auto_bikes: '',
@@ -284,6 +285,7 @@ class CourseForm extends React.Component {
       spaces,
       duration,
       notes,
+      own_bikes,
       auto_bikes,
       manual_bikes,
       a1_auto_bikes,
@@ -427,6 +429,24 @@ class CourseForm extends React.Component {
                   <div className={styles.bikesAvailable}>
                     <b>Bikes Available</b>
                   </div>
+                  <Row>
+                    <Col sm="10">
+                      <BikeNumberPicker
+                        className={styles.numberPicker}
+                        label="Own"
+                        value={own_bikes}
+                        id="own_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('own_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('own_bikes', 1)
+                        }}
+                      />
+                    </Col>
+                  </Row>
                   <Row>
                     <Col sm="10">
                       <BikeNumberPicker
