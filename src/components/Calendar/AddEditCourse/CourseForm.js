@@ -57,6 +57,7 @@ class CourseForm extends React.Component {
           'spaces',
           'duration',
           'instructor_id',
+          'own_bikes',
           'auto_bikes',
           'manual_bikes',
           'notes',
