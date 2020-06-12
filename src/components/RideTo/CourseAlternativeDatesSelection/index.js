@@ -83,7 +83,7 @@ const AlternativeDatesOption = ({
             return (
               <div
                 className={styles.alternativeDateLink}
-                onClick={() => onClick(date)}
+                onClick={() => onClick(date.date)}
                 key={date}>
                 {moment(date.date).format('dddd, Do MMMM')}
                 {!!date.price_difference && (
