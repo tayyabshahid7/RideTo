@@ -88,7 +88,8 @@ const AlternativeDatesOption = ({
                 {moment(date.date).format('dddd, Do MMMM')}
                 {!!date.price_difference && (
                   <span>
-                    &nbsp;(+£{Math.floor(-date.price_difference / 100)})
+                    &nbsp;({date.price_difference < 0 ? '+' : '-'}£
+                    {Math.floor(Math.abs(date.price_difference) / 100)})
                   </span>
                 )}
               </div>
