@@ -115,7 +115,7 @@ function News({
       let response = null
 
       if (filter === 'Reviews') {
-        response = await fetchBikes(selectedGoal)
+        response = await fetchBikes(selectedGoal, page)
       } else {
         const categoryId = FILTERS[filter]
 

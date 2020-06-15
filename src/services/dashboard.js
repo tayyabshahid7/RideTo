@@ -104,12 +104,13 @@ export const updateUserPassword = async (password, username) => {
   return response
 }
 
-export const fetchBikes = async ({ constant }) => {
+export const fetchBikes = async ({ constant }, page = 1) => {
   const licence =
     constant === 'GOAL_SOCIAL_ANY_BIKE' ? 'FULL_LICENCE' : 'LICENCE_CBT'
   const path = `dashboard/dashboard-bike/`
   const params = {
-    licence
+    licence,
+    page
   }
 
   const response = await get(path, params, false)
