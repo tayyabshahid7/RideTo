@@ -310,6 +310,10 @@ class CourseForm extends React.Component {
       .filter(type => type.constant.startsWith('FULL_LICENCE'))
       .some(type => type.id === parseInt(course_type_id, 10))
 
+    const isCBTRenewal = courseTypes
+      .filter(type => type.constant.startsWith('LICENCE_CBT_RENEWAL'))
+      .some(type => type.id === parseInt(course_type_id, 10))
+
     const isFullLicenceTest = courseTypes
       .filter(
         type =>
@@ -430,24 +434,26 @@ class CourseForm extends React.Component {
                   <div className={styles.bikesAvailable}>
                     <b>Bikes Available</b>
                   </div>
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
-                        label="Own"
-                        value={own_bikes}
-                        id="own_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('own_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('own_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
+                  {isCBTRenewal && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Own"
+                          value={own_bikes}
+                          id="own_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('own_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('own_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
                   <Row>
                     <Col sm="10">
                       <BikeNumberPicker
