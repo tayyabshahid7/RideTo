@@ -26,8 +26,7 @@ import { getCourseIdFromSearch } from 'services/course'
 import { Redirect } from 'react-router-dom'
 import { setParam, deleteParam, normalizePostCode } from 'utils/helper'
 import { getStaticData, flashDiv } from 'services/page'
-// import POMBanner from './POMBanner'
-import VirusBanner from './VirusBanner'
+import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
 import { fetchSingleRidetoCourse } from 'services/course'
@@ -691,7 +690,7 @@ class ResultPage extends Component {
 
     const hasPartnerResults = this.checkPartnerResults(courses)
     const isFullLicence = courseType === 'FULL_LICENCE'
-    // const hasPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(courseType)
+    const hasPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(courseType)
 
     if (isFullLicence) {
       bookNowDisabled = true
@@ -866,13 +865,9 @@ class ResultPage extends Component {
                         isFullLicence && styles.noMargin
                       )}>
                       <div className={styles.coursesPanel}>
-                        {/*
-                          <MediaQuery query="(min-width: 769px)">
+                        <MediaQuery query="(min-width: 769px)">
                           {hasPOM && hasPartnerResults && <POMBanner />}
                         </MediaQuery>
-                        */}
-
-                        <VirusBanner />
                         {isFullLicence && (
                           <FullLicenceBanner
                             className={styles.fastTrackAdvert}
