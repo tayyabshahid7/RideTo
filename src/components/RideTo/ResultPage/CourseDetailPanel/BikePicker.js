@@ -13,6 +13,7 @@ const BikePicker = React.forwardRef(
       bike_hire,
       onUpdate,
       course,
+      isOwnFull,
       isAutoFull,
       isManualFull,
       has_auto_bikes,
@@ -57,8 +58,10 @@ const BikePicker = React.forwardRef(
                 isWidget && styles.widgetBtn,
                 bike_hire === 'no' && styles.activeBtn
               )}
-              onClick={() => onUpdate({ bike_hire: 'no' })}>
+              onClick={() => onUpdate({ bike_hire: 'no' })}
+              disabled={isOwnFull}>
               {getMotorbikeLabel('no')}
+              {isOwnFull ? fullText : null}
             </button>
           )}
           {isCbtRenewal && bike_hire === 'no' && (
