@@ -227,6 +227,8 @@ class CourseAvailabilityComponent extends React.Component {
       instantCourse && instantCourse.auto_count >= instantCourse.auto_bikes
     const isManualFull =
       instantCourse && instantCourse.manual_count >= instantCourse.manual_bikes
+    const isOwnFull =
+      instantCourse && instantCourse.own_bikes_count >= instantCourse.own_bikes
     const isItm = courseType === 'INTRO_TO_MOTORCYCLING'
     const isCbt = courseType === 'LICENCE_CBT'
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
@@ -263,6 +265,7 @@ class CourseAvailabilityComponent extends React.Component {
             bike_hire={bike_hire}
             onUpdate={onUpdate}
             course={course}
+            isOwnFull={isOwnFull}
             isAutoFull={isAutoFull}
             isManualFull={isManualFull}
             has_auto_bikes={course.has_auto_bikes}

@@ -48,7 +48,8 @@
   }
 }
 
-.WidgetBtnDisabled {
+.WidgetBtnDisabled,
+.WidgetBtn:disabled {
   opacity: 0.35;
   cursor: default;
   background: darkgrey !important;
