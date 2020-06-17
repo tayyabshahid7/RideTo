@@ -33,6 +33,7 @@ class CourseForm extends React.Component {
       spaces: '',
       duration: '',
       notes: '',
+      own_bikes: '',
       auto_bikes: '',
       manual_bikes: '',
       a1_auto_bikes: '',
@@ -56,6 +57,7 @@ class CourseForm extends React.Component {
           'spaces',
           'duration',
           'instructor_id',
+          'own_bikes',
           'auto_bikes',
           'manual_bikes',
           'notes',
@@ -210,6 +212,10 @@ class CourseForm extends React.Component {
       course.course_type_id = info.courseTypes[0].id
     }
 
+    if (!course.own_bikes) {
+      course.own_bikes = 0
+    }
+
     if (!course.auto_bikes) {
       course.auto_bikes = 0
     }
@@ -284,6 +290,7 @@ class CourseForm extends React.Component {
       spaces,
       duration,
       notes,
+      own_bikes,
       auto_bikes,
       manual_bikes,
       a1_auto_bikes,
@@ -305,6 +312,10 @@ class CourseForm extends React.Component {
 
     const isFullLicence = courseTypes
       .filter(type => type.constant.startsWith('FULL_LICENCE'))
+      .some(type => type.id === parseInt(course_type_id, 10))
+
+    const isCBTRenewal = courseTypes
+      .filter(type => type.constant.startsWith('LICENCE_CBT_RENEWAL'))
       .some(type => type.id === parseInt(course_type_id, 10))
 
     const isFullLicenceTest = courseTypes
@@ -427,6 +438,26 @@ class CourseForm extends React.Component {
                   <div className={styles.bikesAvailable}>
                     <b>Bikes Available</b>
                   </div>
+                  {isCBTRenewal && (
+                    <Row>
+                      <Col sm="10">
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Own"
+                          value={own_bikes}
+                          id="own_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('own_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('own_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
                   <Row>
                     <Col sm="10">
                       <BikeNumberPicker
