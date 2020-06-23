@@ -31,7 +31,14 @@ function CourseInformation({
   handlePOMToggleClick,
   hasPOM
 }) {
-  const { courseType, date, bike_hire, gloves_jacket_included } = checkoutData
+  const {
+    courseType,
+    date,
+    bike_hire,
+    gloves_jacket_included,
+    course
+  } = checkoutData
+  const { helmet_hire, on_site_cafe, indoor_classroom } = course
   const requested_time =
     trainings && trainings[0] && trainings[0].requested_time
   const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
@@ -45,6 +52,9 @@ function CourseInformation({
           <OrderIncluded
             bikeHire={bike_hire}
             hasGloves={gloves_jacket_included}
+            helmetHire={helmet_hire}
+            onSiteCafe={on_site_cafe}
+            indoorClassroom={indoor_classroom}
           />
 
           {isFullLicence && (

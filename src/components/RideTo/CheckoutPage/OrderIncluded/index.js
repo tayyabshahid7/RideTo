@@ -5,6 +5,9 @@ import { capitalizeFirstLetter } from 'utils/helper'
 
 function OrderIncluded({
   bikeHire,
+  helmetHire,
+  onSiteCafe,
+  indoorClassroom,
   pom = false,
   hasGloves,
   fullLicence = false,
@@ -118,18 +121,36 @@ function OrderIncluded({
               hire
             </span>
           </li>
-          <li>
-            <span className={styles.tick}>
-              <i className="fa fa-check" />
-            </span>{' '}
-            <span className={styles.text}>Helmet provided</span>
-          </li>
+          {helmetHire && (
+            <li>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>Helmet provided</span>
+            </li>
+          )}
+          {onSiteCafe && (
+            <li>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>On site cafe</span>
+            </li>
+          )}
+          {indoorClassroom && (
+            <li>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>Indoor classroom</span>
+            </li>
+          )}
           {hasGloves && (
             <li>
               <span className={styles.tick}>
                 <i className="fa fa-check" />
               </span>{' '}
-              <span className={styles.text}>Gloves &amp; jacket provided</span>
+              <span className={styles.text}>Gloves and jacket provided</span>
             </li>
           )}
         </ul>
