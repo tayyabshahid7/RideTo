@@ -352,7 +352,7 @@ class ResultPage extends Component {
       supplierId: selectedCourse.id,
       addons: [],
       gloves_jacket_included: selectedCourse.gloves_jacket_included,
-      course: selectedCourse
+      helmet_hire: selectedCourse.helmet_hire
     }
 
     if (courseType !== 'FULL_LICENCE') {
