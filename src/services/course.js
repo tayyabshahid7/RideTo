@@ -360,6 +360,8 @@ export const getCourseTitle = courseTypeConstant => {
       return 'Off Road Training'
     case 'GEAR_CONVERSION_COURSE':
       return 'Gear Conversion Course'
+    case 'ENHANCED_RIDER_SCHEME':
+      return 'Enhanced Rider Scheme'
     default:
       return 'CBT Training'
   }
