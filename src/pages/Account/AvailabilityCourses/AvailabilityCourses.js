@@ -134,6 +134,7 @@ class AvailabilityCourses extends React.Component {
           </div>
           <div className={styles.bottomRow}>
             <Button
+              id="btnSaveDefaultDays"
               color="primary mt-2"
               onClick={this.handleSaveDefaultDays.bind(this)}
               disabled={settingsSaving}>
