@@ -28,10 +28,10 @@ const defaultProps = {
 it('Shows bulk form after button is clicked', () => {
   const wrapper = shallow(<AvailabilityCourses {...defaultProps} />)
 
-  expect(wrapper.find('CreateBulkCourse').isEmpty()).toEqual(true)
+  expect(wrapper.find('CreateBulkCourse').exists()).toEqual(false)
 
   wrapper.setState({ showCreateBulkCourseForm: true })
-  expect(wrapper.find('CreateBulkCourse').isEmpty()).toEqual(false)
+  expect(wrapper.find('CreateBulkCourse').exists()).toEqual(true)
 })
 
 it('Default days checked off on Tuesday', () => {
