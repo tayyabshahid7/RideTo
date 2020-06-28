@@ -34,11 +34,13 @@ it('Shows bulk form after button is clicked', () => {
   expect(wrapper.find('CreateBulkCourse').exists()).toEqual(true)
 })
 
-it('Default days checked off on Tuesday', () => {
+it('Default days checked based on default props', () => {
   const wrapper = shallow(<AvailabilityCourses {...defaultProps} />)
 
-  expect(wrapper.find('#customCheck0').prop('checked')).toBe(true)
-  expect(wrapper.find('#customCheck1').prop('checked')).toBe(false)
+  defaultProps.defaultDays.days.split('').forEach((flag, index) => {
+    const value = flag === 'T'
+    expect(wrapper.find('#customCheck' + index).prop('checked')).toBe(value)
+  })
 })
 
 it('Save default days button click calls function', () => {
