@@ -6,14 +6,18 @@ import AccountPassword from './AccountPassword'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-const defaultProps = {
-  updatePassword: jest.fn(),
-  showNotification: jest.fn()
-}
+let wrapper
+let props
+
+beforeEach(() => {
+  props = {
+    updatePassword: jest.fn(),
+    showNotification: jest.fn()
+  }
+  wrapper = shallow(<AccountPassword {...props} />)
+})
 
 it('Show password form after toggle button is clicked', () => {
-  const wrapper = shallow(<AccountPassword {...defaultProps} />)
-
   expect(wrapper.find('form').exists()).toEqual(false)
 
   wrapper.find('Button#togglePasswordForm').simulate('click')
@@ -21,8 +25,6 @@ it('Show password form after toggle button is clicked', () => {
 })
 
 it('Form submit should call the updatePassword function', () => {
-  const wrapper = shallow(<AccountPassword {...defaultProps} />)
-
   wrapper.find('Button#togglePasswordForm').simulate('click')
 
   wrapper.find('ConnectInput[name="oldPassword"]').simulate('change', {
@@ -47,13 +49,11 @@ it('Form submit should call the updatePassword function', () => {
   })
 
   wrapper.find('form').simulate('submit', { preventDefault: jest.fn() })
-  expect(defaultProps.updatePassword).toHaveBeenCalledTimes(1)
+  expect(props.updatePassword).toHaveBeenCalledTimes(1)
 })
 
 it('Wrong password match should not call updatePassword function', () => {
-  const wrapper = shallow(<AccountPassword {...defaultProps} />)
-
-  defaultProps.updatePassword.mockReset()
+  props.updatePassword.mockReset()
   wrapper.find('Button#togglePasswordForm').simulate('click')
 
   wrapper.find('ConnectInput[name="oldPassword"]').simulate('change', {
@@ -78,5 +78,5 @@ it('Wrong password match should not call updatePassword function', () => {
   })
 
   wrapper.find('form').simulate('submit', { preventDefault: jest.fn() })
-  expect(defaultProps.updatePassword).toHaveBeenCalledTimes(0)
+  expect(props.updatePassword).toHaveBeenCalledTimes(0)
 })
