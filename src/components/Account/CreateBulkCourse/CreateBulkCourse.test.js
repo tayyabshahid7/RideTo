@@ -65,18 +65,10 @@ const defaultProps = {
     }
   ],
   available_days: ['T', 'T', 'T', 'T', 'T', 'T', 'T'],
+  schoolId: 1,
   saving: false,
   error: null
 }
-
-it('Shoud render submit button and prevent submitting', () => {
-  const wrapper = shallow(<CreateBulkCourse {...defaultProps} />)
-
-  expect(wrapper.find('Button[type="submit"]').exists()).toEqual(true)
-
-  wrapper.find('Button[type="submit"]').simulate('click')
-  expect(defaultProps.onSubmit).toHaveBeenCalledTimes(0)
-})
 
 it('Cancel should collapse the form', () => {
   const wrapper = shallow(<CreateBulkCourse {...defaultProps} />)
@@ -87,4 +79,54 @@ it('Cancel should collapse the form', () => {
     .find('Button[type="button"]')
     .simulate('click', { preventDefault: jest.fn() })
   expect(defaultProps.handleCancel).toHaveBeenCalled()
+})
+
+it('Shoud render submit button and prevent submitting', () => {
+  const wrapper = shallow(<CreateBulkCourse {...defaultProps} />)
+
+  expect(wrapper.find('Button[type="submit"]').exists()).toEqual(true)
+
+  wrapper.find('Button[type="submit"]').simulate('click')
+  expect(defaultProps.onSubmit).toHaveBeenCalledTimes(0)
+})
+
+it('Submit button should submit the form', () => {
+  const wrapper = shallow(<CreateBulkCourse {...defaultProps} />)
+  wrapper.find('ConnectInput[name="spaces"]').simulate('change', {
+    target: {
+      name: 'spaces',
+      value: '2'
+    }
+  })
+
+  wrapper.find('ConnectInput[name="start_date"]').simulate('change', {
+    target: {
+      name: 'start_date',
+      value: '2020-06-01'
+    }
+  })
+
+  wrapper.find('ConnectInput[name="end_date"]').simulate('change', {
+    target: {
+      name: 'end_date',
+      value: '2020-06-10'
+    }
+  })
+
+  wrapper.find('ConnectInput[name="time"]').simulate('change', {
+    target: {
+      name: 'time',
+      value: '02:00'
+    }
+  })
+
+  wrapper.find('ConnectInput[name="end_time"]').simulate('change', {
+    target: {
+      name: 'end_time',
+      value: '06:00'
+    }
+  })
+
+  wrapper.find('Form').simulate('submit', { preventDefault: jest.fn() })
+  expect(defaultProps.onSubmit).toHaveBeenCalledTimes(1)
 })
