@@ -12,6 +12,7 @@ import { getCourseTitle } from 'services/course'
 class ConfirmedOrders extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
       friendly_id: null,
       training_date_time: null,
