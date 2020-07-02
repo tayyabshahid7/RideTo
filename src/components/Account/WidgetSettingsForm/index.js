@@ -54,16 +54,10 @@ class WidgetSettingsForm extends React.Component {
       isChanged: false
     }
 
-    this.color = React.createRef()
     this.introEl = React.createRef()
     this.requirementsEl = React.createRef()
     this.cancellationEl = React.createRef()
     this.termsEl = React.createRef()
-
-    this.handleCancel = this.handleCancel.bind(this)
-    this.handleColourChange = this.handleColourChange.bind(this)
-    this.handleEditClick = this.handleEditClick.bind(this)
-    this.handleSaveClick = this.handleSaveClick.bind(this)
   }
 
   handleChangeRawEvent({ target }) {
@@ -83,11 +77,10 @@ class WidgetSettingsForm extends React.Component {
       termsEditable: false,
       isChanged: false
     })
-    this.color.current.value = this.props.settings.widget_color
   }
 
-  handleColourChange() {
-    const { value } = this.color.current
+  handleColourChange = event => {
+    const value = event.target.value
     const { settings } = this.state
 
     this.setState({
@@ -101,12 +94,16 @@ class WidgetSettingsForm extends React.Component {
     })
   }
 
-  handleEditClick(el) {
+  handleEditClick = el => {
     this.setState(
       {
         [`${el}Editable`]: true
       },
       () => {
+        if (!this[`${el}El`].current) {
+          return
+        }
+
         const {
           current: {
             el: { current }
@@ -118,7 +115,7 @@ class WidgetSettingsForm extends React.Component {
     )
   }
 
-  handleSave(event) {
+  handleSave = event => {
     event.preventDefault()
     const { onSubmit } = this.props
     const { settings } = this.state
@@ -132,7 +129,7 @@ class WidgetSettingsForm extends React.Component {
     })
   }
 
-  handleSaveClick(el) {
+  handleSaveClick = el => {
     const { onSubmit } = this.props
     const { settings } = this.state
 
@@ -183,11 +180,11 @@ class WidgetSettingsForm extends React.Component {
               <div className={styles.rightCol}>
                 <div className="text-right">
                   <input
+                    name="widgetColor"
                     onChange={this.handleColourChange}
                     className={styles.color}
                     type="color"
-                    ref={this.color}
-                    defaultValue={widget_color}
+                    value={widget_color}
                   />
                 </div>
                 <Fragment>
@@ -261,6 +258,7 @@ class WidgetSettingsForm extends React.Component {
                 <Col xs="2">
                   <div className={styles.editButton}>
                     <Button
+                      name="introLink"
                       color="link"
                       onClick={() => {
                         this.handleEditClick('intro')

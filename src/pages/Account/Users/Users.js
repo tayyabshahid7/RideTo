@@ -86,7 +86,10 @@ class Users extends React.Component {
               </p>
             </div>
             <div className={styles.buttons}>
-              <Button color="primary" onClick={this.handleAddNew}>
+              <Button
+                id="btnNewUser"
+                color="primary"
+                onClick={this.handleAddNew}>
                 Add New
               </Button>
             </div>
@@ -134,6 +137,7 @@ class Users extends React.Component {
             </ModalHeader>
             <ModalBody>
               <form
+                id="userForm"
                 onSubmit={this.handleSave}
                 className={styles.editForm}
                 autocomplete="off">
