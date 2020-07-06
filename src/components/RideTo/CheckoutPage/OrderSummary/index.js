@@ -179,7 +179,7 @@ class OrderSummary extends Component {
               </div>
             </Checkbox>
           </div>
-          <div className={classnames(styles.acceptTerms)}>
+          <div id="terms-checkbox" className={classnames(styles.acceptTerms)}>
             <Checkbox
               checked={details.accept_terms}
               extraClass="WidgetCheckbox"
