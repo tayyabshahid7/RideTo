@@ -1,6 +1,7 @@
 import {
   fetchSingleCourse,
   fetchCourses,
+  fetchCoursesMinimal,
   deleteSingleCourse,
   addSchoolOrder,
   addSchoolPayment,
@@ -130,7 +131,7 @@ export const getCourses = ({
   dispatch({ type: FETCH_ALL[REQUEST] })
 
   try {
-    const courses = await fetchCourses(schoolId, firstDate, lastDate)
+    const courses = await fetchCoursesMinimal(schoolId, firstDate, lastDate)
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
@@ -568,6 +569,7 @@ export default function reducer(state = initialState, action) {
         }
       }
     case FETCH_ALL[SUCCESS]:
+      console.log('*** fetching', action.data)
       if (action.data.reset) {
         return {
           ...state,
