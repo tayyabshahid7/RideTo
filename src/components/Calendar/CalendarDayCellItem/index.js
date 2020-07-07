@@ -6,7 +6,7 @@ import classnames from 'classnames'
 
 const CalendarDayCellItem = ({ item, settings }) => {
   const isInstructor = item.instructor_name
-  const availableSpaces = item.course ? item.spaces - item.orders.length : null
+  const availableSpaces = item.spaces_available
   const className = classnames(
     styles.calendarDayCellItem,
     availableSpaces === 1 && styles.warning,
