@@ -8,13 +8,11 @@ class AccountPassword extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      new_password: '',
-      old_password: '',
-      new_password_copy: '',
+      newPassword: '',
+      oldPassword: '',
+      confirmPassword: '',
       showForm: false
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.handleFormSubmit = this.handleFormSubmit.bind(this)
   }
 
   componentDidUpdate(prevProps) {
@@ -22,9 +20,9 @@ class AccountPassword extends React.Component {
     if (prevProps.saving && !saving) {
       if (!error) {
         this.setState({
-          new_password: '',
-          old_password: '',
-          new_password_copy: ''
+          newPassword: '',
+          oldPassword: '',
+          confirmPassword: ''
         })
         showNotification('Success', 'Password has been updated', 'success')
       } else {
@@ -33,28 +31,33 @@ class AccountPassword extends React.Component {
     }
   }
 
-  handleChange(event) {
+  handleChange = event => {
     this.setState({ [event.target.name]: event.target.value })
   }
 
-  handleFormSubmit(event) {
+  handleFormSubmit = event => {
     event.preventDefault()
     const { updatePassword, showNotification } = this.props
-    const { new_password, old_password, new_password_copy } = this.state
-    if (new_password !== new_password_copy) {
+    const { newPassword, oldPassword, confirmPassword } = this.state
+    if (newPassword !== confirmPassword) {
       showNotification('Error', 'Password does not match', 'danger')
       return
     }
-    updatePassword({ new_password, old_password })
+    updatePassword({ new_password: newPassword, old_password: oldPassword })
+  }
+
+  toggleForm = () => {
+    this.setState({
+      showForm: !this.state.showForm,
+      newPassword: '',
+      oldPassword: '',
+      confirmPassword: ''
+    })
   }
 
   render() {
-    const {
-      new_password,
-      old_password,
-      new_password_copy,
-      showForm
-    } = this.state
+    const { newPassword, oldPassword, confirmPassword, showForm } = this.state
+
     return (
       <React.Fragment>
         <div className={classnames(styles.box, styles.boxVertical)}>
@@ -65,14 +68,8 @@ class AccountPassword extends React.Component {
             </div>
             <div className={styles.rightCol}>
               <Button
-                onClick={() => {
-                  this.setState({
-                    showForm: !showForm,
-                    new_password: '',
-                    old_password: '',
-                    new_password_copy: ''
-                  })
-                }}
+                id="togglePasswordForm"
+                onClick={this.toggleForm}
                 color={showForm ? 'white' : 'primary'}>
                 {showForm ? 'Cancel' : 'Update Password'}
               </Button>
@@ -89,12 +86,12 @@ class AccountPassword extends React.Component {
                   <Row>
                     <Col>
                       <ConnectInput
-                        name="old_password"
-                        value={old_password}
+                        name="oldPassword"
+                        value={oldPassword}
                         label="Old Password"
                         className="form-group"
                         type="password"
-                        onChange={this.handleChange.bind(this)}
+                        onChange={this.handleChange}
                         required
                       />
                     </Col>
@@ -102,12 +99,12 @@ class AccountPassword extends React.Component {
                   <Row>
                     <Col>
                       <ConnectInput
-                        name="new_password"
-                        value={new_password}
+                        name="newPassword"
+                        value={newPassword}
                         label="New Password"
                         className="form-group"
                         type="password"
-                        onChange={this.handleChange.bind(this)}
+                        onChange={this.handleChange}
                         required
                       />
                     </Col>
@@ -115,12 +112,12 @@ class AccountPassword extends React.Component {
                   <Row>
                     <Col>
                       <ConnectInput
-                        name="new_password_copy"
-                        value={new_password_copy}
+                        name="confirmPassword"
+                        value={confirmPassword}
                         label="Confirm Password"
                         className="form-group"
                         type="password"
-                        onChange={this.handleChange.bind(this)}
+                        onChange={this.handleChange}
                         required
                       />
                     </Col>

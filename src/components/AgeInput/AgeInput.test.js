@@ -7,9 +7,13 @@ import AgeInput from './index'
 
 Enzyme.configure({ adapter: new Adapter() })
 
-it('Sets correct age', () => {
-  const wrapper = mount(<AgeInput onChange={jest.fn()} />)
+let wrapper
 
+beforeEach(() => {
+  wrapper = mount(<AgeInput onChange={jest.fn()} />)
+})
+
+it('Sets correct age', () => {
   expect(wrapper.find('InputGroupText').text()).toBe('- Years')
 
   const dob1 = moment('2017-01-01', 'YYYY-MM-DD')

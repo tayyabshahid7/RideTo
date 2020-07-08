@@ -39,6 +39,18 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
   return response
 }
 
+export const fetchCoursesMinimal = async (schoolId, startDate, endDate) => {
+  const path = `school/${schoolId}/course/minimal`
+  const params = {
+    sdate: startDate,
+    edate: endDate
+  }
+
+  const response = await get(path, params)
+
+  return response
+}
+
 export const fetchRidetoCourses = async params => {
   // const path = `courses/`
   const path = `courses-new/`
@@ -360,6 +372,8 @@ export const getCourseTitle = courseTypeConstant => {
       return 'Off Road Training'
     case 'GEAR_CONVERSION_COURSE':
       return 'Gear Conversion Course'
+    case 'ENHANCED_RIDER_SCHEME':
+      return 'Enhanced Rider Scheme'
     default:
       return 'CBT Training'
   }

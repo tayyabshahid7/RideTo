@@ -483,6 +483,7 @@ class UserDetails extends Component {
             <span>Card number</span>
             <div
               style={{ marginBottom: '5px' }}
+              id="stripe-card-number"
               className={classnames(
                 styles.cardElementWrapper,
                 errors.card_number && styles.inputError
@@ -518,6 +519,7 @@ class UserDetails extends Component {
               <label className={styles.cardLabel}>
                 <span>Expiry date</span>
                 <div
+                  id="stripe-card-expiry"
                   className={classnames(
                     styles.cardElementWrapper,
                     errors.expiry_date && styles.inputError
@@ -537,6 +539,7 @@ class UserDetails extends Component {
               <label className={styles.cardLabel}>
                 <span>CVV/CV2</span>
                 <div
+                  id="stripe-card-cvc"
                   className={classnames(
                     styles.cardElementWrapper,
                     styles.cvvElementWrapper,
@@ -558,6 +561,7 @@ class UserDetails extends Component {
           <label className={styles.cardLabel}>
             <span>Billing postcode</span>
             <div
+              id="stripe-card-postcode"
               className={classnames(
                 styles.cardElementWrapper,
                 errors.card_zip && styles.inputError

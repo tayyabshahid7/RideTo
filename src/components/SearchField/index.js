@@ -8,15 +8,13 @@ class SearchField extends React.Component {
     super(props)
 
     this.state = { value: '' }
-    this.handleChangeValue = this.handleChangeValue.bind(this)
-    this.handleKeyPress = this.handleKeyPress.bind(this)
   }
 
-  handleChangeValue({ target }) {
+  handleChangeValue = ({ target }) => {
     this.setState({ value: target.value })
   }
 
-  handleKeyPress({ key }) {
+  handleKeyPress = ({ key }) => {
     if (key === 'Enter') {
       this.props.onSearch(this.state.value)
     }

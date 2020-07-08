@@ -73,7 +73,10 @@ class Instructors extends React.Component {
               <p>Add a new staff member to assign to courses</p>
             </div>
             <div className={styles.buttons}>
-              <Button color="primary" onClick={this.handleAddNew}>
+              <Button
+                id="btnNewInstructor"
+                color="primary"
+                onClick={this.handleAddNew}>
                 Add New
               </Button>
             </div>
@@ -119,7 +122,10 @@ class Instructors extends React.Component {
               </h3>
             </ModalHeader>
             <ModalBody>
-              <form onSubmit={this.handleSave} className={styles.editForm}>
+              <form
+                id="instructorForm"
+                onSubmit={this.handleSave}
+                className={styles.editForm}>
                 <ConnectInput
                   name="first_name"
                   value={selectedInstructor.first_name}
