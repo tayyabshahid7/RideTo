@@ -93,6 +93,10 @@ const CalendarDayCell = ({
     }
   }
 
+  const courseList = items
+    .slice(0, showItems)
+    .filter(x => Array.isArray(x.orders))
+
   return (
     <li
       className={classnames(
@@ -110,7 +114,7 @@ const CalendarDayCell = ({
         {day.date.getDate()}
       </div>
       <div className={styles.courseContainer}>
-        {items.slice(0, showItems).map(item => (
+        {courseList.map(item => (
           <CalendarDayCellItem key={item.id} item={item} />
         ))}
 
