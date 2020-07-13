@@ -1,6 +1,8 @@
 export const CALENDAR_VIEW = {
   MONTH: 'month',
-  WEEK: 'week'
+  WEEK: 'week',
+  DAY: 'day',
+  SHIFT: 'shift'
 }
 
 export const DATE_FORMAT = 'YYYY-MM-DD'

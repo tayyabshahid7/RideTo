@@ -155,7 +155,7 @@ let NavigationBar = ({ history, user, logout }) => {
                     ? `/calendar/courses/create?date=${date}`
                     : `/calendar/courses/create`
                 }
-                className={classnames(styles.addCourse)}>
+                className={classnames(styles.navLink)}>
                 Add Course
               </Link>
             )}

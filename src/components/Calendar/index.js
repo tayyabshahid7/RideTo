@@ -9,7 +9,7 @@ import { CALENDAR_VIEW } from '../../common/constants'
 import CalendarWeekView from './CalendarWeekView'
 import Loading from 'components/Loading'
 import SchoolSelect from 'components/SchoolSelect'
-import CalendarDateChanger from './CalendarDateChanger'
+import CalendarDatePicker from './CalendarDatePicker'
 import CalendarViewChanger from './CalendarViewChanger'
 import CalendarArrowsSwitcher from './CalendarArrowsSwitcher'
 import CalendarMobileBackButton from './CalendarMobileBackButton'
@@ -32,6 +32,12 @@ class CalendarComponent extends Component {
             <div className={styles.filtersWrap}>
               <MediaQuery minWidth={768}>
                 <SchoolSelect />
+                <Desktop>
+                  <CalendarDatePicker
+                    calendar={calendar}
+                    handleChangeDate={handleChangeDate}
+                  />
+                </Desktop>
               </MediaQuery>
               <div
                 className={classnames(
@@ -44,12 +50,7 @@ class CalendarComponent extends Component {
                   calendar={calendar}
                   handleChangeDate={handleChangeDate}
                 />
-                <Desktop>
-                  <CalendarDateChanger
-                    calendar={calendar}
-                    handleChangeDate={handleChangeDate}
-                  />
-                </Desktop>
+
                 <CalendarViewChanger
                   viewMode={viewMode}
                   handleCustomEvent={handleCustomEvent}
