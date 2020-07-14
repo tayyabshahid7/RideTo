@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarWeekCourse from '../CalendarWeekCourse'
+import CalendarHeaderInstructors from '../CalendarHeaderInstructors'
 import {
   WORK_HOURS,
   WEEK_VIEW_START_TIME,
@@ -108,9 +109,6 @@ class CalendarWeekView extends Component {
     return (
       <div className={styles.timeline} ref="timelineDiv">
         <ul>
-          <li className={styles.allDayTimelineItem}>
-            <span>All day</span>
-          </li>
           {Array.apply(null, { length: WORK_HOURS }).map((val, index) => {
             const time = moment(
               new Date(
@@ -134,20 +132,21 @@ class CalendarWeekView extends Component {
   renderWeekdays() {
     const { days, calendar, handleMobileCellClick, sideBarOpen } = this.props
     let daysInfo = this.evaluateData(days)
+
     return (
       <div
         className={classnames(
           styles.weekDays,
           sideBarOpen && styles.sideBarOpen
         )}>
-        <ul className={styles.daysContainer}>
+        <div className={styles.daysContainer}>
           {daysInfo.map((day, index) => (
-            <li
+            <div
               className={classnames(
                 styles.weekDaysHeader,
                 calendar.selectedDate ===
                   moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight,
-                moment(day.date).isSame(moment(), 'day') && styles.todayDate,
+
                 moment(day.date).isSame(
                   moment(
                     `${calendar.year}-${calendar.month + 1}-${calendar.day}`,
@@ -157,7 +156,7 @@ class CalendarWeekView extends Component {
                 ) && styles.mobileSameDate
               )}
               key={index}>
-              <div className={styles.topInfo}>
+              <div className={styles.headerItem}>
                 <MediaQuery maxWidth={767}>
                   {matches => {
                     if (matches) {
@@ -176,23 +175,27 @@ class CalendarWeekView extends Component {
                     }
 
                     return (
-                      <Link
-                        to={`/calendar/${moment(day.date).format(
-                          'YYYY-MM-DD'
-                        )}`}>
-                        <span className={styles.desktopVisible}>
-                          {moment(day.date).format('dddd')}
-                          <br />
-                          {moment(day.date).format('Do')}
-                        </span>
-                      </Link>
+                      <div>
+                        <Link
+                          to={`/calendar/${moment(day.date).format(
+                            'YYYY-MM-DD'
+                          )}`}
+                          className={classnames(
+                            styles.date,
+                            moment(day.date).isSame(moment(), 'day') &&
+                              styles.highlight
+                          )}>
+                          {moment(day.date).format('ddd DD')}
+                        </Link>
+                        <CalendarHeaderInstructors />
+                      </div>
                     )
                   }}
                 </MediaQuery>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     )
   }
@@ -276,13 +279,13 @@ class CalendarWeekView extends Component {
 
     return (
       <div className={styles.events}>
-        <ul className={styles.eventsContainer}>
+        <div className={styles.eventsContainer}>
           <MediaQuery maxWidth={767}>
             {matches =>
               daysInfo.map((day, index) => {
                 if (!matches || index === mobileDayOfWeek) {
                   return (
-                    <li
+                    <div
                       onClick={event => {
                         const { target } = event
 
@@ -303,7 +306,7 @@ class CalendarWeekView extends Component {
                           styles.bgHighlight
                       )}
                       key={index}>
-                      <ul className="day-ul">
+                      <div className="day-ul">
                         {day.courses &&
                           day.courses.length > 0 &&
                           day.courses.map((course, index) => (
@@ -323,8 +326,8 @@ class CalendarWeekView extends Component {
                               }
                             />
                           ))}
-                      </ul>
-                    </li>
+                      </div>
+                    </div>
                   )
                 }
 
@@ -332,7 +335,7 @@ class CalendarWeekView extends Component {
               })
             }
           </MediaQuery>
-        </ul>
+        </div>
       </div>
     )
   }
@@ -349,7 +352,7 @@ class CalendarWeekView extends Component {
           styles.allDayEvents,
           sideBarOpen && styles.sideBarOpen
         )}>
-        <ul
+        <div
           className={classnames(
             'day-ul',
             styles.eventsContainer,
@@ -360,7 +363,7 @@ class CalendarWeekView extends Component {
               daysInfo.map((day, index) => {
                 if (!matches || index === mobileDayOfWeek) {
                   return (
-                    <li
+                    <div
                       className={classnames(
                         'day-li',
                         styles.eventsGroup,
@@ -425,14 +428,14 @@ class CalendarWeekView extends Component {
                             {event.name}
                           </div>
                         ))}
-                    </li>
+                    </div>
                   )
                 }
                 return null
               })
             }
           </MediaQuery>
-        </ul>
+        </div>
       </div>
     )
   }
@@ -449,7 +452,7 @@ class CalendarWeekView extends Component {
         <div className={styles.timelineWrapper}>{this.renderTimeline()}</div>
         <div className={styles.mainContent}>
           {this.renderWeekdays()}
-          {this.renderAllDay()}
+          {/* {this.renderAllDay()} */}
           <div
             className={styles.weekviewContent}
             onScroll={this.listenScrollEvent.bind(this)}>
