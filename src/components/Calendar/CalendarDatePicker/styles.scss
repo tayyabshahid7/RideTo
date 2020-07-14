@@ -17,6 +17,7 @@
 }
 
 .calendarDropdown {
+  top: 30px;
   position: absolute;
   border: 1px solid var(--color-border);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
@@ -24,4 +25,5 @@
   background: white;
   padding: 20px 15px;
   width: 356px;
+  z-index: 200;
 }

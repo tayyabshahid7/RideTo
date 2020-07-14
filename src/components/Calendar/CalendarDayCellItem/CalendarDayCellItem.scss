@@ -1,20 +1,30 @@
 @import '../../../bootstrap';
 
-$warning: #fed697;
-$danger: #fe9898;
+$warning: #f8d69f;
+$danger: #ff9292;
 
 .calendarDayCellItem {
-  color: $grey;
-  // border: solid 1px var(--dark-color);
-  margin-top: 5px;
+  color: var(--color-dark-light);
+  border-radius: 2px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   line-height: 24px;
-  padding-left: 4px;
-  background-color: #f3f3f3;
+  padding: 0 8px;
+  background-color: #ededed;
+  font-weight: 500;
+  font-size: 11px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nameCell {
   font-weight: bold;
-  font-size: 12px;
+  flex: 1 1 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .warning {

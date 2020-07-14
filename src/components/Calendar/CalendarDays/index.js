@@ -7,7 +7,7 @@ const CalendarDays = ({ days, calendar, history, handleMobileCellClick }) => {
   const rowsCount = Math.ceil(days.length / 7)
 
   return (
-    <ul
+    <div
       className={classnames(
         styles.calendarDays,
         rowsCount === 5 && styles.calendarDaysFiveRows,
@@ -23,7 +23,7 @@ const CalendarDays = ({ days, calendar, history, handleMobileCellClick }) => {
           rowsCount={rowsCount}
         />
       ))}
-    </ul>
+    </div>
   )
 }
 

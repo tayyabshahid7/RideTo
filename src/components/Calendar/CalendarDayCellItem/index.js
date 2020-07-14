@@ -20,7 +20,8 @@ const CalendarDayCellItem = ({ item, settings }) => {
       {isInstructor && (
         <img src={personIcon} alt="" className={styles.instructorIcon} />
       )}{' '}
-      {item.all_day ? 'All day' : item.time} | {item.name}
+      <span className={styles.nameCell}>{item.name}</span>
+      <span>{item.all_day ? 'All day' : item.time}</span>
     </div>
   )
 }
