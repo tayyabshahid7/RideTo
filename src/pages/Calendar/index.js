@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import RightPanel from 'components/RightPanel'
+import CalendarFilter from 'components/Calendar/CalendarFilter'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
 import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseComponent'
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
@@ -17,12 +18,21 @@ import styles from './styles.scss'
 import { getCourses, updateCalendarSetting } from 'store/course'
 import { getEvents } from 'store/event'
 import { getStaff } from 'store/staff'
+import { toggleUser } from 'store/calendar'
 import { getInstructors } from 'store/instructor'
 import { getTestCentres } from 'store/testCentre'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 import { fetchSettings } from 'store/settings'
 
 class CalendarPage extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      filterOpen: false
+    }
+  }
+
   componentDidMount() {
     this.loadData()
     this.loadInstructors()
@@ -45,6 +55,10 @@ class CalendarPage extends Component {
     ) {
       this.loadData()
     }
+  }
+
+  toggleFilter = value => {
+    this.setState({ filterOpen: value })
   }
 
   loadInstructors() {
@@ -328,6 +342,11 @@ class CalendarPage extends Component {
     })
   }
 
+  handleToggleUser = (userIds, active) => {
+    console.log(userIds, active)
+    this.props.toggleUser({ userIds, active })
+  }
+
   render() {
     const {
       calendar,
@@ -335,8 +354,12 @@ class CalendarPage extends Component {
       staffCalendar,
       history,
       location,
+      instructors,
+      inactiveUsers,
       match
     } = this.props
+    const { filterOpen } = this.state
+
     let days = this.generateDaysDataFromCalendar(
       calendar,
       eventCalendar,
@@ -346,6 +369,13 @@ class CalendarPage extends Component {
 
     return (
       <div className={styles.calendar}>
+        {filterOpen && (
+          <CalendarFilter
+            users={instructors}
+            inactiveUsers={inactiveUsers}
+            toggleUser={this.handleToggleUser}
+          />
+        )}
         <div
           className={classnames(
             styles.calendarColumn,
@@ -362,7 +392,9 @@ class CalendarPage extends Component {
             calendarPath={calendarPath}
             match={match}
             handleMobileCellClick={this.handleMobileCellClick.bind(this)}
+            toggleFilter={this.toggleFilter}
             sideBarOpen={!calendarPath}
+            filterOpen={filterOpen}
           />
         </div>
         <RightPanel location={location}>
@@ -494,7 +526,9 @@ const mapStateToProps = (state, ownProps) => {
     calendar,
     eventCalendar,
     staffCalendar,
-    settings: state.settings.settings
+    settings: state.settings.settings,
+    instructors: state.instructor.instructors,
+    inactiveUsers: state.calendar.inactiveUsers
   }
 }
 
@@ -507,7 +541,8 @@ const mapDispatchToProps = dispatch =>
       getInstructors,
       getTestCentres,
       updateCalendarSetting,
-      fetchSettings
+      fetchSettings,
+      toggleUser
     },
     dispatch
   )

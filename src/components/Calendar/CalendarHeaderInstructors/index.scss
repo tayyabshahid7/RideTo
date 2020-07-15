@@ -4,11 +4,16 @@
   padding: 10px 0 6px;
 }
 
+.filterOpen {
+  padding-left: 320px;
+}
+
 .instructor {
   flex: 1 1 1px;
   display: flex;
   align-items: center;
   padding: 0 8px;
+  min-width: 55px;
 
   img {
     width: 16px;

@@ -51,8 +51,7 @@ let NavigationBar = ({ history, user, logout }) => {
     <nav
       className={classnames(
         styles.navigationBar,
-        // 'navbar navbar-expand-md navbar-light bg-light fixed-top'
-        'navbar navbar-expand-md navbar-light fixed-top',
+        'navbar navbar-expand-md navbar-light',
         isOpen && styles.isOpen
       )}>
       <div className={classnames(styles.image)}>

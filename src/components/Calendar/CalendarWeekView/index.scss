@@ -1,9 +1,9 @@
 .container {
-  flex: 1 1 auto;
+  flex: 1 1 1px;
   display: flex;
   flex-direction: row;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .containerSidebar {
@@ -29,6 +29,10 @@
   height: 72px;
   padding: 0 0 0 56px;
   z-index: 5;
+}
+
+.filterOpen {
+  padding-left: 376px;
 }
 
 .weekDaysHeader {

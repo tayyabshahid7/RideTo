@@ -2,17 +2,13 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-
-  flex-grow: 1;
+  flex: 1 1 1px;
 }
 
 .calendarColumn {
-  // padding-right: 16px;
+  flex: 1 1 1px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  width: 640px;
-  height: 100%;
 
   @media (max-width: 992px) {
     padding-right: 0;

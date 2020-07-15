@@ -130,14 +130,21 @@ class CalendarWeekView extends Component {
   }
 
   renderWeekdays() {
-    const { days, calendar, handleMobileCellClick, sideBarOpen } = this.props
+    const {
+      days,
+      calendar,
+      handleMobileCellClick,
+      sideBarOpen,
+      filterOpen
+    } = this.props
     let daysInfo = this.evaluateData(days)
 
     return (
       <div
         className={classnames(
           styles.weekDays,
-          sideBarOpen && styles.sideBarOpen
+          sideBarOpen && styles.sideBarOpen,
+          filterOpen && styles.filterOpen
         )}>
         <div className={styles.daysContainer}>
           {daysInfo.map((day, index) => (
