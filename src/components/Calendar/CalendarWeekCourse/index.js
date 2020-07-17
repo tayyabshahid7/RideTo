@@ -22,7 +22,7 @@ const CalendarWeekCourse = React.forwardRef(
       }
     }
     let left = `${position * 4}px`
-    let width = `calc(100% - ${barCount * 4}px)`
+    let width = `calc(100% - ${(barCount - 1) * 4}px)`
 
     // if (position > 0) {
     //   left = `calc(${(100 / barCount) * position}% - 12px)`

@@ -9,7 +9,8 @@ import CurrentTimeLine from '../CurrentTimeLine'
 import {
   WORK_HOURS,
   WEEK_VIEW_START_TIME,
-  WEEK_VIEW_WORKING_DAY_TIME_STRING
+  WEEK_VIEW_WORKING_DAY_TIME_STRING,
+  CALENDAR_VIEW
 } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
@@ -44,7 +45,12 @@ class CalendarWeekView extends Component {
   componentDidMount() {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
     const { scrolled, mobileDayOfWeek } = this.state
-    const hasCourses = this.props.days[mobileDayOfWeek].courses.length
+    const { calendar } = this.props
+
+    const hasCourses =
+      calendar.viewMode === CALENDAR_VIEW.WEEK
+        ? this.props.days[mobileDayOfWeek].courses.length
+        : this.props.days[0].courses.length
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
@@ -74,7 +80,12 @@ class CalendarWeekView extends Component {
       const isDesktop = window.matchMedia('(min-width: 768px)').matches
 
       const { mobileDayOfWeek } = this.state
-      const hasCourses = this.props.days[mobileDayOfWeek].courses.length
+      const { calendar } = this.props
+
+      const hasCourses =
+        calendar.viewMode === CALENDAR_VIEW.WEEK
+          ? this.props.days[mobileDayOfWeek].courses.length
+          : this.props.days[0].courses.length
 
       if (!hasCourses && !isDesktop) {
         const { scrolled } = this.state
@@ -127,13 +138,12 @@ class CalendarWeekView extends Component {
 
   renderWeekdays() {
     const {
-      days,
       calendar,
       handleMobileCellClick,
       sideBarOpen,
       filterOpen
     } = this.props
-    let daysInfo = this.evaluateData(days)
+    let daysInfo = this.getWeekDays()
 
     return (
       <div
@@ -142,7 +152,11 @@ class CalendarWeekView extends Component {
           sideBarOpen && styles.sideBarOpen,
           filterOpen && styles.filterOpen
         )}>
-        <div className={styles.daysContainer}>
+        <div
+          className={classnames(
+            styles.daysContainer,
+            calendar.viewMode === CALENDAR_VIEW.DAY && styles.daysSingle
+          )}>
           {daysInfo.map((day, index) => (
             <div
               className={classnames(
@@ -179,18 +193,22 @@ class CalendarWeekView extends Component {
 
                     return (
                       <div>
-                        <Link
-                          to={`/calendar/${moment(day.date).format(
-                            'YYYY-MM-DD'
-                          )}`}
-                          className={classnames(
-                            styles.date,
-                            moment(day.date).isSame(moment(), 'day') &&
-                              styles.highlight
-                          )}>
-                          {moment(day.date).format('ddd DD')}
-                        </Link>
-                        <CalendarHeaderInstructors />
+                        {calendar.viewMode === CALENDAR_VIEW.WEEK && (
+                          <Link
+                            to={`/calendar/${moment(day.date).format(
+                              'YYYY-MM-DD'
+                            )}`}
+                            className={classnames(
+                              styles.date,
+                              moment(day.date).isSame(moment(), 'day') &&
+                                styles.highlight
+                            )}>
+                            {moment(day.date).format('ddd DD')}
+                          </Link>
+                        )}
+                        <CalendarHeaderInstructors
+                          isDay={calendar.viewMode === CALENDAR_VIEW.DAY}
+                        />
                       </div>
                     )
                   }}
@@ -210,7 +228,9 @@ class CalendarWeekView extends Component {
     return ''
   }
 
-  evaluateData(days) {
+  getWeekDays = () => {
+    let { days } = this.props
+
     let date = '2000-01-01'
     let results = days.map(day => {
       let dayObj = { ...day }
@@ -276,13 +296,17 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { days, history, calendar, match, settings, users } = this.props
+    const { history, calendar, match, settings, users } = this.props
     const { mobileDayOfWeek } = this.state
-    let daysInfo = this.evaluateData(days)
+    let daysInfo = this.getWeekDays()
 
     return (
       <div className={styles.events}>
-        <div className={styles.eventsContainer}>
+        <div
+          className={classnames(
+            styles.eventsContainer,
+            calendar.viewMode === CALENDAR_VIEW.DAY && styles.daysSingle
+          )}>
           <MediaQuery maxWidth={767}>
             {matches =>
               daysInfo.map((day, index) => {
@@ -358,7 +382,7 @@ class CalendarWeekView extends Component {
   // renderAllDay() {
   //   const { days, calendar, history, sideBarOpen } = this.props
   //   const { mobileDayOfWeek } = this.state
-  //   let daysInfo = this.evaluateData(days)
+  //   let daysInfo = this.getWeekDays()
 
   //   return (
   //     <div

@@ -23,6 +23,7 @@ class CalendarComponent extends Component {
     const { calendar, filterOpen, toggleFilter } = this.props
     const { viewMode } = calendar
     const { handleCustomEvent, handleChangeDate } = this.props
+
     return (
       <div className={classnames(styles.overview)}>
         <div className={styles.filtersWrap}>
@@ -47,11 +48,7 @@ class CalendarComponent extends Component {
               viewMode === CALENDAR_VIEW.MONTH &&
                 styles.changeCalendarWrapperMonth
             )}>
-            <CalendarArrowsSwitcher
-              handleCustomEvent={handleCustomEvent}
-              calendar={calendar}
-              handleChangeDate={handleChangeDate}
-            />
+            <CalendarArrowsSwitcher handleCustomEvent={handleCustomEvent} />
 
             <CalendarViewChanger
               viewMode={viewMode}
@@ -99,7 +96,15 @@ class CalendarComponent extends Component {
             <Loading
               loading={calendar.loading}
               className={styles.calendarWrapper}>
-              {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
+              {calendar.viewMode === CALENDAR_VIEW.MONTH ? (
+                <CalendarMonthView
+                  days={days}
+                  calendar={calendar}
+                  history={history}
+                  handleMobileCellClick={handleMobileCellClick}
+                  sideBarOpen={sideBarOpen}
+                />
+              ) : (
                 <CalendarWeekView
                   match={match}
                   days={days}
@@ -111,14 +116,6 @@ class CalendarComponent extends Component {
                   filterOpen={filterOpen}
                   users={users}
                   loading={calendar.loading}
-                />
-              ) : (
-                <CalendarMonthView
-                  days={days}
-                  calendar={calendar}
-                  history={history}
-                  handleMobileCellClick={handleMobileCellClick}
-                  sideBarOpen={sideBarOpen}
                 />
               )}
             </Loading>

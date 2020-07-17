@@ -181,6 +181,10 @@
   grid-template-columns: repeat(7, 1fr);
 }
 
+.daysSingle {
+  grid-template-columns: 1fr;
+}
+
 .eventsContainerAllDay {
   height: 50px;
   margin-bottom: 0;

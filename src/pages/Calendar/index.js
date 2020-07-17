@@ -144,6 +144,13 @@ class CalendarPage extends Component {
     }
 
     let firstDay = new Date(year, month, day)
+    if (viewMode === CALENDAR_VIEW.DAY) {
+      return {
+        firstDate: firstDay,
+        lastDate: firstDay
+      }
+    }
+
     let dayOne = firstDay.getDay()
     if (dayOne === 0) {
       dayOne = 6
@@ -166,8 +173,10 @@ class CalendarPage extends Component {
     let dates = []
     if (calendar.viewMode === CALENDAR_VIEW.MONTH) {
       dates = this.generateCalendarDaysForMonth(calendar)
-    } else {
+    } else if (calendar.viewMode === CALENDAR_VIEW.WEEK) {
       dates = this.generateCalendarDaysForWeek(calendar)
+    } else {
+      dates = this.generateCalendarDaysForDay(calendar)
     }
     return dates.map(date => {
       let dateInString = moment(date).format('YYYY-MM-DD')
@@ -248,6 +257,11 @@ class CalendarPage extends Component {
 
     return days
   }
+
+  generateCalendarDaysForDay({ year, month, day }) {
+    return [new Date(year, month, day)]
+  }
+
   handleCustomEvent(type, params) {
     const { updateCalendarSetting, calendar } = this.props
     if (type === 'change-calendar-setting') {
@@ -279,6 +293,12 @@ class CalendarPage extends Component {
           calendar.month,
           calendar.day + (type === 'prev' ? -7 : 7)
         )
+      } else {
+        nextDate = new Date(
+          calendar.year,
+          calendar.month,
+          calendar.day + (type === 'prev' ? -1 : 1)
+        )
       }
       updateCalendarSetting({
         year: nextDate.getFullYear(),
@@ -294,36 +314,9 @@ class CalendarPage extends Component {
     }
   }
 
-  handleChangeDate({ month, year }) {
-    const { calendar, updateCalendarSetting } = this.props
-    let date = moment({
-      year: calendar.year,
-      month: calendar.month,
-      day: calendar.day
-    })
-
-    const endDay = moment({
-      year: year || calendar.year,
-      month: month || calendar.month
-    })
-      .endOf('month')
-      .date()
-
-    if (calendar.day > endDay) {
-      date.date(endDay)
-    }
-
-    if (month) {
-      date.month(parseInt(month))
-    } else if (year) {
-      date.year(parseInt(year))
-    }
-
-    updateCalendarSetting({
-      year: date.year(),
-      month: date.month(),
-      day: date.date()
-    })
+  handleChangeDate({ day, month, year }) {
+    const { updateCalendarSetting } = this.props
+    return updateCalendarSetting({ day, month, year })
   }
 
   handleMobileCellClick(dateStr) {

@@ -3,10 +3,13 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './index.scss'
 
-const CalendarHeaderInstructors = ({ instructors, inactiveUsers }) => {
+const CalendarHeaderInstructors = ({ instructors, inactiveUsers, isDay }) => {
   const activeUsers = instructors.filter(x => !inactiveUsers.includes(x.id))
 
   const getInitial = instructor => {
+    if (isDay) {
+      return instructor.first_name + ' ' + instructor.last_name
+    }
     return (
       instructor.first_name.substr(0, 1) + instructor.last_name.substr(0, 1)
     )

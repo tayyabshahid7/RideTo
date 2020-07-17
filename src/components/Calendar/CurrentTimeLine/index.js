@@ -4,6 +4,7 @@ import moment from 'moment'
 
 const CurrentTimeLine = day => {
   const [top, setTop] = useState(0)
+  let timerInstance = null
 
   const calcTime = () => {
     const seconds = new Date().getTime() % (24 * 60 * 60 * 1000)
@@ -13,13 +14,14 @@ const CurrentTimeLine = day => {
   useEffect(() => {
     calcTime()
 
-    setTimeout(() => {
+    timerInstance = setTimeout(() => {
       calcTime()
     }, 60000)
   }, [])
 
   const isToday = moment().isSame(day.day.date, 'day')
   if (!isToday) {
+    clearTimeout(timerInstance)
     return null
   }
 
