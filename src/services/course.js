@@ -13,7 +13,7 @@ export const getCourseSpaceText = course => {
 }
 
 export const getCourseSpaceTextShort = course => {
-  const availableSpaces = course.spaces - course.orders.length
+  const availableSpaces = course.spaces_available
   return availableSpaces === 0
     ? 'Full'
     : `${availableSpaces} Space${s(availableSpaces)} left`
@@ -28,7 +28,6 @@ export const getCoursesOnDay = (days, dateStr) => {
 }
 
 export const fetchCourses = async (schoolId, startDate, endDate) => {
-  return []
   const path = `school/${schoolId}/course`
   const params = {
     sdate: startDate,
@@ -41,8 +40,7 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
 }
 
 export const fetchCoursesMinimal = async (schoolId, startDate, endDate) => {
-  return []
-  const path = `school/${schoolId}/course`
+  const path = `school/${schoolId}/course/minimal`
   const params = {
     sdate: startDate,
     edate: endDate

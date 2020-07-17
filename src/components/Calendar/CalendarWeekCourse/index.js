@@ -1,5 +1,5 @@
 import React from 'react'
-import { getCourseSpaceTextShort } from 'services/course'
+// import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
@@ -9,7 +9,6 @@ import personIcon from 'assets/images/person.png'
 
 const CalendarWeekCourse = React.forwardRef(
   ({ course, position, barCount, history, calendar, match, settings }, ref) => {
-    console.log(course)
     const offset = 0
     let height = (course.duration / 60) * 100 // Duration is in mins
     let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
@@ -22,15 +21,13 @@ const CalendarWeekCourse = React.forwardRef(
         return null
       }
     }
-    console.log(top, height)
-    let left = `${(100 / barCount) * position}%`
-    let width = `calc(${100 / barCount}%)`
+    let left = `${position * 4}px`
+    let width = `calc(100% - ${barCount * 4}px)`
 
-    if (position > 0) {
-      left = `calc(${(100 / barCount) * position}% - 12px)`
-      width = `calc(${100 / barCount}%)`
-    }
-
+    // if (position > 0) {
+    //   left = `calc(${(100 / barCount) * position}% - 12px)`
+    //   width = `calc(${100 / barCount}%)`
+    // }
     // let borderColor = 'black'
     let style = {
       height: `${height / 2}px`,
@@ -159,7 +156,7 @@ const CalendarWeekCourse = React.forwardRef(
           <span className={styles.eventName}>
             {getShortCourseType(course.course_type)}
           </span>
-          <div className={styles.eventTime}>
+          {/* <div className={styles.eventTime}>
             {course.time.substring(0, 5)} -{' '}
             {moment(`${course.date} ${course.time}`)
               .add(course.duration / 60, 'hours')
@@ -179,8 +176,8 @@ const CalendarWeekCourse = React.forwardRef(
               availableSpaces === 0 && styles.textDanger
             )}>
             {getCourseSpaceTextShort(course)}
-          </span>
-          <div>
+          </span> */}
+          {/* <div>
             <div>
               <b>Orders:</b>
             </div>
@@ -191,7 +188,7 @@ const CalendarWeekCourse = React.forwardRef(
                   </div>
                 ))
               : 'No orders'}
-          </div>
+          </div> */}
           {course.notes && (
             <div className={styles.eventsNotes}>
               <div>

@@ -1,7 +1,17 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { changeSchool } from 'store/auth'
 import styles from './index.scss'
 
-const CalendarFilter = ({ users, inactiveUsers, toggleUser }) => {
+const CalendarFilter = ({
+  users,
+  inactiveUsers,
+  toggleUser,
+  options,
+  changeSchool,
+  selected
+}) => {
   const handleStaffChange = userId => () => {
     toggleUser([userId], inactiveUsers.includes(userId))
   }
@@ -12,19 +22,31 @@ const CalendarFilter = ({ users, inactiveUsers, toggleUser }) => {
     toggleUser(userIds, active)
   }
 
+  const handleSupplierChange = option => () => {
+    if (selected !== option.id) {
+      changeSchool(option.id, option.name)
+    }
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.container}>
         <div className={styles.sectionItem}>
           <h5 className={styles.sectionTitle}>Location</h5>
         </div>
-        <div className={styles.sectionItem}>
-          <h6 className={styles.sectionLabel}>RideTo Demo School</h6>
-          <label className="switch">
-            <input type="checkbox" />
-            <span className="slider round"></span>
-          </label>
-        </div>
+        {options.map(opt => (
+          <div className={styles.sectionItem}>
+            <h6 className={styles.sectionLabel}>{opt.name}</h6>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={opt.id === selected}
+                onChange={handleSupplierChange(opt)}
+              />
+              <span className="slider round"></span>
+            </label>
+          </div>
+        ))}
         <div className={styles.divider}></div>
 
         <div className={styles.sectionItem}>
@@ -64,4 +86,22 @@ const CalendarFilter = ({ users, inactiveUsers, toggleUser }) => {
   )
 }
 
-export default CalendarFilter
+const mapStateToProps = (state, ownProps) => {
+  return {
+    options: state.auth.user.suppliers,
+    selected: state.auth.schoolId
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      changeSchool
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CalendarFilter)

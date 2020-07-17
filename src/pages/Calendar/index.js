@@ -6,7 +6,6 @@ import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
 import RightPanel from 'components/RightPanel'
-import CalendarFilter from 'components/Calendar/CalendarFilter'
 import CoursesPanel from 'components/Calendar/CoursesPanel'
 import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseComponent'
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
@@ -343,7 +342,6 @@ class CalendarPage extends Component {
   }
 
   handleToggleUser = (userIds, active) => {
-    console.log(userIds, active)
     this.props.toggleUser({ userIds, active })
   }
 
@@ -369,13 +367,6 @@ class CalendarPage extends Component {
 
     return (
       <div className={styles.calendar}>
-        {filterOpen && (
-          <CalendarFilter
-            users={instructors}
-            inactiveUsers={inactiveUsers}
-            toggleUser={this.handleToggleUser}
-          />
-        )}
         <div
           className={classnames(
             styles.calendarColumn,
@@ -395,6 +386,9 @@ class CalendarPage extends Component {
             toggleFilter={this.toggleFilter}
             sideBarOpen={!calendarPath}
             filterOpen={filterOpen}
+            instructors={instructors}
+            inactiveUsers={inactiveUsers}
+            handleToggleUser={this.handleToggleUser}
           />
         </div>
         <RightPanel location={location}>

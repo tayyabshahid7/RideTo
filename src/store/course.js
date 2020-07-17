@@ -19,6 +19,7 @@ import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
 import { actions as notificationActions } from './notification'
 import uniqBy from 'lodash/uniqBy'
+import moment from 'moment'
 import { saveState } from 'services/localStorage'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
@@ -130,8 +131,16 @@ export const getCourses = ({
 }) => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
+  const diff = moment
+    .duration(moment(lastDate).diff(moment(firstDate)))
+    .asDays()
+
   try {
-    const courses = await fetchCoursesMinimal(schoolId, firstDate, lastDate)
+    const courses =
+      diff > 10
+        ? await fetchCoursesMinimal(schoolId, firstDate, lastDate)
+        : await fetchCourses(schoolId, firstDate, lastDate)
+
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
@@ -569,7 +578,6 @@ export default function reducer(state = initialState, action) {
         }
       }
     case FETCH_ALL[SUCCESS]:
-      console.log('*** fetching', action.data)
       if (action.data.reset) {
         return {
           ...state,

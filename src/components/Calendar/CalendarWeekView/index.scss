@@ -4,6 +4,7 @@
   flex-direction: row;
   position: relative;
   overflow: auto;
+  padding-left: 56px;
 }
 
 .containerSidebar {
@@ -22,17 +23,16 @@
 
 .weekDays {
   background: #fff;
-  position: fixed;
-  top: 147px;
+  position: sticky;
+  top: 0;
   left: 0;
   right: 0;
   height: 72px;
-  padding: 0 0 0 56px;
+  padding: 0;
   z-index: 5;
 }
 
 .filterOpen {
-  padding-left: 376px;
 }
 
 .weekDaysHeader {
@@ -76,7 +76,6 @@
 }
 
 .weekviewContent {
-  margin-top: 72px;
   position: relative;
   flex: 1 1 auto;
   display: flex;
@@ -93,14 +92,16 @@
 
 .timeline {
   display: block;
-  flex: 0 0 50px;
   height: 100%;
-  width: 50px; //100%;
   position: absolute;
+  left: -56px;
+  right: 0;
+  top: 0;
 
-  li {
-    position: relative;
+  > div {
+    position: absolute;
     height: 50px;
+    width: 100%;
 
     &::after {
       /* this is used to create the table horizontal lines */
@@ -108,7 +109,7 @@
       position: absolute;
       bottom: 0;
       left: 56px;
-      width: calc(100vw - 56px);
+      right: 0;
       height: 1px;
       background: var(--color-border);
       // z-index: 2;
@@ -411,4 +412,8 @@
 .instructorIcon {
   width: 12px;
   vertical-align: -2px;
+}
+
+.weekDayGroup {
+  display: flex !important;
 }

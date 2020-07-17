@@ -3,8 +3,8 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './index.scss'
-import CalendarWeekCourse from '../CalendarWeekCourse'
 import CalendarHeaderInstructors from '../CalendarHeaderInstructors'
+import CalendarUserLine from '../CalendarUserLine'
 import {
   WORK_HOURS,
   WEEK_VIEW_START_TIME,
@@ -100,31 +100,32 @@ class CalendarWeekView extends Component {
   }
 
   listenScrollEvent(event) {
-    if (this.refs.timelineDiv) {
-      this.refs.timelineDiv.style.top = `-${event.target.scrollTop}px`
-    }
+    // if (this.refs.timelineDiv) {
+    //   this.refs.timelineDiv.style.top = `-${event.target.scrollTop}px`
+    // }
   }
 
   renderTimeline() {
     return (
       <div className={styles.timeline} ref="timelineDiv">
-        <ul>
-          {Array.apply(null, { length: WORK_HOURS }).map((val, index) => {
-            const time = moment(
-              new Date(
-                new Date('2000-01-01T00:00:00Z') -
-                  (WEEK_VIEW_START_TIME + index * 60 * 60) * -1000
-              )
-            ).format('HH:mm')
-            const isStartTime = time === WEEK_VIEW_WORKING_DAY_TIME_STRING
-
-            return (
-              <li key={index} ref={isStartTime ? this.startTime : undefined}>
-                {index > 0 && <span>{time}</span>}
-              </li>
+        {Array.apply(null, { length: WORK_HOURS }).map((val, index) => {
+          const time = moment(
+            new Date(
+              new Date('2000-01-01T00:00:00Z') -
+                (WEEK_VIEW_START_TIME + index * 60 * 60) * -1000
             )
-          })}
-        </ul>
+          ).format('HH:mm')
+          const isStartTime = time === WEEK_VIEW_WORKING_DAY_TIME_STRING
+
+          return (
+            <div
+              key={index}
+              ref={isStartTime ? this.startTime : undefined}
+              style={{ top: index * 50 + 'px' }}>
+              {index > 0 && <span>{time}</span>}
+            </div>
+          )
+        })}
       </div>
     )
   }
@@ -280,7 +281,7 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { days, history, calendar, match, settings } = this.props
+    const { days, history, calendar, match, settings, users } = this.props
     const { mobileDayOfWeek } = this.state
     let daysInfo = this.evaluateData(days)
 
@@ -313,8 +314,18 @@ class CalendarWeekView extends Component {
                           styles.bgHighlight
                       )}
                       key={index}>
-                      <div className="day-ul">
-                        {day.courses &&
+                      <div className={styles.weekDayGroup}>
+                        {users.map(user => (
+                          <CalendarUserLine
+                            day={day}
+                            user={user}
+                            history={history}
+                            calendar={calendar}
+                            match={match}
+                            settings={settings}
+                          />
+                        ))}
+                        {/* {day.courses &&
                           day.courses.length > 0 &&
                           day.courses.map((course, index) => (
                             <CalendarWeekCourse
@@ -332,7 +343,7 @@ class CalendarWeekView extends Component {
                                   : undefined
                               }
                             />
-                          ))}
+                          ))} */}
                       </div>
                     </div>
                   )
@@ -456,13 +467,13 @@ class CalendarWeekView extends Component {
           styles.container,
           sideBarOpen && styles.containerSidebar
         )}>
-        <div className={styles.timelineWrapper}>{this.renderTimeline()}</div>
         <div className={styles.mainContent}>
           {this.renderWeekdays()}
           {/* {this.renderAllDay()} */}
           <div
             className={styles.weekviewContent}
             onScroll={this.listenScrollEvent.bind(this)}>
+            {this.renderTimeline()}
             {this.renderDays()}
           </div>
         </div>
