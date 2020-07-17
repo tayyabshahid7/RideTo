@@ -6,7 +6,7 @@ import classnames from 'classnames'
 
 const CalendarDayCellItem = ({ item, settings }) => {
   const isInstructor = item.instructor_name
-  const availableSpaces = item.spaces - item.orders.length
+  const availableSpaces = item.spaces_available
   const className = classnames(
     styles.calendarDayCellItem,
     availableSpaces === 1 && styles.warning,
@@ -20,7 +20,8 @@ const CalendarDayCellItem = ({ item, settings }) => {
       {isInstructor && (
         <img src={personIcon} alt="" className={styles.instructorIcon} />
       )}{' '}
-      {item.all_day ? 'All day' : item.time} | {item.name}
+      <span className={styles.nameCell}>{item.name}</span>
+      <span>{item.all_day ? 'All day' : item.time}</span>
     </div>
   )
 }

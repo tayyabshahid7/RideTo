@@ -93,21 +93,25 @@ const CalendarDayCell = ({
     }
   }
 
+  const dayText = moment(day.date).format('ddd DD')
+
   return (
-    <li
+    <div
       className={classnames(
         styles.container,
         selectedDay && styles.selectedDay,
         isAxisDate && 'axis-date'
       )}
       onClick={handleClick}>
-      <div
-        className={classnames(
-          isOtherMonthDate && styles.otherMonthDate,
-          styles.date,
-          isToday && styles.highlight
-        )}>
-        {day.date.getDate()}
+      <div className={styles.cellHeader}>
+        <div
+          className={classnames(
+            isOtherMonthDate && styles.otherMonthDate,
+            styles.date,
+            isToday && styles.highlight
+          )}>
+          {dayText}
+        </div>
       </div>
       <div className={styles.courseContainer}>
         {items.slice(0, showItems).map(item => (
@@ -120,7 +124,7 @@ const CalendarDayCell = ({
           </div>
         )}
       </div>
-    </li>
+    </div>
   )
 }
 

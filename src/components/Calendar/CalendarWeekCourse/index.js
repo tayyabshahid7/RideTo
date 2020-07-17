@@ -1,5 +1,5 @@
 import React from 'react'
-import { getCourseSpaceTextShort } from 'services/course'
+// import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
@@ -9,7 +9,7 @@ import personIcon from 'assets/images/person.png'
 
 const CalendarWeekCourse = React.forwardRef(
   ({ course, position, barCount, history, calendar, match, settings }, ref) => {
-    const offset = 66
+    const offset = 0
     let height = (course.duration / 60) * 100 // Duration is in mins
     let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
     if (top < 0) {
@@ -21,14 +21,13 @@ const CalendarWeekCourse = React.forwardRef(
         return null
       }
     }
-    let left = `${(100 / barCount) * position}%`
-    let width = `calc(${100 / barCount}% + 12px)`
+    let left = `${position * 4}px`
+    let width = `calc(100% - ${(barCount - 1) * 4}px)`
 
-    if (position > 0) {
-      left = `calc(${(100 / barCount) * position}% - 12px)`
-      width = `calc(${100 / barCount}% + 12px)`
-    }
-
+    // if (position > 0) {
+    //   left = `calc(${(100 / barCount) * position}% - 12px)`
+    //   width = `calc(${100 / barCount}%)`
+    // }
     // let borderColor = 'black'
     let style = {
       height: `${height / 2}px`,
@@ -41,7 +40,7 @@ const CalendarWeekCourse = React.forwardRef(
     if (course.instructor_name) {
       // Then it is staff
       return (
-        <li
+        <div
           className={classnames(
             styles.singleEvent,
             styles.singleEventEvent,
@@ -61,7 +60,7 @@ const CalendarWeekCourse = React.forwardRef(
           }>
           <div
             className={classnames(styles.content)}
-            style={{ background: course.colour }}>
+            style={{ backgroundColor: course.colour }}>
             <span className={styles.eventName}>
               <img
                 src={personIcon}
@@ -85,14 +84,14 @@ const CalendarWeekCourse = React.forwardRef(
               </div>
             )}
           </div>
-        </li>
+        </div>
       )
     }
 
     if (!course.course_type) {
       // Then it is event
       return (
-        <li
+        <div
           className={classnames(
             styles.singleEvent,
             styles.singleEventEvent,
@@ -127,14 +126,14 @@ const CalendarWeekCourse = React.forwardRef(
               </div>
             )}
           </div>
-        </li>
+        </div>
       )
     }
 
     const availableSpaces = course.spaces - course.orders.length
 
     return (
-      <li
+      <div
         ref={ref}
         className={classnames(
           styles.singleEvent,
@@ -157,7 +156,7 @@ const CalendarWeekCourse = React.forwardRef(
           <span className={styles.eventName}>
             {getShortCourseType(course.course_type)}
           </span>
-          <div className={styles.eventTime}>
+          {/* <div className={styles.eventTime}>
             {course.time.substring(0, 5)} -{' '}
             {moment(`${course.date} ${course.time}`)
               .add(course.duration / 60, 'hours')
@@ -177,8 +176,8 @@ const CalendarWeekCourse = React.forwardRef(
               availableSpaces === 0 && styles.textDanger
             )}>
             {getCourseSpaceTextShort(course)}
-          </span>
-          <div>
+          </span> */}
+          {/* <div>
             <div>
               <b>Orders:</b>
             </div>
@@ -189,7 +188,7 @@ const CalendarWeekCourse = React.forwardRef(
                   </div>
                 ))
               : 'No orders'}
-          </div>
+          </div> */}
           {course.notes && (
             <div className={styles.eventsNotes}>
               <div>
@@ -199,7 +198,7 @@ const CalendarWeekCourse = React.forwardRef(
             </div>
           )}
         </div>
-      </li>
+      </div>
     )
   }
 )

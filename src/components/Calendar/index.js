@@ -2,67 +2,65 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
-import { Row, Col } from 'reactstrap'
 import CalendarMonthView from './CalendarMonthView'
 import styles from './index.scss'
 import { CALENDAR_VIEW } from '../../common/constants'
 import CalendarWeekView from './CalendarWeekView'
 import Loading from 'components/Loading'
-import SchoolSelect from 'components/SchoolSelect'
-import CalendarDateChanger from './CalendarDateChanger'
+import CalendarFilter from 'components/Calendar/CalendarFilter'
+import CalendarDatePicker from './CalendarDatePicker'
 import CalendarViewChanger from './CalendarViewChanger'
 import CalendarArrowsSwitcher from './CalendarArrowsSwitcher'
 import CalendarMobileBackButton from './CalendarMobileBackButton'
+import { IconSideFilter } from '../../assets/icons/'
 import { Desktop } from 'common/breakpoints'
 import MediaQuery from 'react-responsive'
 
 class CalendarComponent extends Component {
+  handleSidebar = () => {}
+
   renderOverview() {
-    const { calendar, sideBarOpen } = this.props
+    const { calendar, filterOpen, toggleFilter } = this.props
     const { viewMode } = calendar
     const { handleCustomEvent, handleChangeDate } = this.props
+
     return (
-      <div
-        className={classnames(
-          styles.overview,
-          sideBarOpen && styles.sideBarOpen
-        )}>
-        <Row>
-          <Col>
-            <div className={styles.filtersWrap}>
-              <MediaQuery minWidth={768}>
-                <SchoolSelect />
-              </MediaQuery>
+      <div className={classnames(styles.overview)}>
+        <div className={styles.filtersWrap}>
+          <MediaQuery minWidth={768}>
+            <div className={styles.leftFilter}>
               <div
-                className={classnames(
-                  styles.changeCalendarWrapper,
-                  viewMode === CALENDAR_VIEW.MONTH &&
-                    styles.changeCalendarWrapperMonth
-                )}>
-                <CalendarArrowsSwitcher
-                  handleCustomEvent={handleCustomEvent}
+                onClick={() => toggleFilter(!filterOpen)}
+                className={classnames('icon-button', filterOpen && 'active')}>
+                <IconSideFilter />
+              </div>
+              <Desktop>
+                <CalendarDatePicker
                   calendar={calendar}
                   handleChangeDate={handleChangeDate}
                 />
-                <Desktop>
-                  <CalendarDateChanger
-                    calendar={calendar}
-                    handleChangeDate={handleChangeDate}
-                  />
-                </Desktop>
-                <CalendarViewChanger
-                  viewMode={viewMode}
-                  handleCustomEvent={handleCustomEvent}
-                />
-              </div>
-              <CalendarMobileBackButton
-                handleCustomEvent={handleCustomEvent}
-                viewMode={viewMode}
-                calendar={calendar}
-              />
+              </Desktop>
             </div>
-          </Col>
-        </Row>
+          </MediaQuery>
+          <div
+            className={classnames(
+              styles.changeCalendarWrapper,
+              viewMode === CALENDAR_VIEW.MONTH &&
+                styles.changeCalendarWrapperMonth
+            )}>
+            <CalendarArrowsSwitcher handleCustomEvent={handleCustomEvent} />
+
+            <CalendarViewChanger
+              viewMode={viewMode}
+              handleCustomEvent={handleCustomEvent}
+            />
+          </div>
+          <CalendarMobileBackButton
+            handleCustomEvent={handleCustomEvent}
+            viewMode={viewMode}
+            calendar={calendar}
+          />
+        </div>
       </div>
     )
   }
@@ -74,35 +72,55 @@ class CalendarComponent extends Component {
       match,
       handleMobileCellClick,
       settings,
-      sideBarOpen
+      sideBarOpen,
+      filterOpen,
+      instructors,
+      inactiveUsers,
+      handleToggleUser
     } = this.props
+
+    const users = instructors.filter(x => !inactiveUsers.includes(x.id))
 
     return (
       <div className={classnames(styles.container)}>
         {this.renderOverview()}
-
-        <Loading loading={calendar.loading} className={styles.calendarWrapper}>
-          {calendar.viewMode === CALENDAR_VIEW.WEEK ? (
-            <CalendarWeekView
-              match={match}
-              days={days}
-              calendar={calendar}
-              history={history}
-              handleMobileCellClick={handleMobileCellClick}
-              settings={settings}
-              sideBarOpen={sideBarOpen}
-              loading={calendar.loading}
-            />
-          ) : (
-            <CalendarMonthView
-              days={days}
-              calendar={calendar}
-              history={history}
-              handleMobileCellClick={handleMobileCellClick}
-              sideBarOpen={sideBarOpen}
+        <div className={classnames(styles.wrapper)}>
+          {filterOpen && (
+            <CalendarFilter
+              users={instructors}
+              inactiveUsers={inactiveUsers}
+              toggleUser={handleToggleUser}
             />
           )}
-        </Loading>
+          <div className={classnames(styles.calendarContent)}>
+            <Loading
+              loading={calendar.loading}
+              className={styles.calendarWrapper}>
+              {calendar.viewMode === CALENDAR_VIEW.MONTH ? (
+                <CalendarMonthView
+                  days={days}
+                  calendar={calendar}
+                  history={history}
+                  handleMobileCellClick={handleMobileCellClick}
+                  sideBarOpen={sideBarOpen}
+                />
+              ) : (
+                <CalendarWeekView
+                  match={match}
+                  days={days}
+                  calendar={calendar}
+                  history={history}
+                  handleMobileCellClick={handleMobileCellClick}
+                  settings={settings}
+                  sideBarOpen={sideBarOpen}
+                  filterOpen={filterOpen}
+                  users={users}
+                  loading={calendar.loading}
+                />
+              )}
+            </Loading>
+          </div>
+        </div>
       </div>
     )
   }

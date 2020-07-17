@@ -3,17 +3,20 @@ import moment from 'moment'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import styles from './index.scss'
-import CalendarWeekCourse from '../CalendarWeekCourse'
+import CalendarHeaderInstructors from '../CalendarHeaderInstructors'
+import CalendarUserLine from '../CalendarUserLine'
+import CurrentTimeLine from '../CurrentTimeLine'
 import {
   WORK_HOURS,
   WEEK_VIEW_START_TIME,
-  WEEK_VIEW_WORKING_DAY_TIME_STRING
+  WEEK_VIEW_WORKING_DAY_TIME_STRING,
+  CALENDAR_VIEW
 } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
 import isEqual from 'lodash/isEqual'
-import { mapLabelColoursWithContant } from 'services/settings'
-import personIcon from 'assets/images/person.png'
+// import { mapLabelColoursWithContant } from 'services/settings'
+// import personIcon from 'assets/images/person.png'
 
 function getDayOfWeek({ day, month, year }) {
   const momentDate = moment(`${year}-${month + 1}-${day}`, 'YYYY-M-D')
@@ -42,7 +45,12 @@ class CalendarWeekView extends Component {
   componentDidMount() {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
     const { scrolled, mobileDayOfWeek } = this.state
-    const hasCourses = this.props.days[mobileDayOfWeek].courses.length
+    const { calendar } = this.props
+
+    const hasCourses =
+      calendar.viewMode === CALENDAR_VIEW.WEEK
+        ? this.props.days[mobileDayOfWeek].courses.length
+        : this.props.days[0].courses.length
 
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual'
@@ -72,7 +80,12 @@ class CalendarWeekView extends Component {
       const isDesktop = window.matchMedia('(min-width: 768px)').matches
 
       const { mobileDayOfWeek } = this.state
-      const hasCourses = this.props.days[mobileDayOfWeek].courses.length
+      const { calendar } = this.props
+
+      const hasCourses =
+        calendar.viewMode === CALENDAR_VIEW.WEEK
+          ? this.props.days[mobileDayOfWeek].courses.length
+          : this.props.days[0].courses.length
 
       if (!hasCourses && !isDesktop) {
         const { scrolled } = this.state
@@ -98,56 +111,59 @@ class CalendarWeekView extends Component {
     }
   }
 
-  listenScrollEvent(event) {
-    if (this.refs.timelineDiv) {
-      this.refs.timelineDiv.style.top = `-${event.target.scrollTop}px`
-    }
-  }
-
   renderTimeline() {
     return (
       <div className={styles.timeline} ref="timelineDiv">
-        <ul>
-          <li className={styles.allDayTimelineItem}>
-            <span>All day</span>
-          </li>
-          {Array.apply(null, { length: WORK_HOURS }).map((val, index) => {
-            const time = moment(
-              new Date(
-                new Date('2000-01-01T00:00:00Z') -
-                  (WEEK_VIEW_START_TIME + index * 60 * 60) * -1000
-              )
-            ).format('HH:mm')
-            const isStartTime = time === WEEK_VIEW_WORKING_DAY_TIME_STRING
-
-            return (
-              <li key={index} ref={isStartTime ? this.startTime : undefined}>
-                {index > 0 && <span>{time}</span>}
-              </li>
+        {Array.apply(null, { length: WORK_HOURS }).map((val, index) => {
+          const time = moment(
+            new Date(
+              new Date('2000-01-01T00:00:00Z') -
+                (WEEK_VIEW_START_TIME + index * 60 * 60) * -1000
             )
-          })}
-        </ul>
+          ).format('HH:mm')
+          const isStartTime = time === WEEK_VIEW_WORKING_DAY_TIME_STRING
+
+          return (
+            <div
+              key={index}
+              ref={isStartTime ? this.startTime : undefined}
+              style={{ top: index * 50 + 'px' }}>
+              {index > 0 && <span>{time}</span>}
+            </div>
+          )
+        })}
       </div>
     )
   }
 
   renderWeekdays() {
-    const { days, calendar, handleMobileCellClick, sideBarOpen } = this.props
-    let daysInfo = this.evaluateData(days)
+    const {
+      calendar,
+      handleMobileCellClick,
+      sideBarOpen,
+      filterOpen
+    } = this.props
+    let daysInfo = this.getWeekDays()
+
     return (
       <div
         className={classnames(
           styles.weekDays,
-          sideBarOpen && styles.sideBarOpen
+          sideBarOpen && styles.sideBarOpen,
+          filterOpen && styles.filterOpen
         )}>
-        <ul className={styles.daysContainer}>
+        <div
+          className={classnames(
+            styles.daysContainer,
+            calendar.viewMode === CALENDAR_VIEW.DAY && styles.daysSingle
+          )}>
           {daysInfo.map((day, index) => (
-            <li
+            <div
               className={classnames(
                 styles.weekDaysHeader,
                 calendar.selectedDate ===
                   moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight,
-                moment(day.date).isSame(moment(), 'day') && styles.todayDate,
+
                 moment(day.date).isSame(
                   moment(
                     `${calendar.year}-${calendar.month + 1}-${calendar.day}`,
@@ -157,7 +173,7 @@ class CalendarWeekView extends Component {
                 ) && styles.mobileSameDate
               )}
               key={index}>
-              <div className={styles.topInfo}>
+              <div className={styles.headerItem}>
                 <MediaQuery maxWidth={767}>
                   {matches => {
                     if (matches) {
@@ -176,23 +192,31 @@ class CalendarWeekView extends Component {
                     }
 
                     return (
-                      <Link
-                        to={`/calendar/${moment(day.date).format(
-                          'YYYY-MM-DD'
-                        )}`}>
-                        <span className={styles.desktopVisible}>
-                          {moment(day.date).format('dddd')}
-                          <br />
-                          {moment(day.date).format('Do')}
-                        </span>
-                      </Link>
+                      <div>
+                        {calendar.viewMode === CALENDAR_VIEW.WEEK && (
+                          <Link
+                            to={`/calendar/${moment(day.date).format(
+                              'YYYY-MM-DD'
+                            )}`}
+                            className={classnames(
+                              styles.date,
+                              moment(day.date).isSame(moment(), 'day') &&
+                                styles.highlight
+                            )}>
+                            {moment(day.date).format('ddd DD')}
+                          </Link>
+                        )}
+                        <CalendarHeaderInstructors
+                          isDay={calendar.viewMode === CALENDAR_VIEW.DAY}
+                        />
+                      </div>
                     )
                   }}
                 </MediaQuery>
               </div>
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
     )
   }
@@ -204,7 +228,9 @@ class CalendarWeekView extends Component {
     return ''
   }
 
-  evaluateData(days) {
+  getWeekDays = () => {
+    let { days } = this.props
+
     let date = '2000-01-01'
     let results = days.map(day => {
       let dayObj = { ...day }
@@ -270,19 +296,23 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { days, history, calendar, match, settings } = this.props
+    const { history, calendar, match, settings, users } = this.props
     const { mobileDayOfWeek } = this.state
-    let daysInfo = this.evaluateData(days)
+    let daysInfo = this.getWeekDays()
 
     return (
       <div className={styles.events}>
-        <ul className={styles.eventsContainer}>
+        <div
+          className={classnames(
+            styles.eventsContainer,
+            calendar.viewMode === CALENDAR_VIEW.DAY && styles.daysSingle
+          )}>
           <MediaQuery maxWidth={767}>
             {matches =>
               daysInfo.map((day, index) => {
                 if (!matches || index === mobileDayOfWeek) {
                   return (
-                    <li
+                    <div
                       onClick={event => {
                         const { target } = event
 
@@ -303,8 +333,20 @@ class CalendarWeekView extends Component {
                           styles.bgHighlight
                       )}
                       key={index}>
-                      <ul className="day-ul">
-                        {day.courses &&
+                      <CurrentTimeLine day={day} />
+                      <div className={styles.weekDayGroup}>
+                        {users.map(user => (
+                          <CalendarUserLine
+                            key={user.id}
+                            day={day}
+                            user={user}
+                            history={history}
+                            calendar={calendar}
+                            match={match}
+                            settings={settings}
+                          />
+                        ))}
+                        {/* {day.courses &&
                           day.courses.length > 0 &&
                           day.courses.map((course, index) => (
                             <CalendarWeekCourse
@@ -322,9 +364,9 @@ class CalendarWeekView extends Component {
                                   : undefined
                               }
                             />
-                          ))}
-                      </ul>
-                    </li>
+                          ))} */}
+                      </div>
+                    </div>
                   )
                 }
 
@@ -332,110 +374,110 @@ class CalendarWeekView extends Component {
               })
             }
           </MediaQuery>
-        </ul>
+        </div>
       </div>
     )
   }
 
-  renderAllDay() {
-    const { days, calendar, history, sideBarOpen } = this.props
-    const { mobileDayOfWeek } = this.state
-    let daysInfo = this.evaluateData(days)
+  // renderAllDay() {
+  //   const { days, calendar, history, sideBarOpen } = this.props
+  //   const { mobileDayOfWeek } = this.state
+  //   let daysInfo = this.getWeekDays()
 
-    return (
-      <div
-        className={classnames(
-          styles.events,
-          styles.allDayEvents,
-          sideBarOpen && styles.sideBarOpen
-        )}>
-        <ul
-          className={classnames(
-            'day-ul',
-            styles.eventsContainer,
-            styles.eventsContainerAllDay
-          )}>
-          <MediaQuery maxWidth={767}>
-            {matches =>
-              daysInfo.map((day, index) => {
-                if (!matches || index === mobileDayOfWeek) {
-                  return (
-                    <li
-                      className={classnames(
-                        'day-li',
-                        styles.eventsGroup,
-                        calendar.selectedDate ===
-                          moment(day.date).format('YYYY-MM-DD') &&
-                          styles.bgHighlight
-                      )}
-                      key={index}
-                      onClick={event => {
-                        const { target } = event
+  //   return (
+  //     <div
+  //       className={classnames(
+  //         styles.events,
+  //         styles.allDayEvents,
+  //         sideBarOpen && styles.sideBarOpen
+  //       )}>
+  //       <div
+  //         className={classnames(
+  //           'day-ul',
+  //           styles.eventsContainer,
+  //           styles.eventsContainerAllDay
+  //         )}>
+  //         <MediaQuery maxWidth={767}>
+  //           {matches =>
+  //             daysInfo.map((day, index) => {
+  //               if (!matches || index === mobileDayOfWeek) {
+  //                 return (
+  //                   <div
+  //                     className={classnames(
+  //                       'day-li',
+  //                       styles.eventsGroup,
+  //                       calendar.selectedDate ===
+  //                         moment(day.date).format('YYYY-MM-DD') &&
+  //                         styles.bgHighlight
+  //                     )}
+  //                     key={index}
+  //                     onClick={event => {
+  //                       const { target } = event
 
-                        if (
-                          target.classList.contains('day-li') ||
-                          target.classList.contains('day-ul')
-                        ) {
-                          history.push(
-                            `/calendar/${moment(day.date).format('YYYY-MM-DD')}`
-                          )
-                        }
-                      }}>
-                      {day.staff
-                        .filter(({ all_day }) => all_day)
-                        .map((s, index) => (
-                          <div
-                            onClick={() =>
-                              history.push(
-                                `/calendar/${moment(day.date).format(
-                                  'YYYY-MM-DD'
-                                )}/staff/${s.id}`
-                              )
-                            }
-                            key={index}
-                            className={styles.allDayEvent}
-                            style={{ background: s.colour }}>
-                            <img
-                              src={personIcon}
-                              alt=""
-                              className={styles.instructorIcon}
-                            />{' '}
-                            {s.instructor_name}
-                          </div>
-                        ))}
-                      {day.events
-                        .filter(({ all_day }) => all_day)
-                        .map((event, index) => (
-                          <div
-                            onClick={() =>
-                              history.push(
-                                `/calendar/${moment(day.date).format(
-                                  'YYYY-MM-DD'
-                                )}/events/${event.id}`
-                              )
-                            }
-                            key={index}
-                            className={styles.allDayEvent}
-                            style={{
-                              background: mapLabelColoursWithContant(
-                                {},
-                                'EVENT'
-                              )
-                            }}>
-                            {event.name}
-                          </div>
-                        ))}
-                    </li>
-                  )
-                }
-                return null
-              })
-            }
-          </MediaQuery>
-        </ul>
-      </div>
-    )
-  }
+  //                       if (
+  //                         target.classList.contains('day-li') ||
+  //                         target.classList.contains('day-ul')
+  //                       ) {
+  //                         history.push(
+  //                           `/calendar/${moment(day.date).format('YYYY-MM-DD')}`
+  //                         )
+  //                       }
+  //                     }}>
+  //                     {day.staff
+  //                       .filter(({ all_day }) => all_day)
+  //                       .map((s, index) => (
+  //                         <div
+  //                           onClick={() =>
+  //                             history.push(
+  //                               `/calendar/${moment(day.date).format(
+  //                                 'YYYY-MM-DD'
+  //                               )}/staff/${s.id}`
+  //                             )
+  //                           }
+  //                           key={index}
+  //                           className={styles.allDayEvent}
+  //                           style={{ background: s.colour }}>
+  //                           <img
+  //                             src={personIcon}
+  //                             alt=""
+  //                             className={styles.instructorIcon}
+  //                           />{' '}
+  //                           {s.instructor_name}
+  //                         </div>
+  //                       ))}
+  //                     {day.events
+  //                       .filter(({ all_day }) => all_day)
+  //                       .map((event, index) => (
+  //                         <div
+  //                           onClick={() =>
+  //                             history.push(
+  //                               `/calendar/${moment(day.date).format(
+  //                                 'YYYY-MM-DD'
+  //                               )}/events/${event.id}`
+  //                             )
+  //                           }
+  //                           key={index}
+  //                           className={styles.allDayEvent}
+  //                           style={{
+  //                             background: mapLabelColoursWithContant(
+  //                               {},
+  //                               'EVENT'
+  //                             )
+  //                           }}>
+  //                           {event.name}
+  //                         </div>
+  //                       ))}
+  //                   </div>
+  //                 )
+  //               }
+  //               return null
+  //             })
+  //           }
+  //         </MediaQuery>
+  //       </div>
+  //     </div>
+  //   )
+  // }
 
   render() {
     const { sideBarOpen } = this.props
@@ -446,13 +488,11 @@ class CalendarWeekView extends Component {
           styles.container,
           sideBarOpen && styles.containerSidebar
         )}>
-        <div className={styles.timelineWrapper}>{this.renderTimeline()}</div>
         <div className={styles.mainContent}>
           {this.renderWeekdays()}
-          {this.renderAllDay()}
-          <div
-            className={styles.weekviewContent}
-            onScroll={this.listenScrollEvent.bind(this)}>
+          {/* {this.renderAllDay()} */}
+          <div className={styles.weekviewContent}>
+            {this.renderTimeline()}
             {this.renderDays()}
           </div>
         </div>

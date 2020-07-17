@@ -56,10 +56,8 @@ class UserMenu extends Component {
     return (
       user && (
         <div className={styles.container}>
-          <div className={styles.username} onClick={this.toggleMenu}>
-            <div className={styles.avatar}>
-              {user.name.charAt(0) || user.first_name.charAt(0)}
-            </div>
+          <div className={styles.avatar} onClick={this.toggleMenu}>
+            {user.name.charAt(0) || user.first_name.charAt(0)}
           </div>
           {this.state.menuOpen && (
             <div ref={node => (this.node = node)} className={styles.userMenu}>

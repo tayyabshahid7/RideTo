@@ -42,3 +42,237 @@ $font-family-base: 'PT Sans', sans-serif;
   padding-left: 32px !important;
   padding-right: 32px !important;
 }
+
+.icon-button {
+  border: 0;
+  background: var(--color-primary-bg);
+  color: var(--color-dark-light) !important;
+  transition: all ease 0.3s;
+  outline: none;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover,
+  &.active {
+    color: white !important;
+    background: var(--color-primary);
+
+    svg path {
+      stroke: white;
+    }
+
+    i {
+      color: white;
+    }
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
+
+  i {
+    font-size: 16px;
+    color: var(--color-dark-light);
+  }
+}
+
+.generic-button {
+  border: 0;
+  background: var(--color-primary-bg);
+  color: var(--color-dark-light) !important;
+  border-radius: 20px;
+  transition: all ease 0.3s;
+  font-size: 13px;
+  line-height: 40px;
+  font-weight: 500;
+  padding: 0 16px;
+  outline: none;
+  cursor: pointer;
+
+  &:hover,
+  &.active {
+    color: white !important;
+    background: var(--color-primary);
+  }
+
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+.react-calendar {
+  &__month-view__days__day {
+    border: none;
+    font-size: 13px;
+    line-height: 1;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    font-weight: 500;
+    color: var(--color-dark);
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    max-width: 100% !important;
+    margin: 3px 0;
+
+    &--neighboringMonth {
+      opacity: 0.6;
+    }
+
+    &:focus,
+    &:hover,
+    &:active {
+      outline: none;
+    }
+  }
+
+  &__month-view__days {
+    display: grid !important;
+    grid-template-columns: repeat(7, 1fr);
+    align-items: center;
+
+    > * {
+      justify-self: center;
+    }
+  }
+
+  &__tile--active {
+    color: white;
+    background: var(--color-primary);
+    border-radius: 50%;
+  }
+
+  &__month-view__weekdays__weekday {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    color: var(--color-dark);
+    opacity: 0.6;
+    text-align: center;
+    margin-bottom: 8px;
+
+    abbr {
+      text-decoration: none;
+    }
+  }
+
+  &__navigation {
+    display: grid !important;
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: 'date prev next';
+    margin-bottom: 35px;
+
+    &__label {
+      border: none;
+      background: transparent;
+      font-size: 15px;
+      line-height: 18px;
+      font-weight: 500;
+      color: var(--color-dark);
+      justify-self: baseline;
+    }
+
+    &__prev2-button {
+      display: none;
+    }
+
+    &__prev-button {
+      grid-area: prev;
+      margin-right: 8px;
+
+      &:before {
+        content: '\F104';
+      }
+    }
+
+    &__next2-button {
+      display: none;
+    }
+
+    &__next-button {
+      grid-area: next;
+
+      &:before {
+        content: '\F105';
+      }
+    }
+
+    &__prev-button,
+    &__next-button {
+      @extend .generic-button;
+      width: 24px;
+      height: 24px;
+      padding: 0;
+      font-size: 0;
+      line-height: 1;
+
+      &:before {
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: 16px;
+        line-height: 24px;
+      }
+    }
+  }
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 16px;
+  margin: 0;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(66, 89, 168, 0.1);
+    transition: 0.4s;
+
+    &:before {
+      position: absolute;
+      content: '';
+      height: 12px;
+      width: 12px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: 0.4s;
+    }
+  }
+
+  input:checked + .slider {
+    background-color: var(--color-primary);
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(16px);
+  }
+
+  /* Rounded sliders */
+  .slider.round {
+    border-radius: 8px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+}
