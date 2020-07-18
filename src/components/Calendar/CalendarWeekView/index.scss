@@ -63,12 +63,6 @@
   color: #fff;
 }
 
-.sideBarOpen {
-  @media (min-width: 993px) {
-    width: calc(100% - 341px);
-  }
-}
-
 .timelineWrapper {
   position: relative;
   margin-top: 72px;
@@ -100,7 +94,7 @@
 
   > div {
     position: absolute;
-    height: 50px;
+    height: 56px;
     width: 100%;
 
     &::after {
@@ -245,9 +239,6 @@
   }
 
   > div {
-    // height: 1200px;
-    // height: 2396px;
-    height: 1200px;
     /* reset style */
     position: relative;
     /* force its children to stay on one line */
@@ -420,4 +411,7 @@
 
 .weekDayGroup {
   display: flex !important;
+  height: 756px;
+  min-height: calc(100vh - 147px);
+  pointer-events: none;
 }

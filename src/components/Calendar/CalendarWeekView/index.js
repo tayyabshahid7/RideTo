@@ -6,12 +6,7 @@ import styles from './index.scss'
 import CalendarHeaderInstructors from '../CalendarHeaderInstructors'
 import CalendarUserLine from '../CalendarUserLine'
 import CurrentTimeLine from '../CurrentTimeLine'
-import {
-  WORK_HOURS,
-  WEEK_VIEW_START_TIME,
-  WEEK_VIEW_WORKING_DAY_TIME_STRING,
-  CALENDAR_VIEW
-} from 'common/constants'
+import { WORK_HOURS, WEEK_START_HOUR, CALENDAR_VIEW } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import MediaQuery from 'react-responsive'
 import isEqual from 'lodash/isEqual'
@@ -38,7 +33,6 @@ class CalendarWeekView extends Component {
       scrolled: false
     }
 
-    this.startTime = React.createRef()
     this.firstCourse = null
   }
 
@@ -115,20 +109,10 @@ class CalendarWeekView extends Component {
     return (
       <div className={styles.timeline} ref="timelineDiv">
         {Array.apply(null, { length: WORK_HOURS }).map((val, index) => {
-          const time = moment(
-            new Date(
-              new Date('2000-01-01T00:00:00Z') -
-                (WEEK_VIEW_START_TIME + index * 60 * 60) * -1000
-            )
-          ).format('HH:mm')
-          const isStartTime = time === WEEK_VIEW_WORKING_DAY_TIME_STRING
-
+          const time = ('00' + (index + WEEK_START_HOUR)).substr(-2)
           return (
-            <div
-              key={index}
-              ref={isStartTime ? this.startTime : undefined}
-              style={{ top: index * 50 + 'px' }}>
-              {index > 0 && <span>{time}</span>}
+            <div key={index} style={{ top: index * 56 + 'px' }}>
+              <span>{time}:00</span>
             </div>
           )
         })}
@@ -137,19 +121,13 @@ class CalendarWeekView extends Component {
   }
 
   renderWeekdays() {
-    const {
-      calendar,
-      handleMobileCellClick,
-      sideBarOpen,
-      filterOpen
-    } = this.props
+    const { calendar, handleMobileCellClick, filterOpen } = this.props
     let daysInfo = this.getWeekDays()
 
     return (
       <div
         className={classnames(
           styles.weekDays,
-          sideBarOpen && styles.sideBarOpen,
           filterOpen && styles.filterOpen
         )}>
         <div

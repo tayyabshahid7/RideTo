@@ -17,8 +17,6 @@ import { Desktop } from 'common/breakpoints'
 import MediaQuery from 'react-responsive'
 
 class CalendarComponent extends Component {
-  handleSidebar = () => {}
-
   renderOverview() {
     const { calendar, filterOpen, toggleFilter } = this.props
     const { viewMode } = calendar
@@ -27,21 +25,19 @@ class CalendarComponent extends Component {
     return (
       <div className={classnames(styles.overview)}>
         <div className={styles.filtersWrap}>
-          <MediaQuery minWidth={768}>
-            <div className={styles.leftFilter}>
-              <div
-                onClick={() => toggleFilter(!filterOpen)}
-                className={classnames('icon-button', filterOpen && 'active')}>
-                <IconSideFilter />
-              </div>
-              <Desktop>
-                <CalendarDatePicker
-                  calendar={calendar}
-                  handleChangeDate={handleChangeDate}
-                />
-              </Desktop>
+          <div className={styles.leftFilter}>
+            <div
+              onClick={() => toggleFilter(!filterOpen)}
+              className={classnames('icon-button', filterOpen && 'active')}>
+              <IconSideFilter />
             </div>
-          </MediaQuery>
+            <Desktop>
+              <CalendarDatePicker
+                calendar={calendar}
+                handleChangeDate={handleChangeDate}
+              />
+            </Desktop>
+          </div>
           <div
             className={classnames(
               styles.changeCalendarWrapper,
@@ -49,17 +45,20 @@ class CalendarComponent extends Component {
                 styles.changeCalendarWrapperMonth
             )}>
             <CalendarArrowsSwitcher handleCustomEvent={handleCustomEvent} />
-
-            <CalendarViewChanger
-              viewMode={viewMode}
-              handleCustomEvent={handleCustomEvent}
-            />
+            <Desktop>
+              <CalendarViewChanger
+                viewMode={viewMode}
+                handleCustomEvent={handleCustomEvent}
+              />
+            </Desktop>
           </div>
-          <CalendarMobileBackButton
-            handleCustomEvent={handleCustomEvent}
-            viewMode={viewMode}
-            calendar={calendar}
-          />
+          <Desktop>
+            <CalendarMobileBackButton
+              handleCustomEvent={handleCustomEvent}
+              viewMode={viewMode}
+              calendar={calendar}
+            />
+          </Desktop>
         </div>
       </div>
     )
@@ -92,34 +91,48 @@ class CalendarComponent extends Component {
               toggleUser={handleToggleUser}
             />
           )}
-          <div className={classnames(styles.calendarContent)}>
-            <Loading
-              loading={calendar.loading}
-              className={styles.calendarWrapper}>
-              {calendar.viewMode === CALENDAR_VIEW.MONTH ? (
-                <CalendarMonthView
-                  days={days}
-                  calendar={calendar}
-                  history={history}
-                  handleMobileCellClick={handleMobileCellClick}
-                  sideBarOpen={sideBarOpen}
-                />
-              ) : (
-                <CalendarWeekView
-                  match={match}
-                  days={days}
-                  calendar={calendar}
-                  history={history}
-                  handleMobileCellClick={handleMobileCellClick}
-                  settings={settings}
-                  sideBarOpen={sideBarOpen}
-                  filterOpen={filterOpen}
-                  users={users}
-                  loading={calendar.loading}
-                />
-              )}
-            </Loading>
-          </div>
+          <MediaQuery minWidth={768}>
+            {matches => {
+              if (matches || !filterOpen) {
+                return (
+                  <div
+                    className={classnames(
+                      styles.calendarContent,
+                      sideBarOpen && styles.contentSidebar
+                    )}>
+                    <Loading
+                      loading={calendar.loading}
+                      className={styles.calendarWrapper}>
+                      {calendar.viewMode === CALENDAR_VIEW.MONTH ? (
+                        <CalendarMonthView
+                          days={days}
+                          calendar={calendar}
+                          history={history}
+                          handleMobileCellClick={handleMobileCellClick}
+                          sideBarOpen={sideBarOpen}
+                        />
+                      ) : (
+                        <CalendarWeekView
+                          match={match}
+                          days={days}
+                          calendar={calendar}
+                          history={history}
+                          handleMobileCellClick={handleMobileCellClick}
+                          settings={settings}
+                          sideBarOpen={sideBarOpen}
+                          filterOpen={filterOpen}
+                          users={users}
+                          loading={calendar.loading}
+                        />
+                      )}
+                    </Loading>
+                  </div>
+                )
+              } else {
+                return null
+              }
+            }}
+          </MediaQuery>
         </div>
       </div>
     )

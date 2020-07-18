@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import styles from './styles.scss'
 import Calendar from 'react-calendar'
 import moment from 'moment'
@@ -6,11 +6,24 @@ import { CALENDAR_VIEW } from '../../../common/constants'
 
 function CalendarDatePicker({ calendar, handleChangeDate }) {
   const [showDropdown, setShowDropdown] = useState(false)
+  const inputEl = useRef(null)
   const date = new Date(calendar.year, calendar.month, calendar.day)
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (inputEl && !inputEl.current.contains(event.target)) {
+        setShowDropdown(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const handleChange = date => {
     setShowDropdown(false)
-    console.log(date)
 
     handleChangeDate({
       year: parseInt(moment(date).format('YYYY')),
@@ -50,7 +63,7 @@ function CalendarDatePicker({ calendar, handleChangeDate }) {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} ref={inputEl}>
       <div
         className={styles.calendarText}
         onClick={() => setShowDropdown(!showDropdown)}>

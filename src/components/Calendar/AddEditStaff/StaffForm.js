@@ -156,99 +156,109 @@ class StaffForm extends React.Component {
     const { instructor, notes, all_day } = this.state.staff
 
     return (
-      <div className={styles.container}>
+      <div className={styles.wrapper}>
         <h4 className={styles.addTitle}>Add Staff</h4>
-        <Loading loading={saving}>
-          <Form onSubmit={this.handleSave.bind(this)}>
-            <Row>
-              <Col>
-                <ConnectSelect
-                  basic
-                  name="instructor"
-                  value={instructor}
-                  label="Staff"
-                  className="form-group"
-                  type="text"
-                  onChange={this.handleChangeInstructor.bind(this)}
-                  required
-                  options={[
-                    { id: '', name: 'Select' },
-                    ...instructors.map(instructor => ({
-                      ...instructor,
-                      name: `${instructor.first_name} ${instructor.last_name}`
-                    }))
-                  ]}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <ConnectInput
-                  basic
-                  name="startTime"
-                  value={startTime}
-                  label="Start Time"
-                  className="form-group"
-                  type="time"
-                  onChange={({ target }) =>
-                    this.handleChangeTime('startTime', target.value)
-                  }
-                  required
-                />
-              </Col>
-              <Col>
-                <ConnectInput
-                  basic
-                  name="endTime"
-                  value={endTime}
-                  label="End Time"
-                  className="form-group"
-                  type="time"
-                  onChange={({ target }) =>
-                    this.handleChangeTime('endTime', target.value)
-                  }
-                  required
-                />
-              </Col>
-              <Col>
-                <ConnectCheckbox
-                  basic
-                  vertical
-                  name="all_day"
-                  checked={all_day}
-                  label="All Day"
-                  className="form-group"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <ConnectTextArea
-                  basic
-                  name="notes"
-                  value={notes}
-                  label="Notes"
-                  type="textarea"
-                  onChange={this.handleChangeRawEvent.bind(this)}
-                />
-              </Col>
-            </Row>
+        <Loading className={styles.formWrapper} loading={saving}>
+          <Form
+            className={styles.formContent}
+            onSubmit={this.handleSave.bind(this)}>
+            <div className={styles.formTop}>
+              <Row>
+                <Col>
+                  <ConnectSelect
+                    basic
+                    name="instructor"
+                    value={instructor}
+                    label="Staff"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeInstructor.bind(this)}
+                    required
+                    options={[
+                      { id: '', name: 'Select' },
+                      ...instructors.map(instructor => ({
+                        ...instructor,
+                        name: `${instructor.first_name} ${instructor.last_name}`
+                      }))
+                    ]}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ConnectInput
+                    basic
+                    name="startTime"
+                    value={startTime}
+                    label="Start Time"
+                    className="form-group"
+                    type="time"
+                    onChange={({ target }) =>
+                      this.handleChangeTime('startTime', target.value)
+                    }
+                    required
+                  />
+                </Col>
+                <Col>
+                  <ConnectInput
+                    basic
+                    name="endTime"
+                    value={endTime}
+                    label="End Time"
+                    className="form-group"
+                    type="time"
+                    onChange={({ target }) =>
+                      this.handleChangeTime('endTime', target.value)
+                    }
+                    required
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ConnectCheckbox
+                    basic
+                    name="all_day"
+                    checked={all_day}
+                    label="All Day"
+                    className="form-group"
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ConnectTextArea
+                    basic
+                    name="notes"
+                    value={notes}
+                    label="Notes"
+                    type="textarea"
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                  />
+                </Col>
+              </Row>
+            </div>
             <div className={styles.actions}>
-              <Button small type="submit" color="primary">
-                Save
-              </Button>
-              <Button
-                small
-                type="button"
-                color="white"
-                onClick={this.handleCancel.bind(this)}>
-                Cancel
-              </Button>
-              {this.props.staff && (
-                <Button small onClick={onRemove} color="danger">
-                  Delete
+              <div>
+                <Button type="submit" color="primary">
+                  Save Staff
                 </Button>
+              </div>
+              <div>
+                <Button
+                  type="button"
+                  color="white"
+                  onClick={this.handleCancel.bind(this)}>
+                  Cancel
+                </Button>
+              </div>
+              {this.props.staff && (
+                <div>
+                  <Button onClick={onRemove} color="danger">
+                    Delete
+                  </Button>
+                </div>
               )}
             </div>
           </Form>

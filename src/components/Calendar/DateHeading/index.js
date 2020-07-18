@@ -5,21 +5,12 @@ import styles from './DateHeading.scss'
 
 const DateHeading = ({ date, title, children, backLink }) => {
   return (
-    <React.Fragment>
-      <div className={styles.container}>
-        {backLink && (
-          <Link to={backLink} className={styles.backLink}>
-            <i className="fa fa-times" />
-          </Link>
-        )}
-        <div className={styles.dateHeading}>
-          <span className={styles.date}>
-            {!date ? null : date.format('dddd Do MMMM')}
-          </span>
-        </div>
+    <div className={styles.container}>
+      <div className={styles.date}>
+        {!date ? null : date.format('dddd Do MMMM')}
       </div>
-      <div className={styles.actions}>{children}</div>
-    </React.Fragment>
+      {backLink && <Link to={backLink} className={styles.backLink}></Link>}
+    </div>
   )
 }
 

@@ -9,14 +9,14 @@ import personIcon from 'assets/images/person.png'
 
 const CalendarWeekCourse = React.forwardRef(
   ({ course, position, barCount, history, calendar, match, settings }, ref) => {
-    const offset = 0
-    let height = (course.duration / 60) * 100 // Duration is in mins
-    let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
-    if (top < 0) {
-      top = 0
+    let height = course.duration / 60
+    let startTime = (course.secondsForDay - WEEK_VIEW_START_TIME) / 3600
+    if (startTime < 0) {
+      height += startTime
+      startTime = 0
     }
-    if (top + height > WORK_HOURS * 100) {
-      height = WORK_HOURS * 100 - top
+    if (startTime + height > WORK_HOURS) {
+      height = WORK_HOURS - startTime
       if (height < 0) {
         return null
       }
@@ -24,14 +24,9 @@ const CalendarWeekCourse = React.forwardRef(
     let left = `${position * 4}px`
     let width = `calc(100% - ${(barCount - 1) * 4}px)`
 
-    // if (position > 0) {
-    //   left = `calc(${(100 / barCount) * position}% - 12px)`
-    //   width = `calc(${100 / barCount}%)`
-    // }
-    // let borderColor = 'black'
     let style = {
-      height: `${height / 2}px`,
-      top: `${top / 2 + offset}px`,
+      height: `${height * 56}px`,
+      top: `${startTime * 56}px`,
       left,
       width,
       zIndex: position
@@ -130,7 +125,7 @@ const CalendarWeekCourse = React.forwardRef(
       )
     }
 
-    const availableSpaces = course.spaces - course.orders.length
+    const availableSpaces = course.spaces_available
 
     return (
       <div

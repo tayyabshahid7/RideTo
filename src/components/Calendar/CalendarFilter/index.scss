@@ -9,10 +9,19 @@
   border-right: 1px solid var(--color-border);
   z-index: 10;
   overflow: auto;
+
+  @media (max-width: 767px) {
+    width: 100%;
+    border-right: none;
+  }
 }
 
 .wrapper {
   width: 320px;
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
 }
 
 .sectionTitle {

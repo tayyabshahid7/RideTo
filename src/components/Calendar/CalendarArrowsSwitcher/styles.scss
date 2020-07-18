@@ -34,10 +34,17 @@
   }
 }
 
+.prev {
+  margin-right: 4px;
+}
+
+.next {
+  margin-left: 4px;
+}
+
 .today {
   font-size: 13px;
   font-weight: 500;
   width: auto;
   padding: 0 16px;
-  margin: 0 4px;
 }

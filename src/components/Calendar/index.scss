@@ -19,6 +19,12 @@
   overflow: auto;
 }
 
+.contentSidebar {
+  @media (min-width: 768px) {
+    padding-right: 340px;
+  }
+}
+
 .calendarWrapper {
   overflow: hidden;
   display: flex;
@@ -33,10 +39,6 @@
   z-index: 100;
   background-color: var(--color-light-gray);
   border-bottom: 1px solid #eaeaea;
-
-  @media (max-width: 767px) {
-    padding: 0.25rem 1rem;
-  }
 }
 
 .sideBarOpen {
@@ -120,10 +122,8 @@
 }
 
 .filtersWrap {
-  @media (min-width: 768px) {
-    display: flex;
-    justify-content: space-between;
-  }
+  display: flex;
+  justify-content: space-between;
 }
 
 /* ============================
