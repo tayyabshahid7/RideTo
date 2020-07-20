@@ -32,7 +32,7 @@ const CalendarFilter = ({
   const handleAllStaffChange = () => {
     const active = users.length === inactiveUsers.length
     const userIds = users.map(x => x.id)
-    toggleUser(userIds, active)
+    toggleUser([...userIds, -1], active)
   }
 
   const handleSupplierChange = option => () => {

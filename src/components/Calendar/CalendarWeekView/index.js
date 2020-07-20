@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarHeaderInstructors from '../CalendarHeaderInstructors'
 import CalendarUserLine from '../CalendarUserLine'
+import CalendarDetailLine from '../CalendarDetailLine'
 import CurrentTimeLine from '../CurrentTimeLine'
 import { WORK_HOURS, WEEK_START_HOUR, CALENDAR_VIEW } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
@@ -332,6 +333,16 @@ class CalendarWeekView extends Component {
                             settings={settings}
                           />
                         ))}
+                        {!users.length && (
+                          <CalendarDetailLine
+                            day={day}
+                            inactiveCourses={inactiveCourses}
+                            history={history}
+                            calendar={calendar}
+                            match={match}
+                            settings={settings}
+                          />
+                        )}
                         {/* {day.courses &&
                           day.courses.length > 0 &&
                           day.courses.map((course, index) => (

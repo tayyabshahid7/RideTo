@@ -1,5 +1,5 @@
 import React from 'react'
-// import { getCourseSpaceTextShort } from 'services/course'
+import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
@@ -8,7 +8,10 @@ import moment from 'moment'
 import personIcon from 'assets/images/person.png'
 
 const CalendarWeekCourse = React.forwardRef(
-  ({ course, position, barCount, history, calendar, match, settings }, ref) => {
+  (
+    { course, position, barCount, history, calendar, match, showDetail },
+    ref
+  ) => {
     let height = course.duration / 60
     let startTime = (course.secondsForDay - WEEK_VIEW_START_TIME) / 3600
     if (startTime < 0) {
@@ -151,27 +154,35 @@ const CalendarWeekCourse = React.forwardRef(
           <span className={styles.eventName}>
             {getShortCourseType(course.course_type)}
           </span>
-          {/* <div className={styles.eventTime}>
-            {course.time.substring(0, 5)} -{' '}
-            {moment(`${course.date} ${course.time}`)
-              .add(course.duration / 60, 'hours')
-              .format('HH:mm')}
-          </div>
-          {course.instructor && (
-            <div className={styles.eventInst}>
-              <img src={personIcon} alt="" className={styles.instructorIcon} />{' '}
-              {course.instructor.first_name} {course.instructor.last_name}
-            </div>
+          {showDetail && (
+            <React.Fragment>
+              <div className={styles.eventTime}>
+                {course.time.substring(0, 5)} -{' '}
+                {moment(`${course.date} ${course.time}`)
+                  .add(course.duration / 60, 'hours')
+                  .format('HH:mm')}
+              </div>
+              {course.instructor && (
+                <div className={styles.eventInst}>
+                  <img
+                    src={personIcon}
+                    alt=""
+                    className={styles.instructorIcon}
+                  />{' '}
+                  {course.instructor.first_name} {course.instructor.last_name}
+                </div>
+              )}
+              <span
+                className={classnames(
+                  styles.eventSpaces,
+                  availableSpaces === 2 && styles.textMildWarning,
+                  availableSpaces === 1 && styles.textWarning,
+                  availableSpaces === 0 && styles.textDanger
+                )}>
+                {getCourseSpaceTextShort(course)}
+              </span>
+            </React.Fragment>
           )}
-          <span
-            className={classnames(
-              styles.eventSpaces,
-              availableSpaces === 2 && styles.textMildWarning,
-              availableSpaces === 1 && styles.textWarning,
-              availableSpaces === 0 && styles.textDanger
-            )}>
-            {getCourseSpaceTextShort(course)}
-          </span> */}
           {/* <div>
             <div>
               <b>Orders:</b>
