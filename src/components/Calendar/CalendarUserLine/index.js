@@ -8,26 +8,46 @@ class CalendarUserLine extends Component {
   componentDidUpdate(prevProps) {}
 
   render() {
-    const { day, history, calendar, match, settings } = this.props
-    // const courses = day.courses.filter(x => x.instructor === user.id)
-    const courses = day.courses
+    const {
+      day,
+      history,
+      calendar,
+      match,
+      settings,
+      user,
+      inactiveCourses
+    } = this.props
+
+    if (!day.courses) {
+      return null
+    }
+
+    let courses = day.courses.filter(x => {
+      if (user.id === -1) {
+        return !x.instructor
+      } else {
+        return x.instructor && x.instructor.id === user.id
+      }
+    })
+
+    courses = courses.filter(
+      x => x.course_type && !inactiveCourses.includes(x.course_type.id)
+    )
 
     return (
       <div className={styles.container}>
-        {day.courses &&
-          courses.length > 0 &&
-          courses.map((course, index) => (
-            <CalendarWeekCourse
-              course={course}
-              position={day.coursePositions[index]}
-              barCount={day.barCount}
-              history={history}
-              calendar={calendar}
-              key={index}
-              match={match}
-              settings={settings}
-            />
-          ))}
+        {courses.map((course, index) => (
+          <CalendarWeekCourse
+            course={course}
+            position={day.coursePositions[index]}
+            barCount={day.barCount}
+            history={history}
+            calendar={calendar}
+            key={index}
+            match={match}
+            settings={settings}
+          />
+        ))}
       </div>
     )
   }

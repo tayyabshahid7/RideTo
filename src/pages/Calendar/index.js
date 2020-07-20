@@ -17,7 +17,7 @@ import styles from './styles.scss'
 import { getCourses, updateCalendarSetting } from 'store/course'
 import { getEvents } from 'store/event'
 import { getStaff } from 'store/staff'
-import { toggleUser } from 'store/calendar'
+import { toggleUser, toggleCourse } from 'store/calendar'
 import { getInstructors } from 'store/instructor'
 import { getTestCentres } from 'store/testCentre'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
@@ -338,6 +338,10 @@ class CalendarPage extends Component {
     this.props.toggleUser({ userIds, active })
   }
 
+  handleToggleCourse = (courseIds, active) => {
+    this.props.toggleCourse({ courseIds, active })
+  }
+
   render() {
     const {
       calendar,
@@ -347,6 +351,7 @@ class CalendarPage extends Component {
       location,
       instructors,
       inactiveUsers,
+      inactiveCourses,
       match
     } = this.props
     const { filterOpen } = this.state
@@ -382,6 +387,8 @@ class CalendarPage extends Component {
             instructors={instructors}
             inactiveUsers={inactiveUsers}
             handleToggleUser={this.handleToggleUser}
+            inactiveCourses={inactiveCourses}
+            handleToggleCourse={this.handleToggleCourse}
           />
         </div>
         <RightPanel location={location}>
@@ -515,7 +522,8 @@ const mapStateToProps = (state, ownProps) => {
     staffCalendar,
     settings: state.settings.settings,
     instructors: state.instructor.instructors,
-    inactiveUsers: state.calendar.inactiveUsers
+    inactiveUsers: state.calendar.inactiveUsers,
+    inactiveCourses: state.calendar.inactiveCourses
   }
 }
 
@@ -529,7 +537,8 @@ const mapDispatchToProps = dispatch =>
       getTestCentres,
       updateCalendarSetting,
       fetchSettings,
-      toggleUser
+      toggleUser,
+      toggleCourse
     },
     dispatch
   )

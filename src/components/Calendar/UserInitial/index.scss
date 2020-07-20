@@ -1,0 +1,26 @@
+.user {
+  flex: 1 1 1px;
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  min-width: 60px;
+
+  img {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+
+  span {
+    font-size: 11px;
+    line-height: 13px;
+    color: var(--color-dark-light);
+  }
+}
+
+.short {
+  img {
+    margin-right: 4px;
+  }
+}

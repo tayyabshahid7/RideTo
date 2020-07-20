@@ -75,10 +75,15 @@ class CalendarComponent extends Component {
       filterOpen,
       instructors,
       inactiveUsers,
-      handleToggleUser
+      inactiveCourses,
+      handleToggleUser,
+      handleToggleCourse
     } = this.props
 
     const users = instructors.filter(x => !inactiveUsers.includes(x.id))
+    if (!inactiveUsers.includes(-1)) {
+      users.push({ id: -1 })
+    }
 
     return (
       <div className={classnames(styles.container)}>
@@ -89,6 +94,8 @@ class CalendarComponent extends Component {
               users={instructors}
               inactiveUsers={inactiveUsers}
               toggleUser={handleToggleUser}
+              inactiveCourses={inactiveCourses}
+              toggleCourse={handleToggleCourse}
             />
           )}
           <MediaQuery minWidth={768}>
@@ -122,6 +129,7 @@ class CalendarComponent extends Component {
                           sideBarOpen={sideBarOpen}
                           filterOpen={filterOpen}
                           users={users}
+                          inactiveCourses={inactiveCourses}
                           loading={calendar.loading}
                         />
                       )}

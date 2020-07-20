@@ -274,7 +274,14 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { history, calendar, match, settings, users } = this.props
+    const {
+      history,
+      calendar,
+      match,
+      settings,
+      users,
+      inactiveCourses
+    } = this.props
     const { mobileDayOfWeek } = this.state
     let daysInfo = this.getWeekDays()
 
@@ -318,6 +325,7 @@ class CalendarWeekView extends Component {
                             key={user.id}
                             day={day}
                             user={user}
+                            inactiveCourses={inactiveCourses}
                             history={history}
                             calendar={calendar}
                             match={match}

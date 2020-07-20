@@ -230,6 +230,7 @@ $font-family-base: 'PT Sans', sans-serif;
   width: 32px;
   height: 16px;
   margin: 0;
+  flex-shrink: 0;
 
   input {
     opacity: 0;

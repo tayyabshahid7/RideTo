@@ -15,8 +15,8 @@ const CalendarWeekCourse = React.forwardRef(
       height += startTime
       startTime = 0
     }
-    if (startTime + height > WORK_HOURS) {
-      height = WORK_HOURS - startTime
+    if (startTime + height > WORK_HOURS - 1) {
+      height = WORK_HOURS - startTime - 1
       if (height < 0) {
         return null
       }
