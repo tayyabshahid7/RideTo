@@ -1,5 +1,5 @@
 import React from 'react'
-// import { getCourseSpaceTextShort } from 'services/course'
+import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
@@ -8,15 +8,18 @@ import moment from 'moment'
 import personIcon from 'assets/images/person.png'
 
 const CalendarWeekCourse = React.forwardRef(
-  ({ course, position, barCount, history, calendar, match, settings }, ref) => {
-    const offset = 0
-    let height = (course.duration / 60) * 100 // Duration is in mins
-    let top = ((course.secondsForDay - WEEK_VIEW_START_TIME) / 3600) * 100
-    if (top < 0) {
-      top = 0
+  (
+    { course, position, barCount, history, calendar, match, showDetail },
+    ref
+  ) => {
+    let height = course.duration / 60
+    let startTime = (course.secondsForDay - WEEK_VIEW_START_TIME) / 3600
+    if (startTime < 0) {
+      height += startTime
+      startTime = 0
     }
-    if (top + height > WORK_HOURS * 100) {
-      height = WORK_HOURS * 100 - top
+    if (startTime + height > WORK_HOURS - 1) {
+      height = WORK_HOURS - startTime - 1
       if (height < 0) {
         return null
       }
@@ -24,14 +27,9 @@ const CalendarWeekCourse = React.forwardRef(
     let left = `${position * 4}px`
     let width = `calc(100% - ${(barCount - 1) * 4}px)`
 
-    // if (position > 0) {
-    //   left = `calc(${(100 / barCount) * position}% - 12px)`
-    //   width = `calc(${100 / barCount}%)`
-    // }
-    // let borderColor = 'black'
     let style = {
-      height: `${height / 2}px`,
-      top: `${top / 2 + offset}px`,
+      height: `${height * 56}px`,
+      top: `${startTime * 56}px`,
       left,
       width,
       zIndex: position
@@ -130,7 +128,7 @@ const CalendarWeekCourse = React.forwardRef(
       )
     }
 
-    const availableSpaces = course.spaces - course.orders.length
+    const availableSpaces = course.spaces_available
 
     return (
       <div
@@ -156,27 +154,35 @@ const CalendarWeekCourse = React.forwardRef(
           <span className={styles.eventName}>
             {getShortCourseType(course.course_type)}
           </span>
-          {/* <div className={styles.eventTime}>
-            {course.time.substring(0, 5)} -{' '}
-            {moment(`${course.date} ${course.time}`)
-              .add(course.duration / 60, 'hours')
-              .format('HH:mm')}
-          </div>
-          {course.instructor && (
-            <div className={styles.eventInst}>
-              <img src={personIcon} alt="" className={styles.instructorIcon} />{' '}
-              {course.instructor.first_name} {course.instructor.last_name}
-            </div>
+          {showDetail && (
+            <React.Fragment>
+              <div className={styles.eventTime}>
+                {course.time.substring(0, 5)} -{' '}
+                {moment(`${course.date} ${course.time}`)
+                  .add(course.duration / 60, 'hours')
+                  .format('HH:mm')}
+              </div>
+              {course.instructor && (
+                <div className={styles.eventInst}>
+                  <img
+                    src={personIcon}
+                    alt=""
+                    className={styles.instructorIcon}
+                  />{' '}
+                  {course.instructor.first_name} {course.instructor.last_name}
+                </div>
+              )}
+              <span
+                className={classnames(
+                  styles.eventSpaces,
+                  availableSpaces === 2 && styles.textMildWarning,
+                  availableSpaces === 1 && styles.textWarning,
+                  availableSpaces === 0 && styles.textDanger
+                )}>
+                {getCourseSpaceTextShort(course)}
+              </span>
+            </React.Fragment>
           )}
-          <span
-            className={classnames(
-              styles.eventSpaces,
-              availableSpaces === 2 && styles.textMildWarning,
-              availableSpaces === 1 && styles.textWarning,
-              availableSpaces === 0 && styles.textDanger
-            )}>
-            {getCourseSpaceTextShort(course)}
-          </span> */}
           {/* <div>
             <div>
               <b>Orders:</b>

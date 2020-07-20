@@ -27,13 +27,7 @@
 }
 
 .noCalendarPath {
-  @media (max-width: 992px) {
+  @media (max-width: 767px) {
     display: none;
-  }
-
-  @media (min-width: 993px) {
-    // padding-right: 371px;
-    // padding-right: 316px;
-    padding-right: 340px;
   }
 }
