@@ -59,7 +59,6 @@ class Login extends Component {
           <form className={styles.form} onSubmit={this.handleFormSubmit}>
             <h4>Sign In</h4>
             <ConnectInput
-              vertical
               basic
               label={'Email Address'}
               name="email"
@@ -68,7 +67,6 @@ class Login extends Component {
               required
             />
             <ConnectInput
-              vertical
               basic
               label={'Password'}
               name="password"

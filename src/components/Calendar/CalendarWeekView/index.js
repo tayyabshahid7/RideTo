@@ -136,60 +136,6 @@ class CalendarWeekView extends Component {
     })
   }
 
-  renderWeekdays() {
-    const { calendar, filterOpen } = this.props
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches
-    let daysInfo = isDesktop ? this.getWeekDays() : this.getWeekHeaderDays()
-    const weeks = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
-
-    return (
-      <div
-        className={classnames(
-          styles.weekDays,
-          filterOpen && styles.filterOpen
-        )}>
-        <div
-          className={classnames(
-            styles.daysContainer,
-            calendar.viewMode === CALENDAR_VIEW.DAY && styles.daysSingle
-          )}>
-          {daysInfo.map((day, index) => (
-            <div className={this.getWeekDayStyle(day)} key={index}>
-              <Mobile>
-                <span>{weeks[index]}</span>
-              </Mobile>
-              <div>
-                {calendar.viewMode === CALENDAR_VIEW.WEEK && (
-                  <Link
-                    to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}
-                    className={classnames(
-                      styles.date,
-                      moment(day.date).isSame(moment(), 'day') &&
-                        styles.highlight
-                    )}>
-                    {moment(day.date).format(isDesktop ? 'ddd DD' : 'D')}
-                  </Link>
-                )}
-                {calendar.viewMode === CALENDAR_VIEW.DAY && !isDesktop && (
-                  <div
-                    className={styles.date}
-                    onClick={this.handleSelectDay(day.date)}>
-                    {moment(day.date).format(isDesktop ? 'ddd DD' : 'D')}
-                  </div>
-                )}
-                <Desktop>
-                  <CalendarHeaderInstructors
-                    isDay={calendar.viewMode === CALENDAR_VIEW.DAY}
-                  />
-                </Desktop>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    )
-  }
-
   showMonth(day) {
     if (day.date.getDate() === 1) {
       return `${moment(day.date).format('MMM')} - `
@@ -267,7 +213,8 @@ class CalendarWeekView extends Component {
   getWeekHeaderDays = () => {
     let { days } = this.props
     if (days.length === 1) {
-      const tmp = moment(days[0].date).startOf('week')
+      let tmp = moment(days[0].date)
+      tmp = tmp.add(-1, 'days').startOf('week')
       const result = []
       for (let i = 0; i < 7; i++) {
         tmp.add(1, 'days')
@@ -277,6 +224,23 @@ class CalendarWeekView extends Component {
     } else {
       return days
     }
+  }
+
+  getDayViewDateStyle = currDay => {
+    const { calendar } = this.props
+    const { year, month, day } = calendar
+    const date = new Date(year, month, day)
+    return classnames(
+      styles.date,
+      moment(currDay.date).isSame(moment(date), 'day') && styles.highlight
+    )
+  }
+
+  getDayStyle = day => {
+    return classnames(
+      styles.date,
+      moment(day.date).isSame(moment(), 'day') && styles.highlight
+    )
   }
 
   handleDayClick = day => event => {
@@ -289,6 +253,56 @@ class CalendarWeekView extends Component {
     ) {
       history.push(`/calendar/${moment(day.date).format('YYYY-MM-DD')}`)
     }
+  }
+
+  renderWeekdays() {
+    const { calendar, filterOpen } = this.props
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches
+    let daysInfo = isDesktop ? this.getWeekDays() : this.getWeekHeaderDays()
+    const weeks = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+
+    return (
+      <div
+        className={classnames(
+          styles.weekDays,
+          filterOpen && styles.filterOpen
+        )}>
+        <div
+          className={classnames(
+            styles.daysContainer,
+            calendar.viewMode === CALENDAR_VIEW.DAY && styles.daysSingle
+          )}>
+          {daysInfo.map((day, index) => (
+            <div className={this.getWeekDayStyle(day)} key={index}>
+              <Mobile>
+                <span>{weeks[index]}</span>
+              </Mobile>
+              <div>
+                {calendar.viewMode === CALENDAR_VIEW.WEEK && (
+                  <Link
+                    to={`/calendar/${moment(day.date).format('YYYY-MM-DD')}`}
+                    className={this.getDayStyle(day)}>
+                    {moment(day.date).format(isDesktop ? 'ddd DD' : 'D')}
+                  </Link>
+                )}
+                {calendar.viewMode === CALENDAR_VIEW.DAY && !isDesktop && (
+                  <div
+                    className={this.getDayViewDateStyle(day)}
+                    onClick={this.handleSelectDay(day.date)}>
+                    {moment(day.date).format(isDesktop ? 'ddd DD' : 'D')}
+                  </div>
+                )}
+                <Desktop>
+                  <CalendarHeaderInstructors
+                    isDay={calendar.viewMode === CALENDAR_VIEW.DAY}
+                  />
+                </Desktop>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    )
   }
 
   renderDays() {
@@ -308,7 +322,7 @@ class CalendarWeekView extends Component {
         <div
           className={classnames(
             styles.eventsContainer,
-            calendar.viewMode === CALENDAR_VIEW.DAY && styles.daysSingle
+            calendar.viewMode === CALENDAR_VIEW.DAY && styles.contentSingle
           )}>
           {daysInfo.map((day, index) => (
             <div

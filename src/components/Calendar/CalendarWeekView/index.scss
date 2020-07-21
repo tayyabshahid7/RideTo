@@ -55,11 +55,13 @@
   border-radius: 12px;
   text-decoration: none;
 
-  &:hover,
-  &:active {
-    background-color: var(--color-primary);
-    color: #fff;
-    text-decoration: none;
+  @media (min-width: 768px) {
+    &:hover,
+    &:active {
+      background-color: var(--color-primary);
+      color: #fff;
+      text-decoration: none;
+    }
   }
 
   @media (max-width: 767px) {
@@ -194,6 +196,14 @@
   @media (min-width: 768px) {
     grid-template-columns: 1fr;
   }
+
+  @media (max-width: 767px) {
+    padding-left: 0;
+  }
+}
+
+.contentSingle {
+  grid-template-columns: 1fr;
 
   @media (max-width: 767px) {
     padding-left: 0;
