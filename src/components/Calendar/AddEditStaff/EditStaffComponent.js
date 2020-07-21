@@ -5,7 +5,10 @@ import StaffForm from './StaffForm'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import { getSingleStaff, updateStaff, deleteStaff } from 'store/staff'
 import { unsetSelectedCourse } from 'store/course'
+import styles from './styles.scss'
+import DateHeading from 'components/Calendar/DateHeading'
 import { isAdmin } from 'services/auth'
+import moment from 'moment'
 
 class EditStaffComponent extends Component {
   constructor(props) {
@@ -97,14 +100,18 @@ class EditStaffComponent extends Component {
     if (!staff) {
       return <div>Staff Not Found</div>
     }
-
+    const { date } = staff
+    const backLink = `/calendar/${date}`
     return (
       <React.Fragment>
-        <StaffForm
-          {...this.props}
-          onSubmit={this.onSave.bind(this)}
-          onRemove={this.handleToggleDeleteModal.bind(this)}
-        />
+        <div className={styles.addCourse}>
+          <DateHeading date={date ? moment(date) : null} backLink={backLink} />
+          <StaffForm
+            {...this.props}
+            onSubmit={this.onSave.bind(this)}
+            onRemove={this.handleToggleDeleteModal.bind(this)}
+          />
+        </div>
         {showDeleteConfirmModal && (
           <ConfirmModal
             onClose={this.handleToggleDeleteModal.bind(this)}

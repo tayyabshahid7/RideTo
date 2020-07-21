@@ -142,7 +142,7 @@ class EventForm extends React.Component {
     const { name, notes, all_day } = this.state.event
 
     return (
-      <div className={styles.container}>
+      <div className={styles.wrapper}>
         <h4 className={styles.addTitle}>Add Event</h4>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
@@ -160,35 +160,33 @@ class EventForm extends React.Component {
                 />
               </Col>
             </Row>
+            <div className={styles.timeRow}>
+              <ConnectInput
+                basic
+                name="startTime"
+                value={startTime}
+                label="Start Time"
+                className="form-group"
+                type="time"
+                onChange={({ target }) =>
+                  this.handleChangeTime('startTime', target.value)
+                }
+                required
+              />
+              <ConnectInput
+                basic
+                name="endTime"
+                value={endTime}
+                label="End Time"
+                className="form-group"
+                type="time"
+                onChange={({ target }) =>
+                  this.handleChangeTime('endTime', target.value)
+                }
+                required
+              />
+            </div>
             <Row>
-              <Col>
-                <ConnectInput
-                  basic
-                  name="startTime"
-                  value={startTime}
-                  label="Start Time"
-                  className="form-group"
-                  type="time"
-                  onChange={({ target }) =>
-                    this.handleChangeTime('startTime', target.value)
-                  }
-                  required
-                />
-              </Col>
-              <Col>
-                <ConnectInput
-                  basic
-                  name="endTime"
-                  value={endTime}
-                  label="End Time"
-                  className="form-group"
-                  type="time"
-                  onChange={({ target }) =>
-                    this.handleChangeTime('endTime', target.value)
-                  }
-                  required
-                />
-              </Col>
               <Col>
                 <ConnectCheckbox
                   basic
@@ -214,20 +212,25 @@ class EventForm extends React.Component {
               </Col>
             </Row>
             <div className={styles.actions}>
-              <Button small type="submit" color="primary">
-                Save
-              </Button>
-              <Button
-                small
-                type="button"
-                color="white"
-                onClick={this.handleCancel.bind(this)}>
-                Cancel
-              </Button>
-              {this.props.event && (
-                <Button small onClick={onRemove} color="danger">
-                  Delete
+              <div>
+                <Button type="submit" color="primary">
+                  Save
                 </Button>
+              </div>
+              <div>
+                <Button
+                  type="button"
+                  color="white"
+                  onClick={this.handleCancel.bind(this)}>
+                  Cancel
+                </Button>
+              </div>
+              {this.props.event && (
+                <div>
+                  <Button onClick={onRemove} color="danger">
+                    Delete
+                  </Button>
+                </div>
               )}
             </div>
           </Form>

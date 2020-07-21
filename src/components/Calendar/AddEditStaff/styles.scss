@@ -52,6 +52,7 @@
 .actions {
   display: flex;
   flex-direction: column;
+  margin-bottom: 40px;
 
   > div {
     margin-top: 8px;
@@ -75,4 +76,10 @@
 
 .formTop {
   flex: 1 1 1px;
+}
+
+.timeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 8px;
 }

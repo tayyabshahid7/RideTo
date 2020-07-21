@@ -1,8 +1,16 @@
 .addTitle {
-  color: #707070;
-  font-weight: bold;
-  font-size: 18px !important;
-  margin-bottom: 1rem;
+  color: rgba(#444, 0.6);
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 1px;
 }
 
 .container {
@@ -21,7 +29,11 @@
   }
 }
 
-.addEvent {
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 1px;
 }
 
 .title {
@@ -36,8 +48,23 @@
 
 .actions {
   display: flex;
+  flex-direction: column;
+
+  > div {
+    margin-top: 8px;
+  }
+
+  button {
+    width: 100%;
+  }
 
   button:nth-child(3) {
     margin-left: auto;
   }
+}
+
+.timeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 8px;
 }

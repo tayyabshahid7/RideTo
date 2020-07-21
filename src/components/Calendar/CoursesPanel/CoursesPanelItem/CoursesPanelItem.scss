@@ -1,5 +1,5 @@
-.coursesPanelItem {
-  margin-bottom: 36px;
+.wrapper {
+  margin-bottom: 16px;
 }
 
 .heading {
@@ -7,23 +7,19 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 12px;
+  margin-bottom: 1px;
   font-size: 11px;
+  color: rgba(#444, 0.8);
+  border-radius: 2px;
+}
 
-  &::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    content: '';
-    display: block;
-    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
-      0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 100ms linear;
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 8px;
   }
 }
 
@@ -34,7 +30,7 @@
 }
 
 .container {
-  background-color: #fafafa;
+  background-color: #ededed;
 }
 
 .top {
@@ -43,7 +39,7 @@
 }
 
 .name {
-  font-weight: bold;
+  font-weight: 500;
 }
 
 .title {
@@ -52,18 +48,12 @@
 
 .course {
   flex-grow: 1;
-  padding: 12px;
+  padding: 12px 16px;
   color: #707070;
-  // min-height: 50px;
 }
 
 .notes {
   font-size: 11px;
-}
-
-.testNotes {
-  font-size: 11px;
-  margin-bottom: 8px;
 }
 
 .warning {
@@ -81,7 +71,12 @@
 .editButton {
   font-size: 12px;
   font-weight: bold;
-  color: inherit;
+  text-decoration: underline;
+  color: rgba(#444, 0.8);
+
+  &:hover {
+    color: #444;
+  }
 }
 
 .instAndSpaces {
@@ -92,21 +87,22 @@
   margin: 0.25rem 0;
 }
 
-.inst {
+.detail {
+  border-top: 1px solid var(--color-border);
+  padding: 8px 0 0;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
 }
 
-.personIcon {
-  vertical-align: baseline;
+.testNotes {
+  margin-top: 8px;
 }
 
-// .textMildWarning {
-//   color: var(--warning-color);
-// }
-// .textWarning {
-//   color: var(--danger-color);
-// }
-// .textDanger {
-//   color: var(--danger-color);
-//   text-transform: uppercase;
-//   font-weight: bold;
-// }
+.isOpen {
+  margin-top: 8px;
+
+  i {
+    transform: rotate(180deg);
+  }
+}

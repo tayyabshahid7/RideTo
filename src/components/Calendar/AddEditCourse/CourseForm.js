@@ -327,11 +327,11 @@ class CourseForm extends React.Component {
       .some(type => type.id === parseInt(course_type_id, 10))
 
     return (
-      <div className={styles.container}>
-        <Loading loading={saving}>
+      <div className={styles.wrapper}>
+        <Loading className={styles.formWrapper} loading={saving}>
           <form onSubmit={this.handleSave.bind(this)}>
             <Row>
-              <Col sm="8">
+              <Col>
                 <ConnectSelect
                   label="Course Type"
                   basic
@@ -346,7 +346,7 @@ class CourseForm extends React.Component {
               </Col>
             </Row>
             <Row>
-              <Col sm="8">
+              <Col>
                 <ConnectSelect
                   basic
                   label="Staff"
@@ -368,7 +368,7 @@ class CourseForm extends React.Component {
             <div>
               {!this.props.course && !this.props.date && (
                 <Row>
-                  <Col sm="8">
+                  <Col>
                     <ConnectInput
                       label="Date"
                       basic
@@ -382,38 +382,34 @@ class CourseForm extends React.Component {
                   </Col>
                 </Row>
               )}
+              <div className={styles.timeRow}>
+                <ConnectInput
+                  label="Start Time"
+                  basic
+                  name="time"
+                  className={styles.inputDate}
+                  value={time.slice(0, 5)}
+                  step="60"
+                  type="time"
+                  disabled={!isEditable}
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                  required
+                />
+                <ConnectInput
+                  label="Finish Time"
+                  basic
+                  name="finish_time"
+                  className={styles.inputDate}
+                  value={finishTime.slice(0, 5)}
+                  step="60"
+                  type="time"
+                  disabled={!isEditable}
+                  onChange={this.handleChangeFinishTime.bind(this)}
+                  required
+                />
+              </div>
               <Row>
-                <Col sm="6">
-                  <ConnectInput
-                    label="Start Time"
-                    basic
-                    name="time"
-                    className={styles.inputDate}
-                    value={time.slice(0, 5)}
-                    step="60"
-                    type="time"
-                    disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
-                    required
-                  />
-                </Col>
-                <Col sm="6">
-                  <ConnectInput
-                    label="Finish Time"
-                    basic
-                    name="finish_time"
-                    className={styles.inputDate}
-                    value={finishTime.slice(0, 5)}
-                    step="60"
-                    type="time"
-                    disabled={!isEditable}
-                    onChange={this.handleChangeFinishTime.bind(this)}
-                    required
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col sm={!isFullLicence ? '6' : '8'}>
+                <Col>
                   <ConnectSelect
                     required
                     basic
@@ -435,65 +431,48 @@ class CourseForm extends React.Component {
               </Row>
               {!isFullLicence && (
                 <React.Fragment>
-                  <div className={styles.bikesAvailable}>
-                    <b>Bikes Available</b>
-                  </div>
+                  <div className={styles.bikesAvailable}>Bikes Available</div>
                   {isCBTRenewal && (
-                    <Row>
-                      <Col sm="10">
-                        <BikeNumberPicker
-                          className={styles.numberPicker}
-                          label="Own"
-                          value={own_bikes}
-                          id="own_bikes"
-                          isEditable={isEditable}
-                          onChange={this.handleChangeRawEvent.bind(this)}
-                          onClickMinus={() => {
-                            this.handleBikeButtonClick('own_bikes', -1)
-                          }}
-                          onClickPlus={() => {
-                            this.handleBikeButtonClick('own_bikes', 1)
-                          }}
-                        />
-                      </Col>
-                    </Row>
+                    <BikeNumberPicker
+                      label="Own"
+                      value={own_bikes}
+                      id="own_bikes"
+                      isEditable={isEditable}
+                      onChange={this.handleChangeRawEvent.bind(this)}
+                      onClickMinus={() => {
+                        this.handleBikeButtonClick('own_bikes', -1)
+                      }}
+                      onClickPlus={() => {
+                        this.handleBikeButtonClick('own_bikes', 1)
+                      }}
+                    />
                   )}
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
-                        label="Automatic"
-                        value={auto_bikes}
-                        id="auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('auto_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col sm="10">
-                      <BikeNumberPicker
-                        className={styles.numberPicker}
-                        label="Manual"
-                        value={manual_bikes}
-                        id="manual_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('manual_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('manual_bikes', 1)
-                        }}
-                      />
-                    </Col>
-                  </Row>
+                  <BikeNumberPicker
+                    label="Automatic"
+                    value={auto_bikes}
+                    id="auto_bikes"
+                    isEditable={isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    onClickMinus={() => {
+                      this.handleBikeButtonClick('auto_bikes', -1)
+                    }}
+                    onClickPlus={() => {
+                      this.handleBikeButtonClick('auto_bikes', 1)
+                    }}
+                  />
+                  <BikeNumberPicker
+                    label="Manual"
+                    value={manual_bikes}
+                    id="manual_bikes"
+                    isEditable={isEditable}
+                    onChange={this.handleChangeRawEvent.bind(this)}
+                    onClickMinus={() => {
+                      this.handleBikeButtonClick('manual_bikes', -1)
+                    }}
+                    onClickPlus={() => {
+                      this.handleBikeButtonClick('manual_bikes', 1)
+                    }}
+                  />
                 </React.Fragment>
               )}
               {isFullLicence && (
@@ -702,23 +681,24 @@ class CourseForm extends React.Component {
               />
               {isEditable && (
                 <div className={styles.actions}>
-                  <Button
-                    small
-                    type="submit"
-                    color="primary"
-                    disabled={!edited}>
-                    Save
-                  </Button>
-                  <Button small color="white" onClick={this.handleToggleEdit}>
-                    Cancel
-                  </Button>
-                  <Button
-                    small
-                    color="danger"
-                    onClick={onRemove}
-                    disabled={orderCount > 0}>
-                    Delete
-                  </Button>
+                  <div>
+                    <Button type="submit" color="primary" disabled={!edited}>
+                      Save
+                    </Button>
+                  </div>
+                  <div>
+                    <Button color="white" onClick={this.handleToggleEdit}>
+                      Cancel
+                    </Button>
+                  </div>
+                  <div>
+                    <Button
+                      color="danger"
+                      onClick={onRemove}
+                      disabled={orderCount > 0}>
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
