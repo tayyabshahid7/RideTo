@@ -34,7 +34,6 @@
 
 .overview {
   padding: 16px;
-  background: #fcfcfc;
   position: relative;
   z-index: 100;
   background-color: var(--color-light-gray);
@@ -42,6 +41,7 @@
 
   @media (max-width: 767px) {
     border-bottom: none;
+    padding-top: 0;
   }
 }
 
@@ -104,10 +104,7 @@
 .changeCalendarWrapper {
   margin-top: 0.5rem;
   font-size: 1rem;
-
   align-items: center;
-
-  display: none;
 
   button,
   select,
@@ -121,21 +118,7 @@
   }
 }
 
-.changeCalendarWrapperMonth {
-  display: flex;
-}
-
 .filtersWrap {
   display: flex;
   justify-content: space-between;
-}
-
-/* ============================
-              Mobile Responsiveness
- ============================*/
-
-@media (max-width: 768px) {
-  .noCalendarPath {
-    display: none;
-  }
 }

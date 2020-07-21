@@ -36,12 +36,7 @@ class CalendarComponent extends Component {
               handleChangeDate={handleChangeDate}
             />
           </div>
-          <div
-            className={classnames(
-              styles.changeCalendarWrapper,
-              viewMode === CALENDAR_VIEW.MONTH &&
-                styles.changeCalendarWrapperMonth
-            )}>
+          <div className={classnames(styles.changeCalendarWrapper)}>
             <CalendarArrowsSwitcher handleCustomEvent={handleCustomEvent} />
             <Desktop>
               <CalendarViewChanger
@@ -75,6 +70,7 @@ class CalendarComponent extends Component {
       instructors,
       inactiveUsers,
       inactiveCourses,
+      handleChangeDate,
       handleToggleUser,
       toggleFilter,
       handleToggleCourse,
@@ -132,6 +128,7 @@ class CalendarComponent extends Component {
                           history={history}
                           handleMobileCellClick={handleMobileCellClick}
                           settings={settings}
+                          handleChangeDate={handleChangeDate}
                           sideBarOpen={sideBarOpen}
                           filterOpen={filterOpen}
                           users={users}

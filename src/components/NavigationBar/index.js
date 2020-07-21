@@ -54,19 +54,21 @@ let NavigationBar = ({ history, user, logout }) => {
         'navbar navbar-expand-md navbar-light',
         isOpen && styles.isOpen
       )}>
-      <div className={classnames(styles.image)}>
-        {isOpen && isMobile ? <Logo /> : <Logo short />}
-      </div>
-      <Mobile>
-        <div
-          data-toggle="collapse"
-          data-target="#navbarCollapse"
-          aria-controls="navbarCollapse"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
-          {isOpen ? <IconClose /> : <IconMenu />}
+      <div className={styles.navHeader}>
+        <div className={classnames(styles.image)}>
+          {isOpen && isMobile ? <Logo /> : <Logo short />}
         </div>
-      </Mobile>
+        <Mobile>
+          <div
+            data-toggle="collapse"
+            data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            {isOpen ? <IconClose /> : <IconMenu />}
+          </div>
+        </Mobile>
+      </div>
       <div className="collapse navbar-collapse" id="navbarCollapse">
         <ul className={classnames('navbar-nav mr-auto', styles.navbar)}>
           <MediaQuery minWidth={768}>
@@ -114,7 +116,14 @@ let NavigationBar = ({ history, user, logout }) => {
               </NavLink>
             </li>
           )}
+          <Mobile>
+            <hr className={styles.divider} />
+            <div className={styles.navLink} onClick={handleLogout}>
+              Sign Out
+            </div>
+          </Mobile>
         </ul>
+
         <MediaQuery minWidth={768}>
           <div className={styles.navTools}>
             {isAdmin(user) && (
