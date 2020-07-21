@@ -215,6 +215,11 @@ select {
     pointer-events: none;
     cursor: default;
   }
+
+  &:focus,
+  &:active {
+    outline: none;
+  }
 }
 
 .button + .button {

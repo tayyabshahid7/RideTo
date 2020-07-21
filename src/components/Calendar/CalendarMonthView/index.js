@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import CalendarDays from '../CalendarDays'
 import styles from './index.scss'
 import vhCheck from 'vh-check'
+import { Mobile } from 'common/breakpoints'
 
 vhCheck()
 
@@ -12,9 +13,18 @@ function CalendarMonthView(props) {
     })
   }, [])
 
+  const weeks = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+
   return (
     <div className={styles.container}>
       <div className={styles.daysContainer}>
+        <Mobile>
+          <div className={styles.weekNames}>
+            {weeks.map(x => (
+              <span>{x}</span>
+            ))}
+          </div>
+        </Mobile>
         <CalendarDays {...props} />
       </div>
     </div>

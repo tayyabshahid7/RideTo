@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { login } from 'store/auth'
 import { isAuthenticated } from 'services/auth'
 import { Link } from 'react-router-dom'
-import { ConnectLogo } from 'assets/icons'
+import Logo from 'components/common/Logo'
 import styles from './styles.scss'
 import { Button, ConnectInput } from 'components/ConnectForm'
 
@@ -48,10 +48,7 @@ class Login extends Component {
     return (
       <div className={styles.wrapper}>
         <header className={styles.header}>
-          <Link to="/home" className={styles.logo}>
-            <ConnectLogo />
-            <span>CONNECT</span>
-          </Link>
+          <Logo />
           <Link to="/home" className={styles.signin}>
             <Button type="button" color="white">
               Go Back

@@ -78,6 +78,20 @@
   color: darken(#fe9898, 10%);
 }
 
+.eventHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  > div {
+    flex-grow: 0 !important;
+    padding-right: 0;
+    justify-content: flex-end;
+    min-width: 0;
+    white-space: nowrap;
+  }
+}
+
 .eventName {
   font-weight: bold;
 }
@@ -85,18 +99,11 @@
 .eventName,
 .eventDate,
 .eventTime,
-.eventInst,
 .eventSpaces {
   display: block;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin-bottom: 0.25rem;
-}
-
-.eventInst {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: clip;
 }
 
 .eventSpaces {
@@ -108,28 +115,6 @@
   display: flex;
   flex-direction: column;
 }
-
-// @media (max-width: 768px) {
-//   .content {
-//     background: var(--grey-color);
-//     // border-radius: 10px;
-//     > span {
-//       display: none;
-//     }
-//     > div {
-//       display: none;
-//     }
-//   }
-//   .warning {
-//     background: var(--warning-color);
-//   }
-//   .danger {
-//     background: var(--danger-color);
-//   }
-//   .primary {
-//     background: var(--primary-color);
-//   }
-// }
 
 .eventsNotes {
   margin-top: 1rem;

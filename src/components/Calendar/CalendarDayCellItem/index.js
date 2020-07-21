@@ -1,10 +1,11 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styles from './CalendarDayCellItem.scss'
-import personIcon from 'assets/images/person.png'
+import UserInitial from '../UserInitial'
 import classnames from 'classnames'
+import { Desktop } from 'common/breakpoints'
 
-const CalendarDayCellItem = ({ item, settings }) => {
+const CalendarDayCellItem = ({ item }) => {
   const isInstructor = item.instructor_name
   const availableSpaces = item.spaces_available
   const className = classnames(
@@ -17,11 +18,14 @@ const CalendarDayCellItem = ({ item, settings }) => {
     <div
       className={className}
       style={isInstructor ? { backgroundColor: item.color } : undefined}>
-      {isInstructor && (
-        <img src={personIcon} alt="" className={styles.instructorIcon} />
-      )}{' '}
-      <span className={styles.nameCell}>{item.name}</span>
-      <span>{item.all_day ? 'All day' : item.time}</span>
+      <Desktop>
+        {isInstructor ? (
+          <UserInitial user={item} short />
+        ) : (
+          <span className={styles.nameCell}>{item.name}</span>
+        )}
+        <span>{item.all_day ? 'All day' : item.time}</span>
+      </Desktop>
     </div>
   )
 }

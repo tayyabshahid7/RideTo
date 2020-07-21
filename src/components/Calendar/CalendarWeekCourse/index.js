@@ -5,7 +5,8 @@ import classnames from 'classnames'
 import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
 import { getShortCourseType } from 'services/course'
 import moment from 'moment'
-import personIcon from 'assets/images/person.png'
+import UserInitial from '../UserInitial'
+import { UserAvatar } from 'assets/icons'
 
 const CalendarWeekCourse = React.forwardRef(
   (
@@ -60,11 +61,7 @@ const CalendarWeekCourse = React.forwardRef(
             className={classnames(styles.content)}
             style={{ backgroundColor: course.colour }}>
             <span className={styles.eventName}>
-              <img
-                src={personIcon}
-                alt=""
-                className={styles.instructorIconSmall}
-              />{' '}
+              <UserAvatar />
               {course.instructor_name}
             </span>
             {course.start_time && course.end_time && (
@@ -151,9 +148,14 @@ const CalendarWeekCourse = React.forwardRef(
             availableSpaces === 1 && styles.warning,
             availableSpaces === 0 && styles.danger
           )}>
-          <span className={styles.eventName}>
-            {getShortCourseType(course.course_type)}
-          </span>
+          <div className={styles.eventHeader}>
+            <span className={styles.eventName}>
+              {getShortCourseType(course.course_type)}
+            </span>
+            {showDetail && course.instructor && (
+              <UserInitial user={course.instructor} short />
+            )}
+          </div>
           {showDetail && (
             <React.Fragment>
               <div className={styles.eventTime}>
@@ -162,16 +164,7 @@ const CalendarWeekCourse = React.forwardRef(
                   .add(course.duration / 60, 'hours')
                   .format('HH:mm')}
               </div>
-              {course.instructor && (
-                <div className={styles.eventInst}>
-                  <img
-                    src={personIcon}
-                    alt=""
-                    className={styles.instructorIcon}
-                  />{' '}
-                  {course.instructor.first_name} {course.instructor.last_name}
-                </div>
-              )}
+
               <span
                 className={classnames(
                   styles.eventSpaces,

@@ -1,0 +1,8 @@
+.container {
+  transition: all ease 0.3s;
+  transform: rotate(0);
+
+  &:hover {
+    transform: rotate(360deg);
+  }
+}

@@ -1,9 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { changeSchool } from 'store/auth'
 import { loadCourseTypes } from 'store/info'
 import styles from './index.scss'
+import { Mobile } from 'common/breakpoints'
+import CalendarViewChanger from '../CalendarViewChanger'
+import Logo from 'components/common/Logo'
+import CloseButton from 'components/common/CloseButton'
+import classnames from 'classnames'
 
 const CalendarFilter = ({
   users,
@@ -15,11 +20,29 @@ const CalendarFilter = ({
   changeSchool,
   schoolId,
   loadCourseTypes,
-  info
+  info,
+  hideFilter,
+  handleCustomEvent,
+  calendar
 }) => {
+  const inputEl = useRef(null)
+
   useEffect(() => {
     loadCourseTypes({ schoolId })
   }, [schoolId])
+
+  useEffect(() => {
+    const handleClickOutside = event => {
+      if (inputEl && !inputEl.current.contains(event.target)) {
+        hideFilter()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
 
   const handleStaffChange = userId => () => {
     toggleUser([userId], inactiveUsers.includes(userId))
@@ -30,7 +53,7 @@ const CalendarFilter = ({
   }
 
   const handleAllStaffChange = () => {
-    const active = users.length === inactiveUsers.length
+    const active = users.length === inactiveUsers.length - 1
     const userIds = users.map(x => x.id)
     toggleUser([...userIds, -1], active)
   }
@@ -41,13 +64,27 @@ const CalendarFilter = ({
     }
   }
 
+  const { viewMode } = calendar
+
   const courseTypes = info.courseTypes.filter(
     x => x.constant !== 'FULL_LICENCE'
   )
 
   return (
-    <div className={styles.wrapper}>
+    <div className={styles.wrapper} ref={inputEl}>
       <div className={styles.container}>
+        <Mobile>
+          <div className={styles.mobileHeader}>
+            <Logo />
+            <CloseButton handleClick={hideFilter} />
+          </div>
+          <CalendarViewChanger
+            viewMode={viewMode}
+            handleCustomEvent={handleCustomEvent}
+          />
+          <div
+            className={classnames(styles.divider, styles.dividerNormal)}></div>
+        </Mobile>
         <div className={styles.sectionItem}>
           <h5 className={styles.sectionTitle}>Location</h5>
         </div>

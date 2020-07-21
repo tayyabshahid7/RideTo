@@ -1,20 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styles from './styles.scss'
-import { ConnectLogo, IconLongArrowRight } from 'assets/icons/'
+import { IconLongArrowRight } from 'assets/icons/'
 import classnames from 'classnames'
 
 import { Button } from 'components/ConnectForm'
+import Logo from 'components/common/Logo'
 
 function Home() {
   return (
     <div className={styles.page}>
       <div className={styles.pageTop}>
         <header className={styles.header}>
-          <Link to="/home" className={styles.logo}>
-            <ConnectLogo />
-            <span>CONNECT</span>
-          </Link>
+          <Logo />
           <Link to="/login" className={styles.signin}>
             <Button type="button" color="white">
               Sign In

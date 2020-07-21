@@ -39,6 +39,10 @@
   z-index: 100;
   background-color: var(--color-light-gray);
   border-bottom: 1px solid #eaeaea;
+
+  @media (max-width: 767px) {
+    border-bottom: none;
+  }
 }
 
 .sideBarOpen {

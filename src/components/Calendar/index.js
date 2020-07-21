@@ -31,12 +31,10 @@ class CalendarComponent extends Component {
               className={classnames('icon-button', filterOpen && 'active')}>
               <IconSideFilter />
             </div>
-            <Desktop>
-              <CalendarDatePicker
-                calendar={calendar}
-                handleChangeDate={handleChangeDate}
-              />
-            </Desktop>
+            <CalendarDatePicker
+              calendar={calendar}
+              handleChangeDate={handleChangeDate}
+            />
           </div>
           <div
             className={classnames(
@@ -63,6 +61,7 @@ class CalendarComponent extends Component {
       </div>
     )
   }
+
   render() {
     let {
       days,
@@ -77,7 +76,9 @@ class CalendarComponent extends Component {
       inactiveUsers,
       inactiveCourses,
       handleToggleUser,
-      handleToggleCourse
+      toggleFilter,
+      handleToggleCourse,
+      handleCustomEvent
     } = this.props
 
     const users = instructors.filter(x => !inactiveUsers.includes(x.id))
@@ -96,6 +97,9 @@ class CalendarComponent extends Component {
               toggleUser={handleToggleUser}
               inactiveCourses={inactiveCourses}
               toggleCourse={handleToggleCourse}
+              calendar={calendar}
+              handleCustomEvent={handleCustomEvent}
+              hideFilter={() => toggleFilter(false)}
             />
           )}
           <MediaQuery minWidth={768}>
@@ -115,6 +119,8 @@ class CalendarComponent extends Component {
                           days={days}
                           calendar={calendar}
                           history={history}
+                          users={users}
+                          inactiveCourses={inactiveCourses}
                           handleMobileCellClick={handleMobileCellClick}
                           sideBarOpen={sideBarOpen}
                         />
