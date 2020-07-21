@@ -4,14 +4,14 @@ import { Link, NavLink } from 'react-router-dom'
 import UserMenu from '../UserMenu'
 import classnames from 'classnames'
 import styles from './styles.scss'
-import { ConnectLogo } from '../../assets/icons/'
+import { IconClose, IconMenu } from '../../assets/icons/'
+import Logo from 'components/common/Logo'
 import { connect } from 'react-redux'
 import { isAdmin } from 'services/auth'
-import SchoolSelect from 'components/SchoolSelect'
 import MediaQuery from 'react-responsive'
 import { logout } from 'store/auth'
 import { useMediaQuery } from 'react-responsive'
-import { MdClose } from 'react-icons/md'
+import { Mobile } from 'common/breakpoints'
 import $ from 'jquery'
 
 let NavigationBar = ({ history, user, logout }) => {
@@ -54,42 +54,21 @@ let NavigationBar = ({ history, user, logout }) => {
         'navbar navbar-expand-md navbar-light',
         isOpen && styles.isOpen
       )}>
-      <div className={classnames(styles.image)}>
-        {isOpen && isMobile ? (
-          <div className={styles.avatar}>
-            {user.name.charAt(0) || user.first_name.charAt(0)}
-          </div>
-        ) : (
-          <Link to="/">
-            <ConnectLogo className={classnames(styles.logoImage)} />
-          </Link>
-        )}
-      </div>
-      <MediaQuery maxWidth={768}>
-        <div className={styles.schoolSelect}>
-          <SchoolSelect labelField="town" />
+      <div className={styles.navHeader}>
+        <div className={classnames(styles.image)}>
+          {isOpen && isMobile ? <Logo /> : <Logo short />}
         </div>
-      </MediaQuery>
-      <button
-        className={classnames(
-          'navbar-toggler',
-          isOpen && styles.navBarTogglerOpen,
-          styles.toggleButton
-        )}
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarCollapse"
-        aria-controls="navbarCollapse"
-        aria-expanded="false"
-        aria-label="Toggle navigation">
-        {isOpen ? (
-          <span className={styles.closeIcon}>
-            <MdClose />
-          </span>
-        ) : (
-          <span className="navbar-toggler-icon" />
-        )}
-      </button>
+        <Mobile>
+          <div
+            data-toggle="collapse"
+            data-target="#navbarCollapse"
+            aria-controls="navbarCollapse"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            {isOpen ? <IconClose /> : <IconMenu />}
+          </div>
+        </Mobile>
+      </div>
       <div className="collapse navbar-collapse" id="navbarCollapse">
         <ul className={classnames('navbar-nav mr-auto', styles.navbar)}>
           <MediaQuery minWidth={768}>
@@ -137,14 +116,14 @@ let NavigationBar = ({ history, user, logout }) => {
               </NavLink>
             </li>
           )}
-          <MediaQuery maxWidth={768}>
-            <li className={classnames('nav-item', styles.navItem)}>
-              <button className={styles.logoutButton} onClick={handleLogout}>
-                Log out
-              </button>
-            </li>
-          </MediaQuery>
+          <Mobile>
+            <hr className={styles.divider} />
+            <div className={styles.navLink} onClick={handleLogout}>
+              Sign Out
+            </div>
+          </Mobile>
         </ul>
+
         <MediaQuery minWidth={768}>
           <div className={styles.navTools}>
             {isAdmin(user) && (
@@ -158,11 +137,7 @@ let NavigationBar = ({ history, user, logout }) => {
                 Add Course
               </Link>
             )}
-            <form
-              className={classnames(
-                'form-inline my-2 my-lg-0',
-                styles.authMenu
-              )}>
+            <form className={styles.authMenu}>
               <UserMenu history={history} />
             </form>
           </div>

@@ -6,7 +6,9 @@ import EventForm from './EventForm'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import { getSingleEvent, updateEvent, deleteEvent } from 'store/event'
 import { unsetSelectedCourse } from 'store/course'
+import styles from './styles.scss'
 import { DATE_FORMAT } from '../../../common/constants'
+import DateHeading from 'components/Calendar/DateHeading'
 
 class EditEventComponent extends Component {
   constructor(props) {
@@ -95,14 +97,19 @@ class EditEventComponent extends Component {
     if (!event) {
       return <div>Event Not Found</div>
     }
+    const date = event.start_time
+    let backLink = `/calendar/${date.substr(0, 10)}`
 
     return (
       <React.Fragment>
-        <EventForm
-          {...this.props}
-          onSubmit={this.onSave.bind(this)}
-          onRemove={this.handleToggleDeleteModal.bind(this)}
-        />
+        <div className={styles.wrapper}>
+          <DateHeading date={date ? moment(date) : null} backLink={backLink} />
+          <EventForm
+            {...this.props}
+            onSubmit={this.onSave.bind(this)}
+            onRemove={this.handleToggleDeleteModal.bind(this)}
+          />
+        </div>
         {showDeleteConfirmModal && (
           <ConfirmModal
             onClose={this.handleToggleDeleteModal.bind(this)}

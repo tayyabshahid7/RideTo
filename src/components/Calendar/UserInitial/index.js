@@ -3,11 +3,12 @@ import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './index.scss'
+import { UserAvatar } from 'assets/icons'
 
-const UserInitial = ({ user, short }) => {
+const UserInitial = ({ user, short = false, wide }) => {
   let initial
 
-  if (short) {
+  if (!short) {
     if (user.id === -1) {
       initial = 'Unassigned'
     } else {
@@ -24,8 +25,12 @@ const UserInitial = ({ user, short }) => {
   return (
     <div
       key={user.id}
-      className={classnames(styles.user, short && styles.short)}>
-      <img src="https://via.placeholder.com/150" alt="user" />
+      className={classnames(
+        styles.user,
+        short && styles.short,
+        wide && styles.wide
+      )}>
+      <UserAvatar />
       <span>{initial}</span>
     </div>
   )

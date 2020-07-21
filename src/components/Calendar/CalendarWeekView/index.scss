@@ -4,13 +4,6 @@
   flex-direction: row;
   position: relative;
   overflow: auto;
-  padding-left: 56px;
-}
-
-.containerSidebar {
-  @media (min-width: 768px) {
-    margin-right: 0;
-  }
 }
 
 .mainContent {
@@ -32,13 +25,25 @@
   z-index: 5;
 }
 
-.filterOpen {
-}
-
 .weekDaysHeader {
   padding: 8px;
   border-left: 1px solid var(--color-border);
   border-bottom: 1px solid var(--color-border);
+
+  @media (max-width: 767px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+
+    span {
+      font-weight: 500;
+      font-size: 13px;
+      line-height: 16px;
+      color: rgba(#444, 0.4);
+      margin-bottom: 5px;
+    }
+  }
 }
 
 .date {
@@ -50,11 +55,24 @@
   border-radius: 12px;
   text-decoration: none;
 
-  &:hover,
-  &:active {
-    background-color: var(--color-primary);
-    color: #fff;
-    text-decoration: none;
+  @media (min-width: 768px) {
+    &:hover,
+    &:active {
+      background-color: var(--color-primary);
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    text-align: center;
   }
 }
 
@@ -73,6 +91,7 @@
   position: relative;
   flex: 1 1 auto;
   display: flex;
+  padding-left: 56px;
 }
 
 .mobileVisible {
@@ -88,7 +107,7 @@
   display: block;
   height: 100%;
   position: absolute;
-  left: -56px;
+  left: 0;
   right: 0;
   top: 0;
 
@@ -108,11 +127,6 @@
       background: var(--color-border);
       // z-index: 2;
       z-index: 0;
-
-      @media (max-width: 768px) {
-        content: none;
-        display: none;
-      }
     }
 
     &:last-of-type::after {
@@ -135,9 +149,6 @@
   position: relative;
   z-index: 1;
   flex: 1 1 auto;
-}
-
-.headerItem {
 }
 
 .singleEvent {
@@ -168,6 +179,12 @@
 .daysContainer {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
+  padding-left: 56px;
+
+  @media (max-width: 767px) {
+    background-color: var(--color-light-gray);
+    // border-bottom: 1px solid #eaeaea;
+  }
 }
 
 .eventsContainer {
@@ -176,17 +193,27 @@
 }
 
 .daysSingle {
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 767px) {
+    padding-left: 0;
+  }
+}
+
+.contentSingle {
   grid-template-columns: 1fr;
+
+  @media (max-width: 767px) {
+    padding-left: 0;
+  }
 }
 
 .eventsContainerAllDay {
   height: 50px;
   margin-bottom: 0;
   overflow: hidden;
-
-  @media (max-width: 768px) {
-    height: 22px;
-  }
 
   .eventsGroup {
     border-top: 0;
@@ -204,39 +231,18 @@
   right: 0;
   left: 50px;
   width: calc(100% - 50px - 5px);
-
   z-index: 99;
-
   background: #fff;
   border-bottom: 1px solid #070707;
-
-  @media (min-width: 768px) {
-    top: 183px;
-    border-bottom: 2px solid #eaeaea;
-  }
-
-  &.sideBarOpen {
-    @media (min-width: 993px) {
-      width: calc(100% - 341px - 50px + 1px);
-    }
-  }
 }
 
 .bgHighlight {
   background: #f5f5f5;
-
-  @media (max-width: 768px) {
-    background-color: transparent;
-  }
 }
 
 .eventsGroup {
   cursor: pointer;
   border-left: 1px solid var(--color-border);
-
-  @media (max-width: 768px) {
-    width: 100%;
-  }
 
   > div {
     /* reset style */
@@ -266,24 +272,15 @@
 }
 
 .topInfo {
-  /* vertically center its content */
   display: table;
   height: 50px;
-  // border-bottom: 1px solid #eaeaea;
-  /* reset style */
   padding: 0;
 
-  @media (max-width: 768px) {
-    height: auto;
-  }
-
   > span {
-    /* vertically center inside its parent */
     display: table-cell;
     vertical-align: middle;
     padding: 0 0.5em;
     text-align: center;
-    /* reset style */
     font-weight: normal;
     margin-bottom: 0;
   }
@@ -292,11 +289,9 @@
 .singleEvent {
   position: absolute;
   z-index: 3;
-  /* top position and height will be set using js */
   width: calc(100% + 2px);
   left: -1px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), inset 0 -3px 0 rgba(0, 0, 0, 0.2);
-  /* reset style */
   -ms-flex-negative: 1;
   flex-shrink: 1;
   max-width: none;
@@ -307,7 +302,6 @@
   }
 
   &:last-of-type {
-    /* reset style */
     margin-right: 0;
   }
 }
@@ -325,12 +319,6 @@
   padding: 3px;
   white-space: nowrap;
   overflow: hidden;
-}
-
-@media only screen and (min-width: 1000px) {
-  .events {
-    /* 60px is the .timeline element width */
-  }
 }
 
 .eventName,
@@ -357,51 +345,6 @@
 .singleEvent[data-event='event-1'] {
   /* this is used to set a background color for the event and the modal window */
   background: #577f92;
-}
-
-@media (max-width: 768px) {
-  .mobileSameDate {
-    span {
-      color: var(--primary-color);
-    }
-  }
-
-  .weekDays {
-    width: auto;
-    position: fixed;
-    top: 86px;
-    right: 0;
-    left: 0;
-    z-index: 4;
-    padding-bottom: 0.25rem;
-    border-bottom: 1px solid #707070;
-  }
-
-  .weekviewContent {
-    width: 100%;
-  }
-
-  .weekDaysHeader {
-    min-width: 0px;
-  }
-
-  .eventsGroup {
-    min-width: 0px;
-  }
-
-  .mobileVisible {
-    display: block;
-  }
-
-  .desktopVisible {
-    display: none;
-  }
-
-  .topInfo {
-    span {
-      font-weight: bold;
-    }
-  }
 }
 
 .instructorIcon {

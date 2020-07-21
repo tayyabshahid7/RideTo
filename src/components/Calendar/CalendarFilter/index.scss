@@ -11,8 +11,11 @@
   overflow: auto;
 
   @media (max-width: 767px) {
+    top: 0;
     width: 100%;
     border-right: none;
+    z-index: 1001;
+    padding: 16px;
   }
 }
 
@@ -46,10 +49,21 @@
   background: rgba(black, 0.05);
 }
 
+.dividerNormal {
+  margin: 24px 0;
+}
+
 .sectionLabel {
   font-size: 13px;
   line-height: 16px;
   font-weight: 500;
   color: var(----color-dark-light);
   margin: 0;
+}
+
+.mobileHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }

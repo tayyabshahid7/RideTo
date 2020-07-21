@@ -15,7 +15,7 @@ const OrdersPanelItem = ({
 
   return (
     <div className={styles.container} key={training.id}>
-      <div className={styles.row}>
+      <div className={styles.line}>
         <div className={styles.name}>
           <Link to={`/customers/${training.customer_id}`}>
             {training.customer_name}
@@ -25,17 +25,11 @@ const OrdersPanelItem = ({
           {training.direct_friendly_id}
         </button>
       </div>
-      <div className={styles.row}>
-        {training.bike_hire && (
-          <div className={styles.bikeType}>{training.bike_hire}</div>
-        )}
-        {training.status && (
-          <div className={styles.status}>
-            {getTrainingStatus(training.status)}
-          </div>
-        )}
+      <div className={styles.line}>
+        {training.bike_hire && <div>{training.bike_hire}</div>}
+        {training.status && <div>{getTrainingStatus(training.status)}</div>}
       </div>
-      <div className={styles.row}>
+      <div className={styles.line}>
         {training.rider_experience && <div>{training.rider_experience}</div>}
         {training.payment_status && (
           <div

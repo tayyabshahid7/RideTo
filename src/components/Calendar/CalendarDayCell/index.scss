@@ -3,9 +3,18 @@
   color: var(--color-dark-light);
   text-align: left;
   cursor: pointer;
+  overflow: hidden;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  min-height: 226px;
 
   &:hover {
     background: var(--color-highlight);
+  }
+
+  @media (max-width: 767px) {
+    min-height: 128px;
   }
 }
 
@@ -23,6 +32,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 767px) {
+    justify-content: center;
+    text-align: center;
+  }
 }
 
 .otherMonth {
@@ -59,7 +73,7 @@
   flex-direction: column;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .otherMonth {
     display: none;
   }
@@ -67,6 +81,7 @@
   .courseContainer {
     flex-direction: row;
     min-height: 20px;
+    justify-content: center;
   }
   .more {
     display: none;

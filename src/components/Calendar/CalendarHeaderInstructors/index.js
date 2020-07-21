@@ -17,7 +17,7 @@ const CalendarHeaderInstructors = ({ instructors, inactiveUsers, isDay }) => {
   return (
     <div className={styles.container}>
       {activeUsers.map(x => {
-        return <UserInitial user={x} short={isDay} />
+        return <UserInitial key={x.id} user={x} short={!isDay} wide />
       })}
     </div>
   )

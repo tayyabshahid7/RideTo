@@ -17,8 +17,9 @@
 }
 
 .navbar {
-  @media (max-width: 768px) {
-    margin-top: 0.5rem;
+  @media (max-width: 767px) {
+    margin-top: 1rem;
+    align-items: center;
   }
 }
 
@@ -39,20 +40,15 @@
   align-items: center;
 }
 
-.logoImage {
-  height: 40px;
-  fill: var(--primary-color);
-}
-
 .darkLogo {
   fill: white;
   width: 200px;
 }
 
 .authMenu {
-  // width: 100%;
   display: flex;
   align-items: center;
+  flex-flow: row wrap;
 }
 
 .navLink {
@@ -128,9 +124,28 @@
 }
 
 .isOpen {
-  @media (max-width: 768px) {
-    background: #fafafa;
-    box-shadow: 0px 3px 6px #00000029;
+  @media (max-width: 767px) {
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    display: block !important;
+  }
+}
+
+.divider {
+  // border-bottom: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.navHeader {
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 }
 

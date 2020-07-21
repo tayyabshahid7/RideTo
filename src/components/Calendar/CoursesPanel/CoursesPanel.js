@@ -21,7 +21,7 @@ function CoursesPanel({
   return (
     <div className={styles.coursesPanel}>
       {!addingOrder && (
-        <div className={styles.staff}>
+        <div className={styles.panel}>
           <div className={styles.title}>Staff</div>
 
           <div>
@@ -37,7 +37,7 @@ function CoursesPanel({
 
           {isAdmin && (
             <Link
-              className={styles.addEvent}
+              className={styles.addButton}
               to={`/calendar/staff/create?date=${date}`}>
               Add Staff
             </Link>
@@ -45,7 +45,7 @@ function CoursesPanel({
         </div>
       )}
 
-      <div className={styles.courses}>
+      <div className={styles.panel}>
         <div className={styles.title}>Courses</div>
 
         {courses
@@ -68,7 +68,7 @@ function CoursesPanel({
 
         {!addingOrder && isAdmin && (
           <Link
-            className={styles.addCourse}
+            className={styles.addButton}
             to={`/calendar/courses/create?date=${date}`}>
             Add course
           </Link>
@@ -76,7 +76,7 @@ function CoursesPanel({
       </div>
 
       {!addingOrder && (
-        <div className={styles.events}>
+        <div className={styles.panel}>
           <div className={styles.title}>Events</div>
 
           <div>
@@ -91,7 +91,7 @@ function CoursesPanel({
           </div>
 
           <Link
-            className={styles.addEvent}
+            className={styles.addButton}
             to={`/calendar/events/create?date=${date}`}>
             Add event
           </Link>

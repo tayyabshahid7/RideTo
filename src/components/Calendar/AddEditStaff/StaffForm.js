@@ -184,36 +184,32 @@ class StaffForm extends React.Component {
                   />
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <ConnectInput
-                    basic
-                    name="startTime"
-                    value={startTime}
-                    label="Start Time"
-                    className="form-group"
-                    type="time"
-                    onChange={({ target }) =>
-                      this.handleChangeTime('startTime', target.value)
-                    }
-                    required
-                  />
-                </Col>
-                <Col>
-                  <ConnectInput
-                    basic
-                    name="endTime"
-                    value={endTime}
-                    label="End Time"
-                    className="form-group"
-                    type="time"
-                    onChange={({ target }) =>
-                      this.handleChangeTime('endTime', target.value)
-                    }
-                    required
-                  />
-                </Col>
-              </Row>
+              <div className={styles.timeRow}>
+                <ConnectInput
+                  basic
+                  name="startTime"
+                  value={startTime}
+                  label="Start Time"
+                  className="form-group"
+                  type="time"
+                  onChange={({ target }) =>
+                    this.handleChangeTime('startTime', target.value)
+                  }
+                  required
+                />
+                <ConnectInput
+                  basic
+                  name="endTime"
+                  value={endTime}
+                  label="End Time"
+                  className="form-group"
+                  type="time"
+                  onChange={({ target }) =>
+                    this.handleChangeTime('endTime', target.value)
+                  }
+                  required
+                />
+              </div>
               <Row>
                 <Col>
                   <ConnectCheckbox

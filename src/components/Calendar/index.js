@@ -31,19 +31,12 @@ class CalendarComponent extends Component {
               className={classnames('icon-button', filterOpen && 'active')}>
               <IconSideFilter />
             </div>
-            <Desktop>
-              <CalendarDatePicker
-                calendar={calendar}
-                handleChangeDate={handleChangeDate}
-              />
-            </Desktop>
+            <CalendarDatePicker
+              calendar={calendar}
+              handleChangeDate={handleChangeDate}
+            />
           </div>
-          <div
-            className={classnames(
-              styles.changeCalendarWrapper,
-              viewMode === CALENDAR_VIEW.MONTH &&
-                styles.changeCalendarWrapperMonth
-            )}>
+          <div className={classnames(styles.changeCalendarWrapper)}>
             <CalendarArrowsSwitcher handleCustomEvent={handleCustomEvent} />
             <Desktop>
               <CalendarViewChanger
@@ -63,6 +56,7 @@ class CalendarComponent extends Component {
       </div>
     )
   }
+
   render() {
     let {
       days,
@@ -76,8 +70,11 @@ class CalendarComponent extends Component {
       instructors,
       inactiveUsers,
       inactiveCourses,
+      handleChangeDate,
       handleToggleUser,
-      handleToggleCourse
+      toggleFilter,
+      handleToggleCourse,
+      handleCustomEvent
     } = this.props
 
     const users = instructors.filter(x => !inactiveUsers.includes(x.id))
@@ -96,6 +93,9 @@ class CalendarComponent extends Component {
               toggleUser={handleToggleUser}
               inactiveCourses={inactiveCourses}
               toggleCourse={handleToggleCourse}
+              calendar={calendar}
+              handleCustomEvent={handleCustomEvent}
+              hideFilter={() => toggleFilter(false)}
             />
           )}
           <MediaQuery minWidth={768}>
@@ -115,6 +115,8 @@ class CalendarComponent extends Component {
                           days={days}
                           calendar={calendar}
                           history={history}
+                          users={users}
+                          inactiveCourses={inactiveCourses}
                           handleMobileCellClick={handleMobileCellClick}
                           sideBarOpen={sideBarOpen}
                         />
@@ -126,6 +128,7 @@ class CalendarComponent extends Component {
                           history={history}
                           handleMobileCellClick={handleMobileCellClick}
                           settings={settings}
+                          handleChangeDate={handleChangeDate}
                           sideBarOpen={sideBarOpen}
                           filterOpen={filterOpen}
                           users={users}

@@ -9,8 +9,18 @@ import styles from './index.scss'
 import pluralize from 'pluralize'
 import sortBy from 'lodash/sortBy'
 
-const getDayItems = (day, dateStr) => {
-  const { courses = [], events = [], staff = [] } = day
+const getDayItems = (day, dateStr, users, inactiveCourses) => {
+  let { courses = [], events = [], staff = [] } = day
+
+  const userIds = users.map(x => x.id)
+  courses = courses
+    .filter(x => x.course_type && !inactiveCourses.includes(x.course_type.id))
+    .filter(
+      x =>
+        (userIds.includes(-1) && !x.instructor) ||
+        (x.instructor && userIds.includes(x.instructor.id))
+    )
+  staff = staff.filter(x => userIds.includes(x.instructor))
 
   const items = courses
     .map(course => {
@@ -37,6 +47,8 @@ const getDayItems = (day, dateStr) => {
           s: true,
           time: getStarTimeForEventForDate(s, dateStr),
           name: s.instructor_name,
+          first_name: s.instructor_name.split(' ')[0],
+          last_name: s.instructor_name.split(' ')[1],
           color: s.colour
         }
       })
@@ -51,6 +63,8 @@ const CalendarDayCell = ({
   calendar,
   history,
   handleMobileCellClick,
+  users,
+  inactiveCourses,
   rowsCount
 }) => {
   const isLowHeight = useMediaQuery({ maxHeight: 750 })
@@ -66,7 +80,7 @@ const CalendarDayCell = ({
     ? 2
     : 1
   const dateStr = moment(day.date).format('YYYY-MM-DD')
-  const items = getDayItems(day, dateStr)
+  const items = getDayItems(day, dateStr, users, inactiveCourses)
   const selectedDay = dateStr === calendar.selectedDate
   const more = items.length - showItems
   const isOtherMonthDate = day.date.getMonth() !== calendar.month
@@ -93,7 +107,7 @@ const CalendarDayCell = ({
     }
   }
 
-  const dayText = moment(day.date).format('ddd DD')
+  const dayText = moment(day.date).format(isMobile ? 'D' : 'ddd DD')
 
   return (
     <div

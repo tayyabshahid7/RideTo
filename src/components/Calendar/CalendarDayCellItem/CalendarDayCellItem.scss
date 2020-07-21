@@ -35,7 +35,7 @@ $danger: #ff9292;
   background-color: $danger;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .calendarDayCellItem {
     width: 8px;
     min-width: 8px;
@@ -43,7 +43,7 @@ $danger: #ff9292;
     border-radius: 4px;
     background: var(--dark-color);
     margin-right: 4px;
-    // border: transparent;
+    padding: 0;
   }
 
   .warning {

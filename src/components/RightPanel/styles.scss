@@ -9,6 +9,7 @@
   right: 0;
   height: calc(100% - 147px);
   z-index: 4;
+  overflow: auto;
 
   > div {
     display: flex;

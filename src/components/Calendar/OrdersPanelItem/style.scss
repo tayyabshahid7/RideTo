@@ -1,10 +1,8 @@
 .container {
-  padding: 6px 12px;
+  padding: 12px 16px;
   margin-bottom: 6px;
-
   background-color: #fafafa;
   white-space: now;
-
   font-size: 12px;
 }
 
@@ -15,37 +13,34 @@
 }
 
 .name {
-  font-weight: bold;
-}
+  a {
+    font-weight: bold;
+    color: rgba(#444, 0.8);
+    text-decoration: underline;
 
-.bikeType,
-.status {
-  font-weight: bold;
+    &:hover {
+      color: rgba(#444, 0.8);
+    }
+  }
 }
 
 .editButton {
   appearance: none;
   border: 0;
   background: transparent;
-  color: var(--primary-color);
   padding: 0;
-  font-weight: bold;
   font-size: 12px;
-  cursor: pointer;
-
-  &:hover {
-    color: #1f8f77;
-    text-decoration: underline;
-  }
+  text-decoration: underline;
+  color: rgba(#444, 0.8);
 }
 
 .partial,
 .pending {
-  font-style: italic;
+  font-weight: 500;
 }
 
 .partial {
-  color: var(--warning-color);
+  color: #eb5757;
 }
 
 .pending {
@@ -54,4 +49,14 @@
 
 .notes {
   font-style: italic;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 8px;
+  }
 }

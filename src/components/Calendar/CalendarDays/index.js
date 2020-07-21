@@ -3,7 +3,14 @@ import CalendarDayCell from '../CalendarDayCell'
 import styles from './index.scss'
 import classnames from 'classnames'
 
-const CalendarDays = ({ days, calendar, history, handleMobileCellClick }) => {
+const CalendarDays = ({
+  days,
+  calendar,
+  inactiveCourses,
+  users,
+  history,
+  handleMobileCellClick
+}) => {
   const rowsCount = Math.ceil(days.length / 7)
 
   return (
@@ -21,6 +28,8 @@ const CalendarDays = ({ days, calendar, history, handleMobileCellClick }) => {
           history={history}
           handleMobileCellClick={handleMobileCellClick}
           rowsCount={rowsCount}
+          inactiveCourses={inactiveCourses}
+          users={users}
         />
       ))}
     </div>
