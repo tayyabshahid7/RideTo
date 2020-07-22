@@ -591,15 +591,22 @@ export default function reducer(state = initialState, action) {
         }
       }
 
+      let { courses } = state.calendar
+      action.data.courses.forEach(x => {
+        const tmp = courses.find(c => c.id === x.id)
+        if (tmp) {
+          Object.assign(tmp, x)
+        } else {
+          courses.push(x)
+        }
+      })
+
       return {
         ...state,
         calendar: {
           ...state.calendar,
           loading: false,
-          courses: uniqBy(
-            [...state.calendar.courses, ...action.data.courses],
-            'id'
-          ),
+          courses,
           error: null,
           loadedMonths: [...state.calendar.loadedMonths, action.data.month]
         }
