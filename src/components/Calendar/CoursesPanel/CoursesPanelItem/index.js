@@ -49,8 +49,7 @@ const CoursesPanelItem = ({
   const isTestCourse =
     course.course_type.constant.includes('FULL_LICENCE') &&
     course.course_type.constant.includes('TEST')
-  const { notes = '', instructor } = course
-  const truncated = notes.length > 200 ? `${notes}...` : notes
+  const { instructor } = course
   const isSelected = parseInt(courseId) === course.id
 
   return (

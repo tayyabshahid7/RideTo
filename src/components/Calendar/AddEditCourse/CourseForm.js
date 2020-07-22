@@ -279,9 +279,13 @@ class CourseForm extends React.Component {
       testCentres,
       pricing,
       onRemove,
-      orderCount
+      orderCount,
+      course
     } = this.props
+    console.log(course)
+
     const { edited } = this.state
+
     const {
       course_type_id,
       instructor_id,
@@ -691,14 +695,16 @@ class CourseForm extends React.Component {
                       Cancel
                     </Button>
                   </div>
-                  <div>
-                    <Button
-                      color="danger"
-                      onClick={onRemove}
-                      disabled={orderCount > 0}>
-                      Delete
-                    </Button>
-                  </div>
+                  {course && (
+                    <div className={styles.actionDelete}>
+                      <Button
+                        color="danger"
+                        onClick={onRemove}
+                        disabled={orderCount > 0}>
+                        Delete
+                      </Button>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

@@ -226,7 +226,7 @@ class EventForm extends React.Component {
                 </Button>
               </div>
               {this.props.event && (
-                <div>
+                <div className={styles.actionDelete}>
                   <Button onClick={onRemove} color="danger">
                     Delete
                   </Button>

@@ -250,7 +250,7 @@ class StaffForm extends React.Component {
                 </Button>
               </div>
               {this.props.staff && (
-                <div>
+                <div className={styles.actionDelete}>
                   <Button onClick={onRemove} color="danger">
                     Delete
                   </Button>

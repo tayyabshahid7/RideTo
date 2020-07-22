@@ -1,11 +1,11 @@
 import React from 'react'
-import classnames from 'classnames'
 import styles from './StaffPanelItem.scss'
 import UserInitial from '../../UserInitial'
+import { Link } from 'react-router-dom'
 
 const StaffPanelItem = ({ event, date, staffId }) => {
-  const { all_day, notes } = event
-  const isSelected = parseInt(staffId) === event.id
+  const { all_day } = event
+  // const isSelected = parseInt(staffId) === event.id
 
   event.first_name = event.instructor_name.split(' ')[0]
   event.last_name = event.instructor_name.split(' ')[1]
@@ -14,7 +14,10 @@ const StaffPanelItem = ({ event, date, staffId }) => {
     <div className={styles.container} style={{ background: event.colour }}>
       <div className={styles.line}>
         <div className={styles.user}>
-          <UserInitial user={event} />
+          <Link
+            to={`/calendar/${date}/staff/${event.instructor}/${event.id}/edit`}>
+            <UserInitial user={event} />
+          </Link>
         </div>
         <span className={styles.notes}>
           {all_day ? (
@@ -27,14 +30,7 @@ const StaffPanelItem = ({ event, date, staffId }) => {
           )}
         </span>
       </div>
-      <div className={styles.line}>
-        <div>{notes && <span className={styles.notes}>{notes}</span>}</div>
-        <a
-          className={styles.editLink}
-          href={`/calendar/${date}/staff/${event.instructor}/${event.id}/edit`}>
-          Edit
-        </a>
-      </div>
+      {/* <div>{notes && <span className={styles.notes}>{notes}</span>}</div> */}
     </div>
   )
 }
