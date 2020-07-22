@@ -33,7 +33,7 @@ const EventPanelItem = ({ event, date, eventId }) => {
       <div
         className={classnames(styles.detail, showDetail && styles.isOpen)}
         onClick={() => setShowDetail(!showDetail)}>
-        <i class="fa fa-angle-down"></i>
+        <i className="fa fa-angle-down"></i>
       </div>
     </div>
   )

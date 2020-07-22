@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './index.scss'
-import { UserAvatar } from 'assets/icons'
+import { UserAvatar } from '../../../assets/icons'
 
 const UserInitial = ({ user, short = false, wide }) => {
   let initial
