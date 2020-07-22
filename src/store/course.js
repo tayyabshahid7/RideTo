@@ -18,7 +18,6 @@ import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
 import { actions as notificationActions } from './notification'
-import uniqBy from 'lodash/uniqBy'
 import moment from 'moment'
 import { saveState } from 'services/localStorage'
 
