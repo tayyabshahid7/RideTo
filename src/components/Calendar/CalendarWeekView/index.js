@@ -313,7 +313,7 @@ class CalendarWeekView extends Component {
       users,
       inactiveCourses
     } = this.props
-    const { mobileDayOfWeek } = this.state
+    // const { mobileDayOfWeek } = this.state
     let daysInfo = this.getWeekDays()
 
     return (

@@ -330,12 +330,15 @@ select {
 }
 
 .buttonDanger {
-  color: #fff;
-  background-color: #fe9898;
+  border: 1px solid #eb5757;
+  color: #eb5757;
+  background: white;
 
   &:hover,
   &:focus {
-    background-color: darken(#fe9898, 10%);
+    background-color: #eb5757;
+    color: white;
+    border: 1px solid #eb5757;
   }
 }
 
