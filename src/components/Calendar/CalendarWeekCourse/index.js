@@ -2,7 +2,12 @@ import React from 'react'
 import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
-import { WEEK_VIEW_START_TIME, WORK_HOURS, DATE_FORMAT } from 'common/constants'
+import {
+  WEEK_VIEW_START_TIME,
+  WORK_HOURS,
+  DATE_FORMAT,
+  CALENDAR_VIEW
+} from 'common/constants'
 import { getShortCourseType } from 'services/course'
 import moment from 'moment'
 import UserInitial from '../UserInitial'
@@ -13,6 +18,8 @@ const CalendarWeekCourse = React.forwardRef(
     { course, position, barCount, history, calendar, match, showDetail },
     ref
   ) => {
+    const isDay = calendar.viewMode === CALENDAR_VIEW.DAY
+
     let height = course.duration / 60
     let startTime = (course.secondsForDay - WEEK_VIEW_START_TIME) / 3600
     if (startTime < 0) {
@@ -27,6 +34,11 @@ const CalendarWeekCourse = React.forwardRef(
     }
     let left = `${position * 4}px`
     let width = `calc(100% - ${(barCount - 1) * 4}px)`
+
+    if (isDay) {
+      left = `${(100 / barCount) * position}%`
+      width = `${100 / barCount}%`
+    }
 
     let style = {
       height: `${height * 56}px`,
@@ -156,7 +168,7 @@ const CalendarWeekCourse = React.forwardRef(
               <UserInitial user={course.instructor} short />
             )}
           </div>
-          {showDetail && (
+          {(showDetail || isDay) && (
             <React.Fragment>
               <div className={styles.eventTime}>
                 {course.time.substring(0, 5)} -{' '}
@@ -174,27 +186,27 @@ const CalendarWeekCourse = React.forwardRef(
                 )}>
                 {getCourseSpaceTextShort(course)}
               </span>
-            </React.Fragment>
-          )}
-          {/* <div>
-            <div>
-              <b>Orders:</b>
-            </div>
-            {course.orders.length > 0
-              ? course.orders.map(order => (
-                  <div className={styles.order} key={order.friendly_id}>
-                    <span>{order.customer_name}</span>
+              {/* <div>
+                <div>
+                  <b>Orders:</b>
+                </div>
+                {course.orders.length > 0
+                  ? course.orders.map(order => (
+                      <div className={styles.order} key={order.friendly_id}>
+                        <span>{order.customer_name}</span>
+                      </div>
+                    ))
+                  : 'No orders'}
+              </div> */}
+              {course.notes && (
+                <div className={styles.eventsNotes}>
+                  <div>
+                    <b>Notes:</b>
                   </div>
-                ))
-              : 'No orders'}
-          </div> */}
-          {course.notes && (
-            <div className={styles.eventsNotes}>
-              <div>
-                <b>Notes:</b>
-              </div>
-              <div className={styles.notesContent}>{course.notes}</div>
-            </div>
+                  <div className={styles.notesContent}>{course.notes}</div>
+                </div>
+              )}
+            </React.Fragment>
           )}
         </div>
       </div>
