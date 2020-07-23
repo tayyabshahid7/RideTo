@@ -89,7 +89,7 @@ const CalendarFilter = ({
           <h5 className={styles.sectionTitle}>Location</h5>
         </div>
         {options.map(opt => (
-          <div className={styles.sectionItem}>
+          <div className={styles.sectionItem} key={opt.id}>
             <h6 className={styles.sectionLabel}>{opt.name}</h6>
             <label className="switch">
               <input
