@@ -349,6 +349,7 @@ class CalendarPage extends Component {
       staffCalendar,
       history,
       location,
+      schoolId,
       instructors,
       inactiveUsers,
       inactiveCourses,
@@ -384,6 +385,7 @@ class CalendarPage extends Component {
             toggleFilter={this.toggleFilter}
             sideBarOpen={!calendarPath}
             filterOpen={filterOpen}
+            schoolId={schoolId}
             instructors={instructors}
             inactiveUsers={inactiveUsers}
             handleToggleUser={this.handleToggleUser}

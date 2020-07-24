@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import {
   fetchInstructors,
   addInstructor,
@@ -8,16 +9,24 @@ import { actions as notificationActions } from './notification'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 const module = 'rideto/instructor'
+const FETCH_SINGLE = createRequestTypes(`${module}/FETCH/SINGLE`)
 const FETCH_ALL = createRequestTypes(`${module}/FETCH/ALL`)
 const SAVE = createRequestTypes(`${module}/SAVE`)
 const UPDATE = createRequestTypes(`${module}/UPDATE`)
 const DELETE = createRequestTypes(`${module}/DELETE`)
 
-export const getInstructors = schoolId => async dispatch => {
+// get instructors for all suppliers
+export const getAllInstructors = schoolIds => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
   try {
-    const instructors = await fetchInstructors(schoolId)
+    const requests = schoolIds.map(schoolId => fetchInstructors(schoolId))
+    const result = await Promise.all(requests)
+    const instructors = {}
+    schoolIds.forEach((schoolId, index) => {
+      instructors[schoolId] = result[index]
+    })
+
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
@@ -29,6 +38,21 @@ export const getInstructors = schoolId => async dispatch => {
   }
 }
 
+// get instructors for specific supplier
+export const getInstructors = schoolId => async dispatch => {
+  dispatch({ type: FETCH_SINGLE[REQUEST] })
+
+  try {
+    const instructors = await fetchInstructors(schoolId)
+    dispatch({
+      type: FETCH_SINGLE[SUCCESS],
+      data: { instructors, schoolId }
+    })
+  } catch (error) {
+    dispatch({ type: FETCH_SINGLE[FAILURE], error })
+  }
+}
+
 export const newInstructor = (schoolId, data) => async dispatch => {
   dispatch({ type: SAVE[REQUEST] })
 
@@ -36,7 +60,7 @@ export const newInstructor = (schoolId, data) => async dispatch => {
     const instructor = await addInstructor(schoolId, data)
     dispatch({
       type: SAVE[SUCCESS],
-      data: { instructor }
+      data: { instructor, schoolId }
     })
     notificationActions.dispatchSuccess(dispatch, 'Instructor added.')
   } catch (error) {
@@ -51,7 +75,7 @@ export const editInstructor = (schoolId, data) => async dispatch => {
     const instructor = await updateInstructor(schoolId, data)
     dispatch({
       type: UPDATE[SUCCESS],
-      data: { instructor }
+      data: { instructor, schoolId }
     })
     notificationActions.dispatchSuccess(dispatch, 'Instructor edited.')
   } catch (error) {
@@ -64,10 +88,10 @@ export const deleteInstructor = (schoolId, instructorId) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    const result = await removeInstructor(schoolId, instructorId)
+    const instructor = await removeInstructor(schoolId, instructorId)
     dispatch({
       type: DELETE[SUCCESS],
-      data: result
+      data: { instructor, schoolId }
     })
     notificationActions.dispatchSuccess(dispatch, 'Instructor deleted.')
   } catch (error) {
@@ -78,25 +102,47 @@ export const deleteInstructor = (schoolId, instructorId) => async dispatch => {
 
 const initialState = {
   instructors: [],
-  selectedInstructor: null,
   loading: false,
   saving: false,
-  error: null
+  error: null,
+  loadedAll: false
 }
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
+    case FETCH_SINGLE[REQUEST]:
+      return {
+        ...state,
+        loading: true
+      }
+    case FETCH_SINGLE[SUCCESS]: {
+      const { instructors } = state
+      instructors[action.data.schoolId] = action.data.instructors
+      return {
+        ...state,
+        loading: false,
+        instructors: _.cloneDeep(instructors)
+      }
+    }
+    case FETCH_SINGLE[FAILURE]:
+      return {
+        ...state,
+        loading: false,
+        error: action.error
+      }
     case FETCH_ALL[REQUEST]:
       return {
         ...state,
         loading: true
       }
-    case FETCH_ALL[SUCCESS]:
+    case FETCH_ALL[SUCCESS]: {
       return {
         ...state,
         loading: false,
-        instructors: [...action.data.instructors]
+        loadedAll: true,
+        instructors: action.data.instructors
       }
+    }
     case FETCH_ALL[FAILURE]:
       return {
         ...state,
@@ -108,13 +154,16 @@ export default function reducer(state = initialState, action) {
         ...state,
         saving: true
       }
-    case SAVE[SUCCESS]:
+    case SAVE[SUCCESS]: {
+      const { instructors } = state
+      instructors[action.data.schoolId].push(action.data.instructor)
+
       return {
         ...state,
         saving: false,
-        instructors: [...state.instructors, action.data.instructor],
-        selectedInstructor: null
+        instructors: _.cloneDeep(instructors)
       }
+    }
     case SAVE[FAILURE]:
       return {
         ...state,
@@ -126,17 +175,21 @@ export default function reducer(state = initialState, action) {
         ...state,
         saving: true
       }
-    case UPDATE[SUCCESS]:
-      const updatedInstructor = action.data.instructor
-      const updatedInstructors = state.instructors.filter(
-        instructor => instructor.id !== updatedInstructor.id
-      )
+    case UPDATE[SUCCESS]: {
+      const { instructors } = state
+      const { instructor, schoolId } = action.data
+      const tmp = instructors[schoolId].find(x => x.id === instructor.id)
+      if (tmp) {
+        Object.assign(tmp, instructor)
+      } else {
+        instructors[schoolId].push(instructor)
+      }
       return {
         ...state,
         saving: false,
-        instructors: [...updatedInstructors, updatedInstructor],
-        selectedInstructor: null
+        instructors: _.cloneDeep(instructors)
       }
+    }
     case UPDATE[FAILURE]:
       return {
         ...state,
@@ -148,17 +201,18 @@ export default function reducer(state = initialState, action) {
         ...state,
         saving: true
       }
-    case DELETE[SUCCESS]:
-      const deletedId = action.data.id
-      const newInstructors = state.instructors.filter(
-        instructor => instructor.id !== deletedId
+    case DELETE[SUCCESS]: {
+      const { schoolId, instructor } = action.data
+      const { instructors } = state
+      instructors[schoolId] = instructors[schoolId].filter(
+        x => x.id !== instructor.id
       )
       return {
         ...state,
-        instructors: [...newInstructors],
         saving: false,
-        selectedInstructor: null
+        instructors: _.cloneDeep(instructors)
       }
+    }
     case DELETE[FAILURE]:
       return {
         ...state,

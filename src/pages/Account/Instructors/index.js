@@ -28,7 +28,6 @@ const mapStateToProps = (state, ownProps) => {
     schoolId: state.auth.schoolId,
     saving: state.instructor.saving,
     instructors: state.instructor.instructors,
-    selectedInstructor: state.instructor.selectedInstructor,
     error: state.instructor.error
   }
 }

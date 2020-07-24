@@ -151,9 +151,10 @@ class StaffForm extends React.Component {
   }
 
   render() {
-    const { saving, onRemove, instructors } = this.props
+    const { saving, onRemove, instructors, schoolId } = this.props
     const { startTime, endTime } = this.state
     const { instructor, notes, all_day } = this.state.staff
+    const schoolInstructors = instructors[schoolId]
 
     return (
       <div className={styles.wrapper}>
@@ -176,7 +177,7 @@ class StaffForm extends React.Component {
                     required
                     options={[
                       { id: '', name: 'Select' },
-                      ...instructors.map(instructor => ({
+                      ...schoolInstructors.map(instructor => ({
                         ...instructor,
                         name: `${instructor.first_name} ${instructor.last_name}`
                       }))

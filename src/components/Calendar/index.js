@@ -67,6 +67,7 @@ class CalendarComponent extends Component {
       settings,
       sideBarOpen,
       filterOpen,
+      schoolId,
       instructors,
       inactiveUsers,
       inactiveCourses,
@@ -77,7 +78,8 @@ class CalendarComponent extends Component {
       handleCustomEvent
     } = this.props
 
-    const users = instructors.filter(x => !inactiveUsers.includes(x.id))
+    const schoolInstructors = instructors[schoolId]
+    const users = schoolInstructors.filter(x => !inactiveUsers.includes(x.id))
     if (!inactiveUsers.includes(-1)) {
       users.push({ id: -1 })
     }
@@ -88,7 +90,7 @@ class CalendarComponent extends Component {
         <div className={classnames(styles.wrapper)}>
           {filterOpen && (
             <CalendarFilter
-              users={instructors}
+              users={schoolInstructors}
               inactiveUsers={inactiveUsers}
               toggleUser={handleToggleUser}
               inactiveCourses={inactiveCourses}

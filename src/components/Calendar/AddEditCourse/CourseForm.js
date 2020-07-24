@@ -276,6 +276,7 @@ class CourseForm extends React.Component {
       info,
       saving,
       instructors,
+      schoolId,
       testCentres,
       pricing,
       onRemove,
@@ -283,6 +284,7 @@ class CourseForm extends React.Component {
       course
     } = this.props
     console.log(course)
+    const schoolInstructors = instructors[schoolId]
 
     const { edited } = this.state
 
@@ -361,7 +363,7 @@ class CourseForm extends React.Component {
                   raw
                   options={[
                     { id: '', name: 'Select' },
-                    ...instructors.map(instructor => ({
+                    ...schoolInstructors.map(instructor => ({
                       ...instructor,
                       name: `${instructor.first_name} ${instructor.last_name}`
                     }))

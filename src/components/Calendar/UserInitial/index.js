@@ -1,7 +1,5 @@
 import React from 'react'
 import classnames from 'classnames'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import styles from './index.scss'
 import { UserAvatar } from '../../../assets/icons'
 
@@ -36,16 +34,4 @@ const UserInitial = ({ user, short = false, wide }) => {
   )
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    instructors: state.instructor.instructors,
-    inactiveUsers: state.calendar.inactiveUsers
-  }
-}
-
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(UserInitial)
+export default UserInitial

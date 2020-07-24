@@ -162,6 +162,7 @@ class AvailabilityCourses extends React.Component {
       editInstructor,
       updateDiaryColor
     } = this.props
+
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
       <Fragment>
