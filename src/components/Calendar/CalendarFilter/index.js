@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { changeSchool } from 'store/auth'
+import { changeSchool, updateActiveSchool } from 'store/auth'
 import { loadCourseTypes } from 'store/info'
 import styles from './index.scss'
 import { Mobile } from 'common/breakpoints'
@@ -16,17 +16,17 @@ const CalendarFilter = ({
   inactiveCourses,
   toggleUser,
   toggleCourse,
-  options,
-  changeSchool,
+  suppliers,
   schoolId,
+  activeSchools,
   loadCourseTypes,
   info,
   hideFilter,
   handleCustomEvent,
+  updateActiveSchool,
   calendar
 }) => {
   const inputEl = useRef(null)
-
   useEffect(() => {
     loadCourseTypes({ schoolId })
   }, [schoolId])
@@ -58,10 +58,14 @@ const CalendarFilter = ({
     toggleUser([...userIds, -1], active)
   }
 
-  const handleSupplierChange = option => () => {
-    if (schoolId !== option.id) {
-      changeSchool(option.id, option.name)
+  const handleSchoolChange = school => () => {
+    let schoolIds = [...activeSchools]
+    if (activeSchools.includes(school.id)) {
+      schoolIds = schoolIds.filter(x => x !== school.id)
+    } else {
+      schoolIds.push(school.id)
     }
+    updateActiveSchool(schoolIds)
   }
 
   const { viewMode } = calendar
@@ -88,14 +92,14 @@ const CalendarFilter = ({
         <div className={styles.sectionItem}>
           <h5 className={styles.sectionTitle}>Location</h5>
         </div>
-        {options.map(opt => (
-          <div className={styles.sectionItem} key={opt.id}>
-            <h6 className={styles.sectionLabel}>{opt.name}</h6>
+        {suppliers.map(school => (
+          <div className={styles.sectionItem} key={school.id}>
+            <h6 className={styles.sectionLabel}>{school.name}</h6>
             <label className="switch">
               <input
                 type="checkbox"
-                checked={opt.id === schoolId}
-                onChange={handleSupplierChange(opt)}
+                checked={activeSchools.includes(school.id)}
+                onChange={handleSchoolChange(school)}
               />
               <span className="slider round"></span>
             </label>
@@ -166,8 +170,9 @@ const CalendarFilter = ({
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    options: state.auth.user.suppliers,
+    suppliers: state.auth.user.suppliers,
     schoolId: state.auth.schoolId,
+    activeSchools: state.auth.activeSchools,
     info: state.info
   }
 }
@@ -176,6 +181,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       changeSchool,
+      updateActiveSchool,
       loadCourseTypes
     },
     dispatch

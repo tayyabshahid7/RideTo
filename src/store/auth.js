@@ -16,6 +16,7 @@ import {
 } from './common'
 
 const CHANGE_SCHOOL = 'rideto/auth/CHANGE_SCHOOL'
+const UPDATE_ACTIVE_SCHOOLS = 'rideto/auth/UPDATE_ACTIVE_SCHOOLS'
 const LOGIN_REQUEST = 'rideto/auth/LOGIN_REQUEST'
 const LOGIN_ERROR = 'rideto/auth/LOGIN_ERROR'
 const LOGIN_SUCCESS = 'rideto/auth/LOGIN_SUCCESS'
@@ -28,11 +29,16 @@ const loginError = error => ({ type: LOGIN_ERROR, error })
 const loginSuccess = data => ({ type: LOGIN_SUCCESS, data })
 
 const changeSchoolRequest = school => ({ type: CHANGE_SCHOOL, school })
+const updateActiveSchoolRequest = schoolIds => ({
+  type: UPDATE_ACTIVE_SCHOOLS,
+  schoolIds
+})
 
 const persistAuthState = (state, newState) => {
   const auth = {
     user: state.user,
     schoolId: state.schoolId,
+    activeSchools: state.activeSchools,
     ...newState
   }
   saveState({ auth })
@@ -43,6 +49,12 @@ export const changeSchool = (schoolId, schoolName) => {
     dispatch(getPendingOrders(schoolId))
     dispatch(changeSchoolRequest({ id: schoolId, name: schoolName }))
     dispatch(getInstructors(schoolId))
+  }
+}
+
+export const updateActiveSchool = schoolIds => {
+  return async dispatch => {
+    dispatch(updateActiveSchoolRequest(schoolIds))
   }
 }
 
@@ -59,7 +71,6 @@ export const login = (email, password) => {
       if (error.response) {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
-        console.log(error.response.status)
         if (error.response.status === 400) {
           errorMessage = 'Invalid username or password.'
         } else {
@@ -69,7 +80,6 @@ export const login = (email, password) => {
         // The request was made but no response was received
         // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
         // http.ClientRequest in node.js
-        console.log(error.request)
         errorMessage = 'Please check your network connection.'
       } else {
         // Something happened in setting up the request that triggered an Error
@@ -100,6 +110,7 @@ const initialState = {
   loggedIn: false,
   schoolId: null,
   schoolName: null,
+  activeSchools: [],
   error: null,
   user: null,
   saving: false
@@ -115,6 +126,15 @@ export default function reducer(state = initialState, action) {
         ...state,
         schoolId: action.school.id,
         schoolName: action.school.name
+      }
+
+    case UPDATE_ACTIVE_SCHOOLS:
+      persistAuthState(state, {
+        activeSchools: action.schoolIds
+      })
+      return {
+        ...state,
+        activeSchools: action.schoolIds
       }
 
     case LOGIN_REQUEST:
@@ -142,6 +162,7 @@ export default function reducer(state = initialState, action) {
         error: null,
         schoolId: action.data.user.suppliers[0].id,
         schoolName: action.data.user.suppliers[0].name,
+        activeSchools: [],
         user: action.data.user
       }
     case UPDATE_PASSWORD[REQUEST]:
