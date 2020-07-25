@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { changeSchool, updateActiveSchool } from 'store/auth'
-import { loadCourseTypes } from 'store/info'
 import styles from './index.scss'
 import { Mobile } from 'common/breakpoints'
 import CalendarViewChanger from '../CalendarViewChanger'
@@ -18,9 +17,7 @@ const CalendarFilter = ({
   toggleUser,
   toggleCourse,
   suppliers,
-  schoolId,
   activeSchools,
-  loadCourseTypes,
   info,
   hideFilter,
   handleCustomEvent,
@@ -31,15 +28,22 @@ const CalendarFilter = ({
   const currUsers = []
   activeSchools.forEach(x => currUsers.push(...users[x]))
 
-  useEffect(() => {
-    loadCourseTypes({ schoolId })
-  }, [schoolId])
+  const courseTypes = info.courseTypes.filter(
+    x =>
+      x.constant !== 'FULL_LICENCE' &&
+      _.intersection(x.schoolIds, activeSchools).length
+  )
 
   useEffect(() => {
     // update users list
     const currUserIds = currUsers.map(x => x.id)
     const userIds = _.intersection(inactiveUsers, [...currUserIds, -1])
-    toggleUser(userIds, true)
+    toggleUser(userIds)
+
+    // update course list
+    const currCourseIds = courseTypes.map(x => x.id)
+    const courseIds = _.intersection(inactiveCourses, currCourseIds)
+    toggleCourse(courseIds)
   }, [activeSchools])
 
   useEffect(() => {
@@ -66,7 +70,13 @@ const CalendarFilter = ({
   }
 
   const handleCourseChange = courseId => () => {
-    toggleCourse([courseId], inactiveCourses.includes(courseId))
+    let courseIds = []
+    if (inactiveCourses.includes(courseId)) {
+      courseIds = inactiveCourses.filter(x => x !== courseId)
+    } else {
+      courseIds = [...inactiveCourses, courseId]
+    }
+    toggleCourse(courseIds)
   }
 
   const handleAllStaffChange = () => {
@@ -91,10 +101,6 @@ const CalendarFilter = ({
   }
 
   const { viewMode } = calendar
-
-  const courseTypes = info.courseTypes.filter(
-    x => x.constant !== 'FULL_LICENCE'
-  )
 
   return (
     <div className={styles.wrapper} ref={inputEl}>
@@ -203,8 +209,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       changeSchool,
-      updateActiveSchool,
-      loadCourseTypes
+      updateActiveSchool
     },
     dispatch
   )

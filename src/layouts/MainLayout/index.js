@@ -16,18 +16,21 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import Loading from 'components/Loading'
 import { getAllInstructors } from 'store/instructor'
+import { getAllCourseTypes } from 'store/info'
 
 const MainLayout = ({
   history,
   location: { pathname },
   user,
   getAllInstructors,
+  getAllCourseTypes,
   instructorsLoaded
 }) => {
   useEffect(() => {
     if (user) {
       const schoolIds = user.suppliers.map(x => x.id)
       getAllInstructors(schoolIds)
+      getAllCourseTypes(schoolIds)
     }
   }, [user])
   const isGreyBg = pathname.match(/\/customers\/\d+/)
@@ -77,7 +80,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getAllInstructors
+      getAllInstructors,
+      getAllCourseTypes
     },
     dispatch
   )

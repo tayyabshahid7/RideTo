@@ -18,13 +18,10 @@ export const toggleUser = ({ userIds }) => async dispatch => {
   })
 }
 
-export const toggleCourse = ({
-  courseIds,
-  active = false
-}) => async dispatch => {
+export const toggleCourse = ({ courseIds }) => async dispatch => {
   dispatch({
     type: TOGGLE_COURSES,
-    data: { courseIds, active }
+    data: { courseIds }
   })
 }
 
@@ -49,19 +46,10 @@ export default function reducer(state = initialState, action) {
         inactiveUsers: action.data.userIds
       }
     case TOGGLE_COURSES: {
-      let courses = state.inactiveCourses.slice()
-      if (action.data.active) {
-        action.data.courseIds.forEach(id => {
-          courses = courses.filter(x => x !== id)
-        })
-      } else {
-        action.data.courseIds.forEach(id => {
-          if (!courses.includes(id)) {
-            courses.push(id)
-          }
-        })
+      return {
+        ...state,
+        inactiveCourses: action.data.courseIds
       }
-      return { ...state, inactiveCourses: courses }
     }
     default: {
       return state
