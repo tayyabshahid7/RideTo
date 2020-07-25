@@ -5,19 +5,14 @@ import styles from './index.scss'
 import UserInitial from '../UserInitial'
 
 const CalendarHeaderInstructors = ({
-  instructors,
-  schoolId,
+  users,
+  activeSchools,
   inactiveUsers,
   isDay
 }) => {
-  // const allInstructors = []
-  // Object.keys(instructors).forEach(schoolId =>
-  //   allInstructors.push(...instructors[schoolId])
-  // )
-  const schoolInstructors = instructors[schoolId]
-  const activeUsers = schoolInstructors.filter(
-    x => !inactiveUsers.includes(x.id)
-  )
+  const currUsers = []
+  activeSchools.forEach(x => currUsers.push(...users[x]))
+  const activeUsers = currUsers.filter(x => !inactiveUsers.includes(x.id))
   if (!inactiveUsers.includes(-1)) {
     activeUsers.push({ id: -1 })
   }
@@ -37,8 +32,8 @@ const CalendarHeaderInstructors = ({
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
-    instructors: state.instructor.instructors,
+    activeSchools: state.auth.activeSchools,
+    users: state.instructor.instructors,
     inactiveUsers: state.calendar.inactiveUsers
   }
 }

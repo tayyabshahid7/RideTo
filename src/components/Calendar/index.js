@@ -67,7 +67,7 @@ class CalendarComponent extends Component {
       settings,
       sideBarOpen,
       filterOpen,
-      schoolId,
+      activeSchools,
       instructors,
       inactiveUsers,
       inactiveCourses,
@@ -78,8 +78,9 @@ class CalendarComponent extends Component {
       handleCustomEvent
     } = this.props
 
-    const schoolInstructors = instructors[schoolId]
-    const users = schoolInstructors.filter(x => !inactiveUsers.includes(x.id))
+    const tmpUsers = []
+    activeSchools.forEach(x => tmpUsers.push(...instructors[x]))
+    const users = tmpUsers.filter(x => !inactiveUsers.includes(x.id))
     if (!inactiveUsers.includes(-1)) {
       users.push({ id: -1 })
     }
@@ -90,7 +91,7 @@ class CalendarComponent extends Component {
         <div className={classnames(styles.wrapper)}>
           {filterOpen && (
             <CalendarFilter
-              users={schoolInstructors}
+              users={instructors}
               inactiveUsers={inactiveUsers}
               toggleUser={handleToggleUser}
               inactiveCourses={inactiveCourses}
@@ -154,7 +155,8 @@ class CalendarComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    settings: state.settings.settings
+    settings: state.settings.settings,
+    activeSchools: state.auth.activeSchools
   }
 }
 

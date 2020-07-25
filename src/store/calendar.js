@@ -11,10 +11,10 @@ export const toggleSidebar = ({ flag }) => async dispatch => {
   })
 }
 
-export const toggleUser = ({ userIds, active = false }) => async dispatch => {
+export const toggleUser = ({ userIds }) => async dispatch => {
   dispatch({
     type: TOGGLE_USERS,
-    data: { userIds, active }
+    data: { userIds }
   })
 }
 
@@ -43,21 +43,11 @@ export default function reducer(state = initialState, action) {
       }
       return { ...state, sidebarOpen }
     }
-    case TOGGLE_USERS: {
-      let users = state.inactiveUsers.slice()
-      if (action.data.active) {
-        action.data.userIds.forEach(userId => {
-          users = users.filter(x => x !== userId)
-        })
-      } else {
-        action.data.userIds.forEach(userId => {
-          if (!users.includes(userId)) {
-            users.push(userId)
-          }
-        })
+    case TOGGLE_USERS:
+      return {
+        ...state,
+        inactiveUsers: action.data.userIds
       }
-      return { ...state, inactiveUsers: users }
-    }
     case TOGGLE_COURSES: {
       let courses = state.inactiveCourses.slice()
       if (action.data.active) {
