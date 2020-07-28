@@ -61,12 +61,12 @@ class EditStaffComponent extends Component {
   }
 
   onSave(data) {
-    const { schoolId, updateStaff, match } = this.props
+    const { updateStaff, match } = this.props
     updateStaff({
-      schoolId,
+      schoolId: data.supplier,
       staffId: match.params.staffId,
       diaryId: match.params.diaryId,
-      data: { ...data, supplier: schoolId.toString() },
+      data,
       fullUpdate: true
     })
   }

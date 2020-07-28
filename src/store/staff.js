@@ -48,11 +48,15 @@ export const getSingleStaff = ({
   }
 }
 
-export const getDayStaff = ({ schoolId, date }) => async dispatch => {
+export const getDayStaff = ({ schoolIds, date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {
-    const { results: staff } = await fetchStaff(schoolId, date, date)
+    const request = schoolIds.map(schoolId => fetchStaff(schoolId, date, date))
+    const results = await Promise.all(request)
+
+    const staff = []
+    results.forEach(tmp => staff.push(...tmp.results))
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],

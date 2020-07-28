@@ -33,10 +33,7 @@ class CoursesPanelContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.schoolId !== prevProps.schoolId ||
-      prevProps.match.params.date !== this.props.match.params.date
-    ) {
+    if (prevProps.match.params.date !== this.props.match.params.date) {
       this.loadData()
     }
   }
@@ -46,15 +43,19 @@ class CoursesPanelContainer extends React.Component {
       getDayCourses,
       getDayEvents,
       match,
-      schoolId,
+      schools,
       getDayStaff
     } = this.props
+
     const {
       params: { date }
     } = match
-    getDayCourses({ schoolId, date })
-    getDayEvents({ schoolId, date })
-    getDayStaff({ schoolId, date })
+
+    const schoolIds = schools.map(x => x.id)
+
+    getDayCourses({ schoolIds, date })
+    getDayEvents({ schoolIds, date })
+    getDayStaff({ schoolIds, date })
   }
 
   render() {
@@ -95,7 +96,7 @@ class CoursesPanelContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
+    schools: state.auth.user.suppliers,
     courses: state.course.day.courses,
     loading: state.course.day.loading,
     events: state.event.day.events,

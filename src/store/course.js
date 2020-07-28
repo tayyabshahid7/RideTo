@@ -60,11 +60,17 @@ export const getSingleCourse = ({
   }
 }
 
-export const getDayCourses = ({ schoolId, date }) => async dispatch => {
+export const getDayCourses = ({ schoolIds, date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
-
+  console.log(schoolIds, date)
   try {
-    const courses = await fetchCourses(schoolId, date, date)
+    const request = schoolIds.map(schoolId =>
+      fetchCourses(schoolId, date, date)
+    )
+    const results = await Promise.all(request)
+
+    const courses = []
+    results.forEach(tmp => courses.push(...tmp))
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],
@@ -403,7 +409,6 @@ const initialState = {
 export default function reducer(state = initialState, action) {
   let dayCourses
   let calendarCourses
-  let dt
   switch (action.type) {
     case FETCH_SINGLE[REQUEST]:
       if (action.reset) {
@@ -471,8 +476,8 @@ export default function reducer(state = initialState, action) {
         calendar: { ...state.calendar, courses: calendarCourses }
       }
 
-    case FETCH_FOR_DAY[REQUEST]:
-      dt = new Date(action.date)
+    case FETCH_FOR_DAY[REQUEST]: {
+      const tmp = moment(action.date, 'YYYY-MM-DD')
       return {
         ...state,
         day: {
@@ -483,12 +488,13 @@ export default function reducer(state = initialState, action) {
         calendar: {
           ...state.calendar,
           selectedDate: action.date,
-          year: dt.getFullYear(),
-          month: dt.getMonth(),
-          day: dt.getDate(),
-          silent: state.calendar.month === dt.getMonth()
+          year: tmp.year(),
+          month: tmp.month(),
+          day: tmp.date(),
+          silent: state.calendar.month === tmp.month()
         }
       }
+    }
     case FETCH_FOR_DAY[SUCCESS]:
       return {
         ...state,

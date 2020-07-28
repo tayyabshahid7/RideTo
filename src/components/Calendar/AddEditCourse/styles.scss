@@ -141,8 +141,16 @@
 .formTable {
   margin-top: -0.75rem;
   margin-bottom: 0;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 13px;
+  color: rgba(#444, 0.6) !important;
+
+  th {
+    font-weight: 500;
+    border: none !important;
+    padding: 4px 0.75rem;
+  }
 
   td {
     border-top: 0 !important;

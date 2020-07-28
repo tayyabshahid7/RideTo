@@ -38,11 +38,15 @@ export const getSingleEvent = ({
   }
 }
 
-export const getDayEvents = ({ schoolId, date }) => async dispatch => {
+export const getDayEvents = ({ schoolIds, date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {
-    const events = await fetchEvents(schoolId, date, date)
+    const request = schoolIds.map(schoolId => fetchEvents(schoolId, date, date))
+    const results = await Promise.all(request)
+
+    const events = []
+    results.forEach(tmp => events.push(...tmp))
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],

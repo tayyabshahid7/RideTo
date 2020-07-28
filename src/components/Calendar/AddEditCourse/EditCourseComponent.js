@@ -16,7 +16,6 @@ import {
 import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
 import DateHeading from 'components/Calendar/DateHeading'
 import ConfirmModal from 'components/Modals/ConfirmModal'
-import { loadCourseTypes } from 'store/info'
 import isEqual from 'lodash/isEqual'
 import { isAdmin } from 'services/auth'
 
@@ -73,11 +72,11 @@ class EditCourseComponent extends Component {
   }
 
   onSave(data) {
-    const { schoolId, updateCourse, match } = this.props
+    const { updateCourse, match } = this.props
     updateCourse({
-      schoolId,
+      schoolId: data.supplier,
       courseId: match.params.courseId,
-      data: { ...data, supplier: schoolId.toString() },
+      data,
       fullUpdate: true
     })
     this.setState({ isEditable: false })
@@ -182,7 +181,6 @@ const mapDispatchToProps = dispatch =>
     {
       getSingleCourse,
       updateCourse,
-      loadCourseTypes,
       createSchoolOrder,
       updateSchoolOrder,
       fetchPrice,

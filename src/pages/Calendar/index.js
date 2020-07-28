@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
@@ -28,31 +29,41 @@ class CalendarPage extends Component {
     super(props)
 
     this.state = {
-      filterOpen: false
+      filterOpen: false,
+      loadedSchools: []
     }
   }
 
   componentDidMount() {
-    this.loadData()
+    const { activeSchools } = this.props
+    this.loadData(activeSchools)
     this.loadInstructors()
     this.props.getTestCentres()
 
     if (!this.props.settings) {
       this.props.fetchSettings()
     }
+    this.setState({ loadedSchools: activeSchools })
   }
 
   componentDidUpdate(prevProps) {
-    const { schoolId, calendar } = this.props
+    const { activeSchools, calendar } = this.props
+    const { loadedSchools } = this.state
+    const diffSchools = _.difference(activeSchools, loadedSchools)
+
+    if (diffSchools.length) {
+      this.setState({ loadedSchools: [...loadedSchools, ...diffSchools] })
+    }
+
     if (
-      schoolId !== prevProps.schoolId ||
+      diffSchools.length ||
       ((calendar.month !== prevProps.calendar.month ||
         calendar.year !== prevProps.calendar.year ||
         calendar.day !== prevProps.calendar.day ||
         calendar.viewMode !== prevProps.calendar.viewMode) &&
         !calendar.silent)
     ) {
-      this.loadData()
+      this.loadData(activeSchools)
     }
   }
 
@@ -65,63 +76,96 @@ class CalendarPage extends Component {
     getInstructors(schoolId)
   }
 
-  loadData() {
-    this.loadCourses()
-    this.loadEvents()
-    this.loadStaff()
+  loadData(schoolIds) {
+    this.loadSchoolCourses(schoolIds)
+    this.loadEvents(schoolIds)
+    this.loadStaff(schoolIds)
   }
 
-  loadCourses(reset = false) {
-    const { getCourses, schoolId, calendar } = this.props
+  loadSchoolCourses(schoolIds) {
+    const { getCourses, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
     const formatedFirstDate = moment(firstDate).format(DATE_FORMAT)
     const formatedLastDate = moment(lastDate).format(DATE_FORMAT)
-    const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
 
-    if (!reset && calendar.loadedMonths.includes(month)) {
-      return
-    }
+    schoolIds.forEach(schoolId => {
+      const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
+      if (
+        Array.isArray(calendar.loadedMonths) &&
+        calendar.loadedMonths.includes(month)
+      ) {
+        return
+      }
 
-    getCourses({
-      schoolId,
-      firstDate: formatedFirstDate,
-      lastDate: formatedLastDate,
-      month,
-      reset
+      getCourses({
+        schoolId,
+        firstDate: formatedFirstDate,
+        lastDate: formatedLastDate,
+        month
+      })
     })
   }
 
-  loadEvents() {
-    const { getEvents, schoolId, calendar, eventCalendar } = this.props
+  loadCourses(reset = false) {
+    const { getCourses, activeSchools, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
-    const month = `${calendar.year}-${calendar.month}-${schoolId}`
+    const formatedFirstDate = moment(firstDate).format(DATE_FORMAT)
+    const formatedLastDate = moment(lastDate).format(DATE_FORMAT)
 
-    if (eventCalendar.loadedMonths.includes(month)) {
-      return
-    }
+    activeSchools.forEach(schoolId => {
+      const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
 
-    getEvents({
-      schoolId,
-      firstDate: moment(firstDate).format(DATE_FORMAT),
-      lastDate: moment(lastDate).format(DATE_FORMAT),
-      month
+      if (!reset && calendar.loadedMonths.includes(month)) {
+        return
+      }
+
+      getCourses({
+        schoolId,
+        firstDate: formatedFirstDate,
+        lastDate: formatedLastDate,
+        month,
+        reset
+      })
     })
   }
 
-  loadStaff() {
-    const { getStaff, schoolId, calendar, staffCalendar } = this.props
+  loadEvents(schoolIds) {
+    const { getEvents, calendar, eventCalendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
-    const month = `${calendar.year}-${calendar.month}-${schoolId}`
 
-    if (staffCalendar.loadedMonths.includes(month)) {
-      return
-    }
+    schoolIds.forEach(schoolId => {
+      const month = `${calendar.year}-${calendar.month}-${schoolId}`
 
-    getStaff({
-      schoolId,
-      firstDate: moment(firstDate).format(DATE_FORMAT),
-      lastDate: moment(lastDate).format(DATE_FORMAT),
-      month
+      if (eventCalendar.loadedMonths.includes(month)) {
+        return
+      }
+
+      getEvents({
+        schoolId,
+        firstDate: moment(firstDate).format(DATE_FORMAT),
+        lastDate: moment(lastDate).format(DATE_FORMAT),
+        month
+      })
+    })
+  }
+
+  loadStaff(schoolIds) {
+    const { getStaff, calendar, staffCalendar } = this.props
+    const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+
+    schoolIds.forEach(schoolId => {
+      const month = `${calendar.year}-${calendar.month}-${schoolId}`
+
+      if (staffCalendar.loadedMonths.includes(month)) {
+        return
+      }
+
+      getStaff({
+        schoolId,
+        firstDate: moment(firstDate).format(DATE_FORMAT),
+        lastDate: moment(lastDate).format(DATE_FORMAT),
+        month
+      })
     })
   }
 
@@ -437,12 +481,7 @@ class CalendarPage extends Component {
           <Route
             exact
             path="/calendar/events/create"
-            render={routeProps => (
-              <AddEventComponent
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
-            )}
+            render={routeProps => <AddEventComponent {...routeProps} />}
           />
           <Route
             exact
@@ -457,22 +496,12 @@ class CalendarPage extends Component {
           <Route
             exact
             path="/calendar/:date/events/:eventId/edit"
-            render={routeProps => (
-              <EditEventComponent
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
-            )}
+            render={routeProps => <EditEventComponent {...routeProps} />}
           />
           <Route
             exact
             path="/calendar/staff/create"
-            render={routeProps => (
-              <AddStaffComponent
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
-            )}
+            render={routeProps => <AddStaffComponent {...routeProps} />}
           />
           <Route
             exact
@@ -487,12 +516,7 @@ class CalendarPage extends Component {
           <Route
             exact
             path="/calendar/:date/staff/:staffId/:diaryId/edit"
-            render={routeProps => (
-              <EditStaffComponent
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
-            )}
+            render={routeProps => <EditStaffComponent {...routeProps} />}
           />
         </RightPanel>
       </div>
@@ -519,6 +543,7 @@ const mapStateToProps = (state, ownProps) => {
 
   return {
     schoolId,
+    activeSchools: auth.activeSchools,
     calendar,
     eventCalendar,
     staffCalendar,

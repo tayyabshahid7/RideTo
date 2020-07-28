@@ -1,7 +1,6 @@
 import React from 'react'
 import moment from 'moment'
 import { Col, Row } from 'reactstrap'
-import classnames from 'classnames'
 import range from 'lodash/range'
 import styles from './styles.scss'
 import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
@@ -87,9 +86,16 @@ class CourseForm extends React.Component {
     } else if (this.props.date) {
       course.date = this.props.date
     }
+
+    let supplier = ''
+    if (this.props.schools) {
+      supplier = this.props.schools[0].id
+    }
+
     this.state = {
       course: course,
-      edited: false
+      edited: false,
+      supplier
     }
 
     this.handleToggleEdit = this.handleToggleEdit.bind(this)
@@ -97,18 +103,13 @@ class CourseForm extends React.Component {
   }
 
   componentDidMount() {
-    if (
-      !this.props.info.courseTypes ||
-      this.props.info.courseTypes.length === 0
-    ) {
-      this.props.loadCourseTypes({ schoolId: this.props.schoolId })
-    }
     this.loadPricing()
   }
 
   componentDidUpdate(prevProps, prevState) {
     const { courseTypes } = this.props.info
     const { course_type_id, date } = this.state.course
+    const { supplier } = this.state
 
     if (courseTypes.length && course_type_id === '') {
       const defaultCourse =
@@ -138,19 +139,30 @@ class CourseForm extends React.Component {
       this.loadPricing()
       return
     }
+
+    if (supplier && supplier !== prevState.supplier) {
+      this.loadPricing()
+      return
+    }
   }
 
   loadPricing() {
-    const { fetchPrice, schoolId, pricing } = this.props
+    const { fetchPrice, pricing } = this.props
+    console.log(pricing)
+    const { supplier } = this.state
     const { course_type_id, date } = this.state.course
     if (course_type_id && date) {
       let datetime = moment(date).format(DAY_FORMAT3)
       if (
-        pricing.schoolId !== schoolId ||
+        pricing.schoolId !== supplier ||
         pricing.course_type !== course_type_id ||
         pricing.datetime !== datetime
       ) {
-        fetchPrice({ course_type: course_type_id, schoolId, datetime })
+        fetchPrice({
+          course_type: course_type_id,
+          schoolId: supplier,
+          datetime
+        })
       }
     }
   }
@@ -200,7 +212,8 @@ class CourseForm extends React.Component {
     event.preventDefault()
     const { onSubmit, info } = this.props
     const {
-      course: { instructor_id, ...course }
+      course: { instructor_id, ...course },
+      supplier
     } = this.state
     if (instructor_id !== '') {
       course.instructor_id = instructor_id
@@ -248,9 +261,40 @@ class CourseForm extends React.Component {
       course.last_date_cancel = null
     }
 
+    course.supplier = supplier
+
     onSubmit(course)
     this.setState({
       edited: false
+    })
+  }
+
+  getValidCourseTypes = supplier => {
+    const { info } = this.props
+    if (!supplier) {
+      supplier = this.state.supplier
+    }
+
+    return info.courseTypes
+      .filter(x => x.schoolIds.includes(parseInt(supplier)))
+      .filter(removeFullLicence)
+  }
+
+  handleChangeSchool = id => {
+    let { course_type_id } = this.state.course
+    const courseTypes = this.getValidCourseTypes(id)
+    const tmp = courseTypes.find(x => x.id === parseInt(course_type_id))
+    console.log(courseTypes, tmp)
+    if (!tmp) {
+      course_type_id = ''
+      if (courseTypes.length) {
+        course_type_id = courseTypes[0].id
+      }
+    }
+
+    this.setState({
+      supplier: id,
+      course: { ...this.state.course, course_type_id }
     })
   }
 
@@ -273,18 +317,15 @@ class CourseForm extends React.Component {
   render() {
     const {
       isEditable,
-      info,
       saving,
       instructors,
-      schoolId,
+      schools,
       testCentres,
       pricing,
       onRemove,
       orderCount,
       course
     } = this.props
-    console.log(course)
-    const schoolInstructors = instructors[schoolId]
 
     const { edited } = this.state
 
@@ -310,11 +351,14 @@ class CourseForm extends React.Component {
       status,
       application_reference_number
     } = this.state.course
+    const { supplier } = this.state
+
+    const schoolInstructors = supplier ? instructors[supplier] : []
 
     const finishTime = this.getFinishTime(time, duration)
     // const formClass = isEditable ? styles.grey : ''
 
-    const courseTypes = info.courseTypes.filter(removeFullLicence)
+    const courseTypes = this.getValidCourseTypes()
 
     const isFullLicence = courseTypes
       .filter(type => type.constant.startsWith('FULL_LICENCE'))
@@ -336,6 +380,21 @@ class CourseForm extends React.Component {
       <div className={styles.wrapper}>
         <Loading className={styles.formWrapper} loading={saving}>
           <form onSubmit={this.handleSave.bind(this)}>
+            <Row>
+              <Col>
+                <ConnectSelect
+                  basic
+                  name="school"
+                  value={supplier}
+                  label="Location"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeSchool}
+                  required
+                  options={schools}
+                />
+              </Col>
+            </Row>
             <Row>
               <Col>
                 <ConnectSelect
@@ -485,114 +544,94 @@ class CourseForm extends React.Component {
                 <React.Fragment>
                   <Row>
                     <Col>
-                      <table className={classnames('table', styles.formTable)}>
-                        <tbody>
-                          <tr>
-                            <td />
-                            <td>Automatic</td>
-                            <td>Manual</td>
-                          </tr>
-                          <tr>
-                            <td>A1</td>
-                            <td>
-                              <ConnectInput
-                                basic
-                                className={styles.inputNumber}
-                                name="a1_auto_bikes"
-                                value={a1_auto_bikes || ''}
-                                type="number"
-                                min="0"
-                                max={spaces}
-                                disabled={!isEditable}
-                                onChange={this.handleChangeRawEvent.bind(this)}
-                                required
-                              />
-                            </td>
-                            <td>
-                              <ConnectInput
-                                basic
-                                className={styles.inputNumber}
-                                name="a1_manual_bikes"
-                                value={a1_manual_bikes || ''}
-                                type="number"
-                                min="0"
-                                max={spaces}
-                                disabled={!isEditable}
-                                onChange={this.handleChangeRawEvent.bind(this)}
-                                required
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>A2</td>
-                            <td>
-                              <ConnectInput
-                                basic
-                                className={styles.inputNumber}
-                                name="a2_auto_bikes"
-                                value={a2_auto_bikes || ''}
-                                type="number"
-                                min="0"
-                                max={spaces}
-                                disabled={!isEditable}
-                                onChange={this.handleChangeRawEvent.bind(this)}
-                                required
-                              />
-                            </td>
-                            <td>
-                              <ConnectInput
-                                basic
-                                className={styles.inputNumber}
-                                name="a2_manual_bikes"
-                                value={a2_manual_bikes || ''}
-                                type="number"
-                                min="0"
-                                max={spaces}
-                                disabled={!isEditable}
-                                onChange={this.handleChangeRawEvent.bind(this)}
-                                required
-                              />
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>A</td>
-                            <td>
-                              <ConnectInput
-                                basic
-                                className={styles.inputNumber}
-                                name="a_auto_bikes"
-                                value={a_auto_bikes || ''}
-                                type="number"
-                                min="0"
-                                max={spaces}
-                                disabled={!isEditable}
-                                onChange={this.handleChangeRawEvent.bind(this)}
-                                required
-                              />
-                            </td>
-                            <td>
-                              <ConnectInput
-                                basic
-                                className={styles.inputNumber}
-                                name="a_manual_bikes"
-                                value={a_manual_bikes || ''}
-                                type="number"
-                                min="0"
-                                max={spaces}
-                                disabled={!isEditable}
-                                onChange={this.handleChangeRawEvent.bind(this)}
-                                required
-                              />
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <div className={styles.bikesAvailable}>Bikes</div>
+                      <div className={styles.bikesAvailable}>A1</div>
+                      <BikeNumberPicker
+                        label="Automatic"
+                        value={a1_auto_bikes || ''}
+                        id="a1_auto_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('a1_auto_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('a1_auto_bikes', 1)
+                        }}
+                      />
+                      <BikeNumberPicker
+                        label="Manual"
+                        value={a1_manual_bikes || ''}
+                        id="a1_manual_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('a1_manual_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('a1_manual_bikes', 1)
+                        }}
+                      />
+                      <div className={styles.bikesAvailable}>A2</div>
+                      <BikeNumberPicker
+                        label="Automatic"
+                        value={a2_auto_bikes || ''}
+                        id="a2_auto_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('a2_auto_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('a2_auto_bikes', 1)
+                        }}
+                      />
+                      <BikeNumberPicker
+                        label="Manual"
+                        value={a2_manual_bikes || ''}
+                        id="a2_manual_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('a2_manual_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('a2_manual_bikes', 1)
+                        }}
+                      />
+                      <div className={styles.bikesAvailable}>A</div>
+                      <BikeNumberPicker
+                        label="Automatic"
+                        value={a_auto_bikes || ''}
+                        id="a_auto_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('a_auto_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('a_auto_bikes', 1)
+                        }}
+                      />
+                      <BikeNumberPicker
+                        label="Manual"
+                        value={a_manual_bikes || ''}
+                        id="a_manual_bikes"
+                        isEditable={isEditable}
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onClickMinus={() => {
+                          this.handleBikeButtonClick('a_manual_bikes', -1)
+                        }}
+                        onClickPlus={() => {
+                          this.handleBikeButtonClick('a_manual_bikes', 1)
+                        }}
+                      />
                     </Col>
                   </Row>
                   {isFullLicenceTest && (
                     <React.Fragment>
                       <Row>
-                        <Col sm="8">
+                        <Col>
                           <ConnectInput
                             label="Test Reference Number"
                             basic
@@ -607,7 +646,7 @@ class CourseForm extends React.Component {
                       </Row>
 
                       <Row>
-                        <Col sm="8">
+                        <Col>
                           <ConnectInput
                             label="Last date to cancel"
                             basic
@@ -622,7 +661,7 @@ class CourseForm extends React.Component {
                       </Row>
 
                       <Row>
-                        <Col sm="8">
+                        <Col>
                           <ConnectSelect
                             basic
                             label="Test Centre"
@@ -637,7 +676,7 @@ class CourseForm extends React.Component {
                       </Row>
 
                       <Row>
-                        <Col sm="8">
+                        <Col>
                           <ConnectSelect
                             basic
                             label="Test Status"

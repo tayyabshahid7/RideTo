@@ -213,7 +213,7 @@ class CalendarWeekView extends Component {
     let { days } = this.props
     if (days.length === 1) {
       let tmp = moment(days[0].date)
-      tmp = tmp.add(-1, 'days').startOf('week')
+      tmp = tmp.startOf('isoWeek')
       const result = []
       for (let i = 0; i < 7; i++) {
         tmp.add(1, 'days')
