@@ -19,7 +19,6 @@ import { getCourses, updateCalendarSetting } from 'store/course'
 import { getEvents } from 'store/event'
 import { getStaff } from 'store/staff'
 import { toggleUser, toggleCourse } from 'store/calendar'
-import { getInstructors } from 'store/instructor'
 import { getTestCentres } from 'store/testCentre'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 import { fetchSettings } from 'store/settings'
@@ -37,7 +36,6 @@ class CalendarPage extends Component {
   componentDidMount() {
     const { activeSchools } = this.props
     this.loadData(activeSchools)
-    this.loadInstructors()
     this.props.getTestCentres()
 
     if (!this.props.settings) {
@@ -69,11 +67,6 @@ class CalendarPage extends Component {
 
   toggleFilter = value => {
     this.setState({ filterOpen: value })
-  }
-
-  loadInstructors() {
-    const { getInstructors, schoolId } = this.props
-    getInstructors(schoolId)
   }
 
   loadData(schoolIds) {
@@ -393,7 +386,6 @@ class CalendarPage extends Component {
       staffCalendar,
       history,
       location,
-      schoolId,
       instructors,
       inactiveUsers,
       inactiveCourses,
@@ -429,7 +421,6 @@ class CalendarPage extends Component {
             toggleFilter={this.toggleFilter}
             sideBarOpen={!calendarPath}
             filterOpen={filterOpen}
-            schoolId={schoolId}
             instructors={instructors}
             inactiveUsers={inactiveUsers}
             handleToggleUser={this.handleToggleUser}
@@ -526,27 +517,12 @@ class CalendarPage extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { auth, course, event, staff } = state
-  const schoolId = auth.schoolId || auth.user.suppliers[0].id
-  const isSupplier = course => course.supplier === parseInt(schoolId)
-  const calendar = {
-    ...course.calendar,
-    courses: course.calendar.courses.filter(isSupplier)
-  }
-  const eventCalendar = {
-    ...event.calendar,
-    events: event.calendar.events.filter(isSupplier)
-  }
-  const staffCalendar = {
-    ...staff.calendar,
-    staffs: staff.calendar.staff.filter(isSupplier)
-  }
 
   return {
-    schoolId,
     activeSchools: auth.activeSchools,
-    calendar,
-    eventCalendar,
-    staffCalendar,
+    calendar: course.calendar,
+    eventCalendar: event.calendar,
+    staffCalendar: staff.calendar,
     settings: state.settings.settings,
     instructors: state.instructor.instructors,
     inactiveUsers: state.calendar.inactiveUsers,
@@ -560,7 +536,6 @@ const mapDispatchToProps = dispatch =>
       getCourses,
       getEvents,
       getStaff,
-      getInstructors,
       getTestCentres,
       updateCalendarSetting,
       fetchSettings,

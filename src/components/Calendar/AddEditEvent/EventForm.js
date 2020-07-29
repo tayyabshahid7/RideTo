@@ -9,6 +9,7 @@ import pick from 'lodash/pick'
 import { getTimeFromDateTime } from 'utils/helper'
 
 import {
+  ConnectSelect,
   ConnectInput,
   ConnectTextArea,
   Button,
@@ -20,17 +21,24 @@ class EventForm extends React.Component {
     super(props)
     const event = {
       name: '',
+      supplier: '',
       start_time: '',
       end_time: '',
       notes: '',
       all_day: false
     }
+
+    if (this.props.schools) {
+      event.supplier = this.props.schools[0].id
+    }
+
     if (this.props.event) {
       Object.assign(
         event,
         pick(
           this.props.event,
           'name',
+          'supplier',
           'start_time',
           'end_time',
           'notes',
@@ -60,7 +68,13 @@ class EventForm extends React.Component {
     }
   }
 
-  handleChangeRawEvent(e) {
+  handleChangeSchool = id => {
+    this.setState({
+      event: { ...this.state.event, supplier: id }
+    })
+  }
+
+  handleChangeRawEvent = e => {
     let name = e.target.name
     let { event } = this.state
 
@@ -137,15 +151,30 @@ class EventForm extends React.Component {
   }
 
   render() {
-    const { saving, onRemove } = this.props
+    const { saving, onRemove, schools } = this.props
     const { startTime, endTime } = this.state
-    const { name, notes, all_day } = this.state.event
+    const { supplier, name, notes, all_day } = this.state.event
 
     return (
       <div className={styles.wrapper}>
         <h4 className={styles.addTitle}>Add Event</h4>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
+            <Row>
+              <Col>
+                <ConnectSelect
+                  basic
+                  name="supplier"
+                  value={supplier}
+                  label="Location"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeSchool}
+                  required
+                  options={schools}
+                />
+              </Col>
+            </Row>
             <Row>
               <Col>
                 <ConnectInput
@@ -155,7 +184,7 @@ class EventForm extends React.Component {
                   label="Event Name"
                   className="form-group"
                   type="text"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                   required
                 />
               </Col>
@@ -195,7 +224,7 @@ class EventForm extends React.Component {
                   checked={all_day}
                   label="All Day"
                   className="form-group"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                 />
               </Col>
             </Row>
@@ -207,7 +236,7 @@ class EventForm extends React.Component {
                   value={notes}
                   label="Notes"
                   type="textarea"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                 />
               </Col>
             </Row>

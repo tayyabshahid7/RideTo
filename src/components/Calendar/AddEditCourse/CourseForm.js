@@ -46,7 +46,15 @@ class CourseForm extends React.Component {
       status: '',
       application_reference_number: ''
     }
+
+    let supplier = ''
+    if (this.props.schools) {
+      supplier = this.props.schools[0].id
+    }
+
     if (this.props.course) {
+      supplier = this.props.course.supplier
+
       Object.assign(
         course,
         pick(
@@ -85,11 +93,6 @@ class CourseForm extends React.Component {
       }
     } else if (this.props.date) {
       course.date = this.props.date
-    }
-
-    let supplier = ''
-    if (this.props.schools) {
-      supplier = this.props.schools[0].id
     }
 
     this.state = {

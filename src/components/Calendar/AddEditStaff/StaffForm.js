@@ -28,11 +28,17 @@ class StaffForm extends React.Component {
       all_day: false,
       date: ''
     }
+
+    if (this.props.schools) {
+      staff.supplier = this.props.schools[0].id
+    }
+
     if (this.props.staff) {
       Object.assign(
         staff,
         pick(
           this.props.staff,
+          'supplier',
           'instructor',
           'start_time',
           'end_time',
@@ -45,10 +51,6 @@ class StaffForm extends React.Component {
       staff.end_time = `${staff.date}T${staff.end_time}`
     } else if (this.props.date) {
       staff.date = this.props.date
-    }
-
-    if (this.props.schools) {
-      staff.supplier = this.props.schools[0].id
     }
 
     this.state = {
