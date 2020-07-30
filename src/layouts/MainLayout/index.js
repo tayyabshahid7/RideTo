@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Switch, Route } from 'react-router'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import NavigationBar from 'components/NavigationBar'
 import Dashboard from 'pages/Dashboard/container'
 import Orders from 'pages/Orders/container'
@@ -12,10 +14,31 @@ import Terms from 'pages/Terms'
 import Footer from 'components/Footer'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import Loading from 'components/Loading'
+import { getAllInstructors } from 'store/instructor'
+import { getAllCourseTypes } from 'store/info'
 
-const MainLayout = ({ history, location: { pathname } }) => {
+const MainLayout = ({
+  history,
+  location: { pathname },
+  user,
+  getAllInstructors,
+  getAllCourseTypes,
+  instructorsLoaded
+}) => {
+  useEffect(() => {
+    if (user) {
+      const schoolIds = user.suppliers.map(x => x.id)
+      getAllInstructors(schoolIds)
+      getAllCourseTypes(schoolIds)
+    }
+  }, [user])
   const isGreyBg = pathname.match(/\/customers\/\d+/)
   const isCalendar = pathname.match(/\/calendar/g)
+
+  if (!instructorsLoaded) {
+    return <Loading loading cover />
+  }
 
   return (
     <div className={styles.container}>
@@ -47,4 +70,23 @@ const MainLayout = ({ history, location: { pathname } }) => {
   )
 }
 
-export default MainLayout
+const mapStateToProps = (state, ownProps) => {
+  return {
+    instructorsLoaded: state.instructor.loadedAll,
+    user: state.auth.user
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getAllInstructors,
+      getAllCourseTypes
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MainLayout)

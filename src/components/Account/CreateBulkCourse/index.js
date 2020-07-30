@@ -51,6 +51,7 @@ class CreateBulkCourse extends React.Component {
       loadCourseTypes,
       schoolId
     } = this.props
+    const schoolInstructors = instructors[schoolId]
 
     if (!info.courseTypes || info.courseTypes.length === 0) {
       loadCourseTypes({ schoolId: schoolId })
@@ -65,13 +66,13 @@ class CreateBulkCourse extends React.Component {
       })
     }
 
-    if (!instructors || instructors.length === 0) {
+    if (!schoolInstructors || schoolInstructors.length === 0) {
       getInstructors(schoolId)
     } else {
       this.setState({
         course: {
           ...this.state.course,
-          instructor_id: instructors[0].id.toString()
+          instructor_id: schoolInstructors[0].id.toString()
         }
       })
     }
@@ -83,8 +84,11 @@ class CreateBulkCourse extends React.Component {
       error,
       history,
       info: { courseTypes },
-      instructors
+      instructors,
+      schoolId
     } = this.props
+    const schoolInstructors = instructors[schoolId]
+
     const {
       course: { course_type_id, instructor_id }
     } = this.state
@@ -107,11 +111,11 @@ class CreateBulkCourse extends React.Component {
       })
     }
 
-    if (instructor_id === '' && instructors.length) {
+    if (instructor_id === '' && schoolInstructors.length) {
       this.setState({
         course: {
           ...this.state.course,
-          instructor_id: instructors[0].id.toString()
+          instructor_id: schoolInstructors[0].id.toString()
         }
       })
     }
@@ -199,6 +203,7 @@ class CreateBulkCourse extends React.Component {
 
   render() {
     let { schoolId, info, saving, instructors } = this.props
+    const schoolInstructors = instructors[schoolId]
     const {
       course_type_id,
       instructor_id,
@@ -468,7 +473,7 @@ class CreateBulkCourse extends React.Component {
                   name="instructor_id"
                   value={instructor_id}
                   label="Staff"
-                  valueArray={instructors.map(instructor => ({
+                  valueArray={schoolInstructors.map(instructor => ({
                     id: instructor.id,
                     name: `${instructor.first_name} ${instructor.last_name}`
                   }))}

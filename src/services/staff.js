@@ -12,16 +12,16 @@ export const fetchStaff = async (schoolId, startDate, endDate) => {
   return response
 }
 
-export const fetchSingleStaff = async (schoolId, staffId, diaryId) => {
-  const path = `school/${schoolId}/instructor/${staffId}/diary/${diaryId}`
+export const fetchSingleStaff = async (staffId, diaryId) => {
+  const path = `school/instructor/${staffId}/diary/${diaryId}`
 
   const response = await get(path)
 
   return response
 }
 
-export const deleteSingleStaff = async (schoolId, staffId, diaryId) => {
-  const path = `school/${schoolId}/instructor/${staffId}/diary/${diaryId}`
+export const deleteSingleStaff = async (staffId, diaryId) => {
+  const path = `school/instructor/${staffId}/diary/${diaryId}`
 
   const response = await destroy(path, {})
 
@@ -29,13 +29,12 @@ export const deleteSingleStaff = async (schoolId, staffId, diaryId) => {
 }
 
 export const updateSchoolStaff = async (
-  schoolId,
   staffId,
   diaryId,
   data,
   fullUpdate = false
 ) => {
-  const path = `school/${schoolId}/instructor/${staffId}/diary/${diaryId}`
+  const path = `school/instructor/${staffId}/diary/${diaryId}`
   let response
   if (fullUpdate) {
     response = await put(path, data)

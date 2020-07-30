@@ -42,8 +42,8 @@ function CalendarDatePicker({ calendar, handleChangeDate }) {
   if (calendar.viewMode === CALENDAR_VIEW.DAY) {
     dateText = moment(date).format('ddd DD MMMM YYYY')
   } else if (calendar.viewMode === CALENDAR_VIEW.WEEK) {
-    const weekStart = moment(date).startOf('week')
-    const weekEnd = moment(date).endOf('week')
+    const weekStart = moment(date).startOf('isoWeek')
+    const weekEnd = moment(date).endOf('isoWeek')
     if (weekStart.get('year') !== weekEnd.get('year')) {
       dateText =
         moment(weekStart).format('MMMM DD YYYY') +

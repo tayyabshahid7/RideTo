@@ -21,17 +21,24 @@ class StaffForm extends React.Component {
     super(props)
     const staff = {
       instructor: '',
+      supplier: '',
       start_time: '',
       end_time: '',
       notes: '',
       all_day: false,
       date: ''
     }
+
+    if (this.props.schools) {
+      staff.supplier = this.props.schools[0].id
+    }
+
     if (this.props.staff) {
       Object.assign(
         staff,
         pick(
           this.props.staff,
+          'supplier',
           'instructor',
           'start_time',
           'end_time',
@@ -63,7 +70,7 @@ class StaffForm extends React.Component {
     }
   }
 
-  handleChangeRawEvent(e) {
+  handleChangeRawEvent = e => {
     let name = e.target.name
     let { staff } = this.state
 
@@ -75,12 +82,18 @@ class StaffForm extends React.Component {
     })
   }
 
-  handleChangeInstructor(id) {
+  handleChangeInstructor = id => {
     this.setState({
       staff: {
         ...this.state.staff,
         instructor: id
       }
+    })
+  }
+
+  handleChangeSchool = id => {
+    this.setState({
+      staff: { ...this.state.staff, supplier: id }
     })
   }
 
@@ -90,7 +103,7 @@ class StaffForm extends React.Component {
     })
   }
 
-  handleCancel(e) {
+  handleCancel = e => {
     e.preventDefault()
     const { date, history, staff } = this.props
     if (date) {
@@ -102,7 +115,7 @@ class StaffForm extends React.Component {
     }
   }
 
-  handleSave(e) {
+  handleSave = e => {
     e.preventDefault()
     const { onSubmit } = this.props
     const date = this.getStartDate(this.state.staff)
@@ -151,18 +164,36 @@ class StaffForm extends React.Component {
   }
 
   render() {
-    const { saving, onRemove, instructors } = this.props
+    const { saving, onRemove, instructors, schools } = this.props
     const { startTime, endTime } = this.state
-    const { instructor, notes, all_day } = this.state.staff
+    const { instructor, supplier, notes, all_day } = this.state.staff
+
+    let schoolInstructors = []
+    if (supplier) {
+      schoolInstructors = instructors[supplier]
+    }
 
     return (
       <div className={styles.wrapper}>
         <h4 className={styles.addTitle}>Add Staff</h4>
         <Loading className={styles.formWrapper} loading={saving}>
-          <Form
-            className={styles.formContent}
-            onSubmit={this.handleSave.bind(this)}>
+          <Form className={styles.formContent} onSubmit={this.handleSave}>
             <div className={styles.formTop}>
+              <Row>
+                <Col>
+                  <ConnectSelect
+                    basic
+                    name="school"
+                    value={supplier}
+                    label="Location"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeSchool}
+                    required
+                    options={schools}
+                  />
+                </Col>
+              </Row>
               <Row>
                 <Col>
                   <ConnectSelect
@@ -172,11 +203,11 @@ class StaffForm extends React.Component {
                     label="Staff"
                     className="form-group"
                     type="text"
-                    onChange={this.handleChangeInstructor.bind(this)}
+                    onChange={this.handleChangeInstructor}
                     required
                     options={[
                       { id: '', name: 'Select' },
-                      ...instructors.map(instructor => ({
+                      ...schoolInstructors.map(instructor => ({
                         ...instructor,
                         name: `${instructor.first_name} ${instructor.last_name}`
                       }))
@@ -218,7 +249,7 @@ class StaffForm extends React.Component {
                     checked={all_day}
                     label="All Day"
                     className="form-group"
-                    onChange={this.handleChangeRawEvent.bind(this)}
+                    onChange={this.handleChangeRawEvent}
                   />
                 </Col>
               </Row>
@@ -230,7 +261,7 @@ class StaffForm extends React.Component {
                     value={notes}
                     label="Notes"
                     type="textarea"
-                    onChange={this.handleChangeRawEvent.bind(this)}
+                    onChange={this.handleChangeRawEvent}
                   />
                 </Col>
               </Row>
@@ -242,10 +273,7 @@ class StaffForm extends React.Component {
                 </Button>
               </div>
               <div>
-                <Button
-                  type="button"
-                  color="white"
-                  onClick={this.handleCancel.bind(this)}>
+                <Button type="button" color="white" onClick={this.handleCancel}>
                   Cancel
                 </Button>
               </div>

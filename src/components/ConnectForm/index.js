@@ -30,14 +30,18 @@ function MyDatePicker({
       <style
         dangerouslySetInnerHTML={{
           __html: `
-        .react-datepicker-wrapper { flex-grow: 1 }
+        .react-datepicker-wrapper { flex-grow: 1; width: 100% }
         .react-datepicker__current-month { display: none }
       `
         }}
       />
       <DatePicker
         name={name}
-        className={classnames(styles.input, basic && styles.basic)}
+        className={classnames(
+          styles.input,
+          styles.datepicker,
+          basic && styles.basic
+        )}
         id={id || name}
         type="date"
         selected={value && new Date(value)}

@@ -11,20 +11,17 @@ export const toggleSidebar = ({ flag }) => async dispatch => {
   })
 }
 
-export const toggleUser = ({ userIds, active = false }) => async dispatch => {
+export const toggleUser = ({ userIds }) => async dispatch => {
   dispatch({
     type: TOGGLE_USERS,
-    data: { userIds, active }
+    data: { userIds }
   })
 }
 
-export const toggleCourse = ({
-  courseIds,
-  active = false
-}) => async dispatch => {
+export const toggleCourse = ({ courseIds }) => async dispatch => {
   dispatch({
     type: TOGGLE_COURSES,
-    data: { courseIds, active }
+    data: { courseIds }
   })
 }
 
@@ -43,35 +40,16 @@ export default function reducer(state = initialState, action) {
       }
       return { ...state, sidebarOpen }
     }
-    case TOGGLE_USERS: {
-      let users = state.inactiveUsers.slice()
-      if (action.data.active) {
-        action.data.userIds.forEach(userId => {
-          users = users.filter(x => x !== userId)
-        })
-      } else {
-        action.data.userIds.forEach(userId => {
-          if (!users.includes(userId)) {
-            users.push(userId)
-          }
-        })
+    case TOGGLE_USERS:
+      return {
+        ...state,
+        inactiveUsers: action.data.userIds
       }
-      return { ...state, inactiveUsers: users }
-    }
     case TOGGLE_COURSES: {
-      let courses = state.inactiveCourses.slice()
-      if (action.data.active) {
-        action.data.courseIds.forEach(id => {
-          courses = courses.filter(x => x !== id)
-        })
-      } else {
-        action.data.courseIds.forEach(id => {
-          if (!courses.includes(id)) {
-            courses.push(id)
-          }
-        })
+      return {
+        ...state,
+        inactiveCourses: action.data.courseIds
       }
-      return { ...state, inactiveCourses: courses }
     }
     default: {
       return state

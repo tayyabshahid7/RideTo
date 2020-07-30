@@ -10,7 +10,7 @@ class Instructors extends React.Component {
     super(props)
     this.state = {
       addNew: false,
-      selectedInstructor: props.selectedInstructor
+      selectedInstructor: null
     }
     this.handleEdit = this.handleEdit.bind(this)
     this.handleSave = this.handleSave.bind(this)
@@ -61,7 +61,8 @@ class Instructors extends React.Component {
   }
 
   render() {
-    const { saving, instructors } = this.props
+    const { saving, instructors, schoolId } = this.props
+    const schoolInstructors = instructors[schoolId]
     const { addNew, selectedInstructor } = this.state
     return (
       <Fragment>
@@ -87,7 +88,7 @@ class Instructors extends React.Component {
               <p>Edit the details of an existing staff member</p>
             </div>
             <ul className={styles.list}>
-              {instructors.map((instructor, key) => {
+              {schoolInstructors.map((instructor, key) => {
                 return (
                   <li
                     key={key}

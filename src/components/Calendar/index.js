@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
 import CalendarMonthView from './CalendarMonthView'
+import CalendarShiftView from './CalendarShiftView'
 import styles from './index.scss'
 import { CALENDAR_VIEW } from '../../common/constants'
 import CalendarWeekView from './CalendarWeekView'
@@ -67,6 +68,7 @@ class CalendarComponent extends Component {
       settings,
       sideBarOpen,
       filterOpen,
+      activeSchools,
       instructors,
       inactiveUsers,
       inactiveCourses,
@@ -77,7 +79,9 @@ class CalendarComponent extends Component {
       handleCustomEvent
     } = this.props
 
-    const users = instructors.filter(x => !inactiveUsers.includes(x.id))
+    const tmpUsers = []
+    activeSchools.forEach(x => tmpUsers.push(...instructors[x]))
+    const users = tmpUsers.filter(x => !inactiveUsers.includes(x.id))
     if (!inactiveUsers.includes(-1)) {
       users.push({ id: -1 })
     }
@@ -110,7 +114,7 @@ class CalendarComponent extends Component {
                     <Loading
                       loading={calendar.loading}
                       className={styles.calendarWrapper}>
-                      {calendar.viewMode === CALENDAR_VIEW.MONTH ? (
+                      {calendar.viewMode === CALENDAR_VIEW.MONTH && (
                         <CalendarMonthView
                           days={days}
                           calendar={calendar}
@@ -120,7 +124,8 @@ class CalendarComponent extends Component {
                           handleMobileCellClick={handleMobileCellClick}
                           sideBarOpen={sideBarOpen}
                         />
-                      ) : (
+                      )}
+                      {calendar.viewMode === CALENDAR_VIEW.WEEK && (
                         <CalendarWeekView
                           match={match}
                           days={days}
@@ -134,6 +139,17 @@ class CalendarComponent extends Component {
                           users={users}
                           inactiveCourses={inactiveCourses}
                           loading={calendar.loading}
+                        />
+                      )}
+                      {calendar.viewMode === CALENDAR_VIEW.SHIFT && (
+                        <CalendarShiftView
+                          days={days}
+                          calendar={calendar}
+                          history={history}
+                          users={users}
+                          inactiveUsers={inactiveUsers}
+                          handleMobileCellClick={handleMobileCellClick}
+                          sideBarOpen={sideBarOpen}
                         />
                       )}
                     </Loading>
@@ -152,7 +168,8 @@ class CalendarComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    settings: state.settings.settings
+    settings: state.settings.settings,
+    activeSchools: state.auth.activeSchools
   }
 }
 

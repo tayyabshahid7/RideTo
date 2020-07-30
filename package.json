@@ -135,7 +135,8 @@
   },
   "lint-staged": {
     "*.js": [
-      "eslint --fix"
+      "eslint --fix",
+      "eslint --rule 'no-unused-vars: error'"
     ],
     "*.{js,json,scss}": [
       "prettier --write",

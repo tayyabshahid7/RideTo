@@ -30,6 +30,7 @@ class EditOrderFormContainer extends React.Component {
       courseSpaces,
       updateOrder,
       schoolId,
+      activeSchools,
       trainingId,
       date
     } = this.props
@@ -60,7 +61,7 @@ class EditOrderFormContainer extends React.Component {
     })
 
     if (updateDate) {
-      this.props.getDayCourses({ schoolId, date })
+      this.props.getDayCourses({ activeSchools, date })
       this.props.loadCourses(true)
       // update calendar here
     }
@@ -126,6 +127,7 @@ const mapStateToProps = (state, props) => {
     order: state.course.orderEditForm.order,
     loading: state.course.orderEditForm.loading,
     schoolId: state.auth.schoolId,
+    activeSchools: state.auth.activeSchools,
     info: state.info,
     courses: state.course.day.courses,
     times: state.course.times.available,

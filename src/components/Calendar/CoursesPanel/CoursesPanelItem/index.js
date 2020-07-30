@@ -34,6 +34,7 @@ const CoursesPanelItem = ({
   updateAdding,
   addingOrder,
   courseId,
+  schools,
   settings,
   canEdit,
   loadCourses
@@ -51,6 +52,9 @@ const CoursesPanelItem = ({
     course.course_type.constant.includes('TEST')
   const { instructor } = course
   const isSelected = parseInt(courseId) === course.id
+
+  const school = schools.find(x => x.id === course.supplier)
+  const schoolName = school ? school.name : ''
 
   return (
     <div className={styles.wrapper}>
@@ -81,7 +85,7 @@ const CoursesPanelItem = ({
             </span>
           </div>
           <div className={styles.line}>
-            <span>School Name</span>
+            <span>{schoolName}</span>
             {instructor && <UserInitial user={instructor} short />}
           </div>
           <div className={styles.line}>
@@ -113,7 +117,7 @@ const CoursesPanelItem = ({
                   showDetail && styles.isOpen
                 )}
                 onClick={() => setShowDetail(!showDetail)}>
-                <i class="fa fa-angle-down"></i>
+                <i className="fa fa-angle-down"></i>
               </div>
             </div>
           )}
@@ -142,6 +146,7 @@ const CoursesPanelItem = ({
 const mapStateToProps = (state, ownProps) => {
   return {
     schoolId: state.auth.schoolId,
+    schools: state.auth.user.suppliers,
     loading: state.course.single.loading,
     saving: state.course.single.saving,
     info: state.info,

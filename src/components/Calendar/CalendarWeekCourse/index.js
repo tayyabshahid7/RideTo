@@ -48,6 +48,14 @@ const CalendarWeekCourse = React.forwardRef(
       zIndex: position
     }
 
+    const handleClick = () => {
+      history.push(
+        `/calendar/${moment(course.start_time).format(DATE_FORMAT)}/staff/${
+          course.id
+        }`
+      )
+    }
+
     if (course.instructor_name) {
       // Then it is staff
       return (
@@ -62,13 +70,7 @@ const CalendarWeekCourse = React.forwardRef(
               styles.clickedCourse
           )}
           style={style}
-          onClick={() =>
-            history.push(
-              `/calendar/${moment(course.start_time).format(
-                DATE_FORMAT
-              )}/staff/${course.id}`
-            )
-          }>
+          onClick={handleClick}>
           <div
             className={classnames(styles.content)}
             style={{ backgroundColor: course.colour }}>

@@ -30,11 +30,13 @@ const EventPanelItem = ({ event, date, eventId }) => {
         </span>
       </div>
       {showDetail && <div className={styles.note}>{truncated}</div>}
-      <div
-        className={classnames(styles.detail, showDetail && styles.isOpen)}
-        onClick={() => setShowDetail(!showDetail)}>
-        <i className="fa fa-angle-down"></i>
-      </div>
+      {!!notes.length && (
+        <div
+          className={classnames(styles.detail, showDetail && styles.isOpen)}
+          onClick={() => setShowDetail(!showDetail)}>
+          <i className="fa fa-angle-down"></i>
+        </div>
+      )}
     </div>
   )
 }

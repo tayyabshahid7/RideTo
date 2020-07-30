@@ -20,8 +20,8 @@ class EditEventComponent extends Component {
   }
 
   componentDidMount() {
-    const { getSingleEvent, schoolId, match } = this.props
-    getSingleEvent({ schoolId, eventId: match.params.eventId })
+    const { getSingleEvent, match } = this.props
+    getSingleEvent({ eventId: parseInt(match.params.eventId) })
   }
 
   componentWillUnmount() {
@@ -30,7 +30,7 @@ class EditEventComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, event, history, error, schoolId } = this.props
+    const { saving, event, history, error } = this.props
 
     if (prevProps.event && !event) {
       const date = moment(new Date(prevProps.event.start_time)).format(
@@ -38,17 +38,6 @@ class EditEventComponent extends Component {
       )
 
       history.push(`/calendar/${date}`)
-      return
-    }
-
-    if (schoolId !== prevProps.schoolId) {
-      if (event) {
-        history.push(
-          `/calendar/${moment(new Date(event.start_time)).format(DATE_FORMAT)}`
-        )
-      } else {
-        history.push(`/calendar`)
-      }
       return
     }
 
@@ -64,19 +53,17 @@ class EditEventComponent extends Component {
   }
 
   onSave(data) {
-    const { schoolId, updateEvent, match } = this.props
+    const { updateEvent, match } = this.props
     updateEvent({
-      schoolId,
       eventId: match.params.eventId,
-      data: { ...data, supplier: schoolId.toString() },
+      data,
       fullUpdate: true
     })
   }
 
   handleRemove() {
-    const { schoolId, match } = this.props
+    const { match } = this.props
     this.props.deleteEvent({
-      schoolId,
       eventId: parseInt(match.params.eventId, 10)
     })
   }
@@ -125,10 +112,10 @@ class EditEventComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
     schools: state.auth.user.suppliers,
     loading: state.event.single.loading,
     event: state.event.single.event,
+    events: state.event.day.events,
     saving: state.event.single.saving,
     instructors: state.instructor.instructors,
     pricing: state.event.pricing,

@@ -4,8 +4,15 @@ import { connect } from 'react-redux'
 import styles from './index.scss'
 import UserInitial from '../UserInitial'
 
-const CalendarHeaderInstructors = ({ instructors, inactiveUsers, isDay }) => {
-  const activeUsers = instructors.filter(x => !inactiveUsers.includes(x.id))
+const CalendarHeaderInstructors = ({
+  users,
+  activeSchools,
+  inactiveUsers,
+  isDay
+}) => {
+  const currUsers = []
+  activeSchools.forEach(x => currUsers.push(...users[x]))
+  const activeUsers = currUsers.filter(x => !inactiveUsers.includes(x.id))
   if (!inactiveUsers.includes(-1)) {
     activeUsers.push({ id: -1 })
   }
@@ -25,7 +32,8 @@ const CalendarHeaderInstructors = ({ instructors, inactiveUsers, isDay }) => {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    instructors: state.instructor.instructors,
+    activeSchools: state.auth.activeSchools,
+    users: state.instructor.instructors,
     inactiveUsers: state.calendar.inactiveUsers
   }
 }
