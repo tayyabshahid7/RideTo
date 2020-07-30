@@ -36,14 +36,14 @@ function CalendarDateChanger({ viewMode, handleCustomEvent }) {
         onClick={() => handleChange(CALENDAR_VIEW.MONTH)}>
         Month
       </div>
-      {/* <div
+      <div
         className={classnames({
           'generic-button': true,
           active: viewMode === CALENDAR_VIEW.SHIFT
         })}
         onClick={() => handleChange(CALENDAR_VIEW.SHIFT)}>
         Shift
-      </div> */}
+      </div>
     </div>
   )
 }

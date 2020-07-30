@@ -164,7 +164,7 @@ class CalendarPage extends Component {
 
   getFirstAndLastDate({ year, month, day, viewMode }) {
     let oneDay = 1000 * 60 * 60 * 24
-    if (viewMode === CALENDAR_VIEW.MONTH) {
+    if (viewMode === CALENDAR_VIEW.MONTH || viewMode === CALENDAR_VIEW.SHIFT) {
       let firstDay = new Date(year, month, 1)
       let dayOne = firstDay.getDay()
       if (dayOne === 0) {
@@ -208,7 +208,10 @@ class CalendarPage extends Component {
     const { events } = eventCalendar
     const { staff } = staffCalendar
     let dates = []
-    if (calendar.viewMode === CALENDAR_VIEW.MONTH) {
+    if (
+      calendar.viewMode === CALENDAR_VIEW.MONTH ||
+      calendar.viewMode === CALENDAR_VIEW.SHIFT
+    ) {
       dates = this.generateCalendarDaysForMonth(calendar)
     } else if (calendar.viewMode === CALENDAR_VIEW.WEEK) {
       dates = this.generateCalendarDaysForWeek(calendar)
@@ -255,12 +258,12 @@ class CalendarPage extends Component {
     })
   }
 
-  generateCalendarDaysForMonth({ year, month, day }) {
+  generateCalendarDaysForMonth({ year, month, day, viewMode }) {
     let { firstDate } = this.getFirstAndLastDate({
       year,
       month,
       day,
-      viewMode: CALENDAR_VIEW.MONTH
+      viewMode
     })
 
     let dayLast = new Date(year, month + 1, 0)
@@ -305,7 +308,10 @@ class CalendarPage extends Component {
       updateCalendarSetting(params)
     } else if (type === 'prev' || type === 'next') {
       let nextDate
-      if (calendar.viewMode === CALENDAR_VIEW.MONTH) {
+      if (
+        calendar.viewMode === CALENDAR_VIEW.MONTH ||
+        calendar.viewMode === CALENDAR_VIEW.SHIFT
+      ) {
         nextDate = new Date(
           calendar.year,
           calendar.month + (type === 'prev' ? -1 : 1),

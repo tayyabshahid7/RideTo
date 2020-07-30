@@ -14,10 +14,15 @@ const CalendarDayCellItem = ({ item }) => {
     availableSpaces === 0 && styles.danger
   )
 
+  const handleClick = () => {
+    console.log(item)
+  }
+
   return (
     <div
       className={className}
-      style={isInstructor ? { backgroundColor: item.color } : undefined}>
+      style={isInstructor ? { backgroundColor: item.color } : undefined}
+      onClick={handleClick}>
       <Desktop>
         {isInstructor ? (
           <UserInitial user={item} short />
