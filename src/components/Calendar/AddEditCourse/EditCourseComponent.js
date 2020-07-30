@@ -28,8 +28,8 @@ class EditCourseComponent extends Component {
   }
 
   componentDidMount() {
-    const { getSingleCourse, schoolId, match } = this.props
-    getSingleCourse({ schoolId, courseId: match.params.courseId })
+    const { getSingleCourse, match } = this.props
+    getSingleCourse({ courseId: match.params.courseId })
   }
 
   componentDidUpdate(prevProps) {
@@ -38,22 +38,18 @@ class EditCourseComponent extends Component {
       error,
       course,
       history,
-      schoolId,
       match,
       getSingleCourse
     } = this.props
 
-    if (!isEqual(match.params, prevProps.match.params)) {
-      getSingleCourse({ schoolId, courseId: match.params.courseId })
+    if (prevProps.course && !course) {
+      const date = prevProps.course.date
+      history.push(`/calendar/${date}`)
       return
     }
 
-    if (schoolId !== prevProps.schoolId) {
-      if (course) {
-        history.push(`/calendar/${course.date}`)
-      } else {
-        history.push(`/calendar`)
-      }
+    if (!isEqual(match.params, prevProps.match.params)) {
+      getSingleCourse({ courseId: match.params.courseId })
       return
     }
 
@@ -74,7 +70,6 @@ class EditCourseComponent extends Component {
   onSave(data) {
     const { updateCourse, match } = this.props
     updateCourse({
-      schoolId: data.supplier,
       courseId: match.params.courseId,
       data,
       fullUpdate: true
@@ -87,11 +82,9 @@ class EditCourseComponent extends Component {
   }
 
   handleDeleteCourse() {
-    const { course, schoolId, deleteCourse } = this.props
+    const { course, deleteCourse } = this.props
     this.setState({ showDeleteCourseConfirmModal: false })
-    deleteCourse({ schoolId, courseId: course.id })
-    const link = course && `/calendar/${course.date}`
-    this.props.history.push(link)
+    deleteCourse({ courseId: course.id })
   }
 
   closeDeleteCourseConfirmModal() {
@@ -163,7 +156,6 @@ class EditCourseComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
     schools: state.auth.user.suppliers,
     loading: state.course.single.loading,
     course: state.course.single.course,

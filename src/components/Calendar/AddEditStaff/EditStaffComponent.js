@@ -20,10 +20,9 @@ class EditStaffComponent extends Component {
   }
 
   componentDidMount() {
-    const { getSingleStaff, schoolId, match } = this.props
+    const { getSingleStaff, match } = this.props
 
     getSingleStaff({
-      schoolId,
       ...match.params
     })
   }
@@ -34,20 +33,11 @@ class EditStaffComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, staff, history, error, schoolId } = this.props
+    const { saving, staff, history, error } = this.props
 
     if (prevProps.staff && !staff) {
       const date = prevProps.staff.date
       history.push(`/calendar/${date}`)
-      return
-    }
-
-    if (schoolId !== prevProps.schoolId) {
-      if (staff) {
-        history.push(`/calendar/${staff.date}`)
-      } else {
-        history.push(`/calendar`)
-      }
       return
     }
 
@@ -63,7 +53,6 @@ class EditStaffComponent extends Component {
   onSave(data) {
     const { updateStaff, match } = this.props
     updateStaff({
-      schoolId: data.supplier,
       staffId: match.params.staffId,
       diaryId: match.params.diaryId,
       data,
@@ -72,9 +61,8 @@ class EditStaffComponent extends Component {
   }
 
   handleRemove() {
-    const { schoolId, match } = this.props
+    const { match } = this.props
     this.props.deleteStaff({
-      schoolId,
       staffId: parseInt(match.params.staffId, 10),
       diaryId: parseInt(match.params.diaryId, 10)
     })
@@ -127,7 +115,6 @@ class EditStaffComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
     schools: state.auth.user.suppliers,
     loading: state.staff.single.loading,
     staff: state.staff.single.staff,

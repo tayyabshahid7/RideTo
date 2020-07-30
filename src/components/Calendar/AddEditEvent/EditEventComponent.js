@@ -20,11 +20,8 @@ class EditEventComponent extends Component {
   }
 
   componentDidMount() {
-    const { getSingleEvent, events, match } = this.props
-    const evt = events.find(x => x.id === parseInt(match.params.eventId))
-    if (evt) {
-      getSingleEvent({ schoolId: evt.supplier, eventId: match.params.eventId })
-    }
+    const { getSingleEvent, match } = this.props
+    getSingleEvent({ eventId: parseInt(match.params.eventId) })
   }
 
   componentWillUnmount() {
@@ -58,7 +55,6 @@ class EditEventComponent extends Component {
   onSave(data) {
     const { updateEvent, match } = this.props
     updateEvent({
-      schoolId: data.supplier,
       eventId: match.params.eventId,
       data,
       fullUpdate: true
@@ -66,9 +62,8 @@ class EditEventComponent extends Component {
   }
 
   handleRemove() {
-    const { event, match } = this.props
+    const { match } = this.props
     this.props.deleteEvent({
-      schoolId: event.supplier,
       eventId: parseInt(match.params.eventId, 10)
     })
   }

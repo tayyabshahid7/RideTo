@@ -19,14 +19,13 @@ const UPDATE = createRequestTypes('rideto/event/UPDATE')
 const CREATE = createRequestTypes('rideto/event/CREATE')
 
 export const getSingleEvent = ({
-  schoolId,
   eventId,
   reset = false
 }) => async dispatch => {
   dispatch({ type: FETCH_SINGLE[REQUEST], reset })
 
   try {
-    const event = await fetchSingleEvent(schoolId, eventId)
+    const event = await fetchSingleEvent(eventId)
     dispatch({
       type: FETCH_SINGLE[SUCCESS],
       data: {
@@ -59,11 +58,11 @@ export const getDayEvents = ({ schoolIds, date }) => async dispatch => {
   }
 }
 
-export const deleteEvent = ({ schoolId, eventId }) => async dispatch => {
+export const deleteEvent = ({ eventId }) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    await deleteSingleEvent(schoolId, eventId)
+    await deleteSingleEvent(eventId)
     notificationActions.dispatchSuccess(dispatch, 'Event deleted')
     dispatch({
       type: DELETE[SUCCESS],
@@ -100,14 +99,13 @@ export const getEvents = ({
 }
 
 export const updateEvent = ({
-  schoolId,
   eventId,
   data,
   fullUpdate = false
 }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolEvent(schoolId, eventId, data, fullUpdate)
+    let response = await updateSchoolEvent(eventId, data, fullUpdate)
     dispatch({
       type: UPDATE[SUCCESS],
       data: { event: response }
@@ -193,7 +191,7 @@ export default function reducer(state = initialState, action) {
     case DELETE[REQUEST]:
       return {
         ...state,
-        single: { loading: true }
+        single: { ...state.single, loading: true }
       }
     case DELETE[SUCCESS]:
       dayEvents = state.day.events.filter(

@@ -28,7 +28,6 @@ export const updateDiaryColor = instructor => dispatch => {
 }
 
 export const getSingleStaff = ({
-  schoolId,
   staffId,
   reset = false,
   diaryId
@@ -36,7 +35,7 @@ export const getSingleStaff = ({
   dispatch({ type: FETCH_SINGLE[REQUEST], reset })
 
   try {
-    const staff = await fetchSingleStaff(schoolId, staffId, diaryId)
+    const staff = await fetchSingleStaff(staffId, diaryId)
     dispatch({
       type: FETCH_SINGLE[SUCCESS],
       data: {
@@ -69,15 +68,11 @@ export const getDayStaff = ({ schoolIds, date }) => async dispatch => {
   }
 }
 
-export const deleteStaff = ({
-  schoolId,
-  staffId,
-  diaryId
-}) => async dispatch => {
+export const deleteStaff = ({ staffId, diaryId }) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    await deleteSingleStaff(schoolId, staffId, diaryId)
+    await deleteSingleStaff(staffId, diaryId)
     notificationActions.dispatchSuccess(dispatch, 'Staff deleted')
     dispatch({
       type: DELETE[SUCCESS],
@@ -115,7 +110,6 @@ export const getStaff = ({
 }
 
 export const updateStaff = ({
-  schoolId,
   staffId,
   diaryId,
   data,
@@ -123,13 +117,7 @@ export const updateStaff = ({
 }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolStaff(
-      schoolId,
-      staffId,
-      diaryId,
-      data,
-      fullUpdate
-    )
+    let response = await updateSchoolStaff(staffId, diaryId, data, fullUpdate)
     dispatch({
       type: UPDATE[SUCCESS],
       data: { staff: response }
@@ -246,7 +234,7 @@ export default function reducer(state = initialState, action) {
     case DELETE[REQUEST]:
       return {
         ...state,
-        single: { loading: true }
+        single: { ...state.single, loading: true }
       }
     case DELETE[SUCCESS]:
       dayStaff = state.day.staff.filter(

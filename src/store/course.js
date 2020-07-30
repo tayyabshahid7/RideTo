@@ -41,14 +41,13 @@ const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 
 export const getSingleCourse = ({
-  schoolId,
   courseId,
   reset = false
 }) => async dispatch => {
   dispatch({ type: FETCH_SINGLE[REQUEST], reset })
 
   try {
-    const course = await fetchSingleCourse(schoolId, courseId)
+    const course = await fetchSingleCourse(courseId)
     dispatch({
       type: FETCH_SINGLE[SUCCESS],
       data: {
@@ -110,11 +109,11 @@ export const getDayCourseTimes = (
   }
 }
 
-export const deleteCourse = ({ schoolId, courseId }) => async dispatch => {
+export const deleteCourse = ({ courseId }) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    await deleteSingleCourse(schoolId, courseId)
+    await deleteSingleCourse(courseId)
     notificationActions.dispatchSuccess(dispatch, 'Course deleted')
     dispatch({
       type: DELETE[SUCCESS],
@@ -280,19 +279,13 @@ export const deleteOrderTraining = (schoolId, trainingId) => async dispatch => {
 }
 
 export const updateCourse = ({
-  schoolId,
   courseId,
   data,
   fullUpdate = false
 }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolCourse(
-      schoolId,
-      courseId,
-      data,
-      fullUpdate
-    )
+    let response = await updateSchoolCourse(courseId, data, fullUpdate)
     notificationActions.dispatchSuccess(dispatch, 'Course saved')
     dispatch({
       type: UPDATE[SUCCESS],
@@ -361,6 +354,7 @@ const initialState = {
   single: {
     course: null,
     loading: false,
+    deleting: false,
     saving: false,
     error: null
   },
@@ -460,7 +454,7 @@ export default function reducer(state = initialState, action) {
     case DELETE[REQUEST]:
       return {
         ...state,
-        single: { loading: true }
+        single: { ...state.single, loading: true, deleting: true }
       }
     case DELETE[SUCCESS]:
       dayCourses = state.day.courses.filter(
@@ -471,9 +465,15 @@ export default function reducer(state = initialState, action) {
       )
       return {
         ...state,
-        single: { loading: false, course: null, error: null },
+        single: { loading: false, deleting: false, course: null, error: null },
         day: { ...state.day, courses: dayCourses },
         calendar: { ...state.calendar, courses: calendarCourses }
+      }
+
+    case DELETE[FAILURE]:
+      return {
+        ...state,
+        single: { loading: false, deleting: false }
       }
 
     case FETCH_FOR_DAY[REQUEST]: {
