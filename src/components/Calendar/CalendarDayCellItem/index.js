@@ -14,7 +14,8 @@ const CalendarDayCellItem = ({ item }) => {
     availableSpaces === 0 && styles.danger
   )
 
-  const handleClick = () => {
+  const handleClick = e => {
+    e.stopPropagation()
     console.log(item)
   }
 

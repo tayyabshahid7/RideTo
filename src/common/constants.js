@@ -13,6 +13,13 @@ export const DAY_FORMAT3 = 'YYYY-MM-DDTHH:mm'
 export const DAY_FORMAT4 = 'YYYY-MM-DDTHH:mm:ssZ'
 export const DAY_FORMAT5 = 'ddd Do MMMM'
 
+export const SHIFT_TYPES = [
+  { id: 'EVENT_SHIFT', name: 'Shift' },
+  { id: 'EVENT_BLOCKER', name: 'Blocker' },
+  { id: 'EVENT_HOLIDAY', name: 'Holiday' },
+  { id: 'EVENT_SICK_DAY', name: 'Sick Day' }
+]
+
 export const WEEK_START_HOUR = 7
 export const WEEK_VIEW_START_TIME = 60 * 60 * WEEK_START_HOUR // Midnight
 export const WEEK_VIEW_START_TIME_STRING = '00:00'
