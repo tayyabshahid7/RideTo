@@ -16,6 +16,7 @@ import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponen
 import EditStaffComponent from 'components/Calendar/AddEditStaff/EditStaffComponent'
 import ShiftListComponent from 'components/Calendar/StaffShift/ShiftListComponent'
 import AddShiftComponent from 'components/Calendar/StaffShift/AddShiftComponent'
+import EditShiftComponent from 'components/Calendar/StaffShift/EditShiftComponent'
 
 import styles from './styles.scss'
 import { getCourses, updateCalendarSetting } from 'store/course'
@@ -515,6 +516,11 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date/shifts/:staffId/add"
             render={routeProps => <AddShiftComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/shifts/:staffId/:diaryId/edit"
+            render={routeProps => <EditShiftComponent {...routeProps} />}
           />
         </RightPanel>
       </div>

@@ -1,0 +1,28 @@
+@import '../../../bootstrap';
+
+.container {
+  color: var(--color-dark-light);
+  border-radius: 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 8px;
+  background-color: #ededed;
+  font-weight: 500;
+  font-size: 11px;
+  margin-bottom: 8px;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.typeText {
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.schoolName {
+  font-weight: 400;
+}

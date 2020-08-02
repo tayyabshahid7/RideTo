@@ -1,8 +1,9 @@
 import React from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
-import CalendarDayCellItem from 'components/Calendar/CalendarDayCellItem'
-import { getStarTimeForEventForDate } from 'utils/helper'
+import CalendarShiftDayCellItem from 'components/Calendar/CalendarShiftDayCellItem'
+import { formatShiftTime } from 'utils/helper'
+
 import styles from './index.scss'
 import sortBy from 'lodash/sortBy'
 
@@ -15,7 +16,7 @@ const getDayItems = (day, dateStr, user) => {
       return {
         ...s,
         s: true,
-        time: getStarTimeForEventForDate(s, dateStr),
+        time: formatShiftTime(s, dateStr),
         name: s.instructor_name,
         first_name: s.instructor_name.split(' ')[0],
         last_name: s.instructor_name.split(' ')[1],
@@ -46,7 +47,7 @@ const CalendarShiftDayCell = ({ day, calendar, history, user }) => {
       onClick={handleClick}>
       <div className={styles.courseContainer}>
         {items.map(item => (
-          <CalendarDayCellItem key={item.id} item={item} />
+          <CalendarShiftDayCellItem key={item.id} item={item} />
         ))}
       </div>
       {!items.length && <div className={styles.editButton}>Edit</div>}

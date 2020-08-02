@@ -10,6 +10,18 @@
   justify-content: space-between;
 }
 
+.typeText {
+  font-size: 11px;
+  color: rgba(#444, 0.8);
+  line-height: 13px;
+  margin-left: 6px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+}
+
 .notes {
   font-size: 11px;
   color: rgba(#444, 0.8);
