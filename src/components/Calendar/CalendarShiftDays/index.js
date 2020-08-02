@@ -39,7 +39,7 @@ const CalendarShiftDays = ({
     <div className={classnames(styles.calendarDays)}>
       {daysByWeek.map((weekDays, wIndex) => (
         <React.Fragment>
-          <div></div>
+          <div key={`empty-${wIndex}`}></div>
           {weekDays.map((day, dIndex) => (
             <div key={wIndex * 7 + dIndex} className={styles.cellHeader}>
               <div
@@ -61,6 +61,7 @@ const CalendarShiftDays = ({
                 <CalendarShiftDayCell
                   key={`${wIndex * 7 + dIndex}-${uIndex}`}
                   day={day}
+                  user={user}
                   calendar={calendar}
                   history={history}
                 />

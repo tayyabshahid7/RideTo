@@ -1,0 +1,120 @@
+.addTitle {
+  color: rgba(#444, 0.6);
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: #fafafa;
+  padding: 1rem;
+  align-self: flex-start;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+    0 3px 5px -1px rgba(0, 0, 0, 0.2);
+
+  &,
+  * {
+    font-size: 11px;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 1px;
+}
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 1px;
+}
+
+.addEvent {
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 40px;
+
+  > div {
+    margin-top: 8px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  button:nth-child(3) {
+    margin-left: auto;
+  }
+}
+
+.formContent {
+  flex: 1 1 1px;
+  display: flex;
+  flex-direction: column;
+  align-items: space-between;
+}
+
+.formTop {
+  flex: 1 1 1px;
+}
+
+.timeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 8px;
+}
+
+.actionDelete {
+  margin-top: 46px !important;
+}
+
+.panel {
+  width: 100%;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 24px;
+}
+
+.title {
+  color: rgba(#444, 0.6);
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.addButton {
+  border: 1px dashed var(--color-primary);
+  border-radius: 2px;
+  color: var(--color-primary);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  padding: 12px;
+  transition: all ease 0.3s;
+  width: 100%;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover,
+  &:active {
+    background: var(--color-primary);
+    color: white;
+    text-decoration: none;
+  }
+}

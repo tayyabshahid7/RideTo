@@ -23,6 +23,18 @@ export function getStarTimeForEventForDate(event, date) {
   return WEEK_VIEW_START_TIME_STRING
 }
 
+export function formatShiftTime(event, date) {
+  let eventDate = moment(new Date(event.start_time)).format(DATE_FORMAT)
+  if (eventDate === date) {
+    return (
+      moment(new Date(event.start_time)).format('HH:mm') +
+      ' - ' +
+      moment(new Date(event.end_time)).format('HH:mm')
+    )
+  }
+  return WEEK_VIEW_START_TIME_STRING
+}
+
 export function getTimeOfDayInSeconds(time) {
   return moment(time).diff(moment(time).startOf('day'), 'seconds')
 }

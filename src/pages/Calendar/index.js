@@ -14,6 +14,10 @@ import AddEventComponent from 'components/Calendar/AddEditEvent/AddEventComponen
 import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventComponent'
 import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponent'
 import EditStaffComponent from 'components/Calendar/AddEditStaff/EditStaffComponent'
+import ShiftListComponent from 'components/Calendar/StaffShift/ShiftListComponent'
+import AddShiftComponent from 'components/Calendar/StaffShift/AddShiftComponent'
+import EditShiftComponent from 'components/Calendar/StaffShift/EditShiftComponent'
+
 import styles from './styles.scss'
 import { getCourses, updateCalendarSetting } from 'store/course'
 import { getEvents } from 'store/event'
@@ -99,7 +103,7 @@ class CalendarPage extends Component {
     })
   }
 
-  loadCourses(reset = false) {
+  loadCourses = (reset = false) => {
     const { getCourses, activeSchools, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
     const formatedFirstDate = moment(firstDate).format(DATE_FORMAT)
@@ -302,7 +306,7 @@ class CalendarPage extends Component {
     return [new Date(year, month, day)]
   }
 
-  handleCustomEvent(type, params) {
+  handleCustomEvent = (type, params) => {
     const { updateCalendarSetting, calendar } = this.props
     if (type === 'change-calendar-setting') {
       updateCalendarSetting(params)
@@ -357,12 +361,12 @@ class CalendarPage extends Component {
     }
   }
 
-  handleChangeDate({ day, month, year }) {
+  handleChangeDate = ({ day, month, year }) => {
     const { updateCalendarSetting } = this.props
     return updateCalendarSetting({ day, month, year })
   }
 
-  handleMobileCellClick(dateStr) {
+  handleMobileCellClick = dateStr => {
     const { updateCalendarSetting } = this.props
     const date = moment(dateStr)
 
@@ -418,12 +422,12 @@ class CalendarPage extends Component {
             calendar={calendar}
             eventCalendar={eventCalendar}
             staffCalendar={staffCalendar}
-            handleCustomEvent={this.handleCustomEvent.bind(this)}
-            handleChangeDate={this.handleChangeDate.bind(this)}
+            handleCustomEvent={this.handleCustomEvent}
+            handleChangeDate={this.handleChangeDate}
             history={history}
             calendarPath={calendarPath}
             match={match}
-            handleMobileCellClick={this.handleMobileCellClick.bind(this)}
+            handleMobileCellClick={this.handleMobileCellClick}
             toggleFilter={this.toggleFilter}
             sideBarOpen={!calendarPath}
             filterOpen={filterOpen}
@@ -439,20 +443,14 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date"
             render={routeProps => (
-              <CoursesPanel
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
+              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
           />
           <Route
             exact
             path="/calendar/:date/courses/:courseId"
             render={routeProps => (
-              <CoursesPanel
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
+              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
           />
           <Route
@@ -461,7 +459,7 @@ class CalendarPage extends Component {
             render={routeProps => (
               <AddCourseComponent
                 {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
+                loadCourses={this.loadCourses}
               />
             )}
           />
@@ -471,7 +469,7 @@ class CalendarPage extends Component {
             render={routeProps => (
               <EditCourseComponent
                 {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
+                loadCourses={this.loadCourses}
               />
             )}
           />
@@ -484,10 +482,7 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date/events/:eventId"
             render={routeProps => (
-              <CoursesPanel
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
+              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
           />
           <Route
@@ -504,16 +499,28 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date/staff/:staffId"
             render={routeProps => (
-              <CoursesPanel
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
+              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
           />
           <Route
             exact
             path="/calendar/:date/staff/:staffId/:diaryId/edit"
             render={routeProps => <EditStaffComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/shifts/:staffId/list"
+            render={routeProps => <ShiftListComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/shifts/:staffId/add"
+            render={routeProps => <AddShiftComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/shifts/:staffId/:diaryId/edit"
+            render={routeProps => <EditShiftComponent {...routeProps} />}
           />
         </RightPanel>
       </div>
