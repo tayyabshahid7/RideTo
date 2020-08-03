@@ -3,6 +3,7 @@ import moment from 'moment'
 import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import CalendarDayCellItem from 'components/Calendar/CalendarDayCellItem'
+import CalendarShiftDayCellItem from 'components/Calendar/CalendarShiftDayCellItem'
 import { getStarTimeForEventForDate } from 'utils/helper'
 import { getShortCourseType } from 'services/course'
 import styles from './index.scss'
@@ -116,9 +117,15 @@ const CalendarDayCell = ({
         </div>
       </div>
       <div className={styles.courseContainer}>
-        {items.slice(0, showItems).map(item => (
-          <CalendarDayCellItem key={item.id} item={item} />
-        ))}
+        {items
+          .slice(0, showItems)
+          .map(item =>
+            item.event_type ? (
+              <CalendarShiftDayCellItem normal key={item.id} item={item} />
+            ) : (
+              <CalendarDayCellItem key={item.id} item={item} />
+            )
+          )}
 
         {more > 0 && <div className={styles.more}>+ {more} More</div>}
       </div>

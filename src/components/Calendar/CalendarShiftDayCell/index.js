@@ -34,7 +34,6 @@ const CalendarShiftDayCell = ({ day, calendar, history, user }) => {
   const selectedDay = dateStr === calendar.selectedDate
 
   const handleClick = () => {
-    console.log('clicked')
     history.push(`/calendar/${dateStr}/shifts/${user.id}/list`)
   }
 

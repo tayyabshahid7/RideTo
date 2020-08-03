@@ -86,6 +86,7 @@ const CalendarFilter = ({
       userIds = []
     } else {
       userIds = currUsers.map(x => x.id)
+      userIds.push(-1)
     }
     toggleUser(userIds)
   }

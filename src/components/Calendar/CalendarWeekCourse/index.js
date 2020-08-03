@@ -44,8 +44,7 @@ const CalendarWeekCourse = React.forwardRef(
       height: `${height * 56}px`,
       top: `${startTime * 56}px`,
       left,
-      width,
-      zIndex: position
+      width
     }
 
     const handleClick = () => {

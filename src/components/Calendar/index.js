@@ -125,7 +125,8 @@ class CalendarComponent extends Component {
                           sideBarOpen={sideBarOpen}
                         />
                       )}
-                      {calendar.viewMode === CALENDAR_VIEW.WEEK && (
+                      {(calendar.viewMode === CALENDAR_VIEW.WEEK ||
+                        calendar.viewMode === CALENDAR_VIEW.DAY) && (
                         <CalendarWeekView
                           match={match}
                           days={days}
