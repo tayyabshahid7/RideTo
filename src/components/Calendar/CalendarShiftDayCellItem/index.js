@@ -1,6 +1,8 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import styles from './CalendarShiftDayCellItem.scss'
+import UserInitial from '../UserInitial'
+import classnames from 'classnames'
 import { SHIFT_TYPES } from '../../../common/constants'
 import {
   IconClock,
@@ -9,7 +11,7 @@ import {
   IconSick
 } from '../../../assets/icons'
 
-const CalendarShiftDayCellItem = ({ item, schools }) => {
+const CalendarShiftDayCellItem = ({ item, schools, normal }) => {
   const type = SHIFT_TYPES.find(x => x.id === item.event_type)
   if (!type) {
     return null
@@ -19,21 +21,28 @@ const CalendarShiftDayCellItem = ({ item, schools }) => {
 
   const handleClick = e => {
     e.stopPropagation()
-    console.log(item)
   }
 
   return (
-    <div className={styles.container} onClick={handleClick}>
-      <div className={styles.content}>
-        {type.id === 'EVENT_SHIFT' && <IconClock />}
-        {type.id === 'EVENT_BLOCKER' && <IconBlocker />}
-        {type.id === 'EVENT_SICK_DAY' && <IconSick />}
-        {type.id === 'EVENT_HOLIDAY' && <IconHoliday />}
-        <span className={styles.typeText}>
-          {type.id === 'EVENT_SHIFT' ? item.time : type.name}
-        </span>
+    <div
+      className={classnames(styles.container, normal && styles.normal)}
+      style={{ backgroundColor: item.color }}
+      onClick={handleClick}>
+      <div className={styles.outerWrapper}>
+        {normal && <UserInitial user={item} short />}
+        <div className={styles.content}>
+          {type.id === 'EVENT_SHIFT' && <IconClock />}
+          {type.id === 'EVENT_BLOCKER' && <IconBlocker />}
+          {type.id === 'EVENT_SICK_DAY' && <IconSick />}
+          {type.id === 'EVENT_HOLIDAY' && <IconHoliday />}
+          <span className={styles.typeText}>
+            {type.id === 'EVENT_SHIFT' ? item.time : type.name}
+          </span>
+        </div>
       </div>
-      {!!school && <span className={styles.schoolName}>{school.name}</span>}
+      {!!school && !normal && (
+        <span className={styles.schoolName}>{school.name}</span>
+      )}
     </div>
   )
 }

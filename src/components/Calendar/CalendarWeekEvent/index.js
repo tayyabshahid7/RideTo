@@ -1,7 +1,6 @@
 import React from 'react'
 import styles from './index.scss'
 import classnames from 'classnames'
-import CalendarShiftIcon from '../CalendarShiftIcon'
 import { getTimeOfDayInSeconds } from 'utils/helper'
 import {
   WEEK_VIEW_START_TIME,
@@ -9,9 +8,9 @@ import {
   CALENDAR_VIEW
 } from 'common/constants'
 
-const CalendarWeekStaff = ({ staff, position, barCount, calendar, match }) => {
-  const secondsForDay = getTimeOfDayInSeconds(staff.start_time)
-  const duration = getTimeOfDayInSeconds(staff.end_time) - secondsForDay
+const CalendarWeekEvent = ({ event, position, barCount, calendar, match }) => {
+  const secondsForDay = getTimeOfDayInSeconds(event.start_time)
+  const duration = getTimeOfDayInSeconds(event.end_time) - secondsForDay
 
   const isDay = calendar.viewMode === CALENDAR_VIEW.DAY
 
@@ -42,24 +41,14 @@ const CalendarWeekStaff = ({ staff, position, barCount, calendar, match }) => {
     width
   }
 
+  console.log(event, secondsForDay, duration)
   return (
     <div
-      className={classnames(
-        styles.singleEvent,
-        styles.singleEventEvent,
-        parseInt(match.params.id) === staff.id &&
-          match.params.type === 'staff' &&
-          styles.clickedCourse
-      )}
+      className={classnames(styles.singleEvent, styles.singleEventEvent)}
       style={style}>
-      <div
-        className={classnames(styles.content)}
-        style={{ background: staff.colour }}>
-        <CalendarShiftIcon staff={staff} />
-        {isDay && <div>{staff.start_time.substr(11, 5)}</div>}
-      </div>
+      <div className={classnames(styles.content)}>{event.name}</div>
     </div>
   )
 }
 
-export default CalendarWeekStaff
+export default CalendarWeekEvent

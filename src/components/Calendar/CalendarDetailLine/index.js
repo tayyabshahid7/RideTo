@@ -1,38 +1,59 @@
 import React from 'react'
 import CalendarWeekCourse from '../CalendarWeekCourse'
+import CalendarWeekStaff from '../CalendarWeekStaff'
+import CalendarWeekEvent from '../CalendarWeekEvent'
 import styles from './index.scss'
 
-const CalendarDetailLine = ({
-  day,
-  history,
-  calendar,
-  match,
-  settings,
-  inactiveCourses
-}) => {
+const CalendarDetailLine = ({ day, history, calendar, match, settings }) => {
   if (!day.courses) {
     return null
   }
 
-  let courses = day.courses.filter(
-    x => x.course_type && !inactiveCourses.includes(x.course_type.id)
-  )
-
   return (
     <div className={styles.container}>
-      {courses.map((course, index) => (
-        <CalendarWeekCourse
-          course={course}
-          position={day.coursePositions[index]}
-          barCount={day.barCount}
-          history={history}
-          calendar={calendar}
-          key={index}
-          match={match}
-          settings={settings}
-          showDetail
-        />
-      ))}
+      {day.courses.map((item, index) => {
+        if (!item.itemType) {
+          return (
+            <CalendarWeekCourse
+              course={item}
+              position={day.coursePositions[index]}
+              barCount={day.barCount}
+              history={history}
+              calendar={calendar}
+              key={index}
+              match={match}
+              settings={settings}
+            />
+          )
+        } else if (item.itemType === 'staff') {
+          return (
+            <CalendarWeekStaff
+              staff={item}
+              position={day.coursePositions[index]}
+              barCount={day.barCount}
+              history={history}
+              calendar={calendar}
+              key={index}
+              match={match}
+              settings={settings}
+            />
+          )
+        } else if (item.itemType === 'event') {
+          return (
+            <CalendarWeekEvent
+              event={item}
+              position={day.coursePositions[index]}
+              barCount={day.barCount}
+              history={history}
+              calendar={calendar}
+              key={index}
+              match={match}
+              settings={settings}
+            />
+          )
+        }
+        return null
+      })}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
+import _ from 'lodash'
 import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarHeaderInstructors from '../CalendarHeaderInstructors'
@@ -143,27 +144,30 @@ class CalendarWeekView extends Component {
   }
 
   getWeekDays = () => {
-    let { days } = this.props
+    let { days, inactiveCourses } = this.props
 
     let date = '2000-01-01'
     let results = days.map(day => {
       let dayObj = { ...day }
       dayObj.courses = [
-        ...dayObj.courses.map(course => {
-          const time = moment(`${date} ${course.time}`)
-          const startOfDay = moment(time).startOf('day')
-          const secondsForDay = time.diff(startOfDay, 'seconds')
+        ...dayObj.courses
+          .filter(x => !inactiveCourses.includes(x.course_type.id))
+          .map(course => {
+            const time = moment(`${date} ${course.time}`)
+            const startOfDay = moment(time).startOf('day')
+            const secondsForDay = time.diff(startOfDay, 'seconds')
 
-          return {
-            ...course,
-            secondsForDay
-          }
-        }),
+            return {
+              ...course,
+              secondsForDay
+            }
+          }),
         ...dayObj.events
           .filter(({ all_day }) => !all_day)
           .map(event => {
             return {
               ...event,
+              itemType: 'event',
               ...secondsForDayAndDurationForEvent(event, dayObj.date)
             }
           }),
@@ -172,10 +176,12 @@ class CalendarWeekView extends Component {
           .map(s => {
             return {
               ...s,
+              itemType: 'staff',
               ...secondsForDayAndDurationForEvent(s, dayObj.date)
             }
           })
       ]
+      dayObj.courses = _.orderBy(dayObj.courses, 'secondsForDay')
 
       let barMap = []
       let coursePositions = []
@@ -186,23 +192,24 @@ class CalendarWeekView extends Component {
           coursePositions.push(0)
         } else {
           let j
-          for (j = 0; j < barMap.length; j++) {
+          for (j = barMap.length - 1; j >= 0; j--) {
             if (
-              barMap[j].secondsForDay + barMap[j].duration * 60 <
-              course.secondsForDay
+              course.secondsForDay >= barMap[j].secondsForDay &&
+              course.secondsForDay <
+                barMap[j].secondsForDay + barMap[j].duration * 60
             ) {
-              barMap.splice(j, 1, course)
-              coursePositions.push(j)
+              barMap.push(course)
+              coursePositions.push(j + 1)
               break
             }
           }
-          if (j === barMap.length) {
+          if (j === -1) {
             barMap.push(course)
-            coursePositions.push(j)
+            coursePositions.push(0)
           }
         }
       }
-      dayObj.barCount = barMap.length
+      dayObj.barCount = Math.max(...coursePositions) + 1
       dayObj.coursePositions = coursePositions
       return dayObj
     })
@@ -311,8 +318,7 @@ class CalendarWeekView extends Component {
       match,
       settings,
       users,
-      inactiveCourses,
-      inactiveUsers
+      inactiveCourses
     } = this.props
     // const { mobileDayOfWeek } = this.state
     let daysInfo = this.getWeekDays()
@@ -353,7 +359,6 @@ class CalendarWeekView extends Component {
                       day={day}
                       user={user}
                       inactiveCourses={inactiveCourses}
-                      inactiveUsers={inactiveUsers}
                       history={history}
                       calendar={calendar}
                       match={match}

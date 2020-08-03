@@ -10,7 +10,24 @@
   background-color: #ededed;
   font-weight: 500;
   font-size: 11px;
-  margin-bottom: 8px;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.normal {
+  padding: 0 8px;
+
+  > div {
+    height: 24px;
+  }
+}
+
+.outerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .content {
