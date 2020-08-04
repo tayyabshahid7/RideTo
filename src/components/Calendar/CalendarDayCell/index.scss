@@ -39,6 +39,12 @@
   }
 }
 
+.shiftUsers {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+}
+
 .otherMonth {
   background: #d5d5d5;
   color: #666;

@@ -4,13 +4,14 @@ import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import CalendarDayCellItem from 'components/Calendar/CalendarDayCellItem'
 import CalendarShiftDayCellItem from 'components/Calendar/CalendarShiftDayCellItem'
+import UserWithTooltip from '../UserWithTooltip'
 import { getStarTimeForEventForDate } from 'utils/helper'
 import { getShortCourseType } from 'services/course'
 import styles from './index.scss'
 import sortBy from 'lodash/sortBy'
 
 const getDayItems = (day, dateStr, users, inactiveCourses) => {
-  let { courses = [], events = [], staff = [] } = day
+  let { courses = [], events = [] } = day
 
   const userIds = users.map(x => x.id)
   courses = courses
@@ -20,7 +21,7 @@ const getDayItems = (day, dateStr, users, inactiveCourses) => {
         (userIds.includes(-1) && !x.instructor) ||
         (x.instructor && userIds.includes(x.instructor.id))
     )
-  staff = staff.filter(x => userIds.includes(x.instructor))
+  // staff = staff.filter(x => userIds.includes(x.instructor))
 
   const items = courses
     .map(course => {
@@ -40,22 +41,30 @@ const getDayItems = (day, dateStr, users, inactiveCourses) => {
         }
       })
     )
-    .concat(
-      staff.map(s => {
-        return {
-          ...s,
-          s: true,
-          time: getStarTimeForEventForDate(s, dateStr),
-          name: s.instructor_name,
-          first_name: s.instructor_name.split(' ')[0],
-          last_name: s.instructor_name.split(' ')[1],
-          color: s.colour
-        }
-      })
-    )
+    // .concat(
+    //   staff.map(s => {
+    //     return {
+    //       ...s,
+    //       s: true,
+    //       time: getStarTimeForEventForDate(s, dateStr),
+    //       name: s.instructor_name,
+    //       first_name: s.instructor_name.split(' ')[0],
+    //       last_name: s.instructor_name.split(' ')[1],
+    //       color: s.colour
+    //     }
+    //   })
+    // )
     .sort((a, b) => b.all_day - a.all_day)
 
   return sortBy(items, ['time'])
+}
+
+const getShiftUsers = (day, users) => {
+  const { staff = [] } = day
+  const shiftUsers = users.filter(u =>
+    staff.find(x => parseInt(x.instructor) === u.id)
+  )
+  return shiftUsers
 }
 
 const CalendarDayCell = ({
@@ -64,8 +73,7 @@ const CalendarDayCell = ({
   history,
   handleMobileCellClick,
   users,
-  inactiveCourses,
-  rowsCount
+  inactiveCourses
 }) => {
   let showItems = 4
   const dateStr = moment(day.date).format('YYYY-MM-DD')
@@ -83,6 +91,9 @@ const CalendarDayCell = ({
     now.getMonth() === day.date.getMonth() &&
     now.getDate() === day.date.getDate()
   const isMobile = useMediaQuery({ maxWidth: 767 })
+
+  const shiftUsers = getShiftUsers(day, users)
+  console.log(shiftUsers)
 
   if (isMobile) {
     showItems = 3
@@ -109,11 +120,16 @@ const CalendarDayCell = ({
       <div className={styles.cellHeader}>
         <div
           className={classnames(
-            isOtherMonthDate && styles.otherMonthDate,
             styles.date,
+            isOtherMonthDate && styles.otherMonthDate,
             isToday && styles.highlight
           )}>
           {dayText}
+        </div>
+        <div className={styles.shiftUsers}>
+          {shiftUsers.map(user => (
+            <UserWithTooltip user={user} key={user.id} />
+          ))}
         </div>
       </div>
       <div className={styles.courseContainer}>
