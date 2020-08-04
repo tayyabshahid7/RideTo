@@ -13,7 +13,8 @@ import {
   ConnectInput,
   ConnectTextArea,
   Button,
-  ConnectCheckbox
+  ConnectCheckbox,
+  ConnectColorInput
 } from 'components/ConnectForm'
 
 class EventForm extends React.Component {
@@ -71,6 +72,12 @@ class EventForm extends React.Component {
   handleChangeSchool = id => {
     this.setState({
       event: { ...this.state.event, supplier: id }
+    })
+  }
+
+  handleChangeColor = colour => {
+    this.setState({
+      event: { ...this.state.event, colour }
     })
   }
 
@@ -153,7 +160,7 @@ class EventForm extends React.Component {
   render() {
     const { saving, onRemove, schools } = this.props
     const { startTime, endTime } = this.state
-    const { supplier, name, notes, all_day } = this.state.event
+    const { supplier, name, notes, colour, all_day } = this.state.event
 
     return (
       <div className={styles.wrapper}>
@@ -185,6 +192,19 @@ class EventForm extends React.Component {
                   className="form-group"
                   type="text"
                   onChange={this.handleChangeRawEvent}
+                  required
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <ConnectColorInput
+                  name="colour"
+                  value={colour}
+                  label="Event Colour"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeColor}
                   required
                 />
               </Col>
@@ -222,7 +242,7 @@ class EventForm extends React.Component {
                   vertical
                   name="all_day"
                   checked={all_day}
-                  label="All Day"
+                  label="Book all day"
                   className="form-group"
                   onChange={this.handleChangeRawEvent}
                 />

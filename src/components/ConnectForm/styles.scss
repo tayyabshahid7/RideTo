@@ -370,3 +370,21 @@ select {
   font-size: 18px;
   min-width: 110px;
 }
+
+.colorList {
+  display: flex;
+  align-items: center;
+}
+
+.colorItem {
+  display: block;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.activeColor {
+  border: 2px solid;
+}
