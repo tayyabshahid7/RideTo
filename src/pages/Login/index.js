@@ -74,13 +74,13 @@ class Login extends Component {
               onChange={this.handleChange('password')}
               required
             />
+            {this.props.error && (
+              <div className={styles.error}>{this.props.error}</div>
+            )}
             <Button type="submit" color="primary">
               Sign In
             </Button>
           </form>
-          {this.props.error && (
-            <div style={{ color: 'red' }}>{this.props.error}</div>
-          )}
         </div>
       </div>
     )
