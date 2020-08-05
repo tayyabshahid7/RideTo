@@ -93,7 +93,6 @@ const CalendarDayCell = ({
   const isMobile = useMediaQuery({ maxWidth: 767 })
 
   const shiftUsers = getShiftUsers(day, users)
-  console.log(shiftUsers)
 
   if (isMobile) {
     showItems = 3
