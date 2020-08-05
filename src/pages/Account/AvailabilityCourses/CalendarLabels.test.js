@@ -20,14 +20,16 @@ beforeEach(() => {
       ],
       courseTypes: []
     },
-    instructors: [
-      {
-        id: 1,
-        first_name: 'Jack',
-        last_name: 'Smith',
-        colour: '#000'
-      }
-    ],
+    instructors: {
+      1: [
+        {
+          id: 1,
+          first_name: 'Jack',
+          last_name: 'Smith',
+          colour: '#000'
+        }
+      ]
+    },
     getInstructors: jest.fn(),
     loadCourseTypes: jest.fn(),
     schoolId: 1
