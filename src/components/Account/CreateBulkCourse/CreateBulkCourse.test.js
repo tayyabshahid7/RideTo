@@ -51,16 +51,18 @@ beforeEach(() => {
         }
       ]
     },
-    instructors: [
-      {
-        id: 204,
-        first_name: 'Nathan',
-        last_name: 'Brown',
-        supplier: 44,
-        colour: '#2CCEAC',
-        diary: []
-      }
-    ],
+    instructors: {
+      44: [
+        {
+          id: 204,
+          first_name: 'Nathan',
+          last_name: 'Brown',
+          supplier: 44,
+          colour: '#2CCEAC',
+          diary: []
+        }
+      ]
+    },
     schools: [
       {
         id: 44,
@@ -69,7 +71,7 @@ beforeEach(() => {
       }
     ],
     available_days: ['T', 'T', 'T', 'T', 'T', 'T', 'T'],
-    schoolId: 1,
+    schoolId: 44,
     saving: false,
     error: null
   }

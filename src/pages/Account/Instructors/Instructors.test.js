@@ -11,7 +11,11 @@ let props
 
 beforeEach(() => {
   props = {
-    instructors: [],
+    instructors: {
+      1: [],
+      2: []
+    },
+    schoolId: 1,
     newInstructor: jest.fn()
   }
   wrapper = shallow(<Instructors {...props} />)

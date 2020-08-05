@@ -144,9 +144,10 @@ const CoursesPanelItem = ({
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const schools = state.auth.user ? state.auth.user.suppliers : []
   return {
     schoolId: state.auth.schoolId,
-    schools: state.auth.user.suppliers,
+    schools,
     loading: state.course.single.loading,
     saving: state.course.single.saving,
     info: state.info,
