@@ -356,7 +356,9 @@ class CourseForm extends React.Component {
     } = this.state.course
     const { supplier } = this.state
 
-    const schoolInstructors = supplier ? instructors[supplier] : []
+    const schoolInstructors = instructors.filter(x =>
+      x.supplier.includes(supplier)
+    )
 
     const finishTime = this.getFinishTime(time, duration)
     // const formClass = isEditable ? styles.grey : ''

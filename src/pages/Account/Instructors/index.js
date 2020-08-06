@@ -3,17 +3,12 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import Instructors from './Instructors'
 import {
-  getInstructors,
   editInstructor,
   newInstructor,
   deleteInstructor
 } from 'store/instructor'
 
 class InstructorsContainer extends React.Component {
-  componentDidMount() {
-    this.props.getInstructors(this.props.schoolId)
-  }
-
   render() {
     const { loading } = this.props
     if (loading) {
@@ -25,9 +20,9 @@ class InstructorsContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
     saving: state.instructor.saving,
     instructors: state.instructor.instructors,
+    suppliers: state.auth.user.suppliers,
     error: state.instructor.error
   }
 }
@@ -35,7 +30,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getInstructors,
       editInstructor,
       newInstructor,
       deleteInstructor

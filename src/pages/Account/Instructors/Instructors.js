@@ -1,9 +1,12 @@
 import React, { Fragment } from 'react'
-import { ConnectInput, Button } from 'components/ConnectForm'
+import {
+  ConnectInput,
+  ConnectReactSelect,
+  Button
+} from 'components/ConnectForm'
 import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
-import Users from '../Users'
 
 class Instructors extends React.Component {
   constructor(props) {
@@ -20,19 +23,41 @@ class Instructors extends React.Component {
   }
 
   handleSave(event) {
-    const { schoolId, newInstructor, editInstructor } = this.props
-    const { addNew, selectedInstructor } = this.state
     event.preventDefault()
-    if (addNew) {
-      newInstructor(schoolId, selectedInstructor)
-    } else {
-      editInstructor(schoolId, selectedInstructor)
+
+    const { newInstructor, editInstructor } = this.props
+    const { addNew, selectedInstructor } = this.state
+    const data = {
+      ...selectedInstructor,
+      supplier: selectedInstructor.supplier.map(x => x.id)
     }
+    if (addNew) {
+      newInstructor(data)
+    } else {
+      editInstructor(data)
+    }
+
     this.setState({ addNew: false, selectedInstructor: null })
   }
 
-  handleEdit(selectedInstructor) {
+  handleEdit(instructor) {
+    const { suppliers } = this.props
+    const selectedInstructor = {
+      ...instructor,
+      supplier: suppliers.filter(x => instructor.supplier.includes(x.id))
+    }
     this.setState({ selectedInstructor, addNew: false })
+  }
+
+  handleSupplierChange = values => {
+    const { selectedInstructor } = this.state
+    this.setState({
+      selectedInstructor: { ...selectedInstructor, supplier: values }
+    })
+  }
+
+  getSupplierNames = ids => {
+    return this.props.suppliers.filter(x => ids.includes(x.id)).map(x => x.name)
   }
 
   handleChange(event) {
@@ -45,7 +70,13 @@ class Instructors extends React.Component {
 
   handleAddNew() {
     this.setState({
-      selectedInstructor: { first_name: '', last_name: '' },
+      selectedInstructor: {
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: '',
+        supplier: []
+      },
       addNew: true
     })
   }
@@ -55,23 +86,22 @@ class Instructors extends React.Component {
       `Are you sure you whant to delete instructor ${instructor.first_name} ${instructor.last_name}`
     )
     if (confirm) {
-      const { deleteInstructor, schoolId } = this.props
-      deleteInstructor(schoolId, instructor.id)
+      const { deleteInstructor } = this.props
+      deleteInstructor(instructor.id)
     }
   }
 
   render() {
-    const { saving, instructors, schoolId } = this.props
-    const schoolInstructors = instructors[schoolId]
+    const { saving, instructors, suppliers } = this.props
     const { addNew, selectedInstructor } = this.state
+
     return (
       <Fragment>
-        <Users />
         <Fragment>
           <div className={styles.box}>
             <div>
-              <h3 className={styles.title}>Add Staff</h3>
-              <p>Add a new staff member to assign to courses</p>
+              <h3 className={styles.title}>Add User</h3>
+              <p>Add a new user to assign to courses</p>
             </div>
             <div className={styles.buttons}>
               <Button
@@ -84,34 +114,42 @@ class Instructors extends React.Component {
           </div>
           <div className={classnames(styles.box, styles.header)}>
             <div className={styles.headerText}>
-              <h3 className={styles.title}>Current Staff</h3>
-              <p>Edit the details of an existing staff member</p>
+              <h3 className={styles.title}>Current Users</h3>
+              <p>Edit the details of an existing users</p>
             </div>
-            <ul className={styles.list}>
-              {schoolInstructors.map((instructor, key) => {
+            <div className={styles.userTable}>
+              <div className={classnames(styles.userRow, styles.headerRow)}>
+                <span>User Name</span>
+                <span>Schools</span>
+                <span>Actions</span>
+              </div>
+              {instructors.map((instructor, key) => {
                 return (
-                  <li
-                    key={key}
-                    className={classnames(
-                      instructor === selectedInstructor && styles.selected
-                    )}>
+                  <div key={key} className={classnames(styles.userRow)}>
                     <span className={styles.fullName}>
                       {instructor.first_name} {instructor.last_name}
                     </span>
-                    <Button
-                      color="link"
-                      onClick={() => this.handleEdit(instructor)}>
-                      Edit
-                    </Button>
-                    <Button
-                      color="link"
-                      onClick={() => this.handleDelete(instructor)}>
-                      Delete
-                    </Button>
-                  </li>
+                    <div className={styles.supplierNames}>
+                      {this.getSupplierNames(instructor.supplier).map(name => (
+                        <span key={name}>{name}</span>
+                      ))}
+                    </div>
+                    <div>
+                      <Button
+                        color="link"
+                        onClick={() => this.handleEdit(instructor)}>
+                        Edit
+                      </Button>
+                      <Button
+                        color="link"
+                        onClick={() => this.handleDelete(instructor)}>
+                        Delete
+                      </Button>
+                    </div>
+                  </div>
                 )
               })}
-            </ul>
+            </div>
           </div>
         </Fragment>
 
@@ -119,7 +157,7 @@ class Instructors extends React.Component {
           <Modal isOpen={true}>
             <ModalHeader>
               <h3 className={styles.title}>
-                {addNew ? 'Add' : 'Edit'} Staff Details
+                {addNew ? 'Add' : 'Edit'} User Details
               </h3>
             </ModalHeader>
             <ModalBody>
@@ -133,7 +171,7 @@ class Instructors extends React.Component {
                   label="First Name"
                   className="form-group"
                   onChange={this.handleChange}
-                  required
+                  required={addNew}
                 />
                 <ConnectInput
                   name="last_name"
@@ -141,7 +179,32 @@ class Instructors extends React.Component {
                   label="Last Name"
                   className="form-group"
                   onChange={this.handleChange}
-                  required
+                  required={addNew}
+                />
+                <ConnectInput
+                  name="email"
+                  value={selectedInstructor.email}
+                  label="Email"
+                  className="form-group"
+                  onChange={this.handleChange}
+                  required={addNew}
+                />
+                <ConnectInput
+                  name="password"
+                  value={selectedInstructor.password}
+                  label="Password"
+                  className="form-group"
+                  onChange={this.handleChange}
+                  required={addNew}
+                  type="password"
+                  minLength="6"
+                />
+                <ConnectReactSelect
+                  label="Schools"
+                  name="supplier"
+                  value={selectedInstructor.supplier}
+                  onChange={this.handleSupplierChange}
+                  options={suppliers}
                 />
                 <Button color="primary" type="submit" disabled={saving}>
                   {addNew ? 'Add' : 'Save'}

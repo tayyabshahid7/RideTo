@@ -153,7 +153,6 @@ class AvailabilityCourses extends React.Component {
       instructors,
       schoolId,
       schools,
-      getInstructors,
       history,
       saving,
       error,
@@ -177,7 +176,6 @@ class AvailabilityCourses extends React.Component {
               loadCourseTypes={loadCourseTypes}
               schoolId={schoolId}
               schools={schools}
-              getInstructors={getInstructors}
               available_days={available_days}
               handleCancel={this.handleCancel.bind(this)}
               saving={saving}
@@ -190,7 +188,6 @@ class AvailabilityCourses extends React.Component {
           <CalendarLabels
             settings={settings}
             instructors={instructors}
-            getInstructors={getInstructors}
             schoolId={schoolId}
             info={info}
             loadCourseTypes={loadCourseTypes}

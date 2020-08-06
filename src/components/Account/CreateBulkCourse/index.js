@@ -44,14 +44,10 @@ class CreateBulkCourse extends React.Component {
   }
 
   componentDidMount() {
-    const {
-      getInstructors,
-      info,
-      instructors,
-      loadCourseTypes,
-      schoolId
-    } = this.props
-    const schoolInstructors = instructors[schoolId]
+    const { info, instructors, loadCourseTypes, schoolId } = this.props
+    const schoolInstructors = instructors.filter(x =>
+      x.supplier.includes(schoolId)
+    )
 
     if (!info.courseTypes || info.courseTypes.length === 0) {
       loadCourseTypes({ schoolId: schoolId })
@@ -66,16 +62,14 @@ class CreateBulkCourse extends React.Component {
       })
     }
 
-    if (!schoolInstructors || schoolInstructors.length === 0) {
-      getInstructors(schoolId)
-    } else {
-      this.setState({
-        course: {
-          ...this.state.course,
-          instructor_id: schoolInstructors[0].id.toString()
-        }
-      })
-    }
+    this.setState({
+      course: {
+        ...this.state.course,
+        instructor_id: schoolInstructors.length
+          ? schoolInstructors[0].id.toString()
+          : ''
+      }
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -87,7 +81,9 @@ class CreateBulkCourse extends React.Component {
       instructors,
       schoolId
     } = this.props
-    const schoolInstructors = instructors[schoolId]
+    const schoolInstructors = instructors.filter(x =>
+      x.supplier.includes(schoolId)
+    )
 
     const {
       course: { course_type_id, instructor_id }
@@ -203,7 +199,10 @@ class CreateBulkCourse extends React.Component {
 
   render() {
     let { schoolId, info, saving, instructors } = this.props
-    const schoolInstructors = instructors[schoolId]
+    const schoolInstructors = instructors.filter(x =>
+      x.supplier.includes(schoolId)
+    )
+
     const {
       course_type_id,
       instructor_id,
