@@ -25,8 +25,9 @@ const CalendarFilter = ({
   calendar
 }) => {
   const inputEl = useRef(null)
-  const currUsers = []
-  activeSchools.forEach(x => currUsers.push(...users[x]))
+  const currUsers = users.filter(
+    x => _.intersection(x.supplier, activeSchools).length
+  )
 
   const courseTypes = info.courseTypes.filter(
     x =>

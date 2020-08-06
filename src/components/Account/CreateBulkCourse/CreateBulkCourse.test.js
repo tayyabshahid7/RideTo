@@ -13,7 +13,6 @@ beforeEach(() => {
   props = {
     onSubmit: jest.fn(),
     loadCourseTypes: jest.fn(),
-    getInstructors: jest.fn(),
     handleCancel: jest.fn(),
     info: {
       ridingExperiences: [

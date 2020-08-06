@@ -159,10 +159,9 @@ class ShiftForm extends React.Component {
     const { startTime, endTime } = this.state
     const { instructor, supplier, all_day, event_type } = this.state.staff
 
-    let schoolInstructors = []
-    if (supplier) {
-      schoolInstructors = instructors[supplier]
-    }
+    const schoolInstructors = instructors.filter(x =>
+      x.supplier.includes(supplier)
+    )
 
     return (
       <div className={styles.wrapper}>

@@ -168,10 +168,9 @@ class StaffForm extends React.Component {
     const { startTime, endTime } = this.state
     const { instructor, supplier, notes, all_day } = this.state.staff
 
-    let schoolInstructors = []
-    if (supplier) {
-      schoolInstructors = instructors[supplier]
-    }
+    const schoolInstructors = instructors.filter(x =>
+      x.supplier.includes(supplier)
+    )
 
     return (
       <div className={styles.wrapper}>

@@ -19,17 +19,7 @@ class CalendarLabels extends Component {
   }
 
   componentDidMount() {
-    const {
-      instructors,
-      getInstructors,
-      schoolId,
-      info,
-      loadCourseTypes
-    } = this.props
-    const schoolInstructors = instructors[schoolId]
-    if (!schoolInstructors || schoolInstructors.length === 0) {
-      getInstructors(schoolId)
-    }
+    const { schoolId, info, loadCourseTypes } = this.props
 
     if (!info.courseTypes || info.courseTypes.length === 0) {
       loadCourseTypes({ schoolId: schoolId })
@@ -79,8 +69,7 @@ class CalendarLabels extends Component {
   }
 
   render() {
-    const { instructors, schoolId } = this.props
-    const schoolInstructors = instructors[schoolId]
+    const { instructors } = this.props
     const { changedColors, changedStaffColors } = this.state
 
     return (
@@ -90,7 +79,7 @@ class CalendarLabels extends Component {
           <b>Instructors</b>
         </div>
         <ul className={styles.labelList}>
-          {schoolInstructors.map(instructor => {
+          {instructors.map(instructor => {
             const { first_name, last_name, id, colour } = instructor
 
             return (
