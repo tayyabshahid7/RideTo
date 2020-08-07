@@ -1,9 +1,9 @@
 import {
-  fetchSingleStaff,
-  fetchStaff,
-  deleteSingleStaff,
-  updateSchoolStaff,
-  createSchoolStaff
+  fetchSingleDiary,
+  fetchDiaries,
+  deleteSingleDiary,
+  updateSingleDiary,
+  createDiary
 } from 'services/staff'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
@@ -35,7 +35,7 @@ export const getSingleStaff = ({
   dispatch({ type: FETCH_SINGLE[REQUEST], reset })
 
   try {
-    const staff = await fetchSingleStaff(staffId, diaryId)
+    const staff = await fetchSingleDiary(staffId, diaryId)
     dispatch({
       type: FETCH_SINGLE[SUCCESS],
       data: {
@@ -47,15 +47,11 @@ export const getSingleStaff = ({
   }
 }
 
-export const getDayStaff = ({ schoolIds, date }) => async dispatch => {
+export const getDayStaff = ({ date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {
-    const request = schoolIds.map(schoolId => fetchStaff(schoolId, date, date))
-    const results = await Promise.all(request)
-
-    const staff = []
-    results.forEach(tmp => staff.push(...tmp.results))
+    const staff = fetchDiaries(date, date)
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],
@@ -72,7 +68,7 @@ export const deleteStaff = ({ staffId, diaryId }) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    await deleteSingleStaff(staffId, diaryId)
+    await deleteSingleDiary(staffId, diaryId)
     notificationActions.dispatchSuccess(dispatch, 'Staff deleted')
     dispatch({
       type: DELETE[SUCCESS],
@@ -87,16 +83,11 @@ export const deleteStaff = ({ staffId, diaryId }) => async dispatch => {
   }
 }
 
-export const getStaff = ({
-  schoolId,
-  firstDate,
-  lastDate,
-  month
-}) => async dispatch => {
+export const getStaff = ({ firstDate, lastDate, month }) => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
   try {
-    const { results: staff } = await fetchStaff(schoolId, firstDate, lastDate)
+    const staff = await fetchDiaries(firstDate, lastDate)
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
@@ -109,15 +100,10 @@ export const getStaff = ({
   }
 }
 
-export const updateStaff = ({
-  staffId,
-  diaryId,
-  data,
-  fullUpdate = false
-}) => async dispatch => {
+export const updateStaff = ({ staffId, diaryId, data }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolStaff(staffId, diaryId, data, fullUpdate)
+    let response = await updateSingleDiary(staffId, diaryId, data)
     dispatch({
       type: UPDATE[SUCCESS],
       data: { staff: response }
@@ -129,10 +115,10 @@ export const updateStaff = ({
   }
 }
 
-export const createStaff = ({ schoolId, data }) => async dispatch => {
+export const createStaff = ({ data }) => async dispatch => {
   dispatch({ type: CREATE[REQUEST] })
   try {
-    let response = await createSchoolStaff(schoolId, data)
+    let response = await createDiary(data)
     dispatch({
       type: CREATE[SUCCESS],
       data: { staff: response }
@@ -310,19 +296,21 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: true, error: null }
       }
-    case UPDATE[SUCCESS]:
-      dayStaff = state.day.staff.map(staff =>
+    case UPDATE[SUCCESS]: {
+      const dayStaff = state.day.staff.map(staff =>
         staff.id !== action.data.staff.id ? staff : { ...action.data.staff }
       )
-      calendarStaff = state.calendar.staff.map(staff =>
+      const calendarStaff = state.calendar.staff.map(staff =>
         staff.id !== action.data.staff.id ? staff : { ...action.data.staff }
       )
+      console.log(action.data.staff, dayStaff, calendarStaff)
       return {
         ...state,
         single: { saving: false, staff: action.data.staff, error: null },
         day: { ...state.day, staff: dayStaff },
         calendar: { ...state.calendar, staff: calendarStaff }
       }
+    }
     case UPDATE[FAILURE]:
       return {
         ...state,

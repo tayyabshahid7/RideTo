@@ -2,43 +2,31 @@ import React from 'react'
 import { connect } from 'react-redux'
 import styles from './CalendarShiftDayCellItem.scss'
 import UserInitial from '../UserInitial'
+import CalendarShiftIcon from '../CalendarShiftIcon'
 import classnames from 'classnames'
 import { SHIFT_TYPES } from '../../../common/constants'
-import {
-  IconClock,
-  IconHoliday,
-  IconBlocker,
-  IconSick
-} from '../../../assets/icons'
 
-const CalendarShiftDayCellItem = ({ item, schools, normal }) => {
-  const type = SHIFT_TYPES.find(x => x.id === item.event_type)
+const CalendarShiftDayCellItem = ({ diary, schools, onClick, normal }) => {
+  let type = SHIFT_TYPES.find(x => x.id === diary.event_type)
   if (!type) {
-    return null
+    type = SHIFT_TYPES[0]
   }
 
-  const school = schools.find(x => x.id === item.supplier)
+  const school = schools.find(x => x.id === diary.supplier_id)
 
   const handleClick = e => {
     e.stopPropagation()
+    onClick && onClick(diary)
   }
 
   return (
     <div
       className={classnames(styles.container, normal && styles.normal)}
-      style={{ backgroundColor: item.color }}
+      style={{ backgroundColor: diary.color }}
       onClick={handleClick}>
       <div className={styles.outerWrapper}>
-        {normal && <UserInitial user={item} short />}
-        <div className={styles.content}>
-          {type.id === 'EVENT_SHIFT' && <IconClock />}
-          {type.id === 'EVENT_BLOCKER' && <IconBlocker />}
-          {type.id === 'EVENT_SICK_DAY' && <IconSick />}
-          {type.id === 'EVENT_HOLIDAY' && <IconHoliday />}
-          <span className={styles.typeText}>
-            {type.id === 'EVENT_SHIFT' ? item.time : type.name}
-          </span>
-        </div>
+        {normal && <UserInitial user={diary} short />}
+        <CalendarShiftIcon diary={diary} />
       </div>
       {!!school && !normal && (
         <span className={styles.schoolName}>{school.name}</span>

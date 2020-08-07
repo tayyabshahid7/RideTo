@@ -3,6 +3,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import TimeField from 'react-simple-timefield'
 import ConnectDatePicker from './ConnectDatePicker'
+import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 
 export default function ConnectInput(props) {
   const {

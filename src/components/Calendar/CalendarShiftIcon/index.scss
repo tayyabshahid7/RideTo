@@ -1,11 +1,18 @@
 .container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
 }
 
-.typeText {
+.diaryText {
   font-size: 11px;
   line-height: 13px;
+  font-weight: bold;
   color: rgba(#444, 0.6);
   margin-left: 6px;
+}
+
+.diaryItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
 }

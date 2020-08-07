@@ -5,13 +5,7 @@ import styles from './index.scss'
 import classnames from 'classnames'
 import moment from 'moment'
 
-const CalendarShiftDays = ({
-  days,
-  calendar,
-  history,
-  handleMobileCellClick,
-  activeUsers
-}) => {
+const CalendarShiftDays = ({ days, calendar, history, activeUsers }) => {
   const daysByWeek = []
   for (let i = 0; i < days.length / 7; i++) {
     daysByWeek.push(days.slice(i * 7, (i + 1) * 7))

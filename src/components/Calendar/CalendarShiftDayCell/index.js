@@ -2,39 +2,37 @@ import React from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
 import CalendarShiftDayCellItem from 'components/Calendar/CalendarShiftDayCellItem'
-import { formatShiftTime } from 'utils/helper'
 
 import styles from './index.scss'
-import sortBy from 'lodash/sortBy'
 
-const getDayItems = (day, dateStr, user) => {
+const getDayItems = (day, user) => {
   let { staff = [] } = day
 
   const items = staff
-    .filter(x => x.instructor === user.id)
+    .filter(x => x.instructor_id === user.id)
     .map(s => {
       return {
         ...s,
-        s: true,
-        time: formatShiftTime(s, dateStr),
-        name: s.instructor_name,
-        first_name: s.instructor_name.split(' ')[0],
-        last_name: s.instructor_name.split(' ')[1],
-        color: s.colour
+        first_name: s.instructor_name ? s.instructor_name.split(' ')[0] : '',
+        last_name: s.instructor_name ? s.instructor_name.split(' ')[1] : ''
       }
     })
-    .sort((a, b) => b.all_day - a.all_day)
 
-  return sortBy(items, ['time'])
+  return items
 }
 
 const CalendarShiftDayCell = ({ day, calendar, history, user }) => {
   const dateStr = moment(day.date).format('YYYY-MM-DD')
-  const items = getDayItems(day, dateStr, user)
+  const items = getDayItems(day, user)
   const selectedDay = dateStr === calendar.selectedDate
 
   const handleClick = () => {
     history.push(`/calendar/${dateStr}/shifts/${user.id}/list`)
+  }
+
+  const handleDiaryClick = diary => {
+    console.log(diary)
+    history.push(`/calendar/${dateStr}/shifts/${user.id}/${diary.id}/edit`)
   }
 
   return (
@@ -45,8 +43,12 @@ const CalendarShiftDayCell = ({ day, calendar, history, user }) => {
       )}
       onClick={handleClick}>
       <div className={styles.courseContainer}>
-        {items.map(item => (
-          <CalendarShiftDayCellItem key={item.id} item={item} />
+        {items.map(diary => (
+          <CalendarShiftDayCellItem
+            key={diary.id}
+            diary={diary}
+            onClick={handleDiaryClick}
+          />
         ))}
       </div>
       {!items.length && <div className={styles.editButton}>Edit</div>}

@@ -55,7 +55,7 @@ const CalendarWeekStaff = ({ staff, position, barCount, calendar, match }) => {
       <div
         className={classnames(styles.content)}
         style={{ background: staff.colour }}>
-        <CalendarShiftIcon staff={staff} />
+        <CalendarShiftIcon diary={staff} />
         {isDay && <div>{staff.start_time.substr(11, 5)}</div>}
       </div>
     </div>

@@ -34,7 +34,7 @@ class AddShiftComponent extends Component {
 
   onSave(data) {
     const { createStaff } = this.props
-    createStaff({ schoolId: data.supplier, data })
+    createStaff({ data })
   }
 
   render() {

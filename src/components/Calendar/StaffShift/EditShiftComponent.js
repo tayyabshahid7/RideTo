@@ -33,20 +33,17 @@ class EditShiftComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, staff, history, error } = this.props
+    const { saving, staff, history } = this.props
+    const { date } = prevProps.match.params
 
     if (prevProps.staff && !staff) {
-      const { date, id } = prevProps.staff.date
+      const { id } = prevProps.staff
       history.push(`/calendar/${date}/shifts/${id}/list`)
       return
     }
 
     if (prevProps.saving === true && saving === false) {
-      if (staff) {
-        history.push(`/calendar/${staff.date}/shifts/${staff.id}/list`)
-      } else {
-        console.log('Error', error)
-      }
+      history.push(`/calendar/${date}/shifts/${prevProps.staff.id}/list`)
     }
   }
 
@@ -55,8 +52,7 @@ class EditShiftComponent extends Component {
     updateStaff({
       staffId: match.params.staffId,
       diaryId: match.params.diaryId,
-      data,
-      fullUpdate: true
+      data
     })
   }
 
@@ -75,7 +71,7 @@ class EditShiftComponent extends Component {
   }
 
   render() {
-    let { loading, staff, isAdmin } = this.props
+    let { loading, staff, isAdmin, match } = this.props
     const { showDeleteConfirmModal } = this.state
 
     if (!isAdmin) {
@@ -88,7 +84,7 @@ class EditShiftComponent extends Component {
     if (!staff) {
       return <div>Staff Not Found</div>
     }
-    const { date } = staff
+    const { date } = match.params
     const backLink = `/calendar/${date}/shifts/${staff.id}/list`
 
     return (
@@ -97,6 +93,7 @@ class EditShiftComponent extends Component {
           <DateHeading date={date ? moment(date) : null} backLink={backLink} />
           <ShiftForm
             {...this.props}
+            staffId={staff.instructor_id}
             onSubmit={this.onSave.bind(this)}
             onRemove={this.handleToggleDeleteModal.bind(this)}
           />

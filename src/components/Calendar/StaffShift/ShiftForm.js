@@ -2,124 +2,74 @@ import React from 'react'
 import moment from 'moment'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-import { DAY_FORMAT3, DATE_FORMAT, SHIFT_TYPES } from 'common/constants'
+import { DATE_FORMAT, SHIFT_TYPES } from 'common/constants'
 import Loading from 'components/Loading'
-import pick from 'lodash/pick'
+import _ from 'lodash'
 
-import { getTimeFromDateTime } from 'utils/helper'
-
-import {
-  ConnectSelect,
-  ConnectInput,
-  Button,
-  ConnectCheckbox
-} from 'components/ConnectForm'
+import { ConnectSelect, ConnectInput, Button } from 'components/ConnectForm'
 
 class ShiftForm extends React.Component {
   constructor(props) {
     super(props)
+    const { date = '' } = props
+
     const staff = {
+      instructor_id: props.staffId,
+      supplier_id: '',
+      start_date: date,
+      end_date: date,
+      times: [
+        {
+          start_time: '',
+          end_time: ''
+        }
+      ],
       event_type: SHIFT_TYPES[0].id,
-      supplier: '',
-      start_time: '',
-      end_time: '',
-      notes: '',
-      instructor: props.staffId,
-      all_day: false,
-      date: ''
+      notes: ''
     }
 
-    if (this.props.schools) {
-      staff.supplier = this.props.schools[0].id
+    let schoolList = []
+    const { schools, instructors } = props
+    const instructor = instructors.find(x => x.id === parseInt(props.staffId))
+    if (instructor) {
+      staff.instructor_id = instructor.id
+      schoolList = schools.filter(x => instructor.supplier.includes(x.id))
+      staff.supplier_id = schoolList[0].id
     }
 
     if (this.props.staff) {
-      Object.assign(
-        staff,
-        pick(
-          this.props.staff,
-          'event_type',
-          'supplier',
-          'instructor',
-          'start_time',
-          'end_time',
-          'notes',
-          'all_day',
-          'date'
-        )
-      )
-      staff.start_time = `${staff.date}T${staff.start_time}`
-      staff.end_time = `${staff.date}T${staff.end_time}`
-    } else if (this.props.date) {
-      staff.date = this.props.date
+      const fields = [
+        'start_date',
+        'end_date',
+        'times',
+        'event_type',
+        'notes',
+        'supplier_id'
+      ]
+      Object.assign(staff, _.pick(this.props.staff, fields))
     }
 
-    this.state = {
-      staff,
-      startTime: getTimeFromDateTime(staff.start_time),
-      endTime: getTimeFromDateTime(staff.end_time)
-    }
+    this.state = { ...staff, schoolList }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.state.staff.all_day !== prevState.staff.all_day &&
-      this.state.staff.all_day
-    ) {
-      this.handleChangeTime('endTime', '23:59')
-    }
+  handleChange = name => value => {
+    this.setState({ [name]: value })
   }
 
-  getStartDate(staff) {
-    if (this.props.date) {
-      return this.props.date
-    }
+  handleChangeDate = e => {
+    const name = e.target.name
+    const value =
+      e.target.type === 'checkbox' ? e.target.checked : e.target.value
 
-    if (staff.start_time) {
-      return moment(staff.start_time, DAY_FORMAT3).format(DATE_FORMAT)
-    }
+    this.setState({ [name]: value })
   }
 
-  handleChangeSchool = id => {
-    this.setState({
-      staff: { ...this.state.staff, supplier: id }
-    })
-  }
+  handleChangeTime = index => e => {
+    const { name, value } = e.target
+    const times = this.state.times.slice()
+    times[index][name] = value
 
-  handleChangeInstructor = id => {
-    this.setState({
-      staff: {
-        ...this.state.staff,
-        instructor: id
-      }
-    })
-  }
-
-  handleChangeType = event_type => {
-    this.setState({
-      staff: {
-        ...this.state.staff,
-        event_type
-      }
-    })
-  }
-
-  handleChangeRawEvent = e => {
-    let name = e.target.name
-    let { staff } = this.state
-
-    this.setState({
-      staff: {
-        ...staff,
-        [name]: e.target.type === 'checkbox' ? e.target.checked : e.target.value
-      }
-    })
-  }
-
-  handleChangeTime(field, value) {
-    this.setState({
-      [field]: value
-    })
+    this.setState({ times })
   }
 
   handleCancel(e) {
@@ -136,32 +86,35 @@ class ShiftForm extends React.Component {
     }
   }
 
+  handleNewTime = () => {
+    const times = this.state.times.slice()
+    times.push({
+      start_time: '',
+      end_time: ''
+    })
+
+    this.setState({ times })
+  }
+
+  handleRemoveTime = () => index => {
+    const times = this.state.times.slice()
+    times.splice(index, 1)
+    this.setState({ times })
+  }
+
   handleSave(e) {
     e.preventDefault()
+
     const { onSubmit } = this.props
-    const date = this.getStartDate(this.state.staff)
-    const staff = {
-      ...this.state.staff,
-      start_time: moment(
-        `${date} ${this.state.startTime}`,
-        'YYYY-MM-DD HH:mm'
-      ).format('HH:mm:ssZ'),
-      end_time: moment(
-        `${date} ${this.state.endTime}`,
-        'YYYY-MM-DD HH:mm'
-      ).format('HH:mm:ssZ')
-    }
+    const staff = _.cloneDeep(this.state)
+    delete staff.schoolList
+
     onSubmit(staff)
   }
 
   render() {
-    const { saving, onRemove, schools, instructors } = this.props
-    const { startTime, endTime } = this.state
-    const { instructor, supplier, all_day, event_type } = this.state.staff
-
-    const schoolInstructors = instructors.filter(x =>
-      x.supplier.includes(supplier)
-    )
+    const { saving, onRemove } = this.props
+    const { schoolList } = this.state
 
     return (
       <div className={styles.wrapper}>
@@ -172,35 +125,14 @@ class ShiftForm extends React.Component {
               <Col>
                 <ConnectSelect
                   basic
-                  name="supplier"
-                  value={supplier}
+                  name="supplier_id"
+                  value={this.state.supplier_id}
                   label="Location"
                   className="form-group"
                   type="text"
-                  onChange={this.handleChangeSchool}
+                  onChange={this.handleChange('supplier_id')}
                   required
-                  options={schools}
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <ConnectSelect
-                  basic
-                  name="instructor"
-                  value={instructor}
-                  label="Staff"
-                  className="form-group"
-                  type="text"
-                  onChange={this.handleChangeInstructor}
-                  required
-                  options={[
-                    { id: '', name: 'Select' },
-                    ...schoolInstructors.map(instructor => ({
-                      ...instructor,
-                      name: `${instructor.first_name} ${instructor.last_name}`
-                    }))
-                  ]}
+                  options={schoolList}
                 />
               </Col>
             </Row>
@@ -209,11 +141,11 @@ class ShiftForm extends React.Component {
                 <ConnectSelect
                   basic
                   name="event_type"
-                  value={event_type}
+                  value={this.state.event_type}
                   label="Shift Type"
                   className="form-group"
                   type="text"
-                  onChange={this.handleChangeType}
+                  onChange={this.handleChange('event_type')}
                   required
                   options={SHIFT_TYPES}
                 />
@@ -221,43 +153,54 @@ class ShiftForm extends React.Component {
             </Row>
             <div className={styles.timeRow}>
               <ConnectInput
+                label="From"
                 basic
-                name="startTime"
-                value={startTime}
-                label="Start Time"
-                className="form-group"
-                type="time"
-                onChange={({ target }) =>
-                  this.handleChangeTime('startTime', target.value)
-                }
+                name="start_date"
+                value={this.state.start_date}
+                type="date"
+                onChange={this.handleChangeDate}
                 required
               />
               <ConnectInput
+                label="Until"
                 basic
-                name="endTime"
-                value={endTime}
-                label="End Time"
-                className="form-group"
-                type="time"
-                onChange={({ target }) =>
-                  this.handleChangeTime('endTime', target.value)
-                }
+                name="end_date"
+                value={this.state.end_date}
+                type="date"
+                onChange={this.handleChangeDate}
                 required
               />
             </div>
-            <Row>
-              <Col>
-                <ConnectCheckbox
+            {this.state.times.map((time, index) => (
+              <div className={styles.timeRow}>
+                <ConnectInput
                   basic
-                  vertical
-                  name="all_day"
-                  checked={all_day}
-                  label="All Day"
+                  name="start_time"
+                  value={time.start_time}
+                  label="Start Time"
                   className="form-group"
-                  onChange={this.handleChangeRawEvent}
+                  type="time"
+                  onChange={this.handleChangeTime(index)}
+                  required
                 />
-              </Col>
-            </Row>
+                <ConnectInput
+                  basic
+                  name="end_time"
+                  value={time.end_time}
+                  label="End Time"
+                  className="form-group"
+                  type="time"
+                  onChange={this.handleChangeTime(index)}
+                  required
+                />
+                <span
+                  className={styles.close}
+                  onClick={this.handleRemoveTime(index)}></span>
+              </div>
+            ))}
+            <div className={styles.btnLink}>
+              <span onClick={this.handleNewTime}>Add Interval</span>
+            </div>
             <div className={styles.actions}>
               <div>
                 <Button type="submit" color="primary">
