@@ -80,7 +80,13 @@ class ShiftForm extends React.Component {
 
   handleCancel(e) {
     e.preventDefault()
-    const { date, history, staff } = this.props
+    const { date, history, staff, isPopup, onClose } = this.props
+
+    if (isPopup) {
+      onClose && onClose()
+      return
+    }
+
     if (date) {
       history.push(`/calendar/${date}`)
     } else if (staff) {
