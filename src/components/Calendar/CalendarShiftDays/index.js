@@ -5,7 +5,7 @@ import styles from './index.scss'
 import classnames from 'classnames'
 import moment from 'moment'
 
-const CalendarShiftDays = ({ days, calendar, history, activeUsers }) => {
+const CalendarShiftDays = ({ days, calendar, onEdit, onNew, activeUsers }) => {
   const daysByWeek = []
   for (let i = 0; i < days.length / 7; i++) {
     daysByWeek.push(days.slice(i * 7, (i + 1) * 7))
@@ -56,8 +56,8 @@ const CalendarShiftDays = ({ days, calendar, history, activeUsers }) => {
                   key={`${wIndex * 7 + dIndex}-${uIndex}`}
                   day={day}
                   user={user}
-                  calendar={calendar}
-                  history={history}
+                  onEdit={onEdit}
+                  onNew={onNew}
                 />
               ))}
             </React.Fragment>

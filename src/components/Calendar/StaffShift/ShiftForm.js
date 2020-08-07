@@ -24,8 +24,14 @@ class ShiftForm extends React.Component {
           end_time: ''
         }
       ],
-      event_type: SHIFT_TYPES[0].id,
-      notes: ''
+      event_type: SHIFT_TYPES[0].id
+    }
+
+    if (props.eventType) {
+      staff.event_type = `EVENT_${props.eventType}`
+      if (props.eventType !== 'SHIFT') {
+        staff.times = []
+      }
     }
 
     let schoolList = []
@@ -107,36 +113,51 @@ class ShiftForm extends React.Component {
 
     const { onSubmit } = this.props
     const staff = _.cloneDeep(this.state)
+    if (staff.event_type !== 'EVENT_SHIFT') {
+      delete staff.supplier_id
+    }
     delete staff.schoolList
+    console.log(staff)
+    staff.start_date = staff.start_date.substr(0, 10)
+    staff.end_date = staff.end_date.substr(0, 10)
+    staff.times.forEach(time => {
+      time.start_time += ':00'
+      time.end_time += ':00'
+    })
 
     onSubmit(staff)
   }
 
   render() {
-    const { saving, onRemove } = this.props
+    const { saving, onRemove, staff } = this.props
     const { schoolList } = this.state
+    const eventType = SHIFT_TYPES.find(x => x.id === this.state.event_type)
 
     return (
       <div className={styles.wrapper}>
-        <h4 className={styles.addTitle}>Add Shift</h4>
+        <h4 className={styles.addTitle}>
+          {staff ? 'Edit' : 'Add'} {eventType.name}
+        </h4>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
-            <Row>
-              <Col>
-                <ConnectSelect
-                  basic
-                  name="supplier_id"
-                  value={this.state.supplier_id}
-                  label="Location"
-                  className="form-group"
-                  type="text"
-                  onChange={this.handleChange('supplier_id')}
-                  required
-                  options={schoolList}
-                />
-              </Col>
-            </Row>
-            <Row>
+            {this.state.event_type === 'EVENT_SHIFT' && (
+              <Row>
+                <Col>
+                  <ConnectSelect
+                    basic
+                    name="supplier_id"
+                    value={this.state.supplier_id}
+                    label="Location"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChange('supplier_id')}
+                    required
+                    options={schoolList}
+                  />
+                </Col>
+              </Row>
+            )}
+            {/* <Row>
               <Col>
                 <ConnectSelect
                   basic
@@ -150,7 +171,7 @@ class ShiftForm extends React.Component {
                   options={SHIFT_TYPES}
                 />
               </Col>
-            </Row>
+            </Row> */}
             <div className={styles.timeRow}>
               <ConnectInput
                 label="From"
@@ -198,13 +219,15 @@ class ShiftForm extends React.Component {
                   onClick={this.handleRemoveTime(index)}></span>
               </div>
             ))}
-            <div className={styles.btnLink}>
-              <span onClick={this.handleNewTime}>Add Interval</span>
-            </div>
+            {this.state.event_type === 'EVENT_SHIFT' && (
+              <div className={styles.btnLink}>
+                <span onClick={this.handleNewTime}>Add Interval</span>
+              </div>
+            )}
             <div className={styles.actions}>
               <div>
                 <Button type="submit" color="primary">
-                  Save
+                  Save {eventType.name}
                 </Button>
               </div>
               <div>

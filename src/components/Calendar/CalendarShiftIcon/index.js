@@ -16,19 +16,17 @@ const CalendarShiftIcon = ({ diary }) => {
 
   return (
     <div className={styles.container}>
-      {type.id ? (
-        'EVENT_SHIFT' && (
-          <React.Fragment>
-            {diary.times.map(time => (
-              <div key={time.id} className={styles.diaryItem}>
-                <IconClock />
-                <span className={styles.diaryText}>
-                  {time.start_time.substr(0, 5)} - {time.end_time.substr(0, 5)}
-                </span>
-              </div>
-            ))}
-          </React.Fragment>
-        )
+      {type.id === 'EVENT_SHIFT' ? (
+        <React.Fragment>
+          {diary.times.map(time => (
+            <div key={time.id} className={styles.diaryItem}>
+              <IconClock />
+              <span className={styles.diaryText}>
+                {time.start_time.substr(0, 5)} - {time.end_time.substr(0, 5)}
+              </span>
+            </div>
+          ))}
+        </React.Fragment>
       ) : (
         <React.Fragment>
           <div className={styles.diaryItem}>

@@ -1,7 +1,7 @@
 import React from 'react'
-import moment from 'moment'
 import classnames from 'classnames'
-import CalendarShiftDayCellItem from 'components/Calendar/CalendarShiftDayCellItem'
+import CalendarShiftDayCellItem from '../CalendarShiftDayCellItem'
+import CalendarShiftDayEdit from '../CalendarShiftDayEdit'
 
 import styles from './index.scss'
 
@@ -21,27 +21,20 @@ const getDayItems = (day, user) => {
   return items
 }
 
-const CalendarShiftDayCell = ({ day, calendar, history, user }) => {
-  const dateStr = moment(day.date).format('YYYY-MM-DD')
+const CalendarShiftDayCell = ({ day, user, onNew, onEdit }) => {
   const items = getDayItems(day, user)
-  const selectedDay = dateStr === calendar.selectedDate
-
-  const handleClick = () => {
-    history.push(`/calendar/${dateStr}/shifts/${user.id}/list`)
-  }
 
   const handleDiaryClick = diary => {
-    console.log(diary)
-    history.push(`/calendar/${dateStr}/shifts/${user.id}/${diary.id}/edit`)
+    onEdit && onEdit({ diary, user, day })
+  }
+
+  const handleNewClick = eventType => {
+    onNew && onNew({ eventType, day, user })
   }
 
   return (
     <div
-      className={classnames(
-        styles.container,
-        selectedDay && styles.selectedDay
-      )}
-      onClick={handleClick}>
+      className={classnames(styles.container, items.length && styles.dataCell)}>
       <div className={styles.courseContainer}>
         {items.map(diary => (
           <CalendarShiftDayCellItem
@@ -51,7 +44,7 @@ const CalendarShiftDayCell = ({ day, calendar, history, user }) => {
           />
         ))}
       </div>
-      {!items.length && <div className={styles.editButton}>Edit</div>}
+      {!items.length && <CalendarShiftDayEdit onClick={handleNewClick} />}
     </div>
   )
 }

@@ -38,7 +38,8 @@ const CalendarWeekEvent = ({ event, position, barCount, calendar, match }) => {
     height: `${height * 56}px`,
     top: `${startTime * 56}px`,
     left,
-    width
+    width,
+    backgroundColor: event.colour
   }
 
   console.log(event, secondsForDay, duration)

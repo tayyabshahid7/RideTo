@@ -51,7 +51,7 @@ export const getDayStaff = ({ date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {
-    const staff = fetchDiaries(date, date)
+    const staff = await fetchDiaries(date, date)
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],

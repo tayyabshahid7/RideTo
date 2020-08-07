@@ -11,7 +11,7 @@ const EventPanelItem = ({ event, date, eventId }) => {
   // const isSelected = parseInt(eventId) === event.id
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ backgroundColor: event.colour }}>
       <div className={styles.line}>
         <Link
           className={styles.editLink}

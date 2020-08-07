@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import CoursesPanelItem from './CoursesPanelItem'
 import EventPanelItem from './EventPanelItem'
-import StaffPanelItem from './StaffPanelItem'
+// import StaffPanelItem from './StaffPanelItem'
 import styles from './CoursesPanel.scss'
 
 function CoursesPanel({
@@ -20,7 +20,7 @@ function CoursesPanel({
 }) {
   return (
     <div className={styles.coursesPanel}>
-      {!addingOrder && (
+      {/* {!addingOrder && (
         <div className={styles.panel}>
           <div className={styles.title}>Staff</div>
 
@@ -43,7 +43,7 @@ function CoursesPanel({
             </Link>
           )}
         </div>
-      )}
+      )} */}
 
       <div className={styles.panel}>
         <div className={styles.title}>Courses</div>

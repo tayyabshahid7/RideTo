@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './index.scss'
 import UserInitial from '../UserInitial'
+import _ from 'lodash'
 
 const CalendarHeaderInstructors = ({
   users,
@@ -10,8 +11,9 @@ const CalendarHeaderInstructors = ({
   inactiveUsers,
   isDay
 }) => {
-  const currUsers = []
-  activeSchools.forEach(x => currUsers.push(...users[x]))
+  const currUsers = users.filter(
+    x => _.intersection(x.supplier, activeSchools).length
+  )
   const activeUsers = currUsers.filter(x => !inactiveUsers.includes(x.id))
   if (!inactiveUsers.includes(-1)) {
     activeUsers.push({ id: -1 })

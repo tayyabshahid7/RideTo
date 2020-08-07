@@ -509,7 +509,7 @@ class CalendarPage extends Component {
           />
           <Route
             exact
-            path="/calendar/:date/shifts/:staffId/add"
+            path="/calendar/:date/shifts/:staffId/add/:eventType"
             render={routeProps => <AddShiftComponent {...routeProps} />}
           />
           <Route

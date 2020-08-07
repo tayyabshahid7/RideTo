@@ -110,7 +110,7 @@ const CalendarFilter = ({
         <Mobile>
           <div className={styles.mobileHeader}>
             <Logo />
-            <CloseButton handleClick={hideFilter} />
+            <CloseButton onClick={hideFilter} />
           </div>
           <CalendarViewChanger
             viewMode={viewMode}
