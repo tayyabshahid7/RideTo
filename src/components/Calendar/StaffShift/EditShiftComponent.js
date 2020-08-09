@@ -59,8 +59,7 @@ class EditShiftComponent extends Component {
       }
 
       const { date } = prevProps.match.params
-      const { instructor_id } = prevProps.staff
-      history.push(`/calendar/${date}/shifts/${instructor_id}/list`)
+      history.push(`/calendar/${date}`)
       return
     }
 
@@ -71,9 +70,7 @@ class EditShiftComponent extends Component {
       }
 
       const { date } = prevProps.match.params
-      history.push(
-        `/calendar/${date}/shifts/${prevProps.staff.instructor_id}/list`
-      )
+      history.push(`/calendar/${date}`)
     }
   }
 
@@ -121,9 +118,7 @@ class EditShiftComponent extends Component {
     }
 
     const date = isPopup ? formData.date : match.params.date
-    let backLink = isPopup
-      ? null
-      : `/calendar/${date}/shifts/${staff.instructor_id}/list`
+    let backLink = isPopup ? null : `/calendar/${date}`
 
     return (
       <React.Fragment>

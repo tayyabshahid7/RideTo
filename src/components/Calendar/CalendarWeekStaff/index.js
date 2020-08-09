@@ -5,7 +5,7 @@ import CalendarShiftIcon from '../CalendarShiftIcon'
 import { getTimeOfDayInSeconds } from 'utils/helper'
 import {
   WEEK_VIEW_START_TIME,
-  WORK_HOURS,
+  // WORK_HOURS,
   CALENDAR_VIEW
 } from 'common/constants'
 
@@ -21,12 +21,13 @@ const CalendarWeekStaff = ({ staff, position, barCount, calendar, match }) => {
     height += startTime
     startTime = 0
   }
-  if (startTime + height > WORK_HOURS - 1) {
-    height = WORK_HOURS - startTime - 1
-    if (height < 0) {
-      return null
-    }
-  }
+  height = 20 - 7
+  // if (startTime + height > WORK_HOURS - 1) {
+  //   height = WORK_HOURS - startTime - 1
+  //   if (height < 0) {
+  //     return null
+  //   }
+  // }
   let left = `${position * 4}px`
   let width = `calc(100% - ${(barCount - 1) * 4}px)`
 
@@ -52,11 +53,9 @@ const CalendarWeekStaff = ({ staff, position, barCount, calendar, match }) => {
           styles.clickedCourse
       )}
       style={style}>
-      <div
-        className={classnames(styles.content)}
-        style={{ background: staff.colour }}>
+      <div className={classnames(styles.content)}>
         <CalendarShiftIcon diary={staff} />
-        {isDay && <div>{staff.start_time.substr(11, 5)}</div>}
+        {/* {isDay && <div>{staff.start_time.substr(11, 5)}</div>} */}
       </div>
     </div>
   )

@@ -62,7 +62,7 @@ const getDayItems = (day, dateStr, users, inactiveCourses) => {
 const getShiftUsers = (day, users) => {
   const { staff = [] } = day
   const shiftUsers = users.filter(u =>
-    staff.find(x => parseInt(x.instructor) === u.id)
+    staff.find(x => parseInt(x.instructor_id) === u.id)
   )
   return shiftUsers
 }

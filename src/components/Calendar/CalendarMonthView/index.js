@@ -20,8 +20,8 @@ function CalendarMonthView(props) {
       <div className={styles.daysContainer}>
         <Mobile>
           <div className={styles.weekNames}>
-            {weeks.map(x => (
-              <span>{x}</span>
+            {weeks.map((x, index) => (
+              <span key={index}>{x}</span>
             ))}
           </div>
         </Mobile>

@@ -12,9 +12,9 @@ import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseCompo
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
 import AddEventComponent from 'components/Calendar/AddEditEvent/AddEventComponent'
 import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventComponent'
-import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponent'
-import EditStaffComponent from 'components/Calendar/AddEditStaff/EditStaffComponent'
-import ShiftListComponent from 'components/Calendar/StaffShift/ShiftListComponent'
+// import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponent'
+// import EditStaffComponent from 'components/Calendar/AddEditStaff/EditStaffComponent'
+// import ShiftListComponent from 'components/Calendar/StaffShift/ShiftListComponent'
 import AddShiftComponent from 'components/Calendar/StaffShift/AddShiftComponent'
 import EditShiftComponent from 'components/Calendar/StaffShift/EditShiftComponent'
 
@@ -76,7 +76,7 @@ class CalendarPage extends Component {
   loadData(schoolIds) {
     this.loadSchoolCourses(schoolIds)
     this.loadEvents(schoolIds)
-    this.loadStaff(schoolIds)
+    this.loadStaff()
   }
 
   loadSchoolCourses(schoolIds) {
@@ -131,10 +131,16 @@ class CalendarPage extends Component {
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
 
     schoolIds.forEach(schoolId => {
-      const month = `${calendar.year}-${calendar.month}-${schoolId}`
-
+      let month = `${calendar.year}-${calendar.month}-${schoolId}`
       if (eventCalendar.loadedMonths.includes(month)) {
         return
+      }
+
+      if (
+        calendar.viewMode === CALENDAR_VIEW.WEEK ||
+        calendar.viewMode === CALENDAR_VIEW.DAY
+      ) {
+        month = null
       }
 
       getEvents({
@@ -146,23 +152,27 @@ class CalendarPage extends Component {
     })
   }
 
-  loadStaff(schoolIds) {
+  loadStaff() {
     const { getStaff, calendar, staffCalendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
 
-    schoolIds.forEach(schoolId => {
-      const month = `${calendar.year}-${calendar.month}-${schoolId}`
+    let month = `${calendar.year}-${calendar.month}`
 
-      if (staffCalendar.loadedMonths.includes(month)) {
-        return
-      }
+    if (staffCalendar.loadedMonths.includes(month)) {
+      return
+    }
 
-      getStaff({
-        schoolId,
-        firstDate: moment(firstDate).format(DATE_FORMAT),
-        lastDate: moment(lastDate).format(DATE_FORMAT),
-        month
-      })
+    if (
+      calendar.viewMode === CALENDAR_VIEW.WEEK ||
+      calendar.viewMode === CALENDAR_VIEW.DAY
+    ) {
+      month = null
+    }
+
+    getStaff({
+      firstDate: moment(firstDate).format(DATE_FORMAT),
+      lastDate: moment(lastDate).format(DATE_FORMAT),
+      month
     })
   }
 
@@ -394,6 +404,8 @@ class CalendarPage extends Component {
       instructors,
       inactiveUsers,
       inactiveCourses,
+      activeSchools,
+      settings,
       match
     } = this.props
     const { filterOpen } = this.state
@@ -426,8 +438,10 @@ class CalendarPage extends Component {
             toggleFilter={this.toggleFilter}
             sideBarOpen={!calendarPath}
             filterOpen={filterOpen}
+            activeSchools={activeSchools}
             instructors={instructors}
             inactiveUsers={inactiveUsers}
+            settings={settings}
             handleToggleUser={this.handleToggleUser}
             inactiveCourses={inactiveCourses}
             handleToggleCourse={this.handleToggleCourse}
@@ -485,28 +499,28 @@ class CalendarPage extends Component {
             path="/calendar/:date/events/:eventId/edit"
             render={routeProps => <EditEventComponent {...routeProps} />}
           />
-          <Route
+          {/* <Route
             exact
             path="/calendar/staff/create"
             render={routeProps => <AddStaffComponent {...routeProps} />}
-          />
-          <Route
+          /> */}
+          {/* <Route
             exact
             path="/calendar/:date/staff/:staffId"
             render={routeProps => (
               <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
-          />
-          <Route
+          /> */}
+          {/* <Route
             exact
             path="/calendar/:date/staff/:staffId/:diaryId/edit"
             render={routeProps => <EditStaffComponent {...routeProps} />}
-          />
-          <Route
+          /> */}
+          {/* <Route
             exact
             path="/calendar/:date/shifts/:staffId/list"
             render={routeProps => <ShiftListComponent {...routeProps} />}
-          />
+          /> */}
           <Route
             exact
             path="/calendar/:date/shifts/:staffId/add/:eventType"
