@@ -22,6 +22,21 @@ export default function ConnectDatePicker({
   iso,
   highlightDates
 }) {
+  const handleChange = date => {
+    onChange({
+      target: {
+        name: name,
+        value: date && moment.utc(date).format('YYYY-MM-DD'),
+        ...(iso && { value: moment.utc(date).toISOString() })
+      }
+    })
+  }
+
+  let date = ''
+  if (value) {
+    date = moment(value, 'YYYY-MM-DD').toDate()
+  }
+
   return (
     <React.Fragment>
       <style
@@ -41,16 +56,8 @@ export default function ConnectDatePicker({
         )}
         id={id || name}
         type="date"
-        selected={value && new Date(value)}
-        onChange={date => {
-          onChange({
-            target: {
-              name: name,
-              value: date && moment(date).format('YYYY-MM-DD'),
-              ...(iso && { value: moment(date).toISOString() })
-            }
-          })
-        }}
+        selected={date}
+        onChange={handleChange}
         dateFormat="dd/MM/yyyy"
         disabled={disabled}
         required={required}

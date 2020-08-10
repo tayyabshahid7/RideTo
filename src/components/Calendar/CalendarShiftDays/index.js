@@ -5,13 +5,7 @@ import styles from './index.scss'
 import classnames from 'classnames'
 import moment from 'moment'
 
-const CalendarShiftDays = ({
-  days,
-  calendar,
-  history,
-  handleMobileCellClick,
-  activeUsers
-}) => {
+const CalendarShiftDays = ({ days, calendar, onEdit, onNew, activeUsers }) => {
   const daysByWeek = []
   for (let i = 0; i < days.length / 7; i++) {
     daysByWeek.push(days.slice(i * 7, (i + 1) * 7))
@@ -38,10 +32,10 @@ const CalendarShiftDays = ({
   return (
     <div className={classnames(styles.calendarDays)}>
       {daysByWeek.map((weekDays, wIndex) => (
-        <React.Fragment>
+        <React.Fragment key={wIndex}>
           <div key={`empty-${wIndex}`}></div>
           {weekDays.map((day, dIndex) => (
-            <div key={wIndex * 7 + dIndex} className={styles.cellHeader}>
+            <div key={`w${wIndex * 7 + dIndex}`} className={styles.cellHeader}>
               <div
                 className={classnames(
                   isOtherMonth(day) && styles.otherMonthDate,
@@ -53,8 +47,8 @@ const CalendarShiftDays = ({
             </div>
           ))}
           {activeUsers.map((user, uIndex) => (
-            <React.Fragment>
-              <div className={styles.userCell}>
+            <React.Fragment key={uIndex}>
+              <div key={`u${wIndex * 7}-${uIndex}`} className={styles.userCell}>
                 <UserInitial user={user} short />
               </div>
               {weekDays.map((day, dIndex) => (
@@ -62,8 +56,8 @@ const CalendarShiftDays = ({
                   key={`${wIndex * 7 + dIndex}-${uIndex}`}
                   day={day}
                   user={user}
-                  calendar={calendar}
-                  history={history}
+                  onEdit={onEdit}
+                  onNew={onNew}
                 />
               ))}
             </React.Fragment>

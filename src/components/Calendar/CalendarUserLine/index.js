@@ -5,6 +5,7 @@ import CalendarWeekStaff from '../CalendarWeekStaff'
 import CalendarWeekEvent from '../CalendarWeekEvent'
 import styles from './index.scss'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
+import { SHIFT_TYPES } from 'common/constants'
 
 class CalendarUserLine extends Component {
   componentDidMount() {}
@@ -37,7 +38,9 @@ class CalendarUserLine extends Component {
       .filter(x => x.course_type && !inactiveCourses.includes(x.course_type.id))
 
     const staffs = day.staff
-      .filter(x => x.instructor === user.id)
+      .filter(
+        x => x.instructor_id === user.id && x.event_type !== SHIFT_TYPES[0].id
+      )
       .map(x => {
         return {
           ...x,
@@ -58,6 +61,7 @@ class CalendarUserLine extends Component {
       [...courses, ...staffs, ...events],
       'secondsForDay'
     )
+
     const barMap = []
     const coursePositions = []
     for (let i = 0; i < allItems.length; i++) {
@@ -86,17 +90,6 @@ class CalendarUserLine extends Component {
     }
 
     const barCount = Math.max(...coursePositions) + 1
-
-    if (allItems.length) {
-      console.log(
-        'list',
-        allItems.map(x => ({
-          seconds: x.secondsForDay,
-          duration: x.duration
-        }))
-      )
-      console.log(barMap, coursePositions)
-    }
 
     return (
       <div className={styles.container}>

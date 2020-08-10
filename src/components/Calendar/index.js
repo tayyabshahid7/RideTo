@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import classnames from 'classnames'
 import CalendarMonthView from './CalendarMonthView'
 import CalendarShiftView from './CalendarShiftView'
@@ -19,8 +17,29 @@ import MediaQuery from 'react-responsive'
 import _ from 'lodash'
 
 class CalendarComponent extends Component {
+  getActiveUsers = () => {
+    const { instructors, activeSchools, inactiveUsers } = this.props
+
+    const currUsers = instructors.filter(
+      x => _.intersection(x.supplier, activeSchools).length
+    )
+    const activeUsers = currUsers.filter(x => !inactiveUsers.includes(x.id))
+    if (!inactiveUsers.includes(-1)) {
+      activeUsers.push({ id: -1 })
+    }
+    return activeUsers
+  }
+
+  handleToggleFitler = e => {
+    e.stopPropagation()
+    e.preventDefault()
+
+    const { filterOpen, toggleFilter } = this.props
+    toggleFilter(!filterOpen)
+  }
+
   renderOverview() {
-    const { calendar, filterOpen, toggleFilter } = this.props
+    const { calendar, filterOpen } = this.props
     const { viewMode } = calendar
     const { handleCustomEvent, handleChangeDate } = this.props
 
@@ -29,7 +48,8 @@ class CalendarComponent extends Component {
         <div className={styles.filtersWrap}>
           <div className={styles.leftFilter}>
             <div
-              onClick={() => toggleFilter(!filterOpen)}
+              id="btn-filter-toggle"
+              onClick={this.handleToggleFitler}
               className={classnames('icon-button', filterOpen && 'active')}>
               <IconSideFilter />
             </div>
@@ -69,7 +89,6 @@ class CalendarComponent extends Component {
       settings,
       sideBarOpen,
       filterOpen,
-      activeSchools,
       instructors,
       inactiveUsers,
       inactiveCourses,
@@ -80,19 +99,17 @@ class CalendarComponent extends Component {
       handleCustomEvent
     } = this.props
 
-    const tmpUsers = instructors.filter(
-      x => _.intersection(x.supplier, activeSchools).length
-    )
-    const users = tmpUsers.filter(x => !inactiveUsers.includes(x.id))
-    if (!inactiveUsers.includes(-1)) {
-      users.push({ id: -1 })
-    }
+    const users = this.getActiveUsers()
 
     return (
       <div className={classnames(styles.container)}>
         {this.renderOverview()}
         <div className={classnames(styles.wrapper)}>
-          {filterOpen && (
+          <div
+            className={classnames(
+              styles.filterWrapper,
+              filterOpen && styles.filterForm
+            )}>
             <CalendarFilter
               users={instructors}
               inactiveUsers={inactiveUsers}
@@ -103,7 +120,7 @@ class CalendarComponent extends Component {
               handleCustomEvent={handleCustomEvent}
               hideFilter={() => toggleFilter(false)}
             />
-          )}
+          </div>
           <MediaQuery minWidth={768}>
             {matches => {
               if (matches || !filterOpen) {
@@ -169,16 +186,4 @@ class CalendarComponent extends Component {
   }
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    settings: state.settings.settings,
-    activeSchools: state.auth.activeSchools
-  }
-}
-
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CalendarComponent)
+export default CalendarComponent

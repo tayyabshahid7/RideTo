@@ -12,6 +12,7 @@ import { WORK_HOURS, WEEK_START_HOUR, CALENDAR_VIEW } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import { Desktop, Mobile } from 'common/breakpoints'
 import isEqual from 'lodash/isEqual'
+
 // import { mapLabelColoursWithContant } from 'services/settings'
 
 function getDayOfWeek({ day, month, year }) {
@@ -261,11 +262,38 @@ class CalendarWeekView extends Component {
     }
   }
 
+  showUser = (user, day) => {
+    if (user.id === -1) {
+      return true
+    }
+
+    const courses = day.courses.filter(x => x.instructor === user.id)
+    const staffs = day.staff.filter(
+      x => x.instructor_id === user.id
+      //  && x.event_type !== SHIFT_TYPES[0].id
+    )
+    return courses.length || staffs.length
+  }
+
+  getDaysUserCount = (users, daysInfo) => {
+    return daysInfo.map(day => {
+      return users.filter(user => this.showUser(user, day)).map(user => user.id)
+    })
+  }
+
+  getDaysStyle = users => {
+    const cols = users.map(x => x.length + 'fr').join(' ')
+    return {
+      gridTemplateColumns: cols
+    }
+  }
+
   renderWeekdays() {
-    const { calendar, filterOpen } = this.props
+    const { calendar, users, filterOpen } = this.props
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
     let daysInfo = isDesktop ? this.getWeekDays() : this.getWeekHeaderDays()
     const weeks = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
+    const daysUser = this.getDaysUserCount(users, daysInfo)
 
     return (
       <div
@@ -277,7 +305,8 @@ class CalendarWeekView extends Component {
           className={classnames(
             styles.daysContainer,
             calendar.viewMode === CALENDAR_VIEW.DAY && styles.daysSingle
-          )}>
+          )}
+          style={this.getDaysStyle(daysUser)}>
           {daysInfo.map((day, index) => (
             <div className={this.getWeekDayStyle(day)} key={index}>
               <Mobile>
@@ -300,6 +329,9 @@ class CalendarWeekView extends Component {
                 )}
                 <Desktop>
                   <CalendarHeaderInstructors
+                    day={day}
+                    users={users}
+                    daysUser={daysUser[index]}
                     isDay={calendar.viewMode === CALENDAR_VIEW.DAY}
                   />
                 </Desktop>
@@ -322,6 +354,7 @@ class CalendarWeekView extends Component {
     } = this.props
     // const { mobileDayOfWeek } = this.state
     let daysInfo = this.getWeekDays()
+    const daysUser = this.getDaysUserCount(users, daysInfo)
 
     return (
       <div className={styles.events}>
@@ -329,7 +362,8 @@ class CalendarWeekView extends Component {
           className={classnames(
             styles.eventsContainer,
             calendar.viewMode === CALENDAR_VIEW.DAY && styles.contentSingle
-          )}>
+          )}
+          style={this.getDaysStyle(daysUser)}>
           {daysInfo.map((day, index) => (
             <div
               onClick={this.handleDayClick(day)}
@@ -353,18 +387,20 @@ class CalendarWeekView extends Component {
                   />
                 </Mobile>
                 <Desktop>
-                  {users.map(user => (
-                    <CalendarUserLine
-                      key={user.id}
-                      day={day}
-                      user={user}
-                      inactiveCourses={inactiveCourses}
-                      history={history}
-                      calendar={calendar}
-                      match={match}
-                      settings={settings}
-                    />
-                  ))}
+                  {users.map(user =>
+                    daysUser[index].includes(user.id) ? (
+                      <CalendarUserLine
+                        key={user.id}
+                        day={day}
+                        user={user}
+                        inactiveCourses={inactiveCourses}
+                        history={history}
+                        calendar={calendar}
+                        match={match}
+                        settings={settings}
+                      />
+                    ) : null
+                  )}
                   {!users.length && (
                     <CalendarDetailLine
                       day={day}

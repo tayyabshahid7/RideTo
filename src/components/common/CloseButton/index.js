@@ -1,8 +1,8 @@
 import React from 'react'
 import styles from './styles.scss'
 
-function Logo({ handleClick }) {
-  return <div className={styles.container} onClick={handleClick}></div>
+function CloseButton({ onClick }) {
+  return <div className={styles.container} onClick={onClick}></div>
 }
 
-export default Logo
+export default CloseButton

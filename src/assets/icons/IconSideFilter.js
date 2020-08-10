@@ -3,6 +3,7 @@ import React from 'react'
 function IconSideFilter(props) {
   return (
     <svg
+      style={{ pointerEvents: 'none' }}
       width="24"
       height="24"
       viewBox="0 0 24 24"

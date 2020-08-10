@@ -6,6 +6,22 @@
   margin-bottom: 24px;
 }
 
+.btnLink {
+  margin-bottom: 20px;
+
+  span {
+    font-size: 12px;
+    line-height: 15px;
+    color: var(--color-primary);
+    font-weight: 500;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -34,9 +50,6 @@
   flex-direction: column;
   width: 100%;
   flex: 1 1 1px;
-}
-
-.addEvent {
 }
 
 .actions {
@@ -72,6 +85,45 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 8px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  right: 7px;
+  bottom: 31px;
+  cursor: pointer;
+  width: 19px;
+  height: 19px;
+  display: block;
+
+  &:before,
+  &:after {
+    content: '';
+    width: 19px;
+    height: 1px;
+    top: 9px;
+    left: 0px;
+    background: #444;
+    position: absolute;
+    display: block;
+    transition: all ease 0.3s;
+  }
+
+  &:hover {
+    &:before,
+    &:after {
+      background: var(--color-primary);
+    }
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
 }
 
 .actionDelete {

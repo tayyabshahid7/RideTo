@@ -248,7 +248,11 @@ export default function reducer(state = initialState, action) {
           loading: true
         }
       }
-    case FETCH_ALL[SUCCESS]:
+    case FETCH_ALL[SUCCESS]: {
+      const loadedMonths = state.calendar.loadedMonths.slice()
+      if (action.data.month) {
+        loadedMonths.push(action.data.month)
+      }
       return {
         ...state,
         calendar: {
@@ -259,9 +263,10 @@ export default function reducer(state = initialState, action) {
             'id'
           ),
           error: null,
-          loadedMonths: [...state.calendar.loadedMonths, action.data.month]
+          loadedMonths
         }
       }
+    }
     case FETCH_ALL[FAILURE]:
       return {
         ...state,

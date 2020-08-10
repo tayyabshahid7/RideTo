@@ -41,12 +41,15 @@ const CalendarWeekEvent = ({ event, position, barCount, calendar, match }) => {
     width
   }
 
-  console.log(event, secondsForDay, duration)
   return (
     <div
       className={classnames(styles.singleEvent, styles.singleEventEvent)}
       style={style}>
-      <div className={classnames(styles.content)}>{event.name}</div>
+      <div
+        className={classnames(styles.content)}
+        style={{ backgroundColor: event.colour }}>
+        {event.name}
+      </div>
     </div>
   )
 }

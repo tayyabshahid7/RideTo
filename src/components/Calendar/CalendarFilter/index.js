@@ -49,7 +49,11 @@ const CalendarFilter = ({
 
   useEffect(() => {
     const handleClickOutside = event => {
-      if (inputEl && !inputEl.current.contains(event.target)) {
+      if (
+        inputEl &&
+        event.target.id !== 'btn-filter-toggle' &&
+        !inputEl.current.contains(event.target)
+      ) {
         hideFilter()
       }
     }
@@ -110,7 +114,7 @@ const CalendarFilter = ({
         <Mobile>
           <div className={styles.mobileHeader}>
             <Logo />
-            <CloseButton handleClick={hideFilter} />
+            <CloseButton onClick={hideFilter} />
           </div>
           <CalendarViewChanger
             viewMode={viewMode}

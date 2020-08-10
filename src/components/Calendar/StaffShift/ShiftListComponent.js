@@ -40,7 +40,8 @@ class ShiftListComponent extends Component {
     let backLink = '/calendar'
     console.log(staff)
 
-    staff = staff.filter(x => x.instructor === parseInt(staffId))
+    staff = staff.filter(x => x.instructor_id === parseInt(staffId))
+    console.log(staffId, staff)
 
     if (!isAdmin) {
       return <div>No access</div>
@@ -55,13 +56,37 @@ class ShiftListComponent extends Component {
               <div className={styles.title}>Shifts</div>
               <div>
                 {staff.map(item => (
-                  <ShiftPanelItem key={item.id} date={date} staff={item} />
+                  <ShiftPanelItem key={item.id} date={date} diary={item} />
                 ))}
               </div>
               <Link
                 className={styles.addButton}
-                to={`/calendar/${date}/shifts/${staffId}/add`}>
-                Add shift
+                to={`/calendar/${date}/shifts/${staffId}/add/SHIFT`}>
+                Add Shift
+              </Link>
+            </div>
+            <div className={styles.panel}>
+              <div className={styles.title}>Sick Days</div>
+              <Link
+                className={styles.addButton}
+                to={`/calendar/${date}/shifts/${staffId}/add/SICK_DAY`}>
+                Add Sick Day
+              </Link>
+            </div>
+            <div className={styles.panel}>
+              <div className={styles.title}>Holidays</div>
+              <Link
+                className={styles.addButton}
+                to={`/calendar/${date}/shifts/${staffId}/add/HOLIDAY`}>
+                Add Holiday
+              </Link>
+            </div>
+            <div className={styles.panel}>
+              <div className={styles.title}>Blockers</div>
+              <Link
+                className={styles.addButton}
+                to={`/calendar/${date}/shifts/${staffId}/add/BLOCKER`}>
+                Add Blocker
               </Link>
             </div>
           </div>

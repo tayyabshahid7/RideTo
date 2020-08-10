@@ -4,7 +4,7 @@ import CloseButton from 'components/common/CloseButton'
 
 import styles from './DateHeading.scss'
 
-const DateHeading = ({ date, title, children, backLink }) => {
+const DateHeading = ({ date, title, children, backLink, onBack }) => {
   return (
     <div className={styles.container}>
       <div className={styles.date}>
@@ -15,6 +15,7 @@ const DateHeading = ({ date, title, children, backLink }) => {
           <CloseButton />
         </Link>
       )}
+      {onBack && <CloseButton onClick={onBack} />}
     </div>
   )
 }

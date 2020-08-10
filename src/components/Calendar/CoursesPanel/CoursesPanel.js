@@ -2,8 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import CoursesPanelItem from './CoursesPanelItem'
 import EventPanelItem from './EventPanelItem'
-import StaffPanelItem from './StaffPanelItem'
+import ShiftPanelItem from '../StaffShift/ShiftPanelItem'
 import styles from './CoursesPanel.scss'
+import { SHIFT_TYPES } from 'common/constants'
 
 function CoursesPanel({
   courses,
@@ -13,25 +14,21 @@ function CoursesPanel({
   updateAdding,
   courseId,
   eventId,
-  staffId,
   staff,
   isAdmin,
   loadCourses
 }) {
+  const shifts = staff.filter(x => x.event_type === SHIFT_TYPES[0].id)
+
   return (
     <div className={styles.coursesPanel}>
       {!addingOrder && (
         <div className={styles.panel}>
-          <div className={styles.title}>Staff</div>
+          <div className={styles.title}>Shift</div>
 
           <div>
-            {staff.map(item => (
-              <StaffPanelItem
-                key={item.id}
-                date={date}
-                event={item}
-                staffId={staffId}
-              />
+            {shifts.map(item => (
+              <ShiftPanelItem key={item.id} date={date} diary={item} />
             ))}
           </div>
 

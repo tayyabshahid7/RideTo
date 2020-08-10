@@ -1,46 +1,22 @@
 import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 import styles from './index.scss'
 import UserInitial from '../UserInitial'
 
-const CalendarHeaderInstructors = ({
-  users,
-  activeSchools,
-  inactiveUsers,
-  isDay
-}) => {
-  const currUsers = []
-  activeSchools.forEach(x => currUsers.push(...users[x]))
-  const activeUsers = currUsers.filter(x => !inactiveUsers.includes(x.id))
-  if (!inactiveUsers.includes(-1)) {
-    activeUsers.push({ id: -1 })
-  }
-
-  if (!activeUsers.length) {
+const CalendarHeaderInstructors = ({ users, day, daysUser, isDay }) => {
+  if (!users.length) {
     return null
   }
 
   return (
     <div className={styles.container}>
-      {activeUsers.map(x => {
-        return <UserInitial key={x.id} user={x} short={!isDay} wide />
+      {users.map(user => {
+        if (daysUser.includes(user.id)) {
+          return <UserInitial key={user.id} user={user} short={!isDay} wide />
+        }
+        return null
       })}
     </div>
   )
 }
 
-const mapStateToProps = (state, ownProps) => {
-  return {
-    activeSchools: state.auth.activeSchools,
-    users: state.instructor.instructors,
-    inactiveUsers: state.calendar.inactiveUsers
-  }
-}
-
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CalendarHeaderInstructors)
+export default CalendarHeaderInstructors

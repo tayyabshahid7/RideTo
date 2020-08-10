@@ -21,8 +21,13 @@ class AddShiftComponent extends Component {
     }
   }
 
-  moveBackToPage() {
-    const { history, location } = this.props
+  moveBackToPage = () => {
+    const { history, location, isPopup, onClose } = this.props
+    if (isPopup) {
+      onClose && onClose()
+      return
+    }
+
     let parsed = queryString.parse(location.search)
     let date = parsed.date
     if (date) {
@@ -32,25 +37,40 @@ class AddShiftComponent extends Component {
     }
   }
 
-  onSave(data) {
+  onSave = data => {
     const { createStaff } = this.props
-    createStaff({ schoolId: data.supplier, data })
+    createStaff({ data })
   }
 
   render() {
-    let { staff, location, match, ...rest } = this.props
-    const { date, staffId } = match.params
-    let backLink = '/calendar'
+    let { staff, location, match, isPopup, formData, ...rest } = this.props
+    let date, staffId, eventType
+    if (isPopup) {
+      date = formData.date
+      staffId = formData.user.id
+      eventType = formData.eventType
+    } else {
+      date = match.params.date
+      staffId = match.params.staffId
+      eventType = match.params.eventType
+    }
+
+    let backLink = isPopup ? '' : '/calendar'
 
     return (
       <div className={styles.addCourse}>
-        <DateHeading date={date ? moment(date) : null} backLink={backLink} />
+        <DateHeading
+          date={date ? moment(date) : null}
+          backLink={backLink}
+          onBack={isPopup && this.moveBackToPage}
+        />
         <div className={styles.wrapper}>
           <ShiftForm
             {...rest}
             date={date}
             staffId={staffId}
-            onSubmit={this.onSave.bind(this)}
+            eventType={eventType}
+            onSubmit={this.onSave}
           />
         </div>
       </div>

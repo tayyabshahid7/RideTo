@@ -19,12 +19,29 @@ class EditShiftComponent extends Component {
     }
   }
 
-  componentDidMount() {
-    const { getSingleStaff, match } = this.props
+  getParams = () => {
+    const { isPopup, formData, match } = this.props
+    let params
 
-    getSingleStaff({
-      ...match.params
-    })
+    if (isPopup) {
+      params = {
+        staffId: formData.diary.instructor_id,
+        diaryId: formData.diary.id
+      }
+    } else {
+      params = {
+        staffId: match.params.staffId,
+        diaryId: match.params.diaryId
+      }
+    }
+
+    return params
+  }
+
+  componentDidMount() {
+    const { getSingleStaff } = this.props
+    const params = this.getParams()
+    getSingleStaff(params)
   }
 
   componentWillUnmount() {
@@ -33,39 +50,42 @@ class EditShiftComponent extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { saving, staff, history, error } = this.props
+    const { saving, staff, history, isPopup, onClose } = this.props
 
     if (prevProps.staff && !staff) {
-      const { date, id } = prevProps.staff.date
-      history.push(`/calendar/${date}/shifts/${id}/list`)
+      if (isPopup) {
+        onClose && onClose()
+        return
+      }
+
+      const { date } = prevProps.match.params
+      history.push(`/calendar/${date}`)
       return
     }
 
     if (prevProps.saving === true && saving === false) {
-      if (staff) {
-        history.push(`/calendar/${staff.date}/shifts/${staff.id}/list`)
-      } else {
-        console.log('Error', error)
+      if (isPopup) {
+        onClose && onClose()
+        return
       }
+
+      const { date } = prevProps.match.params
+      history.push(`/calendar/${date}`)
     }
   }
 
   onSave(data) {
-    const { updateStaff, match } = this.props
+    const { updateStaff } = this.props
+    const params = this.getParams()
     updateStaff({
-      staffId: match.params.staffId,
-      diaryId: match.params.diaryId,
-      data,
-      fullUpdate: true
+      ...params,
+      data
     })
   }
 
   handleRemove() {
-    const { match } = this.props
-    this.props.deleteStaff({
-      staffId: parseInt(match.params.staffId, 10),
-      diaryId: parseInt(match.params.diaryId, 10)
-    })
+    const params = this.getParams()
+    this.props.deleteStaff(params)
   }
 
   handleToggleDeleteModal() {
@@ -75,7 +95,15 @@ class EditShiftComponent extends Component {
   }
 
   render() {
-    let { loading, staff, isAdmin } = this.props
+    let {
+      loading,
+      staff,
+      isAdmin,
+      match,
+      isPopup,
+      onClose,
+      formData
+    } = this.props
     const { showDeleteConfirmModal } = this.state
 
     if (!isAdmin) {
@@ -88,15 +116,21 @@ class EditShiftComponent extends Component {
     if (!staff) {
       return <div>Staff Not Found</div>
     }
-    const { date } = staff
-    const backLink = `/calendar/${date}/shifts/${staff.id}/list`
+
+    const date = isPopup ? formData.date : match.params.date
+    let backLink = isPopup ? null : `/calendar/${date}`
 
     return (
       <React.Fragment>
         <div className={styles.addCourse}>
-          <DateHeading date={date ? moment(date) : null} backLink={backLink} />
+          <DateHeading
+            date={date ? moment(date) : null}
+            backLink={backLink}
+            onBack={isPopup && onClose}
+          />
           <ShiftForm
             {...this.props}
+            staffId={staff.instructor_id}
             onSubmit={this.onSave.bind(this)}
             onRemove={this.handleToggleDeleteModal.bind(this)}
           />
