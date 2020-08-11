@@ -11,42 +11,56 @@ import classnames from 'classnames'
 class Instructors extends React.Component {
   constructor(props) {
     super(props)
+    this.photoInput = React.createRef()
+
     this.state = {
       addNew: false,
-      selectedInstructor: null
+      selectedInstructor: null,
+      photo: '',
+      photoPreview: ''
     }
-    this.handleEdit = this.handleEdit.bind(this)
-    this.handleSave = this.handleSave.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.handleAddNew = this.handleAddNew.bind(this)
-    this.handleDelete = this.handleDelete.bind(this)
   }
 
-  handleSave(event) {
+  handleSave = event => {
     event.preventDefault()
 
     const { newInstructor, editInstructor } = this.props
-    const { addNew, selectedInstructor } = this.state
-    const data = {
-      ...selectedInstructor,
-      supplier: selectedInstructor.supplier.map(x => x.id)
+    const { addNew, selectedInstructor, photo } = this.state
+    const formData = new FormData()
+    Object.keys(selectedInstructor).forEach(field => {
+      if (field === 'supplier') {
+        formData.append(field, selectedInstructor.supplier.map(x => x.id))
+      } else {
+        if (selectedInstructor[field]) {
+          formData.append(field, selectedInstructor[field])
+        }
+      }
+    })
+    if (photo) {
+      formData.append('user_photo', photo)
     }
+
     if (addNew) {
-      newInstructor(data)
+      newInstructor(formData)
     } else {
-      editInstructor(data)
+      editInstructor(selectedInstructor.id, formData)
     }
 
     this.setState({ addNew: false, selectedInstructor: null })
   }
 
-  handleEdit(instructor) {
+  handleEdit = instructor => {
     const { suppliers } = this.props
     const selectedInstructor = {
       ...instructor,
       supplier: suppliers.filter(x => instructor.supplier.includes(x.id))
     }
-    this.setState({ selectedInstructor, addNew: false })
+    this.setState({
+      selectedInstructor,
+      addNew: false,
+      photo: '',
+      photoPreview: instructor.user_photo || ''
+    })
   }
 
   handleSupplierChange = values => {
@@ -60,7 +74,7 @@ class Instructors extends React.Component {
     return this.props.suppliers.filter(x => ids.includes(x.id)).map(x => x.name)
   }
 
-  handleChange(event) {
+  handleChange = event => {
     const { name, value } = event.target
     const { selectedInstructor } = this.state
     this.setState({
@@ -68,7 +82,23 @@ class Instructors extends React.Component {
     })
   }
 
-  handleAddNew() {
+  handleImageChange = e => {
+    e.preventDefault()
+
+    let reader = new FileReader()
+    let file = e.target.files[0]
+
+    reader.onloadend = () => {
+      this.setState({
+        photo: file,
+        photoPreview: reader.result
+      })
+    }
+
+    reader.readAsDataURL(file)
+  }
+
+  handleAddNew = () => {
     this.setState({
       selectedInstructor: {
         first_name: '',
@@ -77,11 +107,13 @@ class Instructors extends React.Component {
         password: '',
         supplier: []
       },
+      photo: '',
+      photoPreview: '',
       addNew: true
     })
   }
 
-  handleDelete(instructor) {
+  handleDelete = instructor => {
     const confirm = window.confirm(
       `Are you sure you whant to delete instructor ${instructor.first_name} ${instructor.last_name}`
     )
@@ -93,7 +125,7 @@ class Instructors extends React.Component {
 
   render() {
     const { saving, instructors, suppliers } = this.props
-    const { addNew, selectedInstructor } = this.state
+    const { addNew, selectedInstructor, photoPreview } = this.state
 
     return (
       <Fragment>
@@ -126,6 +158,11 @@ class Instructors extends React.Component {
               {instructors.map((instructor, key) => {
                 return (
                   <div key={key} className={classnames(styles.userRow)}>
+                    <div className={styles.detailPhoto}>
+                      {!!instructor.user_photo && (
+                        <img src={instructor.user_photo} alt="User" />
+                      )}
+                    </div>
                     <span className={styles.fullName}>
                       {instructor.first_name} {instructor.last_name}
                     </span>
@@ -161,61 +198,85 @@ class Instructors extends React.Component {
               </h3>
             </ModalHeader>
             <ModalBody>
-              <form
-                id="instructorForm"
-                onSubmit={this.handleSave}
-                className={styles.editForm}>
-                <ConnectInput
-                  name="first_name"
-                  value={selectedInstructor.first_name}
-                  label="First Name"
-                  className="form-group"
-                  onChange={this.handleChange}
-                  required={addNew}
-                />
-                <ConnectInput
-                  name="last_name"
-                  value={selectedInstructor.last_name}
-                  label="Last Name"
-                  className="form-group"
-                  onChange={this.handleChange}
-                  required={addNew}
-                />
-                <ConnectInput
-                  name="email"
-                  value={selectedInstructor.email}
-                  label="Email"
-                  className="form-group"
-                  onChange={this.handleChange}
-                  required={addNew}
-                />
-                <ConnectInput
-                  name="password"
-                  value={selectedInstructor.password}
-                  label="Password"
-                  className="form-group"
-                  onChange={this.handleChange}
-                  required={addNew}
-                  type="password"
-                  minLength="6"
-                />
-                <ConnectReactSelect
-                  label="Schools"
-                  name="supplier"
-                  value={selectedInstructor.supplier}
-                  onChange={this.handleSupplierChange}
-                  options={suppliers}
-                />
-                <Button color="primary" type="submit" disabled={saving}>
-                  {addNew ? 'Add' : 'Save'}
-                </Button>
-                <Button
-                  color="link"
-                  type="button"
-                  onClick={() => this.setState({ selectedInstructor: null })}>
-                  Cancel
-                </Button>
-              </form>
+              <div className={styles.mobileContent}>
+                <div>
+                  {photoPreview && (
+                    <img
+                      src={photoPreview}
+                      className={styles.photoPreview}
+                      alt="preview"
+                    />
+                  )}
+                  <input
+                    style={{ display: 'none' }}
+                    className={styles.fileInput}
+                    type="file"
+                    ref={this.photoInput}
+                    onChange={this.handleImageChange}
+                  />
+                  <Button
+                    color="link"
+                    type="button"
+                    onClick={() => this.photoInput.current.click()}>
+                    Choose Photo
+                  </Button>
+                </div>
+                <form
+                  id="instructorForm"
+                  onSubmit={this.handleSave}
+                  className={styles.editForm}>
+                  <ConnectInput
+                    name="first_name"
+                    value={selectedInstructor.first_name}
+                    label="First Name"
+                    className="form-group"
+                    onChange={this.handleChange}
+                    required={addNew}
+                  />
+                  <ConnectInput
+                    name="last_name"
+                    value={selectedInstructor.last_name}
+                    label="Last Name"
+                    className="form-group"
+                    onChange={this.handleChange}
+                    required={addNew}
+                  />
+                  <ConnectInput
+                    name="email"
+                    value={selectedInstructor.email}
+                    label="Email"
+                    className="form-group"
+                    onChange={this.handleChange}
+                    required={addNew}
+                  />
+                  <ConnectInput
+                    name="password"
+                    value={selectedInstructor.password}
+                    label="Password"
+                    className="form-group"
+                    onChange={this.handleChange}
+                    required={addNew}
+                    type="password"
+                    minLength="6"
+                  />
+                  <ConnectReactSelect
+                    label="Schools"
+                    name="supplier"
+                    value={selectedInstructor.supplier}
+                    onChange={this.handleSupplierChange}
+                    options={suppliers}
+                  />
+                  <Button color="primary" type="submit" disabled={saving}>
+                    {addNew ? 'Add' : 'Save'}
+                  </Button>
+                  <Button
+                    color="link"
+                    type="button"
+                    onClick={() => this.setState({ selectedInstructor: null })}>
+                    Cancel
+                  </Button>
+                </form>
+              </div>
             </ModalBody>
           </Modal>
         )}

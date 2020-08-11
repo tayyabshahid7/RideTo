@@ -28,7 +28,11 @@ const UserInitial = ({ user, short = false, wide }) => {
         short && styles.short,
         wide && styles.wide
       )}>
-      <UserAvatar />
+      {user.user_photo ? (
+        <img src={user.user_photo} className={styles.photo} alt={initial} />
+      ) : (
+        <UserAvatar />
+      )}
       <span>{initial}</span>
     </div>
   )

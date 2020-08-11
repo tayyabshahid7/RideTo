@@ -309,7 +309,6 @@ export default function reducer(state = initialState, action) {
       const calendarStaff = state.calendar.staff.map(staff =>
         staff.id !== action.data.staff.id ? staff : { ...action.data.staff }
       )
-      console.log(action.data.staff, dayStaff, calendarStaff)
       return {
         ...state,
         single: { saving: false, staff: action.data.staff, error: null },
