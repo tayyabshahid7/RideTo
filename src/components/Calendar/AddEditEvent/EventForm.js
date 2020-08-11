@@ -43,6 +43,7 @@ class EventForm extends React.Component {
           'start_time',
           'end_time',
           'notes',
+          'colour',
           'all_day'
         )
       )
