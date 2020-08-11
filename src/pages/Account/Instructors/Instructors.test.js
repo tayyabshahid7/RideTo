@@ -11,10 +11,7 @@ let props
 
 beforeEach(() => {
   props = {
-    instructors: {
-      1: [],
-      2: []
-    },
+    instructors: [],
     schoolId: 1,
     newInstructor: jest.fn()
   }

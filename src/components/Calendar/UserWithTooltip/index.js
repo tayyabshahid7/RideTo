@@ -25,7 +25,11 @@ const UserWithTooltip = ({ user, short = false }) => {
       title={initial}
       key={user.id}
       className={classnames(styles.user, short && styles.short)}>
-      <UserAvatar />
+      {user.user_photo ? (
+        <img src={user.user_photo} className={styles.photo} alt={initial} />
+      ) : (
+        <UserAvatar />
+      )}
       {/* <span>{initial}</span> */}
     </div>
   )

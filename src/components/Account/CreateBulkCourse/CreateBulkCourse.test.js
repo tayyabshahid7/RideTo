@@ -50,18 +50,16 @@ beforeEach(() => {
         }
       ]
     },
-    instructors: {
-      44: [
-        {
-          id: 204,
-          first_name: 'Nathan',
-          last_name: 'Brown',
-          supplier: 44,
-          colour: '#2CCEAC',
-          diary: []
-        }
-      ]
-    },
+    instructors: [
+      {
+        id: 204,
+        first_name: 'Nathan',
+        last_name: 'Brown',
+        colour: '#2CCEAC',
+        diary: [],
+        supplier: [44]
+      }
+    ],
     schools: [
       {
         id: 44,

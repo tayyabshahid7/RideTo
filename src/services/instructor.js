@@ -12,8 +12,8 @@ export const addInstructor = async instructorData => {
   return response
 }
 
-export const updateInstructor = async instructorData => {
-  const path = `school/instructor/${instructorData.id}`
+export const updateInstructor = async (id, instructorData) => {
+  const path = `school/instructor/${id}`
   const response = await put(path, instructorData)
   return response
 }

@@ -51,10 +51,10 @@ export const newInstructor = data => async dispatch => {
   }
 }
 
-export const editInstructor = data => async dispatch => {
+export const editInstructor = (id, data) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    const instructor = await updateInstructor(data)
+    const instructor = await updateInstructor(id, data)
     dispatch({
       type: UPDATE[SUCCESS],
       data: { instructor }
