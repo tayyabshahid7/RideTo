@@ -16,7 +16,6 @@ export default function ConnectColorInput(props) {
   ]
 
   const changeColor = color => () => {
-    console.log(color)
     onChange(color)
   }
 
@@ -41,7 +40,7 @@ export default function ConnectColorInput(props) {
             style={{ backgroundColor: color }}
             className={classnames(
               styles.colorItem,
-              color === value && styles.activeColor
+              value && color === value.toUpperCase() && styles.activeColor
             )}></span>
         ))}
       </div>
