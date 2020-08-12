@@ -4,6 +4,7 @@ import styles from './styles.scss'
 import { getCourseTitle } from 'services/course'
 import MapComponent from 'components/RideTo/MapComponent'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
+import RefundInfo from 'components/RideTo/CheckoutPage/RefundInfo'
 import classnames from 'classnames'
 
 function renderRow(title, content, index, priceHighlight = false) {
@@ -44,16 +45,12 @@ function CourseInformation({
   const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
   const isFullLicence = courseType === 'FULL_LICENCE'
 
+  const diffDays = moment().diff(moment(date), 'days')
+
   return (
     <Fragment>
       <div className={styles.rowContainer}>
         <div className={styles.orderTopSection}>
-          <OrderIncluded
-            bikeHire={bike_hire}
-            hasGloves={gloves_jacket_included}
-            helmetHire={helmet_hire}
-          />
-
           {isFullLicence && (
             <div style={{ marginTop: '1rem' }}>
               {renderRow(
@@ -89,6 +86,12 @@ function CourseInformation({
           )}
         </div>
 
+        {!isFullLicence &&
+          renderRow(
+            'Date & Time',
+            `${moment(date).format('ddd D MMMM')}: ${requested_time}`
+          )}
+
         <div>
           {renderRow(
             'Location',
@@ -107,15 +110,6 @@ function CourseInformation({
           )}
         </div>
 
-        {!isFullLicence &&
-          renderRow(
-            'Date & Time',
-            `${moment(date).format('ddd D MMMM')}: ${requested_time}`
-          )}
-        <div className={styles.limitedWarning}>
-          <span>Last few spaces</span>
-        </div>
-
         {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no' ? (
           <div className={styles.bikeHireCost}>
             {renderRow(
@@ -125,6 +119,21 @@ function CourseInformation({
             )}
           </div>
         ) : null}
+        <div className={styles.rowItem}>
+          <div className={styles.subtitle}>REFUND POLICY</div>
+          <div className={classnames(styles.content, styles.refundContent)}>
+            {diffDays <= 3 && <RefundInfo />}
+            <span>{diffDays <= 3 ? 'Non-refundable' : '100% Refundable*'}</span>
+          </div>
+        </div>
+        <div className={styles.orderIncluded}>
+          <div className={styles.subtitle}>WHAT'S INCLUDED</div>
+          <OrderIncluded
+            bikeHire={bike_hire}
+            hasGloves={gloves_jacket_included}
+            helmetHire={helmet_hire}
+          />
+        </div>
       </div>
     </Fragment>
   )
