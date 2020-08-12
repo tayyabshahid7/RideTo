@@ -3,7 +3,7 @@ import { useMediaQuery } from 'react-responsive'
 
 const style = {
   display: 'block',
-  backgroundColor: '#f3f3f3',
+  backgroundColor: 'rgba(194, 194, 194, 0.1)',
   marginRight: '-2rem',
   marginLeft: '-2rem',
   height: '1rem'

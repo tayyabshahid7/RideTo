@@ -284,6 +284,7 @@ class CourseForm extends React.Component {
   }
 
   handleChangeSchool = id => {
+    id = parseInt(id)
     let { course_type_id } = this.state.course
     const courseTypes = this.getValidCourseTypes(id)
     const tmp = courseTypes.find(x => x.id === parseInt(course_type_id))
@@ -355,7 +356,6 @@ class CourseForm extends React.Component {
       application_reference_number
     } = this.state.course
     const { supplier } = this.state
-
     const schoolInstructors = instructors.filter(x =>
       x.supplier.includes(supplier)
     )
