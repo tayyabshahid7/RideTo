@@ -119,7 +119,6 @@ export default function reducer(state = initialState, action) {
     case SAVE[SUCCESS]: {
       const instructors = state.instructors.slice()
       const { instructor } = action.data
-      instructor.supplier = instructor.supplier.map(x => x.id)
       const tmp = instructors.find(x => x.id === instructor.id)
       if (tmp) {
         Object.assign(tmp, instructor)
@@ -147,7 +146,6 @@ export default function reducer(state = initialState, action) {
     case UPDATE[SUCCESS]: {
       const instructors = state.instructors.slice()
       const { instructor } = action.data
-      instructor.supplier = instructor.supplier.map(x => x.id)
       const tmp = instructors.find(x => x.id === instructor.id)
       if (tmp) {
         Object.assign(tmp, instructor)
