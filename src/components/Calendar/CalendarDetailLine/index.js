@@ -23,6 +23,7 @@ const CalendarDetailLine = ({ day, history, calendar, match, settings }) => {
               key={index}
               match={match}
               settings={settings}
+              showDetail={true}
             />
           )
         } else if (item.itemType === 'staff') {

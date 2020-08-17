@@ -140,6 +140,16 @@ const CalendarWeekCourse = React.forwardRef(
 
     const availableSpaces = course.spaces_available
 
+    const getOrderText = course => {
+      if (!course.orders || !course.orders.length) {
+        return 'No order'
+      }
+
+      const customerNames = course.orders.map(x => x.customer_name)
+      const tmp = customerNames.length === 1 ? 'Order' : 'Orders'
+      return `${customerNames.length} ${tmp} (${customerNames.join(', ')})`
+    }
+
     return (
       <div
         ref={ref}
@@ -171,19 +181,16 @@ const CalendarWeekCourse = React.forwardRef(
           </div>
           {(showDetail || isDay) && (
             <React.Fragment>
-              <div className={styles.eventTime}>
-                {course.time.substring(0, 5)} -{' '}
-                {moment(`${course.date} ${course.time}`)
-                  .add(course.duration / 60, 'hours')
-                  .format('HH:mm')}
-              </div>
-
+              {!!course.supplierName && (
+                <div className={styles.supplierName}>{course.supplierName}</div>
+              )}
+              <div className={styles.supplierName}>{getOrderText(course)}</div>
               <span
                 className={classnames(
-                  styles.eventSpaces,
-                  availableSpaces === 2 && styles.textMildWarning,
-                  availableSpaces === 1 && styles.textWarning,
-                  availableSpaces === 0 && styles.textDanger
+                  styles.eventSpaces
+                  // availableSpaces === 2 && styles.textMildWarning,
+                  // availableSpaces === 1 && styles.textWarning,
+                  // availableSpaces === 0 && styles.textDanger
                 )}>
                 {getCourseSpaceTextShort(course)}
               </span>
