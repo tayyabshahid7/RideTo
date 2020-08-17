@@ -12,6 +12,7 @@ import { WORK_HOURS, WEEK_START_HOUR, CALENDAR_VIEW } from 'common/constants'
 import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import { Desktop, Mobile } from 'common/breakpoints'
 import isEqual from 'lodash/isEqual'
+import { SHIFT_TYPES } from '../../../common/constants'
 
 // import { mapLabelColoursWithContant } from 'services/settings'
 
@@ -174,6 +175,7 @@ class CalendarWeekView extends Component {
           }),
         ...dayObj.staff
           .filter(({ all_day }) => !all_day)
+          .filter(x => x.event_type !== SHIFT_TYPES[0].id)
           .map(s => {
             return {
               ...s,
@@ -282,7 +284,7 @@ class CalendarWeekView extends Component {
   }
 
   getDaysStyle = users => {
-    const cols = users.map(x => x.length + 'fr').join(' ')
+    const cols = users.map(x => (x.length || 1) + 'fr').join(' ')
     return {
       gridTemplateColumns: cols
     }

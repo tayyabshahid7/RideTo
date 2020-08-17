@@ -214,11 +214,26 @@ class CalendarPage extends Component {
     return { firstDate: firstDateInWeekCalendar, lastDate: date }
   }
 
-  generateDaysDataFromCalendar(
+  generateDaysDataFromCalendar = (
     { courses, ...calendar },
     eventCalendar,
     staffCalendar
-  ) {
+  ) => {
+    const { instructors, suppliers } = this.props
+
+    courses.forEach(course => {
+      if (course.instructor && course.instructor.id) {
+        const tmp = instructors.find(x => x.id === course.instructor.id)
+        if (tmp) {
+          course.instructor = tmp
+        }
+      }
+      const supTmp = suppliers.find(x => x.id === course.supplier)
+      if (supTmp) {
+        course.supplierName = supTmp.name
+      }
+    })
+
     const { events } = eventCalendar
     const { staff } = staffCalendar
     let dates = []
@@ -232,6 +247,7 @@ class CalendarPage extends Component {
     } else {
       dates = this.generateCalendarDaysForDay(calendar)
     }
+
     return dates.map(date => {
       let dateInString = moment(date).format('YYYY-MM-DD')
 
@@ -548,7 +564,8 @@ const mapStateToProps = (state, ownProps) => {
     settings: state.settings.settings,
     instructors: state.instructor.instructors,
     inactiveUsers: state.calendar.inactiveUsers,
-    inactiveCourses: state.calendar.inactiveCourses
+    inactiveCourses: state.calendar.inactiveCourses,
+    suppliers: state.auth.user.suppliers
   }
 }
 
