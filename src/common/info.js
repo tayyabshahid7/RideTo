@@ -16,7 +16,6 @@ export const BikeHires = [
 ]
 
 export function getFullLicenseBikeHires(course) {
-  console.log(course)
   const {
     a1_auto_bikes,
     a1_manual_bikes,

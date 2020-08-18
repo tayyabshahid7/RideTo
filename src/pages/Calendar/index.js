@@ -339,6 +339,9 @@ class CalendarPage extends Component {
     const { updateCalendarSetting, calendar } = this.props
     if (type === 'change-calendar-setting') {
       updateCalendarSetting(params)
+      if (params.viewMode) {
+        this.props.history.push(`/calendar`)
+      }
     } else if (type === 'prev' || type === 'next') {
       let nextDate
       if (
