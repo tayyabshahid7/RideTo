@@ -236,6 +236,14 @@ class CalendarPage extends Component {
 
     const { events } = eventCalendar
     const { staff } = staffCalendar
+
+    staff.forEach(item => {
+      const tmp = instructors.find(x => x.id === item.instructor_id)
+      if (tmp) {
+        item.instructor = tmp
+      }
+    })
+
     let dates = []
     if (
       calendar.viewMode === CALENDAR_VIEW.MONTH ||
@@ -331,6 +339,9 @@ class CalendarPage extends Component {
     const { updateCalendarSetting, calendar } = this.props
     if (type === 'change-calendar-setting') {
       updateCalendarSetting(params)
+      if (params.viewMode) {
+        this.props.history.push(`/calendar`)
+      }
     } else if (type === 'prev' || type === 'next') {
       let nextDate
       if (

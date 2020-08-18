@@ -2,9 +2,17 @@ import React from 'react'
 import styles from './index.scss'
 import classnames from 'classnames'
 import CalendarShiftIcon from '../CalendarShiftIcon'
+import UserInitial from '../UserInitial'
 import { CALENDAR_VIEW } from 'common/constants'
 
-const CalendarWeekStaff = ({ staff, position, barCount, calendar, match }) => {
+const CalendarWeekStaff = ({
+  staff,
+  position,
+  barCount,
+  calendar,
+  showDetail,
+  match
+}) => {
   const isDay = calendar.viewMode === CALENDAR_VIEW.DAY
 
   const startTime = 0
@@ -36,7 +44,12 @@ const CalendarWeekStaff = ({ staff, position, barCount, calendar, match }) => {
       )}
       style={style}>
       <div className={classnames(styles.content)}>
-        <CalendarShiftIcon diary={staff} />
+        <div className={styles.contentLine}>
+          <CalendarShiftIcon diary={staff} />
+          {showDetail && staff.instructor && (
+            <UserInitial user={staff.instructor} short />
+          )}
+        </div>
         {/* {isDay && <div>{staff.start_time.substr(11, 5)}</div>} */}
       </div>
     </div>
