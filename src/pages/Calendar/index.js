@@ -236,6 +236,14 @@ class CalendarPage extends Component {
 
     const { events } = eventCalendar
     const { staff } = staffCalendar
+
+    staff.forEach(item => {
+      const tmp = instructors.find(x => x.id === item.instructor_id)
+      if (tmp) {
+        item.instructor = tmp
+      }
+    })
+
     let dates = []
     if (
       calendar.viewMode === CALENDAR_VIEW.MONTH ||

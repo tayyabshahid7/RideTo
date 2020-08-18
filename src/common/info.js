@@ -15,9 +15,53 @@ export const BikeHires = [
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' }
 ]
 
+export function getFullLicenseBikeHires(course) {
+  console.log(course)
+  const {
+    a1_auto_bikes,
+    a1_manual_bikes,
+    a2_auto_bikes,
+    a2_manual_bikes,
+    a_auto_bikes,
+    a_manual_bikes
+  } = course
+
+  return [
+    {
+      value: a1_auto_bikes ? 'a1_' + BIKE_HIRE.AUTO : null,
+      title: 'A1 Auto Bike'
+    },
+    {
+      value: a1_manual_bikes ? 'a1_' + BIKE_HIRE.MANUAL : null,
+      title: 'A1 Manual Bike'
+    },
+    {
+      value: a2_auto_bikes ? 'a2_' + BIKE_HIRE.AUTO : null,
+      title: 'A2 Auto Bike'
+    },
+    {
+      value: a2_manual_bikes ? 'a2_' + BIKE_HIRE.MANUAL : null,
+      title: 'A2 Manual Bike'
+    },
+    {
+      value: a_auto_bikes ? 'a_' + BIKE_HIRE.AUTO : null,
+      title: 'A Auto Bike'
+    },
+    {
+      value: a_manual_bikes ? 'a_' + BIKE_HIRE.MANUAL : null,
+      title: 'A Manual Bike'
+    },
+    { value: BIKE_HIRE.NO, title: 'Own Bike' }
+  ]
+}
+
 export function getAvailableBikeHires(course) {
   if (!course) {
     return []
+  }
+
+  if (course.course_type.constant.startsWith('FULL_LICENCE')) {
+    return getFullLicenseBikeHires(course)
   }
 
   const {
