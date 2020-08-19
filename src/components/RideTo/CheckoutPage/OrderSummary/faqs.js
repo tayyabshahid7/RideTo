@@ -1,7 +1,7 @@
 const FAQS = {
   "What's included?": `Bike hire: choice of automatic or manual
 
-Helmet
+Helmet (where indicated)
 
 Gloves and Jacket (where indicated)
 
