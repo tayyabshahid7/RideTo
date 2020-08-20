@@ -254,22 +254,6 @@
     overflow: visible;
     padding: 0;
     -webkit-overflow-scrolling: touch;
-
-    &::after {
-      width: 1px;
-      height: 100%;
-      opacity: 0;
-      color: transparent;
-
-      clear: both;
-      content: '';
-      display: block;
-    }
-
-    ::after {
-      /* reset style */
-      display: none;
-    }
   }
 }
 

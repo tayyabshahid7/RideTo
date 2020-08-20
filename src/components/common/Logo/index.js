@@ -5,7 +5,7 @@ import { ConnectLogo } from 'assets/icons'
 
 function CloseButton({ short }) {
   return (
-    <Link to="/home" className={styles.logo}>
+    <Link to="/" className={styles.logo}>
       <ConnectLogo />
       {!short && <span>CONNECT</span>}
     </Link>

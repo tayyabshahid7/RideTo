@@ -19,7 +19,11 @@ import AddShiftComponent from 'components/Calendar/StaffShift/AddShiftComponent'
 import EditShiftComponent from 'components/Calendar/StaffShift/EditShiftComponent'
 
 import styles from './styles.scss'
-import { getCourses, updateCalendarSetting } from 'store/course'
+import {
+  getCourses,
+  updateCalendarSetting,
+  unsetSelectedDate
+} from 'store/course'
 import { getEvents } from 'store/event'
 import { getStaff } from 'store/staff'
 import { toggleUser, toggleCourse } from 'store/calendar'
@@ -49,7 +53,7 @@ class CalendarPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    const { activeSchools, calendar } = this.props
+    const { activeSchools, calendar, match } = this.props
     const { loadedSchools } = this.state
     const diffSchools = _.difference(activeSchools, loadedSchools)
 
@@ -66,6 +70,14 @@ class CalendarPage extends Component {
         !calendar.silent)
     ) {
       this.loadData(activeSchools)
+    }
+
+    console.log(match.params.date)
+    if (
+      prevProps.match.params.date !== match.params.date &&
+      !match.params.date
+    ) {
+      this.props.unsetSelectedDate()
     }
   }
 
@@ -588,6 +600,7 @@ const mapDispatchToProps = dispatch =>
       getStaff,
       getTestCentres,
       updateCalendarSetting,
+      unsetSelectedDate,
       fetchSettings,
       toggleUser,
       toggleCourse

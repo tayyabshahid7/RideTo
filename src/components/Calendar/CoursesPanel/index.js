@@ -66,6 +66,7 @@ class CoursesPanelContainer extends React.Component {
       events,
       staff,
       isAdmin,
+      schools,
       loadCourses
     } = this.props
     const {
@@ -88,6 +89,7 @@ class CoursesPanelContainer extends React.Component {
           staff={staff}
           isAdmin={isAdmin}
           loadCourses={loadCourses}
+          schools={schools}
         />
       </Loading>
     )

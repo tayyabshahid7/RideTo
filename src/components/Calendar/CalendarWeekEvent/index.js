@@ -40,7 +40,7 @@ const CalendarWeekEvent = ({ event, position, barCount, calendar, match }) => {
     left,
     width
   }
-
+  console.log(event)
   return (
     <div
       className={classnames(styles.singleEvent, styles.singleEventEvent)}
@@ -48,7 +48,7 @@ const CalendarWeekEvent = ({ event, position, barCount, calendar, match }) => {
       <div
         className={classnames(styles.content)}
         style={{ backgroundColor: event.colour }}>
-        {event.name}
+        <span className={styles.eventName}>{event.name}</span>
       </div>
     </div>
   )

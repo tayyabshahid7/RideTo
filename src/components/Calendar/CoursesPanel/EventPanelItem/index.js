@@ -4,11 +4,13 @@ import styles from './EventPanelItem.scss'
 import { getTimeFromDateTime } from 'utils/helper'
 import { Link } from 'react-router-dom'
 
-const EventPanelItem = ({ event, date, eventId }) => {
+const EventPanelItem = ({ event, date, schools }) => {
   const [showDetail, setShowDetail] = useState(false)
   const { notes = '', all_day } = event
   const truncated = notes.length > 200 ? `${notes}...` : notes
   // const isSelected = parseInt(eventId) === event.id
+  const school = schools.find(x => x.id === event.supplier)
+  const schoolName = school ? school.name : ''
 
   return (
     <div className={styles.container} style={{ backgroundColor: event.colour }}>
@@ -29,6 +31,7 @@ const EventPanelItem = ({ event, date, eventId }) => {
           )}
         </span>
       </div>
+      <div className={styles.line}>{schoolName}</div>
       {showDetail && <div className={styles.note}>{truncated}</div>}
       {!!notes.length && (
         <div
