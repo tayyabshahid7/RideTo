@@ -22,7 +22,6 @@ export const getAllInstructors = () => async dispatch => {
     instructors.forEach(x => {
       x.supplier = x.supplier.map(x => x.id)
     })
-    console.log(instructors)
 
     dispatch({
       type: FETCH_ALL[SUCCESS],

@@ -10,18 +10,15 @@ import { getShortCourseType } from 'services/course'
 import styles from './index.scss'
 import sortBy from 'lodash/sortBy'
 
-const getDayItems = (day, dateStr, users, inactiveCourses) => {
+const getDayItems = (day, dateStr, users) => {
   let { courses = [], events = [] } = day
 
   const userIds = users.map(x => x.id)
-  courses = courses
-    .filter(x => x.course_type && !inactiveCourses.includes(x.course_type.id))
-    .filter(
-      x =>
-        (userIds.includes(-1) && !x.instructor) ||
-        (x.instructor && userIds.includes(x.instructor.id))
-    )
-  // staff = staff.filter(x => userIds.includes(x.instructor))
+  courses = courses.filter(
+    x =>
+      (userIds.includes(-1) && !x.instructor) ||
+      (x.instructor && userIds.includes(x.instructor.id))
+  )
 
   const items = courses
     .map(course => {
@@ -41,19 +38,6 @@ const getDayItems = (day, dateStr, users, inactiveCourses) => {
         }
       })
     )
-    // .concat(
-    //   staff.map(s => {
-    //     return {
-    //       ...s,
-    //       s: true,
-    //       time: getStarTimeForEventForDate(s, dateStr),
-    //       name: s.instructor_name,
-    //       first_name: s.instructor_name.split(' ')[0],
-    //       last_name: s.instructor_name.split(' ')[1],
-    //       color: s.colour
-    //     }
-    //   })
-    // )
     .sort((a, b) => b.all_day - a.all_day)
 
   return sortBy(items, ['time'])
@@ -72,12 +56,11 @@ const CalendarDayCell = ({
   calendar,
   history,
   handleMobileCellClick,
-  users,
-  inactiveCourses
+  users
 }) => {
   let showItems = 4
   const dateStr = moment(day.date).format('YYYY-MM-DD')
-  const items = getDayItems(day, dateStr, users, inactiveCourses)
+  const items = getDayItems(day, dateStr, users)
   const selectedDay = dateStr === calendar.selectedDate
   const more = items.length - showItems
   const isOtherMonthDate = day.date.getMonth() !== calendar.month
