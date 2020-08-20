@@ -96,6 +96,13 @@
   font-weight: bold;
 }
 
+.eventSupplier {
+  margin-top: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .eventName,
 .eventDate,
 .eventTime,

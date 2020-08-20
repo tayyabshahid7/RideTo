@@ -8,7 +8,13 @@ import {
   CALENDAR_VIEW
 } from 'common/constants'
 
-const CalendarWeekEvent = ({ event, position, barCount, calendar, match }) => {
+const CalendarWeekEvent = ({
+  event,
+  position,
+  barCount,
+  calendar,
+  suppliers
+}) => {
   const secondsForDay = getTimeOfDayInSeconds(event.start_time)
   const duration = getTimeOfDayInSeconds(event.end_time) - secondsForDay
 
@@ -41,6 +47,8 @@ const CalendarWeekEvent = ({ event, position, barCount, calendar, match }) => {
     width
   }
 
+  const supplier = suppliers.find(x => x.id === event.supplier)
+
   return (
     <div
       className={classnames(styles.singleEvent, styles.singleEventEvent)}
@@ -48,7 +56,10 @@ const CalendarWeekEvent = ({ event, position, barCount, calendar, match }) => {
       <div
         className={classnames(styles.content)}
         style={{ backgroundColor: event.colour }}>
-        {event.name}
+        <span className={styles.eventName}>{event.name}</span>
+        {!!supplier && (
+          <div className={styles.eventSupplier}>{supplier.name}</div>
+        )}
       </div>
     </div>
   )

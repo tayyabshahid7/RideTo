@@ -5,13 +5,14 @@ import { changeSchool, updateActiveSchool } from 'store/auth'
 import styles from './index.scss'
 import { Mobile } from 'common/breakpoints'
 import CalendarViewChanger from '../CalendarViewChanger'
+import { CALENDAR_VIEW } from '../../../common/constants'
 import Logo from 'components/common/Logo'
 import CloseButton from 'components/common/CloseButton'
 import classnames from 'classnames'
 import _ from 'lodash'
 
 const CalendarFilter = ({
-  users,
+  users: currUsers,
   inactiveUsers,
   inactiveCourses,
   toggleUser,
@@ -24,10 +25,11 @@ const CalendarFilter = ({
   updateActiveSchool,
   calendar
 }) => {
+  const shiftView = calendar.viewMode === CALENDAR_VIEW.SHIFT
   const inputEl = useRef(null)
-  const currUsers = users.filter(
-    x => _.intersection(x.supplier, activeSchools).length
-  )
+  // const currUsers = users.filter(
+  //   x => shiftView || _.intersection(x.supplier, activeSchools).length
+  // )
 
   const courseTypes = info.courseTypes.filter(
     x =>
@@ -37,9 +39,9 @@ const CalendarFilter = ({
 
   useEffect(() => {
     // update users list
-    const currUserIds = currUsers.map(x => x.id)
-    const userIds = _.intersection(inactiveUsers, [...currUserIds, -1])
-    toggleUser(userIds)
+    // const currUserIds = currUsers.map(x => x.id)
+    // const userIds = _.intersection(inactiveUsers, [...currUserIds, -1])
+    // toggleUser(userIds)
 
     // update course list
     const currCourseIds = courseTypes.map(x => x.id)
@@ -123,23 +125,27 @@ const CalendarFilter = ({
           <div
             className={classnames(styles.divider, styles.dividerNormal)}></div>
         </Mobile>
-        <div className={styles.sectionItem}>
-          <h5 className={styles.sectionTitle}>Location</h5>
-        </div>
-        {suppliers.map(school => (
-          <div className={styles.sectionItem} key={school.id}>
-            <h6 className={styles.sectionLabel}>{school.name}</h6>
-            <label className="switch">
-              <input
-                type="checkbox"
-                checked={activeSchools.includes(school.id)}
-                onChange={handleSchoolChange(school)}
-              />
-              <span className="slider round"></span>
-            </label>
-          </div>
-        ))}
-        <div className={styles.divider}></div>
+        {!shiftView && (
+          <React.Fragment>
+            <div className={styles.sectionItem}>
+              <h5 className={styles.sectionTitle}>Location</h5>
+            </div>
+            {suppliers.map(school => (
+              <div className={styles.sectionItem} key={school.id}>
+                <h6 className={styles.sectionLabel}>{school.name}</h6>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={activeSchools.includes(school.id)}
+                    onChange={handleSchoolChange(school)}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
+            ))}
+            <div className={styles.divider}></div>
+          </React.Fragment>
+        )}
 
         <div className={styles.sectionItem}>
           <h5 className={styles.sectionTitle}>Staff</h5>
@@ -167,36 +173,41 @@ const CalendarFilter = ({
             </label>
           </div>
         ))}
-        <div className={styles.sectionItem} key={-1}>
-          <h6 className={styles.sectionLabel}>Unassigned</h6>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={!inactiveUsers.includes(-1)}
-              onChange={handleStaffChange(-1)}
-            />
-            <span className="slider round"></span>
-          </label>
-        </div>
-
-        <div className={styles.divider}></div>
-
-        <div className={styles.sectionItem}>
-          <h5 className={styles.sectionTitle}>Course</h5>
-        </div>
-        {courseTypes.map(course => (
-          <div className={styles.sectionItem} key={course.id}>
-            <h6 className={styles.sectionLabel}>{course.name}</h6>
+        {!shiftView && (
+          <div className={styles.sectionItem} key={-1}>
+            <h6 className={styles.sectionLabel}>Unassigned</h6>
             <label className="switch">
               <input
                 type="checkbox"
-                checked={!inactiveCourses.includes(course.id)}
-                onChange={handleCourseChange(course.id)}
+                checked={!inactiveUsers.includes(-1)}
+                onChange={handleStaffChange(-1)}
               />
               <span className="slider round"></span>
             </label>
           </div>
-        ))}
+        )}
+        <div className={styles.divider}></div>
+
+        {!shiftView && (
+          <React.Fragment>
+            <div className={styles.sectionItem}>
+              <h5 className={styles.sectionTitle}>Course</h5>
+            </div>
+            {courseTypes.map(course => (
+              <div className={styles.sectionItem} key={course.id}>
+                <h6 className={styles.sectionLabel}>{course.name}</h6>
+                <label className="switch">
+                  <input
+                    type="checkbox"
+                    checked={!inactiveCourses.includes(course.id)}
+                    onChange={handleCourseChange(course.id)}
+                  />
+                  <span className="slider round"></span>
+                </label>
+              </div>
+            ))}
+          </React.Fragment>
+        )}
       </div>
     </div>
   )

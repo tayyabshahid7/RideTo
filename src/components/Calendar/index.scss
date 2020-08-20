@@ -130,12 +130,22 @@
   top: 147px;
   bottom: 0;
   width: 340px;
-  z-index: 10;
+  z-index: 1050;
   transition: all ease 0.3s;
   border-right: 1px solid var(--color-border);
   background: white;
   overflow: auto;
   box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.filterBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1049;
+  background: rgba(black, 0.1);
 }
 
 .filterForm {

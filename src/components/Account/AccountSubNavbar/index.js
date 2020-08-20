@@ -64,7 +64,7 @@ let AccountSubNavbar = ({ history }) => {
             className={styles.navLink}
             activeClassName={styles.activeNavLink}
             to="/account/instructors">
-            User
+            Staff
           </NavLink>
         </li>
         {isDesktop && (

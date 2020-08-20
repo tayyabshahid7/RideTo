@@ -11,28 +11,38 @@
   }
 
   span {
-    font-size: 11px;
-    line-height: 13px;
-    color: var(--color-dark-light);
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    color: rgba(#444, 0.8);
   }
 }
 
 .wide {
   flex: 1 1 1px;
   padding: 0 8px;
-  min-width: 60px;
+  min-width: 90px;
 }
 
 .short {
   img {
     margin-right: 4px;
   }
+
+  svg {
+    margin-right: 4px;
+  }
+
+  span {
+    font-size: 11px;
+    line-height: 13px;
+  }
 }
 
 .photo {
   width: 16px;
   height: 16px;
-  // border: 2px solid white;
   border-radius: 50%;
   object-fit: cover;
+  margin-right: 8px;
 }

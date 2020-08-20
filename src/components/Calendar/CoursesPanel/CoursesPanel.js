@@ -16,6 +16,7 @@ function CoursesPanel({
   eventId,
   staff,
   isAdmin,
+  schools,
   loadCourses
 }) {
   const shifts = staff.filter(x => x.event_type === SHIFT_TYPES[0].id)
@@ -82,7 +83,7 @@ function CoursesPanel({
                 key={event.id}
                 date={date}
                 event={event}
-                eventId={eventId}
+                schools={schools}
               />
             ))}
           </div>
