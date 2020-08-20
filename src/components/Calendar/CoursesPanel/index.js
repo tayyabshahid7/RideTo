@@ -67,6 +67,7 @@ class CoursesPanelContainer extends React.Component {
       staff,
       isAdmin,
       schools,
+      instructors,
       loadCourses
     } = this.props
     const {
@@ -90,6 +91,7 @@ class CoursesPanelContainer extends React.Component {
           isAdmin={isAdmin}
           loadCourses={loadCourses}
           schools={schools}
+          instructors={instructors}
         />
       </Loading>
     )
@@ -105,7 +107,8 @@ const mapStateToProps = (state, ownProps) => {
     eventLoading: state.event.day.loading,
     staff: state.staff.day.staff,
     staffLoading: state.staff.day.loading,
-    isAdmin: isAdmin(state.auth.user)
+    isAdmin: isAdmin(state.auth.user),
+    instructors: state.instructor.instructors
   }
 }
 
