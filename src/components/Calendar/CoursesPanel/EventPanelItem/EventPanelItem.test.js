@@ -18,7 +18,7 @@ const EVENT = {
 it('Renders Event title and link', () => {
   const wrapper = mount(
     <MemoryRouter>
-      <EventsPanelItem event={EVENT} date="2018-01-01" />
+      <EventsPanelItem event={EVENT} schools={[]} date="2018-01-01" />
     </MemoryRouter>
   )
 
