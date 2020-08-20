@@ -13,7 +13,7 @@ function CoursesPanel({
   addingOrder,
   updateAdding,
   courseId,
-  eventId,
+  instructors,
   staff,
   isAdmin,
   schools,
@@ -25,19 +25,24 @@ function CoursesPanel({
     <div className={styles.coursesPanel}>
       {!addingOrder && (
         <div className={styles.panel}>
-          <div className={styles.title}>Shift</div>
+          <div className={styles.title}>Staff</div>
 
           <div>
             {shifts.map(item => (
-              <ShiftPanelItem key={item.id} date={date} diary={item} />
+              <ShiftPanelItem
+                key={item.id}
+                date={date}
+                instructors={instructors}
+                diary={item}
+              />
             ))}
           </div>
 
           {isAdmin && (
             <Link
               className={styles.addButton}
-              to={`/calendar/staff/create?date=${date}`}>
-              Add Staff
+              to={`/calendar/${date}/shifts/add`}>
+              Add staff
             </Link>
           )}
         </div>
@@ -60,6 +65,7 @@ function CoursesPanel({
               addingOrder={addingOrder}
               updateAdding={updateAdding}
               canEdit={isAdmin}
+              instructors={instructors}
               loadCourses={loadCourses}
             />
           ))}
@@ -84,6 +90,7 @@ function CoursesPanel({
                 date={date}
                 event={event}
                 schools={schools}
+                instructors={instructors}
               />
             ))}
           </div>

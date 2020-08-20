@@ -35,6 +35,7 @@ const CoursesPanelItem = ({
   addingOrder,
   courseId,
   schools,
+  instructors,
   settings,
   canEdit,
   loadCourses
@@ -50,7 +51,10 @@ const CoursesPanelItem = ({
   const isTestCourse =
     course.course_type.constant.includes('FULL_LICENCE') &&
     course.course_type.constant.includes('TEST')
-  const { instructor } = course
+  let { instructor } = course
+  if (instructor) {
+    instructor = instructors.find(x => x.id === instructor.id)
+  }
   const isSelected = parseInt(courseId) === course.id
 
   const school = schools.find(x => x.id === course.supplier)

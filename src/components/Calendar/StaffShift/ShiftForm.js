@@ -34,6 +34,7 @@ class ShiftForm extends React.Component {
       }
     }
 
+    let hasStaff = true
     let schoolList = []
     const { schools, instructors } = props
     const instructor = instructors.find(x => x.id === parseInt(props.staffId))
@@ -41,6 +42,8 @@ class ShiftForm extends React.Component {
       staff.instructor_id = instructor.id
       schoolList = schools.filter(x => instructor.supplier.includes(x.id))
       staff.supplier_id = schoolList[0].id
+    } else {
+      hasStaff = false
     }
 
     if (this.props.staff) {
@@ -55,7 +58,27 @@ class ShiftForm extends React.Component {
       Object.assign(staff, _.pick(this.props.staff, fields))
     }
 
-    this.state = { ...staff, schoolList }
+    this.state = { ...staff, hasStaff, schoolList }
+  }
+
+  handleInstructorChange = event => {
+    const { name, value } = event.target
+    const { instructors, schools } = this.props
+    const instructor = instructors.find(x => x.id === parseInt(value))
+
+    const schoolList = schools.filter(x => instructor.supplier.includes(x.id))
+    const data = {
+      [name]: value,
+      schoolList
+    }
+
+    if (schoolList.length) {
+      data.supplier_id = schoolList[0].id
+    } else {
+      data.supplier_id = ''
+    }
+
+    this.setState(data)
   }
 
   handleChange = name => value => {
@@ -123,6 +146,7 @@ class ShiftForm extends React.Component {
       delete staff.supplier_id
     }
     delete staff.schoolList
+    delete staff.hasStaff
     console.log(staff)
     staff.start_date = staff.start_date.substr(0, 10)
     staff.end_date = staff.end_date.substr(0, 10)
@@ -135,8 +159,8 @@ class ShiftForm extends React.Component {
   }
 
   render() {
-    const { saving, onRemove, staff } = this.props
-    const { schoolList } = this.state
+    const { saving, onRemove, staff, instructors } = this.props
+    const { schoolList, hasStaff } = this.state
     const eventType = SHIFT_TYPES.find(x => x.id === this.state.event_type)
 
     return (
@@ -146,6 +170,27 @@ class ShiftForm extends React.Component {
         </h4>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
+            {!hasStaff && (
+              <Row>
+                <Col>
+                  <ConnectSelect
+                    basic
+                    label="Staff"
+                    name="instructor_id"
+                    value={this.state.instructor_id}
+                    onChange={this.handleInstructorChange}
+                    raw
+                    options={[
+                      { id: '', name: 'Select' },
+                      ...instructors.map(instructor => ({
+                        ...instructor,
+                        name: `${instructor.first_name} ${instructor.last_name}`
+                      }))
+                    ]}
+                  />
+                </Col>
+              </Row>
+            )}
             {this.state.event_type === 'EVENT_SHIFT' && (
               <Row>
                 <Col>

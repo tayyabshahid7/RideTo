@@ -55,7 +55,7 @@ class AddShiftComponent extends Component {
       eventType = match.params.eventType
     }
 
-    let backLink = isPopup ? '' : '/calendar'
+    let backLink = isPopup ? '' : `/calendar/${date}`
 
     return (
       <div className={styles.addCourse}>

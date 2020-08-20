@@ -5,13 +5,9 @@ import CalendarShiftIcon from '../../CalendarShiftIcon'
 import { Link } from 'react-router-dom'
 import { SHIFT_TYPES } from '../../../../common/constants'
 
-const ShiftPanelItem = ({ diary, date }) => {
-  diary.first_name = diary.instructor_name
-    ? diary.instructor_name.split(' ')[0]
-    : ''
-  diary.last_name = diary.instructor_name
-    ? diary.instructor_name.split(' ')[1]
-    : ''
+const ShiftPanelItem = ({ diary, instructors, date }) => {
+  const instructor = instructors.find(x => x.id === diary.instructor_id)
+
   let type = SHIFT_TYPES.find(x => x.id === diary.event_type)
   if (!type) {
     type = SHIFT_TYPES[0]
@@ -23,7 +19,7 @@ const ShiftPanelItem = ({ diary, date }) => {
         <div className={styles.user}>
           <Link
             to={`/calendar/${date}/shifts/${diary.instructor_id}/${diary.id}/edit`}>
-            <UserInitial user={diary} />
+            <UserInitial user={instructor} />
           </Link>
         </div>
         <CalendarShiftIcon diary={diary} />

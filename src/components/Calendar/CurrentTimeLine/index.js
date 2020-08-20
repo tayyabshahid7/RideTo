@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import styles from './index.scss'
 import moment from 'moment'
+import momentTz from 'moment-timezone'
+import { WEEK_START_HOUR } from 'common/constants'
 
 const CurrentTimeLine = day => {
   const [top, setTop] = useState(0)
   let timerInstance = null
 
   const calcTime = () => {
-    const seconds = new Date().getTime() % (24 * 60 * 60 * 1000)
-    setTop((parseFloat(seconds) / (24 * 60 * 60 * 1000)) * 1200 + 'px')
+    const time = momentTz().tz('Europe/London')
+    const hours = time.hours() + time.minutes() / 60
+    setTop((hours - WEEK_START_HOUR) * 56 + 'px')
   }
 
   useEffect(() => {
