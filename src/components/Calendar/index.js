@@ -95,6 +95,7 @@ class CalendarComponent extends Component {
       handleChangeDate,
       handleToggleUser,
       toggleFilter,
+      suppliers,
       handleToggleCourse,
       handleCustomEvent
     } = this.props
@@ -121,6 +122,11 @@ class CalendarComponent extends Component {
               hideFilter={() => toggleFilter(false)}
             />
           </div>
+          {filterOpen && (
+            <div
+              onClick={() => toggleFilter(false)}
+              className={styles.filterBackdrop}></div>
+          )}
           <MediaQuery minWidth={768}>
             {matches => {
               if (matches || !filterOpen) {
@@ -157,6 +163,7 @@ class CalendarComponent extends Component {
                           sideBarOpen={sideBarOpen}
                           filterOpen={filterOpen}
                           users={users}
+                          suppliers={suppliers}
                           inactiveCourses={inactiveCourses}
                           loading={calendar.loading}
                         />

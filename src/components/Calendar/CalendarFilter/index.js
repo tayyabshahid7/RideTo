@@ -12,7 +12,7 @@ import classnames from 'classnames'
 import _ from 'lodash'
 
 const CalendarFilter = ({
-  users,
+  users: currUsers,
   inactiveUsers,
   inactiveCourses,
   toggleUser,
@@ -27,9 +27,9 @@ const CalendarFilter = ({
 }) => {
   const shiftView = calendar.viewMode === CALENDAR_VIEW.SHIFT
   const inputEl = useRef(null)
-  const currUsers = users.filter(
-    x => shiftView || _.intersection(x.supplier, activeSchools).length
-  )
+  // const currUsers = users.filter(
+  //   x => shiftView || _.intersection(x.supplier, activeSchools).length
+  // )
 
   const courseTypes = info.courseTypes.filter(
     x =>
@@ -39,9 +39,9 @@ const CalendarFilter = ({
 
   useEffect(() => {
     // update users list
-    const currUserIds = currUsers.map(x => x.id)
-    const userIds = _.intersection(inactiveUsers, [...currUserIds, -1])
-    toggleUser(userIds)
+    // const currUserIds = currUsers.map(x => x.id)
+    // const userIds = _.intersection(inactiveUsers, [...currUserIds, -1])
+    // toggleUser(userIds)
 
     // update course list
     const currCourseIds = courseTypes.map(x => x.id)

@@ -132,8 +132,8 @@ class Instructors extends React.Component {
         <Fragment>
           <div className={styles.box}>
             <div>
-              <h3 className={styles.title}>Add User</h3>
-              <p>Add a new user to assign to courses</p>
+              <h3 className={styles.title}>Add Staff</h3>
+              <p>Add a new staff to assign to courses</p>
             </div>
             <div className={styles.buttons}>
               <Button
@@ -146,12 +146,12 @@ class Instructors extends React.Component {
           </div>
           <div className={classnames(styles.box, styles.header)}>
             <div className={styles.headerText}>
-              <h3 className={styles.title}>Current Users</h3>
-              <p>Edit the details of an existing users</p>
+              <h3 className={styles.title}>Current Staffs</h3>
+              <p>Edit the details of an existing staffs</p>
             </div>
             <div className={styles.userTable}>
               <div className={classnames(styles.userRow, styles.headerRow)}>
-                <span>User Name</span>
+                <span>Staff Name</span>
                 <span>Schools</span>
                 <span>Actions</span>
               </div>
@@ -194,7 +194,7 @@ class Instructors extends React.Component {
           <Modal isOpen={true}>
             <ModalHeader>
               <h3 className={styles.title}>
-                {addNew ? 'Add' : 'Edit'} User Details
+                {addNew ? 'Add' : 'Edit'} Staff Details
               </h3>
             </ModalHeader>
             <ModalBody>

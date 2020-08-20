@@ -444,6 +444,7 @@ class CalendarPage extends Component {
       inactiveUsers,
       inactiveCourses,
       activeSchools,
+      suppliers,
       settings,
       match
     } = this.props
@@ -466,6 +467,7 @@ class CalendarPage extends Component {
           <CalendarComponent
             days={days}
             calendar={calendar}
+            suppliers={suppliers}
             eventCalendar={eventCalendar}
             staffCalendar={staffCalendar}
             handleCustomEvent={this.handleCustomEvent}

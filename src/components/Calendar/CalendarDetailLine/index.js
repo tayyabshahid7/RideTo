@@ -4,7 +4,14 @@ import CalendarWeekStaff from '../CalendarWeekStaff'
 import CalendarWeekEvent from '../CalendarWeekEvent'
 import styles from './index.scss'
 
-const CalendarDetailLine = ({ day, history, calendar, match, settings }) => {
+const CalendarDetailLine = ({
+  day,
+  history,
+  calendar,
+  match,
+  suppliers,
+  settings
+}) => {
   if (!day.courses) {
     return null
   }
@@ -48,8 +55,10 @@ const CalendarDetailLine = ({ day, history, calendar, match, settings }) => {
               barCount={day.barCount}
               history={history}
               calendar={calendar}
+              suppliers={suppliers}
               key={index}
               match={match}
+              showDetail={true}
               settings={settings}
             />
           )

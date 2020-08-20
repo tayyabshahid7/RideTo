@@ -146,7 +146,7 @@ class CalendarWeekView extends Component {
   }
 
   getWeekDays = () => {
-    let { days, inactiveCourses } = this.props
+    let { days, inactiveCourses, users } = this.props
 
     let date = '2000-01-01'
     let results = days.map(day => {
@@ -184,6 +184,11 @@ class CalendarWeekView extends Component {
             }
           })
       ]
+
+      if (!users.length) {
+        dayObj.courses = dayObj.courses.filter(x => x.itemType !== 'staff')
+      }
+
       dayObj.courses = _.orderBy(dayObj.courses, 'secondsForDay')
 
       let barMap = []
@@ -350,6 +355,7 @@ class CalendarWeekView extends Component {
       history,
       calendar,
       match,
+      suppliers,
       settings,
       users,
       inactiveCourses
@@ -408,6 +414,7 @@ class CalendarWeekView extends Component {
                       day={day}
                       inactiveCourses={inactiveCourses}
                       history={history}
+                      suppliers={suppliers}
                       calendar={calendar}
                       match={match}
                       settings={settings}
