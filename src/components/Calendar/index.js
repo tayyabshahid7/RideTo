@@ -166,7 +166,7 @@ class CalendarComponent extends Component {
                           days={days}
                           calendar={calendar}
                           history={history}
-                          users={users}
+                          users={instructors}
                           inactiveUsers={inactiveUsers}
                           handleMobileCellClick={handleMobileCellClick}
                           sideBarOpen={sideBarOpen}
