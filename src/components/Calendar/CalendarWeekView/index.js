@@ -146,24 +146,22 @@ class CalendarWeekView extends Component {
   }
 
   getWeekDays = () => {
-    let { days, inactiveCourses, users } = this.props
+    let { days, users } = this.props
 
     let date = '2000-01-01'
     let results = days.map(day => {
       let dayObj = { ...day }
       dayObj.courses = [
-        ...dayObj.courses
-          .filter(x => !inactiveCourses.includes(x.course_type.id))
-          .map(course => {
-            const time = moment(`${date} ${course.time}`)
-            const startOfDay = moment(time).startOf('day')
-            const secondsForDay = time.diff(startOfDay, 'seconds')
+        ...dayObj.courses.map(course => {
+          const time = moment(`${date} ${course.time}`)
+          const startOfDay = moment(time).startOf('day')
+          const secondsForDay = time.diff(startOfDay, 'seconds')
 
-            return {
-              ...course,
-              secondsForDay
-            }
-          }),
+          return {
+            ...course,
+            secondsForDay
+          }
+        }),
         ...dayObj.events
           .filter(({ all_day }) => !all_day)
           .map(event => {
@@ -351,15 +349,7 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const {
-      history,
-      calendar,
-      match,
-      suppliers,
-      settings,
-      users,
-      inactiveCourses
-    } = this.props
+    const { history, calendar, match, suppliers, settings, users } = this.props
     // const { mobileDayOfWeek } = this.state
     let daysInfo = this.getWeekDays()
     const daysUser = this.getDaysUserCount(users, daysInfo)
@@ -387,7 +377,6 @@ class CalendarWeekView extends Component {
                 <Mobile>
                   <CalendarDetailLine
                     day={day}
-                    inactiveCourses={inactiveCourses}
                     history={history}
                     calendar={calendar}
                     match={match}
@@ -401,7 +390,6 @@ class CalendarWeekView extends Component {
                         key={user.id}
                         day={day}
                         user={user}
-                        inactiveCourses={inactiveCourses}
                         history={history}
                         calendar={calendar}
                         match={match}
@@ -412,7 +400,6 @@ class CalendarWeekView extends Component {
                   {!users.length && (
                     <CalendarDetailLine
                       day={day}
-                      inactiveCourses={inactiveCourses}
                       history={history}
                       suppliers={suppliers}
                       calendar={calendar}

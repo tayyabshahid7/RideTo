@@ -8,34 +8,20 @@ import { secondsForDayAndDurationForEvent } from 'utils/helper'
 import { SHIFT_TYPES } from 'common/constants'
 
 class CalendarUserLine extends Component {
-  componentDidMount() {}
-
-  componentDidUpdate(prevProps) {}
-
   render() {
-    const {
-      day,
-      history,
-      calendar,
-      match,
-      settings,
-      user,
-      inactiveCourses
-    } = this.props
+    const { day, history, calendar, match, settings, user } = this.props
 
     if (!day.courses) {
       return null
     }
 
-    const courses = day.courses
-      .filter(x => {
-        if (user.id === -1) {
-          return !x.instructor
-        } else {
-          return x.instructor && x.instructor.id === user.id
-        }
-      })
-      .filter(x => x.course_type && !inactiveCourses.includes(x.course_type.id))
+    const courses = day.courses.filter(x => {
+      if (user.id === -1) {
+        return !x.instructor
+      } else {
+        return x.instructor && x.instructor.id === user.id
+      }
+    })
 
     const staffs = day.staff
       .filter(

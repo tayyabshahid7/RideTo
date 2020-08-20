@@ -145,7 +145,6 @@ class CalendarComponent extends Component {
                           calendar={calendar}
                           history={history}
                           users={users}
-                          inactiveCourses={inactiveCourses}
                           handleMobileCellClick={handleMobileCellClick}
                           sideBarOpen={sideBarOpen}
                         />
@@ -164,7 +163,6 @@ class CalendarComponent extends Component {
                           filterOpen={filterOpen}
                           users={users}
                           suppliers={suppliers}
-                          inactiveCourses={inactiveCourses}
                           loading={calendar.loading}
                         />
                       )}

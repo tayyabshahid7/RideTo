@@ -9,7 +9,6 @@ import { CALENDAR_VIEW } from '../../../common/constants'
 import Logo from 'components/common/Logo'
 import CloseButton from 'components/common/CloseButton'
 import classnames from 'classnames'
-import _ from 'lodash'
 
 const CalendarFilter = ({
   users: currUsers,
@@ -32,22 +31,20 @@ const CalendarFilter = ({
   // )
 
   const courseTypes = info.courseTypes.filter(
-    x =>
-      x.constant !== 'FULL_LICENCE' &&
-      _.intersection(x.schoolIds, activeSchools).length
+    x => x.constant !== 'FULL_LICENCE'
   )
 
-  useEffect(() => {
-    // update users list
-    // const currUserIds = currUsers.map(x => x.id)
-    // const userIds = _.intersection(inactiveUsers, [...currUserIds, -1])
-    // toggleUser(userIds)
+  // useEffect(() => {
+  //   // update users list
+  //   const currUserIds = currUsers.map(x => x.id)
+  //   const userIds = _.intersection(inactiveUsers, [...currUserIds, -1])
+  //   toggleUser(userIds)
 
-    // update course list
-    const currCourseIds = courseTypes.map(x => x.id)
-    const courseIds = _.intersection(inactiveCourses, currCourseIds)
-    toggleCourse(courseIds)
-  }, [activeSchools])
+  //   // update course list
+  //   const currCourseIds = courseTypes.map(x => x.id)
+  //   const courseIds = _.intersection(inactiveCourses, currCourseIds)
+  //   toggleCourse(courseIds)
+  // }, [activeSchools])
 
   useEffect(() => {
     const handleClickOutside = event => {

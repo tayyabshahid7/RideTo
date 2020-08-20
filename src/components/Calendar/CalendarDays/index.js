@@ -6,7 +6,6 @@ import classnames from 'classnames'
 const CalendarDays = ({
   days,
   calendar,
-  inactiveCourses,
   users,
   history,
   handleMobileCellClick
@@ -28,7 +27,6 @@ const CalendarDays = ({
           history={history}
           handleMobileCellClick={handleMobileCellClick}
           rowsCount={rowsCount}
-          inactiveCourses={inactiveCourses}
           users={users}
         />
       ))}

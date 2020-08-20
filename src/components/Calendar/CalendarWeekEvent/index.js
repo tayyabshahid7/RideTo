@@ -12,8 +12,8 @@ const CalendarWeekEvent = ({
   event,
   position,
   barCount,
-  calendar,
-  suppliers
+  showDetail,
+  calendar
 }) => {
   const secondsForDay = getTimeOfDayInSeconds(event.start_time)
   const duration = getTimeOfDayInSeconds(event.end_time) - secondsForDay
@@ -47,8 +47,6 @@ const CalendarWeekEvent = ({
     width
   }
 
-  const supplier = suppliers.find(x => x.id === event.supplier)
-
   return (
     <div
       className={classnames(styles.singleEvent, styles.singleEventEvent)}
@@ -57,8 +55,8 @@ const CalendarWeekEvent = ({
         className={classnames(styles.content)}
         style={{ backgroundColor: event.colour }}>
         <span className={styles.eventName}>{event.name}</span>
-        {!!supplier && (
-          <div className={styles.eventSupplier}>{supplier.name}</div>
+        {showDetail && !!event.supplierName && (
+          <div className={styles.eventSupplier}>{event.supplierName}</div>
         )}
       </div>
     </div>

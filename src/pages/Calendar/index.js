@@ -72,7 +72,6 @@ class CalendarPage extends Component {
       this.loadData(activeSchools)
     }
 
-    console.log(match.params.date)
     if (
       prevProps.match.params.date !== match.params.date &&
       !match.params.date
@@ -231,7 +230,16 @@ class CalendarPage extends Component {
     eventCalendar,
     staffCalendar
   ) => {
-    const { instructors, suppliers } = this.props
+    const {
+      instructors,
+      suppliers,
+      inactiveCourses,
+      activeSchools
+    } = this.props
+
+    courses = courses
+      .filter(x => activeSchools.includes(x.supplier))
+      .filter(x => !inactiveCourses.includes(x.course_type.id))
 
     courses.forEach(course => {
       if (course.instructor && course.instructor.id) {
@@ -246,7 +254,16 @@ class CalendarPage extends Component {
       }
     })
 
-    const { events } = eventCalendar
+    let { events } = eventCalendar
+
+    events = events.filter(x => activeSchools.includes(x.supplier))
+    events.forEach(event => {
+      const supTmp = suppliers.find(x => x.id === event.supplier)
+      if (supTmp) {
+        event.supplierName = supTmp.name
+      }
+    })
+
     const { staff } = staffCalendar
 
     staff.forEach(item => {
