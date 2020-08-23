@@ -10,6 +10,7 @@ registerLocale('en-GB', enGB)
 export default function ConnectDatePicker({
   label,
   type = 'text',
+  popperPosition = 'bottom-start',
   onChange,
   noWrapLabel,
   value,
@@ -65,6 +66,7 @@ export default function ConnectDatePicker({
         showYearDropdown
         autoComplete="off"
         dropdownMode="select"
+        popperPlacement={popperPosition}
         maxDate={maxDate}
         highlightDates={highlightDates}
         locale="en-GB"

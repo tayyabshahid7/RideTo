@@ -21,8 +21,8 @@
   left: 0;
   right: 0;
   height: 72px;
-  padding: 0;
   z-index: 5;
+  padding-left: 56px;
 }
 
 .weekDaysHeader {
@@ -181,7 +181,6 @@
 .daysContainer {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  padding-left: 56px;
 
   @media (max-width: 767px) {
     background-color: var(--color-light-gray);
