@@ -47,6 +47,10 @@ class CourseForm extends React.Component {
       application_reference_number: ''
     }
 
+    if (this.courseTypes && this.courseTypes.length) {
+      course.course_type_id = this.courseTypes[0].id
+    }
+
     let supplier = ''
     if (this.props.schools) {
       supplier = this.props.schools[0].id

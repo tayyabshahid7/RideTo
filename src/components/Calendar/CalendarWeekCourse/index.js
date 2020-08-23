@@ -38,6 +38,19 @@ const CalendarWeekCourse = React.forwardRef(
     if (isDay) {
       left = `${(100 / barCount) * position}%`
       width = `${100 / barCount}%`
+    } else if (showDetail && course.sameTime > 1) {
+      const offset = (4 * (barCount - course.sameTime)) / course.sameTime
+
+      left = `${(100 / course.sameTime) *
+        (position - course.minStart)}% - ${offset *
+        (position - course.minStart)}px`
+      width = `${100 / course.sameTime}% - ${offset}px`
+
+      if (course.minStart) {
+        left = `${4 * course.minStart}px + ${left}`
+      }
+      left = `calc(${left})`
+      width = `calc(${width})`
     }
 
     let style = {
@@ -175,7 +188,7 @@ const CalendarWeekCourse = React.forwardRef(
             <span className={styles.eventName}>
               {getShortCourseType(course.course_type)}
             </span>
-            {showDetail && course.instructor && (
+            {showDetail && course.instructor && course.sameTime <= 1 && (
               <UserInitial user={course.instructor} short />
             )}
           </div>
