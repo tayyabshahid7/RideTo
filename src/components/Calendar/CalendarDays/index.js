@@ -27,6 +27,7 @@ const CalendarDays = ({
           history={history}
           handleMobileCellClick={handleMobileCellClick}
           rowsCount={rowsCount}
+          lastRow={Math.floor(index / 7) === rowsCount - 1}
           users={users}
         />
       ))}

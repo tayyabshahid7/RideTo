@@ -188,6 +188,10 @@ class CalendarWeekView extends Component {
       }
 
       dayObj.courses = _.orderBy(dayObj.courses, 'secondsForDay')
+      let sameCourses = _.groupBy(dayObj.courses, 'secondsForDay')
+      const tmp = Object.values(sameCourses)
+      const maxSame = tmp.length ? Math.max(...tmp.map(x => x.length)) : 0
+      dayObj.maxSame = maxSame
 
       let barMap = []
       let coursePositions = []
@@ -214,7 +218,19 @@ class CalendarWeekView extends Component {
             coursePositions.push(0)
           }
         }
+        course.sameTime = sameCourses[course.secondsForDay].length
+        course.position = coursePositions[i]
       }
+
+      for (let i = 0; i < dayObj.courses.length; i++) {
+        let course = dayObj.courses[i]
+        if (course.sameTime > 1) {
+          course.minStart = Math.min(
+            ...sameCourses[course.secondsForDay].map(x => x.position)
+          )
+        }
+      }
+
       dayObj.barCount = Math.max(...coursePositions) + 1
       dayObj.coursePositions = coursePositions
       return dayObj
@@ -293,6 +309,15 @@ class CalendarWeekView extends Component {
     }
   }
 
+  getDayCustomStyle = (day, users) => {
+    if (!users.length && day.maxSame > 1) {
+      return {
+        minWidth: 70 * day.maxSame + 'px'
+      }
+    }
+    return {}
+  }
+
   renderWeekdays() {
     const { calendar, users, filterOpen } = this.props
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
@@ -313,7 +338,10 @@ class CalendarWeekView extends Component {
           )}
           style={this.getDaysStyle(daysUser)}>
           {daysInfo.map((day, index) => (
-            <div className={this.getWeekDayStyle(day)} key={index}>
+            <div
+              className={this.getWeekDayStyle(day)}
+              key={index}
+              style={this.getDayCustomStyle(day, users)}>
               <Mobile>
                 <span>{weeks[index]}</span>
               </Mobile>
@@ -350,7 +378,6 @@ class CalendarWeekView extends Component {
 
   renderDays() {
     const { history, calendar, match, suppliers, settings, users } = this.props
-    // const { mobileDayOfWeek } = this.state
     let daysInfo = this.getWeekDays()
     const daysUser = this.getDaysUserCount(users, daysInfo)
 
@@ -371,6 +398,7 @@ class CalendarWeekView extends Component {
                 calendar.selectedDate ===
                   moment(day.date).format('YYYY-MM-DD') && styles.bgHighlight
               )}
+              style={this.getDayCustomStyle(day, users)}
               key={index}>
               <CurrentTimeLine day={day} />
               <div className={styles.weekDayGroup}>
@@ -407,25 +435,6 @@ class CalendarWeekView extends Component {
                       settings={settings}
                     />
                   )}
-                  {/* {day.courses &&
-                    day.courses.length > 0 &&
-                    day.courses.map((course, index) => (
-                      <CalendarWeekCourse
-                        course={course}
-                        position={day.coursePositions[index]}
-                        barCount={day.barCount}
-                        history={history}
-                        calendar={calendar}
-                        key={index}
-                        match={match}
-                        settings={settings}
-                        ref={
-                          matches && index === 0
-                            ? this.setFirstCourseRef
-                            : undefined
-                        }
-                      />
-                    ))} */}
                 </Desktop>
               </div>
             </div>
@@ -434,106 +443,6 @@ class CalendarWeekView extends Component {
       </div>
     )
   }
-
-  // renderAllDay() {
-  //   const { days, calendar, history, sideBarOpen } = this.props
-  //   const { mobileDayOfWeek } = this.state
-  //   let daysInfo = this.getWeekDays()
-
-  //   return (
-  //     <div
-  //       className={classnames(
-  //         styles.events,
-  //         styles.allDayEvents,
-  //         sideBarOpen && styles.sideBarOpen
-  //       )}>
-  //       <div
-  //         className={classnames(
-  //           'day-ul',
-  //           styles.eventsContainer,
-  //           styles.eventsContainerAllDay
-  //         )}>
-  //         <MediaQuery maxWidth={767}>
-  //           {matches =>
-  //             daysInfo.map((day, index) => {
-  //               if (!matches || index === mobileDayOfWeek) {
-  //                 return (
-  //                   <div
-  //                     className={classnames(
-  //                       'day-li',
-  //                       styles.eventsGroup,
-  //                       calendar.selectedDate ===
-  //                         moment(day.date).format('YYYY-MM-DD') &&
-  //                         styles.bgHighlight
-  //                     )}
-  //                     key={index}
-  //                     onClick={event => {
-  //                       const { target } = event
-
-  //                       if (
-  //                         target.classList.contains('day-li') ||
-  //                         target.classList.contains('day-ul')
-  //                       ) {
-  //                         history.push(
-  //                           `/calendar/${moment(day.date).format('YYYY-MM-DD')}`
-  //                         )
-  //                       }
-  //                     }}>
-  //                     {day.staff
-  //                       .filter(({ all_day }) => all_day)
-  //                       .map((s, index) => (
-  //                         <div
-  //                           onClick={() =>
-  //                             history.push(
-  //                               `/calendar/${moment(day.date).format(
-  //                                 'YYYY-MM-DD'
-  //                               )}/staff/${s.id}`
-  //                             )
-  //                           }
-  //                           key={index}
-  //                           className={styles.allDayEvent}
-  //                           style={{ background: s.colour }}>
-  //                           <img
-  //                             src={personIcon}
-  //                             alt=""
-  //                             className={styles.instructorIcon}
-  //                           />{' '}
-  //                           {s.instructor_name}
-  //                         </div>
-  //                       ))}
-  //                     {day.events
-  //                       .filter(({ all_day }) => all_day)
-  //                       .map((event, index) => (
-  //                         <div
-  //                           onClick={() =>
-  //                             history.push(
-  //                               `/calendar/${moment(day.date).format(
-  //                                 'YYYY-MM-DD'
-  //                               )}/events/${event.id}`
-  //                             )
-  //                           }
-  //                           key={index}
-  //                           className={styles.allDayEvent}
-  //                           style={{
-  //                             background: mapLabelColoursWithContant(
-  //                               {},
-  //                               'EVENT'
-  //                             )
-  //                           }}>
-  //                           {event.name}
-  //                         </div>
-  //                       ))}
-  //                   </div>
-  //                 )
-  //               }
-  //               return null
-  //             })
-  //           }
-  //         </MediaQuery>
-  //       </div>
-  //     </div>
-  //   )
-  // }
 
   render() {
     const { sideBarOpen } = this.props
@@ -546,7 +455,6 @@ class CalendarWeekView extends Component {
         )}>
         <div className={styles.mainContent}>
           {this.renderWeekdays()}
-          {/* {this.renderAllDay()} */}
           <div className={styles.weekviewContent}>
             {this.renderTimeline()}
             {this.renderDays()}

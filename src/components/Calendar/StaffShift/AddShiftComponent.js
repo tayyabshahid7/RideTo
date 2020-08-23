@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import queryString from 'query-string'
 import ShiftForm from './ShiftForm'
 import { createStaff } from 'store/staff'
 import styles from './styles.scss'
@@ -22,14 +21,13 @@ class AddShiftComponent extends Component {
   }
 
   moveBackToPage = () => {
-    const { history, location, isPopup, onClose } = this.props
+    const { history, isPopup, onClose, match } = this.props
     if (isPopup) {
       onClose && onClose()
       return
     }
 
-    let parsed = queryString.parse(location.search)
-    let date = parsed.date
+    const { date } = match.params
     if (date) {
       history.push(`/calendar/${date}`)
     } else {

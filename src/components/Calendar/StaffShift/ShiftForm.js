@@ -239,12 +239,13 @@ class ShiftForm extends React.Component {
                 name="end_date"
                 value={this.state.end_date}
                 type="date"
+                popperPosition="bottom-end"
                 onChange={this.handleChangeDate}
                 required
               />
             </div>
             {this.state.times.map((time, index) => (
-              <div className={styles.timeRow}>
+              <div key={index} className={styles.timeRow}>
                 <ConnectInput
                   basic
                   name="start_time"

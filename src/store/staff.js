@@ -220,21 +220,25 @@ export default function reducer(state = initialState, action) {
     case DELETE[REQUEST]:
       return {
         ...state,
-        single: { ...state.single, loading: true }
+        single: { ...state.single, saving: true }
       }
-    case DELETE[SUCCESS]:
-      dayStaff = state.day.staff.filter(
-        staff => staff.id !== action.data.diaryId
-      )
-      calendarStaff = state.calendar.staff.filter(
-        staff => staff.id !== action.data.diaryId
-      )
+    case DELETE[SUCCESS]: {
+      const diaryId = parseInt(action.data.diaryId)
+      dayStaff = state.day.staff.filter(staff => staff.id !== diaryId)
+      calendarStaff = state.calendar.staff.filter(staff => staff.id !== diaryId)
+      console.log(action.data, state.calendar)
 
       return {
         ...state,
-        single: { loading: false, staff: null, error: null },
+        single: { saving: false, staff: null, error: null },
         day: { ...state.day, staff: dayStaff },
         calendar: { ...state.calendar, staff: calendarStaff }
+      }
+    }
+    case DELETE[FAILURE]:
+      return {
+        ...state,
+        single: { ...state.single, saving: false, error: action.error }
       }
     case FETCH_FOR_DAY[REQUEST]:
       return {
