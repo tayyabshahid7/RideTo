@@ -85,7 +85,7 @@ class CoursesPanelContainer extends React.Component {
           addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
-          events={events.sort((a, b) => a.start_time > b.start_time)}
+          events={events}
           updateAdding={this.updateAdding}
           staff={staff}
           isAdmin={isAdmin}

@@ -3,7 +3,7 @@ import Select from 'react-select'
 import styles from './styles.scss'
 import classnames from 'classnames'
 
-export default function ConnectReactSelect({
+export default function ConnectSingleSelect({
   label,
   onChange,
   noWrapLabel,
@@ -15,7 +15,6 @@ export default function ConnectReactSelect({
   options,
   valueArray,
   disabled,
-  isMulti = true,
   labelField = 'name',
   valueField = 'id',
   required,
@@ -25,6 +24,31 @@ export default function ConnectReactSelect({
 }) {
   if (!options) {
     options = valueArray
+  }
+
+  if (value) {
+    value = value.toString()
+  }
+  if (selected) {
+    selected = selected.toString()
+  }
+  const innerValue = options.find(
+    x =>
+      x[valueField].toString() === value ||
+      x[valueField].toString() === selected
+  )
+
+  const handleChange = value => {
+    if (raw) {
+      onChange({
+        target: {
+          name,
+          value: value[valueField]
+        }
+      })
+    } else {
+      onChange(value[valueField])
+    }
   }
 
   // ref: https://react-select.com/styles
@@ -74,13 +98,14 @@ export default function ConnectReactSelect({
         </label>
       )}
       <Select
-        isMulti={isMulti}
+        isMulti={false}
         name={name}
         id={id || name}
         options={options}
+        required={required}
         styles={customStyles}
-        value={selected || value || []}
-        onChange={values => onChange(values)}
+        value={innerValue}
+        onChange={value => handleChange(value)}
         placeholder={placeholder}
         getOptionLabel={option => option[labelField]}
         getOptionValue={option => option[valueField]}

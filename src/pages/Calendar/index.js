@@ -257,6 +257,15 @@ class CalendarPage extends Component {
     let { events } = eventCalendar
 
     events = events.filter(x => activeSchools.includes(x.supplier))
+    events = events.sort((a, b) => {
+      if (a.all_day) {
+        return -1
+      } else if (b.all_day) {
+        return 1
+      } else {
+        return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
+      }
+    })
     events.forEach(event => {
       const supTmp = suppliers.find(x => x.id === event.supplier)
       if (supTmp) {

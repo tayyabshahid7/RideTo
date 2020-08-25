@@ -27,8 +27,8 @@ export default function ConnectDatePicker({
     onChange({
       target: {
         name: name,
-        value: date && moment.utc(date).format('YYYY-MM-DD'),
-        ...(iso && { value: moment.utc(date).toISOString() })
+        value: date && moment(date).format('YYYY-MM-DD'),
+        ...(iso && { value: moment(date).toISOString() })
       }
     })
   }
