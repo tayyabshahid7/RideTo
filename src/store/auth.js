@@ -153,6 +153,10 @@ export default function reducer(state = initialState, action) {
         user: action.data.user,
         schoolId: action.data.user.suppliers[0].id
       })
+      let { activeSchools } = state
+      if (!activeSchools) {
+        activeSchools = []
+      }
       return {
         ...state,
         loading: false,
@@ -160,7 +164,7 @@ export default function reducer(state = initialState, action) {
         error: null,
         schoolId: action.data.user.suppliers[0].id,
         schoolName: action.data.user.suppliers[0].name,
-        activeSchools: [],
+        activeSchools,
         user: action.data.user
       }
     case UPDATE_PASSWORD[REQUEST]:
@@ -183,7 +187,10 @@ export default function reducer(state = initialState, action) {
     case LOGOUT:
       clearState('auth')
       removeToken()
-      return { ...initialState }
+      return {
+        ...initialState,
+        activeSchools: state.activeSchools
+      }
     case RESET:
       removeToken()
       return { ...initialState }

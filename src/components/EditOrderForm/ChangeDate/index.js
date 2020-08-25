@@ -27,7 +27,7 @@ class ChangeDate extends Component {
     const { calendarCourses, courseType } = this.props
     const availableDate = calendarCourses
       .filter(course => courseType === course.course_type.constant)
-      .filter(course => course.spaces > course.orders.length)
+      .filter(course => course.orders && course.spaces > course.orders.length)
       .map(({ date }) => new Date(date))
 
     this.setState({
