@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
 import CoursesPanelItem from './CoursesPanelItem'
 import EventPanelItem from './EventPanelItem'
 import ShiftPanelItem from '../StaffShift/ShiftPanelItem'
@@ -20,6 +21,16 @@ function CoursesPanel({
   loadCourses
 }) {
   const shifts = staff.filter(x => x.event_type === SHIFT_TYPES[0].id)
+
+  events = events.sort((a, b) => {
+    if (a.all_day) {
+      return -1
+    } else if (b.all_day) {
+      return 1
+    } else {
+      return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
+    }
+  })
 
   return (
     <div className={styles.coursesPanel}>

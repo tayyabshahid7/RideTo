@@ -136,13 +136,18 @@
     }
 
     span {
-      position: absolute;
+      position: sticky;
       left: 0;
       font-size: 9px;
       line-height: 11px;
       width: 56px;
       text-align: center;
       color: var(--color-dark-light);
+      width: 56px;
+      height: 56px;
+      display: block;
+      background: white;
+      z-index: 11;
     }
   }
 }

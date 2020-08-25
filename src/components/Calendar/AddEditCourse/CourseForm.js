@@ -10,7 +10,7 @@ import BikeNumberPicker from 'components/BikeNumberPicker'
 
 import {
   ConnectInput,
-  ConnectSelect,
+  ConnectSingleSelect,
   ConnectTextArea,
   Button,
   ConnectLabeledContent
@@ -155,7 +155,6 @@ class CourseForm extends React.Component {
 
   loadPricing() {
     const { fetchPrice, pricing } = this.props
-    console.log(pricing)
     const { supplier } = this.state
     const { course_type_id, date } = this.state.course
     if (course_type_id && date) {
@@ -391,7 +390,7 @@ class CourseForm extends React.Component {
           <form onSubmit={this.handleSave.bind(this)}>
             <Row>
               <Col>
-                <ConnectSelect
+                <ConnectSingleSelect
                   basic
                   name="school"
                   value={supplier}
@@ -406,7 +405,7 @@ class CourseForm extends React.Component {
             </Row>
             <Row>
               <Col>
-                <ConnectSelect
+                <ConnectSingleSelect
                   label="Course Type"
                   basic
                   name="course_type_id"
@@ -421,7 +420,7 @@ class CourseForm extends React.Component {
             </Row>
             <Row>
               <Col>
-                <ConnectSelect
+                <ConnectSingleSelect
                   basic
                   label="Staff"
                   name="instructor_id"
@@ -484,7 +483,7 @@ class CourseForm extends React.Component {
               </div>
               <Row>
                 <Col>
-                  <ConnectSelect
+                  <ConnectSingleSelect
                     required
                     basic
                     label="Course Spaces"
@@ -671,7 +670,7 @@ class CourseForm extends React.Component {
 
                       <Row>
                         <Col>
-                          <ConnectSelect
+                          <ConnectSingleSelect
                             basic
                             label="Test Centre"
                             name="test_centre"
@@ -686,7 +685,7 @@ class CourseForm extends React.Component {
 
                       <Row>
                         <Col>
-                          <ConnectSelect
+                          <ConnectSingleSelect
                             basic
                             label="Test Status"
                             name="status"

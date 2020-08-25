@@ -8,6 +8,7 @@ import ConnectSelect from './ConnectSelect'
 import ConnectTextArea from './ConnectTextArea'
 import ConnectColorInput from './ConnectColorInput'
 import ConnectReactSelect from './ConnectReactSelect'
+import ConnectSingleSelect from './ConnectSingleSelect'
 
 export {
   ConnectAgeInput,
@@ -19,5 +20,6 @@ export {
   ConnectSelect,
   ConnectTextArea,
   ConnectColorInput,
-  ConnectReactSelect
+  ConnectReactSelect,
+  ConnectSingleSelect
 }
