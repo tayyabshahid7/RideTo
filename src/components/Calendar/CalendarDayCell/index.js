@@ -54,6 +54,7 @@ const getShiftUsers = (day, users) => {
 const CalendarDayCell = ({
   day,
   calendar,
+  index,
   history,
   handleMobileCellClick,
   lastRow,
@@ -114,75 +115,81 @@ const CalendarDayCell = ({
         isAxisDate && 'axis-date'
       )}
       onClick={handleClick}>
-      <div className={styles.cellHeader}>
-        <div
-          className={classnames(
-            styles.date,
-            isOtherMonthDate && styles.otherMonthDate,
-            isToday && styles.highlight
-          )}>
-          {dayText}
-        </div>
-        <div className={styles.shiftUsers}>
-          {shiftUsers.map(user => (
-            <UserWithTooltip user={user} key={user.id} />
-          ))}
-        </div>
-      </div>
-      <div className={styles.courseContainer}>
-        {items
-          .slice(0, showItems)
-          .map(item =>
-            item.event_type ? (
-              <CalendarShiftDayCellItem normal key={item.id} item={item} />
-            ) : (
-              <CalendarDayCellItem key={item.id} item={item} />
-            )
-          )}
-
-        {more > 0 && (
-          <div onClick={handleMore} className={styles.more}>
-            + {more} More
-          </div>
-        )}
-      </div>
-      {showPopup && (
-        <React.Fragment>
-          <div onClick={handleClose} className={styles.popupBackdrop}></div>
-
+      <div className={styles.content}>
+        <div className={styles.cellHeader}>
           <div
             className={classnames(
-              styles.detailPopup,
-              lastRow && styles.detailLastRow
+              styles.date,
+              isOtherMonthDate && styles.otherMonthDate,
+              isToday && styles.highlight
             )}>
-            <div className={styles.cellHeader}>
-              <div
-                className={classnames(
-                  styles.date,
-                  isOtherMonthDate && styles.otherMonthDate,
-                  isToday && styles.highlight
-                )}>
-                {dayText}
-              </div>
-              <div className={styles.shiftUsers}>
-                {shiftUsers.map(user => (
-                  <UserWithTooltip user={user} key={user.id} />
-                ))}
-              </div>
-            </div>
-            {items.map(item =>
+            {dayText}
+          </div>
+          <div className={styles.shiftUsers}>
+            {shiftUsers.map(user => (
+              <UserWithTooltip
+                user={user}
+                key={user.id}
+                right={index % 7 === 6}
+              />
+            ))}
+          </div>
+        </div>
+        <div className={styles.courseContainer}>
+          {items
+            .slice(0, showItems)
+            .map(item =>
               item.event_type ? (
                 <CalendarShiftDayCellItem normal key={item.id} item={item} />
               ) : (
                 <CalendarDayCellItem key={item.id} item={item} />
               )
             )}
-            <div className={styles.closeButton} onClick={handleClose}>
-              <i className="fa fa-angle-up"></i>
+
+          {more > 0 && (
+            <div onClick={handleMore} className={styles.more}>
+              + {more} More
             </div>
-          </div>
-        </React.Fragment>
-      )}
+          )}
+        </div>
+        {showPopup && (
+          <React.Fragment>
+            <div onClick={handleClose} className={styles.popupBackdrop}></div>
+
+            <div
+              className={classnames(
+                styles.detailPopup,
+                lastRow && styles.detailLastRow
+              )}>
+              <div className={styles.cellHeader}>
+                <div
+                  className={classnames(
+                    styles.date,
+                    isOtherMonthDate && styles.otherMonthDate,
+                    isToday && styles.highlight
+                  )}>
+                  {dayText}
+                </div>
+                <div className={styles.shiftUsers}>
+                  {shiftUsers.map(user => (
+                    <UserWithTooltip user={user} key={user.id} />
+                  ))}
+                </div>
+              </div>
+              {items.map(item =>
+                item.event_type ? (
+                  <CalendarShiftDayCellItem normal key={item.id} item={item} />
+                ) : (
+                  <CalendarDayCellItem key={item.id} item={item} />
+                )
+              )}
+              <div className={styles.closeButton} onClick={handleClose}>
+                <i className="fa fa-angle-up"></i>
+              </div>
+            </div>
+          </React.Fragment>
+        )}
+      </div>
     </div>
   )
 }

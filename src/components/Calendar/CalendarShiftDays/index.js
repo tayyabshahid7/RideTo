@@ -49,7 +49,7 @@ const CalendarShiftDays = ({ days, calendar, onEdit, onNew, activeUsers }) => {
           {activeUsers.map((user, uIndex) => (
             <React.Fragment key={uIndex}>
               <div key={`u${wIndex * 7}-${uIndex}`} className={styles.userCell}>
-                <UserInitial user={user} short />
+                <UserInitial user={user} minimized />
               </div>
               {weekDays.map((day, dIndex) => (
                 <CalendarShiftDayCell

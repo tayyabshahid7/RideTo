@@ -44,6 +44,7 @@
   right: -340px;
   bottom: 0;
   width: 340px;
+  overflow: auto;
   transition: all ease 0.3s;
   border-left: 1px solid var(--color-border);
   background: white;

@@ -146,8 +146,8 @@ class Instructors extends React.Component {
           </div>
           <div className={classnames(styles.box, styles.header)}>
             <div className={styles.headerText}>
-              <h3 className={styles.title}>Current Staffs</h3>
-              <p>Edit the details of an existing staffs</p>
+              <h3 className={styles.title}>Current Staff</h3>
+              <p>Edit the details of existing staff user accounts</p>
             </div>
             <div className={styles.userTable}>
               <div className={classnames(styles.userRow, styles.headerRow)}>

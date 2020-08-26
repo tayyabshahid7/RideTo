@@ -24,6 +24,7 @@ const CalendarDays = ({
           day={day}
           calendar={calendar}
           key={index}
+          index={index}
           history={history}
           handleMobileCellClick={handleMobileCellClick}
           rowsCount={rowsCount}

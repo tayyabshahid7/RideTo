@@ -271,6 +271,10 @@ class CalendarPage extends Component {
       if (supTmp) {
         event.supplierName = supTmp.name
       }
+      if (event.all_day) {
+        event.start_time = event.start_time.substr(0, 11) + '05:00:00Z'
+        event.end_time = event.end_time.substr(0, 11) + '22:59:00Z'
+      }
     })
 
     const { staff } = staffCalendar

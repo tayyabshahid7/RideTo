@@ -429,7 +429,7 @@ class CourseForm extends React.Component {
                   onChange={this.handleChangeRawEvent.bind(this)}
                   raw
                   options={[
-                    { id: '', name: 'Select' },
+                    { id: '', name: 'Un-Assigned' },
                     ...schoolInstructors.map(instructor => ({
                       ...instructor,
                       name: `${instructor.first_name} ${instructor.last_name}`

@@ -3,15 +3,17 @@ import classnames from 'classnames'
 import styles from './index.scss'
 import { UserAvatar } from '../../../assets/icons'
 
-const UserInitial = ({ user, short = false, wide }) => {
+const UserInitial = ({ user, short = false, minimized = false, wide }) => {
   let initial
+  let username = ''
+  if (user.id === -1) {
+    username = 'Unassigned'
+  } else {
+    username = user.first_name + ' ' + user.last_name
+  }
 
   if (!short) {
-    if (user.id === -1) {
-      initial = 'Unassigned'
-    } else {
-      initial = user.first_name + ' ' + user.last_name
-    }
+    initial = username
   } else {
     if (user.id === -1) {
       initial = 'N/A'
@@ -26,14 +28,20 @@ const UserInitial = ({ user, short = false, wide }) => {
       className={classnames(
         styles.user,
         short && styles.short,
-        wide && styles.wide
+        wide && styles.wide,
+        minimized && styles.minimized
       )}>
-      {user.user_photo ? (
-        <img src={user.user_photo} className={styles.photo} alt={initial} />
-      ) : (
-        <UserAvatar />
-      )}
-      <span>{initial}</span>
+      <div className={styles.content}>
+        {user.user_photo ? (
+          <img src={user.user_photo} className={styles.photo} alt={initial} />
+        ) : (
+          <UserAvatar />
+        )}
+        {!minimized && <span>{initial}</span>}
+        <h5 className={classnames('detail')}>
+          <span>{username}</span>
+        </h5>
+      </div>
     </div>
   )
 }
