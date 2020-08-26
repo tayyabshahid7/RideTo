@@ -50,7 +50,10 @@ export function getFullLicenseBikeHires(course) {
       value: a_manual_bikes ? 'a_' + BIKE_HIRE.MANUAL : null,
       title: 'A Manual Bike'
     },
-    { value: BIKE_HIRE.NO, title: 'Own Bike' }
+    {
+      value: BIKE_HIRE.NO,
+      title: 'Own Bike'
+    }
   ]
 }
 
@@ -93,6 +96,28 @@ export function getAvailableBikeHires(course) {
   ]
 }
 
+export function getLicenseFromType(value) {
+  let [type] = value.toUpperCase().split('_')
+  if (value === BIKE_HIRE.NO) {
+    type = 'NONE'
+  }
+  return 'FULL_LICENCE_TYPE_' + type
+}
+
+export function formaBikeTypeForEdit(order) {
+  if (order.full_licence_type.startsWith('FULL_LICENCE_TYPE')) {
+    const type = formatBikeConstant(order.bike_type)
+    if (type !== BIKE_HIRE.NO) {
+      let tmp = order.full_licence_type.split('_')
+      tmp = tmp[tmp.length - 1].toLowerCase()
+      return `${tmp}_${type}`
+    }
+    return type
+  } else {
+    return formatBikeConstant(order.bike_hire)
+  }
+}
+
 export function formatBikeConstant(constant) {
   switch (constant) {
     case 'BIKE_TYPE_AUTO':
@@ -123,7 +148,8 @@ export function formatBikeConstant(constant) {
 export const FullLicenceTypes = [
   { value: 'FULL_LICENCE_TYPE_A1', title: 'A1' },
   { value: 'FULL_LICENCE_TYPE_A2', title: 'A2' },
-  { value: 'FULL_LICENCE_TYPE_A', title: 'A' }
+  { value: 'FULL_LICENCE_TYPE_A', title: 'A' },
+  { value: 'FULL_LICENCE_TYPE_NONE', title: 'None' }
 ]
 
 export function getTitleFor(arr, value) {

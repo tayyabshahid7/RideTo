@@ -1,5 +1,4 @@
 .container {
-  padding: 8px;
   color: var(--color-dark-light);
   text-align: left;
   cursor: pointer;
@@ -16,6 +15,15 @@
   @media (max-width: 767px) {
     min-height: 128px;
   }
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px;
 }
 
 .date {

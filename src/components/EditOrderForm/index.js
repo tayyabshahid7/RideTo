@@ -6,10 +6,11 @@ import { Row, Col, Form } from 'reactstrap'
 import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
 import {
-  formatBikeConstant,
-  FullLicenceTypes,
+  formaBikeTypeForEdit,
+  getLicenseFromType,
   getAvailableBikeHires
 } from 'common/info'
+import { BIKE_HIRE } from 'common/constants'
 import {
   getPaymentOptions,
   getTrainingStatusOptions,
@@ -24,12 +25,13 @@ class EditOrderForm extends React.Component {
       order: props.order
         ? {
             ...props.order,
-            bike_type: formatBikeConstant(props.order.bike_type)
+            bike_type: formaBikeTypeForEdit(props.order)
           }
         : {},
       showChangeDate: false,
       isChanged: false
     }
+    console.log(this.state)
 
     this.handleSave = this.handleSave.bind(this)
     this.handleToggleDateClick = this.handleToggleDateClick.bind(this)
@@ -55,6 +57,10 @@ class EditOrderForm extends React.Component {
       newOrder[type][name] = value
     }
 
+    if (typeName === 'bike_type') {
+      newOrder.full_licence_type = getLicenseFromType(value)
+    }
+
     this.setState({
       order: { ...newOrder },
       isChanged: true
@@ -64,8 +70,21 @@ class EditOrderForm extends React.Component {
   async handleSave(event) {
     const { onSave, onCancel } = this.props
     const { order } = this.state
+    const isFullLicence = this.state.order.course_type.startsWith(
+      'FULL_LICENCE'
+    )
+
+    const data = Object.assign({}, order)
+    if (isFullLicence) {
+      let type = data.bike_type.toUpperCase().split('_')[1]
+      if (data.bike_type === BIKE_HIRE.NO) {
+        type = 'NONE'
+      }
+      data.bike_type = 'BIKE_TYPE_' + type
+    }
+    console.log(data, order)
     event.preventDefault()
-    let response = await onSave(order)
+    let response = await onSave(data)
     if (response) {
       onCancel() // close the form on success
     }
@@ -99,16 +118,8 @@ class EditOrderForm extends React.Component {
 
     const { first_name, last_name, id } = this.state.order.customer
     const { direct_friendly_id, payment_status } = this.state.order.order
-    const {
-      bike_type,
-      full_licence_type,
-      status,
-      non_completion_reason,
-      notes
-    } = this.state.order
-    const isFullLicence = this.state.order.course_type.startsWith(
-      'FULL_LICENCE'
-    )
+    const { bike_type, status, non_completion_reason, notes } = this.state.order
+
     const isRideTo =
       !direct_friendly_id.includes('DIRECT') &&
       !direct_friendly_id.includes('WIDGET')
@@ -159,26 +170,6 @@ class EditOrderForm extends React.Component {
                   />
                 </Col>
               </Row>
-              {isFullLicence && (
-                <Row>
-                  <Col sm="8">
-                    <ConnectSelect
-                      disabled={isRideTo || !isAdmin}
-                      name="full_licence_type"
-                      selected={full_licence_type}
-                      label="Licence Type *"
-                      options={FullLicenceTypes}
-                      required
-                      valueField="value"
-                      labelField="title"
-                      basic
-                      onChange={value => {
-                        this.handleChange('full_licence_type', value)
-                      }}
-                    />
-                  </Col>
-                </Row>
-              )}
               <Row>
                 <Col sm="10">
                   <ConnectSelect

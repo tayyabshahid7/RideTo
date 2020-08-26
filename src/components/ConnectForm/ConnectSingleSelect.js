@@ -53,12 +53,27 @@ export default function ConnectSingleSelect({
 
   // ref: https://react-select.com/styles
   const customStyles = {
-    option: (provided, state) => ({
-      ...provided
-      // borderBottom: '1px dotted pink',
-      // color: state.isSelected ? 'red' : 'blue',
-      // padding: 20
-    }),
+    option: (provided, state) => {
+      // console.log(state)
+      const color = !state.value ? '#888' : state.isSelected ? 'white' : 'black'
+      return {
+        ...provided,
+        padding: '4px 8px',
+        color,
+        backgroundColor: state.isSelected
+          ? '#4259a8'
+          : state.isFocused
+          ? '#bbc2d8'
+          : 'white',
+
+        ':active': {
+          backgroundColor: '#4259a8'
+        }
+        // borderBottom: '1px dotted pink',
+        // color: state.isSelected ? 'red' : 'blue',
+        // padding: 20
+      }
+    },
     control: provided => ({
       ...provided,
       borderRadius: 0,

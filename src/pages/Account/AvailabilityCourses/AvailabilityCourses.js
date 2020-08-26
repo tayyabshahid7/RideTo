@@ -4,7 +4,7 @@ import moment from 'moment'
 import styles from './styles.scss'
 import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 import classnames from 'classnames'
-import CalendarLabels from './CalendarLabels'
+// import CalendarLabels from './CalendarLabels'
 import SchoolSelect from 'components/SchoolSelect'
 import isEqual from 'lodash/isEqual'
 import Loading from 'components/Loading'
@@ -155,11 +155,11 @@ class AvailabilityCourses extends React.Component {
       schools,
       history,
       saving,
-      error,
-      settings,
-      updateSettings,
-      editInstructor,
-      updateDiaryColor
+      error
+      // settings,
+      // updateSettings,
+      // editInstructor,
+      // updateDiaryColor
     } = this.props
 
     const { showCreateBulkCourseForm, available_days } = this.state
@@ -184,7 +184,7 @@ class AvailabilityCourses extends React.Component {
           )}
         </div>
         <div className={styles.box}>{this.renderDefaultDays()}</div>
-        <div className={styles.box}>
+        {/* <div className={styles.box}>
           <CalendarLabels
             settings={settings}
             instructors={instructors}
@@ -195,7 +195,7 @@ class AvailabilityCourses extends React.Component {
             editInstructor={editInstructor}
             updateDiaryColor={updateDiaryColor}
           />
-        </div>
+        </div> */}
       </Fragment>
     )
   }

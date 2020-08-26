@@ -14,15 +14,12 @@ import CalendarMobileBackButton from './CalendarMobileBackButton'
 import { IconSideFilter } from '../../assets/icons/'
 import { Desktop } from 'common/breakpoints'
 import MediaQuery from 'react-responsive'
-import _ from 'lodash'
 
 class CalendarComponent extends Component {
   getActiveUsers = () => {
-    const { instructors, activeSchools, inactiveUsers } = this.props
+    const { instructors, inactiveUsers } = this.props
 
-    const currUsers = instructors.filter(
-      x => _.intersection(x.supplier, activeSchools).length
-    )
+    const currUsers = instructors
     const activeUsers = currUsers.filter(x => !inactiveUsers.includes(x.id))
     if (!inactiveUsers.includes(-1)) {
       activeUsers.push({ id: -1 })
