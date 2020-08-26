@@ -52,6 +52,8 @@
   }
 
   &:hover {
+    z-index: 6;
+
     h5 {
       display: flex;
     }
