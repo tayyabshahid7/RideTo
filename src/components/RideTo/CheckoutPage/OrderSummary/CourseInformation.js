@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState, useEffect } from 'react'
 import moment from 'moment'
 import styles from './styles.scss'
 import { getCourseTitle } from 'services/course'
@@ -6,6 +6,7 @@ import MapComponent from 'components/RideTo/MapComponent'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import RefundInfo from 'components/RideTo/CheckoutPage/RefundInfo'
 import classnames from 'classnames'
+import axios from 'axios'
 
 function renderRow(title, content, index, priceHighlight = false) {
   return (
@@ -20,6 +21,29 @@ function renderRow(title, content, index, priceHighlight = false) {
       </div>
     </div>
   )
+}
+
+function isBankHoliday(holidays, date) {
+  return holidays.find(x => x.date === date.format('YYYY-MM-DD'))
+}
+
+async function addWeekdays(date, days) {
+  const tmp = await axios.get('https://www.gov.uk/bank-holidays.json')
+  const bankHolidays = tmp.data['england-and-wales'].events
+
+  date = moment(date) // use a clone
+  while (days > 0) {
+    date = date.add(1, 'days')
+    // decrease "days" only if it's a weekday.
+    if (
+      date.isoWeekday() !== 6 &&
+      date.isoWeekday() !== 7 &&
+      !isBankHoliday(bankHolidays, date)
+    ) {
+      days -= 1
+    }
+  }
+  return date
 }
 
 function CourseInformation({
@@ -39,13 +63,21 @@ function CourseInformation({
     gloves_jacket_included,
     helmet_hire
   } = checkoutData
+  const [diffDays, setDiffDays] = useState()
+  useEffect(() => {
+    async function calculateDiffDays() {
+      const tmpDate = await addWeekdays(new Date(), 3)
+      const tmpDays = moment(date).diff(moment(tmpDate), 'days')
+      setDiffDays(tmpDays)
+    }
+    calculateDiffDays()
+  }, [])
+
   const requested_time =
     trainings && trainings[0] && trainings[0].requested_time
   const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
   const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
   const isFullLicence = courseType === 'FULL_LICENCE'
-
-  const diffDays = moment().diff(moment(date), 'days')
 
   return (
     <Fragment>
@@ -121,10 +153,14 @@ function CourseInformation({
         ) : null}
         <div className={styles.rowItem}>
           <div className={styles.subtitle}>REFUND POLICY</div>
-          <div className={classnames(styles.content, styles.refundContent)}>
-            {diffDays <= 3 && <RefundInfo />}
-            <span>{diffDays <= 3 ? 'Non-refundable' : '100% Refundable*'}</span>
-          </div>
+          {diffDays !== undefined && (
+            <div className={classnames(styles.content, styles.refundContent)}>
+              {diffDays < 0 && <RefundInfo />}
+              <span>
+                {diffDays < 0 ? 'Non-refundable' : '100% Refundable*'}
+              </span>
+            </div>
+          )}
         </div>
         <div className={styles.orderIncluded}>
           <div className={styles.subtitle}>WHAT'S INCLUDED</div>

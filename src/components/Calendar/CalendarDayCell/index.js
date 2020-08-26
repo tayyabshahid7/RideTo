@@ -9,16 +9,10 @@ import { getStarTimeForEventForDate } from 'utils/helper'
 import { getShortCourseType } from 'services/course'
 import styles from './index.scss'
 import sortBy from 'lodash/sortBy'
+import { SHIFT_TYPES } from '../../../common/constants'
 
 const getDayItems = (day, dateStr, users) => {
   let { courses = [], events = [] } = day
-
-  const userIds = users.map(x => x.id)
-  courses = courses.filter(
-    x =>
-      (userIds.includes(-1) && !x.instructor) ||
-      (x.instructor && userIds.includes(x.instructor.id))
-  )
 
   const items = courses
     .map(course => {
@@ -45,8 +39,9 @@ const getDayItems = (day, dateStr, users) => {
 
 const getShiftUsers = (day, users) => {
   const { staff = [] } = day
+  const shiftStaff = staff.filter(x => x.event_type === SHIFT_TYPES[0].id)
   const shiftUsers = users.filter(u =>
-    staff.find(x => parseInt(x.instructor_id) === u.id)
+    shiftStaff.find(x => parseInt(x.instructor_id) === u.id)
   )
   return shiftUsers
 }
