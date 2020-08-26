@@ -162,17 +162,14 @@ class CalendarWeekView extends Component {
             secondsForDay
           }
         }),
-        ...dayObj.events
-          .filter(({ all_day }) => !all_day)
-          .map(event => {
-            return {
-              ...event,
-              itemType: 'event',
-              ...secondsForDayAndDurationForEvent(event, dayObj.date)
-            }
-          }),
+        ...dayObj.events.map(event => {
+          return {
+            ...event,
+            itemType: 'event',
+            ...secondsForDayAndDurationForEvent(event, dayObj.date)
+          }
+        }),
         ...dayObj.staff
-          .filter(({ all_day }) => !all_day)
           .filter(x => x.event_type !== SHIFT_TYPES[0].id)
           .map(s => {
             return {
