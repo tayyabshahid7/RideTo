@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import moment from 'moment'
 import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
@@ -55,9 +55,25 @@ const CalendarDayCell = ({
   lastRow,
   users
 }) => {
+  const inputEl = useRef(null)
   const [showPopup, setShowPopup] = useState(false)
+  const [showItems, setShowItems] = useState(0)
 
-  let showItems = 4
+  useEffect(() => {
+    function calculateCount() {
+      const height = inputEl.current.clientHeight
+      const cnt = Math.floor((height - 16 - 29 - 21) / 22)
+      console.log(height)
+      setShowItems(cnt)
+    }
+
+    window.addEventListener('resize', calculateCount)
+
+    calculateCount()
+
+    return () => window.removeEventListener('resize', calculateCount)
+  }, [])
+
   const dateStr = moment(day.date).format('YYYY-MM-DD')
   const items = getDayItems(day, dateStr, users)
   const selectedDay = dateStr === calendar.selectedDate
@@ -75,10 +91,6 @@ const CalendarDayCell = ({
   const isMobile = useMediaQuery({ maxWidth: 767 })
 
   const shiftUsers = getShiftUsers(day, users)
-
-  if (isMobile) {
-    showItems = 3
-  }
 
   const handleClick = () => {
     if (isMobile) {
@@ -109,6 +121,7 @@ const CalendarDayCell = ({
         selectedDay && styles.selectedDay,
         isAxisDate && 'axis-date'
       )}
+      ref={inputEl}
       onClick={handleClick}>
       <div className={styles.content}>
         <div className={styles.cellHeader}>
@@ -120,15 +133,17 @@ const CalendarDayCell = ({
             )}>
             {dayText}
           </div>
-          <div className={styles.shiftUsers}>
-            {shiftUsers.map(user => (
-              <UserWithTooltip
-                user={user}
-                key={user.id}
-                right={index % 7 === 6}
-              />
-            ))}
-          </div>
+          {!isMobile && (
+            <div className={styles.shiftUsers}>
+              {shiftUsers.map(user => (
+                <UserWithTooltip
+                  user={user}
+                  key={user.id}
+                  right={index % 7 === 6}
+                />
+              ))}
+            </div>
+          )}
         </div>
         <div className={styles.courseContainer}>
           {items
