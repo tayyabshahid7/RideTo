@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-import { DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
+import { DAY_FORMAT3, DATE_FORMAT, EVENT_COLORS } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 
@@ -26,6 +26,7 @@ class EventForm extends React.Component {
       start_time: '',
       end_time: '',
       notes: '',
+      colour: EVENT_COLORS[0],
       all_day: false
     }
 

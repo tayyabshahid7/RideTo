@@ -18,6 +18,7 @@ import DateHeading from 'components/Calendar/DateHeading'
 import ConfirmModal from 'components/Modals/ConfirmModal'
 import isEqual from 'lodash/isEqual'
 import { isAdmin } from 'services/auth'
+import { actions as notifyActions } from 'store/notification'
 
 class EditCourseComponent extends Component {
   constructor(props) {
@@ -177,7 +178,8 @@ const mapDispatchToProps = dispatch =>
       updateSchoolOrder,
       fetchPrice,
       deleteCourse,
-      unsetSelectedCourse
+      unsetSelectedCourse,
+      showNotification: notifyActions.showNotification
     },
     dispatch
   )

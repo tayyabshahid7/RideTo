@@ -45,6 +45,7 @@ function CoursesPanel({
                 date={date}
                 instructors={instructors}
                 diary={item}
+                schools={schools}
               />
             ))}
           </div>

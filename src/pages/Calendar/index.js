@@ -284,6 +284,11 @@ class CalendarPage extends Component {
       if (tmp) {
         item.instructor = tmp
       }
+
+      const supTmp = suppliers.find(x => x.id === item.supplier_id)
+      if (supTmp) {
+        item.supplierName = supTmp.name
+      }
     })
 
     let dates = []

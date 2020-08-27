@@ -83,14 +83,11 @@ const CoursesPanelItem = ({
               {moment(`${course.date} ${course.time}`)
                 .add(course.duration / 60, 'hours')
                 .format('HH:mm')}
-              {isTestCourse &&
-                course.application_reference_number &&
-                `(${course.application_reference_number})`}
             </span>
           </div>
           <div className={styles.line}>
             <span>{schoolName}</span>
-            {instructor && <UserInitial user={instructor} short />}
+            {instructor && <UserInitial user={instructor} short right />}
           </div>
           <div className={styles.line}>
             <span>{getCourseSpaceTextShort(course)}</span>
@@ -108,6 +105,11 @@ const CoursesPanelItem = ({
                   </div>
                   {course.test_centre_name && (
                     <div className={styles.line}>{course.test_centre_name}</div>
+                  )}
+                  {isTestCourse && course.application_reference_number && (
+                    <div className={styles.line}>
+                      {`${course.application_reference_number}`}
+                    </div>
                   )}
                   <div className={styles.line}>
                     Cancel by:{' '}

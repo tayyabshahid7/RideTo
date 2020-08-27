@@ -81,6 +81,30 @@
   }
 }
 
+.right {
+  &:hover {
+    div > span {
+      display: none;
+    }
+
+    img,
+    svg {
+      margin-right: 0 !important;
+    }
+  }
+
+  h5 {
+    left: auto !important;
+    right: -3px !important;
+    padding-right: 26px !important;
+    padding-left: 13px !important;
+  }
+}
+
+.noPadding {
+  padding: 0 !important;
+}
+
 .minimized {
   img {
     width: 24px;

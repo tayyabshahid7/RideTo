@@ -9,6 +9,10 @@
   display: flex;
   // align-items: center;
   justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 8px;
+  }
 }
 
 .typeText {
