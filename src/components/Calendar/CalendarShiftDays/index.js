@@ -33,9 +33,16 @@ const CalendarShiftDays = ({ days, calendar, onEdit, onNew, activeUsers }) => {
     <div className={classnames(styles.calendarDays)}>
       {daysByWeek.map((weekDays, wIndex) => (
         <React.Fragment key={wIndex}>
-          <div key={`empty-${wIndex}`}></div>
+          <div
+            key={`empty-${wIndex}`}
+            className={classnames(wIndex && styles.weekStartCell)}></div>
           {weekDays.map((day, dIndex) => (
-            <div key={`w${wIndex * 7 + dIndex}`} className={styles.cellHeader}>
+            <div
+              key={`w${wIndex * 7 + dIndex}`}
+              className={classnames(
+                styles.cellHeader,
+                wIndex && styles.weekStartCell
+              )}>
               <div
                 className={classnames(
                   isOtherMonth(day) && styles.otherMonthDate,
