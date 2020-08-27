@@ -99,6 +99,11 @@ export default function ConnectSingleSelect({
     // }
   }
 
+  //   <Select id={'dropdown'}
+  //          options={options}
+  //          isOptionDisabled={(option) => option.disabled === 'yes'}>
+  //  </Select>
+
   return (
     <div className={styles.formGroup}>
       {label && (
