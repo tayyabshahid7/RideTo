@@ -3,7 +3,14 @@ import classnames from 'classnames'
 import styles from './index.scss'
 import { UserAvatar } from '../../../assets/icons'
 
-const UserInitial = ({ user, short = false, minimized = false, wide }) => {
+const UserInitial = ({
+  user,
+  short = false,
+  minimized = false,
+  wide,
+  right = false,
+  noPadding = false
+}) => {
   let initial
   let username = ''
   if (user.id === -1) {
@@ -27,8 +34,10 @@ const UserInitial = ({ user, short = false, minimized = false, wide }) => {
       key={user.id}
       className={classnames(
         styles.user,
+        right && styles.right,
         short && styles.short,
         wide && styles.wide,
+        noPadding && styles.noPadding,
         minimized && styles.minimized
       )}>
       <div className={styles.content}>

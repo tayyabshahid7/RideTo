@@ -20,6 +20,17 @@ export const SHIFT_TYPES = [
   { id: 'EVENT_SICK_DAY', name: 'Sick Day' }
 ]
 
+export const EVENT_COLORS = [
+  '#C6F6D5',
+  '#FAF089',
+  '#FEEBC8',
+  '#B2F5EA',
+  '#BEE3F8',
+  '#C3DAFE',
+  '#E9D8FD',
+  '#FED7E2'
+]
+
 export const WEEK_START_HOUR = 7
 export const WEEK_VIEW_START_TIME = 60 * 60 * WEEK_START_HOUR // Midnight
 export const WEEK_VIEW_START_TIME_STRING = '00:00'

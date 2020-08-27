@@ -1,19 +1,10 @@
 import React from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import { EVENT_COLORS } from 'common/constants'
 
 export default function ConnectColorInput(props) {
   const { label, id, name, value, onChange, noWrapLabel, disabled } = props
-  const colors = [
-    '#C6F6D5',
-    '#FAF089',
-    '#FEEBC8',
-    '#B2F5EA',
-    '#BEE3F8',
-    '#C3DAFE',
-    '#E9D8FD',
-    '#FED7E2'
-  ]
 
   const changeColor = color => () => {
     onChange(color)
@@ -33,7 +24,7 @@ export default function ConnectColorInput(props) {
         </label>
       )}
       <div className={styles.colorList}>
-        {colors.map((color, index) => (
+        {EVENT_COLORS.map((color, index) => (
           <span
             key={index}
             onClick={changeColor(color)}

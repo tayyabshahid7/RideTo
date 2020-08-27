@@ -7,7 +7,6 @@ import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 import BikeNumberPicker from 'components/BikeNumberPicker'
-
 import {
   ConnectInput,
   ConnectSingleSelect,
@@ -286,12 +285,33 @@ class CourseForm extends React.Component {
       .filter(removeFullLicence)
   }
 
+  getInstructors = schoolId => {
+    let { instructors } = this.props
+
+    return instructors.filter(x => x.supplier.includes(parseInt(schoolId)))
+  }
+
   handleChangeSchool = id => {
+    if (
+      this.props.course &&
+      this.props.course.orders &&
+      this.props.course.orders.length
+    ) {
+      if (this.props.showNotification) {
+        this.props.showNotification(
+          'Error',
+          'Unable to change course location',
+          'danger'
+        )
+      }
+      return
+    }
+
     id = parseInt(id)
-    let { course_type_id } = this.state.course
+    let { course_type_id, instructor_id } = this.state.course
+
     const courseTypes = this.getValidCourseTypes(id)
     const tmp = courseTypes.find(x => x.id === parseInt(course_type_id))
-    console.log(courseTypes, tmp)
     if (!tmp) {
       course_type_id = ''
       if (courseTypes.length) {
@@ -299,9 +319,16 @@ class CourseForm extends React.Component {
       }
     }
 
+    const schoolInstructors = this.getInstructors(id)
+    const tmpI = schoolInstructors.find(x => x.id === parseInt(instructor_id))
+    if (!tmpI) {
+      instructor_id = ''
+    }
+
     this.setState({
       supplier: id,
-      course: { ...this.state.course, course_type_id }
+      edited: true,
+      course: { ...this.state.course, course_type_id, instructor_id }
     })
   }
 
@@ -325,7 +352,6 @@ class CourseForm extends React.Component {
     const {
       isEditable,
       saving,
-      instructors,
       schools,
       testCentres,
       pricing,
@@ -359,12 +385,17 @@ class CourseForm extends React.Component {
       application_reference_number
     } = this.state.course
     const { supplier } = this.state
-    const schoolInstructors = instructors.filter(x =>
-      x.supplier.includes(supplier)
-    )
+
+    const schoolInstructors = this.getInstructors(supplier)
+    const instructorOptions = [
+      { id: '', name: 'Un-Assigned' },
+      ...schoolInstructors.map(instructor => ({
+        ...instructor,
+        name: `${instructor.first_name} ${instructor.last_name}`
+      }))
+    ]
 
     const finishTime = this.getFinishTime(time, duration)
-    // const formClass = isEditable ? styles.grey : ''
 
     const courseTypes = this.getValidCourseTypes()
 
@@ -428,13 +459,7 @@ class CourseForm extends React.Component {
                   disabled={!isEditable}
                   onChange={this.handleChangeRawEvent.bind(this)}
                   raw
-                  options={[
-                    { id: '', name: 'Un-Assigned' },
-                    ...schoolInstructors.map(instructor => ({
-                      ...instructor,
-                      name: `${instructor.first_name} ${instructor.last_name}`
-                    }))
-                  ]}
+                  options={instructorOptions}
                 />
               </Col>
             </Row>
@@ -556,7 +581,7 @@ class CourseForm extends React.Component {
                       <div className={styles.bikesAvailable}>A1</div>
                       <BikeNumberPicker
                         label="Automatic"
-                        value={a1_auto_bikes || ''}
+                        value={a1_auto_bikes}
                         id="a1_auto_bikes"
                         isEditable={isEditable}
                         onChange={this.handleChangeRawEvent.bind(this)}
@@ -569,7 +594,7 @@ class CourseForm extends React.Component {
                       />
                       <BikeNumberPicker
                         label="Manual"
-                        value={a1_manual_bikes || ''}
+                        value={a1_manual_bikes}
                         id="a1_manual_bikes"
                         isEditable={isEditable}
                         onChange={this.handleChangeRawEvent.bind(this)}
@@ -583,7 +608,7 @@ class CourseForm extends React.Component {
                       <div className={styles.bikesAvailable}>A2</div>
                       <BikeNumberPicker
                         label="Automatic"
-                        value={a2_auto_bikes || ''}
+                        value={a2_auto_bikes}
                         id="a2_auto_bikes"
                         isEditable={isEditable}
                         onChange={this.handleChangeRawEvent.bind(this)}
@@ -596,7 +621,7 @@ class CourseForm extends React.Component {
                       />
                       <BikeNumberPicker
                         label="Manual"
-                        value={a2_manual_bikes || ''}
+                        value={a2_manual_bikes}
                         id="a2_manual_bikes"
                         isEditable={isEditable}
                         onChange={this.handleChangeRawEvent.bind(this)}
@@ -610,7 +635,7 @@ class CourseForm extends React.Component {
                       <div className={styles.bikesAvailable}>A</div>
                       <BikeNumberPicker
                         label="Automatic"
-                        value={a_auto_bikes || ''}
+                        value={a_auto_bikes}
                         id="a_auto_bikes"
                         isEditable={isEditable}
                         onChange={this.handleChangeRawEvent.bind(this)}
@@ -623,7 +648,7 @@ class CourseForm extends React.Component {
                       />
                       <BikeNumberPicker
                         label="Manual"
-                        value={a_manual_bikes || ''}
+                        value={a_manual_bikes}
                         id="a_manual_bikes"
                         isEditable={isEditable}
                         onChange={this.handleChangeRawEvent.bind(this)}
