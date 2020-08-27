@@ -5,7 +5,6 @@
   box-sizing: border-box;
   border-bottom: 1px solid var(--color-border);
   border-left: 1px solid var(--color-border);
-  min-height: 226px;
   position: relative;
 
   &:hover {
@@ -36,12 +35,13 @@
 }
 
 .cellHeader {
-  padding: 0 2px 17px 0;
+  padding: 0 2px 5px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   @media (max-width: 767px) {
+    padding-bottom: 11px;
     justify-content: center;
     text-align: center;
   }
