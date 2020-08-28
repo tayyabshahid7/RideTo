@@ -104,6 +104,18 @@ export function getLicenseFromType(value) {
   return 'FULL_LICENCE_TYPE_' + type
 }
 
+export function getTimeValue(time) {
+  try {
+    const times = time.split(':').map(x => parseInt(x))
+    if (times.length < 2) {
+      return 0
+    }
+    return times[0] * 60 + times[1]
+  } catch (err) {
+    return 0
+  }
+}
+
 export function formaBikeTypeForEdit(order) {
   if (order.full_licence_type.startsWith('FULL_LICENCE_TYPE')) {
     const type = formatBikeConstant(order.bike_type)

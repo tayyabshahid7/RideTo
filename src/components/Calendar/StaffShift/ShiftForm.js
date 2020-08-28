@@ -1,4 +1,6 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
@@ -6,7 +8,14 @@ import { DATE_FORMAT, SHIFT_TYPES } from 'common/constants'
 import Loading from 'components/Loading'
 import _ from 'lodash'
 
-import { ConnectSelect, ConnectInput, Button } from 'components/ConnectForm'
+import { getTimeValue } from 'common/info'
+import { getDaysStaff } from 'store/staff'
+import { actions as notifyActions } from 'store/notification'
+import {
+  ConnectSingleSelect,
+  ConnectInput,
+  Button
+} from 'components/ConnectForm'
 
 class ShiftForm extends React.Component {
   constructor(props) {
@@ -20,8 +29,8 @@ class ShiftForm extends React.Component {
       end_date: date,
       times: [
         {
-          start_time: '',
-          end_time: ''
+          start_time: '00:00',
+          end_time: '00:00'
         }
       ],
       event_type: SHIFT_TYPES[0].id
@@ -56,9 +65,25 @@ class ShiftForm extends React.Component {
         'supplier_id'
       ]
       Object.assign(staff, _.pick(this.props.staff, fields))
+      if (staff.times) {
+        staff.times.forEach(time => {
+          time.start_time = time.start_time.substr(0, 5)
+          time.end_time = time.end_time.substr(0, 5)
+        })
+      }
     }
 
     this.state = { ...staff, hasStaff, schoolList }
+    this.loadDiaries()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.start_date !== prevState.start_date ||
+      this.state.end_date !== prevState.end_date
+    ) {
+      this.loadDiaries()
+    }
   }
 
   handleInstructorChange = event => {
@@ -79,6 +104,17 @@ class ShiftForm extends React.Component {
     }
 
     this.setState(data)
+  }
+
+  loadDiaries = () => {
+    const { start_date, end_date } = this.state
+    console.log(start_date, end_date)
+    if (!start_date || !end_date) {
+      return
+    }
+    if (moment(start_date).isSameOrBefore(moment(end_date))) {
+      this.props.getDaysStaff({ start_date, end_date })
+    }
   }
 
   handleChange = name => value => {
@@ -124,8 +160,8 @@ class ShiftForm extends React.Component {
   handleNewTime = () => {
     const times = this.state.times.slice()
     times.push({
-      start_time: '',
-      end_time: ''
+      start_time: '00:00',
+      end_time: '00:00'
     })
 
     this.setState({ times })
@@ -137,8 +173,146 @@ class ShiftForm extends React.Component {
     this.setState({ times })
   }
 
+  validateForm = () => {
+    const { showNotification, staffCalendar } = this.props
+    const {
+      instructor_id,
+      supplier_id,
+      start_date,
+      end_date,
+      times
+    } = this.state
+    console.log(this.state)
+
+    if (!instructor_id) {
+      showNotification('Error', 'Please choose a staff', 'danger')
+      return false
+    }
+    if (!supplier_id) {
+      showNotification('Error', 'Please choose a location', 'danger')
+      return false
+    }
+    if (!start_date) {
+      showNotification('Error', 'Please choose a start date', 'danger')
+      return false
+    }
+    if (!end_date) {
+      showNotification('Error', 'Please choose a end date', 'danger')
+      return false
+    }
+    if (moment(start_date).isAfter(moment(end_date))) {
+      showNotification('Error', 'Invalid date range', 'danger')
+      return false
+    }
+
+    // validate holidays, blockers, sick days
+    let diaries = staffCalendar.staff.filter(
+      x => x.instructor_id === parseInt(instructor_id)
+    )
+    if (this.props.staff) {
+      diaries = diaries.filter(x => x.id !== this.props.staff.id)
+    }
+    console.log('all diaires', diaries)
+
+    if (this.state.event_type !== SHIFT_TYPES[0].id) {
+      if (!this.validateDate(start_date, end_date, diaries)) {
+        showNotification('Error', 'Overlaps with other shifts', 'danger')
+        return
+      }
+    } else {
+      if (!times.length) {
+        showNotification('Error', 'Please add an interval', 'danger')
+        return false
+      }
+      for (const time of times) {
+        if (getTimeValue(time.start_time) >= getTimeValue(time.end_time)) {
+          showNotification('Error', 'Invalid interval', 'danger')
+          return false
+        }
+      }
+      // validate with other shifts
+      const allDayDiaires = diaries.filter(
+        x => x.event_type !== SHIFT_TYPES[0].id
+      )
+
+      if (!this.validateDate(start_date, end_date, allDayDiaires)) {
+        showNotification('Error', 'Overlaps with other shifts', 'danger')
+        return false
+      }
+      const shiftDiaries = diaries.filter(
+        x => x.event_type === SHIFT_TYPES[0].id
+      )
+
+      const dateList = []
+      if (start_date === end_date) {
+        dateList.push(start_date)
+      } else {
+        const tmp = moment(start_date)
+        while (moment(tmp).isSameOrBefore(moment(end_date))) {
+          dateList.push(tmp.format('YYYY-MM-DD'))
+          tmp.add(1, 'days')
+        }
+      }
+
+      for (const date of dateList) {
+        for (const time of times) {
+          const x0 = moment(`${date}T${time.start_time}:00`)
+          const y0 = moment(`${date}T${time.end_time}:00`)
+
+          for (const diary of shiftDiaries) {
+            for (const dtime of diary.times) {
+              if (this.validateDate(date, date, [diary])) {
+                continue
+              }
+
+              const x1 = moment(`${date}T${dtime.start_time}`)
+              const y1 = moment(`${date}T${dtime.end_time}`)
+
+              if (
+                (x0.isSameOrAfter(x1) && x0.isSameOrBefore(y1)) ||
+                (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
+              ) {
+                console.log(diary)
+                showNotification(
+                  'Error',
+                  'Overlaps with other shifts',
+                  'danger'
+                )
+                return false
+              }
+            }
+          }
+        }
+      }
+    }
+
+    return true
+  }
+
+  validateDate = (startDate, endDate, diaries) => {
+    const x0 = moment(startDate)
+    const y0 = moment(endDate)
+
+    for (const diary of diaries) {
+      const x1 = moment(diary.start_date)
+      const y1 = moment(diary.end_date)
+
+      if (
+        (x0.isSameOrAfter(x1) && x0.isSameOrBefore(y1)) ||
+        (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
+      ) {
+        console.log(diary)
+        return false
+      }
+    }
+    return true
+  }
+
   handleSave(e) {
     e.preventDefault()
+    if (!this.validateForm()) {
+      return
+    }
 
     const { onSubmit } = this.props
     const staff = _.cloneDeep(this.state)
@@ -147,7 +321,7 @@ class ShiftForm extends React.Component {
     }
     delete staff.schoolList
     delete staff.hasStaff
-    console.log(staff)
+
     staff.start_date = staff.start_date.substr(0, 10)
     staff.end_date = staff.end_date.substr(0, 10)
     staff.times.forEach(time => {
@@ -159,34 +333,36 @@ class ShiftForm extends React.Component {
   }
 
   render() {
-    const { saving, onRemove, staff, instructors } = this.props
+    const { saving, onRemove, staff, instructors, staffCalendar } = this.props
     const { schoolList, hasStaff } = this.state
     const eventType = SHIFT_TYPES.find(x => x.id === this.state.event_type)
+
+    const instructorOptions = [
+      { id: '', name: 'Un-Assigned' },
+      ...instructors.map(instructor => ({
+        ...instructor,
+        name: `${instructor.first_name} ${instructor.last_name}`
+      }))
+    ]
 
     return (
       <div className={styles.wrapper}>
         <h4 className={styles.addTitle}>
           {staff ? 'Edit' : 'Add'} {eventType.name}
         </h4>
-        <Loading loading={saving}>
+        <Loading loading={saving || staffCalendar.loading}>
           <Form onSubmit={this.handleSave.bind(this)}>
             {!hasStaff && (
               <Row>
                 <Col>
-                  <ConnectSelect
+                  <ConnectSingleSelect
                     basic
                     label="Staff"
                     name="instructor_id"
                     value={this.state.instructor_id}
                     onChange={this.handleInstructorChange}
                     raw
-                    options={[
-                      { id: '', name: 'Select' },
-                      ...instructors.map(instructor => ({
-                        ...instructor,
-                        name: `${instructor.first_name} ${instructor.last_name}`
-                      }))
-                    ]}
+                    options={instructorOptions}
                   />
                 </Col>
               </Row>
@@ -194,7 +370,7 @@ class ShiftForm extends React.Component {
             {this.state.event_type === 'EVENT_SHIFT' && (
               <Row>
                 <Col>
-                  <ConnectSelect
+                  <ConnectSingleSelect
                     basic
                     name="supplier_id"
                     value={this.state.supplier_id}
@@ -305,4 +481,20 @@ class ShiftForm extends React.Component {
   }
 }
 
-export default ShiftForm
+const mapStateToProps = (state, ownProps) => ({
+  staffCalendar: state.staff.days
+})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getDaysStaff,
+      showNotification: notifyActions.showNotification
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ShiftForm)

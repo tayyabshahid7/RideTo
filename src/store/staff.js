@@ -13,6 +13,7 @@ import uniqBy from 'lodash/uniqBy'
 
 const FETCH_ALL = createRequestTypes('rideto/staff/FETCH/ALL')
 const FETCH_FOR_DAY = createRequestTypes('rideto/staff/FETCH/DAY')
+const FETCH_FOR_FORM = createRequestTypes('rideto/staff/FETCH/FORM')
 export const FETCH_SINGLE = createRequestTypes('rideto/staff/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/staff/DELETE')
 const UPDATE = createRequestTypes('rideto/staff/UPDATE')
@@ -44,6 +45,23 @@ export const getSingleStaff = ({
     })
   } catch (error) {
     dispatch({ type: FETCH_SINGLE[FAILURE], error })
+  }
+}
+
+export const getDaysStaff = ({ start_date, end_date }) => async dispatch => {
+  dispatch({ type: FETCH_FOR_FORM[REQUEST] })
+
+  try {
+    const staff = await fetchDiaries(start_date, end_date)
+
+    dispatch({
+      type: FETCH_FOR_FORM[SUCCESS],
+      data: {
+        staff
+      }
+    })
+  } catch (error) {
+    dispatch({ type: FETCH_FOR_FORM[FAILURE], error })
   }
 }
 
@@ -142,6 +160,11 @@ const initialState = {
     loading: false,
     error: null
   },
+  days: {
+    staff: [],
+    loading: false,
+    error: null
+  },
   calendar: {
     staff: [],
     loading: false,
@@ -226,7 +249,6 @@ export default function reducer(state = initialState, action) {
       const diaryId = parseInt(action.data.diaryId)
       dayStaff = state.day.staff.filter(staff => staff.id !== diaryId)
       calendarStaff = state.calendar.staff.filter(staff => staff.id !== diaryId)
-      console.log(action.data, state.calendar)
 
       return {
         ...state,
@@ -264,6 +286,31 @@ export default function reducer(state = initialState, action) {
         day: {
           ...state.day,
           loading: false,
+          error: action.error
+        }
+      }
+    case FETCH_FOR_FORM[REQUEST]:
+      return {
+        ...state,
+        days: {
+          staff: [],
+          loading: true
+        }
+      }
+    case FETCH_FOR_FORM[SUCCESS]:
+      return {
+        ...state,
+        days: {
+          loading: false,
+          staff: [...action.data.staff]
+        }
+      }
+    case FETCH_FOR_FORM[FAILURE]:
+      return {
+        ...state,
+        days: {
+          loading: false,
+          staff: [],
           error: action.error
         }
       }
