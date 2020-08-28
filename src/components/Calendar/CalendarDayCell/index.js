@@ -59,11 +59,16 @@ const CalendarDayCell = ({
   const [showPopup, setShowPopup] = useState(false)
   const [showItems, setShowItems] = useState(0)
 
+  const dateStr = moment(day.date).format('YYYY-MM-DD')
+  const items = getDayItems(day, dateStr, users)
+
   useEffect(() => {
     function calculateCount() {
       const height = inputEl.current.clientHeight
-      const cnt = Math.floor((height - 16 - 29 - 21) / 22)
-      console.log(height)
+      let cnt = Math.floor((height - 29) / 32)
+      if (items.length > cnt) {
+        cnt--
+      }
       setShowItems(cnt)
     }
 
@@ -72,10 +77,8 @@ const CalendarDayCell = ({
     calculateCount()
 
     return () => window.removeEventListener('resize', calculateCount)
-  }, [])
+  }, [items])
 
-  const dateStr = moment(day.date).format('YYYY-MM-DD')
-  const items = getDayItems(day, dateStr, users)
   const selectedDay = dateStr === calendar.selectedDate
   const more = items.length - showItems
   const isOtherMonthDate = day.date.getMonth() !== calendar.month
