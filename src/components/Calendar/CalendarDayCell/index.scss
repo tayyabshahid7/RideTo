@@ -79,7 +79,8 @@
 }
 
 .more {
-  margin-top: 0.15rem;
+  cursor: pointer;
+  line-height: 13px;
 
   &:hover {
     color: var(--color-primary);
