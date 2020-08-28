@@ -34,19 +34,22 @@ beforeEach(() => {
           id: 6,
           constant: 'TFL_ONE_ON_ONE',
           name: 'FREE 1-2-1 Motorcycle Skills',
-          slug: '1-2-1-motorcycle-skills'
+          slug: '1-2-1-motorcycle-skills',
+          schoolIds: [44]
         },
         {
           id: 7,
           constant: 'FULL_LICENCE_MOD1_TRAINING',
           name: 'Full Licence Module 1 Training',
-          slug: 'module-1-training'
+          slug: 'module-1-training',
+          schoolIds: [44]
         },
         {
           id: 8,
           constant: 'FULL_LICENCE_MOD2_TRAINING',
           name: 'Full Licence Module 2 Training',
-          slug: 'module-2-training'
+          slug: 'module-2-training',
+          schoolIds: []
         }
       ]
     },
