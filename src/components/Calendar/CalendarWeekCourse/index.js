@@ -19,6 +19,7 @@ const CalendarWeekCourse = React.forwardRef(
     ref
   ) => {
     const isDay = calendar.viewMode === CALENDAR_VIEW.DAY
+    position = course.position
 
     let height = course.duration / 60
     let startTime = (course.secondsForDay - WEEK_VIEW_START_TIME) / 3600

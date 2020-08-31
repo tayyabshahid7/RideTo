@@ -55,11 +55,11 @@
 }
 
 .clickedCourse {
-  z-index: 99 !important;
+  // z-index: 99 !important;
 
-  &::before {
-    opacity: 1;
-  }
+  // &::before {
+  //   opacity: 1;
+  // }
 }
 
 .warning {
