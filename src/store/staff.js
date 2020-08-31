@@ -18,6 +18,7 @@ export const FETCH_SINGLE = createRequestTypes('rideto/staff/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/staff/DELETE')
 const UPDATE = createRequestTypes('rideto/staff/UPDATE')
 const CREATE = createRequestTypes('rideto/staff/CREATE')
+const RESET_DATA = 'rideto/staff/RESET_DATA'
 
 export const updateDiaryColor = instructor => dispatch => {
   dispatch({
@@ -26,6 +27,10 @@ export const updateDiaryColor = instructor => dispatch => {
       instructor
     }
   })
+}
+
+export const resetData = () => dispatch => {
+  dispatch({ type: RESET_DATA })
 }
 
 export const getSingleStaff = ({
@@ -148,7 +153,7 @@ export const createStaff = ({ data }) => async dispatch => {
   }
 }
 
-const initialState = {
+const defaultState = {
   single: {
     staff: null,
     loading: false,
@@ -171,6 +176,10 @@ const initialState = {
     error: null,
     loadedMonths: []
   }
+}
+
+const initialState = {
+  ...JSON.parse(JSON.stringify(defaultState))
 }
 
 export default function reducer(state = initialState, action) {
@@ -394,6 +403,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
       }
+    case RESET_DATA: {
+      return {
+        ...JSON.parse(JSON.stringify(defaultState))
+      }
+    }
     default:
       return state
   }

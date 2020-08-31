@@ -17,6 +17,11 @@ export const FETCH_SINGLE = createRequestTypes('rideto/event/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/event/DELETE')
 const UPDATE = createRequestTypes('rideto/event/UPDATE')
 const CREATE = createRequestTypes('rideto/event/CREATE')
+const RESET_DATA = 'rideto/event/RESET_DATA'
+
+export const resetData = () => dispatch => {
+  dispatch({ type: RESET_DATA })
+}
 
 export const getSingleEvent = ({
   eventId,
@@ -133,7 +138,7 @@ export const createEvent = ({ schoolId, data }) => async dispatch => {
   }
 }
 
-const initialState = {
+const defaultState = {
   single: {
     event: null,
     loading: false,
@@ -156,6 +161,10 @@ const initialState = {
     loading: false,
     error: null
   }
+}
+
+const initialState = {
+  ...JSON.parse(JSON.stringify(defaultState))
 }
 
 export default function reducer(state = initialState, action) {
@@ -321,6 +330,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
       }
+    case RESET_DATA: {
+      return {
+        ...JSON.parse(JSON.stringify(defaultState))
+      }
+    }
     default:
       return state
   }

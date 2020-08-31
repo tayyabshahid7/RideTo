@@ -23,6 +23,7 @@ import { saveState } from 'services/localStorage'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
+const RESET_DATA = 'rideto/course/RESET_DATA'
 const FETCH_FOR_DAY = createRequestTypes('rideto/course/FETCH/DAY')
 const FETCH_SINGLE = createRequestTypes('rideto/course/FETCH/SINGLE')
 const FETCH_PRICE = createRequestTypes('rideto/course/FETCH/PRICE')
@@ -39,6 +40,10 @@ const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
 const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
+
+export const resetData = () => dispatch => {
+  dispatch({ type: RESET_DATA })
+}
 
 export const getSingleCourse = ({
   courseId,
@@ -350,7 +355,7 @@ export const resetPrice = data => async dispatch => {
   dispatch({ type: RESET_PRICE })
 }
 
-const initialState = {
+const defaultState = {
   single: {
     course: null,
     loading: false,
@@ -398,6 +403,10 @@ const initialState = {
     loading: false,
     error: null
   }
+}
+
+const initialState = {
+  ...JSON.parse(JSON.stringify(defaultState))
 }
 
 export default function reducer(state = initialState, action) {
@@ -815,6 +824,11 @@ export default function reducer(state = initialState, action) {
           error: action.error
         }
       }
+    case RESET_DATA: {
+      return {
+        ...JSON.parse(JSON.stringify(defaultState))
+      }
+    }
     default:
       return state
   }
