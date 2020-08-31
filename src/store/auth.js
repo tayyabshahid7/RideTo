@@ -4,6 +4,7 @@ import {
   updatePassword as updatePasswordApi
 } from 'services/auth'
 import { saveState, clearState } from 'services/localStorage'
+import _ from 'lodash'
 import { getPendingOrders } from 'store/dashboard'
 import {
   LOGOUT,
@@ -13,6 +14,9 @@ import {
   FAILURE,
   createRequestTypes
 } from './common'
+import { resetData as resetCourseData } from './course'
+import { resetData as resetStaffData } from './staff'
+import { resetData as resetEventData } from './event'
 
 const CHANGE_SCHOOL = 'rideto/auth/CHANGE_SCHOOL'
 const UPDATE_ACTIVE_SCHOOLS = 'rideto/auth/UPDATE_ACTIVE_SCHOOLS'
@@ -89,7 +93,12 @@ export const login = (email, password) => {
   }
 }
 
-export const logout = () => ({ type: LOGOUT })
+export const logout = () => dispatch => {
+  dispatch(resetStaffData())
+  dispatch(resetEventData())
+  dispatch(resetCourseData())
+  dispatch({ type: LOGOUT })
+}
 
 export const updatePassword = data => async dispatch => {
   dispatch({ type: UPDATE_PASSWORD[REQUEST] })
@@ -157,6 +166,9 @@ export default function reducer(state = initialState, action) {
       if (!activeSchools) {
         activeSchools = []
       }
+      const schoolIds = action.data.user.suppliers.map(x => x.id)
+      activeSchools = _.intersection(schoolIds, activeSchools)
+
       return {
         ...state,
         loading: false,
