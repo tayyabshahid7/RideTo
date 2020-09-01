@@ -8,6 +8,7 @@ function CalendarDatePicker({ calendar, handleChangeDate }) {
   const [showDropdown, setShowDropdown] = useState(false)
   const inputEl = useRef(null)
   const date = new Date(calendar.year, calendar.month, calendar.day)
+  const isDesktop = window.matchMedia('(min-width: 768px)').matches
 
   useEffect(() => {
     const handleClickOutside = event => {
@@ -39,26 +40,28 @@ function CalendarDatePicker({ calendar, handleChangeDate }) {
   }
 
   let dateText = moment(date).format('MMMM YYYY')
-  if (calendar.viewMode === CALENDAR_VIEW.DAY) {
-    dateText = moment(date).format('ddd DD MMMM YYYY')
-  } else if (calendar.viewMode === CALENDAR_VIEW.WEEK) {
-    const weekStart = moment(date).startOf('isoWeek')
-    const weekEnd = moment(date).endOf('isoWeek')
-    if (weekStart.get('year') !== weekEnd.get('year')) {
-      dateText =
-        moment(weekStart).format('MMMM DD YYYY') +
-        ' - ' +
-        moment(weekEnd).format('MMMM DD YYYY')
-    } else if (weekStart.get('month') !== weekEnd.get('month')) {
-      dateText =
-        moment(weekStart).format('MMMM DD') +
-        ' - ' +
-        moment(weekEnd).format('MMMM DD YYYY')
-    } else {
-      dateText =
-        moment(weekStart).format('MMMM DD') +
-        ' - ' +
-        moment(weekEnd).format('DD YYYY')
+  if (isDesktop) {
+    if (calendar.viewMode === CALENDAR_VIEW.DAY) {
+      dateText = moment(date).format('ddd DD MMMM YYYY')
+    } else if (calendar.viewMode === CALENDAR_VIEW.WEEK) {
+      const weekStart = moment(date).startOf('isoWeek')
+      const weekEnd = moment(date).endOf('isoWeek')
+      if (weekStart.get('year') !== weekEnd.get('year')) {
+        dateText =
+          moment(weekStart).format('MMMM DD YYYY') +
+          ' - ' +
+          moment(weekEnd).format('MMMM DD YYYY')
+      } else if (weekStart.get('month') !== weekEnd.get('month')) {
+        dateText =
+          moment(weekStart).format('MMMM DD') +
+          ' - ' +
+          moment(weekEnd).format('MMMM DD YYYY')
+      } else {
+        dateText =
+          moment(weekStart).format('MMMM DD') +
+          ' - ' +
+          moment(weekEnd).format('DD YYYY')
+      }
     }
   }
 

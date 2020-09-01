@@ -142,3 +142,15 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+
+.mobileAvatar {
+  svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+}

@@ -33,7 +33,8 @@ class CalendarWeekView extends Component {
 
     this.state = {
       mobileDayOfWeek: getDayOfWeek(this.props.calendar),
-      scrolled: false
+      scrolled: false,
+      isDesktop: true
     }
 
     this.firstCourse = null
@@ -64,6 +65,7 @@ class CalendarWeekView extends Component {
         this.setState({ scrolled: true })
       }
     }
+    this.setState({ isDesktop })
   }
 
   componentDidUpdate(prevProps) {
@@ -74,8 +76,6 @@ class CalendarWeekView extends Component {
     }
 
     if (!isEqual(this.props.days, prevProps.days)) {
-      const isDesktop = window.matchMedia('(min-width: 768px)').matches
-
       const { mobileDayOfWeek } = this.state
       const { calendar } = this.props
 
@@ -84,7 +84,7 @@ class CalendarWeekView extends Component {
           ? this.props.days[mobileDayOfWeek].courses.length
           : this.props.days[0].courses.length
 
-      if (!hasCourses && !isDesktop) {
+      if (!hasCourses && !this.state.isDesktop) {
         const { scrolled } = this.state
 
         if (!scrolled) {
@@ -161,24 +161,31 @@ class CalendarWeekView extends Component {
             ...course,
             secondsForDay
           }
-        }),
-        ...dayObj.events.map(event => {
-          return {
-            ...event,
-            itemType: 'event',
-            ...secondsForDayAndDurationForEvent(event, dayObj.date)
-          }
-        }),
-        ...dayObj.staff
-          .filter(x => x.event_type !== SHIFT_TYPES[0].id)
-          .map(s => {
+        })
+      ]
+
+      if (this.state.isDesktop) {
+        dayObj.courses.push(
+          ...dayObj.events.map(event => {
             return {
-              ...s,
-              itemType: 'staff',
-              ...secondsForDayAndDurationForEvent(s, dayObj.date)
+              ...event,
+              itemType: 'event',
+              ...secondsForDayAndDurationForEvent(event, dayObj.date)
             }
           })
-      ]
+        )
+        dayObj.courses.push(
+          ...dayObj.staff
+            .filter(x => x.event_type !== SHIFT_TYPES[0].id)
+            .map(s => {
+              return {
+                ...s,
+                itemType: 'staff',
+                ...secondsForDayAndDurationForEvent(s, dayObj.date)
+              }
+            })
+        )
+      }
 
       if (!users.length) {
         dayObj.courses = dayObj.courses.filter(x => x.itemType !== 'staff')
@@ -242,8 +249,8 @@ class CalendarWeekView extends Component {
       tmp = tmp.startOf('isoWeek')
       const result = []
       for (let i = 0; i < 7; i++) {
-        tmp.add(1, 'days')
         result.push({ date: tmp.toDate() })
+        tmp.add(1, 'days')
       }
       return result
     } else {
@@ -300,14 +307,18 @@ class CalendarWeekView extends Component {
   }
 
   getDaysStyle = users => {
-    const cols = users.map(x => (x.length || 1) + 'fr').join(' ')
-    return {
-      gridTemplateColumns: cols
+    if (this.state.isDesktop) {
+      const cols = users.map(x => (x.length || 1) + 'fr').join(' ')
+      return {
+        gridTemplateColumns: cols
+      }
+    } else {
+      return {}
     }
   }
 
   getDayCustomStyle = (day, users) => {
-    if (!users.length && day.maxSame > 1) {
+    if (this.state.isDesktop && !users.length && day.maxSame > 1) {
       return {
         minWidth: 70 * day.maxSame + 'px'
       }
@@ -317,16 +328,21 @@ class CalendarWeekView extends Component {
 
   renderWeekdays() {
     const { calendar, users, filterOpen } = this.props
-    const isDesktop = window.matchMedia('(min-width: 768px)').matches
-    let daysInfo = isDesktop ? this.getWeekDays() : this.getWeekHeaderDays()
+    const { isDesktop } = this.state
+    let daysInfo = this.getWeekDays()
+
     const weeks = ['M', 'T', 'W', 'T', 'F', 'S', 'S']
     const daysUser = this.getDaysUserCount(users, daysInfo)
+    if (!isDesktop) {
+      daysInfo = this.getWeekHeaderDays()
+    }
 
     return (
       <div
         className={classnames(
           styles.weekDays,
-          filterOpen && styles.filterOpen
+          filterOpen && styles.filterOpen,
+          calendar.viewMode === CALENDAR_VIEW.DAY && styles.weekDaysDay
         )}>
         <div
           className={classnames(

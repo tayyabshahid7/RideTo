@@ -4,6 +4,8 @@ import classnames from 'classnames'
 import { CALENDAR_VIEW } from 'common/constants'
 
 function CalendarDateChanger({ viewMode, handleCustomEvent }) {
+  const isDesktop = window.matchMedia('(min-width: 768px)').matches
+
   const handleChange = viewMode => {
     handleCustomEvent('change-calendar-setting', {
       viewMode
@@ -36,14 +38,16 @@ function CalendarDateChanger({ viewMode, handleCustomEvent }) {
         onClick={() => handleChange(CALENDAR_VIEW.MONTH)}>
         Month
       </div>
-      <div
-        className={classnames({
-          'generic-button': true,
-          active: viewMode === CALENDAR_VIEW.SHIFT
-        })}
-        onClick={() => handleChange(CALENDAR_VIEW.SHIFT)}>
-        Shift
-      </div>
+      {isDesktop && (
+        <div
+          className={classnames({
+            'generic-button': true,
+            active: viewMode === CALENDAR_VIEW.SHIFT
+          })}
+          onClick={() => handleChange(CALENDAR_VIEW.SHIFT)}>
+          Shift
+        </div>
+      )}
     </div>
   )
 }
