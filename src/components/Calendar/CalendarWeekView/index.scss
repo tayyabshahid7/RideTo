@@ -23,6 +23,17 @@
   height: 72px;
   z-index: 5;
   padding-left: 56px;
+
+  @media (max-width: 767px) {
+    background: var(--color-light-gray);
+    z-index: 51;
+  }
+}
+
+.weekDaysDay {
+  @media (max-width: 767px) {
+    padding-left: 0 !important;
+  }
 }
 
 .weekDaysHeader {
@@ -36,6 +47,7 @@
     flex-direction: column;
     align-items: center;
     border: none;
+    min-width: 0;
 
     span {
       font-weight: 500;
@@ -348,4 +360,8 @@
   min-height: calc(100vh - 147px);
   pointer-events: none;
   min-width: 84px;
+
+  @media (max-width: 767px) {
+    min-width: 0;
+  }
 }

@@ -18,6 +18,7 @@ const CalendarWeekCourse = React.forwardRef(
     { course, position, barCount, history, calendar, match, showDetail },
     ref
   ) => {
+    const isDesktop = window.matchMedia('(min-width: 768px)').matches
     const isDay = calendar.viewMode === CALENDAR_VIEW.DAY
     position = course.position
 
@@ -39,7 +40,7 @@ const CalendarWeekCourse = React.forwardRef(
     if (isDay) {
       left = `${(100 / barCount) * position}%`
       width = `${100 / barCount}%`
-    } else if (showDetail && course.sameTime > 1) {
+    } else if (showDetail && course.sameTime > 1 && isDesktop) {
       const offset = (4 * (barCount - course.sameTime)) / course.sameTime
 
       left = `${(100 / course.sameTime) *
@@ -186,40 +187,35 @@ const CalendarWeekCourse = React.forwardRef(
             availableSpaces === 0 && styles.danger
           )}>
           <div className={styles.eventHeader}>
-            <span className={styles.eventName}>
-              {getShortCourseType(course.course_type)}
-            </span>
-            {showDetail && course.instructor && course.sameTime <= 1 && (
-              <UserInitial user={course.instructor} short />
+            {!isDesktop ? (
+              <div className={styles.mobileAvatar}>
+                {course.instructor ? (
+                  <UserInitial user={course.instructor} minimized />
+                ) : (
+                  <UserAvatar />
+                )}
+              </div>
+            ) : (
+              <span className={styles.eventName}>
+                {getShortCourseType(course.course_type)}
+              </span>
             )}
+            {isDesktop &&
+              showDetail &&
+              course.instructor &&
+              course.sameTime <= 1 && (
+                <UserInitial user={course.instructor} short />
+              )}
           </div>
-          {(showDetail || isDay) && (
+          {(showDetail || isDay) && isDesktop && (
             <React.Fragment>
               {!!course.supplierName && (
                 <div className={styles.supplierName}>{course.supplierName}</div>
               )}
               <div className={styles.supplierName}>{getOrderText(course)}</div>
-              <span
-                className={classnames(
-                  styles.eventSpaces
-                  // availableSpaces === 2 && styles.textMildWarning,
-                  // availableSpaces === 1 && styles.textWarning,
-                  // availableSpaces === 0 && styles.textDanger
-                )}>
+              <span className={classnames(styles.eventSpaces)}>
                 {getCourseSpaceTextShort(course)}
               </span>
-              {/* <div>
-                <div>
-                  <b>Orders:</b>
-                </div>
-                {course.orders.length > 0
-                  ? course.orders.map(order => (
-                      <div className={styles.order} key={order.friendly_id}>
-                        <span>{order.customer_name}</span>
-                      </div>
-                    ))
-                  : 'No orders'}
-              </div> */}
               {course.notes && (
                 <div className={styles.eventsNotes}>
                   <div>

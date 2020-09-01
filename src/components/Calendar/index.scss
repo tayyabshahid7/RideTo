@@ -136,6 +136,15 @@
   background: white;
   overflow: auto;
   box-shadow: 10px 5px 20px rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 767px) {
+    box-shadow: none;
+    left: -100vw;
+    width: 100vw;
+    transition: none;
+    border-right: none;
+    top: 0;
+  }
 }
 
 .filterBackdrop {
