@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
-import _ from 'lodash'
 import classnames from 'classnames'
 import styles from './index.scss'
 import CalendarHeaderInstructors from '../CalendarHeaderInstructors'
@@ -9,7 +8,10 @@ import CalendarUserLine from '../CalendarUserLine'
 import CalendarDetailLine from '../CalendarDetailLine'
 import CurrentTimeLine from '../CurrentTimeLine'
 import { WORK_HOURS, WEEK_START_HOUR, CALENDAR_VIEW } from 'common/constants'
-import { secondsForDayAndDurationForEvent } from 'utils/helper'
+import {
+  secondsForDayAndDurationForEvent,
+  calculatePosition
+} from 'utils/helper'
 import { Desktop, Mobile } from 'common/breakpoints'
 import isEqual from 'lodash/isEqual'
 import { SHIFT_TYPES } from '../../../common/constants'
@@ -191,53 +193,7 @@ class CalendarWeekView extends Component {
         dayObj.courses = dayObj.courses.filter(x => x.itemType !== 'staff')
       }
 
-      dayObj.courses = _.orderBy(dayObj.courses, 'secondsForDay')
-      let sameCourses = _.groupBy(dayObj.courses, 'secondsForDay')
-      const tmp = Object.values(sameCourses)
-      const maxSame = tmp.length ? Math.max(...tmp.map(x => x.length)) : 0
-      dayObj.maxSame = maxSame
-
-      let barMap = []
-      let coursePositions = []
-      for (let i = 0; i < dayObj.courses.length; i++) {
-        let course = dayObj.courses[i]
-        if (barMap.length === 0) {
-          barMap.push(course)
-          coursePositions.push(0)
-        } else {
-          let j
-          for (j = barMap.length - 1; j >= 0; j--) {
-            if (
-              course.secondsForDay >= barMap[j].secondsForDay &&
-              course.secondsForDay <
-                barMap[j].secondsForDay + barMap[j].duration * 60
-            ) {
-              barMap.push(course)
-              coursePositions.push(j + 1)
-              break
-            }
-          }
-          if (j === -1) {
-            barMap.push(course)
-            coursePositions.push(0)
-          }
-        }
-        course.sameTime = sameCourses[course.secondsForDay].length
-        course.position = coursePositions[i]
-      }
-
-      for (let i = 0; i < dayObj.courses.length; i++) {
-        let course = dayObj.courses[i]
-        if (course.sameTime > 1) {
-          course.minStart = Math.min(
-            ...sameCourses[course.secondsForDay].map(x => x.position)
-          )
-        }
-      }
-
-      dayObj.barCount = Math.max(...coursePositions) + 1
-      dayObj.coursePositions = coursePositions
-      return dayObj
+      return calculatePosition(dayObj)
     })
     return results
   }
@@ -390,7 +346,7 @@ class CalendarWeekView extends Component {
   }
 
   renderDays() {
-    const { history, calendar, match, suppliers, settings, users } = this.props
+    const { history, calendar, match, users } = this.props
     let daysInfo = this.getWeekDays()
     const daysUser = this.getDaysUserCount(users, daysInfo)
 
@@ -418,10 +374,8 @@ class CalendarWeekView extends Component {
                 <Mobile>
                   <CalendarDetailLine
                     day={day}
-                    history={history}
                     calendar={calendar}
                     match={match}
-                    settings={settings}
                   />
                 </Mobile>
                 <Desktop>
@@ -434,18 +388,14 @@ class CalendarWeekView extends Component {
                         history={history}
                         calendar={calendar}
                         match={match}
-                        settings={settings}
                       />
                     ) : null
                   )}
                   {!users.length && (
                     <CalendarDetailLine
                       day={day}
-                      history={history}
-                      suppliers={suppliers}
                       calendar={calendar}
                       match={match}
-                      settings={settings}
                     />
                   )}
                 </Desktop>

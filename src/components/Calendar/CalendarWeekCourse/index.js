@@ -2,114 +2,24 @@ import React from 'react'
 import { getCourseSpaceTextShort } from 'services/course'
 import styles from './index.scss'
 import classnames from 'classnames'
-import {
-  WEEK_VIEW_START_TIME,
-  WORK_HOURS,
-  DATE_FORMAT,
-  CALENDAR_VIEW
-} from 'common/constants'
+import { DATE_FORMAT, CALENDAR_VIEW } from 'common/constants'
 import { getShortCourseType } from 'services/course'
 import moment from 'moment'
 import UserInitial from '../UserInitial'
 import { UserAvatar } from 'assets/icons'
+import { calculateDimension } from 'utils/helper'
 
 const CalendarWeekCourse = React.forwardRef(
-  (
-    { course, position, barCount, history, calendar, match, showDetail },
-    ref
-  ) => {
+  ({ course, barCount, history, calendar, match, showDetail }, ref) => {
     const isDesktop = window.matchMedia('(min-width: 768px)').matches
     const isDay = calendar.viewMode === CALENDAR_VIEW.DAY
-    position = course.position
-
-    let height = course.duration / 60
-    let startTime = (course.secondsForDay - WEEK_VIEW_START_TIME) / 3600
-    if (startTime < 0) {
-      height += startTime
-      startTime = 0
-    }
-    if (startTime + height > WORK_HOURS - 1) {
-      height = WORK_HOURS - startTime - 1
-      if (height < 0) {
-        return null
-      }
-    }
-    let left = `${position * 4}px`
-    let width = `calc(100% - ${(barCount - 1) * 4}px)`
-
-    if (isDay) {
-      left = `${(100 / barCount) * position}%`
-      width = `${100 / barCount}%`
-    } else if (showDetail && course.sameTime > 1 && isDesktop) {
-      const offset = (4 * (barCount - course.sameTime)) / course.sameTime
-
-      left = `${(100 / course.sameTime) *
-        (position - course.minStart)}% - ${offset *
-        (position - course.minStart)}px`
-      width = `${100 / course.sameTime}% - ${offset}px`
-
-      if (course.minStart) {
-        left = `${4 * course.minStart}px + ${left}`
-      }
-      left = `calc(${left})`
-      width = `calc(${width})`
-    }
-
-    let style = {
-      height: `${height * 56}px`,
-      top: `${startTime * 56}px`,
-      left,
-      width
-    }
-
-    const handleClick = () => {
-      history.push(
-        `/calendar/${moment(course.start_time).format(DATE_FORMAT)}/staff/${
-          course.id
-        }`
-      )
-    }
-
-    if (course.instructor_name) {
-      // Then it is staff
-      return (
-        <div
-          className={classnames(
-            styles.singleEvent,
-            styles.singleEventEvent,
-            parseInt(match.params.id) === course.id &&
-              match.params.type === 'staff' &&
-              styles.clickedCourse,
-            calendar.selectedCourse === `staff-${course.id}` &&
-              styles.clickedCourse
-          )}
-          style={style}
-          onClick={handleClick}>
-          <div
-            className={classnames(styles.content)}
-            style={{ backgroundColor: course.colour }}>
-            <span className={styles.eventName}>
-              <UserAvatar />
-              {course.instructor_name}
-            </span>
-            {course.start_time && course.end_time && (
-              <span className={styles.eventTime}>
-                {moment(course.start_time).format('HH:mm')} -{' '}
-                {moment(course.end_time).format('HH:mm')}
-              </span>
-            )}
-            {course.notes && (
-              <div className={styles.eventsNotes}>
-                <div>
-                  <b>Notes:</b>
-                </div>
-                <div className={styles.notesContent}>{course.notes}</div>
-              </div>
-            )}
-          </div>
-        </div>
-      )
-    }
+    const style = calculateDimension(
+      course,
+      isDesktop,
+      isDay,
+      barCount,
+      showDetail
+    )
 
     if (!course.course_type) {
       // Then it is event
@@ -187,7 +97,12 @@ const CalendarWeekCourse = React.forwardRef(
             availableSpaces === 0 && styles.danger
           )}>
           <div className={styles.eventHeader}>
-            {!isDesktop ? (
+            {(isDay || isDesktop) && (
+              <span className={styles.eventName}>
+                {getShortCourseType(course.course_type)}
+              </span>
+            )}
+            {!isDesktop && (
               <div className={styles.mobileAvatar}>
                 {course.instructor ? (
                   <UserInitial user={course.instructor} minimized />
@@ -195,10 +110,6 @@ const CalendarWeekCourse = React.forwardRef(
                   <UserAvatar />
                 )}
               </div>
-            ) : (
-              <span className={styles.eventName}>
-                {getShortCourseType(course.course_type)}
-              </span>
             )}
             {isDesktop &&
               showDetail &&
@@ -207,7 +118,7 @@ const CalendarWeekCourse = React.forwardRef(
                 <UserInitial user={course.instructor} short />
               )}
           </div>
-          {(showDetail || isDay) && isDesktop && (
+          {((showDetail && isDesktop) || isDay) && (
             <React.Fragment>
               {!!course.supplierName && (
                 <div className={styles.supplierName}>{course.supplierName}</div>
