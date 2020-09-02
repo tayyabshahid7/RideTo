@@ -7,13 +7,13 @@ import { CALENDAR_VIEW } from 'common/constants'
 
 const CalendarWeekStaff = ({
   staff,
-  position,
   barCount,
   calendar,
   showDetail,
   match
 }) => {
   const isDay = calendar.viewMode === CALENDAR_VIEW.DAY
+  const position = staff.position
 
   const startTime = 0
   const height = 20 - 7

@@ -4,14 +4,7 @@ import CalendarWeekStaff from '../CalendarWeekStaff'
 import CalendarWeekEvent from '../CalendarWeekEvent'
 import styles from './index.scss'
 
-const CalendarDetailLine = ({
-  day,
-  history,
-  calendar,
-  match,
-  suppliers,
-  settings
-}) => {
+const CalendarDetailLine = ({ day, calendar, match }) => {
   if (!day.courses) {
     return null
   }
@@ -23,13 +16,10 @@ const CalendarDetailLine = ({
           return (
             <CalendarWeekCourse
               course={item}
-              position={day.coursePositions[index]}
               barCount={day.barCount}
-              history={history}
               calendar={calendar}
               key={index}
               match={match}
-              settings={settings}
               showDetail={true}
             />
           )
@@ -37,13 +27,10 @@ const CalendarDetailLine = ({
           return (
             <CalendarWeekStaff
               staff={item}
-              position={day.coursePositions[index]}
               barCount={day.barCount}
-              history={history}
               calendar={calendar}
               key={index}
               match={match}
-              settings={settings}
               showDetail={true}
             />
           )
@@ -51,15 +38,11 @@ const CalendarDetailLine = ({
           return (
             <CalendarWeekEvent
               event={item}
-              position={day.coursePositions[index]}
               barCount={day.barCount}
-              history={history}
               calendar={calendar}
-              suppliers={suppliers}
               key={index}
               match={match}
               showDetail={true}
-              settings={settings}
             />
           )
         }
