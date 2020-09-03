@@ -167,7 +167,7 @@ class ShiftForm extends React.Component {
     this.setState({ times })
   }
 
-  handleRemoveTime = () => index => {
+  handleRemoveTime = index => event => {
     const times = this.state.times.slice()
     times.splice(index, 1)
     this.setState({ times })
@@ -212,11 +212,11 @@ class ShiftForm extends React.Component {
     if (this.props.staff) {
       diaries = diaries.filter(x => x.id !== this.props.staff.id)
     }
-    console.log('all diaires', diaries)
 
     if (this.state.event_type !== SHIFT_TYPES[0].id) {
-      if (!this.validateDate(start_date, end_date, diaries)) {
-        showNotification('Error', 'Overlaps with other shifts', 'danger')
+      const tmp = this.getConflictDiary(start_date, end_date, diaries)
+      if (tmp) {
+        showNotification('Error', this.getConflictMessage(tmp), 'danger')
         return
       }
     } else {
@@ -235,8 +235,9 @@ class ShiftForm extends React.Component {
         x => x.event_type !== SHIFT_TYPES[0].id
       )
 
-      if (!this.validateDate(start_date, end_date, allDayDiaires)) {
-        showNotification('Error', 'Overlaps with other shifts', 'danger')
+      const tmp = this.getConflictDiary(start_date, end_date, allDayDiaires)
+      if (tmp) {
+        showNotification('Error', this.getConflictMessage(tmp), 'danger')
         return false
       }
       const shiftDiaries = diaries.filter(
@@ -261,7 +262,8 @@ class ShiftForm extends React.Component {
 
           for (const diary of shiftDiaries) {
             for (const dtime of diary.times) {
-              if (this.validateDate(date, date, [diary])) {
+              const tmp = this.getConflictDiary(date, date, [diary])
+              if (!tmp) {
                 continue
               }
 
@@ -289,7 +291,19 @@ class ShiftForm extends React.Component {
     return true
   }
 
-  validateDate = (startDate, endDate, diaries) => {
+  getConflictMessage = diary => {
+    if (diary.event_type === 'EVENT_BLOCKER') {
+      return 'This Staff has a blocker'
+    } else if (diary.event_type === 'EVENT_HOLIDAY') {
+      return 'This Staff is on holiday'
+    } else if (diary.event_type === 'EVENT_SICK_DAY') {
+      return 'This Staff has a sick day'
+    } else {
+      return 'Overlaps with other shifts'
+    }
+  }
+
+  getConflictDiary = (startDate, endDate, diaries) => {
     const x0 = moment(startDate)
     const y0 = moment(endDate)
 
@@ -301,11 +315,10 @@ class ShiftForm extends React.Component {
         (x0.isSameOrAfter(x1) && x0.isSameOrBefore(y1)) ||
         (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
       ) {
-        console.log(diary)
-        return false
+        return diary
       }
     }
-    return true
+    return null
   }
 
   handleSave(e) {
@@ -425,6 +438,7 @@ class ShiftForm extends React.Component {
                 <ConnectInput
                   basic
                   name="start_time"
+                  id={'start_time' + index}
                   value={time.start_time}
                   label="Start Time"
                   className="form-group"
@@ -435,6 +449,7 @@ class ShiftForm extends React.Component {
                 <ConnectInput
                   basic
                   name="end_time"
+                  id={'end_time' + index}
                   value={time.end_time}
                   label="End Time"
                   className="form-group"

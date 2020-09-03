@@ -43,6 +43,11 @@ function CalendarShiftView({ users, inactiveUsers, ...props }) {
     setShowEditForm(true)
   }
 
+  const handleCloseForm = () => {
+    setShowEditForm(false)
+    setShowNewForm(false)
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.daysContainer}>
@@ -53,6 +58,9 @@ function CalendarShiftView({ users, inactiveUsers, ...props }) {
           {...props}
         />
       </div>
+      {(showNewForm || showEditForm) && (
+        <div className={styles.backdrop} onClick={handleCloseForm}></div>
+      )}
       <div
         className={classnames(
           styles.formWrapper,

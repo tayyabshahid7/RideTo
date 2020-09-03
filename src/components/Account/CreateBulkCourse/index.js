@@ -17,7 +17,7 @@ class CreateBulkCourse extends React.Component {
 
     const course = {
       course_type_id: '',
-      instructor_id: '',
+      instructor_id: -1,
       start_date: '',
       end_date: '',
       time: '',
@@ -66,16 +66,11 @@ class CreateBulkCourse extends React.Component {
       saving,
       error,
       history,
-      info: { courseTypes },
-      instructors,
-      schoolId
+      info: { courseTypes }
     } = this.props
-    const schoolInstructors = instructors.filter(x =>
-      x.supplier.includes(schoolId)
-    )
 
     const {
-      course: { course_type_id, instructor_id }
+      course: { course_type_id }
     } = this.state
 
     if (prevProps.saving && !saving) {
@@ -95,21 +90,12 @@ class CreateBulkCourse extends React.Component {
         }
       })
     }
-
-    if (instructor_id === '' && schoolInstructors.length) {
-      this.setState({
-        course: {
-          ...this.state.course,
-          instructor_id: schoolInstructors[0].id.toString()
-        }
-      })
-    }
   }
 
   handleChangeRawEvent(event) {
-    let name = event.target.name
-    let { course } = this.state
-    course[name] = event.target.value
+    const { name, value } = event.target
+    const { course } = this.state
+    course[name] = value
     this.setState({ course })
   }
 
@@ -121,8 +107,9 @@ class CreateBulkCourse extends React.Component {
 
   handleSave(event) {
     event.preventDefault()
-    const { onSubmit, available_days, schoolId } = this.props
-    const {
+    const { onSubmit, available_days } = this.props
+    const { schoolId } = this.state
+    let {
       course_type_id,
       instructor_id,
       time,
@@ -156,6 +143,9 @@ class CreateBulkCourse extends React.Component {
     }
     if (start_date > end_date) {
       return
+    }
+    if (instructor_id === -1) {
+      instructor_id = ''
     }
     let school_course = {
       course_type_id,
@@ -195,7 +185,7 @@ class CreateBulkCourse extends React.Component {
     const schoolInstructors = this.getInstructors(id)
     const tmpI = schoolInstructors.find(x => x.id === parseInt(instructor_id))
     if (!tmpI) {
-      instructor_id = ''
+      instructor_id = -1
     }
 
     this.setState({
@@ -244,7 +234,7 @@ class CreateBulkCourse extends React.Component {
     const schoolInstructors = this.getInstructors(schoolId)
 
     const instructorOptions = [
-      { id: '', name: 'Un-Assigned' },
+      { id: -1, name: 'Un-Assigned' },
       ...schoolInstructors.map(instructor => ({
         ...instructor,
         name: `${instructor.first_name} ${instructor.last_name}`
