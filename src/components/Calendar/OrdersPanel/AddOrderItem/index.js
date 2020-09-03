@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
-import { Row, Col } from 'reactstrap'
-import { FullLicenceTypes, getAvailableBikeHires } from 'common/info'
+import { getLicenseFromType, getAvailableBikeHires } from 'common/info'
+import { BIKE_HIRE } from 'common/constants'
 import { getPaymentOptions } from 'services/order'
 import {
   checkCustomerExists,
@@ -132,22 +132,14 @@ class AddOrderItem extends React.Component {
     }
   }
 
-  handleChange(typeName, value) {
+  handleChange = (typeName, value) => {
     const { order } = this.state
-    // const newOrder = { ...order }
+    order[typeName] = value
 
-    // let type = typeName.split('.')[0]
-    // let name = typeName.split('.')[1]
-
-    // if (!name) {
-    //   newOrder[type] = value
-    // } else {
-    //   newOrder[type][name] = value
-    // }
-
-    this.setState({
-      order: { ...order, [typeName]: value }
-    })
+    if (typeName === 'bike_hire') {
+      order.full_licence_type = getLicenseFromType(value)
+    }
+    this.setState({ order: { ...order } })
   }
 
   handleShowPaymentClick() {
@@ -201,7 +193,7 @@ class AddOrderItem extends React.Component {
 
   async handleSave(event) {
     const { onSave, onCancel } = this.props
-    const { order, showPayment, orderCreated } = this.state
+    const { order, showPayment, orderCreated, isFullLicence } = this.state
 
     event.preventDefault()
 
@@ -216,8 +208,18 @@ class AddOrderItem extends React.Component {
         if (!confirm) return
       }
 
+      const data = Object.assign({}, order)
+
+      if (isFullLicence) {
+        let type = data.bike_hire.toUpperCase().split('_')[1]
+        if (data.bike_hire === BIKE_HIRE.NO) {
+          type = 'NONE'
+        }
+        data.bike_hire = 'BIKE_TYPE_' + type
+      }
+
       const orderResponse = await onSave(
-        !order.user_birthdate ? omit(order, 'user_birthdate') : order
+        !data.user_birthdate ? omit(data, 'user_birthdate') : data
       )
 
       if (!orderResponse) {
@@ -264,7 +266,6 @@ class AddOrderItem extends React.Component {
       widgetSettings
     } = this.props
     const {
-      isFullLicence,
       showPayment,
       showPaymentConfirmation,
       cardName,
@@ -274,7 +275,6 @@ class AddOrderItem extends React.Component {
       cardPostCodeComplete,
       order: {
         bike_hire,
-        full_licence_type,
         payment_status,
         riding_experience,
         user_birthdate,
@@ -299,7 +299,7 @@ class AddOrderItem extends React.Component {
           (!showPaymentConfirmation && (
             <div className={styles.header}>
               <span className={styles.leftCol}>
-                <h3 className={styles.title}>Add Order</h3>
+                <h3 className={styles.addTitle}>Add Order</h3>
               </span>
               {/* <span>Step 1 of 2</span> */}
             </div>
@@ -361,23 +361,6 @@ class AddOrderItem extends React.Component {
                 // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
                 hideAge
               />
-
-              {isFullLicence && (
-                <ConnectSelect
-                  placeholder
-                  basic
-                  name="full_licence_type"
-                  selected={full_licence_type}
-                  label="Licence Type *"
-                  valueArray={FullLicenceTypes}
-                  onChange={value => {
-                    this.handleChange('full_licence_type', value)
-                  }}
-                  required
-                  valueField="value"
-                  labelField="title"
-                />
-              )}
 
               <ConnectSelect
                 placeholder
@@ -479,22 +462,9 @@ class AddOrderItem extends React.Component {
                 />
               </div>
             )}
-            <Row>
-              <Col className="mt-3 text-right">
-                {/*
-                {!showPayment && (
-                  <Button
-                    small
-                    disabled={!userDetailsValid}
-                    type="button"
-                    color="primary"
-                    onClick={this.handleShowPaymentClick}>
-                    Payment
-                  </Button>
-                )}
-                */}
+            <div className={styles.actions}>
+              <div>
                 <Button
-                  small
                   type="submit"
                   color="primary"
                   disabled={
@@ -507,11 +477,13 @@ class AddOrderItem extends React.Component {
                   }>
                   {showPayment ? 'Take Payment' : 'Save'}
                 </Button>
-                <Button small color="white" onClick={this.handleCancel}>
+              </div>
+              <div>
+                <Button color="white" onClick={this.handleCancel}>
                   Cancel
                 </Button>
-              </Col>
-            </Row>
+              </div>
+            </div>
           </form>
         ) : (
           <div className={styles.successMessage}>

@@ -152,6 +152,7 @@ class OrdersPanel extends React.Component {
             {Array.apply(null, Array(availableSpaces)).map((val, index) =>
               orderIndex === index ? (
                 <AddOrderItem
+                  key={index}
                   onCancel={() => this.setState({ orderIndex: -1 })}
                   info={info}
                   course={course}

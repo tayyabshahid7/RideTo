@@ -1,0 +1,45 @@
+@import '../../../bootstrap';
+
+.container {
+  color: var(--color-dark-light);
+  border-radius: 2px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  padding: 5px 7px;
+  background-color: #ededed;
+  font-weight: 500;
+  font-size: 11px;
+
+  &:not(:last-child) {
+    margin-bottom: 8px;
+  }
+}
+
+.normal {
+  padding: 0 8px;
+
+  > div {
+    height: 24px;
+  }
+}
+
+.outerWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+}
+
+.typeText {
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+.schoolName {
+  font-weight: 400;
+}

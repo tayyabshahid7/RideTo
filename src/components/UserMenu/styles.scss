@@ -3,38 +3,43 @@
   margin-left: 12px;
 }
 
-.username {
+.avatar {
   cursor: pointer;
   position: relative;
   display: inline-block;
-}
-
-.avatar {
-  width: 38px;
-  height: 38px;
-  font-size: 20px;
-  color: #87cdf0;
-  font-weight: bold;
-  border: 2px solid #e4e4e4;
+  width: 40px;
+  height: 40px;
+  font-size: 18px;
+  line-height: 40px;
+  color: var(--color-primary);
+  font-weight: 500;
+  border: 1px solid var(--color-primary);
   border-radius: 50%;
   text-align: center;
-  line-height: 1.7;
+  transition: all ease 0.3s;
+
+  &:hover {
+    background-color: var(--color-primary);
+    color: white;
+  }
 }
 
 .userMenu {
   position: absolute;
   padding: 1rem;
   background-color: #fff;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
   min-width: 220px;
-  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-  z-index: 1;
-  right: 0;
+  right: 16px;
   left: 0;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   margin-top: 18px;
+  z-index: 2000;
 
   select {
     margin-top: 6px;
@@ -64,14 +69,19 @@
 }
 
 .logoutLink {
-  appearance: none;
-  padding: 0;
-  border: 0;
-  background: 0;
-  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  color: var(--color-primary);
   cursor: pointer;
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
 
   &:hover {
     text-decoration: underline;
+  }
+
+  > * {
+    margin-right: 10px;
   }
 }

@@ -125,6 +125,14 @@ class CustomerDetailForm extends React.Component {
           />
         )}
         <ConnectInput
+          name="cbt_certificate_number"
+          value={customer.cbt_certificate_number || ''}
+          label="CBT Certificate Number"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
+        <ConnectInput
           name="cbt_passed_date"
           value={customer.cbt_passed_date || ''}
           label="CBT Passed Date"

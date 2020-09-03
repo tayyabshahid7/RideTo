@@ -15,9 +15,55 @@ export const BikeHires = [
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' }
 ]
 
+export function getFullLicenseBikeHires(course) {
+  const {
+    a1_auto_bikes,
+    a1_manual_bikes,
+    a2_auto_bikes,
+    a2_manual_bikes,
+    a_auto_bikes,
+    a_manual_bikes
+  } = course
+
+  return [
+    {
+      value: a1_auto_bikes ? 'a1_' + BIKE_HIRE.AUTO : null,
+      title: 'A1 Auto Bike'
+    },
+    {
+      value: a1_manual_bikes ? 'a1_' + BIKE_HIRE.MANUAL : null,
+      title: 'A1 Manual Bike'
+    },
+    {
+      value: a2_auto_bikes ? 'a2_' + BIKE_HIRE.AUTO : null,
+      title: 'A2 Auto Bike'
+    },
+    {
+      value: a2_manual_bikes ? 'a2_' + BIKE_HIRE.MANUAL : null,
+      title: 'A2 Manual Bike'
+    },
+    {
+      value: a_auto_bikes ? 'a_' + BIKE_HIRE.AUTO : null,
+      title: 'A Auto Bike'
+    },
+    {
+      value: a_manual_bikes ? 'a_' + BIKE_HIRE.MANUAL : null,
+      title: 'A Manual Bike'
+    },
+    {
+      value: BIKE_HIRE.NO,
+      title: 'Own Bike'
+    }
+  ]
+}
+
 export function getAvailableBikeHires(course) {
   if (!course) {
     return []
+  }
+
+  if (course.course_type.constant.startsWith('FULL_LICENCE')) {
+    return getFullLicenseBikeHires(course)
   }
 
   const {
@@ -50,6 +96,40 @@ export function getAvailableBikeHires(course) {
   ]
 }
 
+export function getLicenseFromType(value) {
+  let [type] = value.toUpperCase().split('_')
+  if (value === BIKE_HIRE.NO) {
+    type = 'NONE'
+  }
+  return 'FULL_LICENCE_TYPE_' + type
+}
+
+export function getTimeValue(time) {
+  try {
+    const times = time.split(':').map(x => parseInt(x))
+    if (times.length < 2) {
+      return 0
+    }
+    return times[0] * 60 + times[1]
+  } catch (err) {
+    return 0
+  }
+}
+
+export function formaBikeTypeForEdit(order) {
+  if (order.full_licence_type.startsWith('FULL_LICENCE_TYPE')) {
+    const type = formatBikeConstant(order.bike_type)
+    if (type !== BIKE_HIRE.NO) {
+      let tmp = order.full_licence_type.split('_')
+      tmp = tmp[tmp.length - 1].toLowerCase()
+      return `${tmp}_${type}`
+    }
+    return type
+  } else {
+    return formatBikeConstant(order.bike_hire)
+  }
+}
+
 export function formatBikeConstant(constant) {
   switch (constant) {
     case 'BIKE_TYPE_AUTO':
@@ -80,7 +160,8 @@ export function formatBikeConstant(constant) {
 export const FullLicenceTypes = [
   { value: 'FULL_LICENCE_TYPE_A1', title: 'A1' },
   { value: 'FULL_LICENCE_TYPE_A2', title: 'A2' },
-  { value: 'FULL_LICENCE_TYPE_A', title: 'A' }
+  { value: 'FULL_LICENCE_TYPE_A', title: 'A' },
+  { value: 'FULL_LICENCE_TYPE_NONE', title: 'None' }
 ]
 
 export function getTitleFor(arr, value) {

@@ -19,17 +19,7 @@ class CalendarLabels extends Component {
   }
 
   componentDidMount() {
-    const {
-      instructors,
-      getInstructors,
-      schoolId,
-      info,
-      loadCourseTypes
-    } = this.props
-
-    if (!instructors || instructors.length === 0) {
-      getInstructors(schoolId)
-    }
+    const { schoolId, info, loadCourseTypes } = this.props
 
     if (!info.courseTypes || info.courseTypes.length === 0) {
       loadCourseTypes({ schoolId: schoolId })

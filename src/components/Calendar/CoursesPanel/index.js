@@ -33,10 +33,7 @@ class CoursesPanelContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.schoolId !== prevProps.schoolId ||
-      prevProps.match.params.date !== this.props.match.params.date
-    ) {
+    if (prevProps.match.params.date !== this.props.match.params.date) {
       this.loadData()
     }
   }
@@ -46,15 +43,19 @@ class CoursesPanelContainer extends React.Component {
       getDayCourses,
       getDayEvents,
       match,
-      schoolId,
+      schools,
       getDayStaff
     } = this.props
+
     const {
       params: { date }
     } = match
-    getDayCourses({ schoolId, date })
-    getDayEvents({ schoolId, date })
-    getDayStaff({ schoolId, date })
+
+    const schoolIds = schools.map(x => x.id)
+
+    getDayCourses({ schoolIds, date })
+    getDayEvents({ schoolIds, date })
+    getDayStaff({ schoolIds, date })
   }
 
   render() {
@@ -65,6 +66,8 @@ class CoursesPanelContainer extends React.Component {
       events,
       staff,
       isAdmin,
+      schools,
+      instructors,
       loadCourses
     } = this.props
     const {
@@ -82,11 +85,13 @@ class CoursesPanelContainer extends React.Component {
           addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
-          events={events.sort((a, b) => a.start_time > b.start_time)}
+          events={events}
           updateAdding={this.updateAdding}
           staff={staff}
           isAdmin={isAdmin}
           loadCourses={loadCourses}
+          schools={schools}
+          instructors={instructors}
         />
       </Loading>
     )
@@ -95,14 +100,15 @@ class CoursesPanelContainer extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
+    schools: state.auth.user.suppliers,
     courses: state.course.day.courses,
     loading: state.course.day.loading,
     events: state.event.day.events,
     eventLoading: state.event.day.loading,
     staff: state.staff.day.staff,
     staffLoading: state.staff.day.loading,
-    isAdmin: isAdmin(state.auth.user)
+    isAdmin: isAdmin(state.auth.user),
+    instructors: state.instructor.instructors
   }
 }
 

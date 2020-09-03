@@ -17,7 +17,6 @@ import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/F
 import POMSelector from 'components/RideTo/CheckoutPage/POMSelector'
 import Script from 'react-load-script'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
-import SectionSplitter from '../SectionSplitter'
 import CardIcons from '../CardIcons'
 
 import { PoweredByStripe } from '../../../../assets/icons'
@@ -140,135 +139,145 @@ class OrderSummary extends Component {
 
     return (
       <div className={styles.container}>
-        <div className={styles.hiddenOnMobile}>
-          <div className={styles.title}>Your Order</div>
-          <CourseInformation
-            checkoutData={checkoutData}
-            supplier={supplier}
-            priceInfo={priceInfo}
-            showMap={showMap}
-            handleMapButtonClick={handleMapButtonClick}
-            trainings={trainings}
-            handlePOMToggleClick={handlePOMToggleClick}
-            hasPOM={hasPOM}
-          />
-        </div>
-        {offersPOM ? (
-          <POMSelector
-            handlePOMToggleClick={handlePOMToggleClick}
-            hasPOM={hasPOM}
-          />
-        ) : (
-          <div className={styles.POMPlaceholder} />
-        )}
-        <div
-          className={classnames(
-            styles.acceptTermsWrapper,
-            !showCardDetails && styles.acceptTermsWrapperHideMobile
-          )}>
-          <div className={classnames(styles.acceptTerms)}>
-            <Checkbox
-              checked={details.email_optin}
-              extraClass="WidgetCheckbox"
-              size="smallBlack"
-              onChange={event =>
-                onDetailChange('email_optin', event.target.checked)
-              }>
-              <div style={{ fontSize: '15px' }}>
-                Get weekly ride outs, events & special offers
+        <div className={styles.whiteBox}>
+          <div className={styles.hiddenOnMobile}>
+            <div className={styles.titleWrapper}>
+              <span className={styles.title}>Your Booking</span>
+              <div className={styles.limitedWarning}>
+                <span>Last few spaces</span>
               </div>
-            </Checkbox>
+            </div>
+            <CourseInformation
+              checkoutData={checkoutData}
+              supplier={supplier}
+              priceInfo={priceInfo}
+              showMap={showMap}
+              handleMapButtonClick={handleMapButtonClick}
+              trainings={trainings}
+              handlePOMToggleClick={handlePOMToggleClick}
+              hasPOM={hasPOM}
+            />
           </div>
-          <div id="terms-checkbox" className={classnames(styles.acceptTerms)}>
-            <Checkbox
-              checked={details.accept_terms}
-              extraClass="WidgetCheckbox"
-              size="smallBlack"
-              onChange={event =>
-                onDetailChange('accept_terms', event.target.checked)
-              }>
-              <div style={{ fontSize: '15px' }}>
-                I have read and agree to the{' '}
-                <a
-                  href="https://www.rideto.com/terms"
-                  rel="noopener noreferrer"
-                  target="_blank">
-                  terms and conditions
-                </a>{' '}
-                and for training I:
+          {offersPOM ? (
+            <POMSelector
+              handlePOMToggleClick={handlePOMToggleClick}
+              hasPOM={hasPOM}
+            />
+          ) : (
+            <div className={styles.POMPlaceholder} />
+          )}
+          <div
+            className={classnames(
+              styles.acceptTermsWrapper,
+              !showCardDetails && styles.acceptTermsWrapperHideMobile
+            )}>
+            <div className={classnames(styles.acceptTerms)}>
+              <Checkbox
+                checked={details.email_optin}
+                extraClass="WidgetCheckbox"
+                size="smallBlack"
+                onChange={event =>
+                  onDetailChange('email_optin', event.target.checked)
+                }>
+                <div style={{ fontSize: '15px' }}>
+                  Get weekly ride outs, events & special offers
+                </div>
+              </Checkbox>
+            </div>
+            <div id="terms-checkbox" className={classnames(styles.acceptTerms)}>
+              <Checkbox
+                checked={details.accept_terms}
+                extraClass="WidgetCheckbox"
+                size="smallBlack"
+                onChange={event =>
+                  onDetailChange('accept_terms', event.target.checked)
+                }>
+                <div style={{ fontSize: '15px' }}>
+                  I have read and agree to the{' '}
+                  <a
+                    href="https://www.rideto.com/terms"
+                    rel="noopener noreferrer"
+                    target="_blank">
+                    terms and conditions
+                  </a>{' '}
+                  and for training I:
+                </div>
+              </Checkbox>
+              <div className={styles.terms}>
+                <ul>
+                  <li>
+                    Will present a valid UK Driving or Provisional licence
+                  </li>
+                  <li>
+                    Or a Full EU licence with UK counterpart licence number
+                  </li>
+                  <li>Can read a registration plate from 20.5 meters</li>
+                  <li>Can speak and understand English & the Highway Code</li>
+                  <li>Can ride an adult size bicycle</li>
+                  <li>
+                    Will wear suitable clothing including thick trousers and
+                    boots
+                  </li>
+                  {isRenewal && <li>Will bring my valid CBT Certificate</li>}
+                  {isFullLicence && (
+                    <Fragment>
+                      <li>Have a valid CBT certificate</li>
+                      <li>Have a valid motorcycle theory certificate</li>
+                    </Fragment>
+                  )}
+                </ul>
               </div>
-            </Checkbox>
-            <div className={styles.terms}>
-              <ul>
-                <li>Will present a valid UK Driving or Provisional licence</li>
-                <li>Or a Full EU licence with UK counterpart licence number</li>
-                <li>Can read a registration plate from 20.5 meters</li>
-                <li>Can speak and understand English & the Highway Code</li>
-                <li>Can ride an adult size bicycle</li>
-                <li>
-                  Will wear suitable clothing including thick trousers and boots
-                </li>
-                {isRenewal && <li>Will bring my valid CBT Certificate</li>}
-                {isFullLicence && (
-                  <Fragment>
-                    <li>Have a valid CBT certificate</li>
-                    <li>Have a valid motorcycle theory certificate</li>
-                  </Fragment>
-                )}
-              </ul>
             </div>
           </div>
-        </div>
-        <hr style={{ width: '100%', marginTop: '0.5rem', marginBottom: 0 }} />
-        {this.renderPrices(isFullLicence)}
-        {errors.paymentError && (
-          <div className={styles.paymentError}>
-            {typeof errors.paymentError === 'string' ? (
-              <strong>{errors.paymentError}</strong>
-            ) : (
-              Object.entries(errors.paymentError).map(entry => (
-                <div>
-                  <strong>
-                    {capitalizeFirstLetter(entry[0].replace('_', ' '))}:{' '}
-                    {entry[1]}
-                  </strong>
-                </div>
-              ))
-            )}
-          </div>
-        )}
-        <PromoCode
-          voucher_code={voucher_code}
-          loadingPrice={loadingPrice}
-          handleVoucherApply={handleVoucherApply}
-          onChange={onChange}
-        />
-        <Loading loading={saving}>
-          <RideToButton
+          <hr style={{ width: '100%', marginTop: '0.5rem', marginBottom: 0 }} />
+          {this.renderPrices(isFullLicence)}
+          {errors.paymentError && (
+            <div className={styles.paymentError}>
+              {typeof errors.paymentError === 'string' ? (
+                <strong>{errors.paymentError}</strong>
+              ) : (
+                Object.entries(errors.paymentError).map(entry => (
+                  <div>
+                    <strong>
+                      {capitalizeFirstLetter(entry[0].replace('_', ' '))}:{' '}
+                      {entry[1]}
+                    </strong>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+          <PromoCode
+            voucher_code={voucher_code}
+            loadingPrice={loadingPrice}
+            handleVoucherApply={handleVoucherApply}
+            onChange={onChange}
+          />
+          <Loading loading={saving}>
+            <RideToButton
+              className={classnames(
+                styles.action,
+                confirmDisabled && styles.confirmDisabled
+              )}
+              onClick={() => this.isValidDate() && onSubmit()}>
+              <span>Confirm And Pay</span>
+              <img src={ButtonArrowWhite} alt="arrow" />
+            </RideToButton>
+          </Loading>
+          <div
             className={classnames(
-              styles.action,
-              confirmDisabled && styles.confirmDisabled
-            )}
-            onClick={() => this.isValidDate() && onSubmit()}>
-            <span>Confirm And Pay</span>
-            <img src={ButtonArrowWhite} alt="arrow" />
-          </RideToButton>
-        </Loading>
-        <div
-          className={classnames(
-            styles.cards,
-            instantBook && styles.cardsInstant
-          )}>
-          <PoweredByStripe fill="#141414" opacity="1" />
-          <CardIcons size="large" />
-        </div>
-        {!this.isValidDate() && (
-          <div className={styles.dateError}>
-            Bookings for the next day must be made before 5:30pm. Please return
-            to the results page to pick a later date.
+              styles.cards,
+              instantBook && styles.cardsInstant
+            )}>
+            <PoweredByStripe fill="#141414" opacity="1" />
+            <CardIcons size="large" />
           </div>
-        )}
-        <div className={styles.sectionFooter}>
+          {!this.isValidDate() && (
+            <div className={styles.dateError}>
+              Bookings for the next day must be made before 5:30pm. Please
+              return to the results page to pick a later date.
+            </div>
+          )}
           {(!instantBook || isFullLicence) && (
             <div id="terms-conditions-section" className={styles.information}>
               <p>
@@ -279,52 +288,54 @@ class OrderSummary extends Component {
               </p>
             </div>
           )}
-          <SectionSplitter />
-          <div style={{ margin: '1.5rem 0' }} className={styles.boxShadow}>
-            <div className={styles.title} style={{ marginBottom: '1rem' }}>
-              100% money back guarantee
-            </div>
-            <div className={styles.guaranteeInfo}>
-              <div className={styles.guaranteeLogo}>
-                <img alt="" src={moneyBack} />
+        </div>
+
+        <div className={styles.sectionFooter}>
+          <div className={styles.whiteBox}>
+            <div className={styles.boxShadow}>
+              <div className={styles.title} style={{ marginBottom: '1rem' }}>
+                100% money back guarantee
               </div>
-              <div className={styles.guarenteeContent}>
-                <div className={styles.guarantee1}>
-                  Cancel with {isFullLicence ? '12' : '3'} working days notice
-                  to get a full refund.
+              <div className={styles.guaranteeInfo}>
+                <div className={styles.guaranteeLogo}>
+                  <img alt="" src={moneyBack} />
                 </div>
+                <div className={styles.guarenteeContent}>
+                  <div className={styles.guarantee1}>
+                    Cancel with {isFullLicence ? '12' : '3'} working days notice
+                    to get a full refund.
+                  </div>
+                  <a
+                    href="https://www.rideto.com/terms#cancellations"
+                    className={styles.guarantee2}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    More Details
+                  </a>
+                </div>
+              </div>
+              <div
+                className={classnames('trustpilot-widget', styles.headerTrust)}
+                style={{ marginLeft: '-10px' }}
+                data-locale="en-GB"
+                data-template-id="5419b6a8b0d04a076446a9ad"
+                data-businessunit-id="59832d5f0000ff0005a80d6b"
+                data-style-height="24px"
+                data-style-width="250px"
+                data-theme="light">
                 <a
-                  href="https://www.rideto.com/terms#cancellations"
-                  className={styles.guarantee2}
+                  href="https://uk.trustpilot.com/review/rideto.com"
                   target="_blank"
                   rel="noopener noreferrer">
-                  More Details
+                  Trustpilot
                 </a>
               </div>
+              <Script url="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" />
             </div>
-            <div
-              className={classnames('trustpilot-widget', styles.headerTrust)}
-              style={{ marginLeft: '-10px' }}
-              data-locale="en-GB"
-              data-template-id="5419b6a8b0d04a076446a9ad"
-              data-businessunit-id="59832d5f0000ff0005a80d6b"
-              data-style-height="24px"
-              data-style-width="250px"
-              data-theme="light">
-              <a
-                href="https://uk.trustpilot.com/review/rideto.com"
-                target="_blank"
-                rel="noopener noreferrer">
-                Trustpilot
-              </a>
-            </div>
-            <Script url="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" />
           </div>
-          <SectionSplitter />
-          <div>
-            <div
-              className={styles.title}
-              style={{ marginTop: '1.5rem', marginBottom: '1rem' }}>
+
+          <div className={styles.whiteBox}>
+            <div className={styles.title} style={{ marginBottom: '1.5rem' }}>
               Frequently asked questions
             </div>
             <CourseTypeDetails

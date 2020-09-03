@@ -17,16 +17,20 @@ export const FETCH_SINGLE = createRequestTypes('rideto/event/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/event/DELETE')
 const UPDATE = createRequestTypes('rideto/event/UPDATE')
 const CREATE = createRequestTypes('rideto/event/CREATE')
+const RESET_DATA = 'rideto/event/RESET_DATA'
+
+export const resetData = () => dispatch => {
+  dispatch({ type: RESET_DATA })
+}
 
 export const getSingleEvent = ({
-  schoolId,
   eventId,
   reset = false
 }) => async dispatch => {
   dispatch({ type: FETCH_SINGLE[REQUEST], reset })
 
   try {
-    const event = await fetchSingleEvent(schoolId, eventId)
+    const event = await fetchSingleEvent(eventId)
     dispatch({
       type: FETCH_SINGLE[SUCCESS],
       data: {
@@ -38,11 +42,16 @@ export const getSingleEvent = ({
   }
 }
 
-export const getDayEvents = ({ schoolId, date }) => async dispatch => {
+export const getDayEvents = ({ schoolIds, date }) => async dispatch => {
+  console.log(schoolIds, date)
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {
-    const events = await fetchEvents(schoolId, date, date)
+    const request = schoolIds.map(schoolId => fetchEvents(schoolId, date, date))
+    const results = await Promise.all(request)
+
+    const events = []
+    results.forEach(tmp => events.push(...tmp))
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],
@@ -55,11 +64,11 @@ export const getDayEvents = ({ schoolId, date }) => async dispatch => {
   }
 }
 
-export const deleteEvent = ({ schoolId, eventId }) => async dispatch => {
+export const deleteEvent = ({ eventId }) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    await deleteSingleEvent(schoolId, eventId)
+    await deleteSingleEvent(eventId)
     notificationActions.dispatchSuccess(dispatch, 'Event deleted')
     dispatch({
       type: DELETE[SUCCESS],
@@ -96,14 +105,13 @@ export const getEvents = ({
 }
 
 export const updateEvent = ({
-  schoolId,
   eventId,
   data,
   fullUpdate = false
 }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolEvent(schoolId, eventId, data, fullUpdate)
+    let response = await updateSchoolEvent(eventId, data, fullUpdate)
     dispatch({
       type: UPDATE[SUCCESS],
       data: { event: response }
@@ -130,7 +138,7 @@ export const createEvent = ({ schoolId, data }) => async dispatch => {
   }
 }
 
-const initialState = {
+const defaultState = {
   single: {
     event: null,
     loading: false,
@@ -147,7 +155,16 @@ const initialState = {
     loading: false,
     error: null,
     loadedMonths: []
+  },
+  shift: {
+    events: [],
+    loading: false,
+    error: null
   }
+}
+
+const initialState = {
+  ...JSON.parse(JSON.stringify(defaultState))
 }
 
 export default function reducer(state = initialState, action) {
@@ -189,7 +206,7 @@ export default function reducer(state = initialState, action) {
     case DELETE[REQUEST]:
       return {
         ...state,
-        single: { loading: true }
+        single: { ...state.single, loading: true }
       }
     case DELETE[SUCCESS]:
       dayEvents = state.day.events.filter(
@@ -240,7 +257,11 @@ export default function reducer(state = initialState, action) {
           loading: true
         }
       }
-    case FETCH_ALL[SUCCESS]:
+    case FETCH_ALL[SUCCESS]: {
+      const loadedMonths = state.calendar.loadedMonths.slice()
+      if (action.data.month) {
+        loadedMonths.push(action.data.month)
+      }
       return {
         ...state,
         calendar: {
@@ -251,9 +272,10 @@ export default function reducer(state = initialState, action) {
             'id'
           ),
           error: null,
-          loadedMonths: [...state.calendar.loadedMonths, action.data.month]
+          loadedMonths
         }
       }
+    }
     case FETCH_ALL[FAILURE]:
       return {
         ...state,
@@ -308,6 +330,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
       }
+    case RESET_DATA: {
+      return {
+        ...JSON.parse(JSON.stringify(defaultState))
+      }
+    }
     default:
       return state
   }

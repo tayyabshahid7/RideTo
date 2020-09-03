@@ -13,11 +13,16 @@ const SAVE = createRequestTypes(`${module}/SAVE`)
 const UPDATE = createRequestTypes(`${module}/UPDATE`)
 const DELETE = createRequestTypes(`${module}/DELETE`)
 
-export const getInstructors = schoolId => async dispatch => {
+// get instructors for all suppliers
+export const getAllInstructors = () => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
   try {
-    const instructors = await fetchInstructors(schoolId)
+    const instructors = await fetchInstructors()
+    instructors.forEach(x => {
+      x.supplier = x.supplier.map(x => x.id)
+    })
+
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
@@ -29,11 +34,11 @@ export const getInstructors = schoolId => async dispatch => {
   }
 }
 
-export const newInstructor = (schoolId, data) => async dispatch => {
+export const newInstructor = data => async dispatch => {
   dispatch({ type: SAVE[REQUEST] })
 
   try {
-    const instructor = await addInstructor(schoolId, data)
+    const instructor = await addInstructor(data)
     dispatch({
       type: SAVE[SUCCESS],
       data: { instructor }
@@ -45,10 +50,10 @@ export const newInstructor = (schoolId, data) => async dispatch => {
   }
 }
 
-export const editInstructor = (schoolId, data) => async dispatch => {
+export const editInstructor = (id, data) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    const instructor = await updateInstructor(schoolId, data)
+    const instructor = await updateInstructor(id, data)
     dispatch({
       type: UPDATE[SUCCESS],
       data: { instructor }
@@ -60,14 +65,14 @@ export const editInstructor = (schoolId, data) => async dispatch => {
   }
 }
 
-export const deleteInstructor = (schoolId, instructorId) => async dispatch => {
+export const deleteInstructor = instructorId => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    const result = await removeInstructor(schoolId, instructorId)
+    const instructor = await removeInstructor(instructorId)
     dispatch({
       type: DELETE[SUCCESS],
-      data: result
+      data: { instructor }
     })
     notificationActions.dispatchSuccess(dispatch, 'Instructor deleted.')
   } catch (error) {
@@ -78,10 +83,10 @@ export const deleteInstructor = (schoolId, instructorId) => async dispatch => {
 
 const initialState = {
   instructors: [],
-  selectedInstructor: null,
   loading: false,
   saving: false,
-  error: null
+  error: null,
+  loadedAll: false
 }
 
 export default function reducer(state = initialState, action) {
@@ -91,12 +96,14 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: true
       }
-    case FETCH_ALL[SUCCESS]:
+    case FETCH_ALL[SUCCESS]: {
       return {
         ...state,
         loading: false,
-        instructors: [...action.data.instructors]
+        loadedAll: true,
+        instructors: action.data.instructors
       }
+    }
     case FETCH_ALL[FAILURE]:
       return {
         ...state,
@@ -108,13 +115,22 @@ export default function reducer(state = initialState, action) {
         ...state,
         saving: true
       }
-    case SAVE[SUCCESS]:
+    case SAVE[SUCCESS]: {
+      const instructors = state.instructors.slice()
+      const { instructor } = action.data
+      const tmp = instructors.find(x => x.id === instructor.id)
+      if (tmp) {
+        Object.assign(tmp, instructor)
+      } else {
+        instructors.push(instructor)
+      }
+
       return {
         ...state,
         saving: false,
-        instructors: [...state.instructors, action.data.instructor],
-        selectedInstructor: null
+        instructors
       }
+    }
     case SAVE[FAILURE]:
       return {
         ...state,
@@ -126,17 +142,22 @@ export default function reducer(state = initialState, action) {
         ...state,
         saving: true
       }
-    case UPDATE[SUCCESS]:
-      const updatedInstructor = action.data.instructor
-      const updatedInstructors = state.instructors.filter(
-        instructor => instructor.id !== updatedInstructor.id
-      )
+    case UPDATE[SUCCESS]: {
+      const instructors = state.instructors.slice()
+      const { instructor } = action.data
+      const tmp = instructors.find(x => x.id === instructor.id)
+      if (tmp) {
+        Object.assign(tmp, instructor)
+      } else {
+        instructors.push(instructor)
+      }
+
       return {
         ...state,
         saving: false,
-        instructors: [...updatedInstructors, updatedInstructor],
-        selectedInstructor: null
+        instructors
       }
+    }
     case UPDATE[FAILURE]:
       return {
         ...state,
@@ -148,17 +169,16 @@ export default function reducer(state = initialState, action) {
         ...state,
         saving: true
       }
-    case DELETE[SUCCESS]:
-      const deletedId = action.data.id
-      const newInstructors = state.instructors.filter(
-        instructor => instructor.id !== deletedId
-      )
+    case DELETE[SUCCESS]: {
+      let instructors = state.instructors.slice()
+      instructors = instructors.filter(x => x.id !== action.data.instructor.id)
+
       return {
         ...state,
-        instructors: [...newInstructors],
         saving: false,
-        selectedInstructor: null
+        instructors
       }
+    }
     case DELETE[FAILURE]:
       return {
         ...state,

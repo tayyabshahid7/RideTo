@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import UserInitial from '../../UserInitial'
 
 import { getShortCourseType } from 'services/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
@@ -16,7 +17,6 @@ import {
 } from 'store/course'
 import { TEST_STATUS_CHOICES } from 'common/constants'
 import styles from './CoursesPanelItem.scss'
-import personIcon from '../../../../assets/images/person.png'
 import { getCourseSpaceTextShort } from 'services/course'
 
 const CoursesPanelItem = ({
@@ -34,10 +34,13 @@ const CoursesPanelItem = ({
   updateAdding,
   addingOrder,
   courseId,
+  schools,
+  instructors,
   settings,
   canEdit,
   loadCourses
 }) => {
+  const [showDetail, setShowDetail] = useState(false)
   const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
   const className = classnames(
@@ -48,73 +51,82 @@ const CoursesPanelItem = ({
   const isTestCourse =
     course.course_type.constant.includes('FULL_LICENCE') &&
     course.course_type.constant.includes('TEST')
-  const { notes = '', instructor } = course
-  const truncated = notes.length > 200 ? `${notes}...` : notes
+  let { instructor } = course
+  if (instructor) {
+    instructor = instructors.find(x => x.id === instructor.id)
+  }
   const isSelected = parseInt(courseId) === course.id
 
+  const school = schools.find(x => x.id === course.supplier)
+  const schoolName = school ? school.name : ''
+
   return (
-    <div className={styles.coursesPanelItem}>
+    <div className={styles.wrapper}>
       <div
         className={classnames(
           styles.heading,
           isSelected && styles.headingSelected
         )}>
         <div className={classnames(styles.container, className)}>
-          <div className={styles.top}>
-            <div className={styles.title}>
-              <div>
-                <span className={styles.name}>{name}</span> |{' '}
-                {course.time.substring(0, 5)} -{' '}
-                {moment(`${course.date} ${course.time}`)
-                  .add(course.duration / 60, 'hours')
-                  .format('HH:mm')}
-                {isTestCourse &&
-                  course.application_reference_number &&
-                  `(${course.application_reference_number})`}
-              </div>
-              {isTestCourse && (
-                <div className={styles.testNotes}>
-                  <b>{TEST_STATUS_CHOICES[course.status]}</b>
-                  <br />
-                  {course.test_centre_name}
-                  <br />
-                  Last day to cancel:{' '}
-                  {moment(course.last_date_cancel).format('Do MMM YYYY')}
-                </div>
-              )}
-            </div>
-            {canEdit && (
+          <div className={styles.line}>
+            {canEdit ? (
               <Link
                 className={styles.editButton}
                 to={`/calendar/${date}/courses/${course.id}/edit`}>
-                Edit
+                {name}
               </Link>
+            ) : (
+              <span className={styles.name}>{name}</span>
             )}
-          </div>
-          <div className={styles.instAndSpaces}>
-            {instructor && (
-              <div className={styles.inst}>
-                <img
-                  className={styles.personIcon}
-                  src={personIcon}
-                  alt="Instructor:"
-                  width="12"
-                  height="12"
-                />{' '}
-                {instructor.first_name} {instructor.last_name}
-              </div>
-            )}
-            <span
-              className={classnames(
-                styles.eventSpaces,
-                availableSpaces === 2 && styles.textMildWarning,
-                availableSpaces === 1 && styles.textWarning,
-                availableSpaces === 0 && styles.textDanger
-              )}>
-              {getCourseSpaceTextShort(course)}
+            <span>
+              {course.time.substring(0, 5)} -{' '}
+              {moment(`${course.date} ${course.time}`)
+                .add(course.duration / 60, 'hours')
+                .format('HH:mm')}
             </span>
           </div>
-          {notes && <div className={styles.notes}>{truncated}</div>}
+          <div className={styles.line}>
+            <span>{schoolName}</span>
+            {instructor && <UserInitial user={instructor} short right />}
+          </div>
+          <div className={styles.line}>
+            <span>{getCourseSpaceTextShort(course)}</span>
+          </div>
+          {/* <div className={styles.line}>
+            {notes && <div className={styles.notes}>{truncated}</div>}
+          </div> */}
+
+          {isTestCourse && (
+            <div className={styles.testNotes}>
+              {showDetail && (
+                <React.Fragment>
+                  <div className={styles.line}>
+                    {TEST_STATUS_CHOICES[course.status]}
+                  </div>
+                  {course.test_centre_name && (
+                    <div className={styles.line}>{course.test_centre_name}</div>
+                  )}
+                  {isTestCourse && course.application_reference_number && (
+                    <div className={styles.line}>
+                      {`${course.application_reference_number}`}
+                    </div>
+                  )}
+                  <div className={styles.line}>
+                    Cancel by:{' '}
+                    {moment(course.last_date_cancel).format('Do MMM YYYY')}
+                  </div>
+                </React.Fragment>
+              )}
+              <div
+                className={classnames(
+                  styles.detail,
+                  showDetail && styles.isOpen
+                )}
+                onClick={() => setShowDetail(!showDetail)}>
+                <i className="fa fa-angle-down"></i>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -138,8 +150,10 @@ const CoursesPanelItem = ({
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const schools = state.auth.user ? state.auth.user.suppliers : []
   return {
     schoolId: state.auth.schoolId,
+    schools,
     loading: state.course.single.loading,
     saving: state.course.single.saving,
     info: state.info,

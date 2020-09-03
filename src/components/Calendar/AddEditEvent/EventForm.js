@@ -2,17 +2,19 @@ import React from 'react'
 import moment from 'moment'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
-import { DAY_FORMAT3, DATE_FORMAT } from 'common/constants'
+import { DAY_FORMAT3, DATE_FORMAT, EVENT_COLORS } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 
 import { getTimeFromDateTime } from 'utils/helper'
 
 import {
+  ConnectSelect,
   ConnectInput,
   ConnectTextArea,
   Button,
-  ConnectCheckbox
+  ConnectCheckbox,
+  ConnectColorInput
 } from 'components/ConnectForm'
 
 class EventForm extends React.Component {
@@ -20,20 +22,29 @@ class EventForm extends React.Component {
     super(props)
     const event = {
       name: '',
+      supplier: '',
       start_time: '',
       end_time: '',
       notes: '',
+      colour: EVENT_COLORS[0],
       all_day: false
     }
+
+    if (this.props.schools) {
+      event.supplier = this.props.schools[0].id
+    }
+
     if (this.props.event) {
       Object.assign(
         event,
         pick(
           this.props.event,
           'name',
+          'supplier',
           'start_time',
           'end_time',
           'notes',
+          'colour',
           'all_day'
         )
       )
@@ -60,7 +71,19 @@ class EventForm extends React.Component {
     }
   }
 
-  handleChangeRawEvent(e) {
+  handleChangeSchool = id => {
+    this.setState({
+      event: { ...this.state.event, supplier: id }
+    })
+  }
+
+  handleChangeColor = colour => {
+    this.setState({
+      event: { ...this.state.event, colour }
+    })
+  }
+
+  handleChangeRawEvent = e => {
     let name = e.target.name
     let { event } = this.state
 
@@ -137,15 +160,30 @@ class EventForm extends React.Component {
   }
 
   render() {
-    const { saving, onRemove } = this.props
+    const { saving, onRemove, schools } = this.props
     const { startTime, endTime } = this.state
-    const { name, notes, all_day } = this.state.event
+    const { supplier, name, notes, colour, all_day } = this.state.event
 
     return (
-      <div className={styles.container}>
+      <div className={styles.wrapper}>
         <h4 className={styles.addTitle}>Add Event</h4>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
+            <Row>
+              <Col>
+                <ConnectSelect
+                  basic
+                  name="supplier"
+                  value={supplier}
+                  label="Location"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeSchool}
+                  required
+                  options={schools}
+                />
+              </Col>
+            </Row>
             <Row>
               <Col>
                 <ConnectInput
@@ -155,49 +193,60 @@ class EventForm extends React.Component {
                   label="Event Name"
                   className="form-group"
                   type="text"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                   required
                 />
               </Col>
             </Row>
             <Row>
               <Col>
-                <ConnectInput
-                  basic
-                  name="startTime"
-                  value={startTime}
-                  label="Start Time"
+                <ConnectColorInput
+                  name="colour"
+                  value={colour}
+                  label="Event Colour"
                   className="form-group"
-                  type="time"
-                  onChange={({ target }) =>
-                    this.handleChangeTime('startTime', target.value)
-                  }
+                  type="text"
+                  onChange={this.handleChangeColor}
                   required
                 />
               </Col>
-              <Col>
-                <ConnectInput
-                  basic
-                  name="endTime"
-                  value={endTime}
-                  label="End Time"
-                  className="form-group"
-                  type="time"
-                  onChange={({ target }) =>
-                    this.handleChangeTime('endTime', target.value)
-                  }
-                  required
-                />
-              </Col>
+            </Row>
+            <div className={styles.timeRow}>
+              <ConnectInput
+                basic
+                name="startTime"
+                value={startTime}
+                label="Start Time"
+                className="form-group"
+                type="time"
+                onChange={({ target }) =>
+                  this.handleChangeTime('startTime', target.value)
+                }
+                required
+              />
+              <ConnectInput
+                basic
+                name="endTime"
+                value={endTime}
+                label="End Time"
+                className="form-group"
+                type="time"
+                onChange={({ target }) =>
+                  this.handleChangeTime('endTime', target.value)
+                }
+                required
+              />
+            </div>
+            <Row>
               <Col>
                 <ConnectCheckbox
                   basic
                   vertical
                   name="all_day"
                   checked={all_day}
-                  label="All Day"
+                  label="Book all day"
                   className="form-group"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                 />
               </Col>
             </Row>
@@ -209,25 +258,30 @@ class EventForm extends React.Component {
                   value={notes}
                   label="Notes"
                   type="textarea"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                 />
               </Col>
             </Row>
             <div className={styles.actions}>
-              <Button small type="submit" color="primary">
-                Save
-              </Button>
-              <Button
-                small
-                type="button"
-                color="white"
-                onClick={this.handleCancel.bind(this)}>
-                Cancel
-              </Button>
-              {this.props.event && (
-                <Button small onClick={onRemove} color="danger">
-                  Delete
+              <div>
+                <Button type="submit" color="primary">
+                  Save
                 </Button>
+              </div>
+              <div>
+                <Button
+                  type="button"
+                  color="white"
+                  onClick={this.handleCancel.bind(this)}>
+                  Cancel
+                </Button>
+              </div>
+              {this.props.event && (
+                <div className={styles.actionDelete}>
+                  <Button onClick={onRemove} color="danger">
+                    Delete
+                  </Button>
+                </div>
               )}
             </div>
           </Form>

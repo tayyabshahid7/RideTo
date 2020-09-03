@@ -1,5 +1,4 @@
 import React from 'react'
-import { AiOutlineMinusCircle, AiOutlinePlusCircle } from 'react-icons/ai'
 import { ConnectInput } from 'components/ConnectForm'
 import styles from './styles.scss'
 import classnames from 'classnames'
@@ -17,14 +16,13 @@ function BikeNumberPicker({
 }) {
   return (
     <div className={classnames(className, styles.bikerPicker)}>
-      {label}
+      <label>{label}</label>
       <div className={styles.rightSide}>
-        <button type="button" className={styles.minus} onClick={onClickMinus}>
-          <AiOutlineMinusCircle />
-        </button>
+        <span className={styles.minus} onClick={onClickMinus}>
+          <i className="fa fa-angle-down"></i>
+        </span>
         <ConnectInput
           basic
-          className={styles.inputNumber}
           name={id}
           value={!isNil(value) ? value : ''}
           type="number"
@@ -32,9 +30,9 @@ function BikeNumberPicker({
           onChange={onChange}
           required
         />
-        <button type="button" className={styles.plus} onClick={onClickPlus}>
-          <AiOutlinePlusCircle />
-        </button>
+        <span className={styles.plus} onClick={onClickPlus}>
+          <i className="fa fa-angle-up"></i>
+        </span>
       </div>
     </div>
   )

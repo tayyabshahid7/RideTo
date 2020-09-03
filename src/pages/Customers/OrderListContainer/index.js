@@ -26,6 +26,7 @@ class OrderListContainer extends React.Component {
       this.props.fetchOrders({ customer: parseInt(id, 10) })
       this.props.getEmails(id, schoolId, schoolId)
     }
+    console.log('fetch supplier')
     this.props.fetchSuppliers()
   }
 

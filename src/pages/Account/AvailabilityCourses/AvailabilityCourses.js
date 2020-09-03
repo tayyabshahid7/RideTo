@@ -4,7 +4,7 @@ import moment from 'moment'
 import styles from './styles.scss'
 import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 import classnames from 'classnames'
-import CalendarLabels from './CalendarLabels'
+// import CalendarLabels from './CalendarLabels'
 import SchoolSelect from 'components/SchoolSelect'
 import isEqual from 'lodash/isEqual'
 import Loading from 'components/Loading'
@@ -153,15 +153,15 @@ class AvailabilityCourses extends React.Component {
       instructors,
       schoolId,
       schools,
-      getInstructors,
       history,
       saving,
-      error,
-      settings,
-      updateSettings,
-      editInstructor,
-      updateDiaryColor
+      error
+      // settings,
+      // updateSettings,
+      // editInstructor,
+      // updateDiaryColor
     } = this.props
+
     const { showCreateBulkCourseForm, available_days } = this.state
     return (
       <Fragment>
@@ -176,7 +176,6 @@ class AvailabilityCourses extends React.Component {
               loadCourseTypes={loadCourseTypes}
               schoolId={schoolId}
               schools={schools}
-              getInstructors={getInstructors}
               available_days={available_days}
               handleCancel={this.handleCancel.bind(this)}
               saving={saving}
@@ -185,11 +184,10 @@ class AvailabilityCourses extends React.Component {
           )}
         </div>
         <div className={styles.box}>{this.renderDefaultDays()}</div>
-        <div className={styles.box}>
+        {/* <div className={styles.box}>
           <CalendarLabels
             settings={settings}
             instructors={instructors}
-            getInstructors={getInstructors}
             schoolId={schoolId}
             info={info}
             loadCourseTypes={loadCourseTypes}
@@ -197,7 +195,7 @@ class AvailabilityCourses extends React.Component {
             editInstructor={editInstructor}
             updateDiaryColor={updateDiaryColor}
           />
-        </div>
+        </div> */}
       </Fragment>
     )
   }

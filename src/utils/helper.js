@@ -1,4 +1,5 @@
 import moment from 'moment'
+import _ from 'lodash'
 import {
   DATE_FORMAT,
   WEEK_VIEW_START_TIME_STRING,
@@ -19,6 +20,18 @@ export function getStarTimeForEventForDate(event, date) {
   let eventDate = moment(new Date(event.start_time)).format(DATE_FORMAT)
   if (eventDate === date) {
     return moment(new Date(event.start_time)).format('HH:mm')
+  }
+  return WEEK_VIEW_START_TIME_STRING
+}
+
+export function formatShiftTime(event, date) {
+  let eventDate = moment(new Date(event.start_time)).format(DATE_FORMAT)
+  if (eventDate === date) {
+    return (
+      moment(new Date(event.start_time)).format('HH:mm') +
+      ' - ' +
+      moment(new Date(event.end_time)).format('HH:mm')
+    )
   }
   return WEEK_VIEW_START_TIME_STRING
 }
@@ -134,4 +147,104 @@ export function isExternalLink(link) {
   isInternal = link.startsWith('/')
 
   return !isInternal
+}
+
+export function calculatePosition(dayObj) {
+  dayObj.courses = _.orderBy(dayObj.courses, 'secondsForDay')
+  let sameCourses = _.groupBy(dayObj.courses, 'secondsForDay')
+  const tmp = Object.values(sameCourses)
+  const maxSame = tmp.length ? Math.max(...tmp.map(x => x.length)) : 0
+  dayObj.maxSame = maxSame
+
+  let barMap = []
+  let coursePositions = []
+
+  for (let i = 0; i < dayObj.courses.length; i++) {
+    let course = dayObj.courses[i]
+    if (barMap.length === 0) {
+      barMap.push(course)
+      coursePositions.push(0)
+    } else {
+      let j
+      for (j = barMap.length - 1; j >= 0; j--) {
+        if (
+          course.secondsForDay >= barMap[j].secondsForDay &&
+          course.secondsForDay <
+            barMap[j].secondsForDay + barMap[j].duration * 60
+        ) {
+          barMap.push(course)
+          coursePositions.push(barMap[j].position + 1)
+          break
+        }
+      }
+      if (j === -1) {
+        barMap.push(course)
+        coursePositions.push(0)
+      }
+    }
+    course.sameTime = sameCourses[course.secondsForDay].length
+    course.position = coursePositions[i]
+  }
+
+  for (let i = 0; i < dayObj.courses.length; i++) {
+    let course = dayObj.courses[i]
+    if (course.sameTime > 1) {
+      course.minStart = Math.min(
+        ...sameCourses[course.secondsForDay].map(x => x.position)
+      )
+    }
+  }
+
+  dayObj.barCount = Math.max(...coursePositions) + 1
+  dayObj.coursePositions = coursePositions
+  return dayObj
+}
+
+export function calculateDimension(
+  item,
+  isDesktop,
+  isDay,
+  barCount,
+  showDetail
+) {
+  const position = item.position
+
+  let height = item.duration / 60
+  let startTime = (item.secondsForDay - WEEK_VIEW_START_TIME) / 3600
+  if (startTime < 0) {
+    height += startTime
+    startTime = 0
+  }
+  if (startTime + height > WORK_HOURS - 1) {
+    height = WORK_HOURS - startTime - 1
+    if (height < 0) {
+      return null
+    }
+  }
+  let left = `${position * 4}px`
+  let width = `calc(100% - ${(barCount - 1) * 4}px)`
+
+  if (isDay) {
+    left = `${(100 / barCount) * position}%`
+    width = `${100 / barCount}%`
+  } else if (showDetail && item.sameTime > 1 && isDesktop) {
+    const offset = (4 * (barCount - item.sameTime)) / item.sameTime
+
+    left = `${(100 / item.sameTime) * (position - item.minStart)}% - ${offset *
+      (position - item.minStart)}px`
+    width = `${100 / item.sameTime}% - ${offset}px`
+
+    if (item.minStart) {
+      left = `${4 * item.minStart}px + ${left}`
+    }
+    left = `calc(${left})`
+    width = `calc(${width})`
+  }
+
+  return {
+    height: `${height * 56}px`,
+    top: `${startTime * 56}px`,
+    left,
+    width
+  }
 }

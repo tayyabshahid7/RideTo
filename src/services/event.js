@@ -12,29 +12,24 @@ export const fetchEvents = async (schoolId, startDate, endDate) => {
   return response
 }
 
-export const fetchSingleEvent = async (schoolId, eventId) => {
-  const path = `school/${schoolId}/event/${eventId}`
+export const fetchSingleEvent = async eventId => {
+  const path = `school/event/${eventId}`
 
   const response = await get(path, {})
 
   return response
 }
 
-export const deleteSingleEvent = async (schoolId, eventId) => {
-  const path = `school/${schoolId}/event/${eventId}`
+export const deleteSingleEvent = async eventId => {
+  const path = `school/event/${eventId}`
 
   const response = await destroy(path, {})
 
   return response
 }
 
-export const updateSchoolEvent = async (
-  schoolId,
-  eventId,
-  data,
-  fullUpdate = false
-) => {
-  const path = `school/${schoolId}/event/${eventId}`
+export const updateSchoolEvent = async (eventId, data, fullUpdate = false) => {
+  const path = `school/event/${eventId}`
   let response
   if (fullUpdate) {
     response = await put(path, data)

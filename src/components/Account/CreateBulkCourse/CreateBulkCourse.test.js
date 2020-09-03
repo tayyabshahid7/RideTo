@@ -13,7 +13,6 @@ beforeEach(() => {
   props = {
     onSubmit: jest.fn(),
     loadCourseTypes: jest.fn(),
-    getInstructors: jest.fn(),
     handleCancel: jest.fn(),
     info: {
       ridingExperiences: [
@@ -35,19 +34,22 @@ beforeEach(() => {
           id: 6,
           constant: 'TFL_ONE_ON_ONE',
           name: 'FREE 1-2-1 Motorcycle Skills',
-          slug: '1-2-1-motorcycle-skills'
+          slug: '1-2-1-motorcycle-skills',
+          schoolIds: [44]
         },
         {
           id: 7,
           constant: 'FULL_LICENCE_MOD1_TRAINING',
           name: 'Full Licence Module 1 Training',
-          slug: 'module-1-training'
+          slug: 'module-1-training',
+          schoolIds: [44]
         },
         {
           id: 8,
           constant: 'FULL_LICENCE_MOD2_TRAINING',
           name: 'Full Licence Module 2 Training',
-          slug: 'module-2-training'
+          slug: 'module-2-training',
+          schoolIds: []
         }
       ]
     },
@@ -56,9 +58,9 @@ beforeEach(() => {
         id: 204,
         first_name: 'Nathan',
         last_name: 'Brown',
-        supplier: 44,
         colour: '#2CCEAC',
-        diary: []
+        diary: [],
+        supplier: [44]
       }
     ],
     schools: [
@@ -69,7 +71,7 @@ beforeEach(() => {
       }
     ],
     available_days: ['T', 'T', 'T', 'T', 'T', 'T', 'T'],
-    schoolId: 1,
+    schoolId: 44,
     saving: false,
     error: null
   }

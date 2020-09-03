@@ -2,6 +2,11 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  background-color: #fafafa;
+  padding: 1rem;
+  align-self: flex-start;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
+    0 3px 5px -1px rgba(0, 0, 0, 0.2);
 
   &,
   * {
@@ -13,18 +18,26 @@
   width: 100%;
 }
 
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 1px;
+}
+
 .wrapper {
-  background: #fafafa;
-  padding: 1rem;
-  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
-    0 3px 5px -1px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1 1 1px;
 }
 
 .addTitle {
-  color: #707070;
-  font-weight: bold;
-  font-size: 18px;
-  margin-bottom: 1rem;
+  color: rgba(#444, 0.6);
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  margin-bottom: 24px;
 }
 
 .title {
@@ -97,8 +110,18 @@
   width: 100%;
   display: flex;
   justify-content: flex-start;
+  flex-direction: column;
+  margin-bottom: 40px;
 
-  button:last-child {
+  > div {
+    margin-top: 8px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  button:nth-child(3) {
     margin-left: auto;
   }
 }
@@ -118,8 +141,16 @@
 .formTable {
   margin-top: -0.75rem;
   margin-bottom: 0;
-  font-size: 14px;
-  font-weight: bold;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 13px;
+  color: rgba(#444, 0.6) !important;
+
+  th {
+    font-weight: 500;
+    border: none !important;
+    padding: 4px 0.75rem;
+  }
 
   td {
     border-top: 0 !important;
@@ -132,7 +163,11 @@
 }
 
 .bikesAvailable {
-  margin-bottom: 0.25rem;
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 500;
+  color: rgba(#444, 0.6);
+  margin-bottom: 16px;
 }
 
 .bikerPicker {
@@ -196,7 +231,12 @@
   }
 }
 
-.numberPicker {
-  margin-bottom: 0.5rem;
-  padding-left: 0.25rem;
+.timeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 8px;
+}
+
+.actionDelete {
+  margin-top: 46px !important;
 }

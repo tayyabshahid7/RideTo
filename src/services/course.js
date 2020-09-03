@@ -13,7 +13,7 @@ export const getCourseSpaceText = course => {
 }
 
 export const getCourseSpaceTextShort = course => {
-  const availableSpaces = course.spaces - course.orders.length
+  const availableSpaces = course.spaces_available
   return availableSpaces === 0
     ? 'Full'
     : `${availableSpaces} Space${s(availableSpaces)} left`
@@ -40,7 +40,7 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
 }
 
 export const fetchCoursesMinimal = async (schoolId, startDate, endDate) => {
-  const path = `school/${schoolId}/course`
+  const path = `school/${schoolId}/course/minimal`
   const params = {
     sdate: startDate,
     edate: endDate
@@ -110,8 +110,8 @@ export const fetchDayCourses = async (schoolId, date) => {
   return response.results
 }
 
-export const fetchSingleCourse = async (schoolId, courseId) => {
-  const path = `school/${schoolId}/course/${courseId}`
+export const fetchSingleCourse = async courseId => {
+  const path = `school/course/${courseId}`
 
   const response = await get(path, {})
 
@@ -136,8 +136,8 @@ export const fetchWidgetSingleCourseWithDiscount = async (
   return response
 }
 
-export const deleteSingleCourse = async (schoolId, courseId) => {
-  const path = `school/${schoolId}/course/${courseId}`
+export const deleteSingleCourse = async courseId => {
+  const path = `school/course/${courseId}`
 
   const response = await destroy(path, {})
 
@@ -193,12 +193,11 @@ export const deleteSchoolOrderTraining = async (schoolId, trainingId) => {
 }
 
 export const updateSchoolCourse = async (
-  schoolId,
   courseId,
   data,
   fullUpdate = false
 ) => {
-  const path = `school/${schoolId}/course/${courseId}`
+  const path = `school/course/${courseId}`
   let response
   if (fullUpdate) {
     response = await put(path, data)

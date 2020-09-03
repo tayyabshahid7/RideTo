@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './style.scss'
-import { Button } from 'reactstrap'
+import { Button } from 'components/ConnectForm'
 import { connect } from 'react-redux'
 import { isAdmin } from 'services/auth'
 
@@ -9,12 +9,8 @@ const OrdersPanelSpaceItem = ({ onAdd, onRemove, isAdmin }) => {
     <div className={styles.container}>
       <span className={styles.info}>Available</span>
       {isAdmin && (
-        <Button
-          color="primary"
-          onClick={onAdd}
-          className={`mr-1 btn-padding-md ${styles.button}`}
-          size="sm">
-          Add order
+        <Button color="primary" onClick={onAdd} className={styles.button}>
+          Book
         </Button>
       )}
     </div>

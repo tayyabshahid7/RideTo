@@ -1,0 +1,18 @@
+.container {
+  padding: 8px;
+  color: var(--color-dark-light);
+  text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+}
+
+.courseContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.dataCell {
+  overflow: hidden;
+}

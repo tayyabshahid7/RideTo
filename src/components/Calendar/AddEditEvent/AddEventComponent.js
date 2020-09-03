@@ -10,12 +10,7 @@ import moment from 'moment'
 
 class AddEventComponent extends Component {
   componentDidUpdate(prevProps) {
-    const { saving, event, error, schoolId } = this.props
-
-    if (schoolId !== prevProps.schoolId) {
-      this.moveBackToPage()
-      return
-    }
+    const { saving, event, error } = this.props
 
     if (prevProps.saving === true && saving === false) {
       if (event) {
@@ -38,8 +33,8 @@ class AddEventComponent extends Component {
   }
 
   onSave(data) {
-    const { schoolId, createEvent } = this.props
-    createEvent({ schoolId, data: { ...data, supplier: schoolId.toString() } })
+    const { createEvent } = this.props
+    createEvent({ schoolId: data.supplier, data })
   }
 
   render() {
@@ -61,7 +56,6 @@ class AddEventComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
     schools: state.auth.user.suppliers,
     saving: state.event.single.saving,
     event: state.event.single.event,

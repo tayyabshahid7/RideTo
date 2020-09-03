@@ -16,6 +16,7 @@ import email from './email'
 import sms from './sms'
 import staff from './staff'
 import user from './user'
+import calendar from './calendar'
 
 const appReducer = combineReducers({
   auth,
@@ -34,6 +35,7 @@ const appReducer = combineReducers({
   email,
   sms,
   staff,
-  user
+  user,
+  calendar
 })
 export default appReducer
