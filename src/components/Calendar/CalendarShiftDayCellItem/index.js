@@ -28,7 +28,7 @@ const CalendarShiftDayCellItem = ({ diary, schools, onClick, normal }) => {
         {normal && <UserInitial user={diary} short />}
         <CalendarShiftIcon diary={diary} />
       </div>
-      {!!school && !normal && (
+      {diary.event_type === SHIFT_TYPES[0].id && (
         <span className={styles.schoolName}>{school.name}</span>
       )}
     </div>
