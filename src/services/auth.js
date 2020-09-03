@@ -54,10 +54,12 @@ export const isTokenExpiring = token => {
 export const requestToken = async (email, password) => {
   const response = await post('users/login/', { email, password }, false)
   setToken(response.token)
-  response.user.suppliers.forEach(s => {
-    s.orignalName = s.name
-    s.name = s.connect_location_name
-  })
+  if (response.user) {
+    response.user.suppliers.forEach(s => {
+      s.orignalName = s.name
+      s.name = s.connect_location_name
+    })
+  }
   window.localStorage.setItem('username', response.username)
   return response
 }
