@@ -2,6 +2,7 @@ import {
   fetchSingleCourse,
   fetchCourses,
   fetchCoursesMinimal,
+  fetchUserCourses,
   deleteSingleCourse,
   addSchoolOrder,
   addSchoolPayment,
@@ -22,6 +23,7 @@ import moment from 'moment'
 import { saveState } from 'services/localStorage'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
+const FETCH_FOR_FORM = createRequestTypes('rideto/course/FETCH/FORM')
 const UPDATE_CALENDAR_SETTING = 'rideto/course/UPDATE/CALENDAR_SETTING'
 const RESET_DATA = 'rideto/course/RESET_DATA'
 const FETCH_FOR_DAY = createRequestTypes('rideto/course/FETCH/DAY')
@@ -160,6 +162,23 @@ export const getCourses = ({
     })
   } catch (error) {
     dispatch({ type: FETCH_ALL[FAILURE], error })
+  }
+}
+
+export const getDaysCourses = ({ start_date, end_date }) => async dispatch => {
+  dispatch({ type: FETCH_FOR_FORM[REQUEST] })
+
+  try {
+    const courses = await fetchUserCourses(start_date, end_date)
+
+    dispatch({
+      type: FETCH_FOR_FORM[SUCCESS],
+      data: {
+        courses
+      }
+    })
+  } catch (error) {
+    dispatch({ type: FETCH_FOR_FORM[FAILURE], error })
   }
 }
 
@@ -367,6 +386,11 @@ const defaultState = {
     courses: [],
     loading: false,
     date: null,
+    error: null
+  },
+  days: {
+    courses: [],
+    loading: false,
     error: null
   },
   pricing: {
@@ -581,6 +605,31 @@ export default function reducer(state = initialState, action) {
           ...state.calendar,
           ...action.data,
           silent: false
+        }
+      }
+    case FETCH_FOR_FORM[REQUEST]:
+      return {
+        ...state,
+        days: {
+          courses: [],
+          loading: true
+        }
+      }
+    case FETCH_FOR_FORM[SUCCESS]:
+      return {
+        ...state,
+        days: {
+          loading: false,
+          courses: [...action.data.courses]
+        }
+      }
+    case FETCH_FOR_FORM[FAILURE]:
+      return {
+        ...state,
+        days: {
+          loading: false,
+          courses: [],
+          error: action.error
         }
       }
     case FETCH_ALL[REQUEST]:

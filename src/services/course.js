@@ -39,6 +39,18 @@ export const fetchCourses = async (schoolId, startDate, endDate) => {
   return response
 }
 
+export const fetchUserCourses = async (startDate, endDate) => {
+  const path = `school/courses`
+  const params = {
+    sdate: startDate,
+    edate: endDate
+  }
+
+  const response = await get(path, params)
+
+  return response
+}
+
 export const fetchCoursesMinimal = async (schoolId, startDate, endDate) => {
   const path = `school/${schoolId}/course/minimal`
   const params = {

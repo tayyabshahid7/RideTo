@@ -17,7 +17,7 @@ class CreateBulkCourse extends React.Component {
 
     const course = {
       course_type_id: '',
-      instructor_id: -1,
+      instructor_id: null,
       start_date: '',
       end_date: '',
       time: '',
@@ -144,7 +144,7 @@ class CreateBulkCourse extends React.Component {
     if (start_date > end_date) {
       return
     }
-    if (instructor_id === -1) {
+    if (instructor_id === null) {
       instructor_id = ''
     }
     let school_course = {
@@ -185,7 +185,7 @@ class CreateBulkCourse extends React.Component {
     const schoolInstructors = this.getInstructors(id)
     const tmpI = schoolInstructors.find(x => x.id === parseInt(instructor_id))
     if (!tmpI) {
-      instructor_id = -1
+      instructor_id = null
     }
 
     this.setState({
@@ -234,7 +234,7 @@ class CreateBulkCourse extends React.Component {
     const schoolInstructors = this.getInstructors(schoolId)
 
     const instructorOptions = [
-      { id: -1, name: 'Un-Assigned' },
+      { id: null, name: 'Un-Assigned' },
       ...schoolInstructors.map(instructor => ({
         ...instructor,
         name: `${instructor.first_name} ${instructor.last_name}`
