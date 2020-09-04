@@ -3,6 +3,7 @@ import styles from './styles.scss'
 import Calendar from 'react-calendar'
 import moment from 'moment'
 import { CALENDAR_VIEW } from '../../../common/constants'
+import { Button } from 'components/ConnectForm'
 
 function CalendarDatePicker({ calendar, handleChangeDate }) {
   const [showDropdown, setShowDropdown] = useState(false)
@@ -37,6 +38,10 @@ function CalendarDatePicker({ calendar, handleChangeDate }) {
     return moment(date)
       .format('ddd')
       .substr(0, 1)
+  }
+
+  const handleToday = () => {
+    handleChange(new Date())
   }
 
   let dateText = moment(date).format('MMMM YYYY')
@@ -80,6 +85,13 @@ function CalendarDatePicker({ calendar, handleChangeDate }) {
             value={date}
             formatShortWeekday={(locale, date) => formatWeek(date)}
           />
+          {!isDesktop && (
+            <div className={styles.buttonHolder}>
+              <Button type="button" color="primary" onClick={handleToday}>
+                Go to Today
+              </Button>
+            </div>
+          )}
         </div>
       )}
     </div>

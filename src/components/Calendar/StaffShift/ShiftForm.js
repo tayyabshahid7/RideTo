@@ -275,11 +275,7 @@ class ShiftForm extends React.Component {
                 (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
               ) {
                 console.log(diary)
-                showNotification(
-                  'Error',
-                  'Overlaps with other shifts',
-                  'danger'
-                )
+                showNotification('Error', 'Overlaps with other shift', 'danger')
                 return false
               }
             }

@@ -32,19 +32,14 @@ class EditOrderForm extends React.Component {
       isChanged: false
     }
     console.log(this.state)
-
-    this.handleSave = this.handleSave.bind(this)
-    this.handleToggleDateClick = this.handleToggleDateClick.bind(this)
-    this.handleConfirmation = this.handleConfirmation.bind(this)
-    this.handleChange = this.handleChange.bind(this)
   }
 
-  handleConfirmation() {
+  handleConfirmation = () => {
     const { order } = this.state
     this.props.sendEmailConfirmation(order.order.friendly_id)
   }
 
-  handleChange(typeName, value) {
+  handleChange = (typeName, value) => {
     const { order } = this.state
     const newOrder = { ...order }
 
@@ -67,7 +62,7 @@ class EditOrderForm extends React.Component {
     })
   }
 
-  async handleSave(event) {
+  handleSave = async event => {
     const { onSave, onCancel } = this.props
     const { order } = this.state
     const isFullLicence = this.state.order.course_type.startsWith(
@@ -90,7 +85,7 @@ class EditOrderForm extends React.Component {
     }
   }
 
-  handleToggleDateClick() {
+  handleToggleDateClick = () => {
     this.setState(prevState => ({
       showChangeDate: !prevState.showChangeDate
     }))

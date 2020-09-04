@@ -223,6 +223,12 @@ $font-family-base: 'PT Sans', sans-serif;
   }
 }
 
+.react-calendar__navigation {
+  @media (max-width: 767px) {
+    padding: 0 15px;
+  }
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;

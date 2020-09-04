@@ -32,11 +32,16 @@ export default function ConnectSingleSelect({
   if (selected) {
     selected = selected.toString()
   }
-  const innerValue = options.find(
-    x =>
-      x[valueField].toString() === value ||
-      x[valueField].toString() === selected
-  )
+  let innerValue = options.find(x => !x[valueField])
+
+  if (value || selected) {
+    innerValue = options.find(
+      x =>
+        x[valueField] &&
+        (x[valueField].toString() === value ||
+          x[valueField].toString() === selected)
+    )
+  }
 
   const handleChange = value => {
     if (raw) {

@@ -1,9 +1,11 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import moment from 'moment'
 import { Col, Row } from 'reactstrap'
 import range from 'lodash/range'
 import styles from './styles.scss'
-import { DAY_FORMAT3, TEST_STATUS_CHOICES } from 'common/constants'
+import { DAY_FORMAT3, TEST_STATUS_CHOICES, SHIFT_TYPES } from 'common/constants'
 import Loading from 'components/Loading'
 import pick from 'lodash/pick'
 import BikeNumberPicker from 'components/BikeNumberPicker'
@@ -14,10 +16,25 @@ import {
   Button,
   ConnectLabeledContent
 } from 'components/ConnectForm'
+import { actions as notifyActions } from 'store/notification'
+import { getDaysStaff } from 'store/staff'
+import { getDaysCourses } from 'store/course'
 
 function removeFullLicence(type) {
   return type.constant !== 'FULL_LICENCE'
 }
+
+const bikeFields = [
+  'own_bikes',
+  'auto_bikes',
+  'manual_bikes',
+  'a1_auto_bikes',
+  'a2_auto_bikes',
+  'a1_manual_bikes',
+  'a2_manual_bikes',
+  'a_auto_bikes',
+  'a_manual_bikes'
+]
 
 class CourseForm extends React.Component {
   constructor(props) {
@@ -31,20 +48,13 @@ class CourseForm extends React.Component {
       spaces: '',
       duration: '',
       notes: '',
-      own_bikes: '',
-      auto_bikes: '',
-      manual_bikes: '',
-      a1_auto_bikes: '',
-      a2_auto_bikes: '',
-      a_auto_bikes: '',
-      a1_manual_bikes: '',
-      a2_manual_bikes: '',
-      a_manual_bikes: '',
       test_centre: '',
       last_date_cancel: '',
       status: '',
       application_reference_number: ''
     }
+
+    bikeFields.forEach(field => (course[field] = ''))
 
     if (this.courseTypes && this.courseTypes.length) {
       course.course_type_id = this.courseTypes[0].id
@@ -53,6 +63,11 @@ class CourseForm extends React.Component {
     let supplier = ''
     if (this.props.schools) {
       supplier = this.props.schools[0].id
+
+      const courseTypes = this.getValidCourseTypes(supplier)
+      if (courseTypes.length) {
+        course.course_type_id = courseTypes[0].id
+      }
     }
 
     if (this.props.course) {
@@ -60,28 +75,19 @@ class CourseForm extends React.Component {
 
       Object.assign(
         course,
-        pick(
-          this.props.course,
+        pick(this.props.course, [
           'date',
           'time',
           'spaces',
           'duration',
           'instructor_id',
-          'own_bikes',
-          'auto_bikes',
-          'manual_bikes',
           'notes',
-          'a1_auto_bikes',
-          'a2_auto_bikes',
-          'a_auto_bikes',
-          'a1_manual_bikes',
-          'a2_manual_bikes',
-          'a_manual_bikes',
           'test_centre',
           'last_date_cancel',
           'status',
-          'application_reference_number'
-        )
+          'application_reference_number',
+          ...bikeFields
+        ])
       )
       course.course_type_id =
         typeof this.props.course.course_type === 'string'
@@ -98,14 +104,23 @@ class CourseForm extends React.Component {
       course.date = this.props.date
     }
 
+    if (course.date) {
+      this.props.getDaysStaff({
+        start_date: course.date,
+        end_date: course.date
+      })
+
+      this.props.getDaysCourses({
+        start_date: course.date,
+        end_date: course.date
+      })
+    }
+
     this.state = {
       course: course,
       edited: false,
       supplier
     }
-
-    this.handleToggleEdit = this.handleToggleEdit.bind(this)
-    this.handleBikeButtonClick = this.handleBikeButtonClick.bind(this)
   }
 
   componentDidMount() {
@@ -172,7 +187,7 @@ class CourseForm extends React.Component {
     }
   }
 
-  getFinishTime(time, duration) {
+  getFinishTime = (time, duration) => {
     if (!time) {
       return '00:00'
     }
@@ -182,11 +197,11 @@ class CourseForm extends React.Component {
       .format('HH:mm')
   }
 
-  handleToggleEdit() {
+  handleToggleEdit = () => {
     this.props.onSetEditable(!this.props.isEditable)
   }
 
-  handleChangeFinishTime({ target }) {
+  handleChangeFinishTime = ({ target }) => {
     const { value } = target
     const { course } = this.state
     const duration = moment(value, 'HH:mm').diff(
@@ -200,7 +215,7 @@ class CourseForm extends React.Component {
     })
   }
 
-  handleChangeRawEvent(event) {
+  handleChangeRawEvent = event => {
     const { name, value } = event.target
     const { course } = this.state
 
@@ -213,60 +228,139 @@ class CourseForm extends React.Component {
     })
   }
 
-  handleSave(event) {
-    event.preventDefault()
-    const { onSubmit, info } = this.props
-    const {
-      course: { instructor_id, ...course },
-      supplier
-    } = this.state
-    if (instructor_id !== '') {
-      course.instructor_id = instructor_id
-    } else {
-      course.instructor_id = null
+  validateForm = () => {
+    const { staffCalendar, courseCalendar, showNotification } = this.props
+    const { supplier, course } = this.state
+
+    if (!supplier) {
+      showNotification('Error', 'Please choose a location', 'danger')
+      return false
     }
 
     if (!course.course_type_id) {
-      course.course_type_id = info.courseTypes[0].id
+      showNotification('Error', 'Please choose a course type', 'danger')
+      return false
     }
 
-    if (!course.own_bikes) {
-      course.own_bikes = 0
+    if (course.spaces === '') {
+      showNotification('Error', 'Please choose a course spaces', 'danger')
+      return false
     }
 
-    if (!course.auto_bikes) {
-      course.auto_bikes = 0
+    if (course.duration <= 0) {
+      showNotification('Error', 'Invalid time', 'danger')
+      return false
     }
 
-    if (!course.manual_bikes) {
-      course.manual_bikes = 0
+    const { date } = course
+
+    // validate instructor
+    if (course.instructor_id) {
+      // validate diaries
+      const diaries = staffCalendar.staff.filter(
+        x => x.instructor_id === course.instructor_id
+      )
+      const allDayDiaries = diaries.filter(
+        x => x.event_type !== SHIFT_TYPES[0].id
+      )
+      if (allDayDiaries.length) {
+        showNotification(
+          'Error',
+          this.getConflictMessage(allDayDiaries[0]),
+          'danger'
+        )
+        return false
+      }
+
+      const shiftDiaries = diaries.filter(
+        x => x.event_type === SHIFT_TYPES[0].id
+      )
+
+      const { startTime: x0, endTime: y0 } = this.getCourseTime(course)
+
+      for (const diary of shiftDiaries) {
+        for (const dtime of diary.times) {
+          const x1 = moment(`${date}T${dtime.start_time}`)
+          const y1 = moment(`${date}T${dtime.end_time}`)
+
+          if (
+            (x0.isSameOrAfter(x1) && x0.isSameOrBefore(y1)) ||
+            (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
+          ) {
+            showNotification(
+              'Error',
+              "Staff shift doesn't match course",
+              'danger'
+            )
+            return false
+          }
+        }
+      }
+
+      // validate conflicting courses
+      const courses = courseCalendar.courses.filter(
+        x =>
+          x.instructor &&
+          x.instructor.id === course.instructor_id &&
+          (!this.props.course || this.props.course.id !== x.id)
+      )
+
+      for (const tmp of courses) {
+        const { startTime: x1, endTime: y1 } = this.getCourseTime(tmp)
+
+        if (
+          (x0.isSameOrAfter(x1) && x0.isSameOrBefore(y1)) ||
+          (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
+        ) {
+          showNotification('Error', 'Overlaps with other course', 'danger')
+          return false
+        }
+      }
     }
 
-    if (!course.a1_auto_bikes) {
-      course.a1_auto_bikes = 0
+    return true
+  }
+
+  getCourseTime = course => {
+    const startTime = moment(`${course.date}T${course.time.substr(0, 5)}:00`)
+    const endTime = moment(startTime).add(course.duration, 'minute')
+    return { startTime, endTime }
+  }
+
+  getConflictMessage = diary => {
+    if (diary.event_type === 'EVENT_BLOCKER') {
+      return 'This Staff has a blocker'
+    } else if (diary.event_type === 'EVENT_HOLIDAY') {
+      return 'This Staff is on holiday'
+    } else if (diary.event_type === 'EVENT_SICK_DAY') {
+      return 'This Staff has a sick day'
     }
-    if (!course.a1_manual_bikes) {
-      course.a1_manual_bikes = 0
+  }
+
+  handleSave = event => {
+    event.preventDefault()
+
+    if (!this.validateForm()) {
+      return
     }
 
-    if (!course.a2_auto_bikes) {
-      course.a2_auto_bikes = 0
-    }
-    if (!course.a2_manual_bikes) {
-      course.a2_manual_bikes = 0
-    }
+    const { onSubmit } = this.props
+    const { supplier } = this.state
 
-    if (!course.a_auto_bikes) {
-      course.a_auto_bikes = 0
-    }
-    if (!course.a_manual_bikes) {
-      course.a_manual_bikes = 0
-    }
+    const course = Object.assign({}, this.state.course)
+
+    bikeFields.forEach(field => {
+      if (!course[field]) {
+        course[field] = 0
+      }
+    })
+
     if (course.last_date_cancel === '') {
       course.last_date_cancel = null
     }
 
     course.supplier = supplier
+    course.time = course.time.slice(0, 5) + ':00'
 
     onSubmit(course)
     this.setState({
@@ -332,7 +426,7 @@ class CourseForm extends React.Component {
     })
   }
 
-  handleBikeButtonClick(bikeType, value) {
+  handleBikeButtonClick = (bikeType, value) => {
     let newValue = parseInt(this.state.course[bikeType] || 0, 10) + value
 
     if (newValue < 0) {
@@ -357,8 +451,12 @@ class CourseForm extends React.Component {
       pricing,
       onRemove,
       orderCount,
-      course
+      course,
+      staffCalendar,
+      courseCalendar
     } = this.props
+
+    const loading = staffCalendar.loading || courseCalendar.loading
 
     const { edited } = this.state
 
@@ -374,10 +472,10 @@ class CourseForm extends React.Component {
       auto_bikes,
       manual_bikes,
       a1_auto_bikes,
-      a2_auto_bikes,
-      a_auto_bikes,
       a1_manual_bikes,
+      a2_auto_bikes,
       a2_manual_bikes,
+      a_auto_bikes,
       a_manual_bikes,
       last_date_cancel,
       test_centre,
@@ -417,8 +515,8 @@ class CourseForm extends React.Component {
 
     return (
       <div className={styles.wrapper}>
-        <Loading className={styles.formWrapper} loading={saving}>
-          <form onSubmit={this.handleSave.bind(this)}>
+        <Loading className={styles.formWrapper} loading={saving || loading}>
+          <form onSubmit={this.handleSave}>
             <Row>
               <Col>
                 <ConnectSingleSelect
@@ -443,7 +541,7 @@ class CourseForm extends React.Component {
                   value={course_type_id}
                   disabled={!isEditable}
                   required
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                   raw
                   options={courseTypes}
                 />
@@ -457,7 +555,7 @@ class CourseForm extends React.Component {
                   name="instructor_id"
                   value={instructor_id}
                   disabled={!isEditable}
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                   raw
                   options={instructorOptions}
                 />
@@ -474,7 +572,7 @@ class CourseForm extends React.Component {
                       value={date || ''}
                       type="date"
                       disabled={!isEditable}
-                      onChange={this.handleChangeRawEvent.bind(this)}
+                      onChange={this.handleChangeRawEvent}
                       required
                     />
                   </Col>
@@ -490,7 +588,7 @@ class CourseForm extends React.Component {
                   step="60"
                   type="time"
                   disabled={!isEditable}
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                   required
                 />
                 <ConnectInput
@@ -502,7 +600,7 @@ class CourseForm extends React.Component {
                   step="60"
                   type="time"
                   disabled={!isEditable}
-                  onChange={this.handleChangeFinishTime.bind(this)}
+                  onChange={this.handleChangeFinishTime}
                   required
                 />
               </div>
@@ -515,7 +613,7 @@ class CourseForm extends React.Component {
                     name="spaces"
                     value={spaces || ''}
                     disabled={!isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
+                    onChange={this.handleChangeRawEvent}
                     raw
                     options={[
                       { id: '', name: 'Select' },
@@ -536,7 +634,7 @@ class CourseForm extends React.Component {
                       value={own_bikes}
                       id="own_bikes"
                       isEditable={isEditable}
-                      onChange={this.handleChangeRawEvent.bind(this)}
+                      onChange={this.handleChangeRawEvent}
                       onClickMinus={() => {
                         this.handleBikeButtonClick('own_bikes', -1)
                       }}
@@ -550,7 +648,7 @@ class CourseForm extends React.Component {
                     value={auto_bikes}
                     id="auto_bikes"
                     isEditable={isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
+                    onChange={this.handleChangeRawEvent}
                     onClickMinus={() => {
                       this.handleBikeButtonClick('auto_bikes', -1)
                     }}
@@ -563,7 +661,7 @@ class CourseForm extends React.Component {
                     value={manual_bikes}
                     id="manual_bikes"
                     isEditable={isEditable}
-                    onChange={this.handleChangeRawEvent.bind(this)}
+                    onChange={this.handleChangeRawEvent}
                     onClickMinus={() => {
                       this.handleBikeButtonClick('manual_bikes', -1)
                     }}
@@ -584,7 +682,7 @@ class CourseForm extends React.Component {
                         value={a1_auto_bikes}
                         id="a1_auto_bikes"
                         isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onChange={this.handleChangeRawEvent}
                         onClickMinus={() => {
                           this.handleBikeButtonClick('a1_auto_bikes', -1)
                         }}
@@ -597,7 +695,7 @@ class CourseForm extends React.Component {
                         value={a1_manual_bikes}
                         id="a1_manual_bikes"
                         isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onChange={this.handleChangeRawEvent}
                         onClickMinus={() => {
                           this.handleBikeButtonClick('a1_manual_bikes', -1)
                         }}
@@ -611,7 +709,7 @@ class CourseForm extends React.Component {
                         value={a2_auto_bikes}
                         id="a2_auto_bikes"
                         isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onChange={this.handleChangeRawEvent}
                         onClickMinus={() => {
                           this.handleBikeButtonClick('a2_auto_bikes', -1)
                         }}
@@ -624,7 +722,7 @@ class CourseForm extends React.Component {
                         value={a2_manual_bikes}
                         id="a2_manual_bikes"
                         isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onChange={this.handleChangeRawEvent}
                         onClickMinus={() => {
                           this.handleBikeButtonClick('a2_manual_bikes', -1)
                         }}
@@ -638,7 +736,7 @@ class CourseForm extends React.Component {
                         value={a_auto_bikes}
                         id="a_auto_bikes"
                         isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onChange={this.handleChangeRawEvent}
                         onClickMinus={() => {
                           this.handleBikeButtonClick('a_auto_bikes', -1)
                         }}
@@ -651,7 +749,7 @@ class CourseForm extends React.Component {
                         value={a_manual_bikes}
                         id="a_manual_bikes"
                         isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent.bind(this)}
+                        onChange={this.handleChangeRawEvent}
                         onClickMinus={() => {
                           this.handleBikeButtonClick('a_manual_bikes', -1)
                         }}
@@ -672,7 +770,7 @@ class CourseForm extends React.Component {
                             value={application_reference_number || ''}
                             type="text"
                             disabled={!isEditable}
-                            onChange={this.handleChangeRawEvent.bind(this)}
+                            onChange={this.handleChangeRawEvent}
                             required
                           />
                         </Col>
@@ -687,7 +785,7 @@ class CourseForm extends React.Component {
                             value={last_date_cancel || ''}
                             type="date"
                             disabled={!isEditable}
-                            onChange={this.handleChangeRawEvent.bind(this)}
+                            onChange={this.handleChangeRawEvent}
                             required
                           />
                         </Col>
@@ -701,7 +799,7 @@ class CourseForm extends React.Component {
                             name="test_centre"
                             value={test_centre}
                             disabled={!isEditable}
-                            onChange={this.handleChangeRawEvent.bind(this)}
+                            onChange={this.handleChangeRawEvent}
                             raw
                             options={testCentres}
                           />
@@ -716,7 +814,7 @@ class CourseForm extends React.Component {
                             name="status"
                             value={status ? status : ''}
                             disabled={!isEditable}
-                            onChange={this.handleChangeRawEvent.bind(this)}
+                            onChange={this.handleChangeRawEvent}
                             raw
                             options={[
                               {
@@ -755,7 +853,7 @@ class CourseForm extends React.Component {
                 value={notes}
                 type="textarea"
                 disabled={!isEditable}
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
               {isEditable && (
                 <div className={styles.actions}>
@@ -789,4 +887,22 @@ class CourseForm extends React.Component {
   }
 }
 
-export default CourseForm
+const mapStateToProps = (state, ownProps) => ({
+  staffCalendar: state.staff.days,
+  courseCalendar: state.course.days
+})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getDaysStaff,
+      getDaysCourses,
+      showNotification: notifyActions.showNotification
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CourseForm)
