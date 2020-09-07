@@ -21,6 +21,7 @@ import { FETCH_SINGLE as FETCH_SINGLE_EVENT } from './event'
 import { actions as notificationActions } from './notification'
 import moment from 'moment'
 import { saveState } from 'services/localStorage'
+import { resetLoadedMonths, loadMonthDay } from 'store/staff'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const FETCH_FOR_FORM = createRequestTypes('rideto/course/FETCH/FORM')
@@ -315,6 +316,7 @@ export const updateCourse = ({
       type: UPDATE[SUCCESS],
       data: { course: response }
     })
+    dispatch(loadMonthDay(data.date))
   } catch (error) {
     notificationActions.dispatchError(dispatch, 'Failed to save Course')
     dispatch({ type: UPDATE[FAILURE], error })
@@ -330,6 +332,7 @@ export const createCourse = ({ schoolId, data }) => async dispatch => {
       type: CREATE[SUCCESS],
       data: { course: response }
     })
+    dispatch(loadMonthDay(data.date))
   } catch (error) {
     notificationActions.dispatchError(dispatch, 'Failed to add Course')
     dispatch({ type: CREATE[FAILURE], error })
@@ -339,6 +342,7 @@ export const createCourse = ({ schoolId, data }) => async dispatch => {
 export const createBulkCourse = ({ schoolId, data }) => async dispatch => {
   dispatch({ type: CREATE_BULK[REQUEST] })
   try {
+    dispatch(resetLoadedMonths())
     await createBulkSchoolCourse(schoolId, data)
     notificationActions.dispatchSuccess(dispatch, 'Bulk Courses added')
     dispatch({
