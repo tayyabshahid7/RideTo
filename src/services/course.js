@@ -168,14 +168,14 @@ export const addSchoolPayment = async (schoolId, data) => {
   return response
 }
 
-export const fetchSchoolOrder = async (schoolId, trainingId) => {
-  const path = `school/${schoolId}/course/order/${trainingId}`
+export const fetchSchoolOrder = async trainingId => {
+  const path = `school/course/order/${trainingId}`
   const response = await get(path, {})
   return response
 }
 
-export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
-  const path = `school/${schoolId}/course/order/${friendlyId}`
+export const updateSchoolOrder = async (friendlyId, order) => {
+  const path = `school/course/order/${friendlyId}`
   const response = await put(path, order)
   return response
 }

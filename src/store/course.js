@@ -248,10 +248,10 @@ export const createSchoolPayment = (schoolId, data) => async dispatch => {
   return true
 }
 
-export const getSchoolOrder = ({ schoolId, trainingId }) => async dispatch => {
+export const getSchoolOrder = trainingId => async dispatch => {
   dispatch({ type: FETCH_ORDER[REQUEST] })
   try {
-    const response = await fetchSchoolOrder(schoolId, trainingId)
+    const response = await fetchSchoolOrder(trainingId)
     dispatch({
       type: FETCH_ORDER[SUCCESS],
       data: { order: response }
@@ -265,14 +265,10 @@ export const getSchoolOrder = ({ schoolId, trainingId }) => async dispatch => {
 
 export { updateSchoolOrder }
 
-export const updateOrder = ({
-  schoolId,
-  trainingId,
-  order
-}) => async dispatch => {
+export const updateOrder = ({ trainingId, order }) => async dispatch => {
   dispatch({ type: UPDATE_ORDER[REQUEST] })
   try {
-    const response = await updateSchoolOrder(schoolId, trainingId, order)
+    const response = await updateSchoolOrder(trainingId, order)
     notificationActions.dispatchSuccess(dispatch, 'Order saved')
     dispatch({
       type: UPDATE_ORDER[SUCCESS],

@@ -5,13 +5,7 @@ import { Row, Col, Form } from 'reactstrap'
 
 import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
-import {
-  convertBikeType,
-  formatBikeConstant,
-  getLicenseFromType,
-  getAvailableBikeHires
-} from 'common/info'
-import { BIKE_HIRE } from 'common/constants'
+import { getFullLicenseType, getAvailableBikeHires } from 'common/info'
 import {
   getPaymentOptions,
   getTrainingStatusOptions,
@@ -23,12 +17,7 @@ class EditOrderForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      order: props.order
-        ? {
-            ...props.order,
-            bike_type: formatBikeConstant(props.order.bike_type)
-          }
-        : {},
+      order: props.order || {},
       showChangeDate: false,
       isChanged: false
     }
@@ -54,7 +43,7 @@ class EditOrderForm extends React.Component {
     }
 
     if (typeName === 'bike_type') {
-      newOrder.full_licence_type = getLicenseFromType(value)
+      newOrder.full_licence_type = getFullLicenseType(value)
     }
 
     this.setState({
@@ -66,20 +55,8 @@ class EditOrderForm extends React.Component {
   handleSave = async event => {
     const { onSave, onCancel } = this.props
     const { order } = this.state
-    const isFullLicence = this.state.order.course_type.startsWith(
-      'FULL_LICENCE'
-    )
-
     const data = Object.assign({}, order)
-    if (isFullLicence) {
-      let type = data.bike_type.toUpperCase().split('_')[1]
-      if (data.bike_type === BIKE_HIRE.NO) {
-        type = 'NONE'
-      }
-      data.bike_type = 'BIKE_TYPE_' + type
-    } else {
-      data.bike_type = convertBikeType(data.bike_type)
-    }
+
     console.log(data, order)
     event.preventDefault()
     let response = await onSave(data)
@@ -122,6 +99,14 @@ class EditOrderForm extends React.Component {
       !direct_friendly_id.includes('DIRECT') &&
       !direct_friendly_id.includes('WIDGET')
 
+    const course = courses.find(course => course.id === order.school_course)
+
+    let prevBikeType = null
+    if (this.props.order) {
+      prevBikeType = this.props.order.bike_type
+    }
+    const bikeTypeOptions = getAvailableBikeHires(course, prevBikeType)
+
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
@@ -148,15 +133,13 @@ class EditOrderForm extends React.Component {
           {!showChangeDate && (
             <div>
               <Row>
-                <Col sm="10">
+                <Col>
                   <ConnectSelect
                     disabled={isRideTo || !isAdmin}
                     name="bike_type"
                     selected={bike_type}
                     label="Bike Hire"
-                    options={getAvailableBikeHires(
-                      courses.find(course => course.id === order.school_course)
-                    )}
+                    options={bikeTypeOptions}
                     noSelectOption
                     required
                     valueField="value"
@@ -169,7 +152,7 @@ class EditOrderForm extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col sm="10">
+                <Col>
                   <ConnectSelect
                     label="Training Status"
                     options={getTrainingStatusOptions(isRideTo)}
@@ -184,7 +167,7 @@ class EditOrderForm extends React.Component {
               </Row>
               {status === 'TRAINING_FAILED' && (
                 <Row>
-                  <Col sm="10">
+                  <Col>
                     <ConnectSelect
                       placeholder
                       label="Non-Completion Reason"
@@ -200,7 +183,7 @@ class EditOrderForm extends React.Component {
                 </Row>
               )}
               <Row>
-                <Col sm="10">
+                <Col>
                   <ConnectSelect
                     disabled={isRideTo}
                     name="order.payment_status"
@@ -219,7 +202,7 @@ class EditOrderForm extends React.Component {
                 </Col>
               </Row>
               <Row>
-                <Col sm="10">
+                <Col>
                   <ConnectTextArea
                     basic
                     name="notes"
@@ -235,12 +218,12 @@ class EditOrderForm extends React.Component {
               </Row>
               {/* TODO PRODEV-1112 Needs BACKEND
               <Row>
-                <Col sm="10">
+                <Col>
                   <ConnectLabeledContent label="Price paid" disabled basic>
                     {`£${parseFloat(0).toFixed(2)}`}
                   </ConnectLabeledContent>
                 </Col>
-                <Col sm="10">
+                <Col>
                   <ConnectLabeledContent label="Stripe link" disabled basic>
                     <a href={0} target="_blank" rel="noopener noreferrer">
                       Open
