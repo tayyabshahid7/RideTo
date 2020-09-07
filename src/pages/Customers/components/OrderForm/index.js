@@ -21,18 +21,6 @@ import {
 } from 'services/order'
 import styles from './OrderForm.scss'
 
-const get_bike_hire_option = option => {
-  if (option === 'BIKE_TYPE_MANUAL') {
-    return 'manual'
-  } else if (option === 'BIKE_TYPE_AUTO') {
-    return 'auto'
-  } else if (option === 'BIKE_TYPE_NONE') {
-    return 'no'
-  } else {
-    return option
-  }
-}
-
 const getTime = startTime => {
   if (startTime) {
     return moment(new Date(startTime)).format('HH:mm')
@@ -219,7 +207,7 @@ class OrderForm extends React.Component {
                 disabled={inputsDisabled}
                 label="Bike Hire"
                 options={bikeHireOptions}
-                selected={get_bike_hire_option(editable.bike_type) || ''}
+                selected={editable.bike_type}
                 name="bike_type"
                 onChange={value => {
                   this.handleChange('bike_type', value)
