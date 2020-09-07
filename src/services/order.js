@@ -80,6 +80,26 @@ export const isConnectManual = ({ source }) => {
   return source === 'DASHBOARD'
 }
 
+export const getCustomerBikeTypeOptions = isFullLicence => {
+  if (isFullLicence) {
+    return {
+      BIKE_TYPE_A1_AUTO: 'A1 Auto Bike',
+      BIKE_TYPE_A1_MANUAL: 'A1 Manual Bike',
+      BIKE_TYPE_A2_AUTO: 'A2 Auto Bike',
+      BIKE_TYPE_A2_MANUAL: 'A2 Manual Bike',
+      BIKE_TYPE_A_AUTO: 'A Auto Bike',
+      BIKE_TYPE_A_MANUAL: 'A Manual Bike',
+      BIKE_HIRE_NONE: 'Own Bike'
+    }
+  }
+
+  return {
+    BIKE_TYPE_MANUAL: 'Manual',
+    BIKE_TYPE_AUTO: 'Automatic Scooter',
+    BIKE_HIRE_NONE: 'Own Bike'
+  }
+}
+
 export const getBikeHireOptions = isFullLicence => {
   return {
     [BIKE_HIRE.NO]: 'Own Bike',

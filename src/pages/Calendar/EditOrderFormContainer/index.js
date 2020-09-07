@@ -20,8 +20,8 @@ class EditOrderFormContainer extends React.Component {
   }
 
   componentDidMount() {
-    const { schoolId, trainingId, getSchoolOrder } = this.props
-    getSchoolOrder({ schoolId, trainingId })
+    const { trainingId, getSchoolOrder } = this.props
+    getSchoolOrder(trainingId)
   }
 
   async handleEditOrder(order, updateDate = false) {
@@ -29,7 +29,6 @@ class EditOrderFormContainer extends React.Component {
       courseId,
       courseSpaces,
       updateOrder,
-      schoolId,
       activeSchools,
       trainingId,
       date
@@ -46,7 +45,6 @@ class EditOrderFormContainer extends React.Component {
     }
 
     let response = await updateOrder({
-      schoolId,
       trainingId,
       order: {
         ...order,
@@ -55,7 +53,7 @@ class EditOrderFormContainer extends React.Component {
     })
 
     await this.props.updateCourse({
-      schoolId,
+      schoolId: order.training_location,
       courseId: courseId,
       data: { spaces: courseSpaces }
     })
@@ -69,11 +67,11 @@ class EditOrderFormContainer extends React.Component {
   }
 
   async handleLoadTimes(date, defaultTime) {
-    const { schoolId, order, course_type, getDayCourseTimes } = this.props
+    const { order, course_type, getDayCourseTimes } = this.props
 
     await getDayCourseTimes(
       {
-        schoolId,
+        schoolId: order.training_location,
         date,
         course_type,
         bike_type: order.bike_hire
@@ -126,7 +124,6 @@ const mapStateToProps = (state, props) => {
   return {
     order: state.course.orderEditForm.order,
     loading: state.course.orderEditForm.loading,
-    schoolId: state.auth.schoolId,
     activeSchools: state.auth.activeSchools,
     info: state.info,
     courses: state.course.day.courses,

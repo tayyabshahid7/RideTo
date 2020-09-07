@@ -13,25 +13,13 @@ import {
 import { FullLicenceTypes } from 'common/info'
 import Loading from 'components/Loading'
 import {
-  getBikeHireOptions,
+  getCustomerBikeTypeOptions,
   getPaymentOptions,
   getTrainingStatusOptions,
   isRideTo,
   isConnectManual
 } from 'services/order'
 import styles from './OrderForm.scss'
-
-const get_bike_hire_option = option => {
-  if (option === 'BIKE_TYPE_MANUAL') {
-    return 'manual'
-  } else if (option === 'BIKE_TYPE_AUTO') {
-    return 'auto'
-  } else if (option === 'BIKE_TYPE_NONE') {
-    return 'no'
-  } else {
-    return option
-  }
-}
 
 const getTime = startTime => {
   if (startTime) {
@@ -144,10 +132,11 @@ class OrderForm extends React.Component {
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE')
 
-    const bikeHireOptions = Object.keys(getBikeHireOptions()).map(id => {
+    const bikeOptions = getCustomerBikeTypeOptions(isFullLicence)
+    const bikeHireOptions = Object.keys(bikeOptions).map(id => {
       return {
         id,
-        name: getBikeHireOptions(isFullLicence)[id]
+        name: bikeOptions[id]
       }
     })
 
@@ -218,7 +207,7 @@ class OrderForm extends React.Component {
                 disabled={inputsDisabled}
                 label="Bike Hire"
                 options={bikeHireOptions}
-                selected={get_bike_hire_option(editable.bike_type) || ''}
+                selected={editable.bike_type}
                 name="bike_type"
                 onChange={value => {
                   this.handleChange('bike_type', value)
