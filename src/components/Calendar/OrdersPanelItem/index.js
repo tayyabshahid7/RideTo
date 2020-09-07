@@ -13,13 +13,6 @@ const OrdersPanelItem = ({
 }) => {
   const { payment_status } = training
 
-  const formatBikeType = type => {
-    const tmp = type.split('_').slice(2)
-    if (tmp.length) {
-      return tmp.join(' ')
-    }
-  }
-
   return (
     <div className={styles.container} key={training.id}>
       <div className={styles.line}>
@@ -33,11 +26,7 @@ const OrdersPanelItem = ({
         </button>
       </div>
       <div className={styles.line}>
-        {training.bike_hire && (
-          <div className={styles.bikeType}>
-            {formatBikeType(training.bike_hire)}
-          </div>
-        )}
+        {training.bike_hire && <div>{training.bike_hire}</div>}
         {training.status && <div>{getTrainingStatus(training.status)}</div>}
       </div>
       <div className={styles.line}>
