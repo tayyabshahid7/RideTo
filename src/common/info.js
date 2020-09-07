@@ -157,6 +157,21 @@ export function formatBikeConstant(constant) {
   }
 }
 
+export function convertBikeType(type) {
+  switch (type) {
+    case BIKE_HIRE.AUTO:
+      return 'BIKE_TYPE_AUTO'
+    case BIKE_HIRE.AUTO_125CC:
+      return 'BIKE_TYPE_AUTO_125CC'
+    case BIKE_HIRE.MANUAL:
+      return 'BIKE_TYPE_MANUAL'
+    case BIKE_HIRE.MANUAL_50CC:
+      return 'BIKE_TYPE_MANUAL_50CC'
+    default:
+      return 'BIKE_TYPE_NONE'
+  }
+}
+
 export const FullLicenceTypes = [
   { value: 'FULL_LICENCE_TYPE_A1', title: 'A1' },
   { value: 'FULL_LICENCE_TYPE_A2', title: 'A2' },

@@ -6,7 +6,8 @@ import { Row, Col, Form } from 'reactstrap'
 import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
 import {
-  formaBikeTypeForEdit,
+  convertBikeType,
+  formatBikeConstant,
   getLicenseFromType,
   getAvailableBikeHires
 } from 'common/info'
@@ -25,7 +26,7 @@ class EditOrderForm extends React.Component {
       order: props.order
         ? {
             ...props.order,
-            bike_type: formaBikeTypeForEdit(props.order)
+            bike_type: formatBikeConstant(props.order.bike_type)
           }
         : {},
       showChangeDate: false,
@@ -76,6 +77,8 @@ class EditOrderForm extends React.Component {
         type = 'NONE'
       }
       data.bike_type = 'BIKE_TYPE_' + type
+    } else {
+      data.bike_type = convertBikeType(data.bike_type)
     }
     console.log(data, order)
     event.preventDefault()
