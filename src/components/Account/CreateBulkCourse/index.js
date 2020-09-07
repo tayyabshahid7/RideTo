@@ -75,8 +75,9 @@ class CreateBulkCourse extends React.Component {
 
     if (prevProps.saving && !saving) {
       if (!error) {
-        const { start_date } = this.state.course
-        history.push(`/calendar/${start_date}`)
+        // const { start_date } = this.state.course
+        // history.push(`/calendar/${start_date}`)
+        history.push(`/calendar`)
       }
     }
 

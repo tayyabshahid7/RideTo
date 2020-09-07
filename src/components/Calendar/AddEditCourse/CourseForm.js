@@ -360,7 +360,7 @@ class CourseForm extends React.Component {
     }
 
     course.supplier = supplier
-    course.time = course.time.slice(0, 5) + ':00'
+    course.time = course.time.slice(0, 5)
 
     onSubmit(course)
     this.setState({

@@ -49,7 +49,8 @@ class AvailabilityCourses extends React.Component {
   }
 
   handleCreateBulkCourse(data) {
-    const { createBulkCourse, schoolId } = this.props
+    const { createBulkCourse } = this.props
+    const { supplier: schoolId } = data.school_course
     createBulkCourse({ schoolId, data })
   }
 

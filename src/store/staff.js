@@ -18,7 +18,9 @@ export const FETCH_SINGLE = createRequestTypes('rideto/staff/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/staff/DELETE')
 const UPDATE = createRequestTypes('rideto/staff/UPDATE')
 const CREATE = createRequestTypes('rideto/staff/CREATE')
+const RESET_MONTHS = 'rideto/staff/RESET_MONTHS'
 const RESET_DATA = 'rideto/staff/RESET_DATA'
+const LOAD_MONTH_DAY = 'rideto/staff/LOAD_MONTH_DAY'
 
 export const updateDiaryColor = instructor => dispatch => {
   dispatch({
@@ -31,6 +33,10 @@ export const updateDiaryColor = instructor => dispatch => {
 
 export const resetData = () => dispatch => {
   dispatch({ type: RESET_DATA })
+}
+
+export const resetLoadedMonths = () => dispatch => {
+  dispatch({ type: RESET_MONTHS })
 }
 
 export const getSingleStaff = ({
@@ -51,6 +57,19 @@ export const getSingleStaff = ({
   } catch (error) {
     dispatch({ type: FETCH_SINGLE[FAILURE], error })
   }
+}
+
+export const loadMonthDay = date => async dispatch => {
+  try {
+    const staff = await fetchDiaries(date, date)
+
+    dispatch({
+      type: LOAD_MONTH_DAY,
+      data: {
+        staff
+      }
+    })
+  } catch (err) {}
 }
 
 export const getDaysStaff = ({ start_date, end_date }) => async dispatch => {
@@ -323,6 +342,17 @@ export default function reducer(state = initialState, action) {
           error: action.error
         }
       }
+    case LOAD_MONTH_DAY: {
+      return {
+        ...state,
+        calendar: {
+          ...state.calendar,
+          loading: false,
+          staff: uniqBy([...state.calendar.staff, ...action.data.staff], 'id'),
+          error: null
+        }
+      }
+    }
     case FETCH_ALL[REQUEST]:
       return {
         ...state,
@@ -406,6 +436,12 @@ export default function reducer(state = initialState, action) {
     case RESET_DATA: {
       return {
         ...JSON.parse(JSON.stringify(defaultState))
+      }
+    }
+    case RESET_MONTHS: {
+      return {
+        ...state,
+        calendar: { ...state.calendar, loadedMonths: [] }
       }
     }
     default:
