@@ -15,7 +15,7 @@ export const BikeHires = [
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' }
 ]
 
-export function getFullLicenseBikeHires(course) {
+export function getFullLicenseBikeHires(course, prevBikeType) {
   const {
     a1_auto_bikes,
     a1_manual_bikes,
@@ -27,27 +27,45 @@ export function getFullLicenseBikeHires(course) {
 
   return [
     {
-      value: a1_auto_bikes ? 'BIKE_TYPE_A1_AUTO' : null,
+      value:
+        prevBikeType === 'BIKE_TYPE_A1_AUTO' || a1_auto_bikes
+          ? 'BIKE_TYPE_A1_AUTO'
+          : null,
       title: 'A1 Auto Bike'
     },
     {
-      value: a1_manual_bikes ? 'BIKE_TYPE_A1_MANUAL' : null,
+      value:
+        prevBikeType === 'BIKE_TYPE_A1_MANUAL' || a1_manual_bikes
+          ? 'BIKE_TYPE_A1_MANUAL'
+          : null,
       title: 'A1 Manual Bike'
     },
     {
-      value: a2_auto_bikes ? 'BIKE_TYPE_A2_AUTO' : null,
+      value:
+        prevBikeType === 'BIKE_TYPE_A2_AUTO' || a2_auto_bikes
+          ? 'BIKE_TYPE_A2_AUTO'
+          : null,
       title: 'A2 Auto Bike'
     },
     {
-      value: a2_manual_bikes ? 'BIKE_TYPE_A2_MANUAL' : null,
+      value:
+        prevBikeType === 'BIKE_TYPE_A2_MANUAL' || a2_manual_bikes
+          ? 'BIKE_TYPE_A2_MANUAL'
+          : null,
       title: 'A2 Manual Bike'
     },
     {
-      value: a_auto_bikes ? 'BIKE_TYPE_A_AUTO' : null,
+      value:
+        prevBikeType === 'BIKE_TYPE_A_AUTO' || a_auto_bikes
+          ? 'BIKE_TYPE_A_AUTO'
+          : null,
       title: 'A Auto Bike'
     },
     {
-      value: a_manual_bikes ? 'BIKE_TYPE_A_MANUAL' : null,
+      value:
+        prevBikeType === 'BIKE_TYPE_A_MANUAL' || a_manual_bikes
+          ? 'BIKE_TYPE_A_MANUAL'
+          : null,
       title: 'A Manual Bike'
     },
     {
@@ -63,7 +81,7 @@ export function getAvailableBikeHires(course, prevBikeType) {
   }
 
   if (course.course_type.constant.startsWith('FULL_LICENCE')) {
-    return getFullLicenseBikeHires(course)
+    return getFullLicenseBikeHires(course, prevBikeType)
   }
 
   const {

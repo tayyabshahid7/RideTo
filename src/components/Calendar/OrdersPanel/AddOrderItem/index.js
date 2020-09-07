@@ -199,6 +199,7 @@ class AddOrderItem extends React.Component {
       }
 
       const data = Object.assign({}, order)
+      data.bike_type = data.bike_hire
 
       const orderResponse = await onSave(
         !data.user_birthdate ? omit(data, 'user_birthdate') : data

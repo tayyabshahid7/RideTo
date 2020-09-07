@@ -13,7 +13,7 @@ import {
 import { FullLicenceTypes } from 'common/info'
 import Loading from 'components/Loading'
 import {
-  getBikeHireOptions,
+  getCustomerBikeTypeOptions,
   getPaymentOptions,
   getTrainingStatusOptions,
   isRideTo,
@@ -144,10 +144,11 @@ class OrderForm extends React.Component {
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE')
 
-    const bikeHireOptions = Object.keys(getBikeHireOptions()).map(id => {
+    const bikeOptions = getCustomerBikeTypeOptions(isFullLicence)
+    const bikeHireOptions = Object.keys(bikeOptions).map(id => {
       return {
         id,
-        name: getBikeHireOptions(isFullLicence)[id]
+        name: bikeOptions[id]
       }
     })
 
