@@ -56,8 +56,8 @@ class EventForm extends React.Component {
 
     this.state = {
       event: event,
-      startTime: getTimeFromDateTime(event.start_time),
-      endTime: getTimeFromDateTime(event.end_time)
+      startTime: getTimeFromDateTime(event.start_time) + ':00',
+      endTime: getTimeFromDateTime(event.end_time) + ':00'
     }
   }
 
@@ -121,14 +121,12 @@ class EventForm extends React.Component {
     const date = this.getStartDate(this.state.event)
     const event = {
       ...this.state.event,
-      start_time: moment(
-        `${date} ${this.state.startTime}`,
-        'YYYY-MM-DD HH:mm'
-      ).format(),
-      end_time: moment(
-        `${date} ${this.state.endTime}`,
-        'YYYY-MM-DD HH:mm'
-      ).format()
+      start_time: moment
+        .utc(`${date} ${this.state.startTime}`, 'YYYY-MM-DD HH:mm:ss')
+        .format(),
+      end_time: moment
+        .utc(`${date} ${this.state.endTime}`, 'YYYY-MM-DD HH:mm:ss')
+        .format()
     }
     onSubmit(event)
   }

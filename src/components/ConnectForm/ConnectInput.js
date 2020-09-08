@@ -6,7 +6,7 @@ import ConnectDatePicker from './ConnectDatePicker'
 import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 
 export default function ConnectInput(props) {
-  const {
+  let {
     label,
     type = 'text',
     onChange,
@@ -20,7 +20,18 @@ export default function ConnectInput(props) {
     ...rest
   } = props
 
+  const handleTimeChange = value => {
+    onChange({
+      target: {
+        name,
+        value: value.substr(0, 5) + ':00'
+      }
+    })
+  }
+
   if (type === 'time') {
+    value = value.slice(0, 5)
+
     return (
       <div className={styles.formGroup}>
         {label && (
@@ -36,14 +47,7 @@ export default function ConnectInput(props) {
         )}
         <TimeField
           value={value}
-          onChange={value => {
-            onChange({
-              target: {
-                name,
-                value
-              }
-            })
-          }}
+          onChange={handleTimeChange}
           input={
             <input
               name={name}

@@ -55,8 +55,8 @@ class StaffForm extends React.Component {
 
     this.state = {
       staff: staff,
-      startTime: getTimeFromDateTime(staff.start_time),
-      endTime: getTimeFromDateTime(staff.end_time)
+      startTime: getTimeFromDateTime(staff.start_time) + ':00',
+      endTime: getTimeFromDateTime(staff.end_time) + ':00'
     }
   }
 
