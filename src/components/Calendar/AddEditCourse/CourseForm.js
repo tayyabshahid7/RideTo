@@ -360,7 +360,6 @@ class CourseForm extends React.Component {
     }
 
     course.supplier = supplier
-    course.time = course.time.slice(0, 5)
     if (!course.instructor_id) {
       delete course.instructor_id
     } else {
@@ -589,7 +588,7 @@ class CourseForm extends React.Component {
                   basic
                   name="time"
                   className={styles.inputDate}
-                  value={time.slice(0, 5)}
+                  value={time}
                   step="60"
                   type="time"
                   disabled={!isEditable}
@@ -601,7 +600,7 @@ class CourseForm extends React.Component {
                   basic
                   name="finish_time"
                   className={styles.inputDate}
-                  value={finishTime.slice(0, 5)}
+                  value={finishTime}
                   step="60"
                   type="time"
                   disabled={!isEditable}

@@ -29,8 +29,8 @@ class ShiftForm extends React.Component {
       end_date: date,
       times: [
         {
-          start_time: '00:00',
-          end_time: '00:00'
+          start_time: '00:00:00',
+          end_time: '00:00:00'
         }
       ],
       event_type: SHIFT_TYPES[0].id
@@ -160,8 +160,8 @@ class ShiftForm extends React.Component {
   handleNewTime = () => {
     const times = this.state.times.slice()
     times.push({
-      start_time: '00:00',
-      end_time: '00:00'
+      start_time: '00:00:00',
+      end_time: '00:00:00'
     })
 
     this.setState({ times })
@@ -257,8 +257,8 @@ class ShiftForm extends React.Component {
 
       for (const date of dateList) {
         for (const time of times) {
-          const x0 = moment(`${date}T${time.start_time}:00`)
-          const y0 = moment(`${date}T${time.end_time}:00`)
+          const x0 = moment(`${date}T${time.start_time}`)
+          const y0 = moment(`${date}T${time.end_time}`)
 
           for (const diary of shiftDiaries) {
             for (const dtime of diary.times) {
@@ -333,10 +333,6 @@ class ShiftForm extends React.Component {
 
     staff.start_date = staff.start_date.substr(0, 10)
     staff.end_date = staff.end_date.substr(0, 10)
-    staff.times.forEach(time => {
-      time.start_time += ':00'
-      time.end_time += ':00'
-    })
 
     onSubmit(staff)
   }
