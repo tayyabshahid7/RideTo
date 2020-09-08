@@ -426,7 +426,7 @@ class BookingOptionsContainer extends React.Component {
     if (!courseType) {
       return <div className={styles.bookingOptions}>No Course Found</div>
     }
-
+    console.log(suppliers)
     return (
       <div className={styles.bookingOptions}>
         <BookingOption
@@ -439,7 +439,7 @@ class BookingOptionsContainer extends React.Component {
         <BookingOption
           label="Location:"
           options={suppliers}
-          labelField="town"
+          labelField="connect_location_name"
           selected={selectedSupplier.id}
           onChange={onChangeSupplier}
         />
