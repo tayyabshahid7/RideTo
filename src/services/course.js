@@ -131,7 +131,7 @@ export const fetchSingleCourse = async courseId => {
 }
 
 export const fetchWidgetSingleCourse = async (schoolId, courseId) => {
-  const path = `school/${schoolId}/widget/course/${courseId}`
+  const path = `school/widget/course/${courseId}`
   const response = await get(path, {})
 
   return response
@@ -142,7 +142,7 @@ export const fetchWidgetSingleCourseWithDiscount = async (
   courseId,
   voucher_code
 ) => {
-  const path = `school/${schoolId}/widget/course/${courseId}`
+  const path = `school/widget/course/${courseId}`
   const response = await get(path, { voucher_code })
 
   return response

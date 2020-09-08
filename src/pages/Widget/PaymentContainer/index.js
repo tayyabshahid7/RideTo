@@ -102,6 +102,7 @@ class PaymentContainer extends React.Component {
       totalPrice = response.price
       discount = response.discount
     } else {
+      console.log(courseId)
       course = await fetchWidgetSingleCourse(0, courseId)
       if (voucher_code) {
         const training = trainings[0]
@@ -304,6 +305,7 @@ class PaymentContainer extends React.Component {
       discount
     } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
+    console.log(course, supplier)
 
     return (
       <React.Fragment>
