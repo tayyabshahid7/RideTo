@@ -96,11 +96,12 @@ const CalendarDayCell = ({
   const shiftUsers = getShiftUsers(day, users)
 
   const handleClick = () => {
-    if (isMobile) {
-      handleMobileCellClick(dateStr)
-    } else {
-      history.push(`/calendar/${dateStr}`)
-    }
+    history.push(`/calendar/${dateStr}`)
+    //   if (isMobile) {
+    //   handleMobileCellClick(dateStr)
+    // } else {
+    //   history.push(`/calendar/${dateStr}`)
+    // }
   }
 
   const handleMore = event => {
