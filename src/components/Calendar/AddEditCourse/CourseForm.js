@@ -361,6 +361,11 @@ class CourseForm extends React.Component {
 
     course.supplier = supplier
     course.time = course.time.slice(0, 5)
+    if (!course.instructor_id) {
+      delete course.instructor_id
+    } else {
+      course.instructor_id = parseInt(course.instructor_id)
+    }
 
     onSubmit(course)
     this.setState({
