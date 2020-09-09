@@ -302,8 +302,8 @@ class OrderSummary extends Component {
                 </div>
                 <div className={styles.guarenteeContent}>
                   <div className={styles.guarantee1}>
-                    Cancel with {isFullLicence ? '12' : '3'} working days notice
-                    to get a full refund.
+                    *Cancel with {isFullLicence ? '12' : '3'} working days
+                    notice to get a full refund.
                   </div>
                   <a
                     href="https://www.rideto.com/terms#cancellations"
