@@ -17,6 +17,10 @@
   flex-direction: column;
   flex: 1 1 1px;
   overflow: auto;
+
+  @media (max-width: 767px) {
+    overflow: unset;
+  }
 }
 
 .contentSidebar {
@@ -30,6 +34,10 @@
   display: flex;
   position: relative;
   flex: 1 1 1px;
+
+  @media (max-width: 767px) {
+    overflow: unset;
+  }
 }
 
 .overview {
