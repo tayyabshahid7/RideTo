@@ -3,7 +3,7 @@ import moment from 'moment'
 import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
 import { DAY_FORMAT3, DATE_FORMAT, EVENT_COLORS } from 'common/constants'
-import Loading from 'components/Loading'
+import LoadingMask from 'components/LoadingMask'
 import pick from 'lodash/pick'
 
 import { getTimeFromDateTime } from 'utils/helper'
@@ -165,7 +165,7 @@ class EventForm extends React.Component {
     return (
       <div className={styles.wrapper}>
         <h4 className={styles.addTitle}>Add Event</h4>
-        <Loading loading={saving}>
+        <div>
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
               <Col>
@@ -283,7 +283,8 @@ class EventForm extends React.Component {
               )}
             </div>
           </Form>
-        </Loading>
+        </div>
+        <LoadingMask loading={saving} />
       </div>
     )
   }

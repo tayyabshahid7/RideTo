@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { getDayCourses } from 'store/course'
 import { getDayEvents } from 'store/event'
 import { getDayStaff } from 'store/staff'
-import Loading from 'components/Loading'
+import LoadingMask from 'components/LoadingMask'
 import DateHeading from 'components/Calendar/DateHeading'
 import CoursesPanel from './CoursesPanel'
 import { isAdmin } from 'services/auth'
@@ -76,7 +76,7 @@ class CoursesPanelContainer extends React.Component {
     const { addingOrder } = this.state
 
     return (
-      <Loading loading={loading}>
+      <div>
         <DateHeading date={moment(date, 'YYYY-MM-DD')} backLink={`/calendar`} />
         <CoursesPanel
           courseId={courseId}
@@ -93,7 +93,8 @@ class CoursesPanelContainer extends React.Component {
           schools={schools}
           instructors={instructors}
         />
-      </Loading>
+        <LoadingMask loading={loading} />
+      </div>
     )
   }
 }

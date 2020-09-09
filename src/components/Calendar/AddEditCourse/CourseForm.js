@@ -6,7 +6,7 @@ import { Col, Row } from 'reactstrap'
 import range from 'lodash/range'
 import styles from './styles.scss'
 import { DAY_FORMAT3, TEST_STATUS_CHOICES, SHIFT_TYPES } from 'common/constants'
-import Loading from 'components/Loading'
+import LoadingMask from 'components/LoadingMask'
 import pick from 'lodash/pick'
 import BikeNumberPicker from 'components/BikeNumberPicker'
 import {
@@ -515,7 +515,7 @@ class CourseForm extends React.Component {
 
     return (
       <div className={styles.wrapper}>
-        <Loading className={styles.formWrapper} loading={saving || loading}>
+        <div className={styles.formWrapper}>
           <form onSubmit={this.handleSave}>
             <Row>
               <Col>
@@ -881,7 +881,8 @@ class CourseForm extends React.Component {
               )}
             </div>
           </form>
-        </Loading>
+        </div>
+        <LoadingMask loading={saving || loading} />
       </div>
     )
   }
