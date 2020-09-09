@@ -69,11 +69,22 @@ class EditOrderForm extends React.Component {
     }))
   }
 
+  handleDelete = () => {
+    const { order, onDelete } = this.props
+    const canDelete =
+      order &&
+      order.order &&
+      (order.order.source === 'DASHBOARD' || order.order.source === 'WIDGET')
+
+    if (canDelete) {
+      onDelete()
+    }
+  }
+
   render() {
     let {
       onCancel,
       isSending,
-      onDelete,
       date,
       time,
       courses,
@@ -261,7 +272,7 @@ class EditOrderForm extends React.Component {
                     color="danger"
                     className={styles.deleteButton}
                     disabled={!canDelete}
-                    onClick={onDelete}>
+                    onClick={this.handleDelete}>
                     Delete
                   </Button>
                 )}
