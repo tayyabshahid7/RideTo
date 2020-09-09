@@ -155,9 +155,11 @@ function CourseInformation({
           <div className={styles.subtitle}>REFUND POLICY</div>
           {diffDays !== undefined && (
             <div className={classnames(styles.content, styles.refundContent)}>
-              {diffDays < 0 && <RefundInfo />}
+              {!isFullLicence && diffDays < 0 && <RefundInfo />}
               <span>
-                {diffDays < 0 ? 'Non-refundable' : '100% Refundable*'}
+                {!isFullLicence && diffDays < 0
+                  ? 'Non-refundable'
+                  : '100% Refundable*'}
               </span>
             </div>
           )}
