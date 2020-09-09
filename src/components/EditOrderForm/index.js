@@ -21,7 +21,6 @@ class EditOrderForm extends React.Component {
       showChangeDate: false,
       isChanged: false
     }
-    console.log(this.state)
   }
 
   handleConfirmation = () => {
@@ -57,7 +56,6 @@ class EditOrderForm extends React.Component {
     const { order } = this.state
     const data = Object.assign({}, order)
 
-    console.log(data, order)
     event.preventDefault()
     let response = await onSave(data)
     if (response) {
@@ -86,6 +84,10 @@ class EditOrderForm extends React.Component {
       order
     } = this.props
     const { showChangeDate, isChanged } = this.state
+    const canDelete =
+      order &&
+      order.order &&
+      (order.order.source === 'DASHBOARD' || order.order.source === 'WIDGET')
 
     if (!this.state.order.order || !this.state.order.customer) {
       return null
@@ -258,6 +260,7 @@ class EditOrderForm extends React.Component {
                     small
                     color="danger"
                     className={styles.deleteButton}
+                    disabled={!canDelete}
                     onClick={onDelete}>
                     Delete
                   </Button>
