@@ -20,10 +20,6 @@ import { actions as notifyActions } from 'store/notification'
 import { getDaysStaff } from 'store/staff'
 import { getDaysCourses } from 'store/course'
 
-function removeFullLicence(type) {
-  return type.constant !== 'FULL_LICENCE'
-}
-
 const bikeFields = [
   'own_bikes',
   'auto_bikes',
@@ -134,8 +130,8 @@ class CourseForm extends React.Component {
 
     if (courseTypes.length && course_type_id === '') {
       const defaultCourse =
-        courseTypes.find(({ constant }) => constant === 'LICENCE_CBT') ||
-        courseTypes.filter(removeFullLicence)[0]
+        courseTypes.find(type => type.constant === 'LICENCE_CBT') ||
+        courseTypes[0]
 
       this.setState(
         {
@@ -378,9 +374,9 @@ class CourseForm extends React.Component {
       supplier = this.state.supplier
     }
 
-    return info.courseTypes
-      .filter(x => x.schoolIds.includes(parseInt(supplier)))
-      .filter(removeFullLicence)
+    return info.courseTypes.filter(x =>
+      x.schoolIds.includes(parseInt(supplier))
+    )
   }
 
   getInstructors = schoolId => {

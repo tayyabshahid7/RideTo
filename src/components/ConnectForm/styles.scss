@@ -234,9 +234,10 @@ select {
   }
 
   .age {
-    height: 21px;
     color: #707070;
     border-bottom: 1px dashed #e4e4e4;
+    white-space: nowrap;
+    font-size: 12px;
   }
 
   .input:focus + .age {
