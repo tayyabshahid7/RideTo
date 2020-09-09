@@ -2,11 +2,6 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
-
-  @media (max-width: 767px) {
-    display: block;
-    height: auto;
-  }
 }
 
 .bgBlack {
@@ -21,10 +16,6 @@
   display: flex;
   flex-direction: column;
   overflow: auto;
-
-  @media (max-width: 767px) {
-    display: block;
-  }
 }
 
 .bodyContainerGrey {
