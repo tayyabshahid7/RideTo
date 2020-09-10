@@ -1,8 +1,17 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './styles.scss'
 import { matchPath } from 'react-router'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { toggleSidePanel } from 'store/calendar'
 
-function RightPanel({ children, location }) {
+function RightPanel({ children, location, toggleSidePanel }) {
+  useEffect(() => {
+    toggleSidePanel(true)
+
+    return () => toggleSidePanel(false)
+  }, [])
+
   const hasMatchingRoute = children.some(({ props: { exact, path } }) =>
     matchPath(location.pathname, {
       exact,
@@ -17,4 +26,17 @@ function RightPanel({ children, location }) {
   return <div className={styles.rightPanel}>{children}</div>
 }
 
-export default RightPanel
+const mapStateToProps = (state, ownProps) => ({})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      toggleSidePanel
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(RightPanel)

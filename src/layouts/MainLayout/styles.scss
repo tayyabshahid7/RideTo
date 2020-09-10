@@ -11,6 +11,13 @@
   }
 }
 
+.sideActive {
+  @media (max-width: 767px) {
+    height: 0;
+    overflow: hidden;
+  }
+}
+
 .bgBlack {
   background-color: black;
 }

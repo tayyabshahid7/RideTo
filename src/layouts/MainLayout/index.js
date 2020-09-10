@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Switch, Route } from 'react-router'
+import { useLocation } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import NavigationBar from 'components/NavigationBar'
@@ -26,6 +27,7 @@ const MainLayout = ({
   getAllCourseTypes,
   instructorsLoaded
 }) => {
+  const [sidePanel, setSidePanel] = useState(false)
   useEffect(() => {
     if (user) {
       const schoolIds = user.suppliers.map(x => x.id)
@@ -33,6 +35,14 @@ const MainLayout = ({
       getAllCourseTypes(schoolIds)
     }
   }, [user])
+
+  const location = useLocation()
+
+  useEffect(() => {
+    const sidePanel = location.pathname.match(/\/calendar\/.+/)
+    setSidePanel(sidePanel)
+  }, [location])
+
   const isGreyBg = pathname.match(/\/customers\/\d+/)
   const isCalendar = pathname.match(/\/calendar/g)
 
@@ -41,7 +51,8 @@ const MainLayout = ({
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={classnames(styles.container, sidePanel && styles.sideActive)}>
       <NavigationBar history={history} />
       <div
         className={classnames(

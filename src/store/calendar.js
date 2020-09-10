@@ -3,6 +3,14 @@
 const SET_SIDEBAR_OPEN = 'rideto/calendar/SET_SIDEBAR_OPEN'
 const TOGGLE_USERS = 'rideto/calendar/TOGGLE_USERS'
 const TOGGLE_COURSES = 'rideto/calendar/TOGGLE_COURSES'
+const SIDE_PANEL_MOUNTED = 'rideto/calendar/SIDE_PANEL_MOUNTED'
+
+export const toggleSidePanel = flag => async dispatch => {
+  dispatch({
+    type: SIDE_PANEL_MOUNTED,
+    data: flag
+  })
+}
 
 export const toggleSidebar = ({ flag }) => async dispatch => {
   dispatch({
@@ -27,6 +35,7 @@ export const toggleCourse = ({ courseIds }) => async dispatch => {
 
 const initialState = {
   sidebarOpen: false,
+  sidePanel: false,
   inactiveUsers: [],
   inactiveCourses: []
 }
@@ -39,6 +48,10 @@ export default function reducer(state = initialState, action) {
         sidebarOpen = action.data
       }
       return { ...state, sidebarOpen }
+    }
+    case SIDE_PANEL_MOUNTED: {
+      console.log(action.data)
+      return { ...state, sidePanel: !!action.data }
     }
     case TOGGLE_USERS:
       return {
