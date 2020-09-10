@@ -155,6 +155,10 @@ function DashboardPageV2({ match }) {
       constant = 'STEP_CBT'
     }
 
+    if (constant === 'STEP_CBT' && isCompleted) {
+      updateUserDetail('course_completed_cbt', 'COMPLETED_COURSE', {})
+    }
+
     if (constant.startsWith('STEP_FULL_LICENCE_')) {
       constant = 'STEP_FULL_LICENCE'
     }
