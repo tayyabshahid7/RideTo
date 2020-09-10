@@ -23,7 +23,7 @@ export const fetchDiaries = async (startDate, endDate) => {
 export const createDiary = async data => {
   const path = `school/instructor/${data.instructor_id}/shift-diary`
   const response = await post(path, data)
-  return cleanUpDiary(response)
+  return cleanUpDiary(response[0])
 }
 
 export const fetchSingleDiary = async (staffId, diaryId) => {

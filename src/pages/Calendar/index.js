@@ -329,6 +329,7 @@ class CalendarPage extends Component {
           moment(s.start_date, 'YYYY-MM-DD').isSameOrBefore(moment(date)) &&
           moment(s.end_date, 'YYYY-MM-DD').isSameOrAfter(moment(date))
       )
+
       return {
         date,
         courses: coursesForDate,
