@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import ShiftForm from './ShiftForm'
 import { createStaff } from 'store/staff'
 import styles from './styles.scss'
+import { isAdmin } from 'services/auth'
 import DateHeading from 'components/Calendar/DateHeading'
 import moment from 'moment'
 
@@ -41,7 +42,20 @@ class AddShiftComponent extends Component {
   }
 
   render() {
-    let { staff, location, match, isPopup, formData, ...rest } = this.props
+    let {
+      staff,
+      location,
+      match,
+      isPopup,
+      formData,
+      isAdmin,
+      ...rest
+    } = this.props
+
+    if (!isAdmin) {
+      return <div>No access</div>
+    }
+
     let date, staffId, eventType
     if (isPopup) {
       date = formData.date
@@ -83,7 +97,8 @@ const mapStateToProps = (state, ownProps) => {
     staff: state.staff.single.staff,
     error: state.staff.single.error,
     info: state.info,
-    instructors: state.instructor.instructors
+    instructors: state.instructor.instructors,
+    isAdmin: isAdmin(state.auth.user)
   }
 }
 

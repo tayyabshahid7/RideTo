@@ -83,7 +83,7 @@ class OrderListContainer extends React.Component {
             )}
           </div>
           <div label="Email">
-            {user && customer && schoolId && (
+            {isAdmin && user && customer && schoolId && (
               <NewEmail
                 customer={customer}
                 user={user}

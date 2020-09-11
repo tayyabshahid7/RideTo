@@ -41,9 +41,11 @@
 }
 
 .user {
-  span {
-    color: rgba(#444, 0.8);
-    text-decoration: underline;
-    font-weight: bold;
+  a {
+    span {
+      color: rgba(#444, 0.8);
+      text-decoration: underline;
+      font-weight: bold;
+    }
   }
 }

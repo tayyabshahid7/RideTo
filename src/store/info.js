@@ -64,7 +64,6 @@ export default function reducer(state = initialState, action) {
     }
     case GET_COURSE_TYPES[SUCCESS]: {
       const courseTypes = state.courseTypes.slice()
-      console.log(courseTypes)
       action.data.courseTypes.forEach(course => {
         const tmp = courseTypes.find(x => x.id === course.id)
         if (tmp) {

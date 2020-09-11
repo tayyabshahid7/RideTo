@@ -15,7 +15,6 @@ const CalendarDayCellItem = ({ item }) => {
 
   const handleClick = e => {
     // e.stopPropagation()
-    console.log(item)
   }
 
   return (

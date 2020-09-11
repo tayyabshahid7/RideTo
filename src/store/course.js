@@ -69,7 +69,6 @@ export const getSingleCourse = ({
 
 export const getDayCourses = ({ schoolIds, date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
-  console.log(schoolIds, date)
   try {
     const request = schoolIds.map(schoolId =>
       fetchCourses(schoolId, date, date)

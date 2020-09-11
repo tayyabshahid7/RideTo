@@ -108,7 +108,6 @@ class ShiftForm extends React.Component {
 
   loadDiaries = () => {
     const { start_date, end_date } = this.state
-    console.log(start_date, end_date)
     if (!start_date || !end_date) {
       return
     }

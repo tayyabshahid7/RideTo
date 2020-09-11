@@ -46,6 +46,7 @@ function CoursesPanel({
                 instructors={instructors}
                 diary={item}
                 schools={schools}
+                canEdit={isAdmin}
               />
             ))}
           </div>

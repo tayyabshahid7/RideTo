@@ -1,5 +1,6 @@
 import React from 'react'
 import styles from './index.scss'
+import classnames from 'classnames'
 import { SHIFT_TYPES } from 'common/constants'
 import {
   IconClock,
@@ -8,7 +9,7 @@ import {
   IconSick
 } from '../../../assets/icons'
 
-const CalendarShiftIcon = ({ diary }) => {
+const CalendarShiftIcon = ({ diary, simple = false }) => {
   let type = SHIFT_TYPES.find(x => x.id === diary.event_type)
   if (!type) {
     type = SHIFT_TYPES[0]
@@ -26,8 +27,14 @@ const CalendarShiftIcon = ({ diary }) => {
         <React.Fragment>
           {diary.times.map(time => (
             <div key={time.id} className={styles.diaryItem}>
-              <IconClock />
-              <span className={styles.diaryText}>{getTimeText(time)}</span>
+              {!simple && <IconClock />}
+              <span
+                className={classnames(
+                  styles.diaryText,
+                  simple && styles.simple
+                )}>
+                {getTimeText(time)}
+              </span>
             </div>
           ))}
         </React.Fragment>
