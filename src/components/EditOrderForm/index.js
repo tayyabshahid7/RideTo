@@ -132,9 +132,9 @@ class EditOrderForm extends React.Component {
 
     const isFullLicenceTest =
       order &&
-      order.selected_licence &&
-      order.selected_licence.startsWith('FULL_LICENCE') &&
-      order.selected_licence.endsWith('TEST')
+      order.course_type &&
+      order.course_type.startsWith('FULL_LICENCE') &&
+      order.course_type.endsWith('TEST')
 
     const testResultOptions = getTestResultOptions()
 
