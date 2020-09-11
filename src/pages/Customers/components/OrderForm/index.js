@@ -10,7 +10,7 @@ import {
   Button
 } from 'components/ConnectForm'
 
-import { FullLicenceTypes } from 'common/info'
+import { FullLicenceTypes, getTestResultOptions } from 'common/info'
 import Loading from 'components/Loading'
 import {
   getCustomerBikeTypeOptions,
@@ -139,6 +139,12 @@ class OrderForm extends React.Component {
         name: bikeOptions[id]
       }
     })
+    const isFullLicenceTest =
+      editable.selected_licence &&
+      editable.selected_licence.startsWith('FULL_LICENCE') &&
+      editable.selected_licence.endsWith('TEST')
+
+    const testResultOptions = getTestResultOptions()
 
     const trainingDate = moment(getDate(editable.training_date_time))
 
@@ -214,6 +220,20 @@ class OrderForm extends React.Component {
                 }}
               />
             </Col>
+            {isFullLicenceTest && (
+              <Col sm="4">
+                <ConnectSelect
+                  disabled={inputsDisabled}
+                  label="Test Result"
+                  options={testResultOptions}
+                  selected={editable.test_result}
+                  name="test_result"
+                  onChange={value => {
+                    this.handleChange('test_result', value)
+                  }}
+                />
+              </Col>
+            )}
             <Col sm="4">
               <ConnectSelect
                 disabled={inputsDisabled}

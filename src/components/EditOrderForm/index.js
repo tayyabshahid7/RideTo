@@ -5,7 +5,11 @@ import { Row, Col, Form } from 'reactstrap'
 
 import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
-import { getFullLicenseType, getAvailableBikeHires } from 'common/info'
+import {
+  getFullLicenseType,
+  getAvailableBikeHires,
+  getTestResultOptions
+} from 'common/info'
 import {
   getPaymentOptions,
   getTrainingStatusOptions,
@@ -106,7 +110,13 @@ class EditOrderForm extends React.Component {
 
     const { first_name, last_name, id } = this.state.order.customer
     const { direct_friendly_id, payment_status } = this.state.order.order
-    const { bike_type, status, non_completion_reason, notes } = this.state.order
+    const {
+      bike_type,
+      test_result,
+      status,
+      non_completion_reason,
+      notes
+    } = this.state.order
 
     const isRideTo =
       !direct_friendly_id.includes('DIRECT') &&
@@ -119,6 +129,12 @@ class EditOrderForm extends React.Component {
       prevBikeType = this.props.order.bike_type
     }
     const bikeTypeOptions = getAvailableBikeHires(course, prevBikeType)
+
+    const courseType = course.course_type.constant
+    const isFullLicenceTest =
+      courseType.startsWith('FULL_LICENCE') && courseType.endsWith('TEST')
+
+    const testResultOptions = getTestResultOptions()
 
     return (
       <div className={styles.container}>
@@ -164,6 +180,25 @@ class EditOrderForm extends React.Component {
                   />
                 </Col>
               </Row>
+              {isFullLicenceTest && (
+                <Row>
+                  <Col>
+                    <ConnectSelect
+                      disabled={isRideTo || !isAdmin}
+                      name="test_result"
+                      selected={test_result}
+                      label="Test Result"
+                      options={testResultOptions}
+                      noSelectOption
+                      required
+                      basic
+                      onChange={value => {
+                        this.handleChange('test_result', value)
+                      }}
+                    />
+                  </Col>
+                </Row>
+              )}
               <Row>
                 <Col>
                   <ConnectSelect

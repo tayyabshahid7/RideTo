@@ -45,7 +45,6 @@ class CourseForm extends React.Component {
       duration: '',
       notes: '',
       test_centre: '',
-      test_result: '',
       last_date_cancel: '',
       status: '',
       application_reference_number: ''
@@ -80,7 +79,6 @@ class CourseForm extends React.Component {
           'instructor_id',
           'notes',
           'test_centre',
-          'test_result',
           'last_date_cancel',
           'status',
           'application_reference_number',
@@ -481,7 +479,6 @@ class CourseForm extends React.Component {
       a_manual_bikes,
       last_date_cancel,
       test_centre,
-      test_result,
       status,
       application_reference_number
     } = this.state.course
@@ -515,17 +512,6 @@ class CourseForm extends React.Component {
           type.constant.endsWith('TEST')
       )
       .some(type => type.id === parseInt(course_type_id, 10))
-
-    const testOptions = [
-      {
-        id: 'TEST_RESULT_PASSED',
-        name: 'Passed'
-      },
-      {
-        id: 'TEST_RESULT_FAILED',
-        name: 'Failed'
-      }
-    ]
 
     return (
       <div className={styles.wrapper}>
@@ -786,21 +772,6 @@ class CourseForm extends React.Component {
                             disabled={!isEditable}
                             onChange={this.handleChangeRawEvent}
                             required
-                          />
-                        </Col>
-                      </Row>
-
-                      <Row>
-                        <Col>
-                          <ConnectSingleSelect
-                            basic
-                            label="Test Result"
-                            name="test_result"
-                            value={test_result}
-                            disabled={!isEditable}
-                            onChange={this.handleChangeRawEvent}
-                            raw
-                            options={testOptions}
                           />
                         </Col>
                       </Row>

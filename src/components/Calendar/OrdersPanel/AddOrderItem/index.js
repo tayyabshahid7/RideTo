@@ -1,6 +1,10 @@
 import React from 'react'
 import styles from './styles.scss'
-import { getFullLicenseType, getAvailableBikeHires } from 'common/info'
+import {
+  getFullLicenseType,
+  getAvailableBikeHires
+  // getTestResultOptions
+} from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import {
   checkCustomerExists,
@@ -36,6 +40,7 @@ class AddOrderItem extends React.Component {
         user_last_name: '',
         user_phone: '',
         bike_hire: '',
+        test_result: '',
         payment_status: '',
         riding_experience: '',
         full_licence_type: '',
@@ -258,6 +263,7 @@ class AddOrderItem extends React.Component {
       cardPostCodeComplete,
       order: {
         bike_hire,
+        // test_result,
         payment_status,
         riding_experience,
         user_birthdate,
@@ -275,6 +281,13 @@ class AddOrderItem extends React.Component {
     const price = pricing && pricing.price
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
+
+    // const courseType = course.course_type.constant
+    // const isFullLicenceTest =
+    //   courseType.startsWith('FULL_LICENCE') && courseType.endsWith('TEST')
+
+    // const testResultOptions = getTestResultOptions()
+
     return (
       <div className={styles.container}>
         <div ref={this.scrollIntoView} />
@@ -400,6 +413,21 @@ class AddOrderItem extends React.Component {
                 valueField="value"
                 labelField="title"
               />
+
+              {/* {isFullLicenceTest && (
+                <ConnectSelect
+                  placeholder
+                  basic
+                  name="test_result"
+                  selected={test_result}
+                  label="Test Result"
+                  valueArray={testResultOptions}
+                  onChange={value => {
+                    this.handleChange('test_result', value)
+                  }}
+                  required
+                />
+              )} */}
 
               <ConnectCheckbox
                 label="T&Cs Agreed"

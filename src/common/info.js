@@ -155,6 +155,19 @@ export function formaBikeTypeForEdit(order) {
   }
 }
 
+export function getTestResultOptions() {
+  return [
+    {
+      id: 'TEST_RESULT_PASSED',
+      name: 'Passed'
+    },
+    {
+      id: 'TEST_RESULT_FAILED',
+      name: 'Failed'
+    }
+  ]
+}
+
 export function formatBikeConstant(constant) {
   switch (constant) {
     case 'BIKE_TYPE_AUTO':
