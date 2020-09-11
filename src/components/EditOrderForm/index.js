@@ -130,9 +130,11 @@ class EditOrderForm extends React.Component {
     }
     const bikeTypeOptions = getAvailableBikeHires(course, prevBikeType)
 
-    const courseType = course.course_type.constant
     const isFullLicenceTest =
-      courseType.startsWith('FULL_LICENCE') && courseType.endsWith('TEST')
+      order &&
+      order.selected_licence &&
+      order.selected_licence.startsWith('FULL_LICENCE') &&
+      order.selected_licence.endsWith('TEST')
 
     const testResultOptions = getTestResultOptions()
 
