@@ -260,7 +260,13 @@ export const Features = [
   {
     value: 'on_site_cafe',
     icon: 'Cafe',
-    title: 'On Site Cafe',
+    title: 'On-Site Cafe',
+    description: null
+  },
+  {
+    value: 'on_site_parking',
+    icon: 'Parking',
+    title: 'On-Site Parking',
     description: null
   },
   {
