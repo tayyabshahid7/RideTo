@@ -8,6 +8,7 @@ import {
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 import { actions as notificationActions } from './notification'
+import { shiftDeleted } from 'store/course'
 
 import uniqBy from 'lodash/uniqBy'
 
@@ -110,7 +111,8 @@ export const deleteStaff = ({ staffId, diaryId }) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    await deleteSingleDiary(staffId, diaryId)
+    const response = await deleteSingleDiary(staffId, diaryId)
+    dispatch(shiftDeleted(response))
     notificationActions.dispatchSuccess(dispatch, 'Staff deleted')
     dispatch({
       type: DELETE[SUCCESS],

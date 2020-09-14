@@ -41,11 +41,16 @@ const FETCH_ORDER = createRequestTypes('rideto/course/FETCH/ORDER')
 const DELETE_ORDER = createRequestTypes('rideto/course/FETCH/DELETE_ORDER')
 const UPDATE_ORDER = createRequestTypes('rideto/course/UPDATE/ORDER')
 const UNSET_DAY = 'rideto/course/UNSET/DAY'
+const SHIFT_DELETED = 'rideto/course/SHIFT/DELETED'
 const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 
 export const resetData = () => dispatch => {
   dispatch({ type: RESET_DATA })
+}
+
+export const shiftDeleted = courses => dispatch => {
+  dispatch({ type: SHIFT_DELETED, data: { courses } })
 }
 
 export const getSingleCourse = ({
@@ -798,6 +803,20 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
       }
+    case SHIFT_DELETED: {
+      const calendarCourses = state.calendar.courses.slice()
+      action.data.courses.forEach(course => {
+        const tmp2 = calendarCourses.find(x => x.id === course.id)
+        if (tmp2) {
+          Object.assign(tmp2, course)
+        }
+      })
+
+      return {
+        ...state,
+        calendar: { ...state.calendar, courses: calendarCourses }
+      }
+    }
     case UNSET_DAY:
       return {
         ...state,

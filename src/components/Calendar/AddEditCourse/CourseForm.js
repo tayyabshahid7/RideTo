@@ -289,15 +289,15 @@ class CourseForm extends React.Component {
                 'Staff shift location does not match course location',
                 'danger'
               )
+              return false
             } else {
               // showNotification(
               //   'Error',
               //   "Staff shift doesn't match course",
               //   'danger'
               // )
+              // return false
             }
-
-            return false
           }
         }
       }

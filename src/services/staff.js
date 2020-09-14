@@ -35,7 +35,7 @@ export const fetchSingleDiary = async (staffId, diaryId) => {
 
 export const deleteSingleDiary = async (staffId, diaryId) => {
   const path = `school/instructor/${staffId}/shift-diary/${diaryId}`
-  await destroy(path, {})
+  return await destroy(path, {})
 }
 
 export const updateSingleDiary = async (staffId, diaryId, data) => {
