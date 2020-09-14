@@ -20,6 +20,7 @@ import {
 class ShiftForm extends React.Component {
   constructor(props) {
     super(props)
+
     const { date = '' } = props
 
     const staff = {
@@ -55,7 +56,9 @@ class ShiftForm extends React.Component {
       hasStaff = false
     }
 
+    let isEdit = false
     if (this.props.staff) {
+      isEdit = true
       const fields = [
         'start_date',
         'end_date',
@@ -73,7 +76,7 @@ class ShiftForm extends React.Component {
       }
     }
 
-    this.state = { ...staff, hasStaff, schoolList }
+    this.state = { ...staff, hasStaff, schoolList, isEdit }
     this.loadDiaries()
   }
 
@@ -338,7 +341,7 @@ class ShiftForm extends React.Component {
 
   render() {
     const { saving, onRemove, staff, instructors, staffCalendar } = this.props
-    const { schoolList, hasStaff } = this.state
+    const { schoolList, hasStaff, isEdit } = this.state
     const eventType = SHIFT_TYPES.find(x => x.id === this.state.event_type)
 
     const instructorOptions = [
@@ -403,27 +406,29 @@ class ShiftForm extends React.Component {
                 />
               </Col>
             </Row> */}
-            <div className={styles.timeRow}>
-              <ConnectInput
-                label="From"
-                basic
-                name="start_date"
-                value={this.state.start_date}
-                type="date"
-                onChange={this.handleChangeDate}
-                required
-              />
-              <ConnectInput
-                label="Until"
-                basic
-                name="end_date"
-                value={this.state.end_date}
-                type="date"
-                popperPosition="bottom-end"
-                onChange={this.handleChangeDate}
-                required
-              />
-            </div>
+            {!isEdit && (
+              <div className={styles.timeRow}>
+                <ConnectInput
+                  label="From"
+                  basic
+                  name="start_date"
+                  value={this.state.start_date}
+                  type="date"
+                  onChange={this.handleChangeDate}
+                  required
+                />
+                <ConnectInput
+                  label="Until"
+                  basic
+                  name="end_date"
+                  value={this.state.end_date}
+                  type="date"
+                  popperPosition="bottom-end"
+                  onChange={this.handleChangeDate}
+                  required
+                />
+              </div>
+            )}
             {this.state.times.map((time, index) => (
               <div key={index} className={styles.timeRow}>
                 <ConnectInput

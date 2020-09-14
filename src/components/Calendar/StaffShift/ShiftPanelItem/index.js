@@ -28,14 +28,14 @@ const ShiftPanelItem = ({ diary, schools, instructors, date, canEdit }) => {
           ) : (
             <UserInitial wide noPadding user={instructor} />
           )}
+          {!!schoolName && (
+            <div className={styles.line}>
+              <span className={styles.notes}>{schoolName}</span>
+            </div>
+          )}
         </div>
         <CalendarShiftIcon diary={diary} simple />
       </div>
-      {!!schoolName && (
-        <div className={styles.line}>
-          <span className={styles.notes}>{schoolName}</span>
-        </div>
-      )}
     </div>
   )
 }

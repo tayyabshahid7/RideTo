@@ -248,7 +248,7 @@ class CourseForm extends React.Component {
       return false
     }
 
-    // const { date } = course
+    const { date } = course
 
     // validate instructor
     if (course.instructor_id) {
@@ -268,30 +268,39 @@ class CourseForm extends React.Component {
         return false
       }
 
-      // const shiftDiaries = diaries.filter(
-      //   x => x.event_type === SHIFT_TYPES[0].id
-      // )
+      const shiftDiaries = diaries.filter(
+        x => x.event_type === SHIFT_TYPES[0].id
+      )
 
       const { startTime: x0, endTime: y0 } = this.getCourseTime(course)
 
-      // for (const diary of shiftDiaries) {
-      //   for (const dtime of diary.times) {
-      //     const x1 = moment(`${date}T${dtime.start_time}`)
-      //     const y1 = moment(`${date}T${dtime.end_time}`)
+      for (const diary of shiftDiaries) {
+        for (const dtime of diary.times) {
+          const x1 = moment(`${date}T${dtime.start_time}`)
+          const y1 = moment(`${date}T${dtime.end_time}`)
 
-      //     if (
-      //       (x0.isSameOrAfter(x1) && x0.isSameOrBefore(y1)) ||
-      //       (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
-      //     ) {
-      //       showNotification(
-      //         'Error',
-      //         "Staff shift doesn't match course",
-      //         'danger'
-      //       )
-      //       return false
-      //     }
-      //   }
-      // }
+          if (
+            (x0.isSameOrAfter(x1) && x0.isSameOrBefore(y1)) ||
+            (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
+          ) {
+            if (diary.supplier_id !== parseInt(supplier)) {
+              showNotification(
+                'Error',
+                'Staff shift location does not match course location',
+                'danger'
+              )
+            } else {
+              // showNotification(
+              //   'Error',
+              //   "Staff shift doesn't match course",
+              //   'danger'
+              // )
+            }
+
+            return false
+          }
+        }
+      }
 
       // validate conflicting courses
       const courses = courseCalendar.courses.filter(

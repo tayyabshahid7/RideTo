@@ -163,7 +163,7 @@ export const createStaff = ({ data }) => async dispatch => {
     let response = await createDiary(data)
     dispatch({
       type: CREATE[SUCCESS],
-      data: { staff: response }
+      data: { staffs: response }
     })
     notificationActions.dispatchSuccess(dispatch, 'Staff added')
   } catch (error) {
@@ -417,14 +417,13 @@ export default function reducer(state = initialState, action) {
         single: { staff: null, saving: true, error: null }
       }
     case CREATE[SUCCESS]:
-      dayStaff =
-        action.data.staff.date === state.day.date
-          ? [action.data.staff, ...state.day.staff]
-          : state.day.staff
-      calendarStaff = [action.data.staff, ...state.calendar.staff]
+      const dayItem = action.data.staffs.find(x => x.date === state.day.date)
+
+      dayStaff = dayItem ? [dayItem, ...state.day.staff] : state.day.staff
+      calendarStaff = [...action.data.staffs, ...state.calendar.staff]
       return {
         ...state,
-        single: { saving: false, staff: action.data.staff, error: null },
+        single: { saving: false, staff: action.data.staffs[0], error: null },
         day: { ...state.day, staff: dayStaff },
         calendar: { ...state.calendar, staff: calendarStaff }
       }

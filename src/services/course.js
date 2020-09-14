@@ -299,7 +299,7 @@ export const getShortCourseType = courseType => {
     case 'INTRO_TO_MOTORCYCLING':
       return 'ITM'
     case 'FULL_LICENCE':
-      return 'Full'
+      return 'Full Licence'
     case 'FULL_LICENCE_MOD1_TRAINING':
       return 'Module 1 Training'
     case 'FULL_LICENCE_MOD1_TEST':
