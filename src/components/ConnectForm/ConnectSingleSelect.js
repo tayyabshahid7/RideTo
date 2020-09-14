@@ -127,6 +127,8 @@ export default function ConnectSingleSelect({
         name={name}
         id={id || name}
         options={options}
+        className="react-select-container"
+        classNamePrefix="react-select"
         required={required}
         styles={customStyles}
         value={innerValue}

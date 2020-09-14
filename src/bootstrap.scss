@@ -283,3 +283,22 @@ $font-family-base: 'PT Sans', sans-serif;
     border-radius: 50%;
   }
 }
+
+.react-select-container {
+  @media (max-width: 767px) {
+    .react-select__control {
+      font-size: 16px;
+      line-height: 1;
+
+      .react-select__value-container {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .react-select__input {
+        font-size: 16px;
+        line-height: 1;
+      }
+    }
+  }
+}
