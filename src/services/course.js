@@ -132,7 +132,7 @@ export const fetchSingleCourse = async courseId => {
 
 export const fetchWidgetSingleCourse = async (schoolId, courseId) => {
   const path = `school/widget/course/${courseId}`
-  const response = await get(path, {})
+  const response = await get(path, {}, false)
 
   return response
 }
