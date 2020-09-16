@@ -3,11 +3,18 @@
 const SET_SIDEBAR_OPEN = 'rideto/calendar/SET_SIDEBAR_OPEN'
 const TOGGLE_USERS = 'rideto/calendar/TOGGLE_USERS'
 const TOGGLE_COURSES = 'rideto/calendar/TOGGLE_COURSES'
+const RESET_USERS = 'rideto/calendar/RESET_USERS'
 
 export const toggleSidebar = ({ flag }) => async dispatch => {
   dispatch({
     type: SET_SIDEBAR_OPEN,
     data: flag
+  })
+}
+
+export const resetUsers = () => dispatch => {
+  dispatch({
+    type: RESET_USERS
   })
 }
 
@@ -39,6 +46,12 @@ export default function reducer(state = initialState, action) {
         sidebarOpen = action.data
       }
       return { ...state, sidebarOpen }
+    }
+    case RESET_USERS: {
+      return {
+        ...state,
+        inactiveUsers: []
+      }
     }
     case TOGGLE_USERS:
       return {

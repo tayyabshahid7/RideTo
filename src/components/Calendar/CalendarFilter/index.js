@@ -146,14 +146,16 @@ const CalendarFilter = ({
 
         <div className={styles.sectionItem}>
           <h5 className={styles.sectionTitle}>Staff</h5>
-          <label className="switch">
-            <input
-              type="checkbox"
-              checked={inactiveUsers.length !== currUsers.length + 1}
-              onChange={handleAllStaffChange}
-            />
-            <span className="slider round"></span>
-          </label>
+          {!shiftView && (
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={inactiveUsers.length !== currUsers.length + 1}
+                onChange={handleAllStaffChange}
+              />
+              <span className="slider round"></span>
+            </label>
+          )}
         </div>
         {currUsers.map(user => (
           <div className={styles.sectionItem} key={user.id}>

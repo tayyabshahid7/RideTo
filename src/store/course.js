@@ -22,6 +22,7 @@ import { actions as notificationActions } from './notification'
 import moment from 'moment'
 import { saveState } from 'services/localStorage'
 import { resetLoadedMonths, loadMonthDay } from 'store/staff'
+import { resetUsers } from 'store/calendar'
 
 const FETCH_ALL = createRequestTypes('rideto/course/FETCH/ALL')
 const FETCH_FOR_FORM = createRequestTypes('rideto/course/FETCH/FORM')
@@ -188,6 +189,9 @@ export const getDaysCourses = ({ start_date, end_date }) => async dispatch => {
 }
 
 export const updateCalendarSetting = data => async dispatch => {
+  if (data.viewMode === CALENDAR_VIEW.SHIFT) {
+    dispatch(resetUsers())
+  }
   dispatch({ type: UPDATE_CALENDAR_SETTING, data })
 }
 
