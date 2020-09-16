@@ -15,9 +15,73 @@ export const BikeHires = [
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' }
 ]
 
-export function getAvailableBikeHires(course) {
+export function getFullLicenseBikeHires(course, prevBikeType) {
+  const {
+    a1_auto_bikes,
+    a1_manual_bikes,
+    a2_auto_bikes,
+    a2_manual_bikes,
+    a_auto_bikes,
+    a_manual_bikes
+  } = course
+
+  return [
+    {
+      value:
+        prevBikeType === 'BIKE_TYPE_A1_AUTO' || a1_auto_bikes
+          ? 'BIKE_TYPE_A1_AUTO'
+          : null,
+      title: 'A1 Auto Bike'
+    },
+    {
+      value:
+        prevBikeType === 'BIKE_TYPE_A1_MANUAL' || a1_manual_bikes
+          ? 'BIKE_TYPE_A1_MANUAL'
+          : null,
+      title: 'A1 Manual Bike'
+    },
+    {
+      value:
+        prevBikeType === 'BIKE_TYPE_A2_AUTO' || a2_auto_bikes
+          ? 'BIKE_TYPE_A2_AUTO'
+          : null,
+      title: 'A2 Auto Bike'
+    },
+    {
+      value:
+        prevBikeType === 'BIKE_TYPE_A2_MANUAL' || a2_manual_bikes
+          ? 'BIKE_TYPE_A2_MANUAL'
+          : null,
+      title: 'A2 Manual Bike'
+    },
+    {
+      value:
+        prevBikeType === 'BIKE_TYPE_A_AUTO' || a_auto_bikes
+          ? 'BIKE_TYPE_A_AUTO'
+          : null,
+      title: 'A Auto Bike'
+    },
+    {
+      value:
+        prevBikeType === 'BIKE_TYPE_A_MANUAL' || a_manual_bikes
+          ? 'BIKE_TYPE_A_MANUAL'
+          : null,
+      title: 'A Manual Bike'
+    },
+    {
+      value: 'BIKE_HIRE_NONE',
+      title: 'Own Bike'
+    }
+  ]
+}
+
+export function getAvailableBikeHires(course, prevBikeType) {
   if (!course) {
     return []
+  }
+
+  if (course.course_type.constant.startsWith('FULL_LICENCE')) {
+    return getFullLicenseBikeHires(course, prevBikeType)
   }
 
   const {
@@ -35,18 +99,72 @@ export function getAvailableBikeHires(course) {
     //   title: 'Manual 50cc'
     // },
     {
-      value: manual_bikes > manual_count ? BIKE_HIRE.MANUAL : null,
-      title: 'Manual 125cc'
+      value:
+        prevBikeType === 'BIKE_TYPE_MANUAL' || manual_bikes > manual_count
+          ? 'BIKE_TYPE_MANUAL'
+          : null,
+      title: 'Manual'
     },
     {
-      value: auto_bikes > auto_count ? BIKE_HIRE.AUTO : null,
+      value:
+        prevBikeType === 'BIKE_TYPE_AUTO' || auto_bikes > auto_count
+          ? 'BIKE_TYPE_AUTO'
+          : null,
       title: 'Automatic Scooter'
     },
     // {
     //   value: auto_125cc_bikes ? BIKE_HIRE.AUTO_125CC : null,
     //   title: 'Automatic 125cc'
     // },
-    { value: BIKE_HIRE.NO, title: 'Own Bike' }
+    { value: 'BIKE_TYPE_NONE', title: 'Own Bike' }
+  ]
+}
+
+export function getFullLicenseType(value) {
+  let types = value.toUpperCase().split('_')
+  const validTypes = ['A', 'A1', 'A2']
+  if (validTypes.includes(types[2])) {
+    return 'FULL_LICENCE_TYPE_' + types[2]
+  }
+  return 'FULL_LICENCE_TYPE_NONE'
+}
+
+export function getTimeValue(time) {
+  try {
+    const times = time.split(':').map(x => parseInt(x))
+    if (times.length < 2) {
+      return 0
+    }
+    return times[0] * 60 + times[1]
+  } catch (err) {
+    return 0
+  }
+}
+
+export function formaBikeTypeForEdit(order) {
+  if (order.full_licence_type.startsWith('FULL_LICENCE_TYPE')) {
+    const type = formatBikeConstant(order.bike_type)
+    if (type !== BIKE_HIRE.NO) {
+      let tmp = order.full_licence_type.split('_')
+      tmp = tmp[tmp.length - 1].toLowerCase()
+      return `${tmp}_${type}`
+    }
+    return type
+  } else {
+    return formatBikeConstant(order.bike_hire)
+  }
+}
+
+export function getTestResultOptions() {
+  return [
+    {
+      id: 'TEST_RESULT_PASSED',
+      name: 'Passed'
+    },
+    {
+      id: 'TEST_RESULT_FAILED',
+      name: 'Failed'
+    }
   ]
 }
 
@@ -80,7 +198,8 @@ export function formatBikeConstant(constant) {
 export const FullLicenceTypes = [
   { value: 'FULL_LICENCE_TYPE_A1', title: 'A1' },
   { value: 'FULL_LICENCE_TYPE_A2', title: 'A2' },
-  { value: 'FULL_LICENCE_TYPE_A', title: 'A' }
+  { value: 'FULL_LICENCE_TYPE_A', title: 'A' },
+  { value: 'FULL_LICENCE_TYPE_NONE', title: 'None' }
 ]
 
 export function getTitleFor(arr, value) {
@@ -154,7 +273,13 @@ export const Features = [
   {
     value: 'on_site_cafe',
     icon: 'Cafe',
-    title: 'On Site Cafe',
+    title: 'On-Site Cafe',
+    description: null
+  },
+  {
+    value: 'on_site_parking',
+    icon: 'Parking',
+    title: 'On-Site Parking',
     description: null
   },
   {

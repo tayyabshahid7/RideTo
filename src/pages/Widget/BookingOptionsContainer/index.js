@@ -84,7 +84,7 @@ class BookingOptionsContainer extends React.Component {
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       this.setState(
         {
-          month: moment().startOf('month'),
+          // month: moment().startOf('month'),
           selectedDate: null,
           isLoading: true,
           availableCourses: [],
@@ -100,7 +100,8 @@ class BookingOptionsContainer extends React.Component {
             this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
         () => {
-          this.fetchCourses(moment().startOf('month'))
+          // this.fetchCourses(moment().startOf('month'))
+          this.fetchCourses(this.state.month.clone())
         }
       )
       return
@@ -426,7 +427,7 @@ class BookingOptionsContainer extends React.Component {
     if (!courseType) {
       return <div className={styles.bookingOptions}>No Course Found</div>
     }
-
+    console.log(suppliers)
     return (
       <div className={styles.bookingOptions}>
         <BookingOption
@@ -439,7 +440,7 @@ class BookingOptionsContainer extends React.Component {
         <BookingOption
           label="Location:"
           options={suppliers}
-          labelField="town"
+          labelField="connect_location_name"
           selected={selectedSupplier.id}
           onChange={onChangeSupplier}
         />

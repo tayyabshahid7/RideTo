@@ -3,11 +3,17 @@ import CalendarDayCell from '../CalendarDayCell'
 import styles from './index.scss'
 import classnames from 'classnames'
 
-const CalendarDays = ({ days, calendar, history, handleMobileCellClick }) => {
+const CalendarDays = ({
+  days,
+  calendar,
+  users,
+  history,
+  handleMobileCellClick
+}) => {
   const rowsCount = Math.ceil(days.length / 7)
 
   return (
-    <ul
+    <div
       className={classnames(
         styles.calendarDays,
         rowsCount === 5 && styles.calendarDaysFiveRows,
@@ -18,12 +24,15 @@ const CalendarDays = ({ days, calendar, history, handleMobileCellClick }) => {
           day={day}
           calendar={calendar}
           key={index}
+          index={index}
           history={history}
           handleMobileCellClick={handleMobileCellClick}
           rowsCount={rowsCount}
+          lastRow={Math.floor(index / 7) === rowsCount - 1}
+          users={users}
         />
       ))}
-    </ul>
+    </div>
   )
 }
 

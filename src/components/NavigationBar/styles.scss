@@ -11,15 +11,26 @@
 }
 
 .navigationBar {
-  border-bottom: 2px solid var(--light-grey-color);
   text-align: center;
-  background-color: #fff;
-}
-.navbar {
-  @media (max-width: 768px) {
-    margin-top: 0.5rem;
+  padding: 16px !important;
+  background-color: var(--color-light-gray);
+
+  @media (max-width: 767px) {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
   }
 }
+
+.navbar {
+  @media (max-width: 767px) {
+    margin-top: 1rem;
+    align-items: center;
+  }
+}
+
 .navItem {
   margin: 10px 0px;
 
@@ -28,6 +39,7 @@
     text-align: left;
   }
 }
+
 .navLinks {
   width: 85%;
   display: flex;
@@ -35,62 +47,37 @@
   line-height: 50px;
   align-items: center;
 }
-.logoImage {
-  height: 40px;
-  fill: var(--primary-color);
-}
+
 .darkLogo {
   fill: white;
   width: 200px;
 }
+
 .authMenu {
-  // width: 100%;
   display: flex;
   align-items: center;
+  flex-flow: row wrap;
 }
+
 .navLink {
-  margin: 0 1rem;
-  color: var(--dark-color);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(--color-primary);
   text-decoration: none;
+  padding: 12px 15px;
+  border-radius: 20px;
+  margin: 0 5px;
+
   &:hover {
-    text-decoration: unset;
+    background-color: var(--color-primary-bg);
+    text-decoration: none;
+    color: var(--color-primary);
   }
 }
 
 .activeNavLink {
-  color: var(--primary-color);
-  padding-right: 1rem;
-  padding-bottom: 0.25rem;
-  border-bottom: 3px solid var(--primary-color);
-}
-
-@media (min-width: 768px) {
-  .navigationBar {
-    text-align: left;
-    height: 62px;
-  }
-  .navItem {
-    margin: 0px;
-  }
-  .navLink {
-    // margin: 0 1.2rem;
-    // color: var(--dark-color);
-    // text-decoration: none;
-    padding: 20px 0px;
-    // &:hover {
-    //   text-decoration: unset;
-    // }
-    font-size: 18px;
-    font-weight: bold;
-    color: #707070;
-  }
-  .activeNavLink {
-    padding-bottom: 15px;
-    border-bottom: 4px solid #2cceac;
-  }
-  .authMenu {
-    // width: 250px;
-  }
+  background-color: var(--color-primary-bg);
 }
 
 .addCourse {
@@ -145,9 +132,28 @@
 }
 
 .isOpen {
-  @media (max-width: 768px) {
-    background: #fafafa;
-    box-shadow: 0px 3px 6px #00000029;
+  @media (max-width: 767px) {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1001;
+    display: block !important;
+  }
+}
+
+.divider {
+  // border-bottom: 1px solid var(--color-border);
+  width: 100%;
+}
+
+.navHeader {
+  @media (max-width: 767px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
   }
 }
 

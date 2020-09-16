@@ -1,0 +1,55 @@
+.container {
+  margin-bottom: 16px;
+  border-radius: 2px;
+  padding: 12px 16px;
+  background: #ededed;
+}
+
+.line {
+  display: flex;
+  // align-items: center;
+  justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 8px;
+  }
+
+  > :nth-child(2) {
+    flex-shrink: 0;
+  }
+}
+
+.typeText {
+  font-size: 11px;
+  color: rgba(#444, 0.8);
+  line-height: 13px;
+  margin-left: 6px;
+}
+
+.detail {
+  display: flex;
+  align-items: center;
+}
+
+.notes {
+  font-size: 11px;
+  color: rgba(#444, 0.8);
+  line-height: 13px;
+}
+
+.editLink {
+  font-size: 11px;
+  color: #444;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.user {
+  a {
+    span {
+      color: rgba(#444, 0.8);
+      text-decoration: underline;
+      font-weight: bold;
+    }
+  }
+}

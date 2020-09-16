@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { logout, changeSchool } from 'store/auth'
+import { IconLogout } from '../../assets/icons'
 import styles from './styles.scss'
-
-import SchoolSelect from 'components/SchoolSelect'
 
 class UserMenu extends Component {
   constructor(props) {
@@ -14,7 +13,6 @@ class UserMenu extends Component {
     this.toggleMenu = this.toggleMenu.bind(this)
     this.handleLogout = this.handleLogout.bind(this)
     this.handleClickOutside = this.handleClickOutside.bind(this)
-    this.handleSupplierChange = this.handleSupplierChange.bind(this)
   }
 
   componentDidMount() {
@@ -46,36 +44,23 @@ class UserMenu extends Component {
     }
   }
 
-  handleSupplierChange(schoolId, schoolName) {
-    this.props.changeSchool(schoolId, schoolName)
-    this.toggleMenu()
-  }
-
   render() {
-    let { user, schoolId } = this.props
+    let { user } = this.props
     return (
       user && (
         <div className={styles.container}>
-          <div className={styles.username} onClick={this.toggleMenu}>
-            <div className={styles.avatar}>
-              {user.name.charAt(0) || user.first_name.charAt(0)}
-            </div>
+          <div className={styles.avatar} onClick={this.toggleMenu}>
+            {user.name.charAt(0) || user.first_name.charAt(0)}
           </div>
           {this.state.menuOpen && (
             <div ref={node => (this.node = node)} className={styles.userMenu}>
-              <SchoolSelect
-                schools={user.suppliers}
-                selected={schoolId}
-                onChange={this.handleSupplierChange}
-                small
-              />
-              <hr />
-              <button
+              <div
                 className={styles.logoutLink}
                 color="link"
                 onClick={this.handleLogout}>
+                <IconLogout />
                 Logout
-              </button>
+              </div>
             </div>
           )}
         </div>
@@ -86,7 +71,6 @@ class UserMenu extends Component {
 export default connect(
   state => ({
     user: state.auth.user,
-    schoolId: state.auth.schoolId,
     schoolName: state.auth.schoolName
   }),
   dispatch => ({

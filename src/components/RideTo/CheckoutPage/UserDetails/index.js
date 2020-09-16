@@ -151,7 +151,7 @@ class UserDetails extends Component {
     const { userAuthenticated } = this.state
 
     return (
-      <div>
+      <div className={styles.whiteBox}>
         <NextSteps isFullLicence={isFullLicence} instantBook={instantBook} />
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
@@ -228,13 +228,13 @@ class UserDetails extends Component {
     return (
       <div
         className={classnames(
+          styles.whiteBox,
           !showUserDetails && !userAuthenticated && styles.hideDetails
         )}>
         <div
           ref={this.userDetails}
           id="checkout-your-details"
-          className={styles.title}
-          style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
+          className={styles.title}>
           Rider's Details
         </div>
         <div className={classnames(styles.rowItem)}>
@@ -456,6 +456,7 @@ class UserDetails extends Component {
     return (
       <div
         className={classnames(
+          styles.whiteBox,
           styles.checkForm,
           !showUserDetails && styles.hidePayment
         )}
@@ -585,9 +586,7 @@ class UserDetails extends Component {
     return (
       <div className={styles.container}>
         {this.renderEmail()}
-        <SectionSplitter />
         {this.renderUserInfo()}
-        <SectionSplitter />
         {this.renderPaymentForm()}
       </div>
     )

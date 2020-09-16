@@ -1,0 +1,151 @@
+.user {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  position: relative;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 5;
+    border-radius: 50%;
+    border: 1px solid white;
+  }
+
+  img {
+    position: relative;
+    z-index: 5;
+    border: 1px solid white;
+  }
+
+  span {
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    color: rgba(#444, 0.8);
+  }
+
+  h5 {
+    display: none;
+    position: absolute;
+    left: -3px;
+    top: 50%;
+    height: 32px;
+    border-radius: 16px;
+    background: var(--color-primary);
+    padding-left: 38px;
+    padding-right: 16px;
+    align-items: center;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    margin: 0;
+    z-index: 4;
+    transform: translateY(-50%);
+
+    span {
+      color: white !important;
+    }
+  }
+
+  &:hover {
+    z-index: 6;
+
+    h5 {
+      display: flex;
+    }
+  }
+}
+
+.content {
+  position: relative;
+  font-size: 0;
+  display: flex;
+  align-items: center;
+}
+
+.wide {
+  flex: 1 1 1px;
+  padding: 0 8px;
+  min-width: 90px;
+
+  h5 {
+    height: 22px;
+    border-radius: 11px;
+    left: -2px;
+    padding-left: 25px;
+    padding-right: 11px;
+  }
+}
+
+.right {
+  &:hover {
+    div > span {
+      display: none;
+    }
+
+    img,
+    svg {
+      margin-right: 0 !important;
+    }
+  }
+
+  h5 {
+    left: auto !important;
+    right: -3px !important;
+    padding-right: 26px !important;
+    padding-left: 13px !important;
+  }
+}
+
+.noPadding {
+  padding: 0 !important;
+}
+
+.minimized {
+  img {
+    width: 24px;
+    height: 24px;
+    margin-right: 0;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+    margin-right: 0;
+  }
+}
+
+.short {
+  img {
+    margin-right: 4px;
+  }
+
+  svg {
+    margin-right: 4px;
+  }
+
+  span {
+    font-size: 11px;
+    line-height: 13px;
+  }
+
+  h5 {
+    height: 22px;
+    border-radius: 11px;
+    left: -2px;
+    padding-left: 25px;
+    padding-right: 11px;
+  }
+}
+
+.photo {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
+}

@@ -1,6 +1,8 @@
 export const CALENDAR_VIEW = {
   MONTH: 'month',
-  WEEK: 'week'
+  WEEK: 'week',
+  DAY: 'day',
+  SHIFT: 'shift'
 }
 
 export const DATE_FORMAT = 'YYYY-MM-DD'
@@ -11,10 +13,29 @@ export const DAY_FORMAT3 = 'YYYY-MM-DDTHH:mm'
 export const DAY_FORMAT4 = 'YYYY-MM-DDTHH:mm:ssZ'
 export const DAY_FORMAT5 = 'ddd Do MMMM'
 
-export const WEEK_VIEW_START_TIME = 60 * 60 * 0 // Midnight
+export const SHIFT_TYPES = [
+  { id: 'EVENT_SHIFT', name: 'Shift' },
+  { id: 'EVENT_BLOCKER', name: 'Blocker' },
+  { id: 'EVENT_HOLIDAY', name: 'Holiday' },
+  { id: 'EVENT_SICK_DAY', name: 'Sick Day' }
+]
+
+export const EVENT_COLORS = [
+  '#C6F6D5',
+  '#FAF089',
+  '#FEEBC8',
+  '#B2F5EA',
+  '#BEE3F8',
+  '#C3DAFE',
+  '#E9D8FD',
+  '#FED7E2'
+]
+
+export const WEEK_START_HOUR = 7
+export const WEEK_VIEW_START_TIME = 60 * 60 * WEEK_START_HOUR // Midnight
 export const WEEK_VIEW_START_TIME_STRING = '00:00'
 export const WEEK_VIEW_WORKING_DAY_TIME_STRING = '07:00'
-export const WORK_HOURS = 24
+export const WORK_HOURS = 14
 export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 
 // export const COLOR_RED_1 = '#fa0e0e'

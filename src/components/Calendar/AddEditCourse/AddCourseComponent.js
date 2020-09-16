@@ -7,7 +7,6 @@ import styles from './styles.scss'
 import CourseForm from './CourseForm'
 import DateHeading from 'components/Calendar/DateHeading'
 import { createCourse, fetchPrice, resetPrice } from 'store/course'
-import { loadCourseTypes } from 'store/info'
 import { isAdmin } from 'services/auth'
 
 class AddCourseComponent extends Component {
@@ -42,8 +41,11 @@ class AddCourseComponent extends Component {
   }
 
   onSave(data) {
-    const { schoolId, createCourse } = this.props
-    createCourse({ schoolId, data: { ...data, supplier: schoolId.toString() } })
+    const { createCourse } = this.props
+    createCourse({
+      schoolId: data.supplier,
+      data
+    })
   }
 
   handleSetEditable(isEditable, date) {
@@ -106,7 +108,6 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       createCourse,
-      loadCourseTypes,
       fetchPrice,
       resetPrice
     },

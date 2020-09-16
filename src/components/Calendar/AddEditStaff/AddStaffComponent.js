@@ -39,8 +39,11 @@ class AddStaffComponent extends Component {
   }
 
   onSave(data) {
-    const { schoolId, createStaff } = this.props
-    createStaff({ schoolId, data: { ...data, supplier: schoolId.toString() } })
+    const { createStaff } = this.props
+    createStaff({
+      schoolId: data.supplier,
+      data
+    })
   }
 
   render() {

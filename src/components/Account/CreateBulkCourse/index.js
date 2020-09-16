@@ -4,8 +4,11 @@ import { Row, Col, Form } from 'reactstrap'
 import styles from './styles.scss'
 import Loading from 'components/Loading'
 import classnames from 'classnames'
-import SchoolSelect from 'components/SchoolSelect'
-import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
+import {
+  ConnectInput,
+  ConnectSingleSelect,
+  Button
+} from 'components/ConnectForm'
 import { filterExtraCourses } from 'services/course'
 
 class CreateBulkCourse extends React.Component {
@@ -14,7 +17,7 @@ class CreateBulkCourse extends React.Component {
 
     const course = {
       course_type_id: '',
-      instructor_id: '',
+      instructor_id: null,
       start_date: '',
       end_date: '',
       time: '',
@@ -36,45 +39,26 @@ class CreateBulkCourse extends React.Component {
       status: ''
     }
 
+    const { schools } = this.props
+
     this.state = {
       course: course,
+      schoolId: schools[0].id,
       useDefaultDays: false
     }
-    this.getSchoolName = this.getSchoolName.bind(this)
   }
 
   componentDidMount() {
-    const {
-      getInstructors,
-      info,
-      instructors,
-      loadCourseTypes,
-      schoolId
-    } = this.props
+    const { info } = this.props
 
-    if (!info.courseTypes || info.courseTypes.length === 0) {
-      loadCourseTypes({ schoolId: schoolId })
-    } else {
-      this.setState({
-        course: {
-          ...this.state.course,
-          course_type_id: info.courseTypes
-            .filter(filterExtraCourses)[0]
-            .id.toString()
-        }
-      })
-    }
-
-    if (!instructors || instructors.length === 0) {
-      getInstructors(schoolId)
-    } else {
-      this.setState({
-        course: {
-          ...this.state.course,
-          instructor_id: instructors[0].id.toString()
-        }
-      })
-    }
+    this.setState({
+      course: {
+        ...this.state.course,
+        course_type_id: info.courseTypes
+          .filter(filterExtraCourses)[0]
+          .id.toString()
+      }
+    })
   }
 
   componentDidUpdate(prevProps) {
@@ -82,17 +66,18 @@ class CreateBulkCourse extends React.Component {
       saving,
       error,
       history,
-      info: { courseTypes },
-      instructors
+      info: { courseTypes }
     } = this.props
+
     const {
-      course: { course_type_id, instructor_id }
+      course: { course_type_id }
     } = this.state
 
     if (prevProps.saving && !saving) {
       if (!error) {
-        const { start_date } = this.state.course
-        history.push(`/calendar/${start_date}`)
+        // const { start_date } = this.state.course
+        // history.push(`/calendar/${start_date}`)
+        history.push(`/calendar`)
       }
     }
 
@@ -106,21 +91,12 @@ class CreateBulkCourse extends React.Component {
         }
       })
     }
-
-    if (instructor_id === '' && instructors.length) {
-      this.setState({
-        course: {
-          ...this.state.course,
-          instructor_id: instructors[0].id.toString()
-        }
-      })
-    }
   }
 
   handleChangeRawEvent(event) {
-    let name = event.target.name
-    let { course } = this.state
-    course[name] = event.target.value
+    const { name, value } = event.target
+    const { course } = this.state
+    course[name] = value
     this.setState({ course })
   }
 
@@ -132,8 +108,9 @@ class CreateBulkCourse extends React.Component {
 
   handleSave(event) {
     event.preventDefault()
-    const { onSubmit, available_days, schoolId } = this.props
-    const {
+    const { onSubmit, available_days } = this.props
+    const { schoolId } = this.state
+    let {
       course_type_id,
       instructor_id,
       time,
@@ -168,6 +145,9 @@ class CreateBulkCourse extends React.Component {
     if (start_date > end_date) {
       return
     }
+    if (instructor_id === null) {
+      instructor_id = ''
+    }
     let school_course = {
       course_type_id,
       instructor_id,
@@ -190,15 +170,46 @@ class CreateBulkCourse extends React.Component {
     onSubmit({ school_course, repeat })
   }
 
-  getSchoolName(schoolId) {
-    const { schools } = this.props
-    for (var i = schools.length - 1; i >= 0; i--) {
-      if (schools[i].id === parseInt(schoolId)) return schools[i].name
+  handleChangeSchool = id => {
+    id = parseInt(id)
+    let { course_type_id, instructor_id } = this.state.course
+
+    const courseTypes = this.getCourseTypes(id)
+    const tmp = courseTypes.find(x => x.id === parseInt(course_type_id))
+    if (!tmp) {
+      course_type_id = ''
+      if (courseTypes.length) {
+        course_type_id = courseTypes[0].id
+      }
     }
+
+    const schoolInstructors = this.getInstructors(id)
+    const tmpI = schoolInstructors.find(x => x.id === parseInt(instructor_id))
+    if (!tmpI) {
+      instructor_id = null
+    }
+
+    this.setState({
+      schoolId: id,
+      course: { ...this.state.course, course_type_id, instructor_id }
+    })
+  }
+
+  getCourseTypes = schoolId => {
+    return this.props.info.courseTypes
+      .filter(filterExtraCourses)
+      .filter(x => x.schoolIds.includes(parseInt(schoolId)))
+  }
+
+  getInstructors = schoolId => {
+    let { instructors } = this.props
+
+    return instructors.filter(x => x.supplier.includes(parseInt(schoolId)))
   }
 
   render() {
-    let { schoolId, info, saving, instructors } = this.props
+    let { saving, schools } = this.props
+
     const {
       course_type_id,
       instructor_id,
@@ -218,7 +229,18 @@ class CreateBulkCourse extends React.Component {
       a_manual_bikes
     } = this.state.course
 
-    const courseTypes = info.courseTypes.filter(filterExtraCourses)
+    const { schoolId } = this.state
+
+    const courseTypes = this.getCourseTypes(schoolId)
+    const schoolInstructors = this.getInstructors(schoolId)
+
+    const instructorOptions = [
+      { id: null, name: 'Un-Assigned' },
+      ...schoolInstructors.map(instructor => ({
+        ...instructor,
+        name: `${instructor.first_name} ${instructor.last_name}`
+      }))
+    ]
 
     const isFullLicence = courseTypes
       .filter(type => type.constant.startsWith('FULL_LICENCE'))
@@ -226,26 +248,31 @@ class CreateBulkCourse extends React.Component {
 
     return (
       <div className={styles.container}>
-        <div className={styles.title}>
-          Create default course for{' '}
-          <div className={styles.select}>
-            <SchoolSelect selected={schoolId} small />
-          </div>
-        </div>
         <Loading loading={saving}>
           <Form onSubmit={this.handleSave.bind(this)}>
             <Row>
               <Col>
-                <ConnectSelect
+                <ConnectSingleSelect
+                  basic
+                  name="school"
+                  value={schoolId}
+                  label="Create default course for"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeSchool}
+                  required
+                  options={schools}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <ConnectSingleSelect
                   basic
                   name="course_type_id"
                   value={course_type_id}
-                  label=""
-                  valueArray={courseTypes.map(courseType => ({
-                    id: courseType.id,
-                    name: courseType.name
-                  }))}
-                  noSelectOption
+                  label="Course"
+                  valueArray={courseTypes}
                   onChange={this.handleChangeRawEvent.bind(this)}
                   raw
                   required
@@ -463,16 +490,12 @@ class CreateBulkCourse extends React.Component {
             </Row>
             <Row>
               <Col>
-                <ConnectSelect
+                <ConnectSingleSelect
                   basic
                   name="instructor_id"
                   value={instructor_id}
                   label="Staff"
-                  valueArray={instructors.map(instructor => ({
-                    id: instructor.id,
-                    name: `${instructor.first_name} ${instructor.last_name}`
-                  }))}
-                  noSelectOption
+                  valueArray={instructorOptions}
                   onChange={this.handleChangeRawEvent.bind(this)}
                   raw
                 />

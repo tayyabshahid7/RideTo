@@ -1,7 +1,10 @@
 import React from 'react'
 import styles from './styles.scss'
-import { Row, Col } from 'reactstrap'
-import { FullLicenceTypes, getAvailableBikeHires } from 'common/info'
+import {
+  getFullLicenseType,
+  getAvailableBikeHires
+  // getTestResultOptions
+} from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import {
   checkCustomerExists,
@@ -37,6 +40,7 @@ class AddOrderItem extends React.Component {
         user_last_name: '',
         user_phone: '',
         bike_hire: '',
+        test_result: '',
         payment_status: '',
         riding_experience: '',
         full_licence_type: '',
@@ -46,9 +50,6 @@ class AddOrderItem extends React.Component {
         notes: '',
         third_party_optin: false
       },
-      isFullLicence: this.props.course.course_type.constant.startsWith(
-        'FULL_LICENCE'
-      ),
       orderCreated: false,
       orderResponse: null,
       userDetailsValid: false,
@@ -64,12 +65,6 @@ class AddOrderItem extends React.Component {
 
     this.scrollIntoView = React.createRef()
     this.form = React.createRef()
-
-    this.handleCardNameChange = this.handleCardNameChange.bind(this)
-    this.handleShowPaymentClick = this.handleShowPaymentClick.bind(this)
-    this.handleStripeElementChange = this.handleStripeElementChange.bind(this)
-    this.handleCancel = this.handleCancel.bind(this)
-    this.sendStripePayment = this.sendStripePayment.bind(this)
   }
 
   componentDidMount() {
@@ -106,14 +101,14 @@ class AddOrderItem extends React.Component {
     }
   }
 
-  handleCancel() {
+  handleCancel = () => {
     if (!this.state.showPayment) {
       this.props.onCancel()
     }
     this.setState({ showPayment: false })
   }
 
-  handleChangeRawEvent(event) {
+  handleChangeRawEvent = event => {
     const { target } = event
     const { name } = target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -132,25 +127,17 @@ class AddOrderItem extends React.Component {
     }
   }
 
-  handleChange(typeName, value) {
+  handleChange = (typeName, value) => {
     const { order } = this.state
-    // const newOrder = { ...order }
+    order[typeName] = value
 
-    // let type = typeName.split('.')[0]
-    // let name = typeName.split('.')[1]
-
-    // if (!name) {
-    //   newOrder[type] = value
-    // } else {
-    //   newOrder[type][name] = value
-    // }
-
-    this.setState({
-      order: { ...order, [typeName]: value }
-    })
+    if (typeName === 'bike_hire') {
+      order.full_licence_type = getFullLicenseType(value)
+    }
+    this.setState({ order: { ...order } })
   }
 
-  handleShowPaymentClick() {
+  handleShowPaymentClick = () => {
     const { userDetailsValid } = this.state
     if (!userDetailsValid) {
       return
@@ -160,7 +147,7 @@ class AddOrderItem extends React.Component {
     })
   }
 
-  async sendStripePayment() {
+  sendStripePayment = async () => {
     const {
       onPayment,
       stripe,
@@ -199,7 +186,7 @@ class AddOrderItem extends React.Component {
     }
   }
 
-  async handleSave(event) {
+  handleSave = async event => {
     const { onSave, onCancel } = this.props
     const { order, showPayment, orderCreated } = this.state
 
@@ -216,8 +203,11 @@ class AddOrderItem extends React.Component {
         if (!confirm) return
       }
 
+      const data = Object.assign({}, order)
+      data.bike_type = data.bike_hire
+
       const orderResponse = await onSave(
-        !order.user_birthdate ? omit(order, 'user_birthdate') : order
+        !data.user_birthdate ? omit(data, 'user_birthdate') : data
       )
 
       if (!orderResponse) {
@@ -239,13 +229,13 @@ class AddOrderItem extends React.Component {
     }
   }
 
-  handleCardNameChange({ target: { value } }) {
+  handleCardNameChange = ({ target: { value } }) => {
     this.setState({
       cardName: value
     })
   }
 
-  handleStripeElementChange(el, name) {
+  handleStripeElementChange = (el, name) => {
     this.setState({ [`card${name}Complete`]: !el.empty && el.complete })
   }
 
@@ -264,7 +254,6 @@ class AddOrderItem extends React.Component {
       widgetSettings
     } = this.props
     const {
-      isFullLicence,
       showPayment,
       showPaymentConfirmation,
       cardName,
@@ -274,7 +263,7 @@ class AddOrderItem extends React.Component {
       cardPostCodeComplete,
       order: {
         bike_hire,
-        full_licence_type,
+        // test_result,
         payment_status,
         riding_experience,
         user_birthdate,
@@ -292,6 +281,13 @@ class AddOrderItem extends React.Component {
     const price = pricing && pricing.price
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
+
+    // const courseType = course.course_type.constant
+    // const isFullLicenceTest =
+    //   courseType.startsWith('FULL_LICENCE') && courseType.endsWith('TEST')
+
+    // const testResultOptions = getTestResultOptions()
+
     return (
       <div className={styles.container}>
         <div ref={this.scrollIntoView} />
@@ -299,13 +295,13 @@ class AddOrderItem extends React.Component {
           (!showPaymentConfirmation && (
             <div className={styles.header}>
               <span className={styles.leftCol}>
-                <h3 className={styles.title}>Add Order</h3>
+                <h3 className={styles.addTitle}>Add Order</h3>
               </span>
               {/* <span>Step 1 of 2</span> */}
             </div>
           ))}
         {!showPaymentConfirmation ? (
-          <form onSubmit={this.handleSave.bind(this)} ref={this.form}>
+          <form onSubmit={this.handleSave} ref={this.form}>
             <div className={classnames(showPayment && styles.hideUserForm)}>
               <ConnectInput
                 basic
@@ -314,7 +310,7 @@ class AddOrderItem extends React.Component {
                 label="First Name *"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
 
@@ -325,7 +321,7 @@ class AddOrderItem extends React.Component {
                 label="Surname *"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
 
@@ -336,7 +332,7 @@ class AddOrderItem extends React.Component {
                 label="Mobile"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
 
               <ConnectInput
@@ -346,7 +342,7 @@ class AddOrderItem extends React.Component {
                 label="Email *"
                 className="form-group"
                 type="email"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 required
               />
 
@@ -357,27 +353,10 @@ class AddOrderItem extends React.Component {
                 label="Birthdate"
                 className="form-group"
                 type="date"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
                 // pattern="(1[0-2]|0[1-9])\/(1[5-9]|2\d)"
                 hideAge
               />
-
-              {isFullLicence && (
-                <ConnectSelect
-                  placeholder
-                  basic
-                  name="full_licence_type"
-                  selected={full_licence_type}
-                  label="Licence Type *"
-                  valueArray={FullLicenceTypes}
-                  onChange={value => {
-                    this.handleChange('full_licence_type', value)
-                  }}
-                  required
-                  valueField="value"
-                  labelField="title"
-                />
-              )}
 
               <ConnectSelect
                 placeholder
@@ -435,18 +414,33 @@ class AddOrderItem extends React.Component {
                 labelField="title"
               />
 
+              {/* {isFullLicenceTest && (
+                <ConnectSelect
+                  placeholder
+                  basic
+                  name="test_result"
+                  selected={test_result}
+                  label="Test Result"
+                  valueArray={testResultOptions}
+                  onChange={value => {
+                    this.handleChange('test_result', value)
+                  }}
+                  required
+                />
+              )} */}
+
               <ConnectCheckbox
                 label="T&Cs Agreed"
                 checked={tandcs_agreed}
                 name="tandcs_agreed"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
 
               <ConnectCheckbox
                 label="Email Opt In"
                 checked={email_optin}
                 name="email_optin"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
 
               {enable_third_party_optin && (
@@ -454,7 +448,7 @@ class AddOrderItem extends React.Component {
                   label="3rd Party Opt In"
                   checked={third_party_optin}
                   name="third_party_optin"
-                  onChange={this.handleChangeRawEvent.bind(this)}
+                  onChange={this.handleChangeRawEvent}
                 />
               )}
 
@@ -465,7 +459,7 @@ class AddOrderItem extends React.Component {
                 label="Notes"
                 className="form-group"
                 type="text"
-                onChange={this.handleChangeRawEvent.bind(this)}
+                onChange={this.handleChangeRawEvent}
               />
             </div>
             {showPayment && (
@@ -479,22 +473,9 @@ class AddOrderItem extends React.Component {
                 />
               </div>
             )}
-            <Row>
-              <Col className="mt-3 text-right">
-                {/*
-                {!showPayment && (
-                  <Button
-                    small
-                    disabled={!userDetailsValid}
-                    type="button"
-                    color="primary"
-                    onClick={this.handleShowPaymentClick}>
-                    Payment
-                  </Button>
-                )}
-                */}
+            <div className={styles.actions}>
+              <div>
                 <Button
-                  small
                   type="submit"
                   color="primary"
                   disabled={
@@ -507,11 +488,13 @@ class AddOrderItem extends React.Component {
                   }>
                   {showPayment ? 'Take Payment' : 'Save'}
                 </Button>
-                <Button small color="white" onClick={this.handleCancel}>
+              </div>
+              <div>
+                <Button color="white" onClick={this.handleCancel}>
                   Cancel
                 </Button>
-              </Col>
-            </Row>
+              </div>
+            </div>
           </form>
         ) : (
           <div className={styles.successMessage}>

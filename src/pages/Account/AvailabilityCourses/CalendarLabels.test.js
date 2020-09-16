@@ -25,10 +25,10 @@ beforeEach(() => {
         id: 1,
         first_name: 'Jack',
         last_name: 'Smith',
-        colour: '#000'
+        colour: '#000',
+        supplier: [1]
       }
     ],
-    getInstructors: jest.fn(),
     loadCourseTypes: jest.fn(),
     schoolId: 1
   }
@@ -37,7 +37,6 @@ beforeEach(() => {
 
 it('Load functions should be called', () => {
   expect(props.loadCourseTypes).toHaveBeenCalled()
-  expect(props.getInstructors).toHaveBeenCalledTimes(0)
 })
 
 it('Button should be disabled by default', () => {

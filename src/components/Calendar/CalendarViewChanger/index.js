@@ -1,28 +1,53 @@
 import React from 'react'
-import styles from '../CalendarDateChanger/styles.scss'
-import { CALENDAR_VIEW } from 'common/constants'
+import styles from './styles.scss'
 import classnames from 'classnames'
+import { CALENDAR_VIEW } from 'common/constants'
 
 function CalendarDateChanger({ viewMode, handleCustomEvent }) {
-  const handleSelectChange = event => {
-    const {
-      target: { value }
-    } = event
+  const isDesktop = window.matchMedia('(min-width: 768px)').matches
 
+  const handleChange = viewMode => {
     handleCustomEvent('change-calendar-setting', {
-      viewMode: value
+      viewMode
     })
   }
 
   return (
     <div className={styles.container}>
-      <select
-        value={viewMode}
-        className={classnames(styles.select, styles.viewModeChange)}
-        onChange={handleSelectChange}>
-        <option value={CALENDAR_VIEW.WEEK}>Week</option>
-        <option value={CALENDAR_VIEW.MONTH}>Month</option>
-      </select>
+      <div
+        className={classnames({
+          'generic-button': true,
+          active: viewMode === CALENDAR_VIEW.DAY
+        })}
+        onClick={() => handleChange(CALENDAR_VIEW.DAY)}>
+        Day
+      </div>
+      <div
+        className={classnames({
+          'generic-button': true,
+          active: viewMode === CALENDAR_VIEW.WEEK
+        })}
+        onClick={() => handleChange(CALENDAR_VIEW.WEEK)}>
+        Week
+      </div>
+      <div
+        className={classnames({
+          'generic-button': true,
+          active: viewMode === CALENDAR_VIEW.MONTH
+        })}
+        onClick={() => handleChange(CALENDAR_VIEW.MONTH)}>
+        Month
+      </div>
+      {isDesktop && (
+        <div
+          className={classnames({
+            'generic-button': true,
+            active: viewMode === CALENDAR_VIEW.SHIFT
+          })}
+          onClick={() => handleChange(CALENDAR_VIEW.SHIFT)}>
+          Shift
+        </div>
+      )}
     </div>
   )
 }

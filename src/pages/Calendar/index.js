@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import _ from 'lodash'
 import classnames from 'classnames'
 import moment from 'moment'
 import CalendarComponent from 'components/Calendar'
@@ -11,101 +12,175 @@ import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseCompo
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
 import AddEventComponent from 'components/Calendar/AddEditEvent/AddEventComponent'
 import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventComponent'
-import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponent'
-import EditStaffComponent from 'components/Calendar/AddEditStaff/EditStaffComponent'
+// import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponent'
+// import EditStaffComponent from 'components/Calendar/AddEditStaff/EditStaffComponent'
+// import ShiftListComponent from 'components/Calendar/StaffShift/ShiftListComponent'
+import AddShiftComponent from 'components/Calendar/StaffShift/AddShiftComponent'
+import EditShiftComponent from 'components/Calendar/StaffShift/EditShiftComponent'
+
 import styles from './styles.scss'
-import { getCourses, updateCalendarSetting } from 'store/course'
+import {
+  getCourses,
+  updateCalendarSetting,
+  unsetSelectedDate
+} from 'store/course'
 import { getEvents } from 'store/event'
 import { getStaff } from 'store/staff'
-import { getInstructors } from 'store/instructor'
+import { toggleUser, toggleCourse } from 'store/calendar'
 import { getTestCentres } from 'store/testCentre'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 import { fetchSettings } from 'store/settings'
 
 class CalendarPage extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      filterOpen: false,
+      loadedSchools: []
+    }
+  }
+
   componentDidMount() {
-    this.loadData()
-    this.loadInstructors()
+    const { activeSchools } = this.props
+    this.loadData(activeSchools)
     this.props.getTestCentres()
 
     if (!this.props.settings) {
       this.props.fetchSettings()
     }
+    this.setState({ loadedSchools: activeSchools })
   }
 
   componentDidUpdate(prevProps) {
-    const { schoolId, calendar } = this.props
+    const { activeSchools, calendar, match } = this.props
+    const { loadedSchools } = this.state
+    const diffSchools = _.difference(activeSchools, loadedSchools)
+
+    if (diffSchools.length) {
+      this.setState({ loadedSchools: [...loadedSchools, ...diffSchools] })
+    }
+
     if (
-      schoolId !== prevProps.schoolId ||
+      diffSchools.length ||
       ((calendar.month !== prevProps.calendar.month ||
         calendar.year !== prevProps.calendar.year ||
         calendar.day !== prevProps.calendar.day ||
         calendar.viewMode !== prevProps.calendar.viewMode) &&
         !calendar.silent)
     ) {
-      this.loadData()
+      this.loadData(activeSchools)
+    }
+
+    if (
+      prevProps.match.params.date !== match.params.date &&
+      !match.params.date
+    ) {
+      this.props.unsetSelectedDate()
     }
   }
 
-  loadInstructors() {
-    const { getInstructors, schoolId } = this.props
-    getInstructors(schoolId)
+  toggleFilter = value => {
+    this.setState({ filterOpen: value })
   }
 
-  loadData() {
-    this.loadCourses()
-    this.loadEvents()
+  loadData(schoolIds) {
+    this.loadSchoolCourses(schoolIds)
+    this.loadEvents(schoolIds)
     this.loadStaff()
   }
 
-  loadCourses(reset = false) {
-    const { getCourses, schoolId, calendar } = this.props
+  loadSchoolCourses(schoolIds) {
+    const { getCourses, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
     const formatedFirstDate = moment(firstDate).format(DATE_FORMAT)
     const formatedLastDate = moment(lastDate).format(DATE_FORMAT)
-    const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
 
-    if (!reset && calendar.loadedMonths.includes(month)) {
-      return
-    }
+    schoolIds.forEach(schoolId => {
+      const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
+      if (
+        Array.isArray(calendar.loadedMonths) &&
+        calendar.loadedMonths.includes(month)
+      ) {
+        return
+      }
 
-    getCourses({
-      schoolId,
-      firstDate: formatedFirstDate,
-      lastDate: formatedLastDate,
-      month,
-      reset
+      getCourses({
+        schoolId,
+        firstDate: formatedFirstDate,
+        lastDate: formatedLastDate,
+        month
+      })
     })
   }
 
-  loadEvents() {
-    const { getEvents, schoolId, calendar, eventCalendar } = this.props
+  loadCourses = (reset = false) => {
+    const { getCourses, activeSchools, calendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
-    const month = `${calendar.year}-${calendar.month}-${schoolId}`
+    const formatedFirstDate = moment(firstDate).format(DATE_FORMAT)
+    const formatedLastDate = moment(lastDate).format(DATE_FORMAT)
 
-    if (eventCalendar.loadedMonths.includes(month)) {
-      return
-    }
+    activeSchools.forEach(schoolId => {
+      const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
 
-    getEvents({
-      schoolId,
-      firstDate: moment(firstDate).format(DATE_FORMAT),
-      lastDate: moment(lastDate).format(DATE_FORMAT),
-      month
+      if (!reset && calendar.loadedMonths.includes(month)) {
+        return
+      }
+
+      getCourses({
+        schoolId,
+        firstDate: formatedFirstDate,
+        lastDate: formatedLastDate,
+        month,
+        reset
+      })
+    })
+  }
+
+  loadEvents(schoolIds) {
+    const { getEvents, calendar, eventCalendar } = this.props
+    const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
+
+    schoolIds.forEach(schoolId => {
+      let month = `${calendar.year}-${calendar.month}-${schoolId}`
+      if (eventCalendar.loadedMonths.includes(month)) {
+        return
+      }
+
+      if (
+        calendar.viewMode === CALENDAR_VIEW.WEEK ||
+        calendar.viewMode === CALENDAR_VIEW.DAY
+      ) {
+        month = null
+      }
+
+      getEvents({
+        schoolId,
+        firstDate: moment(firstDate).format(DATE_FORMAT),
+        lastDate: moment(lastDate).format(DATE_FORMAT),
+        month
+      })
     })
   }
 
   loadStaff() {
-    const { getStaff, schoolId, calendar, staffCalendar } = this.props
+    const { getStaff, calendar, staffCalendar } = this.props
     const { firstDate, lastDate } = this.getFirstAndLastDate(calendar)
-    const month = `${calendar.year}-${calendar.month}-${schoolId}`
+
+    let month = `${calendar.year}-${calendar.month}`
 
     if (staffCalendar.loadedMonths.includes(month)) {
       return
     }
 
+    if (
+      calendar.viewMode === CALENDAR_VIEW.WEEK ||
+      calendar.viewMode === CALENDAR_VIEW.DAY
+    ) {
+      month = null
+    }
+
     getStaff({
-      schoolId,
       firstDate: moment(firstDate).format(DATE_FORMAT),
       lastDate: moment(lastDate).format(DATE_FORMAT),
       month
@@ -114,7 +189,7 @@ class CalendarPage extends Component {
 
   getFirstAndLastDate({ year, month, day, viewMode }) {
     let oneDay = 1000 * 60 * 60 * 24
-    if (viewMode === CALENDAR_VIEW.MONTH) {
+    if (viewMode === CALENDAR_VIEW.MONTH || viewMode === CALENDAR_VIEW.SHIFT) {
       let firstDay = new Date(year, month, 1)
       let dayOne = firstDay.getDay()
       if (dayOne === 0) {
@@ -131,6 +206,13 @@ class CalendarPage extends Component {
     }
 
     let firstDay = new Date(year, month, day)
+    if (viewMode === CALENDAR_VIEW.DAY) {
+      return {
+        firstDate: firstDay,
+        lastDate: firstDay
+      }
+    }
+
     let dayOne = firstDay.getDay()
     if (dayOne === 0) {
       dayOne = 6
@@ -143,19 +225,84 @@ class CalendarPage extends Component {
     return { firstDate: firstDateInWeekCalendar, lastDate: date }
   }
 
-  generateDaysDataFromCalendar(
+  generateDaysDataFromCalendar = (
     { courses, ...calendar },
     eventCalendar,
     staffCalendar
-  ) {
-    const { events } = eventCalendar
+  ) => {
+    const {
+      instructors,
+      suppliers,
+      inactiveCourses,
+      activeSchools
+    } = this.props
+
+    courses = courses
+      .filter(x => activeSchools.includes(x.supplier))
+      .filter(x => !inactiveCourses.includes(x.course_type.id))
+
+    courses.forEach(course => {
+      if (course.instructor && course.instructor.id) {
+        const tmp = instructors.find(x => x.id === course.instructor.id)
+        if (tmp) {
+          course.instructor = tmp
+        }
+      }
+      const supTmp = suppliers.find(x => x.id === course.supplier)
+      if (supTmp) {
+        course.supplierName = supTmp.name
+      }
+    })
+
+    let { events } = eventCalendar
+
+    events = events.filter(x => activeSchools.includes(x.supplier))
+    events = events.sort((a, b) => {
+      if (a.all_day) {
+        return -1
+      } else if (b.all_day) {
+        return 1
+      } else {
+        return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
+      }
+    })
+    events.forEach(event => {
+      const supTmp = suppliers.find(x => x.id === event.supplier)
+      if (supTmp) {
+        event.supplierName = supTmp.name
+      }
+      if (event.all_day) {
+        event.start_time = event.start_time.substr(0, 11) + '05:00:00Z'
+        event.end_time = event.end_time.substr(0, 11) + '22:59:00Z'
+      }
+    })
+
     const { staff } = staffCalendar
+
+    staff.forEach(item => {
+      const tmp = instructors.find(x => x.id === item.instructor_id)
+      if (tmp) {
+        item.instructor = tmp
+      }
+
+      const supTmp = suppliers.find(x => x.id === item.supplier_id)
+      if (supTmp) {
+        item.supplierName = supTmp.name
+      }
+    })
+
     let dates = []
-    if (calendar.viewMode === CALENDAR_VIEW.MONTH) {
+    if (
+      calendar.viewMode === CALENDAR_VIEW.MONTH ||
+      calendar.viewMode === CALENDAR_VIEW.SHIFT
+    ) {
       dates = this.generateCalendarDaysForMonth(calendar)
-    } else {
+    } else if (calendar.viewMode === CALENDAR_VIEW.WEEK) {
       dates = this.generateCalendarDaysForWeek(calendar)
+    } else {
+      dates = this.generateCalendarDaysForDay(calendar)
     }
+
     return dates.map(date => {
       let dateInString = moment(date).format('YYYY-MM-DD')
 
@@ -177,16 +324,12 @@ class CalendarPage extends Component {
           new Date(event.start_time) < oneDayLater &&
           new Date(event.end_time) > date
       )
-      let staffForDate = staff
-        .map(s => ({
-          ...s,
-          start_time: `${s.date}T${s.start_time}`,
-          end_time: `${s.date}T${s.end_time}`
-        }))
-        .filter(
-          s =>
-            new Date(s.start_time) < oneDayLater && new Date(s.end_time) > date
-        )
+      let staffForDate = staff.filter(
+        s =>
+          moment(s.start_date, 'YYYY-MM-DD').isSameOrBefore(moment(date)) &&
+          moment(s.end_date, 'YYYY-MM-DD').isSameOrAfter(moment(date))
+      )
+
       return {
         date,
         courses: coursesForDate,
@@ -196,12 +339,12 @@ class CalendarPage extends Component {
     })
   }
 
-  generateCalendarDaysForMonth({ year, month, day }) {
+  generateCalendarDaysForMonth({ year, month, day, viewMode }) {
     let { firstDate } = this.getFirstAndLastDate({
       year,
       month,
       day,
-      viewMode: CALENDAR_VIEW.MONTH
+      viewMode
     })
 
     let dayLast = new Date(year, month + 1, 0)
@@ -235,13 +378,24 @@ class CalendarPage extends Component {
 
     return days
   }
-  handleCustomEvent(type, params) {
+
+  generateCalendarDaysForDay({ year, month, day }) {
+    return [new Date(year, month, day)]
+  }
+
+  handleCustomEvent = (type, params) => {
     const { updateCalendarSetting, calendar } = this.props
     if (type === 'change-calendar-setting') {
       updateCalendarSetting(params)
+      if (params.viewMode) {
+        this.props.history.push(`/calendar`)
+      }
     } else if (type === 'prev' || type === 'next') {
       let nextDate
-      if (calendar.viewMode === CALENDAR_VIEW.MONTH) {
+      if (
+        calendar.viewMode === CALENDAR_VIEW.MONTH ||
+        calendar.viewMode === CALENDAR_VIEW.SHIFT
+      ) {
         nextDate = new Date(
           calendar.year,
           calendar.month + (type === 'prev' ? -1 : 1),
@@ -266,6 +420,12 @@ class CalendarPage extends Component {
           calendar.month,
           calendar.day + (type === 'prev' ? -7 : 7)
         )
+      } else {
+        nextDate = new Date(
+          calendar.year,
+          calendar.month,
+          calendar.day + (type === 'prev' ? -1 : 1)
+        )
       }
       updateCalendarSetting({
         year: nextDate.getFullYear(),
@@ -281,39 +441,12 @@ class CalendarPage extends Component {
     }
   }
 
-  handleChangeDate({ month, year }) {
-    const { calendar, updateCalendarSetting } = this.props
-    let date = moment({
-      year: calendar.year,
-      month: calendar.month,
-      day: calendar.day
-    })
-
-    const endDay = moment({
-      year: year || calendar.year,
-      month: month || calendar.month
-    })
-      .endOf('month')
-      .date()
-
-    if (calendar.day > endDay) {
-      date.date(endDay)
-    }
-
-    if (month) {
-      date.month(parseInt(month))
-    } else if (year) {
-      date.year(parseInt(year))
-    }
-
-    updateCalendarSetting({
-      year: date.year(),
-      month: date.month(),
-      day: date.date()
-    })
+  handleChangeDate = ({ day, month, year }) => {
+    const { updateCalendarSetting } = this.props
+    return updateCalendarSetting({ day, month, year })
   }
 
-  handleMobileCellClick(dateStr) {
+  handleMobileCellClick = dateStr => {
     const { updateCalendarSetting } = this.props
     const date = moment(dateStr)
 
@@ -328,6 +461,14 @@ class CalendarPage extends Component {
     })
   }
 
+  handleToggleUser = (userIds, active) => {
+    this.props.toggleUser({ userIds, active })
+  }
+
+  handleToggleCourse = (courseIds, active) => {
+    this.props.toggleCourse({ courseIds, active })
+  }
+
   render() {
     const {
       calendar,
@@ -335,8 +476,16 @@ class CalendarPage extends Component {
       staffCalendar,
       history,
       location,
+      instructors,
+      inactiveUsers,
+      inactiveCourses,
+      activeSchools,
+      suppliers,
+      settings,
       match
     } = this.props
+    const { filterOpen } = this.state
+
     let days = this.generateDaysDataFromCalendar(
       calendar,
       eventCalendar,
@@ -354,15 +503,25 @@ class CalendarPage extends Component {
           <CalendarComponent
             days={days}
             calendar={calendar}
+            suppliers={suppliers}
             eventCalendar={eventCalendar}
             staffCalendar={staffCalendar}
-            handleCustomEvent={this.handleCustomEvent.bind(this)}
-            handleChangeDate={this.handleChangeDate.bind(this)}
+            handleCustomEvent={this.handleCustomEvent}
+            handleChangeDate={this.handleChangeDate}
             history={history}
             calendarPath={calendarPath}
             match={match}
-            handleMobileCellClick={this.handleMobileCellClick.bind(this)}
+            handleMobileCellClick={this.handleMobileCellClick}
+            toggleFilter={this.toggleFilter}
             sideBarOpen={!calendarPath}
+            filterOpen={filterOpen}
+            activeSchools={activeSchools}
+            instructors={instructors}
+            inactiveUsers={inactiveUsers}
+            settings={settings}
+            handleToggleUser={this.handleToggleUser}
+            inactiveCourses={inactiveCourses}
+            handleToggleCourse={this.handleToggleCourse}
           />
         </div>
         <RightPanel location={location}>
@@ -370,20 +529,14 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date"
             render={routeProps => (
-              <CoursesPanel
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
+              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
           />
           <Route
             exact
             path="/calendar/:date/courses/:courseId"
             render={routeProps => (
-              <CoursesPanel
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
+              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
           />
           <Route
@@ -392,7 +545,7 @@ class CalendarPage extends Component {
             render={routeProps => (
               <AddCourseComponent
                 {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
+                loadCourses={this.loadCourses}
               />
             )}
           />
@@ -402,69 +555,58 @@ class CalendarPage extends Component {
             render={routeProps => (
               <EditCourseComponent
                 {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
+                loadCourses={this.loadCourses}
               />
             )}
           />
           <Route
             exact
             path="/calendar/events/create"
-            render={routeProps => (
-              <AddEventComponent
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
-            )}
+            render={routeProps => <AddEventComponent {...routeProps} />}
           />
           <Route
             exact
             path="/calendar/:date/events/:eventId"
             render={routeProps => (
-              <CoursesPanel
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
+              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
           />
           <Route
             exact
             path="/calendar/:date/events/:eventId/edit"
-            render={routeProps => (
-              <EditEventComponent
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
-            )}
+            render={routeProps => <EditEventComponent {...routeProps} />}
           />
-          <Route
+          {/* <Route
             exact
             path="/calendar/staff/create"
-            render={routeProps => (
-              <AddStaffComponent
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
-            )}
-          />
-          <Route
+            render={routeProps => <AddStaffComponent {...routeProps} />}
+          /> */}
+          {/* <Route
             exact
             path="/calendar/:date/staff/:staffId"
             render={routeProps => (
-              <CoursesPanel
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
+              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
             )}
+          /> */}
+          {/* <Route
+            exact
+            path="/calendar/:date/staff/:staffId/:diaryId/edit"
+            render={routeProps => <EditStaffComponent {...routeProps} />}
+          /> */}
+          {/* <Route
+            exact
+            path="/calendar/:date/shifts/:staffId/list"
+            render={routeProps => <ShiftListComponent {...routeProps} />}
+          /> */}
+          <Route
+            exact
+            path="/calendar/:date/shifts/add"
+            render={routeProps => <AddShiftComponent {...routeProps} />}
           />
           <Route
             exact
-            path="/calendar/:date/staff/:staffId/:diaryId/edit"
-            render={routeProps => (
-              <EditStaffComponent
-                {...routeProps}
-                loadCourses={this.loadCourses.bind(this)}
-              />
-            )}
+            path="/calendar/:date/shifts/:staffId/:diaryId/edit"
+            render={routeProps => <EditShiftComponent {...routeProps} />}
           />
         </RightPanel>
       </div>
@@ -474,27 +616,17 @@ class CalendarPage extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { auth, course, event, staff } = state
-  const schoolId = auth.schoolId || auth.user.suppliers[0].id
-  const isSupplier = course => course.supplier === parseInt(schoolId)
-  const calendar = {
-    ...course.calendar,
-    courses: course.calendar.courses.filter(isSupplier)
-  }
-  const eventCalendar = {
-    ...event.calendar,
-    events: event.calendar.events.filter(isSupplier)
-  }
-  const staffCalendar = {
-    ...staff.calendar,
-    staffs: staff.calendar.staff.filter(isSupplier)
-  }
 
   return {
-    schoolId,
-    calendar,
-    eventCalendar,
-    staffCalendar,
-    settings: state.settings.settings
+    activeSchools: auth.activeSchools,
+    calendar: course.calendar,
+    eventCalendar: event.calendar,
+    staffCalendar: staff.calendar,
+    settings: state.settings.settings,
+    instructors: state.instructor.instructors,
+    inactiveUsers: state.calendar.inactiveUsers,
+    inactiveCourses: state.calendar.inactiveCourses,
+    suppliers: state.auth.user.suppliers
   }
 }
 
@@ -504,10 +636,12 @@ const mapDispatchToProps = dispatch =>
       getCourses,
       getEvents,
       getStaff,
-      getInstructors,
       getTestCentres,
       updateCalendarSetting,
-      fetchSettings
+      unsetSelectedDate,
+      fetchSettings,
+      toggleUser,
+      toggleCourse
     },
     dispatch
   )

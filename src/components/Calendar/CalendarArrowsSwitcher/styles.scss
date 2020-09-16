@@ -9,37 +9,42 @@
 .prev,
 .next,
 .today {
-  padding: 0 0.5rem;
   appearance: none;
   border: 0;
-  font-size: 1.75rem;
-  line-height: 1;
-  border: 1px solid #e4e4e4;
-  min-width: 30px;
-  min-height: 38px;
-  background: #fff;
+  font-size: 0;
+  width: 40px;
+  background: var(--color-primary-bg);
+  color: var(--color-dark-light) !important;
+  border-radius: 20px;
+  transition: all ease 0.3s;
+  padding: 0;
 
-  @media (max-width: 768px) {
-    border-radius: 5px;
+  i {
+    font-size: 16px;
+    line-height: 40px;
   }
 
   &:focus {
     outline: 0;
   }
+
+  &:hover {
+    color: white !important;
+    background: var(--color-primary);
+  }
 }
 
 .prev {
-  border-right: 0;
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
+  margin-right: 4px;
 }
 
 .next {
-  border-left: 0;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  margin-left: 4px;
 }
 
 .today {
-  font-size: 1rem;
+  font-size: 13px;
+  font-weight: 500;
+  width: auto;
+  padding: 0 16px;
 }

@@ -1,22 +1,27 @@
 import {
-  fetchSingleStaff,
-  fetchStaff,
-  deleteSingleStaff,
-  updateSchoolStaff,
-  createSchoolStaff
+  fetchSingleDiary,
+  fetchDiaries,
+  deleteSingleDiary,
+  updateSingleDiary,
+  createDiary
 } from 'services/staff'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 import { actions as notificationActions } from './notification'
+import { shiftDeleted } from 'store/course'
 
 import uniqBy from 'lodash/uniqBy'
 
 const FETCH_ALL = createRequestTypes('rideto/staff/FETCH/ALL')
 const FETCH_FOR_DAY = createRequestTypes('rideto/staff/FETCH/DAY')
+const FETCH_FOR_FORM = createRequestTypes('rideto/staff/FETCH/FORM')
 export const FETCH_SINGLE = createRequestTypes('rideto/staff/FETCH/SINGLE')
 const DELETE = createRequestTypes('rideto/staff/DELETE')
 const UPDATE = createRequestTypes('rideto/staff/UPDATE')
 const CREATE = createRequestTypes('rideto/staff/CREATE')
+const RESET_MONTHS = 'rideto/staff/RESET_MONTHS'
+const RESET_DATA = 'rideto/staff/RESET_DATA'
+const LOAD_MONTH_DAY = 'rideto/staff/LOAD_MONTH_DAY'
 
 export const updateDiaryColor = instructor => dispatch => {
   dispatch({
@@ -27,8 +32,15 @@ export const updateDiaryColor = instructor => dispatch => {
   })
 }
 
+export const resetData = () => dispatch => {
+  dispatch({ type: RESET_DATA })
+}
+
+export const resetLoadedMonths = () => dispatch => {
+  dispatch({ type: RESET_MONTHS })
+}
+
 export const getSingleStaff = ({
-  schoolId,
   staffId,
   reset = false,
   diaryId
@@ -36,7 +48,7 @@ export const getSingleStaff = ({
   dispatch({ type: FETCH_SINGLE[REQUEST], reset })
 
   try {
-    const staff = await fetchSingleStaff(schoolId, staffId, diaryId)
+    const staff = await fetchSingleDiary(staffId, diaryId)
     dispatch({
       type: FETCH_SINGLE[SUCCESS],
       data: {
@@ -48,11 +60,41 @@ export const getSingleStaff = ({
   }
 }
 
-export const getDayStaff = ({ schoolId, date }) => async dispatch => {
+export const loadMonthDay = date => async dispatch => {
+  try {
+    const staff = await fetchDiaries(date, date)
+
+    dispatch({
+      type: LOAD_MONTH_DAY,
+      data: {
+        staff
+      }
+    })
+  } catch (err) {}
+}
+
+export const getDaysStaff = ({ start_date, end_date }) => async dispatch => {
+  dispatch({ type: FETCH_FOR_FORM[REQUEST] })
+
+  try {
+    const staff = await fetchDiaries(start_date, end_date)
+
+    dispatch({
+      type: FETCH_FOR_FORM[SUCCESS],
+      data: {
+        staff
+      }
+    })
+  } catch (error) {
+    dispatch({ type: FETCH_FOR_FORM[FAILURE], error })
+  }
+}
+
+export const getDayStaff = ({ date }) => async dispatch => {
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {
-    const { results: staff } = await fetchStaff(schoolId, date, date)
+    const staff = await fetchDiaries(date, date)
 
     dispatch({
       type: FETCH_FOR_DAY[SUCCESS],
@@ -65,15 +107,12 @@ export const getDayStaff = ({ schoolId, date }) => async dispatch => {
   }
 }
 
-export const deleteStaff = ({
-  schoolId,
-  staffId,
-  diaryId
-}) => async dispatch => {
+export const deleteStaff = ({ staffId, diaryId }) => async dispatch => {
   dispatch({ type: DELETE[REQUEST] })
 
   try {
-    await deleteSingleStaff(schoolId, staffId, diaryId)
+    const response = await deleteSingleDiary(staffId, diaryId)
+    dispatch(shiftDeleted(response))
     notificationActions.dispatchSuccess(dispatch, 'Staff deleted')
     dispatch({
       type: DELETE[SUCCESS],
@@ -88,16 +127,11 @@ export const deleteStaff = ({
   }
 }
 
-export const getStaff = ({
-  schoolId,
-  firstDate,
-  lastDate,
-  month
-}) => async dispatch => {
+export const getStaff = ({ firstDate, lastDate, month }) => async dispatch => {
   dispatch({ type: FETCH_ALL[REQUEST] })
 
   try {
-    const { results: staff } = await fetchStaff(schoolId, firstDate, lastDate)
+    const staff = await fetchDiaries(firstDate, lastDate)
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: {
@@ -110,22 +144,10 @@ export const getStaff = ({
   }
 }
 
-export const updateStaff = ({
-  schoolId,
-  staffId,
-  diaryId,
-  data,
-  fullUpdate = false
-}) => async dispatch => {
+export const updateStaff = ({ staffId, diaryId, data }) => async dispatch => {
   dispatch({ type: UPDATE[REQUEST] })
   try {
-    let response = await updateSchoolStaff(
-      schoolId,
-      staffId,
-      diaryId,
-      data,
-      fullUpdate
-    )
+    let response = await updateSingleDiary(staffId, diaryId, data)
     dispatch({
       type: UPDATE[SUCCESS],
       data: { staff: response }
@@ -137,13 +159,13 @@ export const updateStaff = ({
   }
 }
 
-export const createStaff = ({ schoolId, data }) => async dispatch => {
+export const createStaff = ({ data }) => async dispatch => {
   dispatch({ type: CREATE[REQUEST] })
   try {
-    let response = await createSchoolStaff(schoolId, data)
+    let response = await createDiary(data)
     dispatch({
       type: CREATE[SUCCESS],
-      data: { staff: response }
+      data: { staffs: response }
     })
     notificationActions.dispatchSuccess(dispatch, 'Staff added')
   } catch (error) {
@@ -152,7 +174,7 @@ export const createStaff = ({ schoolId, data }) => async dispatch => {
   }
 }
 
-const initialState = {
+const defaultState = {
   single: {
     staff: null,
     loading: false,
@@ -164,12 +186,21 @@ const initialState = {
     loading: false,
     error: null
   },
+  days: {
+    staff: [],
+    loading: false,
+    error: null
+  },
   calendar: {
     staff: [],
     loading: false,
     error: null,
     loadedMonths: []
   }
+}
+
+const initialState = {
+  ...JSON.parse(JSON.stringify(defaultState))
 }
 
 export default function reducer(state = initialState, action) {
@@ -242,21 +273,24 @@ export default function reducer(state = initialState, action) {
     case DELETE[REQUEST]:
       return {
         ...state,
-        single: { loading: true }
+        single: { ...state.single, saving: true }
       }
-    case DELETE[SUCCESS]:
-      dayStaff = state.day.staff.filter(
-        staff => staff.id !== action.data.diaryId
-      )
-      calendarStaff = state.calendar.staff.filter(
-        staff => staff.id !== action.data.diaryId
-      )
+    case DELETE[SUCCESS]: {
+      const diaryId = parseInt(action.data.diaryId)
+      dayStaff = state.day.staff.filter(staff => staff.id !== diaryId)
+      calendarStaff = state.calendar.staff.filter(staff => staff.id !== diaryId)
 
       return {
         ...state,
-        single: { loading: false, staff: null, error: null },
+        single: { saving: false, staff: null, error: null },
         day: { ...state.day, staff: dayStaff },
         calendar: { ...state.calendar, staff: calendarStaff }
+      }
+    }
+    case DELETE[FAILURE]:
+      return {
+        ...state,
+        single: { ...state.single, saving: false, error: action.error }
       }
     case FETCH_FOR_DAY[REQUEST]:
       return {
@@ -285,6 +319,42 @@ export default function reducer(state = initialState, action) {
           error: action.error
         }
       }
+    case FETCH_FOR_FORM[REQUEST]:
+      return {
+        ...state,
+        days: {
+          staff: [],
+          loading: true
+        }
+      }
+    case FETCH_FOR_FORM[SUCCESS]:
+      return {
+        ...state,
+        days: {
+          loading: false,
+          staff: [...action.data.staff]
+        }
+      }
+    case FETCH_FOR_FORM[FAILURE]:
+      return {
+        ...state,
+        days: {
+          loading: false,
+          staff: [],
+          error: action.error
+        }
+      }
+    case LOAD_MONTH_DAY: {
+      return {
+        ...state,
+        calendar: {
+          ...state.calendar,
+          loading: false,
+          staff: uniqBy([...state.calendar.staff, ...action.data.staff], 'id'),
+          error: null
+        }
+      }
+    }
     case FETCH_ALL[REQUEST]:
       return {
         ...state,
@@ -293,7 +363,12 @@ export default function reducer(state = initialState, action) {
           loading: true
         }
       }
-    case FETCH_ALL[SUCCESS]:
+    case FETCH_ALL[SUCCESS]: {
+      const loadedMonths = state.calendar.loadedMonths.slice()
+      if (action.data.month) {
+        loadedMonths.push(action.data.month)
+      }
+
       return {
         ...state,
         calendar: {
@@ -301,9 +376,10 @@ export default function reducer(state = initialState, action) {
           loading: false,
           staff: uniqBy([...state.calendar.staff, ...action.data.staff], 'id'),
           error: null,
-          loadedMonths: [...state.calendar.loadedMonths, action.data.month]
+          loadedMonths
         }
       }
+    }
     case FETCH_ALL[FAILURE]:
       return {
         ...state,
@@ -318,11 +394,11 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: true, error: null }
       }
-    case UPDATE[SUCCESS]:
-      dayStaff = state.day.staff.map(staff =>
+    case UPDATE[SUCCESS]: {
+      const dayStaff = state.day.staff.map(staff =>
         staff.id !== action.data.staff.id ? staff : { ...action.data.staff }
       )
-      calendarStaff = state.calendar.staff.map(staff =>
+      const calendarStaff = state.calendar.staff.map(staff =>
         staff.id !== action.data.staff.id ? staff : { ...action.data.staff }
       )
       return {
@@ -331,6 +407,7 @@ export default function reducer(state = initialState, action) {
         day: { ...state.day, staff: dayStaff },
         calendar: { ...state.calendar, staff: calendarStaff }
       }
+    }
     case UPDATE[FAILURE]:
       return {
         ...state,
@@ -342,14 +419,13 @@ export default function reducer(state = initialState, action) {
         single: { staff: null, saving: true, error: null }
       }
     case CREATE[SUCCESS]:
-      dayStaff =
-        action.data.staff.date === state.day.date
-          ? [action.data.staff, ...state.day.staff]
-          : state.day.staff
-      calendarStaff = [action.data.staff, ...state.calendar.staff]
+      const dayItem = action.data.staffs.find(x => x.date === state.day.date)
+
+      dayStaff = dayItem ? [dayItem, ...state.day.staff] : state.day.staff
+      calendarStaff = [...action.data.staffs, ...state.calendar.staff]
       return {
         ...state,
-        single: { saving: false, staff: action.data.staff, error: null },
+        single: { saving: false, staff: action.data.staffs[0], error: null },
         day: { ...state.day, staff: dayStaff },
         calendar: { ...state.calendar, staff: calendarStaff }
       }
@@ -358,6 +434,17 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
       }
+    case RESET_DATA: {
+      return {
+        ...JSON.parse(JSON.stringify(defaultState))
+      }
+    }
+    case RESET_MONTHS: {
+      return {
+        ...state,
+        calendar: { ...state.calendar, loadedMonths: [] }
+      }
+    }
     default:
       return state
   }

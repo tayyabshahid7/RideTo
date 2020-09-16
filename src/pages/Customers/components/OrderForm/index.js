@@ -10,28 +10,16 @@ import {
   Button
 } from 'components/ConnectForm'
 
-import { FullLicenceTypes } from 'common/info'
+import { FullLicenceTypes, getTestResultOptions } from 'common/info'
 import Loading from 'components/Loading'
 import {
-  getBikeHireOptions,
+  getCustomerBikeTypeOptions,
   getPaymentOptions,
   getTrainingStatusOptions,
   isRideTo,
   isConnectManual
 } from 'services/order'
 import styles from './OrderForm.scss'
-
-const get_bike_hire_option = option => {
-  if (option === 'BIKE_TYPE_MANUAL') {
-    return 'manual'
-  } else if (option === 'BIKE_TYPE_AUTO') {
-    return 'auto'
-  } else if (option === 'BIKE_TYPE_NONE') {
-    return 'no'
-  } else {
-    return option
-  }
-}
 
 const getTime = startTime => {
   if (startTime) {
@@ -143,12 +131,20 @@ class OrderForm extends React.Component {
     const isFullLicence =
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE')
-    const bikeHireOptions = Object.keys(getBikeHireOptions()).map(id => {
+
+    const bikeOptions = getCustomerBikeTypeOptions(isFullLicence)
+    const bikeHireOptions = Object.keys(bikeOptions).map(id => {
       return {
         id,
-        name: getBikeHireOptions(isFullLicence)[id]
+        name: bikeOptions[id]
       }
     })
+    const isFullLicenceTest =
+      editable.selected_licence &&
+      editable.selected_licence.startsWith('FULL_LICENCE') &&
+      editable.selected_licence.endsWith('TEST')
+
+    const testResultOptions = getTestResultOptions()
 
     const trainingDate = moment(getDate(editable.training_date_time))
 
@@ -217,13 +213,27 @@ class OrderForm extends React.Component {
                 disabled={inputsDisabled}
                 label="Bike Hire"
                 options={bikeHireOptions}
-                selected={get_bike_hire_option(editable.bike_type) || ''}
+                selected={editable.bike_type}
                 name="bike_type"
                 onChange={value => {
                   this.handleChange('bike_type', value)
                 }}
               />
             </Col>
+            {isFullLicenceTest && (
+              <Col sm="4">
+                <ConnectSelect
+                  disabled={inputsDisabled}
+                  label="Test Result"
+                  options={testResultOptions}
+                  selected={editable.test_result}
+                  name="test_result"
+                  onChange={value => {
+                    this.handleChange('test_result', value)
+                  }}
+                />
+              </Col>
+            )}
             <Col sm="4">
               <ConnectSelect
                 disabled={inputsDisabled}
