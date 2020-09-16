@@ -75,6 +75,10 @@ const CalendarWeekCourse = React.forwardRef(
       return `${customerNames.length} ${tmp} (${customerNames.join(', ')})`
     }
 
+    const tmpTime = moment(course.time, 'HH:mm:ss')
+    const startTime = tmpTime.format('HH:mm')
+    const endTime = tmpTime.add(course.duration, 'minutes').format('HH:mm')
+
     return (
       <div
         ref={ref}
@@ -102,8 +106,18 @@ const CalendarWeekCourse = React.forwardRef(
                 {getShortCourseType(course.course_type)}
               </span>
             )}
+            {isDay && isDesktop && (
+              <span className={styles.eventTime}>
+                {startTime} - {endTime}
+              </span>
+            )}
             {!isDesktop && (
               <div className={styles.mobileAvatar}>
+                {/* {isDay && (
+                  <span className={styles.eventTime}>
+                    {startTime} - {endTime}
+                  </span>
+                )} */}
                 {course.instructor ? (
                   <UserInitial user={course.instructor} minimized />
                 ) : (
