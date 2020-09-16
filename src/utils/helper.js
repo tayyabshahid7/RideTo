@@ -40,18 +40,41 @@ export function getTimeOfDayInSeconds(time) {
   return moment(time).diff(moment(time).startOf('day'), 'seconds')
 }
 
-export function secondsForDayAndDurationForEvent(event, fullDate) {
+export function getUtcTimeInSeconds(time) {
+  const tmp = moment.utc(time)
+  return tmp.diff(moment(tmp).startOf('day'), 'seconds')
+}
+
+export function secondsForDayAndDurationForEvent(
+  event,
+  fullDate,
+  isUtc = true
+) {
   let date = moment(new Date(fullDate)).format(DATE_FORMAT)
-  let eventDate = moment(new Date(event.start_time)).format(DATE_FORMAT)
-  let eventEndDate = moment(new Date(event.end_time)).format(DATE_FORMAT)
+  let eventDate, eventEndDate
+  if (isUtc) {
+    eventDate = moment.utc(new Date(event.start_time)).format(DATE_FORMAT)
+    eventEndDate = moment.utc(new Date(event.end_time)).format(DATE_FORMAT)
+  } else {
+    eventDate = moment(new Date(event.start_time)).format(DATE_FORMAT)
+    eventEndDate = moment(new Date(event.end_time)).format(DATE_FORMAT)
+  }
   let secondsForDay = WEEK_VIEW_START_TIME
   if (eventDate === date) {
-    secondsForDay = getTimeOfDayInSeconds(event.start_time)
+    if (isUtc) {
+      secondsForDay = getUtcTimeInSeconds(event.start_time)
+    } else {
+      secondsForDay = getTimeOfDayInSeconds(event.start_time)
+    }
   }
 
   let endTime = WEEK_VIEW_START_TIME + WORK_HOURS * 3600
   if (eventEndDate === date) {
-    endTime = getTimeOfDayInSeconds(event.end_time)
+    if (isUtc) {
+      endTime = getUtcTimeInSeconds(event.end_time)
+    } else {
+      endTime = getTimeOfDayInSeconds(event.end_time)
+    }
   }
 
   return { secondsForDay, duration: (endTime - secondsForDay) / 60 }
@@ -63,6 +86,10 @@ export const getTime = dateTime => {
 
 export const getTimeFromDateTime = dateTime => {
   return dateTime ? moment(dateTime, DAY_FORMAT4).format('HH:mm') : ''
+}
+
+export const getUTCTimeFromDateTime = dateTime => {
+  return dateTime ? moment.utc(dateTime, DAY_FORMAT4).format('HH:mm') : ''
 }
 
 export const normalizePostCode = postcode => {

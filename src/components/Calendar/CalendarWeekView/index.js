@@ -172,7 +172,7 @@ class CalendarWeekView extends Component {
             return {
               ...event,
               itemType: 'event',
-              ...secondsForDayAndDurationForEvent(event, dayObj.date)
+              ...secondsForDayAndDurationForEvent(event, dayObj.date, true)
             }
           })
         )

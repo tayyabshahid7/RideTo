@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import classnames from 'classnames'
 import styles from './EventPanelItem.scss'
-import { getTimeFromDateTime } from 'utils/helper'
+import { getUTCTimeFromDateTime } from 'utils/helper'
 import { Link } from 'react-router-dom'
 
 const EventPanelItem = ({ event, date, schools }) => {
@@ -25,8 +25,8 @@ const EventPanelItem = ({ event, date, schools }) => {
             'ALL DAY'
           ) : (
             <React.Fragment>
-              {getTimeFromDateTime(event.start_time)} -{' '}
-              {getTimeFromDateTime(event.end_time)}
+              {getUTCTimeFromDateTime(event.start_time)} -{' '}
+              {getUTCTimeFromDateTime(event.end_time)}
             </React.Fragment>
           )}
         </span>

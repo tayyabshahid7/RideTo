@@ -48,8 +48,8 @@ class EventForm extends React.Component {
           'all_day'
         )
       )
-      event.start_time = moment(event.start_time).format(DAY_FORMAT3)
-      event.end_time = moment(event.end_time).format(DAY_FORMAT3)
+      event.start_time = moment.utc(event.start_time).format(DAY_FORMAT3)
+      event.end_time = moment.utc(event.end_time).format(DAY_FORMAT3)
     } else if (this.props.date) {
       event.date = this.props.date
     }
@@ -67,7 +67,7 @@ class EventForm extends React.Component {
     }
 
     if (event.start_time) {
-      return moment(event.start_time, DAY_FORMAT3).format(DATE_FORMAT)
+      return moment.utc(event.start_time, DAY_FORMAT3).format(DATE_FORMAT)
     }
   }
 
@@ -108,7 +108,7 @@ class EventForm extends React.Component {
       history.push(`/calendar/${date}`)
     } else if (event) {
       history.push(
-        `/calendar/${moment(new Date(event.start_time)).format(DATE_FORMAT)}`
+        `/calendar/${moment.utc(event.start_time).format(DATE_FORMAT)}`
       )
     } else {
       history.push(`/calendar`)
@@ -130,23 +130,6 @@ class EventForm extends React.Component {
     }
     onSubmit(event)
   }
-
-  //   renderTitle() {
-  //     const { event, date } = this.props
-  //     let title = 'Add New Event'
-  //     let backLink = '/calendar'
-  //
-  //     if (event) {
-  //       title = moment(new Date(event.start_time)).format(DAY_FORMAT2)
-  //       backLink = `/calendar/${moment(new Date(event.start_time)).format(
-  //         DATE_FORMAT
-  //       )}`
-  //     } else if (date) {
-  //       title = moment(new Date(date)).format(DAY_FORMAT2)
-  //       backLink = `/calendar/${date}`
-  //     }
-  //     return <DateHeading date={moment(date)} title={title} backLink={backLink} />
-  //   }
 
   componentDidUpdate(prevProps, prevState) {
     if (
