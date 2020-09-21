@@ -121,7 +121,7 @@ export const CONTENT = {
             </li>
             <li>Hold a valid CBT certificate</li>
             <li>Hold a valid motorcycle theory certificate</li>
-            <li>Be able to read a registration plate from 20.5 meters</li>
+            <li>Be able to read a registration plate from 20.5 metres</li>
             <li> Speak and understand English and the Highway code</li>
             <li>Be able to ride an adult sized bicycle</li>
             <li> Wear suitable clothing including sturdy jeans and boots</li>
@@ -349,7 +349,7 @@ export const CONTENT = {
               licence with UK counterpart licence number. Photocopies or images
               are not accepted.
             </li>
-            <li>Be able to read a registration plate from 20.5 meters</li>
+            <li>Be able to read a registration plate from 20.5 metres</li>
             <li>Speak and understand English and the Highway code</li>
             <li>Be able to ride an adult sized bicycle</li>
             <li>
@@ -407,7 +407,7 @@ export const CONTENT = {
             <p>
               Welcome and brief to what to expect during the course, as well as
               an eyesight test to check you can read a registration plate at a
-              distance of 20.5 meters. You may wear glasses if you use them.
+              distance of 20.5 metres. You may wear glasses if you use them.
             </p>
             <h3>On-Site Training </h3>
             <p>
@@ -514,7 +514,7 @@ export const CONTENT = {
               licence with UK counterpart licence number. Photocopies or images
               are not accepted.
             </li>
-            <li>Be able to read a registration plate from 20.5 meters</li>
+            <li>Be able to read a registration plate from 20.5 metres</li>
             <li>Speak and understand English and the Highway code</li>
             <li>Be able to ride an adult sized bicycle</li>
             <li>
@@ -571,7 +571,7 @@ export const CONTENT = {
             <p>
               Welcome and brief to what to expect during the course, as well as
               an eyesight test to check you can read a registration plate at a
-              distance of 20.5 meters. You may wear glasses if you use them.
+              distance of 20.5 metres. You may wear glasses if you use them.
             </p>
             <h3>On-Site Training </h3>
             <p>
@@ -788,7 +788,7 @@ export const CONTENT = {
               licence with UK counterpart licence number. Photocopies or images
               are not accepted.
             </li>
-            <li>Be able to read a registration plate from 20.5 meters</li>
+            <li>Be able to read a registration plate from 20.5 metres</li>
             <li>Speak and understand English and the Highway code</li>
             <li>Be able to ride an adult sized bicycle</li>
             <li>
@@ -896,7 +896,7 @@ export const CONTENT = {
               licence with UK counterpart licence number. Photocopies or images
               are not accepted.
             </li>
-            <li>Be able to read a registration plate from 20.5 meters</li>
+            <li>Be able to read a registration plate from 20.5 metres</li>
             <li>Speak and understand English and the Highway code</li>
             <li>Be able to ride an adult sized bicycle</li>
             <li>

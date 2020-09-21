@@ -211,7 +211,7 @@ class OrderSummary extends Component {
                   <li>
                     Or a Full EU licence with UK counterpart licence number
                   </li>
-                  <li>Can read a registration plate from 20.5 meters</li>
+                  <li>Can read a registration plate from 20.5 metres</li>
                   <li>Can speak and understand English & the Highway Code</li>
                   <li>Can ride an adult size bicycle</li>
                   <li>
