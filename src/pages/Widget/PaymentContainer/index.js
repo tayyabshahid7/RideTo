@@ -165,6 +165,17 @@ class PaymentContainer extends React.Component {
       }
     })
 
+    // validate email
+    if (!errors.email) {
+      if (
+        !details.email.match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+      ) {
+        errors.email = 'Invalid email address.'
+      }
+    }
+
     if (Object.keys(errors).length) {
       this.setState({
         errors: {
