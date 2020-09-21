@@ -36,6 +36,10 @@ class CourseForm extends React.Component {
   constructor(props) {
     super(props)
 
+    const lastDate = moment()
+      .add(11, 'days')
+      .format('YYYY-MM-DD')
+
     const course = {
       course_type_id: '',
       instructor_id: '',
@@ -45,7 +49,7 @@ class CourseForm extends React.Component {
       duration: '',
       notes: '',
       test_centre: '',
-      last_date_cancel: '',
+      last_date_cancel: lastDate,
       status: '',
       application_reference_number: ''
     }
