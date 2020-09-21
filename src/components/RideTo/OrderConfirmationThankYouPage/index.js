@@ -26,7 +26,7 @@ const OrderConfirmationThankYouPage = () => {
   const ConfirmationText = ({ userName }) => {
     return (
       <div className={styles.headerTextWrapper}>
-        <p>Your order has been confirmed we will be redirecting you shortly.</p>
+        <p>Your booking is being processed and you will be redirected soon.</p>
         <p>
           If you are not redirected within 5 seconds please click{' '}
           <a href={`/account/dashboard/${orderId}`}>here</a>.
