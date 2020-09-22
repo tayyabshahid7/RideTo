@@ -28,7 +28,7 @@ const CourseSummary = ({
   if (instructor) {
     instructor = instructors.find(x => x.id === instructor.id)
   }
-  const isSelected = parseInt(courseId) === course.id
+  const isSelected = courseId && parseInt(courseId) === course.id
 
   const school = schools.find(x => x.id === course.supplier)
   const schoolName = school ? school.name : ''

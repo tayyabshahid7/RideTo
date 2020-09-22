@@ -10,6 +10,7 @@ import { BIKE_HIRE } from 'common/constants'
 class OrdersPanel extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       showEditButton: true,
       orderIndex: -1,

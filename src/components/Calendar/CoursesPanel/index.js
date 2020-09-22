@@ -76,10 +76,23 @@ class CoursesPanelContainer extends React.Component {
     } = match
     const { addingOrder } = this.state
 
+    let title = ''
+    let subtitle = ''
+
+    if (addingOrder) {
+      title = 'Add Order'
+    }
+    if (coursePackage.adding) {
+      title = 'Create Package'
+      subtitle =
+        'You can add more courses to this package by clicking on them in the calendar'
+    }
+
     return (
       <div>
         <DateHeading
-          title={addingOrder && 'Add Order'}
+          title={title}
+          subtitle={subtitle}
           date={moment(date, 'YYYY-MM-DD')}
           backLink={`/calendar`}
         />

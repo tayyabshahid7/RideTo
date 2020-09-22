@@ -54,9 +54,9 @@ const CoursesPanelItem = ({
   }
   const isSelected = parseInt(courseId) === course.id
 
-  const handlePackage = () => {
-    handleAddPackage(course)
-  }
+  // const handlePackage = () => {
+  //   handleAddPackage(course)
+  // }
 
   return (
     <div className={styles.wrapper}>
@@ -121,13 +121,13 @@ const CoursesPanelItem = ({
           )}
         </div>
       </div>
-      {addingOrder && (
+      {/* {addingOrder && (
         <div className={styles.buttonHolder}>
           <div className={styles.addButton} onClick={handlePackage}>
             Create a Package
           </div>
         </div>
-      )}
+      )} */}
 
       <OrdersPanel
         course={course}

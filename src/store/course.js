@@ -46,9 +46,14 @@ const SHIFT_DELETED = 'rideto/course/SHIFT/DELETED'
 const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 const ADD_PACKAGE = 'rideto/course/PACKAGE/ADD'
+const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
 
 export const addCoursePackage = course => dispatch => {
   dispatch({ type: ADD_PACKAGE, data: course })
+}
+
+export const cancelCoursePackage = () => dispatch => {
+  dispatch({ type: CANCEL_PACKAGE })
 }
 
 export const resetData = () => dispatch => {
@@ -455,6 +460,16 @@ export default function reducer(state = initialState, action) {
   let dayCourses
   let calendarCourses
   switch (action.type) {
+    case CANCEL_PACKAGE: {
+      return {
+        ...state,
+        coursePackage: {
+          courses: [],
+          adding: false,
+          editing: false
+        }
+      }
+    }
     case ADD_PACKAGE: {
       return {
         ...state,
