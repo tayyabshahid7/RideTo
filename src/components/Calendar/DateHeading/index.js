@@ -8,7 +8,8 @@ const DateHeading = ({ date, title, children, backLink, onBack }) => {
   return (
     <div className={styles.container}>
       <div className={styles.date}>
-        {!date ? null : date.format('ddd DD MMMM YYYY')}
+        {!!title && <span>{title}</span>}
+        {!title && date && date.format('ddd DD MMMM YYYY')}
       </div>
       {backLink && (
         <Link to={backLink} className={styles.backLink}>

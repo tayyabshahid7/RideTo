@@ -1,13 +1,11 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
-import UserInitial from '../../UserInitial'
 
-import { getShortCourseType } from 'services/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
+import CourseSummary from '../CourseSummary'
 import {
   createSchoolOrder,
   createSchoolPayment,
@@ -32,16 +30,15 @@ const CoursesPanelItem = ({
   deleteOrderTraining,
   updateCourse,
   updateAdding,
+  handleAddPackage,
   addingOrder,
   courseId,
   schools,
   instructors,
-  settings,
   canEdit,
   loadCourses
 }) => {
   const [showDetail, setShowDetail] = useState(false)
-  const name = getShortCourseType(course.course_type)
   const availableSpaces = course.spaces - course.orders.length
   const className = classnames(
     styles.course,
@@ -57,8 +54,9 @@ const CoursesPanelItem = ({
   }
   const isSelected = parseInt(courseId) === course.id
 
-  const school = schools.find(x => x.id === course.supplier)
-  const schoolName = school ? school.name : ''
+  const handlePackage = () => {
+    handleAddPackage(course)
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -68,67 +66,68 @@ const CoursesPanelItem = ({
           isSelected && styles.headingSelected
         )}>
         <div className={classnames(styles.container, className)}>
-          <div className={styles.line}>
-            {canEdit ? (
-              <Link
-                className={styles.editButton}
-                to={`/calendar/${date}/courses/${course.id}/edit`}>
-                {name}
-              </Link>
-            ) : (
-              <span className={styles.name}>{name}</span>
-            )}
-            <span>
-              {course.time.substring(0, 5)} -{' '}
-              {moment(`${course.date} ${course.time}`)
-                .add(course.duration / 60, 'hours')
-                .format('HH:mm')}
-            </span>
-          </div>
-          <div className={styles.line}>
-            <span>{schoolName}</span>
-            {instructor && <UserInitial user={instructor} short right />}
-          </div>
-          <div className={styles.line}>
-            <span>{getCourseSpaceTextShort(course)}</span>
-          </div>
-          {/* <div className={styles.line}>
-            {notes && <div className={styles.notes}>{truncated}</div>}
-          </div> */}
-
-          {isTestCourse && (
-            <div className={styles.testNotes}>
-              {showDetail && (
-                <React.Fragment>
-                  <div className={styles.line}>
-                    {TEST_STATUS_CHOICES[course.status]}
-                  </div>
-                  {course.test_centre_name && (
-                    <div className={styles.line}>{course.test_centre_name}</div>
-                  )}
-                  {isTestCourse && course.application_reference_number && (
-                    <div className={styles.line}>
-                      {`${course.application_reference_number}`}
-                    </div>
-                  )}
-                  <div className={styles.line}>
-                    Cancel by:{' '}
-                    {moment(course.last_date_cancel).format('Do MMM YYYY')}
-                  </div>
-                </React.Fragment>
-              )}
-              <div
-                className={classnames(
-                  styles.detail,
-                  showDetail && styles.isOpen
-                )}
-                onClick={() => setShowDetail(!showDetail)}>
-                <i className="fa fa-angle-down"></i>
+          <CourseSummary
+            course={course}
+            date={date}
+            addingOrder={addingOrder}
+            courseId={courseId}
+            schools={schools}
+            instructors={instructors}
+            canEdit={canEdit}
+          />
+          {!addingOrder && (
+            <React.Fragment>
+              <div className={styles.line}>
+                <span>{getCourseSpaceTextShort(course)}</span>
               </div>
-            </div>
+              {/* <div className={styles.line}>
+                {notes && <div className={styles.notes}>{truncated}</div>}
+              </div> */}
+
+              {isTestCourse && (
+                <div className={styles.testNotes}>
+                  {showDetail && (
+                    <React.Fragment>
+                      <div className={styles.line}>
+                        {TEST_STATUS_CHOICES[course.status]}
+                      </div>
+                      {course.test_centre_name && (
+                        <div className={styles.line}>
+                          {course.test_centre_name}
+                        </div>
+                      )}
+                      {isTestCourse && course.application_reference_number && (
+                        <div className={styles.line}>
+                          {`${course.application_reference_number}`}
+                        </div>
+                      )}
+                      <div className={styles.line}>
+                        Cancel by:{' '}
+                        {moment(course.last_date_cancel).format('Do MMM YYYY')}
+                      </div>
+                    </React.Fragment>
+                  )}
+                  <div
+                    className={classnames(
+                      styles.detail,
+                      showDetail && styles.isOpen
+                    )}
+                    onClick={() => setShowDetail(!showDetail)}>
+                    <i className="fa fa-angle-down"></i>
+                  </div>
+                </div>
+              )}
+            </React.Fragment>
           )}
         </div>
       </div>
+      {addingOrder && (
+        <div className={styles.buttonHolder}>
+          <div className={styles.addButton} onClick={handlePackage}>
+            Create a Package
+          </div>
+        </div>
+      )}
 
       <OrdersPanel
         course={course}
@@ -156,8 +155,7 @@ const mapStateToProps = (state, ownProps) => {
     schools,
     loading: state.course.single.loading,
     saving: state.course.single.saving,
-    info: state.info,
-    settings: state.settings.settings
+    info: state.info
   }
 }
 

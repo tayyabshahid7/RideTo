@@ -1,0 +1,71 @@
+.wrapper {
+  margin-bottom: 16px;
+}
+
+.heading {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1px;
+  font-size: 11px;
+  color: rgba(#444, 0.8);
+  border-radius: 2px;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &:not(:first-child) {
+    margin-top: 8px;
+  }
+}
+
+.headingSelected {
+  &::before {
+    opacity: 1;
+  }
+}
+
+.container {
+  background-color: #ededed;
+}
+
+.name {
+  font-weight: 500;
+}
+
+.title {
+  font-size: 12px;
+}
+
+.course {
+  flex-grow: 1;
+  padding: 12px 16px;
+  color: #707070;
+}
+
+.notes {
+  font-size: 11px;
+}
+
+.warning {
+  background-color: #ffcfa0;
+}
+
+.danger {
+  background-color: #fe9898;
+}
+
+.editButton {
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: underline;
+  color: rgba(#444, 0.8);
+
+  &:hover {
+    color: #444;
+  }
+}

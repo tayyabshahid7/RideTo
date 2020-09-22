@@ -294,10 +294,9 @@ class AddOrderItem extends React.Component {
         {!showPayment &&
           (!showPaymentConfirmation && (
             <div className={styles.header}>
-              <span className={styles.leftCol}>
+              {/* <span className={styles.leftCol}>
                 <h3 className={styles.addTitle}>Add Order</h3>
-              </span>
-              {/* <span>Step 1 of 2</span> */}
+              </span> */}
             </div>
           ))}
         {!showPaymentConfirmation ? (
@@ -486,7 +485,7 @@ class AddOrderItem extends React.Component {
                       !cardCVCComplete ||
                       !cardPostCodeComplete)
                   }>
-                  {showPayment ? 'Take Payment' : 'Save'}
+                  {showPayment ? 'Take Payment' : 'Add Order'}
                 </Button>
               </div>
               <div>

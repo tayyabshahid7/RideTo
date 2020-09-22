@@ -3,7 +3,7 @@ import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { getDayCourses } from 'store/course'
+import { getDayCourses, addCoursePackage } from 'store/course'
 import { getDayEvents } from 'store/event'
 import { getDayStaff } from 'store/staff'
 import LoadingMask from 'components/LoadingMask'
@@ -18,14 +18,14 @@ class CoursesPanelContainer extends React.Component {
     this.state = {
       addingOrder: null
     }
-
-    this.updateAdding = this.updateAdding.bind(this)
   }
 
-  updateAdding(id) {
-    this.setState({
-      addingOrder: id
-    })
+  updateAdding = id => {
+    this.setState({ addingOrder: id })
+  }
+
+  handleAddPackage = course => {
+    this.props.addCoursePackage(course)
   }
 
   componentDidMount() {
@@ -61,6 +61,7 @@ class CoursesPanelContainer extends React.Component {
   render() {
     const {
       courses,
+      coursePackage,
       loading,
       match,
       events,
@@ -77,7 +78,11 @@ class CoursesPanelContainer extends React.Component {
 
     return (
       <div>
-        <DateHeading date={moment(date, 'YYYY-MM-DD')} backLink={`/calendar`} />
+        <DateHeading
+          title={addingOrder && 'Add Order'}
+          date={moment(date, 'YYYY-MM-DD')}
+          backLink={`/calendar`}
+        />
         <CoursesPanel
           courseId={courseId}
           eventId={eventId}
@@ -85,8 +90,10 @@ class CoursesPanelContainer extends React.Component {
           addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
+          coursePackage={coursePackage}
           events={events}
           updateAdding={this.updateAdding}
+          handleAddPackage={this.handleAddPackage}
           staff={staff}
           isAdmin={isAdmin}
           loadCourses={loadCourses}
@@ -103,6 +110,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     schools: state.auth.user.suppliers,
     courses: state.course.day.courses,
+    coursePackage: state.course.coursePackage,
     loading: state.course.day.loading,
     events: state.event.day.events,
     eventLoading: state.event.day.loading,
@@ -118,7 +126,8 @@ const mapDispatchToProps = dispatch =>
     {
       getDayCourses,
       getDayEvents,
-      getDayStaff
+      getDayStaff,
+      addCoursePackage
     },
     dispatch
   )

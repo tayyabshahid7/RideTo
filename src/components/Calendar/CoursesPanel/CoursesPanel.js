@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import classnames from 'classnames'
 import CoursesPanelItem from './CoursesPanelItem'
 import EventPanelItem from './EventPanelItem'
 import ShiftPanelItem from '../StaffShift/ShiftPanelItem'
@@ -9,10 +10,12 @@ import { SHIFT_TYPES } from 'common/constants'
 
 function CoursesPanel({
   courses,
+  coursePackage,
   date,
   events = [],
   addingOrder,
   updateAdding,
+  handleAddPackage,
   courseId,
   instructors,
   staff,
@@ -31,6 +34,8 @@ function CoursesPanel({
       return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
     }
   })
+
+  console.log(coursePackage)
 
   return (
     <div className={styles.coursesPanel}>
@@ -61,8 +66,8 @@ function CoursesPanel({
         </div>
       )}
 
-      <div className={styles.panel}>
-        <div className={styles.title}>Courses</div>
+      <div className={classnames(!addingOrder && styles.panel)}>
+        {!addingOrder && <div className={styles.title}>Courses</div>}
 
         {courses
           .filter(course => !addingOrder || course.id === addingOrder)
@@ -77,6 +82,7 @@ function CoursesPanel({
               course={course}
               addingOrder={addingOrder}
               updateAdding={updateAdding}
+              handleAddPackage={handleAddPackage}
               canEdit={isAdmin}
               instructors={instructors}
               loadCourses={loadCourses}

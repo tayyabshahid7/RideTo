@@ -1,6 +1,5 @@
 .container {
   font-size: 11px;
-  margin-bottom: 1rem;
 
   &,
   * {
@@ -79,14 +78,6 @@
   }
 }
 
-// .container {
-//   // background: #FAFAFA;
-//   background: rgba(#e4e4e4, 0.2);
-//   color: var(--grey-color);
-//   padding: 8px;
-//   margin-bottom: 10px;
-// }
-
 .hideUserForm {
   display: none;
 }
@@ -124,7 +115,6 @@
   display: flex;
   justify-content: flex-start;
   flex-direction: column;
-  margin-bottom: 40px;
 
   > div {
     margin-top: 8px;
