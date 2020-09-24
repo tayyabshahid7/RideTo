@@ -45,18 +45,18 @@ const CoursesPanelItem = ({
     availableSpaces === 1 && styles.warning,
     availableSpaces <= 0 && styles.danger
   )
+  const isFullLicense = course.course_type.constant.includes('FULL_LICENCE')
   const isTestCourse =
-    course.course_type.constant.includes('FULL_LICENCE') &&
-    course.course_type.constant.includes('TEST')
+    isFullLicense && course.course_type.constant.includes('TEST')
   let { instructor } = course
   if (instructor) {
     instructor = instructors.find(x => x.id === instructor.id)
   }
   const isSelected = parseInt(courseId) === course.id
 
-  // const handlePackage = () => {
-  //   handleAddPackage(course)
-  // }
+  const handlePackage = () => {
+    handleAddPackage(course)
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -121,13 +121,13 @@ const CoursesPanelItem = ({
           )}
         </div>
       </div>
-      {/* {addingOrder && (
+      {addingOrder && isFullLicense && (
         <div className={styles.buttonHolder}>
           <div className={styles.addButton} onClick={handlePackage}>
             Create a Package
           </div>
         </div>
-      )} */}
+      )}
 
       <OrdersPanel
         course={course}

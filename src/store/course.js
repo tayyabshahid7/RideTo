@@ -47,6 +47,16 @@ const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 const ADD_PACKAGE = 'rideto/course/PACKAGE/ADD'
 const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
+const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
+const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
+
+export const addCourseToPackage = course => dispatch => {
+  dispatch({ type: ADD_COURSE_TO_PACKAGE, data: course })
+}
+
+export const removeCourseFromPackage = course => dispatch => {
+  dispatch({ type: REMOVE_COURSE_FROM_PACKAGE, data: course })
+}
 
 export const addCoursePackage = course => dispatch => {
   dispatch({ type: ADD_PACKAGE, data: course })
@@ -477,6 +487,33 @@ export default function reducer(state = initialState, action) {
           ...state.coursePackage,
           courses: [action.data],
           adding: true
+        }
+      }
+    }
+    case ADD_COURSE_TO_PACKAGE: {
+      const courses = state.coursePackage.courses
+        .filter(x => x.id !== action.data.id)
+        .slice()
+      courses.push(action.data)
+
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          courses
+        }
+      }
+    }
+    case REMOVE_COURSE_FROM_PACKAGE: {
+      const courses = state.coursePackage.courses
+        .filter(x => x.id !== action.data.id)
+        .slice()
+
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          courses
         }
       }
     }

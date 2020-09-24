@@ -18,7 +18,7 @@ const CourseSummary = ({
   embedded = true
 }) => {
   const name = getShortCourseType(course.course_type)
-  const availableSpaces = course.spaces - course.orders.length
+  const availableSpaces = course.spaces_available
   const className = classnames(
     styles.course,
     availableSpaces === 1 && styles.warning,
