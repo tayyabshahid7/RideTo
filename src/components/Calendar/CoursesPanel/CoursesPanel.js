@@ -36,7 +36,7 @@ function CoursesPanel({
     }
   })
 
-  if (coursePackage.adding) {
+  if (coursePackage && coursePackage.adding) {
     return <AddCoursePackage date={date} courses={coursePackage.courses} />
   }
 
