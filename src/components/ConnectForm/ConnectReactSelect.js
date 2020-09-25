@@ -16,6 +16,7 @@ export default function ConnectReactSelect({
   valueArray,
   disabled,
   isMulti = true,
+  closeMenuOnSelect = true,
   labelField = 'name',
   valueField = 'id',
   required,
@@ -84,6 +85,7 @@ export default function ConnectReactSelect({
         placeholder={placeholder}
         getOptionLabel={option => option[labelField]}
         getOptionValue={option => option[valueField]}
+        closeMenuOnSelect={closeMenuOnSelect}
       />
     </div>
   )

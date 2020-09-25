@@ -27,7 +27,7 @@ import {
 import { getEvents } from 'store/event'
 import { getStaff } from 'store/staff'
 import { toggleUser, toggleCourse } from 'store/calendar'
-import { getTestCentres } from 'store/testCentre'
+import { getTestCentres, getDefaultTestCentres } from 'store/testCentre'
 import { CALENDAR_VIEW, DATE_FORMAT } from '../../common/constants'
 import { fetchSettings } from 'store/settings'
 
@@ -45,6 +45,7 @@ class CalendarPage extends Component {
     const { activeSchools } = this.props
     this.loadData(activeSchools)
     this.props.getTestCentres()
+    this.props.getDefaultTestCentres()
 
     if (!this.props.settings) {
       this.props.fetchSettings()
@@ -637,6 +638,7 @@ const mapDispatchToProps = dispatch =>
       getEvents,
       getStaff,
       getTestCentres,
+      getDefaultTestCentres,
       updateCalendarSetting,
       unsetSelectedDate,
       fetchSettings,
