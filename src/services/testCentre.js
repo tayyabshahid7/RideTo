@@ -19,7 +19,7 @@ export const fetchDefaultTestCentres = async () => {
 export const updateDefaultTestCentres = async data => {
   const path = `school/default-test-centre`
 
-  const response = await post(path, { test_centres: data })
+  const response = await post(path, { default_test_centres: data })
 
   return response
 }
