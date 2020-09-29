@@ -120,6 +120,7 @@ class CourseItem extends Component {
                 {course.gloves_jacket_included &&
                   this.renderIcon('gloves_jacket_included')}
                 {course.on_site_cafe && this.renderIcon('on_site_cafe')}
+                {course.on_site_parking && this.renderIcon('on_site_parking')}
                 {course.indoor_classroom && this.renderIcon('indoor_classroom')}
                 {!isFullLicence &&
                   course.instant_book &&

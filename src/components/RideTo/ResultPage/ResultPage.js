@@ -351,7 +351,8 @@ class ResultPage extends Component {
       bike_hire,
       supplierId: selectedCourse.id,
       addons: [],
-      gloves_jacket_included: selectedCourse.gloves_jacket_included
+      gloves_jacket_included: selectedCourse.gloves_jacket_included,
+      helmet_hire: selectedCourse.helmet_hire
     }
 
     if (courseType !== 'FULL_LICENCE') {
@@ -386,6 +387,7 @@ class ResultPage extends Component {
                 onClick={() =>
                   handeUpdateOption({ sortByOption: sortOption.value })
                 }
+                id={sortOption.value.replace('-', '')}
                 key={sortOption.value}>
                 {!shortOptions
                   ? sortOption.title.toUpperCase()
@@ -829,7 +831,7 @@ class ResultPage extends Component {
                               <div className={classnames(styles.schoolCount)}>
                                 <span>{resultsCount} Results by </span>
                                 {this.renderSortByDropdown(true)}
-                                <i class="fas fa-caret-down"></i>
+                                <i className="fas fa-caret-down"></i>
                                 <span className={styles.desktopSortByValue}>
                                   {sortByOption.replace('-', '')}
                                 </span>

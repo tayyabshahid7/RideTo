@@ -3,48 +3,32 @@ import React from 'react'
 function ConnectLogo(props) {
   return (
     <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
       width="40"
       height="40"
-      viewBox="0 0 40 40">
-      <circle cx="20" cy="20" r="20" fill="#4259a8" />
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg">
       <path
-        fill="none"
-        stroke="#fff"
-        strokeWidth="1.7972445000000001"
-        strokeMiterlimit="10"
-        d="M25.079 11.754l-13.76 8.106 9.927 10.549"
+        d="M20 40C31.0457 40 40 31.0457 40 20C40 8.9543 31.0457 0 20 0C8.9543 0 0 8.9543 0 20C0 31.0457 8.9543 40 20 40Z"
+        fill="#4259A8"
       />
-      <circle
-        cx="5.914"
-        cy="22.082"
-        r="4.188"
-        transform="rotate(-14.68)"
-        fill="#4bbfa5"
-        stroke="#fff"
-        strokeWidth="1.348"
+      <path
+        d="M25.0791 11.754L11.3191 19.86L21.2461 30.409"
+        stroke="white"
+        strokeWidth="1.79724"
         strokeMiterlimit="10"
       />
-      <circle
-        cx="19.901"
-        cy="19.261"
-        r="5.177"
-        transform="rotate(-18.96)"
-        fill="#54b5c8"
-        stroke="#fff"
-        strokeWidth="1.348"
-        strokeMiterlimit="10"
+      <path
+        d="M12.3783 23.9138C14.6157 23.3276 15.9544 21.0386 15.3682 18.8011C14.7821 16.5637 12.4931 15.225 10.2556 15.8112C8.01817 16.3973 6.67952 18.6863 7.26567 20.9238C7.85182 23.1613 10.1408 24.4999 12.3783 23.9138Z"
+        fill="white"
       />
-      <circle
-        cx="10.101"
-        cy="35.525"
-        r="3.293"
-        transform="rotate(-18.96)"
-        fill="#c2c2c1"
-        stroke="#fff"
-        strokeWidth="1.348"
-        strokeMiterlimit="10"
+      <path
+        d="M26.7614 16.6462C29.4655 15.7172 30.9045 12.772 29.9755 10.068C29.0465 7.36392 26.1014 5.92493 23.3973 6.8539C20.6933 7.78287 19.2543 10.728 20.1833 13.4321C21.1122 16.1361 24.0574 17.5751 26.7614 16.6462Z"
+        fill="white"
+      />
+      <path
+        d="M22.1653 33.4301C23.8853 32.8392 24.8006 30.9658 24.2097 29.2458C23.6188 27.5258 21.7455 26.6105 20.0255 27.2014C18.3055 27.7923 17.3902 29.6656 17.9811 31.3856C18.572 33.1056 20.4453 34.021 22.1653 33.4301Z"
+        fill="white"
       />
     </svg>
   )

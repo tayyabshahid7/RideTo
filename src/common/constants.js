@@ -1,6 +1,8 @@
 export const CALENDAR_VIEW = {
   MONTH: 'month',
-  WEEK: 'week'
+  WEEK: 'week',
+  DAY: 'day',
+  SHIFT: 'shift'
 }
 
 export const DATE_FORMAT = 'YYYY-MM-DD'
@@ -11,12 +13,33 @@ export const DAY_FORMAT3 = 'YYYY-MM-DDTHH:mm'
 export const DAY_FORMAT4 = 'YYYY-MM-DDTHH:mm:ssZ'
 export const DAY_FORMAT5 = 'ddd Do MMMM'
 
-export const WEEK_VIEW_START_TIME = 60 * 60 * 0 // Midnight
+export const SHIFT_TYPES = [
+  { id: 'EVENT_SHIFT', name: 'Shift' },
+  { id: 'EVENT_BLOCKER', name: 'Blocker' },
+  { id: 'EVENT_HOLIDAY', name: 'Holiday' },
+  { id: 'EVENT_SICK_DAY', name: 'Sick Day' }
+]
+
+export const EVENT_COLORS = [
+  '#C6F6D5',
+  '#FAF089',
+  '#FEEBC8',
+  '#B2F5EA',
+  '#BEE3F8',
+  '#C3DAFE',
+  '#E9D8FD',
+  '#FED7E2'
+]
+
+export const WEEK_START_HOUR = 7
+export const WEEK_VIEW_START_TIME = 60 * 60 * WEEK_START_HOUR // Midnight
 export const WEEK_VIEW_START_TIME_STRING = '00:00'
 export const WEEK_VIEW_WORKING_DAY_TIME_STRING = '07:00'
-export const WORK_HOURS = 24
+export const WORK_HOURS = 14
 export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 
+// export const COLOR_RED_1 = '#fa0e0e'
+// export const COLOR_YELLOW_1 = '#fa840e'
 export const BIKE_HIRE = {
   MANUAL: 'BIKE_TYPE_MANUAL',
   AUTO: 'BIKE_TYPE_AUTO',
@@ -24,6 +47,11 @@ export const BIKE_HIRE = {
   NO: 'BIKE_TYPE_NONE',
   AUTO_125CC: 'BIKE_TYPE_AUTO_125CC',
   MANUAL_50CC: 'BIKE_TYPE_MANUAL_50CC'
+  // MANUAL: 'manual',
+  // AUTO: 'auto',
+  // NO: 'no',
+  // AUTO_125CC: 'AUTO_125CC',
+  // MANUAL_50CC: 'MANUAL_50CC'
 }
 
 export const RIDING_EXPERIENCE = {
@@ -136,29 +164,4 @@ export const CALENDAR_COLOURS = {
   GEAR_CONVERSION_COURSE: '#e0fff9',
   INSTRUCTOR: '#a5bbff',
   EVENT: '#ebebeb'
-}
-
-export const DEFAULT_SETTINGS = {
-  available_auto_50cc_bikes: true,
-  default_number_auto_50cc_bikes: 0,
-  available_auto_125cc_bikes: true,
-  default_number_auto_125cc_bikes: 0,
-  available_manual_50cc_bikes: true,
-  default_number_manual_50cc_bikes: 0,
-  available_manual_125cc_bikes: true,
-  default_number_manual_125cc_bikes: 0,
-  available_own_bikes: true,
-  default_number_own_bikes: 0,
-  available_a1_auto_bikes: true,
-  a1_auto_bikes: 0,
-  available_a1_manual_bikes: true,
-  a1_manual_bikes: 0,
-  available_a2_auto_bikes: true,
-  a2_auto_bikes: 0,
-  available_a2_manual_bikes: true,
-  a2_manual_bikes: 0,
-  available_a_auto_bikes: true,
-  a_auto_bikes: 0,
-  available_a_manual_bikes: true,
-  a_manual_bikes: 0
 }

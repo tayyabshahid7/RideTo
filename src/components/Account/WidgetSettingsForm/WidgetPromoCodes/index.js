@@ -30,6 +30,7 @@ const BLANK_CODE = {
 function WidgetPromoCodes() {
   const [codes, setCodes] = useState([])
   const [schoolProfile, setSchoolProfile] = useState(null)
+  const activeCodes = codes.filter(x => !x.is_deleted)
 
   useEffect(() => {
     async function fetchSchoolProfile() {
@@ -125,7 +126,7 @@ function WidgetPromoCodes() {
     }
   }
 
-  if (codes.length < 1) {
+  if (activeCodes.length < 1) {
     return (
       <div>
         <p>No codes yet</p>
@@ -137,7 +138,7 @@ function WidgetPromoCodes() {
   return (
     <div>
       <div className={styles.promoList}>
-        {codes.map(code => (
+        {activeCodes.map(code => (
           <PromoCode
             key={code.id}
             code={code}

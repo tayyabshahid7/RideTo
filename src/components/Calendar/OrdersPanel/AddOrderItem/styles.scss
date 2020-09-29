@@ -1,12 +1,5 @@
 .container {
-  // font-size: 14px;
-  // font-size: 11px;
-  background-color: rgba(#e4e4e4, 0.2);
-  padding: 1rem;
-  margin-bottom: 1rem;
-
-  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12),
-    0 3px 5px -1px rgba(0, 0, 0, 0.2);
+  font-size: 11px;
 
   &,
   * {
@@ -51,15 +44,6 @@
   font-weight: bold;
 }
 
-.title {
-  margin-right: 15px;
-  margin-bottom: 0;
-  font-size: 12px;
-  // line-height: 23px;
-  font-weight: bold;
-  color: #707070;
-}
-
 .input {
   display: block;
   width: 100%;
@@ -94,14 +78,6 @@
   }
 }
 
-// .container {
-//   // background: #FAFAFA;
-//   background: rgba(#e4e4e4, 0.2);
-//   color: var(--grey-color);
-//   padding: 8px;
-//   margin-bottom: 10px;
-// }
-
 .hideUserForm {
   display: none;
 }
@@ -124,4 +100,35 @@
     font-size: 14px;
     font-weight: bold;
   }
+}
+
+.addTitle {
+  color: rgba(#444, 0.6);
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  margin-top: 24px;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  > div {
+    margin-top: 8px;
+  }
+
+  button {
+    width: 100%;
+  }
+
+  button:nth-child(3) {
+    margin-left: auto;
+  }
+}
+
+.actionDelete {
+  margin-top: 46px !important;
 }

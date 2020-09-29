@@ -16,9 +16,9 @@ import {
 import CourseHeading from 'components/Calendar/AddEditCourse/CourseHeading'
 import DateHeading from 'components/Calendar/DateHeading'
 import ConfirmModal from 'components/Modals/ConfirmModal'
-import { loadCourseTypes } from 'store/info'
 import isEqual from 'lodash/isEqual'
 import { isAdmin } from 'services/auth'
+import { actions as notifyActions } from 'store/notification'
 
 class EditCourseComponent extends Component {
   constructor(props) {
@@ -29,8 +29,8 @@ class EditCourseComponent extends Component {
   }
 
   componentDidMount() {
-    const { getSingleCourse, schoolId, match } = this.props
-    getSingleCourse({ schoolId, courseId: match.params.courseId })
+    const { getSingleCourse, match } = this.props
+    getSingleCourse({ courseId: match.params.courseId })
   }
 
   componentDidUpdate(prevProps) {
@@ -39,22 +39,18 @@ class EditCourseComponent extends Component {
       error,
       course,
       history,
-      schoolId,
       match,
       getSingleCourse
     } = this.props
 
-    if (!isEqual(match.params, prevProps.match.params)) {
-      getSingleCourse({ schoolId, courseId: match.params.courseId })
+    if (prevProps.course && !course) {
+      const date = prevProps.course.date
+      history.push(`/calendar/${date}`)
       return
     }
 
-    if (schoolId !== prevProps.schoolId) {
-      if (course) {
-        history.push(`/calendar/${course.date}`)
-      } else {
-        history.push(`/calendar`)
-      }
+    if (!isEqual(match.params, prevProps.match.params)) {
+      getSingleCourse({ courseId: match.params.courseId })
       return
     }
 
@@ -73,11 +69,10 @@ class EditCourseComponent extends Component {
   }
 
   onSave(data) {
-    const { schoolId, updateCourse, match } = this.props
+    const { updateCourse, match } = this.props
     updateCourse({
-      schoolId,
       courseId: match.params.courseId,
-      data: { ...data, supplier: schoolId.toString() },
+      data,
       fullUpdate: true
     })
     this.setState({ isEditable: false })
@@ -88,11 +83,9 @@ class EditCourseComponent extends Component {
   }
 
   handleDeleteCourse() {
-    const { course, schoolId, deleteCourse } = this.props
+    const { course, deleteCourse } = this.props
     this.setState({ showDeleteCourseConfirmModal: false })
-    deleteCourse({ schoolId, courseId: course.id })
-    const link = course && `/calendar/${course.date}`
-    this.props.history.push(link)
+    deleteCourse({ courseId: course.id })
   }
 
   closeDeleteCourseConfirmModal() {
@@ -110,7 +103,13 @@ class EditCourseComponent extends Component {
   }
 
   render() {
-    const { loading, course, isAdmin } = this.props
+    const {
+      loading,
+      course,
+      isAdmin,
+      testCentres,
+      defaultTestCentres
+    } = this.props
     const { showDeleteCourseConfirmModal } = this.state
 
     if (!isAdmin) {
@@ -123,6 +122,10 @@ class EditCourseComponent extends Component {
     if (!course) {
       return <div>Course Not Found</div>
     }
+
+    const filteredCentres = testCentres.filter(x =>
+      defaultTestCentres.includes(x.id)
+    )
 
     return (
       <div className={styles.addCourse}>
@@ -140,6 +143,7 @@ class EditCourseComponent extends Component {
           <CourseForm
             orderCount={course.orders ? course.orders.length : 0}
             {...this.props}
+            testCentres={filteredCentres}
             isEditable={true}
             onSetEditable={isEditable =>
               this.handleSetEditable(isEditable, course.date)
@@ -164,13 +168,13 @@ class EditCourseComponent extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
     schools: state.auth.user.suppliers,
     loading: state.course.single.loading,
     course: state.course.single.course,
     saving: state.course.single.saving,
     instructors: state.instructor.instructors,
     testCentres: state.testCentre.testCentres,
+    defaultTestCentres: state.testCentre.defaultTestCentres,
     pricing: state.course.pricing,
     info: state.info,
     isAdmin: isAdmin(state.auth.user)
@@ -182,12 +186,12 @@ const mapDispatchToProps = dispatch =>
     {
       getSingleCourse,
       updateCourse,
-      loadCourseTypes,
       createSchoolOrder,
       updateSchoolOrder,
       fetchPrice,
       deleteCourse,
-      unsetSelectedCourse
+      unsetSelectedCourse,
+      showNotification: notifyActions.showNotification
     },
     dispatch
   )

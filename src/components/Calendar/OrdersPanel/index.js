@@ -4,12 +4,13 @@ import OrdersPanelSpaceItem from './OrdersPanelSpaceItem'
 import AddOrderItem from './AddOrderItem'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import OrdersPanelItem from 'components/Calendar/OrdersPanelItem'
-import Loading from 'components/Loading'
+import LoadingMask from 'components/LoadingMask'
 import { BIKE_HIRE } from 'common/constants'
 
 class OrdersPanel extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       showEditButton: true,
       orderIndex: -1,
@@ -112,7 +113,7 @@ class OrdersPanel extends React.Component {
 
     return (
       <div className={styles.ordersPanel}>
-        <Loading loading={loading || saving}>
+        <div>
           <div className={styles.orders}>
             {course.orders.map((training, index) => (
               <React.Fragment key={index}>
@@ -154,6 +155,7 @@ class OrdersPanel extends React.Component {
               orderIndex === index ? (
                 <AddOrderItem
                   schoolId={schoolId}
+                  key={index}
                   onCancel={() => this.setState({ orderIndex: -1 })}
                   info={info}
                   course={course}
@@ -171,7 +173,8 @@ class OrdersPanel extends React.Component {
               )
             )}
           </div>
-        </Loading>
+        </div>
+        <LoadingMask loading={loading || saving} />
       </div>
     )
   }

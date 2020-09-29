@@ -1,31 +1,23 @@
 .coursesPanel {
-  display: flex;
-  flex-direction: column;
+  display: block;
   width: 100%;
 }
 
-.events,
-.staff {
-  margin-top: 16px;
-}
-
-.staff {
-  margin-bottom: 1rem;
+.panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: 24px;
 }
 
 .title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--grey-color);
-  font-size: 16px;
-  font-weight: bold;
-
+  color: #444;
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
   margin-bottom: 16px;
-}
-
-.courses {
-  // border-bottom: solid 1px var(--light-grey-color);
 }
 
 .scrollContainer {
@@ -39,28 +31,28 @@
   margin-right: -15px;
 }
 
-.addEvent,
-.addCourse {
-  display: flex;
+.addButton {
+  border: 1px dashed var(--color-primary);
+  border-radius: 2px;
+  color: var(--color-primary);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  padding: 12px;
+  transition: all ease 0.3s;
   width: 100%;
-  height: 62px;
-  border: 2px dashed #f0f0f0;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: bold;
+  display: block;
+  text-align: center;
+  text-decoration: none;
 
-  &:hover {
-    text-decoration: none;
-    background: var(--highlight);
+  &:focus {
+    outline: none;
   }
-}
 
-.addCourse {
-  margin-top: -22px;
-  margin-bottom: 5px;
-
-  &:nth-child(2) {
-    margin-top: 0;
+  &:hover,
+  &:active {
+    background: var(--color-primary);
+    color: white;
+    text-decoration: none;
   }
 }

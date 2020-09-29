@@ -2,6 +2,14 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 8px;
+
+  label {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 13px;
+    color: #444;
+  }
 
   .rightSide {
     display: flex;
@@ -9,27 +17,28 @@
 
     .minus,
     .plus {
-      appearance: none;
-      border: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--color-border);
+      border-radius: 50%;
       background: transparent;
-      color: var(--primary-color);
-      padding: 0;
+      color: #444;
+      cursor: pointer;
 
-      svg {
-        font-size: 1.2rem;
-      }
-
-      &:focus {
-        outline: 0;
+      &:hover {
+        border-color: #444;
       }
     }
 
     .minus {
-      margin-right: 0.5rem;
+      margin-right: 16px;
     }
 
     .plus {
-      margin-left: 0.5rem;
+      margin-left: 16px;
     }
   }
 
@@ -38,7 +47,10 @@
     width: 1.5rem;
 
     input[type='number'] {
-      height: 1.25rem;
+      height: 24px;
+      padding: 0;
+      width: 24px;
+      text-align: center;
       appearance: none;
       margin: 0;
     }
@@ -49,6 +61,10 @@
       -moz-appearance: none;
       appearance: none;
       margin: 0;
+    }
+
+    input[type='number'] {
+      -moz-appearance: textfield;
     }
   }
 }

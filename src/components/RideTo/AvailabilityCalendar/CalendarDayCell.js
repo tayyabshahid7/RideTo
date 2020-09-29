@@ -6,6 +6,7 @@ import styles from './CalendarDayCell.scss'
 const CalendarDayCell = ({ day, price, calendar, handleDateSelect }) => {
   const dateStr = moment(day.date).format('YYYY-MM-DD')
   const selectedDay = calendar.selectedDate === dateStr
+
   return (
     <li
       className={classnames(

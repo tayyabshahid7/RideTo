@@ -1,20 +1,56 @@
 .container {
-  // height: 180px;
-  color: #666;
+  color: var(--color-dark-light);
   text-align: left;
+  cursor: pointer;
+  box-sizing: border-box;
+  border-bottom: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border);
+  position: relative;
+
   &:hover {
-    background: var(--highlight);
+    background: var(--color-highlight);
+  }
+
+  @media (max-width: 767px) {
+    min-height: 128px;
   }
 }
 
-.date {
-  float: none;
-  color: #707070;
-  font-size: 14px;
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 8px;
+}
 
-  @media (max-width: 768px) {
-    line-height: 1;
+.date {
+  color: var(--color-dark-light);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.cellHeader {
+  padding: 0 2px 5px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media (max-width: 767px) {
+    padding-bottom: 11px;
+    justify-content: center;
+    text-align: center;
   }
+}
+
+.shiftUsers {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
 }
 
 .otherMonth {
@@ -23,55 +59,17 @@
 }
 
 .otherMonthDate {
-  color: var(--light-grey-color);
+  color: rgba(#444, 0.4);
 }
 
 .selectedDay.selectedDay {
   position: relative;
-  box-shadow: inset 0px 0px 0px 3px #707070;
-
-  &::before,
-  &::after {
-    position: absolute;
-    top: 0;
-    left: 0;
-    content: '';
-    display: block;
-    background-color: #707070;
-  }
-
-  &::before {
-    height: 3px;
-    width: 100%;
-  }
-
-  &::after {
-    height: 100%;
-    width: 3px;
-  }
+  background: #f5f5f5;
 }
 
 .highlight {
-  background-color: #2cceac;
+  background-color: var(--color-primary);
   color: #fff;
-  margin-top: 0;
-  margin-left: -4px;
-  margin-bottom: 4px;
-  border-radius: 50%;
-  text-align: center;
-  width: 17px;
-  height: 17px;
-  line-height: 17px;
-
-  @media (max-width: 768px) {
-    margin-bottom: -3px;
-  }
-
-  @media (min-width: 1200px) {
-    line-height: 23px;
-    width: 22px;
-    height: 22px;
-  }
 }
 
 .dayLink {
@@ -81,7 +79,12 @@
 }
 
 .more {
-  margin-top: 0.15rem;
+  cursor: pointer;
+  line-height: 13px;
+
+  &:hover {
+    color: var(--color-primary);
+  }
 }
 
 .courseContainer {
@@ -89,7 +92,7 @@
   flex-direction: column;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .otherMonth {
     display: none;
   }
@@ -97,8 +100,46 @@
   .courseContainer {
     flex-direction: row;
     min-height: 20px;
+    justify-content: center;
   }
   .more {
     display: none;
   }
+}
+
+.popupBackdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 150;
+}
+
+.detailPopup {
+  position: absolute;
+  z-index: 151;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 8px;
+  border-bottom: 1px solid var(--color-border);
+  background: white;
+  box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.1);
+}
+
+.detailLastRow {
+  top: auto;
+  bottom: 0;
+  border-top: 1px solid var(--color-border);
+  box-shadow: 0 -10px 10px -10px rgba(0, 0, 0, 0.1);
+}
+
+.closeButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  cursor: pointer;
+  font-size: 18px;
 }

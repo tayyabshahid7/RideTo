@@ -56,6 +56,7 @@ class DateSelector extends Component {
     const { date, handleSetDate, className } = this.props
     return (
       <div
+        id="date-selector"
         className={classnames(styles.dateSelector, className)}
         ref="dateSelectorContainer">
         <div className={styles.prev} onClick={this.handleClickPrev.bind(this)}>

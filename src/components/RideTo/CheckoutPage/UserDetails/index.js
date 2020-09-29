@@ -151,7 +151,7 @@ class UserDetails extends Component {
     const { userAuthenticated } = this.state
 
     return (
-      <div>
+      <div className={styles.whiteBox}>
         <NextSteps isFullLicence={isFullLicence} instantBook={instantBook} />
         <div className={styles.hiddenOnDesktop}>
           <div className={classnames(styles.title, styles.titleOrderSummary)}>
@@ -228,13 +228,13 @@ class UserDetails extends Component {
     return (
       <div
         className={classnames(
+          styles.whiteBox,
           !showUserDetails && !userAuthenticated && styles.hideDetails
         )}>
         <div
           ref={this.userDetails}
           id="checkout-your-details"
-          className={styles.title}
-          style={{ marginTop: '2rem', marginBottom: '-0.5rem' }}>
+          className={styles.title}>
           Rider's Details
         </div>
         <div className={classnames(styles.rowItem)}>
@@ -456,6 +456,7 @@ class UserDetails extends Component {
     return (
       <div
         className={classnames(
+          styles.whiteBox,
           styles.checkForm,
           !showUserDetails && styles.hidePayment
         )}
@@ -483,6 +484,7 @@ class UserDetails extends Component {
             <span>Card number</span>
             <div
               style={{ marginBottom: '5px' }}
+              id="stripe-card-number"
               className={classnames(
                 styles.cardElementWrapper,
                 errors.card_number && styles.inputError
@@ -518,6 +520,7 @@ class UserDetails extends Component {
               <label className={styles.cardLabel}>
                 <span>Expiry date</span>
                 <div
+                  id="stripe-card-expiry"
                   className={classnames(
                     styles.cardElementWrapper,
                     errors.expiry_date && styles.inputError
@@ -537,6 +540,7 @@ class UserDetails extends Component {
               <label className={styles.cardLabel}>
                 <span>CVV/CV2</span>
                 <div
+                  id="stripe-card-cvc"
                   className={classnames(
                     styles.cardElementWrapper,
                     styles.cvvElementWrapper,
@@ -558,6 +562,7 @@ class UserDetails extends Component {
           <label className={styles.cardLabel}>
             <span>Billing postcode</span>
             <div
+              id="stripe-card-postcode"
               className={classnames(
                 styles.cardElementWrapper,
                 errors.card_zip && styles.inputError
@@ -581,9 +586,7 @@ class UserDetails extends Component {
     return (
       <div className={styles.container}>
         {this.renderEmail()}
-        <SectionSplitter />
         {this.renderUserInfo()}
-        <SectionSplitter />
         {this.renderPaymentForm()}
       </div>
     )

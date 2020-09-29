@@ -1,0 +1,40 @@
+.container {
+  transition: all ease 0.3s;
+  position: relative;
+  width: 39px;
+  height: 39px;
+  border-radius: 50%;
+  border: 1px solid var(--color-primary);
+  margin: 0 0 1px 1px;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    content: '';
+    width: 19px;
+    height: 1px;
+    top: 18px;
+    left: 9px;
+    background: var(--color-primary);
+    position: absolute;
+    display: block;
+    transition: all ease 0.3s;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    background: var(--color-primary);
+
+    &:before,
+    &:after {
+      background: white;
+    }
+  }
+}

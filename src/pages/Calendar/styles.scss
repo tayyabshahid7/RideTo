@@ -2,17 +2,17 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
+  flex: 1 1 1px;
 
-  flex-grow: 1;
+  @media (max-width: 767px) {
+    min-height: calc(100vh - 72px);
+  }
 }
 
 .calendarColumn {
-  // padding-right: 16px;
+  flex: 1 1 1px;
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  width: 640px;
-  height: 100%;
 
   @media (max-width: 992px) {
     padding-right: 0;
@@ -31,13 +31,7 @@
 }
 
 .noCalendarPath {
-  @media (max-width: 992px) {
+  @media (max-width: 767px) {
     display: none;
-  }
-
-  @media (min-width: 993px) {
-    // padding-right: 371px;
-    // padding-right: 316px;
-    padding-right: 340px;
   }
 }

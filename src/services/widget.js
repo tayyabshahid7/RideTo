@@ -1,6 +1,6 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
-import { FULL_LICENCE_MODULES, BIKE_HIRE } from 'common/constants'
+import { FULL_LICENCE_MODULES } from 'common/constants'
 import moment from 'moment'
 
 export const createStripeToken = async (stripe, data) => {
@@ -57,18 +57,10 @@ export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
 
 export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
   const { pricing } = course
-  let subTotal = pricing.price
-
-  if (bikeHire !== BIKE_HIRE.NO) {
-    subTotal = pricing.price + pricing.bike_hire_cost
-  }
-
-  // if (
-  //   [BIKE_HIRE.MANUAL, BIKE_HIRE.MANUAL_50CC].includes(bikeHire) &&
-  //   pricing.manual_bike_hire_cost
-  // ) {
-  //   subTotal = pricing.price + pricing.manual_bike_hire_cost
-  // }
+  const subTotal =
+    bikeHire && bikeHire !== 'no'
+      ? pricing.price + pricing.bike_hire_cost
+      : pricing.price
 
   return subTotal - discount
 }

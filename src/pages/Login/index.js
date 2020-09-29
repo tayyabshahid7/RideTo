@@ -2,15 +2,19 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { login } from 'store/auth'
 import { isAuthenticated } from 'services/auth'
-import { ConnectLogo, ConnectLogoFull, Info } from 'assets/icons'
+import { Link } from 'react-router-dom'
+import Logo from 'components/common/Logo'
 import styles from './styles.scss'
+import { Button, ConnectInput } from 'components/ConnectForm'
 
 class Login extends Component {
   constructor(props) {
     super(props)
-    this.emailInput = React.createRef()
-    this.passwordInput = React.createRef()
-    this.handleFormSubmit = this.handleFormSubmit.bind(this)
+
+    this.state = {
+      email: '',
+      password: ''
+    }
   }
 
   componentDidMount() {
@@ -19,68 +23,64 @@ class Login extends Component {
     }
   }
 
-  handleFormSubmit(e) {
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value })
+  }
+
+  handleFormSubmit = e => {
     e.preventDefault()
-    if (
-      !this.emailInput.current.value.trim() &&
-      !this.passwordInput.current.value.trim()
-    ) {
+    const { email, password } = this.state
+
+    if (!email || !password) {
       return
     }
-    // dispatch(login({email:emailInput.current.value, password:passwordInput.current.value}))
-    this.props
-      .login(this.emailInput.current.value, this.passwordInput.current.value)
-      .then(() => {
-        if (isAuthenticated()) {
-          this.props.history.push('/')
-        } else {
-          this.props.history.replace('/login')
-        }
-      })
+
+    this.props.login(email, password).then(() => {
+      if (isAuthenticated()) {
+        this.props.history.push('/')
+      } else {
+        this.props.history.replace('/login')
+      }
+    })
   }
 
   render() {
     return (
       <div className={styles.wrapper}>
-        <div className={styles.loginDetails}>
-          <div className={styles.loginDetailsInner}>
-            <div className={styles.loginHeader}>
-              <ConnectLogo className={styles.loginLogo} />
-              <h1 className={styles.loginTitle}>Log In</h1>
-            </div>
-            <form className={styles.form} onSubmit={this.handleFormSubmit}>
-              <label className={styles.formGroup}>
-                <span className={styles.formLabel}>Email</span>
-                <input
-                  className={styles.formElement}
-                  type="email"
-                  autoComplete="email"
-                  ref={this.emailInput}
-                  name="email"
-                />
-              </label>
-              <label className={styles.formGroup}>
-                <span className={styles.formLabel}>Password</span>
-                <input
-                  className={styles.formElement}
-                  type="password"
-                  autoComplete="current-password"
-                  ref={this.passwordInput}
-                  name="password"
-                />
-              </label>
-              <button className={styles.formSubmit} type="submit">
-                Login
-              </button>
-            </form>
+        <header className={styles.header}>
+          <Logo />
+          <Link to="/home" className={styles.signin}>
+            <Button type="button" color="white">
+              Go Back
+            </Button>
+          </Link>
+        </header>
+        <div className={styles.container}>
+          <form className={styles.form} onSubmit={this.handleFormSubmit}>
+            <h4>Sign In</h4>
+            <ConnectInput
+              basic
+              label={'Email Address'}
+              name="email"
+              type="email"
+              onChange={this.handleChange('email')}
+              required
+            />
+            <ConnectInput
+              basic
+              label={'Password'}
+              name="password"
+              type="password"
+              onChange={this.handleChange('password')}
+              required
+            />
             {this.props.error && (
-              <div style={{ color: 'red' }}>{this.props.error}</div>
+              <div className={styles.error}>{this.props.error}</div>
             )}
-          </div>
-        </div>
-        <div className={styles.info}>
-          <ConnectLogoFull className={styles.logoFull} />
-          <Info className={styles.laptop} />
+            <Button type="submit" color="primary">
+              Sign In
+            </Button>
+          </form>
         </div>
       </div>
     )

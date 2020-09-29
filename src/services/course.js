@@ -13,7 +13,7 @@ export const getCourseSpaceText = course => {
 }
 
 export const getCourseSpaceTextShort = course => {
-  const availableSpaces = course.spaces - course.orders.length
+  const availableSpaces = course.spaces_available
   return availableSpaces === 0
     ? 'Full'
     : `${availableSpaces} Space${s(availableSpaces)} left`
@@ -29,6 +29,30 @@ export const getCoursesOnDay = (days, dateStr) => {
 
 export const fetchCourses = async (schoolId, startDate, endDate) => {
   const path = `school/${schoolId}/course`
+  const params = {
+    sdate: startDate,
+    edate: endDate
+  }
+
+  const response = await get(path, params)
+
+  return response
+}
+
+export const fetchUserCourses = async (startDate, endDate) => {
+  const path = `school/courses`
+  const params = {
+    sdate: startDate,
+    edate: endDate
+  }
+
+  const response = await get(path, params)
+
+  return response
+}
+
+export const fetchCoursesMinimal = async (schoolId, startDate, endDate) => {
+  const path = `school/${schoolId}/course/minimal`
   const params = {
     sdate: startDate,
     edate: endDate
@@ -98,8 +122,8 @@ export const fetchDayCourses = async (schoolId, date) => {
   return response.results
 }
 
-export const fetchSingleCourse = async (schoolId, courseId) => {
-  const path = `school/${schoolId}/course/${courseId}`
+export const fetchSingleCourse = async courseId => {
+  const path = `school/course/${courseId}`
 
   const response = await get(path, {})
 
@@ -107,8 +131,8 @@ export const fetchSingleCourse = async (schoolId, courseId) => {
 }
 
 export const fetchWidgetSingleCourse = async (schoolId, courseId) => {
-  const path = `school/${schoolId}/widget/course/${courseId}`
-  const response = await get(path, {})
+  const path = `school/widget/course/${courseId}`
+  const response = await get(path, {}, false)
 
   return response
 }
@@ -118,14 +142,14 @@ export const fetchWidgetSingleCourseWithDiscount = async (
   courseId,
   voucher_code
 ) => {
-  const path = `school/${schoolId}/widget/course/${courseId}`
+  const path = `school/widget/course/${courseId}`
   const response = await get(path, { voucher_code })
 
   return response
 }
 
-export const deleteSingleCourse = async (schoolId, courseId) => {
-  const path = `school/${schoolId}/course/${courseId}`
+export const deleteSingleCourse = async courseId => {
+  const path = `school/course/${courseId}`
 
   const response = await destroy(path, {})
 
@@ -144,14 +168,14 @@ export const addSchoolPayment = async (schoolId, data) => {
   return response
 }
 
-export const fetchSchoolOrder = async (schoolId, trainingId) => {
-  const path = `school/${schoolId}/course/order/${trainingId}`
+export const fetchSchoolOrder = async trainingId => {
+  const path = `school/course/order/${trainingId}`
   const response = await get(path, {})
   return response
 }
 
-export const updateSchoolOrder = async (schoolId, friendlyId, order) => {
-  const path = `school/${schoolId}/course/order/${friendlyId}`
+export const updateSchoolOrder = async (friendlyId, order) => {
+  const path = `school/course/order/${friendlyId}`
   const response = await put(path, order)
   return response
 }
@@ -181,12 +205,11 @@ export const deleteSchoolOrderTraining = async (schoolId, trainingId) => {
 }
 
 export const updateSchoolCourse = async (
-  schoolId,
   courseId,
   data,
   fullUpdate = false
 ) => {
-  const path = `school/${schoolId}/course/${courseId}`
+  const path = `school/course/${courseId}`
   let response
   if (fullUpdate) {
     response = await put(path, data)
@@ -276,7 +299,7 @@ export const getShortCourseType = courseType => {
     case 'INTRO_TO_MOTORCYCLING':
       return 'ITM'
     case 'FULL_LICENCE':
-      return 'Full'
+      return 'Full Licence'
     case 'FULL_LICENCE_MOD1_TRAINING':
       return 'Module 1 Training'
     case 'FULL_LICENCE_MOD1_TEST':
@@ -360,6 +383,8 @@ export const getCourseTitle = courseTypeConstant => {
       return 'Off Road Training'
     case 'GEAR_CONVERSION_COURSE':
       return 'Gear Conversion Course'
+    case 'ENHANCED_RIDER_SCHEME':
+      return 'Enhanced Rider Scheme'
     default:
       return 'CBT Training'
   }

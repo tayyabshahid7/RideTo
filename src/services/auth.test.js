@@ -9,7 +9,7 @@ let _post
 
 beforeEach(() => {
   _post = api.post
-  global.localStorage = { setItem: jest.fn() }
+  Storage.prototype.setItem = jest.fn(() => '')
 
   api.post = jest.fn(() => {
     return { token: TOKEN }
@@ -61,14 +61,12 @@ describe('isTokenExpiring', () => {
 })
 
 describe('requestToken', () => {
-  let _setItem = jest.fn()
-
   beforeEach(() => {
-    global.localStorage = { setItem: _setItem }
+    Storage.prototype.setItem = jest.fn(() => '')
   })
 
   afterEach(() => {
-    _setItem.mockReset()
+    global.localStorage.setItem.mockReset()
   })
 
   it('Makes post', () => {
@@ -83,7 +81,7 @@ describe('requestToken', () => {
 
   it('Sets token in localStorage', async done => {
     await requestToken('test@mail.com', 'secret')
-    expect(_setItem).toHaveBeenCalledWith('token', TOKEN)
+    expect(global.localStorage.setItem).toHaveBeenCalledWith('token', TOKEN)
     done()
   })
 })

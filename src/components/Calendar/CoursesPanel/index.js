@@ -3,10 +3,10 @@ import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { getDayCourses } from 'store/course'
+import { getDayCourses, addCoursePackage } from 'store/course'
 import { getDayEvents } from 'store/event'
 import { getDayStaff } from 'store/staff'
-import Loading from 'components/Loading'
+import LoadingMask from 'components/LoadingMask'
 import DateHeading from 'components/Calendar/DateHeading'
 import CoursesPanel from './CoursesPanel'
 import { isAdmin } from 'services/auth'
@@ -18,14 +18,14 @@ class CoursesPanelContainer extends React.Component {
     this.state = {
       addingOrder: null
     }
-
-    this.updateAdding = this.updateAdding.bind(this)
   }
 
-  updateAdding(id) {
-    this.setState({
-      addingOrder: id
-    })
+  updateAdding = id => {
+    this.setState({ addingOrder: id })
+  }
+
+  handleAddPackage = course => {
+    this.props.addCoursePackage(course)
   }
 
   componentDidMount() {
@@ -33,10 +33,7 @@ class CoursesPanelContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (
-      this.props.schoolId !== prevProps.schoolId ||
-      prevProps.match.params.date !== this.props.match.params.date
-    ) {
+    if (prevProps.match.params.date !== this.props.match.params.date) {
       this.loadData()
     }
   }
@@ -46,25 +43,32 @@ class CoursesPanelContainer extends React.Component {
       getDayCourses,
       getDayEvents,
       match,
-      schoolId,
+      schools,
       getDayStaff
     } = this.props
+
     const {
       params: { date }
     } = match
-    getDayCourses({ schoolId, date })
-    getDayEvents({ schoolId, date })
-    getDayStaff({ schoolId, date })
+
+    const schoolIds = schools.map(x => x.id)
+
+    getDayCourses({ schoolIds, date })
+    getDayEvents({ schoolIds, date })
+    getDayStaff({ schoolIds, date })
   }
 
   render() {
     const {
       courses,
+      coursePackage,
       loading,
       match,
       events,
       staff,
       isAdmin,
+      schools,
+      instructors,
       loadCourses
     } = this.props
     const {
@@ -72,9 +76,26 @@ class CoursesPanelContainer extends React.Component {
     } = match
     const { addingOrder } = this.state
 
+    let title = ''
+    let subtitle = ''
+
+    if (addingOrder) {
+      title = 'Add Order'
+    }
+    if (coursePackage.adding) {
+      title = 'Create Package'
+      subtitle =
+        'You can add more courses to this package by clicking on them in the calendar'
+    }
+
     return (
-      <Loading loading={loading}>
-        <DateHeading date={moment(date, 'YYYY-MM-DD')} backLink={`/calendar`} />
+      <div>
+        <DateHeading
+          title={title}
+          subtitle={subtitle}
+          date={moment(date, 'YYYY-MM-DD')}
+          backLink={`/calendar`}
+        />
         <CoursesPanel
           courseId={courseId}
           eventId={eventId}
@@ -82,27 +103,34 @@ class CoursesPanelContainer extends React.Component {
           addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
-          events={events.sort((a, b) => a.start_time > b.start_time)}
+          coursePackage={coursePackage}
+          events={events}
           updateAdding={this.updateAdding}
+          handleAddPackage={this.handleAddPackage}
           staff={staff}
           isAdmin={isAdmin}
           loadCourses={loadCourses}
+          schools={schools}
+          instructors={instructors}
         />
-      </Loading>
+        <LoadingMask loading={loading} />
+      </div>
     )
   }
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    schoolId: state.auth.schoolId,
+    schools: state.auth.user.suppliers,
     courses: state.course.day.courses,
+    coursePackage: state.course.coursePackage,
     loading: state.course.day.loading,
     events: state.event.day.events,
     eventLoading: state.event.day.loading,
     staff: state.staff.day.staff,
     staffLoading: state.staff.day.loading,
-    isAdmin: isAdmin(state.auth.user)
+    isAdmin: isAdmin(state.auth.user),
+    instructors: state.instructor.instructors
   }
 }
 
@@ -111,7 +139,8 @@ const mapDispatchToProps = dispatch =>
     {
       getDayCourses,
       getDayEvents,
-      getDayStaff
+      getDayStaff,
+      addCoursePackage
     },
     dispatch
   )

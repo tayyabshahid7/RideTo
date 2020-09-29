@@ -1,28 +1,42 @@
 import React, { Fragment } from 'react'
-import { Button } from 'components/ConnectForm'
 import moment from 'moment'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import isEqual from 'lodash/isEqual'
 import styles from './styles.scss'
 import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 import classnames from 'classnames'
-import CalendarLabels from './CalendarLabels'
+// import CalendarLabels from './CalendarLabels'
 import SchoolSelect from 'components/SchoolSelect'
-import isEqual from 'lodash/isEqual'
+import { Button, ConnectReactSelect } from 'components/ConnectForm'
 import Loading from 'components/Loading'
-import DefaultBikes from './DefaultBikes'
+import {
+  getTestCentres,
+  getDefaultTestCentres,
+  setDefaultTestCentres
+} from 'store/testCentre'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
     super(props)
+
     let available_days = ['T', 'T', 'T', 'T', 'T', 'F', 'F']
     if (this.props.defaultDays.days) {
       available_days = this.props.defaultDays.days.split('')
     }
     this.state = {
       showCreateBulkCourseForm: false,
+      showDefaultTestCenterForm: false,
+      defaultCentres: [],
       available_days
     }
     this.handleAvailableDaysChange = this.handleAvailableDaysChange.bind(this)
     this.handleSupplierChange = this.handleSupplierChange.bind(this)
+  }
+
+  componentDidMount() {
+    this.props.getTestCentres()
+    this.props.getDefaultTestCentres()
   }
 
   componentDidUpdate(prevProps) {
@@ -30,6 +44,18 @@ class AvailabilityCourses extends React.Component {
       this.setState({
         available_days: this.props.defaultDays.days.split('')
       })
+    }
+
+    if (
+      this.props.defaultTestCentres.length !==
+        prevProps.defaultTestCentres.length ||
+      this.props.testCentres.length !== prevProps.testCentres.length
+    ) {
+      const ids = this.props.defaultTestCentres
+      const defaultCentres = this.props.testCentres.filter(x =>
+        ids.includes(x.id)
+      )
+      this.setState({ defaultCentres })
     }
   }
 
@@ -50,12 +76,23 @@ class AvailabilityCourses extends React.Component {
   }
 
   handleCreateBulkCourse(data) {
-    const { createBulkCourse, schoolId } = this.props
+    const { createBulkCourse } = this.props
+    const { supplier: schoolId } = data.school_course
     createBulkCourse({ schoolId, data })
   }
 
   handleSupplierChange(schoolId, schoolName) {
     this.props.changeSchool(schoolId, schoolName)
+  }
+
+  handleDefaultCentreChange = values => {
+    this.setState({ defaultCentres: values })
+  }
+
+  handleSaveDefaultCentres = () => {
+    const { defaultCentres } = this.state
+    const ids = defaultCentres.map(x => x.id)
+    this.props.setDefaultTestCentres(ids)
   }
 
   renderCreateCourse() {
@@ -72,6 +109,32 @@ class AvailabilityCourses extends React.Component {
             color="primary"
             onClick={() => this.setState({ showCreateBulkCourseForm: true })}>
             Bulk Create
+          </Button>
+        </div>
+      </div>
+    )
+  }
+
+  renderDefaultTestCenters() {
+    const { testCentres, defaultTestCentres } = this.props
+    const list = testCentres.filter(x => defaultTestCentres.includes(x.id))
+    return (
+      <div className={styles.row}>
+        <div className={styles.leftCol}>
+          <h3 className={styles.title}>Default Test Centres</h3>
+          <div>
+            <ul>
+              {list.map(item => (
+                <li key={item.id}>{item.name}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className={styles.rightCol}>
+          <Button
+            color="primary"
+            onClick={() => this.setState({ showDefaultTestCenterForm: true })}>
+            Edit
           </Button>
         </div>
       </div>
@@ -135,6 +198,7 @@ class AvailabilityCourses extends React.Component {
           </div>
           <div className={styles.bottomRow}>
             <Button
+              id="btnSaveDefaultDays"
               color="primary mt-2"
               onClick={this.handleSaveDefaultDays.bind(this)}
               disabled={settingsSaving}>
@@ -151,19 +215,25 @@ class AvailabilityCourses extends React.Component {
       info,
       loadCourseTypes,
       instructors,
-      schoolId,
+      // schoolId,
       schools,
-      getInstructors,
       history,
       saving,
       error,
-      settings,
-      updateSettings,
-      editInstructor,
-      updateDiaryColor,
-      user
+      testCentres,
+      savingDefaultCentres
+      // settings,
+      // updateSettings,
+      // editInstructor,
+      // updateDiaryColor
     } = this.props
-    const { showCreateBulkCourseForm, available_days } = this.state
+
+    const {
+      showCreateBulkCourseForm,
+      showDefaultTestCenterForm,
+      defaultCentres,
+      available_days
+    } = this.state
     return (
       <Fragment>
         <div className={classnames(styles.box, styles.boxVertical)}>
@@ -175,9 +245,7 @@ class AvailabilityCourses extends React.Component {
               history={history}
               instructors={instructors}
               loadCourseTypes={loadCourseTypes}
-              schoolId={schoolId}
               schools={schools}
-              getInstructors={getInstructors}
               available_days={available_days}
               handleCancel={this.handleCancel.bind(this)}
               saving={saving}
@@ -186,11 +254,30 @@ class AvailabilityCourses extends React.Component {
           )}
         </div>
         <div className={styles.box}>{this.renderDefaultDays()}</div>
-        <div className={styles.box}>
+        <div className={classnames(styles.box, styles.boxVertical)}>
+          {this.renderDefaultTestCenters()}
+          {showDefaultTestCenterForm && (
+            <div className={styles.horzForm}>
+              <ConnectReactSelect
+                value={defaultCentres}
+                onChange={this.handleDefaultCentreChange}
+                options={testCentres}
+                closeMenuOnSelect={false}
+              />
+              <Button
+                color="primary"
+                className="mb-4"
+                onClick={this.handleSaveDefaultCentres}
+                disabled={savingDefaultCentres}>
+                Save
+              </Button>
+            </div>
+          )}
+        </div>
+        {/* <div className={styles.box}>
           <CalendarLabels
             settings={settings}
             instructors={instructors}
-            getInstructors={getInstructors}
             schoolId={schoolId}
             info={info}
             loadCourseTypes={loadCourseTypes}
@@ -198,18 +285,31 @@ class AvailabilityCourses extends React.Component {
             editInstructor={editInstructor}
             updateDiaryColor={updateDiaryColor}
           />
-        </div>
-        <div className={styles.box}>
-          <DefaultBikes
-            user={user}
-            info={info}
-            loadCourseTypes={loadCourseTypes}
-            schoolId={schoolId}
-          />
-        </div>
+        </div> */}
       </Fragment>
     )
   }
 }
 
-export default AvailabilityCourses
+const mapStateToProps = (state, ownProps) => {
+  return {
+    testCentres: state.testCentre.testCentres,
+    defaultTestCentres: state.testCentre.defaultTestCentres,
+    savingDefaultCentres: state.testCentre.saving
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getTestCentres,
+      getDefaultTestCentres,
+      setDefaultTestCentres
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AvailabilityCourses)

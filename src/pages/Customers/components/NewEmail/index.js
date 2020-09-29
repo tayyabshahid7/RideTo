@@ -14,7 +14,9 @@ class Email extends Component {
 
     this.state = {
       email: {
-        to: this.props.customer.rideto_email,
+        to:
+          this.props.customer.first_name + ' ' + this.props.customer.last_name,
+        email: this.props.customer.rideto_email,
         sender,
         subject: '',
         body: ''
@@ -54,11 +56,13 @@ class Email extends Component {
 
   async handleSubmit(e) {
     const { onSendEmail } = this.props
-    const { email } = this.state
+    const data = Object.assign({}, this.state.email)
+    data.to = data.email
+    delete data.email
 
     e.preventDefault()
 
-    const response = await onSendEmail(email)
+    const response = await onSendEmail(data)
 
     if (response) {
       this.clearForm()

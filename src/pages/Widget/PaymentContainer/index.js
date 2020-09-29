@@ -102,6 +102,7 @@ class PaymentContainer extends React.Component {
       totalPrice = response.price
       discount = response.discount
     } else {
+      console.log(courseId)
       course = await fetchWidgetSingleCourse(0, courseId)
       if (voucher_code) {
         const training = trainings[0]
@@ -163,6 +164,17 @@ class PaymentContainer extends React.Component {
         errors[field] = 'This field is required.'
       }
     })
+
+    // validate email
+    if (!errors.email) {
+      if (
+        !details.email.match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+      ) {
+        errors.email = 'Invalid email address.'
+      }
+    }
 
     if (Object.keys(errors).length) {
       this.setState({
@@ -304,6 +316,7 @@ class PaymentContainer extends React.Component {
       discount
     } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
+    console.log(course, supplier)
 
     return (
       <React.Fragment>

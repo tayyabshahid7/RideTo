@@ -1,12 +1,11 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
 import classnames from 'classnames'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
 
-import { getShortCourseType } from 'services/course'
 import OrdersPanel from 'components/Calendar/OrdersPanel'
+import CourseSummary from '../CourseSummary'
 import {
   createSchoolOrder,
   createSchoolPayment,
@@ -16,7 +15,6 @@ import {
 } from 'store/course'
 import { TEST_STATUS_CHOICES } from 'common/constants'
 import styles from './CoursesPanelItem.scss'
-import personIcon from '../../../../assets/images/person.png'
 import { getCourseSpaceTextShort } from 'services/course'
 
 const CoursesPanelItem = ({
@@ -32,91 +30,104 @@ const CoursesPanelItem = ({
   deleteOrderTraining,
   updateCourse,
   updateAdding,
+  handleAddPackage,
   addingOrder,
   courseId,
-  settings,
+  schools,
+  instructors,
   canEdit,
   loadCourses
 }) => {
-  const name = getShortCourseType(course.course_type)
+  const [showDetail, setShowDetail] = useState(false)
   const availableSpaces = course.spaces - course.orders.length
   const className = classnames(
     styles.course,
     availableSpaces === 1 && styles.warning,
     availableSpaces <= 0 && styles.danger
   )
+  const isFullLicense = course.course_type.constant.includes('FULL_LICENCE')
   const isTestCourse =
-    course.course_type.constant.includes('FULL_LICENCE') &&
-    course.course_type.constant.includes('TEST')
-  const { notes = '', instructor } = course
-  const truncated = notes.length > 200 ? `${notes}...` : notes
+    isFullLicense && course.course_type.constant.includes('TEST')
+  let { instructor } = course
+  if (instructor) {
+    instructor = instructors.find(x => x.id === instructor.id)
+  }
   const isSelected = parseInt(courseId) === course.id
 
+  const handlePackage = () => {
+    handleAddPackage(course)
+  }
+
   return (
-    <div className={styles.coursesPanelItem}>
+    <div className={styles.wrapper}>
       <div
         className={classnames(
           styles.heading,
           isSelected && styles.headingSelected
         )}>
         <div className={classnames(styles.container, className)}>
-          <div className={styles.top}>
-            <div className={styles.title}>
-              <div>
-                <span className={styles.name}>{name}</span> |{' '}
-                {course.time.substring(0, 5)} -{' '}
-                {moment(`${course.date} ${course.time}`)
-                  .add(course.duration / 60, 'hours')
-                  .format('HH:mm')}
-                {isTestCourse &&
-                  course.application_reference_number &&
-                  `(${course.application_reference_number})`}
+          <CourseSummary
+            course={course}
+            date={date}
+            addingOrder={addingOrder}
+            courseId={courseId}
+            schools={schools}
+            instructors={instructors}
+            canEdit={canEdit}
+          />
+          {!addingOrder && (
+            <React.Fragment>
+              <div className={styles.line}>
+                <span>{getCourseSpaceTextShort(course)}</span>
               </div>
+              {/* <div className={styles.line}>
+                {notes && <div className={styles.notes}>{truncated}</div>}
+              </div> */}
+
               {isTestCourse && (
                 <div className={styles.testNotes}>
-                  <b>{TEST_STATUS_CHOICES[course.status]}</b>
-                  <br />
-                  {course.test_centre_name}
-                  <br />
-                  Last day to cancel:{' '}
-                  {moment(course.last_date_cancel).format('Do MMM YYYY')}
+                  {showDetail && (
+                    <React.Fragment>
+                      <div className={styles.line}>
+                        {TEST_STATUS_CHOICES[course.status]}
+                      </div>
+                      {course.test_centre_name && (
+                        <div className={styles.line}>
+                          {course.test_centre_name}
+                        </div>
+                      )}
+                      {isTestCourse && course.application_reference_number && (
+                        <div className={styles.line}>
+                          {`${course.application_reference_number}`}
+                        </div>
+                      )}
+                      <div className={styles.line}>
+                        Cancel by:{' '}
+                        {moment(course.last_date_cancel).format('Do MMM YYYY')}
+                      </div>
+                    </React.Fragment>
+                  )}
+                  <div
+                    className={classnames(
+                      styles.detail,
+                      showDetail && styles.isOpen
+                    )}
+                    onClick={() => setShowDetail(!showDetail)}>
+                    <i className="fa fa-angle-down"></i>
+                  </div>
                 </div>
               )}
-            </div>
-            {canEdit && (
-              <Link
-                className={styles.editButton}
-                to={`/calendar/${date}/courses/${course.id}/edit`}>
-                Edit
-              </Link>
-            )}
-          </div>
-          <div className={styles.instAndSpaces}>
-            {instructor && (
-              <div className={styles.inst}>
-                <img
-                  className={styles.personIcon}
-                  src={personIcon}
-                  alt="Instructor:"
-                  width="12"
-                  height="12"
-                />{' '}
-                {instructor.first_name} {instructor.last_name}
-              </div>
-            )}
-            <span
-              className={classnames(
-                styles.eventSpaces,
-                availableSpaces === 2 && styles.textMildWarning,
-                availableSpaces === 1 && styles.textWarning,
-                availableSpaces === 0 && styles.textDanger
-              )}>
-              {getCourseSpaceTextShort(course)}
-            </span>
-          </div>
-          {notes && <div className={styles.notes}>{truncated}</div>}
+            </React.Fragment>
+          )}
         </div>
       </div>
+      {addingOrder && isFullLicense && (
+        <div className={styles.buttonHolder}>
+          <div className={styles.addButton} onClick={handlePackage}>
+            Create a Package
+          </div>
+        </div>
+      )}
 
       <OrdersPanel
         course={course}
@@ -138,12 +149,13 @@ const CoursesPanelItem = ({
 }
 
 const mapStateToProps = (state, ownProps) => {
+  const schools = state.auth.user ? state.auth.user.suppliers : []
   return {
     schoolId: state.auth.schoolId,
+    schools,
     loading: state.course.single.loading,
     saving: state.course.single.saving,
-    info: state.info,
-    settings: state.settings.settings
+    info: state.info
   }
 }
 

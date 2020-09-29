@@ -1,7 +1,7 @@
 import React from 'react'
 import moment from 'moment'
 import { Redirect } from 'react-router-dom'
-import { BIKE_HIRE } from 'common/constants'
+
 import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence.js'
 import Calendar from 'pages/Widget/components/Calendar'
 import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
@@ -44,7 +44,7 @@ class BookingOptionsContainer extends React.Component {
       availableCourses: [],
       selectedCourse: null,
       selectedDate: null,
-      selectedBikeHire: !isFullLicence ? BIKE_HIRE.NO : '',
+      selectedBikeHire: !isFullLicence ? 'no' : '',
       month: moment().startOf('month'),
       isLoading: true,
       isFullLicence,
@@ -84,7 +84,7 @@ class BookingOptionsContainer extends React.Component {
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       this.setState(
         {
-          month: moment().startOf('month'),
+          // month: moment().startOf('month'),
           selectedDate: null,
           isLoading: true,
           availableCourses: [],
@@ -100,7 +100,8 @@ class BookingOptionsContainer extends React.Component {
             this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
         () => {
-          this.fetchCourses(moment().startOf('month'))
+          // this.fetchCourses(moment().startOf('month'))
+          this.fetchCourses(this.state.month.clone())
         }
       )
       return
@@ -149,6 +150,36 @@ class BookingOptionsContainer extends React.Component {
     this.setAvailableCourses(schoolCourses, courseType)
   }
 
+  getBikeHire(courseType, course) {
+    let bikeType = showOwnBikeHire(courseType) ? 'no' : 'auto'
+
+    if (
+      bikeType === 'no' &&
+      course &&
+      course.own_bikes_count >= course.own_bikes
+    ) {
+      bikeType = 'auto'
+    }
+
+    if (
+      bikeType === 'auto' &&
+      course &&
+      course.auto_count >= course.auto_bikes
+    ) {
+      bikeType = 'manual'
+    }
+
+    if (
+      bikeType === 'manual' &&
+      course &&
+      course.manual_count >= course.manual_bikes
+    ) {
+      bikeType = ''
+    }
+
+    return bikeType
+  }
+
   setAvailableCourses(schoolCourses, courseType) {
     const { schoolCourses: prevschoolCourses } = this.state
     const newSchoolCourses = [...prevschoolCourses, ...schoolCourses]
@@ -163,19 +194,7 @@ class BookingOptionsContainer extends React.Component {
       availableCourses
     )
 
-    let selectedBikeHire = showOwnBikeHire(courseType)
-      ? BIKE_HIRE.NO
-      : BIKE_HIRE.AUTO
-
-    const defaultCourse = selectedCourses[0]
-
-    if (
-      selectedBikeHire === BIKE_HIRE.AUTO &&
-      defaultCourse &&
-      defaultCourse.auto_count >= defaultCourse.auto_bikes
-    ) {
-      selectedBikeHire = BIKE_HIRE.MANUAL
-    }
+    let selectedBikeHire = this.getBikeHire(courseType, selectedCourses[0])
 
     const isFullLicence = courseType.constant === 'FULL_LICENCE'
 
@@ -186,7 +205,7 @@ class BookingOptionsContainer extends React.Component {
     this.setState({
       schoolCourses: newSchoolCourses,
       selectedDate,
-      selectedCourse: !isFullLicence ? defaultCourse : availableCourses[0],
+      selectedCourse: !isFullLicence ? selectedCourses[0] : availableCourses[0],
       selectedBikeHire,
       availableCourses,
       courseType,
@@ -220,33 +239,27 @@ class BookingOptionsContainer extends React.Component {
       this.state.availableCourses
     )
 
-    let selectedBikeHire = showOwnBikeHire(this.state.courseType)
-      ? BIKE_HIRE.NO
-      : BIKE_HIRE.AUTO
-
-    const defaultCourse = selectedCourses[0]
-
-    if (
-      selectedBikeHire === BIKE_HIRE.AUTO &&
-      defaultCourse &&
-      defaultCourse.auto_count >= defaultCourse.auto_bikes
-    ) {
-      selectedBikeHire = BIKE_HIRE.MANUAL
-    }
+    let selectedBikeHire = this.getBikeHire(
+      this.state.courseType,
+      selectedCourses[0]
+    )
 
     this.setState({
       selectedDate,
-      selectedCourse: defaultCourse,
+      selectedCourse: selectedCourses[0],
       selectedBikeHire: selectedBikeHire
     })
   }
 
   handleChangeCourse(selectedCourse) {
+    let selectedBikeHire = this.getBikeHire(
+      this.state.courseType,
+      selectedCourse
+    )
+
     this.setState({
       selectedCourse,
-      selectedBikeHire: showOwnBikeHire(this.state.courseType)
-        ? BIKE_HIRE.NO
-        : BIKE_HIRE.AUTO
+      selectedBikeHire
     })
   }
 
@@ -316,6 +329,10 @@ class BookingOptionsContainer extends React.Component {
       selectedLicenceType,
       selectedPackageHours
     } = this.state
+
+    if (!selectedBikeHire) {
+      return
+    }
 
     let trainings = []
 
@@ -410,7 +427,7 @@ class BookingOptionsContainer extends React.Component {
     if (!courseType) {
       return <div className={styles.bookingOptions}>No Course Found</div>
     }
-
+    console.log(suppliers)
     return (
       <div className={styles.bookingOptions}>
         <BookingOption
@@ -423,7 +440,7 @@ class BookingOptionsContainer extends React.Component {
         <BookingOption
           label="Location:"
           options={suppliers}
-          labelField="town"
+          labelField="connect_location_name"
           selected={selectedSupplier.id}
           onChange={onChangeSupplier}
         />
@@ -506,7 +523,10 @@ class BookingOptionsContainer extends React.Component {
           {(isFirstFullLicencePanelComplete && !formCompletedWithoutTheory) ||
           isSecondFullLicencePanelComplete ||
           (!isFullLicence && selectedCourse) ? (
-            <button onClick={this.handleSubmitClick} className="WidgetBtn">
+            <button
+              onClick={this.handleSubmitClick}
+              className="WidgetBtn"
+              disabled={!selectedBikeHire}>
               {isFullLicence ? (
                 <React.Fragment>
                   <span>Continue</span>

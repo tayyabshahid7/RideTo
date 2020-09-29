@@ -7,7 +7,6 @@ import styles from './styles.scss'
 import CourseForm from './CourseForm'
 import DateHeading from 'components/Calendar/DateHeading'
 import { createCourse, fetchPrice, resetPrice } from 'store/course'
-import { loadCourseTypes } from 'store/info'
 import { isAdmin } from 'services/auth'
 
 class AddCourseComponent extends Component {
@@ -42,8 +41,11 @@ class AddCourseComponent extends Component {
   }
 
   onSave(data) {
-    const { schoolId, createCourse } = this.props
-    createCourse({ schoolId, data: { ...data, supplier: schoolId.toString() } })
+    const { createCourse } = this.props
+    createCourse({
+      schoolId: data.supplier,
+      data
+    })
   }
 
   handleSetEditable(isEditable, date) {
@@ -57,7 +59,14 @@ class AddCourseComponent extends Component {
   }
 
   render() {
-    let { course, location, isAdmin, ...rest } = this.props
+    let {
+      course,
+      location,
+      isAdmin,
+      testCentres,
+      defaultTestCentres,
+      ...rest
+    } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
     let backLink = date === '' ? '/calendar' : `/calendar/${date}`
@@ -65,6 +74,10 @@ class AddCourseComponent extends Component {
     if (!isAdmin) {
       return <div>No access</div>
     }
+
+    const filteredCentres = testCentres.filter(x =>
+      defaultTestCentres.includes(x.id)
+    )
 
     return (
       <div className={styles.addCourse}>
@@ -74,13 +87,13 @@ class AddCourseComponent extends Component {
           <h4 className={styles.addTitle}>Add Course</h4>
           <CourseForm
             {...rest}
+            testCentres={filteredCentres}
             isEditable={true}
             date={date}
             onSubmit={this.onSave.bind(this)}
             onSetEditable={isEditable =>
               this.handleSetEditable(isEditable, date)
             }
-            newCourse
           />
         </div>
       </div>
@@ -96,6 +109,7 @@ const mapStateToProps = (state, ownProps) => {
     course: state.course.single.course,
     instructors: state.instructor.instructors,
     testCentres: state.testCentre.testCentres,
+    defaultTestCentres: state.testCentre.defaultTestCentres,
     error: state.course.single.error,
     pricing: state.course.pricing,
     info: state.info,
@@ -107,7 +121,6 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       createCourse,
-      loadCourseTypes,
       fetchPrice,
       resetPrice
     },

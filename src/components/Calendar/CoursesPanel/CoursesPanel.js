@@ -1,52 +1,76 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
+import classnames from 'classnames'
 import CoursesPanelItem from './CoursesPanelItem'
+import AddCoursePackage from './CoursePackages/AddCoursePackage'
 import EventPanelItem from './EventPanelItem'
-import StaffPanelItem from './StaffPanelItem'
+import ShiftPanelItem from '../StaffShift/ShiftPanelItem'
 import styles from './CoursesPanel.scss'
+import { SHIFT_TYPES } from 'common/constants'
 
 function CoursesPanel({
   courses,
+  coursePackage,
   date,
   events = [],
   addingOrder,
   updateAdding,
+  handleAddPackage,
   courseId,
-  eventId,
-  staffId,
+  instructors,
   staff,
   isAdmin,
+  schools,
   loadCourses
 }) {
+  const shifts = staff.filter(x => x.event_type === SHIFT_TYPES[0].id)
+
+  events = events.sort((a, b) => {
+    if (a.all_day) {
+      return -1
+    } else if (b.all_day) {
+      return 1
+    } else {
+      return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
+    }
+  })
+
+  if (coursePackage && coursePackage.adding) {
+    return <AddCoursePackage date={date} courses={coursePackage.courses} />
+  }
+
   return (
     <div className={styles.coursesPanel}>
       {!addingOrder && (
-        <div className={styles.staff}>
+        <div className={styles.panel}>
           <div className={styles.title}>Staff</div>
 
           <div>
-            {staff.map(item => (
-              <StaffPanelItem
+            {shifts.map(item => (
+              <ShiftPanelItem
                 key={item.id}
                 date={date}
-                event={item}
-                staffId={staffId}
+                instructors={instructors}
+                diary={item}
+                schools={schools}
+                canEdit={isAdmin}
               />
             ))}
           </div>
 
           {isAdmin && (
             <Link
-              className={styles.addEvent}
-              to={`/calendar/staff/create?date=${date}`}>
-              Add Staff
+              className={styles.addButton}
+              to={`/calendar/${date}/shifts/add`}>
+              Add staff
             </Link>
           )}
         </div>
       )}
 
-      <div className={styles.courses}>
-        <div className={styles.title}>Courses</div>
+      <div className={classnames(!addingOrder && styles.panel)}>
+        {!addingOrder && <div className={styles.title}>Courses</div>}
 
         {courses
           .filter(course => !addingOrder || course.id === addingOrder)
@@ -61,14 +85,16 @@ function CoursesPanel({
               course={course}
               addingOrder={addingOrder}
               updateAdding={updateAdding}
+              handleAddPackage={handleAddPackage}
               canEdit={isAdmin}
+              instructors={instructors}
               loadCourses={loadCourses}
             />
           ))}
 
         {!addingOrder && isAdmin && (
           <Link
-            className={styles.addCourse}
+            className={styles.addButton}
             to={`/calendar/courses/create?date=${date}`}>
             Add course
           </Link>
@@ -76,7 +102,7 @@ function CoursesPanel({
       </div>
 
       {!addingOrder && (
-        <div className={styles.events}>
+        <div className={styles.panel}>
           <div className={styles.title}>Events</div>
 
           <div>
@@ -85,13 +111,14 @@ function CoursesPanel({
                 key={event.id}
                 date={date}
                 event={event}
-                eventId={eventId}
+                schools={schools}
+                instructors={instructors}
               />
             ))}
           </div>
 
           <Link
-            className={styles.addEvent}
+            className={styles.addButton}
             to={`/calendar/events/create?date=${date}`}>
             Add event
           </Link>
