@@ -139,6 +139,8 @@ class CourseForm extends React.Component {
     this.state = {
       course: course,
       edited: false,
+      defaultBikes: {},
+      loadingDefaultBikes: false,
       supplier
     }
   }
@@ -735,7 +737,7 @@ class CourseForm extends React.Component {
                   </div>
                   {available_auto_bikes && (
                     <Row>
-                      <Col sm="10">
+                      <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
                           label="Automatic"
@@ -755,7 +757,7 @@ class CourseForm extends React.Component {
                   )}
                   {available_auto_50cc_bikes && (
                     <Row>
-                      <Col sm="10">
+                      <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
                           label="Automatic 50cc"
@@ -775,7 +777,7 @@ class CourseForm extends React.Component {
                   )}
                   {available_auto_125cc_bikes && (
                     <Row>
-                      <Col sm="10">
+                      <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
                           label="Automatic 125cc"
@@ -795,7 +797,7 @@ class CourseForm extends React.Component {
                   )}
                   {available_manual_50cc_bikes && (
                     <Row>
-                      <Col sm="10">
+                      <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
                           label="Manual 50cc"
@@ -815,7 +817,7 @@ class CourseForm extends React.Component {
                   )}
                   {available_manual_125cc_bikes && (
                     <Row>
-                      <Col sm="10">
+                      <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
                           label="Manual 125cc"
@@ -835,7 +837,7 @@ class CourseForm extends React.Component {
                   )}
                   {available_own_bikes && (
                     <Row>
-                      <Col sm="10">
+                      <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
                           label="Own Bikes"
@@ -868,32 +870,6 @@ class CourseForm extends React.Component {
                       }}
                     />
                   )}
-                  <BikeNumberPicker
-                    label="Automatic"
-                    value={auto_bikes}
-                    id="auto_bikes"
-                    isEditable={isEditable}
-                    onChange={this.handleChangeRawEvent}
-                    onClickMinus={() => {
-                      this.handleBikeButtonClick('auto_bikes', -1)
-                    }}
-                    onClickPlus={() => {
-                      this.handleBikeButtonClick('auto_bikes', 1)
-                    }}
-                  />
-                  <BikeNumberPicker
-                    label="Manual"
-                    value={manual_bikes}
-                    id="manual_bikes"
-                    isEditable={isEditable}
-                    onChange={this.handleChangeRawEvent}
-                    onClickMinus={() => {
-                      this.handleBikeButtonClick('manual_bikes', -1)
-                    }}
-                    onClickPlus={() => {
-                      this.handleBikeButtonClick('manual_bikes', 1)
-                    }}
-                  />
                 </React.Fragment>
               )}
               {isFullLicence && (
