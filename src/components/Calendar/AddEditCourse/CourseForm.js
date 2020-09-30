@@ -212,7 +212,7 @@ class CourseForm extends React.Component {
   }
 
   loadDefaultBikes() {
-    const { newCourse, schoolId } = this.props
+    const { supplier } = this.state
     const { defaultBikes, loadingDefaultBikes } = this.state
     const { course_type_id } = this.state.course
     const { courseTypes } = this.props.info
@@ -235,7 +235,7 @@ class CourseForm extends React.Component {
       this.setState({
         loadingDefaultBikes: true
       })
-      getDefaultBikeHire(constant, schoolId).then(res => {
+      getDefaultBikeHire(constant, supplier).then(res => {
         this.setState({
           loadingDefaultBikes: false,
           defaultBikes: {
@@ -243,7 +243,8 @@ class CourseForm extends React.Component {
             ...res
           }
         })
-        if (newCourse) {
+        console.log(res, this.state.course)
+        if (!this.props.course) {
           this.setState({
             course: {
               ...this.state.course,
@@ -588,6 +589,7 @@ class CourseForm extends React.Component {
       status,
       application_reference_number
     } = this.state.course
+    console.log(this.state)
     const { supplier } = this.state
 
     const schoolInstructors = this.getInstructors(supplier)
