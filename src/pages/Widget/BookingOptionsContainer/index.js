@@ -383,6 +383,10 @@ class BookingOptionsContainer extends React.Component {
     })
   }
 
+  handleReturnToWebsite = () => {
+    window.history.go(1 - window.history.length)
+  }
+
   render() {
     const { widget, selectedSupplier, suppliers, onChangeSupplier } = this.props
     const {
@@ -520,6 +524,12 @@ class BookingOptionsContainer extends React.Component {
               <img src={ArrowLeft} alt="Back" />
             </button>
           )}
+          <button
+            onClick={this.handleReturnToWebsite}
+            className={classnames(styles.returnButton, 'WidgetBtn')}
+            title="Return to Website">
+            Return to Website
+          </button>
           {(isFirstFullLicencePanelComplete && !formCompletedWithoutTheory) ||
           isSecondFullLicencePanelComplete ||
           (!isFullLicence && selectedCourse) ? (
