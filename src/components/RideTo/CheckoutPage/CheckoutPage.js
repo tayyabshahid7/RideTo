@@ -218,6 +218,14 @@ class CheckoutPage extends Component {
           highway_code: hasHighwayCode
         })
 
+        if (voucher_code && response.discount) {
+          this.props.showPromoNotification('Promo code applied!', 'add')
+        } else {
+          if (voucher_code) {
+            this.props.showPromoNotification('Invalid promo code.', 'error')
+          }
+        }
+
         this.setState({
           priceInfo: { ...response },
           loadingPrice: false,
