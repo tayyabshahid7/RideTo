@@ -7,7 +7,7 @@ import BikeNumberPicker from 'components/BikeNumberPicker'
 import { Button } from 'components/ConnectForm'
 import upperFirst from 'lodash/upperFirst'
 import styles from './BikesModal.scss'
-import { updateDefaultBikes } from 'store/course'
+import { updateDefaultBikes } from 'store/info'
 import { DEFAULT_SETTINGS, COURSE_ORDER } from 'common/constants'
 
 if (process.env.NODE_ENV !== 'test') {
@@ -65,6 +65,7 @@ function DefaultBikesModal({
   setActiveCourse,
   schoolId,
   updateDefaultBikes,
+  saving,
   ...rest
 }) {
   const [isChanged, setIsChanged] = useState(false)
@@ -80,6 +81,13 @@ function DefaultBikesModal({
     }
     setSettings(tmp)
   }, [])
+
+  useEffect(() => {
+    if (isChanged && !saving) {
+      setIsChanged(false)
+      setActiveCourse(null)
+    }
+  }, [saving])
 
   const courses = Object.entries(settings)
     .filter(([key, value]) => key.startsWith('available'))
@@ -110,9 +118,9 @@ function DefaultBikesModal({
 
   const handleSave = async () => {
     try {
-      setIsChanged(false)
-      updateDefaultBikes(settings, courseType.constant, schoolId)
-      setActiveCourse(null)
+      const tmp = Object.assign({}, settings)
+      delete tmp.supplier
+      updateDefaultBikes(tmp, courseType.constant, schoolId)
     } catch {
       setIsChanged(true)
     }
@@ -196,7 +204,7 @@ function DefaultBikesModal({
             type="submit"
             color="primary"
             onClick={handleSave}
-            disabled={!isChanged}>
+            disabled={saving || !isChanged}>
             Save
           </Button>
           <Button
@@ -213,7 +221,9 @@ function DefaultBikesModal({
   )
 }
 
-const mapStateToProps = (state, ownProps) => ({})
+const mapStateToProps = (state, ownProps) => ({
+  saving: state.info.saving
+})
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
