@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import { getDefaultBikeHire } from 'services/course'
+import React from 'react'
 import { formatName, filterBikes } from './DefaultBikesModal'
 import { DEFAULT_SETTINGS } from 'common/constants'
 import styles from './styles.scss'
@@ -10,49 +9,31 @@ function formatListItem(key) {
     .trim()
 }
 
-function RowItem({ activeCourse, setActiveCourse, courseType, schoolId }) {
-  const { name, constant } = courseType
-  const [loading, setLoading] = useState(true)
-  const [settings, setSettings] = useState(null)
+function RowItem({ setActiveCourse, courseType, schoolId }) {
+  let currBikeHire = courseType.bike_hire_setup.find(
+    x => x.supplier.id === parseInt(schoolId)
+  )
 
-  const fetchSettings = async () => {
-    try {
-      const response = await getDefaultBikeHire(constant, schoolId)
-      setSettings(response)
-    } catch {
-      setSettings(DEFAULT_SETTINGS)
-    }
+  if (!currBikeHire) {
+    currBikeHire = DEFAULT_SETTINGS
   }
 
-  useEffect(() => {
-    if (!activeCourse) {
-      fetchSettings()
-      setLoading(false)
-    }
-  }, [activeCourse])
+  const text = Object.entries(currBikeHire)
+    .filter(([key, value]) => key.startsWith('available_') && value === true)
+    .filter(bike => filterBikes(courseType, bike))
+    .map(([key, value]) => formatListItem(key))
+    .join(', ')
 
   return (
     <tr>
       <td className="align-middle">
         <div
-          disabled={loading}
           className={styles.courseName}
-          onClick={() => {
-            setActiveCourse({ ...courseType, settings })
-          }}>
-          {name}
+          onClick={() => setActiveCourse(courseType)}>
+          {courseType.name}
         </div>
       </td>
-      <td className="align-middle">
-        {settings &&
-          Object.entries(settings)
-            .filter(
-              ([key, value]) => key.startsWith('available_') && value === true
-            )
-            .filter(bike => filterBikes(courseType, bike))
-            .map(([key, value]) => formatListItem(key))
-            .join(', ')}
-      </td>
+      <td className="align-middle">{text}</td>
     </tr>
   )
 }

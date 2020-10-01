@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
-import styles from './BikesModal.scss'
+import React, { useEffect, useState } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { Table } from 'reactstrap'
 import BikeNumberPicker from 'components/BikeNumberPicker'
 import { Button } from 'components/ConnectForm'
 import upperFirst from 'lodash/upperFirst'
-import { updateDefaultBikeHire } from 'services/course'
+import styles from './BikesModal.scss'
+import { updateDefaultBikes } from 'store/course'
+import { DEFAULT_SETTINGS, COURSE_ORDER } from 'common/constants'
 
 if (process.env.NODE_ENV !== 'test') {
   Modal.setAppElement('#root')
@@ -54,26 +57,33 @@ export function formatName(key) {
   return upperFirst(key.replace('available_', '').replace(/_/g, ' '))
 }
 
-export const filterBikes = (activeCourse, [key]) =>
-  isFullLicence(activeCourse.constant) ? isDasBike(key) : !isDasBike(key)
+export const filterBikes = (courseType, [key]) =>
+  isFullLicence(courseType.constant) ? isDasBike(key) : !isDasBike(key)
 
 function DefaultBikesModal({
-  activeCourse,
+  courseType,
   setActiveCourse,
   schoolId,
+  updateDefaultBikes,
   ...rest
 }) {
   const [isChanged, setIsChanged] = useState(false)
-  console.log(schoolId)
+  const [settings, setSettings] = useState({})
 
-  if (!activeCourse) {
-    return null
-  }
+  useEffect(() => {
+    let tmp = courseType.bike_hire_setup.find(
+      x => x.supplier.id === parseInt(schoolId)
+    )
 
-  const { name, settings } = activeCourse
+    if (!tmp) {
+      tmp = DEFAULT_SETTINGS
+    }
+    setSettings(tmp)
+  }, [])
+
   const courses = Object.entries(settings)
     .filter(([key, value]) => key.startsWith('available'))
-    .filter(bike => filterBikes(activeCourse, bike))
+    .filter(bike => filterBikes(courseType, bike))
     .map(([key, value]) => {
       const countKey = getCountKey(key)
 
@@ -89,22 +99,19 @@ function DefaultBikesModal({
   const handleCheckboxClick = (event, key) => {
     const { checked } = event.target
     const countKey = getCountKey(key)
-
-    setActiveCourse({
-      ...activeCourse,
-      settings: {
-        ...activeCourse.settings,
-        [key]: checked,
-        ...(!checked && { [countKey]: 0 })
-      }
-    })
+    const tmp = Object.assign({}, settings)
+    tmp[key] = checked
+    if (!checked) {
+      tmp[countKey] = 0
+    }
+    setSettings(tmp)
     setIsChanged(true)
   }
 
   const handleSave = async () => {
     try {
       setIsChanged(false)
-      await updateDefaultBikeHire(activeCourse, schoolId)
+      updateDefaultBikes(settings, courseType.constant, schoolId)
       setActiveCourse(null)
     } catch {
       setIsChanged(true)
@@ -112,25 +119,14 @@ function DefaultBikesModal({
   }
 
   const handleChangeCount = (countKey, value = 0) => {
-    setActiveCourse({
-      ...activeCourse,
-      settings: {
-        ...activeCourse.settings,
-        [countKey]: value
-      }
-    })
+    const tmp = Object.assign({}, settings)
+    tmp[countKey] = value
+    setSettings(tmp)
     setIsChanged(true)
   }
-  const courseOrder = {
-    available_auto_bikes: 1,
-    available_auto_50cc_bikes: 2,
-    available_auto_125cc_bikes: 3,
-    available_manual_50cc_bikes: 4,
-    available_manual_125cc_bikes: 5,
-    available_own_bikes: 6
-  }
+
   courses.sort((a, b) => {
-    return courseOrder[a.key] > courseOrder[b.key] ? 1 : -1
+    return COURSE_ORDER[a.key] > COURSE_ORDER[b.key] ? 1 : -1
   })
 
   return (
@@ -144,7 +140,7 @@ function DefaultBikesModal({
         </div>
         <div className={styles.body}>
           <div className={styles.courseName}>
-            <b>Course:</b> {name}
+            <b>Course:</b> {courseType.name}
           </div>
           <div className={styles.courseDetails}>
             <Table borderless size="sm">
@@ -217,4 +213,17 @@ function DefaultBikesModal({
   )
 }
 
-export default DefaultBikesModal
+const mapStateToProps = (state, ownProps) => ({})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      updateDefaultBikes
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DefaultBikesModal)

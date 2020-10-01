@@ -190,3 +190,12 @@ export const DEFAULT_SETTINGS = {
   available_a_manual_bikes: true,
   a_manual_bikes: 0
 }
+
+export const COURSE_ORDER = {
+  available_auto_bikes: 1,
+  available_auto_50cc_bikes: 2,
+  available_auto_125cc_bikes: 3,
+  available_manual_50cc_bikes: 4,
+  available_manual_125cc_bikes: 5,
+  available_own_bikes: 6
+}

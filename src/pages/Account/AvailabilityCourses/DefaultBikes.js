@@ -6,12 +6,25 @@ import RowItem from './RowItem'
 import { FULL_LICENCE_MODULES } from 'common/constants'
 import { ConnectSingleSelect } from 'components/ConnectForm'
 
-function DefaultBikes({ schools, info, loadCourseTypes, user }) {
+function DefaultBikes({ schools, info }) {
   const [activeCourse, setActiveCourse] = useState(null)
+  const [courseList, setCourseList] = useState([])
   const [schoolId, setSchoolId] = useState(null)
 
   useEffect(() => {
-    loadCourseTypes({ schoolId: schoolId })
+    if (schools.length) {
+      setSchoolId(schools[0].id)
+    }
+  }, [])
+
+  useEffect(() => {
+    const courses = info.courseTypes.filter(
+      courseType =>
+        courseType.schoolIds.includes(schoolId) &&
+        courseType.constant !== 'FULL_LICENCE' &&
+        !FULL_LICENCE_MODULES.includes(courseType.constant)
+    )
+    setCourseList(courses)
   }, [schoolId])
 
   const handleChangeSchool = id => {
@@ -46,36 +59,27 @@ function DefaultBikes({ schools, info, loadCourseTypes, user }) {
               </tr>
             </thead>
             <tbody>
-              {info.courseTypes
-                .filter(
-                  ({ constant }) =>
-                    constant !== 'FULL_LICENCE' &&
-                    !FULL_LICENCE_MODULES.includes(constant)
-                )
-                .map(courseType => {
-                  return (
-                    <RowItem
-                      key={courseType.id}
-                      schoolId={schoolId}
-                      courseType={courseType}
-                      activeCourse={activeCourse}
-                      setActiveCourse={setActiveCourse}
-                    />
-                  )
-                })}
+              {courseList.map(courseType => (
+                <RowItem
+                  key={courseType.id}
+                  schoolId={schoolId}
+                  courseType={courseType}
+                  setActiveCourse={setActiveCourse}
+                />
+              ))}
             </tbody>
           </Table>
         </div>
       </div>
-      <DefaultBikesModal
-        isOpen={!!activeCourse}
-        onRequestClose={() => {
-          setActiveCourse(null)
-        }}
-        schoolId={schoolId}
-        activeCourse={activeCourse}
-        setActiveCourse={setActiveCourse}
-      />
+      {activeCourse && (
+        <DefaultBikesModal
+          isOpen={!!activeCourse}
+          onRequestClose={() => setActiveCourse(null)}
+          setActiveCourse={setActiveCourse}
+          schoolId={schoolId}
+          courseType={activeCourse}
+        />
+      )}
     </Fragment>
   )
 }

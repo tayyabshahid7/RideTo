@@ -13,7 +13,8 @@ import {
   createSchoolCourse,
   createBulkSchoolCourse,
   getPricingForCourse,
-  fetchDayCourseTimes
+  fetchDayCourseTimes,
+  updateDefaultBikeHire
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -49,6 +50,9 @@ const ADD_PACKAGE = 'rideto/course/PACKAGE/ADD'
 const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
 const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
 const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
+const UPDATE_DEFAULT_BIKES = createRequestTypes(
+  'rideto/course/UPDATE_DEFAULT_BIKES'
+)
 
 export const addCourseToPackage = course => dispatch => {
   dispatch({ type: ADD_COURSE_TO_PACKAGE, data: course })
@@ -90,6 +94,27 @@ export const getSingleCourse = ({
     })
   } catch (error) {
     dispatch({ type: FETCH_SINGLE[FAILURE], error })
+  }
+}
+
+export const updateDefaultBikes = (
+  settings,
+  courseType,
+  schoolId
+) => async dispatch => {
+  dispatch({ type: UPDATE_DEFAULT_BIKES[REQUEST] })
+  try {
+    await updateDefaultBikeHire(settings, courseType, schoolId)
+    dispatch({
+      type: UPDATE_DEFAULT_BIKES[SUCCESS],
+      data: {
+        settings,
+        courseType,
+        schoolId
+      }
+    })
+  } catch (error) {
+    dispatch({ type: UPDATE_DEFAULT_BIKES[FAILURE], error })
   }
 }
 
@@ -778,6 +803,15 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: false, error: action.error }
       }
+    case UPDATE_DEFAULT_BIKES[REQUEST]: {
+      return state
+    }
+    case UPDATE_DEFAULT_BIKES[SUCCESS]: {
+      return state
+    }
+    case UPDATE_DEFAULT_BIKES[FAILURE]: {
+      return state
+    }
     case CREATE_PAYMENT[REQUEST]:
       return {
         ...state,

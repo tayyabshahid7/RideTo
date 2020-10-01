@@ -214,7 +214,6 @@ class AvailabilityCourses extends React.Component {
   render() {
     const {
       info,
-      loadCourseTypes,
       instructors,
       // schoolId,
       schools,
@@ -246,7 +245,6 @@ class AvailabilityCourses extends React.Component {
               info={info}
               history={history}
               instructors={instructors}
-              loadCourseTypes={loadCourseTypes}
               schools={schools}
               available_days={available_days}
               handleCancel={this.handleCancel.bind(this)}
@@ -282,19 +280,13 @@ class AvailabilityCourses extends React.Component {
             instructors={instructors}
             schoolId={schoolId}
             info={info}
-            loadCourseTypes={loadCourseTypes}
             updateSettings={updateSettings}
             editInstructor={editInstructor}
             updateDiaryColor={updateDiaryColor}
           />
         </div> */}
         <div className={styles.box}>
-          <DefaultBikes
-            user={user}
-            info={info}
-            loadCourseTypes={loadCourseTypes}
-            schools={schools}
-          />
+          <DefaultBikes user={user} info={info} schools={schools} />
         </div>
       </Fragment>
     )

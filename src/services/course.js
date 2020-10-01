@@ -571,18 +571,16 @@ export const getDefaultBikeHire = async (course_type, schoolId) => {
   return response
 }
 
-export const updateDefaultBikeHire = async (
-  { constant, settings },
-  schoolId
-) => {
+export const updateDefaultBikeHire = async (settings, courseType, schoolId) => {
   const path = 'school/settings/widget/bike-hire-setup'
-  const params = {
-    course_type: constant,
-    supplier_id: schoolId,
-    ...settings
+  console.log(settings, courseType, schoolId)
+  const data = {
+    ...settings,
+    course_type: courseType,
+    supplier_id: schoolId
   }
 
-  const response = await put(path, params, true)
+  const response = await put(path, data, true)
 
   return response
 }
