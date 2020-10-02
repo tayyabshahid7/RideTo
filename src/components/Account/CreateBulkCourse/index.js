@@ -10,12 +10,13 @@ import {
   Button
 } from 'components/ConnectForm'
 import { DEFAULT_SETTINGS } from 'common/constants'
-import * as _ from 'lodash'
-import { filterExtraCourses, getDefaultBikeHire } from 'services/course'
+import { filterExtraCourses } from 'services/course'
 
 class CreateBulkCourse extends React.Component {
   constructor(props) {
     super(props)
+
+    const { schools } = this.props
 
     const course = {
       course_type_id: '',
@@ -45,41 +46,34 @@ class CreateBulkCourse extends React.Component {
       status: ''
     }
 
-    const { schools } = this.props
-
     this.state = {
       settings: DEFAULT_SETTINGS,
       course: course,
       schoolId: schools[0].id,
-      useDefaultDays: false,
-      useDefaultBikeAmounts: true
+      useDefaultDays: false
     }
   }
 
   componentDidMount() {
     const { info } = this.props
 
-    this.setState({
-      course: {
-        ...this.state.course,
-        course_type_id: info.courseTypes
-          .filter(filterExtraCourses)[0]
-          .id.toString()
+    this.setState(
+      {
+        course: {
+          ...this.state.course,
+          course_type_id: info.courseTypes
+            .filter(filterExtraCourses)[0]
+            .id.toString()
+        }
+      },
+      () => {
+        this.updateCourseSettings()
       }
-    })
+    )
   }
 
   async componentDidUpdate(prevProps) {
-    const {
-      saving,
-      error,
-      history,
-      info: { courseTypes }
-    } = this.props
-
-    const {
-      course: { course_type_id }
-    } = this.state
+    const { saving, error, history } = this.props
 
     if (prevProps.saving && !saving) {
       if (!error) {
@@ -88,60 +82,39 @@ class CreateBulkCourse extends React.Component {
         history.push(`/calendar`)
       }
     }
-
-    if (course_type_id === '' && courseTypes.length) {
-      this.setState({
-        course: {
-          ...this.state.course,
-          course_type_id: courseTypes
-            .filter(filterExtraCourses)[0]
-            .id.toString()
-        }
-      })
-    }
-
-    if (this.state.course.course_type_id && this.state.useDefaultBikeAmounts) {
-      let { course } = this.state
-      const updatedCourse = await this.loadCourseSettings(
-        this.state.course.course_type_id,
-        this.props.schoolId
-      )
-      if (updatedCourse) {
-        course = updatedCourse
-      }
-      this.setState({ course })
-    }
   }
 
-  loadCourseSettings = async (course_type_id, schoolId) => {
-    try {
-      const currentCourseTypeConstant = _.find(
-        this.props.info.courseTypes,
-        courseType => courseType.id.toString() === course_type_id
-      ).constant
-      const response = await getDefaultBikeHire(
-        currentCourseTypeConstant,
-        schoolId
+  updateCourseSettings = () => {
+    const {
+      info: { courseTypes }
+    } = this.props
+    let { course, schoolId } = this.state
+    const courseTypeId = parseInt(course.course_type_id)
+    const courseType = courseTypes.find(x => x.id === courseTypeId)
+    let settings = DEFAULT_SETTINGS
+
+    if (courseType) {
+      const bikeSetup = courseType.bike_hire_setup.find(
+        x => x.supplier.id === parseInt(schoolId)
       )
-      this.setState({
-        settings: response,
-        useDefaultBikeAmounts: false
-      })
-      return {
-        ...this.state.course,
-        auto_bikes: response.default_number_auto_bikes,
-        auto_50cc_bikes: response.default_number_auto_50cc_bikes,
-        manual_bikes: response.default_number_manual_125cc_bikes,
-        auto_125cc_bikes: response.default_number_auto_125cc_bikes,
-        manual_50cc_bikes: response.default_number_manual_50cc_bikes,
-        own_bikes: response.default_number_own_bikes
+
+      if (bikeSetup) {
+        settings = bikeSetup
       }
-    } catch (error) {
-      this.setState({
-        settings: DEFAULT_SETTINGS
-      })
-      return null
     }
+
+    course = Object.assign(course, {
+      auto_bikes: settings.default_number_auto_bikes,
+      auto_50cc_bikes: settings.default_number_auto_50cc_bikes,
+      manual_bikes: settings.default_number_manual_125cc_bikes,
+      auto_125cc_bikes: settings.default_number_auto_125cc_bikes,
+      manual_50cc_bikes: settings.default_number_manual_50cc_bikes,
+      own_bikes: settings.default_number_own_bikes
+    })
+    this.setState({
+      course,
+      settings
+    })
   }
 
   async handleChangeRawEvent(event) {
@@ -149,17 +122,11 @@ class CreateBulkCourse extends React.Component {
     let { course } = this.state
     course[name] = value
 
-    if (name === 'course_type_id') {
-      const updatedCourse = await this.loadCourseSettings(
-        course.course_type_id,
-        this.props.schoolId
-      )
-      if (updatedCourse) {
-        course = updatedCourse
+    this.setState({ course }, () => {
+      if (name === 'course_type_id') {
+        this.updateCourseSettings()
       }
-    }
-
-    this.setState({ course })
+    })
   }
 
   handleCancel(event) {
@@ -259,10 +226,15 @@ class CreateBulkCourse extends React.Component {
       instructor_id = null
     }
 
-    this.setState({
-      schoolId: id,
-      course: { ...this.state.course, course_type_id, instructor_id }
-    })
+    this.setState(
+      {
+        schoolId: id,
+        course: { ...this.state.course, course_type_id, instructor_id }
+      },
+      () => {
+        this.updateCourseSettings()
+      }
+    )
   }
 
   getCourseTypes = schoolId => {
