@@ -40,8 +40,19 @@ export const getStartInTime = (now, startTime) => {
     .join(', ')
 }
 
-export const getMotorbikeLabel = (bikeHire, isFullLicence) => {
-  return getBikeHireOptions(isFullLicence)[bikeHire]
+export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
+  const simpleLabels = {
+    auto: !isFullLicence ? 'Automatic Scooter' : 'Automatic',
+    auto_50cc: !isFullLicence ? 'Automatic 50cc' : 'Automatic 50cc',
+    manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
+    no: 'Own Bike'
+  }
+
+  if (['auto', 'auto_50cc', 'manual', 'no'].includes(bikeHire)) {
+    return simpleLabels[bikeHire]
+  }
+
+  return getBikeHireOptions(isFullLicence, isInstantBook)[bikeHire]
 }
 
 export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {

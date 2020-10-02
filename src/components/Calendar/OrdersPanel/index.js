@@ -105,7 +105,8 @@ class OrdersPanel extends React.Component {
       loading,
       updateAdding,
       addingOrder,
-      loadCourses
+      loadCourses,
+      schoolId
     } = this.props
     const { orderIndex, editOrderIndex, showEditButton } = this.state
     const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
@@ -153,6 +154,7 @@ class OrdersPanel extends React.Component {
             {Array.apply(null, Array(availableSpaces)).map((val, index) =>
               orderIndex === index ? (
                 <AddOrderItem
+                  schoolId={schoolId}
                   key={index}
                   onCancel={() => this.setState({ orderIndex: -1 })}
                   info={info}
