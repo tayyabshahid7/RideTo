@@ -19,12 +19,15 @@ import {
 import { actions as notifyActions } from 'store/notification'
 import { getDaysStaff } from 'store/staff'
 import { getDaysCourses } from 'store/course'
-import { getDefaultBikeHire } from 'services/course'
+import { DEFAULT_SETTINGS } from 'common/constants'
 
 const bikeFields = [
   'own_bikes',
   'auto_bikes',
+  'auto_50cc_bikes',
+  'auto_125cc_bikes',
   'manual_bikes',
+  'manual_50cc_bikes',
   'a1_auto_bikes',
   'a2_auto_bikes',
   'a1_manual_bikes',
@@ -49,18 +52,6 @@ class CourseForm extends React.Component {
       spaces: '',
       duration: '',
       notes: '',
-      auto_bikes: '',
-      auto_50cc_bikes: '',
-      manual_bikes: '',
-      auto_125cc_bikes: '',
-      manual_50cc_bikes: '',
-      own_bikes: '',
-      a1_auto_bikes: '',
-      a2_auto_bikes: '',
-      a_auto_bikes: '',
-      a1_manual_bikes: '',
-      a2_manual_bikes: '',
-      a_manual_bikes: '',
       test_centre: '',
       last_date_cancel: lastDate,
       status: '',
@@ -94,12 +85,6 @@ class CourseForm extends React.Component {
           'spaces',
           'duration',
           'instructor_id',
-          'auto_bikes',
-          'auto_50cc_bikes',
-          'manual_bikes',
-          'auto_125cc_bikes',
-          'manual_50cc_bikes',
-          'own_bikes',
           'notes',
           'test_centre',
           'last_date_cancel',
@@ -139,8 +124,7 @@ class CourseForm extends React.Component {
     this.state = {
       course: course,
       edited: false,
-      defaultBikes: {},
-      loadingDefaultBikes: false,
+      defaultBikes: DEFAULT_SETTINGS,
       supplier
     }
   }
@@ -213,58 +197,41 @@ class CourseForm extends React.Component {
 
   loadDefaultBikes() {
     const { supplier } = this.state
-    const { defaultBikes, loadingDefaultBikes } = this.state
     const { course_type_id } = this.state.course
     const { courseTypes } = this.props.info
 
-    if (!course_type_id && courseTypes.length) {
-      return
+    const courseTypeId = parseInt(course_type_id)
+    const courseType = courseTypes.find(x => x.id === courseTypeId)
+    let settings = DEFAULT_SETTINGS
+
+    if (courseType) {
+      const bikeSetup = courseType.bike_hire_setup.find(
+        x => x.supplier.id === parseInt(supplier)
+      )
+
+      if (bikeSetup) {
+        settings = bikeSetup
+      }
     }
 
-    const activeCourse = courseTypes.find(
-      ({ id }) => id === parseInt(course_type_id)
-    )
-
-    const constant = activeCourse && activeCourse.constant
-
-    if (!constant) {
-      return
-    }
-
-    if (defaultBikes.course_type !== constant && !loadingDefaultBikes) {
-      this.setState({
-        loadingDefaultBikes: true
-      })
-      getDefaultBikeHire(constant, supplier).then(res => {
-        this.setState({
-          loadingDefaultBikes: false,
-          defaultBikes: {
-            course_type: constant,
-            ...res
-          }
-        })
-        console.log(res, this.state.course)
-        if (!this.props.course) {
-          this.setState({
-            course: {
-              ...this.state.course,
-              a1_auto_bikes: res.a1_auto_bikes,
-              a1_manual_bikes: res.a1_manual_bikes,
-              a2_auto_bikes: res.a2_auto_bikes,
-              a2_manual_bikes: res.a2_manual_bikes,
-              a_auto_bikes: res.a_auto_bikes,
-              a_manual_bikes: res.a_manual_bikes,
-              auto_bikes: res.default_number_auto_bikes,
-              auto_50cc_bikes: res.default_number_auto_50cc_bikes,
-              auto_125cc_bikes: res.default_number_auto_125cc_bikes,
-              manual_bikes: res.default_number_manual_125cc_bikes,
-              own_bikes: res.default_number_own_bikes,
-              manual_50cc_bikes: res.default_number_manual_50cc_bikes
-            }
-          })
-        }
-      })
-    }
+    this.setState({
+      course: {
+        ...this.state.course,
+        a1_auto_bikes: settings.a1_auto_bikes,
+        a1_manual_bikes: settings.a1_manual_bikes,
+        a2_auto_bikes: settings.a2_auto_bikes,
+        a2_manual_bikes: settings.a2_manual_bikes,
+        a_auto_bikes: settings.a_auto_bikes,
+        a_manual_bikes: settings.a_manual_bikes,
+        auto_bikes: settings.default_number_auto_bikes,
+        auto_50cc_bikes: settings.default_number_auto_50cc_bikes,
+        auto_125cc_bikes: settings.default_number_auto_125cc_bikes,
+        manual_bikes: settings.default_number_manual_125cc_bikes,
+        own_bikes: settings.default_number_own_bikes,
+        manual_50cc_bikes: settings.default_number_manual_50cc_bikes
+      },
+      defaultBikes: settings
+    })
   }
 
   getFinishTime = (time, duration) => {

@@ -106,8 +106,8 @@ class CreateBulkCourse extends React.Component {
     course = Object.assign(course, {
       auto_bikes: settings.default_number_auto_bikes,
       auto_50cc_bikes: settings.default_number_auto_50cc_bikes,
-      manual_bikes: settings.default_number_manual_125cc_bikes,
       auto_125cc_bikes: settings.default_number_auto_125cc_bikes,
+      manual_bikes: settings.default_number_manual_125cc_bikes,
       manual_50cc_bikes: settings.default_number_manual_50cc_bikes,
       own_bikes: settings.default_number_own_bikes
     })
