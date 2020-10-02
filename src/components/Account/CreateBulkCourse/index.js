@@ -93,7 +93,7 @@ class CreateBulkCourse extends React.Component {
     const courseType = courseTypes.find(x => x.id === courseTypeId)
     let settings = DEFAULT_SETTINGS
 
-    if (courseType) {
+    if (courseType && courseType.bike_hire_setup) {
       const bikeSetup = courseType.bike_hire_setup.find(
         x => x.supplier.id === parseInt(schoolId)
       )
