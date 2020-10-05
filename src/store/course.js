@@ -13,7 +13,8 @@ import {
   createSchoolCourse,
   createBulkSchoolCourse,
   getPricingForCourse,
-  fetchDayCourseTimes
+  fetchDayCourseTimes,
+  createPackage
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -49,6 +50,7 @@ const ADD_PACKAGE = 'rideto/course/PACKAGE/ADD'
 const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
 const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
 const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
+const CREATE_PACKAGE = createRequestTypes('rideto/course/CREATE_PACKAGE')
 
 export const addCourseToPackage = course => dispatch => {
   dispatch({ type: ADD_COURSE_TO_PACKAGE, data: course })
@@ -90,6 +92,20 @@ export const getSingleCourse = ({
     })
   } catch (error) {
     dispatch({ type: FETCH_SINGLE[FAILURE], error })
+  }
+}
+
+export const createCoursePackage = (courseIds, price) => async dispatch => {
+  dispatch({ type: CREATE_PACKAGE[REQUEST] })
+  try {
+    const result = await createPackage(courseIds.join(','), price)
+    console.log(result)
+
+    dispatch({
+      type: CREATE_PACKAGE[SUCCESS]
+    })
+  } catch (error) {
+    dispatch({ type: CREATE_PACKAGE[FAILURE], error })
   }
 }
 
@@ -458,7 +474,8 @@ const defaultState = {
   coursePackage: {
     courses: [],
     adding: false,
-    editing: false
+    editing: false,
+    loading: false
   }
 }
 
@@ -470,6 +487,36 @@ export default function reducer(state = initialState, action) {
   let dayCourses
   let calendarCourses
   switch (action.type) {
+    case CREATE_PACKAGE[REQUEST]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          adding: true,
+          loading: true
+        }
+      }
+    }
+    case CREATE_PACKAGE[SUCCESS]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          adding: false,
+          loading: false
+        }
+      }
+    }
+    case CREATE_PACKAGE[FAILURE]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          adding: false,
+          loading: false
+        }
+      }
+    }
     case CANCEL_PACKAGE: {
       return {
         ...state,

@@ -8,6 +8,7 @@ import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 export default function ConnectInput(props) {
   let {
     label,
+    prefix,
     type = 'text',
     onChange,
     noWrapLabel,
@@ -95,17 +96,24 @@ export default function ConnectInput(props) {
           {label}
         </label>
       )}
-      <input
-        {...rest}
-        name={name}
-        className={classnames(styles.input, basic && styles.basic)}
-        id={id || name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        disabled={disabled}
-        required={required}
-      />
+      <div className={styles.inputHolder}>
+        {prefix && <span className={styles.prefix}>{prefix}</span>}
+        <input
+          {...rest}
+          name={name}
+          className={classnames(
+            styles.input,
+            basic && styles.basic,
+            prefix && styles.prefixInput
+          )}
+          id={id || name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          required={required}
+        />
+      </div>
     </div>
   )
 }

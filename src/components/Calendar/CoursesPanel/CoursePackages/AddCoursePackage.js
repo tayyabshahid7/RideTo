@@ -1,23 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './CoursePackages.scss'
 import CourseSummary from '../CourseSummary'
-import { cancelCoursePackage } from 'store/course'
+import { cancelCoursePackage, createCoursePackage } from 'store/course'
 
-import { Button } from 'components/ConnectForm'
+import { Button, ConnectInput } from 'components/ConnectForm'
 
 const AddCoursePackage = ({
   courses,
   date,
   instructors,
   schools,
-  cancelCoursePackage
+  cancelCoursePackage,
+  createCoursePackage
 }) => {
-  const handleSave = () => {}
+  const [price, setPrice] = useState(0)
+  const handleSave = () => {
+    const courseIds = courses.map(x => x.id)
+    createCoursePackage(courseIds, price)
+  }
 
   const handleCancel = () => {
     cancelCoursePackage()
+  }
+
+  const handlePriceChange = event => {
+    const { value } = event.target
+    setPrice(value)
   }
 
   return (
@@ -33,6 +43,18 @@ const AddCoursePackage = ({
           embedded={false}
         />
       ))}
+      <ConnectInput
+        basic
+        className={styles.inputNumber}
+        name="price"
+        value={price}
+        type="number"
+        min="0"
+        prefix="£"
+        onChange={handlePriceChange}
+        raw
+        required
+      />
       <div className={styles.actions}>
         <div>
           <Button
@@ -62,7 +84,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      cancelCoursePackage
+      cancelCoursePackage,
+      createCoursePackage
     },
     dispatch
   )
