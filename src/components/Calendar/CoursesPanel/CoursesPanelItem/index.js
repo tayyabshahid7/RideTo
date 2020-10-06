@@ -31,7 +31,6 @@ const CoursesPanelItem = ({
   deleteOrderTraining,
   updateCourse,
   updateAdding,
-  handleAddPackage,
   addingOrder,
   courseId,
   schools,
@@ -56,10 +55,6 @@ const CoursesPanelItem = ({
     instructor = instructors.find(x => x.id === instructor.id)
   }
   const isSelected = parseInt(courseId) === course.id
-
-  const handlePackage = () => {
-    handleAddPackage(course)
-  }
 
   return (
     <div className={styles.wrapper}>
@@ -124,14 +119,6 @@ const CoursesPanelItem = ({
           )}
         </div>
       </div>
-      {addingOrder && isFullLicense && (
-        <div className={styles.buttonHolder}>
-          <div className={styles.addButton} onClick={handlePackage}>
-            Create a Package
-          </div>
-        </div>
-      )}
-
       <OrdersPanel
         course={course}
         info={info}
@@ -168,10 +155,10 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       updateCourse,
-      setOrderCourse,
       createSchoolOrder,
       createSchoolPayment,
       updateSchoolOrder,
+      setOrderCourse,
       deleteOrderTraining
     },
     dispatch

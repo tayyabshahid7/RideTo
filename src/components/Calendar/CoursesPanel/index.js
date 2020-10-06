@@ -3,7 +3,7 @@ import moment from 'moment'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { getDayCourses, addCoursePackage } from 'store/course'
+import { getDayCourses } from 'store/course'
 import { getDayEvents } from 'store/event'
 import { getDayStaff } from 'store/staff'
 import LoadingMask from 'components/LoadingMask'
@@ -22,10 +22,6 @@ class CoursesPanelContainer extends React.Component {
 
   updateAdding = id => {
     this.setState({ addingOrder: id })
-  }
-
-  handleAddPackage = course => {
-    this.props.addCoursePackage(course)
   }
 
   componentDidMount() {
@@ -97,6 +93,7 @@ class CoursesPanelContainer extends React.Component {
         <DateHeading
           title={title}
           subtitle={subtitle}
+          noClose={!!subtitle}
           date={moment(date, 'YYYY-MM-DD')}
           backLink={`/calendar`}
         />
@@ -110,7 +107,6 @@ class CoursesPanelContainer extends React.Component {
           coursePackage={coursePackage}
           events={events}
           updateAdding={this.updateAdding}
-          handleAddPackage={this.handleAddPackage}
           staff={staff}
           isAdmin={isAdmin}
           loadCourses={loadCourses}
@@ -145,8 +141,7 @@ const mapDispatchToProps = dispatch =>
     {
       getDayCourses,
       getDayEvents,
-      getDayStaff,
-      addCoursePackage
+      getDayStaff
     },
     dispatch
   )

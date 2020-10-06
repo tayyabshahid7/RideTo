@@ -46,10 +46,12 @@ const SHIFT_DELETED = 'rideto/course/SHIFT/DELETED'
 const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 const ADD_PACKAGE = 'rideto/course/PACKAGE/ADD'
+const EDIT_PACKAGE = 'rideto/course/PACKAGE/EDIT'
 const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
+const DELETE_PACKAGE = 'rideto/course/PACKAGE/DELETE'
 const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
 const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
-const CREATE_PACKAGE = createRequestTypes('rideto/course/CREATE_PACKAGE')
+const FINISH_COURSE_PACKAGE = 'rideto/course/FINISH_COURSE_PACKAGE'
 const SET_ORDER_COURSE = 'rideto/course/SET_ORDER_COURSE'
 
 export const setOrderCourse = course => dispatch => {
@@ -64,12 +66,20 @@ export const removeCourseFromPackage = course => dispatch => {
   dispatch({ type: REMOVE_COURSE_FROM_PACKAGE, data: course })
 }
 
-export const addCoursePackage = course => dispatch => {
-  dispatch({ type: ADD_PACKAGE, data: course })
+export const addCoursePackage = () => dispatch => {
+  dispatch({ type: ADD_PACKAGE })
+}
+
+export const editCoursePackage = () => dispatch => {
+  dispatch({ type: EDIT_PACKAGE })
 }
 
 export const cancelCoursePackage = () => dispatch => {
   dispatch({ type: CANCEL_PACKAGE })
+}
+
+export const deleteCoursePackage = () => dispatch => {
+  dispatch({ type: DELETE_PACKAGE })
 }
 
 export const resetData = () => dispatch => {
@@ -99,17 +109,8 @@ export const getSingleCourse = ({
   }
 }
 
-export const createCoursePackage = (courseIds, price) => async dispatch => {
-  dispatch({ type: CREATE_PACKAGE[REQUEST] })
-  // try {
-  //   const result = await createPackage(courseIds.join(','), price)
-
-  //   dispatch({
-  //     type: CREATE_PACKAGE[SUCCESS]
-  //   })
-  // } catch (error) {
-  //   dispatch({ type: CREATE_PACKAGE[FAILURE], error })
-  // }
+export const finishCoursePackage = price => async dispatch => {
+  dispatch({ type: FINISH_COURSE_PACKAGE, data: { price } })
 }
 
 export const getDayCourses = ({ schoolIds, date }) => async dispatch => {
@@ -465,11 +466,6 @@ const defaultState = {
     order: null,
     loading: false
   },
-  order: {
-    courses: [],
-    order: null,
-    saving: false
-  },
   bulk: {
     saving: false,
     error: null
@@ -484,6 +480,14 @@ const defaultState = {
     adding: false,
     editing: false,
     loading: false
+  },
+  order: {
+    courses: [],
+    orderIndex: -1,
+    isPackage: false,
+    price: null,
+    order: null,
+    saving: false
   }
 }
 
@@ -495,35 +499,22 @@ export default function reducer(state = initialState, action) {
   let dayCourses
   let calendarCourses
   switch (action.type) {
-    case CREATE_PACKAGE[REQUEST]: {
+    case FINISH_COURSE_PACKAGE: {
       return {
         ...state,
         coursePackage: {
           ...state.coursePackage,
+          price: action.data.price,
           adding: false
+        },
+        order: {
+          ...state.order,
+          isPackage: true,
+          price: action.data.price,
+          courses: state.coursePackage.courses
         }
       }
     }
-    // case CREATE_PACKAGE[SUCCESS]: {
-    //   return {
-    //     ...state,
-    //     coursePackage: {
-    //       ...state.coursePackage,
-    //       adding: false,
-    //       loading: false
-    //     }
-    //   }
-    // }
-    // case CREATE_PACKAGE[FAILURE]: {
-    //   return {
-    //     ...state,
-    //     coursePackage: {
-    //       ...state.coursePackage,
-    //       adding: false,
-    //       loading: false
-    //     }
-    //   }
-    // }
     case CANCEL_PACKAGE: {
       return {
         ...state,
@@ -534,22 +525,51 @@ export default function reducer(state = initialState, action) {
         }
       }
     }
+    case DELETE_PACKAGE: {
+      return {
+        ...state,
+        coursePackage: {
+          courses: [],
+          adding: false,
+          editing: false
+        },
+        order: {
+          courses: [state.order.courses[0]],
+          price: null,
+          isPackage: false
+        }
+      }
+    }
     case ADD_PACKAGE: {
       return {
         ...state,
         coursePackage: {
           ...state.coursePackage,
-          courses: [action.data],
+          courses: [...state.order.courses],
           adding: true
         }
       }
     }
+    case EDIT_PACKAGE: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          courses: [...state.order.courses],
+          price: state.order.price,
+          adding: true,
+          editing: true
+        }
+      }
+    }
+
     case SET_ORDER_COURSE: {
       return {
         ...state,
         order: {
           ...state.order,
-          courses: [action.data]
+          courses: [action.data.course],
+          orderIndex: action.data.orderIndex
         }
       }
     }

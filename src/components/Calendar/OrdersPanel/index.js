@@ -20,13 +20,16 @@ class OrdersPanel extends React.Component {
 
   handleAdd = index => {
     const { course, setOrderCourse, history } = this.props
-    setOrderCourse(course)
+    setOrderCourse({ course })
     history.push(`/calendar/${course.date}/orders/add`)
     // this.setState({ orderIndex: index })
   }
 
-  handleShowEditForm(index) {
-    this.setState({ editOrderIndex: index, showEditButton: false })
+  handleShowEditForm = index => {
+    const { course, setOrderCourse, history } = this.props
+    setOrderCourse({ course, orderIndex: index })
+    history.push(`/calendar/${course.date}/orders/edit`)
+    // this.setState({ editOrderIndex: index, showEditButton: false })
   }
 
   handleNewOrder(order) {

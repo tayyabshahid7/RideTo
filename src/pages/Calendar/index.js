@@ -15,6 +15,7 @@ import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventCompon
 import AddShiftComponent from 'components/Calendar/StaffShift/AddShiftComponent'
 import EditShiftComponent from 'components/Calendar/StaffShift/EditShiftComponent'
 import AddOrderComponent from 'components/Calendar/Orders/AddOrderComponent'
+import EditOrderComponent from 'components/Calendar/Orders/EditOrderComponent'
 
 import styles from './styles.scss'
 import {
@@ -589,6 +590,16 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date/orders/add"
             render={routeProps => <AddOrderComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/orders/edit"
+            render={routeProps => (
+              <EditOrderComponent
+                {...routeProps}
+                loadCourses={this.loadCourses}
+              />
+            )}
           />
         </RightPanel>
       </div>

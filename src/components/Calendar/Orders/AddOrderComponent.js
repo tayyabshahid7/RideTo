@@ -5,9 +5,14 @@ import { connect } from 'react-redux'
 import DateHeading from 'components/Calendar/DateHeading'
 import CourseSummary from '../CoursesPanel/CourseSummary'
 import AddOrderForm from './AddOrderForm'
+import CoursePackageForm from './CoursePackages/CoursePackageForm'
+import { ConnectInput } from 'components/ConnectForm'
+
 import {
   createSchoolOrder,
-  createSchoolPayment
+  createSchoolPayment,
+  addCoursePackage,
+  editCoursePackage
   // updateSchoolOrder,
   // deleteOrderTraining,
   // updateCourse,
@@ -17,15 +22,19 @@ import { BIKE_HIRE } from 'common/constants'
 
 const AddOrderComponent = ({
   history,
-  courses,
   schools,
+  orderDetail,
   info,
   instructors,
   saving,
   createSchoolOrder,
-  createSchoolPayment
+  createSchoolPayment,
+  addCoursePackage,
+  editCoursePackage,
+  coursePackage
 }) => {
   const [submitted, setSubmitted] = useState(false)
+  const { courses, isPackage, price } = orderDetail
 
   useEffect(() => {
     if (!courses.length) {
@@ -47,7 +56,13 @@ const AddOrderComponent = ({
 
   const isFullLicense = courses[0].course_type.constant.includes('FULL_LICENCE')
 
-  const handlePackage = () => {}
+  const handleAddPackage = () => {
+    addCoursePackage()
+  }
+
+  const handleEditPackage = () => {
+    editCoursePackage()
+  }
 
   const handleNewOrder = order => {
     const course = courses[0]
@@ -106,9 +121,18 @@ const AddOrderComponent = ({
     })
   }
 
+  if (coursePackage && coursePackage.adding) {
+    return (
+      <CoursePackageForm
+        date={courses[0].date}
+        courses={coursePackage.courses}
+      />
+    )
+  }
+
   return (
     <div>
-      <DateHeading title="Add Order" backLink={`/calendar`} />
+      <DateHeading title="Add Order" onBack={handleCancel} />
       {courses.map(course => (
         <CourseSummary
           key={course.id}
@@ -120,11 +144,33 @@ const AddOrderComponent = ({
           embedded={false}
         />
       ))}
+
+      {isFullLicense && isPackage && (
+        <ConnectInput
+          basic
+          className={styles.inputNumber}
+          name="price"
+          label="Total Package Cost"
+          value={price}
+          type="number"
+          min="0"
+          prefix="£"
+          raw
+          disabled
+        />
+      )}
+
       {isFullLicense && (
         <div className={styles.buttonHolder}>
-          <div className={styles.addButton} onClick={handlePackage}>
-            Create a Package
-          </div>
+          {isPackage ? (
+            <div className={styles.addButton} onClick={handleEditPackage}>
+              Edit Package
+            </div>
+          ) : (
+            <div className={styles.addButton} onClick={handleAddPackage}>
+              Create a Package
+            </div>
+          )}
         </div>
       )}
       <AddOrderForm
@@ -142,11 +188,12 @@ const AddOrderComponent = ({
 const mapStateToProps = (state, ownProps) => {
   const schools = state.auth.user ? state.auth.user.suppliers : []
   return {
-    courses: state.course.order.courses,
+    orderDetail: state.course.order,
     schools,
     instructors: state.instructor.instructors,
     info: state.info,
-    saving: state.course.single.saving
+    saving: state.course.single.saving,
+    coursePackage: state.course.coursePackage
   }
 }
 
@@ -154,7 +201,9 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       createSchoolPayment,
-      createSchoolOrder
+      createSchoolOrder,
+      addCoursePackage,
+      editCoursePackage
     },
     dispatch
   )

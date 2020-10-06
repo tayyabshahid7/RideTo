@@ -15,6 +15,8 @@ const CourseSummary = ({
   schools,
   instructors,
   canEdit,
+  canRemove,
+  onRemove,
   embedded = true
 }) => {
   const name = getShortCourseType(course.course_type)
@@ -63,6 +65,13 @@ const CourseSummary = ({
         <span>{schoolName}</span>
         {instructor && <UserInitial user={instructor} short right />}
       </div>
+      {canRemove && (
+        <div className={styles.line}>
+          <span className={styles.link} onClick={onRemove}>
+            Remove
+          </span>
+        </div>
+      )}
     </React.Fragment>
   )
 

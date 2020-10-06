@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import classnames from 'classnames'
 import CoursesPanelItem from './CoursesPanelItem'
-import AddCoursePackage from './CoursePackages/AddCoursePackage'
 import EventPanelItem from './EventPanelItem'
 import ShiftPanelItem from '../StaffShift/ShiftPanelItem'
 import styles from './CoursesPanel.scss'
@@ -11,12 +10,10 @@ import { SHIFT_TYPES } from 'common/constants'
 
 function CoursesPanel({
   courses,
-  coursePackage,
   date,
   events = [],
   addingOrder,
   updateAdding,
-  handleAddPackage,
   courseId,
   instructors,
   staff,
@@ -36,16 +33,6 @@ function CoursesPanel({
       return moment(a.start_time).valueOf() - moment(b.start_time).valueOf()
     }
   })
-
-  if (coursePackage && coursePackage.adding) {
-    return (
-      <AddCoursePackage
-        date={date}
-        courses={coursePackage.courses}
-        updateAdding={updateAdding}
-      />
-    )
-  }
 
   return (
     <div className={styles.coursesPanel}>
@@ -92,7 +79,6 @@ function CoursesPanel({
               course={course}
               addingOrder={addingOrder}
               updateAdding={updateAdding}
-              handleAddPackage={handleAddPackage}
               canEdit={isAdmin}
               instructors={instructors}
               loadCourses={loadCourses}
