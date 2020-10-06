@@ -4,7 +4,7 @@ import { Button } from 'components/ConnectForm'
 import { connect } from 'react-redux'
 import { isAdmin } from 'services/auth'
 
-const OrdersPanelSpaceItem = ({ onAdd, onRemove, isAdmin }) => {
+const OrdersPanelSpaceItem = ({ onAdd, isAdmin }) => {
   return (
     <div className={styles.container}>
       <span className={styles.info}>Available</span>

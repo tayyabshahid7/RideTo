@@ -13,8 +13,7 @@ import {
   createSchoolCourse,
   createBulkSchoolCourse,
   getPricingForCourse,
-  fetchDayCourseTimes,
-  createPackage
+  fetchDayCourseTimes
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -51,6 +50,11 @@ const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
 const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
 const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
 const CREATE_PACKAGE = createRequestTypes('rideto/course/CREATE_PACKAGE')
+const SET_ORDER_COURSE = 'rideto/course/SET_ORDER_COURSE'
+
+export const setOrderCourse = course => dispatch => {
+  dispatch({ type: SET_ORDER_COURSE, data: course })
+}
 
 export const addCourseToPackage = course => dispatch => {
   dispatch({ type: ADD_COURSE_TO_PACKAGE, data: course })
@@ -97,16 +101,15 @@ export const getSingleCourse = ({
 
 export const createCoursePackage = (courseIds, price) => async dispatch => {
   dispatch({ type: CREATE_PACKAGE[REQUEST] })
-  try {
-    const result = await createPackage(courseIds.join(','), price)
-    console.log(result)
+  // try {
+  //   const result = await createPackage(courseIds.join(','), price)
 
-    dispatch({
-      type: CREATE_PACKAGE[SUCCESS]
-    })
-  } catch (error) {
-    dispatch({ type: CREATE_PACKAGE[FAILURE], error })
-  }
+  //   dispatch({
+  //     type: CREATE_PACKAGE[SUCCESS]
+  //   })
+  // } catch (error) {
+  //   dispatch({ type: CREATE_PACKAGE[FAILURE], error })
+  // }
 }
 
 export const getDayCourses = ({ schoolIds, date }) => async dispatch => {
@@ -462,6 +465,11 @@ const defaultState = {
     order: null,
     loading: false
   },
+  order: {
+    courses: [],
+    order: null,
+    saving: false
+  },
   bulk: {
     saving: false,
     error: null
@@ -492,31 +500,30 @@ export default function reducer(state = initialState, action) {
         ...state,
         coursePackage: {
           ...state.coursePackage,
-          adding: true,
-          loading: true
+          adding: false
         }
       }
     }
-    case CREATE_PACKAGE[SUCCESS]: {
-      return {
-        ...state,
-        coursePackage: {
-          ...state.coursePackage,
-          adding: false,
-          loading: false
-        }
-      }
-    }
-    case CREATE_PACKAGE[FAILURE]: {
-      return {
-        ...state,
-        coursePackage: {
-          ...state.coursePackage,
-          adding: false,
-          loading: false
-        }
-      }
-    }
+    // case CREATE_PACKAGE[SUCCESS]: {
+    //   return {
+    //     ...state,
+    //     coursePackage: {
+    //       ...state.coursePackage,
+    //       adding: false,
+    //       loading: false
+    //     }
+    //   }
+    // }
+    // case CREATE_PACKAGE[FAILURE]: {
+    //   return {
+    //     ...state,
+    //     coursePackage: {
+    //       ...state.coursePackage,
+    //       adding: false,
+    //       loading: false
+    //     }
+    //   }
+    // }
     case CANCEL_PACKAGE: {
       return {
         ...state,
@@ -534,6 +541,15 @@ export default function reducer(state = initialState, action) {
           ...state.coursePackage,
           courses: [action.data],
           adding: true
+        }
+      }
+    }
+    case SET_ORDER_COURSE: {
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          courses: [action.data]
         }
       }
     }

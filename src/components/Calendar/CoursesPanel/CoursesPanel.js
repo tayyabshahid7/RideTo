@@ -22,7 +22,8 @@ function CoursesPanel({
   staff,
   isAdmin,
   schools,
-  loadCourses
+  loadCourses,
+  history
 }) {
   const shifts = staff.filter(x => x.event_type === SHIFT_TYPES[0].id)
 
@@ -37,7 +38,13 @@ function CoursesPanel({
   })
 
   if (coursePackage && coursePackage.adding) {
-    return <AddCoursePackage date={date} courses={coursePackage.courses} />
+    return (
+      <AddCoursePackage
+        date={date}
+        courses={coursePackage.courses}
+        updateAdding={updateAdding}
+      />
+    )
   }
 
   return (
@@ -89,6 +96,7 @@ function CoursesPanel({
               canEdit={isAdmin}
               instructors={instructors}
               loadCourses={loadCourses}
+              history={history}
             />
           ))}
 

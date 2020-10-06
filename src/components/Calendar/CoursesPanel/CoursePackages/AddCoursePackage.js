@@ -13,12 +13,15 @@ const AddCoursePackage = ({
   instructors,
   schools,
   cancelCoursePackage,
-  createCoursePackage
+  createCoursePackage,
+  updateAdding
 }) => {
   const [price, setPrice] = useState(0)
+
   const handleSave = () => {
     const courseIds = courses.map(x => x.id)
     createCoursePackage(courseIds, price)
+    updateAdding(courseIds[0])
   }
 
   const handleCancel = () => {
@@ -59,7 +62,7 @@ const AddCoursePackage = ({
         <div>
           <Button
             color="primary"
-            disabled={!courses.length}
+            disabled={courses.length < 2}
             onClick={handleSave}>
             Save Package
           </Button>

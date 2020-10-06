@@ -11,7 +11,8 @@ import {
   createSchoolPayment,
   updateSchoolOrder,
   deleteOrderTraining,
-  updateCourse
+  updateCourse,
+  setOrderCourse
 } from 'store/course'
 import { TEST_STATUS_CHOICES } from 'common/constants'
 import styles from './CoursesPanelItem.scss'
@@ -35,8 +36,10 @@ const CoursesPanelItem = ({
   courseId,
   schools,
   instructors,
+  setOrderCourse,
   canEdit,
-  loadCourses
+  loadCourses,
+  history
 }) => {
   const [showDetail, setShowDetail] = useState(false)
   const availableSpaces = course.spaces - course.orders.length
@@ -132,6 +135,7 @@ const CoursesPanelItem = ({
       <OrdersPanel
         course={course}
         info={info}
+        setOrderCourse={setOrderCourse}
         createSchoolOrder={createSchoolOrder}
         createSchoolPayment={createSchoolPayment}
         updateSchoolOrder={updateSchoolOrder}
@@ -140,6 +144,7 @@ const CoursesPanelItem = ({
         loading={loading}
         schoolId={schoolId}
         saving={saving}
+        history={history}
         addingOrder={addingOrder}
         updateAdding={updateAdding}
         loadCourses={loadCourses}
@@ -163,6 +168,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       updateCourse,
+      setOrderCourse,
       createSchoolOrder,
       createSchoolPayment,
       updateSchoolOrder,

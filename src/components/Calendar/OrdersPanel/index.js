@@ -18,8 +18,11 @@ class OrdersPanel extends React.Component {
     }
   }
 
-  handleAdd(index) {
-    this.setState({ orderIndex: index })
+  handleAdd = index => {
+    const { course, setOrderCourse, history } = this.props
+    setOrderCourse(course)
+    history.push(`/calendar/${course.date}/orders/add`)
+    // this.setState({ orderIndex: index })
   }
 
   handleShowEditForm(index) {
@@ -165,7 +168,7 @@ class OrdersPanel extends React.Component {
               ) : (
                 <Fragment key={index}>
                   {!addingOrder && (
-                    <OrdersPanelSpaceItem onAdd={() => this.handleAdd(index)} />
+                    <OrdersPanelSpaceItem onAdd={this.handleAdd} />
                   )}
                 </Fragment>
               )

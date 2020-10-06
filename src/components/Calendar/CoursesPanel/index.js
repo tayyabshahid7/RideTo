@@ -29,7 +29,10 @@ class CoursesPanelContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.loadData()
+    console.log(this.props.courseDate, this.props.match.params.date)
+    if (this.props.courseDate !== this.props.match.params.date) {
+      this.loadData()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -69,7 +72,8 @@ class CoursesPanelContainer extends React.Component {
       isAdmin,
       schools,
       instructors,
-      loadCourses
+      loadCourses,
+      history
     } = this.props
     const {
       params: { date, courseId, eventId, staffId }
@@ -112,6 +116,7 @@ class CoursesPanelContainer extends React.Component {
           loadCourses={loadCourses}
           schools={schools}
           instructors={instructors}
+          history={history}
         />
         <LoadingMask loading={loading} />
       </div>
@@ -123,6 +128,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     schools: state.auth.user.suppliers,
     courses: state.course.day.courses,
+    courseDate: state.course.day.date,
     coursePackage: state.course.coursePackage,
     loading: state.course.day.loading,
     events: state.event.day.events,
