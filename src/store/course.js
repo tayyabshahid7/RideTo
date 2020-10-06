@@ -46,9 +46,17 @@ const SHIFT_DELETED = 'rideto/course/SHIFT/DELETED'
 const UNSET_SELECTED_COURSE = 'rideto/course/UNSET/SELECTED_COURSE'
 const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 const ADD_PACKAGE = 'rideto/course/PACKAGE/ADD'
+const EDIT_PACKAGE = 'rideto/course/PACKAGE/EDIT'
 const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
+const DELETE_PACKAGE = 'rideto/course/PACKAGE/DELETE'
 const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
 const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
+const FINISH_COURSE_PACKAGE = 'rideto/course/FINISH_COURSE_PACKAGE'
+const SET_ORDER_COURSE = 'rideto/course/SET_ORDER_COURSE'
+
+export const setOrderCourse = course => dispatch => {
+  dispatch({ type: SET_ORDER_COURSE, data: course })
+}
 
 export const addCourseToPackage = course => dispatch => {
   dispatch({ type: ADD_COURSE_TO_PACKAGE, data: course })
@@ -58,12 +66,20 @@ export const removeCourseFromPackage = course => dispatch => {
   dispatch({ type: REMOVE_COURSE_FROM_PACKAGE, data: course })
 }
 
-export const addCoursePackage = course => dispatch => {
-  dispatch({ type: ADD_PACKAGE, data: course })
+export const addCoursePackage = () => dispatch => {
+  dispatch({ type: ADD_PACKAGE })
+}
+
+export const editCoursePackage = () => dispatch => {
+  dispatch({ type: EDIT_PACKAGE })
 }
 
 export const cancelCoursePackage = () => dispatch => {
   dispatch({ type: CANCEL_PACKAGE })
+}
+
+export const deleteCoursePackage = () => dispatch => {
+  dispatch({ type: DELETE_PACKAGE })
 }
 
 export const resetData = () => dispatch => {
@@ -91,6 +107,10 @@ export const getSingleCourse = ({
   } catch (error) {
     dispatch({ type: FETCH_SINGLE[FAILURE], error })
   }
+}
+
+export const finishCoursePackage = price => async dispatch => {
+  dispatch({ type: FINISH_COURSE_PACKAGE, data: { price } })
 }
 
 export const getDayCourses = ({ schoolIds, date }) => async dispatch => {
@@ -458,7 +478,16 @@ const defaultState = {
   coursePackage: {
     courses: [],
     adding: false,
-    editing: false
+    editing: false,
+    loading: false
+  },
+  order: {
+    courses: [],
+    orderIndex: -1,
+    isPackage: false,
+    price: null,
+    order: null,
+    saving: false
   }
 }
 
@@ -470,6 +499,22 @@ export default function reducer(state = initialState, action) {
   let dayCourses
   let calendarCourses
   switch (action.type) {
+    case FINISH_COURSE_PACKAGE: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          price: action.data.price,
+          adding: false
+        },
+        order: {
+          ...state.order,
+          isPackage: true,
+          price: action.data.price,
+          courses: state.coursePackage.courses
+        }
+      }
+    }
     case CANCEL_PACKAGE: {
       return {
         ...state,
@@ -480,13 +525,51 @@ export default function reducer(state = initialState, action) {
         }
       }
     }
+    case DELETE_PACKAGE: {
+      return {
+        ...state,
+        coursePackage: {
+          courses: [],
+          adding: false,
+          editing: false
+        },
+        order: {
+          courses: [state.order.courses[0]],
+          price: null,
+          isPackage: false
+        }
+      }
+    }
     case ADD_PACKAGE: {
       return {
         ...state,
         coursePackage: {
           ...state.coursePackage,
-          courses: [action.data],
+          courses: [...state.order.courses],
           adding: true
+        }
+      }
+    }
+    case EDIT_PACKAGE: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          courses: [...state.order.courses],
+          price: state.order.price,
+          adding: true,
+          editing: true
+        }
+      }
+    }
+
+    case SET_ORDER_COURSE: {
+      return {
+        ...state,
+        order: {
+          ...state.order,
+          courses: [action.data.course],
+          orderIndex: action.data.orderIndex
         }
       }
     }

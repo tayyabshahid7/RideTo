@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import moment from 'moment'
+import { connect } from 'react-redux'
 import classnames from 'classnames'
 import { useMediaQuery } from 'react-responsive'
 import CalendarDayCellItem from 'components/Calendar/CalendarDayCellItem'
@@ -51,6 +52,7 @@ const CalendarDayCell = ({
   calendar,
   index,
   history,
+  coursePackage,
   handleMobileCellClick,
   lastRow,
   users
@@ -96,6 +98,9 @@ const CalendarDayCell = ({
   const shiftUsers = getShiftUsers(day, users)
 
   const handleClick = () => {
+    if (coursePackage.adding) {
+      return
+    }
     history.push(`/calendar/${dateStr}`)
     //   if (isMobile) {
     //   handleMobileCellClick(dateStr)
@@ -208,4 +213,13 @@ const CalendarDayCell = ({
   )
 }
 
-export default CalendarDayCell
+const mapStateToProps = (state, ownProps) => {
+  return {
+    coursePackage: state.course.coursePackage
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  null
+)(CalendarDayCell)

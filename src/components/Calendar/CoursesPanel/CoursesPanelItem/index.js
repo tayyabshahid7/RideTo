@@ -11,7 +11,8 @@ import {
   createSchoolPayment,
   updateSchoolOrder,
   deleteOrderTraining,
-  updateCourse
+  updateCourse,
+  setOrderCourse
 } from 'store/course'
 import { TEST_STATUS_CHOICES } from 'common/constants'
 import styles from './CoursesPanelItem.scss'
@@ -30,13 +31,14 @@ const CoursesPanelItem = ({
   deleteOrderTraining,
   updateCourse,
   updateAdding,
-  handleAddPackage,
   addingOrder,
   courseId,
   schools,
   instructors,
+  setOrderCourse,
   canEdit,
-  loadCourses
+  loadCourses,
+  history
 }) => {
   const [showDetail, setShowDetail] = useState(false)
   const availableSpaces = course.spaces - course.orders.length
@@ -53,10 +55,6 @@ const CoursesPanelItem = ({
     instructor = instructors.find(x => x.id === instructor.id)
   }
   const isSelected = parseInt(courseId) === course.id
-
-  const handlePackage = () => {
-    handleAddPackage(course)
-  }
 
   return (
     <div className={styles.wrapper}>
@@ -121,17 +119,10 @@ const CoursesPanelItem = ({
           )}
         </div>
       </div>
-      {addingOrder && isFullLicense && (
-        <div className={styles.buttonHolder}>
-          <div className={styles.addButton} onClick={handlePackage}>
-            Create a Package
-          </div>
-        </div>
-      )}
-
       <OrdersPanel
         course={course}
         info={info}
+        setOrderCourse={setOrderCourse}
         createSchoolOrder={createSchoolOrder}
         createSchoolPayment={createSchoolPayment}
         updateSchoolOrder={updateSchoolOrder}
@@ -140,6 +131,7 @@ const CoursesPanelItem = ({
         loading={loading}
         schoolId={schoolId}
         saving={saving}
+        history={history}
         addingOrder={addingOrder}
         updateAdding={updateAdding}
         loadCourses={loadCourses}
@@ -166,6 +158,7 @@ const mapDispatchToProps = dispatch =>
       createSchoolOrder,
       createSchoolPayment,
       updateSchoolOrder,
+      setOrderCourse,
       deleteOrderTraining
     },
     dispatch

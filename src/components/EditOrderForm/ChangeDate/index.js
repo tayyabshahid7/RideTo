@@ -98,7 +98,7 @@ class ChangeDate extends Component {
     return (
       <div className={styles.form}>
         <Row>
-          <Col sm="10">
+          <Col>
             <div className={styles.addon}>
               <ConnectInput
                 basic
@@ -126,7 +126,7 @@ class ChangeDate extends Component {
         </Row>
         {showTimes && (
           <Row>
-            <Col sm="10">
+            <Col>
               {!times.length ? (
                 <span className={styles.noTimes}>
                   No times available on this date

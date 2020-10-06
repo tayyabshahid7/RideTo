@@ -516,7 +516,8 @@ class CourseForm extends React.Component {
       orderCount,
       course,
       staffCalendar,
-      courseCalendar
+      courseCalendar,
+      coursePackage
     } = this.props
 
     const {
@@ -527,7 +528,8 @@ class CourseForm extends React.Component {
       available_manual_125cc_bikes,
       available_own_bikes
     } = this.state.defaultBikes
-    const loading = staffCalendar.loading || courseCalendar.loading
+    const loading =
+      staffCalendar.loading || courseCalendar.loading || coursePackage.loading
 
     const { edited } = this.state
 
@@ -1060,7 +1062,8 @@ class CourseForm extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
   staffCalendar: state.staff.days,
-  courseCalendar: state.course.days
+  courseCalendar: state.course.days,
+  coursePackage: state.course.coursePackage
 })
 
 const mapDispatchToProps = dispatch =>

@@ -12,11 +12,10 @@ import AddCourseComponent from 'components/Calendar/AddEditCourse/AddCourseCompo
 import EditCourseComponent from 'components/Calendar/AddEditCourse/EditCourseComponent'
 import AddEventComponent from 'components/Calendar/AddEditEvent/AddEventComponent'
 import EditEventComponent from 'components/Calendar/AddEditEvent/EditEventComponent'
-// import AddStaffComponent from 'components/Calendar/AddEditStaff/AddStaffComponent'
-// import EditStaffComponent from 'components/Calendar/AddEditStaff/EditStaffComponent'
-// import ShiftListComponent from 'components/Calendar/StaffShift/ShiftListComponent'
 import AddShiftComponent from 'components/Calendar/StaffShift/AddShiftComponent'
 import EditShiftComponent from 'components/Calendar/StaffShift/EditShiftComponent'
+import AddOrderComponent from 'components/Calendar/Orders/AddOrderComponent'
+import EditOrderComponent from 'components/Calendar/Orders/EditOrderComponent'
 
 import styles from './styles.scss'
 import {
@@ -577,28 +576,6 @@ class CalendarPage extends Component {
             path="/calendar/:date/events/:eventId/edit"
             render={routeProps => <EditEventComponent {...routeProps} />}
           />
-          {/* <Route
-            exact
-            path="/calendar/staff/create"
-            render={routeProps => <AddStaffComponent {...routeProps} />}
-          /> */}
-          {/* <Route
-            exact
-            path="/calendar/:date/staff/:staffId"
-            render={routeProps => (
-              <CoursesPanel {...routeProps} loadCourses={this.loadCourses} />
-            )}
-          /> */}
-          {/* <Route
-            exact
-            path="/calendar/:date/staff/:staffId/:diaryId/edit"
-            render={routeProps => <EditStaffComponent {...routeProps} />}
-          /> */}
-          {/* <Route
-            exact
-            path="/calendar/:date/shifts/:staffId/list"
-            render={routeProps => <ShiftListComponent {...routeProps} />}
-          /> */}
           <Route
             exact
             path="/calendar/:date/shifts/add"
@@ -608,6 +585,21 @@ class CalendarPage extends Component {
             exact
             path="/calendar/:date/shifts/:staffId/:diaryId/edit"
             render={routeProps => <EditShiftComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/orders/add"
+            render={routeProps => <AddOrderComponent {...routeProps} />}
+          />
+          <Route
+            exact
+            path="/calendar/:date/orders/edit"
+            render={routeProps => (
+              <EditOrderComponent
+                {...routeProps}
+                loadCourses={this.loadCourses}
+              />
+            )}
           />
         </RightPanel>
       </div>

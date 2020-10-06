@@ -27,6 +27,19 @@ export const getCoursesOnDay = (days, dateStr) => {
   return day.courses
 }
 
+export const createPackage = async (courseIds, price) => {
+  const path = `school/course/package`
+  const data = {
+    name: '',
+    price,
+    courses: courseIds
+  }
+
+  const response = await post(path, data)
+
+  return response
+}
+
 export const fetchCourses = async (schoolId, startDate, endDate) => {
   const path = `school/${schoolId}/course`
   const params = {
