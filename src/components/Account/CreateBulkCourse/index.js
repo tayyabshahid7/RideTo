@@ -9,11 +9,14 @@ import {
   ConnectSingleSelect,
   Button
 } from 'components/ConnectForm'
+import { DEFAULT_SETTINGS } from 'common/constants'
 import { filterExtraCourses } from 'services/course'
 
 class CreateBulkCourse extends React.Component {
   constructor(props) {
     super(props)
+
+    const { schools } = this.props
 
     const course = {
       course_type_id: '',
@@ -26,7 +29,11 @@ class CreateBulkCourse extends React.Component {
       duration: '',
       notes: '',
       auto_bikes: '',
+      auto_50cc_bikes: '',
       manual_bikes: '',
+      auto_125cc_bikes: '',
+      manual_50cc_bikes: '',
+      own_bikes: '',
       a1_auto_bikes: '',
       a2_auto_bikes: '',
       a_auto_bikes: '',
@@ -39,9 +46,8 @@ class CreateBulkCourse extends React.Component {
       status: ''
     }
 
-    const { schools } = this.props
-
     this.state = {
+      settings: DEFAULT_SETTINGS,
       course: course,
       schoolId: schools[0].id,
       useDefaultDays: false
@@ -51,27 +57,23 @@ class CreateBulkCourse extends React.Component {
   componentDidMount() {
     const { info } = this.props
 
-    this.setState({
-      course: {
-        ...this.state.course,
-        course_type_id: info.courseTypes
-          .filter(filterExtraCourses)[0]
-          .id.toString()
+    this.setState(
+      {
+        course: {
+          ...this.state.course,
+          course_type_id: info.courseTypes
+            .filter(filterExtraCourses)[0]
+            .id.toString()
+        }
+      },
+      () => {
+        this.updateCourseSettings()
       }
-    })
+    )
   }
 
-  componentDidUpdate(prevProps) {
-    const {
-      saving,
-      error,
-      history,
-      info: { courseTypes }
-    } = this.props
-
-    const {
-      course: { course_type_id }
-    } = this.state
+  async componentDidUpdate(prevProps) {
+    const { saving, error, history } = this.props
 
     if (prevProps.saving && !saving) {
       if (!error) {
@@ -80,24 +82,51 @@ class CreateBulkCourse extends React.Component {
         history.push(`/calendar`)
       }
     }
-
-    if (course_type_id === '' && courseTypes.length) {
-      this.setState({
-        course: {
-          ...this.state.course,
-          course_type_id: courseTypes
-            .filter(filterExtraCourses)[0]
-            .id.toString()
-        }
-      })
-    }
   }
 
-  handleChangeRawEvent(event) {
+  updateCourseSettings = () => {
+    const {
+      info: { courseTypes }
+    } = this.props
+    let { course, schoolId } = this.state
+    const courseTypeId = parseInt(course.course_type_id)
+    const courseType = courseTypes.find(x => x.id === courseTypeId)
+    let settings = DEFAULT_SETTINGS
+
+    if (courseType && courseType.bike_hire_setup) {
+      const bikeSetup = courseType.bike_hire_setup.find(
+        x => x.supplier.id === parseInt(schoolId)
+      )
+
+      if (bikeSetup) {
+        settings = bikeSetup
+      }
+    }
+
+    course = Object.assign(course, {
+      auto_bikes: settings.default_number_auto_bikes,
+      auto_50cc_bikes: settings.default_number_auto_50cc_bikes,
+      auto_125cc_bikes: settings.default_number_auto_125cc_bikes,
+      manual_bikes: settings.default_number_manual_125cc_bikes,
+      manual_50cc_bikes: settings.default_number_manual_50cc_bikes,
+      own_bikes: settings.default_number_own_bikes
+    })
+    this.setState({
+      course,
+      settings
+    })
+  }
+
+  async handleChangeRawEvent(event) {
     const { name, value } = event.target
-    const { course } = this.state
+    let { course } = this.state
     course[name] = value
-    this.setState({ course })
+
+    this.setState({ course }, () => {
+      if (name === 'course_type_id') {
+        this.updateCourseSettings()
+      }
+    })
   }
 
   handleCancel(event) {
@@ -120,7 +149,11 @@ class CreateBulkCourse extends React.Component {
       end_time,
       notes,
       auto_bikes,
+      auto_50cc_bikes,
       manual_bikes,
+      auto_125cc_bikes,
+      manual_50cc_bikes,
+      own_bikes,
       a1_auto_bikes,
       a2_auto_bikes,
       a_auto_bikes,
@@ -154,7 +187,11 @@ class CreateBulkCourse extends React.Component {
       time,
       spaces,
       auto_bikes: auto_bikes || 0,
+      auto_50cc_bikes: auto_50cc_bikes || 0,
       manual_bikes: manual_bikes || 0,
+      auto_125cc_bikes: auto_125cc_bikes || 0,
+      manual_50cc_bikes: manual_50cc_bikes || 0,
+      own_bikes: own_bikes || 0,
       notes,
       duration: duration.toString(),
       supplier: schoolId.toString(),
@@ -189,10 +226,15 @@ class CreateBulkCourse extends React.Component {
       instructor_id = null
     }
 
-    this.setState({
-      schoolId: id,
-      course: { ...this.state.course, course_type_id, instructor_id }
-    })
+    this.setState(
+      {
+        schoolId: id,
+        course: { ...this.state.course, course_type_id, instructor_id }
+      },
+      () => {
+        this.updateCourseSettings()
+      }
+    )
   }
 
   getCourseTypes = schoolId => {
@@ -220,7 +262,11 @@ class CreateBulkCourse extends React.Component {
       end_time,
       notes,
       auto_bikes,
+      auto_50cc_bikes,
       manual_bikes,
+      auto_125cc_bikes,
+      manual_50cc_bikes,
+      own_bikes,
       a1_auto_bikes,
       a2_auto_bikes,
       a_auto_bikes,
@@ -230,6 +276,21 @@ class CreateBulkCourse extends React.Component {
     } = this.state.course
 
     const { schoolId } = this.state
+
+    const {
+      default_number_auto_bikes,
+      available_auto_bikes,
+      default_number_auto_50cc_bikes,
+      available_auto_50cc_bikes,
+      default_number_auto_125cc_bikes,
+      available_auto_125cc_bikes,
+      default_number_manual_50cc_bikes,
+      available_manual_50cc_bikes,
+      default_number_manual_125cc_bikes,
+      available_manual_125cc_bikes,
+      default_number_own_bikes,
+      available_own_bikes
+    } = this.state.settings
 
     const courseTypes = this.getCourseTypes(schoolId)
     const schoolInstructors = this.getInstructors(schoolId)
@@ -295,30 +356,98 @@ class CreateBulkCourse extends React.Component {
               </Col>
               {!isFullLicence && (
                 <React.Fragment>
-                  <Col>
-                    <ConnectInput
-                      basic
-                      name="auto_bikes"
-                      value={auto_bikes}
-                      label="Automatic"
-                      className="form-group"
-                      type="number"
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      raw
-                    />
-                  </Col>
-                  <Col>
-                    <ConnectInput
-                      basic
-                      name="manual_bikes"
-                      value={manual_bikes}
-                      label="Manual"
-                      className="form-group"
-                      type="number"
-                      onChange={this.handleChangeRawEvent.bind(this)}
-                      raw
-                    />
-                  </Col>
+                  {available_auto_50cc_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="auto_50cc_bikes"
+                        value={
+                          auto_50cc_bikes || default_number_auto_50cc_bikes
+                        }
+                        label="Automatic 50cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_auto_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="auto_bikes"
+                        value={auto_bikes || default_number_auto_bikes}
+                        label="Automatic"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_manual_125cc_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="manual_bikes"
+                        value={
+                          manual_bikes || default_number_manual_125cc_bikes
+                        }
+                        label="Manual 125cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_auto_125cc_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="auto_125cc_bikes"
+                        value={
+                          auto_125cc_bikes || default_number_auto_125cc_bikes
+                        }
+                        label="Auto 125cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_manual_50cc_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="manual_50cc_bikes"
+                        value={
+                          manual_50cc_bikes || default_number_manual_50cc_bikes
+                        }
+                        label="Manual 50cc"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_own_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="own_bikes"
+                        value={own_bikes || default_number_own_bikes}
+                        label="Own Bikes"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
                 </React.Fragment>
               )}
             </Row>

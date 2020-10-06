@@ -5,6 +5,7 @@ import {
   getAvailableBikeHires
   // getTestResultOptions
 } from 'common/info'
+import { getDefaultBikeHire } from 'services/course'
 import { getPaymentOptions } from 'services/order'
 import {
   checkCustomerExists,
@@ -13,7 +14,7 @@ import {
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
-import omit from 'lodash/omit'
+import { filter, omit } from 'lodash'
 import { connect } from 'react-redux'
 import { fetchWidgetSettings } from 'store/settings'
 import { bindActionCreators } from 'redux'
@@ -67,18 +68,70 @@ class AddOrderItem extends React.Component {
     this.form = React.createRef()
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     const {
       updateAdding,
       course,
       widgetSettings,
-      fetchWidgetSettings
+      fetchWidgetSettings,
+      schoolId
     } = this.props
 
     if (!widgetSettings) {
       fetchWidgetSettings()
     }
 
+    if (course.course_type.constant.startsWith('FULL_LICENCE')) {
+      const availableBikeHireTypes = getAvailableBikeHires(
+        course.course_type.constant
+      )
+      this.setState({
+        availableBikeHireTypes
+      })
+    } else {
+      const {
+        available_auto_50cc_bikes,
+        available_auto_125cc_bikes,
+        available_manual_50cc_bikes,
+        available_manual_125cc_bikes,
+        available_own_bikes
+      } = await getDefaultBikeHire(course.course_type.constant, schoolId)
+
+      let availableBikeHireTypes = getAvailableBikeHires(course)
+      if (!available_auto_50cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Automatic 50cc'
+        )
+      }
+      if (!available_auto_125cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Automatic 125cc'
+        )
+      }
+      if (!available_manual_50cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Manual 50cc'
+        )
+      }
+      if (!available_manual_125cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Manual 125cc'
+        )
+      }
+      if (!available_own_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Own Bike'
+        )
+      }
+      this.setState({
+        availableBikeHireTypes
+      })
+    }
     // this.scrollIntoView.current.scrollIntoView()
     setTimeout(() => {
       window.scrollTo(0, 0)
