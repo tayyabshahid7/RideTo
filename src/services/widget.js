@@ -1,6 +1,5 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
-import { FULL_LICENCE_MODULES } from 'common/constants'
 import moment from 'moment'
 
 export const createStripeToken = async (stripe, data) => {
@@ -13,13 +12,13 @@ export const createOrder = async (data, auth = false) => {
 
 export const getInitialSuppliers = () => {
   return window.RIDE_TO_DATA.widget_locations
-    .filter(({ courses }) => courses.length)
     .map(supplier => ({
       ...supplier,
       courses: supplier.courses.filter(
-        ({ constant }) => !FULL_LICENCE_MODULES.includes(constant)
+        course => course && !course.constant.startsWith('FULL_LICENCE')
       )
     }))
+    .filter(supplier => supplier.courses.length)
 }
 
 export const getAddress = loc => {
