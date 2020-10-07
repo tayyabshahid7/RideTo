@@ -11,7 +11,7 @@ global.RIDE_TO_DATA = {
 
 describe('getInitialSuppliers', () => {
   it('Filter empty courses', () => {
-    expect(getInitialSuppliers().length).toBe(2)
+    expect(getInitialSuppliers().length).toBe(0)
   })
 })
 
