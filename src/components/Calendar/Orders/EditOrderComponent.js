@@ -6,12 +6,12 @@ import DateHeading from 'components/Calendar/DateHeading'
 import CourseSummary from '../CoursesPanel/CourseSummary'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import CoursePackageForm from './CoursePackages/CoursePackageForm'
+import LoadingMask from 'components/LoadingMask'
 import { ConnectInput } from 'components/ConnectForm'
 
 import {
   deleteOrderTraining,
   updateCourse,
-  addCoursePackage,
   editCoursePackage,
   getSchoolOrder,
   getDayCourses,
@@ -25,12 +25,12 @@ const EditOrderComponent = ({
   schools,
   instructors,
   saving,
+  deleting,
   activeSchools,
-
+  deletingPackage,
+  errorPackage,
   coursePackage,
   deleteOrderTraining,
-  updateCourse,
-  addCoursePackage,
   editCoursePackage,
   getSchoolOrder,
   getDayCourses,
@@ -38,10 +38,9 @@ const EditOrderComponent = ({
   loadCourses,
   match
 }) => {
-  const [submitted] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
 
   let { order, isPackage, price, courses } = orderDetail
-  console.log('*** order detail', orderDetail)
 
   useEffect(() => {
     if (orderIndex === -1 || !courses.length) {
@@ -51,6 +50,15 @@ const EditOrderComponent = ({
       getSchoolOrder(tmp.id)
     }
   }, [])
+
+  useEffect(() => {
+    if (deletingPackage) {
+      setSubmitted(true)
+    }
+    if (!deletingPackage && submitted && !errorPackage) {
+      history.push(`/calendar/${match.params.date}`)
+    }
+  }, [deletingPackage])
 
   useEffect(() => {
     if (submitted && !saving) {
@@ -73,10 +81,6 @@ const EditOrderComponent = ({
   }
 
   const isFullLicense = courses[0].course_type.constant.includes('FULL_LICENCE')
-
-  const handleAddPackage = () => {
-    addCoursePackage()
-  }
 
   const handleEditPackage = () => {
     editCoursePackage()
@@ -140,13 +144,14 @@ const EditOrderComponent = ({
     return (
       <CoursePackageForm
         date={courses[0].date}
+        history={history}
         courses={coursePackage.courses}
       />
     )
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <DateHeading
         title={order.customer_name || order.customer.full_name}
         subtitle={order.direct_friendly_id || order.order.direct_friendly_id}
@@ -177,17 +182,11 @@ const EditOrderComponent = ({
           disabled
         />
       )}
-      {isFullLicense && (
+      {isFullLicense && isPackage && (
         <div className={styles.buttonHolder}>
-          {isPackage ? (
-            <div className={styles.addButton} onClick={handleEditPackage}>
-              Edit Package
-            </div>
-          ) : (
-            <div className={styles.addButton} onClick={handleAddPackage}>
-              Create a Package
-            </div>
-          )}
+          <div className={styles.addButton} onClick={handleEditPackage}>
+            Edit Package
+          </div>
         </div>
       )}
       <EditOrderFormContainer
@@ -198,6 +197,7 @@ const EditOrderComponent = ({
         onDelete={handleDeleteTraining}
         onSave={handleUpdateOrder}
       />
+      <LoadingMask loading={saving || deleting || deletingPackage} />
     </div>
   )
 }
@@ -211,6 +211,9 @@ const mapStateToProps = (state, ownProps) => {
     instructors: state.instructor.instructors,
     info: state.info,
     saving: state.course.single.saving,
+    deleting: state.course.single.deleting,
+    deletingPackage: state.course.coursePackage.deleting,
+    errorPackage: state.course.coursePackage.error,
     coursePackage: state.course.coursePackage,
     activeSchools: state.auth.activeSchools
   }
@@ -221,7 +224,6 @@ const mapDispatchToProps = dispatch =>
     {
       updateCourse,
       deleteOrderTraining,
-      addCoursePackage,
       editCoursePackage,
       getDayCourses,
       updateOrder,

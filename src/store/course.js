@@ -14,7 +14,8 @@ import {
   createBulkSchoolCourse,
   getPricingForCourse,
   fetchDayCourseTimes,
-  updatePackage
+  updatePackage,
+  deletePackage
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -49,7 +50,7 @@ const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 const ADD_PACKAGE = 'rideto/course/PACKAGE/ADD'
 const EDIT_PACKAGE = 'rideto/course/PACKAGE/EDIT'
 const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
-const DELETE_PACKAGE = 'rideto/course/PACKAGE/DELETE'
+const DELETE_PACKAGE = createRequestTypes('rideto/course/PACKAGE/DELETE')
 const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
 const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
 const FINISH_COURSE_PACKAGE = 'rideto/course/FINISH_COURSE_PACKAGE'
@@ -80,8 +81,19 @@ export const cancelCoursePackage = () => dispatch => {
   dispatch({ type: CANCEL_PACKAGE })
 }
 
-export const deleteCoursePackage = () => dispatch => {
-  dispatch({ type: DELETE_PACKAGE })
+export const deleteCoursePackage = id => async dispatch => {
+  dispatch({ type: DELETE_PACKAGE[REQUEST] })
+
+  try {
+    if (id) {
+      await deletePackage(id)
+    }
+    dispatch({
+      type: DELETE_PACKAGE[SUCCESS]
+    })
+  } catch (error) {
+    dispatch({ type: DELETE_PACKAGE[FAILURE] })
+  }
 }
 
 export const resetData = () => dispatch => {
@@ -502,6 +514,7 @@ const defaultState = {
     adding: false,
     editing: false,
     loading: false,
+    deleting: false,
     error: false
   },
   order: {
@@ -545,22 +558,45 @@ export default function reducer(state = initialState, action) {
         coursePackage: {
           courses: [],
           adding: false,
-          editing: false
+          editing: false,
+          deleting: false,
+          error: false
         }
       }
     }
-    case DELETE_PACKAGE: {
+    case DELETE_PACKAGE[REQUEST]: {
+      return {
+        ...state,
+        coursePackage: {
+          error: false,
+          deleting: true
+        }
+      }
+    }
+    case DELETE_PACKAGE[SUCCESS]: {
       return {
         ...state,
         coursePackage: {
           courses: [],
           adding: false,
-          editing: false
+          editing: false,
+          deleting: false,
+          error: false
         },
         order: {
           courses: [state.order.courses[0]],
           price: null,
-          isPackage: false
+          isPackage: false,
+          packageId: null
+        }
+      }
+    }
+    case DELETE_PACKAGE[FAILURE]: {
+      return {
+        ...state,
+        coursePackage: {
+          error: true,
+          deleting: false
         }
       }
     }
@@ -908,8 +944,8 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: true, error: null }
       }
-    case DELETE_ORDER[SUCCESS]:
-      dayCourses = state.day.courses.map(course => {
+    case DELETE_ORDER[SUCCESS]: {
+      const dayCourses = state.day.courses.map(course => {
         const newOrders = course.orders.filter(
           order => order.id !== action.data.trainingId
         )
@@ -920,6 +956,7 @@ export default function reducer(state = initialState, action) {
         single: { ...state.single, saving: false },
         day: { ...state.day, courses: dayCourses }
       }
+    }
     case DELETE_ORDER[FAILURE]:
       return {
         ...state,

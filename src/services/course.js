@@ -56,7 +56,7 @@ export const updatePackage = async (id, courseIds, price) => {
 export const deletePackage = async id => {
   const path = `school/course/package/${id}`
 
-  const response = await delete (path, {})
+  const response = await destroy(path, {})
 
   return response
 }

@@ -141,7 +141,7 @@ const AddOrderComponent = ({
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <DateHeading title="Add Order" onBack={handleCancel} />
       {courses.map(course => (
         <CourseSummary

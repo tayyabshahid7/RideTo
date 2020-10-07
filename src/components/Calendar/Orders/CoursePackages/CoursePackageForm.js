@@ -71,7 +71,8 @@ const CoursePackageForm = ({
   }
 
   const handleDelete = () => {
-    deleteCoursePackage()
+    deleteCoursePackage(orderDetail.packageId)
+    setSubmitted(true)
   }
 
   const title = editing ? 'Edit Package' : 'Create Package'
