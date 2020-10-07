@@ -40,6 +40,19 @@ export const createPackage = async (courseIds, price) => {
   return response
 }
 
+export const updatePackage = async (id, courseIds, price) => {
+  const path = `school/course/package/${id}`
+  const data = {
+    name: '',
+    price,
+    courses: courseIds
+  }
+
+  const response = await put(path, data)
+
+  return response
+}
+
 export const fetchCourses = async (schoolId, startDate, endDate) => {
   const path = `school/${schoolId}/course`
   const params = {

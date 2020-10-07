@@ -7,6 +7,7 @@ import CourseSummary from '../CoursesPanel/CourseSummary'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import CoursePackageForm from './CoursePackages/CoursePackageForm'
 import { ConnectInput } from 'components/ConnectForm'
+import { updatePackage } from 'services/course'
 
 import {
   deleteOrderTraining,
@@ -85,23 +86,23 @@ const EditOrderComponent = ({
     history.push(`/calendar/${courses[0].date}`)
   }
 
-  const handleUpdateOrder = async (order, updateDate = false) => {
-    const courseIds = courses.map(x => x.id).join(',')
-    if (order.user_first_name && order.user_last_name) {
-      order.user_name = `${order.user_first_name} ${order.user_last_name}`
+  const handleUpdateOrder = async (updatedOrder, updateDate = false) => {
+    // const courseIds = courses.map(x => x.id).join(',')
+    if (updatedOrder.user_first_name && updatedOrder.user_last_name) {
+      updatedOrder.user_name = `${updatedOrder.user_first_name} ${updatedOrder.user_last_name}`
     }
     if (!updateDate) {
-      order.school_course = courseIds
+      // order.school_course = courseIds
     }
 
-    if (!order.user_birthdate) {
-      delete order['user_birthdate']
+    if (!updatedOrder.user_birthdate) {
+      delete updatedOrder['user_birthdate']
     }
 
     await updateOrder({
       trainingId: order.id,
       order: {
-        ...order,
+        ...updatedOrder,
         full_edit: updateDate
       }
     })
@@ -115,6 +116,16 @@ const EditOrderComponent = ({
     if (updateDate) {
       getDayCourses({ activeSchools, date: course.date })
       loadCourses(true)
+    }
+
+    console.log('*** course', orderDetail)
+    if (orderDetail.isPackage) {
+      const courseIds = courses.map(x => x.id.toString())
+      await updatePackage(
+        orderDetail.order.package,
+        courseIds,
+        orderDetail.price * 100
+      )
     }
 
     handleCancel()
