@@ -15,7 +15,7 @@ import {
 
 const EditOrderComponent = ({
   history,
-  courses,
+  orderDetail,
   orderIndex,
   schools,
   info,
@@ -28,8 +28,11 @@ const EditOrderComponent = ({
 }) => {
   const [submitted] = useState(false)
 
+  let { order, courses } = orderDetail
+  console.log('*** order detail', orderDetail)
+
   useEffect(() => {
-    if (!courses.length) {
+    if (orderIndex === -1 || !courses.length) {
       history.push('/calendar')
     }
   }, [])
@@ -40,15 +43,19 @@ const EditOrderComponent = ({
     }
   }, [saving])
 
-  console.log(courses, orderIndex)
+  const course = courses[0]
 
   if (!courses.length) {
     return null
   }
 
-  const course = courses[0]
-  const order = course.orders[orderIndex]
-  console.log(order)
+  if (!order && course.orders && orderIndex !== -1) {
+    order = course.orders[orderIndex]
+  }
+
+  if (!order) {
+    return null
+  }
 
   const isFullLicense = courses[0].course_type.constant.includes('FULL_LICENCE')
 
@@ -76,8 +83,8 @@ const EditOrderComponent = ({
   return (
     <div>
       <DateHeading
-        title={order.customer_name}
-        subtitle={order.direct_friendly_id}
+        title={order.customer_name || order.customer.full_name}
+        subtitle={order.direct_friendly_id || order.order.direct_friendly_id}
         onBack={handleCancel}
       />
       {courses.map(course => (
@@ -117,7 +124,7 @@ const EditOrderComponent = ({
 const mapStateToProps = (state, ownProps) => {
   const schools = state.auth.user ? state.auth.user.suppliers : []
   return {
-    courses: state.course.order.courses,
+    orderDetail: state.course.order,
     orderIndex: state.course.order.orderIndex,
     schools,
     instructors: state.instructor.instructors,

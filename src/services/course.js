@@ -184,6 +184,16 @@ export const addSchoolPayment = async (schoolId, data) => {
 export const fetchSchoolOrder = async trainingId => {
   const path = `school/course/order/${trainingId}`
   const response = await get(path, {})
+  if (response.package) {
+    const path = `school/course/package/${response.package}`
+    const packageDetail = await get(path, {})
+    const requests = packageDetail.school_course_package.map(x =>
+      fetchSingleCourse(x.course_id)
+    )
+    const courses = await Promise.all(requests)
+    response.packageDetail = packageDetail
+    response.courses = courses
+  }
   return response
 }
 
@@ -570,4 +580,29 @@ export const filterExtraCourses = type => {
       type.constant.startsWith('FULL_LICENCE') && type.constant.endsWith('TEST')
     ) && type.constant !== 'FULL_LICENCE'
   )
+}
+
+export const getDefaultBikeHire = async (course_type, schoolId) => {
+  const path = 'school/settings/widget/bike-hire-setup/'
+  const params = {
+    course_type,
+    supplier_id: schoolId
+  }
+
+  const response = await get(path, params, true)
+
+  return response
+}
+
+export const updateDefaultBikeHire = async (settings, courseType, schoolId) => {
+  const path = 'school/settings/widget/bike-hire-setup'
+  const data = {
+    ...settings,
+    course_type: courseType,
+    supplier_id: schoolId
+  }
+
+  const response = await put(path, data, true)
+
+  return response
 }

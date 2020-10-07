@@ -102,8 +102,17 @@ const AddOrderComponent = ({
       // }
     }
 
+    const data = Object.assign({}, order)
+    if (orderDetail.isPackage) {
+      data.school_course = courses.map(x => x.id).join(',')
+      data.price = parseFloat(orderDetail.price) * 100
+    }
+
     setSubmitted(true)
-    return createSchoolOrder({ schoolId: course.supplier, order })
+    return createSchoolOrder({
+      schoolId: course.supplier,
+      order: data
+    })
   }
 
   const handleCancel = () => {

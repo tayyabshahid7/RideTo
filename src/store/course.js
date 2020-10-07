@@ -262,13 +262,16 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     if (response.sms_success) {
       notificationActions.dispatchSuccess(dispatch, 'SMS sent')
     }
-    dispatch(
-      getSingleCourse({
-        schoolId,
-        courseId: order.school_course,
-        reset: false
-      })
-    )
+    const courseIds = order.school_course.split(',')
+    courseIds.forEach(courseId => {
+      dispatch(
+        getSingleCourse({
+          schoolId,
+          courseId,
+          reset: false
+        })
+      )
+    })
   } catch (error) {
     notificationActions.dispatchError(dispatch, 'Failed to add Order')
     dispatch({ type: CREATE_ORDER[FAILURE], error })
@@ -1017,11 +1020,24 @@ export default function reducer(state = initialState, action) {
         ...state,
         orderEditForm: { order: null, loading: true, error: null }
       }
-    case FETCH_ORDER[SUCCESS]:
+    case FETCH_ORDER[SUCCESS]: {
+      const { packageDetail, courses } = action.data.order
+
       return {
         ...state,
-        orderEditForm: { order: action.data.order, loading: false, error: null }
+        orderEditForm: {
+          order: action.data.order,
+          loading: false,
+          error: null
+        },
+        order: {
+          ...state.order,
+          price: parseFloat(packageDetail.price),
+          order: action.data.order,
+          courses
+        }
       }
+    }
     case FETCH_ORDER[FAILURE]:
       return {
         ...state,
