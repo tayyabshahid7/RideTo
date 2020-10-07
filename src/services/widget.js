@@ -15,7 +15,10 @@ export const getInitialSuppliers = () => {
     .map(supplier => ({
       ...supplier,
       courses: supplier.courses.filter(
-        course => course && !course.constant.startsWith('FULL_LICENCE')
+        course =>
+          course &&
+          course.constant &&
+          !course.constant.startsWith('FULL_LICENCE')
       )
     }))
     .filter(supplier => supplier.courses.length)
