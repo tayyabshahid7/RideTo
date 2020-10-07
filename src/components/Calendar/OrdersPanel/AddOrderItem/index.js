@@ -2,8 +2,8 @@ import React from 'react'
 import styles from './styles.scss'
 import {
   getFullLicenseType,
-  getAvailableBikeHires
-  // getTestResultOptions
+  getAvailableBikeHires,
+  getTestResultOptions
 } from 'common/info'
 import { getDefaultBikeHire } from 'services/course'
 import { getPaymentOptions } from 'services/order'
@@ -316,7 +316,7 @@ class AddOrderItem extends React.Component {
       cardPostCodeComplete,
       order: {
         bike_hire,
-        // test_result,
+        test_result,
         payment_status,
         riding_experience,
         user_birthdate,
@@ -335,11 +335,11 @@ class AddOrderItem extends React.Component {
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
 
-    // const courseType = course.course_type.constant
-    // const isFullLicenceTest =
-    //   courseType.startsWith('FULL_LICENCE') && courseType.endsWith('TEST')
+    const courseType = course.course_type.constant
+    const isFullLicenceTest =
+      courseType.startsWith('FULL_LICENCE') && courseType.endsWith('TEST')
 
-    // const testResultOptions = getTestResultOptions()
+    const testResultOptions = getTestResultOptions()
 
     return (
       <div className={styles.container}>
@@ -466,7 +466,7 @@ class AddOrderItem extends React.Component {
                 labelField="title"
               />
 
-              {/* {isFullLicenceTest && (
+              {isFullLicenceTest && (
                 <ConnectSelect
                   placeholder
                   basic
@@ -479,7 +479,7 @@ class AddOrderItem extends React.Component {
                   }}
                   required
                 />
-              )} */}
+              )}
 
               <ConnectCheckbox
                 label="T&Cs Agreed"
