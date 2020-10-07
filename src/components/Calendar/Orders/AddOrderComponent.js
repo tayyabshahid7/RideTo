@@ -7,6 +7,7 @@ import CourseSummary from '../CoursesPanel/CourseSummary'
 import AddOrderForm from './AddOrderForm'
 import CoursePackageForm from './CoursePackages/CoursePackageForm'
 import { ConnectInput } from 'components/ConnectForm'
+import LoadingMask from 'components/LoadingMask'
 
 import {
   createSchoolOrder,
@@ -190,6 +191,7 @@ const AddOrderComponent = ({
         onPayment={handleNewPayment}
         saving={saving}
       />
+      <LoadingMask loading={saving} />
     </div>
   )
 }

@@ -571,6 +571,9 @@ export default function reducer(state = initialState, action) {
         ...state,
         order: {
           ...state.order,
+          order: null,
+          isPackage: false,
+          price: 0,
           courses: [action.data.course],
           orderIndex: action.data.orderIndex
         }
@@ -1022,6 +1025,13 @@ export default function reducer(state = initialState, action) {
       }
     case FETCH_ORDER[SUCCESS]: {
       const { packageDetail, courses } = action.data.order
+      const order = Object.assign({}, state.order)
+      if (packageDetail) {
+        order.price = parseFloat(packageDetail.price)
+        order.order = action.data.order
+        order.courses = courses
+        order.isPackage = true
+      }
 
       return {
         ...state,
@@ -1030,12 +1040,7 @@ export default function reducer(state = initialState, action) {
           loading: false,
           error: null
         },
-        order: {
-          ...state.order,
-          price: parseFloat(packageDetail.price),
-          order: action.data.order,
-          courses
-        }
+        order
       }
     }
     case FETCH_ORDER[FAILURE]:

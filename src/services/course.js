@@ -188,7 +188,7 @@ export const fetchSchoolOrder = async trainingId => {
     const path = `school/course/package/${response.package}`
     const packageDetail = await get(path, {})
     const requests = packageDetail.school_course_package.map(x =>
-      fetchSingleCourse(x.course_id)
+      fetchSingleCourse(x.school_course_id)
     )
     const courses = await Promise.all(requests)
     response.packageDetail = packageDetail
