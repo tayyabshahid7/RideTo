@@ -13,7 +13,9 @@ import {
   createSchoolCourse,
   createBulkSchoolCourse,
   getPricingForCourse,
-  fetchDayCourseTimes
+  fetchDayCourseTimes,
+  updatePackage,
+  deletePackage
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -48,11 +50,12 @@ const FETCH_TIMES = createRequestTypes('rideto/course/FETCH_TIMES')
 const ADD_PACKAGE = 'rideto/course/PACKAGE/ADD'
 const EDIT_PACKAGE = 'rideto/course/PACKAGE/EDIT'
 const CANCEL_PACKAGE = 'rideto/course/PACKAGE/CANCEL'
-const DELETE_PACKAGE = 'rideto/course/PACKAGE/DELETE'
+const DELETE_PACKAGE = createRequestTypes('rideto/course/PACKAGE/DELETE')
 const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
 const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
 const FINISH_COURSE_PACKAGE = 'rideto/course/FINISH_COURSE_PACKAGE'
 const SET_ORDER_COURSE = 'rideto/course/SET_ORDER_COURSE'
+const UPDATE_PACKAGE = createRequestTypes('rideto/course/UPDATE/PACKAGE')
 
 export const setOrderCourse = course => dispatch => {
   dispatch({ type: SET_ORDER_COURSE, data: course })
@@ -78,8 +81,19 @@ export const cancelCoursePackage = () => dispatch => {
   dispatch({ type: CANCEL_PACKAGE })
 }
 
-export const deleteCoursePackage = () => dispatch => {
-  dispatch({ type: DELETE_PACKAGE })
+export const deleteCoursePackage = id => async dispatch => {
+  dispatch({ type: DELETE_PACKAGE[REQUEST] })
+
+  try {
+    if (id) {
+      await deletePackage(id)
+    }
+    dispatch({
+      type: DELETE_PACKAGE[SUCCESS]
+    })
+  } catch (error) {
+    dispatch({ type: DELETE_PACKAGE[FAILURE] })
+  }
 }
 
 export const resetData = () => dispatch => {
@@ -262,13 +276,16 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     if (response.sms_success) {
       notificationActions.dispatchSuccess(dispatch, 'SMS sent')
     }
-    dispatch(
-      getSingleCourse({
-        schoolId,
-        courseId: order.school_course,
-        reset: false
-      })
-    )
+    const courseIds = order.school_course.split(',')
+    courseIds.forEach(courseId => {
+      dispatch(
+        getSingleCourse({
+          schoolId,
+          courseId,
+          reset: false
+        })
+      )
+    })
   } catch (error) {
     notificationActions.dispatchError(dispatch, 'Failed to add Order')
     dispatch({ type: CREATE_ORDER[FAILURE], error })
@@ -325,6 +342,23 @@ export const updateOrder = ({ trainingId, order }) => async dispatch => {
   } catch (error) {
     notificationActions.dispatchError(dispatch, 'Failed to save Order')
     dispatch({ type: UPDATE_ORDER[FAILURE], error })
+    return false
+  }
+  return true
+}
+
+export const savePackage = (id, courseIds, price) => async dispatch => {
+  dispatch({ type: UPDATE_PACKAGE[REQUEST] })
+  try {
+    const response = await updatePackage(id, courseIds, price)
+    notificationActions.dispatchSuccess(dispatch, 'Package saved')
+    dispatch({
+      type: UPDATE_PACKAGE[SUCCESS],
+      data: { order: response }
+    })
+  } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to update package')
+    dispatch({ type: UPDATE_PACKAGE[FAILURE], error })
     return false
   }
   return true
@@ -479,12 +513,15 @@ const defaultState = {
     courses: [],
     adding: false,
     editing: false,
-    loading: false
+    loading: false,
+    deleting: false,
+    error: false
   },
   order: {
     courses: [],
     orderIndex: -1,
     isPackage: false,
+    packageId: null,
     price: null,
     order: null,
     saving: false
@@ -521,22 +558,45 @@ export default function reducer(state = initialState, action) {
         coursePackage: {
           courses: [],
           adding: false,
-          editing: false
+          editing: false,
+          deleting: false,
+          error: false
         }
       }
     }
-    case DELETE_PACKAGE: {
+    case DELETE_PACKAGE[REQUEST]: {
+      return {
+        ...state,
+        coursePackage: {
+          error: false,
+          deleting: true
+        }
+      }
+    }
+    case DELETE_PACKAGE[SUCCESS]: {
       return {
         ...state,
         coursePackage: {
           courses: [],
           adding: false,
-          editing: false
+          editing: false,
+          deleting: false,
+          error: false
         },
         order: {
           courses: [state.order.courses[0]],
           price: null,
-          isPackage: false
+          isPackage: false,
+          packageId: null
+        }
+      }
+    }
+    case DELETE_PACKAGE[FAILURE]: {
+      return {
+        ...state,
+        coursePackage: {
+          error: true,
+          deleting: false
         }
       }
     }
@@ -568,6 +628,9 @@ export default function reducer(state = initialState, action) {
         ...state,
         order: {
           ...state.order,
+          order: null,
+          isPackage: false,
+          price: 0,
           courses: [action.data.course],
           orderIndex: action.data.orderIndex
         }
@@ -881,8 +944,8 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: true, error: null }
       }
-    case DELETE_ORDER[SUCCESS]:
-      dayCourses = state.day.courses.map(course => {
+    case DELETE_ORDER[SUCCESS]: {
+      const dayCourses = state.day.courses.map(course => {
         const newOrders = course.orders.filter(
           order => order.id !== action.data.trainingId
         )
@@ -893,6 +956,7 @@ export default function reducer(state = initialState, action) {
         single: { ...state.single, saving: false },
         day: { ...state.day, courses: dayCourses }
       }
+    }
     case DELETE_ORDER[FAILURE]:
       return {
         ...state,
@@ -1012,16 +1076,62 @@ export default function reducer(state = initialState, action) {
         ...state,
         pricing: { ...state.pricing, loading: false }
       }
+    case UPDATE_PACKAGE[REQUEST]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          saving: true,
+          error: false
+        }
+      }
+    }
+    case UPDATE_PACKAGE[SUCCESS]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          saving: false,
+          error: false
+        }
+      }
+    }
+    case UPDATE_PACKAGE[FAILURE]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          saving: false,
+          error: true
+        }
+      }
+    }
     case FETCH_ORDER[REQUEST]:
       return {
         ...state,
         orderEditForm: { order: null, loading: true, error: null }
       }
-    case FETCH_ORDER[SUCCESS]:
+    case FETCH_ORDER[SUCCESS]: {
+      const { packageDetail, courses } = action.data.order
+      const order = Object.assign({}, state.order)
+      if (packageDetail) {
+        order.price = parseFloat(packageDetail.price)
+        order.order = action.data.order
+        order.courses = courses
+        order.isPackage = true
+        order.packageId = action.data.order.package
+      }
+
       return {
         ...state,
-        orderEditForm: { order: action.data.order, loading: false, error: null }
+        orderEditForm: {
+          order: action.data.order,
+          loading: false,
+          error: null
+        },
+        order
       }
+    }
     case FETCH_ORDER[FAILURE]:
       return {
         ...state,

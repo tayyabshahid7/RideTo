@@ -7,6 +7,7 @@ import CourseSummary from '../CoursesPanel/CourseSummary'
 import AddOrderForm from './AddOrderForm'
 import CoursePackageForm from './CoursePackages/CoursePackageForm'
 import { ConnectInput } from 'components/ConnectForm'
+import LoadingMask from 'components/LoadingMask'
 
 import {
   createSchoolOrder,
@@ -102,8 +103,17 @@ const AddOrderComponent = ({
       // }
     }
 
+    const data = Object.assign({}, order)
+    if (orderDetail.isPackage) {
+      data.school_course = courses.map(x => x.id).join(',')
+      data.price = parseFloat(orderDetail.price) * 100
+    }
+
     setSubmitted(true)
-    return createSchoolOrder({ schoolId: course.supplier, order })
+    return createSchoolOrder({
+      schoolId: course.supplier,
+      order: data
+    })
   }
 
   const handleCancel = () => {
@@ -131,7 +141,7 @@ const AddOrderComponent = ({
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <DateHeading title="Add Order" onBack={handleCancel} />
       {courses.map(course => (
         <CourseSummary
@@ -181,6 +191,7 @@ const AddOrderComponent = ({
         onPayment={handleNewPayment}
         saving={saving}
       />
+      <LoadingMask loading={saving} />
     </div>
   )
 }

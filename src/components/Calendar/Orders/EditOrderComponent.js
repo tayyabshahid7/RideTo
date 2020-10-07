@@ -5,57 +5,124 @@ import { connect } from 'react-redux'
 import DateHeading from 'components/Calendar/DateHeading'
 import CourseSummary from '../CoursesPanel/CourseSummary'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
+import CoursePackageForm from './CoursePackages/CoursePackageForm'
+import LoadingMask from 'components/LoadingMask'
+import { ConnectInput } from 'components/ConnectForm'
 
 import {
-  updateSchoolOrder,
   deleteOrderTraining,
-  updateCourse
-  // setOrderCourse
+  updateCourse,
+  editCoursePackage,
+  getSchoolOrder,
+  getDayCourses,
+  updateOrder
 } from 'store/course'
 
 const EditOrderComponent = ({
   history,
-  courses,
+  orderDetail,
   orderIndex,
   schools,
-  info,
   instructors,
   saving,
+  deleting,
+  activeSchools,
+  deletingPackage,
+  errorPackage,
+  coursePackage,
+  deleteOrderTraining,
+  editCoursePackage,
+  getSchoolOrder,
+  getDayCourses,
+  updateOrder,
   loadCourses,
-  updateSchoolOrder,
-  updateCourse,
-  deleteOrderTraining
+  match
 }) => {
-  const [submitted] = useState(false)
+  const [submitted, setSubmitted] = useState(false)
+
+  let { order, isPackage, price, courses } = orderDetail
 
   useEffect(() => {
-    if (!courses.length) {
+    if (orderIndex === -1 || !courses.length) {
       history.push('/calendar')
+    } else {
+      const tmp = courses[0].orders[orderIndex]
+      getSchoolOrder(tmp.id)
     }
   }, [])
 
   useEffect(() => {
+    if (deletingPackage) {
+      setSubmitted(true)
+    }
+    if (!deletingPackage && submitted && !errorPackage) {
+      history.push(`/calendar/${match.params.date}`)
+    }
+  }, [deletingPackage])
+
+  useEffect(() => {
     if (submitted && !saving) {
-      history.push(`/calendar/${courses[0].date}`)
+      history.push(`/calendar/${match.params.date}`)
     }
   }, [saving])
 
-  console.log(courses, orderIndex)
+  const course = courses[0]
 
   if (!courses.length) {
     return null
   }
 
-  const course = courses[0]
-  const order = course.orders[orderIndex]
-  console.log(order)
+  if (!order && course.orders && orderIndex !== -1) {
+    order = course.orders[orderIndex]
+  }
+
+  if (!order) {
+    return null
+  }
 
   const isFullLicense = courses[0].course_type.constant.includes('FULL_LICENCE')
 
-  const handlePackage = () => {}
+  const handleEditPackage = () => {
+    editCoursePackage()
+  }
 
   const handleCancel = () => {
-    history.push(`/calendar/${courses[0].date}`)
+    history.push(`/calendar/${match.params.date}`)
+  }
+
+  const handleUpdateOrder = async (updatedOrder, updateDate = false) => {
+    // const courseIds = courses.map(x => x.id).join(',')
+    if (updatedOrder.user_first_name && updatedOrder.user_last_name) {
+      updatedOrder.user_name = `${updatedOrder.user_first_name} ${updatedOrder.user_last_name}`
+    }
+    if (!updateDate) {
+      // order.school_course = courseIds
+    }
+
+    if (!updatedOrder.user_birthdate) {
+      delete updatedOrder['user_birthdate']
+    }
+
+    await updateOrder({
+      trainingId: order.id,
+      order: {
+        ...updatedOrder,
+        full_edit: updateDate
+      }
+    })
+
+    // await this.props.updateCourse({
+    //   schoolId: order.training_location,
+    //   courseId: courseId,
+    //   data: { spaces: courseSpaces }
+    // })
+
+    if (updateDate) {
+      getDayCourses({ activeSchools, date: course.date })
+      loadCourses(true)
+    }
+
+    handleCancel()
   }
 
   const handleDeleteTraining = async () => {
@@ -73,11 +140,21 @@ const EditOrderComponent = ({
     }
   }
 
+  if (coursePackage && coursePackage.adding) {
+    return (
+      <CoursePackageForm
+        date={courses[0].date}
+        history={history}
+        courses={coursePackage.courses}
+      />
+    )
+  }
+
   return (
-    <div>
+    <div className={styles.container}>
       <DateHeading
-        title={order.customer_name}
-        subtitle={order.direct_friendly_id}
+        title={order.customer_name || order.customer.full_name}
+        subtitle={order.direct_friendly_id || order.order.direct_friendly_id}
         onBack={handleCancel}
       />
       {courses.map(course => (
@@ -91,25 +168,36 @@ const EditOrderComponent = ({
           embedded={false}
         />
       ))}
-      {isFullLicense && (
+      {isFullLicense && isPackage && (
+        <ConnectInput
+          basic
+          className={styles.inputNumber}
+          name="price"
+          label="Total Package Cost"
+          value={price}
+          type="number"
+          min="0"
+          prefix="£"
+          raw
+          disabled
+        />
+      )}
+      {isFullLicense && isPackage && (
         <div className={styles.buttonHolder}>
-          <div className={styles.addButton} onClick={handlePackage}>
-            Create a Package
+          <div className={styles.addButton} onClick={handleEditPackage}>
+            Edit Package
           </div>
         </div>
       )}
       <EditOrderFormContainer
-        updateCourse={updateCourse}
         onCancel={handleCancel}
-        trainingId={order.id}
         course_type={courses[0].course_type.constant}
-        courseId={course.id}
-        courseSpaces={course.spaces}
         date={course.date}
         time={course.time}
         onDelete={handleDeleteTraining}
-        loadCourses={loadCourses}
+        onSave={handleUpdateOrder}
       />
+      <LoadingMask loading={saving || deleting || deletingPackage} />
     </div>
   )
 }
@@ -117,12 +205,17 @@ const EditOrderComponent = ({
 const mapStateToProps = (state, ownProps) => {
   const schools = state.auth.user ? state.auth.user.suppliers : []
   return {
-    courses: state.course.order.courses,
+    orderDetail: state.course.order,
     orderIndex: state.course.order.orderIndex,
     schools,
     instructors: state.instructor.instructors,
     info: state.info,
-    saving: state.course.single.saving
+    saving: state.course.single.saving,
+    deleting: state.course.single.deleting,
+    deletingPackage: state.course.coursePackage.deleting,
+    errorPackage: state.course.coursePackage.error,
+    coursePackage: state.course.coursePackage,
+    activeSchools: state.auth.activeSchools
   }
 }
 
@@ -130,8 +223,11 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       updateCourse,
-      updateSchoolOrder,
-      deleteOrderTraining
+      deleteOrderTraining,
+      editCoursePackage,
+      getDayCourses,
+      updateOrder,
+      getSchoolOrder
     },
     dispatch
   )

@@ -40,6 +40,27 @@ export const createPackage = async (courseIds, price) => {
   return response
 }
 
+export const updatePackage = async (id, courseIds, price) => {
+  const path = `school/course/package/${id}`
+  const data = {
+    name: '',
+    price,
+    courses: courseIds.join(',')
+  }
+
+  const response = await put(path, data)
+
+  return response
+}
+
+export const deletePackage = async id => {
+  const path = `school/course/package/${id}`
+
+  const response = await destroy(path, {})
+
+  return response
+}
+
 export const fetchCourses = async (schoolId, startDate, endDate) => {
   const path = `school/${schoolId}/course`
   const params = {
@@ -184,6 +205,16 @@ export const addSchoolPayment = async (schoolId, data) => {
 export const fetchSchoolOrder = async trainingId => {
   const path = `school/course/order/${trainingId}`
   const response = await get(path, {})
+  if (response.package) {
+    const path = `school/course/package/${response.package}`
+    const packageDetail = await get(path, {})
+    const requests = packageDetail.school_course_package.map(x =>
+      fetchSingleCourse(x.school_course_id)
+    )
+    const courses = await Promise.all(requests)
+    response.packageDetail = packageDetail
+    response.courses = courses
+  }
   return response
 }
 
@@ -586,7 +617,6 @@ export const getDefaultBikeHire = async (course_type, schoolId) => {
 
 export const updateDefaultBikeHire = async (settings, courseType, schoolId) => {
   const path = 'school/settings/widget/bike-hire-setup'
-  console.log(settings, courseType, schoolId)
   const data = {
     ...settings,
     course_type: courseType,
