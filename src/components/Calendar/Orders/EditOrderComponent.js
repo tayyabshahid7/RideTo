@@ -7,7 +7,6 @@ import CourseSummary from '../CoursesPanel/CourseSummary'
 import EditOrderFormContainer from 'pages/Calendar/EditOrderFormContainer'
 import CoursePackageForm from './CoursePackages/CoursePackageForm'
 import { ConnectInput } from 'components/ConnectForm'
-import { updatePackage } from 'services/course'
 
 import {
   deleteOrderTraining,
@@ -36,7 +35,8 @@ const EditOrderComponent = ({
   getSchoolOrder,
   getDayCourses,
   updateOrder,
-  loadCourses
+  loadCourses,
+  match
 }) => {
   const [submitted] = useState(false)
 
@@ -54,7 +54,7 @@ const EditOrderComponent = ({
 
   useEffect(() => {
     if (submitted && !saving) {
-      history.push(`/calendar/${courses[0].date}`)
+      history.push(`/calendar/${match.params.date}`)
     }
   }, [saving])
 
@@ -83,7 +83,7 @@ const EditOrderComponent = ({
   }
 
   const handleCancel = () => {
-    history.push(`/calendar/${courses[0].date}`)
+    history.push(`/calendar/${match.params.date}`)
   }
 
   const handleUpdateOrder = async (updatedOrder, updateDate = false) => {
@@ -116,16 +116,6 @@ const EditOrderComponent = ({
     if (updateDate) {
       getDayCourses({ activeSchools, date: course.date })
       loadCourses(true)
-    }
-
-    console.log('*** course', orderDetail)
-    if (orderDetail.isPackage) {
-      const courseIds = courses.map(x => x.id.toString())
-      await updatePackage(
-        orderDetail.order.package,
-        courseIds,
-        orderDetail.price * 100
-      )
     }
 
     handleCancel()

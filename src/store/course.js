@@ -13,7 +13,8 @@ import {
   createSchoolCourse,
   createBulkSchoolCourse,
   getPricingForCourse,
-  fetchDayCourseTimes
+  fetchDayCourseTimes,
+  updatePackage
 } from 'services/course'
 import { CALENDAR_VIEW } from 'common/constants'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
@@ -53,6 +54,7 @@ const ADD_COURSE_TO_PACKAGE = 'rideto/course/PACKAGE/ADD_COURSE'
 const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
 const FINISH_COURSE_PACKAGE = 'rideto/course/FINISH_COURSE_PACKAGE'
 const SET_ORDER_COURSE = 'rideto/course/SET_ORDER_COURSE'
+const UPDATE_PACKAGE = createRequestTypes('rideto/course/UPDATE/PACKAGE')
 
 export const setOrderCourse = course => dispatch => {
   dispatch({ type: SET_ORDER_COURSE, data: course })
@@ -333,6 +335,23 @@ export const updateOrder = ({ trainingId, order }) => async dispatch => {
   return true
 }
 
+export const savePackage = (id, courseIds, price) => async dispatch => {
+  dispatch({ type: UPDATE_PACKAGE[REQUEST] })
+  try {
+    const response = await updatePackage(id, courseIds, price)
+    notificationActions.dispatchSuccess(dispatch, 'Package saved')
+    dispatch({
+      type: UPDATE_PACKAGE[SUCCESS],
+      data: { order: response }
+    })
+  } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to update package')
+    dispatch({ type: UPDATE_PACKAGE[FAILURE], error })
+    return false
+  }
+  return true
+}
+
 export const deleteOrderTraining = (schoolId, trainingId) => async dispatch => {
   dispatch({ type: DELETE_ORDER[REQUEST] })
 
@@ -482,12 +501,14 @@ const defaultState = {
     courses: [],
     adding: false,
     editing: false,
-    loading: false
+    loading: false,
+    error: false
   },
   order: {
     courses: [],
     orderIndex: -1,
     isPackage: false,
+    packageId: null,
     price: null,
     order: null,
     saving: false
@@ -1018,6 +1039,36 @@ export default function reducer(state = initialState, action) {
         ...state,
         pricing: { ...state.pricing, loading: false }
       }
+    case UPDATE_PACKAGE[REQUEST]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          saving: true,
+          error: false
+        }
+      }
+    }
+    case UPDATE_PACKAGE[SUCCESS]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          saving: false,
+          error: false
+        }
+      }
+    }
+    case UPDATE_PACKAGE[FAILURE]: {
+      return {
+        ...state,
+        coursePackage: {
+          ...state.coursePackage,
+          saving: false,
+          error: true
+        }
+      }
+    }
     case FETCH_ORDER[REQUEST]:
       return {
         ...state,
@@ -1031,6 +1082,7 @@ export default function reducer(state = initialState, action) {
         order.order = action.data.order
         order.courses = courses
         order.isPackage = true
+        order.packageId = action.data.order.package
       }
 
       return {

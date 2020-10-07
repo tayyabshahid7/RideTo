@@ -25,10 +25,9 @@ class CoursesPanelContainer extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.courseDate, this.props.match.params.date)
-    if (this.props.courseDate !== this.props.match.params.date) {
-      this.loadData()
-    }
+    // if (this.props.courseDate !== this.props.match.params.date) {
+    this.loadData()
+    // }
   }
 
   componentDidUpdate(prevProps) {

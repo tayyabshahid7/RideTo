@@ -45,10 +45,18 @@ export const updatePackage = async (id, courseIds, price) => {
   const data = {
     name: '',
     price,
-    courses: courseIds
+    courses: courseIds.join(',')
   }
 
   const response = await put(path, data)
+
+  return response
+}
+
+export const deletePackage = async id => {
+  const path = `school/course/package/${id}`
+
+  const response = await delete (path, {})
 
   return response
 }

@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import styles from './CoursePackages.scss'
 import CourseSummary from '../../CoursesPanel/CourseSummary'
 import DateHeading from 'components/Calendar/DateHeading'
+import LoadingMask from 'components/LoadingMask'
 import {
+  savePackage,
   cancelCoursePackage,
   deleteCoursePackage,
   finishCoursePackage,
@@ -20,12 +22,24 @@ const CoursePackageForm = ({
   schools,
   initialPrice,
   editing,
+  saving,
+  error,
+  orderDetail,
+  savePackage,
   cancelCoursePackage,
   deleteCoursePackage,
   finishCoursePackage,
   removeCourseFromPackage
 }) => {
   const [price, setPrice] = useState(0)
+  const [submitted, setSubmitted] = useState(false)
+
+  // return to order detail after package is updated
+  useEffect(() => {
+    if (!saving && submitted && !error) {
+      finishCoursePackage(price)
+    }
+  }, [saving, submitted])
 
   useEffect(() => {
     if (initialPrice) {
@@ -34,7 +48,13 @@ const CoursePackageForm = ({
   }, [initialPrice])
 
   const handleSave = () => {
-    finishCoursePackage(price)
+    if (orderDetail.packageId) {
+      const courseIds = courses.map(x => x.id.toString())
+      savePackage(orderDetail.packageId, courseIds, price * 100)
+      setSubmitted(true)
+    } else {
+      finishCoursePackage(price)
+    }
   }
 
   const handleCancel = () => {
@@ -112,6 +132,7 @@ const CoursePackageForm = ({
           </div>
         )}
       </div>
+      <LoadingMask loading={saving} />
     </div>
   )
 }
@@ -121,7 +142,10 @@ const mapStateToProps = (state, ownProps) => {
     schools: state.auth.user.suppliers,
     instructors: state.instructor.instructors,
     initialPrice: state.course.coursePackage.price,
-    editing: state.course.coursePackage.editing
+    editing: state.course.coursePackage.editing,
+    orderDetail: state.course.order,
+    saving: state.course.coursePackage.saving,
+    error: state.course.coursePackage.error
   }
 }
 
@@ -131,7 +155,8 @@ const mapDispatchToProps = dispatch =>
       cancelCoursePackage,
       deleteCoursePackage,
       finishCoursePackage,
-      removeCourseFromPackage
+      removeCourseFromPackage,
+      savePackage
     },
     dispatch
   )
