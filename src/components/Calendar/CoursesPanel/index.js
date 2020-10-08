@@ -12,18 +12,6 @@ import CoursesPanel from './CoursesPanel'
 import { isAdmin } from 'services/auth'
 
 class CoursesPanelContainer extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      addingOrder: null
-    }
-  }
-
-  updateAdding = id => {
-    this.setState({ addingOrder: id })
-  }
-
   componentDidMount() {
     // if (this.props.courseDate !== this.props.match.params.date) {
     this.loadData()
@@ -59,7 +47,6 @@ class CoursesPanelContainer extends React.Component {
   render() {
     const {
       courses,
-      coursePackage,
       loading,
       match,
       events,
@@ -73,19 +60,9 @@ class CoursesPanelContainer extends React.Component {
     const {
       params: { date, courseId, eventId, staffId }
     } = match
-    const { addingOrder } = this.state
 
     let title = ''
     let subtitle = ''
-
-    if (addingOrder) {
-      title = 'Add Order'
-    }
-    if (coursePackage.adding) {
-      title = 'Create Package'
-      subtitle =
-        'You can add more courses to this package by clicking on them in the calendar'
-    }
 
     return (
       <div>
@@ -100,12 +77,9 @@ class CoursesPanelContainer extends React.Component {
           courseId={courseId}
           eventId={eventId}
           staffId={staffId}
-          addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
-          coursePackage={coursePackage}
           events={events}
-          updateAdding={this.updateAdding}
           staff={staff}
           isAdmin={isAdmin}
           loadCourses={loadCourses}
@@ -124,7 +98,6 @@ const mapStateToProps = (state, ownProps) => {
     schools: state.auth.user.suppliers,
     courses: state.course.day.courses,
     courseDate: state.course.day.date,
-    coursePackage: state.course.coursePackage,
     loading: state.course.day.loading,
     events: state.event.day.events,
     eventLoading: state.event.day.loading,

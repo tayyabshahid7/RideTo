@@ -104,16 +104,7 @@ class OrdersPanel extends React.Component {
   }
 
   render() {
-    const {
-      course,
-      info,
-      saving,
-      loading,
-      updateAdding,
-      addingOrder,
-      loadCourses,
-      schoolId
-    } = this.props
+    const { course, info, saving, loading, loadCourses, schoolId } = this.props
     const { orderIndex, editOrderIndex, showEditButton } = this.state
     const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
 
@@ -168,13 +159,10 @@ class OrdersPanel extends React.Component {
                   onSave={this.handleNewOrder.bind(this)}
                   onPayment={this.handleNewPayment.bind(this)}
                   saving={saving}
-                  updateAdding={updateAdding}
                 />
               ) : (
                 <Fragment key={index}>
-                  {!addingOrder && (
-                    <OrdersPanelSpaceItem onAdd={this.handleAdd} />
-                  )}
+                  <OrdersPanelSpaceItem onAdd={this.handleAdd} />
                 </Fragment>
               )
             )}
