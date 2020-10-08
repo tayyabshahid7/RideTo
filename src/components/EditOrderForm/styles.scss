@@ -50,10 +50,6 @@ button.toggleButton {
 
 .buttons {
   display: flex;
-
-  .deleteButton {
-    margin-left: auto;
-  }
 }
 
 .actions {
@@ -73,4 +69,8 @@ button.toggleButton {
   button:nth-child(3) {
     margin-left: auto;
   }
+}
+
+.deleteButton {
+  margin-top: 2rem;
 }

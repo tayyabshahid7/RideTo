@@ -30,8 +30,6 @@ const CoursesPanelItem = ({
   updateSchoolOrder,
   deleteOrderTraining,
   updateCourse,
-  updateAdding,
-  addingOrder,
   courseId,
   schools,
   instructors,
@@ -67,55 +65,48 @@ const CoursesPanelItem = ({
           <CourseSummary
             course={course}
             date={date}
-            addingOrder={addingOrder}
             courseId={courseId}
             schools={schools}
             instructors={instructors}
             canEdit={canEdit}
           />
-          {!addingOrder && (
-            <React.Fragment>
-              <div className={styles.line}>
-                <span>{getCourseSpaceTextShort(course)}</span>
-              </div>
-              {/* <div className={styles.line}>
+          <div className={styles.line}>
+            <span>{getCourseSpaceTextShort(course)}</span>
+          </div>
+          {/* <div className={styles.line}>
                 {notes && <div className={styles.notes}>{truncated}</div>}
               </div> */}
 
-              {isTestCourse && (
-                <div className={styles.testNotes}>
-                  {showDetail && (
-                    <React.Fragment>
-                      <div className={styles.line}>
-                        {TEST_STATUS_CHOICES[course.status]}
-                      </div>
-                      {course.test_centre_name && (
-                        <div className={styles.line}>
-                          {course.test_centre_name}
-                        </div>
-                      )}
-                      {isTestCourse && course.application_reference_number && (
-                        <div className={styles.line}>
-                          {`${course.application_reference_number}`}
-                        </div>
-                      )}
-                      <div className={styles.line}>
-                        Cancel by:{' '}
-                        {moment(course.last_date_cancel).format('Do MMM YYYY')}
-                      </div>
-                    </React.Fragment>
-                  )}
-                  <div
-                    className={classnames(
-                      styles.detail,
-                      showDetail && styles.isOpen
-                    )}
-                    onClick={() => setShowDetail(!showDetail)}>
-                    <i className="fa fa-angle-down"></i>
+          {isTestCourse && (
+            <div className={styles.testNotes}>
+              {showDetail && (
+                <React.Fragment>
+                  <div className={styles.line}>
+                    {TEST_STATUS_CHOICES[course.status]}
                   </div>
-                </div>
+                  {course.test_centre_name && (
+                    <div className={styles.line}>{course.test_centre_name}</div>
+                  )}
+                  {isTestCourse && course.application_reference_number && (
+                    <div className={styles.line}>
+                      {`${course.application_reference_number}`}
+                    </div>
+                  )}
+                  <div className={styles.line}>
+                    Cancel by:{' '}
+                    {moment(course.last_date_cancel).format('Do MMM YYYY')}
+                  </div>
+                </React.Fragment>
               )}
-            </React.Fragment>
+              <div
+                className={classnames(
+                  styles.detail,
+                  showDetail && styles.isOpen
+                )}
+                onClick={() => setShowDetail(!showDetail)}>
+                <i className="fa fa-angle-down"></i>
+              </div>
+            </div>
           )}
         </div>
       </div>
@@ -132,8 +123,6 @@ const CoursesPanelItem = ({
         schoolId={schoolId}
         saving={saving}
         history={history}
-        addingOrder={addingOrder}
-        updateAdding={updateAdding}
         loadCourses={loadCourses}
       />
     </div>

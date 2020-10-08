@@ -69,13 +69,7 @@ class AddOrderItem extends React.Component {
   }
 
   async componentDidMount() {
-    const {
-      updateAdding,
-      course,
-      widgetSettings,
-      fetchWidgetSettings,
-      schoolId
-    } = this.props
+    const { course, widgetSettings, fetchWidgetSettings, schoolId } = this.props
 
     if (!widgetSettings) {
       fetchWidgetSettings()
@@ -136,14 +130,6 @@ class AddOrderItem extends React.Component {
     setTimeout(() => {
       window.scrollTo(0, 0)
     })
-
-    updateAdding(course.id)
-  }
-
-  componentWillUnmount() {
-    const { updateAdding } = this.props
-
-    updateAdding(null)
   }
 
   componentDidUpdate(prevProps, prevState) {
