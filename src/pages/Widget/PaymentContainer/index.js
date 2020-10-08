@@ -17,6 +17,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { capitalizeFirstLetter } from 'utils/helper'
 import { handleStripePayment } from 'services/stripe'
+import { EMAIL_EXTENSIONS } from 'common/emailExtensions'
 
 const REQUIRED_FIELDS = [
   'first_name',
@@ -173,6 +174,12 @@ class PaymentContainer extends React.Component {
         )
       ) {
         errors.email = 'Invalid email address.'
+      } else {
+        let extension = details.email.split('.')
+        extension = extension[extension.length - 1].toLowerCase()
+        if (!EMAIL_EXTENSIONS.includes(extension)) {
+          errors.email = 'Invalid email extension.'
+        }
       }
     }
 
