@@ -38,6 +38,7 @@ class AvailabilityCourses extends React.Component {
   componentDidMount() {
     this.props.getTestCentres()
     this.props.getDefaultTestCentres()
+    this.filterTestCenters()
   }
 
   componentDidUpdate(prevProps) {
@@ -59,12 +60,15 @@ class AvailabilityCourses extends React.Component {
         prevProps.defaultTestCentres.length ||
       this.props.testCentres.length !== prevProps.testCentres.length
     ) {
-      const ids = this.props.defaultTestCentres
-      const defaultCentres = this.props.testCentres.filter(x =>
-        ids.includes(x.id)
-      )
-      this.setState({ defaultCentres })
+      this.filterTestCenters()
     }
+  }
+
+  filterTestCenters = () => {
+    const defaultCentres = this.props.testCentres.filter(x =>
+      this.props.defaultTestCentres.includes(x.id)
+    )
+    this.setState({ defaultCentres })
   }
 
   handleAvailableDaysChange(index) {
@@ -99,7 +103,7 @@ class AvailabilityCourses extends React.Component {
 
   handleSaveDefaultCentres = () => {
     const { defaultCentres } = this.state
-    const ids = defaultCentres.map(x => x.id)
+    const ids = defaultCentres ? defaultCentres.map(x => x.id) : []
     this.props.setDefaultTestCentres(ids)
   }
 
@@ -125,7 +129,6 @@ class AvailabilityCourses extends React.Component {
 
   renderDefaultTestCenters() {
     const { testCentres, defaultTestCentres } = this.props
-    console.log(testCentres, defaultTestCentres)
     const list = testCentres.filter(x => defaultTestCentres.includes(x.id))
     return (
       <div className={styles.row}>

@@ -75,9 +75,12 @@ class AddCourseComponent extends Component {
       return <div>No access</div>
     }
 
-    const filteredCentres = testCentres.filter(x =>
-      defaultTestCentres.includes(x.id)
-    )
+    let filteredCentres = testCentres
+    if (defaultTestCentres.length) {
+      filteredCentres = testCentres.filter(x =>
+        defaultTestCentres.includes(x.id)
+      )
+    }
 
     return (
       <div className={styles.addCourse}>
