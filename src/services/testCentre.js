@@ -13,7 +13,7 @@ export const fetchDefaultTestCentres = async () => {
 
   const response = await get(path)
 
-  return response.test_centres
+  return response.default_test_centres
 }
 
 export const updateDefaultTestCentres = async data => {

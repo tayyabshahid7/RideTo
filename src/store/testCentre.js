@@ -32,9 +32,7 @@ export const getDefaultTestCentres = () => async dispatch => {
     const defaultTestCentres = await fetchDefaultTestCentres()
     dispatch({
       type: FETCH_DEFAULT[SUCCESS],
-      data: {
-        defaultTestCentres
-      }
+      data: defaultTestCentres
     })
   } catch (error) {
     dispatch({ type: FETCH_DEFAULT[FAILURE], error })
@@ -93,7 +91,7 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        defaultTestCentres: [...action.data.defaultTestCentres]
+        defaultTestCentres: [...action.data]
       }
     case FETCH_DEFAULT[FAILURE]:
       return {

@@ -123,9 +123,12 @@ class EditCourseComponent extends Component {
       return <div>Course Not Found</div>
     }
 
-    const filteredCentres = testCentres.filter(x =>
-      defaultTestCentres.includes(x.id)
-    )
+    let filteredCentres = testCentres
+    if (defaultTestCentres.length) {
+      filteredCentres = testCentres.filter(x =>
+        defaultTestCentres.includes(x.id)
+      )
+    }
 
     return (
       <div className={styles.addCourse}>

@@ -38,6 +38,7 @@ class AvailabilityCourses extends React.Component {
   componentDidMount() {
     this.props.getTestCentres()
     this.props.getDefaultTestCentres()
+    this.filterTestCenters()
   }
 
   componentDidUpdate(prevProps) {
@@ -48,16 +49,26 @@ class AvailabilityCourses extends React.Component {
     }
 
     if (
+      this.props.savingDefaultCentres !== prevProps.savingDefaultCentres &&
+      !this.props.savingDefaultCentres
+    ) {
+      this.setState({ showDefaultTestCenterForm: false })
+    }
+
+    if (
       this.props.defaultTestCentres.length !==
         prevProps.defaultTestCentres.length ||
       this.props.testCentres.length !== prevProps.testCentres.length
     ) {
-      const ids = this.props.defaultTestCentres
-      const defaultCentres = this.props.testCentres.filter(x =>
-        ids.includes(x.id)
-      )
-      this.setState({ defaultCentres })
+      this.filterTestCenters()
     }
+  }
+
+  filterTestCenters = () => {
+    const defaultCentres = this.props.testCentres.filter(x =>
+      this.props.defaultTestCentres.includes(x.id)
+    )
+    this.setState({ defaultCentres })
   }
 
   handleAvailableDaysChange(index) {
@@ -92,7 +103,7 @@ class AvailabilityCourses extends React.Component {
 
   handleSaveDefaultCentres = () => {
     const { defaultCentres } = this.state
-    const ids = defaultCentres.map(x => x.id)
+    const ids = defaultCentres ? defaultCentres.map(x => x.id) : []
     this.props.setDefaultTestCentres(ids)
   }
 
@@ -123,7 +134,7 @@ class AvailabilityCourses extends React.Component {
       <div className={styles.row}>
         <div className={styles.leftCol}>
           <h3 className={styles.title}>Default Test Centres</h3>
-          <div>
+          <div className={styles.list}>
             <ul>
               {list.map(item => (
                 <li key={item.id}>{item.name}</li>
