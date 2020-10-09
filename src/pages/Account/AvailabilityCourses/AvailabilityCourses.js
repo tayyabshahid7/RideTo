@@ -48,6 +48,13 @@ class AvailabilityCourses extends React.Component {
     }
 
     if (
+      this.props.savingDefaultCentres !== prevProps.savingDefaultCentres &&
+      !this.props.savingDefaultCentres
+    ) {
+      this.setState({ showDefaultTestCenterForm: false })
+    }
+
+    if (
       this.props.defaultTestCentres.length !==
         prevProps.defaultTestCentres.length ||
       this.props.testCentres.length !== prevProps.testCentres.length
@@ -118,12 +125,13 @@ class AvailabilityCourses extends React.Component {
 
   renderDefaultTestCenters() {
     const { testCentres, defaultTestCentres } = this.props
+    console.log(testCentres, defaultTestCentres)
     const list = testCentres.filter(x => defaultTestCentres.includes(x.id))
     return (
       <div className={styles.row}>
         <div className={styles.leftCol}>
           <h3 className={styles.title}>Default Test Centres</h3>
-          <div>
+          <div className={styles.list}>
             <ul>
               {list.map(item => (
                 <li key={item.id}>{item.name}</li>
