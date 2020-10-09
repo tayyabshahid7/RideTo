@@ -276,7 +276,7 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     if (response.sms_success) {
       notificationActions.dispatchSuccess(dispatch, 'SMS sent')
     }
-    const courseIds = order.school_course.split(',')
+    const courseIds = order.school_course.toString().split(',')
     courseIds.forEach(courseId => {
       dispatch(
         getSingleCourse({
