@@ -183,7 +183,6 @@ class EditOrderForm extends React.Component {
                       label="Test Result"
                       options={testResultOptions}
                       noSelectOption
-                      required
                       basic
                       onChange={value => {
                         this.handleChange('test_result', value)

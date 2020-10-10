@@ -411,7 +411,6 @@ class AddOrderForm extends React.Component {
                   onChange={value => {
                     this.handleChange('test_result', value)
                   }}
-                  required
                 />
               )}
 
