@@ -130,7 +130,7 @@ const BikePicker = React.forwardRef(
                 }
                 disabled={
                   (isFullLicence && !has_auto_bikes_50cc) ||
-                  (!isFullLicence && (isAuto50Full || !isAutoAvailable))
+                  (!isFullLicence && (isAuto50Full || !isAuto50Available))
                 }>
                 {getMotorbikeLabel('auto_50cc', isFullLicence, isInstantBook)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}

@@ -41,11 +41,11 @@ export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 // export const COLOR_RED_1 = '#fa0e0e'
 // export const COLOR_YELLOW_1 = '#fa840e'
 export const BIKE_HIRE = {
-  MANUAL: 'BIKE_TYPE_MANUAL',
+  NO: 'BIKE_TYPE_NONE',
   AUTO: 'BIKE_TYPE_AUTO',
   AUTO_50CC: 'BIKE_TYPE_AUTO_50CC',
-  NO: 'BIKE_TYPE_NONE',
   AUTO_125CC: 'BIKE_TYPE_AUTO_125CC',
+  MANUAL: 'BIKE_TYPE_MANUAL',
   MANUAL_50CC: 'BIKE_TYPE_MANUAL_50CC'
   // MANUAL: 'manual',
   // AUTO: 'auto',
