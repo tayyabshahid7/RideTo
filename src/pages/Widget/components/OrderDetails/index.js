@@ -31,6 +31,7 @@ const OrderDetails = ({
   const startTime = moment(dateStr, 'YYYY-MM-DDTh:mm:ss')
   const displayPrice = asPoundSterling(totalPrice)
   const isBikeHire = hire !== BIKE_HIRE.NO
+  console.log('*** trainings', trainings, course)
   const fullLicenceType =
     isFullLicence && SHORT_LICENCE_TYPES[trainings[0].full_licence_type]
 
