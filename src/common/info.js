@@ -8,12 +8,12 @@ import {
 } from './constants'
 
 export const BikeHires = [
-  { value: BIKE_HIRE.MANUAL, title: 'Manual' },
+  { value: BIKE_HIRE.NO, title: 'No' },
   { value: BIKE_HIRE.AUTO, title: 'Automatic' },
   { value: BIKE_HIRE.AUTO_50CC, title: 'Automatic 50cc' },
-  { value: BIKE_HIRE.NO, title: 'No' },
-  { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' },
-  { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' }
+  { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' },
+  { value: BIKE_HIRE.MANUAL, title: 'Manual 125cc' },
+  { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' }
 ]
 
 export function getFullLicenseBikeHires(course, prevBikeType) {
