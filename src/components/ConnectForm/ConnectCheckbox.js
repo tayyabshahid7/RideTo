@@ -6,6 +6,7 @@ export default function ConnectCheckbox({
   label,
   type = 'checkbox',
   disabled,
+  fainted,
   checked = false,
   onChange,
   noWrapLabel,
@@ -20,7 +21,8 @@ export default function ConnectCheckbox({
             styles.label,
             styles.labelCheckbox,
             vertical && styles.labelCheckboxVertical,
-            disabled && styles.labelDisabled
+            disabled && styles.labelDisabled,
+            fainted && styles.labelFainted
           )}>
           <input
             name={name}

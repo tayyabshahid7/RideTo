@@ -22,6 +22,10 @@
   cursor: initial;
 }
 
+.labelFainted {
+  opacity: 0.8;
+}
+
 @mixin vh() {
   border: 0;
   clip: rect(0 0 0 0);
