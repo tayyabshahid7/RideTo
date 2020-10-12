@@ -40,7 +40,7 @@ class CourseForm extends React.Component {
   constructor(props) {
     super(props)
 
-    const lastDate = moment()
+    const lastDate = moment(props.date)
       .add(11, 'days')
       .format('YYYY-MM-DD')
 
