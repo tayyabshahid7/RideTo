@@ -73,12 +73,22 @@ function OrderIncluded({
             </span>{' '}
             <span className={styles.text}>Bike hire and fuel</span>
           </li>
-          <li>
-            <span className={styles.tick}>
-              <i className="fa fa-check" />
-            </span>{' '}
-            <span className={styles.text}>Helmet and gloves</span>
-          </li>
+          {helmetHire && (
+            <li>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>Helmet provided</span>
+            </li>
+          )}
+          {hasGloves && (
+            <li>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>Gloves and jacket provided</span>
+            </li>
+          )}
           <li>
             <span className={styles.tick}>
               <i className="fa fa-check" />
@@ -87,7 +97,7 @@ function OrderIncluded({
               Test fees and escort to and from test centres
             </span>
           </li>
-          {!isWidget && (
+          {/* {!isWidget && (
             <li>
               <span className={styles.tick}>
                 <i className="fa fa-check" />
@@ -96,7 +106,7 @@ function OrderIncluded({
                 12 working day free cancellation
               </span>
             </li>
-          )}
+          )} */}
         </ul>
       </div>
     )
