@@ -11,6 +11,7 @@ import SchoolSelect from 'components/SchoolSelect'
 import { Button, ConnectReactSelect } from 'components/ConnectForm'
 import Loading from 'components/Loading'
 import DefaultBikes from './DefaultBikes'
+import DefaultCourses from './DefaultCourses'
 import {
   getTestCentres,
   getDefaultTestCentres,
@@ -232,7 +233,6 @@ class AvailabilityCourses extends React.Component {
       saving,
       error,
       testCentres,
-      user,
       savingDefaultCentres
       // settings,
       // updateSettings,
@@ -297,7 +297,10 @@ class AvailabilityCourses extends React.Component {
           />
         </div> */}
         <div className={styles.box}>
-          <DefaultBikes user={user} info={info} schools={schools} />
+          <DefaultCourses info={info} schools={schools} />
+        </div>
+        <div className={styles.box}>
+          <DefaultBikes info={info} schools={schools} />
         </div>
       </Fragment>
     )
