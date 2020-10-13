@@ -181,6 +181,10 @@ export function formaBikeTypeForEdit(order) {
 export function getTestResultOptions() {
   return [
     {
+      id: null,
+      name: ''
+    },
+    {
       id: 'TEST_RESULT_PASSED',
       name: 'Passed'
     },
