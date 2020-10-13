@@ -35,7 +35,11 @@ function DefaultCourses({ schools, info }) {
   return (
     <Fragment>
       <div className={styles.defaultBikes}>
-        <div className={styles.title}>Courses</div>
+        <div className={styles.title}>Available Courses</div>
+        <p>
+          Courses which are available for customers to book online through the
+          widget
+        </p>
         <div className="pb-4">
           <ConnectSingleSelect
             basic

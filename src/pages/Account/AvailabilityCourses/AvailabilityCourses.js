@@ -297,10 +297,10 @@ class AvailabilityCourses extends React.Component {
           />
         </div> */}
         <div className={styles.box}>
-          <DefaultCourses info={info} schools={schools} />
+          <DefaultBikes info={info} schools={schools} />
         </div>
         <div className={styles.box}>
-          <DefaultBikes info={info} schools={schools} />
+          <DefaultCourses info={info} schools={schools} />
         </div>
       </Fragment>
     )
