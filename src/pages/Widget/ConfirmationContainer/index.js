@@ -16,7 +16,7 @@ class ConfirmationContainer extends React.Component {
   }
 
   handleReturnToWebsite = () => {
-    window.history.go(1 - window.history.length)
+    window.history.go(2 - window.history.length)
   }
 
   render() {

@@ -162,6 +162,7 @@ class PaymentContainer extends React.Component {
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
         errors[field] = 'This field is required.'
+        window.document.body.scrollIntoView()
       }
     })
 
@@ -173,11 +174,13 @@ class PaymentContainer extends React.Component {
         )
       ) {
         errors.email = 'Invalid email address.'
+        window.document.body.scrollIntoView()
       } else {
         let extension = details.email.split('.')
         extension = extension[extension.length - 1].toLowerCase()
         if (!EMAIL_EXTENSIONS.includes(extension)) {
           errors.email = 'Invalid email extension.'
+          window.document.body.scrollIntoView()
         }
       }
     }
