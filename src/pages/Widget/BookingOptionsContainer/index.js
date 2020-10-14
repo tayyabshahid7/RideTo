@@ -7,7 +7,7 @@ import Calendar from 'pages/Widget/components/Calendar'
 import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
 import CourseSelect from 'pages/Widget/components/CourseSelect'
 import BookingOption from 'pages/Widget/components/BookingOption'
-import { fetchWidgetCourses } from 'services/course'
+import { fetchWidgetCourses, getCourseTypes } from 'services/course'
 import {
   showOwnBikeHire,
   getTotalOrderPrice,
@@ -54,7 +54,9 @@ class BookingOptionsContainer extends React.Component {
       loadedMonths: {},
       showDayOfWeekPicker: false,
       selectedTimeDays: [],
-      formCompletedWithoutTheory: false
+      courseTypes: [],
+      formCompletedWithoutTheory: false,
+      loadingCourseTypes: true
     }
 
     this.handleChangeCourseType = this.handleChangeCourseType.bind(this)
@@ -76,6 +78,7 @@ class BookingOptionsContainer extends React.Component {
   componentDidMount() {
     const { month } = this.state
     this.fetchCourses(month.clone())
+    this.fetchCourseTypes()
   }
 
   componentDidUpdate(oldProps, oldState) {
@@ -114,6 +117,12 @@ class BookingOptionsContainer extends React.Component {
       this.setState({ isLoading: true })
       this.fetchCourses(month.clone())
     }
+  }
+
+  async fetchCourseTypes() {
+    const { selectedSupplier } = this.props
+    const courseTypes = await getCourseTypes(selectedSupplier.id)
+    this.setState({ courseTypes, loadingCourseTypes: false })
   }
 
   async fetchCourses(month) {
@@ -387,6 +396,8 @@ class BookingOptionsContainer extends React.Component {
     const { widget, selectedSupplier, suppliers, onChangeSupplier } = this.props
     const {
       courseType,
+      courseTypes,
+      loadingCourseTypes,
       availableCourses,
       selectedDate,
       selectedCourse,
@@ -424,10 +435,22 @@ class BookingOptionsContainer extends React.Component {
       return <Redirect push to={submit} />
     }
 
+    if (loadingCourseTypes) {
+      return <div className={styles.bookingOptions}>Loading</div>
+    }
+
     if (!courseType) {
       return <div className={styles.bookingOptions}>No Course Found</div>
     }
-    console.log(suppliers)
+    const tmp = courseTypes.find(x => x.constant === courseType.constant)
+    if (!tmp) {
+      return <div className={styles.bookingOptions}>No Course Found</div>
+    }
+    const bikeSetup = tmp.bike_hire_setup.find(
+      x => x.supplier.id === selectedSupplier.id
+    )
+    console.log(bikeSetup)
+
     return (
       <div className={styles.bookingOptions}>
         <BookingOption
@@ -499,6 +522,7 @@ class BookingOptionsContainer extends React.Component {
               selected={selectedBikeHire}
               course={selectedCourse}
               onChange={this.handleSelectBikeHire}
+              bikeSetup={bikeSetup}
             />
 
             <hr />

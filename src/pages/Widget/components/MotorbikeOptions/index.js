@@ -1,10 +1,16 @@
 import React from 'react'
 import { BIKE_HIRE } from 'common/constants'
 import { getMotorbikeLabel, asPoundSterling } from 'services/widget'
-import Checkbox from 'components/Checkbox'
+import Checkbox from 'components/WidgetCheckbox'
 import styles from './MotorbikeOptions.scss'
 
-const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
+const MotorbikeOptions = ({
+  selected,
+  course,
+  onChange,
+  bikeSetup,
+  ownBike = false
+}) => {
   let { bike_hire_cost } = course.pricing
 
   const isFree = !bike_hire_cost
@@ -29,6 +35,12 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
   // determining course state for own bikes
   const isOwnFull = course.own_bikes_count >= course.own_bikes
 
+  const isAvailable = type => {
+    return (
+      course.auto_bikes > 0 || (bikeSetup && bikeSetup[`available_${type}`])
+    )
+  }
+
   console.log(course)
   return (
     <div className={styles.motorbikeOptions}>
@@ -45,7 +57,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
       {/* Auto Bikes   */}
 
-      {course.auto_bikes > 0 && (
+      {isAvailable('auto_bikes') && (
         <Checkbox
           checked={selected === BIKE_HIRE.AUTO}
           extraClass="WidgetCheckbox"
@@ -63,7 +75,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
       {/* Auto Bikes 50cc  */}
 
-      {course.auto_50cc_bikes > 0 && (
+      {isAvailable('auto_50cc_bikes') && (
         <Checkbox
           checked={selected === BIKE_HIRE.AUTO_50CC}
           extraClass="WidgetCheckbox"
@@ -81,7 +93,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
       {/* Auto Bikes 125cc  */}
 
-      {course.auto_125cc_bikes > 0 && (
+      {isAvailable('auto_125cc_bikes') && (
         <Checkbox
           checked={selected === BIKE_HIRE.AUTO_125CC}
           extraClass="WidgetCheckbox"
@@ -99,7 +111,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
       {/* Manual Bikes 50cc  */}
 
-      {course.manual_50cc_bikes > 0 && (
+      {isAvailable('manual_50cc_bikes') && (
         <Checkbox
           checked={selected === BIKE_HIRE.MANUAL_50CC}
           extraClass="WidgetCheckbox"
@@ -117,7 +129,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
       {/* Manual Bikes 125cc  */}
 
-      {course.manual_bikes > 0 && (
+      {isAvailable('manual_bikes') && (
         <Checkbox
           checked={selected === BIKE_HIRE.MANUAL}
           extraClass="WidgetCheckbox"
@@ -135,7 +147,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
       {/* Own Bikes  */}
 
-      {course.own_bikes > 0 && (
+      {isAvailable('own_bikes') && (
         <Checkbox
           checked={selected === BIKE_HIRE.NO}
           extraClass="WidgetCheckbox"
