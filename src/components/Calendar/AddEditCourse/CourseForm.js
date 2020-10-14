@@ -19,6 +19,7 @@ import {
 import { actions as notifyActions } from 'store/notification'
 import { getDaysStaff } from 'store/staff'
 import { getDaysCourses } from 'store/course'
+import { removeWeekdays } from 'utils/helper'
 import { DEFAULT_SETTINGS } from 'common/constants'
 
 const fullLicenceBikeFields = [
@@ -44,10 +45,8 @@ const bikeFields = [...fullLicenceBikeFields, ...generalBikeFields]
 class CourseForm extends React.Component {
   constructor(props) {
     super(props)
-
-    const lastDate = moment(props.date)
-      .add(11, 'days')
-      .format('YYYY-MM-DD')
+    console.log(props.bankHolidays)
+    const lastDate = removeWeekdays(moment(props.date), 4, props.bankHolidays)
 
     const course = {
       course_type_id: '',
@@ -1107,7 +1106,8 @@ class CourseForm extends React.Component {
 const mapStateToProps = (state, ownProps) => ({
   staffCalendar: state.staff.days,
   courseCalendar: state.course.days,
-  coursePackage: state.course.coursePackage
+  coursePackage: state.course.coursePackage,
+  bankHolidays: state.info.bankHolidays
 })
 
 const mapDispatchToProps = dispatch =>
