@@ -5,8 +5,7 @@ import styles from './OrderDetails.scss'
 import Loading from 'components/Loading'
 
 import { SHORT_LICENCE_TYPES } from 'common/constants'
-import { asPoundSterling } from 'services/widget'
-import { BikeHires } from 'common/info'
+import { getMotorbikeLabel, asPoundSterling } from 'services/widget'
 import { BIKE_HIRE } from 'common/constants'
 
 const OrderDetails = ({
@@ -64,10 +63,7 @@ const OrderDetails = ({
           <h3 className={styles.heading}>Includes</h3>
           <ul className={styles.checklist}>
             {isBikeHire && (
-              <li>
-                Bike and helmet hire (
-                {BikeHires.find(bike => bike.value === hire).title} Motorcycle)
-              </li>
+              <li>Bike and helmet hire ({getMotorbikeLabel(hire)})</li>
             )}
             <li>Insurance</li>
           </ul>

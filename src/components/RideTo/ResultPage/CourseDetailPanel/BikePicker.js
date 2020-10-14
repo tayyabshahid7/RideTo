@@ -162,6 +162,30 @@ const BikePicker = React.forwardRef(
               </button>
             )}
 
+            {/* manual 50 */}
+
+            {!isFullLicence && has_manual_50cc && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  isWidget && styles.widgetBtn,
+                  bike_hire === BIKE_HIRE.MANUAL_50CC && styles.activeBtn
+                )}
+                onClick={() =>
+                  onUpdate({
+                    bike_hire: BIKE_HIRE.MANUAL_50CC,
+                    selectedLicenceType: null,
+                    selectedPackageDays: '',
+                    selectedPackageDates: []
+                  })
+                }
+                disabled={isManual50Full || !isManual50Available}>
+                {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC, isFullLicence)}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {isManual50Full ? fullText : null}
+              </button>
+            )}
+
             {/* manual 125 */}
 
             {has_manual_bikes && (
@@ -186,30 +210,6 @@ const BikePicker = React.forwardRef(
                 {getMotorbikeLabel('manual', isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isManualFull ? fullText : null}
-              </button>
-            )}
-
-            {/* manual 50 */}
-
-            {!isFullLicence && has_manual_50cc && (
-              <button
-                className={classnames(
-                  styles.bikeHireBtn,
-                  isWidget && styles.widgetBtn,
-                  bike_hire === BIKE_HIRE.MANUAL_50CC && styles.activeBtn
-                )}
-                onClick={() =>
-                  onUpdate({
-                    bike_hire: BIKE_HIRE.MANUAL_50CC,
-                    selectedLicenceType: null,
-                    selectedPackageDays: '',
-                    selectedPackageDates: []
-                  })
-                }
-                disabled={isManual50Full || !isManual50Available}>
-                {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC, isFullLicence)}{' '}
-                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-                {isManual50Full ? fullText : null}
               </button>
             )}
           </div>

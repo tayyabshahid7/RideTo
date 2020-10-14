@@ -105,7 +105,7 @@ class OrderForm extends React.Component {
   handleSaveClick() {
     const { onSave } = this.props
     const { editable } = this.state
-
+    console.log(editable)
     this.setState(
       {
         inputsDisabled: true

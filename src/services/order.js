@@ -93,23 +93,19 @@ export const getCustomerBikeTypeOptions = isFullLicence => {
     }
   }
 
-  return {
-    BIKE_TYPE_MANUAL: 'Manual',
-    BIKE_TYPE_AUTO: 'Automatic Scooter',
-    BIKE_HIRE_NONE: 'Own Bike'
-  }
+  return getBikeHireOptions()
 }
 
 export const getBikeHireOptions = isFullLicence => {
   return {
     [BIKE_HIRE.NO]: 'Own Bike',
-    [BIKE_HIRE.AUTO]: 'Automatic',
+    [BIKE_HIRE.AUTO]: !isFullLicence ? 'Automatic Scooter' : 'Automatic',
     [BIKE_HIRE.AUTO_50CC]: !isFullLicence
       ? 'Automatic 50cc Scooter'
       : 'Automatic',
-    [BIKE_HIRE.MANUAL]: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
     [BIKE_HIRE.AUTO_125CC]: 'Automatic 125cc Scooter',
-    [BIKE_HIRE.MANUAL_50CC]: 'Manual 50cc Motorcycle'
+    [BIKE_HIRE.MANUAL_50CC]: 'Manual 50cc Motorcycle',
+    [BIKE_HIRE.MANUAL]: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual'
   }
 }
 

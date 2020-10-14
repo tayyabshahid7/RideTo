@@ -21,13 +21,7 @@ import { getDaysStaff } from 'store/staff'
 import { getDaysCourses } from 'store/course'
 import { DEFAULT_SETTINGS } from 'common/constants'
 
-const bikeFields = [
-  'own_bikes',
-  'auto_bikes',
-  'auto_50cc_bikes',
-  'auto_125cc_bikes',
-  'manual_bikes',
-  'manual_50cc_bikes',
+const fullLicenceBikeFields = [
   'a1_auto_bikes',
   'a2_auto_bikes',
   'a1_manual_bikes',
@@ -35,6 +29,17 @@ const bikeFields = [
   'a_auto_bikes',
   'a_manual_bikes'
 ]
+
+const generalBikeFields = [
+  'own_bikes',
+  'auto_bikes',
+  'auto_50cc_bikes',
+  'auto_125cc_bikes',
+  'manual_bikes',
+  'manual_50cc_bikes'
+]
+
+const bikeFields = [...fullLicenceBikeFields, ...generalBikeFields]
 
 class CourseForm extends React.Component {
   constructor(props) {
@@ -214,22 +219,34 @@ class CourseForm extends React.Component {
       }
     }
 
+    const isFullLicence = this.checkType()
+    const { course } = this.state
+    console.log(course)
+
+    if (isFullLicence) {
+      fullLicenceBikeFields.forEach(field => {
+        if (
+          !course.hasOwnProperty(field) ||
+          course[field] === '' ||
+          !this.props.course
+        ) {
+          course[field] = settings[field]
+        }
+      })
+    } else {
+      generalBikeFields.forEach(field => {
+        if (
+          !course.hasOwnProperty(field) ||
+          course[field] === '' ||
+          !this.props.course
+        ) {
+          course[field] = settings['default_number_' + field]
+        }
+      })
+    }
+
     this.setState({
-      course: {
-        ...this.state.course,
-        a1_auto_bikes: settings.a1_auto_bikes,
-        a1_manual_bikes: settings.a1_manual_bikes,
-        a2_auto_bikes: settings.a2_auto_bikes,
-        a2_manual_bikes: settings.a2_manual_bikes,
-        a_auto_bikes: settings.a_auto_bikes,
-        a_manual_bikes: settings.a_manual_bikes,
-        auto_bikes: settings.default_number_auto_bikes,
-        auto_50cc_bikes: settings.default_number_auto_50cc_bikes,
-        auto_125cc_bikes: settings.default_number_auto_125cc_bikes,
-        manual_bikes: settings.default_number_manual_125cc_bikes,
-        own_bikes: settings.default_number_own_bikes,
-        manual_50cc_bikes: settings.default_number_manual_50cc_bikes
-      },
+      course,
       defaultBikes: settings
     })
   }
@@ -505,6 +522,18 @@ class CourseForm extends React.Component {
     })
   }
 
+  checkType = (prefix = 'FULL_LICENCE', suffix = '') => {
+    const courseTypes = this.getValidCourseTypes()
+    const { course_type_id } = this.state.course
+
+    return courseTypes
+      .filter(
+        type =>
+          type.constant.startsWith(prefix) && type.constant.endsWith(suffix)
+      )
+      .some(type => type.id === parseInt(course_type_id, 10))
+  }
+
   render() {
     const {
       isEditable,
@@ -526,7 +555,13 @@ class CourseForm extends React.Component {
       available_auto_125cc_bikes,
       available_manual_50cc_bikes,
       available_manual_125cc_bikes,
-      available_own_bikes
+      available_own_bikes,
+      available_a1_auto_bikes,
+      available_a1_manual_bikes,
+      available_a2_auto_bikes,
+      available_a2_manual_bikes,
+      available_a_auto_bikes,
+      available_a_manual_bikes
     } = this.state.defaultBikes
     const loading =
       staffCalendar.loading || courseCalendar.loading || coursePackage.loading
@@ -558,7 +593,7 @@ class CourseForm extends React.Component {
       status,
       application_reference_number
     } = this.state.course
-    console.log(this.state)
+
     const { supplier } = this.state
 
     const schoolInstructors = this.getInstructors(supplier)
@@ -574,21 +609,10 @@ class CourseForm extends React.Component {
 
     const courseTypes = this.getValidCourseTypes()
 
-    const isFullLicence = courseTypes
-      .filter(type => type.constant.startsWith('FULL_LICENCE'))
-      .some(type => type.id === parseInt(course_type_id, 10))
+    const isFullLicence = this.checkType()
+    const isCBTRenewal = this.checkType('LICENCE_CBT_RENEWAL')
+    const isFullLicenceTest = this.checkType('FULL_LICENCE', 'TEST')
 
-    const isCBTRenewal = courseTypes
-      .filter(type => type.constant.startsWith('LICENCE_CBT_RENEWAL'))
-      .some(type => type.id === parseInt(course_type_id, 10))
-
-    const isFullLicenceTest = courseTypes
-      .filter(
-        type =>
-          type.constant.startsWith('FULL_LICENCE') &&
-          type.constant.endsWith('TEST')
-      )
-      .some(type => type.id === parseInt(course_type_id, 10))
     return (
       <div className={styles.wrapper}>
         <div className={styles.formWrapper}>
@@ -848,87 +872,107 @@ class CourseForm extends React.Component {
                   <Row>
                     <Col>
                       <div className={styles.bikesAvailable}>Bikes</div>
-                      <div className={styles.bikesAvailable}>A1</div>
-                      <BikeNumberPicker
-                        label="Automatic"
-                        value={a1_auto_bikes}
-                        id="a1_auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a1_auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a1_auto_bikes', 1)
-                        }}
-                      />
-                      <BikeNumberPicker
-                        label="Manual"
-                        value={a1_manual_bikes}
-                        id="a1_manual_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a1_manual_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a1_manual_bikes', 1)
-                        }}
-                      />
-                      <div className={styles.bikesAvailable}>A2</div>
-                      <BikeNumberPicker
-                        label="Automatic"
-                        value={a2_auto_bikes}
-                        id="a2_auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a2_auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a2_auto_bikes', 1)
-                        }}
-                      />
-                      <BikeNumberPicker
-                        label="Manual"
-                        value={a2_manual_bikes}
-                        id="a2_manual_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a2_manual_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a2_manual_bikes', 1)
-                        }}
-                      />
-                      <div className={styles.bikesAvailable}>A</div>
-                      <BikeNumberPicker
-                        label="Automatic"
-                        value={a_auto_bikes}
-                        id="a_auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a_auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a_auto_bikes', 1)
-                        }}
-                      />
-                      <BikeNumberPicker
-                        label="Manual"
-                        value={a_manual_bikes}
-                        id="a_manual_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a_manual_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a_manual_bikes', 1)
-                        }}
-                      />
+                      {(available_a1_auto_bikes ||
+                        available_a1_manual_bikes) && (
+                        <div className={styles.bikesAvailable}>A1</div>
+                      )}
+                      {available_a1_auto_bikes && (
+                        <BikeNumberPicker
+                          label="Automatic"
+                          value={a1_auto_bikes}
+                          id="a1_auto_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a1_auto_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a1_auto_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {available_a1_manual_bikes && (
+                        <BikeNumberPicker
+                          label="Manual"
+                          value={a1_manual_bikes}
+                          id="a1_manual_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a1_manual_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a1_manual_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {(available_a2_auto_bikes ||
+                        available_a2_manual_bikes) && (
+                        <div className={styles.bikesAvailable}>A2</div>
+                      )}
+                      {available_a2_auto_bikes && (
+                        <BikeNumberPicker
+                          label="Automatic"
+                          value={a2_auto_bikes}
+                          id="a2_auto_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a2_auto_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a2_auto_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {available_a2_manual_bikes && (
+                        <BikeNumberPicker
+                          label="Manual"
+                          value={a2_manual_bikes}
+                          id="a2_manual_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a2_manual_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a2_manual_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {(available_a_auto_bikes || available_a_manual_bikes) && (
+                        <div className={styles.bikesAvailable}>A</div>
+                      )}
+                      {available_a_auto_bikes && (
+                        <BikeNumberPicker
+                          label="Automatic"
+                          value={a_auto_bikes}
+                          id="a_auto_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a_auto_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a_auto_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {available_a_manual_bikes && (
+                        <BikeNumberPicker
+                          label="Manual"
+                          value={a_manual_bikes}
+                          id="a_manual_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a_manual_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a_manual_bikes', 1)
+                          }}
+                        />
+                      )}
                     </Col>
                   </Row>
                   {isFullLicenceTest && (

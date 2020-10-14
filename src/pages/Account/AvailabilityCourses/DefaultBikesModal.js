@@ -33,7 +33,7 @@ const customStyles = {
 }
 
 function isFullLicence(constant) {
-  return constant.startsWith('FULL_LICENCE_')
+  return constant.startsWith('FULL_LICENCE')
 }
 
 function isDasBike(key) {

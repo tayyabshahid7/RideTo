@@ -121,6 +121,11 @@ export default function reducer(state = initialState, action) {
         )
         if (bikeSetting) {
           Object.assign(bikeSetting, settings)
+        } else {
+          tmp.bike_hire_setup.push({
+            ...settings,
+            supplier: { id: schoolId }
+          })
         }
       }
 
