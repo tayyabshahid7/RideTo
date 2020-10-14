@@ -364,7 +364,7 @@ export const getShortCourseType = courseType => {
     case 'GEAR_CONVERSION_COURSE':
       return 'Gear Conversion'
     default:
-      return 'CBT'
+      return courseType.name || 'CBT'
   }
 }
 
