@@ -3,7 +3,6 @@ import styles from './styles.scss'
 import { Table } from 'reactstrap'
 import DefaultBikesModal from './DefaultBikesModal'
 import RowItem from './RowItem'
-import { FULL_LICENCE_MODULES } from 'common/constants'
 import { ConnectSingleSelect } from 'components/ConnectForm'
 
 function DefaultBikes({ schools, info }) {
@@ -18,14 +17,11 @@ function DefaultBikes({ schools, info }) {
   }, [])
 
   useEffect(() => {
-    const courses = info.courseTypes.filter(
-      courseType =>
-        courseType.schoolIds.includes(schoolId) &&
-        courseType.constant !== 'FULL_LICENCE' &&
-        !FULL_LICENCE_MODULES.includes(courseType.constant)
+    const courses = info.courseTypes.filter(courseType =>
+      courseType.schoolIds.includes(schoolId)
     )
     setCourseList(courses)
-  }, [schoolId])
+  }, [schoolId, info.courseTypes])
 
   const handleChangeSchool = id => {
     setSchoolId(parseInt(id))
