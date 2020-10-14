@@ -343,6 +343,8 @@ class BookingOptionsContainer extends React.Component {
       return
     }
 
+    localStorage.setItem('RIDETO_WIDGTE_SCHOOL_URL', selectedCourse.school_url)
+
     let trainings = []
 
     if (isFullLicence && !showDayOfWeekPicker) {
@@ -449,7 +451,6 @@ class BookingOptionsContainer extends React.Component {
     const bikeSetup = tmp.bike_hire_setup.find(
       x => x.supplier.id === selectedSupplier.id
     )
-    console.log(bikeSetup)
 
     return (
       <div className={styles.bookingOptions}>

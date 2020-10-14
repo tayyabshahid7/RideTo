@@ -16,10 +16,13 @@ class ConfirmationContainer extends React.Component {
   }
 
   handleReturnToWebsite = () => {
-    window.history.go(2 - window.history.length)
+    const url = localStorage.getItem('RIDETO_WIDGTE_SCHOOL_URL')
+    window.location.href = url
   }
 
   render() {
+    const url = localStorage.getItem('RIDETO_WIDGTE_SCHOOL_URL')
+
     return (
       <div className={styles.confirmationContainer}>
         <h2>Booked!</h2>
@@ -28,11 +31,13 @@ class ConfirmationContainer extends React.Component {
           full details.
         </div>
         <div className={styles.supplier}>{this.supplier.name}</div>
-        <button
-          onClick={this.handleReturnToWebsite}
-          className={classnames(styles.returnButton, 'WidgetBtn')}>
-          Return to Website
-        </button>
+        {url && (
+          <button
+            onClick={this.handleReturnToWebsite}
+            className={classnames(styles.returnButton, 'WidgetBtn')}>
+            Return to Website
+          </button>
+        )}
       </div>
     )
   }
