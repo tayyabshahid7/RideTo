@@ -293,7 +293,7 @@ export function addWeekdays(date, days, bankHolidays) {
       days -= 1
     }
   }
-  return date
+  return date.format('YYYY-MM-DD')
 }
 
 export function removeWeekdays(date, days, bankHolidays) {
@@ -309,5 +309,5 @@ export function removeWeekdays(date, days, bankHolidays) {
       days -= 1
     }
   }
-  return date
+  return date.format('YYYY-MM-DD')
 }
