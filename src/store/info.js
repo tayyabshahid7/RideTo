@@ -1,5 +1,9 @@
 import { RidingExperiences } from 'common/info'
-import { getCourseTypes, updateDefaultBikeHire } from 'services/course'
+import {
+  getCourseTypes,
+  updateDefaultBikeHire,
+  getBankHolidays
+} from 'services/course'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 const GET_COURSE_TYPES = createRequestTypes('rideto/info/GET/COURSE_TYPES')
@@ -9,6 +13,13 @@ const GET_ALL_COURSE_TYPES = createRequestTypes(
 const UPDATE_DEFAULT_BIKES = createRequestTypes(
   'rideto/course/UPDATE_DEFAULT_BIKES'
 )
+
+const GET_BANK_HOLIDAYS = 'rideto/info/GET/BANK_HOLIDAYS'
+
+export const fetchBankHolidays = () => async dispatch => {
+  const data = await getBankHolidays()
+  dispatch({ type: GET_BANK_HOLIDAYS, data })
+}
 
 export const updateDefaultBikes = (
   settings,
@@ -76,6 +87,7 @@ export const loadCourseTypes = ({ schoolId }) => async dispatch => {
 const initialState = {
   ridingExperiences: RidingExperiences,
   courseTypes: [],
+  bankHolidays: [],
   saving: false
 }
 
@@ -85,6 +97,12 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         courseTypes: action.data
+      }
+    }
+    case GET_BANK_HOLIDAYS: {
+      return {
+        ...state,
+        bankHolidays: action.data
       }
     }
     case GET_COURSE_TYPES[SUCCESS]: {

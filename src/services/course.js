@@ -1,4 +1,5 @@
 import moment from 'moment'
+import axios from 'axios'
 import { get, destroy, post, put, patch } from 'services/api'
 import { s } from 'utils/helper'
 import { Features } from 'common/info'
@@ -273,6 +274,12 @@ export const getCourseTypes = async schoolId => {
   const path = `school/${schoolId}/course/type`
   const response = await get(path)
   return response
+}
+
+export const getBankHolidays = async () => {
+  const tmp = await axios.get('https://www.gov.uk/bank-holidays.json')
+  const bankHolidays = tmp.data['england-and-wales'].events
+  return bankHolidays
 }
 
 export const getDasBikeTypes = async schoolId => {
