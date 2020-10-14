@@ -29,6 +29,7 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
   // determining course state for own bikes
   const isOwnFull = course.own_bikes_count >= course.own_bikes
 
+  console.log(course)
   return (
     <div className={styles.motorbikeOptions}>
       <h4>Bike Hire {isFree && '(Included)'}</h4>
@@ -44,23 +45,6 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
 
       {/* Auto Bikes   */}
 
-      {course.auto_50cc_bikes > 0 && (
-        <Checkbox
-          checked={selected === BIKE_HIRE.AUTO_50CC}
-          extraClass="WidgetCheckbox"
-          onChange={() => onChange(BIKE_HIRE.AUTO_50CC)}
-          disabled={isAuto50Full}>
-          {getMotorbikeLabel(BIKE_HIRE.AUTO_50CC)}
-          {isAuto50Full ? fullText : null}
-          {bike_hire_cost > 0 && (
-            <div className={styles.price}>{`(+${asPoundSterling(
-              bike_hire_cost
-            )})`}</div>
-          )}
-        </Checkbox>
-      )}
-      {/* Auto Bikes 50cc  */}
-
       {course.auto_bikes > 0 && (
         <Checkbox
           checked={selected === BIKE_HIRE.AUTO}
@@ -69,6 +53,24 @@ const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
           disabled={isAutoFull}>
           {getMotorbikeLabel(BIKE_HIRE.AUTO)}
           {isAutoFull ? fullText : null}
+          {bike_hire_cost > 0 && (
+            <div className={styles.price}>{`(+${asPoundSterling(
+              bike_hire_cost
+            )})`}</div>
+          )}
+        </Checkbox>
+      )}
+
+      {/* Auto Bikes 50cc  */}
+
+      {course.auto_50cc_bikes > 0 && (
+        <Checkbox
+          checked={selected === BIKE_HIRE.AUTO_50CC}
+          extraClass="WidgetCheckbox"
+          onChange={() => onChange(BIKE_HIRE.AUTO_50CC)}
+          disabled={isAuto50Full}>
+          {getMotorbikeLabel(BIKE_HIRE.AUTO_50CC)}
+          {isAuto50Full ? fullText : null}
           {bike_hire_cost > 0 && (
             <div className={styles.price}>{`(+${asPoundSterling(
               bike_hire_cost
