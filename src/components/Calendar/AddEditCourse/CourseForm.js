@@ -239,7 +239,11 @@ class CourseForm extends React.Component {
           course[field] === '' ||
           !this.props.course
         ) {
-          course[field] = settings['default_number_' + field]
+          if (field === 'manual_bikes') {
+            course[field] = settings['default_number_manual_125cc_bikes']
+          } else {
+            course[field] = settings['default_number_' + field]
+          }
         }
       })
     }
