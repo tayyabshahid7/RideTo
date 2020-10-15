@@ -64,18 +64,14 @@ class CourseForm extends React.Component {
 
     bikeFields.forEach(field => (course[field] = ''))
 
-    if (this.courseTypes && this.courseTypes.length) {
-      course.course_type_id = this.courseTypes[0].id
-    }
+    this.setCourseType(course, this.courseTypes)
 
     let supplier = ''
     if (this.props.schools) {
       supplier = this.props.schools[0].id
 
       const courseTypes = this.getValidCourseTypes(supplier)
-      if (courseTypes.length) {
-        course.course_type_id = courseTypes[0].id
-      }
+      this.setCourseType(course, courseTypes)
     }
 
     if (this.props.course) {
@@ -174,6 +170,17 @@ class CourseForm extends React.Component {
     if (supplier && supplier !== prevState.supplier) {
       this.loadPricing()
       return
+    }
+  }
+
+  setCourseType = (course, courseTypes) => {
+    if (courseTypes && courseTypes.length) {
+      const cbt = courseTypes.find(x => x.constant === 'LICENCE_CBT')
+      if (cbt) {
+        course.course_type_id = cbt.id
+      } else {
+        course.course_type_id = courseTypes[0].id
+      }
     }
   }
 
