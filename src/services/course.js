@@ -404,8 +404,12 @@ export const getMediumCourseType = courseType => {
       return 'Off Road Training'
     case 'GEAR_CONVERSION_COURSE':
       return 'Gear Conversion'
-    default:
+    default: {
+      if (courseType.constant) {
+        return capitalizeString(courseType.constant)
+      }
       return 'CBT'
+    }
   }
 }
 
@@ -437,8 +441,18 @@ export const getCourseTitle = courseTypeConstant => {
     case 'ENHANCED_RIDER_SCHEME':
       return 'Enhanced Rider Scheme'
     default:
+      if (courseTypeConstant) {
+        return capitalizeString(courseTypeConstant)
+      }
       return 'CBT Training'
   }
+}
+
+export const capitalizeString = value => {
+  const parts = value
+    .split('_')
+    .map(x => x.substr(0, 1).toUpperCase() + x.substr(1).toLowerCase())
+  return parts.join(' ')
 }
 
 export const getLicenceAge = courseTypeConstant => {
