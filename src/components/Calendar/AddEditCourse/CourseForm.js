@@ -881,7 +881,9 @@ class CourseForm extends React.Component {
                 <React.Fragment>
                   <Row>
                     <Col>
-                      <div className={styles.bikesAvailable}>Bikes</div>
+                      <div className={styles.bikesAvailable}>
+                        <b>Bikes Available</b>
+                      </div>
                       {(available_a1_auto_bikes ||
                         available_a1_manual_bikes) && (
                         <div className={styles.bikesAvailable}>A1</div>
@@ -1064,15 +1066,13 @@ class CourseForm extends React.Component {
                   )}
                 </React.Fragment>
               )}
-              {!isFullLicence && (
-                <ConnectLabeledContent label="Course Price" basic name="price">
-                  {pricing.loading
-                    ? '...'
-                    : pricing.info
-                    ? `£${(pricing.info.price / 100.0).toFixed(2)}`
-                    : ''}
-                </ConnectLabeledContent>
-              )}
+              <ConnectLabeledContent label="Course Price" basic name="price">
+                {pricing.loading
+                  ? '...'
+                  : pricing.info
+                  ? `£${(pricing.info.price / 100.0).toFixed(2)}`
+                  : ''}
+              </ConnectLabeledContent>
               <ConnectTextArea
                 label="Notes"
                 name="notes"
