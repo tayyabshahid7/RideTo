@@ -304,11 +304,12 @@ class ResultPage extends Component {
       return
     }
     if (courseType === 'FULL_LICENCE') {
+      const bikeHire = `BIKE_TYPE_${selectedLicenceType}_${bike_hire}`.toUpperCase()
       trainings = selectedTimeDays.map(timeDay => ({
         selected_availability: timeDay,
         course_type: courseType,
         full_licence_type: LICENCE_TYPES[selectedLicenceType],
-        bike_type: bike_hire,
+        bike_type: bikeHire,
         supplier_id: selectedCourse.id,
         package_hours: selectedPackageHours
       }))
