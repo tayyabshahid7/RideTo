@@ -10,10 +10,13 @@ import {
   Button
 } from 'components/ConnectForm'
 
-import { FullLicenceTypes, getTestResultOptions } from 'common/info'
+import {
+  FullLicenceTypes,
+  getTestResultOptions,
+  getAvailableBikeHires
+} from 'common/info'
 import Loading from 'components/Loading'
 import {
-  getCustomerBikeTypeOptions,
   getPaymentOptions,
   getTrainingStatusOptions,
   isRideTo,
@@ -105,7 +108,6 @@ class OrderForm extends React.Component {
   handleSaveClick() {
     const { onSave } = this.props
     const { editable } = this.state
-    console.log(editable)
     this.setState(
       {
         inputsDisabled: true
@@ -128,17 +130,14 @@ class OrderForm extends React.Component {
       return null
     }
 
+    console.log(editable, this.props.order)
+
+    const course = this.props.order.school_course
+
     const isFullLicence =
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE')
 
-    const bikeOptions = getCustomerBikeTypeOptions(isFullLicence)
-    const bikeHireOptions = Object.keys(bikeOptions).map(id => {
-      return {
-        id,
-        name: bikeOptions[id]
-      }
-    })
     const isFullLicenceTest =
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE') &&
@@ -212,12 +211,14 @@ class OrderForm extends React.Component {
               <ConnectSelect
                 disabled={inputsDisabled}
                 label="Bike Hire"
-                options={bikeHireOptions}
+                options={getAvailableBikeHires(course)}
                 selected={editable.bike_type}
                 name="bike_type"
                 onChange={value => {
                   this.handleChange('bike_type', value)
                 }}
+                valueField="value"
+                labelField="title"
               />
             </Col>
             {isFullLicenceTest && (

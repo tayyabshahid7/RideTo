@@ -81,7 +81,12 @@ export function getAvailableBikeHires(course, prevBikeType) {
     return []
   }
 
-  if (course.course_type.constant.startsWith('FULL_LICENCE')) {
+  const courseType =
+    typeof course.course_type === 'object'
+      ? course.course_type.constant
+      : course.course_type
+
+  if (courseType.startsWith('FULL_LICENCE')) {
     return getFullLicenseBikeHires(course, prevBikeType)
   }
 
