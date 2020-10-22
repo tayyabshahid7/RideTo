@@ -55,6 +55,8 @@ deploy_staging:
     AWS_CLOUDFRONT_ID: E8ZUC9YWATM4A
     AWS_S3_BUCKET: bike-tests-staging
     APPS: widget,rideto
+    AWS_CLOUDFRONT_APP_ID: E2MODPUBRAYF4I
+    AWS_S3_APP_BUCKET: staging.connectmct.com
   script:
     - ./scripts/deploy.sh
   environment:
@@ -73,6 +75,8 @@ deploy_master:
     AWS_CLOUDFRONT_ID: EHLGMCG8HAANI
     AWS_S3_BUCKET: bike-tests
     APPS: widget,rideto
+    AWS_CLOUDFRONT_APP_ID: E2SMV31GMD29WV
+    AWS_S3_APP_BUCKET: www.connectmct.com
   script:
     - ./scripts/deploy.sh
   environment:
