@@ -47,7 +47,7 @@ echo "  Bucket: $AWS_S3_APP_BUCKET"
 echo ""
 
 aws s3 sync ${BUILD_APP_DIR} s3://${AWS_S3_APP_BUCKET} --cache-control max-age=691200
-CDN_PATHS="$CDN_PATHS /*"
+CDN_PATHS="/*"
 
 if [ "${CDN_PATHS}" ]; then
     echo "Invalidate Cloudfront: $CDN_PATHS"
