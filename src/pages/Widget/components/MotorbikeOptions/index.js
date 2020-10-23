@@ -4,13 +4,7 @@ import { getMotorbikeLabel, asPoundSterling } from 'services/widget'
 import Checkbox from 'components/WidgetCheckbox'
 import styles from './MotorbikeOptions.scss'
 
-const MotorbikeOptions = ({
-  selected,
-  course,
-  onChange,
-  bikeSetup,
-  ownBike = false
-}) => {
+const MotorbikeOptions = ({ selected, course, onChange, ownBike = false }) => {
   let { bike_hire_cost } = course.pricing
 
   const isFree = !bike_hire_cost
@@ -36,12 +30,9 @@ const MotorbikeOptions = ({
   const isOwnFull = course.own_bikes_count >= course.own_bikes
 
   const isAvailable = type => {
-    return (
-      course.auto_bikes > 0 || (bikeSetup && bikeSetup[`available_${type}`])
-    )
+    return course[type] > 0
   }
 
-  console.log(course)
   return (
     <div className={styles.motorbikeOptions}>
       <h4>Bike Hire {isFree && '(Included)'}</h4>
@@ -129,7 +120,7 @@ const MotorbikeOptions = ({
 
       {/* Manual Bikes 125cc  */}
 
-      {isAvailable('manual_125cc_bikes') && (
+      {isAvailable('manual_bikes') && (
         <Checkbox
           checked={selected === BIKE_HIRE.MANUAL}
           extraClass="WidgetCheckbox"
