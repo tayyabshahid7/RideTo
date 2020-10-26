@@ -620,7 +620,7 @@ class CourseForm extends React.Component {
     const courseTypes = this.getValidCourseTypes()
 
     const isFullLicence = this.checkType()
-    const isCBTRenewal = this.checkType('LICENCE_CBT_RENEWAL')
+    // const isCBTRenewal = this.checkType('LICENCE_CBT_RENEWAL')
     const isFullLicenceTest = this.checkType('FULL_LICENCE', 'TEST')
 
     return (
@@ -859,21 +859,6 @@ class CourseForm extends React.Component {
                         />
                       </Col>
                     </Row>
-                  )}
-                  {isCBTRenewal && (
-                    <BikeNumberPicker
-                      label="Own"
-                      value={own_bikes}
-                      id="own_bikes"
-                      isEditable={isEditable}
-                      onChange={this.handleChangeRawEvent}
-                      onClickMinus={() => {
-                        this.handleBikeButtonClick('own_bikes', -1)
-                      }}
-                      onClickPlus={() => {
-                        this.handleBikeButtonClick('own_bikes', 1)
-                      }}
-                    />
                   )}
                 </React.Fragment>
               )}
