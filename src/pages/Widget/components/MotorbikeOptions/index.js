@@ -126,7 +126,7 @@ const MotorbikeOptions = ({
 
       {/* Manual Bikes 125cc  */}
 
-      {isAvailable('manual_bikes') && (
+      {(isAvailable('manual_bikes') || isAvailable('manual_125cc_bikes')) && (
         <Checkbox
           checked={selected === BIKE_HIRE.MANUAL}
           extraClass="WidgetCheckbox"
