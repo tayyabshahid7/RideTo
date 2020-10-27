@@ -211,7 +211,10 @@ class OrderForm extends React.Component {
               <ConnectSelect
                 disabled={inputsDisabled}
                 label="Bike Hire"
-                options={getAvailableBikeHires(course)}
+                options={getAvailableBikeHires(
+                  course,
+                  this.props.order.bike_type
+                )}
                 selected={editable.bike_type}
                 name="bike_type"
                 onChange={value => {

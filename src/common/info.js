@@ -117,25 +117,42 @@ export function getAvailableBikeHires(course, prevBikeType) {
     // },
     // TODO: refer to the above logic
     {
-      value: auto_bikes > auto_count ? BIKE_HIRE.AUTO : null,
+      value:
+        auto_bikes > auto_count || prevBikeType === BIKE_HIRE.AUTO
+          ? BIKE_HIRE.AUTO
+          : null,
       title: 'Automatic Scooter'
     },
     {
-      value: auto_125cc_bikes > auto_125cc_count ? BIKE_HIRE.AUTO_125CC : null,
+      value:
+        auto_125cc_bikes > auto_125cc_count ||
+        prevBikeType === BIKE_HIRE.AUTO_125CC
+          ? BIKE_HIRE.AUTO_125CC
+          : null,
       title: 'Automatic 125cc Scooter'
     },
 
     {
-      value: auto_50cc_bikes > auto_50cc_count ? BIKE_HIRE.AUTO_50CC : null,
+      value:
+        auto_50cc_bikes > auto_50cc_count ||
+        prevBikeType === BIKE_HIRE.AUTO_50CC
+          ? BIKE_HIRE.AUTO_50CC
+          : null,
       title: 'Automatic 50cc Scooter'
     },
     {
       value:
-        manual_50cc_bikes > manual_50cc_count ? BIKE_HIRE.MANUAL_50CC : null,
+        manual_50cc_bikes > manual_50cc_count ||
+        prevBikeType === BIKE_HIRE.MANUAL_50CC
+          ? BIKE_HIRE.MANUAL_50CC
+          : null,
       title: 'Manual 50cc Motorcycle'
     },
     {
-      value: manual_bikes > manual_count ? BIKE_HIRE.MANUAL : null,
+      value:
+        manual_bikes > manual_count || prevBikeType === BIKE_HIRE.MANUAL
+          ? BIKE_HIRE.MANUAL
+          : null,
       title: 'Manual 125cc Motorcycle'
     },
     // {
