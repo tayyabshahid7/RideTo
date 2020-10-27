@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import _ from 'lodash'
 import { Redirect } from 'react-router-dom'
 
 import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence.js'
@@ -82,8 +83,6 @@ class BookingOptionsContainer extends React.Component {
   }
 
   componentDidUpdate(oldProps, oldState) {
-    const { month } = this.state
-
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       this.setState(
         {
@@ -103,19 +102,9 @@ class BookingOptionsContainer extends React.Component {
             this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
         () => {
-          // this.fetchCourses(moment().startOf('month'))
           this.fetchCourses(this.state.month.clone())
         }
       )
-      return
-    }
-
-    if (
-      oldState.courseType.constant !== this.state.courseType.constant &&
-      !this.state.availableCourses.length
-    ) {
-      this.setState({ isLoading: true })
-      this.fetchCourses(month.clone())
     }
   }
 
@@ -190,32 +179,21 @@ class BookingOptionsContainer extends React.Component {
   }
 
   setAvailableCourses(schoolCourses, courseType) {
+    const { selectedSupplier } = this.props
     const { schoolCourses: prevschoolCourses } = this.state
-    const newSchoolCourses = [...prevschoolCourses, ...schoolCourses]
+    const newSchoolCourses = _.uniqBy(
+      [...prevschoolCourses, ...schoolCourses],
+      'id'
+    )
     const availableCourses = newSchoolCourses.filter(
       ({ course_type, training_count, spaces }) => {
         return course_type.id === courseType.id && training_count < spaces
       }
     )
-    const selectedDate = getEarliestDate(availableCourses)
-    const selectedCourses = getSchoolCoursesByDate(
-      selectedDate,
-      availableCourses
-    )
-
-    let selectedBikeHire = this.getBikeHire(courseType, selectedCourses[0])
-
     const isFullLicence = courseType.constant === 'FULL_LICENCE'
 
-    if (isFullLicence) {
-      selectedBikeHire = ''
-    }
-
-    this.setState({
+    const data = {
       schoolCourses: newSchoolCourses,
-      selectedDate,
-      selectedCourse: !isFullLicence ? selectedCourses[0] : availableCourses[0],
-      selectedBikeHire,
       availableCourses,
       courseType,
       isLoading: false,
@@ -223,7 +201,36 @@ class BookingOptionsContainer extends React.Component {
       selectedLicenceType: null,
       selectedPackageHours: '',
       selectedPackageDates: []
-    })
+    }
+
+    if (
+      !this.state.selectedCourse ||
+      this.state.selectedCourse.supplier !== selectedSupplier.id ||
+      !this.state.courseType ||
+      this.state.selectedCourse.course_type.constant !== courseType.constant
+    ) {
+      const selectedDate = getEarliestDate(availableCourses)
+      const selectedCourses = getSchoolCoursesByDate(
+        selectedDate,
+        availableCourses
+      )
+
+      let selectedBikeHire = this.getBikeHire(courseType, selectedCourses[0])
+
+      data.selectedDate = selectedDate
+      data.selectedCourse = !isFullLicence
+        ? selectedCourses[0]
+        : availableCourses[0]
+      data.selectedBikeHire = selectedBikeHire
+
+      console.log('changed', selectedCourses[0])
+    }
+
+    if (isFullLicence) {
+      data.selectedBikeHire = ''
+    }
+
+    this.setState(data)
   }
 
   handleChangeCourseType(courseTypeId) {
