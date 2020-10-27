@@ -226,7 +226,7 @@ class CourseAvailabilityComponent extends React.Component {
     // determining course state for auto bikes
     const isAutoFull =
       instantCourse &&
-      !!instantCourse.auto_bikes &&
+      // !!instantCourse.auto_bikes &&
       instantCourse.auto_count >= instantCourse.auto_bikes
     const isAutoAvailable =
       !instantCourse ||
@@ -237,7 +237,7 @@ class CourseAvailabilityComponent extends React.Component {
     // determining course state for auto 50cc bikes
     const isAuto50Full =
       instantCourse &&
-      !!instantCourse.auto_50cc_bikes &&
+      // !!instantCourse.auto_50cc_bikes &&
       instantCourse.auto_50cc_count >= instantCourse.auto_50cc_bikes
     const isAuto50Available =
       !instantCourse ||
@@ -248,7 +248,7 @@ class CourseAvailabilityComponent extends React.Component {
     // determining course state for auto 125cc bikes
     const isAuto125Full =
       instantCourse &&
-      !!instantCourse.auto_125cc_bikes &&
+      // !!instantCourse.auto_125cc_bikes &&
       instantCourse.auto_125cc_count >= instantCourse.auto_125cc_bikes
     const isAuto125Available =
       !instantCourse ||
@@ -259,7 +259,7 @@ class CourseAvailabilityComponent extends React.Component {
     // determining course state for manual 125cc bikes
     const isManualFull =
       instantCourse &&
-      !!instantCourse.manual_bikes &&
+      // !!instantCourse.manual_bikes &&
       instantCourse.manual_count >= instantCourse.manual_bikes
     const isManualAvailable =
       !instantCourse ||
@@ -270,7 +270,7 @@ class CourseAvailabilityComponent extends React.Component {
     // determining course state for manual 50cc bikes
     const isManual50Full =
       instantCourse &&
-      !!instantCourse.manual_50cc_bikes &&
+      // !!instantCourse.manual_50cc_bikes &&
       instantCourse.manual_50cc_count >= instantCourse.manual_50cc_bikes
     const isManual50Available =
       !instantCourse ||
