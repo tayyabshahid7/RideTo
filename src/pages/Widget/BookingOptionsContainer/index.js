@@ -452,12 +452,9 @@ class BookingOptionsContainer extends React.Component {
       return <div className={styles.bookingOptions}>No Course Found</div>
     }
     const tmp = courseTypes.find(x => x.constant === courseType.constant)
-    if (!tmp) {
-      return <div className={styles.bookingOptions}>No Course Found</div>
-    }
-    const bikeSetup = tmp.bike_hire_setup.find(
-      x => x.supplier.id === selectedSupplier.id
-    )
+    const bikeSetup = tmp
+      ? tmp.bike_hire_setup.find(x => x.supplier.id === selectedSupplier.id)
+      : null
 
     return (
       <div className={styles.bookingOptions}>
