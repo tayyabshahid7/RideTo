@@ -70,15 +70,15 @@ const BikePicker = React.forwardRef(
               className={classnames(
                 styles.bikeHireBtn,
                 isWidget && styles.widgetBtn,
-                bike_hire === 'no' && styles.activeBtn
+                bike_hire === BIKE_HIRE.NO && styles.activeBtn
               )}
-              onClick={() => onUpdate({ bike_hire: 'no' })}
+              onClick={() => onUpdate({ bike_hire: BIKE_HIRE.NO })}
               disabled={isOwnFull}>
-              {getMotorbikeLabel('no')}
+              {getMotorbikeLabel(BIKE_HIRE.NO)}
               {isOwnFull ? fullText : null}
             </button>
           )}
-          {isCbtRenewal && bike_hire === 'no' && (
+          {isCbtRenewal && bike_hire === BIKE_HIRE.NO && (
             <div className={styles.ownBikeDisclaimer}>
               You must bring a valid CBT Certificate, Insurance Documents, Tax
               and MOT if you wish to train on your own bike.
@@ -92,11 +92,11 @@ const BikePicker = React.forwardRef(
                 className={classnames(
                   styles.bikeHireBtn,
                   isWidget && styles.widgetBtn,
-                  bike_hire === 'auto' && styles.activeBtn
+                  bike_hire === BIKE_HIRE.AUTO && styles.activeBtn
                 )}
                 onClick={() =>
                   onUpdate({
-                    bike_hire: 'auto',
+                    bike_hire: BIKE_HIRE.AUTO,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
                     selectedPackageDates: []
@@ -106,7 +106,11 @@ const BikePicker = React.forwardRef(
                   (isFullLicence && !has_auto_bikes) ||
                   (!isFullLicence && (isAutoFull || !isAutoAvailable))
                 }>
-                {getMotorbikeLabel('auto', isFullLicence, isInstantBook)}{' '}
+                {getMotorbikeLabel(
+                  BIKE_HIRE.AUTO,
+                  isFullLicence,
+                  isInstantBook
+                )}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isAutoFull ? fullText : null}
               </button>
@@ -118,11 +122,11 @@ const BikePicker = React.forwardRef(
                 className={classnames(
                   styles.bikeHireBtn,
                   isWidget && styles.widgetBtn,
-                  bike_hire === 'auto_50cc' && styles.activeBtn
+                  bike_hire === BIKE_HIRE.AUTO_50CC && styles.activeBtn
                 )}
                 onClick={() =>
                   onUpdate({
-                    bike_hire: 'auto_50cc',
+                    bike_hire: BIKE_HIRE.AUTO_50CC,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
                     selectedPackageDates: []
@@ -132,7 +136,11 @@ const BikePicker = React.forwardRef(
                   (isFullLicence && !has_auto_bikes_50cc) ||
                   (!isFullLicence && (isAuto50Full || !isAuto50Available))
                 }>
-                {getMotorbikeLabel('auto_50cc', isFullLicence, isInstantBook)}{' '}
+                {getMotorbikeLabel(
+                  BIKE_HIRE.AUTO_50CC,
+                  isFullLicence,
+                  isInstantBook
+                )}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isAuto50Full ? fullText : null}
               </button>
@@ -193,11 +201,11 @@ const BikePicker = React.forwardRef(
                 className={classnames(
                   styles.bikeHireBtn,
                   isWidget && styles.widgetBtn,
-                  bike_hire === 'manual' && styles.activeBtn
+                  bike_hire === BIKE_HIRE.MANUAL && styles.activeBtn
                 )}
                 onClick={() =>
                   onUpdate({
-                    bike_hire: 'manual',
+                    bike_hire: BIKE_HIRE.MANUAL,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
                     selectedPackageDates: []
@@ -207,14 +215,14 @@ const BikePicker = React.forwardRef(
                   (isFullLicence && !has_manual_bikes) ||
                   (!isFullLicence && (isManualFull || !isManualAvailable))
                 }>
-                {getMotorbikeLabel('manual', isFullLicence)}{' '}
+                {getMotorbikeLabel(BIKE_HIRE.MANUAL, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {isManualFull ? fullText : null}
               </button>
             )}
           </div>
           {isCbt &&
-            ['manual', BIKE_HIRE.MANUAL_50CC].includes(bike_hire) &&
+            [BIKE_HIRE.MANUAL, BIKE_HIRE.MANUAL_50CC].includes(bike_hire) &&
             !isItm &&
             manualText}
           {isFullLicence &&
