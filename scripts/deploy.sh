@@ -23,21 +23,21 @@ if [ ! -d "$BUILD_APP_DIR" ]; then
     exit 1
 fi
 
-echo ""
-echo "  Deploying..."
-echo ""
-echo "  Cloudfront ID: $AWS_CLOUDFRONT_ID"
-echo "  Bucket: $AWS_S3_BUCKET"
-echo ""
+# echo ""
+# echo "  Deploying..."
+# echo ""
+# echo "  Cloudfront ID: $AWS_CLOUDFRONT_ID"
+# echo "  Bucket: $AWS_S3_BUCKET"
+# echo ""
 
-aws s3 sync ${BUILD_JS_DIR} s3://${AWS_S3_BUCKET}/client/js --cache-control max-age=691200
-aws s3 sync ${BUILD_CSS_DIR} s3://${AWS_S3_BUCKET}/client/css --cache-control max-age=691200
-CDN_PATHS="$CDN_PATHS /client/*"
+# aws s3 sync ${BUILD_JS_DIR} s3://${AWS_S3_BUCKET}/client/js
+# aws s3 sync ${BUILD_CSS_DIR} s3://${AWS_S3_BUCKET}/client/css
+# CDN_PATHS="$CDN_PATHS /client/*"
 
-if [ "${CDN_PATHS}" ]; then
-    echo "Invalidate Cloudfront: $CDN_PATHS"
-    aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_ID} --paths ${CDN_PATHS}
-fi
+# if [ "${CDN_PATHS}" ]; then
+#     echo "Invalidate Cloudfront: $CDN_PATHS"
+#     aws cloudfront create-invalidation --distribution-id ${AWS_CLOUDFRONT_ID} --paths ${CDN_PATHS}
+# fi
 
 echo ""
 echo "  Deploying App..."
@@ -46,7 +46,7 @@ echo "  Cloudfront ID: $AWS_CLOUDFRONT_APP_ID"
 echo "  Bucket: $AWS_S3_APP_BUCKET"
 echo ""
 
-aws s3 sync ${BUILD_APP_DIR} s3://${AWS_S3_APP_BUCKET} --cache-control max-age=691200
+aws s3 sync ${BUILD_APP_DIR} s3://${AWS_S3_APP_BUCKET}
 CDN_PATHS="/*"
 
 if [ "${CDN_PATHS}" ]; then
