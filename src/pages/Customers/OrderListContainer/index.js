@@ -2,7 +2,6 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
-import { loadCourseTypes } from 'store/info'
 import * as orderModule from 'store/order'
 import * as supplierModule from 'store/supplier'
 import { getEmails, sendEmail } from 'store/email'
@@ -42,7 +41,6 @@ class OrderListContainer extends React.Component {
       orders,
       suppliers,
       isSaving,
-      loadCourseTypes,
       isSending,
       loading,
       sendEmailConfirmation,
@@ -71,10 +69,10 @@ class OrderListContainer extends React.Component {
                       suppliers={suppliers}
                       onSave={this.handleSave}
                       isSaving={isSaving}
-                      loadCourseTypes={loadCourseTypes}
                       isSending={isSending}
                       sendEmailConfirmation={sendEmailConfirmation}
                       isAdmin={isAdmin}
+                      info={info}
                     />
                   </div>
                 ))}
@@ -148,7 +146,6 @@ export default connect(
       {
         ...orderModule.actions,
         ...supplierModule.actions,
-        loadCourseTypes,
         getEmails,
         sendEmail
       },

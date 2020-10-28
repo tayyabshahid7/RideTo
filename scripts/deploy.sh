@@ -49,7 +49,7 @@ echo ""
 aws s3 sync ${BUILD_JS_DIR} s3://${AWS_S3_BUCKET}/client/js --delete
 aws s3 sync ${BUILD_CSS_DIR} s3://${AWS_S3_BUCKET}/client/css --delete
 aws s3 sync ${BUILD_APP_DIR} s3://${AWS_S3_APP_BUCKET}
-CDN_PATHS="/*"
+CDN_PATHS="$CDN_PATHS /*"
 
 if [ "${CDN_PATHS}" ]; then
     echo "Invalidate Cloudfront: $CDN_PATHS"

@@ -22,7 +22,7 @@ test:
 build_staging:
   stage: build
   script:
-    - PUBLIC_URL=$STAGING_AWS_CDN REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
+    - PUBLIC_URL=$STAGING_AWS_CDN REACT_APP_REST_API_BASE_URL=$STAGING_API_URL REACT_APP_STRIPE_KEY=$STAGING_STRIPE_KEY yarn build
   environment:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
@@ -36,7 +36,7 @@ build_staging:
 build_master:
   stage: build
   script:
-    - PUBLIC_URL=$PRODUCTION_AWS_CDN APPS=widget,rideto REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL yarn build
+    - PUBLIC_URL=$PRODUCTION_AWS_CDN APPS=widget,rideto REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL REACT_APP_STRIPE_KEY=$PRODUCTION_STRIPE_KEY yarn build
   environment:
     name: production
     url: https://rideto.com/
