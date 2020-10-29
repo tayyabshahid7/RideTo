@@ -443,7 +443,7 @@ class BookingOptionsContainer extends React.Component {
     if (submit) {
       return <Redirect push to={submit} />
     }
-
+    console.log(this.state, this.props)
     if (loadingCourseTypes) {
       return <div className={styles.bookingOptions}>Loading</div>
     }
