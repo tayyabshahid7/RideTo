@@ -40,7 +40,7 @@ class BookingOptionsContainer extends React.Component {
       selectedSupplier.courses[0].constant === 'FULL_LICENCE'
 
     this.state = {
-      courseType: selectedSupplier.courses[0],
+      courseType: this.getDefaultCourse(),
       schoolCourses: [],
       availableCourses: [],
       selectedCourse: null,
@@ -97,7 +97,7 @@ class BookingOptionsContainer extends React.Component {
             this.props.selectedSupplier.courses.find(
               courseType =>
                 courseType.constant === this.state.courseType.constant
-            ) || this.props.selectedSupplier.courses[0],
+            ) || this.getDefaultCourse(),
           isFullLicence:
             this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
@@ -106,6 +106,17 @@ class BookingOptionsContainer extends React.Component {
         }
       )
     }
+  }
+
+  getDefaultCourse = () => {
+    const {
+      selectedSupplier: { courses }
+    } = this.props
+    const cbtCourse = courses.find(x => x.constant === 'LICENCE_CBT')
+    if (cbtCourse) {
+      return cbtCourse
+    }
+    return courses[0]
   }
 
   async fetchCourseTypes() {
@@ -117,7 +128,7 @@ class BookingOptionsContainer extends React.Component {
   async fetchCourses(month) {
     const { selectedSupplier } = this.props
     const { loadedMonths } = this.state
-    const courseType = this.state.courseType || selectedSupplier.courses[0]
+    const courseType = this.state.courseType || this.getDefaultCourse()
 
     if (
       loadedMonths[courseType.constant] &&
@@ -235,9 +246,9 @@ class BookingOptionsContainer extends React.Component {
 
   handleChangeCourseType(courseTypeId) {
     const { selectedSupplier } = this.props
-    const courseType = selectedSupplier.courses.filter(
-      ({ id }) => id === parseInt(courseTypeId, 10)
-    )[0]
+    const courseType = selectedSupplier.courses.find(
+      course => course.id === parseInt(courseTypeId, 10)
+    )
 
     this.setState(
       {
@@ -443,7 +454,9 @@ class BookingOptionsContainer extends React.Component {
     if (submit) {
       return <Redirect push to={submit} />
     }
-    console.log(this.state, this.props)
+    if (window.DEBUG) {
+      console.log(this.state, this.props)
+    }
     if (loadingCourseTypes) {
       return <div className={styles.bookingOptions}>Loading</div>
     }
