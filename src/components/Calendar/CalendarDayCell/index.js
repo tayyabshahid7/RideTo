@@ -69,7 +69,9 @@ const CalendarDayCell = ({
       const height = inputEl.current.clientHeight
       let cnt = Math.floor((height - 29) / 32)
       if (items.length > cnt) {
-        cnt--
+        if (height - 29 < cnt * 32 + 21) {
+          cnt--
+        }
       }
       setShowItems(cnt)
     }
