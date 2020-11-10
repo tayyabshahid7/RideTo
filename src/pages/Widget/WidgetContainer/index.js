@@ -6,16 +6,16 @@ import styles from './WidgetContainer.scss'
 import { parseQueryString } from 'services/api'
 import { getInitialSuppliers, getAddress } from 'services/widget'
 
-const COURSETYPE_ORDER_WIDGET = [
-  'LICENCE_CBT',
-  'INTRO_TO_MOTORCYCLING',
-  'LICENCE_CBT_RENEWAL',
-  'FULL_LICENCE',
-  'TFL_ONE_ON_ONE',
-  'ENHANCED_RIDER_SCHEME',
-  'BIKE_HIRE',
-  'GEAR_CONVERSION_COURSE'
-]
+// const COURSETYPE_ORDER_WIDGET = [
+//   'LICENCE_CBT',
+//   'INTRO_TO_MOTORCYCLING',
+//   'LICENCE_CBT_RENEWAL',
+//   'FULL_LICENCE',
+//   'TFL_ONE_ON_ONE',
+//   'ENHANCED_RIDER_SCHEME',
+//   'BIKE_HIRE',
+//   'GEAR_CONVERSION_COURSE'
+// ]
 
 class WidgetContainer extends React.Component {
   constructor(props) {
@@ -37,18 +37,22 @@ class WidgetContainer extends React.Component {
     const { match } = this.props
     const { slug } = match.params
     const query = parseQueryString(window.location.search.slice(1))
-    const selectedSupplier = query.supplier
-      ? this.suppliers.filter(
-          ({ id }) => id === parseInt(query.supplier, 10)
-        )[0]
-      : this.suppliers[0]
+    let selectedSupplier
+    if (query.supplier) {
+      selectedSupplier = this.suppliers.filter(
+        ({ id }) => id === parseInt(query.supplier, 10)
+      )[0]
+    }
+    if (!selectedSupplier) {
+      selectedSupplier = this.suppliers[0]
+    }
     const address = getAddress(selectedSupplier)
 
-    selectedSupplier.courses = COURSETYPE_ORDER_WIDGET.map(constant =>
-      selectedSupplier.courses.find(
-        courseType => courseType.constant === constant
-      )
-    ).filter(Boolean)
+    // selectedSupplier.courses = COURSETYPE_ORDER_WIDGET.map(constant =>
+    //   selectedSupplier.courses.find(
+    //     courseType => courseType.constant === constant
+    //   )
+    // ).filter(Boolean)
 
     return (
       <div className={styles.widgetContainer}>

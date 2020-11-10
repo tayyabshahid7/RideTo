@@ -1,6 +1,7 @@
 .list {
   position: relative;
   list-style: none;
+  min-height: 300px;
 
   @media (min-width: 768px) {
     margin-left: 28px;

@@ -103,7 +103,13 @@ class EditCourseComponent extends Component {
   }
 
   render() {
-    const { loading, course, isAdmin } = this.props
+    const {
+      loading,
+      course,
+      isAdmin,
+      testCentres,
+      defaultTestCentres
+    } = this.props
     const { showDeleteCourseConfirmModal } = this.state
 
     if (!isAdmin) {
@@ -115,6 +121,13 @@ class EditCourseComponent extends Component {
     }
     if (!course) {
       return <div>Course Not Found</div>
+    }
+
+    let filteredCentres = testCentres
+    if (defaultTestCentres.length) {
+      filteredCentres = testCentres.filter(x =>
+        defaultTestCentres.includes(x.id)
+      )
     }
 
     return (
@@ -133,6 +146,7 @@ class EditCourseComponent extends Component {
           <CourseForm
             orderCount={course.orders ? course.orders.length : 0}
             {...this.props}
+            testCentres={filteredCentres}
             isEditable={true}
             onSetEditable={isEditable =>
               this.handleSetEditable(isEditable, course.date)
@@ -163,6 +177,7 @@ const mapStateToProps = (state, ownProps) => {
     saving: state.course.single.saving,
     instructors: state.instructor.instructors,
     testCentres: state.testCentre.testCentres,
+    defaultTestCentres: state.testCentre.defaultTestCentres,
     pricing: state.course.pricing,
     info: state.info,
     isAdmin: isAdmin(state.auth.user)

@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 
@@ -108,7 +107,6 @@ class EditOrderForm extends React.Component {
       return null
     }
 
-    const { first_name, last_name, id } = this.state.order.customer
     const { direct_friendly_id, payment_status } = this.state.order.order
     const {
       bike_type,
@@ -142,13 +140,6 @@ class EditOrderForm extends React.Component {
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
         <Form onSubmit={this.handleSave}>
-          <div className={styles.topSection}>
-            <Link to={`/customers/${id}`}>
-              {first_name} {last_name}
-            </Link>
-            <span>{direct_friendly_id}</span>
-          </div>
-
           <ChangeDate
             date={date}
             time={time}
@@ -192,7 +183,6 @@ class EditOrderForm extends React.Component {
                       label="Test Result"
                       options={testResultOptions}
                       noSelectOption
-                      required
                       basic
                       onChange={value => {
                         this.handleChange('test_result', value)
@@ -282,37 +272,37 @@ class EditOrderForm extends React.Component {
                 </Col>
               </Row>
               */}
-              <div className={styles.comms}>
-                <Button
-                  small
-                  disabled={isSending}
-                  color="primary"
-                  outline
-                  onClick={this.handleConfirmation}>
-                  Send Confirmation
-                </Button>
-              </div>
-              <div className={styles.buttons}>
-                <Button
-                  small
-                  type="submit"
-                  color="primary"
-                  disabled={!isChanged}>
-                  Save
-                </Button>
-                <Button small color="white" onClick={onCancel}>
-                  Cancel
-                </Button>
-                {isAdmin && (
+              <div className={styles.actions}>
+                <div>
                   <Button
-                    small
-                    color="danger"
-                    className={styles.deleteButton}
-                    disabled={!canDelete}
-                    onClick={this.handleDelete}>
-                    Delete
+                    disabled={isSending}
+                    color="primary"
+                    outline
+                    onClick={this.handleConfirmation}>
+                    Send Confirmation
                   </Button>
-                )}
+                </div>
+                <div>
+                  <Button type="submit" color="primary" disabled={!isChanged}>
+                    Save
+                  </Button>
+                </div>
+                <div>
+                  <Button color="white" onClick={onCancel}>
+                    Cancel
+                  </Button>
+                </div>
+                <div>
+                  {isAdmin && (
+                    <Button
+                      color="danger"
+                      className={styles.deleteButton}
+                      disabled={!canDelete}
+                      onClick={this.handleDelete}>
+                      Delete
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           )}

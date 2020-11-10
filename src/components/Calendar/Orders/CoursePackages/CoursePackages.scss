@@ -1,0 +1,49 @@
+.container {
+  position: relative;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.notes {
+  font-size: 11px;
+  color: rgba(#444, 0.8);
+  line-height: 13px;
+}
+
+.editLink {
+  font-size: 11px;
+  color: #444;
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.user {
+  span {
+    color: rgba(#444, 0.8);
+    text-decoration: underline;
+    font-weight: bold;
+  }
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  > div {
+    margin-top: 8px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+.deleteButton {
+  margin-top: 2rem;
+}

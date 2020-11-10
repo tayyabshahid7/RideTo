@@ -2,7 +2,6 @@ import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
-import { loadCourseTypes } from 'store/info'
 import * as orderModule from 'store/order'
 import * as supplierModule from 'store/supplier'
 import { getEmails, sendEmail } from 'store/email'
@@ -10,6 +9,7 @@ import Tabs from 'pages/Customers/components/Tabs'
 import OrderForm from 'pages/Customers/components/OrderForm'
 import Email from 'pages/Customers/components/Email'
 import NewEmail from 'pages/Customers/components/NewEmail'
+import LoadingMask from 'components/LoadingMask'
 import styles from './OrderListContainer.scss'
 import { selectors } from 'store/customer'
 
@@ -26,7 +26,6 @@ class OrderListContainer extends React.Component {
       this.props.fetchOrders({ customer: parseInt(id, 10) })
       this.props.getEmails(id, schoolId, schoolId)
     }
-    console.log('fetch supplier')
     this.props.fetchSuppliers()
   }
 
@@ -42,8 +41,8 @@ class OrderListContainer extends React.Component {
       orders,
       suppliers,
       isSaving,
-      loadCourseTypes,
       isSending,
+      loading,
       sendEmailConfirmation,
       info,
       notepad,
@@ -61,23 +60,24 @@ class OrderListContainer extends React.Component {
         <Tabs>
           <div label="Orders">
             {orders.length > 0 ? (
-              <ul className={styles.list}>
-                {orders.map(order => (
-                  <li key={order.id} className={styles.listItem}>
+              <div className={styles.list}>
+                {orders.map((order, index) => (
+                  <div key={order.id} className={styles.listItem}>
                     <OrderForm
                       courseTypes={info.courseTypes}
                       order={order}
                       suppliers={suppliers}
                       onSave={this.handleSave}
                       isSaving={isSaving}
-                      loadCourseTypes={loadCourseTypes}
                       isSending={isSending}
                       sendEmailConfirmation={sendEmailConfirmation}
                       isAdmin={isAdmin}
+                      info={info}
                     />
-                  </li>
+                  </div>
                 ))}
-              </ul>
+                <LoadingMask loading={loading} />
+              </div>
             ) : (
               <div className={styles.noOrder}>No orders</div>
             )}
@@ -129,6 +129,7 @@ const mapStateToProps = (state, props) => {
     customer: selectors.getItem(customer, id),
     orders: id !== 'create' ? orderModule.selectors.getItems(state.order) : [],
     isSaving: state.order.isSaving,
+    loading: state.order.isFetching,
     isSending: state.order.isSending,
     suppliers: supplierModule.selectors.getItems(state.supplier),
     info: state.info,
@@ -145,7 +146,6 @@ export default connect(
       {
         ...orderModule.actions,
         ...supplierModule.actions,
-        loadCourseTypes,
         getEmails,
         sendEmail
       },

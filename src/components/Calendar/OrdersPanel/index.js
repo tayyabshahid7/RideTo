@@ -10,6 +10,7 @@ import { BIKE_HIRE } from 'common/constants'
 class OrdersPanel extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       showEditButton: true,
       orderIndex: -1,
@@ -17,12 +18,18 @@ class OrdersPanel extends React.Component {
     }
   }
 
-  handleAdd(index) {
-    this.setState({ orderIndex: index })
+  handleAdd = index => {
+    const { course, setOrderCourse, history } = this.props
+    setOrderCourse({ course })
+    history.push(`/calendar/${course.date}/orders/add`)
+    // this.setState({ orderIndex: index })
   }
 
-  handleShowEditForm(index) {
-    this.setState({ editOrderIndex: index, showEditButton: false })
+  handleShowEditForm = index => {
+    const { course, setOrderCourse, history } = this.props
+    setOrderCourse({ course, orderIndex: index })
+    history.push(`/calendar/${course.date}/orders/edit`)
+    // this.setState({ editOrderIndex: index, showEditButton: false })
   }
 
   handleNewOrder(order) {
@@ -97,15 +104,7 @@ class OrdersPanel extends React.Component {
   }
 
   render() {
-    const {
-      course,
-      info,
-      saving,
-      loading,
-      updateAdding,
-      addingOrder,
-      loadCourses
-    } = this.props
+    const { course, info, saving, loading, loadCourses, schoolId } = this.props
     const { orderIndex, editOrderIndex, showEditButton } = this.state
     const availableSpaces = Math.max(course.spaces - course.orders.length, 0)
 
@@ -152,6 +151,7 @@ class OrdersPanel extends React.Component {
             {Array.apply(null, Array(availableSpaces)).map((val, index) =>
               orderIndex === index ? (
                 <AddOrderItem
+                  schoolId={schoolId}
                   key={index}
                   onCancel={() => this.setState({ orderIndex: -1 })}
                   info={info}
@@ -159,13 +159,10 @@ class OrdersPanel extends React.Component {
                   onSave={this.handleNewOrder.bind(this)}
                   onPayment={this.handleNewPayment.bind(this)}
                   saving={saving}
-                  updateAdding={updateAdding}
                 />
               ) : (
                 <Fragment key={index}>
-                  {!addingOrder && (
-                    <OrdersPanelSpaceItem onAdd={() => this.handleAdd(index)} />
-                  )}
+                  <OrdersPanelSpaceItem onAdd={this.handleAdd} />
                 </Fragment>
               )
             )}

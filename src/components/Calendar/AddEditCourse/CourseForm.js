@@ -19,11 +19,10 @@ import {
 import { actions as notifyActions } from 'store/notification'
 import { getDaysStaff } from 'store/staff'
 import { getDaysCourses } from 'store/course'
+import { removeWeekdays } from 'utils/helper'
+import { DEFAULT_SETTINGS } from 'common/constants'
 
-const bikeFields = [
-  'own_bikes',
-  'auto_bikes',
-  'manual_bikes',
+const fullLicenceBikeFields = [
   'a1_auto_bikes',
   'a2_auto_bikes',
   'a1_manual_bikes',
@@ -32,9 +31,22 @@ const bikeFields = [
   'a_manual_bikes'
 ]
 
+const generalBikeFields = [
+  'own_bikes',
+  'auto_bikes',
+  'auto_50cc_bikes',
+  'auto_125cc_bikes',
+  'manual_bikes',
+  'manual_50cc_bikes'
+]
+
+const bikeFields = [...fullLicenceBikeFields, ...generalBikeFields]
+
 class CourseForm extends React.Component {
   constructor(props) {
     super(props)
+    console.log(props.bankHolidays)
+    const lastDate = removeWeekdays(moment(props.date), 4, props.bankHolidays)
 
     const course = {
       course_type_id: '',
@@ -45,25 +57,21 @@ class CourseForm extends React.Component {
       duration: '',
       notes: '',
       test_centre: '',
-      last_date_cancel: '',
+      last_date_cancel: lastDate,
       status: '',
       application_reference_number: ''
     }
 
     bikeFields.forEach(field => (course[field] = ''))
 
-    if (this.courseTypes && this.courseTypes.length) {
-      course.course_type_id = this.courseTypes[0].id
-    }
+    this.setCourseType(course, this.courseTypes)
 
     let supplier = ''
     if (this.props.schools) {
       supplier = this.props.schools[0].id
 
       const courseTypes = this.getValidCourseTypes(supplier)
-      if (courseTypes.length) {
-        course.course_type_id = courseTypes[0].id
-      }
+      this.setCourseType(course, courseTypes)
     }
 
     if (this.props.course) {
@@ -85,6 +93,7 @@ class CourseForm extends React.Component {
           ...bikeFields
         ])
       )
+
       course.course_type_id =
         typeof this.props.course.course_type === 'string'
           ? this.props.course.course_type
@@ -115,6 +124,7 @@ class CourseForm extends React.Component {
     this.state = {
       course: course,
       edited: false,
+      defaultBikes: DEFAULT_SETTINGS,
       supplier
     }
   }
@@ -163,6 +173,17 @@ class CourseForm extends React.Component {
     }
   }
 
+  setCourseType = (course, courseTypes) => {
+    if (courseTypes && courseTypes.length) {
+      const cbt = courseTypes.find(x => x.constant === 'LICENCE_CBT')
+      if (cbt) {
+        course.course_type_id = cbt.id
+      } else {
+        course.course_type_id = courseTypes[0].id
+      }
+    }
+  }
+
   loadPricing() {
     const { fetchPrice, pricing } = this.props
     const { supplier } = this.state
@@ -181,6 +202,63 @@ class CourseForm extends React.Component {
         })
       }
     }
+
+    this.loadDefaultBikes()
+  }
+
+  loadDefaultBikes() {
+    const { supplier } = this.state
+    const { course_type_id } = this.state.course
+    const { courseTypes } = this.props.info
+
+    const courseTypeId = parseInt(course_type_id)
+    const courseType = courseTypes.find(x => x.id === courseTypeId)
+    let settings = DEFAULT_SETTINGS
+
+    if (courseType) {
+      const bikeSetup = courseType.bike_hire_setup.find(
+        x => x.supplier.id === parseInt(supplier)
+      )
+
+      if (bikeSetup) {
+        settings = bikeSetup
+      }
+    }
+
+    const isFullLicence = this.checkType()
+    const { course } = this.state
+    console.log(course)
+
+    if (isFullLicence) {
+      fullLicenceBikeFields.forEach(field => {
+        if (
+          !course.hasOwnProperty(field) ||
+          course[field] === '' ||
+          !this.props.course
+        ) {
+          course[field] = settings[field]
+        }
+      })
+    } else {
+      generalBikeFields.forEach(field => {
+        if (
+          !course.hasOwnProperty(field) ||
+          course[field] === '' ||
+          !this.props.course
+        ) {
+          if (field === 'manual_bikes') {
+            course[field] = settings['default_number_manual_125cc_bikes']
+          } else {
+            course[field] = settings['default_number_' + field]
+          }
+        }
+      })
+    }
+
+    this.setState({
+      course,
+      defaultBikes: settings
+    })
   }
 
   getFinishTime = (time, duration) => {
@@ -241,6 +319,9 @@ class CourseForm extends React.Component {
     if (course.spaces === '') {
       showNotification('Error', 'Please choose a course spaces', 'danger')
       return false
+    }
+    if (!course.auto_50cc_bikes) {
+      course.auto_50cc_bikes = 0
     }
 
     if (course.duration <= 0) {
@@ -451,6 +532,18 @@ class CourseForm extends React.Component {
     })
   }
 
+  checkType = (prefix = 'FULL_LICENCE', suffix = '') => {
+    const courseTypes = this.getValidCourseTypes()
+    const { course_type_id } = this.state.course
+
+    return courseTypes
+      .filter(
+        type =>
+          type.constant.startsWith(prefix) && type.constant.endsWith(suffix)
+      )
+      .some(type => type.id === parseInt(course_type_id, 10))
+  }
+
   render() {
     const {
       isEditable,
@@ -462,10 +555,26 @@ class CourseForm extends React.Component {
       orderCount,
       course,
       staffCalendar,
-      courseCalendar
+      courseCalendar,
+      coursePackage
     } = this.props
 
-    const loading = staffCalendar.loading || courseCalendar.loading
+    const {
+      available_auto_bikes,
+      available_auto_50cc_bikes,
+      available_auto_125cc_bikes,
+      available_manual_50cc_bikes,
+      available_manual_125cc_bikes,
+      available_own_bikes,
+      available_a1_auto_bikes,
+      available_a1_manual_bikes,
+      available_a2_auto_bikes,
+      available_a2_manual_bikes,
+      available_a_auto_bikes,
+      available_a_manual_bikes
+    } = this.state.defaultBikes
+    const loading =
+      staffCalendar.loading || courseCalendar.loading || coursePackage.loading
 
     const { edited } = this.state
 
@@ -479,6 +588,9 @@ class CourseForm extends React.Component {
       notes,
       own_bikes,
       auto_bikes,
+      auto_50cc_bikes,
+      auto_125cc_bikes,
+      manual_50cc_bikes,
       manual_bikes,
       a1_auto_bikes,
       a1_manual_bikes,
@@ -491,6 +603,7 @@ class CourseForm extends React.Component {
       status,
       application_reference_number
     } = this.state.course
+
     const { supplier } = this.state
 
     const schoolInstructors = this.getInstructors(supplier)
@@ -506,21 +619,9 @@ class CourseForm extends React.Component {
 
     const courseTypes = this.getValidCourseTypes()
 
-    const isFullLicence = courseTypes
-      .filter(type => type.constant.startsWith('FULL_LICENCE'))
-      .some(type => type.id === parseInt(course_type_id, 10))
-
-    const isCBTRenewal = courseTypes
-      .filter(type => type.constant.startsWith('LICENCE_CBT_RENEWAL'))
-      .some(type => type.id === parseInt(course_type_id, 10))
-
-    const isFullLicenceTest = courseTypes
-      .filter(
-        type =>
-          type.constant.startsWith('FULL_LICENCE') &&
-          type.constant.endsWith('TEST')
-      )
-      .some(type => type.id === parseInt(course_type_id, 10))
+    const isFullLicence = this.checkType()
+    // const isCBTRenewal = this.checkType('LICENCE_CBT_RENEWAL')
+    const isFullLicenceTest = this.checkType('FULL_LICENCE', 'TEST')
 
     return (
       <div className={styles.wrapper}>
@@ -636,136 +737,239 @@ class CourseForm extends React.Component {
               </Row>
               {!isFullLicence && (
                 <React.Fragment>
-                  <div className={styles.bikesAvailable}>Bikes Available</div>
-                  {isCBTRenewal && (
-                    <BikeNumberPicker
-                      label="Own"
-                      value={own_bikes}
-                      id="own_bikes"
-                      isEditable={isEditable}
-                      onChange={this.handleChangeRawEvent}
-                      onClickMinus={() => {
-                        this.handleBikeButtonClick('own_bikes', -1)
-                      }}
-                      onClickPlus={() => {
-                        this.handleBikeButtonClick('own_bikes', 1)
-                      }}
-                    />
+                  <div className={styles.bikesAvailable}>
+                    <b>Bikes Available</b>
+                  </div>
+                  {available_auto_bikes && (
+                    <Row>
+                      <Col>
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Automatic"
+                          value={auto_bikes}
+                          id="auto_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('auto_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('auto_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
                   )}
-                  <BikeNumberPicker
-                    label="Automatic"
-                    value={auto_bikes}
-                    id="auto_bikes"
-                    isEditable={isEditable}
-                    onChange={this.handleChangeRawEvent}
-                    onClickMinus={() => {
-                      this.handleBikeButtonClick('auto_bikes', -1)
-                    }}
-                    onClickPlus={() => {
-                      this.handleBikeButtonClick('auto_bikes', 1)
-                    }}
-                  />
-                  <BikeNumberPicker
-                    label="Manual"
-                    value={manual_bikes}
-                    id="manual_bikes"
-                    isEditable={isEditable}
-                    onChange={this.handleChangeRawEvent}
-                    onClickMinus={() => {
-                      this.handleBikeButtonClick('manual_bikes', -1)
-                    }}
-                    onClickPlus={() => {
-                      this.handleBikeButtonClick('manual_bikes', 1)
-                    }}
-                  />
+                  {available_auto_50cc_bikes && (
+                    <Row>
+                      <Col>
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Automatic 50cc"
+                          value={auto_50cc_bikes}
+                          id="auto_50cc_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('auto_50cc_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('auto_50cc_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {available_auto_125cc_bikes && (
+                    <Row>
+                      <Col>
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Automatic 125cc"
+                          value={auto_125cc_bikes}
+                          id="auto_125cc_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('auto_125cc_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('auto_125cc_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {available_manual_50cc_bikes && (
+                    <Row>
+                      <Col>
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Manual 50cc"
+                          value={manual_50cc_bikes}
+                          id="manual_50cc_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('manual_50cc_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('manual_50cc_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {available_manual_125cc_bikes && (
+                    <Row>
+                      <Col>
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Manual 125cc"
+                          value={manual_bikes}
+                          id="manual_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('manual_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('manual_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {available_own_bikes && (
+                    <Row>
+                      <Col>
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label="Own Bikes"
+                          value={own_bikes}
+                          id="own_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('own_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('own_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
                 </React.Fragment>
               )}
               {isFullLicence && (
                 <React.Fragment>
                   <Row>
                     <Col>
-                      <div className={styles.bikesAvailable}>Bikes</div>
-                      <div className={styles.bikesAvailable}>A1</div>
-                      <BikeNumberPicker
-                        label="Automatic"
-                        value={a1_auto_bikes}
-                        id="a1_auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a1_auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a1_auto_bikes', 1)
-                        }}
-                      />
-                      <BikeNumberPicker
-                        label="Manual"
-                        value={a1_manual_bikes}
-                        id="a1_manual_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a1_manual_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a1_manual_bikes', 1)
-                        }}
-                      />
-                      <div className={styles.bikesAvailable}>A2</div>
-                      <BikeNumberPicker
-                        label="Automatic"
-                        value={a2_auto_bikes}
-                        id="a2_auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a2_auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a2_auto_bikes', 1)
-                        }}
-                      />
-                      <BikeNumberPicker
-                        label="Manual"
-                        value={a2_manual_bikes}
-                        id="a2_manual_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a2_manual_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a2_manual_bikes', 1)
-                        }}
-                      />
-                      <div className={styles.bikesAvailable}>A</div>
-                      <BikeNumberPicker
-                        label="Automatic"
-                        value={a_auto_bikes}
-                        id="a_auto_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a_auto_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a_auto_bikes', 1)
-                        }}
-                      />
-                      <BikeNumberPicker
-                        label="Manual"
-                        value={a_manual_bikes}
-                        id="a_manual_bikes"
-                        isEditable={isEditable}
-                        onChange={this.handleChangeRawEvent}
-                        onClickMinus={() => {
-                          this.handleBikeButtonClick('a_manual_bikes', -1)
-                        }}
-                        onClickPlus={() => {
-                          this.handleBikeButtonClick('a_manual_bikes', 1)
-                        }}
-                      />
+                      <div className={styles.bikesAvailable}>
+                        <b>Bikes Available</b>
+                      </div>
+                      {(available_a1_auto_bikes ||
+                        available_a1_manual_bikes) && (
+                        <div className={styles.bikesAvailable}>A1</div>
+                      )}
+                      {available_a1_auto_bikes && (
+                        <BikeNumberPicker
+                          label="Automatic"
+                          value={a1_auto_bikes}
+                          id="a1_auto_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a1_auto_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a1_auto_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {available_a1_manual_bikes && (
+                        <BikeNumberPicker
+                          label="Manual"
+                          value={a1_manual_bikes}
+                          id="a1_manual_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a1_manual_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a1_manual_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {(available_a2_auto_bikes ||
+                        available_a2_manual_bikes) && (
+                        <div className={styles.bikesAvailable}>A2</div>
+                      )}
+                      {available_a2_auto_bikes && (
+                        <BikeNumberPicker
+                          label="Automatic"
+                          value={a2_auto_bikes}
+                          id="a2_auto_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a2_auto_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a2_auto_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {available_a2_manual_bikes && (
+                        <BikeNumberPicker
+                          label="Manual"
+                          value={a2_manual_bikes}
+                          id="a2_manual_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a2_manual_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a2_manual_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {(available_a_auto_bikes || available_a_manual_bikes) && (
+                        <div className={styles.bikesAvailable}>A</div>
+                      )}
+                      {available_a_auto_bikes && (
+                        <BikeNumberPicker
+                          label="Automatic"
+                          value={a_auto_bikes}
+                          id="a_auto_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a_auto_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a_auto_bikes', 1)
+                          }}
+                        />
+                      )}
+                      {available_a_manual_bikes && (
+                        <BikeNumberPicker
+                          label="Manual"
+                          value={a_manual_bikes}
+                          id="a_manual_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick('a_manual_bikes', -1)
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('a_manual_bikes', 1)
+                          }}
+                        />
+                      )}
                     </Col>
                   </Row>
                   {isFullLicenceTest && (
@@ -847,15 +1051,13 @@ class CourseForm extends React.Component {
                   )}
                 </React.Fragment>
               )}
-              {!isFullLicence && (
-                <ConnectLabeledContent label="Course Price" basic name="price">
-                  {pricing.loading
-                    ? '...'
-                    : pricing.info
-                    ? `£${(pricing.info.price / 100.0).toFixed(2)}`
-                    : ''}
-                </ConnectLabeledContent>
-              )}
+              <ConnectLabeledContent label="Course Price" basic name="price">
+                {pricing.loading
+                  ? '...'
+                  : pricing.info
+                  ? `£${(pricing.info.price / 100.0).toFixed(2)}`
+                  : ''}
+              </ConnectLabeledContent>
               <ConnectTextArea
                 label="Notes"
                 name="notes"
@@ -899,7 +1101,9 @@ class CourseForm extends React.Component {
 
 const mapStateToProps = (state, ownProps) => ({
   staffCalendar: state.staff.days,
-  courseCalendar: state.course.days
+  courseCalendar: state.course.days,
+  coursePackage: state.course.coursePackage,
+  bankHolidays: state.info.bankHolidays
 })
 
 const mapDispatchToProps = dispatch =>

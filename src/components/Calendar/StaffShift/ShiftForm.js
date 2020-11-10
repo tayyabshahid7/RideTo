@@ -51,7 +51,9 @@ class ShiftForm extends React.Component {
     if (instructor) {
       staff.instructor_id = instructor.id
       schoolList = schools.filter(x => instructor.supplier.includes(x.id))
-      staff.supplier_id = schoolList[0].id
+      if (schoolList.length) {
+        staff.supplier_id = schoolList[0].id
+      }
     } else {
       hasStaff = false
     }
@@ -182,15 +184,15 @@ class ShiftForm extends React.Component {
       supplier_id,
       start_date,
       end_date,
-      times
+      times,
+      event_type
     } = this.state
-    console.log(this.state)
 
     if (!instructor_id) {
       showNotification('Error', 'Please choose a staff', 'danger')
       return false
     }
-    if (!supplier_id) {
+    if (event_type === SHIFT_TYPES[0].id && !supplier_id) {
       showNotification('Error', 'Please choose a location', 'danger')
       return false
     }
@@ -276,7 +278,6 @@ class ShiftForm extends React.Component {
                 (x0.isSameOrAfter(x1) && x0.isSameOrBefore(y1)) ||
                 (x1.isSameOrAfter(x0) && x1.isSameOrBefore(y0))
               ) {
-                console.log(diary)
                 showNotification('Error', 'Overlaps with other shift', 'danger')
                 return false
               }

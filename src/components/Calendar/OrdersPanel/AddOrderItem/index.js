@@ -2,9 +2,10 @@ import React from 'react'
 import styles from './styles.scss'
 import {
   getFullLicenseType,
-  getAvailableBikeHires
-  // getTestResultOptions
+  getAvailableBikeHires,
+  getTestResultOptions
 } from 'common/info'
+import { getDefaultBikeHire } from 'services/course'
 import { getPaymentOptions } from 'services/order'
 import {
   checkCustomerExists,
@@ -13,7 +14,7 @@ import {
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
-import omit from 'lodash/omit'
+import { filter, omit } from 'lodash'
 import { connect } from 'react-redux'
 import { fetchWidgetSettings } from 'store/settings'
 import { bindActionCreators } from 'redux'
@@ -67,30 +68,68 @@ class AddOrderItem extends React.Component {
     this.form = React.createRef()
   }
 
-  componentDidMount() {
-    const {
-      updateAdding,
-      course,
-      widgetSettings,
-      fetchWidgetSettings
-    } = this.props
+  async componentDidMount() {
+    const { course, widgetSettings, fetchWidgetSettings, schoolId } = this.props
 
     if (!widgetSettings) {
       fetchWidgetSettings()
     }
 
+    if (course.course_type.constant.startsWith('FULL_LICENCE')) {
+      const availableBikeHireTypes = getAvailableBikeHires(
+        course.course_type.constant
+      )
+      this.setState({
+        availableBikeHireTypes
+      })
+    } else {
+      const {
+        available_auto_50cc_bikes,
+        available_auto_125cc_bikes,
+        available_manual_50cc_bikes,
+        available_manual_125cc_bikes,
+        available_own_bikes
+      } = await getDefaultBikeHire(course.course_type.constant, schoolId)
+
+      let availableBikeHireTypes = getAvailableBikeHires(course)
+      if (!available_auto_50cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Automatic 50cc'
+        )
+      }
+      if (!available_auto_125cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Automatic 125cc'
+        )
+      }
+      if (!available_manual_50cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Manual 50cc'
+        )
+      }
+      if (!available_manual_125cc_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Manual 125cc'
+        )
+      }
+      if (!available_own_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Own Bike'
+        )
+      }
+      this.setState({
+        availableBikeHireTypes
+      })
+    }
     // this.scrollIntoView.current.scrollIntoView()
     setTimeout(() => {
       window.scrollTo(0, 0)
     })
-
-    updateAdding(course.id)
-  }
-
-  componentWillUnmount() {
-    const { updateAdding } = this.props
-
-    updateAdding(null)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -263,7 +302,7 @@ class AddOrderItem extends React.Component {
       cardPostCodeComplete,
       order: {
         bike_hire,
-        // test_result,
+        test_result,
         payment_status,
         riding_experience,
         user_birthdate,
@@ -282,11 +321,11 @@ class AddOrderItem extends React.Component {
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
 
-    // const courseType = course.course_type.constant
-    // const isFullLicenceTest =
-    //   courseType.startsWith('FULL_LICENCE') && courseType.endsWith('TEST')
+    const courseType = course.course_type.constant
+    const isFullLicenceTest =
+      courseType.startsWith('FULL_LICENCE') && courseType.endsWith('TEST')
 
-    // const testResultOptions = getTestResultOptions()
+    const testResultOptions = getTestResultOptions()
 
     return (
       <div className={styles.container}>
@@ -294,10 +333,9 @@ class AddOrderItem extends React.Component {
         {!showPayment &&
           (!showPaymentConfirmation && (
             <div className={styles.header}>
-              <span className={styles.leftCol}>
+              {/* <span className={styles.leftCol}>
                 <h3 className={styles.addTitle}>Add Order</h3>
-              </span>
-              {/* <span>Step 1 of 2</span> */}
+              </span> */}
             </div>
           ))}
         {!showPaymentConfirmation ? (
@@ -414,7 +452,7 @@ class AddOrderItem extends React.Component {
                 labelField="title"
               />
 
-              {/* {isFullLicenceTest && (
+              {isFullLicenceTest && (
                 <ConnectSelect
                   placeholder
                   basic
@@ -425,9 +463,8 @@ class AddOrderItem extends React.Component {
                   onChange={value => {
                     this.handleChange('test_result', value)
                   }}
-                  required
                 />
-              )} */}
+              )}
 
               <ConnectCheckbox
                 label="T&Cs Agreed"
@@ -486,7 +523,7 @@ class AddOrderItem extends React.Component {
                       !cardCVCComplete ||
                       !cardPostCodeComplete)
                   }>
-                  {showPayment ? 'Take Payment' : 'Save'}
+                  {showPayment ? 'Take Payment' : 'Add Order'}
                 </Button>
               </div>
               <div>

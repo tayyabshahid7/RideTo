@@ -2,7 +2,7 @@
   display: block;
   background: white;
   padding: 16px;
-  border-left: 1px solid var(--light-grey-color);
+  box-shadow: -1px 0 0 rgba(68, 68, 68, 0.1), -8px 0 40px rgba(68, 68, 68, 0.05);
   width: 340px;
   position: fixed;
   top: 147px;

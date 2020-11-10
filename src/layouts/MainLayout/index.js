@@ -17,7 +17,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import Loading from 'components/Loading'
 import { getAllInstructors } from 'store/instructor'
-import { getAllCourseTypes } from 'store/info'
+import { getAllCourseTypes, fetchBankHolidays } from 'store/info'
 
 const MainLayout = ({
   history,
@@ -25,6 +25,7 @@ const MainLayout = ({
   user,
   getAllInstructors,
   getAllCourseTypes,
+  fetchBankHolidays,
   instructorsLoaded
 }) => {
   const [sidePanel, setSidePanel] = useState(false)
@@ -33,6 +34,7 @@ const MainLayout = ({
       const schoolIds = user.suppliers.map(x => x.id)
       getAllInstructors(schoolIds)
       getAllCourseTypes(schoolIds)
+      fetchBankHolidays()
     }
   }, [user])
 
@@ -92,6 +94,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getAllInstructors,
+      fetchBankHolidays,
       getAllCourseTypes
     },
     dispatch

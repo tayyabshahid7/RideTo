@@ -1,11 +1,46 @@
 import { RidingExperiences } from 'common/info'
-import { getCourseTypes } from 'services/course'
+import {
+  getCourseTypes,
+  updateDefaultBikeHire,
+  getBankHolidays
+} from 'services/course'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
 
 const GET_COURSE_TYPES = createRequestTypes('rideto/info/GET/COURSE_TYPES')
 const GET_ALL_COURSE_TYPES = createRequestTypes(
   'rideto/info/GET/ALL_COURSE_TYPES'
 )
+const UPDATE_DEFAULT_BIKES = createRequestTypes(
+  'rideto/course/UPDATE_DEFAULT_BIKES'
+)
+
+const GET_BANK_HOLIDAYS = 'rideto/info/GET/BANK_HOLIDAYS'
+
+export const fetchBankHolidays = () => async dispatch => {
+  const data = await getBankHolidays()
+  dispatch({ type: GET_BANK_HOLIDAYS, data })
+}
+
+export const updateDefaultBikes = (
+  settings,
+  courseType,
+  schoolId
+) => async dispatch => {
+  dispatch({ type: UPDATE_DEFAULT_BIKES[REQUEST] })
+  try {
+    await updateDefaultBikeHire(settings, courseType, schoolId)
+    dispatch({
+      type: UPDATE_DEFAULT_BIKES[SUCCESS],
+      data: {
+        settings,
+        courseType,
+        schoolId
+      }
+    })
+  } catch (error) {
+    dispatch({ type: UPDATE_DEFAULT_BIKES[FAILURE], error })
+  }
+}
 
 export const getAllCourseTypes = schoolIds => async dispatch => {
   dispatch({ type: GET_ALL_COURSE_TYPES[REQUEST] })
@@ -51,7 +86,9 @@ export const loadCourseTypes = ({ schoolId }) => async dispatch => {
 
 const initialState = {
   ridingExperiences: RidingExperiences,
-  courseTypes: []
+  courseTypes: [],
+  bankHolidays: [],
+  saving: false
 }
 
 export default function reducer(state = initialState, action) {
@@ -60,6 +97,12 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         courseTypes: action.data
+      }
+    }
+    case GET_BANK_HOLIDAYS: {
+      return {
+        ...state,
+        bankHolidays: action.data
       }
     }
     case GET_COURSE_TYPES[SUCCESS]: {
@@ -80,6 +123,43 @@ export default function reducer(state = initialState, action) {
         courseTypes
       }
     }
+    case UPDATE_DEFAULT_BIKES[REQUEST]: {
+      return {
+        ...state,
+        saving: true
+      }
+    }
+    case UPDATE_DEFAULT_BIKES[SUCCESS]: {
+      const courseTypes = state.courseTypes.slice()
+      const { settings, courseType, schoolId } = action.data
+      const tmp = courseTypes.find(x => x.constant === courseType)
+      if (tmp) {
+        const bikeSetting = tmp.bike_hire_setup.find(
+          x => x.supplier.id === schoolId
+        )
+        if (bikeSetting) {
+          Object.assign(bikeSetting, settings)
+        } else {
+          tmp.bike_hire_setup.push({
+            ...settings,
+            supplier: { id: schoolId }
+          })
+        }
+      }
+
+      return {
+        ...state,
+        saving: false,
+        courseTypes
+      }
+    }
+    case UPDATE_DEFAULT_BIKES[FAILURE]: {
+      return {
+        ...state,
+        saving: false
+      }
+    }
+
     default:
       return state
   }

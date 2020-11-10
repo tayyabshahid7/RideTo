@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import _ from 'lodash'
 import { Redirect } from 'react-router-dom'
 
 import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence.js'
@@ -7,7 +8,7 @@ import Calendar from 'pages/Widget/components/Calendar'
 import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
 import CourseSelect from 'pages/Widget/components/CourseSelect'
 import BookingOption from 'pages/Widget/components/BookingOption'
-import { fetchWidgetCourses } from 'services/course'
+import { fetchWidgetCourses, getCourseTypes } from 'services/course'
 import {
   showOwnBikeHire,
   getTotalOrderPrice,
@@ -39,7 +40,7 @@ class BookingOptionsContainer extends React.Component {
       selectedSupplier.courses[0].constant === 'FULL_LICENCE'
 
     this.state = {
-      courseType: selectedSupplier.courses[0],
+      courseType: this.getDefaultCourse(),
       schoolCourses: [],
       availableCourses: [],
       selectedCourse: null,
@@ -54,7 +55,9 @@ class BookingOptionsContainer extends React.Component {
       loadedMonths: {},
       showDayOfWeekPicker: false,
       selectedTimeDays: [],
-      formCompletedWithoutTheory: false
+      courseTypes: [],
+      formCompletedWithoutTheory: false,
+      loadingCourseTypes: true
     }
 
     this.handleChangeCourseType = this.handleChangeCourseType.bind(this)
@@ -76,11 +79,10 @@ class BookingOptionsContainer extends React.Component {
   componentDidMount() {
     const { month } = this.state
     this.fetchCourses(month.clone())
+    this.fetchCourseTypes()
   }
 
   componentDidUpdate(oldProps, oldState) {
-    const { month } = this.state
-
     if (oldProps.selectedSupplier !== this.props.selectedSupplier) {
       this.setState(
         {
@@ -95,31 +97,38 @@ class BookingOptionsContainer extends React.Component {
             this.props.selectedSupplier.courses.find(
               courseType =>
                 courseType.constant === this.state.courseType.constant
-            ) || this.props.selectedSupplier.courses[0],
+            ) || this.getDefaultCourse(),
           isFullLicence:
             this.props.selectedSupplier.courses[0].constant === 'FULL_LICENCE'
         },
         () => {
-          // this.fetchCourses(moment().startOf('month'))
           this.fetchCourses(this.state.month.clone())
         }
       )
-      return
     }
+  }
 
-    if (
-      oldState.courseType.constant !== this.state.courseType.constant &&
-      !this.state.availableCourses.length
-    ) {
-      this.setState({ isLoading: true })
-      this.fetchCourses(month.clone())
+  getDefaultCourse = () => {
+    const {
+      selectedSupplier: { courses }
+    } = this.props
+    const cbtCourse = courses.find(x => x.constant === 'LICENCE_CBT')
+    if (cbtCourse) {
+      return cbtCourse
     }
+    return courses[0]
+  }
+
+  async fetchCourseTypes() {
+    const { selectedSupplier } = this.props
+    const courseTypes = await getCourseTypes(selectedSupplier.id)
+    this.setState({ courseTypes, loadingCourseTypes: false })
   }
 
   async fetchCourses(month) {
     const { selectedSupplier } = this.props
     const { loadedMonths } = this.state
-    const courseType = this.state.courseType || selectedSupplier.courses[0]
+    const courseType = this.state.courseType || this.getDefaultCourse()
 
     if (
       loadedMonths[courseType.constant] &&
@@ -181,32 +190,21 @@ class BookingOptionsContainer extends React.Component {
   }
 
   setAvailableCourses(schoolCourses, courseType) {
+    const { selectedSupplier } = this.props
     const { schoolCourses: prevschoolCourses } = this.state
-    const newSchoolCourses = [...prevschoolCourses, ...schoolCourses]
+    const newSchoolCourses = _.uniqBy(
+      [...prevschoolCourses, ...schoolCourses],
+      'id'
+    )
     const availableCourses = newSchoolCourses.filter(
       ({ course_type, training_count, spaces }) => {
         return course_type.id === courseType.id && training_count < spaces
       }
     )
-    const selectedDate = getEarliestDate(availableCourses)
-    const selectedCourses = getSchoolCoursesByDate(
-      selectedDate,
-      availableCourses
-    )
-
-    let selectedBikeHire = this.getBikeHire(courseType, selectedCourses[0])
-
     const isFullLicence = courseType.constant === 'FULL_LICENCE'
 
-    if (isFullLicence) {
-      selectedBikeHire = ''
-    }
-
-    this.setState({
+    const data = {
       schoolCourses: newSchoolCourses,
-      selectedDate,
-      selectedCourse: !isFullLicence ? selectedCourses[0] : availableCourses[0],
-      selectedBikeHire,
       availableCourses,
       courseType,
       isLoading: false,
@@ -214,14 +212,43 @@ class BookingOptionsContainer extends React.Component {
       selectedLicenceType: null,
       selectedPackageHours: '',
       selectedPackageDates: []
-    })
+    }
+
+    if (
+      !this.state.selectedCourse ||
+      this.state.selectedCourse.supplier !== selectedSupplier.id ||
+      !this.state.courseType ||
+      this.state.selectedCourse.course_type.constant !== courseType.constant
+    ) {
+      const selectedDate = getEarliestDate(availableCourses)
+      const selectedCourses = getSchoolCoursesByDate(
+        selectedDate,
+        availableCourses
+      )
+
+      let selectedBikeHire = this.getBikeHire(courseType, selectedCourses[0])
+
+      data.selectedDate = selectedDate
+      data.selectedCourse = !isFullLicence
+        ? selectedCourses[0]
+        : availableCourses[0]
+      data.selectedBikeHire = selectedBikeHire
+
+      console.log('changed', selectedCourses[0])
+    }
+
+    if (isFullLicence) {
+      data.selectedBikeHire = ''
+    }
+
+    this.setState(data)
   }
 
   handleChangeCourseType(courseTypeId) {
     const { selectedSupplier } = this.props
-    const courseType = selectedSupplier.courses.filter(
-      ({ id }) => id === parseInt(courseTypeId, 10)
-    )[0]
+    const courseType = selectedSupplier.courses.find(
+      course => course.id === parseInt(courseTypeId, 10)
+    )
 
     this.setState(
       {
@@ -334,6 +361,8 @@ class BookingOptionsContainer extends React.Component {
       return
     }
 
+    localStorage.setItem('RIDETO_WIDGTE_SCHOOL_URL', selectedCourse.school_url)
+
     let trainings = []
 
     if (isFullLicence && !showDayOfWeekPicker) {
@@ -387,6 +416,8 @@ class BookingOptionsContainer extends React.Component {
     const { widget, selectedSupplier, suppliers, onChangeSupplier } = this.props
     const {
       courseType,
+      courseTypes,
+      loadingCourseTypes,
       availableCourses,
       selectedDate,
       selectedCourse,
@@ -423,11 +454,21 @@ class BookingOptionsContainer extends React.Component {
     if (submit) {
       return <Redirect push to={submit} />
     }
+    if (window.DEBUG) {
+      console.log(this.state, this.props)
+    }
+    if (loadingCourseTypes) {
+      return <div className={styles.bookingOptions}>Loading</div>
+    }
 
     if (!courseType) {
       return <div className={styles.bookingOptions}>No Course Found</div>
     }
-    console.log(suppliers)
+    const tmp = courseTypes.find(x => x.constant === courseType.constant)
+    const bikeSetup = tmp
+      ? tmp.bike_hire_setup.find(x => x.supplier.id === selectedSupplier.id)
+      : null
+
     return (
       <div className={styles.bookingOptions}>
         <BookingOption
@@ -499,6 +540,7 @@ class BookingOptionsContainer extends React.Component {
               selected={selectedBikeHire}
               course={selectedCourse}
               onChange={this.handleSelectBikeHire}
+              bikeSetup={bikeSetup}
             />
 
             <hr />

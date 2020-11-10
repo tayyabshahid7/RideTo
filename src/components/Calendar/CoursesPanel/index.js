@@ -12,24 +12,10 @@ import CoursesPanel from './CoursesPanel'
 import { isAdmin } from 'services/auth'
 
 class CoursesPanelContainer extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      addingOrder: null
-    }
-
-    this.updateAdding = this.updateAdding.bind(this)
-  }
-
-  updateAdding(id) {
-    this.setState({
-      addingOrder: id
-    })
-  }
-
   componentDidMount() {
+    // if (this.props.courseDate !== this.props.match.params.date) {
     this.loadData()
+    // }
   }
 
   componentDidUpdate(prevProps) {
@@ -68,30 +54,38 @@ class CoursesPanelContainer extends React.Component {
       isAdmin,
       schools,
       instructors,
-      loadCourses
+      loadCourses,
+      history
     } = this.props
     const {
       params: { date, courseId, eventId, staffId }
     } = match
-    const { addingOrder } = this.state
+
+    let title = ''
+    let subtitle = ''
 
     return (
       <div>
-        <DateHeading date={moment(date, 'YYYY-MM-DD')} backLink={`/calendar`} />
+        <DateHeading
+          title={title}
+          subtitle={subtitle}
+          noClose={!!subtitle}
+          date={moment(date, 'YYYY-MM-DD')}
+          backLink={`/calendar`}
+        />
         <CoursesPanel
           courseId={courseId}
           eventId={eventId}
           staffId={staffId}
-          addingOrder={addingOrder}
           date={date}
           courses={courses.sort((a, b) => a.time > b.time)}
           events={events}
-          updateAdding={this.updateAdding}
           staff={staff}
           isAdmin={isAdmin}
           loadCourses={loadCourses}
           schools={schools}
           instructors={instructors}
+          history={history}
         />
         <LoadingMask loading={loading} />
       </div>
@@ -103,6 +97,7 @@ const mapStateToProps = (state, ownProps) => {
   return {
     schools: state.auth.user.suppliers,
     courses: state.course.day.courses,
+    courseDate: state.course.day.date,
     loading: state.course.day.loading,
     events: state.event.day.events,
     eventLoading: state.event.day.loading,

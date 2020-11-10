@@ -167,6 +167,7 @@ function CourseInformation({
         <div className={styles.orderIncluded}>
           <div className={styles.subtitle}>WHAT'S INCLUDED</div>
           <OrderIncluded
+            fullLicence={isFullLicence}
             bikeHire={bike_hire}
             hasGloves={gloves_jacket_included}
             helmetHire={helmet_hire}

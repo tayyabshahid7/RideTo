@@ -10,10 +10,13 @@ import {
   Button
 } from 'components/ConnectForm'
 
-import { FullLicenceTypes, getTestResultOptions } from 'common/info'
+import {
+  FullLicenceTypes,
+  getTestResultOptions,
+  getAvailableBikeHires
+} from 'common/info'
 import Loading from 'components/Loading'
 import {
-  getCustomerBikeTypeOptions,
   getPaymentOptions,
   getTrainingStatusOptions,
   isRideTo,
@@ -44,7 +47,6 @@ class OrderForm extends React.Component {
       },
       isChanged: false,
       isSending: false,
-      courseTypes: [],
       showMore: false,
       inputsDisabled: true
     }
@@ -55,12 +57,7 @@ class OrderForm extends React.Component {
     this.handleSaveClick = this.handleSaveClick.bind(this)
   }
 
-  componentDidMount() {
-    const { loadCourseTypes } = this.props
-    const { training_location } = this.state.editable
-
-    loadCourseTypes({ schoolId: training_location })
-  }
+  componentDidMount() {}
 
   componentDidUpdate(prevProps) {
     if (prevProps.order !== this.props.order) {
@@ -105,7 +102,6 @@ class OrderForm extends React.Component {
   handleSaveClick() {
     const { onSave } = this.props
     const { editable } = this.state
-
     this.setState(
       {
         inputsDisabled: true
@@ -117,13 +113,26 @@ class OrderForm extends React.Component {
   }
 
   render() {
-    const { suppliers, isSaving, courseTypes, isSending, isAdmin } = this.props
+    const {
+      suppliers,
+      isSaving,
+      info: { courseTypes },
+      isSending,
+      isAdmin
+    } = this.props
     const { editable, isChanged, showMore, inputsDisabled } = this.state
-    const courses = courseTypes
-      ? courseTypes.filter(
-          course => !['TFL_ONE_ON_ONE'].includes(course.constant)
-        )
-      : []
+    const course = this.props.order.school_course
+
+    const courses = courseTypes.filter(
+      type =>
+        type.schoolIds.includes(course.supplier) &&
+        !['TFL_ONE_ON_ONE'].includes(type.constant)
+    )
+
+    course.course_type = courses.find(
+      x => x.id === parseInt(course.course_type_id)
+    )
+
     if (!editable) {
       return null
     }
@@ -132,13 +141,6 @@ class OrderForm extends React.Component {
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE')
 
-    const bikeOptions = getCustomerBikeTypeOptions(isFullLicence)
-    const bikeHireOptions = Object.keys(bikeOptions).map(id => {
-      return {
-        id,
-        name: bikeOptions[id]
-      }
-    })
     const isFullLicenceTest =
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE') &&
@@ -212,12 +214,17 @@ class OrderForm extends React.Component {
               <ConnectSelect
                 disabled={inputsDisabled}
                 label="Bike Hire"
-                options={bikeHireOptions}
+                options={getAvailableBikeHires(
+                  course,
+                  this.props.order.bike_type
+                )}
                 selected={editable.bike_type}
                 name="bike_type"
                 onChange={value => {
                   this.handleChange('bike_type', value)
                 }}
+                valueField="value"
+                labelField="title"
               />
             </Col>
             {isFullLicenceTest && (
@@ -290,7 +297,7 @@ class OrderForm extends React.Component {
               <Col sm="4">
                 <ConnectSelect
                   label="Training Site"
-                  disabled={isRideTo(editable) || inputsDisabled}
+                  disabled={true || isRideTo(editable) || inputsDisabled}
                   options={suppliers}
                   selected={editable.training_location || ''}
                   name="supplier"

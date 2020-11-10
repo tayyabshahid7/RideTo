@@ -8,11 +8,12 @@ import {
 } from './constants'
 
 export const BikeHires = [
-  { value: BIKE_HIRE.MANUAL, title: 'Manual' },
-  { value: BIKE_HIRE.AUTO, title: 'Automatic' },
   { value: BIKE_HIRE.NO, title: 'No' },
-  { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' },
-  { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' }
+  { value: BIKE_HIRE.AUTO, title: 'Automatic' },
+  { value: BIKE_HIRE.AUTO_50CC, title: 'Automatic 50cc' },
+  { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' },
+  { value: BIKE_HIRE.MANUAL, title: 'Manual 125cc' },
+  { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' }
 ]
 
 export function getFullLicenseBikeHires(course, prevBikeType) {
@@ -80,43 +81,88 @@ export function getAvailableBikeHires(course, prevBikeType) {
     return []
   }
 
-  if (course.course_type.constant.startsWith('FULL_LICENCE')) {
+  const courseType =
+    typeof course.course_type === 'object'
+      ? course.course_type.constant
+      : course.course_type
+
+  if (courseType.startsWith('FULL_LICENCE')) {
     return getFullLicenseBikeHires(course, prevBikeType)
   }
 
   const {
-    // auto_125cc_bikes,
+    auto_125cc_bikes,
+    auto_125cc_count,
+
     auto_bikes,
     auto_count,
-    // manual_50cc_bikes,
+
+    auto_50cc_bikes,
+    auto_50cc_count,
+
+    manual_50cc_bikes,
+    manual_50cc_count,
+
     manual_bikes,
     manual_count
   } = course
 
   return [
     // {
-    //   value: manual_50cc_bikes ? BIKE_HIRE.MANUAL_50CC : null,
-    //   title: 'Manual 50cc'
+    //   value:
+    //     prevBikeType === 'BIKE_TYPE_MANUAL' || manual_bikes > manual_count
+    //       ? 'BIKE_TYPE_MANUAL'
+    //       : null,
+    //   title: 'Manual'
     // },
+    // TODO: refer to the above logic
     {
       value:
-        prevBikeType === 'BIKE_TYPE_MANUAL' || manual_bikes > manual_count
-          ? 'BIKE_TYPE_MANUAL'
-          : null,
-      title: 'Manual'
-    },
-    {
-      value:
-        prevBikeType === 'BIKE_TYPE_AUTO' || auto_bikes > auto_count
-          ? 'BIKE_TYPE_AUTO'
+        auto_bikes > auto_count || prevBikeType === BIKE_HIRE.AUTO
+          ? BIKE_HIRE.AUTO
           : null,
       title: 'Automatic Scooter'
     },
+    {
+      value:
+        auto_125cc_bikes > auto_125cc_count ||
+        prevBikeType === BIKE_HIRE.AUTO_125CC
+          ? BIKE_HIRE.AUTO_125CC
+          : null,
+      title: 'Automatic 125cc Scooter'
+    },
+
+    {
+      value:
+        auto_50cc_bikes > auto_50cc_count ||
+        prevBikeType === BIKE_HIRE.AUTO_50CC
+          ? BIKE_HIRE.AUTO_50CC
+          : null,
+      title: 'Automatic 50cc Scooter'
+    },
+    {
+      value:
+        manual_50cc_bikes > manual_50cc_count ||
+        prevBikeType === BIKE_HIRE.MANUAL_50CC
+          ? BIKE_HIRE.MANUAL_50CC
+          : null,
+      title: 'Manual 50cc Motorcycle'
+    },
+    {
+      value:
+        manual_bikes > manual_count || prevBikeType === BIKE_HIRE.MANUAL
+          ? BIKE_HIRE.MANUAL
+          : null,
+      title: 'Manual 125cc Motorcycle'
+    },
     // {
-    //   value: auto_125cc_bikes ? BIKE_HIRE.AUTO_125CC : null,
-    //   title: 'Automatic 125cc'
+    //   value:
+    //     prevBikeType === 'BIKE_TYPE_AUTO' || auto_bikes > auto_count
+    //       ? 'BIKE_TYPE_AUTO'
+    //       : null,
+    //   title: 'Automatic Scooter'
     // },
-    { value: 'BIKE_TYPE_NONE', title: 'Own Bike' }
+    { value: BIKE_HIRE.NO, title: 'Own Bike' }
   ]
 }
 
@@ -158,6 +204,10 @@ export function formaBikeTypeForEdit(order) {
 export function getTestResultOptions() {
   return [
     {
+      id: null,
+      name: ''
+    },
+    {
       id: 'TEST_RESULT_PASSED',
       name: 'Passed'
     },
@@ -176,6 +226,10 @@ export function formatBikeConstant(constant) {
     case 'automatic':
     case 'Automatic':
       return BIKE_HIRE.AUTO
+    case 'AUTO_50CC':
+    case 'auto_50cc':
+    case 'BIKE_TYPE_AUTO_50CC':
+      return BIKE_HIRE.AUTO_50CC
     case 'AUTO_125CC':
     case 'BIKE_TYPE_AUTO_125CC':
     case 'BIKE_TYPE_BIKE_125CC':

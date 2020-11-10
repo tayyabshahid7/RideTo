@@ -1,4 +1,5 @@
 import moment from 'moment'
+import axios from 'axios'
 import { get, destroy, post, put, patch } from 'services/api'
 import { s } from 'utils/helper'
 import { Features } from 'common/info'
@@ -25,6 +26,40 @@ export const getCoursesOnDay = (days, dateStr) => {
     return []
   }
   return day.courses
+}
+
+export const createPackage = async (courseIds, price) => {
+  const path = `school/course/package`
+  const data = {
+    name: '',
+    price,
+    courses: courseIds
+  }
+
+  const response = await post(path, data)
+
+  return response
+}
+
+export const updatePackage = async (id, courseIds, price) => {
+  const path = `school/course/package/${id}`
+  const data = {
+    name: '',
+    price,
+    courses: courseIds.join(',')
+  }
+
+  const response = await put(path, data)
+
+  return response
+}
+
+export const deletePackage = async id => {
+  const path = `school/course/package/${id}`
+
+  const response = await destroy(path, {})
+
+  return response
 }
 
 export const fetchCourses = async (schoolId, startDate, endDate) => {
@@ -171,6 +206,16 @@ export const addSchoolPayment = async (schoolId, data) => {
 export const fetchSchoolOrder = async trainingId => {
   const path = `school/course/order/${trainingId}`
   const response = await get(path, {})
+  if (response.package) {
+    const path = `school/course/package/${response.package}`
+    const packageDetail = await get(path, {})
+    const requests = packageDetail.school_course_package.map(x =>
+      fetchSingleCourse(x.school_course_id)
+    )
+    const courses = await Promise.all(requests)
+    response.packageDetail = packageDetail
+    response.courses = courses
+  }
   return response
 }
 
@@ -229,6 +274,12 @@ export const getCourseTypes = async schoolId => {
   const path = `school/${schoolId}/course/type`
   const response = await get(path)
   return response
+}
+
+export const getBankHolidays = async () => {
+  const tmp = await axios.get('https://www.gov.uk/bank-holidays.json')
+  const bankHolidays = tmp.data['england-and-wales'].events
+  return bankHolidays
 }
 
 export const getDasBikeTypes = async schoolId => {
@@ -320,7 +371,7 @@ export const getShortCourseType = courseType => {
     case 'GEAR_CONVERSION_COURSE':
       return 'Gear Conversion'
     default:
-      return 'CBT'
+      return courseType.name || 'CBT'
   }
 }
 
@@ -353,8 +404,12 @@ export const getMediumCourseType = courseType => {
       return 'Off Road Training'
     case 'GEAR_CONVERSION_COURSE':
       return 'Gear Conversion'
-    default:
+    default: {
+      if (courseType.constant) {
+        return capitalizeString(courseType.constant)
+      }
       return 'CBT'
+    }
   }
 }
 
@@ -386,8 +441,18 @@ export const getCourseTitle = courseTypeConstant => {
     case 'ENHANCED_RIDER_SCHEME':
       return 'Enhanced Rider Scheme'
     default:
+      if (courseTypeConstant) {
+        return capitalizeString(courseTypeConstant)
+      }
       return 'CBT Training'
   }
+}
+
+export const capitalizeString = value => {
+  const parts = value
+    .split('_')
+    .map(x => x.substr(0, 1).toUpperCase() + x.substr(1).toLowerCase())
+  return parts.join(' ')
 }
 
 export const getLicenceAge = courseTypeConstant => {
@@ -557,4 +622,29 @@ export const filterExtraCourses = type => {
       type.constant.startsWith('FULL_LICENCE') && type.constant.endsWith('TEST')
     ) && type.constant !== 'FULL_LICENCE'
   )
+}
+
+export const getDefaultBikeHire = async (course_type, schoolId) => {
+  const path = 'school/settings/widget/bike-hire-setup/'
+  const params = {
+    course_type,
+    supplier_id: schoolId
+  }
+
+  const response = await get(path, params, true)
+
+  return response
+}
+
+export const updateDefaultBikeHire = async (settings, courseType, schoolId) => {
+  const path = 'school/settings/widget/bike-hire-setup'
+  const data = {
+    ...settings,
+    course_type: courseType,
+    supplier_id: schoolId
+  }
+
+  const response = await put(path, data, true)
+
+  return response
 }

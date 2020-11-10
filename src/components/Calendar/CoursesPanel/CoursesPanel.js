@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import moment from 'moment'
+import classnames from 'classnames'
 import CoursesPanelItem from './CoursesPanelItem'
 import EventPanelItem from './EventPanelItem'
 import ShiftPanelItem from '../StaffShift/ShiftPanelItem'
@@ -11,14 +12,13 @@ function CoursesPanel({
   courses,
   date,
   events = [],
-  addingOrder,
-  updateAdding,
   courseId,
   instructors,
   staff,
   isAdmin,
   schools,
-  loadCourses
+  loadCourses,
+  history
 }) {
   const shifts = staff.filter(x => x.event_type === SHIFT_TYPES[0].id)
 
@@ -34,38 +34,35 @@ function CoursesPanel({
 
   return (
     <div className={styles.coursesPanel}>
-      {!addingOrder && (
-        <div className={styles.panel}>
-          <div className={styles.title}>Staff</div>
-
-          <div>
-            {shifts.map(item => (
-              <ShiftPanelItem
-                key={item.id}
-                date={date}
-                instructors={instructors}
-                diary={item}
-                schools={schools}
-                canEdit={isAdmin}
-              />
-            ))}
-          </div>
-
-          {isAdmin && (
-            <Link
-              className={styles.addButton}
-              to={`/calendar/${date}/shifts/add`}>
-              Add staff
-            </Link>
-          )}
-        </div>
-      )}
-
       <div className={styles.panel}>
+        <div className={styles.title}>Staff</div>
+
+        <div>
+          {shifts.map(item => (
+            <ShiftPanelItem
+              key={item.id}
+              date={date}
+              instructors={instructors}
+              diary={item}
+              schools={schools}
+              canEdit={isAdmin}
+            />
+          ))}
+        </div>
+
+        {isAdmin && (
+          <Link
+            className={styles.addButton}
+            to={`/calendar/${date}/shifts/add`}>
+            Add staff
+          </Link>
+        )}
+      </div>
+
+      <div className={classnames(styles.panel)}>
         <div className={styles.title}>Courses</div>
 
         {courses
-          .filter(course => !addingOrder || course.id === addingOrder)
           .sort(({ time: timeA }, { time: timeB }) =>
             timeA.localeCompare(timeB)
           )
@@ -75,15 +72,14 @@ function CoursesPanel({
               key={course.id}
               date={date}
               course={course}
-              addingOrder={addingOrder}
-              updateAdding={updateAdding}
               canEdit={isAdmin}
               instructors={instructors}
               loadCourses={loadCourses}
+              history={history}
             />
           ))}
 
-        {!addingOrder && isAdmin && (
+        {isAdmin && (
           <Link
             className={styles.addButton}
             to={`/calendar/courses/create?date=${date}`}>
@@ -92,29 +88,27 @@ function CoursesPanel({
         )}
       </div>
 
-      {!addingOrder && (
-        <div className={styles.panel}>
-          <div className={styles.title}>Events</div>
+      <div className={styles.panel}>
+        <div className={styles.title}>Events</div>
 
-          <div>
-            {events.map(event => (
-              <EventPanelItem
-                key={event.id}
-                date={date}
-                event={event}
-                schools={schools}
-                instructors={instructors}
-              />
-            ))}
-          </div>
-
-          <Link
-            className={styles.addButton}
-            to={`/calendar/events/create?date=${date}`}>
-            Add event
-          </Link>
+        <div>
+          {events.map(event => (
+            <EventPanelItem
+              key={event.id}
+              date={date}
+              event={event}
+              schools={schools}
+              instructors={instructors}
+            />
+          ))}
         </div>
-      )}
+
+        <Link
+          className={styles.addButton}
+          to={`/calendar/events/create?date=${date}`}>
+          Add event
+        </Link>
+      </div>
     </div>
   )
 }

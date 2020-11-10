@@ -59,13 +59,27 @@ class AddCourseComponent extends Component {
   }
 
   render() {
-    let { course, location, isAdmin, ...rest } = this.props
+    let {
+      course,
+      location,
+      isAdmin,
+      testCentres,
+      defaultTestCentres,
+      ...rest
+    } = this.props
     let parsed = queryString.parse(location.search)
     let date = parsed.date || ''
     let backLink = date === '' ? '/calendar' : `/calendar/${date}`
 
     if (!isAdmin) {
       return <div>No access</div>
+    }
+
+    let filteredCentres = testCentres
+    if (defaultTestCentres.length) {
+      filteredCentres = testCentres.filter(x =>
+        defaultTestCentres.includes(x.id)
+      )
     }
 
     return (
@@ -76,6 +90,7 @@ class AddCourseComponent extends Component {
           <h4 className={styles.addTitle}>Add Course</h4>
           <CourseForm
             {...rest}
+            testCentres={filteredCentres}
             isEditable={true}
             date={date}
             onSubmit={this.onSave.bind(this)}
@@ -97,6 +112,7 @@ const mapStateToProps = (state, ownProps) => {
     course: state.course.single.course,
     instructors: state.instructor.instructors,
     testCentres: state.testCentre.testCentres,
+    defaultTestCentres: state.testCentre.defaultTestCentres,
     error: state.course.single.error,
     pricing: state.course.pricing,
     info: state.info,

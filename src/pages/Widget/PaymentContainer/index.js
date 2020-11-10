@@ -17,6 +17,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { capitalizeFirstLetter } from 'utils/helper'
 import { handleStripePayment } from 'services/stripe'
+import { EMAIL_EXTENSIONS } from 'common/emailExtensions'
 
 const REQUIRED_FIELDS = [
   'first_name',
@@ -102,7 +103,6 @@ class PaymentContainer extends React.Component {
       totalPrice = response.price
       discount = response.discount
     } else {
-      console.log(courseId)
       course = await fetchWidgetSingleCourse(0, courseId)
       if (voucher_code) {
         const training = trainings[0]
@@ -162,8 +162,28 @@ class PaymentContainer extends React.Component {
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
         errors[field] = 'This field is required.'
+        window.document.body.scrollIntoView()
       }
     })
+
+    // validate email
+    if (!errors.email) {
+      if (
+        !details.email.match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+      ) {
+        errors.email = 'Invalid email address.'
+        window.document.body.scrollIntoView()
+      } else {
+        let extension = details.email.split('.')
+        extension = extension[extension.length - 1].toLowerCase()
+        if (!EMAIL_EXTENSIONS.includes(extension)) {
+          errors.email = 'Invalid email extension.'
+          window.document.body.scrollIntoView()
+        }
+      }
+    }
 
     if (Object.keys(errors).length) {
       this.setState({
@@ -305,7 +325,6 @@ class PaymentContainer extends React.Component {
       discount
     } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
-    console.log(course, supplier)
 
     return (
       <React.Fragment>

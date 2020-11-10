@@ -1,6 +1,5 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
-import { FULL_LICENCE_MODULES } from 'common/constants'
 import moment from 'moment'
 
 export const createStripeToken = async (stripe, data) => {
@@ -13,13 +12,16 @@ export const createOrder = async (data, auth = false) => {
 
 export const getInitialSuppliers = () => {
   return window.RIDE_TO_DATA.widget_locations
-    .filter(({ courses }) => courses.length)
     .map(supplier => ({
       ...supplier,
       courses: supplier.courses.filter(
-        ({ constant }) => !FULL_LICENCE_MODULES.includes(constant)
+        course =>
+          course &&
+          course.constant &&
+          !course.constant.startsWith('FULL_LICENCE')
       )
     }))
+    .filter(supplier => supplier.courses.length)
 }
 
 export const getAddress = loc => {
@@ -40,12 +42,29 @@ export const getStartInTime = (now, startTime) => {
     .join(', ')
 }
 
-export const getMotorbikeLabel = (bikeHire, isFullLicence) => {
-  return getBikeHireOptions(isFullLicence)[bikeHire]
+export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
+  const simpleLabels = {
+    auto: !isFullLicence ? 'Automatic Scooter' : 'Automatic',
+    auto_50cc: !isFullLicence
+      ? 'Automatic 50cc Scooter'
+      : 'Automatic 50cc Scooter',
+    manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
+    no: 'Own Bike'
+  }
+
+  if (['auto', 'auto_50cc', 'manual', 'no'].includes(bikeHire)) {
+    return simpleLabels[bikeHire]
+  }
+
+  return getBikeHireOptions(isFullLicence, isInstantBook)[bikeHire]
 }
 
 export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
-  const { pricing } = course
+  const { pricing, course_type } = course
+  if (course_type && course_type.name !== 'CBT Training Renewal') {
+    return pricing.price
+  }
+
   const subTotal =
     bikeHire && bikeHire !== 'no'
       ? pricing.price + pricing.bike_hire_cost
