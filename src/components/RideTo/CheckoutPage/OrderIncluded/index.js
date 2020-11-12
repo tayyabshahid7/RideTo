@@ -89,14 +89,14 @@ function OrderIncluded({
               <span className={styles.text}>Gloves and jacket provided</span>
             </li>
           )}
-          <li>
+          {/* <li>
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
             <span className={styles.text}>
               Test fees and escort to and from test centres
             </span>
-          </li>
+          </li> */}
           {/* {!isWidget && (
             <li>
               <span className={styles.tick}>

@@ -31,7 +31,7 @@ let NavigationBar = ({ history, user, logout }) => {
   }
 
   function handleLogout() {
-    if (window.confirm('Are you sure that you whant to logout?')) {
+    if (window.confirm('Are you sure that you want to logout?')) {
       logout()
       history.push('/')
     }
