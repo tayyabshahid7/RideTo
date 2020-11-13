@@ -175,7 +175,12 @@ const CalendarDayCell = ({
         </div>
         {showPopup && (
           <React.Fragment>
-            <div onClick={handleClose} className={styles.popupBackdrop}></div>
+            <div
+              onClick={handleClose}
+              className={classnames(
+                styles.popupBackdrop,
+                coursePackage.adding && styles.openSidebar
+              )}></div>
 
             <div
               className={classnames(
