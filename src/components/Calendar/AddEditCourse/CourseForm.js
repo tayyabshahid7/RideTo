@@ -737,9 +737,7 @@ class CourseForm extends React.Component {
               </Row>
               {!isFullLicence && (
                 <React.Fragment>
-                  <div className={styles.bikesAvailable}>
-                    <b>Bikes Available</b>
-                  </div>
+                  <div className={styles.bikesAvailable}>Bikes Available</div>
                   {available_auto_bikes && (
                     <Row>
                       <Col>
