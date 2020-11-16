@@ -13,7 +13,7 @@ it('Renders time', () => {
 
 it('Renders selected', () => {
   const wrapper = mount(
-    <CourseTime time="12:00" selected="12:00" color="#FF0000" />
+    <CourseTime time="12:00" courseId={1} selected={1} color="#FF0000" />
   )
   const styles = wrapper
     .find('div')
