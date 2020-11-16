@@ -31,7 +31,8 @@ const CourseSelect = ({
           <CourseTime
             key={course.id}
             time={course.time}
-            selected={selected.time}
+            courseId={course.id}
+            selected={selected.id}
             color={color}
             onClick={() => onChangeCourse(course)}
           />

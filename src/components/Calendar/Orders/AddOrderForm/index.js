@@ -293,7 +293,7 @@ class AddOrderForm extends React.Component {
                 basic
                 name="user_last_name"
                 value={user_last_name}
-                label="Surname *"
+                label="Last Name *"
                 className="form-group"
                 type="text"
                 onChange={this.handleChangeRawEvent}
