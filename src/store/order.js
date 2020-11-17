@@ -54,10 +54,12 @@ const isSending = moduleName => (state = false, action) => {
 }
 
 actions.fetchOrders = common.fetch(MODULE, orderService.fetchOrders)
+
 actions.fetchSupplierOrders = common.fetch(
   MODULE,
   orderService.fetchSupplierOrders
 )
+
 actions.saveTraining = common.save(MODULE, orderService.saveTraining)
 
 actions.sendEmailConfirmation = send(MODULE, orderService.sendConfirmation)
