@@ -22,7 +22,7 @@ test:
 build_staging:
   stage: build
   script:
-    - PUBLIC_URL=$STAGING_AWS_CDN REACT_APP_REST_API_BASE_URL=$STAGING_API_URL REACT_APP_STRIPE_KEY=$STAGING_STRIPE_KEY yarn build
+    - PUBLIC_URL=$STAGING_AWS_CDN REACT_APP_REST_API_BASE_URL=$STAGING_API_URL yarn build
   environment:
     name: staging
     url: https://bike-tests-staging.herokuapp.com
@@ -36,7 +36,7 @@ build_staging:
 build_master:
   stage: build
   script:
-    - PUBLIC_URL=$PRODUCTION_AWS_CDN APPS=widget,rideto REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL REACT_APP_STRIPE_KEY=$PRODUCTION_STRIPE_KEY yarn build
+    - PUBLIC_URL=$PRODUCTION_AWS_CDN APPS=widget,rideto REACT_APP_REST_API_BASE_URL=$PRODUCTION_API_URL yarn build
   environment:
     name: production
     url: https://rideto.com/
@@ -55,8 +55,6 @@ deploy_staging:
     AWS_CLOUDFRONT_ID: E8ZUC9YWATM4A
     AWS_S3_BUCKET: bike-tests-staging
     APPS: widget,rideto
-    AWS_CLOUDFRONT_APP_ID: E2MODPUBRAYF4I
-    AWS_S3_APP_BUCKET: staging.connectmct.com
   script:
     - ./scripts/deploy.sh
   environment:
@@ -75,8 +73,6 @@ deploy_master:
     AWS_CLOUDFRONT_ID: EHLGMCG8HAANI
     AWS_S3_BUCKET: bike-tests
     APPS: widget,rideto
-    AWS_CLOUDFRONT_APP_ID: E2SMV31GMD29WV
-    AWS_S3_APP_BUCKET: www.connectmct.com
   script:
     - ./scripts/deploy.sh
   environment:

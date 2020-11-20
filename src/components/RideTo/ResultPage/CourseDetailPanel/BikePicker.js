@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import { getMotorbikeLabel } from 'services/widget'
 import Loading from 'components/Loading'
 import { BIKE_HIRE } from 'common/constants'
+import { isConnectManual } from '../../../../services/order'
 
 const BikePicker = React.forwardRef(
   (
@@ -41,12 +42,24 @@ const BikePicker = React.forwardRef(
     },
     ref
   ) => {
+    // check validation
+    if (
+      (isOwnFull && bike_hire === BIKE_HIRE.NO) ||
+      (isAutoFull && bike_hire === BIKE_HIRE.AUTO) ||
+      (isAuto50Full && bike_hire === BIKE_HIRE.AUTO_50CC) ||
+      (isAuto125Full && bike_hire === BIKE_HIRE.AUTO_125CC) ||
+      (isManualFull && bike_hire === BIKE_HIRE.MANUAL) ||
+      (isConnectManual && bike_hire === BIKE_HIRE.MANUAL_50CC)
+    ) {
+      onUpdate({ bike_hire: null })
+    }
+
     const fullText = <span className={styles.full}> - Fully Booked</span>
     const manualText = (
       <span className={styles.manualInfo}>
         Please note: If you haven't ridden a manual (geared) bike before and
         expect to complete the CBT training in one day, you may find you need
-        additional training to complete your CBT. If your not sure, call us on
+        additional training to complete your CBT. If you're not sure, call us on
         02036039652 to talk to a member of our friendly team.
       </span>
     )

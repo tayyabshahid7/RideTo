@@ -8,6 +8,7 @@ function OrderIncluded({
   helmetHire,
   pom = false,
   hasGloves,
+  package_hours,
   fullLicence = false,
   isWidget = false,
   items
@@ -89,14 +90,16 @@ function OrderIncluded({
               <span className={styles.text}>Gloves and jacket provided</span>
             </li>
           )}
-          <li>
-            <span className={styles.tick}>
-              <i className="fa fa-check" />
-            </span>{' '}
-            <span className={styles.text}>
-              Test fees and escort to and from test centres
-            </span>
-          </li>
+          {package_hours !== 16 && (
+            <li>
+              <span className={styles.tick}>
+                <i className="fa fa-check" />
+              </span>{' '}
+              <span className={styles.text}>
+                Test fees and escort to and from test centres
+              </span>
+            </li>
+          )}
           {/* {!isWidget && (
             <li>
               <span className={styles.tick}>
