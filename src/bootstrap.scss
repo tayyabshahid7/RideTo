@@ -229,6 +229,63 @@ $font-family-base: 'PT Sans', sans-serif;
   }
 }
 
+.cross-check {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(66, 89, 168, 0.1);
+    transition: 0.4s;
+    border-radius: 2px;
+
+    &:before,
+    &:after {
+      position: absolute;
+      content: '';
+      width: 10px;
+      height: 1px;
+      left: 3px;
+      top: 7px;
+      background-color: white;
+      transition: 0.4s;
+      opacity: 0;
+    }
+
+    &:before {
+      transform: rotate(45deg);
+    }
+
+    &:after {
+      transform: rotate(-45deg);
+    }
+  }
+
+  input:checked + .slider {
+    background-color: var(--color-primary);
+
+    &:before,
+    &:after {
+      opacity: 1;
+    }
+  }
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -301,4 +358,44 @@ $font-family-base: 'PT Sans', sans-serif;
       }
     }
   }
+}
+
+.main-table {
+  display: grid;
+
+  &--cell {
+    padding: 20px 10px 20px 32px;
+    border-bottom: 1px solid #e9eaeb;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    color: rgba(68, 68, 68, 0.8);
+
+    &.header-cell {
+      background: white;
+      color: rgba(68, 68, 68, 0.6);
+      position: sticky;
+      top: 0;
+    }
+  }
+}
+
+.bgcolor-default {
+  background: #ededed;
+  color: rgba(68, 68, 68, 0.8);
+}
+
+.bgcolor-info {
+  background: #f8d69f;
+  color: rgba(68, 68, 68, 0.8);
+}
+
+.bgcolor-success {
+  background: #48b878;
+  color: white;
+}
+
+.bgcolor-danger {
+  background: #f56565;
+  color: white;
 }

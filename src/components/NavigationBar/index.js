@@ -102,6 +102,14 @@ let NavigationBar = ({ history, user, logout }) => {
             <NavLink
               className={styles.navLink}
               activeClassName={styles.activeNavLink}
+              to="/invoices">
+              Invoices
+            </NavLink>
+          </li>
+          <li className={classnames('nav-item', styles.navItem)}>
+            <NavLink
+              className={styles.navLink}
+              activeClassName={styles.activeNavLink}
               to="/customers">
               Customers
             </NavLink>
