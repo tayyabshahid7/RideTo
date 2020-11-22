@@ -11,7 +11,7 @@ import { isAdmin } from 'services/auth'
 import MediaQuery from 'react-responsive'
 import { logout } from 'store/auth'
 import { useMediaQuery } from 'react-responsive'
-import { Mobile } from 'common/breakpoints'
+import { Mobile, Desktop } from 'common/breakpoints'
 import $ from 'jquery'
 
 let NavigationBar = ({ history, user, logout }) => {
@@ -98,14 +98,16 @@ let NavigationBar = ({ history, user, logout }) => {
               Calendar
             </NavLink>
           </li>
-          <li className={classnames('nav-item', styles.navItem)}>
-            <NavLink
-              className={styles.navLink}
-              activeClassName={styles.activeNavLink}
-              to="/invoices">
-              Invoices
-            </NavLink>
-          </li>
+          <Desktop>
+            <li className={classnames('nav-item', styles.navItem)}>
+              <NavLink
+                className={styles.navLink}
+                activeClassName={styles.activeNavLink}
+                to="/invoices">
+                Invoices
+              </NavLink>
+            </li>
+          </Desktop>
           <li className={classnames('nav-item', styles.navItem)}>
             <NavLink
               className={styles.navLink}

@@ -4,7 +4,7 @@ import styles from './styles.scss'
 import { Button } from 'components/ConnectForm'
 import InvoicesTableRow from '../InvoiceTableRow'
 
-const InvoicesTable = props => {
+const InvoicesTable = ({ location, history, match }) => {
   const header = [
     { title: 'Invoice #', field: 'id', width: '2fr' },
     { title: 'Amount', field: 'amount', width: '1.5fr' },
@@ -37,7 +37,9 @@ const InvoicesTable = props => {
     gridTemplateColumns: header.map(x => x.width).join(' ')
   }
 
-  const onNewPayment = () => {}
+  const onNewPayment = () => {
+    history.push('/invoices/new-payment')
+  }
 
   return (
     <div className={styles.container}>

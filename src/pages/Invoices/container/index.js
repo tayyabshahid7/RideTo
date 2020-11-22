@@ -1,10 +1,13 @@
 import React, { Component } from 'react'
+import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
 import StaticSidePanel from 'components/StaticSidePanel'
 import SearchInput from 'components/SearchInput'
 import InvoicesTable from '../components/InvoicesTable'
+import NewPaymentSidebar from '../components/NewPaymentSidebar'
+import RightPanel from 'components/RightPanel'
 import { Button } from 'components/ConnectForm'
 
 const statusOptions = [
@@ -41,6 +44,8 @@ class Orders extends Component {
   fetchOrders() {}
 
   render() {
+    const { location, history, match } = this.props
+
     return (
       <div className={styles.container}>
         <StaticSidePanel>
@@ -66,8 +71,22 @@ class Orders extends Component {
           </Button>
         </StaticSidePanel>
         <div className={styles.tableContainer}>
-          <InvoicesTable />
+          <InvoicesTable location={location} history={history} match={match} />
         </div>
+        <RightPanel location={location} type="full">
+          <Route
+            exact
+            path="/invoices/new-payment"
+            render={routeProps => (
+              <NewPaymentSidebar history={history} {...routeProps} />
+            )}
+          />
+          <Route
+            exact
+            path="/invoices/edit/:id "
+            render={routeProps => <NewPaymentSidebar {...routeProps} />}
+          />
+        </RightPanel>
       </div>
     )
   }
