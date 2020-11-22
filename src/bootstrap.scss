@@ -376,6 +376,7 @@ $font-family-base: 'PT Sans', sans-serif;
       color: rgba(68, 68, 68, 0.6);
       position: sticky;
       top: 0;
+      z-index: 10;
     }
   }
 }

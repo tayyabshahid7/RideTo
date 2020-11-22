@@ -2,11 +2,9 @@ import React from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import { Button } from 'components/ConnectForm'
-import ColorTag from 'components/ColorTag'
-import { IconClose } from 'assets/icons/'
-import { Link } from 'react-router-dom'
+import InvoicesTableRow from '../InvoiceTableRow'
 
-const InvoicesTable = ({}) => {
+const InvoicesTable = props => {
   const header = [
     { title: 'Invoice #', field: 'id', width: '2fr' },
     { title: 'Amount', field: 'amount', width: '1.5fr' },
@@ -26,19 +24,6 @@ const InvoicesTable = ({}) => {
     dueDate: '16 Aug 2020'
   }
 
-  const tagMap = {
-    outstanding: 'default',
-    'partially paid': 'info',
-    paid: 'success',
-    overdue: 'danger',
-    draft: 'default'
-  }
-
-  const getTagType = tag => {
-    const tmp = tag.toLowerCase()
-    return tagMap[tmp] || 'default'
-  }
-
   const records = []
   for (let i = 0; i < 25; i++) {
     records.push(Object.assign({}, dummy))
@@ -51,6 +36,8 @@ const InvoicesTable = ({}) => {
   const tableStyles = {
     gridTemplateColumns: header.map(x => x.width).join(' ')
   }
+
+  const onNewPayment = () => {}
 
   return (
     <div className={styles.container}>
@@ -71,38 +58,14 @@ const InvoicesTable = ({}) => {
         ))}
 
         {records.map((record, index) => (
-          <React.Fragment>
-            {header.map((item, rIndex) => {
-              let cell
-              if (item.field === 'orderId') {
-                cell = (
-                  <Link to={`/orders/${record.orderId}`}>{record.orderId}</Link>
-                )
-              } else if (item.field === 'customer') {
-                cell = (
-                  <Link to={`/customers/${record.customer}`}>
-                    {record.customer}
-                  </Link>
-                )
-              } else if (item.field === 'status') {
-                cell = (
-                  <ColorTag
-                    text={record.status}
-                    type={getTagType(record.status)}
-                  />
-                )
-              } else {
-                cell = <span>{record[item.field]}</span>
-              }
-              return (
-                <div
-                  className="main-table--cell"
-                  key={`${index}-${item.id}-${rIndex}`}>
-                  {cell}
-                </div>
-              )
-            })}
-          </React.Fragment>
+          <InvoicesTableRow
+            key={index}
+            header={header}
+            record={record}
+            index={index}
+            total={records.length}
+            onNewPayment={onNewPayment}
+          />
         ))}
       </div>
     </div>
