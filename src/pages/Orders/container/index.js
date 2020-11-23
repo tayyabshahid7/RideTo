@@ -7,9 +7,11 @@ import PaginationLinks from 'components/PaginationLinks'
 import { getDateFilters } from 'services/order'
 import { changeSchool } from 'store/auth'
 import * as orderModule from 'store/order'
-import Loading from 'components/Loading'
 
-import ConfirmedOrders from 'pages/Orders/components/ConfirmedOrders'
+import Loading from 'components/Loading'
+import StaticSidePanel from 'components/StaticSidePanel'
+import SearchInput from 'components/SearchInput'
+import OrdersTable from 'pages/Orders/components/OrdersTable'
 import OrderFilters from 'pages/Orders/components/OrderFilters'
 import styles from './styles.scss'
 import commonStyles from '../../styles.scss'
@@ -70,6 +72,8 @@ class Orders extends Component {
     })
   }
 
+  onSearch = () => {}
+
   render() {
     const {
       orders,
@@ -83,7 +87,18 @@ class Orders extends Component {
 
     return (
       <div className={styles.container}>
-        <div
+        <StaticSidePanel>
+          <SearchInput placeholder="e.g. order #" onSearch={this.onSearch} />
+          <div className={styles.divider}></div>
+        </StaticSidePanel>
+        <div className={styles.tableContainer}>
+          <OrdersTable
+            loading={isFetching}
+            orders={orders}
+            sortingChange={this.handleSorting}
+          />
+        </div>
+        {/* <div
           className={classnames(
             styles.ordersContainer,
             commonStyles.mainContent
@@ -127,7 +142,7 @@ class Orders extends Component {
               </div>
             )}
           </Loading>
-        </div>
+        </div> */}
       </div>
     )
   }
