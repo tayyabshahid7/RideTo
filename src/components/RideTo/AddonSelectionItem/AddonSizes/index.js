@@ -23,7 +23,7 @@ const AddonSizes = ({ sizes, selected, onClick, sizeRequired }) => {
           Select Size
         </option>
         {sizes.map(size => (
-          <option key={size.code} value={size.code}>
+          <option key={size.code} value={size.code} disabled={!size.quantity}>
             {size.code}
           </option>
         ))}
