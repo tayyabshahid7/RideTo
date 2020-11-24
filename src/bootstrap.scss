@@ -286,6 +286,57 @@ $font-family-base: 'PT Sans', sans-serif;
   }
 }
 
+.general-check {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+  pointer-events: none;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(66, 89, 168, 0.1);
+    transition: 0.4s;
+    border-radius: 2px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      transition: 0.4s;
+      opacity: 0;
+      transform: rotate(45deg);
+      left: 6px;
+      top: 1px;
+      width: 5px;
+      height: 10px;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+      transform: rotate(45deg);
+    }
+  }
+
+  input:checked + .slider {
+    background-color: var(--color-primary);
+
+    &:before {
+      opacity: 1;
+    }
+  }
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;
