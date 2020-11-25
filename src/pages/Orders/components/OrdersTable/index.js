@@ -3,8 +3,18 @@ import classnames from 'classnames'
 import styles from './styles.scss'
 import moment from 'moment'
 import OrdersTableRow from '../OrdersTableRow'
+import { Button, ConnectInput } from 'components/ConnectForm'
+import { IconAngleRight, IconAngleLeft } from 'assets/icons'
 
-const OrdersTable = ({ location, history, match, orders }) => {
+const OrdersTable = ({
+  location,
+  history,
+  match,
+  orders,
+  page,
+  total,
+  onPage
+}) => {
   const paymentStatusMap = {
     PARTIAL_PAYMENT: {
       text: 'Partially Paid',
@@ -55,12 +65,33 @@ const OrdersTable = ({ location, history, match, orders }) => {
   ]
 
   const tableStyles = {
-    gridTemplateColumns: header.map(x => x.width).join(' ')
+    gridTemplateColumns: header.map(x => x.width).join(' '),
+    gridTemplateRows: `repeat(${orders.length + 1}, auto) 1fr`
+  }
+
+  const statsStyle = {
+    gridColumnStart: 1,
+    gridColumnEnd: header.length + 1
   }
 
   const onNewPayment = () => {
     history.push('/invoices/new-payment')
   }
+
+  const handlePageChange = event => {
+    event.persist()
+    pageChanged(parseInt(event.target.value))
+  }
+
+  const pageChanged = page => {
+    page = Math.max(1, page)
+    page = Math.min(Math.ceil(total / 25), page)
+    console.log(page)
+    onPage(page)
+  }
+
+  const statsText = `Showing ${(page - 1) * 25 + 1} to ${page *
+    25} of ${total} orders`
 
   return (
     <div className={styles.container}>
@@ -86,6 +117,33 @@ const OrdersTable = ({ location, history, match, orders }) => {
             onNewPayment={onNewPayment}
           />
         ))}
+        <div style={statsStyle}>
+          <div className={styles.tableStats}>
+            <span className={styles.statsText}>{statsText}</span>
+            <div className={styles.pagination}>
+              <Button
+                color="white"
+                className={styles.pageButton}
+                onClick={() => pageChanged(page - 1)}>
+                <IconAngleLeft />
+              </Button>
+              <div className={styles.pageInput}>
+                <ConnectInput
+                  basic
+                  value={page}
+                  type="number"
+                  onChange={handlePageChange}
+                />
+              </div>
+              <Button
+                color="white"
+                className={styles.pageButton}
+                onClick={() => pageChanged(page + 1)}>
+                <IconAngleRight />
+              </Button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   )

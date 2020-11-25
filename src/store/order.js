@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import { actions as notificationActions } from './notification'
 import common from 'store/common'
 import * as orderService from 'services/order'
+import { FAILURE, REQUEST, SUCCESS, createRequestTypes } from './common'
 
 const MODULE = 'order'
 
@@ -10,6 +11,8 @@ export const FETCH_SUCCESS = common.constant(MODULE, 'FETCH_SUCCESS')
 export const SAVE = common.constant(MODULE, 'SAVE')
 export const SAVE_SUCCESS = common.constant(MODULE, 'SAVE_SUCCESS')
 export const ERROR = common.constant(MODULE, 'ERROR')
+
+const FETCH_ORDER = createRequestTypes('rideto/orders/FETCH')
 
 export const actions = {}
 export const selectors = {}
@@ -74,7 +77,70 @@ selectors.getOrdersByCustomer = ({ items }, customerId) => {
     .filter(({ customer }) => customer === customerId)
 }
 
+actions.fetchFilteredOrders = params => async dispatch => {
+  dispatch({
+    type: FETCH_ORDER[REQUEST],
+    data: { params }
+  })
+
+  try {
+    const response = await orderService.fetchFilteredOrders(params)
+    notificationActions.dispatchSuccess(dispatch, 'Loaded orders')
+    dispatch({
+      type: FETCH_ORDER[SUCCESS],
+      data: {
+        orders: response.results,
+        total: response.count
+      }
+    })
+  } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to load orders')
+    dispatch({ type: FETCH_ORDER[FAILURE] })
+    return false
+  }
+  return true
+}
+
+const initialState = {
+  params: {},
+  loading: false,
+  error: false,
+  total: 0,
+  orders: []
+}
+
+function orderReducer(state = initialState, action) {
+  switch (action.type) {
+    case FETCH_ORDER[REQUEST]: {
+      return {
+        ...state,
+        params: action.data.params,
+        loading: true,
+        error: false
+      }
+    }
+    case FETCH_ORDER[SUCCESS]: {
+      return {
+        ...state,
+        orders: action.data.orders,
+        total: action.data.total,
+        loading: false
+      }
+    }
+    case FETCH_ORDER[FAILURE]: {
+      return {
+        ...state,
+        loading: false,
+        error: true
+      }
+    }
+    default:
+      return state
+  }
+}
+
 export default combineReducers({
+  orders: orderReducer,
   items: common.items(MODULE),
   isSaving: common.isSaving(MODULE),
   isSending: isSending(MODULE),

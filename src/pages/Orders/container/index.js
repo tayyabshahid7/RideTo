@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import classnames from 'classnames'
@@ -8,8 +8,9 @@ import { getDateFilters } from 'services/order'
 import { changeSchool } from 'store/auth'
 import * as orderModule from 'store/order'
 import { Button } from 'components/ConnectForm'
+import { getDateRangeByType } from 'common/info'
 
-import Loading from 'components/Loading'
+import LoadingMask from 'components/LoadingMask'
 import StaticSidePanel from 'components/StaticSidePanel'
 import SearchInput from 'components/SearchInput'
 import OrdersTable from 'pages/Orders/components/OrdersTable'
@@ -18,42 +19,75 @@ import OrdersMultiFilter from 'pages/Orders/components/OrdersMultiFilter'
 import styles from './styles.scss'
 import commonStyles from '../../styles.scss'
 
-function Orders({ orders, total, supplierId, user, changeSchool, isFetching }) {
+function Orders({
+  orders,
+  suppliers,
+  info,
+  total,
+  user,
+  changeSchool,
+  fetchFilteredOrders,
+  isFetching
+}) {
   const [filterChanged, setFilterChanged] = useState(false)
   const [dateFilter, setDateFilter] = useState(null)
-  const [locationFilter, setLocationFilter] = useState(null)
+  const [selectedSuppliers, setSelectedSuppliers] = useState([])
   const [selectedCourses, setSelectedCourses] = useState([])
   const [selectedStatuses, setSelectedStatuses] = useState([])
+  const [fromDate, setFromDate] = useState(null)
+  const [toDate, setToDate] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [page, setPage] = useState(1)
 
   const dateFilters = [
     { text: 'Today', value: 'today' },
     { text: 'All Time', value: 'all' },
-    { text: 'This Week', value: 'week' },
-    { text: 'This Month', value: 'month' },
-    { text: 'This Year', value: 'year' }
+    { text: 'This Week', value: 'this week' },
+    { text: 'This Month', value: 'this month' },
+    { text: 'This Year', value: 'this year' }
   ]
+  const supplierOptions = suppliers.map(x => ({
+    text: x.name,
+    value: x.id
+  }))
 
-  const locationFilters = [
-    { text: 'RideTo Demo School', value: 0 },
-    { text: 'RideTo London School', value: 1 },
-    { text: 'Orpington School', value: 2 }
-  ]
-
-  const courseFilters = [
-    { text: 'Course 1', value: 0 },
-    { text: 'Course 2', value: 1 },
-    { text: 'Course 3', value: 2 },
-    { text: 'Course 4', value: 3 }
-  ]
+  const courseFilters = info.courseTypes.map(x => ({
+    text: x.name,
+    value: x.constant
+  }))
 
   const statusFilters = [
-    { text: 'Confirmed', value: 'confirmed' },
-    { text: 'Pending', value: 'pending' },
-    { text: 'Cancelled', value: 'cancelled' },
-    { text: 'Completed', value: 'completed' },
-    { text: 'Not Completed', value: 'not_completed' },
-    { text: 'Not Attended', value: 'not_attended' }
+    { text: 'Confirmed', value: 'TRAINING_CONFIRMED' },
+    { text: 'Failed', value: 'TRAINING_FAILED' },
+    { text: 'Cancelled', value: 'TRAINING_CANCELLED' },
+    {
+      text: 'Waiting School Confirmation',
+      value: 'TRAINING_WAITING_SCHOOL_CONFIRMATION'
+    },
+    {
+      text: 'Waiting Rider Confirmation',
+      value: 'TRAINING_WAITING_RIDER_CONFIRMATION'
+    },
+    { text: 'No Show', value: 'TRAINING_NO_SHOW' },
+    { text: 'Passed', value: 'TRAINING_PASSED' },
+    { text: 'Order Denined', value: 'TRAINING_ORDER_DENIED' }
   ]
+
+  useEffect(() => {
+    fetchOrders()
+  }, [searchQuery, page])
+
+  // useEffect(() => {
+  //   console.log('*** fetching')
+  //   console.log(fromDate, toDate)
+  //   // const { supplierId } = this.props
+  //   // const { dateFilter, search, ordering, page } = this.state
+  //   // const sdate = dateFilter.getStartDate()
+  //   // const edate = dateFilter.getEndDate()
+  //   // const params = { sdate, edate, search, page, ordering }
+
+  //   // this.props.fetchSupplierOrders(supplierId, params)
+  // }, [fromDate, toDate, selectedSuppliers, selectedCourses, selectedStatuses])
 
   // constructor(props) {
   //   super(props)
@@ -80,16 +114,6 @@ function Orders({ orders, total, supplierId, user, changeSchool, isFetching }) {
   //   this.fetchOrders()
   // }
 
-  // fetchOrders() {
-  //   const { supplierId } = this.props
-  //   const { dateFilter, search, ordering, page } = this.state
-  //   const sdate = dateFilter.getStartDate()
-  //   const edate = dateFilter.getEndDate()
-  //   const params = { sdate, edate, search, page, ordering }
-
-  //   this.props.fetchSupplierOrders(supplierId, params)
-  // }
-
   // handleChangePage(page) {
   //   this.setState({ page }, () => this.fetchOrders())
   // }
@@ -114,13 +138,29 @@ function Orders({ orders, total, supplierId, user, changeSchool, isFetching }) {
 
   const handleClearFilter = () => {
     setDateFilter(null)
-    setLocationFilter(null)
+    setSelectedSuppliers([])
     setSelectedStatuses([])
     setSelectedCourses([])
   }
 
   const handleApplyFilter = () => {
     setFilterChanged(false)
+    setPage(1)
+    fetchOrders()
+  }
+
+  const fetchOrders = () => {
+    const params = {
+      sdate: fromDate,
+      edate: toDate,
+      supplier_id: selectedSuppliers.join(','),
+      course_type__constant: selectedCourses.join(','),
+      status: selectedStatuses.join(','),
+      search: searchQuery,
+      page
+    }
+
+    fetchFilteredOrders(params)
   }
 
   const handleFilterChanged = () => {
@@ -129,11 +169,20 @@ function Orders({ orders, total, supplierId, user, changeSchool, isFetching }) {
 
   const handleDateFilter = filter => {
     setDateFilter(filter)
+    const { fromDate, toDate } = getDateRangeByType(filter)
+    setFromDate(fromDate)
+    setToDate(toDate)
     handleFilterChanged()
   }
 
-  const handleLocationFilter = filter => {
-    setLocationFilter(filter)
+  const handleSupplierSelect = filter => {
+    let tmp = selectedSuppliers.slice()
+    if (selectedSuppliers.includes(filter)) {
+      tmp = tmp.filter(x => x !== filter)
+    } else {
+      tmp.push(filter)
+    }
+    setSelectedSuppliers(tmp)
     handleFilterChanged()
   }
 
@@ -159,7 +208,14 @@ function Orders({ orders, total, supplierId, user, changeSchool, isFetching }) {
     handleFilterChanged()
   }
 
-  const onSearch = () => {}
+  const onSearch = query => {
+    setSearchQuery(query)
+    setPage(1)
+  }
+
+  const onPage = page => {
+    setPage(page)
+  }
 
   return (
     <div className={styles.container}>
@@ -173,11 +229,11 @@ function Orders({ orders, total, supplierId, user, changeSchool, isFetching }) {
           onSelect={handleDateFilter}
         />
         <div className={styles.divider}></div>
-        <OrdersRadioFilter
+        <OrdersMultiFilter
           title="Location"
-          filters={locationFilters}
-          selectedFilter={locationFilter}
-          onSelect={handleLocationFilter}
+          filters={supplierOptions}
+          selectedFilters={selectedSuppliers}
+          onSelect={handleSupplierSelect}
         />
         <div className={styles.divider}></div>
         <OrdersMultiFilter
@@ -212,9 +268,13 @@ function Orders({ orders, total, supplierId, user, changeSchool, isFetching }) {
       <div className={styles.tableContainer}>
         <OrdersTable
           loading={isFetching}
-          orders={orders}
+          orders={orders.orders}
+          total={orders.total}
+          page={page}
+          onPage={onPage}
           sortingChange={handleSorting}
         />
+        <LoadingMask loading={orders.loading} />
       </div>
       {filterChanged && (
         <div className={styles.floatingApply}>
@@ -283,8 +343,10 @@ const mapStateToProps = (state, ownProps) => {
     total,
     isFetching,
     user: state.auth.user,
-    schoolName: state.auth.schoolName,
-    orders: orderModule.selectors.getItems(state.order)
+    suppliers: state.auth.user.suppliers,
+    info: state.info,
+    // orders: orderModule.selectors.getItems(state.order)
+    orders: state.order.orders
   }
 }
 

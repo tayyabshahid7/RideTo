@@ -22,7 +22,7 @@ const OrdersTableRow = ({ header, record, index, total }) => {
   return (
     <React.Fragment>
       {header.map((item, rIndex) => {
-        let cell
+        let cell = null
         if (item.field === 'id') {
           if (record.order) {
             cell = (
@@ -34,7 +34,7 @@ const OrdersTableRow = ({ header, record, index, total }) => {
             cell = null
           }
         } else if (item.field === 'phone') {
-          cell = <span>{record.customer.phone}</span>
+          cell = record.customer ? <span>{record.customer.phone}</span> : null
         } else if (item.field === 'course_type') {
           cell = <span>{getCourseTitle(record.course_type)}</span>
         } else if (item.field === 'bike_type') {
@@ -43,11 +43,13 @@ const OrdersTableRow = ({ header, record, index, total }) => {
           let text = options[record.bike_type]
           cell = <span>{text}</span>
         } else if (item.field === 'customer') {
-          cell = (
-            <Link to={`/customers/${record.customer.id}`}>
-              {record.customer.full_name}
-            </Link>
-          )
+          if (record.customer) {
+            cell = (
+              <Link to={`/customers/${record.customer.id}`}>
+                {record.customer.full_name}
+              </Link>
+            )
+          }
         } else if (item.field === 'payment_status') {
           if (record.paymentStatus) {
             cell = (
@@ -56,8 +58,6 @@ const OrdersTableRow = ({ header, record, index, total }) => {
                 type={record.paymentStatus.type}
               />
             )
-          } else {
-            cell = null
           }
         } else if (item.field === 'status') {
           if (record.orderStatus) {
