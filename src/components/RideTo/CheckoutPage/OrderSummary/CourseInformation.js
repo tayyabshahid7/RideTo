@@ -5,6 +5,7 @@ import { getCourseTitle } from 'services/course'
 import MapComponent from 'components/RideTo/MapComponent'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import RefundInfo from 'components/RideTo/CheckoutPage/RefundInfo'
+import { BIKE_HIRE } from 'common/constants'
 import classnames from 'classnames'
 import axios from 'axios'
 
@@ -144,7 +145,7 @@ function CourseInformation({
           )}
         </div>
 
-        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no' ? (
+        {priceInfo.bike_hire_cost > 0 && bike_hire !== BIKE_HIRE.NO ? (
           <div className={styles.bikeHireCost}>
             {renderRow(
               'Bike Hire Cost',
