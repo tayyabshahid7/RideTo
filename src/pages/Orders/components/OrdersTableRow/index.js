@@ -1,4 +1,6 @@
 import React, { useRef } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import ColorTag from 'components/ColorTag'
@@ -7,6 +9,9 @@ import { Link } from 'react-router-dom'
 import { getCourseTitle } from 'services/course'
 import { getCustomerBikeTypeOptions } from 'services/order'
 import { IconRightArrow, IconEdit, IconTrash, IconPound } from 'assets/icons'
+import { isAdmin } from 'services/auth'
+import * as orderModule from 'store/order'
+import { deleteOrderTraining } from 'store/course'
 
 const OrdersTableRow = ({
   header,
@@ -14,7 +19,11 @@ const OrdersTableRow = ({
   index,
   total,
   onViewOrder,
-  onEditOrder
+  onEditOrder,
+  isAdmin,
+  params,
+  deleteOrderTraining,
+  fetchFilteredOrders
 }) => {
   const menuRef = useRef()
 
@@ -31,10 +40,34 @@ const OrdersTableRow = ({
     onEditOrder(order)
   }
 
+  const handleDeleteOrder = order => {
+    menuRef.current.hideMenu()
+
+    if (
+      window.confirm(
+        `Are you sure you want to delete the training from Order ${order.direct_friendly_id}?`
+      )
+    ) {
+      // try {
+      //   await deleteOrderTraining(course.supplier, order.id)
+      //   fetchFilteredOrders(params)
+      //   handleBack()
+      // } catch {
+      //   console.log("Couldn't delete order.")
+      // }
+      fetchFilteredOrders(params)
+    }
+  }
+
   const handleViewOrder = order => {
     menuRef.current.hideMenu()
     onViewOrder(order)
   }
+
+  const canDelete =
+    record &&
+    record.order &&
+    (record.order.source === 'DASHBOARD' || record.order.source === 'WIDGET')
 
   return (
     <React.Fragment>
@@ -104,10 +137,14 @@ const OrdersTableRow = ({
                 <span>Edit Order</span>
               </div>
               <div className={styles.spacing} />
-              <div className={styles.menuItem}>
-                <IconTrash />
-                <span>Delete Order</span>
-              </div>
+              {isAdmin && canDelete && (
+                <div
+                  className={styles.menuItem}
+                  onClick={() => handleDeleteOrder(record)}>
+                  <IconTrash />
+                  <span>Delete Order</span>
+                </div>
+              )}
               <div className={styles.divider}></div>
               <div className={styles.menuItem}>
                 <IconPound />
@@ -133,4 +170,27 @@ const OrdersTableRow = ({
   )
 }
 
-export default OrdersTableRow
+const mapStateToProps = (state, ownProps) => {
+  return {
+    loading: state.course.single.loading,
+    course: state.course.single.course,
+    instructors: state.instructor.instructors,
+    schools: state.auth.user.suppliers,
+    params: state.order.orders.params,
+    isAdmin: isAdmin(state.auth.user)
+  }
+}
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      deleteOrderTraining,
+      fetchFilteredOrders: orderModule.actions.fetchFilteredOrders
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrdersTableRow)
