@@ -188,13 +188,3 @@ export const showReview = order => {
     order.supplierrating_set.length === 0
   )
 }
-
-export const getBikeHireDetail = bike_hire => {
-  if (bike_hire === 'no') {
-    return 'Own bike, helmet and gloves required'
-  } else if (bike_hire === 'auto') {
-    return `Automatic scooter, helmet & gloves provided`
-  } else if (bike_hire === 'manual') {
-    return 'Manual motorcycle, helmet & gloves provided'
-  } else return ''
-}
