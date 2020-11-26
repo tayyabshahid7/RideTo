@@ -231,8 +231,14 @@ function Orders({
         />
         <Route
           exact
-          path="/orders/dumb"
-          render={routeProps => <div>null</div>}
+          path="/orders/edit/:id"
+          render={routeProps => (
+            <OrdersDetailPanel
+              {...routeProps}
+              isEdit={true}
+              orders={orders.orders}
+            />
+          )}
         />
       </RightPanel>
       {filterChanged && (

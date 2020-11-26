@@ -1,5 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
-import classnames from 'classnames'
+import React, { useEffect, useState } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
@@ -7,7 +6,8 @@ import DateHeading from 'components/Calendar/DateHeading'
 import {
   getSingleCourse,
   resetSingleCourse,
-  deleteOrderTraining
+  deleteOrderTraining,
+  updateOrder
 } from 'store/course'
 import * as orderModule from 'store/order'
 import { getPaymentStatus } from 'services/order'
@@ -16,6 +16,7 @@ import CourseSummary from 'components/Calendar/CoursesPanel/CourseSummary'
 import OrdersPanelDetailForm from '../OrdersPanelDetailForm'
 import { Button } from 'components/ConnectForm'
 import LoadingMask from 'components/LoadingMask'
+import Loading from 'components/Loading'
 import { isAdmin } from 'services/auth'
 
 const OrdersDetailPanel = ({
@@ -29,12 +30,14 @@ const OrdersDetailPanel = ({
   isAdmin,
   getSingleCourse,
   resetSingleCourse,
+  updateOrder,
   deleteOrderTraining,
   fetchFilteredOrders,
+  isEdit = false,
   params
 }) => {
   const [order, setOrder] = useState(null)
-  const [editMode, setEditMode] = useState(false)
+  const [editMode, setEditMode] = useState(isEdit)
 
   useEffect(() => {
     resetSingleCourse()
@@ -57,13 +60,13 @@ const OrdersDetailPanel = ({
 
   if (!orderId) {
     handleBack()
-    return null
+    return <Loading loading />
   }
 
   const tmpOrder = orders.find(x => x.id === orderId)
   if (!tmpOrder) {
     handleBack()
-    return null
+    return <Loading loading />
   }
 
   if (!order) {
@@ -71,7 +74,7 @@ const OrdersDetailPanel = ({
   }
 
   if (!order || !course) {
-    return null
+    return <Loading loading />
   }
 
   const paymentStatus = getPaymentStatus(order.order.payment_status)
@@ -97,6 +100,20 @@ const OrdersDetailPanel = ({
   const onViewInvoice = () => {}
 
   const onAddPayment = () => {}
+
+  const onSave = async (updatedOrder, updateDate = false) => {
+    const tmp = Object.assign({}, updatedOrder)
+    await updateOrder({
+      trainingId: order.id,
+      order: {
+        ...tmp,
+        full_edit: updateDate
+      }
+    })
+
+    fetchFilteredOrders(params)
+    handleBack()
+  }
 
   const onDelete = async () => {
     if (!canDelete) {
@@ -141,6 +158,7 @@ const OrdersDetailPanel = ({
         <OrdersPanelDetailForm
           onCancel={() => setEditMode(false)}
           onDelete={onDelete}
+          onSave={onSave}
           order={order}
           course={course}
         />
@@ -187,6 +205,7 @@ const mapDispatchToProps = dispatch =>
       getSingleCourse,
       resetSingleCourse,
       deleteOrderTraining,
+      updateOrder,
       fetchFilteredOrders: orderModule.actions.fetchFilteredOrders
     },
     dispatch

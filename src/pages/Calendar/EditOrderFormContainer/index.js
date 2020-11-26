@@ -32,6 +32,7 @@ class EditOrderFormContainer extends React.Component {
     const {
       order,
       orderDetail,
+      courseDetail,
       info,
       loading,
       onCancel,
@@ -57,6 +58,7 @@ class EditOrderFormContainer extends React.Component {
             date={date}
             time={time}
             courses={courses}
+            courseDetail={courseDetail}
             times={times}
             loadTimes={this.handleLoadTimes}
             sendEmailConfirmation={sendEmailConfirmation}

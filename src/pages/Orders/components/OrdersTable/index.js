@@ -60,8 +60,11 @@ const OrdersTable = ({
   }
 
   const onViewOrder = order => {
-    console.log(order)
     history.push(`/orders/detail/${order.id}`)
+  }
+
+  const onEditOrder = order => {
+    history.push(`/orders/edit/${order.id}`)
   }
 
   const handlePageChange = event => {
@@ -101,6 +104,7 @@ const OrdersTable = ({
             index={index}
             total={orders.length}
             onViewOrder={onViewOrder}
+            onEditOrder={onEditOrder}
           />
         ))}
         <div style={statsStyle}>

@@ -91,6 +91,7 @@ class EditOrderForm extends React.Component {
       date,
       time,
       courses,
+      courseDetail,
       onSave,
       times,
       loadTimes,
@@ -120,7 +121,9 @@ class EditOrderForm extends React.Component {
       !direct_friendly_id.includes('DIRECT') &&
       !direct_friendly_id.includes('WIDGET')
 
-    const course = courses.find(course => course.id === order.school_course)
+    const course = courseDetail
+      ? courseDetail
+      : courses.find(course => course.id === order.school_course)
 
     let prevBikeType = null
     if (this.props.order) {
