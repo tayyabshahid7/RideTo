@@ -38,6 +38,36 @@ const FILTERS = [
   }
 ]
 
+const PAYMENT_STATUS_MAP = {
+  PARTIAL_PAYMENT: {
+    text: 'Partially Paid',
+    type: 'info'
+  },
+  PAID: {
+    text: 'Paid',
+    type: 'success'
+  },
+  OUTSTANDING: {
+    text: 'Outstanding',
+    type: 'default'
+  },
+  PENDING: {
+    text: 'Outstanding',
+    type: 'default'
+  }
+}
+
+export const getPaymentStatus = status => {
+  const item = PAYMENT_STATUS_MAP[status]
+  if (item) {
+    return item
+  }
+  return {
+    text: status,
+    type: 'default'
+  }
+}
+
 export const getDateFilters = () => {
   return FILTERS
 }

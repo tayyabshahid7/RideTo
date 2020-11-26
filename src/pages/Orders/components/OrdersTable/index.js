@@ -5,6 +5,7 @@ import moment from 'moment'
 import OrdersTableRow from '../OrdersTableRow'
 import { Button, ConnectInput } from 'components/ConnectForm'
 import { IconAngleRight, IconAngleLeft } from 'assets/icons'
+import { getPaymentStatus } from 'services/order'
 
 const OrdersTable = ({
   location,
@@ -15,21 +16,6 @@ const OrdersTable = ({
   total,
   onPage
 }) => {
-  const paymentStatusMap = {
-    PARTIAL_PAYMENT: {
-      text: 'Partially Paid',
-      type: 'info'
-    },
-    PAID: {
-      text: 'Paid',
-      type: 'success'
-    },
-    OUTSTANDING: {
-      text: 'Outstanding',
-      type: 'default'
-    }
-  }
-
   const orderStatusMap = {
     CONFIRMED: {
       text: 'Confirmed',
@@ -45,10 +31,9 @@ const OrdersTable = ({
     }
   }
 
-  console.log(orders)
   orders.forEach(order => {
     order.training_date = moment(order.training_date_time).format('DD MMM YY')
-    order.paymentStatus = paymentStatusMap[order.order.payment_status]
+    order.paymentStatus = getPaymentStatus(order.order.payment_status)
     order.orderStatus = orderStatusMap[order.order.status]
   })
 
@@ -74,8 +59,9 @@ const OrdersTable = ({
     gridColumnEnd: header.length + 1
   }
 
-  const onNewPayment = () => {
-    history.push('/invoices/new-payment')
+  const onViewOrder = order => {
+    console.log(order)
+    history.push(`/orders/detail/${order.id}`)
   }
 
   const handlePageChange = event => {
@@ -114,7 +100,7 @@ const OrdersTable = ({
             record={record}
             index={index}
             total={orders.length}
-            onNewPayment={onNewPayment}
+            onViewOrder={onViewOrder}
           />
         ))}
         <div style={statsStyle}>

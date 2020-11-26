@@ -14,6 +14,9 @@ const NewPaymentSidebar = ({ history }) => {
         subtitle="Direct #35210"
         onBack={handleBack}
       />
+      <div className={styles.priceLine}>
+
+      </div>
     </div>
   )
 }

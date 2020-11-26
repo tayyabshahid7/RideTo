@@ -11,6 +11,7 @@
   align-items: center;
   justify-content: center;
   margin-left: auto;
+  margin-right: 15px;
 
   > span {
     display: inline-block;
@@ -42,7 +43,7 @@
   border-radius: 4px;
   position: absolute;
   top: 0;
-  right: 15px;
+  right: 30px;
   left: auto;
   background: white;
   z-index: 51;

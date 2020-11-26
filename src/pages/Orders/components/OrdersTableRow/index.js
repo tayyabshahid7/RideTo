@@ -8,7 +8,7 @@ import { getCourseTitle } from 'services/course'
 import { getCustomerBikeTypeOptions } from 'services/order'
 import { IconRightArrow, IconEdit, IconTrash, IconPound } from 'assets/icons'
 
-const OrdersTableRow = ({ header, record, index, total }) => {
+const OrdersTableRow = ({ header, record, index, total, onViewOrder }) => {
   const menuRef = useRef()
 
   const isRight = field => {
@@ -17,6 +17,11 @@ const OrdersTableRow = ({ header, record, index, total }) => {
 
   const calcDown = index => {
     return index > 4 && index > total - 5
+  }
+
+  const handleViewOrder = order => {
+    menuRef.current.hideMenu()
+    onViewOrder(order)
   }
 
   return (
@@ -73,7 +78,9 @@ const OrdersTableRow = ({ header, record, index, total }) => {
         } else if (item.field === 'action') {
           cell = (
             <ActionThreeDot ref={menuRef} down={calcDown(index)}>
-              <div className={styles.menuItem}>
+              <div
+                className={styles.menuItem}
+                onClick={() => handleViewOrder(record)}>
                 <IconRightArrow />
                 <span>View Order</span>
               </div>
