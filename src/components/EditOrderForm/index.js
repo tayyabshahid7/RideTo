@@ -274,17 +274,17 @@ class EditOrderForm extends React.Component {
               */}
               <div className={styles.actions}>
                 <div>
-                  <Button
-                    disabled={isSending}
-                    color="primary"
-                    outline
-                    onClick={this.handleConfirmation}>
-                    Send Confirmation
+                  <Button type="submit" color="primary" disabled={!isChanged}>
+                    Save Order
                   </Button>
                 </div>
                 <div>
-                  <Button type="submit" color="primary" disabled={!isChanged}>
-                    Save
+                  <Button
+                    disabled={isSending}
+                    color="white"
+                    outline
+                    onClick={this.handleConfirmation}>
+                    Send Confirmation
                   </Button>
                 </div>
                 <div>
@@ -307,7 +307,6 @@ class EditOrderForm extends React.Component {
             </div>
           )}
         </Form>
-        {/* </Loading> */}
       </div>
     )
   }

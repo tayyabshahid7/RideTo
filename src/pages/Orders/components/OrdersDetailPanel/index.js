@@ -4,11 +4,18 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
 import DateHeading from 'components/Calendar/DateHeading'
-import { getSingleCourse, resetSingleCourse } from 'store/course'
+import {
+  getSingleCourse,
+  resetSingleCourse,
+  deleteOrderTraining
+} from 'store/course'
+import * as orderModule from 'store/order'
 import { getPaymentStatus } from 'services/order'
 import ColorTag from 'components/ColorTag'
 import CourseSummary from 'components/Calendar/CoursesPanel/CourseSummary'
+import OrdersPanelDetailForm from '../OrdersPanelDetailForm'
 import { Button } from 'components/ConnectForm'
+import LoadingMask from 'components/LoadingMask'
 import { isAdmin } from 'services/auth'
 
 const OrdersDetailPanel = ({
@@ -18,11 +25,16 @@ const OrdersDetailPanel = ({
   match,
   schools,
   instructors,
-  getSingleCourse,
+  loading,
   isAdmin,
-  resetSingleCourse
+  getSingleCourse,
+  resetSingleCourse,
+  deleteOrderTraining,
+  fetchFilteredOrders,
+  params
 }) => {
   const [order, setOrder] = useState(null)
+  const [editMode, setEditMode] = useState(false)
 
   useEffect(() => {
     resetSingleCourse()
@@ -64,7 +76,6 @@ const OrdersDetailPanel = ({
 
   const paymentStatus = getPaymentStatus(order.order.payment_status)
 
-  console.log(order, course)
   let customerName = ' '
   if (order.customer) {
     customerName = order.customer.full_name
@@ -79,13 +90,33 @@ const OrdersDetailPanel = ({
     order.order &&
     (order.order.source === 'DASHBOARD' || order.order.source === 'WIDGET')
 
-  const onEditOrder = () => {}
+  const onEditOrder = () => {
+    setEditMode(true)
+  }
 
   const onViewInvoice = () => {}
 
   const onAddPayment = () => {}
 
-  const onDelete = () => {}
+  const onDelete = async () => {
+    if (!canDelete) {
+      return
+    }
+
+    if (
+      window.confirm(
+        `Are you sure you want to delete the training from Order ${order.direct_friendly_id}?`
+      )
+    ) {
+      try {
+        await deleteOrderTraining(course.supplier, order.id)
+        fetchFilteredOrders(params)
+        handleBack()
+      } catch {
+        console.log("Couldn't delete order.")
+      }
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -106,25 +137,35 @@ const OrdersDetailPanel = ({
         instructors={instructors}
         embedded={false}
       />
-      <div className={styles.actions}>
-        <Button color="primary" onClick={onEditOrder}>
-          Edit Order
-        </Button>
-        <Button color="white" onClick={onViewInvoice}>
-          View Invoice
-        </Button>
-        <Button color="white" onClick={onAddPayment}>
-          Add Payment
-        </Button>
-        {isAdmin && (
-          <React.Fragment>
-            <div className={styles.divider}></div>
-            <Button color="danger" disabled={!canDelete} onClick={onDelete}>
-              Delete
-            </Button>
-          </React.Fragment>
-        )}
-      </div>
+      {editMode ? (
+        <OrdersPanelDetailForm
+          onCancel={() => setEditMode(false)}
+          onDelete={onDelete}
+          order={order}
+          course={course}
+        />
+      ) : (
+        <div className={styles.actions}>
+          <Button color="primary" onClick={onEditOrder}>
+            Edit Order
+          </Button>
+          <Button color="white" onClick={onViewInvoice}>
+            View Invoice
+          </Button>
+          <Button color="white" onClick={onAddPayment}>
+            Add Payment
+          </Button>
+          {isAdmin && (
+            <React.Fragment>
+              <div className={styles.divider}></div>
+              <Button color="danger" disabled={!canDelete} onClick={onDelete}>
+                Delete
+              </Button>
+            </React.Fragment>
+          )}
+        </div>
+      )}
+      <LoadingMask loading={loading} />
     </div>
   )
 }
@@ -135,6 +176,7 @@ const mapStateToProps = (state, ownProps) => {
     course: state.course.single.course,
     instructors: state.instructor.instructors,
     schools: state.auth.user.suppliers,
+    params: state.order.orders.params,
     isAdmin: isAdmin(state.auth.user)
   }
 }
@@ -143,7 +185,9 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getSingleCourse,
-      resetSingleCourse
+      resetSingleCourse,
+      deleteOrderTraining,
+      fetchFilteredOrders: orderModule.actions.fetchFilteredOrders
     },
     dispatch
   )

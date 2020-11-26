@@ -14,14 +14,15 @@ class EditOrderFormContainer extends React.Component {
   }
 
   async handleLoadTimes(date, defaultTime) {
-    const { order, course_type, getDayCourseTimes } = this.props
+    const { order, orderDetail, course_type, getDayCourseTimes } = this.props
+    const orderObject = orderDetail || order
 
     await getDayCourseTimes(
       {
-        schoolId: order.training_location,
+        schoolId: orderObject.training_location,
         date,
         course_type,
-        bike_type: order.bike_hire
+        bike_type: orderObject.bike_hire
       },
       defaultTime
     )
@@ -30,6 +31,7 @@ class EditOrderFormContainer extends React.Component {
   render() {
     const {
       order,
+      orderDetail,
       info,
       loading,
       onCancel,
@@ -50,7 +52,7 @@ class EditOrderFormContainer extends React.Component {
           <EditOrderForm
             onSave={onSave}
             onCancel={onCancel}
-            order={order}
+            order={orderDetail || order}
             info={info}
             date={date}
             time={time}
