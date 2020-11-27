@@ -9,21 +9,24 @@ const OrdersPanelDetailForm = ({
   onDelete
 }) => {
   const handleSave = (updatedOrder, updateDate = false) => {
-    const data = {
-      id: updatedOrder.id,
-      customer: updatedOrder.customer,
-      order: {
-        payment_status: updatedOrder.order.payment_status
-      },
-      status: updatedOrder.status,
-      notes: updatedOrder.notes || '',
-      requested_date: updatedOrder.requested_date,
-      training_date_time: updatedOrder.training_date_time,
-      bike_type: updatedOrder.bike_type,
-      school_course: updatedOrder.school_course
+    if (updateDate) {
+      onSave(updatedOrder, updateDate)
+    } else {
+      const data = {
+        id: updatedOrder.id,
+        customer: updatedOrder.customer,
+        order: {
+          payment_status: updatedOrder.order.payment_status
+        },
+        status: updatedOrder.status,
+        notes: updatedOrder.notes || '',
+        requested_date: updatedOrder.requested_date,
+        training_date_time: updatedOrder.training_date_time,
+        bike_type: updatedOrder.bike_type,
+        school_course: updatedOrder.school_course
+      }
+      onSave(data, updateDate)
     }
-
-    onSave(data, updateDate)
   }
 
   const tmpOrder = course.orders.find(x => x.id === order.id)
