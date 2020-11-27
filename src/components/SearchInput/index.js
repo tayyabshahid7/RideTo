@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import styles from './styles.scss'
 
-const SearchInput = ({ onSearch, placeholder = '' }) => {
+const SearchInput = ({ value = '', onSearch, placeholder = '' }) => {
   const debounceChange = useCallback(
     debounce(value => {
       if (onSearch) {
@@ -25,6 +25,7 @@ const SearchInput = ({ onSearch, placeholder = '' }) => {
       <div>
         <input
           type="text"
+          defaultValue={value}
           placeholder={placeholder}
           className={classnames(styles.input)}
           onChange={onChange}

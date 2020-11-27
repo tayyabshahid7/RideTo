@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import classnames from 'classnames'
 import { changeSchool } from 'store/auth'
 import * as orderModule from 'store/order'
 import { Button } from 'components/ConnectForm'
@@ -26,6 +25,9 @@ function Orders({
   history,
   match,
   fetchFilteredOrders,
+  loadOrderState,
+  params,
+  paramLoaded,
   isFetching
 }) {
   const [filterChanged, setFilterChanged] = useState(false)
@@ -73,7 +75,33 @@ function Orders({
   ]
 
   useEffect(() => {
-    fetchOrders()
+    loadOrderState()
+  }, [])
+
+  useEffect(() => {
+    if (paramLoaded) {
+      setDateFilter(params.dateFilter)
+      if (params.supplier_id) {
+        setSelectedSuppliers(
+          params.supplier_id.split(',').map(x => parseInt(x))
+        )
+      }
+      if (params.course_type__constant) {
+        setSelectedCourses(params.course_type__constant.split(','))
+      }
+      if (params.status) {
+        setSelectedStatuses(params.status.split(','))
+      }
+      setSearchQuery(params.search)
+      setToDate(params.edate)
+      setFromDate(params.sdate)
+    }
+  }, [paramLoaded])
+
+  useEffect(() => {
+    if (paramLoaded) {
+      fetchOrders()
+    }
   }, [searchQuery, page])
 
   const handleSorting = () => {}
@@ -99,6 +127,7 @@ function Orders({
       course_type__constant: selectedCourses.join(','),
       status: selectedStatuses.join(','),
       search: searchQuery,
+      dateFilter,
       page
     }
 
@@ -162,7 +191,11 @@ function Orders({
   return (
     <div className={styles.container}>
       <StaticSidePanel>
-        <SearchInput placeholder="e.g. order #" onSearch={onSearch} />
+        <SearchInput
+          value={searchQuery}
+          placeholder="e.g. order #"
+          onSearch={onSearch}
+        />
         <div className={styles.divider}></div>
         <OrdersRadioFilter
           title="Training Date"
@@ -259,7 +292,9 @@ const mapStateToProps = (state, ownProps) => {
     user: state.auth.user,
     suppliers: state.auth.user.suppliers,
     info: state.info,
-    orders: state.order.orders
+    orders: state.order.orders,
+    params: state.order.orders.params,
+    paramLoaded: state.order.orders.paramLoaded
   }
 }
 

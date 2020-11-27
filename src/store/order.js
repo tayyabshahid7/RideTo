@@ -3,6 +3,7 @@ import { actions as notificationActions } from './notification'
 import common from 'store/common'
 import * as orderService from 'services/order'
 import { FAILURE, REQUEST, SUCCESS, createRequestTypes } from './common'
+import { saveState, loadState } from 'services/localStorage'
 
 const MODULE = 'order'
 
@@ -13,6 +14,7 @@ export const SAVE_SUCCESS = common.constant(MODULE, 'SAVE_SUCCESS')
 export const ERROR = common.constant(MODULE, 'ERROR')
 
 const FETCH_ORDER = createRequestTypes('rideto/orders/FETCH')
+const LOAD_ORDER_FILTERS = 'rideto/orders/LOAD_ORDER_FILTERS'
 
 export const actions = {}
 export const selectors = {}
@@ -77,6 +79,12 @@ selectors.getOrdersByCustomer = ({ items }, customerId) => {
     .filter(({ customer }) => customer === customerId)
 }
 
+actions.loadOrderState = () => dispatch => {
+  dispatch({
+    type: LOAD_ORDER_FILTERS
+  })
+}
+
 actions.fetchFilteredOrders = params => async dispatch => {
   dispatch({
     type: FETCH_ORDER[REQUEST],
@@ -103,6 +111,7 @@ actions.fetchFilteredOrders = params => async dispatch => {
 
 const initialState = {
   params: {},
+  paramLoaded: false,
   loading: false,
   error: false,
   total: 0,
@@ -111,7 +120,34 @@ const initialState = {
 
 function orderReducer(state = initialState, action) {
   switch (action.type) {
+    case LOAD_ORDER_FILTERS: {
+      const savedState = loadState()
+      let params = {}
+      if (
+        savedState.order &&
+        savedState.order.orders &&
+        savedState.order.orders.params
+      ) {
+        params = savedState.order.orders.params
+      }
+
+      return {
+        ...state,
+        orders: [],
+        params,
+        paramLoaded: true
+      }
+    }
     case FETCH_ORDER[REQUEST]: {
+      saveState({
+        order: {
+          orders: {
+            params: action.data.params,
+            orders: []
+          }
+        }
+      })
+
       return {
         ...state,
         params: action.data.params,
