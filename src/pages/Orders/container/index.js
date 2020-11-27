@@ -26,6 +26,7 @@ function Orders({
   match,
   fetchFilteredOrders,
   loadOrderState,
+  resetOrderParamsLoaded,
   params,
   paramLoaded,
   isFetching
@@ -39,6 +40,7 @@ function Orders({
   const [toDate, setToDate] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
+  const [paramsRefreshed, setParamsRefreshed] = useState(false)
 
   const dateFilters = [
     { text: 'Today', value: 'today' },
@@ -76,6 +78,10 @@ function Orders({
 
   useEffect(() => {
     loadOrderState()
+
+    return () => {
+      resetOrderParamsLoaded()
+    }
   }, [])
 
   useEffect(() => {
@@ -95,6 +101,7 @@ function Orders({
       setSearchQuery(params.search)
       setToDate(params.edate)
       setFromDate(params.sdate)
+      setParamsRefreshed(true)
     }
   }, [paramLoaded])
 
@@ -102,7 +109,7 @@ function Orders({
     if (paramLoaded) {
       fetchOrders()
     }
-  }, [searchQuery, page])
+  }, [searchQuery, page, paramsRefreshed])
 
   const handleSorting = () => {}
 

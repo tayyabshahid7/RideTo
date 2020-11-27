@@ -15,6 +15,7 @@ export const ERROR = common.constant(MODULE, 'ERROR')
 
 const FETCH_ORDER = createRequestTypes('rideto/orders/FETCH')
 const LOAD_ORDER_FILTERS = 'rideto/orders/LOAD_ORDER_FILTERS'
+const RESET_PARAMS_LOADED = 'rideto/orders/RESET_PARAMS_LOADED'
 
 export const actions = {}
 export const selectors = {}
@@ -85,6 +86,12 @@ actions.loadOrderState = () => dispatch => {
   })
 }
 
+actions.resetOrderParamsLoaded = () => dispatch => {
+  dispatch({
+    type: RESET_PARAMS_LOADED
+  })
+}
+
 actions.fetchFilteredOrders = params => async dispatch => {
   dispatch({
     type: FETCH_ORDER[REQUEST],
@@ -120,6 +127,12 @@ const initialState = {
 
 function orderReducer(state = initialState, action) {
   switch (action.type) {
+    case RESET_PARAMS_LOADED: {
+      return {
+        ...state,
+        paramLoaded: false
+      }
+    }
     case LOAD_ORDER_FILTERS: {
       const savedState = loadState()
       let params = {}
