@@ -322,6 +322,18 @@ select {
   margin-left: 0.5rem;
 }
 
+.buttonSecondary {
+  background-color: #ededed;
+  border-color: #ededed;
+  color: rgba(68, 68, 68, 0.4);
+
+  &:hover {
+    color: #ffffff;
+    background-color: darken(#ededed, 10%);
+    border-color: darken(#ededed, 10%);
+  }
+}
+
 .buttonPrimary {
   background-color: var(--color-primary);
 
