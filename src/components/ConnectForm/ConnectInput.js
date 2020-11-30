@@ -10,6 +10,7 @@ export default function ConnectInput(props) {
     label,
     prefix,
     type = 'text',
+    size,
     onChange,
     noWrapLabel,
     value,
@@ -104,6 +105,7 @@ export default function ConnectInput(props) {
           className={classnames(
             styles.input,
             basic && styles.basic,
+            size === 'lg' && styles.large,
             prefix && styles.prefixInput
           )}
           id={id || name}

@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import { Button } from 'components/ConnectForm'
 import InvoicesTableRow from '../InvoiceTableRow'
+import InvoiceForm from '../InvoiceForm'
 
 const InvoicesTable = ({ location, history, match }) => {
+  const [showForm, setShowForm] = useState(false)
+
   const header = [
     { title: 'Invoice #', field: 'id', width: '2fr' },
     { title: 'Amount', field: 'amount', width: '1.5fr' },
@@ -41,11 +44,19 @@ const InvoicesTable = ({ location, history, match }) => {
     history.push('/invoices/new-payment')
   }
 
+  const showInvoiceForm = () => {
+    setShowForm(true)
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <label className={styles.headerLabel}>Invoices</label>
-        <Button type="submit" color="primary" className={styles.headerButton}>
+        <Button
+          type="submit"
+          color="primary"
+          className={styles.headerButton}
+          onClick={showInvoiceForm}>
           <span className={styles.plusIcon}></span>
           New Invoice
         </Button>
@@ -70,6 +81,7 @@ const InvoicesTable = ({ location, history, match }) => {
           />
         ))}
       </div>
+      {showForm && <InvoiceForm onClose={() => setShowForm(false)} />}
     </div>
   )
 }
