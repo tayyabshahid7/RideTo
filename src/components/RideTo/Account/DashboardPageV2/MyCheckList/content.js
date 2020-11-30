@@ -26,7 +26,8 @@ export const ITEMS = [
   },
   {
     title: 'Delivery Rider Bikes For Hire',
-    url: 'https://rideto.typeform.com/to/tt64qL',
+    url:
+      'https://www.rideto.com/blog/Rent-To-Buy-Electric-Scooters-RideTo-Scooter-Hire',
     id: 'delivery_bikes'
   },
   {

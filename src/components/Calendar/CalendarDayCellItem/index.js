@@ -39,7 +39,8 @@ const CalendarDayCellItem = ({
 
     if (
       coursePackage.adding &&
-      item.course_type.constant.startsWith('FULL_LICENCE')
+      item.course_type.constant.startsWith('FULL_LICENCE') &&
+      item.spaces_available
     ) {
       if (isInPackage) {
         removeCourseFromPackage(item)

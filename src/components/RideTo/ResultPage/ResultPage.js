@@ -304,7 +304,9 @@ class ResultPage extends Component {
       return
     }
     if (courseType === 'FULL_LICENCE') {
-      const bikeHire = `BIKE_TYPE_${selectedLicenceType}_${bike_hire}`.toUpperCase()
+      let tmp = bike_hire.split('_')
+      tmp = tmp[tmp.length - 1]
+      const bikeHire = `BIKE_TYPE_${selectedLicenceType}_${tmp}`.toUpperCase()
       trainings = selectedTimeDays.map(timeDay => ({
         selected_availability: timeDay,
         course_type: courseType,

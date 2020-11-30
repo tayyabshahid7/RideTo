@@ -36,7 +36,7 @@ class UserMenu extends Component {
   }
 
   handleLogout(e) {
-    if (window.confirm('Are you sure that you whant to logout?')) {
+    if (window.confirm('Are you sure that you want to logout?')) {
       this.props.logout()
       this.props.history.push('/')
     } else {

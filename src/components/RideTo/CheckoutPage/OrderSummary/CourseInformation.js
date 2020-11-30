@@ -5,6 +5,7 @@ import { getCourseTitle } from 'services/course'
 import MapComponent from 'components/RideTo/MapComponent'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import RefundInfo from 'components/RideTo/CheckoutPage/RefundInfo'
+import { BIKE_HIRE } from 'common/constants'
 import classnames from 'classnames'
 import axios from 'axios'
 
@@ -63,6 +64,7 @@ function CourseInformation({
     gloves_jacket_included,
     helmet_hire
   } = checkoutData
+
   const [diffDays, setDiffDays] = useState()
   useEffect(() => {
     async function calculateDiffDays() {
@@ -75,6 +77,7 @@ function CourseInformation({
 
   const requested_time =
     trainings && trainings[0] && trainings[0].requested_time
+  const package_hours = trainings && trainings[0] && trainings[0].package_hours
   const lat = parseFloat(window.RIDETO_PAGE.checkout.supplier.latitude)
   const lng = parseFloat(window.RIDETO_PAGE.checkout.supplier.longitude)
   const isFullLicence = courseType === 'FULL_LICENCE'
@@ -142,7 +145,7 @@ function CourseInformation({
           )}
         </div>
 
-        {priceInfo.bike_hire_cost > 0 && bike_hire !== 'no' ? (
+        {priceInfo.bike_hire_cost > 0 && bike_hire !== BIKE_HIRE.NO ? (
           <div className={styles.bikeHireCost}>
             {renderRow(
               'Bike Hire Cost',
@@ -168,6 +171,7 @@ function CourseInformation({
           <div className={styles.subtitle}>WHAT'S INCLUDED</div>
           <OrderIncluded
             fullLicence={isFullLicence}
+            package_hours={package_hours}
             bikeHire={bike_hire}
             hasGloves={gloves_jacket_included}
             helmetHire={helmet_hire}

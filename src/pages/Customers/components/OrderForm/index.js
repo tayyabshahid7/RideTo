@@ -121,7 +121,14 @@ class OrderForm extends React.Component {
       isAdmin
     } = this.props
     const { editable, isChanged, showMore, inputsDisabled } = this.state
-    const course = this.props.order.school_course
+    let course = this.props.order.school_course
+    if (!course) {
+      course = this.props.order
+      if (course.supplier && typeof course.supplier === 'object') {
+        course.supplier = course.supplier.id
+      }
+      course.course_type = course.selected_licence
+    }
 
     const courses = courseTypes.filter(
       type =>
@@ -129,9 +136,11 @@ class OrderForm extends React.Component {
         !['TFL_ONE_ON_ONE'].includes(type.constant)
     )
 
-    course.course_type = courses.find(
-      x => x.id === parseInt(course.course_type_id)
-    )
+    if (courses.length) {
+      course.course_type = courses.find(
+        x => x.id === parseInt(course.course_type_id)
+      )
+    }
 
     if (!editable) {
       return null

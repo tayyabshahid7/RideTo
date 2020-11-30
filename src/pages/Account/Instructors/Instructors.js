@@ -1,4 +1,7 @@
 import React, { Fragment } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
 import {
   ConnectInput,
   ConnectReactSelect,
@@ -7,6 +10,7 @@ import {
 import { Modal, ModalHeader, ModalBody } from 'reactstrap'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import { actions as notifyActions } from 'store/notification'
 
 class Instructors extends React.Component {
   constructor(props) {
@@ -21,11 +25,49 @@ class Instructors extends React.Component {
     }
   }
 
+  validateDetail = () => {
+    const { showNotification } = this.props
+    const { selectedInstructor: staff } = this.state
+
+    if (!staff.first_name) {
+      showNotification('Error', 'Please input first name', 'danger')
+      return false
+    }
+
+    if (!staff.last_name) {
+      showNotification('Error', 'Please input last name', 'danger')
+      return false
+    }
+
+    if (!staff.email) {
+      showNotification('Error', 'Please input email', 'danger')
+      return false
+    }
+
+    if (!staff.password) {
+      showNotification('Error', 'Please input password', 'danger')
+      return false
+    }
+
+    if (!staff.supplier.length) {
+      showNotification('Error', 'Please select schools', 'danger')
+      return false
+    }
+
+    return true
+  }
+
   handleSave = event => {
     event.preventDefault()
 
     const { newInstructor, editInstructor } = this.props
     const { addNew, selectedInstructor, photo } = this.state
+
+    // validation
+    if (addNew && !this.validateDetail()) {
+      return
+    }
+
     const formData = new FormData()
     Object.keys(selectedInstructor).forEach(field => {
       if (field === 'supplier') {
@@ -231,7 +273,6 @@ class Instructors extends React.Component {
                     label="First Name"
                     className="form-group"
                     onChange={this.handleChange}
-                    required={addNew}
                   />
                   <ConnectInput
                     name="last_name"
@@ -239,7 +280,6 @@ class Instructors extends React.Component {
                     label="Last Name"
                     className="form-group"
                     onChange={this.handleChange}
-                    required={addNew}
                   />
                   <ConnectInput
                     name="email"
@@ -247,7 +287,6 @@ class Instructors extends React.Component {
                     label="Email"
                     className="form-group"
                     onChange={this.handleChange}
-                    required={addNew}
                   />
                   <ConnectInput
                     name="password"
@@ -255,7 +294,6 @@ class Instructors extends React.Component {
                     label="Password"
                     className="form-group"
                     onChange={this.handleChange}
-                    required={addNew}
                     type="password"
                     minLength="6"
                   />
@@ -285,4 +323,17 @@ class Instructors extends React.Component {
   }
 }
 
-export default Instructors
+const mapStateToProps = (state, ownProps) => ({})
+
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      showNotification: notifyActions.showNotification
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Instructors)

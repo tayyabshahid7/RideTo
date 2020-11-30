@@ -7,10 +7,7 @@ const FILTERS = [
   {
     name: 'Today',
     getStartDate: () => moment().format(DATE_FORMAT),
-    getEndDate: () =>
-      moment()
-        .add(1, 'day')
-        .format(DATE_FORMAT)
+    getEndDate: () => moment().format(DATE_FORMAT)
   },
   {
     name: 'This Week',
@@ -183,14 +180,4 @@ export const showReview = order => {
     order.supplierrating_set &&
     order.supplierrating_set.length === 0
   )
-}
-
-export const getBikeHireDetail = bike_hire => {
-  if (bike_hire === 'no') {
-    return 'Own bike, helmet and gloves required'
-  } else if (bike_hire === 'auto') {
-    return `Automatic scooter, helmet & gloves provided`
-  } else if (bike_hire === 'manual') {
-    return 'Manual motorcycle, helmet & gloves provided'
-  } else return ''
 }
