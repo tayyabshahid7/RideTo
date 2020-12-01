@@ -26,3 +26,8 @@
     z-index: 1004;
   }
 }
+
+.fullPanel {
+  top: 75px;
+  height: calc(100% - 75px);
+}

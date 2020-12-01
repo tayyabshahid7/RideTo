@@ -1,17 +1,89 @@
 .container {
-  width: 100%;
-  flex: 1 1 1px;
-  // flex: 1 1 auto;
+  display: grid;
+  border-top: 1px solid rgba(64, 64, 64, 0.1);
+  grid-template-columns: 275px 1fr;
+  height: 100%;
 }
-.orderFilters {
-  margin-top: 16px;
-  margin-bottom: 16px;
 
-  h2 {
-    margin: 0;
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 32px 0;
+}
+
+.sectionTitle {
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.sectionItem {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionLabel {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(----color-dark-light);
+  margin: 0;
+}
+
+.filterButton {
+  width: 100%;
+  margin: 0 0 8px !important;
+}
+
+.tableContainer {
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+.filterActions {
+}
+
+.floatingApply {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  background: var(--color-primary);
+  border-radius: 4px;
+  padding: 8px 8px 8px 16px;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  z-index: 11;
+
+  span {
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 50px;
+  }
+
+  button {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 2px;
   }
 }
 
-.sortByTraining {
-  font-size: 1rem;
+.exclamation {
+  display: inline-block;
+  text-align: center;
+  width: 24px;
+  height: 24px;
+  background: #f8d69f;
+  border-radius: 50%;
+  color: rgba(68, 68, 68, 0.8);
+  font-size: 12px;
+  line-height: 24px;
+  margin-right: 16px;
+  font-style: normal;
 }

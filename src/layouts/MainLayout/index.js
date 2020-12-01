@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import NavigationBar from 'components/NavigationBar'
 import Dashboard from 'pages/Dashboard/container'
 import Orders from 'pages/Orders/container'
+import Invoices from 'pages/Invoices/container'
 import CustomerListContainer from 'pages/Customers/ListContainer'
 import CustomerDetailContainer from 'pages/Customers/DetailContainer'
 import NotificationContainer from 'pages/Notifications/NotificationContainer'
@@ -47,6 +48,9 @@ const MainLayout = ({
 
   const isGreyBg = pathname.match(/\/customers\/\d+/)
   const isCalendar = pathname.match(/\/calendar/g)
+  const isInvoices = pathname.match(/\/invoices/g)
+  const isOrders = pathname.match(/\/orders/g)
+  const hideFooter = isCalendar || isInvoices || isOrders
 
   if (!instructorsLoaded) {
     return <Loading loading cover />
@@ -60,11 +64,12 @@ const MainLayout = ({
         className={classnames(
           styles.bodyContainer,
           isGreyBg && styles.bodyContainerGrey,
-          isCalendar && styles.bodyContainerCalendar
+          hideFooter && styles.bodyContainerCalendar
         )}
         id="body-container">
         <Switch>
           <Route path="/orders" component={Orders} />
+          <Route path="/invoices" component={Invoices} />
           <Route path="/calendar/:date?/:type?/:id?" component={Calendar} />
           <Route path="/customers" component={CustomerListContainer} exact />
           <Route
@@ -76,7 +81,7 @@ const MainLayout = ({
           <Route path="/terms" component={Terms} />
           <Route exact path="/" component={Dashboard} />
         </Switch>
-        {!isCalendar && <Footer />}
+        {!hideFooter && <Footer />}
       </div>
       <NotificationContainer />
     </div>

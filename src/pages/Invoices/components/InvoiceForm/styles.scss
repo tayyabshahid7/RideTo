@@ -1,0 +1,161 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 17px 16px 22px;
+  background: #fbfcfd;
+  border-bottom: 1px solid rgba(#444, 0.1);
+
+  h6 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: 500;
+    color: #444;
+  }
+}
+
+.innerContent {
+  width: 100%;
+  max-width: 684px;
+  margin: 0 auto;
+}
+
+.content {
+  width: 100%;
+  padding: 100px 50px;
+  flex: 1 1 1px;
+  overflow: auto;
+}
+
+.blockHeader {
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 16px;
+
+  span {
+    opacity: 0.6;
+  }
+}
+
+.invoiceLine {
+  display: grid;
+  grid-template-columns: 1fr 343px;
+  align-items: center;
+  margin-bottom: 12px;
+
+  > div {
+    margin: 0;
+  }
+}
+
+.label {
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  margin: 0;
+  color: rgba(#444, 0.6);
+}
+
+.value {
+  color: #444;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 32px 0;
+}
+
+.lineRow {
+  display: grid;
+  grid-template-columns: 4fr 1fr 1fr 120px 12px;
+  grid-gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+  margin-right: -27px;
+
+  > div {
+    margin: 0 !important;
+  }
+}
+
+.closeIcon {
+  transition: all ease 0.3s;
+  position: relative;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+
+  &:before,
+  &:after {
+    content: '';
+    width: 15px;
+    height: 1px;
+    top: 7px;
+    left: 0;
+    background: #444;
+    position: absolute;
+    display: block;
+    transition: all ease 0.3s;
+  }
+
+  &:before {
+    transform: rotate(45deg);
+  }
+
+  &:after {
+    transform: rotate(-45deg);
+  }
+
+  &:hover {
+    &:before,
+    &:after {
+      background: var(--color-primary);
+    }
+  }
+}
+
+.link {
+  color: var(--color-primary);
+  cursor: pointer;
+  margin: 0;
+}
+
+.lineSummary {
+  width: 220px;
+  margin-left: auto;
+}
+
+.subRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    width: 113px;
+
+    + button {
+      margin-left: 16px;
+    }
+  }
+}

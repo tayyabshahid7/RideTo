@@ -132,8 +132,7 @@
     "start:rideto": "APP=rideto node scripts/start.js",
     "start:widget": "APP=widget node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom",
-    "precommit": "lint-staged"
+    "test": "node scripts/test.js --env=jsdom"
   },
   "lint-staged": {
     "*.js": [

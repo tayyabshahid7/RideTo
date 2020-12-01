@@ -1,8 +1,9 @@
 import React from 'react'
 import styles from './styles.scss'
+import classnames from 'classnames'
 import { matchPath } from 'react-router'
 
-function RightPanel({ children, location }) {
+function RightPanel({ children, location, type }) {
   const hasMatchingRoute = children.some(({ props: { exact, path } }) =>
     matchPath(location.pathname, {
       exact,
@@ -14,7 +15,15 @@ function RightPanel({ children, location }) {
     return null
   }
 
-  return <div className={styles.rightPanel}>{children}</div>
+  return (
+    <div
+      className={classnames(
+        styles.rightPanel,
+        type === 'full' && styles.fullPanel
+      )}>
+      {children}
+    </div>
+  )
 }
 
 export default RightPanel

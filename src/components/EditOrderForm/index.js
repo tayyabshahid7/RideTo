@@ -91,6 +91,7 @@ class EditOrderForm extends React.Component {
       date,
       time,
       courses,
+      courseDetail,
       onSave,
       times,
       loadTimes,
@@ -120,7 +121,9 @@ class EditOrderForm extends React.Component {
       !direct_friendly_id.includes('DIRECT') &&
       !direct_friendly_id.includes('WIDGET')
 
-    const course = courses.find(course => course.id === order.school_course)
+    const course = courseDetail
+      ? courseDetail
+      : courses.find(course => course.id === order.school_course)
 
     let prevBikeType = null
     if (this.props.order) {
@@ -274,17 +277,17 @@ class EditOrderForm extends React.Component {
               */}
               <div className={styles.actions}>
                 <div>
-                  <Button
-                    disabled={isSending}
-                    color="primary"
-                    outline
-                    onClick={this.handleConfirmation}>
-                    Send Confirmation
+                  <Button type="submit" color="primary" disabled={!isChanged}>
+                    Save Order
                   </Button>
                 </div>
                 <div>
-                  <Button type="submit" color="primary" disabled={!isChanged}>
-                    Save
+                  <Button
+                    disabled={isSending}
+                    color="white"
+                    outline
+                    onClick={this.handleConfirmation}>
+                    Send Confirmation
                   </Button>
                 </div>
                 <div>
@@ -307,7 +310,6 @@ class EditOrderForm extends React.Component {
             </div>
           )}
         </Form>
-        {/* </Loading> */}
       </div>
     )
   }

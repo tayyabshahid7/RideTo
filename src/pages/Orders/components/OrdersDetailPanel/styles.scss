@@ -1,0 +1,39 @@
+.container {
+  position: relative;
+}
+
+.priceLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.price {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  color: #444;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 24px 0;
+}
+
+.actions {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+
+  button {
+    width: 100%;
+
+    + button {
+      margin-left: 0 !important;
+      margin-top: 8px;
+    }
+  }
+}

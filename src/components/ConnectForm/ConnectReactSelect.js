@@ -19,6 +19,7 @@ export default function ConnectReactSelect({
   closeMenuOnSelect = true,
   labelField = 'name',
   valueField = 'id',
+  size = 'normal',
   required,
   basic,
   textStyle = false,
@@ -40,7 +41,7 @@ export default function ConnectReactSelect({
       ...provided,
       borderRadius: 0,
       borderColor: '#e4e4e4',
-      minHeight: '32px',
+      minHeight: size === 'normal' ? '32px' : '40px',
       fontSize: '11px',
       fontWeight: 500
     }),

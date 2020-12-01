@@ -1,0 +1,55 @@
+.container {
+  position: relative;
+}
+
+.trigger {
+  cursor: pointer;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-left: auto;
+  margin-right: 15px;
+
+  > span {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--color-primary);
+
+    + span {
+      margin-top: 3px;
+    }
+  }
+}
+
+.backdrop {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+}
+
+.dropdown {
+  padding: 16px;
+  width: 228px;
+  border: 1px solid rgba(68, 68, 68, 0.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  position: absolute;
+  top: 0;
+  right: 30px;
+  left: auto;
+  background: white;
+  z-index: 51;
+}
+
+.showUp {
+  top: auto !important;
+  bottom: 0;
+}

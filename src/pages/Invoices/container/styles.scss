@@ -1,0 +1,44 @@
+.container {
+  display: grid;
+  border-top: 1px solid rgba(64, 64, 64, 0.1);
+  grid-template-columns: 275px 1fr;
+  height: 100%;
+}
+
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 32px 0;
+}
+
+.sectionTitle {
+  font-size: 15px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--color-dark);
+  margin: 0;
+}
+
+.sectionItem {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sectionLabel {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(----color-dark-light);
+  margin: 0;
+}
+
+.filterButton {
+  width: 100%;
+}
+
+.tableContainer {
+  height: 100%;
+  overflow: hidden;
+}
