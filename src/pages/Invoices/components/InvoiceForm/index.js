@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import DateHeading from 'components/Calendar/DateHeading'
-import InvoicesPaymentForm from '../InvoicesPaymentForm'
 import styles from './styles.scss'
 import CloseButton from 'components/common/CloseButton'
 import {
@@ -15,7 +13,6 @@ const InvoiceForm = ({ onClose }) => {
   const [customer, setCustomer] = useState(null)
   const [email, setEmail] = useState('')
   const [notes, setNotes] = useState('')
-  const [lineItems, setLineItems] = useState([])
 
   useEffect(() => {}, [])
 
@@ -42,7 +39,7 @@ const InvoiceForm = ({ onClose }) => {
 
   const handleChangeNote = event => {
     const { value } = event.target
-    setEmail(value)
+    setNotes(value)
   }
 
   return (

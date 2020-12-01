@@ -56,6 +56,10 @@ const InvoicesPaymentForm = ({ history }) => {
 
     setFormData(tmp)
     setEdited(true)
+    // TODO: remove this later
+    if (edited && cardElement) {
+      return
+    }
   }
 
   const onStripeFormReady = el => {
