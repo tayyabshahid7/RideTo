@@ -74,6 +74,7 @@ const InvoiceFormLineItems = ({ data }) => {
             name="price"
             value={line.price}
             type="number"
+            prefix="£"
             onChange={event => handleChange(event, line, index)}
           />
           <div className={styles.closeIcon} onClick={() => removeLine(index)} />
