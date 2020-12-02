@@ -8,6 +8,8 @@ import {
   Button
 } from 'components/ConnectForm'
 import InvoiceFormLineItems from './InvoiceFormLineItems'
+import SearchCustomerInput from 'components/SearchCustomerInput'
+import SearchOrderInput from 'components/SearchOrderInput'
 
 const InvoiceForm = ({ onClose }) => {
   const [customer, setCustomer] = useState(null)
@@ -42,6 +44,10 @@ const InvoiceForm = ({ onClose }) => {
     setNotes(value)
   }
 
+  const handleOrderChange = () => {}
+
+  const handleCustomerChange = () => {}
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -55,14 +61,7 @@ const InvoiceForm = ({ onClose }) => {
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Customer</label>
-            <ConnectReactSelect
-              value={customer}
-              onChange={handleChangeOption}
-              size="big"
-              options={options}
-              isMulti={false}
-              closeMenuOnSelect={true}
-            />
+            <SearchCustomerInput onChange={handleCustomerChange} />
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>School</label>
@@ -88,14 +87,7 @@ const InvoiceForm = ({ onClose }) => {
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Order</label>
-            <ConnectReactSelect
-              value={customer}
-              onChange={handleChangeOption}
-              size="big"
-              options={options}
-              isMulti={false}
-              closeMenuOnSelect={true}
-            />
+            <SearchOrderInput onChange={handleOrderChange} />
           </div>
           <div className={styles.divider} />
 
