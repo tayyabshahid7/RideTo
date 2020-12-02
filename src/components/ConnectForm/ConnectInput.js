@@ -9,6 +9,7 @@ export default function ConnectInput(props) {
   let {
     label,
     prefix,
+    prefixBig = false,
     type = 'text',
     size,
     onChange,
@@ -98,7 +99,15 @@ export default function ConnectInput(props) {
         </label>
       )}
       <div className={styles.inputHolder}>
-        {prefix && <span className={styles.prefix}>{prefix}</span>}
+        {prefix && (
+          <span
+            className={classnames(
+              styles.prefix,
+              prefixBig && styles.prefixBig
+            )}>
+            {prefix}
+          </span>
+        )}
         <input
           {...rest}
           name={name}
@@ -106,7 +115,8 @@ export default function ConnectInput(props) {
             styles.input,
             basic && styles.basic,
             size === 'lg' && styles.large,
-            prefix && styles.prefixInput
+            prefix && styles.prefixInput,
+            prefixBig && styles.prefixBigInput
           )}
           id={id || name}
           type={type}
