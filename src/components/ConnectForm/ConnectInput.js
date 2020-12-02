@@ -13,6 +13,7 @@ export default function ConnectInput(props) {
     type = 'text',
     size,
     onChange,
+    readOnly = false,
     noWrapLabel,
     value,
     id,
@@ -57,6 +58,7 @@ export default function ConnectInput(props) {
               className={classnames(styles.input, basic && styles.basic)}
               id={id || name}
               type="text"
+              readOnly={readOnly}
               disabled={disabled}
               required={required}
             />

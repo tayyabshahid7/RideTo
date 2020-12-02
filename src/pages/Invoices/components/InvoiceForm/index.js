@@ -9,10 +9,13 @@ import {
 } from 'components/ConnectForm'
 import InvoiceFormLineItems from './InvoiceFormLineItems'
 import SearchCustomerInput from 'components/SearchCustomerInput'
-import SearchOrderInput from 'components/SearchOrderInput'
 
 const InvoiceForm = ({ onClose }) => {
   const [customer, setCustomer] = useState(null)
+  const [order, setOrder] = useState(null)
+  const [supplier, setSupplier] = useState(null)
+  const [course, setCourse] = useState(null)
+  const [orderOptions, setOrderOptions] = useState([])
   const [email, setEmail] = useState('')
   const [notes, setNotes] = useState('')
 
@@ -30,13 +33,8 @@ const InvoiceForm = ({ onClose }) => {
   ]
 
   const handleChangeOption = value => {
-    console.log(value)
-    setCustomer(value)
-  }
-
-  const handleChangeEmail = event => {
-    const { value } = event.target
-    setEmail(value)
+    // console.log(value)
+    // setCustomer(value)
   }
 
   const handleChangeNote = event => {
@@ -44,9 +42,29 @@ const InvoiceForm = ({ onClose }) => {
     setNotes(value)
   }
 
-  const handleOrderChange = () => {}
+  const handleOrderChange = value => {
+    setOrder(value)
+    // TODO: fetch order detail and determine school and course
+  }
 
-  const handleCustomerChange = () => {}
+  const handleCustomerChange = value => {
+    setCustomer(value)
+    const tmp = value.orders.map(x => {
+      let id = x.split('#')
+      if (id.length > 1) {
+        id = id[1]
+      } else {
+        id = id[0]
+      }
+      return {
+        id: id,
+        name: x
+      }
+    })
+    setOrderOptions(tmp)
+    setOrder(null)
+    setEmail(value.email)
+  }
 
   return (
     <div className={styles.container}>
@@ -66,7 +84,7 @@ const InvoiceForm = ({ onClose }) => {
           <div className={styles.invoiceLine}>
             <label className={styles.label}>School</label>
             <ConnectReactSelect
-              value={customer}
+              value={supplier}
               onChange={handleChangeOption}
               size="big"
               options={options}
@@ -77,7 +95,7 @@ const InvoiceForm = ({ onClose }) => {
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Course</label>
             <ConnectReactSelect
-              value={customer}
+              value={course}
               onChange={handleChangeOption}
               size="big"
               options={options}
@@ -87,7 +105,14 @@ const InvoiceForm = ({ onClose }) => {
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Order</label>
-            <SearchOrderInput onChange={handleOrderChange} />
+            <ConnectReactSelect
+              value={order}
+              onChange={handleOrderChange}
+              size="big"
+              options={orderOptions}
+              isMulti={false}
+              closeMenuOnSelect={true}
+            />
           </div>
           <div className={styles.divider} />
 
@@ -98,11 +123,12 @@ const InvoiceForm = ({ onClose }) => {
             </label>
             <ConnectInput
               basic
+              readOnly
               size="lg"
               name="email"
               value={email || ''}
+              onChange={() => {}}
               type="email"
-              onChange={handleChangeEmail}
               required
             />
           </div>

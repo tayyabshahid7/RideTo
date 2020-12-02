@@ -3,7 +3,7 @@ import AsyncSelect from 'react-select/async'
 import styles from './styles.scss'
 
 export default function ConnectReactSelectAsync({
-  promiseOptions,
+  loadOptions,
   onChange,
   selected,
   value,
@@ -45,7 +45,7 @@ export default function ConnectReactSelectAsync({
       <AsyncSelect
         cacheOptions
         defaultOptions
-        loadOptions={promiseOptions}
+        loadOptions={loadOptions}
         isMulti={isMulti}
         name={name}
         id={id || name}
