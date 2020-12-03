@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -9,96 +9,126 @@ import InvoicesTable from '../components/InvoicesTable'
 import NewPaymentSidebar from '../components/NewPaymentSidebar'
 import RightPanel from 'components/RightPanel'
 import { Button } from 'components/ConnectForm'
+import { getInvoices } from 'store/invoice'
+import OrdersRadioFilter from 'pages/Orders/components/OrdersRadioFilter'
+import LoadingMask from 'components/LoadingMask'
 
 const statusOptions = [
   { text: 'All Invoicse', value: 'all' },
   { text: 'Paid', value: 'paid' },
-  { text: 'Partially Paid', value: 'partial' },
-  { text: 'Outstanding', value: 'outstanding' },
-  { text: 'Overdue', value: 'overdue' }
+  { text: 'Draft', value: 'draft' },
+  { text: 'Open', value: 'open' },
+  { text: 'Uncollectible', value: 'uncollectible' },
+  { text: 'Void', value: 'void' }
 ]
 
-class Orders extends Component {
-  constructor(props) {
-    super(props)
+function Invoices({
+  location,
+  history,
+  match,
+  invoices,
+  loading,
+  getInvoices
+}) {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [selectedStatus, setSelectedStatus] = useState('all')
+  const [page, setPage] = useState(1)
 
-    this.state = {}
+  useEffect(() => {
+    fetchInvoices()
+  }, [searchQuery, page])
+
+  const onSearch = query => {
+    setSearchQuery(query)
+    setPage(1)
   }
 
-  componentDidUpdate(oldProps) {
-    this.fetchOrders()
+  const fetchInvoices = () => {
+    const params = {
+      page,
+      search: searchQuery,
+      status: selectedStatus
+    }
+    getInvoices(params)
   }
 
-  componentDidMount() {
-    this.fetchOrders()
+  const handleSelectStatus = filter => {
+    setSelectedStatus(filter)
   }
 
-  onSearch = value => {
-    console.log(value)
+  const handleApplyFilter = () => {
+    setPage(1)
+    fetchInvoices()
   }
 
-  handleChangeStatus = status => {
-    status.checked = !status.checked
-  }
-
-  fetchOrders() {}
-
-  render() {
-    const { location, history, match } = this.props
-
-    return (
-      <div className={styles.container}>
-        <StaticSidePanel>
-          <SearchInput placeholder="e.g. invoice #" onSearch={this.onSearch} />
-          <div className={styles.divider}></div>
-          <h5 className={styles.sectionTitle}>Invoice Status</h5>
-          {statusOptions.map((status, index) => (
-            <div className={styles.sectionItem} key={index}>
-              <h6 className={styles.sectionLabel}>{status.text}</h6>
-              <label className="cross-check">
-                <input
-                  type="checkbox"
-                  checked={status.checked}
-                  onChange={() => this.handleChangeStatus(status)}
-                />
-                <span className="slider"></span>
-              </label>
-            </div>
-          ))}
-          <div className={styles.divider}></div>
-          <Button type="submit" color="primary" className={styles.filterButton}>
-            Apply Filters
-          </Button>
-        </StaticSidePanel>
-        <div className={styles.tableContainer}>
-          <InvoicesTable location={location} history={history} match={match} />
-        </div>
-        <RightPanel location={location} type="full">
-          <Route
-            exact
-            path="/invoices/new-payment"
-            render={routeProps => (
-              <NewPaymentSidebar history={history} {...routeProps} />
-            )}
-          />
-          <Route
-            exact
-            path="/invoices/edit/:id "
-            render={routeProps => <NewPaymentSidebar {...routeProps} />}
-          />
-        </RightPanel>
+  return (
+    <div className={styles.container}>
+      <StaticSidePanel>
+        <SearchInput
+          value={searchQuery}
+          placeholder="e.g. invoice #"
+          onSearch={onSearch}
+        />
+        <div className={styles.divider}></div>
+        <OrdersRadioFilter
+          title="Invoice Status"
+          filters={statusOptions}
+          selectedFilter={selectedStatus}
+          onSelect={handleSelectStatus}
+        />
+        <div className={styles.divider}></div>
+        <Button
+          type="submit"
+          color="primary"
+          className={styles.filterButton}
+          onClick={handleApplyFilter}>
+          Apply Filters
+        </Button>
+      </StaticSidePanel>
+      <div className={styles.tableContainer}>
+        <InvoicesTable
+          invoices={invoices}
+          location={location}
+          history={history}
+          match={match}
+          onRefresh={fetchInvoices}
+        />
+        <LoadingMask loading={loading} />
       </div>
-    )
-  }
+      <RightPanel location={location} type="full">
+        <Route
+          exact
+          path="/invoices/new-payment"
+          render={routeProps => (
+            <NewPaymentSidebar history={history} {...routeProps} />
+          )}
+        />
+        <Route
+          exact
+          path="/invoices/edit/:id "
+          render={routeProps => <NewPaymentSidebar {...routeProps} />}
+        />
+      </RightPanel>
+    </div>
+  )
 }
 
 const mapStateToProps = (state, ownProps) => {
-  return {}
+  return {
+    invoices: state.invoice.invoices,
+    loading: state.invoice.loading
+  }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getInvoices
+    },
+    dispatch
+  )
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Orders)
+)(Invoices)

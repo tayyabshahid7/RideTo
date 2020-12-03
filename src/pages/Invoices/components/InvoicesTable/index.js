@@ -4,8 +4,9 @@ import styles from './styles.scss'
 import { Button } from 'components/ConnectForm'
 import InvoicesTableRow from '../InvoiceTableRow'
 import InvoiceForm from '../InvoiceForm'
+import moment from 'moment'
 
-const InvoicesTable = ({ location, history, match }) => {
+const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
   const [showForm, setShowForm] = useState(false)
 
   const header = [
@@ -18,26 +19,23 @@ const InvoicesTable = ({ location, history, match }) => {
     { title: '', field: 'action', width: '100px' }
   ]
 
-  const dummy = {
-    id: 'AD1231231234',
-    amount: '$150.00',
-    status: 'Outstanding',
-    orderId: 'DIRECT#398728',
-    customer: 'Chris Mahon',
-    dueDate: '16 Aug 2020'
-  }
+  const records = invoices.map(x => ({
+    id: x.id,
+    amount: '£' + (x.total / 100).toFixed(),
+    status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
+    orderId: x.metadata.order,
+    customer: x.customer_name,
+    dueDate: moment(x.due_date).format('DD MMM YYYY')
+  }))
 
-  const records = []
-  for (let i = 0; i < 25; i++) {
-    records.push(Object.assign({}, dummy))
-  }
-  records[1].status = 'Partially Paid'
-  records[2].status = 'Paid'
-  records[3].status = 'Overdue'
-  records[4].status = 'Draft'
+  // records[1].status = 'Partially Paid'
+  // records[2].status = 'Paid'
+  // records[3].status = 'Overdue'
+  // records[4].status = 'Draft'
 
   const tableStyles = {
-    gridTemplateColumns: header.map(x => x.width).join(' ')
+    gridTemplateColumns: header.map(x => x.width).join(' '),
+    gridTemplateRows: `repeat(${records.length + 1}, auto) 1fr`
   }
 
   const onNewPayment = () => {
@@ -50,7 +48,12 @@ const InvoicesTable = ({ location, history, match }) => {
 
   const handleInvoiceSent = () => {
     setShowForm(false)
-    // TODO: fetch invoices
+    onRefresh()
+  }
+
+  const statsStyle = {
+    gridColumnStart: 1,
+    gridColumnEnd: header.length + 1
   }
 
   return (
@@ -85,6 +88,7 @@ const InvoicesTable = ({ location, history, match }) => {
             onNewPayment={onNewPayment}
           />
         ))}
+        <div style={statsStyle}></div>
       </div>
       {showForm && (
         <InvoiceForm

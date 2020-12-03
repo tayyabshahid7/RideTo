@@ -17,6 +17,7 @@ import sms from './sms'
 import staff from './staff'
 import user from './user'
 import calendar from './calendar'
+import invoice from './invoice'
 
 const appReducer = combineReducers({
   auth,
@@ -36,6 +37,7 @@ const appReducer = combineReducers({
   sms,
   staff,
   user,
-  calendar
+  calendar,
+  invoice
 })
 export default appReducer

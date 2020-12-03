@@ -20,8 +20,7 @@ const InvoiceForm = ({
   info,
   onSent,
   onClose,
-  showNotification,
-  getInvoices
+  showNotification
 }) => {
   const [customer, setCustomer] = useState(null)
   const [order, setOrder] = useState(null)
@@ -185,7 +184,7 @@ const InvoiceForm = ({
     console.log(result)
 
     setSaving(false)
-    // onSent()
+    onSent()
   }
 
   const handleLineChange = lines => {
@@ -298,8 +297,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      showNotification: notifyActions.showNotification,
-      getInvoices
+      showNotification: notifyActions.showNotification
     },
     dispatch
   )
