@@ -3,7 +3,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { ConnectInput } from 'components/ConnectForm'
 
-const InvoiceFormLineItems = ({ data }) => {
+const InvoiceFormLineItems = ({ onChange }) => {
   const [lineItems, setLineItems] = useState([])
   const [stats, setStats] = useState({
     total: '0.00',
@@ -21,12 +21,12 @@ const InvoiceFormLineItems = ({ data }) => {
     let tax = 0
 
     lineItems.forEach(x => {
-      if (x.price && x.qty) {
-        subtotal += x.price * x.qty
+      if (x.price && x.quantity) {
+        subtotal += x.price * x.quantity
         if (x.tax) {
           const value = x.tax.substr(0, x.tax.length - 1)
           if (value && !isNaN(value)) {
-            tax += (x.price * x.qty * parseInt(value)) / 100
+            tax += (x.price * x.quantity * parseInt(value)) / 100
           }
         }
       }
@@ -37,12 +37,13 @@ const InvoiceFormLineItems = ({ data }) => {
     total = total.toFixed(2)
 
     setStats({ total, subtotal, tax })
+    onChange(lineItems)
   }, [lineItems])
 
   const addLine = () => {
     const item = {
-      name: '',
-      qty: 1,
+      description: '',
+      quantity: 1,
       tax: '20%',
       price: 0
     }
@@ -65,7 +66,6 @@ const InvoiceFormLineItems = ({ data }) => {
       if (value.substr(-1) === '%') {
         value = value.substr(0, value.length - 1)
       }
-      console.log(value)
       if (isNaN(value)) {
         return
       }
@@ -82,7 +82,7 @@ const InvoiceFormLineItems = ({ data }) => {
       <div className={styles.blockHeader}>Line Items</div>
       <div className={styles.lineRow}>
         <label className={styles.label}>Item</label>
-        <label className={styles.label}>Qty</label>
+        <label className={styles.label}>quantity</label>
         <label className={styles.label}>Tax</label>
         <label className={styles.label}>Price</label>
       </div>
@@ -91,16 +91,16 @@ const InvoiceFormLineItems = ({ data }) => {
           <ConnectInput
             basic
             size="lg"
-            name="name"
-            value={line.name}
+            name="description"
+            value={line.description}
             type="text"
             onChange={event => handleChange(event, line, index)}
           />
           <ConnectInput
             basic
             size="lg"
-            name="qty"
-            value={line.qty}
+            name="quantity"
+            value={line.quantity}
             type="number"
             onChange={event => handleChange(event, line, index)}
           />
