@@ -3,18 +3,48 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { ConnectInput } from 'components/ConnectForm'
 
-const InvoiceFormLineItems = ({ data }) => {
+const InvoiceFormLineItems = ({ onChange }) => {
   const [lineItems, setLineItems] = useState([])
+  const [stats, setStats] = useState({
+    total: '0.00',
+    subtotal: '0.00',
+    tax: '0.00'
+  })
 
   useEffect(() => {
     addLine()
   }, [])
 
+  useEffect(() => {
+    let subtotal = 0
+    let total = 0
+    let tax = 0
+
+    lineItems.forEach(x => {
+      if (x.price && x.quantity) {
+        subtotal += x.price * x.quantity
+        if (x.tax) {
+          const value = x.tax.substr(0, x.tax.length - 1)
+          if (value && !isNaN(value)) {
+            tax += (x.price * x.quantity * parseInt(value)) / 100
+          }
+        }
+      }
+    })
+    total = subtotal + tax
+    subtotal = subtotal.toFixed(2)
+    tax = tax.toFixed(2)
+    total = total.toFixed(2)
+
+    setStats({ total, subtotal, tax })
+    onChange(lineItems)
+  }, [lineItems])
+
   const addLine = () => {
     const item = {
-      name: '',
-      qty: 1,
-      tax: 0,
+      description: '',
+      quantity: 1,
+      tax: '20%',
       price: 0
     }
     const tmp = lineItems.slice()
@@ -29,8 +59,22 @@ const InvoiceFormLineItems = ({ data }) => {
   }
 
   const handleChange = (event, line, index) => {
-    const { name, value } = event
-    console.log(name, value, line, index)
+    event.persist()
+    let { name, value } = event.target
+
+    if (name === 'tax') {
+      if (value.substr(-1) === '%') {
+        value = value.substr(0, value.length - 1)
+      }
+      if (isNaN(value)) {
+        return
+      }
+      value = value + '%'
+    }
+
+    const tmp = lineItems.slice()
+    lineItems[index][name] = value
+    setLineItems(tmp)
   }
 
   return (
@@ -38,7 +82,7 @@ const InvoiceFormLineItems = ({ data }) => {
       <div className={styles.blockHeader}>Line Items</div>
       <div className={styles.lineRow}>
         <label className={styles.label}>Item</label>
-        <label className={styles.label}>Qty</label>
+        <label className={styles.label}>quantity</label>
         <label className={styles.label}>Tax</label>
         <label className={styles.label}>Price</label>
       </div>
@@ -47,16 +91,16 @@ const InvoiceFormLineItems = ({ data }) => {
           <ConnectInput
             basic
             size="lg"
-            name="name"
-            value={line.name}
+            name="description"
+            value={line.description}
             type="text"
             onChange={event => handleChange(event, line, index)}
           />
           <ConnectInput
             basic
             size="lg"
-            name="qty"
-            value={line.qty}
+            name="quantity"
+            value={line.quantity}
             type="number"
             onChange={event => handleChange(event, line, index)}
           />
@@ -65,7 +109,7 @@ const InvoiceFormLineItems = ({ data }) => {
             size="lg"
             name="tax"
             value={line.tax}
-            type="number"
+            type="text"
             onChange={event => handleChange(event, line, index)}
           />
           <ConnectInput
@@ -75,6 +119,7 @@ const InvoiceFormLineItems = ({ data }) => {
             value={line.price}
             type="number"
             prefix="£"
+            prefixBig
             onChange={event => handleChange(event, line, index)}
           />
           <div className={styles.closeIcon} onClick={() => removeLine(index)} />
@@ -92,19 +137,19 @@ const InvoiceFormLineItems = ({ data }) => {
         <div className={styles.subRow}>
           <label className={styles.label}>Subtotal</label>
           <label className={classnames(styles.label, styles.value)}>
-            £300.00
+            £{stats.subtotal}
           </label>
         </div>
         <div className={styles.subRow}>
           <label className={styles.label}>Tax</label>
           <label className={classnames(styles.label, styles.value)}>
-            £60.00
+            £{stats.tax}
           </label>
         </div>
         <div className={styles.subRow}>
           <label className={styles.label}>Total</label>
           <label className={classnames(styles.label, styles.value)}>
-            £360.00
+            £{stats.total}
           </label>
         </div>
       </div>

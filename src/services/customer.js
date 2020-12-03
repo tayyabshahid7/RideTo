@@ -14,6 +14,14 @@ export const fetchCustomer = async (id, params = {}) => {
   return response
 }
 
+export const searchCustomer = async value => {
+  const path = `school/customer/stripe`
+  const params = { email: value }
+  const response = await get(path, params)
+
+  return response
+}
+
 export const saveCustomer = async customer => {
   const { id } = customer
   const path = id ? `school/customer/${id}` : `school/customer`
