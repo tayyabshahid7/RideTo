@@ -13,8 +13,16 @@ import InvoiceFormLineItems from './InvoiceFormLineItems'
 import SearchCustomerInput from 'components/SearchCustomerInput'
 import LoadingMask from 'components/LoadingMask'
 import { actions as notifyActions } from 'store/notification'
+import { sendInvoice } from 'services/invoice'
 
-const InvoiceForm = ({ suppliers, info, onClose, showNotification }) => {
+const InvoiceForm = ({
+  suppliers,
+  info,
+  onSent,
+  onClose,
+  showNotification,
+  getInvoices
+}) => {
   const [customer, setCustomer] = useState(null)
   const [order, setOrder] = useState(null)
   const [supplier, setSupplier] = useState(null)
@@ -159,7 +167,7 @@ const InvoiceForm = ({ suppliers, info, onClose, showNotification }) => {
       items,
       notes
     }
-    console.log(order)
+
     if (order) {
       data.order = order.id
     }
@@ -167,20 +175,17 @@ const InvoiceForm = ({ suppliers, info, onClose, showNotification }) => {
     return data
   }
 
-  const handleSaveDraft = () => {
+  const handleSend = async isSend => {
     const formData = prepareData()
-    formData.send_invoice = false
-    console.log(formData)
-  }
-
-  const handleSend = () => {
-    const formData = prepareData()
-    formData.send_invoice = true
-    console.log(formData)
+    formData.send_invoice = isSend
 
     setSaving(true)
 
-    setTimeout(() => setSaving(false), 1000)
+    const result = await sendInvoice(formData)
+    console.log(result)
+
+    setSaving(false)
+    // onSent()
   }
 
   const handleLineChange = lines => {
@@ -269,10 +274,10 @@ const InvoiceForm = ({ suppliers, info, onClose, showNotification }) => {
             />
           </div>
           <div className={styles.actions}>
-            <Button color="white" onClick={handleSaveDraft}>
+            <Button color="white" onClick={() => handleSend(false)}>
               Save as Draft
             </Button>
-            <Button color="primary" onClick={handleSend}>
+            <Button color="primary" onClick={() => handleSend(true)}>
               Save & Send
             </Button>
           </div>
@@ -293,7 +298,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      showNotification: notifyActions.showNotification
+      showNotification: notifyActions.showNotification,
+      getInvoices
     },
     dispatch
   )

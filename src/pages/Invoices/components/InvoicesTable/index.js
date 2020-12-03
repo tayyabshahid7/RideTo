@@ -48,6 +48,11 @@ const InvoicesTable = ({ location, history, match }) => {
     setShowForm(true)
   }
 
+  const handleInvoiceSent = () => {
+    setShowForm(false)
+    // TODO: fetch invoices
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -81,7 +86,12 @@ const InvoicesTable = ({ location, history, match }) => {
           />
         ))}
       </div>
-      {showForm && <InvoiceForm onClose={() => setShowForm(false)} />}
+      {showForm && (
+        <InvoiceForm
+          onSent={handleInvoiceSent}
+          onClose={() => setShowForm(false)}
+        />
+      )}
     </div>
   )
 }
