@@ -63,7 +63,7 @@ function Invoices({
     fetchInvoices()
   }
 
-  const onDelete = async invoice => {
+  const handleDelete = async invoice => {
     if (window.confirm('Are you sure you want to delete this invoice?')) {
       setDeleting(true)
       await deleteInvoice(invoice.id)
@@ -103,7 +103,7 @@ function Invoices({
           history={history}
           match={match}
           onRefresh={fetchInvoices}
-          onDelete={onDelete}
+          onDelete={handleDelete}
         />
         <LoadingMask loading={loading || deleting} />
       </div>

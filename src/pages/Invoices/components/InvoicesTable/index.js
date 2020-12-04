@@ -12,9 +12,11 @@ const InvoicesTable = ({
   history,
   match,
   onDelete,
+  onEdit,
   onRefresh
 }) => {
   const [showForm, setShowForm] = useState(false)
+  const [invoice, setInvoice] = useState(null)
 
   const header = [
     { title: 'Invoice #', field: 'id', width: '2fr' },
@@ -35,11 +37,6 @@ const InvoicesTable = ({
     dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY')
   }))
 
-  // records[1].status = 'Partially Paid'
-  // records[2].status = 'Paid'
-  // records[3].status = 'Overdue'
-  // records[4].status = 'Draft'
-
   const tableStyles = {
     gridTemplateColumns: header.map(x => x.width).join(' '),
     gridTemplateRows: `repeat(${records.length + 1}, auto) 1fr`
@@ -58,8 +55,11 @@ const InvoicesTable = ({
     onRefresh()
   }
 
-  const handleDelete = invoice => {
-    onDelete(invoice)
+  const handleEdit = invoice => {
+    const data = invoices.find(x => x.id === invoice.id)
+    setInvoice(data)
+    setShowForm(true)
+    console.log('%cedit invoice', 'color: red', data)
   }
 
   const statsStyle = {
@@ -97,7 +97,8 @@ const InvoicesTable = ({
             index={index}
             total={records.length}
             onNewPayment={onNewPayment}
-            onDelete={handleDelete}
+            onDelete={onDelete}
+            onEdit={handleEdit}
           />
         ))}
         <div style={statsStyle}></div>
@@ -105,6 +106,7 @@ const InvoicesTable = ({
       {showForm && (
         <InvoiceForm
           onSent={handleInvoiceSent}
+          invoice={invoice}
           onClose={() => setShowForm(false)}
         />
       )}

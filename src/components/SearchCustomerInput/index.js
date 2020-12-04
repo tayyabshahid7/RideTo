@@ -1,10 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ConnectReactSelectAsync } from 'components/ConnectForm'
 import { fetchCustomers } from 'services/customer'
 import debounce from 'debounce-promise'
 
-const SearchCustomerInput = ({ onChange }) => {
+const SearchCustomerInput = ({ value, onChange }) => {
   const [customer, setCustomer] = useState(null)
+
+  useEffect(() => {
+    if (value && !customer) {
+      setCustomer(value)
+    }
+  }, [value])
 
   const handleChangeOption = value => {
     setCustomer(value)

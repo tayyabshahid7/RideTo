@@ -17,7 +17,8 @@ const InvoiceTableRow = ({
   index,
   total,
   onNewPayment,
-  onDelete
+  onDelete,
+  onEdit
 }) => {
   const menuRef = useRef()
   const tagMap = {
@@ -41,6 +42,11 @@ const InvoiceTableRow = ({
   const handleNewPayment = () => {
     menuRef.current.hideMenu()
     onNewPayment()
+  }
+
+  const handleEdit = () => {
+    menuRef.current.hideMenu()
+    onEdit(record)
   }
 
   const handleDelete = () => {
@@ -70,7 +76,7 @@ const InvoiceTableRow = ({
                 <span>New Payment</span>
               </div>
               <div className={styles.divider}></div>
-              <div className={styles.menuItem}>
+              <div className={styles.menuItem} onClick={handleEdit}>
                 <IconEdit />
                 <span>Edit Invoice</span>
               </div>
