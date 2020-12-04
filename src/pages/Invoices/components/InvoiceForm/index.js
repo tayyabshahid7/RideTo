@@ -14,6 +14,7 @@ import SearchCustomerInput from 'components/SearchCustomerInput'
 import LoadingMask from 'components/LoadingMask'
 import { actions as notifyActions } from 'store/notification'
 import { sendInvoice } from 'services/invoice'
+import { fetchOrderById } from 'services/order'
 
 const InvoiceForm = ({
   suppliers,
@@ -36,7 +37,6 @@ const InvoiceForm = ({
     name: x.name,
     id: x.id
   }))
-  console.log(info.courseTypes)
   let courseTypeOptions = []
   if (supplier) {
     courseTypeOptions = info.courseTypes
@@ -64,8 +64,17 @@ const InvoiceForm = ({
     setNotes(value)
   }
 
-  const handleOrderChange = value => {
+  const handleOrderChange = async value => {
     setOrder(value)
+    console.log(value)
+    if (value) {
+      const result = await fetchOrderById(value.id)
+      console.log(result)
+      const tmpSup = supplierOptions.find(x => x.id === result.supplier_id)
+      if (tmpSup) {
+        setSupplier(tmpSup)
+      }
+    }
     // TODO: fetch order detail and determine school and course
   }
 
