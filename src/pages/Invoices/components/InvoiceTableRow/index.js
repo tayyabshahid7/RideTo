@@ -49,6 +49,10 @@ const InvoiceTableRow = ({
     onEdit(record)
   }
 
+  const handleChangeStatus = () => {
+    menuRef.current.hideMenu()
+  }
+
   const handleDelete = () => {
     menuRef.current.hideMenu()
     onDelete(record)
@@ -76,19 +80,24 @@ const InvoiceTableRow = ({
                 <span>New Payment</span>
               </div>
               <div className={styles.divider}></div>
-              <div className={styles.menuItem} onClick={handleEdit}>
-                <IconEdit />
-                <span>Edit Invoice</span>
-              </div>
 
-              {record.status !== 'Void' && (
+              {record.status === 'Draft' ? (
                 <React.Fragment>
+                  <div className={styles.menuItem} onClick={handleEdit}>
+                    <IconEdit />
+                    <span>Edit Invoice</span>
+                  </div>
                   <div className={styles.spacing}></div>
                   <div className={styles.menuItem} onClick={handleDelete}>
                     <IconTrash />
                     <span>Delete Invoice</span>
                   </div>
                 </React.Fragment>
+              ) : (
+                <div className={styles.menuItem} onClick={handleChangeStatus}>
+                  <IconEdit />
+                  <span>Change Invoice Status</span>
+                </div>
               )}
               <div className={styles.divider}></div>
               <div className={styles.menuItem}>

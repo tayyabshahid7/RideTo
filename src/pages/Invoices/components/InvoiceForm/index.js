@@ -117,13 +117,21 @@ const InvoiceForm = ({
 
   const handleOrderChange = async value => {
     setOrder(value)
-    console.log(value)
+
     if (value) {
       const result = await fetchOrderById(value.id)
-      console.log(result)
-      const tmpSup = supplierOptions.find(x => x.id === result.supplier_id)
-      if (tmpSup) {
-        setSupplier(tmpSup)
+      const tmpSuppplier = supplierOptions.find(
+        x => x.id === result.supplier_id
+      )
+      if (tmpSuppplier) {
+        setSupplier(tmpSuppplier)
+      }
+
+      const tmpCourse = info.courseTypes.find(
+        x => x.id === result.course_type_id
+      )
+      if (tmpCourse) {
+        setCourse(tmpCourse)
       }
     }
     // TODO: fetch order detail and determine school and course
