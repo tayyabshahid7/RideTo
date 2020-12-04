@@ -6,8 +6,17 @@ import InvoicesTableRow from '../InvoiceTableRow'
 import InvoiceForm from '../InvoiceForm'
 import moment from 'moment'
 
-const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
+const InvoicesTable = ({
+  invoices,
+  location,
+  history,
+  match,
+  onDelete,
+  onEdit,
+  onRefresh
+}) => {
   const [showForm, setShowForm] = useState(false)
+  const [invoice, setInvoice] = useState(null)
 
   const header = [
     { title: 'Invoice #', field: 'id', width: '2fr' },
@@ -25,13 +34,8 @@ const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
     status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
     orderId: x.metadata.order,
     customer: x.customer_name,
-    dueDate: moment(x.due_date).format('DD MMM YYYY')
+    dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY')
   }))
-
-  // records[1].status = 'Partially Paid'
-  // records[2].status = 'Paid'
-  // records[3].status = 'Overdue'
-  // records[4].status = 'Draft'
 
   const tableStyles = {
     gridTemplateColumns: header.map(x => x.width).join(' '),
@@ -49,6 +53,13 @@ const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
   const handleInvoiceSent = () => {
     setShowForm(false)
     onRefresh()
+  }
+
+  const handleEdit = invoice => {
+    const data = invoices.find(x => x.id === invoice.id)
+    setInvoice(data)
+    setShowForm(true)
+    console.log('%cedit invoice', 'color: red', data)
   }
 
   const statsStyle = {
@@ -86,6 +97,8 @@ const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
             index={index}
             total={records.length}
             onNewPayment={onNewPayment}
+            onDelete={onDelete}
+            onEdit={handleEdit}
           />
         ))}
         <div style={statsStyle}></div>
@@ -93,6 +106,7 @@ const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
       {showForm && (
         <InvoiceForm
           onSent={handleInvoiceSent}
+          invoice={invoice}
           onClose={() => setShowForm(false)}
         />
       )}

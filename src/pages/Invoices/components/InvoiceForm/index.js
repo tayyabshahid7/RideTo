@@ -14,8 +14,11 @@ import SearchCustomerInput from 'components/SearchCustomerInput'
 import LoadingMask from 'components/LoadingMask'
 import { actions as notifyActions } from 'store/notification'
 import { sendInvoice } from 'services/invoice'
+import { fetchOrderById } from 'services/order'
+import { fetchCustomer } from 'services/customer'
 
 const InvoiceForm = ({
+  invoice,
   suppliers,
   info,
   onSent,
@@ -28,6 +31,7 @@ const InvoiceForm = ({
   const [course, setCourse] = useState(null)
   const [orderOptions, setOrderOptions] = useState([])
   const [lines, setLines] = useState([])
+  // const [defaultLines, setDefaultLines] = useState([])
   const [email, setEmail] = useState('')
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
@@ -36,22 +40,74 @@ const InvoiceForm = ({
     name: x.name,
     id: x.id
   }))
+  let courseTypeOptions = []
 
-  const courseTypeOptions = info.courseTypes.map(x => ({
-    name: x.name,
-    constant: x.constant,
-    id: x.id
-  }))
+  if (supplier) {
+    courseTypeOptions = info.courseTypes
+      .filter(x => x.schoolIds.includes(supplier.id))
+      .map(x => ({
+        name: x.name,
+        constant: x.constant,
+        id: x.id
+      }))
+  }
 
-  useEffect(() => {}, [])
+  // in edit mode, fill data
+  useEffect(() => {
+    async function loadInvoice() {
+      if (!invoice) {
+        return
+      }
+
+      const fetchData = async () => {
+        return await fetchCustomer(metadata.customer_id)
+      }
+
+      const { metadata } = invoice
+      setCustomer({
+        id: metadata.customer_id,
+        name: invoice.customer_name,
+        email: invoice.customer_email,
+        orders: []
+      })
+      setEmail(invoice.customer_email)
+      const tmpSuppplier = supplierOptions.find(
+        x => x.id === parseInt(metadata.supplier_id)
+      )
+
+      if (tmpSuppplier) {
+        setSupplier(tmpSuppplier)
+      }
+      const tmpCourse = info.courseTypes.find(
+        x => x.id === parseInt(metadata.course_id)
+      )
+      if (tmpCourse) {
+        setCourse(tmpCourse)
+      }
+      if (metadata.notes) {
+        setNotes(metadata.notes)
+      }
+      // fetch customer detail and orders
+      const cdetail = await fetchData()
+
+      const tmpOrderOptions = cleanUpOrders(cdetail.orders)
+      setOrderOptions(tmpOrderOptions)
+      const tmpOrder = tmpOrderOptions.find(x => x.id === metadata.order)
+      if (tmpOrder) {
+        setOrder(tmpOrder)
+      }
+    }
+
+    loadInvoice()
+  }, [invoice])
 
   const handleClose = () => {
-    console.log('closing')
     onClose()
   }
 
   const handleChangeCourse = value => {
     setCourse(value)
+    setOrder(null)
   }
 
   const handleChangeNote = event => {
@@ -59,19 +115,36 @@ const InvoiceForm = ({
     setNotes(value)
   }
 
-  const handleOrderChange = value => {
+  const handleOrderChange = async value => {
     setOrder(value)
+
+    if (value) {
+      const result = await fetchOrderById(value.id)
+      const tmpSuppplier = supplierOptions.find(
+        x => x.id === result.supplier_id
+      )
+      if (tmpSuppplier) {
+        setSupplier(tmpSuppplier)
+      }
+
+      const tmpCourse = info.courseTypes.find(
+        x => x.id === result.course_type_id
+      )
+      if (tmpCourse) {
+        setCourse(tmpCourse)
+      }
+    }
     // TODO: fetch order detail and determine school and course
   }
 
   const handleChangeSupplier = value => {
     setSupplier(value)
+    setCourse(null)
+    setOrder(null)
   }
 
-  const handleCustomerChange = value => {
-    console.log(value)
-    setCustomer(value)
-    const tmp = value.orders.map(x => {
+  const cleanUpOrders = orders => {
+    return orders.map(x => {
       let id = x.split('#')
       if (id.length > 1) {
         id = id[1]
@@ -83,7 +156,12 @@ const InvoiceForm = ({
         name: x
       }
     })
-    setOrderOptions(tmp)
+  }
+
+  const handleCustomerChange = value => {
+    console.log(value)
+    setCustomer(value)
+    setOrderOptions(cleanUpOrders(value.orders))
     setOrder(null)
     setEmail(value.email)
   }
@@ -103,6 +181,10 @@ const InvoiceForm = ({
     }
     if (!lines.length) {
       showNotification('Error', 'Please add a line item', 'danger')
+      return false
+    }
+    if (!notes) {
+      showNotification('Error', 'Please add a note', 'danger')
       return false
     }
     lines.forEach((line, index) => {
@@ -204,7 +286,10 @@ const InvoiceForm = ({
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Customer</label>
-            <SearchCustomerInput onChange={handleCustomerChange} />
+            <SearchCustomerInput
+              value={customer}
+              onChange={handleCustomerChange}
+            />
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>School</label>

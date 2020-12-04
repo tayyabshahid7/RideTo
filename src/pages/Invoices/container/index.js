@@ -12,6 +12,7 @@ import { Button } from 'components/ConnectForm'
 import { getInvoices } from 'store/invoice'
 import OrdersRadioFilter from 'pages/Orders/components/OrdersRadioFilter'
 import LoadingMask from 'components/LoadingMask'
+import { deleteInvoice } from 'services/invoice'
 
 const statusOptions = [
   { text: 'All Invoicse', value: 'all' },
@@ -33,6 +34,7 @@ function Invoices({
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('all')
   const [page, setPage] = useState(1)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     fetchInvoices()
@@ -59,6 +61,15 @@ function Invoices({
   const handleApplyFilter = () => {
     setPage(1)
     fetchInvoices()
+  }
+
+  const handleDelete = async invoice => {
+    if (window.confirm('Are you sure you want to delete this invoice?')) {
+      setDeleting(true)
+      await deleteInvoice(invoice.id)
+      setDeleting(false)
+      fetchInvoices()
+    }
   }
 
   return (
@@ -92,8 +103,9 @@ function Invoices({
           history={history}
           match={match}
           onRefresh={fetchInvoices}
+          onDelete={handleDelete}
         />
-        <LoadingMask loading={loading} />
+        <LoadingMask loading={loading || deleting} />
       </div>
       <RightPanel location={location} type="full">
         <Route

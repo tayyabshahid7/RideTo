@@ -11,13 +11,22 @@ import {
   IconPound
 } from 'assets/icons'
 
-const InvoiceTableRow = ({ header, record, index, total, onNewPayment }) => {
+const InvoiceTableRow = ({
+  header,
+  record,
+  index,
+  total,
+  onNewPayment,
+  onDelete,
+  onEdit
+}) => {
   const menuRef = useRef()
   const tagMap = {
     outstanding: 'default',
     'partially paid': 'info',
     paid: 'success',
     overdue: 'danger',
+    void: 'danger',
     draft: 'default'
   }
 
@@ -33,6 +42,20 @@ const InvoiceTableRow = ({ header, record, index, total, onNewPayment }) => {
   const handleNewPayment = () => {
     menuRef.current.hideMenu()
     onNewPayment()
+  }
+
+  const handleEdit = () => {
+    menuRef.current.hideMenu()
+    onEdit(record)
+  }
+
+  const handleChangeStatus = () => {
+    menuRef.current.hideMenu()
+  }
+
+  const handleDelete = () => {
+    menuRef.current.hideMenu()
+    onDelete(record)
   }
 
   return (
@@ -57,15 +80,25 @@ const InvoiceTableRow = ({ header, record, index, total, onNewPayment }) => {
                 <span>New Payment</span>
               </div>
               <div className={styles.divider}></div>
-              <div className={styles.menuItem}>
-                <IconEdit />
-                <span>Edit Invoice</span>
-              </div>
-              <div className={styles.spacing}></div>
-              <div className={styles.menuItem}>
-                <IconTrash />
-                <span>Delete Invoice</span>
-              </div>
+
+              {record.status === 'Draft' ? (
+                <React.Fragment>
+                  <div className={styles.menuItem} onClick={handleEdit}>
+                    <IconEdit />
+                    <span>Edit Invoice</span>
+                  </div>
+                  <div className={styles.spacing}></div>
+                  <div className={styles.menuItem} onClick={handleDelete}>
+                    <IconTrash />
+                    <span>Delete Invoice</span>
+                  </div>
+                </React.Fragment>
+              ) : (
+                <div className={styles.menuItem} onClick={handleChangeStatus}>
+                  <IconEdit />
+                  <span>Change Invoice Status</span>
+                </div>
+              )}
               <div className={styles.divider}></div>
               <div className={styles.menuItem}>
                 <IconDownArrow />
