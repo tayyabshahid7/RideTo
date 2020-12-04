@@ -11,13 +11,21 @@ import {
   IconPound
 } from 'assets/icons'
 
-const InvoiceTableRow = ({ header, record, index, total, onNewPayment }) => {
+const InvoiceTableRow = ({
+  header,
+  record,
+  index,
+  total,
+  onNewPayment,
+  onDelete
+}) => {
   const menuRef = useRef()
   const tagMap = {
     outstanding: 'default',
     'partially paid': 'info',
     paid: 'success',
     overdue: 'danger',
+    void: 'danger',
     draft: 'default'
   }
 
@@ -33,6 +41,11 @@ const InvoiceTableRow = ({ header, record, index, total, onNewPayment }) => {
   const handleNewPayment = () => {
     menuRef.current.hideMenu()
     onNewPayment()
+  }
+
+  const handleDelete = () => {
+    menuRef.current.hideMenu()
+    onDelete(record)
   }
 
   return (
@@ -61,11 +74,16 @@ const InvoiceTableRow = ({ header, record, index, total, onNewPayment }) => {
                 <IconEdit />
                 <span>Edit Invoice</span>
               </div>
-              <div className={styles.spacing}></div>
-              <div className={styles.menuItem}>
-                <IconTrash />
-                <span>Delete Invoice</span>
-              </div>
+
+              {record.status !== 'Void' && (
+                <React.Fragment>
+                  <div className={styles.spacing}></div>
+                  <div className={styles.menuItem} onClick={handleDelete}>
+                    <IconTrash />
+                    <span>Delete Invoice</span>
+                  </div>
+                </React.Fragment>
+              )}
               <div className={styles.divider}></div>
               <div className={styles.menuItem}>
                 <IconDownArrow />

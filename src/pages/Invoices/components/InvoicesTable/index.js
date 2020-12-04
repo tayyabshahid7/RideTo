@@ -6,7 +6,14 @@ import InvoicesTableRow from '../InvoiceTableRow'
 import InvoiceForm from '../InvoiceForm'
 import moment from 'moment'
 
-const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
+const InvoicesTable = ({
+  invoices,
+  location,
+  history,
+  match,
+  onDelete,
+  onRefresh
+}) => {
   const [showForm, setShowForm] = useState(false)
 
   const header = [
@@ -25,7 +32,7 @@ const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
     status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
     orderId: x.metadata.order,
     customer: x.customer_name,
-    dueDate: moment(x.due_date).format('DD MMM YYYY')
+    dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY')
   }))
 
   // records[1].status = 'Partially Paid'
@@ -49,6 +56,10 @@ const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
   const handleInvoiceSent = () => {
     setShowForm(false)
     onRefresh()
+  }
+
+  const handleDelete = invoice => {
+    onDelete(invoice)
   }
 
   const statsStyle = {
@@ -86,6 +97,7 @@ const InvoicesTable = ({ invoices, location, history, match, onRefresh }) => {
             index={index}
             total={records.length}
             onNewPayment={onNewPayment}
+            onDelete={handleDelete}
           />
         ))}
         <div style={statsStyle}></div>

@@ -36,12 +36,17 @@ const InvoiceForm = ({
     name: x.name,
     id: x.id
   }))
-
-  const courseTypeOptions = info.courseTypes.map(x => ({
-    name: x.name,
-    constant: x.constant,
-    id: x.id
-  }))
+  console.log(info.courseTypes)
+  let courseTypeOptions = []
+  if (supplier) {
+    courseTypeOptions = info.courseTypes
+      .filter(x => x.schoolIds.includes(supplier.id))
+      .map(x => ({
+        name: x.name,
+        constant: x.constant,
+        id: x.id
+      }))
+  }
 
   useEffect(() => {}, [])
 
@@ -103,6 +108,10 @@ const InvoiceForm = ({
     }
     if (!lines.length) {
       showNotification('Error', 'Please add a line item', 'danger')
+      return false
+    }
+    if (!notes) {
+      showNotification('Error', 'Please add a note', 'danger')
       return false
     }
     lines.forEach((line, index) => {
