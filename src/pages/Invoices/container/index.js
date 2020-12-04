@@ -22,12 +22,14 @@ const statusOptions = [
   { text: 'Uncollectible', value: 'uncollectible' },
   { text: 'Void', value: 'void' }
 ]
+const pageSize = 2
 
 function Invoices({
   location,
   history,
   match,
   invoices,
+  total,
   loading,
   getInvoices
 }) {
@@ -48,6 +50,7 @@ function Invoices({
   const fetchInvoices = () => {
     const params = {
       page,
+      limit: pageSize,
       search: searchQuery,
       status: selectedStatus
     }
@@ -62,6 +65,11 @@ function Invoices({
     setPage(1)
     fetchInvoices()
   }
+
+  const onPage = page => {
+    setPage(page)
+  }
+  console.log(total)
 
   const handleDelete = async invoice => {
     if (window.confirm('Are you sure you want to delete this invoice?')) {
@@ -104,6 +112,10 @@ function Invoices({
           match={match}
           onRefresh={fetchInvoices}
           onDelete={handleDelete}
+          pageSize={pageSize}
+          page={page}
+          total={total}
+          onPage={onPage}
         />
         <LoadingMask loading={loading || deleting} />
       </div>
@@ -128,6 +140,7 @@ function Invoices({
 const mapStateToProps = (state, ownProps) => {
   return {
     invoices: state.invoice.invoices,
+    total: state.invoice.total,
     loading: state.invoice.loading
   }
 }

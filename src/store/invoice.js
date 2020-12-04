@@ -10,12 +10,10 @@ export const getInvoices = params => async dispatch => {
   })
 
   try {
-    const invoices = await fetchInvoices(params)
+    const result = await fetchInvoices(params)
     dispatch({
       type: FETCH_ALL[SUCCESS],
-      data: {
-        invoices
-      }
+      data: result
     })
   } catch (error) {
     dispatch({ type: FETCH_ALL[FAILURE], error })
@@ -24,6 +22,7 @@ export const getInvoices = params => async dispatch => {
 
 const initialState = {
   invoices: [],
+  total: 0,
   params: {},
   loading: false,
   error: null
@@ -42,7 +41,8 @@ export default function reducer(state = initialState, action) {
       return {
         ...state,
         loading: false,
-        invoices: action.data.invoices
+        invoices: action.data.data,
+        total: action.data.count
       }
     }
     case FETCH_ALL[FAILURE]: {
