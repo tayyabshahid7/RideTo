@@ -15,7 +15,6 @@ const InvoicesTable = ({
   history,
   match,
   onDelete,
-  onEdit,
   page,
   total,
   onPage,

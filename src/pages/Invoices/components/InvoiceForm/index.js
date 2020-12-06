@@ -31,7 +31,7 @@ const InvoiceForm = ({
   const [course, setCourse] = useState(null)
   const [orderOptions, setOrderOptions] = useState([])
   const [lines, setLines] = useState([])
-  // const [defaultLines, setDefaultLines] = useState([])
+  const [defaultLines, setDefaultLines] = useState([])
   const [email, setEmail] = useState('')
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
@@ -87,6 +87,19 @@ const InvoiceForm = ({
       if (metadata.notes) {
         setNotes(metadata.notes)
       }
+
+      // line items
+      const tmpLines = invoice.lines.data.map(x => {
+        const data = {
+          description: x.description,
+          quantity: x.quantity,
+          price: x.price.unit_amount / 100,
+          tax: ((x.tax_amounts[0].amount / x.amount) * 100).toFixed(2) + '%'
+        }
+        return data
+      })
+      setDefaultLines(tmpLines)
+
       // fetch customer detail and orders
       const cdetail = await fetchData()
 
@@ -344,7 +357,10 @@ const InvoiceForm = ({
           </div>
           <div className={styles.divider} />
 
-          <InvoiceFormLineItems onChange={handleLineChange} />
+          <InvoiceFormLineItems
+            value={defaultLines}
+            onChange={handleLineChange}
+          />
 
           <div>
             <label className={styles.label} style={{ marginBottom: 20 }}>
