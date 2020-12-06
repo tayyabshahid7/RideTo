@@ -14,6 +14,7 @@ const OrdersTable = ({
   orders,
   page,
   total,
+  pageSize = 50,
   onPage
 }) => {
   const orderStatusMap = {
@@ -74,13 +75,13 @@ const OrdersTable = ({
 
   const pageChanged = page => {
     page = Math.max(1, page)
-    page = Math.min(Math.ceil(total / 25), page)
+    page = Math.min(Math.ceil(total / pageSize), page)
     console.log(page)
     onPage(page)
   }
 
-  const statsText = `Showing ${(page - 1) * 25 + 1} to ${page *
-    25} of ${total} orders`
+  const statsText = `Showing ${(page - 1) * pageSize + 1} to ${page *
+    pageSize} of ${total} orders`
 
   return (
     <div className={styles.container}>
