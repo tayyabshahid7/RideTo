@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import classnames from 'classnames'
 import moment from 'moment'
 
-import { Button, ConnectInput } from 'components/ConnectForm'
+import { Button } from 'components/ConnectForm'
 import InvoicesTableRow from '../InvoiceTableRow'
 import InvoiceForm from '../InvoiceForm'
-import { IconAngleRight, IconAngleLeft } from 'assets/icons'
 
 import styles from './styles.scss'
 
@@ -15,10 +14,8 @@ const InvoicesTable = ({
   history,
   match,
   onDelete,
-  page,
-  total,
-  onPage,
-  pageSize = 25,
+  onLoadMore,
+  loadedAll,
   onRefresh
 }) => {
   const [showForm, setShowForm] = useState(false)
@@ -68,18 +65,6 @@ const InvoicesTable = ({
     console.log('%cedit invoice', 'color: red', data)
   }
 
-  const handlePageChange = event => {
-    event.persist()
-    pageChanged(parseInt(event.target.value))
-  }
-
-  const pageChanged = page => {
-    page = Math.max(1, page)
-    page = Math.min(Math.ceil(total / pageSize), page)
-    console.log(page)
-    onPage(page)
-  }
-
   const statsStyle = {
     gridColumnStart: 1,
     gridColumnEnd: header.length + 1
@@ -121,28 +106,11 @@ const InvoicesTable = ({
         ))}
         <div style={statsStyle}>
           <div className={styles.tableStats}>
-            <div className={styles.pagination}>
-              <Button
-                color="white"
-                className={styles.pageButton}
-                onClick={() => pageChanged(page - 1)}>
-                <IconAngleLeft />
+            {!loadedAll && (
+              <Button color="white" onClick={onLoadMore}>
+                Load More
               </Button>
-              <div className={styles.pageInput}>
-                <ConnectInput
-                  basic
-                  value={page}
-                  type="number"
-                  onChange={handlePageChange}
-                />
-              </div>
-              <Button
-                color="white"
-                className={styles.pageButton}
-                onClick={() => pageChanged(page + 1)}>
-                <IconAngleRight />
-              </Button>
-            </div>
+            )}
           </div>
         </div>
       </div>

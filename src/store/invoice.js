@@ -22,7 +22,7 @@ export const getInvoices = params => async dispatch => {
 
 const initialState = {
   invoices: [],
-  total: 0,
+  loadedAll: false,
   params: {},
   loading: false,
   error: null
@@ -38,11 +38,17 @@ export default function reducer(state = initialState, action) {
       }
     }
     case FETCH_ALL[SUCCESS]: {
+      const id = state.params.starting_after
+      let invoices = action.data.data
+      if (id) {
+        invoices = [...state.invoices, ...action.data.data]
+      }
+
       return {
         ...state,
         loading: false,
-        invoices: action.data.data,
-        total: action.data.count
+        invoices,
+        loadedAll: !action.data.data.length
       }
     }
     case FETCH_ALL[FAILURE]: {
