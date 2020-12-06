@@ -22,34 +22,35 @@ const statusOptions = [
   { text: 'Uncollectible', value: 'uncollectible' },
   { text: 'Void', value: 'void' }
 ]
+const pageSize = 25
 
 function Invoices({
   location,
   history,
   match,
   invoices,
+  loadedAll,
   loading,
   getInvoices
 }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('all')
-  const [page, setPage] = useState(1)
   const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     fetchInvoices()
-  }, [searchQuery, page])
+  }, [searchQuery])
 
   const onSearch = query => {
     setSearchQuery(query)
-    setPage(1)
   }
 
-  const fetchInvoices = () => {
+  const fetchInvoices = invoiceId => {
     const params = {
-      page,
+      limit: pageSize,
       search: searchQuery,
-      status: selectedStatus
+      status: selectedStatus,
+      starting_after: invoiceId
     }
     getInvoices(params)
   }
@@ -59,8 +60,15 @@ function Invoices({
   }
 
   const handleApplyFilter = () => {
-    setPage(1)
     fetchInvoices()
+  }
+
+  const onLoadMore = () => {
+    if (!invoices.length) {
+      return
+    }
+    const lastInvoice = invoices.slice(-1)[0].id
+    fetchInvoices(lastInvoice)
   }
 
   const handleDelete = async invoice => {
@@ -104,6 +112,8 @@ function Invoices({
           match={match}
           onRefresh={fetchInvoices}
           onDelete={handleDelete}
+          onLoadMore={onLoadMore}
+          loadedAll={loadedAll}
         />
         <LoadingMask loading={loading || deleting} />
       </div>
@@ -128,6 +138,7 @@ function Invoices({
 const mapStateToProps = (state, ownProps) => {
   return {
     invoices: state.invoice.invoices,
+    loadedAll: state.invoice.loadedAll,
     loading: state.invoice.loading
   }
 }

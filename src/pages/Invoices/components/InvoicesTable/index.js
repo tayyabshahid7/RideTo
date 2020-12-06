@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import classnames from 'classnames'
-import styles from './styles.scss'
+import moment from 'moment'
+
 import { Button } from 'components/ConnectForm'
 import InvoicesTableRow from '../InvoiceTableRow'
 import InvoiceForm from '../InvoiceForm'
-import moment from 'moment'
+
+import styles from './styles.scss'
 
 const InvoicesTable = ({
   invoices,
@@ -12,7 +14,8 @@ const InvoicesTable = ({
   history,
   match,
   onDelete,
-  onEdit,
+  onLoadMore,
+  loadedAll,
   onRefresh
 }) => {
   const [showForm, setShowForm] = useState(false)
@@ -47,6 +50,7 @@ const InvoicesTable = ({
   }
 
   const showInvoiceForm = () => {
+    setInvoice(null)
     setShowForm(true)
   }
 
@@ -101,7 +105,15 @@ const InvoicesTable = ({
             onEdit={handleEdit}
           />
         ))}
-        <div style={statsStyle}></div>
+        <div style={statsStyle}>
+          <div className={styles.tableStats}>
+            {!loadedAll && (
+              <Button color="white" onClick={onLoadMore}>
+                Load More
+              </Button>
+            )}
+          </div>
+        </div>
       </div>
       {showForm && (
         <InvoiceForm

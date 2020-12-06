@@ -1,5 +1,6 @@
 import { fetchInvoices } from 'services/invoice'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
+import { actions as notificationActions } from './notification'
 
 const FETCH_ALL = createRequestTypes('rideto/invoice/FETCH/ALL')
 
@@ -10,12 +11,14 @@ export const getInvoices = params => async dispatch => {
   })
 
   try {
-    const invoices = await fetchInvoices(params)
+    const result = await fetchInvoices(params)
+    if (!result.data.length) {
+      notificationActions.dispatchSuccess(dispatch, 'Nothing to load')
+    }
+
     dispatch({
       type: FETCH_ALL[SUCCESS],
-      data: {
-        invoices
-      }
+      data: result
     })
   } catch (error) {
     dispatch({ type: FETCH_ALL[FAILURE], error })
@@ -24,6 +27,7 @@ export const getInvoices = params => async dispatch => {
 
 const initialState = {
   invoices: [],
+  loadedAll: false,
   params: {},
   loading: false,
   error: null
@@ -39,10 +43,17 @@ export default function reducer(state = initialState, action) {
       }
     }
     case FETCH_ALL[SUCCESS]: {
+      const id = state.params.starting_after
+      let invoices = action.data.data
+      if (id) {
+        invoices = [...state.invoices, ...action.data.data]
+      }
+
       return {
         ...state,
         loading: false,
-        invoices: action.data.invoices
+        invoices,
+        loadedAll: !action.data.data.length
       }
     }
     case FETCH_ALL[FAILURE]: {

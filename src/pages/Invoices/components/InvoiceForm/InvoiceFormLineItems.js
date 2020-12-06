@@ -3,7 +3,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { ConnectInput } from 'components/ConnectForm'
 
-const InvoiceFormLineItems = ({ onChange }) => {
+const InvoiceFormLineItems = ({ value, onChange }) => {
   const [lineItems, setLineItems] = useState([])
   const [stats, setStats] = useState({
     total: '0.00',
@@ -14,6 +14,12 @@ const InvoiceFormLineItems = ({ onChange }) => {
   useEffect(() => {
     addLine()
   }, [])
+
+  useEffect(() => {
+    if (value && value.length) {
+      setLineItems(value)
+    }
+  }, [value])
 
   useEffect(() => {
     let subtotal = 0

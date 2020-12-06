@@ -17,6 +17,8 @@ import RightPanel from 'components/RightPanel'
 import styles from './styles.scss'
 import OrdersDetailPanel from '../components/OrdersDetailPanel'
 
+const pageSize = 50
+
 function Orders({
   orders,
   suppliers,
@@ -134,6 +136,7 @@ function Orders({
       course_type__constant: selectedCourses.join(','),
       status: selectedStatuses.join(','),
       search: searchQuery,
+      page_size: pageSize,
       dateFilter,
       page
     }
@@ -257,6 +260,7 @@ function Orders({
           total={orders.total}
           page={page}
           onPage={onPage}
+          pageSize={pageSize}
           sortingChange={handleSorting}
         />
         <LoadingMask loading={orders.loading} />
