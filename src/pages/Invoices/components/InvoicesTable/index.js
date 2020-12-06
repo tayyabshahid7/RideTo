@@ -50,6 +50,7 @@ const InvoicesTable = ({
   }
 
   const showInvoiceForm = () => {
+    setInvoice(null)
     setShowForm(true)
   }
 

@@ -13,7 +13,12 @@ import InvoiceFormLineItems from './InvoiceFormLineItems'
 import SearchCustomerInput from 'components/SearchCustomerInput'
 import LoadingMask from 'components/LoadingMask'
 import { actions as notifyActions } from 'store/notification'
-import { sendInvoice } from 'services/invoice'
+import {
+  sendInvoice,
+  updateInvoice,
+  deleteInvoiceLine
+  // addInvoiceLine
+} from 'services/invoice'
 import { fetchOrderById } from 'services/order'
 import { fetchCustomer } from 'services/customer'
 
@@ -91,6 +96,7 @@ const InvoiceForm = ({
       // line items
       const tmpLines = invoice.lines.data.map(x => {
         const data = {
+          id: x.id,
           description: x.description,
           quantity: x.quantity,
           price: x.price.unit_amount / 100,
@@ -243,6 +249,16 @@ const InvoiceForm = ({
       return
     }
 
+    const data = {
+      supplier: supplier.id,
+      course_id: course.id,
+      notes
+    }
+
+    if (!invoice) {
+      data.customer = customer.id
+    }
+
     const items = lines.map(x => {
       let tax = x.tax.split('%')[0]
       tax = parseFloat(tax)
@@ -254,13 +270,7 @@ const InvoiceForm = ({
       }
     })
 
-    const data = {
-      customer: customer.id,
-      supplier: supplier.id,
-      course_id: course.id,
-      items,
-      notes
-    }
+    data.items = items
 
     if (order) {
       data.order = order.id
@@ -275,8 +285,19 @@ const InvoiceForm = ({
 
     setSaving(true)
 
-    const result = await sendInvoice(formData)
-    console.log(result)
+    if (invoice) {
+      for (const line of defaultLines) {
+        await deleteInvoiceLine(invoice.id, line.id)
+      }
+      // TODO: create Invoice
+      // for (const line of formData.items) {
+      //   await addInvoiceLine(invoice.id, line)
+      // }
+      delete formData.items
+      await updateInvoice(invoice.id, formData)
+    } else {
+      await sendInvoice(formData)
+    }
 
     setSaving(false)
     onSent()
@@ -295,14 +316,20 @@ const InvoiceForm = ({
       <div className={styles.content}>
         <div className={styles.innerContent}>
           <div className={styles.blockHeader} style={{ marginBottom: 36 }}>
-            Invoice <span>#</span>
+            Invoice {invoice ? '#' + invoice.id : <span>#</span>}
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Customer</label>
-            <SearchCustomerInput
-              value={customer}
-              onChange={handleCustomerChange}
-            />
+            {invoice ? (
+              <label className={styles.labelValue}>
+                {customer && customer.name}
+              </label>
+            ) : (
+              <SearchCustomerInput
+                value={customer}
+                onChange={handleCustomerChange}
+              />
+            )}
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>School</label>
@@ -339,7 +366,7 @@ const InvoiceForm = ({
           </div>
           <div className={styles.divider} />
 
-          <div className={styles.blockHeader}>Customer Details</div>
+          <div className={styles.blockHeader}>fDetails</div>
           <div>
             <label className={styles.label} style={{ marginBottom: 9 }}>
               Email
@@ -347,6 +374,7 @@ const InvoiceForm = ({
             <ConnectInput
               basic
               readOnly
+              disabled
               size="lg"
               name="email"
               value={email || ''}

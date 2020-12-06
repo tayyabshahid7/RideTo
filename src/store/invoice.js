@@ -1,5 +1,6 @@
 import { fetchInvoices } from 'services/invoice'
 import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
+import { actions as notificationActions } from './notification'
 
 const FETCH_ALL = createRequestTypes('rideto/invoice/FETCH/ALL')
 
@@ -11,6 +12,10 @@ export const getInvoices = params => async dispatch => {
 
   try {
     const result = await fetchInvoices(params)
+    if (!result.data.length) {
+      notificationActions.dispatchSuccess(dispatch, 'Nothing to load')
+    }
+
     dispatch({
       type: FETCH_ALL[SUCCESS],
       data: result
