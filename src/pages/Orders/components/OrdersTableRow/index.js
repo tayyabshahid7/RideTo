@@ -22,6 +22,7 @@ const OrdersTableRow = ({
   onEditOrder,
   isAdmin,
   params,
+  onCreateInvoice,
   deleteOrderTraining,
   fetchFilteredOrders
 }) => {
@@ -38,6 +39,11 @@ const OrdersTableRow = ({
   const handleEditOrder = order => {
     menuRef.current.hideMenu()
     onEditOrder(order)
+  }
+
+  const handleCreateInvoice = () => {
+    menuRef.current.hideMenu()
+    onCreateInvoice(record)
   }
 
   const handleDeleteOrder = order => {
@@ -147,11 +153,17 @@ const OrdersTableRow = ({
                   </div>
                 </React.Fragment>
               )}
-              <div className={styles.divider}></div>
-              <div className={styles.menuItem}>
-                <IconPound />
-                <span>Create Invoice</span>
-              </div>
+              {!record.order.stripe_invoice_id && (
+                <React.Fragment>
+                  <div className={styles.divider}></div>
+                  <div
+                    className={styles.menuItem}
+                    onClick={handleCreateInvoice}>
+                    <IconPound />
+                    <span>Create Invoice</span>
+                  </div>
+                </React.Fragment>
+              )}
             </ActionThreeDot>
           )
         } else {

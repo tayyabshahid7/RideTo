@@ -87,11 +87,11 @@ const InvoiceTableRow = ({
         } else if (item.field === 'action') {
           cell = (
             <ActionThreeDot ref={menuRef} down={calcDown(index)}>
-              <div className={styles.menuItem} onClick={handleNewPayment}>
+              {/* <div className={styles.menuItem} onClick={handleNewPayment}>
                 <IconPound />
                 <span>New Payment</span>
               </div>
-              <div className={styles.divider}></div>
+              <div className={styles.divider}></div> */}
 
               {record.status === 'Draft' ? (
                 <React.Fragment>

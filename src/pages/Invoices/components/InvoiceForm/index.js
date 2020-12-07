@@ -24,6 +24,7 @@ import { fetchCustomer } from 'services/customer'
 
 const InvoiceForm = ({
   invoice,
+  orderDetail,
   suppliers,
   info,
   onSent,
@@ -40,6 +41,18 @@ const InvoiceForm = ({
   const [email, setEmail] = useState('')
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
+
+  let supplierName = ''
+  let courseTypeName = ''
+
+  if (orderDetail) {
+    const tmpSuppplier = suppliers.find(x => x.id === orderDetail.supplierId)
+    supplierName = tmpSuppplier.name
+    const tmpCourseType = info.courseTypes.find(
+      x => x.id === orderDetail.courseTypeId
+    )
+    courseTypeName = tmpCourseType.name
+  }
 
   const supplierOptions = suppliers.map(x => ({
     name: x.name,
@@ -186,22 +199,25 @@ const InvoiceForm = ({
   }
 
   const validateData = () => {
-    if (!customer) {
-      showNotification('Error', 'Please choose a customer', 'danger')
-      return false
-    }
-    if (!supplier) {
-      showNotification('Error', 'Please choose a supplier', 'danger')
-      return false
-    }
-    if (!course) {
-      showNotification('Error', 'Please choose a course', 'danger')
-      return false
+    if (!orderDetail) {
+      if (!customer) {
+        showNotification('Error', 'Please choose a customer', 'danger')
+        return false
+      }
+      if (!supplier) {
+        showNotification('Error', 'Please choose a supplier', 'danger')
+        return false
+      }
+      if (!course) {
+        showNotification('Error', 'Please choose a course', 'danger')
+        return false
+      }
     }
     if (!lines.length) {
       showNotification('Error', 'Please add a line item', 'danger')
       return false
     }
+
     if (!notes) {
       showNotification('Error', 'Please add a note', 'danger')
       return false
@@ -249,14 +265,26 @@ const InvoiceForm = ({
       return
     }
 
-    const data = {
-      supplier: supplier.id,
-      course_id: course.id,
-      notes
-    }
+    let data = {}
 
-    if (!invoice) {
-      data.customer = customer.id
+    if (orderDetail) {
+      data = {
+        customer: orderDetail.customerId,
+        supplier: orderDetail.supplierId,
+        course_id: orderDetail.courseTypeId,
+        order: orderDetail.orderId,
+        notes
+      }
+    } else {
+      data = {
+        supplier: supplier.id,
+        course_id: course.id,
+        notes
+      }
+
+      if (!invoice) {
+        data.customer = customer.id
+      }
     }
 
     const items = lines.map(x => {
@@ -327,6 +355,10 @@ const InvoiceForm = ({
               <label className={styles.labelValue}>
                 {customer && customer.name}
               </label>
+            ) : orderDetail ? (
+              <label className={styles.labelValue}>
+                {orderDetail.customer}
+              </label>
             ) : (
               <SearchCustomerInput
                 value={customer}
@@ -336,40 +368,52 @@ const InvoiceForm = ({
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>School</label>
-            <ConnectReactSelect
-              value={supplier}
-              onChange={handleChangeSupplier}
-              size="big"
-              options={supplierOptions}
-              isMulti={false}
-              closeMenuOnSelect={true}
-            />
+            {orderDetail ? (
+              <label className={styles.labelValue}>{supplierName}</label>
+            ) : (
+              <ConnectReactSelect
+                value={supplier}
+                onChange={handleChangeSupplier}
+                size="big"
+                options={supplierOptions}
+                isMulti={false}
+                closeMenuOnSelect={true}
+              />
+            )}
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Course</label>
-            <ConnectReactSelect
-              value={course}
-              onChange={handleChangeCourse}
-              size="big"
-              options={courseTypeOptions}
-              isMulti={false}
-              closeMenuOnSelect={true}
-            />
+            {orderDetail ? (
+              <label className={styles.labelValue}>{courseTypeName}</label>
+            ) : (
+              <ConnectReactSelect
+                value={course}
+                onChange={handleChangeCourse}
+                size="big"
+                options={courseTypeOptions}
+                isMulti={false}
+                closeMenuOnSelect={true}
+              />
+            )}
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Order</label>
-            <ConnectReactSelect
-              value={order}
-              onChange={handleOrderChange}
-              size="big"
-              options={orderOptions}
-              isMulti={false}
-              closeMenuOnSelect={true}
-            />
+            {orderDetail ? (
+              <label className={styles.labelValue}>{orderDetail.order}</label>
+            ) : (
+              <ConnectReactSelect
+                value={order}
+                onChange={handleOrderChange}
+                size="big"
+                options={orderOptions}
+                isMulti={false}
+                closeMenuOnSelect={true}
+              />
+            )}
           </div>
           <div className={styles.divider} />
 
-          <div className={styles.blockHeader}>fDetails</div>
+          <div className={styles.blockHeader}>Details</div>
           <div>
             <label className={styles.label} style={{ marginBottom: 9 }}>
               Email
@@ -380,7 +424,7 @@ const InvoiceForm = ({
               disabled
               size="lg"
               name="email"
-              value={email || ''}
+              value={email || (orderDetail && orderDetail.customerEmail) || ''}
               onChange={() => {}}
               type="email"
               required

@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import classnames from 'classnames'
 import styles from './styles.scss'
 import moment from 'moment'
 import OrdersTableRow from '../OrdersTableRow'
 import { Button, ConnectInput } from 'components/ConnectForm'
 import { IconAngleRight, IconAngleLeft } from 'assets/icons'
-import { getPaymentStatus } from 'services/order'
+import { fetchOrderById, getPaymentStatus } from 'services/order'
+import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
 
 const OrdersTable = ({
   location,
@@ -15,8 +16,12 @@ const OrdersTable = ({
   page,
   total,
   pageSize = 50,
-  onPage
+  onPage,
+  onRefresh
 }) => {
+  const [showInvoiceForm, setShowInvoiceForm] = useState(false)
+  const [orderDetail, setOrderDetail] = useState(false)
+
   const orderStatusMap = {
     CONFIRMED: {
       text: 'Confirmed',
@@ -76,8 +81,30 @@ const OrdersTable = ({
   const pageChanged = page => {
     page = Math.max(1, page)
     page = Math.min(Math.ceil(total / pageSize), page)
-    console.log(page)
     onPage(page)
+  }
+
+  const onCreateInvoice = async order => {
+    const result = await fetchOrderById(order.order.friendly_id)
+    // console.log(order)
+
+    const tmp = {
+      customer: `${order.customer.first_name} ${order.customer.last_name}`,
+      customerId: order.customer.id,
+      supplierId: result.supplier_id,
+      courseTypeId: result.course_type_id,
+      order: order.order.direct_friendly_id,
+      orderId: order.order.friendly_id,
+      customerEmail: order.customer.email
+    }
+
+    setOrderDetail(tmp)
+    setShowInvoiceForm(true)
+  }
+
+  const handleInvoiceSent = () => {
+    setShowInvoiceForm(false)
+    onRefresh()
   }
 
   const statsText = `Showing ${(page - 1) * pageSize + 1} to ${page *
@@ -106,6 +133,7 @@ const OrdersTable = ({
             total={orders.length}
             onViewOrder={onViewOrder}
             onEditOrder={onEditOrder}
+            onCreateInvoice={onCreateInvoice}
           />
         ))}
         <div style={statsStyle}>
@@ -136,6 +164,13 @@ const OrdersTable = ({
           </div>
         </div>
       </div>
+      {showInvoiceForm && (
+        <InvoiceForm
+          onSent={handleInvoiceSent}
+          orderDetail={orderDetail}
+          onClose={() => setShowInvoiceForm(false)}
+        />
+      )}
     </div>
   )
 }

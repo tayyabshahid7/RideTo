@@ -167,12 +167,12 @@ const OrdersDetailPanel = ({
           <Button color="primary" onClick={onEditOrder}>
             Edit Order
           </Button>
-          <Button color="white" onClick={onViewInvoice}>
+          {/* <Button color="white" onClick={onViewInvoice}>
             View Invoice
           </Button>
           <Button color="white" onClick={onAddPayment}>
             Add Payment
-          </Button>
+          </Button> */}
           {isAdmin && (
             <React.Fragment>
               <div className={styles.divider}></div>
