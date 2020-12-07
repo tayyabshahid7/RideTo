@@ -240,29 +240,7 @@ class Instructors extends React.Component {
               </h3>
             </ModalHeader>
             <ModalBody>
-              <div className={styles.mobileContent}>
-                <div>
-                  {photoPreview && (
-                    <img
-                      src={photoPreview}
-                      className={styles.photoPreview}
-                      alt="preview"
-                    />
-                  )}
-                  <input
-                    style={{ display: 'none' }}
-                    className={styles.fileInput}
-                    type="file"
-                    ref={this.photoInput}
-                    onChange={this.handleImageChange}
-                  />
-                  <Button
-                    color="link"
-                    type="button"
-                    onClick={() => this.photoInput.current.click()}>
-                    Choose Photo
-                  </Button>
-                </div>
+              <div className={styles.modalContent}>
                 <form
                   id="instructorForm"
                   onSubmit={this.handleSave}
@@ -297,6 +275,31 @@ class Instructors extends React.Component {
                     type="password"
                     minLength="6"
                   />
+                  <div className={styles.photoHolder}>
+                    <div>
+                      <label className={styles.label}>Photo</label>
+                      {photoPreview && (
+                        <img
+                          src={photoPreview}
+                          className={styles.photoPreview}
+                          alt="preview"
+                        />
+                      )}
+                    </div>
+                    <input
+                      style={{ display: 'none' }}
+                      className={styles.fileInput}
+                      type="file"
+                      ref={this.photoInput}
+                      onChange={this.handleImageChange}
+                    />
+                    <Button
+                      color="link"
+                      type="button"
+                      onClick={() => this.photoInput.current.click()}>
+                      Choose Photo
+                    </Button>
+                  </div>
                   <ConnectReactSelect
                     label="Schools"
                     name="supplier"
