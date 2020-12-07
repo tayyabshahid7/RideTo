@@ -7,8 +7,8 @@ import {
   IconRightArrow,
   IconDownArrow,
   IconEdit,
-  IconTrash,
-  IconPound
+  IconTrash
+  // IconPound
 } from 'assets/icons'
 
 const InvoiceTableRow = ({
@@ -40,10 +40,10 @@ const InvoiceTableRow = ({
     return index > 4 && index > total - 5
   }
 
-  const handleNewPayment = () => {
-    menuRef.current.hideMenu()
-    onNewPayment()
-  }
+  // const handleNewPayment = () => {
+  //   menuRef.current.hideMenu()
+  //   onNewPayment()
+  // }
 
   const handleEdit = () => {
     menuRef.current.hideMenu()
