@@ -98,7 +98,7 @@ const CalendarWeekCourse = React.forwardRef(
           className={classnames(
             styles.content,
             availableSpaces === 1 && styles.warning,
-            availableSpaces === 0 && styles.danger
+            availableSpaces <= 0 && styles.danger
           )}>
           <div className={styles.eventHeader}>
             {(isDay || isDesktop) && (
