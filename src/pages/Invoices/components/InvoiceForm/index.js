@@ -16,8 +16,8 @@ import { actions as notifyActions } from 'store/notification'
 import {
   sendInvoice,
   updateInvoice,
-  deleteInvoiceLine
-  // addInvoiceLine
+  deleteInvoiceLine,
+  addInvoiceLine
 } from 'services/invoice'
 import { fetchOrderById } from 'services/order'
 import { fetchCustomer } from 'services/customer'
@@ -104,7 +104,7 @@ const InvoiceForm = ({
         }
         return data
       })
-      setDefaultLines(tmpLines)
+      setDefaultLines(tmpLines.reverse())
 
       // fetch customer detail and orders
       const cdetail = await fetchData()
@@ -281,6 +281,9 @@ const InvoiceForm = ({
 
   const handleSend = async isSend => {
     const formData = prepareData()
+    if (!formData) {
+      return
+    }
     formData.send_invoice = isSend
 
     setSaving(true)
@@ -289,10 +292,10 @@ const InvoiceForm = ({
       for (const line of defaultLines) {
         await deleteInvoiceLine(invoice.id, line.id)
       }
-      // TODO: create Invoice
-      // for (const line of formData.items) {
-      //   await addInvoiceLine(invoice.id, line)
-      // }
+      for (const line of formData.items) {
+        delete line.id
+        await addInvoiceLine(invoice.id, line)
+      }
       delete formData.items
       await updateInvoice(invoice.id, formData)
     } else {

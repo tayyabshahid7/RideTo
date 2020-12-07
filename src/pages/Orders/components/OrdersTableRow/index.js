@@ -136,14 +136,16 @@ const OrdersTableRow = ({
                 <IconEdit />
                 <span>Edit Order</span>
               </div>
-              <div className={styles.spacing} />
               {isAdmin && canDelete && (
-                <div
-                  className={styles.menuItem}
-                  onClick={() => handleDeleteOrder(record)}>
-                  <IconTrash />
-                  <span>Delete Order</span>
-                </div>
+                <React.Fragment>
+                  <div className={styles.spacing} />
+                  <div
+                    className={styles.menuItem}
+                    onClick={() => handleDeleteOrder(record)}>
+                    <IconTrash />
+                    <span>Delete Order</span>
+                  </div>
+                </React.Fragment>
               )}
               <div className={styles.divider}></div>
               <div className={styles.menuItem}>
