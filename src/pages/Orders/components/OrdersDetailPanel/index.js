@@ -97,9 +97,9 @@ const OrdersDetailPanel = ({
     setEditMode(true)
   }
 
-  const onViewInvoice = () => {}
+  // const onViewInvoice = () => {}
 
-  const onAddPayment = () => {}
+  // const onAddPayment = () => {}
 
   const onSave = async (updatedOrder, updateDate = false) => {
     const tmp = Object.assign({}, updatedOrder)
