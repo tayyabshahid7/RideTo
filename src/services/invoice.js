@@ -36,7 +36,7 @@ export const deleteInvoiceLine = async (invoiceId, lineId) => {
 }
 
 export const addInvoiceLine = async (invoiceId, data) => {
-  const path = `school/invoice/${invoiceId}/add-item`
+  const path = `school/invoice/${invoiceId}/add-item/`
   const response = await post(path, data)
 
   return response

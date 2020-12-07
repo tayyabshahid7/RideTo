@@ -198,6 +198,10 @@ function Orders({
     setPage(page)
   }
 
+  const onRefresh = () => {
+    fetchOrders()
+  }
+
   return (
     <div className={styles.container}>
       <StaticSidePanel>
@@ -260,6 +264,7 @@ function Orders({
           total={orders.total}
           page={page}
           onPage={onPage}
+          onRefresh={onRefresh}
           pageSize={pageSize}
           sortingChange={handleSorting}
         />

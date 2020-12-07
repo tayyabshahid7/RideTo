@@ -5,6 +5,7 @@ import moment from 'moment'
 import { Button } from 'components/ConnectForm'
 import InvoicesTableRow from '../InvoiceTableRow'
 import InvoiceForm from '../InvoiceForm'
+import { updateInvoice } from 'services/invoice'
 
 import styles from './styles.scss'
 
@@ -16,7 +17,8 @@ const InvoicesTable = ({
   onDelete,
   onLoadMore,
   loadedAll,
-  onRefresh
+  onRefresh,
+  setUpdating
 }) => {
   const [showForm, setShowForm] = useState(false)
   const [invoice, setInvoice] = useState(null)
@@ -37,7 +39,8 @@ const InvoicesTable = ({
     status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
     orderId: x.metadata.order,
     customer: x.customer_name,
-    dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY')
+    dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY'),
+    original: x
   }))
 
   const tableStyles = {
@@ -60,10 +63,23 @@ const InvoicesTable = ({
   }
 
   const handleEdit = invoice => {
-    const data = invoices.find(x => x.id === invoice.id)
-    setInvoice(data)
+    setInvoice(invoice.original)
     setShowForm(true)
-    console.log('%cedit invoice', 'color: red', data)
+  }
+
+  const handleSend = async invoice => {
+    setUpdating(true)
+    const tmp = invoice.original
+    const data = {
+      supplier: tmp.metadata.supplier_id,
+      course_id: tmp.metadata.course_id,
+      order: tmp.metadata.order,
+      send_invoice: true
+    }
+    await updateInvoice(tmp.id, data)
+    setUpdating(false)
+
+    onRefresh()
   }
 
   const statsStyle = {
@@ -103,6 +119,7 @@ const InvoicesTable = ({
             onNewPayment={onNewPayment}
             onDelete={onDelete}
             onEdit={handleEdit}
+            onSend={handleSend}
           />
         ))}
         <div style={statsStyle}>
