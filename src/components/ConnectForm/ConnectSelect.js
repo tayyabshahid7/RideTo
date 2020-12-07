@@ -66,11 +66,11 @@ export default function ConnectSelect({
             {typeof placeholder === 'boolean' ? 'Select' : placeholder}
           </option>
         )}
-        {options.map(opt => (
+        {options.map((opt, index) => (
           <option
-            key={opt.key || opt[valueField]}
+            key={opt.key || index}
             disabled={!opt[valueField]}
-            value={opt[valueField]}
+            value={opt[valueField] === null ? undefined : opt[valueField]}
             name={opt[labelField]}>
             {opt[labelField]}
           </option>
