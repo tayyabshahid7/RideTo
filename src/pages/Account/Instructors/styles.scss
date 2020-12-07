@@ -53,15 +53,23 @@
 }
 
 .photoPreview {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 }
 
-.mobileContent {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  grid-gap: 16px;
+.label {
+  display: block;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: bold;
+  color: rgba(68, 68, 68, 0.6);
+  margin-bottom: 0.5rem;
+}
+
+.photoHolder {
+  margin-bottom: 1rem;
 }
 
 .editForm {

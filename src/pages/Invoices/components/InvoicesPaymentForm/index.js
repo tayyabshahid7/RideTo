@@ -6,10 +6,11 @@ import {
   CardNumberElement,
   CardExpiryElement,
   CardCVCElement,
-  PostalCodeElement
+  PostalCodeElement,
+  StripeProvider,
+  Elements
 } from 'react-stripe-elements'
 import { STRIPE_KEY } from 'common/constants'
-import { StripeProvider, Elements } from 'react-stripe-elements'
 import LoadingMask from 'components/LoadingMask'
 import { IconExclamation, IconCheck } from 'assets/icons'
 
@@ -67,6 +68,7 @@ const InvoicesPaymentForm = ({ history }) => {
   }
 
   const handleSubmit = async () => {
+    console.log(formData)
     setSaving(true)
     setTimeout(() => {
       setScreen('success')
@@ -83,7 +85,7 @@ const InvoicesPaymentForm = ({ history }) => {
   }
 
   const handleStripeElementChange = (el, name) => {
-    console.log(name, el.empty, el.complete)
+    console.log(name, el.empty, el.complete, el)
   }
 
   return (
