@@ -18,7 +18,8 @@ const InvoiceTableRow = ({
   total,
   onNewPayment,
   onDelete,
-  onEdit
+  onEdit,
+  onSend
 }) => {
   const menuRef = useRef()
   const tagMap = {
@@ -56,6 +57,17 @@ const InvoiceTableRow = ({
   const handleDelete = () => {
     menuRef.current.hideMenu()
     onDelete(record)
+  }
+
+  const handleSend = () => {
+    menuRef.current.hideMenu()
+    onSend(record)
+  }
+
+  const handleDownload = () => {
+    menuRef.current.hideMenu()
+    console.log(record.original)
+    window.open(record.original.invoice_pdf)
   }
 
   return (
@@ -100,15 +112,23 @@ const InvoiceTableRow = ({
                 </div>
               )}
               <div className={styles.divider}></div>
-              <div className={styles.menuItem}>
-                <IconDownArrow />
-                <span>Download Invoice</span>
-              </div>
-              <div className={styles.spacing}></div>
-              <div className={styles.menuItem}>
-                <IconRightArrow />
-                <span>Send Invoice</span>
-              </div>
+              {record.original.invoice_pdf && (
+                <React.Fragment>
+                  <div className={styles.menuItem} onClick={handleDownload}>
+                    <IconDownArrow />
+                    <span>Download Invoice</span>
+                  </div>
+                  <div className={styles.spacing}></div>
+                </React.Fragment>
+              )}
+              {record.status === 'Draft' && (
+                <React.Fragment>
+                  <div className={styles.menuItem} onClick={handleSend}>
+                    <IconRightArrow />
+                    <span>Send Invoice</span>
+                  </div>
+                </React.Fragment>
+              )}
             </ActionThreeDot>
           )
         } else {

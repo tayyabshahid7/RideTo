@@ -36,6 +36,7 @@ function Invoices({
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('all')
   const [deleting, setDeleting] = useState(false)
+  const [updating, setUpdating] = useState(false)
 
   useEffect(() => {
     fetchInvoices()
@@ -110,12 +111,14 @@ function Invoices({
           location={location}
           history={history}
           match={match}
+          loadedAll={loadedAll}
           onRefresh={fetchInvoices}
           onDelete={handleDelete}
           onLoadMore={onLoadMore}
-          loadedAll={loadedAll}
+          setUpdating={setUpdating}
         />
-        <LoadingMask loading={loading || deleting} />
+
+        <LoadingMask loading={loading || updating || deleting} />
       </div>
       <RightPanel location={location} type="full">
         <Route
