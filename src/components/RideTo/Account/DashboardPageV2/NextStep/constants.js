@@ -362,44 +362,37 @@ export const STEP_GEAR = {
     {
       name: 'Helmets',
       image: helmets,
-      link:
-        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/797/#/23639,2834,1102'
+      link: 'https://store.rideto.com/collections/helmet'
     },
     {
       name: 'Gloves',
       image: gloves,
-      link:
-        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/314/#/23639,2834,1102'
+      link: 'https://store.rideto.com/collections/gloves'
     },
     {
       name: 'Jackets',
       image: jackets,
-      link:
-        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/975/#/23639,2834,1102'
+      link: 'https://store.rideto.com/collections/motorcycle-jackets'
     },
     {
       name: 'Jeans',
       image: jeans,
-      link:
-        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/976/#/23639,2834,1102'
+      link: 'https://store.rideto.com/collections/motorcyle-jeans'
     },
     {
       name: 'Boots',
       image: boots,
-      link:
-        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/1590/#/23639,2834,1102'
+      link: 'https://store.rideto.com/collections/boots'
     },
     {
       name: 'Locks',
       image: locks,
-      link:
-        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/69/#/23639,2834,1102'
+      link: 'https://store.rideto.com/collections/security'
     },
     {
       name: 'Luggage',
       image: luggage,
-      link:
-        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/941/#/23639,2834,1102'
+      link: 'https://store.rideto.com/collections/accessory'
     }
   ],
   status: 'Not Started',
