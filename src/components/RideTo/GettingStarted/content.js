@@ -57,12 +57,11 @@ const GET_THE_GEAR = {
   img: image4,
   title: 'Get the look, be protected.',
   text:
-    "Our clothing partners SportsBikeShop bring you the biggest selection of riding gear. From helmets to gloves and boots. Get kitted out at the best price with the best gear. Unsure what's right for you? Check out our latest gear reviews. ",
+    "Our online store brings you the best selection of gear for new riders. From helmets to gloves and boots. Get kitted out at the best price with the best gear. Unsure what's right for you? Check out our latest gear reviews.",
   links: [
     { url: '/blog/gear-guide-for-new-motorcyclists', text: 'See Gear Reviews' },
     {
-      url:
-        'https://www.sportsbikeshop.co.uk/motorcycle_parts/content_cat/3087/#/23639,2834,1126',
+      url: 'https://store.rideto.com',
       text: 'Shop Gear',
       external: true,
       alt: true
