@@ -7,10 +7,7 @@ const FILTERS = [
   {
     name: 'Today',
     getStartDate: () => moment().format(DATE_FORMAT),
-    getEndDate: () =>
-      moment()
-        .add(1, 'day')
-        .format(DATE_FORMAT)
+    getEndDate: () => moment().format(DATE_FORMAT)
   },
   {
     name: 'This Week',
