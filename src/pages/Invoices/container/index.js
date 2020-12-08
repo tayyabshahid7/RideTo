@@ -7,6 +7,7 @@ import StaticSidePanel from 'components/StaticSidePanel'
 import SearchInput from 'components/SearchInput'
 import InvoicesTable from '../components/InvoicesTable'
 import NewPaymentSidebar from '../components/NewPaymentSidebar'
+import InvoiceStatusSidebar from '../components/InvoiceStatusSidebar'
 import RightPanel from 'components/RightPanel'
 import { Button } from 'components/ConnectForm'
 import { getInvoices } from 'store/invoice'
@@ -130,8 +131,13 @@ function Invoices({
         />
         <Route
           exact
-          path="/invoices/edit/:id "
+          path="/invoices/edit/:id"
           render={routeProps => <NewPaymentSidebar {...routeProps} />}
+        />
+        <Route
+          exact
+          path="/invoices/status/:id"
+          render={routeProps => <InvoiceStatusSidebar {...routeProps} />}
         />
       </RightPanel>
     </div>

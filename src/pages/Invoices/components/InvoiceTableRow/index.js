@@ -10,31 +10,21 @@ import {
   IconTrash
   // IconPound
 } from 'assets/icons'
+import { getTagType } from 'services/invoice'
 
 const InvoiceTableRow = ({
   header,
   record,
   index,
   total,
+  history,
   onNewPayment,
   onDelete,
   onEdit,
   onSend
 }) => {
   const menuRef = useRef()
-  const tagMap = {
-    outstanding: 'default',
-    'partially paid': 'info',
-    paid: 'success',
-    overdue: 'danger',
-    void: 'danger',
-    draft: 'default'
-  }
 
-  const getTagType = tag => {
-    const tmp = tag.toLowerCase()
-    return tagMap[tmp] || 'default'
-  }
 
   const calcDown = index => {
     return index > 4 && index > total - 5
@@ -52,6 +42,7 @@ const InvoiceTableRow = ({
 
   const handleChangeStatus = () => {
     menuRef.current.hideMenu()
+    history.push(`/invoices/status/${record.id}`)
   }
 
   const handleDelete = () => {
@@ -118,11 +109,13 @@ const InvoiceTableRow = ({
                     <IconDownArrow />
                     <span>Download Invoice</span>
                   </div>
-                  <div className={styles.spacing}></div>
                 </React.Fragment>
               )}
               {record.status === 'Draft' && (
                 <React.Fragment>
+                  {record.original.invoice_pdf && (
+                    <div className={styles.spacing}></div>
+                  )}
                   <div className={styles.menuItem} onClick={handleSend}>
                     <IconRightArrow />
                     <span>Send Invoice</span>

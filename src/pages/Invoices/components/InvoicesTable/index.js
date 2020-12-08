@@ -115,6 +115,7 @@ const InvoicesTable = ({
             header={header}
             record={record}
             index={index}
+            history={history}
             total={records.length}
             onNewPayment={onNewPayment}
             onDelete={onDelete}

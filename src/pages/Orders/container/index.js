@@ -190,6 +190,7 @@ function Orders({
   }
 
   const onSearch = query => {
+    console.log(query)
     setSearchQuery(query)
     setPage(1)
   }

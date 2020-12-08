@@ -24,6 +24,7 @@ const OrdersRadioFilter = ({ title, filters, selectedFilter, onSelect }) => {
               type="radio"
               name={`${title}Filter`}
               checked={filter.value === selectedFilter}
+              onChange={() => {}}
             />
             <span className="slider"></span>
           </label>
