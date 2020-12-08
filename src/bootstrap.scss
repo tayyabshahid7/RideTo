@@ -295,6 +295,17 @@ $font-family-base: 'PT Sans', sans-serif;
   flex-shrink: 0;
   pointer-events: none;
 
+  &.round-check {
+    .slider {
+      border-radius: 50%;
+
+      &:before {
+        top: 2px;
+        height: 9px;
+      }
+    }
+  }
+
   input {
     opacity: 0;
     width: 0;

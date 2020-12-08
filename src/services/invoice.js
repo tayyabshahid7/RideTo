@@ -1,4 +1,5 @@
 import { get, put, post, destroy } from 'services/api'
+import { INVOICE_STATUS_COLOR } from 'common/constants'
 
 export const sendInvoice = async data => {
   const path = 'school/invoice/'
@@ -40,4 +41,8 @@ export const addInvoiceLine = async (invoiceId, data) => {
   const response = await post(path, data)
 
   return response
+}
+
+export const getTagType = tag => {
+  return INVOICE_STATUS_COLOR[tag.toLowerCase()] || 'default'
 }

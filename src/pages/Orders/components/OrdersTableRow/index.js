@@ -82,9 +82,9 @@ const OrdersTableRow = ({
         if (item.field === 'id') {
           if (record.order) {
             cell = (
-              <Link to={`/orders/${record.order.direct_friendly_id}`}>
+              <span className={styles.link}>
                 {record.order.direct_friendly_id}
-              </Link>
+              </span>
             )
           } else {
             cell = null

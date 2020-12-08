@@ -21,6 +21,7 @@ const OrdersMultiFilter = ({ title, filters, selectedFilters, onSelect }) => {
               type="checkbox"
               name={`${title}Filter`}
               checked={selectedFilters.includes(filter.value)}
+              onChange={() => {}}
             />
             <span className="slider"></span>
           </label>

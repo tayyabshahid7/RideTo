@@ -34,13 +34,31 @@ const OrdersTable = ({
     PENDING: {
       text: 'Pending',
       type: 'info'
+    },
+    CREATED: {
+      text: 'Created',
+      type: 'default'
+    },
+    FAILED: {
+      text: 'Failed',
+      type: 'danger'
     }
   }
 
   orders.forEach(order => {
-    order.training_date = moment(order.training_date_time).format('DD MMM YY')
+    order.training_date = order.training_date_time
+      ? moment(order.training_date_time).format('DD MMM YY')
+      : ''
     order.paymentStatus = getPaymentStatus(order.order.payment_status)
     order.orderStatus = orderStatusMap[order.order.status]
+    if (!order.orderStatus) {
+      order.orderStatus = {
+        text:
+          order.order.status.substr(0, 1).toUpperCase() +
+          order.order.status.substr(1).toLowerCase(),
+        type: 'default'
+      }
+    }
   })
 
   const header = [
@@ -107,8 +125,9 @@ const OrdersTable = ({
     onRefresh()
   }
 
-  const statsText = `Showing ${(page - 1) * pageSize + 1} to ${page *
-    pageSize} of ${total} orders`
+  const showCount = Math.min(total, page * pageSize)
+  const statsText = `Showing ${(page - 1) * pageSize +
+    1} to ${showCount} of ${total} orders`
 
   return (
     <div className={styles.container}>
@@ -125,16 +144,18 @@ const OrdersTable = ({
         ))}
 
         {orders.map((record, index) => (
-          <OrdersTableRow
-            key={index}
-            header={header}
-            record={record}
-            index={index}
-            total={orders.length}
-            onViewOrder={onViewOrder}
-            onEditOrder={onEditOrder}
-            onCreateInvoice={onCreateInvoice}
-          />
+          <React.Fragment>
+            <OrdersTableRow
+              key={index}
+              header={header}
+              record={record}
+              index={index}
+              total={orders.length}
+              onViewOrder={onViewOrder}
+              onEditOrder={onEditOrder}
+              onCreateInvoice={onCreateInvoice}
+            />
+          </React.Fragment>
         ))}
         <div style={statsStyle}>
           <div className={styles.tableStats}>
