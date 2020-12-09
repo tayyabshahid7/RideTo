@@ -44,6 +44,7 @@ function Orders({
   const [orderDir, setOrderDir] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
+  const [showFilter, setShowFilter] = useState(false)
   const [paramsRefreshed, setParamsRefreshed] = useState(false)
 
   const dateFilters = [
@@ -131,12 +132,14 @@ function Orders({
     setSelectedSuppliers([])
     setSelectedStatuses([])
     setSelectedCourses([])
+    setShowFilter(false)
   }
 
   const handleApplyFilter = () => {
     setFilterChanged(false)
     setPage(1)
     fetchOrders()
+    setShowFilter(false)
   }
 
   const fetchOrders = () => {
@@ -224,9 +227,16 @@ function Orders({
     fetchOrders()
   }
 
+  const onToggleFilter = flag => {
+    setShowFilter(flag)
+  }
+
   return (
     <div className={styles.container}>
-      <StaticSidePanel>
+      <StaticSidePanel
+        title="Filter"
+        show={showFilter}
+        onClose={() => onToggleFilter(false)}>
         <SearchInput
           value={searchQuery}
           placeholder="e.g. order #"
@@ -290,6 +300,7 @@ function Orders({
           onPage={onPage}
           onSort={onSort}
           onRefresh={onRefresh}
+          onOpenFilter={() => onToggleFilter(true)}
           pageSize={pageSize}
           sortingChange={handleSorting}
         />

@@ -4,9 +4,15 @@ import styles from './styles.scss'
 import moment from 'moment'
 import OrdersTableRow from '../OrdersTableRow'
 import { Button, ConnectInput } from 'components/ConnectForm'
-import { IconAngleRight, IconAngleLeft, IconLongArrowRight } from 'assets/icons'
+import {
+  IconSideFilter,
+  IconAngleRight,
+  IconAngleLeft,
+  IconLongArrowRight
+} from 'assets/icons'
 import { fetchOrderById, getPaymentStatus } from 'services/order'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
+import { Mobile } from 'common/breakpoints'
 
 const OrdersTable = ({
   location,
@@ -20,6 +26,7 @@ const OrdersTable = ({
   pageSize = 50,
   onPage,
   onSort,
+  onOpenFilter,
   onRefresh
 }) => {
   const [showInvoiceForm, setShowInvoiceForm] = useState(false)
@@ -160,6 +167,10 @@ const OrdersTable = ({
     onRefresh()
   }
 
+  const handleToggleFitler = () => {
+    onOpenFilter()
+  }
+
   const showCount = Math.min(total, page * pageSize)
   const statsText = `Showing ${(page - 1) * pageSize +
     1} to ${showCount} of ${total} orders`
@@ -167,67 +178,79 @@ const OrdersTable = ({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
+        <Mobile>
+          <div
+            id="btn-filter-toggle"
+            onClick={handleToggleFitler}
+            className={classnames('icon-button')}>
+            <IconSideFilter />
+          </div>
+        </Mobile>
         <label className={styles.headerLabel}>Orders</label>
       </div>
-      <div
-        className={classnames('main-table', styles.tableContainer)}
-        style={tableStyles}>
-        {header.map((item, index) => (
+      <div className={styles.tableContainer}>
+        <div className={styles.tableInner}>
           <div
-            key={index}
-            className={classnames('main-table--cell', 'header-cell')}
-            onClick={() => handleSort(item)}>
-            {item.title}
-            {ordering === item.sortField && (
-              <span
-                className={classnames(
-                  styles.orderingIcon,
-                  orderDir && styles.iconDown
-                )}>
-                <IconLongArrowRight />
-              </span>
-            )}
-          </div>
-        ))}
-
-        {orders.map((record, index) => (
-          <React.Fragment>
-            <OrdersTableRow
-              key={index}
-              header={header}
-              record={record}
-              index={index}
-              total={orders.length}
-              onViewOrder={onViewOrder}
-              onEditOrder={onEditOrder}
-              onCreateInvoice={onCreateInvoice}
-            />
-          </React.Fragment>
-        ))}
-        <div style={statsStyle}>
-          <div className={styles.tableStats}>
-            <span className={styles.statsText}>{statsText}</span>
-            <div className={styles.pagination}>
-              <Button
-                color="white"
-                className={styles.pageButton}
-                onClick={() => pageChanged(page - 1)}>
-                <IconAngleLeft />
-              </Button>
-              <div className={styles.pageInput}>
-                <ConnectInput
-                  basic
-                  value={page}
-                  type="number"
-                  onChange={handlePageChange}
-                />
+            className={classnames('main-table', 'table--bordered')}
+            style={tableStyles}>
+            {header.map((item, index) => (
+              <div
+                key={index}
+                className={classnames('main-table--cell', 'header-cell')}
+                onClick={() => handleSort(item)}>
+                {item.title}
+                {ordering === item.sortField && (
+                  <span
+                    className={classnames(
+                      styles.orderingIcon,
+                      orderDir && styles.iconDown
+                    )}>
+                    <IconLongArrowRight />
+                  </span>
+                )}
               </div>
-              <Button
-                color="white"
-                className={styles.pageButton}
-                onClick={() => pageChanged(page + 1)}>
-                <IconAngleRight />
-              </Button>
+            ))}
+
+            {orders.map((record, index) => (
+              <React.Fragment>
+                <OrdersTableRow
+                  key={index}
+                  header={header}
+                  record={record}
+                  index={index}
+                  total={orders.length}
+                  onViewOrder={onViewOrder}
+                  onEditOrder={onEditOrder}
+                  onCreateInvoice={onCreateInvoice}
+                />
+              </React.Fragment>
+            ))}
+            <div style={statsStyle}>
+              <div className={styles.tableStats}>
+                <span className={styles.statsText}>{statsText}</span>
+                <div className={styles.pagination}>
+                  <Button
+                    color="white"
+                    className={styles.pageButton}
+                    onClick={() => pageChanged(page - 1)}>
+                    <IconAngleLeft />
+                  </Button>
+                  <div className={styles.pageInput}>
+                    <ConnectInput
+                      basic
+                      value={page}
+                      type="number"
+                      onChange={handlePageChange}
+                    />
+                  </div>
+                  <Button
+                    color="white"
+                    className={styles.pageButton}
+                    onClick={() => pageChanged(page + 1)}>
+                    <IconAngleRight />
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

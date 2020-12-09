@@ -3,6 +3,11 @@
   border-top: 1px solid rgba(64, 64, 64, 0.1);
   grid-template-columns: 275px 1fr;
   height: 100%;
+
+  @media (max-width: 767px) {
+    display: block;
+    height: calc(100vh - 72px);
+  }
 }
 
 .divider {

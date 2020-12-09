@@ -12,6 +12,7 @@ import { IconRightArrow, IconEdit, IconTrash, IconPound } from 'assets/icons'
 import { isAdmin } from 'services/auth'
 import * as orderModule from 'store/order'
 import { deleteOrderTraining } from 'store/course'
+import { Desktop } from 'common/breakpoints'
 
 const OrdersTableRow = ({
   header,
@@ -153,17 +154,19 @@ const OrdersTableRow = ({
                   </div>
                 </React.Fragment>
               )}
-              {!record.order.stripe_invoice_id && (
-                <React.Fragment>
-                  <div className={styles.divider}></div>
-                  <div
-                    className={styles.menuItem}
-                    onClick={handleCreateInvoice}>
-                    <IconPound />
-                    <span>Create Invoice</span>
-                  </div>
-                </React.Fragment>
-              )}
+              <Desktop>
+                {!record.order.stripe_invoice_id && (
+                  <React.Fragment>
+                    <div className={styles.divider}></div>
+                    <div
+                      className={styles.menuItem}
+                      onClick={handleCreateInvoice}>
+                      <IconPound />
+                      <span>Create Invoice</span>
+                    </div>
+                  </React.Fragment>
+                )}
+              </Desktop>
             </ActionThreeDot>
           )
         } else {
