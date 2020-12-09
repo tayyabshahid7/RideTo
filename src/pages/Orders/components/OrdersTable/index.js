@@ -17,6 +17,7 @@ const OrdersTable = ({
   total,
   pageSize = 50,
   onPage,
+  onSort,
   onRefresh
 }) => {
   const [showInvoiceForm, setShowInvoiceForm] = useState(false)
@@ -120,6 +121,10 @@ const OrdersTable = ({
     setShowInvoiceForm(true)
   }
 
+  const handleSort = column => {
+    onSort(column.field, true)
+  }
+
   const handleInvoiceSent = () => {
     setShowInvoiceForm(false)
     onRefresh()
@@ -138,7 +143,10 @@ const OrdersTable = ({
         className={classnames('main-table', styles.tableContainer)}
         style={tableStyles}>
         {header.map((item, index) => (
-          <div key={index} className="main-table--cell header-cell">
+          <div
+            key={index}
+            className="main-table--cell header-cell"
+            onClick={() => handleSort(item)}>
             {item.title}
           </div>
         ))}

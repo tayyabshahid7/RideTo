@@ -439,6 +439,10 @@ $font-family-base: 'PT Sans', sans-serif;
       position: sticky;
       top: 0;
       z-index: 10;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
     }
   }
 }

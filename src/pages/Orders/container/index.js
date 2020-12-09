@@ -195,6 +195,10 @@ function Orders({
     setPage(1)
   }
 
+  const onSort = (field, asc) => {
+    console.log(field, asc);
+  }
+
   const onPage = page => {
     setPage(page)
   }
@@ -265,6 +269,7 @@ function Orders({
           total={orders.total}
           page={page}
           onPage={onPage}
+          onSort={onSort}
           onRefresh={onRefresh}
           pageSize={pageSize}
           sortingChange={handleSorting}
