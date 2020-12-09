@@ -63,11 +63,31 @@ const OrdersTable = ({
   })
 
   const header = [
-    { title: 'Order #', field: 'id', width: '2fr' },
-    { title: 'Training Date', field: 'training_date', width: '1.5fr' },
-    { title: 'Course', field: 'course_type', width: '3fr' },
+    {
+      title: 'Order #',
+      sortField: 'order__friendly_id',
+      field: 'id',
+      width: '2fr'
+    },
+    {
+      title: 'Training Date',
+      sortField: 'training_date_time',
+      field: 'training_date',
+      width: '1.5fr'
+    },
+    {
+      title: 'Course',
+      sortField: 'course_type__constant',
+      field: 'course_type',
+      width: '3fr'
+    },
     { title: 'Bike Hire', field: 'bike_type', width: '2fr' },
-    { title: 'Customer', field: 'customer', width: '2fr' },
+    {
+      title: 'Customer',
+      sortField: 'order__customer__first_name',
+      field: 'customer',
+      width: '2fr'
+    },
     { title: 'Mobile #', field: 'phone', width: '1.5fr' },
     { title: 'Payment Status', field: 'payment_status', width: '2fr' },
     { title: 'Order Status', field: 'status', width: '1.5fr' },
@@ -122,7 +142,9 @@ const OrdersTable = ({
   }
 
   const handleSort = column => {
-    onSort(column.field, true)
+    if (column.sortField) {
+      onSort(column.sortField, true)
+    }
   }
 
   const handleInvoiceSent = () => {

@@ -40,6 +40,7 @@ function Orders({
   const [selectedStatuses, setSelectedStatuses] = useState([])
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
+  const [ordering, setOrdering] = useState(null)
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
   const [paramsRefreshed, setParamsRefreshed] = useState(false)
@@ -196,7 +197,8 @@ function Orders({
   }
 
   const onSort = (field, asc) => {
-    console.log(field, asc);
+    setOrdering(field)
+    console.log(field, asc)
   }
 
   const onPage = page => {
