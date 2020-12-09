@@ -105,6 +105,15 @@ function Orders({
       setSearchQuery(params.search)
       setToDate(params.edate)
       setFromDate(params.sdate)
+      if (params.ordering) {
+        if (params.ordering.startsWith('-')) {
+          setOrdering(params.ordering.substr(1))
+          setOrderDir(true)
+        } else {
+          setOrdering(params.ordering)
+          setOrderDir(false)
+        }
+      }
       setParamsRefreshed(true)
     }
   }, [paramLoaded])
