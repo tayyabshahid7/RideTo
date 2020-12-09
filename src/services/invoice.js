@@ -43,6 +43,23 @@ export const addInvoiceLine = async (invoiceId, data) => {
   return response
 }
 
+export const markInvoiceAsPaid = async invoiceId => {
+  const path = `school/invoice/${invoiceId}/pay/`
+  const data = {
+    mark_as_paid: true
+  }
+  const response = await post(path, data)
+
+  return response
+}
+
+export const markInvoiceAsUncollectible = async invoiceId => {
+  const path = `school/invoice/${invoiceId}/uncollectible/`
+  const response = await post(path)
+
+  return response
+}
+
 export const getTagType = tag => {
   return INVOICE_STATUS_COLOR[tag.toLowerCase()] || 'default'
 }
