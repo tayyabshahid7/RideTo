@@ -40,7 +40,8 @@ function Orders({
   const [selectedStatuses, setSelectedStatuses] = useState([])
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
-  const [ordering, setOrdering] = useState(null)
+  const [ordering, setOrdering] = useState('')
+  const [orderDir, setOrderDir] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
   const [paramsRefreshed, setParamsRefreshed] = useState(false)
@@ -112,7 +113,7 @@ function Orders({
     if (paramLoaded) {
       fetchOrders()
     }
-  }, [searchQuery, page, paramsRefreshed])
+  }, [searchQuery, page, paramsRefreshed, ordering, orderDir])
 
   const handleSorting = () => {}
 
@@ -140,6 +141,10 @@ function Orders({
       page_size: pageSize,
       dateFilter,
       page
+    }
+
+    if (ordering) {
+      params.ordering = orderDir + ordering
     }
 
     fetchFilteredOrders(params)
@@ -198,7 +203,8 @@ function Orders({
 
   const onSort = (field, asc) => {
     setOrdering(field)
-    console.log(field, asc)
+    setOrderDir(asc ? '' : '-')
+    setPage(1)
   }
 
   const onPage = page => {
@@ -269,6 +275,8 @@ function Orders({
           loading={isFetching}
           orders={orders.orders}
           total={orders.total}
+          ordering={ordering}
+          orderDir={orderDir}
           page={page}
           onPage={onPage}
           onSort={onSort}

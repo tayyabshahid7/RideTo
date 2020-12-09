@@ -4,7 +4,7 @@ import styles from './styles.scss'
 import moment from 'moment'
 import OrdersTableRow from '../OrdersTableRow'
 import { Button, ConnectInput } from 'components/ConnectForm'
-import { IconAngleRight, IconAngleLeft } from 'assets/icons'
+import { IconAngleRight, IconAngleLeft, IconLongArrowRight } from 'assets/icons'
 import { fetchOrderById, getPaymentStatus } from 'services/order'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
 
@@ -15,6 +15,8 @@ const OrdersTable = ({
   orders,
   page,
   total,
+  ordering,
+  orderDir,
   pageSize = 50,
   onPage,
   onSort,
@@ -143,7 +145,13 @@ const OrdersTable = ({
 
   const handleSort = column => {
     if (column.sortField) {
-      onSort(column.sortField, true)
+      if (ordering !== column.sortField) {
+        onSort(column.sortField, true)
+        return
+      }
+
+      const dir = !!orderDir
+      onSort(column.sortField, dir)
     }
   }
 
@@ -167,9 +175,18 @@ const OrdersTable = ({
         {header.map((item, index) => (
           <div
             key={index}
-            className="main-table--cell header-cell"
+            className={classnames('main-table--cell', 'header-cell')}
             onClick={() => handleSort(item)}>
             {item.title}
+            {ordering === item.sortField && (
+              <span
+                className={classnames(
+                  styles.orderingIcon,
+                  orderDir && styles.iconDown
+                )}>
+                <IconLongArrowRight />
+              </span>
+            )}
           </div>
         ))}
 
