@@ -433,6 +433,12 @@ $font-family-base: 'PT Sans', sans-serif;
     font-weight: 500;
     color: rgba(68, 68, 68, 0.8);
 
+    @media (max-width: 767px) {
+      padding-top: 16px;
+      padding-bottom: 16px;
+      padding-left: 24px;
+    }
+
     &.header-cell {
       background: white;
       color: rgba(68, 68, 68, 0.6);

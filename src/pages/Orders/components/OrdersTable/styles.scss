@@ -6,14 +6,34 @@
 
 .tableContainer {
   flex: 1 1 1px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 767px) {
+    padding: 16px;
+  }
+}
+
+.tableInner {
+  flex: 1 1 1px;
   overflow: auto;
+
+  @media (max-width: 767px) {
+    border: 1px solid #e9eaeb;
+    border-bottom: none;
+    padding-bottom: 112px;
+  }
 }
 
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   padding: 16px 16px 0 29px;
+
+  @media (max-width: 767px) {
+    padding: 16px 16px 0 16px;
+  }
 }
 
 .headerLabel {
@@ -21,6 +41,12 @@
   line-height: 22px;
   color: #444;
   font-weight: 500;
+
+  @media (max-width: 767px) {
+    font-size: 15px;
+    margin-left: 16px;
+    margin-bottom: 0;
+  }
 }
 
 .headerButton {
@@ -58,6 +84,15 @@
   justify-content: space-between;
   padding: 30px 32px;
   align-items: center;
+
+  @media (max-width: 767px) {
+    position: absolute;
+    left: -16px;
+    right: -16px;
+    bottom: -16px;
+    flex-direction: column-reverse;
+    background: white;
+  }
 }
 
 .statsText {
@@ -65,6 +100,10 @@
   line-height: 16px;
   font-weight: 500;
   color: rgba(68, 68, 68, 0.5);
+
+  @media (max-width: 767px) {
+    margin-top: 20px;
+  }
 }
 
 .pageButton {

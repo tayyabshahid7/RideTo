@@ -1,5 +1,16 @@
 .container {
   position: relative;
+
+  @media (max-width: 767px) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: white;
+    padding: 16px;
+    overflow: auto;
+  }
 }
 
 .priceLine {
