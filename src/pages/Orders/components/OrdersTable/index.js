@@ -4,7 +4,7 @@ import styles from './styles.scss'
 import moment from 'moment'
 import OrdersTableRow from '../OrdersTableRow'
 import { Button, ConnectInput } from 'components/ConnectForm'
-import { IconAngleRight, IconAngleLeft } from 'assets/icons'
+import { IconAngleRight, IconAngleLeft, IconLongArrowRight } from 'assets/icons'
 import { fetchOrderById, getPaymentStatus } from 'services/order'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
 
@@ -15,8 +15,11 @@ const OrdersTable = ({
   orders,
   page,
   total,
+  ordering,
+  orderDir,
   pageSize = 50,
   onPage,
+  onSort,
   onRefresh
 }) => {
   const [showInvoiceForm, setShowInvoiceForm] = useState(false)
@@ -62,11 +65,31 @@ const OrdersTable = ({
   })
 
   const header = [
-    { title: 'Order #', field: 'id', width: '2fr' },
-    { title: 'Training Date', field: 'training_date', width: '1.5fr' },
-    { title: 'Course', field: 'course_type', width: '3fr' },
+    {
+      title: 'Order #',
+      sortField: 'order__friendly_id',
+      field: 'id',
+      width: '2fr'
+    },
+    {
+      title: 'Training Date',
+      sortField: 'training_date_time',
+      field: 'training_date',
+      width: '1.5fr'
+    },
+    {
+      title: 'Course',
+      sortField: 'course_type__constant',
+      field: 'course_type',
+      width: '3fr'
+    },
     { title: 'Bike Hire', field: 'bike_type', width: '2fr' },
-    { title: 'Customer', field: 'customer', width: '2fr' },
+    {
+      title: 'Customer',
+      sortField: 'order__customer__first_name',
+      field: 'customer',
+      width: '2fr'
+    },
     { title: 'Mobile #', field: 'phone', width: '1.5fr' },
     { title: 'Payment Status', field: 'payment_status', width: '2fr' },
     { title: 'Order Status', field: 'status', width: '1.5fr' },
@@ -120,6 +143,18 @@ const OrdersTable = ({
     setShowInvoiceForm(true)
   }
 
+  const handleSort = column => {
+    if (column.sortField) {
+      if (ordering !== column.sortField) {
+        onSort(column.sortField, true)
+        return
+      }
+
+      const dir = !!orderDir
+      onSort(column.sortField, dir)
+    }
+  }
+
   const handleInvoiceSent = () => {
     setShowInvoiceForm(false)
     onRefresh()
@@ -138,8 +173,20 @@ const OrdersTable = ({
         className={classnames('main-table', styles.tableContainer)}
         style={tableStyles}>
         {header.map((item, index) => (
-          <div key={index} className="main-table--cell header-cell">
+          <div
+            key={index}
+            className={classnames('main-table--cell', 'header-cell')}
+            onClick={() => handleSort(item)}>
             {item.title}
+            {ordering === item.sortField && (
+              <span
+                className={classnames(
+                  styles.orderingIcon,
+                  orderDir && styles.iconDown
+                )}>
+                <IconLongArrowRight />
+              </span>
+            )}
           </div>
         ))}
 

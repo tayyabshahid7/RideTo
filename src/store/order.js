@@ -100,7 +100,6 @@ actions.fetchFilteredOrders = params => async dispatch => {
 
   try {
     const response = await orderService.fetchFilteredOrders(params)
-    notificationActions.dispatchSuccess(dispatch, 'Loaded orders')
     dispatch({
       type: FETCH_ORDER[SUCCESS],
       data: {

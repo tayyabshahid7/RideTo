@@ -40,6 +40,8 @@ function Orders({
   const [selectedStatuses, setSelectedStatuses] = useState([])
   const [fromDate, setFromDate] = useState(null)
   const [toDate, setToDate] = useState(null)
+  const [ordering, setOrdering] = useState('')
+  const [orderDir, setOrderDir] = useState('')
   const [searchQuery, setSearchQuery] = useState('')
   const [page, setPage] = useState(1)
   const [paramsRefreshed, setParamsRefreshed] = useState(false)
@@ -103,6 +105,15 @@ function Orders({
       setSearchQuery(params.search)
       setToDate(params.edate)
       setFromDate(params.sdate)
+      if (params.ordering) {
+        if (params.ordering.startsWith('-')) {
+          setOrdering(params.ordering.substr(1))
+          setOrderDir(true)
+        } else {
+          setOrdering(params.ordering)
+          setOrderDir(false)
+        }
+      }
       setParamsRefreshed(true)
     }
   }, [paramLoaded])
@@ -111,7 +122,7 @@ function Orders({
     if (paramLoaded) {
       fetchOrders()
     }
-  }, [searchQuery, page, paramsRefreshed])
+  }, [searchQuery, page, paramsRefreshed, ordering, orderDir])
 
   const handleSorting = () => {}
 
@@ -139,6 +150,10 @@ function Orders({
       page_size: pageSize,
       dateFilter,
       page
+    }
+
+    if (ordering) {
+      params.ordering = orderDir + ordering
     }
 
     fetchFilteredOrders(params)
@@ -192,6 +207,12 @@ function Orders({
   const onSearch = query => {
     console.log(query)
     setSearchQuery(query)
+    setPage(1)
+  }
+
+  const onSort = (field, asc) => {
+    setOrdering(field)
+    setOrderDir(asc ? '' : '-')
     setPage(1)
   }
 
@@ -263,8 +284,11 @@ function Orders({
           loading={isFetching}
           orders={orders.orders}
           total={orders.total}
+          ordering={ordering}
+          orderDir={orderDir}
           page={page}
           onPage={onPage}
+          onSort={onSort}
           onRefresh={onRefresh}
           pageSize={pageSize}
           sortingChange={handleSorting}

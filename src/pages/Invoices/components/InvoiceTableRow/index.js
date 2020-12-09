@@ -25,7 +25,6 @@ const InvoiceTableRow = ({
 }) => {
   const menuRef = useRef()
 
-
   const calcDown = index => {
     return index > 4 && index > total - 5
   }
@@ -95,14 +94,18 @@ const InvoiceTableRow = ({
                     <IconTrash />
                     <span>Delete Invoice</span>
                   </div>
+                  <div className={styles.divider}></div>
                 </React.Fragment>
-              ) : (
-                <div className={styles.menuItem} onClick={handleChangeStatus}>
-                  <IconEdit />
-                  <span>Change Invoice Status</span>
-                </div>
+              ) : record.status === 'Void' ? null : (
+                <React.Fragment>
+                  <div className={styles.menuItem} onClick={handleChangeStatus}>
+                    <IconEdit />
+                    <span>Change Invoice Status</span>
+                  </div>
+                  <div className={styles.divider}></div>
+                </React.Fragment>
               )}
-              <div className={styles.divider}></div>
+
               {record.original.invoice_pdf && (
                 <React.Fragment>
                   <div className={styles.menuItem} onClick={handleDownload}>

@@ -5,13 +5,27 @@ import DateHeading from 'components/Calendar/DateHeading'
 import styles from './styles.scss'
 import { fetchOrderById } from 'services/order'
 import ColorTag from 'components/ColorTag'
-import { getTagType } from 'services/invoice'
+import LoadingMask from 'components/LoadingMask'
+import {
+  getTagType,
+  markInvoiceAsPaid,
+  deleteInvoice,
+  markInvoiceAsUncollectible
+} from 'services/invoice'
+import { getInvoices } from 'store/invoice'
 import { ConnectTextArea, Button } from 'components/ConnectForm'
-const InvoiceStatusSidebar = ({ history, match, invoices }) => {
+const InvoiceStatusSidebar = ({
+  history,
+  match,
+  invoices,
+  params,
+  getInvoices
+}) => {
   const [invoice, setInvoice] = useState(null)
   const [order, setOrder] = useState(null)
   const [status, setStatus] = useState(null)
   const [notes, setNotes] = useState('')
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     async function loadOrder() {
@@ -57,7 +71,29 @@ const InvoiceStatusSidebar = ({ history, match, invoices }) => {
     setNotes(value)
   }
 
-  const handleUpdate = () => {}
+  const handleUpdate = async () => {
+    setLoading(true)
+    try {
+      if (status === 'paid') {
+        await markInvoiceAsPaid(invoice.id)
+      } else if (status === 'void') {
+        await deleteInvoice(invoice.id)
+      } else if (status === 'uncollectible') {
+        await markInvoiceAsUncollectible(invoice.id)
+      }
+    } catch (err) {
+      console.log(err)
+    } finally {
+      setLoading(false)
+    }
+    getInvoices(params)
+    handleBack()
+  }
+
+  if (invoice.status === 'void') {
+    handleBack()
+    return null
+  }
 
   const statusOptions = [
     {
@@ -71,14 +107,17 @@ const InvoiceStatusSidebar = ({ history, match, invoices }) => {
       title: 'Void',
       description:
         'This invoice was accidentally finalised or contains a mistake.'
-    },
-    {
+    }
+  ]
+
+  if (invoice.status.toLowerCase() === 'open') {
+    statusOptions.push({
       name: 'uncollectible',
       title: 'Uncollectible',
       description:
         'Payment of this invoice is not expected, but you can still collect payment.'
-    }
-  ]
+    })
+  }
 
   return (
     <div className={styles.container}>
@@ -98,6 +137,7 @@ const InvoiceStatusSidebar = ({ history, match, invoices }) => {
 
       {statusOptions.map(option => (
         <div
+          key={option.name}
           onClick={() => handleChangeStatus(option.name)}
           className={styles.optionItem}>
           <label className="general-check round-check">
@@ -129,17 +169,25 @@ const InvoiceStatusSidebar = ({ history, match, invoices }) => {
       <Button color="primary" onClick={handleUpdate}>
         Update Status
       </Button>
+      <LoadingMask loading={loading} />
     </div>
   )
 }
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    invoices: state.invoice.invoices
+    invoices: state.invoice.invoices,
+    params: state.invoice.params
   }
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getInvoices
+    },
+    dispatch
+  )
 
 export default connect(
   mapStateToProps,
