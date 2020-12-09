@@ -218,10 +218,10 @@ const InvoiceForm = ({
       return false
     }
 
-    if (!notes) {
-      showNotification('Error', 'Please add a note', 'danger')
-      return false
-    }
+    // if (!notes) {
+    //   showNotification('Error', 'Please add a note', 'danger')
+    //   return false
+    // }
     lines.forEach((line, index) => {
       if (!line.description) {
         showNotification(
