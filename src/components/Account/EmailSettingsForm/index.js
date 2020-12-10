@@ -19,6 +19,7 @@ const PLACEHOLDERS = [
   '[[school_name]]',
   '[[school_phone]]',
   '[[price_paid]]',
+  '[[course_price]]',
   '[[logo]]'
 ]
 
