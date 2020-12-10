@@ -14,6 +14,7 @@ import { getInvoices } from 'store/invoice'
 import OrdersRadioFilter from 'pages/Orders/components/OrdersRadioFilter'
 import LoadingMask from 'components/LoadingMask'
 import { deleteInvoice } from 'services/invoice'
+import { actions as notifyActions } from 'store/notification'
 
 const statusOptions = [
   { text: 'All Invoicse', value: 'all' },
@@ -32,6 +33,7 @@ function Invoices({
   invoices,
   loadedAll,
   loading,
+  showNotification,
   getInvoices
 }) {
   const [searchQuery, setSearchQuery] = useState('')
@@ -76,9 +78,13 @@ function Invoices({
   const handleDelete = async invoice => {
     if (window.confirm('Are you sure you want to delete this invoice?')) {
       setDeleting(true)
-      await deleteInvoice(invoice.id)
-      setDeleting(false)
-      fetchInvoices()
+      try {
+        await deleteInvoice(invoice.id)
+        setDeleting(false)
+        fetchInvoices()
+      } catch (err) {
+        showNotification('Error', 'Failed to delete an invoice', 'danger')
+      }
     }
   }
 
@@ -114,6 +120,7 @@ function Invoices({
           match={match}
           loadedAll={loadedAll}
           onRefresh={fetchInvoices}
+          showNotification={showNotification}
           onDelete={handleDelete}
           onLoadMore={onLoadMore}
           setUpdating={setUpdating}
@@ -155,7 +162,8 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
-      getInvoices
+      getInvoices,
+      showNotification: notifyActions.showNotification
     },
     dispatch
   )

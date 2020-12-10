@@ -31,6 +31,7 @@ const OrdersTable = ({
   onSearchChange,
   onPage,
   onSort,
+  showNotification,
   onOpenFilter,
   onRefresh
 }) => {
@@ -138,20 +139,28 @@ const OrdersTable = ({
   }
 
   const onCreateInvoice = async order => {
-    const result = await fetchOrderById(order.order.friendly_id)
+    try {
+      const result = await fetchOrderById(order.order.friendly_id)
 
-    const tmp = {
-      customer: `${order.customer.first_name} ${order.customer.last_name}`,
-      customerId: order.customer.id,
-      supplierId: result.supplier_id,
-      courseTypeId: result.course_type_id,
-      order: order.order.direct_friendly_id,
-      orderId: order.order.friendly_id,
-      customerEmail: order.customer.email
+      const tmp = {
+        customer: `${order.customer.first_name} ${order.customer.last_name}`,
+        customerId: order.customer.id,
+        supplierId: result.supplier_id,
+        courseTypeId: result.course_type_id,
+        order: order.order.direct_friendly_id,
+        orderId: order.order.friendly_id,
+        customerEmail: order.customer.email
+      }
+
+      setOrderDetail(tmp)
+      setShowInvoiceForm(true)
+    } catch (err) {
+      showNotification(
+        'Error',
+        err.message || 'Failed to create an invoice',
+        'danger'
+      )
     }
-
-    setOrderDetail(tmp)
-    setShowInvoiceForm(true)
   }
 
   const handleSort = column => {
@@ -242,6 +251,7 @@ const OrdersTable = ({
                   total={orders.length}
                   onViewOrder={onViewOrder}
                   onEditOrder={onEditOrder}
+                  showNotification={showNotification}
                   onCreateInvoice={onCreateInvoice}
                 />
               </React.Fragment>

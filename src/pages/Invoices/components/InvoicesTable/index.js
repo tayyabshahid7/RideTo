@@ -18,6 +18,7 @@ const InvoicesTable = ({
   onLoadMore,
   loadedAll,
   onRefresh,
+  showNotification,
   setUpdating
 }) => {
   const [showForm, setShowForm] = useState(false)
@@ -76,7 +77,12 @@ const InvoicesTable = ({
       order: tmp.metadata.order,
       send_invoice: true
     }
-    await updateInvoice(tmp.id, data)
+    try {
+      await updateInvoice(tmp.id, data)
+    } catch (err) {
+      console.log(err)
+      showNotification('Error', 'Failed to update invoice details', 'danger')
+    }
     setUpdating(false)
 
     onRefresh()

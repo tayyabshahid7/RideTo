@@ -18,6 +18,7 @@ import { Button } from 'components/ConnectForm'
 import LoadingMask from 'components/LoadingMask'
 import Loading from 'components/Loading'
 import { isAdmin } from 'services/auth'
+import { actions as notifyActions } from 'store/notification'
 
 const OrdersDetailPanel = ({
   course,
@@ -33,6 +34,7 @@ const OrdersDetailPanel = ({
   updateOrder,
   deleteOrderTraining,
   fetchFilteredOrders,
+  showNotification,
   isEdit = false,
   params
 }) => {
@@ -103,16 +105,19 @@ const OrdersDetailPanel = ({
 
   const onSave = async (updatedOrder, updateDate = false) => {
     const tmp = Object.assign({}, updatedOrder)
-    await updateOrder({
-      trainingId: order.id,
-      order: {
-        ...tmp,
-        full_edit: updateDate
-      }
-    })
-
-    fetchFilteredOrders(params)
-    handleBack()
+    try {
+      await updateOrder({
+        trainingId: order.id,
+        order: {
+          ...tmp,
+          full_edit: updateDate
+        }
+      })
+      fetchFilteredOrders(params)
+      handleBack()
+    } catch (err) {
+      showNotification('Error', err.message || 'Failed to save order', 'danger')
+    }
   }
 
   const onDelete = async () => {
@@ -129,8 +134,12 @@ const OrdersDetailPanel = ({
         await deleteOrderTraining(course.supplier, order.id)
         fetchFilteredOrders(params)
         handleBack()
-      } catch {
-        console.log("Couldn't delete order.")
+      } catch (err) {
+        showNotification(
+          'Error',
+          err.message || 'Failed to delete order',
+          'danger'
+        )
       }
     }
   }
@@ -206,7 +215,8 @@ const mapDispatchToProps = dispatch =>
       resetSingleCourse,
       deleteOrderTraining,
       updateOrder,
-      fetchFilteredOrders: orderModule.actions.fetchFilteredOrders
+      fetchFilteredOrders: orderModule.actions.fetchFilteredOrders,
+      showNotification: notifyActions.showNotification
     },
     dispatch
   )

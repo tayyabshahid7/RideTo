@@ -78,7 +78,12 @@ const InvoiceForm = ({
       }
 
       const fetchData = async () => {
-        return await fetchCustomer(metadata.customer_id)
+        try {
+          return await fetchCustomer(metadata.customer_id)
+        } catch (err) {
+          showNotification('Error', 'Failed to load customer detail', 'danger')
+          return []
+        }
       }
 
       const { metadata } = invoice
@@ -151,19 +156,23 @@ const InvoiceForm = ({
     setOrder(value)
 
     if (value) {
-      const result = await fetchOrderById(value.id)
-      const tmpSuppplier = supplierOptions.find(
-        x => x.id === result.supplier_id
-      )
-      if (tmpSuppplier) {
-        setSupplier(tmpSuppplier)
-      }
+      try {
+        const result = await fetchOrderById(value.id)
+        const tmpSuppplier = supplierOptions.find(
+          x => x.id === result.supplier_id
+        )
+        if (tmpSuppplier) {
+          setSupplier(tmpSuppplier)
+        }
 
-      const tmpCourse = info.courseTypes.find(
-        x => x.id === result.course_type_id
-      )
-      if (tmpCourse) {
-        setCourse(tmpCourse)
+        const tmpCourse = info.courseTypes.find(
+          x => x.id === result.course_type_id
+        )
+        if (tmpCourse) {
+          setCourse(tmpCourse)
+        }
+      } catch (err) {
+        showNotification('Error', 'Failed to load order details', 'danger')
       }
     }
     // TODO: fetch order detail and determine school and course
@@ -316,18 +325,29 @@ const InvoiceForm = ({
 
     setSaving(true)
 
-    if (invoice) {
-      for (const line of defaultLines) {
-        await deleteInvoiceLine(invoice.id, line.id)
+    try {
+      if (invoice) {
+        for (const line of defaultLines) {
+          await deleteInvoiceLine(invoice.id, line.id)
+        }
+        for (const line of formData.items) {
+          delete line.id
+          await addInvoiceLine(invoice.id, line)
+        }
+        delete formData.items
+        await updateInvoice(invoice.id, formData)
+      } else {
+        await sendInvoice(formData)
       }
-      for (const line of formData.items) {
-        delete line.id
-        await addInvoiceLine(invoice.id, line)
-      }
-      delete formData.items
-      await updateInvoice(invoice.id, formData)
-    } else {
-      await sendInvoice(formData)
+    } catch (err) {
+      console.log(err)
+      showNotification(
+        'Error',
+        invoice
+          ? 'Failed to update invoice details'
+          : 'Failed to create a new invoice',
+        'danger'
+      )
     }
 
     setSaving(false)

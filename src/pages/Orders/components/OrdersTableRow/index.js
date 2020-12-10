@@ -7,7 +7,7 @@ import ColorTag from 'components/ColorTag'
 import ActionThreeDot from 'components/ActionThreeDot'
 import { Link } from 'react-router-dom'
 import { getCourseTitle } from 'services/course'
-import { getCustomerBikeTypeOptions } from 'services/order'
+import { getCustomerBikeTypeOptions, fetchOrderById } from 'services/order'
 import { IconRightArrow, IconEdit, IconTrash, IconPound } from 'assets/icons'
 import { isAdmin } from 'services/auth'
 import * as orderModule from 'store/order'
@@ -24,6 +24,7 @@ const OrdersTableRow = ({
   isAdmin,
   params,
   onCreateInvoice,
+  showNotification,
   deleteOrderTraining,
   fetchFilteredOrders
 }) => {
@@ -47,7 +48,7 @@ const OrdersTableRow = ({
     onCreateInvoice(record)
   }
 
-  const handleDeleteOrder = order => {
+  const handleDeleteOrder = async order => {
     menuRef.current.hideMenu()
 
     if (
@@ -55,13 +56,18 @@ const OrdersTableRow = ({
         `Are you sure you want to delete the training from Order ${order.direct_friendly_id}?`
       )
     ) {
-      // try {
-      //   await deleteOrderTraining(course.supplier, order.id)
-      //   fetchFilteredOrders(params)
-      //   handleBack()
-      // } catch {
-      //   console.log("Couldn't delete order.")
-      // }
+      try {
+        const result = await fetchOrderById(order.order.friendly_id)
+        await deleteOrderTraining(result.supplier_id, order.id)
+        fetchFilteredOrders(params)
+      } catch (err) {
+        showNotification(
+          'Error',
+          err.message || 'Failed to delete order',
+          'danger'
+        )
+        console.log("Couldn't delete order.")
+      }
       fetchFilteredOrders(params)
     }
   }
