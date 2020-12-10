@@ -10,6 +10,8 @@ import {
   IconAngleLeft,
   IconLongArrowRight
 } from 'assets/icons'
+import SearchTag from 'components/SearchTag'
+import SearchInput from 'components/SearchInput'
 import { fetchOrderById, getPaymentStatus } from 'services/order'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
 import { Mobile } from 'common/breakpoints'
@@ -21,9 +23,12 @@ const OrdersTable = ({
   orders,
   page,
   total,
+  tags,
   ordering,
   orderDir,
   pageSize = 50,
+  searchInputValue,
+  onSearchChange,
   onPage,
   onSort,
   onOpenFilter,
@@ -134,7 +139,6 @@ const OrdersTable = ({
 
   const onCreateInvoice = async order => {
     const result = await fetchOrderById(order.order.friendly_id)
-    // console.log(order)
 
     const tmp = {
       customer: `${order.customer.first_name} ${order.customer.last_name}`,
@@ -189,6 +193,23 @@ const OrdersTable = ({
         <label className={styles.headerLabel}>Orders</label>
       </div>
       <div className={styles.tableContainer}>
+        <Mobile>
+          <div className={styles.tagsHolder}>
+            <div className={styles.tagsHolderInner}>
+              {tags.map(tag => (
+                <SearchTag key={tag} text={tag} />
+              ))}
+            </div>
+          </div>
+          <div className={styles.searchHolder}>
+            <SearchInput
+              noLabel={true}
+              value={searchInputValue}
+              placeholder="e.g. order #"
+              onChange={onSearchChange}
+            />
+          </div>
+        </Mobile>
         <div className={styles.tableInner}>
           <div
             className={classnames('main-table', 'table--bordered')}
