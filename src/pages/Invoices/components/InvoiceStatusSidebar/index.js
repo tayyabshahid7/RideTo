@@ -13,12 +13,15 @@ import {
   markInvoiceAsUncollectible
 } from 'services/invoice'
 import { getInvoices } from 'store/invoice'
+import { actions as notifyActions } from 'store/notification'
 import { ConnectTextArea, Button } from 'components/ConnectForm'
+
 const InvoiceStatusSidebar = ({
   history,
   match,
   invoices,
   params,
+  showNotification,
   getInvoices
 }) => {
   const [invoice, setInvoice] = useState(null)
@@ -34,7 +37,12 @@ const InvoiceStatusSidebar = ({
       }
 
       const fetchData = async () => {
-        return await fetchOrderById(invoice.metadata.order)
+        try {
+          return await fetchOrderById(invoice.metadata.order)
+        } catch (err) {
+          showNotification('Error', 'Failed to load order', 'danger')
+          return null
+        }
       }
       const tmpOrder = await fetchData()
       setOrder(tmpOrder)
@@ -184,6 +192,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
+      showNotification: notifyActions.showNotification,
       getInvoices
     },
     dispatch
