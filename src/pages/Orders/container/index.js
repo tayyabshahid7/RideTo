@@ -17,6 +17,7 @@ import OrdersMultiFilter from 'pages/Orders/components/OrdersMultiFilter'
 import RightPanel from 'components/RightPanel'
 import styles from './styles.scss'
 import OrdersDetailPanel from '../components/OrdersDetailPanel'
+import { actions as notifyActions } from 'store/notification'
 
 const pageSize = 50
 
@@ -32,6 +33,7 @@ function Orders({
   resetOrderParamsLoaded,
   params,
   paramLoaded,
+  showNotification,
   isFetching
 }) {
   const [filterChanged, setFilterChanged] = useState(false)
@@ -363,6 +365,7 @@ function Orders({
           onRefresh={onRefresh}
           searchInputValue={searchInputValue}
           onSearchChange={handleSearchChange}
+          showNotification={showNotification}
           onOpenFilter={() => onToggleFilter(true)}
           pageSize={pageSize}
         />
@@ -416,7 +419,8 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       changeSchool,
-      ...orderModule.actions
+      ...orderModule.actions,
+      showNotification: notifyActions.showNotification
     },
     dispatch
   )
