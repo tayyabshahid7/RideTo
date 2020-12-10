@@ -36,6 +36,7 @@ const InvoicesTable = ({
 
   const records = invoices.map(x => ({
     id: x.id,
+    number: x.number,
     amount: '£' + (x.total / 100).toFixed(),
     status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
     orderId: x.metadata.order,

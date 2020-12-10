@@ -70,6 +70,8 @@ const InvoiceTableRow = ({
           cell = (
             <Link to={`/customers/${record.customer}`}>{record.customer}</Link>
           )
+        } else if (item.field === 'id') {
+          cell = <span>{record.number}</span>
         } else if (item.field === 'status') {
           cell = (
             <ColorTag text={record.status} type={getTagType(record.status)} />

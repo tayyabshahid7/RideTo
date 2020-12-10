@@ -367,7 +367,7 @@ const InvoiceForm = ({
       <div className={styles.content}>
         <div className={styles.innerContent}>
           <div className={styles.blockHeader} style={{ marginBottom: 36 }}>
-            Invoice {invoice ? '#' + invoice.id : <span>#</span>}
+            Invoice {invoice ? '#' + invoice.number : <span>#</span>}
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>Customer</label>
