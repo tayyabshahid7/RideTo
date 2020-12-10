@@ -160,3 +160,20 @@
 .iconDown {
   transform: rotate(-90deg);
 }
+
+.searchHolder {
+  margin-bottom: 16px;
+}
+
+.tagsHolder {
+  overflow: hidden;
+  margin-right: -16px;
+  margin-bottom: 16px;
+  padding-right: 16px;
+}
+
+.tagsHolderInner {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: auto;
+}

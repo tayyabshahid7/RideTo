@@ -47,6 +47,7 @@ function Orders({
   const [searchInputValue, setSearchInputValue] = useState('')
   const [page, setPage] = useState(1)
   const [showFilter, setShowFilter] = useState(false)
+  const [tags, setTags] = useState([])
   const [paramsRefreshed, setParamsRefreshed] = useState(false)
 
   const dateFilters = [
@@ -122,6 +123,41 @@ function Orders({
     }
   }, [paramLoaded])
 
+  const getTags = () => {
+    const data = []
+    if (dateFilter) {
+      const tmp = dateFilters.find(x => x.value === dateFilter)
+      if (tmp) {
+        data.push(tmp.text)
+      }
+    }
+    if (selectedSuppliers.length) {
+      selectedSuppliers.forEach(sup => {
+        const tmp = supplierOptions.find(x => x.value === sup)
+        if (tmp) {
+          data.push(tmp.text)
+        }
+      })
+    }
+    if (selectedCourses.length) {
+      selectedCourses.forEach(course => {
+        const tmp = courseFilters.find(x => x.value === course)
+        if (tmp) {
+          data.push(tmp.text)
+        }
+      })
+    }
+    if (selectedStatuses.length) {
+      selectedStatuses.forEach(st => {
+        const tmp = statusFilters.find(x => x.value === st)
+        if (tmp) {
+          data.push(tmp.text)
+        }
+      })
+    }
+    return data
+  }
+
   useEffect(() => {
     if (paramLoaded) {
       fetchOrders()
@@ -167,6 +203,7 @@ function Orders({
     }
 
     handleFetch(params)
+    setTags(getTags())
   }
 
   const handleFetch = orderParams => {
@@ -319,10 +356,13 @@ function Orders({
           total={orders.total}
           ordering={ordering}
           orderDir={orderDir}
+          tags={tags}
           page={page}
           onPage={onPage}
           onSort={onSort}
           onRefresh={onRefresh}
+          searchInputValue={searchInputValue}
+          onSearchChange={handleSearchChange}
           onOpenFilter={() => onToggleFilter(true)}
           pageSize={pageSize}
         />

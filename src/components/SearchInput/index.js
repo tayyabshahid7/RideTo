@@ -3,14 +3,19 @@ import classnames from 'classnames'
 
 import styles from './styles.scss'
 
-const SearchInput = ({ value = '', onChange, placeholder = '' }) => {
+const SearchInput = ({
+  value = '',
+  onChange,
+  placeholder = '',
+  noLabel = false
+}) => {
   const handleChange = event => {
     onChange(event.target.value)
   }
 
   return (
     <div className={styles.container}>
-      <label className={styles.label}>Search</label>
+      {!noLabel && <label className={styles.label}>Search</label>}
       <div>
         <input
           type="text"
