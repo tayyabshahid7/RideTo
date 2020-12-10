@@ -88,7 +88,7 @@ const InvoiceFormLineItems = ({ value, onChange }) => {
       <div className={styles.blockHeader}>Line Items</div>
       <div className={styles.lineRow}>
         <label className={styles.label}>Item</label>
-        <label className={styles.label}>quantity</label>
+        <label className={styles.label}>Qty</label>
         <label className={styles.label}>Tax</label>
         <label className={styles.label}>Price</label>
       </div>

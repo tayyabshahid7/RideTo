@@ -138,7 +138,7 @@ const InvoiceStatusSidebar = ({
       <div className={styles.priceLine}>
         <div className={styles.priceValue}>
           <h6>£{(invoice.total / 100).toFixed(2)}</h6>
-          <span>Invoice #{invoice.id}</span>
+          <span>Invoice #{invoice.number}</span>
         </div>
         <ColorTag text={invoice.status} type={getTagType(invoice.status)} />
       </div>
