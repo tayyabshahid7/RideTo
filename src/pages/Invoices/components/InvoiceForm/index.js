@@ -20,7 +20,7 @@ import {
   addInvoiceLine
 } from 'services/invoice'
 import { fetchOrderById } from 'services/order'
-import { fetchCustomer } from 'services/customer'
+import { fetchCustomer, createCustomer } from 'services/customer'
 
 const InvoiceForm = ({
   invoice,
@@ -152,6 +152,10 @@ const InvoiceForm = ({
     setNotes(value)
   }
 
+  const handleChangeEmail = event => {
+    setEmail(event.target.value)
+  }
+
   const handleOrderChange = async value => {
     setOrder(value)
 
@@ -209,10 +213,6 @@ const InvoiceForm = ({
 
   const validateData = () => {
     if (!orderDetail) {
-      if (!customer) {
-        showNotification('Error', 'Please choose a customer', 'danger')
-        return false
-      }
       if (!supplier) {
         showNotification('Error', 'Please choose a supplier', 'danger')
         return false
@@ -227,10 +227,27 @@ const InvoiceForm = ({
       return false
     }
 
+    if (!customer && !email) {
+      showNotification('Error', 'Please input customer email', 'danger')
+      return false
+    }
+
+    if (!customer && email) {
+      if (
+        !email.match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+      ) {
+        showNotification('Error', 'Customer email is invalid', 'danger')
+        return false
+      }
+    }
+
     // if (!notes) {
     //   showNotification('Error', 'Please add a note', 'danger')
     //   return false
     // }
+    let flag = true
     lines.forEach((line, index) => {
       if (!line.description) {
         showNotification(
@@ -238,7 +255,7 @@ const InvoiceForm = ({
           `Item #${index + 1}: Description is required`,
           'danger'
         )
-        return false
+        flag = false
       }
       if (!line.quantity) {
         showNotification(
@@ -246,7 +263,7 @@ const InvoiceForm = ({
           `Line #${index + 1}: Qty is required`,
           'danger'
         )
-        return false
+        flag = false
       }
       if (!line.price) {
         showNotification(
@@ -254,7 +271,7 @@ const InvoiceForm = ({
           `Line #${index + 1}: Price is required`,
           'danger'
         )
-        return false
+        flag = false
       }
       if (!line.tax) {
         showNotification(
@@ -262,14 +279,18 @@ const InvoiceForm = ({
           `Line #${index + 1}: Tax is required`,
           'danger'
         )
-        return false
+        flag = false
       }
     })
+
+    if (!flag) {
+      return false
+    }
 
     return true
   }
 
-  const prepareData = () => {
+  const prepareData = async () => {
     if (!validateData()) {
       return
     }
@@ -292,7 +313,22 @@ const InvoiceForm = ({
       }
 
       if (!invoice) {
-        data.customer = customer.id
+        if (customer) {
+          data.customer = customer.id
+        } else if (email) {
+          // create customer using the email and assign it
+          try {
+            setSaving(true)
+            const tmp = await createCustomer(email)
+            data.customer = tmp.customer_id
+          } catch (err) {
+            console.log(err)
+            showNotification('Error', 'Failed to create a customer', 'danger')
+            return
+          } finally {
+            setSaving(false)
+          }
+        }
       }
     }
 
@@ -317,7 +353,8 @@ const InvoiceForm = ({
   }
 
   const handleSend = async isSend => {
-    const formData = prepareData()
+    const formData = await prepareData()
+    console.log(formData)
     if (!formData) {
       return
     }
@@ -440,12 +477,11 @@ const InvoiceForm = ({
             </label>
             <ConnectInput
               basic
-              readOnly
-              disabled
+              disabled={!!customer || !!orderDetail}
               size="lg"
               name="email"
               value={email || (orderDetail && orderDetail.customerEmail) || ''}
-              onChange={() => {}}
+              onChange={handleChangeEmail}
               type="email"
               required
             />

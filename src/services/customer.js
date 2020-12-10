@@ -22,6 +22,13 @@ export const searchCustomer = async value => {
   return response
 }
 
+export const createCustomer = async email => {
+  const path = `school/customer/stripe`
+  const response = await post(path, { email })
+
+  return response
+}
+
 export const saveCustomer = async customer => {
   const { id } = customer
   const path = id ? `school/customer/${id}` : `school/customer`
