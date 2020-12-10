@@ -1,22 +1,11 @@
-import React, { useCallback } from 'react'
-import debounce from 'lodash/debounce'
+import React from 'react'
 import classnames from 'classnames'
 
 import styles from './styles.scss'
 
-const SearchInput = ({ value = '', onSearch, placeholder = '' }) => {
-  const debounceChange = useCallback(
-    debounce(value => {
-      if (onSearch) {
-        onSearch(value)
-      }
-    }, 500),
-    []
-  )
-
-  const onChange = event => {
-    event.persist()
-    debounceChange(event.target.value)
+const SearchInput = ({ value = '', onChange, placeholder = '' }) => {
+  const handleChange = event => {
+    onChange(event.target.value)
   }
 
   return (
@@ -25,10 +14,10 @@ const SearchInput = ({ value = '', onSearch, placeholder = '' }) => {
       <div>
         <input
           type="text"
-          defaultValue={value}
+          value={value}
           placeholder={placeholder}
           className={classnames(styles.input)}
-          onChange={onChange}
+          onChange={handleChange}
         />
       </div>
     </div>
