@@ -71,7 +71,6 @@ function Orders({
 
   const statusFilters = [
     { text: 'Confirmed', value: 'TRAINING_CONFIRMED' },
-    { text: 'Failed', value: 'TRAINING_FAILED' },
     { text: 'Cancelled', value: 'TRAINING_CANCELLED' },
     {
       text: 'Waiting School Confirmation',
@@ -82,8 +81,7 @@ function Orders({
       value: 'TRAINING_WAITING_RIDER_CONFIRMATION'
     },
     { text: 'No Show', value: 'TRAINING_NO_SHOW' },
-    { text: 'Passed', value: 'TRAINING_PASSED' },
-    { text: 'Order Denined', value: 'TRAINING_ORDER_DENIED' }
+    { text: 'Passed', value: 'TRAINING_PASSED' }
   ]
 
   useEffect(() => {
@@ -197,11 +195,16 @@ function Orders({
       edate: toDate,
       supplier_id: selectedSuppliers.join(','),
       course_type__constant: selectedCourses.join(','),
-      status: selectedStatuses.join(','),
       search: searchQuery,
       page_size: pageSize,
       dateFilter,
       page
+    }
+
+    if (selectedStatuses.length) {
+      params.status = selectedStatuses.join(',')
+    } else {
+      params.status = statusFilters.map(x => x.value).join(',')
     }
 
     handleFetch(params)
