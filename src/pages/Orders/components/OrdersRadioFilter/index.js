@@ -19,7 +19,7 @@ const OrdersRadioFilter = ({ title, filters, selectedFilter, onSelect }) => {
           key={index}
           onClick={() => handleChangeStatus(filter)}>
           <h6 className={styles.sectionLabel}>{filter.text}</h6>
-          <label className="cross-check">
+          <label className="general-check">
             <input
               type="radio"
               name={`${title}Filter`}

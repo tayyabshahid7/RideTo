@@ -320,13 +320,11 @@ $font-family-base: 'PT Sans', sans-serif;
     right: 0;
     bottom: 0;
     background: rgba(66, 89, 168, 0.1);
-    transition: 0.4s;
     border-radius: 2px;
 
     &:before {
       position: absolute;
       content: '';
-      transition: 0.4s;
       opacity: 0;
       transform: rotate(45deg);
       left: 6px;
@@ -344,6 +342,33 @@ $font-family-base: 'PT Sans', sans-serif;
 
     &:before {
       opacity: 1;
+    }
+  }
+}
+
+.active-option {
+  &:hover {
+    .general-check {
+      input:checked + .slider {
+        &:before,
+        &:after {
+          position: absolute;
+          content: '';
+          width: 10px;
+          height: 1px;
+          left: 3px;
+          top: 7px;
+          background-color: white;
+        }
+
+        &:before {
+          transform: rotate(45deg);
+        }
+
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
     }
   }
 }
