@@ -12,7 +12,11 @@ const OrdersMultiFilter = ({ title, filters, selectedFilters, onSelect }) => {
       <h5 className={styles.sectionTitle}>{title}</h5>
       {filters.map((filter, index) => (
         <div
-          className={classnames(styles.sectionItem)}
+          className={classnames(
+            styles.sectionItem,
+            selectedFilters.includes(filter.value) && styles.activeItem,
+            selectedFilters.includes(filter.value) && 'active-option'
+          )}
           key={index}
           onClick={() => handleChangeStatus(filter)}>
           <h6 className={styles.sectionLabel}>{filter.text}</h6>
