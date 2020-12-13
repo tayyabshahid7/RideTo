@@ -20,7 +20,7 @@ class CsvUpload extends React.Component {
 
   componentDidUpdate(prevProps) {
     const { saving, error, showNotification } = this.props
-
+    console.log(error)
     if (prevProps.saving && !saving) {
       if (!error) {
         this.setState({
@@ -29,7 +29,12 @@ class CsvUpload extends React.Component {
         this.input.current.value = ''
         showNotification('Success', 'File uploaded', 'success')
       } else {
-        showNotification('Error', error, 'danger')
+        showNotification(
+          'Error',
+          error.message ||
+            'There was an error processing the file. Please try again',
+          'danger'
+        )
       }
     }
   }
