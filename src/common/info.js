@@ -499,7 +499,7 @@ export function getDateRangeByType(type) {
       break
     }
     case 'this week': {
-      fromDate = moment().startOf('week')
+      fromDate = moment().startOf('isoWeek')
       toDate = moment()
       break
     }
