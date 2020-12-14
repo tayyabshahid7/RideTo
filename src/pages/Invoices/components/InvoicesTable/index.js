@@ -50,8 +50,8 @@ const InvoicesTable = ({
     gridTemplateRows: `repeat(${records.length + 1}, auto) 1fr`
   }
 
-  const onNewPayment = () => {
-    history.push('/invoices/new-payment')
+  const onNewPayment = invoice => {
+    history.push('/invoices/new-payment/' + invoice.id)
   }
 
   const showInvoiceForm = () => {
