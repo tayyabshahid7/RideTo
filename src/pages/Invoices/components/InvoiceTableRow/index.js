@@ -7,8 +7,8 @@ import {
   IconRightArrow,
   IconDownArrow,
   IconEdit,
-  IconTrash
-  // IconPound
+  IconTrash,
+  IconPound
 } from 'assets/icons'
 import { getTagType } from 'services/invoice'
 
@@ -29,10 +29,10 @@ const InvoiceTableRow = ({
     return index > 4 && index > total - 5
   }
 
-  // const handleNewPayment = () => {
-  //   menuRef.current.hideMenu()
-  //   onNewPayment()
-  // }
+  const handleNewPayment = () => {
+    menuRef.current.hideMenu()
+    onNewPayment(record)
+  }
 
   const handleEdit = () => {
     menuRef.current.hideMenu()
@@ -79,11 +79,15 @@ const InvoiceTableRow = ({
         } else if (item.field === 'action') {
           cell = (
             <ActionThreeDot ref={menuRef} down={calcDown(index)}>
-              {/* <div className={styles.menuItem} onClick={handleNewPayment}>
-                <IconPound />
-                <span>New Payment</span>
-              </div>
-              <div className={styles.divider}></div> */}
+              {record.status === 'Open' && (
+                <React.Fragment>
+                  <div className={styles.menuItem} onClick={handleNewPayment}>
+                    <IconPound />
+                    <span>New Payment</span>
+                  </div>
+                  <div className={styles.divider}></div>
+                </React.Fragment>
+              )}
 
               {record.status === 'Draft' ? (
                 <React.Fragment>

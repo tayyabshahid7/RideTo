@@ -131,7 +131,7 @@ function Invoices({
       <RightPanel location={location} type="full">
         <Route
           exact
-          path="/invoices/new-payment"
+          path="/invoices/new-payment/:id"
           render={routeProps => (
             <NewPaymentSidebar history={history} {...routeProps} />
           )}
