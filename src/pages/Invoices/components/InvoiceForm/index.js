@@ -52,6 +52,9 @@ const InvoiceForm = ({
       x => x.id === orderDetail.courseTypeId
     )
     courseTypeName = tmpCourseType.name
+    if (!email && orderDetail.customerEmail) {
+      setEmail(orderDetail.customerEmail)
+    }
   }
 
   const supplierOptions = suppliers.map(x => ({
@@ -217,36 +220,34 @@ const InvoiceForm = ({
         showNotification('Error', 'Please choose a supplier', 'danger')
         return false
       }
+
       if (!course) {
         showNotification('Error', 'Please choose a course', 'danger')
         return false
       }
+
+      if (!customer && !email) {
+        showNotification('Error', 'Please input customer email', 'danger')
+        return false
+      }
+
+      if (!customer && email) {
+        if (
+          !email.match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+          )
+        ) {
+          showNotification('Error', 'Customer email is invalid', 'danger')
+          return false
+        }
+      }
     }
+
     if (!lines.length) {
       showNotification('Error', 'Please add a line item', 'danger')
       return false
     }
 
-    if (!customer && !email) {
-      showNotification('Error', 'Please input customer email', 'danger')
-      return false
-    }
-
-    if (!customer && email) {
-      if (
-        !email.match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
-      ) {
-        showNotification('Error', 'Customer email is invalid', 'danger')
-        return false
-      }
-    }
-
-    // if (!notes) {
-    //   showNotification('Error', 'Please add a note', 'danger')
-    //   return false
-    // }
     let flag = true
     lines.forEach((line, index) => {
       if (!line.description) {
@@ -480,7 +481,7 @@ const InvoiceForm = ({
               disabled={!!customer || !!orderDetail}
               size="lg"
               name="email"
-              value={email || (orderDetail && orderDetail.customerEmail) || ''}
+              value={email || ''}
               onChange={handleChangeEmail}
               type="email"
               required

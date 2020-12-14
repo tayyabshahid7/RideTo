@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
+import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
 
 import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
@@ -22,8 +23,27 @@ class EditOrderForm extends React.Component {
     this.state = {
       order: props.order || {},
       showChangeDate: false,
-      isChanged: false
+      isChanged: false,
+      invoiceCreated: false,
+      orderDetail: null // invoice order detail
     }
+  }
+
+  handleCreateInvoice = () => {
+    const { order } = this.state
+    const course = this.props.courses.find(x => x.id === order.school_course)
+
+    const tmp = {
+      customer: order.customer.full_name,
+      customerId: order.customer.id,
+      supplierId: course.supplier,
+      courseTypeId: course.course_type.id,
+      order: order.order.direct_friendly_id,
+      orderId: order.order.friendly_id,
+      customerEmail: order.customer.email
+    }
+
+    this.setState({ orderDetail: tmp })
   }
 
   handleConfirmation = () => {
@@ -72,6 +92,15 @@ class EditOrderForm extends React.Component {
     }))
   }
 
+  handleInvoiceSent = () => {
+    this.handleHideInvoiceForm()
+    this.setState({ invoiceCreated: true })
+  }
+
+  handleHideInvoiceForm = () => {
+    this.setState({ orderDetail: null })
+  }
+
   handleDelete = () => {
     const { order, onDelete } = this.props
     const canDelete =
@@ -86,7 +115,6 @@ class EditOrderForm extends React.Component {
 
   render() {
     let {
-      onCancel,
       isSending,
       date,
       time,
@@ -98,7 +126,24 @@ class EditOrderForm extends React.Component {
       isAdmin,
       order
     } = this.props
-    const { showChangeDate, isChanged } = this.state
+    const { showChangeDate, isChanged, orderDetail } = this.state
+
+    if (orderDetail) {
+      return (
+        <InvoiceForm
+          onSent={this.handleInvoiceSent}
+          orderDetail={orderDetail}
+          onClose={() => this.handleHideInvoiceForm()}
+        />
+      )
+    }
+
+    const canInvoice =
+      !this.state.invoiceCreated &&
+      order &&
+      order.order &&
+      !order.order.stripe_invoice_id
+
     const canDelete =
       order &&
       order.order &&
@@ -290,11 +335,17 @@ class EditOrderForm extends React.Component {
                     Send Confirmation
                   </Button>
                 </div>
-                <div>
-                  <Button color="white" onClick={onCancel}>
-                    Cancel
-                  </Button>
-                </div>
+                {canInvoice && (
+                  <div>
+                    <Button
+                      disabled={isSending}
+                      color="white"
+                      outline
+                      onClick={this.handleCreateInvoice}>
+                      Create Invoice
+                    </Button>
+                  </div>
+                )}
                 <div>
                   {isAdmin && (
                     <Button
