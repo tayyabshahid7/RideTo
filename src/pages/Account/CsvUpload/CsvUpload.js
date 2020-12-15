@@ -67,6 +67,7 @@ class CsvUpload extends React.Component {
       )
       return
     }
+    file.type = 'text/csv'
     uploadFile({ schoolId, file })
   }
 
