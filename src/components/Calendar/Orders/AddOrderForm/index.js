@@ -9,7 +9,6 @@ import {
 import CheckoutForm from './CheckoutForm'
 import classnames from 'classnames'
 import { handleStripePayment } from 'services/stripe'
-import omit from 'lodash/omit'
 import { connect } from 'react-redux'
 import { fetchWidgetSettings } from 'store/settings'
 import { bindActionCreators } from 'redux'
@@ -169,8 +168,8 @@ class AddOrderForm extends React.Component {
     }
   }
 
-  handleSave = async event => {
-    const { onSave, onCancel } = this.props
+  handleSave = async (event, withInvoice = false) => {
+    const { onSave } = this.props
     const { order, showPayment, orderCreated } = this.state
 
     event.preventDefault()
@@ -189,9 +188,10 @@ class AddOrderForm extends React.Component {
       const data = Object.assign({}, order)
       data.bike_type = data.bike_hire
 
-      const orderResponse = await onSave(
-        !data.user_birthdate ? omit(data, 'user_birthdate') : data
-      )
+      if (!data.user_birthdate) {
+        delete data.user_birthdate
+      }
+      const orderResponse = await onSave(data, withInvoice)
 
       if (!orderResponse) {
         this.setState({ showPayment: false })
@@ -202,7 +202,7 @@ class AddOrderForm extends React.Component {
             if (showPayment) {
               await this.sendStripePayment()
             } else {
-              onCancel()
+              // onCancel()
             }
           }
         )
@@ -447,6 +447,22 @@ class AddOrderForm extends React.Component {
                       !cardPostCodeComplete)
                   }>
                   {showPayment ? 'Take Payment' : 'Add Order'}
+                </Button>
+              </div>
+              <div>
+                <Button
+                  type="button"
+                  onClick={e => this.handleSave(e, true)}
+                  color="white"
+                  disabled={
+                    showPayment &&
+                    (!cardName ||
+                      !cardNumberComplete ||
+                      !cardDateComplete ||
+                      !cardCVCComplete ||
+                      !cardPostCodeComplete)
+                  }>
+                  Add Order & Create Invoice
                 </Button>
               </div>
               <div>
