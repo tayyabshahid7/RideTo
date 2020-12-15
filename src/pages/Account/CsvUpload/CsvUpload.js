@@ -49,6 +49,7 @@ class CsvUpload extends React.Component {
     event.preventDefault()
     const { uploadFile, showNotification, schoolId } = this.props
     const { file } = this.state
+    console.log(file, file.type)
 
     if (file.type !== 'text/csv') {
       showNotification(
