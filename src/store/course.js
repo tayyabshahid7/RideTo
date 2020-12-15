@@ -271,7 +271,7 @@ export const createSchoolOrder = ({ schoolId, order }) => async dispatch => {
     dispatch({
       type: CREATE_ORDER[SUCCESS],
       data: {
-        course: response
+        order: response
       }
     })
     notificationActions.dispatchSuccess(dispatch, 'Order added')
@@ -530,7 +530,8 @@ const defaultState = {
     price: null,
     order: null,
     saving: false
-  }
+  },
+  newOrder: null
 }
 
 const initialState = {
@@ -925,11 +926,13 @@ export default function reducer(state = initialState, action) {
         ...state,
         single: { ...state.single, saving: true, error: null }
       }
-    case CREATE_ORDER[SUCCESS]:
+    case CREATE_ORDER[SUCCESS]: {
       return {
         ...state,
-        single: { ...state.single, saving: false }
+        single: { ...state.single, saving: false },
+        newOrder: action.data.order
       }
+    }
     case CREATE_ORDER[FAILURE]:
       return {
         ...state,
