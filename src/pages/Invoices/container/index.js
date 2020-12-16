@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -11,13 +11,14 @@ import InvoiceStatusSidebar from '../components/InvoiceStatusSidebar'
 import RightPanel from 'components/RightPanel'
 import { Button } from 'components/ConnectForm'
 import { getInvoices } from 'store/invoice'
-import OrdersRadioFilter from 'pages/Orders/components/OrdersRadioFilter'
+import OrdersMultiFilter from 'pages/Orders/components/OrdersMultiFilter'
 import LoadingMask from 'components/LoadingMask'
 import { deleteInvoice } from 'services/invoice'
 import { actions as notifyActions } from 'store/notification'
+import { debounce } from 'lodash'
 
 const statusOptions = [
-  { text: 'All Invoicse', value: 'all' },
+  { text: 'All Invoices', value: 'all' },
   { text: 'Paid', value: 'paid' },
   { text: 'Draft', value: 'draft' },
   { text: 'Open', value: 'open' },
@@ -37,7 +38,8 @@ function Invoices({
   getInvoices
 }) {
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedStatus, setSelectedStatus] = useState('all')
+  const [searchInputValue, setSearchInputValue] = useState('')
+  const [selectedStatuses, setSelectedStatuses] = useState(['all'])
   const [deleting, setDeleting] = useState(false)
   const [updating, setUpdating] = useState(false)
 
@@ -45,22 +47,44 @@ function Invoices({
     fetchInvoices()
   }, [searchQuery])
 
-  const onSearch = query => {
-    setSearchQuery(query)
+  const handleSearchChange = query => {
+    setSearchInputValue(query)
+    onSearch(query)
   }
+
+  const onSearch = useCallback(
+    debounce(query => {
+      setSearchQuery(query)
+    }, 500),
+    []
+  )
 
   const fetchInvoices = invoiceId => {
     const params = {
       limit: pageSize,
       search: searchQuery,
-      status: selectedStatus,
+      status: selectedStatuses.join(','),
+      // TODO: support multiple status by backend
       starting_after: invoiceId
     }
     getInvoices(params)
   }
 
   const handleSelectStatus = filter => {
-    setSelectedStatus(filter)
+    console.log(filter)
+    let tmp = selectedStatuses.slice()
+    if (selectedStatuses.includes(filter)) {
+      tmp = tmp.filter(x => x !== filter)
+    } else {
+      tmp.push(filter)
+    }
+    if (filter === 'all' && tmp.includes('all')) {
+      tmp = ['all']
+    }
+    if (filter !== 'all' && tmp.includes('all')) {
+      tmp = tmp.filter(x => x !== 'all')
+    }
+    setSelectedStatuses(tmp)
   }
 
   const handleApplyFilter = () => {
@@ -92,15 +116,15 @@ function Invoices({
     <div className={styles.container}>
       <StaticSidePanel>
         <SearchInput
-          value={searchQuery}
+          value={searchInputValue}
           placeholder="e.g. invoice #"
-          onSearch={onSearch}
+          onChange={handleSearchChange}
         />
         <div className={styles.divider}></div>
-        <OrdersRadioFilter
+        <OrdersMultiFilter
           title="Invoice Status"
           filters={statusOptions}
-          selectedFilter={selectedStatus}
+          selectedFilters={selectedStatuses}
           onSelect={handleSelectStatus}
         />
         <div className={styles.divider}></div>
