@@ -1,6 +1,6 @@
 .container {
   display: flex;
-  height: 200px;
+  min-height: 200px;
   background: white;
   position: relative;
 
@@ -223,9 +223,12 @@
 }
 
 .icons {
-  margin-top: 12px;
+  margin-bottom: 12px;
   display: flex;
+  flex-wrap: wrap;
+
   div {
+    margin-top: 12px;
     margin-right: 16px;
   }
 }
