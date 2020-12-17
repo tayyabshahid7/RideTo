@@ -39,23 +39,23 @@ const OrdersTable = ({
   const [orderDetail, setOrderDetail] = useState(false)
 
   const orderStatusMap = {
-    CONFIRMED: {
+    TRAINING_CONFIRMED: {
       text: 'Confirmed',
       type: 'success'
     },
-    CANCELLED: {
+    TRAINING_CANCELLED: {
       text: 'Cancelled',
       type: 'default'
     },
-    PENDING: {
+    TRAINING_PENDING: {
       text: 'Pending',
       type: 'info'
     },
-    CREATED: {
+    TRAINING_CREATED: {
       text: 'Created',
       type: 'default'
     },
-    FAILED: {
+    TRAINING_FAILED: {
       text: 'Failed',
       type: 'danger'
     }
@@ -66,7 +66,7 @@ const OrdersTable = ({
       ? moment(order.training_date_time).format('DD MMM YY')
       : ''
     order.paymentStatus = getPaymentStatus(order.order.payment_status)
-    order.orderStatus = orderStatusMap[order.order.status]
+    order.orderStatus = orderStatusMap[order.status]
     if (!order.orderStatus) {
       order.orderStatus = {
         text:
