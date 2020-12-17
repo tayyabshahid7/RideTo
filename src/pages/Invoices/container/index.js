@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -15,9 +15,10 @@ import OrdersRadioFilter from 'pages/Orders/components/OrdersRadioFilter'
 import LoadingMask from 'components/LoadingMask'
 import { deleteInvoice } from 'services/invoice'
 import { actions as notifyActions } from 'store/notification'
+import { debounce } from 'lodash'
 
 const statusOptions = [
-  { text: 'All Invoicse', value: 'all' },
+  { text: 'All Invoices', value: 'all' },
   { text: 'Paid', value: 'paid' },
   { text: 'Draft', value: 'draft' },
   { text: 'Open', value: 'open' },
@@ -37,6 +38,7 @@ function Invoices({
   getInvoices
 }) {
   const [searchQuery, setSearchQuery] = useState('')
+  const [searchInputValue, setSearchInputValue] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('all')
   const [deleting, setDeleting] = useState(false)
   const [updating, setUpdating] = useState(false)
@@ -45,15 +47,24 @@ function Invoices({
     fetchInvoices()
   }, [searchQuery])
 
-  const onSearch = query => {
-    setSearchQuery(query)
+  const handleSearchChange = query => {
+    setSearchInputValue(query)
+    onSearch(query)
   }
+
+  const onSearch = useCallback(
+    debounce(query => {
+      setSearchQuery(query)
+    }, 500),
+    []
+  )
 
   const fetchInvoices = invoiceId => {
     const params = {
       limit: pageSize,
       search: searchQuery,
       status: selectedStatus,
+      // TODO: support multiple status by backend
       starting_after: invoiceId
     }
     getInvoices(params)
@@ -92,9 +103,9 @@ function Invoices({
     <div className={styles.container}>
       <StaticSidePanel>
         <SearchInput
-          value={searchQuery}
+          value={searchInputValue}
           placeholder="e.g. invoice #"
-          onSearch={onSearch}
+          onChange={handleSearchChange}
         />
         <div className={styles.divider}></div>
         <OrdersRadioFilter

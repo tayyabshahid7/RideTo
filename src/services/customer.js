@@ -7,6 +7,13 @@ export const fetchCustomers = async (params = {}) => {
   return response
 }
 
+export const searchInvoiceCustomer = async (params = {}) => {
+  const path = `school/customer-list`
+  const response = await get(path, params)
+
+  return response
+}
+
 export const fetchCustomer = async (id, params = {}) => {
   const path = `school/customer/${id}`
   const response = await get(path, params)

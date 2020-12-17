@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { ConnectReactSelectAsync } from 'components/ConnectForm'
-import { fetchCustomers } from 'services/customer'
+import { searchInvoiceCustomer } from 'services/customer'
 import debounce from 'debounce-promise'
 
 const SearchCustomerInput = ({ value, onChange }) => {
@@ -24,7 +24,7 @@ const SearchCustomerInput = ({ value, onChange }) => {
       ordering: 'updated_at',
       search: inputValue
     }
-    const result = await fetchCustomers(params)
+    const result = await searchInvoiceCustomer(params)
     const tmp = result.results.map(x => ({
       id: x.id,
       name: `${x.first_name} ${x.last_name}`,
