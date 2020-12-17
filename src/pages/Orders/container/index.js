@@ -6,7 +6,7 @@ import { changeSchool } from 'store/auth'
 import * as orderModule from 'store/order'
 import { Button } from 'components/ConnectForm'
 import { getDateRangeByType } from 'common/info'
-import { debounce } from 'lodash'
+import _ from 'lodash'
 
 import LoadingMask from 'components/LoadingMask'
 import StaticSidePanel from 'components/StaticSidePanel'
@@ -94,14 +94,21 @@ function Orders({
 
   useEffect(() => {
     if (paramLoaded) {
+      console.log(params)
       setDateFilter(params.dateFilter)
       if (params.supplier_id) {
         setSelectedSuppliers(
-          params.supplier_id.split(',').map(x => parseInt(x))
+          _.intersection(
+            params.supplier_id.split(',').map(x => parseInt(x)),
+            supplierOptions.map(x => x.value)
+          )
         )
       }
       if (params.course_type__constant) {
-        setSelectedCourses(params.course_type__constant.split(','))
+        _.intersection(
+          setSelectedCourses(params.course_type__constant.split(',')),
+          courseFilters.map(x => x.value)
+        )
       }
       if (params.status) {
         setSelectedStatuses(params.status.split(','))
@@ -113,10 +120,10 @@ function Orders({
       if (params.ordering) {
         if (params.ordering.startsWith('-')) {
           setOrdering(params.ordering.substr(1))
-          setOrderDir(true)
+          setOrderDir('-')
         } else {
           setOrdering(params.ordering)
-          setOrderDir(false)
+          setOrderDir('')
         }
       }
       setParamsRefreshed(true)
@@ -270,8 +277,7 @@ function Orders({
   }
 
   const onSearch = useCallback(
-    debounce(query => {
-      console.log(query)
+    _.debounce(query => {
       setSearchQuery(query)
       setPage(1)
     }, 500),
