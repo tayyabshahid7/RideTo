@@ -11,7 +11,7 @@ import InvoiceStatusSidebar from '../components/InvoiceStatusSidebar'
 import RightPanel from 'components/RightPanel'
 import { Button } from 'components/ConnectForm'
 import { getInvoices } from 'store/invoice'
-import OrdersMultiFilter from 'pages/Orders/components/OrdersMultiFilter'
+import OrdersRadioFilter from 'pages/Orders/components/OrdersRadioFilter'
 import LoadingMask from 'components/LoadingMask'
 import { deleteInvoice } from 'services/invoice'
 import { actions as notifyActions } from 'store/notification'
@@ -39,7 +39,7 @@ function Invoices({
 }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchInputValue, setSearchInputValue] = useState('')
-  const [selectedStatuses, setSelectedStatuses] = useState(['all'])
+  const [selectedStatus, setSelectedStatus] = useState('all')
   const [deleting, setDeleting] = useState(false)
   const [updating, setUpdating] = useState(false)
 
@@ -63,7 +63,7 @@ function Invoices({
     const params = {
       limit: pageSize,
       search: searchQuery,
-      status: selectedStatuses.join(','),
+      status: selectedStatus,
       // TODO: support multiple status by backend
       starting_after: invoiceId
     }
@@ -71,20 +71,7 @@ function Invoices({
   }
 
   const handleSelectStatus = filter => {
-    console.log(filter)
-    let tmp = selectedStatuses.slice()
-    if (selectedStatuses.includes(filter)) {
-      tmp = tmp.filter(x => x !== filter)
-    } else {
-      tmp.push(filter)
-    }
-    if (filter === 'all' && tmp.includes('all')) {
-      tmp = ['all']
-    }
-    if (filter !== 'all' && tmp.includes('all')) {
-      tmp = tmp.filter(x => x !== 'all')
-    }
-    setSelectedStatuses(tmp)
+    setSelectedStatus(filter)
   }
 
   const handleApplyFilter = () => {
@@ -121,10 +108,10 @@ function Invoices({
           onChange={handleSearchChange}
         />
         <div className={styles.divider}></div>
-        <OrdersMultiFilter
+        <OrdersRadioFilter
           title="Invoice Status"
           filters={statusOptions}
-          selectedFilters={selectedStatuses}
+          selectedFilter={selectedStatus}
           onSelect={handleSelectStatus}
         />
         <div className={styles.divider}></div>
