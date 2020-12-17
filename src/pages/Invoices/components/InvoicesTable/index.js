@@ -40,7 +40,7 @@ const InvoicesTable = ({
     amount: '£' + (x.total / 100).toFixed(),
     status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
     orderId: x.metadata.order,
-    customer: x.customer_name,
+    customer: x.customer_name || x.customer_email,
     dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY'),
     original: x
   }))

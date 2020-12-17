@@ -40,12 +40,14 @@ const InvoiceStatusSidebar = ({
         try {
           return await fetchOrderById(invoice.metadata.order)
         } catch (err) {
-          showNotification('Error', 'Failed to load order', 'danger')
           return null
         }
       }
-      const tmpOrder = await fetchData()
-      setOrder(tmpOrder)
+
+      if (invoice.metadata.order) {
+        const tmpOrder = await fetchData()
+        setOrder(tmpOrder)
+      }
     }
 
     loadOrder()
@@ -66,7 +68,7 @@ const InvoiceStatusSidebar = ({
     setInvoice(tmp)
   }
 
-  if (!order || !invoice) {
+  if (!invoice) {
     return null
   }
 
@@ -131,7 +133,7 @@ const InvoiceStatusSidebar = ({
     <div className={styles.container}>
       <DateHeading
         title="James Beddows"
-        subtitle={'Direct #' + order.friendly_id}
+        subtitle={order ? 'Direct #' + order.friendly_id : ''}
         onBack={handleBack}
       />
       {/* <div className={styles.divider}></div> */}

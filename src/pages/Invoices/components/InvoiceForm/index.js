@@ -85,7 +85,7 @@ const InvoiceForm = ({
           return await fetchCustomer(metadata.customer_id)
         } catch (err) {
           showNotification('Error', 'Failed to load customer detail', 'danger')
-          return []
+          return null
         }
       }
 
@@ -130,11 +130,13 @@ const InvoiceForm = ({
       // fetch customer detail and orders
       const cdetail = await fetchData()
 
-      const tmpOrderOptions = cleanUpOrders(cdetail.orders)
-      setOrderOptions(tmpOrderOptions)
-      const tmpOrder = tmpOrderOptions.find(x => x.id === metadata.order)
-      if (tmpOrder) {
-        setOrder(tmpOrder)
+      if (cdetail) {
+        const tmpOrderOptions = cleanUpOrders(cdetail.orders)
+        setOrderOptions(tmpOrderOptions)
+        const tmpOrder = tmpOrderOptions.find(x => x.id === metadata.order)
+        if (tmpOrder) {
+          setOrder(tmpOrder)
+        }
       }
     }
 
