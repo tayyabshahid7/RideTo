@@ -79,7 +79,7 @@ const InvoiceTableRow = ({
         } else if (item.field === 'action') {
           cell = (
             <ActionThreeDot ref={menuRef} down={calcDown(index)}>
-              {record.status === 'Open' && (
+              {false && record.status === 'Open' && (
                 <React.Fragment>
                   <div className={styles.menuItem} onClick={handleNewPayment}>
                     <IconPound />
