@@ -1,12 +1,47 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import {} from 'services/invoice'
+import styles from './styles.scss'
+import { fetchOrderDetailById } from 'services/order'
 import OrdersDetailPanel from 'pages/Orders/components/OrdersDetailPanel'
+import LoadingMask from 'components/LoadingMask'
 
 const InvoiceOrderDetail = ({ ...props }) => {
-  console.log('waiting for orders API')
-  return <OrdersDetailPanel {...props} isInvoice isEdit orders={[]} />
+  const [loading, setLoading] = useState(true)
+  const [order, setOrder] = useState(null)
+
+  useEffect(() => {
+    async function loadOrder() {
+      const { id } = props.match.params
+      if (!id) {
+        setLoading(false)
+      }
+      try {
+        const result = await fetchOrderDetailById(id)
+        setOrder(result)
+      } catch (err) {
+        console.log(err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadOrder()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <LoadingMask loading={loading} />
+      </div>
+    )
+  }
+
+  const orders = []
+  if (order) {
+    orders.push(order)
+  }
+  return <OrdersDetailPanel {...props} isInvoice isEdit orders={orders} />
 }
 
 const mapStateToProps = (state, ownProps) => {
