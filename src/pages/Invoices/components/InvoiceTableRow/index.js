@@ -21,6 +21,7 @@ const InvoiceTableRow = ({
   onNewPayment,
   onDelete,
   onEdit,
+  onShowOrder,
   onSend
 }) => {
   const menuRef = useRef()
@@ -65,10 +66,18 @@ const InvoiceTableRow = ({
       {header.map((item, rIndex) => {
         let cell
         if (item.field === 'orderId') {
-          cell = <Link to={`/orders/${record.orderId}`}>{record.orderId}</Link>
+          cell = (
+            <span onClick={() => onShowOrder(record)} className={styles.link}>
+              {record.orderId}
+            </span>
+          )
         } else if (item.field === 'customer') {
           cell = (
-            <Link to={`/customers/${record.customer}`}>{record.customer}</Link>
+            <Link
+              className={styles.link}
+              to={`/customers/${record.customerId}`}>
+              {record.customer}
+            </Link>
           )
         } else if (item.field === 'id') {
           cell = <span>{record.number}</span>
@@ -133,6 +142,8 @@ const InvoiceTableRow = ({
               )}
             </ActionThreeDot>
           )
+        } else if (item.field === 'dueDate') {
+          cell = <span className={styles.noBreak}>{record[item.field]}</span>
         } else {
           cell = <span>{record[item.field]}</span>
         }

@@ -209,11 +209,10 @@ const InvoiceForm = ({
   }
 
   const handleCustomerChange = value => {
-    console.log(value)
     setCustomer(value)
     setOrderOptions(cleanUpOrders(value.orders))
     setOrder(null)
-    setEmail(value.email)
+    setEmail(value.email || value.name)
   }
 
   const validateData = () => {
@@ -357,7 +356,6 @@ const InvoiceForm = ({
 
   const handleSend = async isSend => {
     const formData = await prepareData()
-    console.log(formData)
     if (!formData) {
       return
     }

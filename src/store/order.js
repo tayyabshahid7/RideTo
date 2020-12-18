@@ -17,6 +17,8 @@ const FETCH_ORDER = createRequestTypes('rideto/orders/FETCH')
 const LOAD_ORDER_FILTERS = 'rideto/orders/LOAD_ORDER_FILTERS'
 const RESET_PARAMS_LOADED = 'rideto/orders/RESET_PARAMS_LOADED'
 
+const SET_INVOICE_ORDER_ID = 'rideto/orders/SET_INVOICE_ORDER_ID'
+
 export const actions = {}
 export const selectors = {}
 
@@ -92,6 +94,13 @@ actions.resetOrderParamsLoaded = () => dispatch => {
   })
 }
 
+actions.setInvoiceOrderId = orderId => dispatch => {
+  dispatch({
+    type: SET_INVOICE_ORDER_ID,
+    data: { orderId }
+  })
+}
+
 actions.fetchFilteredOrders = params => async dispatch => {
   dispatch({
     type: FETCH_ORDER[REQUEST],
@@ -121,7 +130,8 @@ const initialState = {
   loading: false,
   error: false,
   total: 0,
-  orders: []
+  orders: [],
+  invoiceOrderId: null
 }
 
 function orderReducer(state = initialState, action) {
@@ -130,6 +140,13 @@ function orderReducer(state = initialState, action) {
       return {
         ...state,
         paramLoaded: false
+      }
+    }
+    case SET_INVOICE_ORDER_ID: {
+      console.log(action)
+      return {
+        ...state,
+        invoiceOrderId: action.data.orderId
       }
     }
     case LOAD_ORDER_FILTERS: {

@@ -37,4 +37,14 @@
 
 .link {
   color: #4259a8;
+  cursor: pointer;
+
+  &:hover {
+    color: #2c3c71;
+    text-decoration: underline;
+  }
+}
+
+.noBreak {
+  white-space: nowrap;
 }

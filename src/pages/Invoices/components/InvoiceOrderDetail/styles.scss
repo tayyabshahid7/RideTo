@@ -1,0 +1,65 @@
+.container {
+}
+
+.priceLine {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.priceValue {
+  h6 {
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 500;
+    color: #444;
+    margin: 0 0 10px;
+  }
+
+  span {
+    font-size: 11px;
+    line-height: 13px;
+    color: rgba(#444, 0.6);
+    font-weight: 500;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 24px 0;
+}
+
+.optionItem {
+  display: flex;
+  margin-bottom: 20px;
+  cursor: pointer;
+
+  > div {
+    margin-left: 16px;
+
+    h3 {
+      font-size: 13px;
+      line-height: 16px;
+      font-weight: 500;
+      color: #444;
+      margin-bottom: 8px;
+    }
+
+    p {
+      font-size: 11px;
+      line-height: 16px;
+      font-weight: 500;
+      color: rgba(#444, 0.6);
+      margin-bottom: 0;
+    }
+  }
+}
+
+.label {
+  font-size: 13px;
+  line-height: 15px;
+  font-weight: 500;
+  margin: 0;
+  color: rgba(#444, 0.6);
+}

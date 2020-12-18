@@ -108,7 +108,9 @@ const OrdersTableRow = ({
         } else if (item.field === 'customer') {
           if (record.customer) {
             cell = (
-              <Link className={styles.link} to={`/customers/${record.customer.id}`}>
+              <Link
+                className={styles.link}
+                to={`/customers/${record.customer.id}`}>
                 {record.customer.full_name}
               </Link>
             )
@@ -175,6 +177,8 @@ const OrdersTableRow = ({
               </Desktop>
             </ActionThreeDot>
           )
+        } else if (item.field === 'training_date') {
+          cell = <span className={styles.noBreak}>{record[item.field]}</span>
         } else {
           cell = <span>{record[item.field]}</span>
         }

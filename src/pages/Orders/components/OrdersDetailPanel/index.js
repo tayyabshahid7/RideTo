@@ -36,6 +36,7 @@ const OrdersDetailPanel = ({
   fetchFilteredOrders,
   showNotification,
   isEdit = false,
+  isInvoice = false,
   params
 }) => {
   const [order, setOrder] = useState(null)
@@ -52,7 +53,7 @@ const OrdersDetailPanel = ({
   }, [order])
 
   const handleBack = () => {
-    history.push('/orders')
+    history.push(isInvoice ? '/invoices' : '/orders')
   }
 
   let orderId = null
