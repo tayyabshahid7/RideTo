@@ -184,9 +184,13 @@ const OrdersTable = ({
     onOpenFilter()
   }
 
-  const showCount = Math.min(total, page * pageSize)
-  const statsText = `Showing ${(page - 1) * pageSize +
-    1} to ${showCount} of ${total} orders`
+  let statsText = ''
+  if (typeof total !== 'undefined') {
+    const showCount = Math.min(total, page * pageSize)
+
+    statsText = `Showing ${(page - 1) * pageSize +
+      1} to ${showCount} of ${total} orders`
+  }
 
   return (
     <div className={styles.container}>
