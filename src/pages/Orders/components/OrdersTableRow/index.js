@@ -108,7 +108,7 @@ const OrdersTableRow = ({
         } else if (item.field === 'customer') {
           if (record.customer) {
             cell = (
-              <Link to={`/customers/${record.customer.id}`}>
+              <Link className={styles.link} to={`/customers/${record.customer.id}`}>
                 {record.customer.full_name}
               </Link>
             )
