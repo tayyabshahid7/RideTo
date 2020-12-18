@@ -12,7 +12,11 @@
   font-style: italic;
 
   a {
-    text-decoration: underline;
+    color: #4259a8;
+
+    &:hover {
+      color: #2c3c71;
+    }
   }
 }
 
