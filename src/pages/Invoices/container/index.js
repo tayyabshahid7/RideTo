@@ -8,13 +8,16 @@ import SearchInput from 'components/SearchInput'
 import InvoicesTable from '../components/InvoicesTable'
 import NewPaymentSidebar from '../components/NewPaymentSidebar'
 import InvoiceStatusSidebar from '../components/InvoiceStatusSidebar'
+import InvoiceOrderDetail from '../components/InvoiceOrderDetail'
 import RightPanel from 'components/RightPanel'
 import { Button } from 'components/ConnectForm'
-import { getInvoices } from 'store/invoice'
 import OrdersRadioFilter from 'pages/Orders/components/OrdersRadioFilter'
+
 import LoadingMask from 'components/LoadingMask'
 import { deleteInvoice } from 'services/invoice'
 import { actions as notifyActions } from 'store/notification'
+import { getInvoices } from 'store/invoice'
+import { actions as orderActions } from 'store/order'
 import { debounce } from 'lodash'
 
 const statusOptions = [
@@ -35,7 +38,8 @@ function Invoices({
   loadedAll,
   loading,
   showNotification,
-  getInvoices
+  getInvoices,
+  setInvoiceOrderId
 }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [searchInputValue, setSearchInputValue] = useState('')
@@ -135,6 +139,7 @@ function Invoices({
           onDelete={handleDelete}
           onLoadMore={onLoadMore}
           setUpdating={setUpdating}
+          setInvoiceOrderId={setInvoiceOrderId}
         />
 
         <LoadingMask loading={loading || updating || deleting} />
@@ -157,6 +162,17 @@ function Invoices({
           path="/invoices/status/:id"
           render={routeProps => <InvoiceStatusSidebar {...routeProps} />}
         />
+        <Route
+          exact
+          path="/invoices/orders/edit/:id"
+          render={routeProps => (
+            <InvoiceOrderDetail
+              {...routeProps}
+              isEdit={true}
+              isInvoice={true}
+            />
+          )}
+        />
       </RightPanel>
     </div>
   )
@@ -174,6 +190,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getInvoices,
+      setInvoiceOrderId: orderActions.setInvoiceOrderId,
       showNotification: notifyActions.showNotification
     },
     dispatch

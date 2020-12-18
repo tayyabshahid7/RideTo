@@ -41,6 +41,7 @@ const InvoicesTable = ({
     status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
     orderId: x.metadata.order,
     customer: x.customer_name || x.customer_email,
+    customerId: x.metadata.customer_id,
     dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY'),
     original: x
   }))
@@ -89,6 +90,11 @@ const InvoicesTable = ({
     onRefresh()
   }
 
+  const handleShowOrder = invoice => {
+    console.log(invoice)
+    history.push(`/invoices/orders/edit/${invoice.orderId}`)
+  }
+
   const statsStyle = {
     gridColumnStart: 1,
     gridColumnEnd: header.length + 1
@@ -128,6 +134,7 @@ const InvoicesTable = ({
             onDelete={onDelete}
             onEdit={handleEdit}
             onSend={handleSend}
+            onShowOrder={handleShowOrder}
           />
         ))}
         <div style={statsStyle}>
