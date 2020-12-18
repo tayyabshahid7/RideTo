@@ -72,16 +72,9 @@ function Orders({
   const statusFilters = [
     { text: 'Confirmed', value: 'TRAINING_CONFIRMED' },
     { text: 'Cancelled', value: 'TRAINING_CANCELLED' },
-    {
-      text: 'Waiting School Confirmation',
-      value: 'TRAINING_WAITING_SCHOOL_CONFIRMATION'
-    },
-    {
-      text: 'Waiting Rider Confirmation',
-      value: 'TRAINING_WAITING_RIDER_CONFIRMATION'
-    },
-    { text: 'No Show', value: 'TRAINING_NO_SHOW' },
-    { text: 'Passed', value: 'TRAINING_PASSED' }
+    { text: 'Not Completed', value: 'TRAINING_FAILED' },
+    { text: 'Completed', value: 'TRAINING_PASSED' },
+    { text: 'Not Attended', value: 'TRAINING_NO_SHOW' }
   ]
 
   useEffect(() => {
@@ -105,13 +98,20 @@ function Orders({
         )
       }
       if (params.course_type__constant) {
-        _.intersection(
-          setSelectedCourses(params.course_type__constant.split(',')),
-          courseFilters.map(x => x.value)
+        setSelectedCourses(
+          _.intersection(
+            params.course_type__constant.split(','),
+            courseFilters.map(x => x.value)
+          )
         )
       }
       if (params.status) {
-        setSelectedStatuses(params.status.split(','))
+        setSelectedStatuses(
+          _.intersection(
+            params.status.split(','),
+            statusFilters.map(x => x.value)
+          )
+        )
       }
       setSearchQuery(params.search)
       setSearchInputValue(params.search)

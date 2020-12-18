@@ -47,16 +47,16 @@ const OrdersTable = ({
       text: 'Cancelled',
       type: 'default'
     },
-    TRAINING_PENDING: {
-      text: 'Pending',
+    TRAINING_FAILED: {
+      text: 'Not Completed',
+      type: 'danger'
+    },
+    TRAINING_PASSED: {
+      text: 'Completed',
       type: 'info'
     },
-    TRAINING_CREATED: {
-      text: 'Created',
-      type: 'default'
-    },
-    TRAINING_FAILED: {
-      text: 'Failed',
+    TRAINING_NO_SHOW: {
+      text: 'Not Attended',
       type: 'danger'
     }
   }
