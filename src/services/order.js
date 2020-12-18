@@ -92,6 +92,13 @@ export const fetchOrderById = async id => {
   return response
 }
 
+export const fetchOrderDetailById = async id => {
+  const path = `school/order-detail/${id}/`
+  const response = await get(path)
+
+  return response
+}
+
 export const fetchOrders = async (params = {}) => {
   const path = 'o/'
   const response = await get(path, params)
