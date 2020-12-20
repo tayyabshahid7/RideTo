@@ -21,6 +21,7 @@ import {
 } from 'services/invoice'
 import { fetchOrderById } from 'services/order'
 import { fetchCustomer, createCustomer } from 'services/customer'
+import { getErrorMsg } from 'utils/helper'
 
 const InvoiceForm = ({
   invoice,
@@ -377,19 +378,15 @@ const InvoiceForm = ({
       } else {
         await sendInvoice(formData)
       }
+      onSent()
     } catch (err) {
-      console.log(err)
-      showNotification(
-        'Error',
-        invoice
-          ? 'Failed to update invoice details'
-          : 'Failed to create a new invoice',
-        'danger'
-      )
+      const defaultMsg = invoice
+        ? 'Failed to update invoice details'
+        : 'Failed to create a new invoice'
+      showNotification('Error', getErrorMsg(err) || defaultMsg, 'danger')
+    } finally {
+      setSaving(false)
     }
-
-    setSaving(false)
-    onSent()
   }
 
   const handleLineChange = lines => {

@@ -68,7 +68,7 @@ const InvoiceTableRow = ({
         if (item.field === 'orderId') {
           cell = (
             <span onClick={() => onShowOrder(record)} className={styles.link}>
-              {record.orderId}
+              {record.original.metadata.order_friendly_id || record.orderId}
             </span>
           )
         } else if (item.field === 'customer') {
