@@ -56,10 +56,15 @@ const REMOVE_COURSE_FROM_PACKAGE = 'rideto/course/PACKAGE/REMOVE_COURSE'
 const FINISH_COURSE_PACKAGE = 'rideto/course/FINISH_COURSE_PACKAGE'
 const SET_ORDER_COURSE = 'rideto/course/SET_ORDER_COURSE'
 const RESET_SINGLE = 'rideto/course/RESET_SINGLE'
+const RESET_COURSES = 'rideto/course/RESET_COURSES'
 const UPDATE_PACKAGE = createRequestTypes('rideto/course/UPDATE/PACKAGE')
 
 export const setOrderCourse = course => dispatch => {
   dispatch({ type: SET_ORDER_COURSE, data: course })
+}
+
+export const resetCourses = course => dispatch => {
+  dispatch({ type: RESET_COURSES, data: course })
 }
 
 export const addCourseToPackage = course => dispatch => {
@@ -870,6 +875,17 @@ export default function reducer(state = initialState, action) {
           error: action.error
         }
       }
+    case RESET_COURSES: {
+      return {
+        ...state,
+        calendar: {
+          ...state.calendar,
+          courses: [],
+          error: null,
+          loadedMonths: []
+        }
+      }
+    }
     case FETCH_ALL[REQUEST]:
       return {
         ...state,
@@ -878,7 +894,7 @@ export default function reducer(state = initialState, action) {
           loading: true
         }
       }
-    case FETCH_ALL[SUCCESS]:
+    case FETCH_ALL[SUCCESS]: {
       if (action.data.reset) {
         return {
           ...state,
@@ -912,6 +928,7 @@ export default function reducer(state = initialState, action) {
           loadedMonths: [...state.calendar.loadedMonths, action.data.month]
         }
       }
+    }
     case FETCH_ALL[FAILURE]:
       return {
         ...state,

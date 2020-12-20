@@ -20,6 +20,7 @@ import EditOrderComponent from 'components/Calendar/Orders/EditOrderComponent'
 import styles from './styles.scss'
 import {
   getCourses,
+  resetCourses,
   updateCalendarSetting,
   unsetSelectedDate
 } from 'store/course'
@@ -120,6 +121,10 @@ class CalendarPage extends Component {
     const formatedFirstDate = moment(firstDate).format(DATE_FORMAT)
     const formatedLastDate = moment(lastDate).format(DATE_FORMAT)
 
+    if (reset) {
+      resetCourses()
+    }
+
     activeSchools.forEach(schoolId => {
       const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
 
@@ -132,7 +137,7 @@ class CalendarPage extends Component {
         firstDate: formatedFirstDate,
         lastDate: formatedLastDate,
         month,
-        reset
+        reset: false
       })
     })
   }
@@ -627,6 +632,7 @@ const mapDispatchToProps = dispatch =>
   bindActionCreators(
     {
       getCourses,
+      resetCourses,
       getEvents,
       getStaff,
       getTestCentres,
