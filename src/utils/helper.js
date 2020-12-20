@@ -311,3 +311,7 @@ export function removeWeekdays(date, days, bankHolidays) {
   }
   return date.format('YYYY-MM-DD')
 }
+
+export function getErrorMsg(err) {
+  return err && err.response && err.response.data && err.response.data.error
+}
