@@ -6,6 +6,8 @@ import InvoicesPaymentForm from '../InvoicesPaymentForm'
 import { getInvoices } from 'store/invoice'
 import { fetchOrderById } from 'services/order'
 import { actions as notifyActions } from 'store/notification'
+import { STRIPE_KEY } from 'common/constants'
+import { StripeProvider, Elements } from 'react-stripe-elements'
 import styles from './styles.scss'
 
 const NewPaymentSidebar = ({
@@ -71,7 +73,15 @@ const NewPaymentSidebar = ({
         onBack={handleBack}
       />
       <div className={styles.priceLine}></div>
-      <InvoicesPaymentForm history={history} />
+      <StripeProvider apiKey={STRIPE_KEY}>
+        <Elements>
+          <InvoicesPaymentForm
+            history={history}
+            order={order}
+            invoice={invoice}
+          />
+        </Elements>
+      </StripeProvider>
     </div>
   )
 }

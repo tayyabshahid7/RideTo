@@ -43,6 +43,13 @@ export const addInvoiceLine = async (invoiceId, data) => {
   return response
 }
 
+export const payInvoice = async invoiceId => {
+  const path = `school/invoice/${invoiceId}/pay/`
+  const response = await post(path)
+
+  return response
+}
+
 export const markInvoiceAsPaid = async invoiceId => {
   const path = `school/invoice/${invoiceId}/pay/`
   const data = {
