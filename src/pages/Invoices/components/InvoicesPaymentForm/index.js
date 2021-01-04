@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
 import styles from './styles.scss'
 import classnames from 'classnames'
+import { injectStripe } from 'react-stripe-elements'
 import { ConnectInput, Button } from 'components/ConnectForm'
 import {
   CardNumberElement,
   CardExpiryElement,
   CardCVCElement,
-  PostalCodeElement,
-  StripeProvider,
-  Elements
+  PostalCodeElement
 } from 'react-stripe-elements'
-import { STRIPE_KEY } from 'common/constants'
 import LoadingMask from 'components/LoadingMask'
 import { IconExclamation, IconCheck } from 'assets/icons'
+import { searchCustomer, getCustomerSetupIntent } from 'services/customer'
+import { payInvoice } from 'services/invoice'
 
 const initialFormData = {
   holderName: '',
@@ -39,7 +39,7 @@ const options = {
   }
 }
 
-const InvoicesPaymentForm = ({ history }) => {
+const InvoicesPaymentForm = ({ history, order, invoice, stripe }) => {
   const [formData, setFormData] = useState(initialFormData)
   const [edited, setEdited] = useState(false)
   const [cardElement, setCardElement] = useState(null)
@@ -68,20 +68,51 @@ const InvoicesPaymentForm = ({ history }) => {
   }
 
   const handleSubmit = async () => {
-    console.log(formData)
     setSaving(true)
-    setTimeout(() => {
-      setScreen('success')
+    try {
+      let tmp
+      // STEP 1: Get stripe customer Id
+      // search customer by email to get stripe customer id
+      // we already have it in invoice detail though
+      tmp = await searchCustomer(invoice.customer_email)
+
+      const customerId = tmp.stripe_customer_id
+      // STEP 2: Get customer setup intent
+      tmp = await getCustomerSetupIntent(customerId)
+      const { client_secret } = tmp
+
+      console.log(tmp, stripe)
+
+      // STEP 3: Add card to stripe
+      const { setupIntent, error } = await stripe.handleCardSetup(
+        client_secret,
+        cardElement,
+        {
+          payment_method_data: {
+            billing_details: {
+              name: invoice.customer_name,
+              email: invoice.customer_email,
+              phone: invoice.customer_phone
+            }
+          }
+        }
+      )
+      console.log(setupIntent)
+
+      if (error) {
+        console.log(error)
+        setScreen('error')
+      } else {
+        // STEP 4: Pay the invoice
+        tmp = await payInvoice(invoice.id)
+        console.log(tmp)
+        setScreen('success')
+      }
+    } catch (err) {
+      setSaving('error')
+      console.log(err)
       setSaving(false)
-    }, 1000)
-    // TODO: from calendar/orders/AddOrderForm/index.js
-    // const { error, token } = await handleStripePayment({
-    //   stripe,
-    //   cardElement,
-    //   full_name: cardName,
-    //   email: order.user_email,
-    //   phone: order.user_phone
-    // })
+    }
   }
 
   const handleStripeElementChange = (el, name) => {
@@ -89,102 +120,97 @@ const InvoicesPaymentForm = ({ history }) => {
   }
 
   return (
-    <StripeProvider apiKey={STRIPE_KEY}>
-      <Elements>
-        <div className={styles.container}>
-          {screen === 'form' && (
-            <React.Fragment>
-              <ConnectInput
-                label="Cardholder Name"
-                basic
-                name="holderName"
-                value={formData.holderName}
-                onChange={handleChange}
-                required
+    <div className={styles.container}>
+      {screen === 'form' && (
+        <React.Fragment>
+          <ConnectInput
+            label="Cardholder Name"
+            basic
+            name="holderName"
+            value={formData.holderName}
+            onChange={handleChange}
+            required
+          />
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Card Number</label>
+            <CardNumberElement
+              className={styles.input}
+              {...options}
+              onChange={el => handleStripeElementChange(el, 'Number')}
+              onReady={el => onStripeFormReady(el)}
+            />
+          </div>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Expiry</label>
+              <CardExpiryElement
+                className={styles.input}
+                {...options}
+                onChange={el => handleStripeElementChange(el, 'Date')}
               />
-              <div className={styles.formGroup}>
-                <label className={styles.label}>Cardholder Name</label>
-                <CardNumberElement
-                  className={styles.input}
-                  {...options}
-                  onChange={el => handleStripeElementChange(el, 'Number')}
-                  onReady={el => onStripeFormReady(el)}
-                />
-              </div>
-              <div className={styles.formRow}>
-                <div className={styles.formGroup}>
-                  <label className={styles.label}>Expiry</label>
-                  <CardExpiryElement
-                    className={styles.input}
-                    {...options}
-                    onChange={el => handleStripeElementChange(el, 'Date')}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label className={styles.label}>CVC</label>
-                  <CardCVCElement
-                    className={styles.input}
-                    {...options}
-                    onChange={el => handleStripeElementChange(el, 'CVC')}
-                  />
-                </div>
-                <div className={styles.formGroup}>
-                  <label className={styles.label}>Postcode</label>
-                  <PostalCodeElement
-                    className={styles.input}
-                    {...options}
-                    onChange={el => handleStripeElementChange(el, 'PostCode')}
-                  />
-                </div>
-              </div>
-              {saving ? (
-                <Button color="secondary" style={{ width: '100%' }}>
-                  Processing Payment
-                </Button>
-              ) : (
-                <Button
-                  color="primary"
-                  onClick={handleSubmit}
-                  style={{ width: '100%' }}>
-                  Submit Payment
-                </Button>
-              )}
-              <LoadingMask loading={saving} />
-            </React.Fragment>
-          )}
-          {screen === 'error' && (
-            <div className={styles.result}>
-              <div className={styles.resultIcon}>
-                <IconExclamation />
-              </div>
-              <p>There was a problem processing your payment.</p>
-              <Button
-                color="primary"
-                onClick={handleSubmit}
-                style={{ width: '100%' }}>
-                Try Again
-              </Button>
             </div>
-          )}
-          {screen === 'success' && (
-            <div className={styles.result}>
-              <div
-                className={classnames(styles.resultIcon, styles.iconSuccess)}>
-                <IconCheck />
-              </div>
-              <p>Your payment was successfully processed.</p>
-              <Button
-                color="primary"
-                onClick={handleClose}
-                style={{ width: '100%' }}>
-                Close
-              </Button>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>CVC</label>
+              <CardCVCElement
+                className={styles.input}
+                {...options}
+                onChange={el => handleStripeElementChange(el, 'CVC')}
+              />
             </div>
+            <div className={styles.formGroup}>
+              <label className={styles.label}>Postcode</label>
+              <PostalCodeElement
+                className={styles.input}
+                {...options}
+                onChange={el => handleStripeElementChange(el, 'PostCode')}
+              />
+            </div>
+          </div>
+          {saving ? (
+            <Button color="secondary" style={{ width: '100%' }}>
+              Processing Payment
+            </Button>
+          ) : (
+            <Button
+              color="primary"
+              onClick={handleSubmit}
+              style={{ width: '100%' }}>
+              Submit Payment
+            </Button>
           )}
+          <LoadingMask loading={saving} />
+        </React.Fragment>
+      )}
+      {screen === 'error' && (
+        <div className={styles.result}>
+          <div className={styles.resultIcon}>
+            <IconExclamation />
+          </div>
+          <p>There was a problem processing your payment.</p>
+          <Button
+            color="primary"
+            onClick={handleSubmit}
+            style={{ width: '100%' }}>
+            Try Again
+          </Button>
         </div>
-      </Elements>
-    </StripeProvider>
+      )}
+      {screen === 'success' && (
+        <div className={styles.result}>
+          <div className={classnames(styles.resultIcon, styles.iconSuccess)}>
+            <IconCheck />
+          </div>
+          <p>Your payment was successfully processed.</p>
+          <Button
+            color="primary"
+            onClick={handleClose}
+            style={{ width: '100%' }}>
+            Close
+          </Button>
+        </div>
+      )}
+    </div>
   )
 }
 
-export default InvoicesPaymentForm
+export default injectStripe(InvoicesPaymentForm)

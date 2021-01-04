@@ -21,10 +21,17 @@ export const fetchCustomer = async (id, params = {}) => {
   return response
 }
 
+export const getCustomerSetupIntent = async customerId => {
+  const path = `school/customer/stripe/${customerId}/get-setup-intent`
+  const response = await post(path)
+
+  return response
+}
+
 export const searchCustomer = async value => {
   const path = `school/customer/stripe`
   const params = { email: value }
-  const response = await get(path, params)
+  const response = await post(path, params)
 
   return response
 }
