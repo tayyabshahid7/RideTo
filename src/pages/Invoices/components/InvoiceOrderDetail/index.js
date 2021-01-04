@@ -18,7 +18,13 @@ const InvoiceOrderDetail = ({ ...props }) => {
       }
       try {
         const result = await fetchOrderDetailById(id)
-        setOrder(result)
+        const { customer, trainings, ...order } = result
+        const data = {
+          customer,
+          order,
+          ...trainings[0]
+        }
+        setOrder(data)
       } catch (err) {
         console.log(err)
       } finally {
@@ -41,7 +47,15 @@ const InvoiceOrderDetail = ({ ...props }) => {
   if (order) {
     orders.push(order)
   }
-  return <OrdersDetailPanel {...props} isInvoice isEdit orders={orders} />
+  return (
+    <OrdersDetailPanel
+      {...props}
+      isInvoice
+      isEdit
+      orders={orders}
+      trainingId={order.id}
+    />
+  )
 }
 
 const mapStateToProps = (state, ownProps) => {

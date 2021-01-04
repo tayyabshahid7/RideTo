@@ -37,6 +37,7 @@ const OrdersDetailPanel = ({
   showNotification,
   isEdit = false,
   isInvoice = false,
+  trainingId, // from invoice page
   params
 }) => {
   const [order, setOrder] = useState(null)
@@ -56,8 +57,8 @@ const OrdersDetailPanel = ({
     history.push(isInvoice ? '/invoices' : '/orders')
   }
 
-  let orderId = null
-  if (match.params && match.params.id) {
+  let orderId = trainingId
+  if (!orderId && match.params && match.params.id) {
     orderId = parseInt(match.params.id)
   }
 
@@ -68,6 +69,10 @@ const OrdersDetailPanel = ({
 
   const tmpOrder = orders.find(x => x.id === orderId)
   if (!tmpOrder) {
+    handleBack()
+    return <Loading loading />
+  } else if (!tmpOrder.school_course) {
+    showNotification('Error', 'Order course is null', 'danger')
     handleBack()
     return <Loading loading />
   }
