@@ -12,7 +12,8 @@ import {
 import LoadingMask from 'components/LoadingMask'
 import { IconExclamation, IconCheck } from 'assets/icons'
 import { searchCustomer, getCustomerSetupIntent } from 'services/customer'
-import { payInvoice } from 'services/invoice'
+import { markInvoiceAsPaid } from 'services/invoice'
+import { payOrder } from 'services/order'
 
 const initialFormData = {
   holderName: '',
@@ -39,7 +40,7 @@ const options = {
   }
 }
 
-const InvoicesPaymentForm = ({ history, order, invoice, stripe }) => {
+const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
   const [formData, setFormData] = useState(initialFormData)
   const [edited, setEdited] = useState(false)
   const [cardElement, setCardElement] = useState(null)
@@ -47,6 +48,7 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe }) => {
   const [screen, setScreen] = useState('form')
 
   const handleClose = () => {
+    onClose && onClose()
     history.push('/invoices')
   }
 
@@ -103,8 +105,23 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe }) => {
         console.log(error)
         setScreen('error')
       } else {
+        // call setup intent again to confirm
+        tmp = await getCustomerSetupIntent(customerId, {
+          setup_id: setupIntent.id
+        })
+
         // STEP 4: Pay the invoice
-        tmp = await payInvoice(invoice.id)
+        // pay order and update invoice status as paid
+        const payload = {
+          order: invoice.metadata.order,
+          customer: customerId,
+          expected_price: invoice.amount_due,
+          email: invoice.customer_email
+        }
+        tmp = await payOrder(payload)
+        console.log(tmp)
+
+        tmp = await markInvoiceAsPaid(invoice.id)
         console.log(tmp)
         setScreen('success')
       }

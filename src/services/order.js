@@ -85,6 +85,13 @@ export const fetchFilteredOrders = async (params = {}) => {
   return response
 }
 
+export const payOrder = async data => {
+  const path = 'school/order/payment/'
+  const response = await post(path, data)
+
+  return response
+}
+
 export const fetchOrderById = async id => {
   const path = `school/order/${id}/`
   const response = await get(path)
