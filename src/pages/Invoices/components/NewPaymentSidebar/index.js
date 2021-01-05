@@ -74,7 +74,7 @@ const NewPaymentSidebar = ({
     <div className={styles.container}>
       <DateHeading
         title="James Beddows"
-        subtitle="Direct #35210"
+        subtitle={order.direct_friendly_id}
         onBack={handleBack}
       />
       <div className={styles.priceLine}></div>
