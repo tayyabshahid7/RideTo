@@ -49,6 +49,10 @@ const NewPaymentSidebar = ({
     loadOrder()
   }, [invoice])
 
+  const handleClosed = () => {
+    getInvoices(params)
+  }
+
   const handleBack = () => {
     history.push('/invoices')
   }
@@ -84,6 +88,7 @@ const NewPaymentSidebar = ({
             history={history}
             order={order}
             invoice={invoice}
+            onClose={handleClosed}
           />
         </Elements>
       </StripeProvider>
