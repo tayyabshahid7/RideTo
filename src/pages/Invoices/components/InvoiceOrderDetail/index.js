@@ -5,8 +5,9 @@ import styles from './styles.scss'
 import { fetchOrderDetailById } from 'services/order'
 import OrdersDetailPanel from 'pages/Orders/components/OrdersDetailPanel'
 import LoadingMask from 'components/LoadingMask'
+import { actions as notifyActions } from 'store/notification'
 
-const InvoiceOrderDetail = ({ ...props }) => {
+const InvoiceOrderDetail = ({ showNotification, ...props }) => {
   const [loading, setLoading] = useState(true)
   const [order, setOrder] = useState(null)
 
@@ -27,6 +28,8 @@ const InvoiceOrderDetail = ({ ...props }) => {
         setOrder(data)
       } catch (err) {
         console.log(err)
+        props.history.push('/invoices')
+        showNotification('Error', 'Order not found', 'danger')
       } finally {
         setLoading(false)
       }
@@ -47,6 +50,11 @@ const InvoiceOrderDetail = ({ ...props }) => {
   if (order) {
     orders.push(order)
   }
+
+  if (!order) {
+    return null
+  }
+
   return (
     <OrdersDetailPanel
       {...props}
@@ -62,7 +70,13 @@ const mapStateToProps = (state, ownProps) => {
   return {}
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      showNotification: notifyActions.showNotification
+    },
+    dispatch
+  )
 
 export default connect(
   mapStateToProps,
