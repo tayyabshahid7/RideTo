@@ -14,6 +14,7 @@ const NewPaymentSidebar = ({
   history,
   match,
   invoices,
+  suppliers,
   params,
   showNotification,
   getInvoices
@@ -21,6 +22,10 @@ const NewPaymentSidebar = ({
   const [invoice, setInvoice] = useState(null)
   const [order, setOrder] = useState(null)
   // const [loading, setLoading] = useState(false)
+
+  const stripeAccountId = suppliers.length
+    ? suppliers[0].stripe_account_id
+    : null
 
   useEffect(() => {
     async function loadOrder() {
@@ -73,7 +78,7 @@ const NewPaymentSidebar = ({
         onBack={handleBack}
       />
       <div className={styles.priceLine}></div>
-      <StripeProvider apiKey={STRIPE_KEY}>
+      <StripeProvider apiKey={STRIPE_KEY} stripeAccount={stripeAccountId}>
         <Elements>
           <InvoicesPaymentForm
             history={history}
@@ -89,6 +94,7 @@ const NewPaymentSidebar = ({
 const mapStateToProps = (state, ownProps) => {
   return {
     invoices: state.invoice.invoices,
+    suppliers: state.auth.user.suppliers,
     params: state.invoice.params
   }
 }
