@@ -163,6 +163,7 @@ class EditOrderForm extends React.Component {
     } = this.state.order
 
     const isRideTo =
+      !direct_friendly_id.includes('DR') &&
       !direct_friendly_id.includes('DIRECT') &&
       !direct_friendly_id.includes('WIDGET')
 
@@ -187,11 +188,13 @@ class EditOrderForm extends React.Component {
     return (
       <div className={styles.container}>
         {/* <Loading loading={saving}> */}
+        {isRideTo} {isAdmin}
         <Form onSubmit={this.handleSave}>
           <ChangeDate
             date={date}
             time={time}
             courses={courses}
+            course={course}
             onSave={onSave}
             onCancel={this.handleToggleDateClick}
             times={times}
