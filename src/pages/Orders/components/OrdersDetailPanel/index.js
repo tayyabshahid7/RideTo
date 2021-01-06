@@ -42,6 +42,7 @@ const OrdersDetailPanel = ({
 }) => {
   const [order, setOrder] = useState(null)
   const [editMode, setEditMode] = useState(isEdit)
+  const [paymentMode, setPaymentMode] = useState(false)
 
   useEffect(() => {
     resetSingleCourse()
@@ -107,7 +108,10 @@ const OrdersDetailPanel = ({
 
   // const onViewInvoice = () => {}
 
-  // const onAddPayment = () => {}
+  const onAddPayment = () => {
+    console.log(order)
+    setPaymentMode(true)
+  }
 
   const onSave = async (updatedOrder, updateDate = false) => {
     const tmp = Object.assign({}, updatedOrder)
@@ -150,6 +154,8 @@ const OrdersDetailPanel = ({
     }
   }
 
+  console.log(paymentMode)
+
   return (
     <div className={styles.container}>
       <DateHeading
@@ -184,10 +190,15 @@ const OrdersDetailPanel = ({
           </Button>
           {/* <Button color="white" onClick={onViewInvoice}>
             View Invoice
-          </Button>
-          <Button color="white" onClick={onAddPayment}>
-            Add Payment
           </Button> */}
+          {!trainingId &&
+            order &&
+            order.order &&
+            order.order.payment_status !== 'PAID' && (
+              <Button color="white" onClick={onAddPayment}>
+                Add Payment
+              </Button>
+            )}
           {isAdmin && (
             <React.Fragment>
               <div className={styles.divider}></div>
