@@ -13,6 +13,7 @@ import * as orderModule from 'store/order'
 import { getPaymentStatus } from 'services/order'
 import ColorTag from 'components/ColorTag'
 import CourseSummary from 'components/Calendar/CoursesPanel/CourseSummary'
+import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
 import OrdersPanelDetailForm from '../OrdersPanelDetailForm'
 import { Button } from 'components/ConnectForm'
 import LoadingMask from 'components/LoadingMask'
@@ -130,6 +131,11 @@ const OrdersDetailPanel = ({
     }
   }
 
+  const handleCloseAndRefresh = () => {
+    fetchFilteredOrders(params)
+    handleBack()
+  }
+
   const onDelete = async () => {
     if (!canDelete) {
       return
@@ -154,21 +160,45 @@ const OrdersDetailPanel = ({
     }
   }
 
-  console.log(paymentMode)
+  const renderHeader = () => {
+    return (
+      <React.Fragment>
+        <DateHeading
+          title={customerName}
+          subtitle={friendlyId}
+          onBack={handleBack}
+        />
+        <div className={styles.priceLine}>
+          <span className={styles.price}>
+            £{(course.pricing.price / 100).toFixed(2)}
+          </span>
+          <ColorTag text={paymentStatus.text} type={paymentStatus.type} />
+        </div>
+      </React.Fragment>
+    )
+  }
+
+  const payOrderId = order && order.order ? order.order.friendly_id : null
+  let amount = course && course.pricing ? course.pricing.price : 0
+  const paymentValid = payOrderId && amount
+
+  if (paymentValid && paymentMode) {
+    return (
+      <div className={styles.container}>
+        {renderHeader()}
+        <OrderPaymentContainer
+          customer={order.customer}
+          amount={amount}
+          orderId={payOrderId}
+          onRefresh={handleCloseAndRefresh}
+        />
+      </div>
+    )
+  }
 
   return (
     <div className={styles.container}>
-      <DateHeading
-        title={customerName}
-        subtitle={friendlyId}
-        onBack={handleBack}
-      />
-      <div className={styles.priceLine}>
-        <span className={styles.price}>
-          £{(course.pricing.price / 100).toFixed(2)}
-        </span>
-        <ColorTag text={paymentStatus.text} type={paymentStatus.type} />
-      </div>
+      {renderHeader()}
       <CourseSummary
         course={course}
         schools={schools}
@@ -192,8 +222,7 @@ const OrdersDetailPanel = ({
             View Invoice
           </Button> */}
           {!trainingId &&
-            order &&
-            order.order &&
+            paymentValid &&
             order.order.payment_status !== 'PAID' && (
               <Button color="white" onClick={onAddPayment}>
                 Add Payment

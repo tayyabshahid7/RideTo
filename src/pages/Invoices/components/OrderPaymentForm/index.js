@@ -71,6 +71,11 @@ const OrderPaymentForm = ({
     setCardElement(el)
   }
 
+  const handleResubmit = () => {
+    setSaving('form')
+    setTimeout(() => handleSubmit())
+  }
+
   const handleSubmit = async () => {
     setSaving(true)
     try {
@@ -86,6 +91,16 @@ const OrderPaymentForm = ({
       const { client_secret } = tmp
 
       console.log(tmp, stripe)
+      const billingDetail = {}
+      if (customer.full_name) {
+        billingDetail.name = customer.full_name
+      }
+      if (customer.email) {
+        billingDetail.email = customer.email
+      }
+      if (customer.phone) {
+        billingDetail.phone = customer.phone
+      }
 
       // STEP 3: Add card to stripe
       const { setupIntent, error } = await stripe.handleCardSetup(
@@ -93,11 +108,7 @@ const OrderPaymentForm = ({
         cardElement,
         {
           payment_method_data: {
-            billing_details: {
-              name: customer.full_name,
-              email: customer.email,
-              phone: customer.phone
-            }
+            billing_details: billingDetail
           }
         }
       )
@@ -206,7 +217,7 @@ const OrderPaymentForm = ({
           <p>There was a problem processing your payment.</p>
           <Button
             color="primary"
-            onClick={handleSubmit}
+            onClick={handleResubmit}
             style={{ width: '100%' }}>
             Try Again
           </Button>
