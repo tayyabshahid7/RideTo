@@ -187,8 +187,6 @@ class EditOrderForm extends React.Component {
 
     return (
       <div className={styles.container}>
-        {/* <Loading loading={saving}> */}
-        {isRideTo} {isAdmin}
         <Form onSubmit={this.handleSave}>
           <ChangeDate
             date={date}

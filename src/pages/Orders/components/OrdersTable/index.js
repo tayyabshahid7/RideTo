@@ -246,19 +246,17 @@ const OrdersTable = ({
             ))}
 
             {orders.map((record, index) => (
-              <React.Fragment>
-                <OrdersTableRow
-                  key={index}
-                  header={header}
-                  record={record}
-                  index={index}
-                  total={orders.length}
-                  onViewOrder={onViewOrder}
-                  onEditOrder={onEditOrder}
-                  showNotification={showNotification}
-                  onCreateInvoice={onCreateInvoice}
-                />
-              </React.Fragment>
+              <OrdersTableRow
+                key={index}
+                header={header}
+                record={record}
+                index={index}
+                total={orders.length}
+                onViewOrder={onViewOrder}
+                onEditOrder={onEditOrder}
+                showNotification={showNotification}
+                onCreateInvoice={onCreateInvoice}
+              />
             ))}
             <div style={statsStyle}>
               <div className={styles.tableStats}>

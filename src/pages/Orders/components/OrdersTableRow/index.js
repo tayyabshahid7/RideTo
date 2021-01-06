@@ -117,12 +117,16 @@ const OrdersTableRow = ({
           }
         } else if (item.field === 'payment_status') {
           if (record.paymentStatus) {
-            cell = (
-              <ColorTag
-                text={record.paymentStatus.text}
-                type={record.paymentStatus.type}
-              />
-            )
+            if (record.orderStatus && record.orderStatus.text === 'Cancelled') {
+              cell = null
+            } else {
+              cell = (
+                <ColorTag
+                  text={record.paymentStatus.text}
+                  type={record.paymentStatus.type}
+                />
+              )
+            }
           }
         } else if (item.field === 'status') {
           if (record.orderStatus) {
