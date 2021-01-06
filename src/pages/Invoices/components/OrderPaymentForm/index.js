@@ -40,17 +40,19 @@ const options = {
   }
 }
 
-const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
+const OrderPaymentForm = ({
+  amount,
+  orderId,
+  customer,
+  invoiceId,
+  stripe,
+  onRefresh
+}) => {
   const [formData, setFormData] = useState(initialFormData)
   const [edited, setEdited] = useState(false)
   const [cardElement, setCardElement] = useState(null)
   const [saving, setSaving] = useState(false)
   const [screen, setScreen] = useState('form')
-
-  const handleClose = () => {
-    onClose && onClose()
-    history.push('/invoices')
-  }
 
   const handleChange = event => {
     const { name, value } = event.target
@@ -69,6 +71,11 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
     setCardElement(el)
   }
 
+  const handleResubmit = () => {
+    setSaving('form')
+    setTimeout(() => handleSubmit())
+  }
+
   const handleSubmit = async () => {
     setSaving(true)
     try {
@@ -76,7 +83,7 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
       // STEP 1: Get stripe customer Id
       // search customer by email to get stripe customer id
       // we already have it in invoice detail though
-      tmp = await searchCustomer(invoice.customer_email)
+      tmp = await searchCustomer(customer.email)
 
       const customerId = tmp.stripe_customer_id
       // STEP 2: Get customer setup intent
@@ -84,6 +91,16 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
       const { client_secret } = tmp
 
       console.log(tmp, stripe)
+      const billingDetail = {}
+      if (customer.full_name) {
+        billingDetail.name = customer.full_name
+      }
+      if (customer.email) {
+        billingDetail.email = customer.email
+      }
+      if (customer.phone) {
+        billingDetail.phone = customer.phone
+      }
 
       // STEP 3: Add card to stripe
       const { setupIntent, error } = await stripe.handleCardSetup(
@@ -91,11 +108,7 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
         cardElement,
         {
           payment_method_data: {
-            billing_details: {
-              name: invoice.customer_name,
-              email: invoice.customer_email,
-              phone: invoice.customer_phone
-            }
+            billing_details: billingDetail
           }
         }
       )
@@ -106,23 +119,23 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
         setScreen('error')
       } else {
         // call setup intent again to confirm
-        tmp = await getCustomerSetupIntent(customerId, {
+        await getCustomerSetupIntent(customerId, {
           setup_id: setupIntent.id
         })
 
         // STEP 4: Pay the invoice
         // pay order and update invoice status as paid
         const payload = {
-          order: invoice.metadata.order,
+          order: orderId,
           customer: customerId,
-          expected_price: invoice.amount_due,
-          email: invoice.customer_email
+          expected_price: amount,
+          email: customer.email
         }
-        tmp = await payOrder(payload)
-        console.log(tmp)
+        await payOrder(payload)
 
-        tmp = await markInvoiceAsPaid(invoice.id)
-        console.log(tmp)
+        if (invoiceId) {
+          await markInvoiceAsPaid(invoiceId)
+        }
         setScreen('success')
       }
     } catch (err) {
@@ -132,9 +145,7 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
     }
   }
 
-  const handleStripeElementChange = (el, name) => {
-    console.log(name, el.empty, el.complete, el)
-  }
+  const handleStripeElementChange = (el, name) => {}
 
   return (
     <div className={styles.container}>
@@ -206,7 +217,7 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
           <p>There was a problem processing your payment.</p>
           <Button
             color="primary"
-            onClick={handleSubmit}
+            onClick={handleResubmit}
             style={{ width: '100%' }}>
             Try Again
           </Button>
@@ -218,10 +229,7 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
             <IconCheck />
           </div>
           <p>Your payment was successfully processed.</p>
-          <Button
-            color="primary"
-            onClick={handleClose}
-            style={{ width: '100%' }}>
+          <Button color="primary" onClick={onRefresh} style={{ width: '100%' }}>
             Close
           </Button>
         </div>
@@ -230,4 +238,4 @@ const InvoicesPaymentForm = ({ history, order, invoice, stripe, onClose }) => {
   )
 }
 
-export default injectStripe(InvoicesPaymentForm)
+export default injectStripe(OrderPaymentForm)

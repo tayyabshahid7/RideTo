@@ -2,19 +2,16 @@ import React, { useState, useEffect } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import DateHeading from 'components/Calendar/DateHeading'
-import InvoicesPaymentForm from '../InvoicesPaymentForm'
+import OrderPaymentContainer from '../OrderPaymentContainer'
 import { getInvoices } from 'store/invoice'
 import { fetchOrderById } from 'services/order'
 import { actions as notifyActions } from 'store/notification'
-import { STRIPE_KEY } from 'common/constants'
-import { StripeProvider, Elements } from 'react-stripe-elements'
 import styles from './styles.scss'
 
 const NewPaymentSidebar = ({
   history,
   match,
   invoices,
-  suppliers,
   params,
   showNotification,
   getInvoices
@@ -22,10 +19,6 @@ const NewPaymentSidebar = ({
   const [invoice, setInvoice] = useState(null)
   const [order, setOrder] = useState(null)
   // const [loading, setLoading] = useState(false)
-
-  const stripeAccountId = suppliers.length
-    ? suppliers[0].stripe_account_id
-    : null
 
   useEffect(() => {
     async function loadOrder() {
@@ -49,8 +42,9 @@ const NewPaymentSidebar = ({
     loadOrder()
   }, [invoice])
 
-  const handleClosed = () => {
+  const handleCloseAndRefresh = () => {
     getInvoices(params)
+    handleBack()
   }
 
   const handleBack = () => {
@@ -74,6 +68,12 @@ const NewPaymentSidebar = ({
 
   console.log('payment form', order, invoice)
 
+  const customer = {
+    email: invoice.customer_email,
+    full_name: invoice.customer_email,
+    phone: invoice.customer_phone
+  }
+
   return (
     <div className={styles.container}>
       <DateHeading
@@ -82,16 +82,13 @@ const NewPaymentSidebar = ({
         onBack={handleBack}
       />
       <div className={styles.priceLine}></div>
-      <StripeProvider apiKey={STRIPE_KEY} stripeAccount={stripeAccountId}>
-        <Elements>
-          <InvoicesPaymentForm
-            history={history}
-            order={order}
-            invoice={invoice}
-            onClose={handleClosed}
-          />
-        </Elements>
-      </StripeProvider>
+      <OrderPaymentContainer
+        invoiceId={invoice.id}
+        customer={customer}
+        amount={invoice.amount_due}
+        orderId={order.friendly_id}
+        onRefresh={handleCloseAndRefresh}
+      />
     </div>
   )
 }
@@ -99,7 +96,6 @@ const NewPaymentSidebar = ({
 const mapStateToProps = (state, ownProps) => {
   return {
     invoices: state.invoice.invoices,
-    suppliers: state.auth.user.suppliers,
     params: state.invoice.params
   }
 }

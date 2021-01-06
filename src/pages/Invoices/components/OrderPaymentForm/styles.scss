@@ -1,0 +1,73 @@
+.container {
+  position: relative;
+}
+
+.input {
+  padding: 9px 5px;
+  display: block;
+  width: 100%;
+  height: 32px;
+  color: #444;
+  border: 1px solid #e4e4e4;
+  appearance: none;
+  outline: none;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 13px;
+
+  &::placeholder {
+    color: #aab7c4;
+  }
+}
+
+.label {
+  display: block;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 13px;
+  font-weight: 500;
+  color: rgba(#444, 0.6);
+  margin-bottom: 4px;
+}
+
+.formGroup {
+  margin-bottom: 24px;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 16px;
+}
+
+.result {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding-top: 65px;
+
+  p {
+    font-size: 15px;
+    line-height: 24px;
+    font-weight: 500;
+    color: #444;
+    margin-bottom: 65px;
+    max-width: 190px;
+    text-align: center;
+  }
+}
+
+.resultIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #f56565;
+  margin-bottom: 24px;
+}
+
+.iconSuccess {
+  border-color: #48bb78;
+}

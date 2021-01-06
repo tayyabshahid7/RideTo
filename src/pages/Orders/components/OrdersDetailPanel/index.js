@@ -13,6 +13,7 @@ import * as orderModule from 'store/order'
 import { getPaymentStatus } from 'services/order'
 import ColorTag from 'components/ColorTag'
 import CourseSummary from 'components/Calendar/CoursesPanel/CourseSummary'
+import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
 import OrdersPanelDetailForm from '../OrdersPanelDetailForm'
 import { Button } from 'components/ConnectForm'
 import LoadingMask from 'components/LoadingMask'
@@ -42,6 +43,7 @@ const OrdersDetailPanel = ({
 }) => {
   const [order, setOrder] = useState(null)
   const [editMode, setEditMode] = useState(isEdit)
+  const [paymentMode, setPaymentMode] = useState(false)
 
   useEffect(() => {
     resetSingleCourse()
@@ -107,7 +109,10 @@ const OrdersDetailPanel = ({
 
   // const onViewInvoice = () => {}
 
-  // const onAddPayment = () => {}
+  const onAddPayment = () => {
+    console.log(order)
+    setPaymentMode(true)
+  }
 
   const onSave = async (updatedOrder, updateDate = false) => {
     const tmp = Object.assign({}, updatedOrder)
@@ -124,6 +129,11 @@ const OrdersDetailPanel = ({
     } catch (err) {
       showNotification('Error', err.message || 'Failed to save order', 'danger')
     }
+  }
+
+  const handleCloseAndRefresh = () => {
+    fetchFilteredOrders(params)
+    handleBack()
   }
 
   const onDelete = async () => {
@@ -150,19 +160,45 @@ const OrdersDetailPanel = ({
     }
   }
 
+  const renderHeader = () => {
+    return (
+      <React.Fragment>
+        <DateHeading
+          title={customerName}
+          subtitle={friendlyId}
+          onBack={handleBack}
+        />
+        <div className={styles.priceLine}>
+          <span className={styles.price}>
+            £{(course.pricing.price / 100).toFixed(2)}
+          </span>
+          <ColorTag text={paymentStatus.text} type={paymentStatus.type} />
+        </div>
+      </React.Fragment>
+    )
+  }
+
+  const payOrderId = order && order.order ? order.order.friendly_id : null
+  let amount = course && course.pricing ? course.pricing.price : 0
+  const paymentValid = payOrderId && amount
+
+  if (paymentValid && paymentMode) {
+    return (
+      <div className={styles.container}>
+        {renderHeader()}
+        <OrderPaymentContainer
+          customer={order.customer}
+          amount={amount}
+          orderId={payOrderId}
+          onRefresh={handleCloseAndRefresh}
+        />
+      </div>
+    )
+  }
+
   return (
     <div className={styles.container}>
-      <DateHeading
-        title={customerName}
-        subtitle={friendlyId}
-        onBack={handleBack}
-      />
-      <div className={styles.priceLine}>
-        <span className={styles.price}>
-          £{(course.pricing.price / 100).toFixed(2)}
-        </span>
-        <ColorTag text={paymentStatus.text} type={paymentStatus.type} />
-      </div>
+      {renderHeader()}
       <CourseSummary
         course={course}
         schools={schools}
@@ -184,10 +220,14 @@ const OrdersDetailPanel = ({
           </Button>
           {/* <Button color="white" onClick={onViewInvoice}>
             View Invoice
-          </Button>
-          <Button color="white" onClick={onAddPayment}>
-            Add Payment
           </Button> */}
+          {!trainingId &&
+            paymentValid &&
+            order.order.payment_status !== 'PAID' && (
+              <Button color="white" onClick={onAddPayment}>
+                Add Payment
+              </Button>
+            )}
           {isAdmin && (
             <React.Fragment>
               <div className={styles.divider}></div>
