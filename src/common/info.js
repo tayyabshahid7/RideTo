@@ -500,17 +500,17 @@ export function getDateRangeByType(type) {
     }
     case 'this week': {
       fromDate = moment().startOf('isoWeek')
-      toDate = moment()
+      toDate = moment().endOf('isoWeek')
       break
     }
     case 'this month': {
       fromDate = moment().startOf('month')
-      toDate = moment()
+      toDate = moment().endOf('month')
       break
     }
     case 'this year': {
       fromDate = moment().startOf('year')
-      toDate = moment()
+      toDate = moment().endOf('year')
       break
     }
     default: {
