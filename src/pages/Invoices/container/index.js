@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import styles from './styles.scss'
 import StaticSidePanel from 'components/StaticSidePanel'
-import SearchInput from 'components/SearchInput'
+// import SearchInput from 'components/SearchInput'
 import InvoicesTable from '../components/InvoicesTable'
 import NewPaymentSidebar from '../components/NewPaymentSidebar'
 import InvoiceStatusSidebar from '../components/InvoiceStatusSidebar'
@@ -18,7 +18,7 @@ import { deleteInvoice } from 'services/invoice'
 import { actions as notifyActions } from 'store/notification'
 import { getInvoices } from 'store/invoice'
 import { actions as orderActions } from 'store/order'
-import { debounce } from 'lodash'
+// import { debounce } from 'lodash'
 
 const statusOptions = [
   { text: 'All Invoices', value: 'all' },
@@ -41,32 +41,32 @@ function Invoices({
   getInvoices,
   setInvoiceOrderId
 }) {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [searchInputValue, setSearchInputValue] = useState('')
+  // const [searchQuery, setSearchQuery] = useState('')
+  // const [searchInputValue, setSearchInputValue] = useState('')
   const [selectedStatus, setSelectedStatus] = useState('all')
   const [deleting, setDeleting] = useState(false)
   const [updating, setUpdating] = useState(false)
 
   useEffect(() => {
     fetchInvoices()
-  }, [searchQuery])
+  }, [])
 
-  const handleSearchChange = query => {
-    setSearchInputValue(query)
-    onSearch(query)
-  }
+  // const handleSearchChange = query => {
+  //   setSearchInputValue(query)
+  //   onSearch(query)
+  // }
 
-  const onSearch = useCallback(
-    debounce(query => {
-      setSearchQuery(query)
-    }, 500),
-    []
-  )
+  // const onSearch = useCallback(
+  //   debounce(query => {
+  //     setSearchQuery(query)
+  //   }, 500),
+  //   []
+  // )
 
   const fetchInvoices = invoiceId => {
     const params = {
       limit: pageSize,
-      search: searchQuery,
+      // search: searchQuery,
       status: selectedStatus,
       // TODO: support multiple status by backend
       starting_after: invoiceId
@@ -106,12 +106,12 @@ function Invoices({
   return (
     <div className={styles.container}>
       <StaticSidePanel>
-        <SearchInput
+        {/* <SearchInput
           value={searchInputValue}
           placeholder="e.g. invoice #"
           onChange={handleSearchChange}
         />
-        <div className={styles.divider}></div>
+        <div className={styles.divider}></div> */}
         <OrdersRadioFilter
           title="Invoice Status"
           filters={statusOptions}
