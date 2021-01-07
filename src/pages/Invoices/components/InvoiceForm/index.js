@@ -40,7 +40,7 @@ const InvoiceForm = ({
   const [lines, setLines] = useState([])
   const [defaultLines, setDefaultLines] = useState([])
   const [email, setEmail] = useState('')
-  const [due, setDue] = useState(7)
+  const [due, setDue] = useState(30)
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
 
