@@ -73,7 +73,7 @@ const OrderPaymentForm = ({
   }
 
   const handleResubmit = () => {
-    setSaving('form')
+    setScreen('form')
     setTimeout(() => handleSubmit())
   }
 
@@ -114,6 +114,7 @@ const OrderPaymentForm = ({
       )
 
       if (error) {
+        console.log('error', error)
         throw error
       } else {
         // call setup intent again to confirm
@@ -135,11 +136,12 @@ const OrderPaymentForm = ({
           await markInvoiceAsPaid(invoiceId)
         }
         setScreen('success')
+        setSaving(false)
         onPaid && onPaid()
       }
     } catch (err) {
-      setSaving('error')
       console.log(err)
+      setScreen('error')
       setSaving(false)
     }
   }
