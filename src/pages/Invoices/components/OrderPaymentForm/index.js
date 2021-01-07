@@ -10,7 +10,7 @@ import {
   PostalCodeElement
 } from 'react-stripe-elements'
 import LoadingMask from 'components/LoadingMask'
-import { IconExclamation, IconCheck } from 'assets/icons'
+import { IconExclamation, IconCheck } from '../../../../assets/icons'
 import { searchCustomer, getCustomerSetupIntent } from 'services/customer'
 import { markInvoiceAsPaid } from 'services/invoice'
 import { payOrder } from 'services/order'
