@@ -37,13 +37,14 @@ const OrdersDetailPanel = ({
   fetchFilteredOrders,
   showNotification,
   isEdit = false,
+  isPayment = false,
   isInvoice = false,
   trainingId, // from invoice page
   params
 }) => {
   const [order, setOrder] = useState(null)
   const [editMode, setEditMode] = useState(isEdit)
-  const [paymentMode, setPaymentMode] = useState(false)
+  const [paymentMode, setPaymentMode] = useState(isPayment)
 
   useEffect(() => {
     resetSingleCourse()
@@ -98,6 +99,12 @@ const OrdersDetailPanel = ({
     friendlyId = order.order.direct_friendly_id
   }
 
+  const onPaid = () => {
+    const tmp = Object.assign({}, order)
+    tmp.order.payment_status = 'PAID'
+    setOrder(tmp)
+  }
+
   const canDelete =
     order &&
     order.order &&
@@ -110,7 +117,6 @@ const OrdersDetailPanel = ({
   // const onViewInvoice = () => {}
 
   const onAddPayment = () => {
-    console.log(order)
     setPaymentMode(true)
   }
 
@@ -190,6 +196,7 @@ const OrdersDetailPanel = ({
           customer={order.customer}
           amount={amount}
           orderId={payOrderId}
+          onPaid={onPaid}
           onRefresh={handleCloseAndRefresh}
         />
       </div>

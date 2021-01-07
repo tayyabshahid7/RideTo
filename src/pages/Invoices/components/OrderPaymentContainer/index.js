@@ -11,6 +11,7 @@ const OrderPaymentContainer = ({
   orderId,
   amount,
   onRefresh,
+  onPaid,
   suppliers
 }) => {
   const stripeAccountId = suppliers.length
@@ -26,6 +27,7 @@ const OrderPaymentContainer = ({
           amount={amount}
           orderId={orderId}
           onRefresh={onRefresh}
+          onPaid={onPaid}
         />
       </Elements>
     </StripeProvider>
