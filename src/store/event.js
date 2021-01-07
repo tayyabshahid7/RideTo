@@ -43,7 +43,6 @@ export const getSingleEvent = ({
 }
 
 export const getDayEvents = ({ schoolIds, date }) => async dispatch => {
-  console.log(schoolIds, date)
   dispatch({ type: FETCH_FOR_DAY[REQUEST], date })
 
   try {

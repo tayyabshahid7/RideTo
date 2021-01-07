@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
+import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
 
 import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
@@ -25,6 +26,7 @@ class EditOrderForm extends React.Component {
       showChangeDate: false,
       isChanged: false,
       invoiceCreated: false,
+      showPayment: false,
       orderDetail: null // invoice order detail
     }
   }
@@ -86,6 +88,10 @@ class EditOrderForm extends React.Component {
     }
   }
 
+  handleTakePayment = () => {
+    this.setState({ showPayment: true })
+  }
+
   handleToggleDateClick = () => {
     this.setState(prevState => ({
       showChangeDate: !prevState.showChangeDate
@@ -124,9 +130,10 @@ class EditOrderForm extends React.Component {
       times,
       loadTimes,
       isAdmin,
-      order
+      order,
+      onCancel
     } = this.props
-    const { showChangeDate, isChanged, orderDetail } = this.state
+    const { showChangeDate, isChanged, orderDetail, showPayment } = this.state
 
     if (orderDetail) {
       return (
@@ -184,128 +191,141 @@ class EditOrderForm extends React.Component {
       order.course_type.endsWith('TEST')
 
     const testResultOptions = getTestResultOptions()
+    const payOrderId = order && order.order && order.order.friendly_id
+    const amount = course && course.pricing ? course.pricing.price : 0
+
+    const canTakePayment =
+      amount && order && order.order && order.order.payment_status !== 'PAID'
 
     return (
       <div className={styles.container}>
-        <Form onSubmit={this.handleSave}>
-          <ChangeDate
-            date={date}
-            time={time}
-            courses={courses}
-            course={course}
-            onSave={onSave}
-            onCancel={this.handleToggleDateClick}
-            times={times}
-            loadTimes={loadTimes}
-            courseType={this.state.order.course_type}
-            disabled={isRideTo || !isAdmin}
+        {showPayment ? (
+          <OrderPaymentContainer
+            customer={order.customer}
+            amount={amount}
+            orderId={payOrderId}
+            onRefresh={onCancel}
           />
+        ) : (
+          <Form onSubmit={this.handleSave}>
+            <ChangeDate
+              date={date}
+              time={time}
+              courses={courses}
+              course={course}
+              onSave={onSave}
+              onCancel={this.handleToggleDateClick}
+              times={times}
+              loadTimes={loadTimes}
+              courseType={this.state.order.course_type}
+              disabled={isRideTo || !isAdmin}
+            />
 
-          {!showChangeDate && (
-            <div>
-              <Row>
-                <Col>
-                  <ConnectSelect
-                    disabled={isRideTo || !isAdmin}
-                    name="bike_type"
-                    selected={bike_type}
-                    label="Bike Hire"
-                    options={bikeTypeOptions}
-                    noSelectOption
-                    required
-                    valueField="value"
-                    labelField="title"
-                    basic
-                    onChange={value => {
-                      this.handleChange('bike_type', value)
-                    }}
-                  />
-                </Col>
-              </Row>
-              {isFullLicenceTest && (
+            {!showChangeDate && (
+              <div>
                 <Row>
                   <Col>
                     <ConnectSelect
                       disabled={isRideTo || !isAdmin}
-                      name="test_result"
-                      selected={test_result}
-                      label="Test Result"
-                      options={testResultOptions}
+                      name="bike_type"
+                      selected={bike_type}
+                      label="Bike Hire"
+                      options={bikeTypeOptions}
                       noSelectOption
+                      required
+                      valueField="value"
+                      labelField="title"
                       basic
                       onChange={value => {
-                        this.handleChange('test_result', value)
+                        this.handleChange('bike_type', value)
                       }}
                     />
                   </Col>
                 </Row>
-              )}
-              <Row>
-                <Col>
-                  <ConnectSelect
-                    label="Training Status"
-                    options={getTrainingStatusOptions(isRideTo)}
-                    selected={status}
-                    name="status"
-                    basic
-                    onChange={value => {
-                      this.handleChange('status', value)
-                    }}
-                  />
-                </Col>
-              </Row>
-              {status === 'TRAINING_FAILED' && (
+                {isFullLicenceTest && (
+                  <Row>
+                    <Col>
+                      <ConnectSelect
+                        disabled={isRideTo || !isAdmin}
+                        name="test_result"
+                        selected={test_result}
+                        label="Test Result"
+                        options={testResultOptions}
+                        noSelectOption
+                        basic
+                        onChange={value => {
+                          this.handleChange('test_result', value)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                )}
                 <Row>
                   <Col>
                     <ConnectSelect
-                      placeholder
-                      label="Non-Completion Reason"
-                      options={getNonCompleteOptions()}
-                      selected={non_completion_reason}
-                      name="non_completion_reason"
+                      label="Training Status"
+                      options={getTrainingStatusOptions(isRideTo)}
+                      selected={status}
+                      name="status"
                       basic
                       onChange={value => {
-                        this.handleChange('non_completion_reason', value)
+                        this.handleChange('status', value)
                       }}
                     />
                   </Col>
                 </Row>
-              )}
-              <Row>
-                <Col>
-                  <ConnectSelect
-                    disabled={isRideTo}
-                    name="order.payment_status"
-                    selected={payment_status}
-                    label="Payment Status"
-                    options={getPaymentOptions()}
-                    noSelectOption
-                    required
-                    valueField="id"
-                    labelField="name"
-                    basic
-                    onChange={value => {
-                      this.handleChange('order.payment_status', value)
-                    }}
-                  />
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <ConnectTextArea
-                    basic
-                    name="notes"
-                    value={notes || ''}
-                    label="Notes"
-                    className="form-group"
-                    type="text"
-                    onChange={({ target: { value } }) => {
-                      this.handleChange('notes', value)
-                    }}
-                  />
-                </Col>
-              </Row>
-              {/* TODO PRODEV-1112 Needs BACKEND
+                {status === 'TRAINING_FAILED' && (
+                  <Row>
+                    <Col>
+                      <ConnectSelect
+                        placeholder
+                        label="Non-Completion Reason"
+                        options={getNonCompleteOptions()}
+                        selected={non_completion_reason}
+                        name="non_completion_reason"
+                        basic
+                        onChange={value => {
+                          this.handleChange('non_completion_reason', value)
+                        }}
+                      />
+                    </Col>
+                  </Row>
+                )}
+                <Row>
+                  <Col>
+                    <ConnectSelect
+                      disabled={isRideTo}
+                      name="order.payment_status"
+                      selected={payment_status}
+                      label="Payment Status"
+                      options={getPaymentOptions()}
+                      noSelectOption
+                      required
+                      valueField="id"
+                      labelField="name"
+                      basic
+                      onChange={value => {
+                        this.handleChange('order.payment_status', value)
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <ConnectTextArea
+                      basic
+                      name="notes"
+                      value={notes || ''}
+                      label="Notes"
+                      className="form-group"
+                      type="text"
+                      onChange={({ target: { value } }) => {
+                        this.handleChange('notes', value)
+                      }}
+                    />
+                  </Col>
+                </Row>
+                {/* TODO PRODEV-1112 Needs BACKEND
               <Row>
                 <Col>
                   <ConnectLabeledContent label="Price paid" disabled basic>
@@ -321,47 +341,59 @@ class EditOrderForm extends React.Component {
                 </Col>
               </Row>
               */}
-              <div className={styles.actions}>
-                <div>
-                  <Button type="submit" color="primary" disabled={!isChanged}>
-                    Save Order
-                  </Button>
-                </div>
-                <div>
-                  <Button
-                    disabled={isSending}
-                    color="white"
-                    outline
-                    onClick={this.handleConfirmation}>
-                    Send Confirmation
-                  </Button>
-                </div>
-                {canInvoice && (
+                <div className={styles.actions}>
+                  <div>
+                    <Button type="submit" color="primary" disabled={!isChanged}>
+                      Save Order
+                    </Button>
+                  </div>
                   <div>
                     <Button
                       disabled={isSending}
                       color="white"
                       outline
-                      onClick={this.handleCreateInvoice}>
-                      Create Invoice
+                      onClick={this.handleConfirmation}>
+                      Send Confirmation
                     </Button>
                   </div>
-                )}
-                <div>
-                  {isAdmin && (
-                    <Button
-                      color="danger"
-                      className={styles.deleteButton}
-                      disabled={!canDelete}
-                      onClick={this.handleDelete}>
-                      Delete
-                    </Button>
+                  {canInvoice && (
+                    <div>
+                      <Button
+                        disabled={isSending}
+                        color="white"
+                        outline
+                        onClick={this.handleCreateInvoice}>
+                        Create Invoice
+                      </Button>
+                    </div>
                   )}
+                  {canTakePayment && (
+                    <div>
+                      <Button
+                        disabled={isSending}
+                        color="white"
+                        outline
+                        onClick={this.handleTakePayment}>
+                        Take Payment
+                      </Button>
+                    </div>
+                  )}
+                  <div>
+                    {isAdmin && (
+                      <Button
+                        color="danger"
+                        className={styles.deleteButton}
+                        disabled={!canDelete}
+                        onClick={this.handleDelete}>
+                        Delete
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          )}
-        </Form>
+            )}
+          </Form>
+        )}
       </div>
     )
   }
