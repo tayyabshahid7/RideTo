@@ -39,6 +39,7 @@ const AddOrderComponent = ({
 }) => {
   const [submitted, setSubmitted] = useState(false)
   const [withInvoice, setWithInvoice] = useState(false)
+  const [withPayment, setWithPayment] = useState(false)
   const [orderData, setOrderData] = useState(null)
   const { courses, isPackage, price } = orderDetail
   const [invoiceData, setInvoiceData] = useState(null)
@@ -70,7 +71,9 @@ const AddOrderComponent = ({
       if (withInvoice) {
         loadInvoiceData()
       } else {
-        history.push(`/calendar/${courses[0].date}`)
+        if (!withPayment) {
+          history.push(`/calendar/${courses[0].date}`)
+        }
       }
     }
   }, [saving])
@@ -89,9 +92,10 @@ const AddOrderComponent = ({
     editCoursePackage()
   }
 
-  const handleNewOrder = (order, invoiceFlag) => {
+  const handleNewOrder = (order, invoiceFlag, paymentFlag) => {
     const course = courses[0]
     setWithInvoice(invoiceFlag)
+    setWithPayment(paymentFlag)
 
     if (!order.full_licence_type) {
       if (order.bike_hire === BIKE_HIRE.MANUAL) {
