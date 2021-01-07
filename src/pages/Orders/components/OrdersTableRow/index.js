@@ -107,13 +107,17 @@ const OrdersTableRow = ({
           cell = <span>{text}</span>
         } else if (item.field === 'customer') {
           if (record.customer) {
-            cell = (
-              <Link
-                className={styles.link}
-                to={`/customers/${record.customer.id}`}>
-                {record.customer.full_name}
-              </Link>
-            )
+            if (record.orderStatus && record.orderStatus.text === 'Cancelled') {
+              cell = null
+            } else {
+              cell = (
+                <Link
+                  className={styles.link}
+                  to={`/customers/${record.customer.id}`}>
+                  {record.customer.full_name}
+                </Link>
+              )
+            }
           }
         } else if (item.field === 'payment_status') {
           if (record.paymentStatus) {
