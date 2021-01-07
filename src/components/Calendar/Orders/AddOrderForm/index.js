@@ -336,14 +336,16 @@ class AddOrderForm extends React.Component {
                   Add Order & Create Invoice
                 </Button>
               </div>
-              <div>
-                <Button
-                  type="button"
-                  onClick={e => this.handleSave(e, false, true)}
-                  color="white">
-                  Add Order & Take Payment
-                </Button>
-              </div>
+              {!!amount && (
+                <div>
+                  <Button
+                    type="button"
+                    onClick={e => this.handleSave(e, false, true)}
+                    color="white">
+                    Add Order & Take Payment
+                  </Button>
+                </div>
+              )}
               <div>
                 <Button color="white" onClick={this.handleCancel}>
                   Cancel

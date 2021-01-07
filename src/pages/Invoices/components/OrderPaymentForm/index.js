@@ -90,7 +90,6 @@ const OrderPaymentForm = ({
       tmp = await getCustomerSetupIntent(customerId)
       const { client_secret } = tmp
 
-      console.log(tmp, stripe)
       const billingDetail = {}
       if (customer.full_name) {
         billingDetail.name = customer.full_name
@@ -112,11 +111,9 @@ const OrderPaymentForm = ({
           }
         }
       )
-      console.log(setupIntent)
 
       if (error) {
-        console.log(error)
-        setScreen('error')
+        throw error
       } else {
         // call setup intent again to confirm
         await getCustomerSetupIntent(customerId, {
