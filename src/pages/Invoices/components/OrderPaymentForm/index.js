@@ -46,7 +46,8 @@ const OrderPaymentForm = ({
   customer,
   invoiceId,
   stripe,
-  onRefresh
+  onRefresh,
+  onPaid
 }) => {
   const [formData, setFormData] = useState(initialFormData)
   const [edited, setEdited] = useState(false)
@@ -134,6 +135,7 @@ const OrderPaymentForm = ({
           await markInvoiceAsPaid(invoiceId)
         }
         setScreen('success')
+        onPaid && onPaid()
       }
     } catch (err) {
       setSaving('error')

@@ -127,6 +127,10 @@ const OrdersTable = ({
     history.push(`/orders/edit/${order.id}`)
   }
 
+  const onPayOrder = order => {
+    history.push(`/orders/pay/${order.id}`)
+  }
+
   const handlePageChange = event => {
     event.persist()
     pageChanged(parseInt(event.target.value))
@@ -254,6 +258,7 @@ const OrdersTable = ({
                 total={orders.length}
                 onViewOrder={onViewOrder}
                 onEditOrder={onEditOrder}
+                onPayOrder={onPayOrder}
                 showNotification={showNotification}
                 onCreateInvoice={onCreateInvoice}
               />

@@ -21,6 +21,7 @@ const OrdersTableRow = ({
   total,
   onViewOrder,
   onEditOrder,
+  onPayOrder,
   isAdmin,
   params,
   onCreateInvoice,
@@ -38,9 +39,14 @@ const OrdersTableRow = ({
     return index > 4 && index > total - 5
   }
 
-  const handleEditOrder = order => {
+  const handleEditOrder = () => {
     menuRef.current.hideMenu()
-    onEditOrder(order)
+    onEditOrder(record)
+  }
+
+  const handleTakePayment = () => {
+    menuRef.current.hideMenu()
+    onPayOrder(record)
   }
 
   const handleCreateInvoice = () => {
@@ -48,17 +54,17 @@ const OrdersTableRow = ({
     onCreateInvoice(record)
   }
 
-  const handleDeleteOrder = async order => {
+  const handleDeleteOrder = async () => {
     menuRef.current.hideMenu()
 
     if (
       window.confirm(
-        `Are you sure you want to delete the training from Order ${order.direct_friendly_id}?`
+        `Are you sure you want to delete the training from Order ${record.direct_friendly_id}?`
       )
     ) {
       try {
-        const result = await fetchOrderById(order.order.friendly_id)
-        await deleteOrderTraining(result.supplier_id, order.id)
+        const result = await fetchOrderById(record.order.friendly_id)
+        await deleteOrderTraining(result.supplier_id, record.id)
         fetchFilteredOrders(params)
       } catch (err) {
         showNotification(
@@ -89,7 +95,7 @@ const OrdersTableRow = ({
         if (item.field === 'id') {
           if (record.order) {
             cell = (
-              <span className={styles.link}>
+              <span className={styles.link} onClick={() => handleEditOrder()}>
                 {record.order.direct_friendly_id}
               </span>
             )
@@ -107,7 +113,11 @@ const OrdersTableRow = ({
           cell = <span>{text}</span>
         } else if (item.field === 'customer') {
           if (record.customer) {
-            if (record.orderStatus && record.orderStatus.text === 'Cancelled') {
+            if (
+              record.orderStatus &&
+              record.orderStatus.text === 'Cancelled' &&
+              record.order.source.startsWith('RIDETO')
+            ) {
               cell = null
             } else {
               cell = (
@@ -155,22 +165,31 @@ const OrdersTableRow = ({
               <div className={styles.spacing} />
               <div
                 className={styles.menuItem}
-                onClick={() => handleEditOrder(record)}>
+                onClick={() => handleEditOrder()}>
                 <IconEdit />
                 <span>Edit Order</span>
               </div>
               {isAdmin && canDelete && (
                 <React.Fragment>
                   <div className={styles.spacing} />
-                  <div
-                    className={styles.menuItem}
-                    onClick={() => handleDeleteOrder(record)}>
+                  <div className={styles.menuItem} onClick={handleDeleteOrder}>
                     <IconTrash />
                     <span>Delete Order</span>
                   </div>
                 </React.Fragment>
               )}
               <Desktop>
+                {record.order.payment_status !== 'PAID' && (
+                  <React.Fragment>
+                    <div className={styles.divider}></div>
+                    <div
+                      className={styles.menuItem}
+                      onClick={handleTakePayment}>
+                      <IconPound />
+                      <span>Take Payment</span>
+                    </div>
+                  </React.Fragment>
+                )}
                 {!record.order.stripe_invoice_id && (
                   <React.Fragment>
                     <div className={styles.divider}></div>

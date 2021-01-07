@@ -399,6 +399,17 @@ function Orders({
             />
           )}
         />
+        <Route
+          exact
+          path="/orders/pay/:id"
+          render={routeProps => (
+            <OrdersDetailPanel
+              {...routeProps}
+              isPayment={true}
+              orders={orders.orders}
+            />
+          )}
+        />
       </RightPanel>
       {filterChanged && (
         <div className={styles.floatingApply}>
