@@ -169,3 +169,14 @@
     }
   }
 }
+
+.inlineInput {
+  display: flex;
+  align-items: center;
+
+  input {
+    width: 100px;
+    text-align: right;
+    margin-right: 1rem;
+  }
+}

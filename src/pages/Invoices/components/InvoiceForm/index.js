@@ -40,6 +40,7 @@ const InvoiceForm = ({
   const [lines, setLines] = useState([])
   const [defaultLines, setDefaultLines] = useState([])
   const [email, setEmail] = useState('')
+  const [due, setDue] = useState(7)
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
 
@@ -160,6 +161,10 @@ const InvoiceForm = ({
 
   const handleChangeEmail = event => {
     setEmail(event.target.value)
+  }
+
+  const handleChangeDue = event => {
+    setDue(event.target.value)
   }
 
   const handleOrderChange = async value => {
@@ -305,14 +310,12 @@ const InvoiceForm = ({
         customer: orderDetail.customerId,
         supplier: orderDetail.supplierId,
         course_id: orderDetail.courseTypeId,
-        order: orderDetail.orderId,
-        notes
+        order: orderDetail.orderId
       }
     } else {
       data = {
         supplier: supplier.id,
-        course_id: course.id,
-        notes
+        course_id: course.id
       }
 
       if (!invoice) {
@@ -347,6 +350,8 @@ const InvoiceForm = ({
     })
 
     data.items = items
+    data.days_until_due = due
+    data.notes = notes
 
     if (order) {
       data.order = order.id
@@ -484,13 +489,33 @@ const InvoiceForm = ({
               required
             />
           </div>
+          <div>
+            <label className={styles.label} style={{ marginBottom: 9 }}>
+              Payment due
+            </label>
+            <div className={styles.inlineInput}>
+              <ConnectInput
+                basic
+                size="lg"
+                name="email"
+                value={due}
+                onChange={handleChangeDue}
+                type="number"
+                min={1}
+                max={100}
+                required
+              />
+              <label className={styles.label} style={{ marginBottom: 20 }}>
+                days after invoice is sent
+              </label>
+            </div>
+          </div>
           <div className={styles.divider} />
 
           <InvoiceFormLineItems
             value={defaultLines}
             onChange={handleLineChange}
           />
-
           <div>
             <label className={styles.label} style={{ marginBottom: 20 }}>
               Notes
@@ -502,6 +527,7 @@ const InvoiceForm = ({
               onChange={handleChangeNote}
             />
           </div>
+
           <div className={styles.actions}>
             <Button color="white" onClick={() => handleSend(false)}>
               Save as Draft
