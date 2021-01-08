@@ -84,9 +84,10 @@ const OrdersTableRow = ({
   }
 
   const canDelete =
-    record &&
-    record.order &&
-    (record.order.source === 'DASHBOARD' || record.order.source === 'WIDGET')
+    record.order.source === 'DASHBOARD' || record.order.source === 'WIDGET'
+
+  const orderPaid = record.order.payment_status === 'PAID'
+  const hasInvoice = !!record.order.stripe_invoice_id
 
   return (
     <React.Fragment>
@@ -179,7 +180,7 @@ const OrdersTableRow = ({
                 </React.Fragment>
               )}
               <Desktop>
-                {record.order.payment_status !== 'PAID' && (
+                {!orderPaid && (
                   <React.Fragment>
                     <div className={styles.divider}></div>
                     <div
@@ -188,17 +189,17 @@ const OrdersTableRow = ({
                       <IconPound />
                       <span>Take Payment</span>
                     </div>
-                  </React.Fragment>
-                )}
-                {!record.order.stripe_invoice_id && (
-                  <React.Fragment>
-                    <div className={styles.divider}></div>
-                    <div
-                      className={styles.menuItem}
-                      onClick={handleCreateInvoice}>
-                      <IconPound />
-                      <span>Create Invoice</span>
-                    </div>
+                    {!hasInvoice && (
+                      <React.Fragment>
+                        <div className={styles.divider}></div>
+                        <div
+                          className={styles.menuItem}
+                          onClick={handleCreateInvoice}>
+                          <IconPound />
+                          <span>Create Invoice</span>
+                        </div>
+                      </React.Fragment>
+                    )}
                   </React.Fragment>
                 )}
               </Desktop>
