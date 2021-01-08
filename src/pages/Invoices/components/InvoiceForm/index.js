@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import moment from 'moment'
 import styles from './styles.scss'
 import CloseButton from 'components/common/CloseButton'
 import {
@@ -81,7 +82,6 @@ const InvoiceForm = ({
       if (!invoice) {
         return
       }
-
       const fetchData = async () => {
         try {
           return await fetchCustomer(metadata.customer_id)
@@ -91,7 +91,10 @@ const InvoiceForm = ({
         }
       }
 
-      const { metadata } = invoice
+      const { metadata, due_date } = invoice
+      const dueDays = moment(new Date(due_date * 1000)).diff(moment(), 'days')
+      setDue(dueDays)
+
       setCustomer({
         id: metadata.customer_id,
         name: invoice.customer_name,

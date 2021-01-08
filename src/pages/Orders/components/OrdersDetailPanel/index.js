@@ -106,7 +106,6 @@ const OrdersDetailPanel = ({
   }
 
   const canDelete =
-    order &&
     order.order &&
     (order.order.source === 'DASHBOARD' || order.order.source === 'WIDGET')
 
@@ -184,7 +183,9 @@ const OrdersDetailPanel = ({
     )
   }
 
-  const payOrderId = order && order.order ? order.order.friendly_id : null
+  const orderPaid = order.order && order.order.payment_status === 'PAID'
+  // const hasInvoice = order.order && !!order.order.stripe_invoice_id
+  const payOrderId = order.order ? order.order.friendly_id : null
   let amount = course && course.pricing ? course.pricing.price : 0
   const paymentValid = payOrderId && amount
 
@@ -225,16 +226,17 @@ const OrdersDetailPanel = ({
           <Button color="primary" onClick={onEditOrder}>
             Edit Order
           </Button>
-          {/* <Button color="white" onClick={onViewInvoice}>
-            View Invoice
-          </Button> */}
-          {!trainingId &&
-            paymentValid &&
-            order.order.payment_status !== 'PAID' && (
-              <Button color="white" onClick={onAddPayment}>
-                Add Payment
-              </Button>
-            )}
+          {/* {hasInvoice && (
+            <Button color="white" onClick={onViewInvoice}>
+              View Invoice
+            </Button>
+          )} */}
+          {!trainingId && paymentValid && !orderPaid && (
+            <Button color="white" onClick={onAddPayment}>
+              Add Payment
+            </Button>
+          )}
+
           {isAdmin && (
             <React.Fragment>
               <div className={styles.divider}></div>
