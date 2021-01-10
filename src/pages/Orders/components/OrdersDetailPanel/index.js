@@ -174,9 +174,13 @@ const OrdersDetailPanel = ({
           onBack={handleBack}
         />
         <div className={styles.priceLine}>
-          <span className={styles.price}>
-            £{(course.pricing.price / 100).toFixed(2)}
-          </span>
+          {course.pricing ? (
+            <span className={styles.price}>
+              £{(course.pricing.price / 100).toFixed(2)}
+            </span>
+          ) : (
+            <span></span>
+          )}
           <ColorTag text={paymentStatus.text} type={paymentStatus.type} />
         </div>
       </React.Fragment>
@@ -186,7 +190,7 @@ const OrdersDetailPanel = ({
   const orderPaid = order.order && order.order.payment_status === 'PAID'
   // const hasInvoice = order.order && !!order.order.stripe_invoice_id
   const payOrderId = order.order ? order.order.friendly_id : null
-  let amount = course && course.pricing ? course.pricing.price : 0
+  let amount = course.pricing ? course.pricing.price : 0
   const paymentValid = payOrderId && amount
 
   if (paymentValid && paymentMode) {
