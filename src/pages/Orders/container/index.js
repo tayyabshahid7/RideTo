@@ -106,12 +106,14 @@ function Orders({
         )
       }
       if (params.status) {
-        setSelectedStatuses(
-          _.intersection(
-            params.status.split(','),
-            statusFilters.map(x => x.value)
+        if (params.status.split(',').length !== statusFilters.length) {
+          setSelectedStatuses(
+            _.intersection(
+              params.status.split(','),
+              statusFilters.map(x => x.value)
+            )
           )
-        )
+        }
       }
       setSearchQuery(params.search)
       setSearchInputValue(params.search)
