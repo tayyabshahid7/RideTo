@@ -231,11 +231,6 @@ const InvoiceForm = ({
         return false
       }
 
-      if (!course) {
-        showNotification('Error', 'Please choose a course', 'danger')
-        return false
-      }
-
       if (!customer && !email) {
         showNotification('Error', 'Please input customer email', 'danger')
         return false
@@ -317,8 +312,10 @@ const InvoiceForm = ({
       }
     } else {
       data = {
-        supplier: supplier.id,
-        course_id: course.id
+        supplier: supplier.id
+      }
+      if (course) {
+        data.course_id = course.id
       }
 
       if (!invoice) {
@@ -476,7 +473,7 @@ const InvoiceForm = ({
           </div>
           <div className={styles.divider} />
 
-          <div className={styles.blockHeader}>Details</div>
+          <div className={styles.blockHeader}>Customer Details</div>
           <div>
             <label className={styles.label} style={{ marginBottom: 9 }}>
               Email
@@ -492,10 +489,23 @@ const InvoiceForm = ({
               required
             />
           </div>
+          <div className={styles.divider} />
+
+          <InvoiceFormLineItems
+            value={defaultLines}
+            onChange={handleLineChange}
+          />
           <div>
-            <label className={styles.label} style={{ marginBottom: 9 }}>
-              Payment due
-            </label>
+            <div className={styles.blockHeader}>Notes</div>
+            <ConnectTextArea
+              name="notes"
+              value={notes}
+              type="textarea"
+              onChange={handleChangeNote}
+            />
+          </div>
+          <div>
+            <div className={styles.blockHeader}>Payment due</div>
             <div className={styles.inlineInput}>
               <ConnectInput
                 basic
@@ -512,23 +522,6 @@ const InvoiceForm = ({
                 days after invoice is sent
               </label>
             </div>
-          </div>
-          <div className={styles.divider} />
-
-          <InvoiceFormLineItems
-            value={defaultLines}
-            onChange={handleLineChange}
-          />
-          <div>
-            <label className={styles.label} style={{ marginBottom: 20 }}>
-              Notes
-            </label>
-            <ConnectTextArea
-              name="notes"
-              value={notes}
-              type="textarea"
-              onChange={handleChangeNote}
-            />
           </div>
 
           <div className={styles.actions}>
