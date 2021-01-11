@@ -2,6 +2,10 @@
   position: relative;
 }
 
+.hidden {
+  display: none !important;
+}
+
 .input {
   padding: 9px 5px;
   display: block;
@@ -17,6 +21,10 @@
 
   &::placeholder {
     color: #aab7c4;
+  }
+
+  @media (max-width: 767px) {
+    padding: 6px 5px;
   }
 }
 
