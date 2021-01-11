@@ -97,3 +97,20 @@
     font-weight: bold;
   }
 }
+
+.sortingIcon {
+  transform: rotate(90deg);
+  margin-left: 4px;
+
+  svg {
+    width: 14px;
+
+    path {
+      stroke: #444;
+    }
+  }
+}
+
+.iconDown {
+  transform: rotate(-90deg);
+}
