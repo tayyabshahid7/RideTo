@@ -75,7 +75,6 @@ const OrderPaymentForm = ({
 
   const handleResubmit = () => {
     setScreen('form')
-    setTimeout(() => handleSubmit())
   }
 
   const handleSubmit = async () => {
@@ -156,70 +155,68 @@ const OrderPaymentForm = ({
 
   return (
     <div className={styles.container}>
-      {screen === 'form' && (
-        <React.Fragment>
-          <ConnectInput
-            label="Cardholder Name"
-            basic
-            name="holderName"
-            value={formData.holderName}
-            onChange={handleChange}
-            required
+      <div className={classnames(screen !== 'form' && styles.hidden)}>
+        <ConnectInput
+          label="Cardholder Name"
+          basic
+          name="holderName"
+          value={formData.holderName}
+          onChange={handleChange}
+          required
+        />
+        <div className={styles.formGroup}>
+          <label className={styles.label}>Card Number</label>
+          <CardNumberElement
+            className={styles.input}
+            {...options}
+            onChange={el => handleStripeElementChange(el, 'Number')}
+            onReady={el => onStripeFormReady(el)}
+            style={stripeStyle}
           />
+        </div>
+        <div className={styles.formRow}>
           <div className={styles.formGroup}>
-            <label className={styles.label}>Card Number</label>
-            <CardNumberElement
+            <label className={styles.label}>Expiry</label>
+            <CardExpiryElement
               className={styles.input}
               {...options}
-              onChange={el => handleStripeElementChange(el, 'Number')}
-              onReady={el => onStripeFormReady(el)}
+              onChange={el => handleStripeElementChange(el, 'Date')}
               style={stripeStyle}
             />
           </div>
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Expiry</label>
-              <CardExpiryElement
-                className={styles.input}
-                {...options}
-                onChange={el => handleStripeElementChange(el, 'Date')}
-                style={stripeStyle}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>CVC</label>
-              <CardCVCElement
-                className={styles.input}
-                {...options}
-                onChange={el => handleStripeElementChange(el, 'CVC')}
-                style={stripeStyle}
-              />
-            </div>
-            <div className={styles.formGroup}>
-              <label className={styles.label}>Postcode</label>
-              <PostalCodeElement
-                className={styles.input}
-                {...options}
-                onChange={el => handleStripeElementChange(el, 'PostCode')}
-                style={stripeStyle}
-              />
-            </div>
+          <div className={styles.formGroup}>
+            <label className={styles.label}>CVC</label>
+            <CardCVCElement
+              className={styles.input}
+              {...options}
+              onChange={el => handleStripeElementChange(el, 'CVC')}
+              style={stripeStyle}
+            />
           </div>
-          {saving ? (
-            <Button color="secondary" style={{ width: '100%' }}>
-              Processing Payment
-            </Button>
-          ) : (
-            <Button
-              color="primary"
-              onClick={handleSubmit}
-              style={{ width: '100%' }}>
-              Submit Payment
-            </Button>
-          )}
-          <LoadingMask loading={saving} />
-        </React.Fragment>
-      )}
+          <div className={styles.formGroup}>
+            <label className={styles.label}>Postcode</label>
+            <PostalCodeElement
+              className={styles.input}
+              {...options}
+              onChange={el => handleStripeElementChange(el, 'PostCode')}
+              style={stripeStyle}
+            />
+          </div>
+        </div>
+        {saving ? (
+          <Button color="secondary" style={{ width: '100%' }}>
+            Processing Payment
+          </Button>
+        ) : (
+          <Button
+            color="primary"
+            onClick={handleSubmit}
+            style={{ width: '100%' }}>
+            Submit Payment
+          </Button>
+        )}
+        <LoadingMask loading={saving} />
+      </div>
       {screen === 'error' && (
         <div className={styles.result}>
           <div className={styles.resultIcon}>

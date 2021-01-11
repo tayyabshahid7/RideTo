@@ -3,6 +3,7 @@ import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
 import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
+import { Desktop } from 'common/breakpoints'
 
 import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
 
@@ -356,17 +357,19 @@ class EditOrderForm extends React.Component {
                       Send Confirmation
                     </Button>
                   </div>
-                  {canInvoice && (
-                    <div>
-                      <Button
-                        disabled={isSending}
-                        color="white"
-                        outline
-                        onClick={this.handleCreateInvoice}>
-                        Create Invoice
-                      </Button>
-                    </div>
-                  )}
+                  <Desktop>
+                    {canInvoice && (
+                      <div>
+                        <Button
+                          disabled={isSending}
+                          color="white"
+                          outline
+                          onClick={this.handleCreateInvoice}>
+                          Create Invoice
+                        </Button>
+                      </div>
+                    )}
+                  </Desktop>
                   {canTakePayment && (
                     <div>
                       <Button

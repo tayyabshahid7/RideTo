@@ -189,17 +189,19 @@ const OrdersTableRow = ({
                       <IconPound />
                       <span>Take Payment</span>
                     </div>
-                    {!hasInvoice && (
-                      <React.Fragment>
-                        <div className={styles.divider}></div>
-                        <div
-                          className={styles.menuItem}
-                          onClick={handleCreateInvoice}>
-                          <IconPound />
-                          <span>Create Invoice</span>
-                        </div>
-                      </React.Fragment>
-                    )}
+                    <Desktop>
+                      {!hasInvoice && (
+                        <React.Fragment>
+                          <div className={styles.divider}></div>
+                          <div
+                            className={styles.menuItem}
+                            onClick={handleCreateInvoice}>
+                            <IconPound />
+                            <span>Create Invoice</span>
+                          </div>
+                        </React.Fragment>
+                      )}
+                    </Desktop>
                   </React.Fragment>
                 )}
               </Desktop>

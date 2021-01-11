@@ -19,6 +19,7 @@ import {
   ConnectAgeInput,
   ConnectTextArea
 } from 'components/ConnectForm'
+import { Desktop } from 'common/breakpoints'
 
 class AddOrderForm extends React.Component {
   constructor(props) {
@@ -328,14 +329,16 @@ class AddOrderForm extends React.Component {
                   Add Order
                 </Button>
               </div>
-              <div>
-                <Button
-                  type="button"
-                  onClick={e => this.handleSave(e, true)}
-                  color="white">
-                  Add Order & Create Invoice
-                </Button>
-              </div>
+              <Desktop>
+                <div>
+                  <Button
+                    type="button"
+                    onClick={e => this.handleSave(e, true)}
+                    color="white">
+                    Add Order & Create Invoice
+                  </Button>
+                </div>
+              </Desktop>
               {!!amount && (
                 <div>
                   <Button
