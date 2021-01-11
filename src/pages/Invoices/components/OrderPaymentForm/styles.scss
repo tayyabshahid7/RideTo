@@ -18,6 +18,10 @@
   &::placeholder {
     color: #aab7c4;
   }
+
+  @media (max-width: 767px) {
+    padding: 6px 5px;
+  }
 }
 
 .label {

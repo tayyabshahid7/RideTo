@@ -14,6 +14,7 @@ import { IconExclamation, IconCheck } from '../../../../assets/icons'
 import { searchCustomer, getCustomerSetupIntent } from 'services/customer'
 import { markInvoiceAsPaid } from 'services/invoice'
 import { payOrder } from 'services/order'
+import { useMediaQuery } from 'react-responsive'
 
 const initialFormData = {
   holderName: '',
@@ -148,6 +149,11 @@ const OrderPaymentForm = ({
 
   const handleStripeElementChange = (el, name) => {}
 
+  const isDesktop = useMediaQuery({ minWidth: 768 })
+  const stripeStyle = isDesktop
+    ? { base: { fontSize: '11px' } }
+    : { base: { fontSize: '16px' } }
+
   return (
     <div className={styles.container}>
       {screen === 'form' && (
@@ -167,6 +173,7 @@ const OrderPaymentForm = ({
               {...options}
               onChange={el => handleStripeElementChange(el, 'Number')}
               onReady={el => onStripeFormReady(el)}
+              style={stripeStyle}
             />
           </div>
           <div className={styles.formRow}>
@@ -176,6 +183,7 @@ const OrderPaymentForm = ({
                 className={styles.input}
                 {...options}
                 onChange={el => handleStripeElementChange(el, 'Date')}
+                style={stripeStyle}
               />
             </div>
             <div className={styles.formGroup}>
@@ -184,6 +192,7 @@ const OrderPaymentForm = ({
                 className={styles.input}
                 {...options}
                 onChange={el => handleStripeElementChange(el, 'CVC')}
+                style={stripeStyle}
               />
             </div>
             <div className={styles.formGroup}>
@@ -192,6 +201,7 @@ const OrderPaymentForm = ({
                 className={styles.input}
                 {...options}
                 onChange={el => handleStripeElementChange(el, 'PostCode')}
+                style={stripeStyle}
               />
             </div>
           </div>
