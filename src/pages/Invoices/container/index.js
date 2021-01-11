@@ -28,7 +28,7 @@ const statusOptions = [
   { text: 'Uncollectible', value: 'uncollectible' },
   { text: 'Void', value: 'void' }
 ]
-const pageSize = 25
+const pageSize = 100
 
 function Invoices({
   location,
@@ -46,6 +46,8 @@ function Invoices({
   const [selectedStatus, setSelectedStatus] = useState('all')
   const [deleting, setDeleting] = useState(false)
   const [updating, setUpdating] = useState(false)
+  const [sorting, setSorting] = useState('dueDateSort')
+  const [sortDir, setsortDir] = useState(true)
 
   useEffect(() => {
     fetchInvoices()
@@ -72,6 +74,11 @@ function Invoices({
       starting_after: invoiceId
     }
     getInvoices(params)
+  }
+
+  const onSort = (field, asc) => {
+    setSorting(field)
+    setsortDir(asc)
   }
 
   const handleSelectStatus = filter => {
@@ -140,6 +147,9 @@ function Invoices({
           onLoadMore={onLoadMore}
           setUpdating={setUpdating}
           setInvoiceOrderId={setInvoiceOrderId}
+          sorting={sorting}
+          sortDir={sortDir}
+          onSort={onSort}
         />
 
         <LoadingMask loading={loading || updating || deleting} />
