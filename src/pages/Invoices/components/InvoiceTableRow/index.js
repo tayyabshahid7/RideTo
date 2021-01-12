@@ -8,7 +8,9 @@ import {
   IconDownArrow,
   IconEdit,
   IconTrash,
-  IconPound
+  IconPound,
+  IconCreditCard,
+  IconChangeStatus
 } from 'assets/icons'
 import { getTagType } from 'services/invoice'
 
@@ -91,7 +93,7 @@ const InvoiceTableRow = ({
               {record.status === 'Open' && (
                 <React.Fragment>
                   <div className={styles.menuItem} onClick={handleNewPayment}>
-                    <IconPound />
+                    <IconCreditCard />
                     <span>New Payment</span>
                   </div>
                   <div className={styles.divider}></div>
@@ -102,7 +104,7 @@ const InvoiceTableRow = ({
                 <React.Fragment>
                   <div className={styles.menuItem} onClick={handleEdit}>
                     <IconEdit />
-                    <span>Edit Invoice</span>
+                    <span>Update Invoice</span>
                   </div>
                   <div className={styles.spacing}></div>
                   <div className={styles.menuItem} onClick={handleDelete}>
@@ -114,7 +116,7 @@ const InvoiceTableRow = ({
               ) : record.status === 'Void' ? null : (
                 <React.Fragment>
                   <div className={styles.menuItem} onClick={handleChangeStatus}>
-                    <IconEdit />
+                    <IconChangeStatus />
                     <span>Change Invoice Status</span>
                   </div>
                   <div className={styles.divider}></div>
