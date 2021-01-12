@@ -28,7 +28,7 @@ const statusOptions = [
   { text: 'Uncollectible', value: 'uncollectible' },
   { text: 'Void', value: 'void' }
 ]
-const pageSize = 100
+const pageSize = 25
 
 function Invoices({
   location,
@@ -46,7 +46,7 @@ function Invoices({
   const [selectedStatus, setSelectedStatus] = useState('all')
   const [deleting, setDeleting] = useState(false)
   const [updating, setUpdating] = useState(false)
-  const [sorting, setSorting] = useState('dueDateSort')
+  const [sorting, setSorting] = useState('created')
   const [sortDir, setsortDir] = useState(true)
 
   useEffect(() => {
