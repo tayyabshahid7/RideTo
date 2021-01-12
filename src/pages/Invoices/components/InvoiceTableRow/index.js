@@ -8,7 +8,6 @@ import {
   IconDownArrow,
   IconEdit,
   IconTrash,
-  IconPound,
   IconCreditCard,
   IconChangeStatus
 } from 'assets/icons'
