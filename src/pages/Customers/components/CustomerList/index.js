@@ -13,6 +13,13 @@ const getDisplaySource = ({ source }) => {
     : 'Direct'
 }
 
+const getCustomerName = customer => {
+  if (customer.first_name || customer.last_name) {
+    return `${customer.first_name} ${customer.last_name}`
+  }
+  return customer.rideto_email
+}
+
 const CustomerList = ({ customers, ordering, isLoading, onSort }) => {
   return (
     <Loading loading={isLoading}>
@@ -40,7 +47,7 @@ const CustomerList = ({ customers, ordering, isLoading, onSort }) => {
             <tr key={customer.id}>
               <Cell>
                 <Link to={`/customers/${customer.id}`}>
-                  {customer.first_name} {customer.last_name}
+                  {getCustomerName(customer)}
                 </Link>
               </Cell>
               <Cell>{customer.phone}</Cell>

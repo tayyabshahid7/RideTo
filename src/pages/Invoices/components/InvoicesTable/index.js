@@ -30,7 +30,7 @@ const InvoicesTable = ({
   const [invoice, setInvoice] = useState(null)
 
   const header = [
-    { title: 'Invoice #', sortField: 'number', field: 'id', width: '2fr' },
+    { title: 'Invoice #', sortField: 'created', field: 'id', width: '2fr' },
     { title: 'Amount', sortField: 'total', field: 'amount', width: '1.5fr' },
     { title: 'Status', sortField: 'status', field: 'status', width: '2fr' },
     { title: 'Order', sortField: 'orderSort', field: 'orderId', width: '2fr' },
@@ -42,26 +42,35 @@ const InvoicesTable = ({
     },
     {
       title: 'Due',
-      sortField: 'dueDateSort',
+      sortField: 'due_date',
       field: 'dueDate',
       width: '1.5fr'
     },
     { title: '', field: 'action', width: '100px' }
   ]
 
-  let records = invoices.map(x => ({
-    id: x.id,
-    number: x.number,
-    amount: '£' + (x.total / 100).toFixed(),
-    status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
-    orderId: x.metadata.order,
-    orderSort: x.metadata.order_friendly_id || x.metadata.order,
-    customer: x.customer_name || x.customer_email,
-    customerId: x.metadata.customer_id,
-    dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY'),
-    dueDateSort: moment(new Date(x.due_date * 1000)).format('YYYY-MM-DD'),
-    original: x
-  }))
+  let records = invoices.map(x => {
+    const data = {
+      id: x.id,
+      number: x.number,
+      amount: '£' + (x.total / 100).toFixed(),
+      status: x.status.substr(0, 1).toUpperCase() + x.status.substr(1),
+      orderId: x.metadata.order_friendly_id || x.metadata.order,
+      orderSort: 0,
+      customer: x.customer_name || x.customer_email,
+      customerId: x.metadata.customer_id,
+      dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY'),
+      due_date: x.due_date,
+      created: x.created,
+      total: x.total,
+      original: x
+    }
+    if (data.orderId) {
+      const tmp = data.orderId.split('#')
+      data.orderSort = parseInt(tmp.slice(-1))
+    }
+    return data
+  })
 
   if (sorting) {
     records = _.sortBy(records, sorting)
@@ -128,7 +137,7 @@ const InvoicesTable = ({
   }
 
   const handleShowOrder = invoice => {
-    history.push(`/invoices/orders/edit/${invoice.orderId}`)
+    history.push(`/invoices/orders/edit/${invoice.metadata.order}`)
   }
 
   const statsStyle = {
