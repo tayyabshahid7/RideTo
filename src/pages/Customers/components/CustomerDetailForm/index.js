@@ -47,6 +47,22 @@ class CustomerDetailForm extends React.Component {
     )
     return (
       <Form className={styles.panel} onSubmit={this.handleSubmit}>
+        <ConnectInput
+          name="first_name"
+          value={customer.first_name || ''}
+          label="First Name"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
+        <ConnectInput
+          name="last_name"
+          value={customer.last_name || ''}
+          label="Last Name"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
         <div className={styles.phoneInput}>
           <ConnectInput
             name="phone"
