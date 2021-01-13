@@ -8,7 +8,13 @@ import ActionThreeDot from 'components/ActionThreeDot'
 import { Link } from 'react-router-dom'
 import { getCourseTitle } from 'services/course'
 import { getCustomerBikeTypeOptions, fetchOrderById } from 'services/order'
-import { IconRightArrow, IconEdit, IconTrash, IconPound } from 'assets/icons'
+import {
+  IconRightArrow,
+  IconEdit,
+  IconTrash,
+  IconCreditCard,
+  IconPound
+} from 'assets/icons'
 import { isAdmin } from 'services/auth'
 import * as orderModule from 'store/order'
 import { deleteOrderTraining } from 'store/course'
@@ -186,7 +192,7 @@ const OrdersTableRow = ({
                     <div
                       className={styles.menuItem}
                       onClick={handleTakePayment}>
-                      <IconPound />
+                      <IconCreditCard />
                       <span>Take Payment</span>
                     </div>
                     <Desktop>
