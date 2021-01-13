@@ -30,11 +30,6 @@ const InvoiceTableRow = ({
     return index > 4 && index > total - 5
   }
 
-  const handleNewPayment = () => {
-    menuRef.current.hideMenu()
-    window.open(record.original.hosted_invoice_url)
-  }
-
   const handleEdit = () => {
     menuRef.current.hideMenu()
     onEdit(record)
@@ -53,6 +48,11 @@ const InvoiceTableRow = ({
   const handleSend = () => {
     menuRef.current.hideMenu()
     onSend(record)
+  }
+
+  const handleNewPayment = () => {
+    menuRef.current.hideMenu()
+    window.open(record.original.hosted_invoice_url)
   }
 
   const handleDownload = () => {
@@ -79,7 +79,11 @@ const InvoiceTableRow = ({
             </Link>
           )
         } else if (item.field === 'id') {
-          cell = <span>{record.number}</span>
+          cell = (
+            <span onClick={handleEdit} className={styles.link}>
+              {record.number}
+            </span>
+          )
         } else if (item.field === 'status') {
           cell = (
             <ColorTag text={record.status} type={getTagType(record.status)} />

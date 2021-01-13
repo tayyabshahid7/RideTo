@@ -39,6 +39,7 @@ const InvoiceForm = ({
   const [due, setDue] = useState(30)
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
+  const [status, setStatus] = useState(null)
 
   let supplierName = ''
 
@@ -62,7 +63,9 @@ const InvoiceForm = ({
         return
       }
 
-      const { metadata, due_date } = invoice
+      const { metadata, due_date, status } = invoice
+      console.log(invoice, status)
+      setStatus(status)
       const dueDays = moment(new Date(due_date * 1000)).diff(moment(), 'days')
       setDue(dueDays)
 
@@ -254,6 +257,11 @@ const InvoiceForm = ({
     return data
   }
 
+  const handleTakePayment = () => {
+    window.open(invoice.hosted_invoice_url)
+    handleClose()
+  }
+
   const handleSend = async isSend => {
     const formData = await prepareData()
     if (!formData) {
@@ -266,11 +274,19 @@ const InvoiceForm = ({
     try {
       if (invoice) {
         for (const line of defaultLines) {
-          await deleteInvoiceLine(invoice.id, line.id)
+          try {
+            await deleteInvoiceLine(invoice.id, line.id)
+          } catch (err) {
+            console.log(err)
+          }
         }
         for (const line of formData.items) {
-          delete line.id
-          await addInvoiceLine(invoice.id, line)
+          try {
+            delete line.id
+            await addInvoiceLine(invoice.id, line)
+          } catch (err) {
+            console.log(err)
+          }
         }
         delete formData.items
         await updateInvoice(invoice.id, formData)
@@ -322,7 +338,11 @@ const InvoiceForm = ({
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>School</label>
-            {orderDetail ? (
+            {status && status !== 'draft' ? (
+              <label className={styles.labelValue}>
+                {supplier && supplier.name}
+              </label>
+            ) : orderDetail ? (
               <label className={styles.labelValue}>{supplierName}</label>
             ) : (
               <ConnectReactSelect
@@ -344,7 +364,9 @@ const InvoiceForm = ({
             </label>
             <ConnectInput
               basic
-              disabled={!!customer || !!orderDetail}
+              disabled={
+                !!customer || !!orderDetail || (status && status !== 'draft')
+              }
               size="lg"
               name="email"
               value={email || ''}
@@ -358,6 +380,7 @@ const InvoiceForm = ({
           <InvoiceFormLineItems
             value={defaultLines}
             onChange={handleLineChange}
+            disabled={status && status !== 'draft'}
           />
           <div>
             <div className={styles.blockHeader}>Notes</div>
@@ -365,6 +388,7 @@ const InvoiceForm = ({
               name="notes"
               value={notes}
               type="textarea"
+              disabled={status && status !== 'draft'}
               onChange={handleChangeNote}
             />
           </div>
@@ -380,6 +404,7 @@ const InvoiceForm = ({
                 type="number"
                 min={1}
                 max={100}
+                disabled={status && status !== 'draft'}
                 required
               />
               <label className={styles.label} style={{ marginBottom: 20 }}>
@@ -389,12 +414,20 @@ const InvoiceForm = ({
           </div>
 
           <div className={styles.actions}>
-            <Button color="white" onClick={() => handleSend(false)}>
-              Save as Draft
-            </Button>
-            <Button color="primary" onClick={() => handleSend(true)}>
-              Save & Send
-            </Button>
+            {status && status !== 'draft' ? (
+              <Button color="primary" onClick={() => handleTakePayment()}>
+                Take Payment
+              </Button>
+            ) : (
+              <React.Fragment>
+                <Button color="white" onClick={() => handleSend(false)}>
+                  Save as Draft
+                </Button>
+                <Button color="primary" onClick={() => handleSend(true)}>
+                  Save & Send
+                </Button>
+              </React.Fragment>
+            )}
           </div>
         </div>
       </div>
