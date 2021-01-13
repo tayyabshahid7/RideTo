@@ -30,15 +30,20 @@ const InvoicesTable = ({
   const [invoice, setInvoice] = useState(null)
 
   const header = [
-    { title: 'Invoice #', sortField: 'created', field: 'id', width: '2fr' },
+    { title: 'Invoice #', sortField: 'id', field: 'id', width: '2fr' },
     { title: 'Amount', sortField: 'total', field: 'amount', width: '1.5fr' },
     { title: 'Status', sortField: 'status', field: 'status', width: '2fr' },
-    { title: 'Order', sortField: 'orderSort', field: 'orderId', width: '2fr' },
     {
       title: 'Customer',
       sortField: 'customer',
       field: 'customer',
       width: '3fr'
+    },
+    {
+      title: 'Created',
+      sortField: 'created',
+      field: 'createdDate',
+      width: '1.5fr'
     },
     {
       title: 'Due',
@@ -60,6 +65,7 @@ const InvoicesTable = ({
       customer: x.customer_name || x.customer_email,
       customerId: x.metadata.customer_id,
       dueDate: moment(new Date(x.due_date * 1000)).format('DD MMM YYYY'),
+      createdDate: moment(new Date(x.created * 1000)).format('DD MMM YYYY'),
       due_date: x.due_date,
       created: x.created,
       total: x.total,
@@ -85,9 +91,9 @@ const InvoicesTable = ({
     gridTemplateRows: `repeat(${records.length + 1}, auto) 1fr`
   }
 
-  const onNewPayment = invoice => {
-    history.push('/invoices/new-payment/' + invoice.id)
-  }
+  // const onNewPayment = invoice => {
+  //   history.push('/invoices/new-payment/' + invoice.id)
+  // }
 
   const showInvoiceForm = () => {
     setInvoice(null)
@@ -187,7 +193,6 @@ const InvoicesTable = ({
             index={index}
             history={history}
             total={records.length}
-            onNewPayment={onNewPayment}
             onDelete={onDelete}
             onEdit={handleEdit}
             onSend={handleSend}
