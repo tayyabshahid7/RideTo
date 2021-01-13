@@ -20,19 +20,24 @@ import {
   deleteInvoiceLine,
   addInvoiceLine
 } from 'services/invoice'
-import { createCustomer } from 'services/customer'
+import { fetchOrderById } from 'services/order'
+import { fetchCustomer, createCustomer } from 'services/customer'
 import { getErrorMsg } from 'utils/helper'
 
 const InvoiceForm = ({
   invoice,
   orderDetail,
   suppliers,
+  info,
   onSent,
   onClose,
   showNotification
 }) => {
   const [customer, setCustomer] = useState(null)
+  const [order, setOrder] = useState(null)
   const [supplier, setSupplier] = useState(null)
+  const [course, setCourse] = useState(null)
+  const [orderOptions, setOrderOptions] = useState([])
   const [lines, setLines] = useState([])
   const [defaultLines, setDefaultLines] = useState([])
   const [email, setEmail] = useState('')
@@ -41,25 +46,49 @@ const InvoiceForm = ({
   const [saving, setSaving] = useState(false)
 
   let supplierName = ''
+  let courseTypeName = ''
 
   if (orderDetail) {
     const tmpSuppplier = suppliers.find(x => x.id === orderDetail.supplierId)
     supplierName = tmpSuppplier.name
-
+    const tmpCourseType = info.courseTypes.find(
+      x => x.id === orderDetail.courseTypeId
+    )
+    courseTypeName = tmpCourseType.name
     if (!email && orderDetail.customerEmail) {
       setEmail(orderDetail.customerEmail)
     }
   }
+
   const supplierOptions = suppliers.map(x => ({
     name: x.name,
     id: x.id
   }))
+  let courseTypeOptions = []
+
+  if (supplier) {
+    courseTypeOptions = info.courseTypes
+      .filter(x => x.schoolIds.includes(supplier.id))
+      .map(x => ({
+        name: x.name,
+        constant: x.constant,
+        id: x.id
+      }))
+  }
 
   // in edit mode, fill data
   useEffect(() => {
     async function loadInvoice() {
       if (!invoice) {
         return
+      }
+      const fetchData = async () => {
+        try {
+          return await fetchCustomer(metadata.customer_id)
+        } catch (err) {
+          showNotification('Error', 'Failed to load customer detail', 'danger')
+          return null
+        }
       }
 
       const { metadata, due_date } = invoice
@@ -69,7 +98,8 @@ const InvoiceForm = ({
       setCustomer({
         id: metadata.customer_id,
         name: invoice.customer_name,
-        email: invoice.customer_email
+        email: invoice.customer_email,
+        orders: []
       })
       setEmail(invoice.customer_email)
       const tmpSuppplier = supplierOptions.find(
@@ -79,7 +109,12 @@ const InvoiceForm = ({
       if (tmpSuppplier) {
         setSupplier(tmpSuppplier)
       }
-
+      const tmpCourse = info.courseTypes.find(
+        x => x.id === parseInt(metadata.course_id)
+      )
+      if (tmpCourse) {
+        setCourse(tmpCourse)
+      }
       if (metadata.notes) {
         setNotes(metadata.notes)
       }
@@ -96,6 +131,18 @@ const InvoiceForm = ({
         return data
       })
       setDefaultLines(tmpLines.reverse())
+
+      // fetch customer detail and orders
+      const cdetail = await fetchData()
+
+      if (cdetail) {
+        const tmpOrderOptions = cleanUpOrders(cdetail.orders)
+        setOrderOptions(tmpOrderOptions)
+        const tmpOrder = tmpOrderOptions.find(x => x.id === metadata.order)
+        if (tmpOrder) {
+          setOrder(tmpOrder)
+        }
+      }
     }
 
     loadInvoice()
@@ -103,6 +150,11 @@ const InvoiceForm = ({
 
   const handleClose = () => {
     onClose()
+  }
+
+  const handleChangeCourse = value => {
+    setCourse(value)
+    setOrder(null)
   }
 
   const handleChangeNote = event => {
@@ -118,12 +170,57 @@ const InvoiceForm = ({
     setDue(event.target.value)
   }
 
+  const handleOrderChange = async value => {
+    setOrder(value)
+
+    if (value) {
+      try {
+        const result = await fetchOrderById(value.id)
+        const tmpSuppplier = supplierOptions.find(
+          x => x.id === result.supplier_id
+        )
+        if (tmpSuppplier) {
+          setSupplier(tmpSuppplier)
+        }
+
+        const tmpCourse = info.courseTypes.find(
+          x => x.id === result.course_type_id
+        )
+        if (tmpCourse) {
+          setCourse(tmpCourse)
+        }
+      } catch (err) {
+        showNotification('Error', 'Failed to load order details', 'danger')
+      }
+    }
+    // TODO: fetch order detail and determine school and course
+  }
+
   const handleChangeSupplier = value => {
     setSupplier(value)
+    setCourse(null)
+    setOrder(null)
+  }
+
+  const cleanUpOrders = orders => {
+    return orders.map(x => {
+      let id = x.split('#')
+      if (id.length > 1) {
+        id = id[1]
+      } else {
+        id = id[0]
+      }
+      return {
+        id: id,
+        name: x
+      }
+    })
   }
 
   const handleCustomerChange = value => {
     setCustomer(value)
+    setOrderOptions(cleanUpOrders(value.orders))
+    setOrder(null)
     setEmail(value.email || value.name)
   }
 
@@ -209,11 +306,16 @@ const InvoiceForm = ({
     if (orderDetail) {
       data = {
         customer: orderDetail.customerId,
-        supplier: orderDetail.supplierId
+        supplier: orderDetail.supplierId,
+        course_id: orderDetail.courseTypeId,
+        order: orderDetail.orderId
       }
     } else {
       data = {
         supplier: supplier.id
+      }
+      if (course) {
+        data.course_id = course.id
       }
 
       if (!invoice) {
@@ -250,6 +352,10 @@ const InvoiceForm = ({
     data.items = items
     data.days_until_due = due
     data.notes = notes
+
+    if (order) {
+      data.order = order.id
+    }
 
     return data
   }
@@ -335,6 +441,36 @@ const InvoiceForm = ({
               />
             )}
           </div>
+          <div className={styles.invoiceLine}>
+            <label className={styles.label}>Course</label>
+            {orderDetail ? (
+              <label className={styles.labelValue}>{courseTypeName}</label>
+            ) : (
+              <ConnectReactSelect
+                value={course}
+                onChange={handleChangeCourse}
+                size="big"
+                options={courseTypeOptions}
+                isMulti={false}
+                closeMenuOnSelect={true}
+              />
+            )}
+          </div>
+          <div className={styles.invoiceLine}>
+            <label className={styles.label}>Order</label>
+            {orderDetail ? (
+              <label className={styles.labelValue}>{orderDetail.order}</label>
+            ) : (
+              <ConnectReactSelect
+                value={order}
+                onChange={handleOrderChange}
+                size="big"
+                options={orderOptions}
+                isMulti={false}
+                closeMenuOnSelect={true}
+              />
+            )}
+          </div>
           <div className={styles.divider} />
 
           <div className={styles.blockHeader}>Customer Details</div>
@@ -369,7 +505,7 @@ const InvoiceForm = ({
             />
           </div>
           <div>
-            <div className={styles.blockHeader}>Payment Due</div>
+            <div className={styles.blockHeader}>Payment due</div>
             <div className={styles.inlineInput}>
               <ConnectInput
                 basic
