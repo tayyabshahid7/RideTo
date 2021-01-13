@@ -53,7 +53,7 @@ export default function reducer(state = initialState, action) {
         ...state,
         loading: false,
         invoices,
-        loadedAll: !action.data.data.length
+        loadedAll: !action.data.data.length // || invoices.length >= action.data.count
       }
     }
     case FETCH_ALL[FAILURE]: {

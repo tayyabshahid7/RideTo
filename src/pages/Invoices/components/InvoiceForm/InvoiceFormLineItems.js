@@ -3,7 +3,7 @@ import styles from './styles.scss'
 import classnames from 'classnames'
 import { ConnectInput } from 'components/ConnectForm'
 
-const InvoiceFormLineItems = ({ value, onChange }) => {
+const InvoiceFormLineItems = ({ disabled, value, onChange }) => {
   const [lineItems, setLineItems] = useState([])
   const [stats, setStats] = useState({
     total: '0.00',
@@ -100,6 +100,7 @@ const InvoiceFormLineItems = ({ value, onChange }) => {
             name="description"
             value={line.description}
             type="text"
+            disabled={disabled}
             onChange={event => handleChange(event, line, index)}
           />
           <ConnectInput
@@ -108,6 +109,7 @@ const InvoiceFormLineItems = ({ value, onChange }) => {
             name="quantity"
             value={line.quantity}
             type="number"
+            disabled={disabled}
             onChange={event => handleChange(event, line, index)}
           />
           <ConnectInput
@@ -116,6 +118,7 @@ const InvoiceFormLineItems = ({ value, onChange }) => {
             name="tax"
             value={line.tax}
             type="text"
+            disabled={disabled}
             onChange={event => handleChange(event, line, index)}
           />
           <ConnectInput
@@ -126,16 +129,24 @@ const InvoiceFormLineItems = ({ value, onChange }) => {
             type="number"
             prefix="£"
             prefixBig
+            disabled={disabled}
             onChange={event => handleChange(event, line, index)}
           />
-          <div className={styles.closeIcon} onClick={() => removeLine(index)} />
+          {!disabled && (
+            <div
+              className={styles.closeIcon}
+              onClick={() => removeLine(index)}
+            />
+          )}
         </div>
       ))}
-      <label
-        onClick={addLine}
-        className={classnames(styles.label, styles.link)}>
-        Add an Item
-      </label>
+      {!disabled && (
+        <label
+          onClick={addLine}
+          className={classnames(styles.label, styles.link)}>
+          Add an Item
+        </label>
+      )}
       <div
         className={styles.divider}
         style={{ marginTop: 16, marginBottom: 20 }}></div>

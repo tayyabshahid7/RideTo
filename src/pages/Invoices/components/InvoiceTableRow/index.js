@@ -19,7 +19,6 @@ const InvoiceTableRow = ({
   index,
   total,
   history,
-  onNewPayment,
   onDelete,
   onEdit,
   onShowOrder,
@@ -29,11 +28,6 @@ const InvoiceTableRow = ({
 
   const calcDown = index => {
     return index > 4 && index > total - 5
-  }
-
-  const handleNewPayment = () => {
-    menuRef.current.hideMenu()
-    onNewPayment(record)
   }
 
   const handleEdit = () => {
@@ -56,9 +50,13 @@ const InvoiceTableRow = ({
     onSend(record)
   }
 
+  const handleNewPayment = () => {
+    menuRef.current.hideMenu()
+    window.open(record.original.hosted_invoice_url)
+  }
+
   const handleDownload = () => {
     menuRef.current.hideMenu()
-    console.log(record.original)
     window.open(record.original.invoice_pdf)
   }
 
@@ -81,7 +79,11 @@ const InvoiceTableRow = ({
             </Link>
           )
         } else if (item.field === 'id') {
-          cell = <span>{record.number}</span>
+          cell = (
+            <span onClick={handleEdit} className={styles.link}>
+              {record.number}
+            </span>
+          )
         } else if (item.field === 'status') {
           cell = (
             <ColorTag text={record.status} type={getTagType(record.status)} />
@@ -93,7 +95,7 @@ const InvoiceTableRow = ({
                 <React.Fragment>
                   <div className={styles.menuItem} onClick={handleNewPayment}>
                     <IconCreditCard />
-                    <span>New Payment</span>
+                    <span>Take Payment</span>
                   </div>
                   <div className={styles.divider}></div>
                 </React.Fragment>
@@ -112,7 +114,8 @@ const InvoiceTableRow = ({
                   </div>
                   <div className={styles.divider}></div>
                 </React.Fragment>
-              ) : record.status === 'Void' ? null : (
+              ) : record.status === 'Void' ||
+                record.status === 'Paid' ? null : (
                 <React.Fragment>
                   <div className={styles.menuItem} onClick={handleChangeStatus}>
                     <IconChangeStatus />
@@ -143,7 +146,7 @@ const InvoiceTableRow = ({
               )}
             </ActionThreeDot>
           )
-        } else if (item.field === 'dueDate') {
+        } else if (item.field === 'dueDate' || item.field === 'createdDate') {
           cell = <span className={styles.noBreak}>{record[item.field]}</span>
         } else {
           cell = <span>{record[item.field]}</span>

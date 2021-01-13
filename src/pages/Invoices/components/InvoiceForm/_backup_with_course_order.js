@@ -20,41 +20,61 @@ import {
   deleteInvoiceLine,
   addInvoiceLine
 } from 'services/invoice'
-import { createCustomer } from 'services/customer'
+import { fetchOrderById } from 'services/order'
+import { fetchCustomer, createCustomer } from 'services/customer'
 import { getErrorMsg } from 'utils/helper'
 
 const InvoiceForm = ({
   invoice,
   orderDetail,
   suppliers,
+  info,
   onSent,
   onClose,
   showNotification
 }) => {
   const [customer, setCustomer] = useState(null)
+  const [order, setOrder] = useState(null)
   const [supplier, setSupplier] = useState(null)
+  const [course, setCourse] = useState(null)
+  const [orderOptions, setOrderOptions] = useState([])
   const [lines, setLines] = useState([])
   const [defaultLines, setDefaultLines] = useState([])
   const [email, setEmail] = useState('')
   const [due, setDue] = useState(30)
   const [notes, setNotes] = useState('')
   const [saving, setSaving] = useState(false)
-  const [status, setStatus] = useState(null)
 
   let supplierName = ''
+  let courseTypeName = ''
 
   if (orderDetail) {
     const tmpSuppplier = suppliers.find(x => x.id === orderDetail.supplierId)
     supplierName = tmpSuppplier.name
-
+    const tmpCourseType = info.courseTypes.find(
+      x => x.id === orderDetail.courseTypeId
+    )
+    courseTypeName = tmpCourseType.name
     if (!email && orderDetail.customerEmail) {
       setEmail(orderDetail.customerEmail)
     }
   }
+
   const supplierOptions = suppliers.map(x => ({
     name: x.name,
     id: x.id
   }))
+  let courseTypeOptions = []
+
+  if (supplier) {
+    courseTypeOptions = info.courseTypes
+      .filter(x => x.schoolIds.includes(supplier.id))
+      .map(x => ({
+        name: x.name,
+        constant: x.constant,
+        id: x.id
+      }))
+  }
 
   // in edit mode, fill data
   useEffect(() => {
@@ -62,17 +82,24 @@ const InvoiceForm = ({
       if (!invoice) {
         return
       }
+      const fetchData = async () => {
+        try {
+          return await fetchCustomer(metadata.customer_id)
+        } catch (err) {
+          showNotification('Error', 'Failed to load customer detail', 'danger')
+          return null
+        }
+      }
 
-      const { metadata, due_date, status } = invoice
-      console.log(invoice, status)
-      setStatus(status)
+      const { metadata, due_date } = invoice
       const dueDays = moment(new Date(due_date * 1000)).diff(moment(), 'days')
       setDue(dueDays)
 
       setCustomer({
         id: metadata.customer_id,
         name: invoice.customer_name,
-        email: invoice.customer_email
+        email: invoice.customer_email,
+        orders: []
       })
       setEmail(invoice.customer_email)
       const tmpSuppplier = supplierOptions.find(
@@ -82,7 +109,12 @@ const InvoiceForm = ({
       if (tmpSuppplier) {
         setSupplier(tmpSuppplier)
       }
-
+      const tmpCourse = info.courseTypes.find(
+        x => x.id === parseInt(metadata.course_id)
+      )
+      if (tmpCourse) {
+        setCourse(tmpCourse)
+      }
       if (metadata.notes) {
         setNotes(metadata.notes)
       }
@@ -99,6 +131,18 @@ const InvoiceForm = ({
         return data
       })
       setDefaultLines(tmpLines.reverse())
+
+      // fetch customer detail and orders
+      const cdetail = await fetchData()
+
+      if (cdetail) {
+        const tmpOrderOptions = cleanUpOrders(cdetail.orders)
+        setOrderOptions(tmpOrderOptions)
+        const tmpOrder = tmpOrderOptions.find(x => x.id === metadata.order)
+        if (tmpOrder) {
+          setOrder(tmpOrder)
+        }
+      }
     }
 
     loadInvoice()
@@ -106,6 +150,11 @@ const InvoiceForm = ({
 
   const handleClose = () => {
     onClose()
+  }
+
+  const handleChangeCourse = value => {
+    setCourse(value)
+    setOrder(null)
   }
 
   const handleChangeNote = event => {
@@ -121,12 +170,57 @@ const InvoiceForm = ({
     setDue(event.target.value)
   }
 
+  const handleOrderChange = async value => {
+    setOrder(value)
+
+    if (value) {
+      try {
+        const result = await fetchOrderById(value.id)
+        const tmpSuppplier = supplierOptions.find(
+          x => x.id === result.supplier_id
+        )
+        if (tmpSuppplier) {
+          setSupplier(tmpSuppplier)
+        }
+
+        const tmpCourse = info.courseTypes.find(
+          x => x.id === result.course_type_id
+        )
+        if (tmpCourse) {
+          setCourse(tmpCourse)
+        }
+      } catch (err) {
+        showNotification('Error', 'Failed to load order details', 'danger')
+      }
+    }
+    // TODO: fetch order detail and determine school and course
+  }
+
   const handleChangeSupplier = value => {
     setSupplier(value)
+    setCourse(null)
+    setOrder(null)
+  }
+
+  const cleanUpOrders = orders => {
+    return orders.map(x => {
+      let id = x.split('#')
+      if (id.length > 1) {
+        id = id[1]
+      } else {
+        id = id[0]
+      }
+      return {
+        id: id,
+        name: x
+      }
+    })
   }
 
   const handleCustomerChange = value => {
     setCustomer(value)
+    setOrderOptions(cleanUpOrders(value.orders))
+    setOrder(null)
     setEmail(value.email || value.name)
   }
 
@@ -212,11 +306,16 @@ const InvoiceForm = ({
     if (orderDetail) {
       data = {
         customer: orderDetail.customerId,
-        supplier: orderDetail.supplierId
+        supplier: orderDetail.supplierId,
+        course_id: orderDetail.courseTypeId,
+        order: orderDetail.orderId
       }
     } else {
       data = {
         supplier: supplier.id
+      }
+      if (course) {
+        data.course_id = course.id
       }
 
       if (!invoice) {
@@ -254,12 +353,11 @@ const InvoiceForm = ({
     data.days_until_due = due
     data.notes = notes
 
-    return data
-  }
+    if (order) {
+      data.order = order.id
+    }
 
-  const handleTakePayment = () => {
-    window.open(invoice.hosted_invoice_url)
-    handleClose()
+    return data
   }
 
   const handleSend = async isSend => {
@@ -274,19 +372,11 @@ const InvoiceForm = ({
     try {
       if (invoice) {
         for (const line of defaultLines) {
-          try {
-            await deleteInvoiceLine(invoice.id, line.id)
-          } catch (err) {
-            console.log(err)
-          }
+          await deleteInvoiceLine(invoice.id, line.id)
         }
         for (const line of formData.items) {
-          try {
-            delete line.id
-            await addInvoiceLine(invoice.id, line)
-          } catch (err) {
-            console.log(err)
-          }
+          delete line.id
+          await addInvoiceLine(invoice.id, line)
         }
         delete formData.items
         await updateInvoice(invoice.id, formData)
@@ -338,11 +428,7 @@ const InvoiceForm = ({
           </div>
           <div className={styles.invoiceLine}>
             <label className={styles.label}>School</label>
-            {status && status !== 'draft' ? (
-              <label className={styles.labelValue}>
-                {supplier && supplier.name}
-              </label>
-            ) : orderDetail ? (
+            {orderDetail ? (
               <label className={styles.labelValue}>{supplierName}</label>
             ) : (
               <ConnectReactSelect
@@ -350,6 +436,36 @@ const InvoiceForm = ({
                 onChange={handleChangeSupplier}
                 size="big"
                 options={supplierOptions}
+                isMulti={false}
+                closeMenuOnSelect={true}
+              />
+            )}
+          </div>
+          <div className={styles.invoiceLine}>
+            <label className={styles.label}>Course</label>
+            {orderDetail ? (
+              <label className={styles.labelValue}>{courseTypeName}</label>
+            ) : (
+              <ConnectReactSelect
+                value={course}
+                onChange={handleChangeCourse}
+                size="big"
+                options={courseTypeOptions}
+                isMulti={false}
+                closeMenuOnSelect={true}
+              />
+            )}
+          </div>
+          <div className={styles.invoiceLine}>
+            <label className={styles.label}>Order</label>
+            {orderDetail ? (
+              <label className={styles.labelValue}>{orderDetail.order}</label>
+            ) : (
+              <ConnectReactSelect
+                value={order}
+                onChange={handleOrderChange}
+                size="big"
+                options={orderOptions}
                 isMulti={false}
                 closeMenuOnSelect={true}
               />
@@ -364,9 +480,7 @@ const InvoiceForm = ({
             </label>
             <ConnectInput
               basic
-              disabled={
-                !!customer || !!orderDetail || (status && status !== 'draft')
-              }
+              disabled={!!customer || !!orderDetail}
               size="lg"
               name="email"
               value={email || ''}
@@ -380,7 +494,6 @@ const InvoiceForm = ({
           <InvoiceFormLineItems
             value={defaultLines}
             onChange={handleLineChange}
-            disabled={status && status !== 'draft'}
           />
           <div>
             <div className={styles.blockHeader}>Notes</div>
@@ -388,12 +501,11 @@ const InvoiceForm = ({
               name="notes"
               value={notes}
               type="textarea"
-              disabled={status && status !== 'draft'}
               onChange={handleChangeNote}
             />
           </div>
           <div>
-            <div className={styles.blockHeader}>Payment Due</div>
+            <div className={styles.blockHeader}>Payment due</div>
             <div className={styles.inlineInput}>
               <ConnectInput
                 basic
@@ -404,7 +516,6 @@ const InvoiceForm = ({
                 type="number"
                 min={1}
                 max={100}
-                disabled={status && status !== 'draft'}
                 required
               />
               <label className={styles.label} style={{ marginBottom: 20 }}>
@@ -414,20 +525,12 @@ const InvoiceForm = ({
           </div>
 
           <div className={styles.actions}>
-            {status && status !== 'draft' ? (
-              <Button color="primary" onClick={() => handleTakePayment()}>
-                Take Payment
-              </Button>
-            ) : (
-              <React.Fragment>
-                <Button color="white" onClick={() => handleSend(false)}>
-                  Save as Draft
-                </Button>
-                <Button color="primary" onClick={() => handleSend(true)}>
-                  Save & Send
-                </Button>
-              </React.Fragment>
-            )}
+            <Button color="white" onClick={() => handleSend(false)}>
+              Save as Draft
+            </Button>
+            <Button color="primary" onClick={() => handleSend(true)}>
+              Save & Send
+            </Button>
           </div>
         </div>
       </div>
