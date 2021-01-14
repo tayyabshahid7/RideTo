@@ -162,7 +162,7 @@
   justify-content: flex-end;
 
   button {
-    width: 113px;
+    min-width: 113px;
 
     + button {
       margin-left: 16px;
