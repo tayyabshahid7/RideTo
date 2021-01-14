@@ -20,6 +20,7 @@ import {
   ConnectTextArea
 } from 'components/ConnectForm'
 import { Desktop } from 'common/breakpoints'
+import { validateEmail } from 'common/emailExtensions'
 
 class AddOrderForm extends React.Component {
   constructor(props) {
@@ -96,10 +97,14 @@ class AddOrderForm extends React.Component {
   }
 
   handleSave = async (event, withInvoice = false, withPayment = false) => {
+    event.preventDefault()
+
     const { onSave } = this.props
     const { order } = this.state
-
-    event.preventDefault()
+    if (!validateEmail(order.user_email)) {
+      alert('Invalid email address')
+      return
+    }
 
     let result = await checkCustomerExists(order.user_email)
     if (result.email_exists) {

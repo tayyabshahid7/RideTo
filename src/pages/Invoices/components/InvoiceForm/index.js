@@ -64,7 +64,6 @@ const InvoiceForm = ({
       }
 
       const { metadata, due_date, status } = invoice
-      console.log(invoice, status)
       setStatus(status)
       const dueDays = moment(new Date(due_date * 1000)).diff(moment(), 'days')
       setDue(dueDays)

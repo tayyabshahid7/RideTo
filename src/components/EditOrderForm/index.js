@@ -146,17 +146,6 @@ class EditOrderForm extends React.Component {
       )
     }
 
-    const canInvoice =
-      !this.state.invoiceCreated &&
-      order &&
-      order.order &&
-      !order.order.stripe_invoice_id
-
-    const canDelete =
-      order &&
-      order.order &&
-      (order.order.source === 'DASHBOARD' || order.order.source === 'WIDGET')
-
     if (!this.state.order.order || !this.state.order.customer) {
       return null
     }
@@ -197,6 +186,18 @@ class EditOrderForm extends React.Component {
 
     const canTakePayment =
       amount && order && order.order && order.order.payment_status !== 'PAID'
+
+    const canInvoice =
+      !this.state.invoiceCreated &&
+      order &&
+      order.order &&
+      !order.order.stripe_invoice_id &&
+      order.order.payment_status !== 'PAID'
+
+    const canDelete =
+      order &&
+      order.order &&
+      (order.order.source === 'DASHBOARD' || order.order.source === 'WIDGET')
 
     return (
       <div className={styles.container}>
