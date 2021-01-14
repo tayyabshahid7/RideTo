@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { Col } from 'reactstrap'
 import styles from './DetailFormContainer.scss'
+import { actions as notifyActions } from 'store/notification'
 import { actions, selectors } from 'store/customer'
 import { getEmptyCustomer } from 'services/customer'
 import CustomerDetailForm from 'pages/Customers/components/CustomerDetailForm'
@@ -68,6 +69,14 @@ class DetailFormContainer extends React.Component {
   }
 
   handleSaveCustomer() {
+    if (
+      !this.state.editable.rideto_email.match(
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+    ) {
+      this.props.showNotification('Error', 'Invalid email address', 'danger')
+      return
+    }
     this.props.saveCustomer(this.state.editable, this.props.history)
   }
 
@@ -165,7 +174,16 @@ const mapStateToProps = (state, props) => {
   }
 }
 
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      showNotification: notifyActions.showNotification,
+      ...actions
+    },
+    dispatch
+  )
+
 export default connect(
   mapStateToProps,
-  dispatch => bindActionCreators(actions, dispatch)
+  mapDispatchToProps
 )(DetailFormContainer)
