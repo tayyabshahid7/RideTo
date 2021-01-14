@@ -163,10 +163,10 @@ export default function reducer(state = initialState, action) {
         schoolId: action.data.user.suppliers[0].id
       })
       let { activeSchools } = state
-      if (!activeSchools) {
-        activeSchools = []
-      }
       const schoolIds = action.data.user.suppliers.map(x => x.id)
+      if (!activeSchools || !activeSchools.length) {
+        activeSchools = schoolIds
+      }
       activeSchools = _.intersection(schoolIds, activeSchools)
 
       return {

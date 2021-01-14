@@ -7,6 +7,7 @@ import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
 class ChangeDate extends Component {
   constructor(props) {
     super(props)
+
     this.state = {
       date: this.props.date,
       time: this.props.time,
@@ -24,11 +25,18 @@ class ChangeDate extends Component {
   }
 
   filterDates() {
-    const { calendarCourses, courseType } = this.props
-    const availableDate = calendarCourses
-      .filter(course => courseType === course.course_type.constant)
-      .filter(course => course.orders && course.spaces > course.orders.length)
-      .map(({ date }) => new Date(date))
+    const { calendarCourses, courseType, course } = this.props
+
+    const availableDate = !course
+      ? []
+      : calendarCourses
+          .filter(
+            x =>
+              x.course_type.constant === courseType &&
+              x.spaces_available > 0 &&
+              x.supplier === course.supplier
+          )
+          .map(({ date }) => new Date(date))
 
     this.setState({
       availableDate

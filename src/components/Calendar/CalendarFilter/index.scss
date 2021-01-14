@@ -33,6 +33,14 @@
   padding: 10px 0;
 }
 
+.sectionLabel {
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 500;
+  color: var(----color-dark-light);
+  margin: 0;
+}
+
 .divider {
   margin: 10px 0 30px;
   width: 100%;
@@ -42,14 +50,6 @@
 
 .dividerNormal {
   margin: 24px 0;
-}
-
-.sectionLabel {
-  font-size: 13px;
-  line-height: 16px;
-  font-weight: 500;
-  color: var(----color-dark-light);
-  margin: 0;
 }
 
 .mobileHeader {

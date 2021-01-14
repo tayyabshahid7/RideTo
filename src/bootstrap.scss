@@ -229,6 +229,150 @@ $font-family-base: 'PT Sans', sans-serif;
   }
 }
 
+.cross-check {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(66, 89, 168, 0.1);
+    transition: 0.4s;
+    border-radius: 2px;
+
+    &:before,
+    &:after {
+      position: absolute;
+      content: '';
+      width: 10px;
+      height: 1px;
+      left: 3px;
+      top: 7px;
+      background-color: white;
+      transition: 0.4s;
+      opacity: 0;
+    }
+
+    &:before {
+      transform: rotate(45deg);
+    }
+
+    &:after {
+      transform: rotate(-45deg);
+    }
+  }
+
+  input:checked + .slider {
+    background-color: var(--color-primary);
+
+    &:before,
+    &:after {
+      opacity: 1;
+    }
+  }
+}
+
+.general-check {
+  position: relative;
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin: 0;
+  flex-shrink: 0;
+  pointer-events: none;
+
+  &.round-check {
+    .slider {
+      border-radius: 50%;
+
+      &:before {
+        top: 2px;
+        height: 9px;
+      }
+    }
+  }
+
+  input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(66, 89, 168, 0.1);
+    border-radius: 2px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      opacity: 0;
+      transform: rotate(45deg);
+      left: 6px;
+      top: 1px;
+      width: 5px;
+      height: 10px;
+      border-bottom: 1px solid white;
+      border-right: 1px solid white;
+      transform: rotate(45deg);
+    }
+  }
+
+  input:checked + .slider {
+    background-color: var(--color-primary);
+
+    &:before {
+      opacity: 1;
+    }
+  }
+}
+
+.active-option {
+  &:hover {
+    .general-check {
+      input:checked + .slider {
+        &:before,
+        &:after {
+          position: absolute;
+          content: '';
+          width: 10px;
+          height: 1px;
+          left: 3px;
+          top: 7px;
+          background-color: white;
+        }
+
+        &:before {
+          transform: rotate(45deg);
+        }
+
+        &:after {
+          transform: rotate(-45deg);
+        }
+      }
+    }
+  }
+}
+
 /* The switch - the box around the slider */
 .switch {
   position: relative;
@@ -301,4 +445,55 @@ $font-family-base: 'PT Sans', sans-serif;
       }
     }
   }
+}
+
+.main-table {
+  display: grid;
+
+  &--cell {
+    padding: 20px 10px 20px 32px;
+    border-bottom: 1px solid #e9eaeb;
+    font-size: 13px;
+    line-height: 16px;
+    font-weight: 500;
+    color: rgba(68, 68, 68, 0.8);
+
+    @media (max-width: 767px) {
+      padding-top: 16px;
+      padding-bottom: 16px;
+      padding-left: 24px;
+    }
+
+    &.header-cell {
+      background: white;
+      color: rgba(68, 68, 68, 0.6);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+  }
+}
+
+.bgcolor-default {
+  background: #ededed;
+  color: rgba(68, 68, 68, 0.8);
+}
+
+.bgcolor-info {
+  background: #f8d69f;
+  color: rgba(68, 68, 68, 0.8);
+}
+
+.bgcolor-success {
+  background: #48b878;
+  color: white;
+}
+
+.bgcolor-danger {
+  background: #f56565;
+  color: white;
 }

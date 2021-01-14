@@ -8,6 +8,8 @@ import AddOrderForm from './AddOrderForm'
 import CoursePackageForm from './CoursePackages/CoursePackageForm'
 import { ConnectInput } from 'components/ConnectForm'
 import LoadingMask from 'components/LoadingMask'
+import { fetchOrderById } from 'services/order'
+import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
 
 import {
   createSchoolOrder,
@@ -27,6 +29,7 @@ const AddOrderComponent = ({
   orderDetail,
   info,
   instructors,
+  newOrder,
   saving,
   createSchoolOrder,
   createSchoolPayment,
@@ -35,7 +38,11 @@ const AddOrderComponent = ({
   coursePackage
 }) => {
   const [submitted, setSubmitted] = useState(false)
+  const [withInvoice, setWithInvoice] = useState(false)
+  const [withPayment, setWithPayment] = useState(false)
+  const [orderData, setOrderData] = useState(null)
   const { courses, isPackage, price } = orderDetail
+  const [invoiceData, setInvoiceData] = useState(null)
 
   useEffect(() => {
     if (!courses.length) {
@@ -44,12 +51,32 @@ const AddOrderComponent = ({
   }, [])
 
   useEffect(() => {
+    async function loadInvoiceData() {
+      const result = await fetchOrderById(newOrder.order_id)
+
+      const tmp = {
+        customer: `${orderData.user_first_name} ${orderData.user_last_name}`,
+        customerId: result.customer_id,
+        supplierId: result.supplier_id,
+        courseTypeId: result.course_type_id,
+        order: result.direct_friendly_id,
+        orderId: result.friendly_id,
+        customerEmail: orderData.user_email
+      }
+      setInvoiceData(tmp)
+    }
+
     if (submitted && !saving) {
-      history.push(`/calendar/${courses[0].date}`)
+      // check new order and invoice form
+      if (withInvoice) {
+        loadInvoiceData()
+      } else {
+        if (!withPayment) {
+          history.push(`/calendar/${courses[0].date}`)
+        }
+      }
     }
   }, [saving])
-
-  console.log(courses)
 
   if (!courses.length) {
     return null
@@ -65,8 +92,10 @@ const AddOrderComponent = ({
     editCoursePackage()
   }
 
-  const handleNewOrder = order => {
+  const handleNewOrder = (order, invoiceFlag, paymentFlag) => {
     const course = courses[0]
+    setWithInvoice(invoiceFlag)
+    setWithPayment(paymentFlag)
 
     if (!order.full_licence_type) {
       if (order.bike_hire === BIKE_HIRE.MANUAL) {
@@ -110,6 +139,7 @@ const AddOrderComponent = ({
     }
 
     setSubmitted(true)
+    setOrderData(data)
     return createSchoolOrder({
       schoolId: course.supplier,
       order: data
@@ -191,7 +221,14 @@ const AddOrderComponent = ({
         onPayment={handleNewPayment}
         saving={saving}
       />
-      <LoadingMask loading={saving} />
+      {invoiceData && (
+        <InvoiceForm
+          onSent={handleCancel}
+          orderDetail={invoiceData}
+          onClose={handleCancel}
+        />
+      )}
+      <LoadingMask loading={withInvoice || saving} />
     </div>
   )
 }
@@ -199,6 +236,7 @@ const AddOrderComponent = ({
 const mapStateToProps = (state, ownProps) => {
   const schools = state.auth.user ? state.auth.user.suppliers : []
   return {
+    newOrder: state.course.newOrder,
     orderDetail: state.course.order,
     schools,
     instructors: state.instructor.instructors,

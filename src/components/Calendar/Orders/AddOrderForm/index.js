@@ -1,4 +1,6 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import styles from './styles.scss'
 import { getFullLicenseType, getAvailableBikeHires } from 'common/info'
 import { getPaymentOptions } from 'services/order'
@@ -6,13 +8,8 @@ import {
   checkCustomerExists,
   getCurrentLicenceOptions
 } from 'services/customer'
-import CheckoutForm from './CheckoutForm'
-import classnames from 'classnames'
-import { handleStripePayment } from 'services/stripe'
-import omit from 'lodash/omit'
-import { connect } from 'react-redux'
 import { fetchWidgetSettings } from 'store/settings'
-import { bindActionCreators } from 'redux'
+import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
 
 import {
   ConnectInput,
@@ -22,6 +19,8 @@ import {
   ConnectAgeInput,
   ConnectTextArea
 } from 'components/ConnectForm'
+import { Desktop } from 'common/breakpoints'
+import { validateEmail } from 'common/emailExtensions'
 
 class AddOrderForm extends React.Component {
   constructor(props) {
@@ -46,20 +45,11 @@ class AddOrderForm extends React.Component {
         notes: '',
         third_party_optin: false
       },
-      orderCreated: false,
       orderResponse: null,
       userDetailsValid: false,
-      showPayment: false,
-      showPaymentConfirmation: false,
-      cardName: '',
-      cardNumberComplete: false,
-      cardDateComplete: false,
-      cardCVCComplete: false,
-      cardPostCodeComplete: false,
-      cardElement: null
+      showPayment: false
     }
 
-    this.scrollIntoView = React.createRef()
     this.form = React.createRef()
   }
 
@@ -70,7 +60,6 @@ class AddOrderForm extends React.Component {
       fetchWidgetSettings()
     }
 
-    // this.scrollIntoView.current.scrollIntoView()
     setTimeout(() => {
       window.scrollTo(0, 0)
     })
@@ -85,10 +74,7 @@ class AddOrderForm extends React.Component {
   }
 
   handleCancel = () => {
-    if (!this.state.showPayment) {
-      this.props.onCancel()
-    }
-    this.setState({ showPayment: false })
+    this.props.onCancel()
   }
 
   handleChangeRawEvent = event => {
@@ -98,16 +84,6 @@ class AddOrderForm extends React.Component {
     const { order } = this.state
 
     this.setState({ order: { ...order, [name]: value } })
-
-    if (name === 'user_first_name') {
-      this.setState({
-        cardName: `${value} ${order.user_last_name}`.toUpperCase()
-      })
-    } else if (name === 'user_last_name') {
-      this.setState({
-        cardName: `${order.user_first_name} ${value}`.toUpperCase()
-      })
-    }
   }
 
   handleChange = (typeName, value) => {
@@ -120,112 +96,40 @@ class AddOrderForm extends React.Component {
     this.setState({ order: { ...order } })
   }
 
-  handleShowPaymentClick = () => {
-    const { userDetailsValid } = this.state
-    if (!userDetailsValid) {
-      return
-    }
-    this.setState({
-      showPayment: true
-    })
-  }
-
-  sendStripePayment = async () => {
-    const {
-      onPayment,
-      stripe,
-      course: {
-        pricing: { price }
-      }
-    } = this.props
-    const { order, cardName, orderResponse, cardElement } = this.state
-
-    if (!stripe) {
-      console.log("Stripe.js hasn't loaded yet.")
-    } else {
-      const { error, token } = await handleStripePayment({
-        stripe,
-        cardElement,
-        full_name: cardName,
-        email: order.user_email,
-        phone: order.user_phone
-      })
-
-      if (error) {
-        console.log('Error', error)
-      } else {
-        const paymentResponse = await onPayment(
-          orderResponse,
-          token,
-          price,
-          order.user_email
-        )
-        if (paymentResponse) {
-          this.setState({
-            showPaymentConfirmation: true
-          })
-        }
-      }
-    }
-  }
-
-  handleSave = async event => {
-    const { onSave, onCancel } = this.props
-    const { order, showPayment, orderCreated } = this.state
-
+  handleSave = async (event, withInvoice = false, withPayment = false) => {
     event.preventDefault()
 
-    if (!orderCreated) {
-      let result = await checkCustomerExists(order.user_email)
-      if (result.email_exists) {
-        const confirm = window.confirm(
-          `There's already a customer with this email (${order.user_email})\n` +
-            'The order will be associated to this email.\n' +
-            'Do you want to continue?'
-        )
-        if (!confirm) return
-      }
-
-      const data = Object.assign({}, order)
-      data.bike_type = data.bike_hire
-
-      const orderResponse = await onSave(
-        !data.user_birthdate ? omit(data, 'user_birthdate') : data
-      )
-
-      if (!orderResponse) {
-        this.setState({ showPayment: false })
-      } else {
-        this.setState(
-          { orderCreated: true, orderResponse: orderResponse },
-          async () => {
-            if (showPayment) {
-              await this.sendStripePayment()
-            } else {
-              onCancel()
-            }
-          }
-        )
-      }
-    } else if (showPayment) {
-      await this.sendStripePayment()
+    const { onSave } = this.props
+    const { order } = this.state
+    if (!validateEmail(order.user_email)) {
+      alert('Invalid email address')
+      return
     }
-  }
 
-  handleCardNameChange = ({ target: { value } }) => {
-    this.setState({
-      cardName: value
-    })
-  }
+    let result = await checkCustomerExists(order.user_email)
+    if (result.email_exists) {
+      const confirm = window.confirm(
+        `There's already a customer with this email (${order.user_email})\n` +
+          'The order will be associated to this email.\n' +
+          'Do you want to continue?'
+      )
+      if (!confirm) return
+    }
 
-  handleStripeElementChange = (el, name) => {
-    this.setState({ [`card${name}Complete`]: !el.empty && el.complete })
-  }
+    const data = Object.assign({}, order)
+    data.bike_type = data.bike_hire
 
-  setCardElement = cardElement => {
-    this.setState({
-      cardElement
-    })
+    if (!data.user_birthdate) {
+      delete data.user_birthdate
+    }
+    const orderResponse = await onSave(data, withInvoice, withPayment)
+
+    if (orderResponse) {
+      this.setState({
+        orderResponse: orderResponse,
+        showPayment: withPayment
+      })
+    }
   }
 
   render() {
@@ -236,14 +140,10 @@ class AddOrderForm extends React.Component {
       course: { pricing },
       widgetSettings
     } = this.props
+
     const {
       showPayment,
-      showPaymentConfirmation,
-      cardName,
-      cardNumberComplete,
-      cardDateComplete,
-      cardCVCComplete,
-      cardPostCodeComplete,
+      orderResponse,
       order: {
         bike_hire,
         payment_status,
@@ -260,24 +160,30 @@ class AddOrderForm extends React.Component {
         third_party_optin
       }
     } = this.state
-    const price = pricing && pricing.price
+
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
 
+    const amount = pricing && pricing.price
+    const customer = {
+      full_name: `${user_first_name} ${user_last_name}`,
+      email: user_email,
+      phone: user_phone
+    }
+    const payOrderId = orderResponse && orderResponse.order_id
+
     return (
       <div className={styles.container}>
-        <div ref={this.scrollIntoView} />
-        {!showPayment &&
-          (!showPaymentConfirmation && (
-            <div className={styles.header}>
-              {/* <span className={styles.leftCol}>
-                <h3 className={styles.addTitle}>Add Order</h3>
-              </span> */}
-            </div>
-          ))}
-        {!showPaymentConfirmation ? (
+        {showPayment ? (
+          <OrderPaymentContainer
+            customer={customer}
+            amount={amount}
+            orderId={payOrderId}
+            onRefresh={onCancel}
+          />
+        ) : (
           <form onSubmit={this.handleSave} ref={this.form}>
-            <div className={classnames(showPayment && styles.hideUserForm)}>
+            <div>
               <ConnectInput
                 basic
                 name="user_first_name"
@@ -422,33 +328,32 @@ class AddOrderForm extends React.Component {
                 onChange={this.handleChangeRawEvent}
               />
             </div>
-            {showPayment && (
-              <div>
-                <CheckoutForm
-                  price={price}
-                  cardName={cardName}
-                  handleCardNameChange={this.handleCardNameChange}
-                  handleStripeElementChange={this.handleStripeElementChange}
-                  setCardElement={this.setCardElement}
-                />
-              </div>
-            )}
             <div className={styles.actions}>
               <div>
-                <Button
-                  type="submit"
-                  color="primary"
-                  disabled={
-                    showPayment &&
-                    (!cardName ||
-                      !cardNumberComplete ||
-                      !cardDateComplete ||
-                      !cardCVCComplete ||
-                      !cardPostCodeComplete)
-                  }>
-                  {showPayment ? 'Take Payment' : 'Add Order'}
+                <Button type="submit" color="primary">
+                  Add Order
                 </Button>
               </div>
+              <Desktop>
+                <div>
+                  <Button
+                    type="button"
+                    onClick={e => this.handleSave(e, true)}
+                    color="white">
+                    Add Order & Create Invoice
+                  </Button>
+                </div>
+              </Desktop>
+              {!!amount && (
+                <div>
+                  <Button
+                    type="button"
+                    onClick={e => this.handleSave(e, false, true)}
+                    color="white">
+                    Add Order & Take Payment
+                  </Button>
+                </div>
+              )}
               <div>
                 <Button color="white" onClick={this.handleCancel}>
                   Cancel
@@ -456,20 +361,6 @@ class AddOrderForm extends React.Component {
               </div>
             </div>
           </form>
-        ) : (
-          <div className={styles.successMessage}>
-            <h4>Success!</h4>
-            <p>
-              The order has been added to the course and payment made via
-              Stripe.
-            </p>
-            <p>Confirmation Email sent.</p>
-            <p>
-              <Button small color="white" onClick={onCancel}>
-                Close
-              </Button>
-            </p>
-          </div>
         )}
       </div>
     )

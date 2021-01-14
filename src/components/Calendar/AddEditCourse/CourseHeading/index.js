@@ -16,7 +16,7 @@ const CourseHeading = ({ course, onRemove, settings }) => {
       className={classnames(
         styles.courseHeading,
         availableSpaces === 1 && styles.warning,
-        availableSpaces === 0 && styles.danger
+        availableSpaces <= 0 && styles.danger
       )}>
       <div className={styles.title}>
         <span>Edit {course.course_type.name}</span>|{' '}

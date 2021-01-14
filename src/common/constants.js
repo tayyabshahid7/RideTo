@@ -201,3 +201,12 @@ export const COURSE_ORDER = {
   available_manual_125cc_bikes: 5,
   available_own_bikes: 6
 }
+
+export const INVOICE_STATUS_COLOR = {
+  outstanding: 'default',
+  'partially paid': 'info',
+  paid: 'success',
+  overdue: 'danger',
+  void: 'danger',
+  draft: 'default'
+}

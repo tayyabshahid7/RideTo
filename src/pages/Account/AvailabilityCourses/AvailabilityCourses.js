@@ -201,7 +201,7 @@ class AvailabilityCourses extends React.Component {
                         className={`custom-control-label ${
                           day === 'F' ? '' : 'text-white'
                         }`}>
-                        {day === 'F' ? 'Closed' : 'Open'}
+                        {day === 'F' ? 'Closed' : ' '}
                       </label>
                     </div>
                   </div>

@@ -7,9 +7,38 @@ export const fetchCustomers = async (params = {}) => {
   return response
 }
 
+export const searchInvoiceCustomer = async (params = {}) => {
+  const path = `school/customer-list`
+  const response = await get(path, params)
+
+  return response
+}
+
 export const fetchCustomer = async (id, params = {}) => {
   const path = `school/customer/${id}`
   const response = await get(path, params)
+
+  return response
+}
+
+export const getCustomerSetupIntent = async (customerId, data = {}) => {
+  const path = `school/customer/stripe/${customerId}/get-setup-intent`
+  const response = await post(path, data)
+
+  return response
+}
+
+export const searchCustomer = async value => {
+  const path = `school/customer/stripe`
+  const params = { email: value }
+  const response = await post(path, params)
+
+  return response
+}
+
+export const createCustomer = async email => {
+  const path = `school/customer/stripe`
+  const response = await post(path, { email })
 
   return response
 }

@@ -45,7 +45,6 @@ const bikeFields = [...fullLicenceBikeFields, ...generalBikeFields]
 class CourseForm extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props.bankHolidays)
     const lastDate = removeWeekdays(moment(props.date), 4, props.bankHolidays)
 
     const course = {
@@ -441,7 +440,15 @@ class CourseForm extends React.Component {
       }
     })
 
-    if (course.last_date_cancel === '') {
+    if (
+      course.last_date_cancel === '' ||
+      course.last_date_cancel === 'Invalid date'
+    ) {
+      course.last_date_cancel = null
+    }
+
+    const isFullLicenceTest = this.checkType('FULL_LICENCE', 'TEST')
+    if (!isFullLicenceTest) {
       course.last_date_cancel = null
     }
 

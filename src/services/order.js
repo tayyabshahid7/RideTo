@@ -38,6 +38,36 @@ const FILTERS = [
   }
 ]
 
+const PAYMENT_STATUS_MAP = {
+  PARTIAL_PAYMENT: {
+    text: 'Partially Paid',
+    type: 'info'
+  },
+  PAID: {
+    text: 'Paid',
+    type: 'success'
+  },
+  OUTSTANDING: {
+    text: 'Outstanding',
+    type: 'default'
+  },
+  PENDING: {
+    text: 'Outstanding',
+    type: 'default'
+  }
+}
+
+export const getPaymentStatus = status => {
+  const item = PAYMENT_STATUS_MAP[status]
+  if (item) {
+    return item
+  }
+  return {
+    text: status,
+    type: 'default'
+  }
+}
+
 export const getDateFilters = () => {
   return FILTERS
 }
@@ -45,6 +75,34 @@ export const getDateFilters = () => {
 export const fetchSupplierOrders = async (schoolId, params = {}) => {
   const path = `o/${schoolId}/confirmed/`
   const response = await get(path, params)
+  return response
+}
+
+export const fetchFilteredOrders = async (params = {}) => {
+  const path = 'school/orders'
+  const response = await get(path, params)
+
+  return response
+}
+
+export const payOrder = async data => {
+  const path = 'school/order/payment/'
+  const response = await post(path, data)
+
+  return response
+}
+
+export const fetchOrderById = async id => {
+  const path = `school/order/${id}/`
+  const response = await get(path)
+
+  return response
+}
+
+export const fetchOrderDetailById = async id => {
+  const path = `school/order-detail/${id}/`
+  const response = await get(path)
+
   return response
 }
 

@@ -485,3 +485,47 @@ export function isAllPackageDatesSelected(selectedPackageDates) {
 export function isAnyPackageDatesSelected(selectedPackageDates) {
   return selectedPackageDates.some(date => date.date !== '')
 }
+
+export function getDateRangeByType(type) {
+  let fromDate = null
+  let toDate = null
+  switch (type.toLowerCase()) {
+    case 'today': {
+      fromDate = moment()
+      toDate = moment()
+      break
+    }
+    case 'all': {
+      break
+    }
+    case 'this week': {
+      fromDate = moment().startOf('isoWeek')
+      toDate = moment().endOf('isoWeek')
+      break
+    }
+    case 'this month': {
+      fromDate = moment().startOf('month')
+      toDate = moment().endOf('month')
+      break
+    }
+    case 'this year': {
+      fromDate = moment().startOf('year')
+      toDate = moment().endOf('year')
+      break
+    }
+    default: {
+      fromDate = moment()
+      toDate = moment()
+      break
+    }
+  }
+
+  if (fromDate) {
+    fromDate = fromDate.format('YYYY-MM-DD')
+  }
+  if (toDate) {
+    toDate = toDate.format('YYYY-MM-DD')
+  }
+
+  return { fromDate, toDate }
+}

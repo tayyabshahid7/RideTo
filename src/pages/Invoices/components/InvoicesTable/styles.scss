@@ -1,0 +1,116 @@
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableContainer {
+  flex: 1 1 1px;
+  overflow: auto;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 0 29px;
+}
+
+.headerLabel {
+  font-size: 18px;
+  line-height: 22px;
+  color: #444;
+  font-weight: 500;
+}
+
+.headerButton {
+  padding-left: 18px;
+  padding-right: 18px;
+  border-radius: 20px;
+}
+
+.plusIcon {
+  position: relative;
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  margin-right: 10px;
+
+  &:before,
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 9px;
+    height: 1px;
+    background: white;
+  }
+
+  &:after {
+    transform: rotate(90deg);
+  }
+}
+
+.tableStats {
+  display: flex;
+  justify-content: center;
+  padding: 30px 32px;
+  align-items: center;
+}
+
+.pageButton {
+  border-color: rgba(68, 68, 68, 0.1);
+  width: 32px;
+  height: 32px;
+  min-width: 0;
+
+  svg {
+    transform: scale(1.1);
+  }
+
+  &:hover {
+    svg path {
+      stroke: white;
+    }
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+}
+
+.pageInput {
+  width: 60px;
+  text-align: center;
+  font-weight: 700;
+  margin: 0 8px;
+
+  > div {
+    margin-bottom: 0;
+  }
+
+  input {
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
+.sortingIcon {
+  transform: rotate(90deg);
+  margin-left: 4px;
+
+  svg {
+    width: 14px;
+
+    path {
+      stroke: #444;
+    }
+  }
+}
+
+.iconDown {
+  transform: rotate(-90deg);
+}

@@ -18,14 +18,7 @@ import classnames from 'classnames'
 import isMobile from 'is-mobile'
 
 class CustomerDetailForm extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleChange({ target }) {
+  handleChange = ({ target }) => {
     const { customer, onChange } = this.props
     const { name } = target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -33,7 +26,7 @@ class CustomerDetailForm extends React.Component {
     onChange({ ...customer, [name]: value })
   }
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     const { onSave } = this.props
     event.preventDefault()
     onSave()
@@ -47,6 +40,22 @@ class CustomerDetailForm extends React.Component {
     )
     return (
       <Form className={styles.panel} onSubmit={this.handleSubmit}>
+        <ConnectInput
+          name="first_name"
+          value={customer.first_name || ''}
+          label="First Name"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
+        <ConnectInput
+          name="last_name"
+          value={customer.last_name || ''}
+          label="Last Name"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
         <div className={styles.phoneInput}>
           <ConnectInput
             name="phone"

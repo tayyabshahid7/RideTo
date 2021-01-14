@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styles from './styles.scss'
+import { getCustomerBikeTypeOptions } from 'services/order'
 
 class FilteredTable extends Component {
   constructor(props) {
@@ -22,6 +23,11 @@ class FilteredTable extends Component {
         return undefined
       })
     return sortingData.toString()
+  }
+
+  getBikeType(order) {
+    const options = getCustomerBikeTypeOptions(false)
+    return options[order.bike_hire]
   }
 
   handleSort(e) {
@@ -112,13 +118,7 @@ class FilteredTable extends Component {
                 </td>
                 <td>{order.friendly_id}</td>
                 <td>{order.user_date}</td>
-                <td>
-                  {order.bike_hire === 'auto'
-                    ? 'Automatic'
-                    : order.bike_hire === 'manual'
-                    ? 'Manual'
-                    : 'None'}
-                </td>
+                <td>{this.getBikeType(order)}</td>
                 <td>{order.location}</td>
               </tr>
             ))}

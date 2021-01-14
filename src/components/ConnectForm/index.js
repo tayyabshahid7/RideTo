@@ -8,6 +8,7 @@ import ConnectSelect from './ConnectSelect'
 import ConnectTextArea from './ConnectTextArea'
 import ConnectColorInput from './ConnectColorInput'
 import ConnectReactSelect from './ConnectReactSelect'
+import ConnectReactSelectAsync from './ConnectReactSelectAsync'
 import ConnectSingleSelect from './ConnectSingleSelect'
 
 export {
@@ -21,5 +22,6 @@ export {
   ConnectTextArea,
   ConnectColorInput,
   ConnectReactSelect,
+  ConnectReactSelectAsync,
   ConnectSingleSelect
 }

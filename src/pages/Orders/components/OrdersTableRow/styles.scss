@@ -1,0 +1,50 @@
+.menuItem {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  > span {
+    font-size: 13px;
+    line-height: 16px;
+    color: rgba(#4259a8, 0.8);
+    margin-left: 8px;
+  }
+
+  > svg {
+    transform: scale(1.1);
+  }
+
+  &:hover {
+    > span {
+      color: #4259a8;
+    }
+  }
+}
+
+.divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.05);
+  margin: 16px 0;
+}
+
+.spacing {
+  height: 16px;
+}
+
+.textRight {
+  text-align: right;
+}
+
+.link {
+  color: #4259a8;
+  cursor: pointer;
+
+  &:hover {
+    color: #2c3c71;
+    text-decoration: underline;
+  }
+}
+
+.noBreak {
+  white-space: nowrap;
+}
