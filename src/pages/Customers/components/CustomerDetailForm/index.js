@@ -18,14 +18,7 @@ import classnames from 'classnames'
 import isMobile from 'is-mobile'
 
 class CustomerDetailForm extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-
-  handleChange({ target }) {
+  handleChange = ({ target }) => {
     const { customer, onChange } = this.props
     const { name } = target
     const value = target.type === 'checkbox' ? target.checked : target.value
@@ -33,7 +26,7 @@ class CustomerDetailForm extends React.Component {
     onChange({ ...customer, [name]: value })
   }
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     const { onSave } = this.props
     event.preventDefault()
     onSave()
