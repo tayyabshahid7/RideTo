@@ -23,6 +23,7 @@ import {
 import { fetchOrderById } from 'services/order'
 import { fetchCustomer, createCustomer } from 'services/customer'
 import { getErrorMsg } from 'utils/helper'
+import { validateEmail } from 'common/emailExtensions'
 
 const InvoiceForm = ({
   invoice,
@@ -237,11 +238,7 @@ const InvoiceForm = ({
       }
 
       if (!customer && email) {
-        if (
-          !email.match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          )
-        ) {
+        if (!validateEmail(email)) {
           showNotification('Error', 'Customer email is invalid', 'danger')
           return false
         }

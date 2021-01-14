@@ -17,7 +17,6 @@ const InvoiceFormLineItems = ({ disabled, value, onChange }) => {
 
   useEffect(() => {
     if (value && value.length) {
-      console.log(value)
       value.forEach(line => {
         line.tax = parseInt(line.tax.split('%')[0]) + '%'
       })
