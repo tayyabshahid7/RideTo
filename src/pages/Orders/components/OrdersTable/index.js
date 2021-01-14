@@ -4,6 +4,7 @@ import styles from './styles.scss'
 import moment from 'moment'
 import OrdersTableRow from '../OrdersTableRow'
 import { Button, ConnectInput } from 'components/ConnectForm'
+import { useMediaQuery } from 'react-responsive'
 import {
   IconSideFilter,
   IconAngleRight,
@@ -37,6 +38,7 @@ const OrdersTable = ({
 }) => {
   const [showInvoiceForm, setShowInvoiceForm] = useState(false)
   const [orderDetail, setOrderDetail] = useState(false)
+  const isTablet = useMediaQuery({ maxWidth: 1249 })
 
   const orderStatusMap = {
     TRAINING_CONFIRMED: {
@@ -108,6 +110,10 @@ const OrdersTable = ({
     { title: 'Order Status', field: 'status', width: '1.5fr' },
     { title: '', field: 'action', width: '100px' }
   ]
+
+  if (isTablet) {
+    header.splice(5, 1)
+  }
 
   const tableStyles = {
     gridTemplateColumns: header.map(x => x.width).join(' '),
