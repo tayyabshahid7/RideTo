@@ -14,7 +14,10 @@ import {
 } from 'services/invoice'
 import { getInvoices } from 'store/invoice'
 import { actions as notifyActions } from 'store/notification'
-import { ConnectTextArea, Button } from 'components/ConnectForm'
+import {
+  //ConnectTextArea,
+  Button
+} from 'components/ConnectForm'
 
 const InvoiceStatusSidebar = ({
   history,
@@ -27,7 +30,7 @@ const InvoiceStatusSidebar = ({
   const [invoice, setInvoice] = useState(null)
   const [order, setOrder] = useState(null)
   const [status, setStatus] = useState(null)
-  const [notes, setNotes] = useState('')
+  // const [notes, setNotes] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -76,10 +79,10 @@ const InvoiceStatusSidebar = ({
     setStatus(value)
   }
 
-  const handleChangeNote = event => {
-    const { value } = event.target
-    setNotes(value)
-  }
+  // const handleChangeNote = event => {
+  //   const { value } = event.target
+  //   setNotes(value)
+  // }
 
   const handleUpdate = async () => {
     setLoading(true)
@@ -165,7 +168,7 @@ const InvoiceStatusSidebar = ({
           </div>
         </div>
       ))}
-      <div>
+      {/* <div>
         <label className={styles.label} style={{ marginBottom: 20 }}>
           Notes
         </label>
@@ -175,7 +178,7 @@ const InvoiceStatusSidebar = ({
           type="textarea"
           onChange={handleChangeNote}
         />
-      </div>
+      </div> */}
       <Button color="primary" onClick={handleUpdate}>
         Update Status
       </Button>

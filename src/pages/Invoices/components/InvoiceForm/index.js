@@ -262,6 +262,11 @@ const InvoiceForm = ({
     handleClose()
   }
 
+  const handleDownload = () => {
+    window.open(invoice.invoice_pdf)
+    handleClose()
+  }
+
   const handleSend = async isSend => {
     const formData = await prepareData()
     if (!formData) {
@@ -414,7 +419,11 @@ const InvoiceForm = ({
           </div>
 
           <div className={styles.actions}>
-            {status && status !== 'draft' ? (
+            {status && (status === 'paid' || status === 'void') ? (
+              <Button color="primary" onClick={() => handleDownload()}>
+                Download Invoice
+              </Button>
+            ) : status && status !== 'draft' ? (
               <Button color="primary" onClick={() => handleTakePayment()}>
                 Take Payment
               </Button>
