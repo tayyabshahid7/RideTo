@@ -22,7 +22,7 @@ function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
         <div className={styles.headerText}>
           <div>
             Peace of mind policy
-            <PeaceOfMindPolicyInfo />
+            {!popup && <PeaceOfMindPolicyInfo />}
           </div>
         </div>
         {!popup && (
