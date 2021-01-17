@@ -22,7 +22,7 @@ class AddonSelectionItem extends React.Component {
     const isDiscount =
       addon.full_price &&
       addon.discount_price &&
-      addon.full_price > addon.discount_price
+      parseFloat(addon.full_price) > parseFloat(addon.discount_price)
     const price = addon.discount_price || addon.full_price
     const onClick = isAdded ? onRemove : onAdd
 

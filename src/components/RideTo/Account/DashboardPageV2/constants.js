@@ -4,8 +4,8 @@ export const CBT_ROUTE = [
   'STEP_ITM',
   'STEP_REVISE',
   'STEP_CBT',
-  'STEP_BIKE',
   'STEP_GEAR',
+  'STEP_BIKE',
   'STEP_INSURE',
   'STEP_RIDE'
 ]
@@ -18,8 +18,8 @@ export const FULL_LICENCE_ROUTE = [
   'STEP_CBT',
   'STEP_THEORY_TEST',
   'STEP_FULL_LICENCE',
-  'STEP_BIKE',
   'STEP_GEAR',
+  'STEP_BIKE',
   'STEP_INSURE',
   'STEP_RIDE'
 ]
@@ -72,16 +72,16 @@ export const DEFAULT_TIMELINE = [
     ]
   },
   {
-    constant: 'STEP_BIKE',
-    name: 'Bike',
-    is_completed: false,
-    achievements: []
-  },
-  {
     constant: 'STEP_GEAR',
     name: 'Gear',
     is_completed: false,
     achievements: ['ACHIEVEMENT_GET_THE_GEAR']
+  },
+  {
+    constant: 'STEP_BIKE',
+    name: 'Bike',
+    is_completed: false,
+    achievements: []
   },
   {
     constant: 'STEP_INSURE',

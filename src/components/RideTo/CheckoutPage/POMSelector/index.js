@@ -4,6 +4,7 @@ import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import classnames from 'classnames'
 import { createPOM } from 'utils/helper'
 import shield from 'assets/images/security.svg'
+import PeaceOfMindPolicyInfo from 'components/RideTo/CheckoutPage/PeaceOfMindPolicyInfo'
 
 function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
   const { discount_price } = createPOM()
@@ -19,7 +20,10 @@ function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
       </div>
       <div className={styles.header}>
         <div className={styles.headerText}>
-          <div>Peace of mind policy</div>
+          <div>
+            Peace of mind policy
+            {!popup && <PeaceOfMindPolicyInfo />}
+          </div>
         </div>
         {!popup && (
           <button
