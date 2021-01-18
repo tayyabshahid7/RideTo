@@ -226,7 +226,6 @@ class CourseForm extends React.Component {
 
     const isFullLicence = this.checkType()
     const { course } = this.state
-    console.log(course)
 
     if (isFullLicence) {
       fullLicenceBikeFields.forEach(field => {
