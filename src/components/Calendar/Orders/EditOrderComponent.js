@@ -134,9 +134,7 @@ const EditOrderComponent = ({
       try {
         await deleteOrderTraining(course.supplier, order.id)
         handleCancel()
-      } catch {
-        console.log("Couldn't delete order.")
-      }
+      } catch {}
     }
   }
 
