@@ -231,6 +231,16 @@
     margin-top: 12px;
     margin-right: 16px;
   }
+
+  @media (max-width: 575px) {
+    > div {
+      margin-right: 12px;
+
+      img {
+        width: 20px;
+      }
+    }
+  }
 }
 
 .tooltip {
