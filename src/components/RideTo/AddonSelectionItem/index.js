@@ -27,7 +27,7 @@ class AddonSelectionItem extends React.Component {
     const onClick = isAdded ? onRemove : onAdd
 
     return (
-      <div className={styles.addonSelectionItem}>
+      <div className={styles.addonSelectionItem} id={'addon-' + addon.id}>
         <h2 className={styles.title}>{addon.name}</h2>
 
         <div className={styles.row}>
