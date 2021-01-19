@@ -58,6 +58,7 @@ class CsvUpload extends React.Component {
       'text/x-comma-separated-values',
       'text/tab-separated-values'
     ]
+    console.log('CSV file type', file.type)
 
     if (!csvTypes.includes(file.type)) {
       showNotification(
