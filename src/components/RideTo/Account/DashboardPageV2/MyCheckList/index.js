@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styles from './styles.scss'
-import { ITEMS } from './content'
+import { NEW_ITEMS } from './content'
 import StatusIcon from '../StatusIcon'
 import { fetchUserChecklist, updateUserChecklist } from 'services/dashboard'
 import shopIcon from 'assets/images/shop.svg'
@@ -10,8 +10,9 @@ const DEFAULT_LENGTH = 3
 function MyCheckList({ userId }) {
   const [isChanged, setIsChanged] = useState(false)
   const [userList, setUserList] = useState([])
-  const totalLength = userList.length
   const [visibleLength, setVisibleLength] = useState(DEFAULT_LENGTH)
+  const totalLength = userList.length
+  const itemKeys = NEW_ITEMS.map(x => x.id)
 
   const handleViewAllClick = () => {
     if (visibleLength === DEFAULT_LENGTH) {
@@ -35,8 +36,14 @@ function MyCheckList({ userId }) {
   useEffect(() => {
     async function loadList() {
       const response = await fetchUserChecklist(userId)
+      const data = []
+      itemKeys.forEach(id => {
+        if (typeof response[id] !== 'undefined') {
+          data.push([id, response[id]])
+        }
+      })
 
-      setUserList(Object.entries(response))
+      setUserList(data)
     }
 
     if (userId && !userList.length) {
@@ -58,7 +65,7 @@ function MyCheckList({ userId }) {
       </h2>
       <ul className={styles.list}>
         {userList.slice(0, visibleLength).map(([id, status]) => {
-          const meta = ITEMS.find(item => item.id === id)
+          const meta = NEW_ITEMS.find(item => item.id === id)
 
           return (
             <li key={id}>
