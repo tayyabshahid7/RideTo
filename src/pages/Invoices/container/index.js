@@ -28,7 +28,7 @@ const statusOptions = [
   { text: 'Uncollectible', value: 'uncollectible' },
   { text: 'Void', value: 'void' }
 ]
-const pageSize = 100
+const pageSize = 1
 
 function Invoices({
   location,

@@ -1,8 +1,13 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
+import moment from 'moment'
 import styles from './styles.scss'
 import { Row, Col } from 'reactstrap'
 import { connect } from 'react-redux'
 import { ConnectInput, ConnectSelect, Button } from 'components/ConnectForm'
+import LoadingMask from 'components/LoadingMask'
+import { DATE_FORMAT } from 'common/constants'
+import { getCourses } from 'store/course'
 
 class ChangeDate extends Component {
   constructor(props) {
@@ -21,31 +26,54 @@ class ChangeDate extends Component {
     this.handleTimeChange = this.handleTimeChange.bind(this)
     this.handleFetchTimes = this.handleFetchTimes.bind(this)
     this.handleUpdateClick = this.handleUpdateClick.bind(this)
-    this.filterDates = this.filterDates.bind(this)
   }
 
-  filterDates() {
-    const { calendarCourses, courseType, course } = this.props
-
-    const availableDate = !course
-      ? []
-      : calendarCourses
-          .filter(
-            x =>
-              x.course_type.constant === courseType &&
-              x.spaces_available > 0 &&
-              x.supplier === course.supplier
-          )
-          .map(({ date }) => new Date(date))
-
-    this.setState({
-      availableDate
-    })
+  getFirstAndLastDate(year, month) {
+    let oneDay = 1000 * 60 * 60 * 24
+    let firstDay = new Date(year, month, 1)
+    let dayOne = firstDay.getDay()
+    if (dayOne === 0) {
+      dayOne = 6
+    } else {
+      dayOne--
+    }
+    let dayLast = new Date(year, month + 1, 0)
+    let firstDateInMonthCalendar = new Date(firstDay - dayOne * oneDay)
+    let monthViewDays = dayOne + dayLast.getDate() <= 35 ? 35 : 42
+    let date = new Date(firstDateInMonthCalendar)
+    date.setDate(date.getDate() + monthViewDays - 1)
+    return { firstDate: firstDateInMonthCalendar, lastDate: date }
   }
 
   componentDidMount() {
-    this.filterDates()
+    this.handleCalendarChange(this.props.date)
     this.handleFetchTimes({ init: true })
+  }
+
+  handleCalendarChange = date => {
+    const { course, calendar, getCourses } = this.props
+    const schoolId = course.supplier
+    const { firstDate, lastDate } = this.getFirstAndLastDate(
+      moment(date).year(),
+      moment(date).month()
+    )
+    const formatedFirstDate = moment(firstDate).format(DATE_FORMAT)
+    const formatedLastDate = moment(lastDate).format(DATE_FORMAT)
+    const month = `${formatedFirstDate}-${formatedLastDate}-${schoolId}`
+
+    if (
+      Array.isArray(calendar.loadedMonths) &&
+      calendar.loadedMonths.includes(month)
+    ) {
+      return
+    }
+
+    getCourses({
+      schoolId,
+      firstDate: formatedFirstDate,
+      lastDate: formatedLastDate,
+      month
+    })
   }
 
   handleDateChange(event) {
@@ -100,8 +128,21 @@ class ChangeDate extends Component {
   }
 
   render() {
-    const { times, disabled } = this.props
-    const { date, time, showTimes, isTimeChanged, availableDate } = this.state
+    const { times, disabled, calendar } = this.props
+    const { date, time, showTimes, isTimeChanged } = this.state
+
+    // calculate available dates
+    const { calendarCourses, courseType, course } = this.props
+    const availableDate = !course
+      ? []
+      : calendarCourses
+          .filter(
+            x =>
+              x.course_type.constant === courseType &&
+              x.spaces_available > 0 &&
+              x.supplier === course.supplier
+          )
+          .map(({ date }) => new Date(date))
 
     return (
       <div className={styles.form}>
@@ -115,10 +156,12 @@ class ChangeDate extends Component {
                 value={date}
                 type="date"
                 onChange={this.handleDateChange}
+                onCalendarChange={this.handleCalendarChange}
                 className={styles.dateInput}
                 highlightDates={availableDate}
                 disabled={disabled}
               />
+              {calendar.loading && <LoadingMask loading={true} />}
               {/*
               <Button
                 disabled={!isDateChanged}
@@ -184,8 +227,20 @@ class ChangeDate extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    calendarCourses: state.course.calendar.courses
+    calendarCourses: state.course.calendar.courses,
+    calendar: state.course.calendar
   }
 }
 
-export default connect(mapStateToProps)(ChangeDate)
+const mapDispatchToProps = dispatch =>
+  bindActionCreators(
+    {
+      getCourses
+    },
+    dispatch
+  )
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ChangeDate)

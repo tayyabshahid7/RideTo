@@ -1,7 +1,12 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { updateOrder, getDayCourses, getDayCourseTimes } from 'store/course'
+import {
+  updateOrder,
+  getCourses,
+  getDayCourses,
+  getDayCourseTimes
+} from 'store/course'
 import * as orderModule from 'store/order'
 import EditOrderForm from 'components/EditOrderForm'
 import Loading from 'components/Loading'
@@ -78,6 +83,7 @@ const mapStateToProps = (state, props) => {
     loading: state.course.orderEditForm.loading,
     activeSchools: state.auth.activeSchools,
     info: state.info,
+    calendar: state.course.calendar,
     courses: state.course.day.courses,
     times: state.course.times.available,
     isSending: state.order.isSending,
@@ -91,7 +97,8 @@ const mapDispatchToProps = dispatch =>
       ...orderModule.actions,
       updateOrder,
       getDayCourses,
-      getDayCourseTimes
+      getDayCourseTimes,
+      getCourses
     },
     dispatch
   )
