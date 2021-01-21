@@ -41,6 +41,7 @@ const OrdersPanelDetailForm = ({
       course_type={course.course_type.constant}
       date={course.date}
       time={course.time}
+      hidePriceLine
       onCancel={onCancel}
       onDelete={onDelete}
       onSave={handleSave}

@@ -137,7 +137,9 @@ const OrderPaymentForm = ({
         }
         setScreen('success')
         setSaving(false)
-        onPaid && onPaid()
+        if (onPaid) {
+          onPaid()
+        }
       }
     } catch (err) {
       console.log(err)

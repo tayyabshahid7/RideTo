@@ -200,7 +200,7 @@ const AddOrderComponent = ({
         />
       )}
 
-      {isFullLicense && (
+      {!submitted && isFullLicense && (
         <div className={styles.buttonHolder}>
           {isPackage ? (
             <div className={styles.addButton} onClick={handleEditPackage}>

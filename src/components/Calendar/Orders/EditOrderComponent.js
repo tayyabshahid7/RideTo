@@ -125,6 +125,10 @@ const EditOrderComponent = ({
     handleCancel()
   }
 
+  const handlePackageUpdated = () => {
+    handleCancel()
+  }
+
   const handleDeleteTraining = async () => {
     if (
       window.confirm(
@@ -144,6 +148,7 @@ const EditOrderComponent = ({
         date={courses[0].date}
         history={history}
         courses={coursePackage.courses}
+        onUpdated={handlePackageUpdated}
       />
     )
   }

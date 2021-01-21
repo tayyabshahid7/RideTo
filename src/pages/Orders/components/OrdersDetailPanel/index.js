@@ -10,8 +10,7 @@ import {
   updateOrder
 } from 'store/course'
 import * as orderModule from 'store/order'
-import { getPaymentStatus } from 'services/order'
-import ColorTag from 'components/ColorTag'
+import OrderPriceLine from 'components/Calendar/CoursesPanel/OrderPriceLine'
 import CourseSummary from 'components/Calendar/CoursesPanel/CourseSummary'
 import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
 import OrdersPanelDetailForm from '../OrdersPanelDetailForm'
@@ -88,8 +87,6 @@ const OrdersDetailPanel = ({
     return <Loading loading />
   }
 
-  const paymentStatus = getPaymentStatus(order.order.payment_status)
-
   let customerName = ' '
   if (order.customer) {
     customerName = order.customer.full_name
@@ -165,6 +162,25 @@ const OrdersDetailPanel = ({
     }
   }
 
+  const orderPaid = order.order && order.order.payment_status === 'PAID'
+  // const hasInvoice = order.order && !!order.order.stripe_invoice_id
+  const payOrderId = order.order ? order.order.friendly_id : null
+  let amount = course.pricing ? course.pricing.price : 0
+  const paymentValid = payOrderId && amount
+
+  let orderResponse = {}
+  if (course && course.orders) {
+    const courseOrder = course.orders.find(x => x.id === order.id)
+    if (courseOrder) {
+      if (courseOrder.package_price) {
+        amount = courseOrder.package_price
+        orderResponse.package = {
+          price: (amount / 100).toFixed(2)
+        }
+      }
+    }
+  }
+
   const renderHeader = () => {
     return (
       <React.Fragment>
@@ -173,25 +189,14 @@ const OrdersDetailPanel = ({
           subtitle={friendlyId}
           onBack={handleBack}
         />
-        <div className={styles.priceLine}>
-          {course.pricing ? (
-            <span className={styles.price}>
-              £{(course.pricing.price / 100).toFixed(2)}
-            </span>
-          ) : (
-            <span></span>
-          )}
-          <ColorTag text={paymentStatus.text} type={paymentStatus.type} />
-        </div>
+        <OrderPriceLine
+          order={order}
+          orderDetail={orderResponse}
+          course={course}
+        />
       </React.Fragment>
     )
   }
-
-  const orderPaid = order.order && order.order.payment_status === 'PAID'
-  // const hasInvoice = order.order && !!order.order.stripe_invoice_id
-  const payOrderId = order.order ? order.order.friendly_id : null
-  let amount = course.pricing ? course.pricing.price : 0
-  const paymentValid = payOrderId && amount
 
   if (paymentValid && paymentMode) {
     return (

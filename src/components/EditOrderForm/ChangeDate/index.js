@@ -52,6 +52,9 @@ class ChangeDate extends Component {
 
   handleCalendarChange = date => {
     const { course, calendar, getCourses } = this.props
+    if (!course) {
+      return
+    }
     const schoolId = course.supplier
     const { firstDate, lastDate } = this.getFirstAndLastDate(
       moment(date).year(),

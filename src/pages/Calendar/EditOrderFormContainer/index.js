@@ -49,6 +49,7 @@ class EditOrderFormContainer extends React.Component {
       isSending,
       onDelete,
       onSave,
+      hidePriceLine,
       isAdmin
     } = this.props
 
@@ -62,6 +63,7 @@ class EditOrderFormContainer extends React.Component {
             info={info}
             date={date}
             time={time}
+            hidePriceLine={hidePriceLine}
             courses={courses}
             courseDetail={courseDetail}
             times={times}

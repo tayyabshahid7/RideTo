@@ -87,7 +87,6 @@ function Orders({
 
   useEffect(() => {
     if (paramLoaded) {
-      console.log(params)
       setDateFilter(params.dateFilter)
       if (params.supplier_id) {
         setSelectedSuppliers(

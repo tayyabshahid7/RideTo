@@ -2,6 +2,7 @@ import React from 'react'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
+import OrderPriceLine from 'components/Calendar/CoursesPanel/OrderPriceLine'
 import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
 import { Desktop } from 'common/breakpoints'
 
@@ -22,12 +23,14 @@ import ChangeDate from './ChangeDate/'
 class EditOrderForm extends React.Component {
   constructor(props) {
     super(props)
+
     this.state = {
       order: props.order || {},
       showChangeDate: false,
       isChanged: false,
       invoiceCreated: false,
       showPayment: false,
+      paid: false,
       orderDetail: null // invoice order detail
     }
   }
@@ -120,6 +123,12 @@ class EditOrderForm extends React.Component {
     }
   }
 
+  onOrderPaid = () => {
+    this.setState({
+      paid: true
+    })
+  }
+
   render() {
     let {
       isSending,
@@ -132,6 +141,7 @@ class EditOrderForm extends React.Component {
       loadTimes,
       isAdmin,
       order,
+      hidePriceLine,
       onCancel
     } = this.props
     const { showChangeDate, isChanged, orderDetail, showPayment } = this.state
@@ -183,7 +193,7 @@ class EditOrderForm extends React.Component {
 
     const testResultOptions = getTestResultOptions()
     const payOrderId = order && order.order && order.order.friendly_id
-    const amount = course && course.pricing ? course.pricing.price : 0
+    let amount = course && course.pricing ? course.pricing.price : 0
 
     const canTakePayment =
       amount && order && order.order && order.order.payment_status !== 'PAID'
@@ -200,15 +210,44 @@ class EditOrderForm extends React.Component {
       order.order &&
       (order.order.source === 'DASHBOARD' || order.order.source === 'WIDGET')
 
+    // check package
+    const newOrder = {
+      order: {
+        payment_status: this.state.paid ? 'PAID' : payment_status
+      }
+    }
+    let orderResponse = {}
+    if (course && course.orders) {
+      const courseOrder = course.orders.find(x => x.id === order.id)
+      if (courseOrder) {
+        if (courseOrder.package_price) {
+          amount = courseOrder.package_price
+          orderResponse.package = {
+            price: (amount / 100).toFixed(2)
+          }
+        }
+      }
+    }
+
     return (
       <div className={styles.container}>
         {showPayment ? (
-          <OrderPaymentContainer
-            customer={order.customer}
-            amount={amount}
-            orderId={payOrderId}
-            onRefresh={onCancel}
-          />
+          <React.Fragment>
+            {!hidePriceLine && (
+              <OrderPriceLine
+                order={newOrder}
+                orderDetail={orderResponse}
+                course={course}
+              />
+            )}
+            <OrderPaymentContainer
+              customer={order.customer}
+              amount={amount}
+              orderId={payOrderId}
+              onRefresh={onCancel}
+              onPaid={this.onOrderPaid}
+            />
+          </React.Fragment>
         ) : (
           <Form onSubmit={this.handleSave}>
             <ChangeDate
