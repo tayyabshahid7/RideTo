@@ -29,6 +29,7 @@ const CoursePackageForm = ({
   cancelCoursePackage,
   deleteCoursePackage,
   finishCoursePackage,
+  onUpdated,
   removeCourseFromPackage
 }) => {
   const [price, setPrice] = useState(0)
@@ -38,6 +39,7 @@ const CoursePackageForm = ({
   useEffect(() => {
     if (!saving && submitted && !error) {
       finishCoursePackage(price)
+      onUpdated && onUpdated()
     }
   }, [saving, submitted])
 
