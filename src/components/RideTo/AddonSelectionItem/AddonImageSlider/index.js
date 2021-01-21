@@ -2,19 +2,15 @@ import React from 'react'
 import classnames from 'classnames'
 
 import RideToSlider from 'components/RideToSlider'
-import ArrowSlideLeftBlack from 'assets/images/rideto/ArrowSlideLeftBlack.svg'
-import ArrowSlideRightBlack from 'assets/images/rideto/ArrowSlideRightBlack.svg'
 import styles from './AddonImageSlider.scss'
 
 const NextArrow = ({ onClick }) => (
   <span className={styles.nextArrow} onClick={onClick}>
-    <img src={ArrowSlideRightBlack} alt="" />
   </span>
 )
 
 const PrevArrow = ({ onClick }) => (
   <span className={styles.prevArrow} onClick={onClick}>
-    <img src={ArrowSlideLeftBlack} alt="" />
   </span>
 )
 
