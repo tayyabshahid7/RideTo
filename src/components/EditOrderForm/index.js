@@ -162,7 +162,8 @@ class EditOrderForm extends React.Component {
     const isRideTo =
       !direct_friendly_id.includes('DR') &&
       !direct_friendly_id.includes('DIRECT') &&
-      !direct_friendly_id.includes('WIDGET')
+      !direct_friendly_id.includes('WIDGET') &&
+      !direct_friendly_id.includes('WD')
 
     const course = courseDetail
       ? courseDetail
