@@ -1,0 +1,146 @@
+.container {
+}
+
+.infoContainer {
+  padding: 58px 0;
+  position: relative;
+
+  h1 {
+    font-family: var(--font-rift-bold);
+    font-size: 60px;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-bottom: 36px;
+  }
+
+  hr {
+    margin: 15px 0;
+  }
+}
+
+.logo {
+  margin-bottom: 36px;
+
+  img {
+    height: 30px;
+  }
+}
+
+.starComponent {
+  margin-left: 14px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.icons {
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+
+  div {
+    margin-top: 12px;
+    margin-right: 16px;
+  }
+
+  @media (max-width: 575px) {
+    > div {
+      margin-right: 12px;
+
+      img {
+        width: 20px;
+      }
+    }
+  }
+}
+
+.iconsReviews {
+  display: flex;
+  align-items: center;
+}
+
+.reviewCount {
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 24px;
+  color: #141414;
+  opacity: 0.5;
+  margin-top: 4px;
+}
+
+.reviews {
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+}
+
+.blockTitle {
+  font-family: var(--font-rift-bold);
+  font-size: 24px;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 34px;
+}
+
+.margin20 {
+  margin-bottom: 20px;
+}
+
+.aboutContainer {
+  padding-top: 72px;
+  padding-bottom: 40px;
+}
+
+.aboutLines {
+  p {
+    font-size: 15px;
+    line-height: 24px;
+    color: #141414;
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-bottom: 24px;
+    }
+  }
+}
+
+.block {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+.facilityGroup {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 32px;
+}
+
+.facilityImages {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 14px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.locationIcon {
+  padding: 25px 0 30px;
+}
+
+.backdropArea {
+  position: relative;
+
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: rgba(#c2c2c2, 0.1);
+    left: -10000px;
+    right: -20000px;
+  }
+}
