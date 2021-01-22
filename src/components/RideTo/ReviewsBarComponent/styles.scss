@@ -1,0 +1,31 @@
+.container {
+}
+
+.reviewLine {
+  display: grid;
+  grid-template-columns: 60px 1fr;
+  height: 24px;
+  align-items: center;
+}
+
+.reviewKey {
+  font-size: 14px;
+  line-height: 24px;
+  color: #141414;
+}
+
+.reviewBar {
+  width: 100%;
+  height: 8px;
+  background: white;
+  position: relative;
+
+  > span {
+    position: absolute;
+    display: block;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: var(--primary-color);
+  }
+}
