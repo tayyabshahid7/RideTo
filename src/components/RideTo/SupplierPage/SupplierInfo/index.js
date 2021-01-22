@@ -131,6 +131,7 @@ const SupplierInfo = () => {
               const featureInfo = getFeatureInfo(item)
               return (
                 <IconText
+                  key={item}
                   icon={
                     <img
                       src={FeatureIcons[featureInfo.icon]}
