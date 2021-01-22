@@ -3,3 +3,8 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 30px;
 }
+
+.rightContent {
+  max-width: 456px;
+  justify-self: flex-end;
+}
