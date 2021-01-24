@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import classnames from 'classnames'
 import styles from './SupplierInfo.scss'
 import { IconPlace, IconTram } from 'assets/icons'
@@ -7,15 +7,41 @@ import IconText from '../IconText'
 import { getFeatureInfo } from 'services/course'
 import { UncontrolledTooltip } from 'reactstrap'
 import StarsComponent from 'components/RideTo/StarsComponent'
+import ReviewItem from 'components/RideTo/ReviewItem'
 import ReviewsBarComponent from 'components/RideTo/ReviewsBarComponent'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
 const ratings = supplier.ratings ? supplier.ratings : []
 
-const SupplierInfo = () => {
-  const backdrop = useRef()
+const reviews = {
+  '5 Star': 0,
+  '4 Star': 0,
+  '3 Star': 0,
+  '2 Star': 0,
+  '1 Star': 0
+}
 
-  const handleReviewClick = () => {}
+let avgRating = 0
+ratings.forEach(rating => {
+  reviews[`${rating.rating} Star`]++
+  avgRating += rating.rating
+})
+if (ratings.length) {
+  avgRating /= ratings.length
+}
+
+const SupplierInfo = () => {
+  const [showCnt, setShowCnt] = useState(3)
+  const backdrop = useRef()
+  const reviewBlock = useRef()
+
+  const handleReviewClick = () => {
+    reviewBlock.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const handleShowMore = () => {
+    setShowCnt(showCnt + 5)
+  }
 
   const renderIcon = feature => {
     let featureInfo = getFeatureInfo(feature)
@@ -85,7 +111,7 @@ const SupplierInfo = () => {
           </div>
           <div className={styles.reviews}>
             <StarsComponent
-              rating={4}
+              rating={avgRating}
               className={styles.starComponent}
               onClick={() => handleReviewClick()}
             />
@@ -178,9 +204,19 @@ const SupplierInfo = () => {
           TODO: MAP HERE
         </div>
 
-        <div id="rideto-supplier-reviews">
+        <div ref={reviewBlock} className={styles.reviewsBlock}>
           <h4 className={styles.blockTitle}>{ratings.length} REVIEWS</h4>
-          <ReviewsBarComponent />
+          <ReviewsBarComponent reviews={reviews} />
+          <div className={styles.reviewList}>
+            {ratings.slice(0, showCnt).map(rating => (
+              <ReviewItem key={rating.id} {...rating} />
+            ))}
+          </div>
+          {showCnt < ratings.length && (
+            <span className={styles.loadButton} onClick={handleShowMore}>
+              LOAD MORE
+            </span>
+          )}
         </div>
       </div>
     </div>

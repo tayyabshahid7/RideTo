@@ -1,14 +1,7 @@
 import React from 'react'
 import styles from './styles.scss'
 
-const ReviewsBarComponent = () => {
-  const reviews = {
-    '5 Star': 20,
-    '4 Star': 15,
-    '3 Star': 3,
-    '2 Star': 10,
-    '1 Star': 0
-  }
+const ReviewsBarComponent = ({ reviews }) => {
   const items = Object.keys(reviews)
   let total = 0
   items.forEach(item => (total += reviews[item]))
