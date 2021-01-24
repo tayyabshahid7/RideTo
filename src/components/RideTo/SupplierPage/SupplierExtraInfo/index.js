@@ -1,12 +1,15 @@
 import React from 'react'
 import styles from './SupplierExtraInfo.scss'
+import { IconGuarantee } from 'assets/icons'
 
 const SupplierExtraInfo = () => {
   return (
     <React.Fragment>
       <div className={styles.container}>
         <div className={styles.moneybackContent}>
-          <div>Icon</div>
+          <div className={styles.moneybackIcon}>
+            <IconGuarantee />
+          </div>
           <div>
             <p>
               Cancel within 3 working days to get a full refund on your booking.

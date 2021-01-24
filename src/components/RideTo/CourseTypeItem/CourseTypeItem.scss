@@ -5,6 +5,7 @@
   background-position: center;
   background-size: cover;
   padding-bottom: 120px;
+  cursor: pointer;
 }
 
 .content {
@@ -20,7 +21,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
+  cursor: pointer;
   flex-grow: 1;
   background: white;
   transition: height 0.2s ease-in-out;
@@ -56,7 +57,7 @@
 .cta {
   min-width: 96px;
   height: 120px;
-
+  cursor: pointer;
   color: white;
   background: var(--primary-color);
 

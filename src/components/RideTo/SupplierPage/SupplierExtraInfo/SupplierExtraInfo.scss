@@ -21,7 +21,13 @@
 .moneybackContent {
   display: grid;
   grid-template-columns: 80px 1fr;
+  grid-gap: 22px;
   align-items: center;
+}
+
+.moneybackIcon {
+  width: 80px;
+  height: 80px;
 }
 
 .link {
