@@ -1,18 +1,47 @@
-import React, { useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import classnames from 'classnames'
 import styles from './SupplierInfo.scss'
-import { IconHelmet } from 'assets/icons'
+import { IconPlace, IconTram } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import IconText from '../IconText'
 import { getFeatureInfo } from 'services/course'
 import { UncontrolledTooltip } from 'reactstrap'
 import StarsComponent from 'components/RideTo/StarsComponent'
+import ReviewItem from 'components/RideTo/ReviewItem'
 import ReviewsBarComponent from 'components/RideTo/ReviewsBarComponent'
 
-const SupplierInfo = () => {
-  const backdrop = useRef()
+const supplier = window.RIDETO_PAGE.supplier.supplier
+const ratings = supplier.ratings ? supplier.ratings : []
 
-  const handleReviewClick = () => {}
+const reviews = {
+  '5 Star': 0,
+  '4 Star': 0,
+  '3 Star': 0,
+  '2 Star': 0,
+  '1 Star': 0
+}
+
+let avgRating = 0
+ratings.forEach(rating => {
+  reviews[`${rating.rating} Star`]++
+  avgRating += rating.rating
+})
+if (ratings.length) {
+  avgRating /= ratings.length
+}
+
+const SupplierInfo = () => {
+  const [showCnt, setShowCnt] = useState(3)
+  const backdrop = useRef()
+  const reviewBlock = useRef()
+
+  const handleReviewClick = () => {
+    reviewBlock.current.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  const handleShowMore = () => {
+    setShowCnt(showCnt + 5)
+  }
 
   const renderIcon = feature => {
     let featureInfo = getFeatureInfo(feature)
@@ -45,7 +74,7 @@ const SupplierInfo = () => {
     instant_book: true
   }
 
-  const validFeatures = Object.keys(feature).filter(x => feature[x])
+  const validFeatures = Object.keys(feature).filter(x => supplier[x])
 
   const isFullLicence = false
 
@@ -58,38 +87,38 @@ const SupplierInfo = () => {
             alt="Supplier Logo"
           />
         </div>
-        <h1>Phoenix Motorcycle training crystal palace</h1>
+        <h1>{supplier.name}</h1>
         <IconText
-          icon={<IconHelmet />}
-          text="Wolsey Junir School, CR0 0TF"
+          icon={<IconPlace />}
+          text={supplier.address_2 + ', ' + supplier.postcode}
           underlined
         />
-        <IconText icon={<IconHelmet />} text="Fieldway Tramp stop" />
+        <IconText icon={<IconTram />} text="Fieldway Tramp stop" />
         <hr />
         <div className={styles.iconsReviews}>
           <div className={styles.icons}>
-            {feature.mciac_approved && renderIcon('mciac_approved')}
-            {feature.bike_hire && renderIcon('bike_hire')}
-            {feature.helmet_hire && renderIcon('helmet_hire')}
-            {feature.gloves_jacket_included &&
+            {supplier.mciac_approved && renderIcon('mciac_approved')}
+            {supplier.bike_hire && renderIcon('bike_hire')}
+            {supplier.helmet_hire && renderIcon('helmet_hire')}
+            {supplier.gloves_jacket_included &&
               renderIcon('gloves_jacket_included')}
-            {feature.on_site_cafe && renderIcon('on_site_cafe')}
-            {feature.on_site_parking && renderIcon('on_site_parking')}
-            {feature.indoor_classroom && renderIcon('indoor_classroom')}
+            {supplier.on_site_cafe && renderIcon('on_site_cafe')}
+            {supplier.on_site_parking && renderIcon('on_site_parking')}
+            {supplier.indoor_classroom && renderIcon('indoor_classroom')}
             {!isFullLicence &&
-              feature.instant_book &&
+              supplier.instant_book &&
               renderIcon('instant_book')}
           </div>
           <div className={styles.reviews}>
             <StarsComponent
-              rating={4}
+              rating={avgRating}
               className={styles.starComponent}
               onClick={() => handleReviewClick()}
             />
             <span
               onClick={() => handleReviewClick()}
               className={styles.reviewCount}>
-              {53}
+              {ratings.length}
             </span>
           </div>
         </div>
@@ -99,9 +128,7 @@ const SupplierInfo = () => {
         <div ref={backdrop} className={styles.backdrop}></div>
 
         <div className={styles.aboutContainer} id="rideto-supplier-about">
-          <h4 className={styles.blockTitle}>
-            About Phoenix Motorcycle Training Crystal Palace
-          </h4>
+          <h4 className={styles.blockTitle}>About {supplier.name}</h4>
           <div className={styles.aboutLines}>
             <p>
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae
@@ -170,16 +197,26 @@ const SupplierInfo = () => {
           </div>
           <div className={styles.locationIcon}>
             <IconText
-              icon={<IconHelmet />}
-              text="Wolsey Junir School, CR0 0TF"
+              icon={<IconPlace />}
+              text={supplier.address_2 + ', ' + supplier.postcode}
             />
           </div>
           TODO: MAP HERE
         </div>
 
-        <div id="rideto-supplier-reviews">
-          <h4 className={styles.blockTitle}>53 REVIEWS</h4>
-          <ReviewsBarComponent />
+        <div ref={reviewBlock} className={styles.reviewsBlock}>
+          <h4 className={styles.blockTitle}>{ratings.length} REVIEWS</h4>
+          <ReviewsBarComponent reviews={reviews} />
+          <div className={styles.reviewList}>
+            {ratings.slice(0, showCnt).map(rating => (
+              <ReviewItem key={rating.id} {...rating} />
+            ))}
+          </div>
+          {showCnt < ratings.length && (
+            <span className={styles.loadButton} onClick={handleShowMore}>
+              LOAD MORE
+            </span>
+          )}
         </div>
       </div>
     </div>

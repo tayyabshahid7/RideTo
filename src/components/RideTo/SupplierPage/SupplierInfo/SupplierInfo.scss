@@ -65,7 +65,7 @@
   line-height: 24px;
   color: #141414;
   opacity: 0.5;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .reviews {
@@ -143,4 +143,38 @@
     left: -10000px;
     right: -20000px;
   }
+}
+
+.loadButton {
+  position: relative;
+  flex-shrink: 0;
+  padding: 0.25rem 1rem;
+  border: 1px solid var(--primary-color);
+  background-color: transparent;
+  color: #fff;
+  font-weight: bold;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 400;
+  height: 48px;
+  font-family: var(--font-rift-bold);
+  text-align: center;
+  cursor: pointer;
+  font-size: 20px;
+
+  &,
+  &:hover {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+}
+
+.reviewList {
+  margin-top: 36px;
+}
+
+.reviewsBlock {
+  padding-bottom: 76px;
 }
