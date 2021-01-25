@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import SupplierInfo from './SupplierInfo'
 import SupplierExtraInfo from './SupplierExtraInfo'
 import CourseTypeList from 'components/RideTo/CourseTypeList'
@@ -10,13 +10,23 @@ const courseTypes = window.RIDETO_PAGE.courseTypes.filter(x =>
   typeList.includes(x.constant)
 )
 
+let defualtCourse = courseTypes.find(x => x.constant === 'LICENCE_CBT')
+if (!defualtCourse) {
+  defualtCourse = courseTypes[0]
+}
+
 const SupplierPage = () => {
+  const [course, setCourse] = useState(defualtCourse)
+
   const onDetail = value => {
     console.log(value)
   }
 
   const onCourseClick = value => {
-    console.log(value)
+
+    setCourse(value)
+    const courseEl = document.getElementById('supplier-course-slider')
+    courseEl.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -25,7 +35,7 @@ const SupplierPage = () => {
         <SupplierInfo />
       </div>
       <div className={styles.rightContent}>
-        <SupplierExtraInfo />
+        <SupplierExtraInfo courseTypes={courseTypes} course={course} />
       </div>
       <div className={styles.courseList}>
         <CourseTypeList

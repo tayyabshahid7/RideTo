@@ -69,4 +69,27 @@ $theme-colors: (
       }
     }
   }
+
+  &.course-image-slider {
+    .slick-dots {
+      bottom: 6px;
+      li {
+        margin: 0;
+
+        button {
+          &:before {
+            background: white;
+            opacity: 0.4;
+          }
+        }
+
+        &.slick-active button {
+          &:before {
+            background: white;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
 }

@@ -18,6 +18,19 @@
   }
 }
 
+.courseContainer {
+  padding: 38px 40px;
+  border-top: none;
+
+  h5 {
+    font-family: var(--font-rift-bold);
+    font-size: 18px;
+    line-height: 22px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+  }
+}
+
 .moneybackContent {
   display: grid;
   grid-template-columns: 80px 1fr;
@@ -51,4 +64,11 @@
   &:last-child {
     margin-bottom: 0;
   }
+}
+
+.imageSlider {
+  padding-top: 82px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
