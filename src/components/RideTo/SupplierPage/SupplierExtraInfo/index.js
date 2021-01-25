@@ -1,10 +1,22 @@
 import React from 'react'
 import styles from './SupplierExtraInfo.scss'
+import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
 import { IconGuarantee } from 'assets/icons'
+
+const images = [
+  'https://via.placeholder.com/456x296',
+  'https://via.placeholder.com/456x296',
+  'https://via.placeholder.com/456x296',
+  'https://via.placeholder.com/456x296',
+  'https://via.placeholder.com/456x296'
+]
 
 const SupplierExtraInfo = () => {
   return (
     <React.Fragment>
+      <div className={styles.imageSlider}>
+        <SupplierCourseImageSlider images={images} />
+      </div>
       <div className={styles.container}>
         <div className={styles.moneybackContent}>
           <div className={styles.moneybackIcon}>
