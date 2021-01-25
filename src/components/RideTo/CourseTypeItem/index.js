@@ -28,7 +28,9 @@ const CourseTypeItem = ({
         {children}
       </a>
     ) : (
-      <div onClick={onLinkClick} className={styles.expandedInfo}>
+      <div
+        onClick={() => onLinkClick(courseType)}
+        className={styles.expandedInfo}>
         {children}
       </div>
     )
@@ -43,7 +45,7 @@ const CourseTypeItem = ({
       </a>
     ) : (
       <div
-        onClick={onLinkClick}
+        onClick={() => onLinkClick(courseType)}
         className={classnames(styles.cta, isTypeform && 'typeform-share')}>
         {children}
       </div>
@@ -57,7 +59,7 @@ const CourseTypeItem = ({
       </a>
     ) : (
       <div
-        onClick={onLinkClick}
+        onClick={() => onLinkClick(courseType)}
         className={isTypeform ? 'typeform-share' : null}>
         {children}
       </div>
