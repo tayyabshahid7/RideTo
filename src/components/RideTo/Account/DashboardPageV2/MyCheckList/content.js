@@ -70,7 +70,7 @@ export const NEW_ITEMS = [
   },
   {
     title: 'L Plates - SHOP NOW',
-    url: 'https://store.rideto.com/products/pair-of-st',
+    url: 'https://store.rideto.com/products/pair-of-stick-on-l-plates-1',
     id: 'l_plates'
   },
   {
