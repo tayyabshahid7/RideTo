@@ -3,10 +3,9 @@ import styles from './SupplierCourseDetail.scss'
 import { AVAILABLE_COURSE_TYPES } from 'common/constants'
 import dropdownSmall from 'assets/icons/DropdownSmall.svg'
 import CourseAvailabilityComponent from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponent'
-import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence'
+// import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
-console.log(supplier)
 
 supplier.bank_holiday_start_time = '08:45:00'
 supplier.weekday_start_time = '08:45:00'
@@ -16,7 +15,6 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
   const [courseType, setCourseType] = useState(course)
 
   useEffect(() => {
-    console.log('changed', course)
     setCourseType(course)
   }, [course])
 
@@ -28,8 +26,6 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
   const onUpdate = value => {
     console.log(value)
   }
-
-  console.log(course)
 
   return (
     <React.Fragment>
