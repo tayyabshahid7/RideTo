@@ -5,13 +5,8 @@ import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
 import SupplierCourseDetail from '../SupplierCourseDetail'
 import { IconGuarantee } from 'assets/icons'
 
-const images = [
-  'https://via.placeholder.com/456x296',
-  'https://via.placeholder.com/456x296',
-  'https://via.placeholder.com/456x296',
-  'https://via.placeholder.com/456x296',
-  'https://via.placeholder.com/456x296'
-]
+const supplier = window.RIDETO_PAGE.supplier.supplier
+const images = [supplier.image, supplier.image2, supplier.image3].filter(x => x)
 
 const SupplierExtraInfo = ({ courseTypes, course }) => {
   return (

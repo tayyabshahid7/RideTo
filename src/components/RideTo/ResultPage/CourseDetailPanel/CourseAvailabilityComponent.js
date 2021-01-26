@@ -1,5 +1,6 @@
 import React from 'react'
 import moment from 'moment'
+import classnames from 'classnames'
 import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
@@ -218,7 +219,8 @@ class CourseAvailabilityComponent extends React.Component {
       instantDate,
       bike_hire,
       onUpdate,
-      courseType
+      courseType,
+      fromSupplier
     } = this.props
     const { calendar, courses, loadingCourses } = this.state
     let days = this.generateDaysDataFromCalendar(course, calendar)
@@ -287,7 +289,7 @@ class CourseAvailabilityComponent extends React.Component {
 
     return (
       <Loading loading={loadingCourses}>
-        <div className={styles.content}>
+        <div className={classnames(styles.content, fromSupplier && 'px-0')}>
           <AvailabilityCalendar
             days={days}
             calendar={{
