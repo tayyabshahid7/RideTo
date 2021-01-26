@@ -12,6 +12,7 @@ import ReviewsBarComponent from 'components/RideTo/ReviewsBarComponent'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
 const ratings = supplier.ratings ? supplier.ratings : []
+const trampText = supplier.nearest_tube_station
 
 const reviews = {
   '5 Star': 0,
@@ -82,10 +83,7 @@ const SupplierInfo = () => {
     <div className={styles.container}>
       <div className={styles.infoContainer}>
         <div className={styles.logo}>
-          <img
-            src="/static/client/assets/corporate/bmf.png"
-            alt="Supplier Logo"
-          />
+          <img src={supplier.hosted_logo} alt="Supplier Logo" />
         </div>
         <h1>{supplier.name}</h1>
         <IconText
@@ -93,7 +91,10 @@ const SupplierInfo = () => {
           text={supplier.address_2 + ', ' + supplier.postcode}
           underlined
         />
-        <IconText icon={<IconTram />} text="Fieldway Tramp stop" />
+        <IconText
+          icon={<IconTram />}
+          text={trampText || 'Fieldway Tramp stop'}
+        />
         <hr />
         <div className={styles.iconsReviews}>
           <div className={styles.icons}>
@@ -130,22 +131,7 @@ const SupplierInfo = () => {
         <div className={styles.aboutContainer} id="rideto-supplier-about">
           <h4 className={styles.blockTitle}>About {supplier.name}</h4>
           <div className={styles.aboutLines}>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut vitae
-              leo pulvinar, consectetur augue blandit, ullamcorper orci.
-              Curabitur eget sollicitudin lectus, quis auctor neque. Proin
-              mauris lorem, vulputate sit amet nisl nec, consequat euismod
-              neque. Integer feugiat molestie eros vel rhoncus. Maecenas nec ex
-              a elit aliquet luctus sit amet nec velit. Sed purus erat, pulvinar
-              et felis blandit, accumsan sagittis ligula.
-            </p>
-            <p>
-              Nullam cursus pulvinar augue, consequat tristique neque convallis
-              non. Aliquam nec finibus est, at gravida nisi. Suspendisse
-              pharetra sollicitudin tristique. Aliquam scelerisque finibus quam
-              quis iaculis. Phasellus blandit porttitor massa nec aliquet. Nunc
-              in nunc id sapien suscipit porttitor.
-            </p>
+            <p>{supplier.rideto_opinion}</p>
           </div>
         </div>
 
@@ -170,12 +156,12 @@ const SupplierInfo = () => {
               )
             })}
           </div>
-          <div className={styles.facilityImages}>
+          {/* <div className={styles.facilityImages}>
             <img src="https://via.placeholder.com/262x193" alt="Facility" />
             <img src="https://via.placeholder.com/262x193" alt="Facility" />
             <img src="https://via.placeholder.com/262x193" alt="Facility" />
             <img src="https://via.placeholder.com/262x193" alt="Facility" />
-          </div>
+          </div> */}
         </div>
 
         <div className={styles.block}>
@@ -183,17 +169,7 @@ const SupplierInfo = () => {
             LOCATION
           </h4>
           <div className={styles.aboutLines}>
-            <p>
-              Phoenix Motorcycle Training in Crystal Palace is a long
-              established motorcycle CBT school in South London. They offer a
-              large choice of bikes to train on, as well as providing jackets,
-              boots, helmets and gloves as standard. There's an indoor class
-              room for breaks and are just a 2 minute walk from the train
-              station. The local roads are quiet and provide a variety of
-              scenarios for learner riders. Phoenix are the UK's 1st MCIAC Gold
-              Standard School providing the highest standard of motorcycle
-              training.
-            </p>
+            <p>{supplier.location_information}</p>
           </div>
           <div className={styles.locationIcon}>
             <IconText
