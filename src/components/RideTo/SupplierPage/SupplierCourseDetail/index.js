@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import moment from 'moment'
 import styles from './SupplierCourseDetail.scss'
 import { AVAILABLE_COURSE_TYPES } from 'common/constants'
 import dropdownSmall from 'assets/icons/DropdownSmall.svg'
@@ -6,13 +7,20 @@ import CourseAvailabilityComponent from 'components/RideTo/ResultPage/CourseDeta
 // import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
+let supplierData = Object.assign({}, supplier)
+if (supplier.courses_info && supplier.courses_info.length) {
+  supplierData = Object.assign(supplierData, supplier.courses_info[0])
+}
 
-supplier.bank_holiday_start_time = '08:45:00'
-supplier.weekday_start_time = '08:45:00'
-supplier.weekend_start_time = '06:45:00'
+const date = moment().format('YYYY-MM-DD')
 
 const SupplierCourseDetail = ({ courseTypes, course }) => {
   const [courseType, setCourseType] = useState(course)
+  const [courseInfo, setCourseInfo] = useState({
+    instantCourse: null,
+    instantDate: date,
+    bike_hire: null
+  })
 
   useEffect(() => {
     setCourseType(course)
@@ -24,7 +32,9 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
   }
 
   const onUpdate = value => {
-    console.log(value)
+    const tmp = Object.assign({}, courseInfo, value)
+    setCourseInfo(tmp)
+    console.log(tmp)
   }
 
   return (
@@ -50,15 +60,15 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
           alt="dropdown icon"
         />
       </div>
-      {course.constant !== 'FULL_LICENCE' ? (
+      {courseType.constant !== 'FULL_LICENCE' ? (
         <CourseAvailabilityComponent
           fromSupplier
-          course={supplier}
+          course={supplierData}
           courseType={course.constant}
-          date={null}
-          instantCourse={false}
-          instantDate={null}
-          bike_hire={null}
+          date={date}
+          instantCourse={courseInfo.instantCourse}
+          instantDate={courseInfo.instantDate}
+          bike_hire={courseInfo.bike_hire}
           onUpdate={onUpdate}
         />
       ) : null
