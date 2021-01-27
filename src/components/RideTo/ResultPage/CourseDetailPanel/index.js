@@ -41,14 +41,7 @@ class CourseDetailPanel extends React.Component {
       selectedTimeDays,
       isErrored
     } = this.props
-    console.log({
-      course,
-      courseType,
-      date,
-      instantCourse,
-      instantDate,
-      bike_hire
-    })
+
     return (
       <div className={styles.courseDetails}>
         <div className={styles.tab}>

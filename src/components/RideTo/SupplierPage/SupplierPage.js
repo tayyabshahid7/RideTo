@@ -18,7 +18,7 @@ const typeList = supplier.courses.map(x => x.constant)
 const courseTypes = window.RIDETO_PAGE.courseTypes.filter(x =>
   typeList.includes(x.constant)
 )
-supplierData.instant_book = window.RIDETO_PAGE.instant_book
+supplier.instant_book = window.RIDETO_PAGE.supplier.instant_book
 
 window.isSupplier = true
 
@@ -35,7 +35,6 @@ const SupplierPage = () => {
   const isDesktop = useMediaQuery({ minWidth: 1200 })
 
   const onDetail = value => {
-    console.log(value)
     setInfoCourse(value)
     setShowCourseInfo(true)
   }
