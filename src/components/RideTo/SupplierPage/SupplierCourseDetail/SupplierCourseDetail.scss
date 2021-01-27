@@ -33,3 +33,54 @@
   right: 18px;
   pointer-events: none;
 }
+
+.priceLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 36px 0 0;
+
+  span {
+    font-size: 20px;
+    color: #d0021b;
+  }
+}
+
+.action {
+  width: 100%;
+  justify-content: space-between;
+  padding-left: 24px;
+  padding-right: 24px;
+  width: 100%;
+  font-family: var(--font-rift-bold);
+
+  span {
+    font-size: 20px;
+  }
+
+  img {
+    margin-left: 16px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 32px;
+  }
+}
+
+.backButton {
+  flex-shrink: 0;
+  margin-right: 20px;
+  height: 56px;
+  width: 56px;
+  appearance: none;
+  background-color: #fff;
+  cursor: pointer;
+  border: 1px solid black;
+}
+
+.actionButton {
+  margin-top: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

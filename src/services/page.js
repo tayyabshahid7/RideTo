@@ -34,7 +34,9 @@ export const flashDiv = id => {
 
   if (el) {
     el.classList.remove('highlight-required')
-    el.scrollIntoView()
+    if (!window.isSupplier) {
+      el.scrollIntoView()
+    }
     el.classList.add('highlight-required')
   }
 }
