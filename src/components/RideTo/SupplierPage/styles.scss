@@ -2,6 +2,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-gap: 30px;
+
+  @media (max-width: 1199px) {
+    display: block;
+  }
 }
 
 .rightContent {

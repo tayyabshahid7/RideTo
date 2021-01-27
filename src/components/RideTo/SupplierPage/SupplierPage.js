@@ -5,6 +5,8 @@ import SupplierExtraInfo from './SupplierExtraInfo'
 import CourseTypeList from 'components/RideTo/CourseTypeList'
 import { SupplierContext } from './supplier-context'
 import styles from './styles.scss'
+import { useMediaQuery } from 'react-responsive'
+
 const SidePanel = loadable(() => import('components/RideTo/SidePanel'))
 const CourseTypeDetails = loadable(() =>
   import('components/RideTo/CourseTypeDetails')
@@ -16,6 +18,8 @@ const typeList = supplier.courses.map(x => x.constant)
 const courseTypes = window.RIDETO_PAGE.courseTypes.filter(x =>
   typeList.includes(x.constant)
 )
+supplierData.instant_book = window.RIDETO_PAGE.instant_book
+
 window.isSupplier = true
 
 let defualtCourse = courseTypes.find(x => x.constant === 'LICENCE_CBT')
@@ -25,8 +29,10 @@ if (!defualtCourse) {
 
 const SupplierPage = () => {
   const [course, setCourse] = useState(defualtCourse)
-  const [infoCourse, setInfoCourse] = useState()
+  const [infoCourse, setInfoCourse] = useState(null)
+  const [showExtraPanel, setShowExtraPanel] = useState(false)
   const [showCourseInfo, setShowCourseInfo] = useState(false)
+  const isDesktop = useMediaQuery({ minWidth: 1200 })
 
   const onDetail = value => {
     console.log(value)
@@ -36,8 +42,11 @@ const SupplierPage = () => {
 
   const onCourseClick = value => {
     setCourse(value)
-    const courseEl = document.getElementById('supplier-course-slider')
-    courseEl.scrollIntoView({ behavior: 'smooth' })
+    if (isDesktop) {
+      const courseEl = document.getElementById('supplier-course-slider')
+      courseEl.scrollIntoView({ behavior: 'smooth' })
+    }
+    setShowExtraPanel(true)
   }
 
   return (
@@ -46,9 +55,16 @@ const SupplierPage = () => {
         <div className={styles.leftContent}>
           <SupplierInfo />
         </div>
-        <div className={styles.rightContent}>
-          <SupplierExtraInfo course={course} />
-        </div>
+        {isDesktop && (
+          <div className={styles.rightContent}>
+            <SupplierExtraInfo course={course} />
+          </div>
+        )}
+        {!isDesktop && showExtraPanel && (
+          <SidePanel visible onDismiss={() => setShowExtraPanel(false)}>
+            <SupplierExtraInfo course={course} />
+          </SidePanel>
+        )}
         <div className={styles.courseList}>
           <CourseTypeList
             courseTypes={courseTypes}
