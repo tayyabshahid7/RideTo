@@ -49,3 +49,23 @@
     }
   }
 }
+
+.shopImageMobile {
+  max-width: 100%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  @media (max-width: 767px) {
+    display: inline !important;
+  }
+}
+
+.shopImage {
+  max-width: 100%;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
