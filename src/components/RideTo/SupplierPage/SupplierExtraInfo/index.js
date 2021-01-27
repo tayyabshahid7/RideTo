@@ -5,18 +5,19 @@ import { SupplierContext } from '../supplier-context'
 import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
 import SupplierCourseDetail from '../SupplierCourseDetail'
 import { IconGuarantee } from 'assets/icons'
+import { useMediaQuery } from 'react-responsive'
 
 const SupplierExtraInfo = ({ course }) => {
-  const { supplier, courseTypes } = React.useContext(SupplierContext)
-  const images = [supplier.image, supplier.image2, supplier.image3].filter(
-    x => x
-  )
+  const { courseTypes } = React.useContext(SupplierContext)
+  const isDesktop = useMediaQuery({ minWidth: 1200 })
 
   return (
     <React.Fragment>
-      <div id="supplier-course-slider" className={styles.imageSlider}>
-        <SupplierCourseImageSlider images={images} />
-      </div>
+      {isDesktop && (
+        <div id="supplier-course-slider" className={styles.imageSlider}>
+          <SupplierCourseImageSlider />
+        </div>
+      )}
       <div className={classnames(styles.container, styles.courseContainer)}>
         <SupplierCourseDetail courseTypes={courseTypes} course={course} />
       </div>

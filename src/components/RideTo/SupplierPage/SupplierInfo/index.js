@@ -10,6 +10,10 @@ import StarsComponent from 'components/RideTo/StarsComponent'
 import ReviewItem from 'components/RideTo/ReviewItem'
 import ReviewsBarComponent from 'components/RideTo/ReviewsBarComponent'
 import MapComponent from 'components/RideTo/MapComponent'
+import { useMediaQuery } from 'react-responsive'
+import RideToButton from 'components/RideTo/Button'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
 const ratings = supplier.ratings ? supplier.ratings : []
@@ -34,8 +38,9 @@ if (ratings.length) {
   avgRating /= ratings.length
 }
 
-const SupplierInfo = () => {
+const SupplierInfo = ({ onShowExtra }) => {
   const [showCnt, setShowCnt] = useState(3)
+  const isDesktop = useMediaQuery({ minWidth: 1200 })
   const backdrop = useRef()
   const reviewBlock = useRef()
 
@@ -126,7 +131,20 @@ const SupplierInfo = () => {
             </span>
           </div>
         </div>
+        {!isDesktop && (
+          <RideToButton
+            className={styles.actionButton}
+            onClick={() => onShowExtra()}>
+            <span>Check Availability</span>
+            <img src={ButtonArrowWhite} alt="arrow" />
+          </RideToButton>
+        )}
       </div>
+      {!isDesktop && (
+        <div className={styles.imageSlider}>
+          <SupplierCourseImageSlider />
+        </div>
+      )}
 
       <div className={styles.backdropArea}>
         <div ref={backdrop} className={styles.backdrop}></div>
