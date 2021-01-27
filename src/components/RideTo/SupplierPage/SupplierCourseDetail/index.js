@@ -210,14 +210,6 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
         <RideToButton
           className={classnames(styles.action, styles.actionStatic)}
           onClick={() => {
-            console.log({
-              bookNowDisabled,
-              instantDate,
-              instantCourse,
-              bike_hire,
-              isFullLicence,
-              showDayOfWeekPicker
-            })
             if (isFullLicence && bookNowDisabled) {
               setCourseInfo({ ...courseInfo, isErrored: true })
               setTimeout(() => {
