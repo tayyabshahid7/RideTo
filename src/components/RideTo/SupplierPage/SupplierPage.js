@@ -3,17 +3,20 @@ import loadable from '@loadable/component'
 import SupplierInfo from './SupplierInfo'
 import SupplierExtraInfo from './SupplierExtraInfo'
 import CourseTypeList from 'components/RideTo/CourseTypeList'
+import { SupplierContext } from './supplier-context'
 import styles from './styles.scss'
 const SidePanel = loadable(() => import('components/RideTo/SidePanel'))
 const CourseTypeDetails = loadable(() =>
   import('components/RideTo/CourseTypeDetails')
 )
 
-const supplier = window.RIDETO_PAGE.supplier.supplier
+const supplierData = window.RIDETO_PAGE.supplier.supplier
+let supplier = Object.assign({}, supplierData)
 const typeList = supplier.courses.map(x => x.constant)
 const courseTypes = window.RIDETO_PAGE.courseTypes.filter(x =>
   typeList.includes(x.constant)
 )
+window.isSupplier = true
 
 let defualtCourse = courseTypes.find(x => x.constant === 'LICENCE_CBT')
 if (!defualtCourse) {
@@ -38,30 +41,32 @@ const SupplierPage = () => {
   }
 
   return (
-    <div className={styles.container}>
-      <div className={styles.leftContent}>
-        <SupplierInfo />
+    <SupplierContext.Provider value={{ supplier, courseTypes }}>
+      <div className={styles.container}>
+        <div className={styles.leftContent}>
+          <SupplierInfo />
+        </div>
+        <div className={styles.rightContent}>
+          <SupplierExtraInfo course={course} />
+        </div>
+        <div className={styles.courseList}>
+          <CourseTypeList
+            courseTypes={courseTypes}
+            onDetail={onDetail}
+            onLinkClick={onCourseClick}
+            postcode={''}
+          />
+        </div>
+        {showCourseInfo && (
+          <SidePanel
+            visible
+            headingImage={infoCourse.details && infoCourse.details.image}
+            onDismiss={() => setShowCourseInfo(false)}>
+            <CourseTypeDetails courseType={infoCourse} opened={() => {}} />
+          </SidePanel>
+        )}
       </div>
-      <div className={styles.rightContent}>
-        <SupplierExtraInfo courseTypes={courseTypes} course={course} />
-      </div>
-      <div className={styles.courseList}>
-        <CourseTypeList
-          courseTypes={courseTypes}
-          onDetail={onDetail}
-          onLinkClick={onCourseClick}
-          postcode={''}
-        />
-      </div>
-      {showCourseInfo && (
-        <SidePanel
-          visible
-          headingImage={infoCourse.details && infoCourse.details.image}
-          onDismiss={() => setShowCourseInfo(false)}>
-          <CourseTypeDetails courseType={infoCourse} opened={() => {}} />
-        </SidePanel>
-      )}
-    </div>
+    </SupplierContext.Provider>
   )
 }
 

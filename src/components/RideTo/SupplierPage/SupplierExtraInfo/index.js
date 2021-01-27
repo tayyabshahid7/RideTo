@@ -1,14 +1,17 @@
 import React from 'react'
 import classnames from 'classnames'
 import styles from './SupplierExtraInfo.scss'
+import { SupplierContext } from '../supplier-context'
 import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
 import SupplierCourseDetail from '../SupplierCourseDetail'
 import { IconGuarantee } from 'assets/icons'
 
-const supplier = window.RIDETO_PAGE.supplier.supplier
-const images = [supplier.image, supplier.image2, supplier.image3].filter(x => x)
+const SupplierExtraInfo = ({ course }) => {
+  const { supplier, courseTypes } = React.useContext(SupplierContext)
+  const images = [supplier.image, supplier.image2, supplier.image3].filter(
+    x => x
+  )
 
-const SupplierExtraInfo = ({ courseTypes, course }) => {
   return (
     <React.Fragment>
       <div id="supplier-course-slider" className={styles.imageSlider}>
@@ -23,10 +26,12 @@ const SupplierExtraInfo = ({ courseTypes, course }) => {
             <IconGuarantee />
           </div>
           <div>
-            <p>
-              Cancel within 3 working days to get a full refund on your booking.
-            </p>
-            <span className={styles.link}>More Details</span>
+            <p>Cancel with 3 working days notice to get a full refund.</p>
+            <a
+              href="https://www.rideto.com/terms#cancellations"
+              className={styles.link}>
+              More Details
+            </a>
           </div>
         </div>
       </div>

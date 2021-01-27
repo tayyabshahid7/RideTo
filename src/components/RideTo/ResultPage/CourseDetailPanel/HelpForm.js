@@ -34,7 +34,13 @@ const QUESTIONS = [
   }
 ]
 
-function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
+function HelpForm({
+  isWidget,
+  onUpdate,
+  updateContainerState,
+  isErrored,
+  fromSupplier
+}) {
   const [values, setValues] = useState({
     old: '',
     long: '',
@@ -181,7 +187,7 @@ function HelpForm({ isWidget, onUpdate, updateContainerState, isErrored }) {
             Both certificates are required in order to book
           </div>
         */}
-          {showCBTLink && (
+          {showCBTLink && !fromSupplier && (
             <div
               id="choose-cbt"
               className={classnames(styles.cbtRequired, 'highlight-required')}>

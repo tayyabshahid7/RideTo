@@ -105,6 +105,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
       <div
         className={classnames(
           styles.fullLicenceAvailability,
+          this.props.fromSupplier && 'px-0',
           !isWidget ? styles.content : styles.widget
         )}>
         {!showDayOfWeekPicker ? (
@@ -154,6 +155,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
             />
             {needsHelp === true && (
               <HelpForm
+                fromSupplier={this.props.fromSupplier}
                 isErrored={isErrored}
                 onUpdate={onUpdate}
                 updateContainerState={this.updateState}
