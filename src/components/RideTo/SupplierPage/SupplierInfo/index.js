@@ -9,10 +9,13 @@ import { UncontrolledTooltip } from 'reactstrap'
 import StarsComponent from 'components/RideTo/StarsComponent'
 import ReviewItem from 'components/RideTo/ReviewItem'
 import ReviewsBarComponent from 'components/RideTo/ReviewsBarComponent'
+import MapComponent from 'components/RideTo/MapComponent'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
 const ratings = supplier.ratings ? supplier.ratings : []
 const trampText = supplier.nearest_tube_station
+supplier.lat = parseFloat(supplier.latitude)
+supplier.lng = parseFloat(supplier.longitude)
 
 const reviews = {
   '5 Star': 0,
@@ -177,7 +180,11 @@ const SupplierInfo = () => {
               text={supplier.address_2 + ', ' + supplier.postcode}
             />
           </div>
-          TODO: MAP HERE
+          <MapComponent
+            className={styles.mapWrapper}
+            courses={[supplier]}
+            sidebar
+          />
         </div>
 
         <div ref={reviewBlock} className={styles.reviewsBlock}>
