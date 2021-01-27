@@ -4,7 +4,7 @@ import styles from './styles.scss'
 import StarsComponent from '../StarsComponent'
 
 const ReviewItem = ({ author, rating, review, time }) => {
-  let datetime = moment(time).format('dddd, YYYY')
+  let datetime = moment(time).format('MMMM, YYYY')
   return (
     <div className={styles.container}>
       <div className={styles.title}>
