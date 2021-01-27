@@ -17,6 +17,10 @@
   hr {
     margin: 15px 0;
   }
+
+  @media (max-width: 1199px) {
+    padding-bottom: 30px;
+  }
 }
 
 .logo {
@@ -90,6 +94,10 @@
 .aboutContainer {
   padding-top: 72px;
   padding-bottom: 40px;
+
+  @media (max-width: 767px) {
+    padding-top: 48px;
+  }
 }
 
 .aboutLines {
@@ -114,7 +122,10 @@
 .facilityGroup {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-bottom: 32px;
+
+  @media (max-width: 767px) {
+    display: block;
+  }
 }
 
 .facilityImages {
@@ -128,7 +139,7 @@
 }
 
 .locationIcon {
-  padding: 25px 0 30px;
+  padding: 0 0 30px;
 }
 
 .backdropArea {
@@ -183,4 +194,36 @@
 
 .reviewsBlock {
   padding-bottom: 76px;
+
+  @media (max-width: 767px) {
+    padding-bottom: 48px;
+  }
+}
+
+.actionButton {
+  width: 100%;
+  justify-content: space-between;
+  padding-left: 24px !important;
+  padding-right: 24px !important;
+  font-family: var(--font-rift-bold) !important;
+  margin-top: 20px;
+
+  span {
+    font-size: 20px;
+  }
+
+  img {
+    margin-left: 16px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 10px 32px;
+  }
+}
+
+.imageSlider {
+  @media (max-width: 575px) {
+    margin-left: -32px;
+    margin-right: -32px;
+  }
 }

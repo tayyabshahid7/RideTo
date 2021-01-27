@@ -53,7 +53,7 @@ const SupplierPage = () => {
     <SupplierContext.Provider value={{ supplier, courseTypes }}>
       <div className={styles.container}>
         <div className={styles.leftContent}>
-          <SupplierInfo />
+          <SupplierInfo onShowExtra={() => setShowExtraPanel(true)} />
         </div>
         {isDesktop && (
           <div className={styles.rightContent}>
