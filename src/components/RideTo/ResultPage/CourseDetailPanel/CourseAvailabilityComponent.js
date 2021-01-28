@@ -192,7 +192,7 @@ class CourseAvailabilityComponent extends React.Component {
     this.setState({ calendar: { ...calendar } })
     onUpdate({ instantCourse, instantDate })
 
-    if (!bike_hire) {
+    if (!bike_hire && !this.props.fromSupplier) {
       setTimeout(() => {
         this.bikePicker.current.scrollIntoView({
           behavior: 'smooth',

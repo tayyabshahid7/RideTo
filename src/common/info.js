@@ -308,7 +308,7 @@ export const Features = [
   {
     value: 'mciac_approved',
     icon: 'Approved',
-    title: 'MCIA APPROVED',
+    title: 'MCIA Approved',
     description:
       'By choosing an MCIA RIDE approved training school you can be sure that the standards of training and customer service you receive will be amongst the best on offer.'
   },
