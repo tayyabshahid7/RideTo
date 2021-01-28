@@ -16,10 +16,20 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
+const instant_book = window.RIDETO_PAGE.supplier
 const ratings = supplier.ratings ? supplier.ratings : []
 const trampText = supplier.nearest_tube_station
 supplier.lat = parseFloat(supplier.latitude)
 supplier.lng = parseFloat(supplier.longitude)
+
+const supplierAddress = [
+  supplier.address_1,
+  supplier.address_2,
+  supplier.town,
+  supplier.postcode
+]
+  .filter(x => x)
+  .join(', ')
 
 const reviews = {
   '5 Star': 0,
@@ -43,6 +53,7 @@ const SupplierInfo = ({ onShowExtra }) => {
   const isDesktop = useMediaQuery({ minWidth: 1200 })
   const backdrop = useRef()
   const reviewBlock = useRef()
+  const mapArea = useRef()
 
   const handleReviewClick = () => {
     reviewBlock.current.scrollIntoView({ behavior: 'smooth' })
@@ -50,6 +61,10 @@ const SupplierInfo = ({ onShowExtra }) => {
 
   const handleShowMore = () => {
     setShowCnt(showCnt + 5)
+  }
+
+  const handleShowMap = () => {
+    mapArea.current.scrollIntoView({ behavior: 'smooth' })
   }
 
   const renderIcon = feature => {
@@ -94,15 +109,10 @@ const SupplierInfo = ({ onShowExtra }) => {
           <img src={supplier.hosted_logo} alt="Supplier Logo" />
         </div>
         <h1>{supplier.name}</h1>
-        <IconText
-          icon={<IconPlace />}
-          text={supplier.address_2 + ', ' + supplier.postcode}
-          underlined
-        />
-        <IconText
-          icon={<IconTram />}
-          text={trampText || 'Fieldway Tramp stop'}
-        />
+        <div onClick={handleShowMap}>
+          <IconText icon={<IconPlace />} text={supplierAddress} underlined />
+        </div>
+        {!!trampText && <IconText icon={<IconTram />} text={trampText} />}
         <hr />
         <div className={styles.iconsReviews}>
           <div className={styles.icons}>
@@ -114,9 +124,7 @@ const SupplierInfo = ({ onShowExtra }) => {
             {supplier.on_site_cafe && renderIcon('on_site_cafe')}
             {supplier.on_site_parking && renderIcon('on_site_parking')}
             {supplier.indoor_classroom && renderIcon('indoor_classroom')}
-            {!isFullLicence &&
-              supplier.instant_book &&
-              renderIcon('instant_book')}
+            {!isFullLicence && instant_book && renderIcon('instant_book')}
           </div>
           <div className={styles.reviews}>
             <StarsComponent
@@ -150,7 +158,7 @@ const SupplierInfo = ({ onShowExtra }) => {
         <div ref={backdrop} className={styles.backdrop}></div>
 
         <div className={styles.aboutContainer} id="rideto-supplier-about">
-          <h4 className={styles.blockTitle}>About {supplier.name}</h4>
+          <h2 className={styles.blockTitle}>About {supplier.name}</h2>
           <div className={styles.aboutLines}>
             <p>{supplier.rideto_opinion}</p>
           </div>
@@ -192,11 +200,8 @@ const SupplierInfo = ({ onShowExtra }) => {
           <div className={styles.aboutLines}>
             <p>{supplier.location_information}</p>
           </div>
-          <div className={styles.locationIcon}>
-            <IconText
-              icon={<IconPlace />}
-              text={supplier.address_2 + ', ' + supplier.postcode}
-            />
+          <div ref={mapArea} className={styles.locationIcon}>
+            <IconText icon={<IconPlace />} text={supplierAddress} />
           </div>
           <MapComponent
             className={styles.mapWrapper}
