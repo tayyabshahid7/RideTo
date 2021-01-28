@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import moment from 'moment'
+import _ from 'lodash'
 import { parseQueryString } from 'services/api'
 import { getSupplier, getAddons } from 'services/page'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
@@ -15,22 +16,22 @@ const CHECKLIST_ITEMS = [
   {
     icon: <IconMask />,
     title: 'A face\ncovering',
-    keywords: ['face covering']
+    keywords: ['FACE_COVER']
   },
   {
     icon: <IconBoots />,
     title: 'Sturdy boots\nand Jeans',
-    keywords: ['boots', 'jeans']
+    keywords: ['BOOTS_JEANS']
   },
   {
     icon: <IconHelmet />,
     title: 'Motorcycle helmet\nand gloves',
-    keywords: ['helmet', 'gloves']
+    keywords: ['HELMET_GLOVES']
   },
   {
     icon: <IconJacket />,
     title: 'A thick suitable\njacket',
-    keywords: ['jacket']
+    keywords: ['JACKET']
   }
 ]
 
@@ -213,19 +214,23 @@ class AddonSelection extends React.Component {
 
   handleHighlightAddon(keywords) {
     const { addons } = this.state
-    for (const addon of addons) {
-      for (const keyword of keywords) {
-        if (addon.name.toLowerCase().includes(keyword)) {
-          // scroll to addon
-          const addonEl = document.getElementById('addon-' + addon.id)
-          addonEl.scrollIntoView({
-            behavior: 'smooth',
-            inline: 'nearest'
-          })
-          return
-        }
-      }
+
+    if (!keywords.length) {
+      return
     }
+    let items = addons.filter(x => x.addon_group === keywords[0])
+    if (!items.length) {
+      return
+    }
+    items.forEach(item => (item.price = parseFloat(item.discount_price)))
+    items = _.orderBy(items, 'price').reverse()
+
+    // scroll to addon
+    const addonEl = document.getElementById('addon-' + items[0].id)
+    addonEl.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'nearest'
+    })
   }
 
   isAddonSelected(addon) {
@@ -267,20 +272,16 @@ class AddonSelection extends React.Component {
       gloves_jacket_included,
       helmet_hire
     } = this.state
-
+    console.log(addons)
     let checklistItems = CHECKLIST_ITEMS.slice()
     if (gloves_jacket_included) {
       checklistItems[3].keywords = []
-      checklistItems[2].keywords = checklistItems[2].keywords.filter(
-        x => x !== 'gloves'
-      )
+
+      if (helmet_hire) {
+        checklistItems[2].keywords = []
+      }
     }
 
-    if (helmet_hire) {
-      checklistItems[2].keywords = checklistItems[2].keywords.filter(
-        x => x !== 'helmet'
-      )
-    }
     checklistItems = checklistItems.filter(x => x.keywords.length)
 
     return (
