@@ -34,6 +34,11 @@ const SupplierPage = () => {
   const [showCourseInfo, setShowCourseInfo] = useState(false)
   const isDesktop = useMediaQuery({ minWidth: 1200 })
 
+  if (!supplier.publish_supplier_page) {
+    window.location.pathname = '/'
+    return null
+  }
+
   const onDetail = value => {
     setInfoCourse(value)
     setShowCourseInfo(true)
