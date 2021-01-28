@@ -203,9 +203,18 @@ function HelpForm({
           )}
         </div>
       ) : (
-        <p style={{ marginTop: '1rem', marginBottom: '-0.5rem' }}>
+        <p
+          id="choose-cbt"
+          className={classnames('highlight-required')}
+          style={{ marginTop: '1rem', marginBottom: '-0.5rem' }}>
           If you're new to riding and yet to get on a bike, you'll need to start
-          with the CBT course.
+          with the CBT course.{' '}
+          <a
+            href={`/course-location/?postcode=${normalizePostCode(
+              parseQueryString(window.location.search.slice(1)).postcode
+            )}&courseType=LICENCE_CBT`}>
+            View CBT courses
+          </a>
         </p>
       )}
     </Fragment>
