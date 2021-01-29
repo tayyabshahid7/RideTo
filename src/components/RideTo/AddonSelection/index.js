@@ -25,13 +25,13 @@ const CHECKLIST_ITEMS = [
   },
   {
     icon: <IconHelmet />,
-    title: 'Motorcycle helmet\nand gloves',
-    keywords: ['HELMET_GLOVES']
+    title: 'Motorcycle\nhelmet',
+    keywords: ['HELMET']
   },
   {
     icon: <IconJacket />,
-    title: 'A thick suitable\njacket',
-    keywords: ['JACKET']
+    title: 'A thick jacket \nand motorcycle gloves',
+    keywords: ['JACKET_GLOVES']
   }
 ]
 
@@ -272,14 +272,13 @@ class AddonSelection extends React.Component {
       gloves_jacket_included,
       helmet_hire
     } = this.state
-    console.log(addons)
     let checklistItems = CHECKLIST_ITEMS.slice()
     if (gloves_jacket_included) {
       checklistItems[3].keywords = []
+    }
 
-      if (helmet_hire) {
-        checklistItems[2].keywords = []
-      }
+    if (helmet_hire) {
+      checklistItems[2].keywords = []
     }
 
     checklistItems = checklistItems.filter(x => x.keywords.length)
