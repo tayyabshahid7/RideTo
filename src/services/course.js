@@ -586,10 +586,10 @@ export const getDefaultFullLicencePackage = ({
       if (size === '125cc') {
         packageHours = 40
       } else if (size === 'More than 125cc') {
-        packageHours = 30
+        packageHours = 32
       }
     } else if (miles === '1,500+') {
-      packageHours = 30
+      packageHours = 32
     }
   }
 
