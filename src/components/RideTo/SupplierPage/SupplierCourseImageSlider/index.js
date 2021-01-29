@@ -36,13 +36,10 @@ const SupplierCourseImageSlider = () => {
       )}>
       <RideToSlider settings={settings}>
         {images.map(image => (
-          <img
-            key={image}
-            src={image}
+          <div
+            key="image"
             className={styles.image}
-            alt=""
-            onClick={() => {}}
-          />
+            style={{ backgroundImage: `url(${image})` }}></div>
         ))}
       </RideToSlider>
     </div>

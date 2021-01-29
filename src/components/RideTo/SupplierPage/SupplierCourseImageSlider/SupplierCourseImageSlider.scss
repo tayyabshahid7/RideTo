@@ -3,6 +3,8 @@
 }
 
 .slider {
+  font-size: 0;
+
   :global(.slick-slide) {
     display: block;
   }
@@ -53,7 +55,7 @@
 }
 
 .image {
-  // height: 235px;
-  object-fit: contain;
-  cursor: pointer;
+  background-position: center center;
+  background-size: cover;
+  padding-bottom: 65%;
 }
