@@ -13,11 +13,13 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
 import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence'
 import { isBankHoliday } from 'services/misc'
+import { BIKE_HIRE } from 'common/constants'
 
 const date = moment().format('YYYY-MM-DD')
 
 const SupplierCourseDetail = ({ courseTypes, course }) => {
   const [courseType, setCourseType] = useState(course)
+  const [showForm, setShowForm] = useState(true)
   const [courseInfo, setCourseInfo] = useState({
     instantCourse: null,
     instantDate: date,
@@ -31,13 +33,22 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
   const { supplier } = React.useContext(SupplierContext)
   const bottomAnchor = useRef(null)
 
+  const refreshForm = () => {
+    setShowForm(false)
+    setTimeout(() => {
+      setShowForm(true)
+    })
+  }
+
   useEffect(() => {
     setCourseType(course)
+    refreshForm()
   }, [course])
 
   const handleCourseChange = event => {
     const tmp = courseTypes.find(x => x.constant === event.target.value)
     setCourseType(tmp)
+    refreshForm()
   }
 
   const onUpdate = value => {
@@ -309,13 +320,20 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
   let totalCost = ''
   if (!isFullLicence) {
     let price = 0
-    if (day === 6 || day === 0) {
-      price = parseFloat(supplierData.week_prices.weekend) * 100
+    if (courseInfo.instantCourse) {
+      price = courseInfo.instantCourse.pricing.price
     } else {
-      price = parseFloat(supplierData.week_prices.weekday) * 100
+      if (day === 6 || day === 0) {
+        price = parseFloat(supplierData.week_prices.weekend) * 100
+      } else {
+        price = parseFloat(supplierData.week_prices.weekday) * 100
+      }
     }
 
-    if (courseType.constant === 'LICENCE_CBT_RENEWAL') {
+    if (
+      courseType.constant === 'LICENCE_CBT_RENEWAL' &&
+      courseInfo.bike_hire !== BIKE_HIRE.NO
+    ) {
       price += supplierData.bike_hire_cost
     }
     totalCost = (price / 100).toFixed(2)
@@ -344,45 +362,49 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
           alt="dropdown icon"
         />
       </div>
-      {!isFullLicence ? (
-        <CourseAvailabilityComponent
-          fromSupplier
-          course={supplierData}
-          courseType={courseType.constant}
-          date={date}
-          instantCourse={courseInfo.instantCourse}
-          instantDate={courseInfo.instantDate}
-          bike_hire={courseInfo.bike_hire}
-          onUpdate={onUpdate}
-        />
-      ) : (
-        <CourseAvailabilityComponentFullLicence
-          fromSupplier
-          course={supplierData}
-          bike_hire={courseInfo.bike_hire}
-          onUpdate={onUpdate}
-          onSelectPackage={onSelectPackage}
-          selectedLicenceType={courseInfo.selectedLicenceType}
-          selectedPackageHours={courseInfo.selectedPackageHours}
-          showDayOfWeekPicker={courseInfo.showDayOfWeekPicker}
-          timeDayChange={timeDayChange}
-          selectedTimeDays={courseInfo.selectedTimeDays}
-          isErrored={courseInfo.isErrored}
-        />
-      )}
-      {!isFullLicence && (
-        <div className={styles.priceLine}>
-          <h5>TOTAL COST</h5>
-          <span>£{totalCost}</span>
-        </div>
-      )}
-      {renderRidetoButton(
-        bookNowDisabled,
-        courseInfo.instantDate,
-        courseInfo.instantCourse,
-        courseInfo.bike_hire,
-        isFullLicence,
-        courseInfo.showDayOfWeekPicker
+      {showForm && (
+        <React.Fragment>
+          {!isFullLicence ? (
+            <CourseAvailabilityComponent
+              fromSupplier
+              course={supplierData}
+              courseType={courseType.constant}
+              date={date}
+              instantCourse={courseInfo.instantCourse}
+              instantDate={courseInfo.instantDate}
+              bike_hire={courseInfo.bike_hire}
+              onUpdate={onUpdate}
+            />
+          ) : (
+            <CourseAvailabilityComponentFullLicence
+              fromSupplier
+              course={supplierData}
+              bike_hire={courseInfo.bike_hire}
+              onUpdate={onUpdate}
+              onSelectPackage={onSelectPackage}
+              selectedLicenceType={courseInfo.selectedLicenceType}
+              selectedPackageHours={courseInfo.selectedPackageHours}
+              showDayOfWeekPicker={courseInfo.showDayOfWeekPicker}
+              timeDayChange={timeDayChange}
+              selectedTimeDays={courseInfo.selectedTimeDays}
+              isErrored={courseInfo.isErrored}
+            />
+          )}
+          {!isFullLicence && (
+            <div className={styles.priceLine}>
+              <h5>TOTAL COST</h5>
+              <span>£{totalCost}</span>
+            </div>
+          )}
+          {renderRidetoButton(
+            bookNowDisabled,
+            courseInfo.instantDate,
+            courseInfo.instantCourse,
+            courseInfo.bike_hire,
+            isFullLicence,
+            courseInfo.showDayOfWeekPicker
+          )}
+        </React.Fragment>
       )}
     </React.Fragment>
   )
