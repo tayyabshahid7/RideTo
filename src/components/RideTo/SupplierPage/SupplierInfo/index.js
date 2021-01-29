@@ -16,7 +16,6 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
-const instant_book = window.RIDETO_PAGE.supplier
 const ratings = supplier.ratings ? supplier.ratings : []
 const trampText = supplier.nearest_tube_station
 supplier.lat = parseFloat(supplier.latitude)
@@ -124,7 +123,9 @@ const SupplierInfo = ({ onShowExtra }) => {
             {supplier.on_site_cafe && renderIcon('on_site_cafe')}
             {supplier.on_site_parking && renderIcon('on_site_parking')}
             {supplier.indoor_classroom && renderIcon('indoor_classroom')}
-            {!isFullLicence && instant_book && renderIcon('instant_book')}
+            {!isFullLicence &&
+              supplier.instant_book &&
+              renderIcon('instant_book')}
           </div>
           <div className={styles.reviews}>
             <StarsComponent
