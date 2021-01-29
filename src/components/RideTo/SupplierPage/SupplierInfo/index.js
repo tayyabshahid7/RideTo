@@ -20,6 +20,7 @@ const ratings = supplier.ratings ? supplier.ratings : []
 const trampText = supplier.nearest_tube_station
 supplier.lat = parseFloat(supplier.latitude)
 supplier.lng = parseFloat(supplier.longitude)
+supplier.instant_book = window.RIDETO_PAGE.supplier.instant_book
 
 const supplierAddress = [
   supplier.address_1,
@@ -94,7 +95,6 @@ const SupplierInfo = ({ onShowExtra }) => {
     on_site_cafe: true,
     on_site_parking: true,
     indoor_classroom: true,
-    instant_book: true
   }
 
   const validFeatures = Object.keys(feature).filter(x => supplier[x])
