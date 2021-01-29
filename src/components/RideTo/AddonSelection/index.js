@@ -20,7 +20,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     icon: <IconBoots />,
-    title: 'Sturdy boots\nand Jeans',
+    title: 'Sturdy boots\nand jeans',
     keywords: ['BOOTS_JEANS']
   },
   {
@@ -298,7 +298,7 @@ class AddonSelection extends React.Component {
             <Mobile>
               <Col md="12">
                 <div className={styles.checkListContainer}>
-                  <h4>ON THE DAY OF TRAINING YOU'LL NEED TO HAVE:</h4>
+                  <h4>ON THE DAY OF TRAINING YOU'LL NEED TO BRING:</h4>
                   <div className={styles.checkLists}>
                     {checklistItems.map((item, index) =>
                       this.renderCheckListItem(
