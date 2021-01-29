@@ -1,6 +1,7 @@
 import React from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import moment from 'moment'
+import classnames from 'classnames'
 import _ from 'lodash'
 import { parseQueryString } from 'services/api'
 import { getSupplier, getAddons } from 'services/page'
@@ -243,7 +244,10 @@ class AddonSelection extends React.Component {
     return (
       <React.Fragment key={'chk-addon-' + index}>
         <div
-          className={styles.checkListItem}
+          className={classnames(
+            styles.checkListItem,
+            !item.keywords.length && styles.providedItem
+          )}
           onClick={() => this.handleHighlightAddon(item.keywords)}>
           {item.icon}
           {isMobile ? (
@@ -255,7 +259,11 @@ class AddonSelection extends React.Component {
               ))}
             </h6>
           )}
-          <span className={styles.required}>REQUIRED</span>
+          {item.keywords.length ? (
+            <span className={styles.required}>BRING YOUR OWN</span>
+          ) : (
+            <span className={styles.provided}>PROVIDED</span>
+          )}
         </div>
         {!isLast && <span className={styles.plus}>+</span>}
       </React.Fragment>
@@ -281,7 +289,9 @@ class AddonSelection extends React.Component {
       checklistItems[2].keywords = []
     }
 
+    const providedList = checklistItems.filter(x => !x.keywords.length)
     checklistItems = checklistItems.filter(x => x.keywords.length)
+    checklistItems = [...checklistItems, ...providedList]
 
     return (
       <React.Fragment>
@@ -325,7 +335,7 @@ class AddonSelection extends React.Component {
           </Row>
           <Desktop>
             <div className={styles.checkListContainer}>
-              <h4>ON THE DAY OF TRAINING YOU'LL NEED TO HAVE:</h4>
+              <h4>ON THE DAY OF TRAINING YOU'LL NEED TO BRING:</h4>
               <div className={styles.checkLists}>
                 {checklistItems.map((item, index) =>
                   this.renderCheckListItem(
