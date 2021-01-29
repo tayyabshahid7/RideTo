@@ -304,9 +304,21 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
     }
   }
 
+  // calculate price considering weekend
+  const day = new Date(courseInfo.instantDate).getDay()
   let totalCost = ''
   if (!isFullLicence) {
-    totalCost = (parseInt(supplierData.price) / 100).toFixed(2)
+    let price = 0
+    if (day === 6 || day === 0) {
+      price = parseFloat(supplierData.week_prices.weekend) * 100
+    } else {
+      price = parseFloat(supplierData.week_prices.weekday) * 100
+    }
+
+    if (courseType.constant === 'LICENCE_CBT_RENEWAL') {
+      price += supplierData.bike_hire_cost
+    }
+    totalCost = (price / 100).toFixed(2)
   }
 
   return (
