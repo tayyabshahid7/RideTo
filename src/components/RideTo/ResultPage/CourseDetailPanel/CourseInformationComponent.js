@@ -100,7 +100,7 @@ class CourseInformationComponent extends React.Component {
         <div className={styles.instructor}>
           <div className={styles.subtitle}>The Instructor</div>
           <div className={styles.desc}>{course.rideto_opinion}</div>
-          {course.publish_supplier_page ? (
+          {course.publish_supplier_page && course.supplier_page_link ? (
             <a className={styles.supplierLink} href={course.supplier_page_link}>
               {this.renderSupplierLogo()}
             </a>

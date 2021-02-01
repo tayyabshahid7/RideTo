@@ -362,12 +362,12 @@ export const STEP_GEAR = {
     {
       name: 'Helmets',
       image: helmets,
-      link: 'https://store.rideto.com/collections/helmet'
+      link: 'https://store.rideto.com/collections/motorcycle-helmets'
     },
     {
       name: 'Gloves',
       image: gloves,
-      link: 'https://store.rideto.com/collections/gloves'
+      link: 'https://store.rideto.com/collections/motorcycle-gloves'
     },
     {
       name: 'Jackets',
