@@ -14,10 +14,25 @@ const CourseTypeDetails = loadable(() =>
 
 const supplierData = window.RIDETO_PAGE.supplier.supplier
 let supplier = Object.assign({}, supplierData)
-const typeList = supplier.courses.map(x => x.constant)
-const courseTypes = window.RIDETO_PAGE.courseTypes.filter(x =>
-  typeList.includes(x.constant)
-)
+const courseTypes = window.RIDETO_PAGE.courseTypes.filter(x => {
+  const course = supplier.courses.find(c => c.constant === x.constant)
+  if (!course) {
+    return false
+  }
+
+  const courseInfo = supplier.courses_info.find(c => c.course === course.id)
+  if (
+    !courseInfo ||
+    (course.constant === 'FULL_LICENCE' &&
+      (!courseInfo.price ||
+        isNaN(courseInfo.price) ||
+        !parseFloat(courseInfo.price)))
+  ) {
+    return false
+  }
+  return true
+})
+
 supplier.instant_book = window.RIDETO_PAGE.supplier.instant_book
 
 window.isSupplier = true
@@ -34,7 +49,7 @@ const SupplierPage = () => {
   const [showCourseInfo, setShowCourseInfo] = useState(false)
   const isDesktop = useMediaQuery({ minWidth: 1200 })
 
-  if (!supplier.publish_supplier_page) {
+  if (!supplier.publish_supplier_page || !courseTypes.length) {
     window.location.pathname = '/'
     return null
   }
