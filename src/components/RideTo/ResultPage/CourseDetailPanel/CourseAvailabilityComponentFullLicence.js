@@ -61,6 +61,14 @@ class CourseAvailabilityComponentFullLicence extends Component {
     this.setState(state)
   }
 
+  convertBikeHire = type => {
+    if (!type) {
+      return type
+    }
+    const tmp = type.split('_').slice(-1)[0]
+    return 'BIKE_TYPE_' + tmp.toUpperCase()
+  }
+
   render() {
     const {
       onUpdate,
@@ -97,6 +105,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
       <div
         className={classnames(
           styles.fullLicenceAvailability,
+          this.props.fromSupplier && 'px-0',
           !isWidget ? styles.content : styles.widget
         )}>
         {!showDayOfWeekPicker ? (
@@ -146,6 +155,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
             />
             {needsHelp === true && (
               <HelpForm
+                fromSupplier={this.props.fromSupplier}
                 isErrored={isErrored}
                 onUpdate={onUpdate}
                 updateContainerState={this.updateState}
@@ -167,7 +177,7 @@ class CourseAvailabilityComponentFullLicence extends Component {
                   needsHelp={needsHelp}
                   isWidget={isWidget}
                   isFullLicence
-                  bike_hire={bike_hire}
+                  bike_hire={this.convertBikeHire(bike_hire)}
                   onUpdate={onUpdate}
                   course={course}
                   has_auto_bikes={hasAutoBikes}

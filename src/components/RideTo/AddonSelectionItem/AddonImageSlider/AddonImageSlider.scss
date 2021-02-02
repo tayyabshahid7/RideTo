@@ -8,20 +8,47 @@
   }
 }
 
-.prevArrow {
+.prevArrow,
+.nextArrow {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #141414;
+  border-radius: 50%;
+  display: inline-block;
   position: absolute;
   top: 45%;
   z-index: 1;
-  left: 24px;
   cursor: pointer;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 9px;
+    height: 9px;
+    border-top: 1px solid #141414;
+    border-left: 1px solid #141414;
+    position: absolute;
+    left: 8px;
+  }
+}
+
+.prevArrow {
+  left: 24px;
+
+  &:before {
+    transform: rotate(-45deg);
+    top: 6px;
+  }
 }
 
 .nextArrow {
-  position: absolute;
-  top: 45%;
-  z-index: 1;
   right: 24px;
-  cursor: pointer;
+
+  &:before {
+    transform: rotate(135deg);
+    top: 6px;
+    left: 5px;
+  }
 }
 
 .addonImage {

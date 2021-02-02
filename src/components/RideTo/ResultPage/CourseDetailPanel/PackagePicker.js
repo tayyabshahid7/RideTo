@@ -29,14 +29,12 @@ class PackagePicker extends Component {
     super(props)
 
     this.state = {
-      showAll: !this.props.needsHelp
+      // showAll: !this.props.needsHelp
+      showAll: true
     }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.onShowAllClick = this.onShowAllClick.bind(this)
   }
 
-  handleChange(event) {
+  handleChange = event => {
     const { onSelectPackage } = this.props
 
     onSelectPackage(event.target.value)
@@ -48,19 +46,19 @@ class PackagePicker extends Component {
     return `£${now} now, £${later} later`
   }
 
-  onShowAllClick() {
+  onShowAllClick = () => {
     this.setState({
       showAll: true
     })
   }
 
-  componentDidUpdate(prevProps) {
-    if (prevProps.needsHelp !== this.props.needsHelp) {
-      this.setState({
-        showAll: !this.props.needsHelp
-      })
-    }
-  }
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.needsHelp !== this.props.needsHelp) {
+  //     this.setState({
+  //       showAll: !this.props.needsHelp
+  //     })
+  //   }
+  // }
 
   render() {
     const {

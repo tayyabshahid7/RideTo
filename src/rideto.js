@@ -19,6 +19,8 @@ mountComponent('CourseSlider', 'rideto-home-course-slider', {
 
 mountComponent('ResultPage', 'rideto-resultspage-root', {}, false)
 
+mountComponent('SupplierPage', 'rideto-supplier-page-content')
+
 mountComponent('ReviewSlider', 'rideto-home-reviews')
 
 mountComponent('CourseMenuItem', 'rideto-home-course-menu')

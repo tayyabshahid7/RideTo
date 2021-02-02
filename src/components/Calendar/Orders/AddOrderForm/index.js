@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import styles from './styles.scss'
+import OrderPriceLine from 'components/Calendar/CoursesPanel/OrderPriceLine'
 import { getFullLicenseType, getAvailableBikeHires } from 'common/info'
 import { getPaymentOptions } from 'services/order'
 import {
@@ -26,6 +27,7 @@ class AddOrderForm extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      paid: false,
       order: {
         school_course: this.props.course.id,
         user_birthdate: '',
@@ -132,6 +134,12 @@ class AddOrderForm extends React.Component {
     }
   }
 
+  onOrderPaid = () => {
+    this.setState({
+      paid: true
+    })
+  }
+
   render() {
     let {
       onCancel,
@@ -158,13 +166,18 @@ class AddOrderForm extends React.Component {
         email_optin,
         notes,
         third_party_optin
-      }
+      },
+      paid
     } = this.state
 
     const enable_third_party_optin =
       widgetSettings && widgetSettings.enable_third_party_optin
 
-    const amount = pricing && pricing.price
+    let amount = pricing && pricing.price
+    if (orderResponse && orderResponse.package && orderResponse.package.price) {
+      amount = parseFloat(orderResponse.package.price) * 100
+    }
+
     const customer = {
       full_name: `${user_first_name} ${user_last_name}`,
       email: user_email,
@@ -172,15 +185,29 @@ class AddOrderForm extends React.Component {
     }
     const payOrderId = orderResponse && orderResponse.order_id
 
+    const newOrder = {
+      order: {
+        payment_status: paid ? 'PAID' : payment_status
+      }
+    }
+
     return (
       <div className={styles.container}>
         {showPayment ? (
-          <OrderPaymentContainer
-            customer={customer}
-            amount={amount}
-            orderId={payOrderId}
-            onRefresh={onCancel}
-          />
+          <React.Fragment>
+            <OrderPriceLine
+              order={newOrder}
+              orderDetail={orderResponse}
+              course={this.props.course}
+            />
+            <OrderPaymentContainer
+              customer={customer}
+              amount={amount}
+              orderId={payOrderId}
+              onRefresh={onCancel}
+              onPaid={this.onOrderPaid}
+            />
+          </React.Fragment>
         ) : (
           <form onSubmit={this.handleSave} ref={this.form}>
             <div>

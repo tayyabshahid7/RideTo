@@ -49,17 +49,20 @@ class CsvUpload extends React.Component {
     event.preventDefault()
     const { uploadFile, showNotification, schoolId } = this.props
     const { file } = this.state
-    const csvTypes = [
-      'application/csv',
-      'application/x-csv',
-      'text/csv',
-      'application/vnd.ms-excel',
-      'text/comma-separated-values',
-      'text/x-comma-separated-values',
-      'text/tab-separated-values'
-    ]
 
-    if (!csvTypes.includes(file.type)) {
+    const ext = file.name.split('.').slice(-1)[0]
+    // const csvTypes = [
+    //   'application/csv',
+    //   'application/x-csv',
+    //   'text/csv',
+    //   'application/vnd.ms-excel',
+    //   'text/comma-separated-values',
+    //   'text/x-comma-separated-values',
+    //   'text/tab-separated-values'
+    // ]
+    // console.log('CSV file type', file.type)
+
+    if (ext.toLowerCase() !== 'csv') {
       showNotification(
         'Error',
         'File is not CSV. Make sure you have the file with ".csv" extension',

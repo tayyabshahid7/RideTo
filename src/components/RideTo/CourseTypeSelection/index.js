@@ -1,11 +1,10 @@
 import React from 'react'
-import { Container, Row, Col } from 'reactstrap'
 import loadable from '@loadable/component'
+import { Container } from 'reactstrap'
 import { parseQueryString } from 'services/api'
-import { fetchCoursesTypes, getFilters } from 'services/course-type'
-import CourseTypeItem from 'components/RideTo/CourseTypeItem'
-import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFilters'
+import { fetchCoursesTypes } from 'services/course-type'
 import Button from 'components/RideTo/Button'
+import CourseTypeList from 'components/RideTo/CourseTypeList'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import classnames from 'classnames'
 import { normalizePostCode } from 'utils/helper'
@@ -21,6 +20,14 @@ const CourseTypeDetails = loadable(() =>
   import('components/RideTo/CourseTypeDetails')
 )
 
+const isTypeform = courseType => {
+  if (courseType === 'TFL_ONE_ON_ONE') {
+    return true
+  } else {
+    return false
+  }
+}
+
 const getBookUrl = (courseType, postcode) => {
   const normalizedPostCode = normalizePostCode(postcode)
 
@@ -31,21 +38,12 @@ const getBookUrl = (courseType, postcode) => {
   }
 }
 
-const isTypeform = courseType => {
-  if (courseType === 'TFL_ONE_ON_ONE') {
-    return true
-  } else {
-    return false
-  }
-}
-
 class CourseTypeSelection extends React.Component {
   constructor(props) {
     super(props)
 
     const qs = parseQueryString(window.location.search.slice(1))
 
-    this.filters = getFilters()
     this.courseTypes = []
 
     this.navigation = [
@@ -70,15 +68,12 @@ class CourseTypeSelection extends React.Component {
     ]
 
     this.state = {
-      filteredCourseTypes: [],
-      selectedFilter: { tag: 'ALL', name: 'All' },
       postcode: qs.postcode ? qs.postcode.replace('+', ' ') : '',
       selectedCourseType: null,
       navigation: this.navigation,
       loading: true
     }
 
-    this.handleSelectFilter = this.handleSelectFilter.bind(this)
     this.handleDetails = this.handleDetails.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
   }
@@ -104,20 +99,6 @@ class CourseTypeSelection extends React.Component {
     }
   }
 
-  handleSelectFilter(selectedFilter) {
-    const filteredCourseTypes =
-      selectedFilter && selectedFilter.tag !== 'ALL'
-        ? this.courseTypes.filter(
-            ({ tags }) => tags.indexOf(selectedFilter.tag) > -1
-          )
-        : this.courseTypes
-
-    this.setState({
-      selectedFilter,
-      filteredCourseTypes
-    })
-  }
-
   handleDetails(selectedCourseType) {
     this.setState({
       selectedCourseType,
@@ -126,14 +107,7 @@ class CourseTypeSelection extends React.Component {
   }
 
   render() {
-    const {
-      postcode,
-      filteredCourseTypes,
-      selectedFilter,
-      selectedCourseType,
-      detailsImage,
-      loading
-    } = this.state
+    const { postcode, selectedCourseType, detailsImage, loading } = this.state
 
     const footer = selectedCourseType ? (
       <Button
@@ -159,36 +133,11 @@ class CourseTypeSelection extends React.Component {
         */}
         <Loading loading={loading} position="top" cover>
           <Container className={styles.container}>
-            <Row>
-              <Col sm={{ size: 4, offset: 8 }} className={styles.filtersTitle}>
-                Filter Courses
-              </Col>
-            </Row>
-            <Row className={styles.filters}>
-              <Col sm="6">
-                <h2 className={styles.heading}>Choose a Course</h2>
-              </Col>
-              <Col sm="6">
-                <CourseTypeSelectionFilters
-                  filters={this.filters}
-                  selected={selectedFilter}
-                  onSelect={this.handleSelectFilter}
-                />
-              </Col>
-            </Row>
-            <Row>
-              {filteredCourseTypes.map(courseType => (
-                <Col md="6" lg="4" key={courseType.name}>
-                  <CourseTypeItem
-                    isTypeform={isTypeform(courseType.constant)}
-                    postcode={postcode}
-                    courseType={courseType}
-                    onClickDetails={this.handleDetails}
-                    url={getBookUrl(courseType.constant, postcode)}
-                  />
-                </Col>
-              ))}
-            </Row>
+            <CourseTypeList
+              courseTypes={this.courseTypes}
+              onDetail={this.handleDetails}
+              postcode={postcode}
+            />
           </Container>
         </Loading>
         {selectedCourseType && (

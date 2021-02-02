@@ -441,3 +441,15 @@ select {
 .prefixBigInput {
   padding-left: 48px !important;
 }
+
+.customDateInput {
+  font-size: 16px !important;
+  height: 32px;
+  border: 1px solid #e4e4e4;
+  color: #444;
+  display: block;
+  width: 100%;
+  font-weight: 500;
+  line-height: 32px;
+  padding: 0 4px;
+}

@@ -611,3 +611,11 @@ select.widgetSelect {
   margin-top: 1rem;
   margin-bottom: -0.5rem;
 }
+
+.supplierLink {
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}

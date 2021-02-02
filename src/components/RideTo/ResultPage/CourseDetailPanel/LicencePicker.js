@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import styles from './styles.scss'
 import LicenceButton from './LicenceButton'
 
@@ -9,26 +9,26 @@ function LicencePicker({
   isWidget,
   needsHelp = false
 }) {
-  const [showAll, setShowAll] = useState(!needsHelp)
+  const [showAll, setShowAll] = useState(true) //!needsHelp
   let filteredLicences = licences
 
-  useEffect(() => {
-    setShowAll(!needsHelp)
-  }, [needsHelp])
+  // useEffect(() => {
+  //   setShowAll(!needsHelp)
+  // }, [needsHelp])
 
   const onShowAllClick = () => {
     setShowAll(true)
   }
 
-  if (!showAll && selectedLicenceType) {
-    filteredLicences = licences.filter(
-      licence => selectedLicenceType.toLowerCase() === licence
-    )
+  // if (!showAll && selectedLicenceType) {
+  //   filteredLicences = licences.filter(
+  //     licence => selectedLicenceType.toLowerCase() === licence
+  //   )
 
-    if (filteredLicences.length === 0) {
-      setShowAll(true)
-    }
-  }
+  //   if (filteredLicences.length === 0) {
+  //     setShowAll(true)
+  //   }
+  // }
 
   return (
     <div className={styles.licenceWrapper}>

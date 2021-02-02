@@ -42,3 +42,54 @@ $theme-colors: (
   padding-left: 32px !important;
   padding-right: 32px !important;
 }
+
+.addon-image-slider {
+  .slick-dots {
+    bottom: -27px;
+
+    li {
+      margin: 0;
+
+      button {
+        &:before {
+          content: '';
+          opacity: 1;
+          background: $primary;
+          border-radius: 50%;
+          width: 10px;
+          height: 10px;
+        }
+      }
+
+      &.slick-active button {
+        &:before {
+          background: black;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &.course-image-slider {
+    .slick-dots {
+      bottom: 6px;
+      li {
+        margin: 0;
+
+        button {
+          &:before {
+            background: white;
+            opacity: 0.4;
+          }
+        }
+
+        &.slick-active button {
+          &:before {
+            background: white;
+            opacity: 1;
+          }
+        }
+      }
+    }
+  }
+}

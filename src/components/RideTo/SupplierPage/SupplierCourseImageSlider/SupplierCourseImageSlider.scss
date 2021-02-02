@@ -1,0 +1,71 @@
+.wrap {
+  display: block;
+}
+
+.slider {
+  font-size: 0;
+
+  :global(.slick-slide) {
+    display: block;
+  }
+}
+
+.prevArrow,
+.nextArrow {
+  width: 31px;
+  height: 31px;
+  background: white;
+  border-radius: 50%;
+  display: inline-block;
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  cursor: pointer;
+  transform: translateY(-16px);
+
+  &:before {
+    content: '';
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-top: 1px solid #141414;
+    border-left: 1px solid #141414;
+    position: absolute;
+    left: 12px;
+  }
+}
+
+.prevArrow {
+  left: 16px;
+
+  &:before {
+    transform: rotate(-45deg);
+    top: 10px;
+  }
+}
+
+.nextArrow {
+  right: 16px;
+
+  &:before {
+    transform: rotate(135deg);
+    top: 10px;
+    left: 9px;
+  }
+}
+
+.image {
+  background-position: center center;
+  background-size: cover;
+  padding-bottom: 65%;
+  position: relative;
+
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}

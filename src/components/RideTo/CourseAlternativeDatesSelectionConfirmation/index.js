@@ -3,6 +3,13 @@ import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelectionConfirmation.scss'
 const rideToMinimalGreenImg =
   'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
+
+const shopImageMobile =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/shop-now-banner-mobile.jpg'
+
+const shopImage =
+  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/shop-now-banner.jpg'
+
 const Header = ({ userName }) => {
   return (
     <div className={styles.header}>
@@ -55,6 +62,15 @@ const CourseAlternativeDatesSelectionConfirmation = () => {
           </a>{' '}
           for information on what to wear and bring to your motorcycle training.
         </p>
+        <a href="https://store.rideto.com/">
+          <img
+            className={styles.shopImageMobile}
+            style={{ display: 'none' }}
+            src={shopImageMobile}
+            alt="Shop now"
+          />
+          <img className={styles.shopImage} src={shopImage} alt="Shop now" />
+        </a>
       </div>
     )
   }

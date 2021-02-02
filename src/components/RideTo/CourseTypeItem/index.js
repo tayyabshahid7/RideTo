@@ -11,6 +11,7 @@ const CourseTypeItem = ({
   courseType,
   url,
   onClickDetails,
+  onLinkClick,
   isTypeform = false
 }) => {
   const { details } = courseType
@@ -21,6 +22,50 @@ const CourseTypeItem = ({
 
   const bgImg = { backgroundImage: `url(${details.image})` }
 
+  const renderTopLink = children => {
+    return !onLinkClick ? (
+      <a className={styles.expandedInfo} href={url}>
+        {children}
+      </a>
+    ) : (
+      <div
+        onClick={() => onLinkClick(courseType)}
+        className={styles.expandedInfo}>
+        {children}
+      </div>
+    )
+  }
+
+  const renderChooseLink = children => {
+    return !onLinkClick ? (
+      <a
+        className={classnames(styles.cta, isTypeform && 'typeform-share')}
+        href={url}>
+        {children}
+      </a>
+    ) : (
+      <div
+        onClick={() => onLinkClick(courseType)}
+        className={classnames(styles.cta, isTypeform && 'typeform-share')}>
+        {children}
+      </div>
+    )
+  }
+
+  const renderTypeForm = children => {
+    return !onLinkClick ? (
+      <a href={url} className={isTypeform ? 'typeform-share' : null}>
+        {children}
+      </a>
+    ) : (
+      <div
+        onClick={() => onLinkClick(courseType)}
+        className={isTypeform ? 'typeform-share' : null}>
+        {children}
+      </div>
+    )
+  }
+
   return (
     <div className={styles.courseTypeItem}>
       <div
@@ -28,28 +73,30 @@ const CourseTypeItem = ({
         onClick={() => onClickDetails(courseType)}>
         <span>i</span>
       </div>
-      <a href={url} className={isTypeform ? 'typeform-share' : null}>
-        <div className={styles.backgroundImg} style={bgImg} />
-      </a>
+      {renderTypeForm(<div className={styles.backgroundImg} style={bgImg} />)}
 
       <div className={styles.content}>
-        <a className={styles.expandedInfo} href={url}>
+        {renderTopLink(
           <div className={styles.info}>
             <h5>{courseType.name}</h5>
             <div className={styles.description}>{details.description}</div>
           </div>
-        </a>
-        <a
-          className={classnames(styles.cta, isTypeform && 'typeform-share')}
-          href={url}>
-          <div className={styles.ctaText}>Choose</div>
-          <img className={styles.ctaIcon} src={ArrowRight} alt="right-arrow" />
-          <img
-            className={styles.ctaIconHover}
-            src={ButtonArrowWhite}
-            alt="arrow-white"
-          />
-        </a>
+        )}
+        {renderChooseLink(
+          <React.Fragment>
+            <div className={styles.ctaText}>Choose</div>
+            <img
+              className={styles.ctaIcon}
+              src={ArrowRight}
+              alt="right-arrow"
+            />
+            <img
+              className={styles.ctaIconHover}
+              src={ButtonArrowWhite}
+              alt="arrow-white"
+            />
+          </React.Fragment>
+        )}
       </div>
       {//Add typeform popup script
       isTypeform && loadTypeformScript()}

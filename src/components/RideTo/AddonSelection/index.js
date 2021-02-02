@@ -1,6 +1,8 @@
 import React from 'react'
 import { Container, Row, Col, Button } from 'reactstrap'
 import moment from 'moment'
+import classnames from 'classnames'
+import _ from 'lodash'
 import { parseQueryString } from 'services/api'
 import { getSupplier, getAddons } from 'services/page'
 import NavigationComponent from 'components/RideTo/NavigationComponent'
@@ -8,6 +10,31 @@ import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
 import styles from './AddonSelection.scss'
 import { getCourseTitle } from 'services/course'
 import { IconArrowRight } from 'assets/icons'
+import { Desktop, Mobile } from 'common/breakpoints'
+import { IconHelmet, IconMask, IconJacket, IconBoots } from 'assets/icons'
+
+const CHECKLIST_ITEMS = [
+  {
+    icon: <IconMask />,
+    title: 'A face\ncovering',
+    keywords: ['FACE_COVER']
+  },
+  {
+    icon: <IconBoots />,
+    title: 'Sturdy boots\nand jeans',
+    keywords: ['BOOTS_JEANS']
+  },
+  {
+    icon: <IconHelmet />,
+    title: 'Motorcycle\nhelmet',
+    keywords: ['HELMET']
+  },
+  {
+    icon: <IconJacket />,
+    title: 'A thick jacket \nand motorcycle gloves',
+    keywords: ['JACKET_GLOVES']
+  }
+]
 
 class AddonSelection extends React.Component {
   constructor(props) {
@@ -86,7 +113,9 @@ class AddonSelection extends React.Component {
       selectedAddons: [],
       detailsAddon: null,
       supplier: null,
-      navigation: this.navigation
+      navigation: this.navigation,
+      gloves_jacket_included: checkoutData.gloves_jacket_included,
+      helmet_hire: checkoutData.helmet_hire
     }
 
     this.handleAddAddon = this.handleAddAddon.bind(this)
@@ -184,17 +213,85 @@ class AddonSelection extends React.Component {
     })
   }
 
+  handleHighlightAddon(keywords) {
+    const { addons } = this.state
+
+    if (!keywords.length) {
+      return
+    }
+    let items = addons.filter(x => x.addon_group === keywords[0])
+    if (!items.length) {
+      return
+    }
+    items.forEach(item => (item.price = parseFloat(item.discount_price)))
+    items = _.orderBy(items, 'price').reverse()
+
+    // scroll to addon
+    const addonEl = document.getElementById('addon-' + items[0].id)
+    addonEl.scrollIntoView({
+      behavior: 'smooth',
+      inline: 'nearest'
+    })
+  }
+
   isAddonSelected(addon) {
     const { selectedAddons } = this.state
 
     return selectedAddons.filter(item => item.id === addon.id).length > 0
   }
 
+  renderCheckListItem(item, index, isLast, isMobile = false) {
+    return (
+      <React.Fragment key={'chk-addon-' + index}>
+        <div
+          className={classnames(
+            styles.checkListItem,
+            !item.keywords.length && styles.providedItem
+          )}
+          onClick={() => this.handleHighlightAddon(item.keywords)}>
+          {item.icon}
+          {isMobile ? (
+            <h6>{item.title.split('\n').join(' ')}</h6>
+          ) : (
+            <h6>
+              {item.title.split('\n').map(text => (
+                <span key={'chk-text' + text}>{text}</span>
+              ))}
+            </h6>
+          )}
+          {item.keywords.length ? (
+            <span className={styles.required}>BRING YOUR OWN</span>
+          ) : (
+            <span className={styles.provided}>PROVIDED</span>
+          )}
+        </div>
+        {!isLast && <span className={styles.plus}>+</span>}
+      </React.Fragment>
+    )
+  }
+
   render() {
     // Kill the addons page so no one can land here
     // return null
 
-    const { addons, navigation } = this.state
+    const {
+      addons,
+      navigation,
+      gloves_jacket_included,
+      helmet_hire
+    } = this.state
+    let checklistItems = CHECKLIST_ITEMS.slice()
+    if (gloves_jacket_included) {
+      checklistItems[3].keywords = []
+    }
+
+    if (helmet_hire) {
+      checklistItems[2].keywords = []
+    }
+
+    const providedList = checklistItems.filter(x => !x.keywords.length)
+    checklistItems = checklistItems.filter(x => x.keywords.length)
+    checklistItems = [...checklistItems, ...providedList]
 
     return (
       <React.Fragment>
@@ -208,6 +305,23 @@ class AddonSelection extends React.Component {
                 your door. FREE delivery with ALL orders.
               </div>
             </Col>
+            <Mobile>
+              <Col md="12">
+                <div className={styles.checkListContainer}>
+                  <h4>ON THE DAY OF TRAINING YOU'LL NEED TO BRING:</h4>
+                  <div className={styles.checkLists}>
+                    {checklistItems.map((item, index) =>
+                      this.renderCheckListItem(
+                        item,
+                        index,
+                        index === checklistItems.length - 1,
+                        true
+                      )
+                    )}
+                  </div>
+                </div>
+              </Col>
+            </Mobile>
             <Col md="6" className={styles.skipLink}>
               <Button
                 id="addons-checkout-button"
@@ -219,6 +333,20 @@ class AddonSelection extends React.Component {
               </Button>
             </Col>
           </Row>
+          <Desktop>
+            <div className={styles.checkListContainer}>
+              <h4>ON THE DAY OF TRAINING YOU'LL NEED TO BRING:</h4>
+              <div className={styles.checkLists}>
+                {checklistItems.map((item, index) =>
+                  this.renderCheckListItem(
+                    item,
+                    index,
+                    index === checklistItems.length - 1
+                  )
+                )}
+              </div>
+            </div>
+          </Desktop>
           <Row>
             {addons.map((addon, i) => (
               <Col xs="12" key={i}>

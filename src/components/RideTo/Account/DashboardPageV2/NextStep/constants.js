@@ -98,7 +98,7 @@ export const STEP_REVISE = {
   introduction: {
     title: 'Introduction',
     text:
-      "Time to get prepared for your CBT course. The CBT course contains 5 parts including 3 theory section, so it's important that you have a good understanding of the Highway Code and motorcycling basics before. Get ready with our handy online guides."
+      "The CBT course contains 5 parts including 3 theory sections, so it's important that you have a good understanding of the Highway Code and motorcycling basics before. Get ready with our handy online guides."
   },
   guides: {
     title: 'Revision guides',
@@ -362,12 +362,12 @@ export const STEP_GEAR = {
     {
       name: 'Helmets',
       image: helmets,
-      link: 'https://store.rideto.com/collections/helmet'
+      link: 'https://store.rideto.com/collections/motorcycle-helmets'
     },
     {
       name: 'Gloves',
       image: gloves,
-      link: 'https://store.rideto.com/collections/gloves'
+      link: 'https://store.rideto.com/collections/motorcycle-gloves'
     },
     {
       name: 'Jackets',

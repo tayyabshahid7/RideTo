@@ -15,6 +15,7 @@ import {
   getToken,
   isAuthenticated as getIsAuthenticated
 } from 'services/auth'
+import { Desktop } from 'common/breakpoints'
 import { DEFAULT_TIMELINE } from './constants'
 import {
   updateTimelineStep,
@@ -419,9 +420,11 @@ function DashboardPageV2({ match }) {
                 }>
                 <div className={styles.leftColInnerStuckInner}>
                   {isAuthenticated && (
-                    <div className={styles.pageItem}>
-                      <Achievements achievements={achievements} />
-                    </div>
+                    <Desktop>
+                      <div className={styles.pageItem}>
+                        <Achievements achievements={achievements} />
+                      </div>
+                    </Desktop>
                   )}
                   <div className={styles.pageItem}>
                     <MyOrders
@@ -438,9 +441,11 @@ function DashboardPageV2({ match }) {
                   <div className={styles.pageItem}>
                     <MyCheckList userId={userDetails.user_id} />
                   </div>
-                  <div className={styles.pageItem}>
-                    <GuidesAdvice />
-                  </div>
+                  <Desktop>
+                    <div className={styles.pageItem}>
+                      <GuidesAdvice />
+                    </div>
+                  </Desktop>
                 </div>
               </div>
             </div>

@@ -46,3 +46,36 @@ export const ITEMS = [
     id: 'helmets_gear'
   }
 ]
+
+export const NEW_ITEMS = [
+  {
+    title: 'Helmet - SHOP NOW',
+    url: 'https://store.rideto.com/collections/motorcycle-helmets',
+    id: 'helmets_gear'
+  },
+  {
+    title: 'Gloves - SHOP NOW',
+    url: 'https://store.rideto.com/collections/motorcycle-gloves',
+    id: 'gloves'
+  },
+  {
+    title: 'Jeans - SHOP NOW',
+    url: 'https://store.rideto.com/collections/motorcyle-jeans',
+    id: 'thick_jeans'
+  },
+  {
+    title: 'Boots - SHOP NOW',
+    url: 'https://store.rideto.com/collections/motorcycle-boots',
+    id: 'sturdy_boots'
+  },
+  {
+    title: 'L Plates - SHOP NOW',
+    url: 'https://store.rideto.com/products/pair-of-stick-on-l-plates-1',
+    id: 'l_plates'
+  },
+  {
+    title: 'Insurance - GET A QUOTE',
+    url: 'http://tidd.ly/3413398',
+    id: 'insurance'
+  }
+]

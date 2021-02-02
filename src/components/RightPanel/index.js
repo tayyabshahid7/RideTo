@@ -1,9 +1,18 @@
-import React from 'react'
+import React, { useRef } from 'react'
+import { withRouter } from 'react-router-dom'
 import styles from './styles.scss'
 import classnames from 'classnames'
 import { matchPath } from 'react-router'
 
-function RightPanel({ children, location, type }) {
+const RightPanel = ({ children, history, location, type }) => {
+  const myRef = useRef(null)
+
+  history.listen((location, action) => {
+    if (myRef.current) {
+      myRef.current.scrollTop = 0
+    }
+  })
+
   const hasMatchingRoute = children.some(({ props: { exact, path } }) =>
     matchPath(location.pathname, {
       exact,
@@ -17,6 +26,7 @@ function RightPanel({ children, location, type }) {
 
   return (
     <div
+      ref={myRef}
       className={classnames(
         styles.rightPanel,
         type === 'full' && styles.fullPanel
@@ -26,4 +36,4 @@ function RightPanel({ children, location, type }) {
   )
 }
 
-export default RightPanel
+export default withRouter(RightPanel)

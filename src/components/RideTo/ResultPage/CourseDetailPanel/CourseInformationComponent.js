@@ -31,6 +31,23 @@ class CourseInformationComponent extends React.Component {
     )
   }
 
+  renderSupplierLogo() {
+    const { course } = this.props
+    return (
+      <React.Fragment>
+        <div className={styles.hostedLogo}>
+          <img src={course.hosted_logo} alt="feature" />
+        </div>
+        <div>
+          <StarsComponent
+            rating={course.rating}
+            className={styles.starComponent}
+          />
+        </div>
+      </React.Fragment>
+    )
+  }
+
   render() {
     const { course, courseType } = this.props
     const description = !this.isFullLicence
@@ -83,15 +100,13 @@ class CourseInformationComponent extends React.Component {
         <div className={styles.instructor}>
           <div className={styles.subtitle}>The Instructor</div>
           <div className={styles.desc}>{course.rideto_opinion}</div>
-          <div className={styles.hostedLogo}>
-            <img src={course.hosted_logo} alt="feature" />
-          </div>
-          <div>
-            <StarsComponent
-              rating={course.rating}
-              className={styles.starComponent}
-            />
-          </div>
+          {course.publish_supplier_page && course.supplier_page_link ? (
+            <a className={styles.supplierLink} href={course.supplier_page_link}>
+              {this.renderSupplierLogo()}
+            </a>
+          ) : (
+            this.renderSupplierLogo()
+          )}
         </div>
       </Fragment>
     )

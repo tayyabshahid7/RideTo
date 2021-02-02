@@ -216,10 +216,7 @@
 .starComponent {
   margin-left: 14px;
   margin-right: 6px;
-
-  &:hover {
-    cursor: pointer;
-  }
+  cursor: pointer;
 }
 
 .icons {
@@ -230,6 +227,16 @@
   div {
     margin-top: 12px;
     margin-right: 16px;
+  }
+
+  @media (max-width: 575px) {
+    > div {
+      margin-right: 12px;
+
+      img {
+        width: 20px;
+      }
+    }
   }
 }
 
