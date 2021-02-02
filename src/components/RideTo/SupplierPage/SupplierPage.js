@@ -80,7 +80,10 @@ const SupplierPage = () => {
           </div>
         )}
         {!isDesktop && showExtraPanel && (
-          <SidePanel visible onDismiss={() => setShowExtraPanel(false)}>
+          <SidePanel
+            visible
+            headingImage={supplier.image ? supplier.image : ''}
+            onDismiss={() => setShowExtraPanel(false)}>
             <SupplierExtraInfo course={course} />
           </SidePanel>
         )}
