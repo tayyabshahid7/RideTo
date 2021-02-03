@@ -50,6 +50,12 @@ class CourseInformationComponent extends React.Component {
 
   render() {
     const { course, courseType } = this.props
+
+    let instructorText = course.rideto_opinion.substr(0, 500)
+    if (course.rideto_opinion.length > 500) {
+      instructorText += ' ...'
+    }
+
     const description = !this.isFullLicence
       ? "On the day of the training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots (something which protect your feet such as walking boots) and suitable clothes for being outside all day."
       : "On the day of training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots and suitable clothes for being outside all day. You must also bring your valid CBT and Motorcycle Theory certificates."
@@ -99,7 +105,21 @@ class CourseInformationComponent extends React.Component {
         </div>
         <div className={styles.instructor}>
           <div className={styles.subtitle}>The Instructor</div>
-          <div className={styles.desc}>{course.rideto_opinion}</div>
+          {course.publish_supplier_page && course.supplier_page_link ? (
+            <div className={styles.desc}>
+              {instructorText}
+              {course.rideto_opinion.length > 500 && (
+                <a
+                  className={styles.supplierLink}
+                  href={course.supplier_page_link}>
+                  READ MORE
+                </a>
+              )}
+            </div>
+          ) : (
+            <div className={styles.desc}>{course.rideto_opinion}</div>
+          )}
+
           {course.publish_supplier_page && course.supplier_page_link ? (
             <a className={styles.supplierLink} href={course.supplier_page_link}>
               {this.renderSupplierLogo()}
