@@ -76,7 +76,7 @@ function NextStep({
   }, [constant, selectedGoal])
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="next-step-container">
       <div className={styles.header}>
         <div className={styles.headerTitle}>
           <div className={styles.iconWrap}>
