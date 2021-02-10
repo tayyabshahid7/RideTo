@@ -395,6 +395,11 @@ export const STEP_GEAR = {
       link: 'https://store.rideto.com/collections/accessory'
     }
   ],
+  bottomForm: {
+    icon: revise,
+    href: 'https://store.rideto.com',
+    buttonText: 'Shop Motorcycle Gear'
+  },
   status: 'Not Started',
   id: 'STEP_GEAR'
 }
