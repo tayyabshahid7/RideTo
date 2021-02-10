@@ -39,6 +39,7 @@ function NextStep({
     form,
     cta,
     gear,
+    bottomForm,
     id
   } = getNextStep(constant)
   const isDesktop = useMediaQuery({ minWidth: 1025 })
@@ -75,7 +76,7 @@ function NextStep({
   }, [constant, selectedGoal])
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} id="next-step-container">
       <div className={styles.header}>
         <div className={styles.headerTitle}>
           <div className={styles.iconWrap}>
@@ -163,12 +164,19 @@ function NextStep({
             <Form form={form} />
           </div>
         ) : gear ? (
-          <div className={classnames(styles.rightCol, styles.rightColSlider)}>
-            <Slider
-              gear={constant === 'STEP_BIKE' ? bikes : gear}
-              constant={constant}
-            />
-          </div>
+          <React.Fragment>
+            <div className={classnames(styles.rightCol, styles.rightColSlider)}>
+              <Slider
+                gear={constant === 'STEP_BIKE' ? bikes : gear}
+                constant={constant}
+              />
+            </div>
+            {!!bottomForm && (
+              <div className={styles.rightCol}>
+                <Form form={bottomForm} />
+              </div>
+            )}
+          </React.Fragment>
         ) : null}
         {!isDesktop && constant !== 'STEP_RIDE' && (
           <MyCheckbox
