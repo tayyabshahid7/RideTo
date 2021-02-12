@@ -171,9 +171,9 @@ function NextStep({
                 constant={constant}
               />
             </div>
-            {!!bottomForm && (
+            {!isDesktop && !!bottomForm && (
               <div className={styles.rightCol}>
-                <Form form={bottomForm} />
+                <Form form={bottomForm} hideIcon />
               </div>
             )}
           </React.Fragment>
