@@ -178,11 +178,13 @@ function DashboardPageV2({ match }) {
     )
 
     setNextStep(clickedStep)
-    const stepDom = document.getElementById('next-step-container')
-    if (stepDom) {
-      stepDom.scrollIntoView({
-        behavior: 'smooth'
-      })
+    if (!isDesktop) {
+      const stepDom = document.getElementById('next-step-container')
+      if (stepDom) {
+        stepDom.scrollIntoView({
+          behavior: 'smooth'
+        })
+      }
     }
   }
 

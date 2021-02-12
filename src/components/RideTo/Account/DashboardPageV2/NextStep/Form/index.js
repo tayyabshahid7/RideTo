@@ -11,7 +11,7 @@ const linkIsTypeform = href => {
   return href && href.includes('rideto.typeform.com')
 }
 
-function Form({ form }) {
+function Form({ form, hideIcon = false }) {
   const { action, label, buttonText, icon, href, params = {}, text } = form
   const isTypeform = linkIsTypeform(href)
 
@@ -23,9 +23,11 @@ function Form({ form }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.icon}>
-        <img src={icon} alt="Icon" width="74" />
-      </div>
+      {!hideIcon && (
+        <div className={styles.icon}>
+          <img src={icon} alt="Icon" width="74" />
+        </div>
+      )}
       {text && <div>{text}</div>}
       {action && label ? (
         <form action={action}>
