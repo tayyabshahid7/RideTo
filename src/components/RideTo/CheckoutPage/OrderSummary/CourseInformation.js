@@ -167,7 +167,8 @@ function CourseInformation({
             </div>
           )}
         </div>
-        {bike_hire !== BIKE_HIRE.NO && courseType !== 'LICENCE_CBT_RENEWAL' && (
+        {(bike_hire !== BIKE_HIRE.NO ||
+          courseType !== 'LICENCE_CBT_RENEWAL') && (
           <div className={styles.orderIncluded}>
             <div className={styles.subtitle}>WHAT'S INCLUDED</div>
             <OrderIncluded
