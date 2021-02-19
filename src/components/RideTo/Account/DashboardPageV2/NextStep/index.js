@@ -128,7 +128,7 @@ function NextStep({
                     {recentOrder ? (
                       <OrderIncluded
                         fullLicence={included.type === 'das'}
-                        bikeHire={recentOrder.bike_type.toLowerCase()}
+                        bikeHire={recentOrder.bike_type}
                         hasGloves={recentOrder.gloves_jacket_included}
                       />
                     ) : (
