@@ -60,13 +60,35 @@ class CourseItem extends Component {
     return !+price && courseType === 'FULL_LICENCE'
   }
 
+  handleScroll = () => {
+    // localStorage.setItem('COURSE_INFO_SCROLL_Y', window.scrollY)
+    // const isMobile = window.innerWidth < 768 || window.screen.width < 768
+    // if (isMobile) {
+    //   setTimeout(() => {
+    //     window.scrollTo(0, 0)
+    //   }, 50)
+    // }
+  }
+
+  detailClicked = course => {
+    this.handleScroll()
+    this.props.handleDetailClick(course)
+  }
+
+  priceClicked = course => {
+    this.handleScroll()
+    this.props.handlePriceClick(course)
+  }
+
+  reviewClicked = course => {
+    this.handleScroll()
+    this.props.handleReviewClick(course)
+  }
+
   render() {
     const {
       course,
       className,
-      handleDetailClick,
-      handlePriceClick,
-      handleReviewClick,
       showCourseTypeInfo,
       unavaiableDate = false,
       id,
@@ -92,7 +114,7 @@ class CourseItem extends Component {
           className={classnames(styles.container, className)}>
           <div
             className={styles.photo}
-            onClick={() => handleDetailClick(course)}>
+            onClick={() => this.detailClicked(course)}>
             <LazyLoadImage
               src={course.image_thumbnail || course.image}
               className={styles.image}
@@ -105,12 +127,12 @@ class CourseItem extends Component {
             <div className={styles.upperSection}>
               <button
                 className={styles.courseName}
-                onClick={() => handleDetailClick(course)}>
+                onClick={() => this.detailClicked(course)}>
                 {course.location_slug.replace('-', ' ')}
               </button>
               <div
                 className={styles.place}
-                onClick={() => handleDetailClick(course)}>
+                onClick={() => this.detailClicked(course)}>
                 {course.place}, {course.postcode}
               </div>
               <div className={styles.icons}>
@@ -136,7 +158,7 @@ class CourseItem extends Component {
               <div>
                 <IconInfo className={styles.detailIcon} />{' '}
                 <span
-                  onClick={() => handleDetailClick(course)}
+                  onClick={() => this.detailClicked(course)}
                   className={classnames(styles.detail, styles.detailsLink)}>
                   Details
                 </span>
@@ -145,10 +167,10 @@ class CourseItem extends Component {
                 <StarsComponent
                   rating={course.rating}
                   className={styles.starComponent}
-                  onClick={() => handleReviewClick(course)}
+                  onClick={() => this.reviewClicked(course)}
                 />
                 <span
-                  onClick={() => handleReviewClick(course)}
+                  onClick={() => this.reviewClicked(course)}
                   className={styles.detail}>
                   {course.number_of_reviews}
                 </span>
@@ -160,7 +182,7 @@ class CourseItem extends Component {
               <Fragment>
                 <div
                   className={styles.price}
-                  onClick={() => handlePriceClick(course)}>
+                  onClick={() => this.priceClicked(course)}>
                   £{parseInt(course.price / 100.0, 10)}
                   {courseType === 'FULL_LICENCE' && '/Hr'}
                 </div>
@@ -169,7 +191,7 @@ class CourseItem extends Component {
                     styles.cta,
                     unavaiableDate && styles.ctaDateUnavailable
                   )}
-                  onClick={() => handlePriceClick(course)}>
+                  onClick={() => this.priceClicked(course)}>
                   <div>Select</div>
                   <IconArrowRight className={styles.arrowIcon} />
                 </div>

@@ -167,16 +167,19 @@ function CourseInformation({
             </div>
           )}
         </div>
-        <div className={styles.orderIncluded}>
-          <div className={styles.subtitle}>WHAT'S INCLUDED</div>
-          <OrderIncluded
-            fullLicence={isFullLicence}
-            package_hours={package_hours}
-            bikeHire={bike_hire}
-            hasGloves={gloves_jacket_included}
-            helmetHire={helmet_hire}
-          />
-        </div>
+        {(bike_hire !== BIKE_HIRE.NO ||
+          courseType !== 'LICENCE_CBT_RENEWAL') && (
+          <div className={styles.orderIncluded}>
+            <div className={styles.subtitle}>WHAT'S INCLUDED</div>
+            <OrderIncluded
+              fullLicence={isFullLicence}
+              package_hours={package_hours}
+              bikeHire={bike_hire}
+              hasGloves={gloves_jacket_included}
+              helmetHire={helmet_hire}
+            />
+          </div>
+        )}
       </div>
     </Fragment>
   )
