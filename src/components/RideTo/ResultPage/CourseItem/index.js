@@ -63,7 +63,7 @@ class CourseItem extends Component {
   handleScroll = () => {
     const isMobile = window.innerWidth < 768 || window.screen.width < 768
     if (isMobile) {
-      window.scrollTo(0, window.scrollY - 1)
+      window.scrollTo(0, 0)
     }
   }
 
