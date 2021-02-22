@@ -45,12 +45,24 @@ class SidePanel extends React.Component {
     }
   }
 
+  handleDismissed = () => {
+    this.props.onDismiss()
+
+    const isMobile = window.innerWidth < 768 || window.screen.width < 768
+    if (isMobile) {
+      const scrollY = localStorage.getItem('COURSE_INFO_SCROLL_Y')
+      if (!isNaN(scrollY)) {
+        window.scrollTo(0, parseInt(scrollY))
+        localStorage.setItem('COURSE_INFO_SCROLL_Y', null)
+      }
+    }
+  }
+
   render() {
     const {
       children,
       visible,
       headingImage,
-      onDismiss,
       footer,
       footerStatic = false
     } = this.props
@@ -62,10 +74,10 @@ class SidePanel extends React.Component {
 
     return (
       <div className={className}>
-        <div className={styles.overlay} onClick={onDismiss} />
+        <div className={styles.overlay} onClick={this.handleDismissed} />
         <div className={styles.sidePanel} ref={this.sidePanel} id="sidepanel">
           <div className={styles.headingImage} style={headingStyle}>
-            <img src={closeImg} alt="Close" onClick={onDismiss} />
+            <img src={closeImg} alt="Close" onClick={this.handleDismissed} />
           </div>
           <div className={styles.content}>{children}</div>
           {footer && (

@@ -61,9 +61,12 @@ class CourseItem extends Component {
   }
 
   handleScroll = () => {
+    localStorage.setItem('COURSE_INFO_SCROLL_Y', window.scrollY)
     const isMobile = window.innerWidth < 768 || window.screen.width < 768
     if (isMobile) {
-      window.scrollTo(0, 0)
+      setTimeout(() => {
+        window.scrollTo(0, 0)
+      }, 50)
     }
   }
 
