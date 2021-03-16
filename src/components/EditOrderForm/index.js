@@ -1,4 +1,6 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
@@ -129,6 +131,12 @@ class EditOrderForm extends React.Component {
     })
   }
 
+  getInstructors = schoolId => {
+    const { instructors } = this.props
+
+    return instructors.filter(x => x.supplier.includes(parseInt(schoolId)))
+  }
+
   render() {
     let {
       isSending,
@@ -228,6 +236,13 @@ class EditOrderForm extends React.Component {
         }
       }
     }
+
+    const schoolInstructors = this.getInstructors(course.supplier)
+    const instructorOptions = [
+      { id: '', name: 'Un-Assigned' },
+      ...schoolInstructors
+    ]
+    const instructorId = course.instructor ? course.instructor.id : ''
 
     return (
       <div className={styles.container}>
@@ -367,6 +382,19 @@ class EditOrderForm extends React.Component {
                     />
                   </Col>
                 </Row>
+                <Row>
+                  <Col>
+                    <ConnectSelect
+                      basic
+                      label="Instructor"
+                      name="instructor_id"
+                      value={instructorId}
+                      disabled={true}
+                      raw
+                      options={instructorOptions}
+                    />
+                  </Col>
+                </Row>
                 {/* TODO PRODEV-1112 Needs BACKEND
               <Row>
                 <Col>
@@ -443,4 +471,15 @@ class EditOrderForm extends React.Component {
   }
 }
 
-export default EditOrderForm
+const mapStateToProps = (state, props) => {
+  return {
+    instructors: state.instructor.instructors
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditOrderForm)

@@ -11271,10 +11271,10 @@ react-responsive-ui@^0.14.123:
     react-modal "^3.8.1"
     scroll-into-view-if-needed "^2.2.16"
 
-react-responsive@^8.0.0-beta.1:
-  version "8.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-8.0.0-beta.1.tgz#3d07fce7a8e1ef638645ca7f057a2c01b56d3956"
-  integrity sha512-tkTn6Jtpuw2uETCK6LSF5+QTpcrUqlxI0yKOTnWXi6VdifxX07sWYuE0CzQItVcttZiMLi6SKeHcWysvCv7U5w==
+react-responsive@^8.2.0:
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/react-responsive/-/react-responsive-8.2.0.tgz#e0ffb306cfd8f38c9c12e26725b9e1245fa9debc"
+  integrity sha512-iagCqVrw4QSjhxKp3I/YK6+ODkWY6G+YPElvdYKiUUbywwh9Ds0M7r26Fj2/7dWFFbOpcGnJE6uE7aMck8j5Qg==
   dependencies:
     hyphenate-style-name "^1.0.0"
     matchmediaquery "^0.3.0"
