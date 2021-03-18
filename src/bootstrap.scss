@@ -497,3 +497,9 @@ $font-family-base: 'PT Sans', sans-serif;
   background: #f56565;
   color: white;
 }
+
+.react-datepicker {
+  button {
+    min-height: 0;
+  }
+}

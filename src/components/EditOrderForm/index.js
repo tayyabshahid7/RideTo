@@ -8,7 +8,12 @@ import OrderPriceLine from 'components/Calendar/CoursesPanel/OrderPriceLine'
 import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
 import { Desktop } from 'common/breakpoints'
 
-import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
+import {
+  ConnectInput,
+  ConnectSelect,
+  Button,
+  ConnectTextArea
+} from 'components/ConnectForm'
 
 import {
   getFullLicenseType,
@@ -57,6 +62,12 @@ class EditOrderForm extends React.Component {
   handleConfirmation = () => {
     const { order } = this.state
     this.props.sendEmailConfirmation(order.order.friendly_id)
+  }
+
+  handleChangeRawEvent = event => {
+    const { name, value } = event.target
+    console.log(name, value)
+    this.handleChange(name, value)
   }
 
   handleChange = (typeName, value) => {
@@ -168,7 +179,20 @@ class EditOrderForm extends React.Component {
       return null
     }
 
-    const { direct_friendly_id, payment_status } = this.state.order.order
+    let {
+      direct_friendly_id,
+      payment_status,
+      completion_date,
+      completion_time,
+      course_duration,
+      instructor_certificate,
+      restriction
+    } = this.state.order.order
+
+    if (!completion_time) {
+      completion_time = '00:00'
+    }
+    const { cbt_certificate_number } = this.state.order.customer
     const {
       bike_type,
       test_result,
@@ -198,6 +222,10 @@ class EditOrderForm extends React.Component {
       order.course_type &&
       order.course_type.startsWith('FULL_LICENCE') &&
       order.course_type.endsWith('TEST')
+
+    const isCbt =
+      order.course_type === 'LICENCE_CBT_RENEWAL' ||
+      order.course_type === 'LICENCE_CBT'
 
     const testResultOptions = getTestResultOptions()
     const payOrderId = order && order.order && order.order.friendly_id
@@ -382,19 +410,72 @@ class EditOrderForm extends React.Component {
                     />
                   </Col>
                 </Row>
-                <Row>
-                  <Col>
-                    <ConnectSelect
-                      basic
-                      label="Instructor"
-                      name="instructor_id"
-                      value={instructorId}
-                      disabled={true}
-                      raw
-                      options={instructorOptions}
-                    />
-                  </Col>
-                </Row>
+                <ConnectSelect
+                  basic
+                  label="Instructor"
+                  name="instructor_id"
+                  value={instructorId}
+                  disabled={true}
+                  raw
+                  options={instructorOptions}
+                />
+                {isCbt && (
+                  <ConnectInput
+                    basic
+                    name="customer.cbt_certificate_number"
+                    value={cbt_certificate_number}
+                    label="Certificate number"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeRawEvent}
+                  />
+                )}
+                <ConnectInput
+                  basic
+                  name="order.completion_date"
+                  value={completion_date}
+                  label="Completion Date"
+                  className="form-group"
+                  type="date"
+                  onChange={this.handleChangeRawEvent}
+                />
+                <ConnectInput
+                  basic
+                  name="order.completion_time"
+                  value={completion_time}
+                  label="Completion Time"
+                  className="form-group"
+                  step="60"
+                  type="time"
+                  onChange={this.handleChangeRawEvent}
+                />
+                <ConnectInput
+                  basic
+                  name="order.course_duration"
+                  value={course_duration}
+                  label="Course Duration"
+                  className="form-group"
+                  type="number"
+                  onChange={this.handleChangeRawEvent}
+                />
+                <ConnectInput
+                  basic
+                  name="order.instructor_certificate"
+                  value={instructor_certificate}
+                  label="Instructor Certificate"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeRawEvent}
+                />
+                <ConnectInput
+                  basic
+                  name="order.restriction"
+                  value={restriction}
+                  label="Restriction"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeRawEvent}
+                />
                 {/* TODO PRODEV-1112 Needs BACKEND
               <Row>
                 <Col>
