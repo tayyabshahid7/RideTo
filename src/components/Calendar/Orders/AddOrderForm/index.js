@@ -41,6 +41,7 @@ class AddOrderForm extends React.Component {
         payment_status: '',
         riding_experience: '',
         full_licence_type: '',
+        licence_number: '',
         start_time: `${this.props.course.date}T${this.props.course.time}Z`,
         tandcs_agreed: false,
         email_optin: false,
@@ -158,6 +159,7 @@ class AddOrderForm extends React.Component {
         riding_experience,
         user_birthdate,
         current_licence,
+        licence_number,
         user_email,
         user_first_name,
         user_last_name,
@@ -276,6 +278,15 @@ class AddOrderForm extends React.Component {
                 onChange={value => {
                   this.handleChange('current_licence', value)
                 }}
+              />
+
+              <ConnectInput
+                basic
+                name="licence_number"
+                value={licence_number}
+                label="Driver Number"
+                type="text"
+                onChange={this.handleChangeRawEvent}
               />
 
               <ConnectSelect
