@@ -66,7 +66,6 @@ class EditOrderForm extends React.Component {
 
   handleChangeRawEvent = event => {
     const { name, value } = event.target
-    console.log(name, value)
     this.handleChange(name, value)
   }
 

@@ -59,8 +59,6 @@ class OrderForm extends React.Component {
     this.handleSaveClick = this.handleSaveClick.bind(this)
   }
 
-  componentDidMount() {}
-
   componentDidUpdate(prevProps) {
     if (prevProps.order !== this.props.order) {
       this.setState({
@@ -76,6 +74,11 @@ class OrderForm extends React.Component {
       editable: { ...editable, [name]: value },
       isChanged: true
     })
+  }
+
+  handleChangeRawEvent = event => {
+    const { name, value } = event.target
+    this.handleChange(name, value)
   }
 
   handleCancel() {
@@ -158,6 +161,10 @@ class OrderForm extends React.Component {
     const isFullLicence =
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE')
+
+    const isCbt =
+      editable.selected_licence === 'LICENCE_CBT_RENEWAL' ||
+      editable.selected_licence === 'LICENCE_CBT'
 
     const isFullLicenceTest =
       editable.selected_licence &&
@@ -359,6 +366,17 @@ class OrderForm extends React.Component {
                   name="instructor_id"
                 />
               </Col>
+              {isCbt && (
+                <Col sm="4">
+                  <ConnectInput
+                    disabled={inputsDisabled}
+                    name="cbt_certificate_number"
+                    value={editable.cbt_certificate_number}
+                    label="Certificate number"
+                    onChange={this.handleChangeRawEvent}
+                  />
+                </Col>
+              )}
             </Row>
             {editable.source !== 'RIDETO' &&
               editable.source !== 'RIDETO_INSTANT' && (
