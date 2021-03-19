@@ -42,10 +42,21 @@ class OrderForm extends React.Component {
   constructor(props) {
     super(props)
 
+    const { order } = props
+    if (!order.customer) {
+      order.customer = {}
+    }
+    if (!order.order) {
+      order.order = {}
+    }
+    if (!order.order.completion_time) {
+      order.order.completion_time = '00:00'
+    }
+
     this.state = {
       editable: {
         application_reference_number: '',
-        ...props.order
+        ...order
       },
       isChanged: false,
       isSending: false,
@@ -68,10 +79,21 @@ class OrderForm extends React.Component {
     }
   }
 
-  handleChange(name, value) {
+  handleChange(typeName, value) {
     const { editable } = this.state
+    const newOrder = { ...editable }
+
+    let type = typeName.split('.')[0]
+    let name = typeName.split('.')[1]
+
+    if (!name) {
+      newOrder[type] = value
+    } else {
+      newOrder[type][name] = value
+    }
+
     this.setState({
-      editable: { ...editable, [name]: value },
+      editable: newOrder,
       isChanged: true
     })
   }
@@ -370,13 +392,64 @@ class OrderForm extends React.Component {
                 <Col sm="4">
                   <ConnectInput
                     disabled={inputsDisabled}
-                    name="cbt_certificate_number"
-                    value={editable.cbt_certificate_number}
+                    name="customer.cbt_certificate_number"
+                    value={editable.customer.cbt_certificate_number}
                     label="Certificate number"
                     onChange={this.handleChangeRawEvent}
                   />
                 </Col>
               )}
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.completion_date"
+                  value={editable.order.completion_date}
+                  label="Completion Date"
+                  type="date"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.completion_time"
+                  value={editable.order.completion_time}
+                  label="Completion Time"
+                  step="60"
+                  type="time"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.course_duration"
+                  value={editable.order.course_duration}
+                  label="Course Duration"
+                  type="number"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.instructor_certificate"
+                  value={editable.order.instructor_certificate}
+                  label="Instructor Certificate"
+                  type="text"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.restriction"
+                  value={editable.order.restriction}
+                  label="Restriction"
+                  type="text"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
             </Row>
             {editable.source !== 'RIDETO' &&
               editable.source !== 'RIDETO_INSTANT' && (

@@ -167,7 +167,7 @@ class AddOrderForm extends React.Component {
         tandcs_agreed,
         email_optin,
         notes,
-        third_party_optin
+        third_party_optin,
       },
       paid
     } = this.state
