@@ -15,7 +15,7 @@ import SearchTag from 'components/SearchTag'
 import SearchInput from 'components/SearchInput'
 import { fetchOrderById, getPaymentStatus } from 'services/order'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
-import { Mobile } from 'common/breakpoints'
+import { Mobile, Desktop } from 'common/breakpoints'
 
 const OrdersTable = ({
   location,
@@ -34,7 +34,8 @@ const OrdersTable = ({
   onSort,
   showNotification,
   onOpenFilter,
-  onRefresh
+  onRefresh,
+  onExportCsv
 }) => {
   const [showInvoiceForm, setShowInvoiceForm] = useState(false)
   const [orderDetail, setOrderDetail] = useState(false)
@@ -214,6 +215,15 @@ const OrdersTable = ({
           </div>
         </Mobile>
         <label className={styles.headerLabel}>Orders</label>
+        <Desktop>
+          <Button
+            color="primary"
+            className={styles.headerButton}
+            onClick={onExportCsv}>
+            {/* <span className={styles.plusIcon}></span> */}
+            Export Data
+          </Button>
+        </Desktop>
       </div>
       <div className={styles.tableContainer}>
         <Mobile>

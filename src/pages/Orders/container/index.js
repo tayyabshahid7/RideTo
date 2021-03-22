@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -6,6 +6,7 @@ import { changeSchool } from 'store/auth'
 import * as orderModule from 'store/order'
 import { Button } from 'components/ConnectForm'
 import { getDateRangeByType } from 'common/info'
+import { CSVLink } from 'react-csv'
 import _ from 'lodash'
 
 import LoadingMask from 'components/LoadingMask'
@@ -18,8 +19,25 @@ import RightPanel from 'components/RightPanel'
 import styles from './styles.scss'
 import OrdersDetailPanel from '../components/OrdersDetailPanel'
 import { actions as notifyActions } from 'store/notification'
+import { exportOrdersCsv } from 'services/order'
 
 const pageSize = 50
+
+const headers = [
+  { label: 'ATB Number', key: 'atb_number' },
+  { label: 'Certificate number', key: 'certificate_number' },
+  { label: 'Completion Date', key: 'completion_date' },
+  { label: 'Completion Time', key: 'completion_time' },
+  { label: 'Course Duration', key: 'course_duration' },
+  { label: 'Driver Number', key: 'driver_number' },
+  { label: 'Instructor Certificate', key: 'instructor_certificate' },
+  { label: 'Restriction', key: 'restriction' },
+  { label: 'Transmission', key: 'transmission' }
+  // { label: 'Validation', key: 'validation' }
+  // { label: 'IN List', key: '' },
+  // { label: 'IC List', key: '' },
+  // { label: '', key: '' },
+]
 
 function Orders({
   orders,
@@ -51,6 +69,9 @@ function Orders({
   const [showFilter, setShowFilter] = useState(false)
   const [tags, setTags] = useState([])
   const [paramsRefreshed, setParamsRefreshed] = useState(false)
+  const [exportData, setExportData] = useState([])
+
+  const csvLinkEl = useRef()
 
   const dateFilters = [
     { text: 'Today', value: 'today' },
@@ -197,7 +218,7 @@ function Orders({
     setShowFilter(false)
   }
 
-  const fetchOrders = () => {
+  const generateParams = () => {
     const params = {
       sdate: fromDate,
       edate: toDate,
@@ -215,8 +236,22 @@ function Orders({
       params.status = statusFilters.map(x => x.value).join(',')
     }
 
+    return params
+  }
+
+  const fetchOrders = () => {
+    const params = generateParams()
     handleFetch(params)
     setTags(getTags())
+  }
+
+  const onExportCsv = async () => {
+    const params = generateParams()
+    const result = await exportOrdersCsv(params)
+    setExportData(result)
+    setTimeout(() => {
+      csvLinkEl.current.link.click()
+    })
   }
 
   const handleFetch = orderParams => {
@@ -359,6 +394,14 @@ function Orders({
         </div>
       </StaticSidePanel>
       <div className={styles.tableContainer}>
+        <div className="d-none">
+          <CSVLink
+            headers={headers}
+            filename="order-data.csv"
+            data={exportData}
+            ref={csvLinkEl}
+          />
+        </div>
         <OrdersTable
           location={location}
           history={history}
@@ -372,6 +415,7 @@ function Orders({
           page={page}
           onPage={onPage}
           onSort={onSort}
+          onExportCsv={onExportCsv}
           onRefresh={onRefresh}
           searchInputValue={searchInputValue}
           onSearchChange={handleSearchChange}
