@@ -93,11 +93,11 @@ class EditOrderForm extends React.Component {
   }
 
   handleSave = async event => {
+    event.preventDefault()
     const { onSave, onCancel } = this.props
     const { order } = this.state
     const data = Object.assign({}, order)
 
-    event.preventDefault()
     let response = await onSave(data)
     if (response) {
       onCancel() // close the form on success

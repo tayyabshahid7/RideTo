@@ -15,9 +15,10 @@ const OrdersPanelDetailForm = ({
       const data = {
         id: updatedOrder.id,
         customer: updatedOrder.customer,
-        order: {
-          payment_status: updatedOrder.order.payment_status
-        },
+        order: updatedOrder.order,
+        // order: {
+        //   payment_status: updatedOrder.order.payment_status
+        // },
         status: updatedOrder.status,
         notes: updatedOrder.notes || '',
         requested_date: updatedOrder.requested_date,
