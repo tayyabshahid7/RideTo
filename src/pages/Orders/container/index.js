@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Route } from 'react-router'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -6,7 +6,7 @@ import { changeSchool } from 'store/auth'
 import * as orderModule from 'store/order'
 import { Button } from 'components/ConnectForm'
 import { getDateRangeByType } from 'common/info'
-import { CSVLink } from 'react-csv'
+// import { CSVLink } from 'react-csv'
 import _ from 'lodash'
 import moment from 'moment'
 
@@ -24,21 +24,21 @@ import { exportOrdersCsv } from 'services/order'
 
 const pageSize = 50
 
-const headers = [
-  { label: 'ATB Number', key: 'atb_number' },
-  { label: 'Certificate number', key: 'certificate_number' },
-  { label: 'Completion Date', key: 'completion_date' },
-  { label: 'Completion Time', key: 'completion_time' },
-  { label: 'Course Duration', key: 'course_duration' },
-  { label: 'Driver Number', key: 'driver_number' },
-  { label: 'Instructor Certificate', key: 'instructor_certificate' },
-  { label: 'Restriction', key: 'restriction' },
-  { label: 'Transmission', key: 'transmission' }
-  // { label: 'Validation', key: 'validation' }
-  // { label: 'IN List', key: '' },
-  // { label: 'IC List', key: '' },
-  // { label: '', key: '' },
-]
+// const headers = [
+//   { label: 'ATB Number', key: 'atb_number' },
+//   { label: 'Certificate number', key: 'certificate_number' },
+//   { label: 'Completion Date', key: 'completion_date' },
+//   { label: 'Completion Time', key: 'completion_time' },
+//   { label: 'Course Duration', key: 'course_duration' },
+//   { label: 'Driver Number', key: 'driver_number' },
+//   { label: 'Instructor Certificate', key: 'instructor_certificate' },
+//   { label: 'Restriction', key: 'restriction' },
+//   { label: 'Transmission', key: 'transmission' }
+//   // { label: 'Validation', key: 'validation' }
+//   // { label: 'IN List', key: '' },
+//   // { label: 'IC List', key: '' },
+//   // { label: '', key: '' },
+// ]
 
 function Orders({
   orders,
@@ -70,9 +70,9 @@ function Orders({
   const [showFilter, setShowFilter] = useState(false)
   const [tags, setTags] = useState([])
   const [paramsRefreshed, setParamsRefreshed] = useState(false)
-  const [exportData, setExportData] = useState([])
+  // const [exportData, setExportData] = useState([])
 
-  const csvLinkEl = useRef()
+  // const csvLinkEl = useRef()
 
   const dateFilters = [
     { text: 'Today', value: 'today' },
@@ -417,14 +417,14 @@ function Orders({
         </div>
       </StaticSidePanel>
       <div className={styles.tableContainer}>
-        <div className="d-none">
+        {/* <div className="d-none">
           <CSVLink
             headers={headers}
             filename="order-data.csv"
             data={exportData}
             ref={csvLinkEl}
           />
-        </div>
+        </div> */}
         <OrdersTable
           location={location}
           history={history}
