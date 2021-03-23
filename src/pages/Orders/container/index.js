@@ -8,6 +8,7 @@ import { Button } from 'components/ConnectForm'
 import { getDateRangeByType } from 'common/info'
 import { CSVLink } from 'react-csv'
 import _ from 'lodash'
+import moment from 'moment'
 
 import LoadingMask from 'components/LoadingMask'
 import StaticSidePanel from 'components/StaticSidePanel'
@@ -246,12 +247,34 @@ function Orders({
   }
 
   const onExportCsv = async () => {
+    let filename =
+      moment().format('hh:mm MM-DD-YY') + ' ConnectMCT Order Export.xlsx'
+
+    if (selectedSuppliers.length === 1) {
+      const supplier = suppliers.find(x => x.id === selectedSuppliers[0])
+      filename = supplier.name + ' ' + filename
+    }
+
     const params = generateParams()
     const result = await exportOrdersCsv(params)
-    setExportData(result)
-    setTimeout(() => {
-      csvLinkEl.current.link.click()
+
+    const blob = new Blob([result], {
+      type:
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'
     })
+    const element = document.createElement('a')
+    const href = window.URL.createObjectURL(blob)
+    element.href = href
+    element.download = filename
+    document.body.appendChild(element)
+    element.click()
+    document.body.removeChild(element)
+    window.URL.revokeObjectURL(href)
+
+    // setExportData(result)
+    // setTimeout(() => {
+    //   csvLinkEl.current.link.click()
+    // })
   }
 
   const handleFetch = orderParams => {

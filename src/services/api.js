@@ -80,6 +80,31 @@ const request = async (
   }
 }
 
+export const getXlsx = async (path, params) => {
+  const existingToken = getToken()
+  const token = isTokenExpiring(existingToken)
+    ? await refreshToken(existingToken)
+    : existingToken
+
+  const url = `${BASE_URL}api/${path}`
+
+  try {
+    const response = await axios({
+      url,
+      method: 'get',
+      params,
+      responseType: 'blob',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/xlsx'
+      }
+    })
+    return response.data
+  } catch (err) {
+    throw err
+  }
+}
+
 export const get = async (path, params, auth = true) => {
   return await request('get', path, params, null, auth)
 }
