@@ -90,7 +90,7 @@ class CustomerDetailForm extends React.Component {
         <ConnectInput
           name="licence_number"
           value={customer.licence_number || ''}
-          label="Licence Number"
+          label="Driver Number"
           type="text"
           onChange={this.handleChange}
           disabled={!isAdmin}
