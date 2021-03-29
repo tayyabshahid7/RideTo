@@ -34,7 +34,9 @@ export default function ConnectInput(props) {
   }
 
   if (type === 'time') {
-    value = value.slice(0, 5)
+    if (value) {
+      value = value.slice(0, 5)
+    }
 
     return (
       <div className={styles.formGroup}>

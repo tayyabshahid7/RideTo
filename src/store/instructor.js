@@ -21,6 +21,7 @@ export const getAllInstructors = () => async dispatch => {
     const instructors = await fetchInstructors()
     instructors.forEach(x => {
       x.supplier = x.supplier.map(x => x.id)
+      x.name = `${x.first_name} ${x.last_name}`
     })
 
     dispatch({

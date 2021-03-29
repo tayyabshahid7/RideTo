@@ -29,6 +29,7 @@
 .header {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   padding: 16px 16px 0 29px;
 
   @media (max-width: 767px) {
@@ -121,6 +122,12 @@
       stroke: white;
     }
   }
+}
+
+.headerButton {
+  padding-left: 18px;
+  padding-right: 18px;
+  border-radius: 20px;
 }
 
 .pagination {

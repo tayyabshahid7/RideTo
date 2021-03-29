@@ -173,10 +173,25 @@ class AddonSelection extends React.Component {
   handleSizeUpdate(addon, selectedSize) {
     const { addons, selectedAddons } = this.state
 
-    this.setState({
-      addons: this.updateAddonSize(addons, addon, selectedSize),
-      selectedAddons: this.updateAddonSize(selectedAddons, addon, selectedSize)
-    })
+    this.setState(
+      {
+        addons: this.updateAddonSize(addons, addon, selectedSize),
+        selectedAddons: this.updateAddonSize(
+          selectedAddons,
+          addon,
+          selectedSize
+        )
+      },
+      () => {
+        if (!this.isAddonSelected(addon)) {
+          this.handleAddAddon({
+            ...addon,
+            selectedSize,
+            sizeRequired: false
+          })
+        }
+      }
+    )
   }
 
   async handleContinue() {

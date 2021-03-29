@@ -1,4 +1,6 @@
 import React from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import styles from './styles.scss'
 import { Row, Col, Form } from 'reactstrap'
 import InvoiceForm from 'pages/Invoices/components/InvoiceForm'
@@ -6,7 +8,12 @@ import OrderPriceLine from 'components/Calendar/CoursesPanel/OrderPriceLine'
 import OrderPaymentContainer from 'pages/Invoices/components/OrderPaymentContainer'
 import { Desktop } from 'common/breakpoints'
 
-import { ConnectSelect, Button, ConnectTextArea } from 'components/ConnectForm'
+import {
+  ConnectInput,
+  ConnectSelect,
+  Button,
+  ConnectTextArea
+} from 'components/ConnectForm'
 
 import {
   getFullLicenseType,
@@ -57,6 +64,11 @@ class EditOrderForm extends React.Component {
     this.props.sendEmailConfirmation(order.order.friendly_id)
   }
 
+  handleChangeRawEvent = event => {
+    const { name, value } = event.target
+    this.handleChange(name, value)
+  }
+
   handleChange = (typeName, value) => {
     const { order } = this.state
     const newOrder = { ...order }
@@ -81,11 +93,11 @@ class EditOrderForm extends React.Component {
   }
 
   handleSave = async event => {
+    event.preventDefault()
     const { onSave, onCancel } = this.props
     const { order } = this.state
     const data = Object.assign({}, order)
 
-    event.preventDefault()
     let response = await onSave(data)
     if (response) {
       onCancel() // close the form on success
@@ -129,6 +141,12 @@ class EditOrderForm extends React.Component {
     })
   }
 
+  getInstructors = schoolId => {
+    const { instructors } = this.props
+
+    return instructors.filter(x => x.supplier.includes(parseInt(schoolId)))
+  }
+
   render() {
     let {
       isSending,
@@ -160,7 +178,20 @@ class EditOrderForm extends React.Component {
       return null
     }
 
-    const { direct_friendly_id, payment_status } = this.state.order.order
+    let {
+      direct_friendly_id,
+      payment_status,
+      completion_date,
+      completion_time,
+      course_duration,
+      instructor_certificate,
+      restriction
+    } = this.state.order.order
+
+    if (!completion_time) {
+      completion_time = '00:00'
+    }
+    const { cbt_certificate_number } = this.state.order.customer
     const {
       bike_type,
       test_result,
@@ -190,6 +221,10 @@ class EditOrderForm extends React.Component {
       order.course_type &&
       order.course_type.startsWith('FULL_LICENCE') &&
       order.course_type.endsWith('TEST')
+
+    const isCbt =
+      order.course_type === 'LICENCE_CBT_RENEWAL' ||
+      order.course_type === 'LICENCE_CBT'
 
     const testResultOptions = getTestResultOptions()
     const payOrderId = order && order.order && order.order.friendly_id
@@ -228,6 +263,13 @@ class EditOrderForm extends React.Component {
         }
       }
     }
+
+    const schoolInstructors = this.getInstructors(course.supplier)
+    const instructorOptions = [
+      { id: '', name: 'Un-Assigned' },
+      ...schoolInstructors
+    ]
+    const instructorId = course.instructor ? course.instructor.id : ''
 
     return (
       <div className={styles.container}>
@@ -367,6 +409,72 @@ class EditOrderForm extends React.Component {
                     />
                   </Col>
                 </Row>
+                <ConnectSelect
+                  basic
+                  label="Instructor"
+                  name="instructor_id"
+                  value={instructorId}
+                  disabled={true}
+                  raw
+                  options={instructorOptions}
+                />
+                {isCbt && (
+                  <ConnectInput
+                    basic
+                    name="customer.cbt_certificate_number"
+                    value={cbt_certificate_number}
+                    label="Certificate number"
+                    className="form-group"
+                    type="text"
+                    onChange={this.handleChangeRawEvent}
+                  />
+                )}
+                <ConnectInput
+                  basic
+                  name="order.completion_date"
+                  value={completion_date}
+                  label="Completion Date"
+                  className="form-group"
+                  type="date"
+                  onChange={this.handleChangeRawEvent}
+                />
+                <ConnectInput
+                  basic
+                  name="order.completion_time"
+                  value={completion_time}
+                  label="Completion Time"
+                  className="form-group"
+                  step="60"
+                  type="time"
+                  onChange={this.handleChangeRawEvent}
+                />
+                <ConnectInput
+                  basic
+                  name="order.course_duration"
+                  value={course_duration}
+                  label="Course Duration"
+                  className="form-group"
+                  type="number"
+                  onChange={this.handleChangeRawEvent}
+                />
+                <ConnectInput
+                  basic
+                  name="order.instructor_certificate"
+                  value={instructor_certificate}
+                  label="Instructor Certificate"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeRawEvent}
+                />
+                <ConnectInput
+                  basic
+                  name="order.restriction"
+                  value={restriction}
+                  label="Restriction"
+                  className="form-group"
+                  type="text"
+                  onChange={this.handleChangeRawEvent}
+                />
                 {/* TODO PRODEV-1112 Needs BACKEND
               <Row>
                 <Col>
@@ -443,4 +551,15 @@ class EditOrderForm extends React.Component {
   }
 }
 
-export default EditOrderForm
+const mapStateToProps = (state, props) => {
+  return {
+    instructors: state.instructor.instructors
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditOrderForm)

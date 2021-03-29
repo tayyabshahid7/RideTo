@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { get, put, post } from 'services/api'
+import { get, getXlsx, put, post } from 'services/api'
 import { BIKE_HIRE } from 'common/constants'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
@@ -75,6 +75,12 @@ export const getDateFilters = () => {
 export const fetchSupplierOrders = async (schoolId, params = {}) => {
   const path = `o/${schoolId}/confirmed/`
   const response = await get(path, params)
+  return response
+}
+
+export const exportOrdersCsv = async (params = {}) => {
+  const path = `school/export-order-data`
+  const response = await getXlsx(path, params)
   return response
 }
 

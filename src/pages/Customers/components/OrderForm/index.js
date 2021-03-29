@@ -1,5 +1,7 @@
 import React from 'react'
 import moment from 'moment'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import { Row, Col } from 'reactstrap'
 import classnames from 'classnames'
 import { getCustomerTypeShort } from 'services/customer'
@@ -40,10 +42,21 @@ class OrderForm extends React.Component {
   constructor(props) {
     super(props)
 
+    const { order } = props
+    if (!order.customer) {
+      order.customer = {}
+    }
+    if (!order.order) {
+      order.order = {}
+    }
+    if (!order.order.completion_time) {
+      order.order.completion_time = '00:00'
+    }
+
     this.state = {
       editable: {
         application_reference_number: '',
-        ...props.order
+        ...order
       },
       isChanged: false,
       isSending: false,
@@ -57,8 +70,6 @@ class OrderForm extends React.Component {
     this.handleSaveClick = this.handleSaveClick.bind(this)
   }
 
-  componentDidMount() {}
-
   componentDidUpdate(prevProps) {
     if (prevProps.order !== this.props.order) {
       this.setState({
@@ -68,12 +79,28 @@ class OrderForm extends React.Component {
     }
   }
 
-  handleChange(name, value) {
+  handleChange(typeName, value) {
     const { editable } = this.state
+    const newOrder = { ...editable }
+
+    let type = typeName.split('.')[0]
+    let name = typeName.split('.')[1]
+
+    if (!name) {
+      newOrder[type] = value
+    } else {
+      newOrder[type][name] = value
+    }
+
     this.setState({
-      editable: { ...editable, [name]: value },
+      editable: newOrder,
       isChanged: true
     })
+  }
+
+  handleChangeRawEvent = event => {
+    const { name, value } = event.target
+    this.handleChange(name, value)
   }
 
   handleCancel() {
@@ -112,18 +139,25 @@ class OrderForm extends React.Component {
     )
   }
 
+  getInstructors = schoolId => {
+    const { instructors } = this.props
+
+    return instructors.filter(x => x.supplier.includes(parseInt(schoolId)))
+  }
+
   render() {
     const {
       suppliers,
       isSaving,
       info: { courseTypes },
       isSending,
+      order,
       isAdmin
     } = this.props
     const { editable, isChanged, showMore, inputsDisabled } = this.state
-    let course = this.props.order.school_course
+    let course = order.school_course
     if (!course) {
-      course = this.props.order
+      course = order
       if (course.supplier && typeof course.supplier === 'object') {
         course.supplier = course.supplier.id
       }
@@ -150,6 +184,10 @@ class OrderForm extends React.Component {
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE')
 
+    const isCbt =
+      editable.selected_licence === 'LICENCE_CBT_RENEWAL' ||
+      editable.selected_licence === 'LICENCE_CBT'
+
     const isFullLicenceTest =
       editable.selected_licence &&
       editable.selected_licence.startsWith('FULL_LICENCE') &&
@@ -158,6 +196,13 @@ class OrderForm extends React.Component {
     const testResultOptions = getTestResultOptions()
 
     const trainingDate = moment(getDate(editable.training_date_time))
+
+    const schoolInstructors = this.getInstructors(course.supplier)
+    const instructorOptions = [
+      { id: '', name: 'Un-Assigned' },
+      ...schoolInstructors
+    ]
+    const instructorId = course.instructor
 
     return (
       <div className={styles.panel}>
@@ -333,6 +378,78 @@ class OrderForm extends React.Component {
                   />
                 </Col>
               )}
+
+              <Col sm="4">
+                <ConnectSelect
+                  disabled={true}
+                  label="Instructor"
+                  options={instructorOptions}
+                  selected={instructorId}
+                  name="instructor_id"
+                />
+              </Col>
+              {isCbt && (
+                <Col sm="4">
+                  <ConnectInput
+                    disabled={inputsDisabled}
+                    name="customer.cbt_certificate_number"
+                    value={editable.customer.cbt_certificate_number}
+                    label="Certificate number"
+                    onChange={this.handleChangeRawEvent}
+                  />
+                </Col>
+              )}
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.completion_date"
+                  value={editable.order.completion_date}
+                  label="Completion Date"
+                  type="date"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.completion_time"
+                  value={editable.order.completion_time}
+                  label="Completion Time"
+                  step="60"
+                  type="time"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.course_duration"
+                  value={editable.order.course_duration}
+                  label="Course Duration"
+                  type="number"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.instructor_certificate"
+                  value={editable.order.instructor_certificate}
+                  label="Instructor Certificate"
+                  type="text"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
+              <Col sm="4">
+                <ConnectInput
+                  disabled={inputsDisabled}
+                  name="order.restriction"
+                  value={editable.order.restriction}
+                  label="Restriction"
+                  type="text"
+                  onChange={this.handleChangeRawEvent}
+                />
+              </Col>
             </Row>
             {editable.source !== 'RIDETO' &&
               editable.source !== 'RIDETO_INSTANT' && (
@@ -359,4 +476,15 @@ class OrderForm extends React.Component {
   }
 }
 
-export default OrderForm
+const mapStateToProps = (state, props) => {
+  return {
+    instructors: state.instructor.instructors
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(OrderForm)
