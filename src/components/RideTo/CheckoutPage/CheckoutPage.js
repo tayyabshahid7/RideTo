@@ -159,10 +159,10 @@ class CheckoutPage extends Component {
           ...userDetails,
           ...(userDetails.birthdate
             ? {
-                user_birthdate: moment(userDetails.birthdate).format(
-                  'DD/MM/YYYY'
-                )
-              }
+              user_birthdate: moment(userDetails.birthdate).format(
+                'DD/MM/YYYY'
+              )
+            }
             : null)
         }
         const errors = {
@@ -545,6 +545,14 @@ class CheckoutPage extends Component {
       hasError = true
     }
 
+    const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+    if (!drivingLicenceRegex.test(details.driving_licence_number)) {
+      errors['driving_licence_number'] = 'Please enter a valid driving licence number'
+      if (!errors.divId) errors.divId = this.getErrorDivId('driving_licence_number')
+      hasError = true
+    }
+
+
     if (
       !details.email.match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -557,7 +565,7 @@ class CheckoutPage extends Component {
     }
 
     this.setState({
-      errors: errors
+      errors
     })
 
     return !hasError

@@ -7,6 +7,7 @@ import {
   PostalCodeElement
 } from 'react-stripe-elements'
 import DateInput from 'components/RideTo/DateInput'
+import LicenceInput from 'components/RideTo/LicenceInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Input from 'components/RideTo/Input'
 import { RidingExperiences, RiderTypes } from 'common/info'
@@ -285,6 +286,25 @@ class UserDetails extends Component {
           {errors.user_birthdate && (
             <div className={styles.error}>{errors.user_birthdate}</div>
           )}
+          <div
+            className={classnames(
+              styles.input,
+              errors.driving_licence_number && styles.inputError
+            )}>
+            <LicenceInput
+              label="Driving Licence Number"
+              placeholder="Driving Licence Number"
+              name="driving_licence_number"
+              id="driving_licence_number"
+              value={details.driving_licence_number}
+              className={classnames(
+                styles.input,
+                errors.driving_licence_number && styles.inputError
+              )}
+              onChange={this.handleChange}
+            />
+          </div>
+          {errors.driving_licence_number && <div className={styles.error}>{errors.driving_licence_number}</div>}
           <div
             className={classnames(
               styles.input,
