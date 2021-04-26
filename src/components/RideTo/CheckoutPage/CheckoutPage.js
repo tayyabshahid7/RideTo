@@ -546,7 +546,7 @@ class CheckoutPage extends Component {
     }
 
     const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
-    if (!drivingLicenceRegex.test(details.driving_licence_number)) {
+    if (!drivingLicenceRegex.test(details.driving_licence_number.split(' ').join(''))) {
       errors['driving_licence_number'] = 'Please enter a valid driving licence number'
       if (!errors.divId) errors.divId = this.getErrorDivId('driving_licence_number')
       hasError = true
