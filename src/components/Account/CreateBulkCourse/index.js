@@ -57,13 +57,16 @@ class CreateBulkCourse extends React.Component {
   componentDidMount() {
     const { info } = this.props
 
+    const tmpCourses = info.courseTypes
+      .filter(filterExtraCourses)
+
+    const course_type_id = tmpCourses.length ? tmpCourses[0].id.toString() : null
+
     this.setState(
       {
         course: {
           ...this.state.course,
-          course_type_id: info.courseTypes
-            .filter(filterExtraCourses)[0]
-            .id.toString()
+          course_type_id
         }
       },
       () => {
@@ -161,6 +164,10 @@ class CreateBulkCourse extends React.Component {
       a2_manual_bikes,
       a_manual_bikes
     } = this.state.course
+
+    if (!course_type_id) {
+      return
+    }
 
     let repeat = {
       start_date,
