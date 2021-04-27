@@ -34,7 +34,7 @@ class FooterLinks extends Component {
         <DetailsAccordionItem
           title="Support"
           content={`<div class="footer--links">
-              <a href="https://www.rideto.com/contact">Contact us</a>
+              <a href="https://www.rideto.com/contact">Contact Us</a>
               <a href="http://learn.rideto.com/frequently-asked-questions">FAQs</a>
               <a href="http://www.work.rideto.com/">Delivery Jobs</a>
               <a href="https://www.rideto.com/blog">Blog</a>
