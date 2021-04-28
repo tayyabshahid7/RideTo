@@ -55,7 +55,7 @@ function Contact() {
               <img src={call} alt="Call" />
               <div className={styles.keyInfoItemText}>
                 <h2>020 3603 9652</h2>
-                <p>Mon - Sun 9am - 5pm</p>
+                <p>Mon - Sun 9am - 6pm</p>
               </div>
               <div className={styles.keyInfoItemTextMobile}>Call</div>
             </a>

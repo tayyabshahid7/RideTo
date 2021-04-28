@@ -289,25 +289,6 @@ class UserDetails extends Component {
           <div
             className={classnames(
               styles.input,
-              errors.driving_licence_number && styles.inputError
-            )}>
-            <LicenceInput
-              label="Driving Licence Number"
-              placeholder="Driving Licence Number"
-              name="driving_licence_number"
-              id="driving_licence_number"
-              value={details.driving_licence_number}
-              className={classnames(
-                styles.input,
-                errors.driving_licence_number && styles.inputError
-              )}
-              onChange={this.handleChange}
-            />
-          </div>
-          {errors.driving_licence_number && <div className={styles.error}>{errors.driving_licence_number}</div>}
-          <div
-            className={classnames(
-              styles.input,
               errors.phone && styles.inputError
             )}>
             <PhoneInput
@@ -344,6 +325,25 @@ class UserDetails extends Component {
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
+          <div
+            className={classnames(
+              styles.input,
+              errors.driving_licence_number && styles.inputError
+            )}>
+            <LicenceInput
+              label="Driving Licence Number"
+              placeholder="_____ ______ __ _ __"
+              name="driving_licence_number"
+              id="driving_licence_number"
+              value={details.driving_licence_number}
+              className={classnames(
+                styles.input,
+                errors.driving_licence_number && styles.inputError
+              )}
+              onChange={this.handleChange}
+            />
+          </div>
+          {errors.driving_licence_number && <div className={styles.error}>{errors.driving_licence_number}</div>}
           <div className={styles.selectElement}>
             <Select
               label="Riding Experience"
