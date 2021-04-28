@@ -17,6 +17,7 @@ import {
   getDefaultTestCentres,
   setDefaultTestCentres
 } from 'store/testCentre'
+import OrderCancellationSetting from './OrderCancellationSetting'
 
 class AvailabilityCourses extends React.Component {
   constructor(props) {
@@ -265,6 +266,9 @@ class AvailabilityCourses extends React.Component {
           )}
         </div>
         <div className={styles.box}>{this.renderDefaultDays()}</div>
+        <div className={styles.box}>
+          <OrderCancellationSetting />
+        </div>
         <div className={classnames(styles.box, styles.boxVertical)}>
           {this.renderDefaultTestCenters()}
           {showDefaultTestCenterForm && (

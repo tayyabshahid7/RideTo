@@ -25,6 +25,17 @@ export const saveSettings = async (params = {}) => {
   return response
 }
 
+export const saveOrderCancelSetting = async value => {
+  const path = `school/space-available/`
+  const response = await put(path, { space_available_delete_course: value })
+  return response
+}
+
+export const getOrderCancelSetting = async () => {
+  const path = `school/space-available/`
+  return await get(path)
+}
+
 export const getWidgetSettings = async () => {
   const path = `school/settings/widget/`
   const response = await get(path)

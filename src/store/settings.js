@@ -3,6 +3,8 @@ import {
   saveSettings,
   getWidgetSettings,
   saveWidgetSettings,
+  getOrderCancelSetting,
+  saveOrderCancelSetting,
   getDefaultDays,
   saveDefaultDays
 } from 'services/settings'
@@ -11,6 +13,13 @@ import { actions as notificationActions } from './notification'
 
 const FETCH_SETTING = createRequestTypes('rideto/settings/FETCH')
 const UPDATE_SETTING = createRequestTypes('rideto/settings/UPDATE')
+
+const FETCH_ORDER_CANCEL = createRequestTypes(
+  'rideto/settings/FETCH_ORDER_CANCEL'
+)
+const UPDATE_ORDER_CANCEL = createRequestTypes(
+  'rideto/settings/UPDATE_ORDER_CANCEL'
+)
 
 const FETCH_DEFAULT_DAYS = createRequestTypes('rideto/defaultDays/FETCH')
 const UPDATE_DEFAULT_DAYS = createRequestTypes('rideto/defaultDays/UPDATE')
@@ -53,6 +62,41 @@ export const updateDefaultDays = (data, schoolId) => async dispatch => {
   } catch (error) {
     notificationActions.dispatchError(dispatch, 'Failed to save settings')
     dispatch({ type: UPDATE_DEFAULT_DAYS[FAILURE], error })
+  }
+}
+
+export const fetchOrderCancelSetting = () => async dispatch => {
+  dispatch({ type: FETCH_ORDER_CANCEL[REQUEST] })
+
+  try {
+    const setting = await getOrderCancelSetting()
+    dispatch({
+      type: FETCH_ORDER_CANCEL[SUCCESS],
+      data: {
+        setting
+      }
+    })
+  } catch (error) {
+    dispatch({ type: FETCH_ORDER_CANCEL[FAILURE], error })
+  }
+}
+
+export const updateOrderCancelSetting = value => async dispatch => {
+  dispatch({ type: UPDATE_ORDER_CANCEL[REQUEST] })
+
+  try {
+    await saveOrderCancelSetting(value)
+
+    notificationActions.dispatchSuccess(dispatch, 'Setting saved')
+    dispatch({
+      type: UPDATE_ORDER_CANCEL[SUCCESS],
+      data: {
+        setting: value
+      }
+    })
+  } catch (error) {
+    notificationActions.dispatchError(dispatch, 'Failed to save setting')
+    dispatch({ type: UPDATE_ORDER_CANCEL[FAILURE], error })
   }
 }
 
@@ -142,6 +186,12 @@ const initialState = {
     loading: false,
     saving: false,
     error: null
+  },
+  orderCancel: {
+    saving: false,
+    error: null,
+    loading: false,
+    value: true
   }
 }
 
@@ -287,6 +337,60 @@ export default function reducer(state = initialState, action) {
         ...state,
         defaultDays: {
           ...state.defaultDays,
+          saving: false,
+          error: action.error
+        }
+      }
+    case FETCH_ORDER_CANCEL[REQUEST]:
+      return {
+        ...state,
+        orderCancel: {
+          ...state.orderCancel,
+          loading: true,
+          error: null
+        }
+      }
+    case FETCH_ORDER_CANCEL[SUCCESS]:
+      return {
+        ...state,
+        orderCancel: {
+          ...state.orderCancel,
+          loading: false,
+          value: action.data.setting.space_available_delete_course
+        }
+      }
+    case FETCH_ORDER_CANCEL[FAILURE]:
+      return {
+        ...state,
+        orderCancel: {
+          ...state.orderCancel,
+          loading: false,
+          error: action.error
+        }
+      }
+    case UPDATE_ORDER_CANCEL[REQUEST]:
+      return {
+        ...state,
+        orderCancel: {
+          ...state.orderCancel,
+          saving: true,
+          error: null
+        }
+      }
+    case UPDATE_ORDER_CANCEL[SUCCESS]:
+      return {
+        ...state,
+        orderCancel: {
+          ...state.orderCancel,
+          saving: false,
+          value: action.data.setting
+        }
+      }
+    case UPDATE_ORDER_CANCEL[FAILURE]:
+      return {
+        ...state,
+        orderCancel: {
+          ...state.orderCancel,
           saving: false,
           error: action.error
         }
