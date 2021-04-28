@@ -90,6 +90,8 @@ class CheckoutPage extends Component {
         user_birthdate: '',
         phone: '',
         current_licence: '',
+        driving_licence_number: '',
+        prev_cbt_date: '',
         riding_experience: '',
         rider_type: '',
         address: { ...emptyAddress },
@@ -380,10 +382,6 @@ class CheckoutPage extends Component {
   isValidCbtPrevDate(dateString) {
     if (this.props.checkoutData.courseType !== 'LICENCE_CBT_RENEWAL') {
       return ''
-    }
-
-    if (!dateString) {
-      return 'invalid'
     }
 
     let trainingDate = moment(this.props.checkoutData.date, 'YYYY-MM-DD')
@@ -947,8 +945,6 @@ class CheckoutPage extends Component {
       emailSubmitted,
       showUserDetails
     } = this.state
-
-    console.log(this.props.checkoutData)
 
     return (
       <React.Fragment>
