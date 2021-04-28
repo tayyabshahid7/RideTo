@@ -220,7 +220,8 @@ class UserDetails extends Component {
       postcodeLookingup,
       onChange,
       onPostalCodeSubmit,
-      showUserDetails
+      showUserDetails,
+      isRenewal
     } = this.props
     const { userAuthenticated } = this.state
 
@@ -343,7 +344,38 @@ class UserDetails extends Component {
               onChange={this.handleChange}
             />
           </div>
-          {errors.driving_licence_number && <div className={styles.error}>{errors.driving_licence_number}</div>}
+          {errors.driving_licence_number && (
+            <div className={styles.error}>{errors.driving_licence_number}</div>
+          )}
+          {isRenewal && (
+            <>
+              <div
+                className={classnames(
+                  errors.prev_cbt_date && styles.inputError,
+                  styles.input
+                )}>
+                <DateInput
+                  label="Previous CBT Completion Date"
+                  id="prev_cbt_date"
+                  name="prev_cbt_date"
+                  minyears={16}
+                  value={details.prev_cbt_date}
+                  onChange={this.handleChange}
+                  required
+                />
+              </div>
+              <div className={styles.subtext}>
+                The date you completed your previous CBT.
+              </div>
+              {errors.prev_cbt_date === 'over' && (
+                <div className={styles.error}>
+                  Your CBT has passed the renewal date, please book the{' '}
+                  <a href="https://www.rideto.com/cbt-training">CBT</a> Training
+                  course instead.
+                </div>
+              )}
+            </>
+          )}
           <div className={styles.selectElement}>
             <Select
               label="Riding Experience"

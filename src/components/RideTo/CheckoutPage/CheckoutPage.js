@@ -31,6 +31,7 @@ const AddressSelectModal = loadable(() =>
 
 const REQUIRED_FIELDS = [
   'user_birthdate',
+  'driving_licence_number',
   'phone',
   'current_licence',
   'riding_experience',
@@ -49,6 +50,8 @@ const USER_FIELDS = [
   'user_birthdate',
   'phone',
   'current_licence',
+  'driving_licence_number',
+  'prev_cbt_date',
   'riding_experience',
   'rider_type',
   'first_name',
@@ -159,10 +162,10 @@ class CheckoutPage extends Component {
           ...userDetails,
           ...(userDetails.birthdate
             ? {
-              user_birthdate: moment(userDetails.birthdate).format(
-                'DD/MM/YYYY'
-              )
-            }
+                user_birthdate: moment(userDetails.birthdate).format(
+                  'DD/MM/YYYY'
+                )
+              }
             : null)
         }
         const errors = {
@@ -374,11 +377,38 @@ class CheckoutPage extends Component {
     return isComplete || date.isValid()
   }
 
+  isValidCbtPrevDate(dateString) {
+    if (this.props.checkoutData.courseType !== 'LICENCE_CBT_RENEWAL') {
+      return ''
+    }
+
+    if (!dateString) {
+      return 'invalid'
+    }
+
+    let trainingDate = moment(this.props.checkoutData.date, 'YYYY-MM-DD')
+
+    const date = moment(dateString, 'DD/MM/YYYY')
+    const isComplete = dateString.slice(-1) !== '_'
+
+    if (!isComplete || !date.isValid()) {
+      return 'invalid'
+    }
+
+    if (trainingDate.diff(date, 'years', true) > 2) {
+      return 'over'
+    }
+
+    return ''
+  }
+
   getErrorDivId(field) {
     switch (field) {
       case 'user_birthdate':
       case 'phone':
       case 'current_licence':
+      case 'driving_licence_number':
+      case 'prev_cbt_date':
       case 'riding_experience':
       case 'rider_type':
       case 'first_name':
@@ -545,13 +575,25 @@ class CheckoutPage extends Component {
       hasError = true
     }
 
-    const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
-    if (!drivingLicenceRegex.test(details.driving_licence_number.split(' ').join(''))) {
-      errors['driving_licence_number'] = 'Please enter a valid driving licence number'
-      if (!errors.divId) errors.divId = this.getErrorDivId('driving_licence_number')
+    const validatedCbtPrevDate = this.isValidCbtPrevDate(details.prev_cbt_date)
+    if (validatedCbtPrevDate) {
+      errors['prev_cbt_date'] = validatedCbtPrevDate
+      if (!errors.divId) errors.divId = this.getErrorDivId('prev_cbt_date')
       hasError = true
     }
 
+    const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+    if (
+      !drivingLicenceRegex.test(
+        details.driving_licence_number.split(' ').join('')
+      )
+    ) {
+      errors['driving_licence_number'] =
+        'Please enter a valid driving licence number'
+      if (!errors.divId)
+        errors.divId = this.getErrorDivId('driving_licence_number')
+      hasError = true
+    }
 
     if (
       !details.email.match(
@@ -857,6 +899,8 @@ class CheckoutPage extends Component {
         last_name: '',
         // email: '',
         user_birthdate: '',
+        driving_licence_number: '',
+        prev_cbt_date: '',
         phone: '',
         current_licence: '',
         riding_experience: '',
@@ -904,6 +948,8 @@ class CheckoutPage extends Component {
       showUserDetails
     } = this.state
 
+    console.log(this.props.checkoutData)
+
     return (
       <React.Fragment>
         <div className={styles.container}>
@@ -931,6 +977,7 @@ class CheckoutPage extends Component {
               handleVoucherApply={this.handleVoucherApply}
               showCardDetails={showCardDetails}
               isFullLicence={courseType === 'FULL_LICENCE'}
+              isRenewal={courseType === 'LICENCE_CBT_RENEWAL'}
               handlePaymentButtonClick={this.handlePaymentButtonClick}
               needsAddress={physicalAddonsCount > 0}
               setCardElement={this.setCardElement}
