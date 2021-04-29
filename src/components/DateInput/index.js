@@ -10,14 +10,40 @@ class DateInput extends React.Component {
   }
 
   handleChange(event) {
-    const { id, onError, onChange } = this.props
+    const { id, onError, onChange, isPrevCbt } = this.props
     const { value } = event.target
 
     onChange(id, value)
 
-    if (!this.isValid(value)) {
+    if (isPrevCbt) {
+      const result = this.isValidCbtPrevDate(value)
+      if (result) {
+        onError(id, result)
+      }
+    } else if (!this.isValid(value)) {
       onError(id)
     }
+  }
+
+  isValidCbtPrevDate(dateString) {
+    let trainingDate = moment(this.props.trainingDate, 'YYYY-MM-DD')
+
+    const date = moment(dateString, 'DD/MM/YYYY')
+    const isComplete = dateString.slice(-1) !== '_'
+
+    if (!isComplete || !date.isValid()) {
+      return 'invalid'
+    }
+
+    if (moment().isBefore(date)) {
+      return 'future'
+    }
+
+    if (trainingDate.diff(date, 'years', true) > 2) {
+      return 'over'
+    }
+
+    return ''
   }
 
   isValid(value) {

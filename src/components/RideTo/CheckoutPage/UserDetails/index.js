@@ -358,7 +358,6 @@ class UserDetails extends Component {
                   label="Previous CBT Completion Date"
                   id="prev_cbt_date"
                   name="prev_cbt_date"
-                  minyears={16}
                   value={details.prev_cbt_date}
                   onChange={this.handleChange}
                   required
@@ -373,6 +372,9 @@ class UserDetails extends Component {
                   <a href="https://www.rideto.com/cbt-training">CBT</a> Training
                   course instead.
                 </div>
+              )}
+              {errors.prev_cbt_date === 'future' && (
+                <div className={styles.error}>Please input valid date.</div>
               )}
             </>
           )}

@@ -40,6 +40,13 @@ class PaymentContainer extends React.Component {
 
     const query = parseQueryString(window.location.search.slice(1))
 
+    const trainings = JSON.parse(
+      window.sessionStorage.getItem('widgetTrainings')
+    )
+
+    const isRenewal =
+      trainings && trainings[0].course_type === 'LICENCE_CBT_RENEWAL'
+
     this.state = {
       course: null,
       supplier: null,
@@ -51,8 +58,9 @@ class PaymentContainer extends React.Component {
         riding_experience: '',
         third_party_optin: false
       },
-      trainings: JSON.parse(window.sessionStorage.getItem('widgetTrainings')),
+      trainings,
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
+      isRenewal,
       totalPrice: 0,
       voucher_code: '',
       discount: 0,
@@ -157,7 +165,9 @@ class PaymentContainer extends React.Component {
     })
   }
 
-  validateDetails(details) {
+  validateDetails = details => {
+    const { isRenewal } = this.state
+
     const errors = {}
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
@@ -165,6 +175,10 @@ class PaymentContainer extends React.Component {
         window.document.body.scrollIntoView()
       }
     })
+    if (isRenewal && !details['prev_cbt_date']) {
+      errors['prev_cbt_date'] = 'This field is required.'
+      window.document.body.scrollIntoView()
+    }
 
     // validate email
     if (!errors.email) {
@@ -320,6 +334,7 @@ class PaymentContainer extends React.Component {
       isSaving,
       totalPrice,
       isFullLicence,
+      isRenewal,
       trainings,
       voucher_code,
       discount
@@ -349,6 +364,7 @@ class PaymentContainer extends React.Component {
             {!isLoading && (
               <CustomerDetailsForm
                 details={details}
+                isRenewal={isRenewal}
                 trainingDate={course && course.date}
                 errors={errors}
                 fullLicenceType={trainings && trainings[0].full_licence_type}

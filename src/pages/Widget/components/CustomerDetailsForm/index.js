@@ -22,6 +22,7 @@ const CustomerDetailsForm = ({
   onChange,
   trainingDate,
   fullLicenceType,
+  isRenewal,
   bikeType,
   courseType: { constant }
 }) => {
@@ -36,6 +37,13 @@ const CustomerDetailsForm = ({
     bdayError =
       'In order to take your CBT on a 125cc motorcycle, you must be 17 years old on the day of the course'
   }
+  const pastCbtError = (
+    <>
+      Your CBT has passed the renewal date, please book the{' '}
+      <a href="https://www.rideto.com/cbt-training">CBT</a> Training course
+      instead.
+    </>
+  )
 
   const labelStyle = {
     marginTop: '16px',
@@ -120,6 +128,34 @@ const CustomerDetailsForm = ({
           onChange={event => handleChange(event, details, errors, onChange)}
         />
       </LabelField>
+
+      {isRenewal && (
+        <LabelField
+          label="Previous CBT Completion Date"
+          name="prev_cbt_date"
+          error={errors.prev_cbt_date}
+          style={labelStyle}>
+          <DateInput
+            trainingDate={trainingDate}
+            id="prev_cbt_date"
+            isPrevCbt
+            value={details.prev_cbt_date || ''}
+            onChange={(id, value) => {
+              onChange({ ...details, [id]: value }, { ...errors, [id]: null })
+            }}
+            onError={(id, reason) => {
+              let errorTxt = pastCbtError
+              if (reason === 'invalid') {
+                errorTxt = 'This field is required.'
+              } else if (reason === 'future') {
+                errorTxt = 'Please input valid date.'
+              }
+
+              onChange(details, { ...errors, [id]: errorTxt })
+            }}
+          />
+        </LabelField>
+      )}
 
       <LabelField
         label="Current Licence"

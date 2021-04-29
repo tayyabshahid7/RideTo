@@ -392,6 +392,10 @@ class CheckoutPage extends Component {
       return 'invalid'
     }
 
+    if (moment().isBefore(date)) {
+      return 'future'
+    }
+
     if (trainingDate.diff(date, 'years', true) > 2) {
       return 'over'
     }
