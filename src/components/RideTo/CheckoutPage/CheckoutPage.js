@@ -31,7 +31,6 @@ const AddressSelectModal = loadable(() =>
 
 const REQUIRED_FIELDS = [
   'user_birthdate',
-  'driving_licence_number',
   'phone',
   'current_licence',
   'riding_experience',
@@ -580,17 +579,19 @@ class CheckoutPage extends Component {
       hasError = true
     }
 
-    const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
-    if (
-      !drivingLicenceRegex.test(
-        details.driving_licence_number.split(' ').join('')
-      )
-    ) {
-      errors['driving_licence_number'] =
-        'Please enter a valid driving licence number'
-      if (!errors.divId)
-        errors.divId = this.getErrorDivId('driving_licence_number')
-      hasError = true
+    if (details.driving_licence_number) {
+      const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+      if (
+        !drivingLicenceRegex.test(
+          details.driving_licence_number.split(' ').join('')
+        )
+      ) {
+        errors['driving_licence_number'] =
+          'Please enter a valid driving licence number'
+        if (!errors.divId)
+          errors.divId = this.getErrorDivId('driving_licence_number')
+        hasError = true
+      }
     }
 
     if (
