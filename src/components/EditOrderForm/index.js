@@ -507,7 +507,7 @@ class EditOrderForm extends React.Component {
                     </Button>
                   </div>
                   <Desktop>
-                    {canInvoice && (
+                    {!!canInvoice && (
                       <div>
                         <Button
                           disabled={isSending}
@@ -519,7 +519,7 @@ class EditOrderForm extends React.Component {
                       </div>
                     )}
                   </Desktop>
-                  {canTakePayment && (
+                  {!!canTakePayment && (
                     <div>
                       <Button
                         disabled={isSending}
@@ -531,7 +531,7 @@ class EditOrderForm extends React.Component {
                     </div>
                   )}
                   <div>
-                    {isAdmin && (
+                    {!!isAdmin && (
                       <Button
                         color="danger"
                         className={styles.deleteButton}

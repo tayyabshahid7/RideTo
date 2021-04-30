@@ -1,5 +1,6 @@
 import { post } from 'services/api'
 import { getBikeHireOptions } from 'services/order'
+import { BIKE_HIRE } from 'common/constants'
 import moment from 'moment'
 
 export const createStripeToken = async (stripe, data) => {
@@ -66,7 +67,7 @@ export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
   }
 
   const subTotal =
-    bikeHire && bikeHire !== 'no'
+    bikeHire && bikeHire !== BIKE_HIRE.NO
       ? pricing.price + pricing.bike_hire_cost
       : pricing.price
 

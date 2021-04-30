@@ -43,14 +43,14 @@ const MotorbikeOptions = ({
     <div className={styles.motorbikeOptions}>
       <h4>Bike Hire {isFree && '(Included)'}</h4>
 
-      {ownBike && (
+      {/* {ownBike && (
         <Checkbox
           checked={selected === BIKE_HIRE.NO}
           extraClass="WidgetCheckbox"
           onChange={() => onChange(BIKE_HIRE.NO)}>
           {getMotorbikeLabel(BIKE_HIRE.NO)}
         </Checkbox>
-      )}
+      )} */}
 
       {/* Auto Bikes   */}
 
@@ -143,8 +143,7 @@ const MotorbikeOptions = ({
       )}
 
       {/* Own Bikes  */}
-
-      {isAvailable('own_bikes') && (
+      {ownBike && (
         <Checkbox
           checked={selected === BIKE_HIRE.NO}
           extraClass="WidgetCheckbox"
