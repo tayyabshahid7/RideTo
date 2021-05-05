@@ -39,8 +39,7 @@ const CustomerDetailsForm = ({
   }
   const pastCbtError = (
     <>
-      Your CBT has passed the renewal date, please book the{' '}
-      <a href="https://www.rideto.com/cbt-training">CBT</a> Training course
+      Your CBT has passed the renewal date, please book the CBT Training course
       instead.
     </>
   )

@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react'
 import styles from './styles.scss'
-import call from 'assets/icons/contact/call.svg'
-import chat from 'assets/icons/contact/chat.svg'
+// import call from 'assets/icons/contact/call.svg'
+// import chat from 'assets/icons/contact/chat.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import { post } from 'services/api'
 import MediaQuery from 'react-responsive'
@@ -27,20 +27,20 @@ function Contact() {
     }
   }
 
-  const handleBack = () => {
-    setName('')
-    setEmail('')
-    setMessage('')
-    setSent(false)
-    setError('')
-  }
+  // const handleBack = () => {
+  //   setName('')
+  //   setEmail('')
+  //   setMessage('')
+  //   setSent(false)
+  //   setError('')
+  // }
 
   return (
     <Fragment>
       <Helmet>
         <title>Contact Us | RideTo</title>
       </Helmet>
-      <section className={styles.header}>
+      {/* <section className={styles.header}>
         <div className={styles.container}>
           <div className={styles.keyInfo}>
             <div className={styles.keyInfoItem}>
@@ -61,15 +61,19 @@ function Contact() {
             </a>
           </div>
         </div>
-      </section>
+      </section> */}
       <section className={styles.body}>
         <div className={styles.container}>
           <div className={styles.formContainer}>
             <h2 className={styles.formTitle}>Send us a message</h2>
             <p className={styles.introText}>
-              Got a question? We love to talk motorbikes, marketing and ideas,
-              especially over a good coffee. Drop us a line and one of the team
-              will be in touch.
+              Need help? For general questions about learning to ride, check out
+              our{' '}
+              <a href="https://www.rideto.com/blog/category/guides">
+                new rider guides
+              </a>
+              . For order support and anything else, drop us a message and one
+              of the team will be in touch.
             </p>
             {!sent ? (
               <MediaQuery minWidth={769}>
@@ -135,9 +139,9 @@ function Contact() {
                     Message sent!
                   </h3>
                   <p>We'll be back in touch as soon as possible.</p>
-                  <button className={styles.back} onClick={handleBack}>
+                  {/* <button className={styles.back} onClick={handleBack}>
                     Send another message
-                  </button>
+                  </button> */}
                 </div>
               </div>
             )}
