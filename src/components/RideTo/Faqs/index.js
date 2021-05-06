@@ -58,14 +58,14 @@ export class Faqs extends Component {
             </div>
             <div className={styles.images}>
               <img
-                src="/static/images/home-carousel-image-3.jpg"
+                src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/home-carousel-image-3.jpg"
                 className={classnames(styles.getStartedImage, styles.right)}
                 height="480"
                 width="340"
                 alt=""
               />
               <img
-                src="/static/images/home-page-image-2.jpg"
+                src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/home-page-image-2.jpg"
                 className={classnames(styles.getStartedImage, styles.left)}
                 height="480"
                 width="340"
@@ -76,7 +76,7 @@ export class Faqs extends Component {
         </div>
         <SidePanel
           visible={sidePanelVisible}
-          headingImage={'/static/images/home-carousel-image-1.jpg'}
+          headingImage={'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/home-carousel-image-1.jpg'}
           onDismiss={() => this.setState({ sidePanelVisible: false })}>
           <FaqsDetails />
         </SidePanel>

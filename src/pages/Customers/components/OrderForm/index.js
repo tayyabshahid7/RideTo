@@ -155,6 +155,7 @@ class OrderForm extends React.Component {
       isAdmin
     } = this.props
     const { editable, isChanged, showMore, inputsDisabled } = this.state
+
     let course = order.school_course
     if (!course) {
       course = order
