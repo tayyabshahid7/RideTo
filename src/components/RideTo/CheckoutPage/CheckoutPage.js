@@ -45,17 +45,21 @@ const REQUIRED_FIELDS = [
   'email'
 ]
 
-const USER_FIELDS = [
+const REQUIRED_USER_FIELDS = [
   'user_birthdate',
   'phone',
   'current_licence',
-  'driving_licence_number',
-  'prev_cbt_date',
   'riding_experience',
   'rider_type',
   'first_name',
   'last_name',
   'email'
+]
+
+const USER_FIELDS = [
+  ...REQUIRED_USER_FIELDS,
+  'driving_licence_number',
+  'prev_cbt_date'
 ]
 
 const CARD_FIELDS = REQUIRED_FIELDS.filter(
@@ -434,8 +438,8 @@ class CheckoutPage extends Component {
 
     if (
       !needsAddress &&
-      USER_FIELDS.some(key => prevState.details[key] !== details[key]) &&
-      USER_FIELDS.every(key => details[key]) &&
+      REQUIRED_USER_FIELDS.some(key => prevState.details[key] !== details[key]) &&
+      REQUIRED_USER_FIELDS.every(key => details[key]) &&
       !showCardDetails
     ) {
       this.setState({
@@ -445,7 +449,7 @@ class CheckoutPage extends Component {
 
     if (
       needsAddress &&
-      USER_FIELDS.every(key => details[key]) &&
+      REQUIRED_USER_FIELDS.every(key => details[key]) &&
       REQUIRED_ADDRESS_FIELDS.every(key => details.address[key]) &&
       !showCardDetails
     ) {
@@ -584,7 +588,7 @@ class CheckoutPage extends Component {
     }
 
     if (details.driving_licence_number) {
-      const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+      const drivingLicenceRegex = /^^[A-Za-z9]{5}\d{6}[A-Za-z9]{2}\d[A-Za-z]{2}$$/
       if (
         !drivingLicenceRegex.test(
           details.driving_licence_number.split(' ').join('')
