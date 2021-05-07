@@ -438,7 +438,9 @@ class CheckoutPage extends Component {
 
     if (
       !needsAddress &&
-      REQUIRED_USER_FIELDS.some(key => prevState.details[key] !== details[key]) &&
+      REQUIRED_USER_FIELDS.some(
+        key => prevState.details[key] !== details[key]
+      ) &&
       REQUIRED_USER_FIELDS.every(key => details[key]) &&
       !showCardDetails
     ) {
@@ -588,10 +590,13 @@ class CheckoutPage extends Component {
     }
 
     if (details.driving_licence_number) {
-      const drivingLicenceRegex = /^^[A-Za-z9]{5}\d{6}[A-Za-z9]{2}\d[A-Za-z]{2}$$/
+      const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
       if (
         !drivingLicenceRegex.test(
-          details.driving_licence_number.split(' ').join('')
+          details.driving_licence_number
+            .split(' ')
+            .join('')
+            .toUpperCase()
         )
       ) {
         errors['driving_licence_number'] =

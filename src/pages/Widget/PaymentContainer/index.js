@@ -175,9 +175,26 @@ class PaymentContainer extends React.Component {
         window.document.body.scrollIntoView()
       }
     })
-    if (isRenewal && !details['prev_cbt_date']) {
+    if (isRenewal && !details.prev_cbt_date) {
       errors['prev_cbt_date'] = 'This field is required.'
       window.document.body.scrollIntoView()
+    }
+    if (details.driving_licence_number) {
+      const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+      if (
+        !drivingLicenceRegex.test(
+          details.driving_licence_number
+            .split(' ')
+            .join('')
+            .toUpperCase()
+        )
+      ) {
+        errors['driving_licence_number'] =
+          'Please enter a valid driving licence number'
+        window.document.body.scrollIntoView()
+      } else {
+        errors.driving_licence_number = ''
+      }
     }
 
     // validate email

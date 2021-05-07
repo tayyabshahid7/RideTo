@@ -12,7 +12,7 @@ const mask = [
 
 class LicenceInput extends React.Component {
   render() {
-    const { value, label } = this.props
+    const { value = '', label } = this.props
 
     if (label) {
       return (

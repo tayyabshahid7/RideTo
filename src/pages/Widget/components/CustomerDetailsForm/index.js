@@ -3,6 +3,7 @@ import moment from 'moment'
 
 import LabelField from 'pages/Widget/components/LabelField'
 import DateInput from 'components/DateInput'
+import LicenceInput from 'components/RideTo/LicenceInput'
 import MinimalSelect from 'components/MinimalSelect'
 import {
   getRidingExperienceOptions,
@@ -167,6 +168,23 @@ const CustomerDetailsForm = ({
           selected={details.current_licence}
           onChange={value => {
             onChange({ ...details, current_licence: value }, errors)
+          }}
+        />
+      </LabelField>
+
+      <LabelField
+        label="Driving Licence Number"
+        name="driving_licence_number"
+        style={labelStyle}
+        error={errors.driving_licence_number}>
+        <LicenceInput
+          placeholder="_____ ______ __ _ __"
+          name="driving_licence_number"
+          id="driving_licence_number"
+          value={details.driving_licence_number}
+          style={{ width: 'auto' }}
+          onChange={event => {
+            onChange({ ...details, driving_licence_number: event.target.value }, errors)
           }}
         />
       </LabelField>
