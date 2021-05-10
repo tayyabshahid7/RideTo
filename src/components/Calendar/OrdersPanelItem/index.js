@@ -11,7 +11,7 @@ const OrdersPanelItem = ({
   onDelete,
   showEditButton = false
 }) => {
-  const { payment_status } = training
+  const { payment_status, status } = training
 
   return (
     <div className={styles.container} key={training.id}>
@@ -21,9 +21,13 @@ const OrdersPanelItem = ({
             {training.customer_name}
           </Link>
         </div>
-        <button className={styles.editButton} onClick={onEdit}>
-          {training.direct_friendly_id}
-        </button>
+        {status === 'TRAINING_CANCELLED' ? (
+          <span className={styles.text}>{training.direct_friendly_id}</span>
+        ) : (
+          <button className={styles.editButton} onClick={onEdit}>
+            {training.direct_friendly_id}
+          </button>
+        )}
       </div>
       <div className={styles.line}>
         {training.bike_hire && (
