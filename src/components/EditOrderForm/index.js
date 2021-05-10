@@ -209,6 +209,9 @@ class EditOrderForm extends React.Component {
     const course = courseDetail
       ? courseDetail
       : courses.find(course => course.id === order.school_course)
+    if (!course) {
+      return null
+    }
 
     let prevBikeType = null
     if (this.props.order) {
@@ -302,7 +305,7 @@ class EditOrderForm extends React.Component {
               times={times}
               loadTimes={loadTimes}
               courseType={this.state.order.course_type}
-              disabled={isRideTo || !isAdmin}
+              disabled={!isAdmin}
             />
 
             {!showChangeDate && (
@@ -537,7 +540,7 @@ class EditOrderForm extends React.Component {
                         className={styles.deleteButton}
                         disabled={!canDelete}
                         onClick={this.handleDelete}>
-                        Delete
+                        Cancel Order
                       </Button>
                     )}
                   </div>
