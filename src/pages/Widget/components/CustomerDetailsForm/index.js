@@ -184,7 +184,23 @@ const CustomerDetailsForm = ({
           value={details.driving_licence_number}
           style={{ width: 'auto' }}
           onChange={event => {
-            onChange({ ...details, driving_licence_number: event.target.value }, errors)
+            if (errors.driving_licence_number) {
+              const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+              if (
+                drivingLicenceRegex.test(
+                  event.target.value
+                    .split(' ')
+                    .join('')
+                    .toUpperCase()
+                )
+              ) {
+                delete errors.driving_licence_number
+              }
+            }
+            onChange(
+              { ...details, driving_licence_number: event.target.value },
+              errors
+            )
           }}
         />
       </LabelField>

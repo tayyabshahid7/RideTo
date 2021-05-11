@@ -193,7 +193,7 @@ class PaymentContainer extends React.Component {
           'Please enter a valid driving licence number'
         window.document.body.scrollIntoView()
       } else {
-        errors.driving_licence_number = ''
+        delete errors.driving_licence_number
       }
     }
 
