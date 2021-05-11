@@ -81,9 +81,6 @@ class ResultPage extends Component {
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
     this.handleCourseChange = this.handleCourseChange.bind(this)
-    this.handleDetailClick = this.handleDetailClick.bind(this)
-    this.handlePriceClick = this.handlePriceClick.bind(this)
-    this.handleReviewClick = this.handleReviewClick.bind(this)
     this.handleMobileDateClick = this.handleMobileDateClick.bind(this)
     this.timeDayChange = this.timeDayChange.bind(this)
     this.handleDissmiss = this.handleDissmiss.bind(this)
@@ -162,32 +159,13 @@ class ResultPage extends Component {
     })
   }
 
-  async handleDetailClick(course) {
+  loadCourseDetail = async (course, activeTab) => {
     const selectedCourse = await fetchSingleRidetoCourse(course.id)
+    selectedCourse.next_date_available = course.next_date_available
 
     this.setState({
       selectedCourse,
-      activeTab: 1,
-      instantDate: this.props.date
-    })
-  }
-
-  async handlePriceClick(course) {
-    const selectedCourse = await fetchSingleRidetoCourse(course.id)
-
-    this.setState({
-      selectedCourse,
-      activeTab: 3,
-      instantDate: this.props.date
-    })
-  }
-
-  async handleReviewClick(course) {
-    const selectedCourse = await fetchSingleRidetoCourse(course.id)
-
-    this.setState({
-      selectedCourse,
-      activeTab: 2,
+      activeTab: activeTab,
       instantDate: this.props.date
     })
   }
@@ -902,9 +880,15 @@ class ResultPage extends Component {
                                     showCourseTypeInfo={() =>
                                       this.showCourseTypeInfo('pom')
                                     }
-                                    handleDetailClick={this.handleDetailClick}
-                                    handlePriceClick={this.handlePriceClick}
-                                    handleReviewClick={this.handleReviewClick}
+                                    handleDetailClick={course =>
+                                      this.loadCourseDetail(course, 1)
+                                    }
+                                    handlePriceClick={course =>
+                                      this.loadCourseDetail(course, 3)
+                                    }
+                                    handleReviewClick={course =>
+                                      this.loadCourseDetail(course, 2)
+                                    }
                                   />
                                 )
                             )}
@@ -931,9 +915,15 @@ class ResultPage extends Component {
                                   course={course}
                                   className={styles.courseSpacing}
                                   key={course.id}
-                                  handleDetailClick={this.handleDetailClick}
-                                  handlePriceClick={this.handlePriceClick}
-                                  handleReviewClick={this.handleReviewClick}
+                                  handleDetailClick={course =>
+                                    this.loadCourseDetail(course, 1)
+                                  }
+                                  handlePriceClick={course =>
+                                    this.loadCourseDetail(course, 3)
+                                  }
+                                  handleReviewClick={course =>
+                                    this.loadCourseDetail(course, 2)
+                                  }
                                 />
                               ) : (
                                 <CourseItemNonPartner

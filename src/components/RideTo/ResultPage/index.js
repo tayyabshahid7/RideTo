@@ -59,7 +59,7 @@ class ResultPageContainer extends Component {
   }
 
   async componentDidMount() {
-    this.loadData()
+    this.loadCourses()
 
     const userLocation = await fetchSearchLocation(this.state.postcode)
 
@@ -78,12 +78,8 @@ class ResultPageContainer extends Component {
   componentDidUpdate(prevProps, prevState) {
     const { date, sortByOption } = this.state
     if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
-      this.loadData()
+      this.loadCourses()
     }
-  }
-
-  loadData() {
-    this.loadCourses()
   }
 
   async loadCourses() {
