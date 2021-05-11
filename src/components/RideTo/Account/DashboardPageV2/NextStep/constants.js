@@ -152,7 +152,7 @@ export const STEP_CBT_BEFORE = {
       'Bike & helmet hire',
       'Test fees & fuel',
       'Online pre-training',
-      'Free cancellation',
+      'Flexible cancellation',
       '135 training locations UK wide',
       'Dedicated support team'
     ],

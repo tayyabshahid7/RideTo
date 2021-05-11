@@ -293,7 +293,7 @@ class OrderSummary extends Component {
           <div className={styles.whiteBox}>
             <div className={styles.boxShadow}>
               <div className={styles.title} style={{ marginBottom: '1rem' }}>
-                100% money back guarantee
+                MONEY BACK GUARANTEE
               </div>
               <div className={styles.guaranteeInfo}>
                 <div className={styles.guaranteeLogo}>
@@ -301,8 +301,8 @@ class OrderSummary extends Component {
                 </div>
                 <div className={styles.guarenteeContent}>
                   <div className={styles.guarantee1}>
-                    *Cancel with {isFullLicence ? '12' : '3'} working days
-                    notice to get a full refund.
+                    *Cancel up to 3 working days before your course to get a
+                    refund. Admin fees apply.
                   </div>
                   <a
                     href="https://www.rideto.com/terms#cancellations"

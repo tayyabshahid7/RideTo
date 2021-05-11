@@ -173,7 +173,7 @@ class CourseTypeLanding extends React.Component {
                             <span className={styles.tick}>
                               <i className="fa fa-check" />
                             </span>{' '}
-                            Free cancellation
+                            Flexible cancellation
                           </li>
                           <li>
                             <span className={styles.tick}>

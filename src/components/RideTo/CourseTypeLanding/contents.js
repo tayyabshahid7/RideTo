@@ -282,9 +282,8 @@ export const CONTENT = {
         <div>
           <h2>Cancellation policy</h2>
           <p>
-            Once your booking is confirmed, we can cancel and refund you in full
-            as long as you give us at least 12 working days notice before your
-            training starts.
+            Once your booking is confirmed, we can cancel as long as you give us
+            at least 12 working days notice before your training starts.
           </p>
         </div>
       </Fragment>
@@ -447,9 +446,8 @@ export const CONTENT = {
           <h2>Cancellation policy</h2>
           <p>
             You won't be charged anything until your booking is confirmed. Once
-            the booking is confirmed, we can cancel or refund you in full as
-            long as you give us at least 3 working days notice before your
-            training.
+            the booking is confirmed, we can cancel your booking as long as you
+            give us at least 3 working days notice before your training.
           </p>
         </div>
       </Fragment>
@@ -611,9 +609,8 @@ export const CONTENT = {
           <h2>Cancellation policy</h2>
           <p>
             You won't be charged anything until your booking is confirmed. Once
-            the booking is confirmed, we can cancel or refund you in full as
-            long as you give us at least 3 working days notice before your
-            training.
+            the booking is confirmed, we can cancel your booking as long as you
+            give us at least 3 working days notice before your training.
           </p>
         </div>
       </Fragment>
@@ -838,9 +835,8 @@ export const CONTENT = {
           <h2>Cancellation policy</h2>
           <p>
             You won't be charged anything until your booking is confirmed. Once
-            the booking is confirmed, we can cancel or refund you in full as
-            long as you give us at least 3 working days notice before your
-            training.
+            the booking is confirmed, we can cancel your booking as long as you
+            give us at least 3 working days notice before your training.
           </p>
         </div>
       </Fragment>
@@ -947,9 +943,8 @@ export const CONTENT = {
           <h2>Cancellation policy</h2>
           <p>
             You won't be charged anything until your booking is confirmed. Once
-            the booking is confirmed, we can cancel or refund you in full as
-            long as you give us at least 3 working days notice before your
-            training.
+            the booking is confirmed, we can cancel your booking as long as you
+            give us at least 3 working days notice before your training.
           </p>
         </div>
       </Fragment>

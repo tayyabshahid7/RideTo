@@ -162,7 +162,7 @@ function CourseInformation({
               <span>
                 {!isFullLicence && diffDays < 0
                   ? 'Non-refundable'
-                  : '100% Refundable*'}
+                  : 'Refundable*'}
               </span>
             </div>
           )}
