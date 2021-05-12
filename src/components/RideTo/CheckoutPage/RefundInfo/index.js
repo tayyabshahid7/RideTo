@@ -6,7 +6,7 @@ function RefundInfo() {
     <div className={styles.container}>
       <span>!</span>
       <div className={styles.popover}>
-        As the course is within 3 working days, you will not be able to cancel
+        As the course is within 5 working days, you will not be able to cancel
         or change the booking once confirmed.
       </div>
     </div>

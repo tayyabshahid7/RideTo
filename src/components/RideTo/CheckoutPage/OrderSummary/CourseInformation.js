@@ -68,7 +68,7 @@ function CourseInformation({
   const [diffDays, setDiffDays] = useState()
   useEffect(() => {
     async function calculateDiffDays() {
-      const tmpDate = await addWeekdays(new Date(), 3)
+      const tmpDate = await addWeekdays(new Date(), 5)
       const tmpDays = moment(date).diff(moment(tmpDate), 'days')
       setDiffDays(tmpDays)
     }

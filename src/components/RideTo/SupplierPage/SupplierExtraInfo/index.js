@@ -27,7 +27,7 @@ const SupplierExtraInfo = ({ course }) => {
             <IconGuarantee />
           </div>
           <div>
-            <p>Cancel with 3 working days notice to get a full refund.</p>
+            <p>Cancel with 5 working days notice to get a full refund.</p>
             <a
               href="https://www.rideto.com/terms#cancellations"
               className={styles.link}>

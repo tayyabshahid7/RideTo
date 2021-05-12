@@ -136,6 +136,10 @@ class OrderSummary extends Component {
       courseType
     )
 
+    const cancelGuarantee = isFullLicence
+      ? '*Cancel up to 12 working days before your course to get a refund. Admin fees apply.'
+      : '*Cancel up to 5 working days before your course to get a refund. Admin fees apply.'
+
     return (
       <div className={styles.container}>
         <div className={styles.whiteBox}>
@@ -300,10 +304,7 @@ class OrderSummary extends Component {
                   <img alt="" src={moneyBack} />
                 </div>
                 <div className={styles.guarenteeContent}>
-                  <div className={styles.guarantee1}>
-                    *Cancel up to 3 working days before your course to get a
-                    refund. Admin fees apply.
-                  </div>
+                  <div className={styles.guarantee1}>{cancelGuarantee}</div>
                   <a
                     href="https://www.rideto.com/terms#cancellations"
                     className={styles.guarantee2}

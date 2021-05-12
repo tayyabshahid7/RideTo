@@ -447,7 +447,7 @@ export const CONTENT = {
           <p>
             You won't be charged anything until your booking is confirmed. Once
             the booking is confirmed, we can cancel your booking as long as you
-            give us at least 3 working days notice before your training.
+            give us at least 5 working days notice before your training.
           </p>
         </div>
       </Fragment>
@@ -610,7 +610,7 @@ export const CONTENT = {
           <p>
             You won't be charged anything until your booking is confirmed. Once
             the booking is confirmed, we can cancel your booking as long as you
-            give us at least 3 working days notice before your training.
+            give us at least 5 working days notice before your training.
           </p>
         </div>
       </Fragment>
@@ -729,7 +729,7 @@ export const CONTENT = {
           <h2>Cancellation policy</h2>
           <p>
             Once your booking is confirmed, we can cancel the course as long as
-            you give us at least 3 working days notice before your training.
+            you give us at least 5 working days notice before your training.
           </p>
         </div>
       </Fragment>
@@ -836,7 +836,7 @@ export const CONTENT = {
           <p>
             You won't be charged anything until your booking is confirmed. Once
             the booking is confirmed, we can cancel your booking as long as you
-            give us at least 3 working days notice before your training.
+            give us at least 5 working days notice before your training.
           </p>
         </div>
       </Fragment>
@@ -944,7 +944,7 @@ export const CONTENT = {
           <p>
             You won't be charged anything until your booking is confirmed. Once
             the booking is confirmed, we can cancel your booking as long as you
-            give us at least 3 working days notice before your training.
+            give us at least 5 working days notice before your training.
           </p>
         </div>
       </Fragment>
