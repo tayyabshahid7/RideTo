@@ -2,12 +2,20 @@ import React from 'react'
 import MaskedInput from 'react-text-mask'
 import styles from './LicenceInput.scss'
 
+// const mask = [
+//   /[A-Za-z9]/, /[A-Za-z9]/, /[A-Za-z9]/, /[A-Za-z9]/, /[A-Za-z9]/, ' ',
+//   /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, ' ',
+//   /[A-Za-z9]/, /[A-Za-z9]/, ' ',
+//   /\d/, ' ',
+//   /[A-Za-z9]/, /[A-Za-z9]/
+// ]
+
 const mask = [
-  /[A-Za-z9]/, /[A-Za-z9]/, /[A-Za-z9]/, /[A-Za-z9]/, /[A-Za-z9]/, ' ',
-  /\d/, /\d/, /\d/, /\d/, /\d/, /\d/, ' ',
-  /[A-Za-z9]/, /[A-Za-z9]/, ' ',
-  /\d/, ' ',
-  /[A-Za-z9]/, /[A-Za-z9]/
+  /./, /./, /./, /./, /./, ' ',
+  /./, /./, /./, /./, /./, /./, ' ',
+  /./, /./, ' ',
+  /./, ' ',
+  /./, /./
 ]
 
 class LicenceInput extends React.Component {
