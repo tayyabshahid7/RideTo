@@ -10,10 +10,16 @@ function CalendarSpacesAvailable({ calendar: { selectedCourse }, courses }) {
     return null
   }
 
-  const { training_count, spaces } = selectedCourse
-  const spacesTotal = parseInt(spaces)
-  const spacesTaken = parseInt(training_count)
-  const spacesLeft = spacesTotal - spacesTaken
+  const { training_count, spaces, spaces_available } = selectedCourse
+
+  let spacesLeft = 0
+  if (spaces_available) {
+    spacesLeft = parseInt(spaces_available)
+  } else {
+    const spacesTotal = parseInt(spaces)
+    const spacesTaken = parseInt(training_count)
+    spacesLeft = spacesTotal - spacesTaken
+  }
   let colorClass = null
 
   if (spacesLeft === 2) {

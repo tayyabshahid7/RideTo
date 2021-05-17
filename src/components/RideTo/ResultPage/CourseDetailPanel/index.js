@@ -76,7 +76,7 @@ class CourseDetailPanel extends React.Component {
         {activeTab === 2 && <CourseReviewsComponent course={course} />}
         {activeTab === 3 && courseType !== 'FULL_LICENCE' && (
           <CourseAvailabilityComponent
-            course={course}
+            supplier={course}
             courseType={courseType}
             date={date}
             instantCourse={instantCourse}

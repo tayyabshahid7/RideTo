@@ -145,6 +145,81 @@ export const fetchWidgetCourses = async (
   return response.results
 }
 
+export const fetchPlatformCourses = async (
+  schoolId,
+  startDate,
+  endDate,
+  courseType
+) => {
+  const path = `school/${schoolId}/platform/course`
+  let params = {
+    ordering: 'date',
+    course_type: courseType
+  }
+
+  if (courseType !== 'FULL_LICENCE') {
+    params = {
+      ...params,
+      sdate: startDate,
+      edate: endDate
+    }
+  }
+
+  const response = await get(path, params)
+
+  return response.results
+}
+
+export const fetchPlatformCourseTimes = async (
+  schoolId,
+  startDate,
+  endDate,
+  courseType
+) => {
+  const path = `school/${schoolId}/platform/course/time`
+  let params = {
+    ordering: 'date',
+    course_type: courseType
+  }
+
+  if (courseType !== 'FULL_LICENCE') {
+    params = {
+      ...params,
+      sdate: startDate,
+      edate: endDate
+    }
+  }
+
+  const response = await get(path, params)
+
+  return response.results
+}
+
+export const fetchPlatformCourseBikes = async (
+  schoolId,
+  startDate,
+  endDate,
+  courseType
+) => {
+  const path = `school/${schoolId}/platform/course/bike-type`
+  let params = {
+    ordering: 'date',
+    course_type: courseType
+  }
+
+  if (courseType !== 'FULL_LICENCE') {
+    params = {
+      ...params,
+      sdate: startDate,
+      edate: endDate
+    }
+  }
+
+  const response = await get(path, params)
+
+  return response.results
+}
+
 export const fetchDayCourses = async (schoolId, date) => {
   // TODO: Update this once API is ready
   const path = `school/${schoolId}/course/day`

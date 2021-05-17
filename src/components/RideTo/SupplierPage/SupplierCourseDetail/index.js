@@ -367,7 +367,7 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
           {!isFullLicence ? (
             <CourseAvailabilityComponent
               fromSupplier
-              course={supplierData}
+              supplier={supplierData}
               courseType={courseType.constant}
               date={date}
               instantCourse={courseInfo.instantCourse}

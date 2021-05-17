@@ -5,16 +5,21 @@ import styles from './styles.scss'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import Loading from 'components/Loading'
-import { fetchWidgetCourses } from 'services/course'
+import {
+  fetchPlatformCourses,
+  fetchPlatformCourseTimes,
+  fetchPlatformCourseBikes
+} from 'services/course'
 
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
     super(props)
-    const nextDate = this.props.course.next_date_available
-      ? new Date(this.props.course.next_date_available)
+    const nextDate = this.props.supplier.next_date_available
+      ? new Date(this.props.supplier.next_date_available)
       : new Date()
     let date = this.props.date ? new Date(this.props.date) : nextDate
     this.state = {
+      loadingTimes: false,
       calendar: {
         year: date.getFullYear(),
         month: date.getMonth()
@@ -27,14 +32,14 @@ class CourseAvailabilityComponent extends React.Component {
   }
 
   componentDidMount() {
-    if (this.props.course.instant_book) {
+    if (this.props.supplier.instant_book) {
       this.setState({ loadingCourses: true }, () => this.loadCourses())
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { course } = this.props
-    if (!course.instant_book) {
+    const { supplier } = this.props
+    if (!supplier.instant_book) {
       return
     }
     if (
@@ -47,11 +52,11 @@ class CourseAvailabilityComponent extends React.Component {
 
   async loadCourses() {
     const { year, month } = this.state.calendar
-    const { course, courseType } = this.props
+    const { supplier, courseType } = this.props
     let momentDate = moment(new Date(year, month, 1))
 
-    const courses = await fetchWidgetCourses(
-      course.id,
+    const courses = await fetchPlatformCourses(
+      supplier.id,
       momentDate.format('YYYY-MM-DD'),
       momentDate.endOf('month').format('YYYY-MM-DD'),
       courseType
@@ -95,9 +100,7 @@ class CourseAvailabilityComponent extends React.Component {
       let dateInString = momentDate.format('YYYY-MM-DD')
       let disabled = false
       let invisible = date.getMonth() !== calendar.month
-      let dayCourses = courses.filter(
-        courseLocation => courseLocation.date === dateInString
-      )
+      let dayCourses = courses.filter(x => x.date === dateInString)
       if (
         courseLocation.excluded_days &&
         courseLocation.excluded_days.includes(momentDate.format('dddd'))
@@ -124,11 +127,12 @@ class CourseAvailabilityComponent extends React.Component {
       }
 
       if (courseLocation.instant_book) {
-        for (let i = dayCourses.length - 1; i >= 0; i--) {
-          if (dayCourses[i].training_count >= dayCourses[i].spaces) {
-            dayCourses.splice(i, 1)
-          }
-        }
+        // TODO: confirm `training_count` & `spaces`
+        // for (let i = dayCourses.length - 1; i >= 0; i--) {
+        //   if (dayCourses[i].training_count >= dayCourses[i].spaces) {
+        //     dayCourses.splice(i, 1)
+        //   }
+        // }
         if (dayCourses.length === 0) {
           disabled = true
         }
@@ -165,7 +169,7 @@ class CourseAvailabilityComponent extends React.Component {
     }
   }
 
-  handlePrevMonth() {
+  handlePrevMonth = () => {
     const { calendar } = this.state
     let month = calendar.month - 1
     let year = calendar.year
@@ -176,7 +180,7 @@ class CourseAvailabilityComponent extends React.Component {
     this.setState({ calendar: { ...calendar, month, year } })
   }
 
-  handleNextMonth() {
+  handleNextMonth = () => {
     const { calendar } = this.state
     let month = calendar.month + 1
     let year = calendar.year
@@ -187,9 +191,45 @@ class CourseAvailabilityComponent extends React.Component {
     this.setState({ calendar: { ...calendar, month, year } })
   }
 
-  handleDateSelect(instantDate) {
-    const { calendar } = this.state
-    const { onUpdate, bike_hire } = this.props
+  handleDateSelect = async instantDate => {
+    const { calendar, courses } = this.state
+    const { supplier, courseType, onUpdate, bike_hire } = this.props
+
+    const dayCourses = courses.filter(x => x.date === instantDate)
+    if (
+      supplier.instant_book &&
+      dayCourses.length &&
+      !dayCourses[0].dataLoaded
+    ) {
+      this.setState({ loadingTimes: true })
+      const times = await fetchPlatformCourseTimes(
+        supplier.id,
+        instantDate,
+        instantDate,
+        courseType
+      )
+
+      const bikes = await fetchPlatformCourseBikes(
+        supplier.id,
+        instantDate,
+        instantDate,
+        courseType
+      )
+
+      dayCourses.forEach(course => {
+        const time = times.find(x => x.id === course.id)
+        if (time) {
+          Object.assign(course, time)
+        }
+        const bikeType = bikes.find(x => x.id === course.id)
+        if (bikeType) {
+          Object.assign(course, bikeType)
+        }
+        course.dataLoaded = true
+      })
+      this.setState({ courses, loadingTimes: false })
+    }
+
     let instantCourse =
       this.props.instantDate === instantDate ? this.props.instantCourse : null
     this.setState({ calendar: { ...calendar } })
@@ -205,7 +245,7 @@ class CourseAvailabilityComponent extends React.Component {
     }
   }
 
-  handleTimeSelect(instantCourse) {
+  handleTimeSelect = async instantCourse => {
     const { onUpdate } = this.props
     onUpdate({ instantCourse })
   }
@@ -217,7 +257,7 @@ class CourseAvailabilityComponent extends React.Component {
 
   render() {
     const {
-      course,
+      supplier,
       instantCourse,
       instantDate,
       bike_hire,
@@ -225,8 +265,8 @@ class CourseAvailabilityComponent extends React.Component {
       courseType,
       fromSupplier
     } = this.props
-    const { calendar, courses, loadingCourses } = this.state
-    let days = this.generateDaysDataFromCalendar(course, calendar)
+    const { calendar, courses, loadingCourses, loadingTimes } = this.state
+    let days = this.generateDaysDataFromCalendar(supplier, calendar)
 
     // determining course state for auto bikes
     const isAutoFull =
@@ -288,10 +328,10 @@ class CourseAvailabilityComponent extends React.Component {
     const isItm = courseType === 'INTRO_TO_MOTORCYCLING'
     const isCbt = courseType === 'LICENCE_CBT'
     const isCbtRenewal = courseType === 'LICENCE_CBT_RENEWAL'
-    const isInstantBook = !!course.instant_book
+    const isInstantBook = !!supplier.instant_book
 
     return (
-      <Loading loading={loadingCourses}>
+      <Loading loading={loadingCourses || loadingTimes}>
         <div className={classnames(styles.content, fromSupplier && 'px-0')}>
           <AvailabilityCalendar
             days={days}
@@ -300,17 +340,17 @@ class CourseAvailabilityComponent extends React.Component {
               selectedCourse: instantCourse,
               selectedDate: instantDate
             }}
-            handleDateSelect={this.handleDateSelect.bind(this)}
-            handlePrevMonth={this.handlePrevMonth.bind(this)}
-            handleNextMonth={this.handleNextMonth.bind(this)}
-            handleTimeSelect={this.handleTimeSelect.bind(this)}
-            isInstantBook={!!course.instant_book}
-            nonInstantPrices={course.week_prices}
-            nonInstantStartTimes={this.getNonInstantStartTimes(course)}
+            handleDateSelect={this.handleDateSelect}
+            handleTimeSelect={this.handleTimeSelect}
+            handlePrevMonth={this.handlePrevMonth}
+            handleNextMonth={this.handleNextMonth}
+            isInstantBook={!!supplier.instant_book}
+            nonInstantPrices={supplier.week_prices}
+            nonInstantStartTimes={this.getNonInstantStartTimes(supplier)}
             showChooseDate={true}
             courses={courses}
             disablePreviousDates
-            course={course}
+            course={supplier}
             courseType={courseType}
             checkFutureMonth
             loading={loadingCourses}
@@ -321,7 +361,7 @@ class CourseAvailabilityComponent extends React.Component {
             isCbtRenewal={isCbtRenewal}
             bike_hire={bike_hire}
             onUpdate={onUpdate}
-            course={course}
+            course={supplier}
             isOwnFull={isOwnFull}
             isAutoFull={isAutoFull}
             isAuto50Full={isAuto50Full}
@@ -333,11 +373,13 @@ class CourseAvailabilityComponent extends React.Component {
             isAuto125Available={isAuto125Available}
             isManualAvailable={isManualAvailable}
             isManual50Available={isManual50Available}
-            has_auto_bikes={course.has_auto_bikes}
-            has_auto_bikes_50cc={isInstantBook && course.has_auto_bikes_50cc}
-            has_auto_bikes_125cc={isInstantBook && course.has_auto_bikes_125cc}
-            has_manual_bikes={course.has_manual_bikes}
-            has_manual_50cc={isInstantBook && course.has_manual_50cc}
+            has_auto_bikes={supplier.has_auto_bikes}
+            has_auto_bikes_50cc={isInstantBook && supplier.has_auto_bikes_50cc}
+            has_auto_bikes_125cc={
+              isInstantBook && supplier.has_auto_bikes_125cc
+            }
+            has_manual_bikes={supplier.has_manual_bikes}
+            has_manual_50cc={isInstantBook && supplier.has_manual_50cc}
             isInstantBook={isInstantBook}
             ref={this.bikePicker}
           />

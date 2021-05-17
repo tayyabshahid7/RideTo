@@ -6,8 +6,9 @@ import CalendarContent from './CalendarContent'
 import CalendarTime from './CalendarTime'
 import CalendarSpacesAvailable from './CalendarSpacesAvailable'
 import moment from 'moment'
+import _ from 'lodash'
 import { BANK_HOLIDAYS } from 'common/constants'
-import { fetchWidgetCourses } from 'services/course'
+import { fetchPlatformCourses } from 'services/course'
 
 const isBankHoliday = date => {
   return BANK_HOLIDAYS.includes(date)
@@ -69,7 +70,7 @@ class AvailabilityCalendar extends Component {
 
       let momentDate = moment(new Date(year, month, 1)).add(1, 'months')
 
-      const courses = await fetchWidgetCourses(
+      const courses = await fetchPlatformCourses(
         course.id,
         momentDate.format('YYYY-MM-DD'),
         momentDate.endOf('month').format('YYYY-MM-DD'),
@@ -193,8 +194,9 @@ class AvailabilityCalendar extends Component {
       showTrainingTime = true,
       showLabel
     } = this.props
-    const filteredCourses =
+    let filteredCourses =
       courses && courses.filter(course => course.date === calendar.selectedDate)
+    filteredCourses = _.sortBy(filteredCourses, 'time')
     const hasManyTimes = isInstantBook && filteredCourses.length > 1
 
     return (

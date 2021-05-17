@@ -18,11 +18,17 @@ class CalendarTime extends Component {
     return (
       <div className={classnames(!isSingleTime && styles.container)}>
         {courses.map((course, index) => {
-          const training_count =
-            course.training_count || course.auto_count + course.manual_count
+          let spacesLeft = 0
+          if (course.spaces_available) {
+            spacesLeft = parseInt(course.spaces_available)
+          } else {
+            const training_count =
+              course.training_count || course.auto_count + course.manual_count
+            spacesLeft = course.spaces - training_count
+          }
 
           return (
-            course.spaces > training_count && (
+            spacesLeft && (
               <React.Fragment key={course.id}>
                 {!isSingleTime ? (
                   <button
