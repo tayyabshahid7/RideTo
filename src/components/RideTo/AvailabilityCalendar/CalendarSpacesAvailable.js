@@ -13,7 +13,7 @@ function CalendarSpacesAvailable({ calendar: { selectedCourse }, courses }) {
   const { training_count, spaces, spaces_available } = selectedCourse
 
   let spacesLeft = 0
-  if (spaces_available) {
+  if (typeof spaces_available !== 'undefined') {
     spacesLeft = parseInt(spaces_available)
   } else {
     const spacesTotal = parseInt(spaces)

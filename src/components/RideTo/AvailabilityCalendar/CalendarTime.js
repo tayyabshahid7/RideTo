@@ -19,7 +19,7 @@ class CalendarTime extends Component {
       <div className={classnames(!isSingleTime && styles.container)}>
         {courses.map((course, index) => {
           let spacesLeft = 0
-          if (course.spaces_available) {
+          if (typeof course.spaces_available !== 'undefined') {
             spacesLeft = parseInt(course.spaces_available)
           } else {
             const training_count =

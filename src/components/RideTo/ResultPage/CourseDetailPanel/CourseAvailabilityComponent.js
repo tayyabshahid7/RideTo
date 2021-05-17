@@ -14,9 +14,12 @@ import {
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
     super(props)
-    const nextDate = this.props.supplier.next_date_available
+    let nextDate = this.props.supplier.next_date_available
       ? new Date(this.props.supplier.next_date_available)
       : new Date()
+    if (moment().isAfter(moment(nextDate))) {
+      nextDate = moment().toDate()
+    }
     let date = this.props.date ? new Date(this.props.date) : nextDate
     this.state = {
       loadingTimes: false,
