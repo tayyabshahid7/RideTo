@@ -28,7 +28,7 @@ class CalendarTime extends Component {
           }
 
           return (
-            spacesLeft && (
+            !!spacesLeft && (
               <React.Fragment key={course.id}>
                 {!isSingleTime ? (
                   <button

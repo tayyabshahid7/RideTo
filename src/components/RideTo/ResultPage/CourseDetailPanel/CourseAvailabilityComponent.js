@@ -130,12 +130,11 @@ class CourseAvailabilityComponent extends React.Component {
       }
 
       if (courseLocation.instant_book) {
-        // TODO: confirm `training_count` & `spaces`
-        // for (let i = dayCourses.length - 1; i >= 0; i--) {
-        //   if (dayCourses[i].training_count >= dayCourses[i].spaces) {
-        //     dayCourses.splice(i, 1)
-        //   }
-        // }
+        for (let i = dayCourses.length - 1; i >= 0; i--) {
+          if (!dayCourses[i].spaces_available) {
+            dayCourses.splice(i, 1)
+          }
+        }
         if (dayCourses.length === 0) {
           disabled = true
         }
