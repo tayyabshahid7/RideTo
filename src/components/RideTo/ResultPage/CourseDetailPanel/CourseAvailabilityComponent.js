@@ -64,7 +64,11 @@ class CourseAvailabilityComponent extends React.Component {
       momentDate.endOf('month').format('YYYY-MM-DD'),
       courseType
     )
-    this.setState({ courses, loadingCourses: false })
+    this.setState({ courses, loadingCourses: false }, () => {
+      if (this.props.date) {
+        this.handleDateSelect(this.props.date)
+      }
+    })
   }
 
   getFirstAndLastDate({ year, month }) {

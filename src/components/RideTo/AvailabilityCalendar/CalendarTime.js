@@ -14,6 +14,9 @@ class CalendarTime extends Component {
   render() {
     const { calendar, courses, handleTimeSelect } = this.props
     const isSingleTime = courses.length === 1
+    if (courses.length && !courses[0].time) {
+      return null
+    }
 
     return (
       <div className={classnames(!isSingleTime && styles.container)}>
