@@ -7,7 +7,7 @@ import {
   PostalCodeElement
 } from 'react-stripe-elements'
 import DateInput from 'components/RideTo/DateInput'
-import LicenceInput from 'components/RideTo/LicenceInput'
+// import LicenceInput from 'components/RideTo/LicenceInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Input from 'components/RideTo/Input'
 import { RidingExperiences, RiderTypes } from 'common/info'
@@ -326,7 +326,7 @@ class UserDetails extends Component {
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
-          <div
+          {/* <div
             className={classnames(
               styles.input,
               errors.driving_licence_number && styles.inputError
@@ -346,7 +346,7 @@ class UserDetails extends Component {
           </div>
           {errors.driving_licence_number && (
             <div className={styles.error}>{errors.driving_licence_number}</div>
-          )}
+          )} */}
           {isRenewal && (
             <>
               <div
