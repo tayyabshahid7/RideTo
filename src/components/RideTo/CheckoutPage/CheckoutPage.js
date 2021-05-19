@@ -409,10 +409,10 @@ class CheckoutPage extends Component {
 
   getErrorDivId(field) {
     switch (field) {
+      // case 'driving_licence_number':
       case 'user_birthdate':
       case 'phone':
       case 'current_licence':
-      case 'driving_licence_number':
       case 'prev_cbt_date':
       case 'riding_experience':
       case 'rider_type':
