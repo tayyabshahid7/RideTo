@@ -8,7 +8,7 @@ import CalendarSpacesAvailable from './CalendarSpacesAvailable'
 import moment from 'moment'
 import _ from 'lodash'
 import { BANK_HOLIDAYS } from 'common/constants'
-import { fetchPlatformCourses } from 'services/course'
+// import { fetchPlatformCourses } from 'services/course'
 
 const isBankHoliday = date => {
   return BANK_HOLIDAYS.includes(date)
@@ -56,9 +56,9 @@ class AvailabilityCalendar extends Component {
 
     if (days.length && !days.some(({ disabled }) => !disabled)) {
       const {
-        course,
-        courseType,
-        calendar: { year, month },
+        // course,
+        // courseType,
+        // calendar: { year, month },
         isInstantBook
       } = this.props
 
@@ -68,18 +68,18 @@ class AvailabilityCalendar extends Component {
         return
       }
 
-      let momentDate = moment(new Date(year, month, 1)).add(1, 'months')
+      // let momentDate = moment(new Date(year, month, 1)).add(1, 'months')
 
-      const courses = await fetchPlatformCourses(
-        course.id,
-        momentDate.format('YYYY-MM-DD'),
-        momentDate.endOf('month').format('YYYY-MM-DD'),
-        courseType
-      )
+      // const courses = await fetchPlatformCourses(
+      //   course.id,
+      //   momentDate.format('YYYY-MM-DD'),
+      //   momentDate.endOf('month').format('YYYY-MM-DD'),
+      //   courseType
+      // )
 
-      if (courses.length) {
-        handleNextMonth()
-      }
+      // if (courses.length) {
+      //   handleNextMonth()
+      // }
     }
   }
 

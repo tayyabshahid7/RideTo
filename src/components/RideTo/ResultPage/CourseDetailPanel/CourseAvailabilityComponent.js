@@ -14,15 +14,24 @@ import {
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
     super(props)
-    let nextDate = this.props.supplier.next_date_available
+
+    let date = this.props.supplier.next_date_available
       ? new Date(this.props.supplier.next_date_available)
       : new Date()
-    if (moment().isAfter(moment(nextDate))) {
-      nextDate = moment().toDate()
+    if (moment().isAfter(moment(date))) {
+      date = moment().toDate()
     }
-    let date = this.props.date ? new Date(this.props.date) : nextDate
+    if (this.props.date && moment(this.props.date).isAfter(moment(date))) {
+      date = moment(this.props.date).toDate()
+    } else {
+      if (!this.props.supplier.instant_book) {
+        this.props.onUpdate({ instantDate: this.props.supplier.next_date_available })
+      }
+    }
+
     this.state = {
       loadingTimes: false,
+      initialDate: moment(date).format('YYYY-MM-DD'),
       calendar: {
         year: date.getFullYear(),
         month: date.getMonth()
@@ -65,9 +74,7 @@ class CourseAvailabilityComponent extends React.Component {
       courseType
     )
     this.setState({ courses, loadingCourses: false }, () => {
-      if (this.props.date) {
-        this.handleDateSelect(this.props.date)
-      }
+      this.handleDateSelect(this.state.initialDate, true)
     })
   }
 
@@ -197,11 +204,30 @@ class CourseAvailabilityComponent extends React.Component {
     this.setState({ calendar: { ...calendar, month, year } })
   }
 
-  handleDateSelect = async instantDate => {
+  handleDateSelect = async (instantDate, toValidate = false) => {
     const { calendar, courses } = this.state
     const { supplier, courseType, onUpdate, bike_hire } = this.props
 
     const dayCourses = courses.filter(x => x.date === instantDate)
+
+    if (toValidate) {
+      if (!dayCourses.length) {
+        onUpdate({ instantDate: null })
+        return
+      }
+
+      let isValid = false
+      dayCourses.forEach(course => {
+        if (course.spaces_available) {
+          isValid = true
+        }
+      })
+      if (!isValid) {
+        onUpdate({ instantDate: null })
+        return
+      }
+    }
+
     if (
       supplier.instant_book &&
       dayCourses.length &&
