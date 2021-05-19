@@ -8,8 +8,11 @@ import DateItem from './DateItem'
 class DateSelector extends Component {
   constructor(props) {
     super(props)
+
+    const startDate = props.date ? new Date(props.date) : new Date()
+
     this.state = {
-      startDate: new Date(),
+      startDate,
       daysCount: 12
     }
     this.updateDimensions = this.updateDimensions.bind(this)
@@ -39,7 +42,9 @@ class DateSelector extends Component {
     )
     let today = moment().startOf('day')
     let newPrevDate = moment(date).startOf('day')
-    if (newPrevDate < today) return
+    if (newPrevDate < today) {
+      date = new Date()
+    }
     this.setState({ startDate: date })
   }
 
