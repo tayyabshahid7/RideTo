@@ -23,8 +23,11 @@ class CourseAvailabilityComponent extends React.Component {
     }
     if (this.props.date && moment(this.props.date).isAfter(moment(date))) {
       date = moment(this.props.date).toDate()
-    } else {
-      if (!this.props.supplier.instant_book) {
+    }
+    if (!this.props.supplier.instant_book) {
+      if (this.props.supplier.excluded_dates.includes(this.props.supplier.next_date_available)) {
+        this.props.onUpdate({ instantDate: null })  
+      } else {
         this.props.onUpdate({ instantDate: this.props.supplier.next_date_available })
       }
     }

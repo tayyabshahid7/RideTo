@@ -129,6 +129,7 @@ class CourseItem extends Component {
                 className={styles.courseName}
                 onClick={() => this.detailClicked(course)}>
                 {course.location_slug.replace('-', ' ')}
+                {'   '}{course.next_date_available}
               </button>
               <div
                 className={styles.place}
