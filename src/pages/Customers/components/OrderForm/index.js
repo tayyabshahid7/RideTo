@@ -300,7 +300,7 @@ class OrderForm extends React.Component {
               <ConnectSelect
                 disabled={inputsDisabled}
                 label="Training Status"
-                options={getTrainingStatusOptions()}
+                options={getTrainingStatusOptions(isRideTo(editable))}
                 selected={editable.training_status || ''}
                 name="training_status"
                 onChange={value => {

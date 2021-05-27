@@ -134,7 +134,7 @@ export const saveTraining = async training => {
 }
 
 export const isRideTo = ({ source }) => {
-  return source === 'RIDETO' || source === 'RIDETO_INSTANT'
+  return source === 'RIDETO' || source === 'RT' || source === 'RIDETO_INSTANT'
 }
 
 export const isConnectManual = ({ source }) => {
