@@ -85,7 +85,6 @@ const InvoiceForm = ({
     setUrl(history.location.pathname)
   }
 
-
   useEffect(() => {
     return () => {
       if (history.action === 'POP') {
@@ -172,7 +171,11 @@ const InvoiceForm = ({
   }
 
   const handleChangeDue = event => {
-    setDue(event.target.value)
+    if (event.target.value) {
+      setDue(Math.max(1, event.target.value))
+    } else {
+      setDue(event.target.value)
+    }
   }
 
   const handleChangeSupplier = value => {
@@ -193,6 +196,11 @@ const InvoiceForm = ({
 
       if (!customer && !email) {
         showNotification('Error', 'Please input customer email', 'danger')
+        return false
+      }
+
+      if (!due) {
+        showNotification('Error', 'Please input payment due', 'danger')
         return false
       }
 
