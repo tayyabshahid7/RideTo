@@ -62,7 +62,7 @@ class DayOfWeekPicker extends Component {
 
     if (availability !== 'empty') {
       estimate = moment()
-        .add(availability === 'moderate' ? 60 : 40, 'days')
+        .add(availability === 'moderate' ? 12 : 8, 'weeks')
         .format('dddd, Do MMMM')
     }
 
