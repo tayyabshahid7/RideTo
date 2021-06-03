@@ -101,6 +101,8 @@ export const getCustomerTypeShort = source => {
     case 'RIDETO':
     case 'RIDETO_INSTANT':
       return 'RT'
+    case 'WIDGET':
+      return 'WD'
     default:
       return 'Direct'
   }
