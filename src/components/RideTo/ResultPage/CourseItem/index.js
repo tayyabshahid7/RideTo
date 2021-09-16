@@ -85,6 +85,20 @@ class CourseItem extends Component {
     this.props.handleReviewClick(course)
   }
 
+  getPriceData = () => {
+    const { course } = this.props
+
+    var getDay = new Date().getDay()
+
+    // If the date is a week end
+    if (getDay === 0 || getDay === 6) {
+      return parseInt(course?.supplier_pricing[0]?.weekend_price)
+    } else {
+      // If the date is a week day
+      return parseInt(course?.supplier_pricing[0]?.weekday_price)
+    }
+  }
+
   render() {
     const {
       course,
@@ -183,7 +197,10 @@ class CourseItem extends Component {
                 <div
                   className={styles.price}
                   onClick={() => this.priceClicked(course)}>
-                  £{parseInt(course.price / 100.0, 10)}
+                  £
+                  {courseType === 'FULL_LICENCE'
+                    ? parseInt(course.price / 100.0, 10)
+                    : this.getPriceData()}
                   {courseType === 'FULL_LICENCE' && '/Hr'}
                 </div>
                 <div
