@@ -59,14 +59,14 @@ const BikePicker = React.forwardRef(
       <span className={styles.manualInfo}>
         Please note: If you haven't ridden a manual (geared) bike before and
         expect to complete the CBT training in one day, you may find you need
-        additional training to complete your CBT. If you’re not sure,
+        additional training to complete your CBT. If you’re not sure, &nbsp;
         <a
           target="_blank"
           rel="noopener noreferrer"
           href="https://www.rideto.com/contact">
           contact us
         </a>
-        to ask a member of our friendly team.
+        &nbsp; to ask a member of our friendly team.
       </span>
     )
 
