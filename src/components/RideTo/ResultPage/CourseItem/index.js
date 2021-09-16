@@ -10,6 +10,7 @@ import POMCard from 'components/RideTo/ResultPage/POMCard'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 import { loadTypeformScript } from 'utils/helper'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+import get from 'lodash/get'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -89,13 +90,12 @@ class CourseItem extends Component {
     const { course } = this.props
 
     var getDay = new Date().getDay()
-
     // If the date is a week end
     if (getDay === 0 || getDay === 6) {
-      return parseInt(course?.supplier_pricing[0]?.weekend_price)
+      return parseInt(get(course, 'supplier_pricing[0].weekend_price', ''))
     } else {
       // If the date is a week day
-      return parseInt(course?.supplier_pricing[0]?.weekday_price)
+      return parseInt(get(course, 'supplier_pricing[0].weekday_price', ''))
     }
   }
 
