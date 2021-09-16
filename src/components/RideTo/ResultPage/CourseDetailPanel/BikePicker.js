@@ -64,7 +64,7 @@ const BikePicker = React.forwardRef(
           target="_blank"
           rel="noopener noreferrer"
           href="https://www.rideto.com/contact">
-          contact us
+          &nbsp;contact us&nbsp;
         </a>
         to ask a member of our friendly team.
       </span>
