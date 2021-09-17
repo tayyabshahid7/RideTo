@@ -23,6 +23,7 @@ function POMBanner({ discount }) {
   if (discount) {
     return (
       <img
+        loading="lazy"
         style={style}
         src={isDesktop ? desktopDiscount : mobileDiscount}
         alt="Book a POM"
@@ -31,7 +32,12 @@ function POMBanner({ discount }) {
   }
 
   return (
-    <img style={style} src={isDesktop ? desktop : mobile} alt="Book a POM" />
+    <img
+      loading="lazy"
+      style={style}
+      src={isDesktop ? desktop : mobile}
+      alt="Book a POM"
+    />
   )
 }
 
