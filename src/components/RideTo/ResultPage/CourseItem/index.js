@@ -11,6 +11,7 @@ import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 import { loadTypeformScript } from 'utils/helper'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import get from 'lodash/get'
+import moment from 'moment'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -86,10 +87,22 @@ class CourseItem extends Component {
     this.props.handleReviewClick(course)
   }
 
+  checkBankHoliday = date => {
+    const { bankHolidays } = this.props
+    const results = get(bankHolidays, 'results', [])
+    return results.some(item => item.date === date)
+  }
+
   getPriceData = () => {
     const { course } = this.props
+    const date = course.date || moment().format('YYYY-MM-DD')
+    const getDay = new Date(date).getDay()
 
-    var getDay = new Date().getDay()
+    // if its a bank holday
+    if (this.checkBankHoliday(date)) {
+      return parseInt(get(course, 'supplier_pricing[0].bank_holiday_price', ''))
+    }
+
     // If the date is a week end
     if (getDay === 0 || getDay === 6) {
       return parseInt(get(course, 'supplier_pricing[0].weekend_price', ''))
