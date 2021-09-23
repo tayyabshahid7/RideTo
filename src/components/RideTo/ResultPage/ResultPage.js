@@ -733,8 +733,6 @@ class ResultPage extends Component {
       } catch {}
     }
 
-    const { bankHolidays } = this.state
-
     return (
       <div className={styles.container}>
         <ResultsHeader
@@ -864,7 +862,6 @@ class ResultPage extends Component {
                               (course, index) =>
                                 course.is_partner && (
                                   <CourseItem
-                                    bankHolidays={bankHolidays}
                                     showCallMessage={
                                       index === 1 ||
                                       (index - 1) % 5 === 0 ||
@@ -907,7 +904,6 @@ class ResultPage extends Component {
                             {courses.unavailable.map((course, index) =>
                               course.is_partner ? (
                                 <CourseItem
-                                  bankHolidays={bankHolidays}
                                   showCallMessage={
                                     index === 2 ||
                                     (courses.unavailable.length < 3 &&
