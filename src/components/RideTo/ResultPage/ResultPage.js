@@ -29,7 +29,7 @@ import { getStaticData, flashDiv } from 'services/page'
 import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
-import { fetchSingleRidetoCourse, fetchBankHolidays } from 'services/course'
+import { fetchSingleRidetoCourse } from 'services/course'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -116,10 +116,6 @@ class ResultPage extends Component {
   }
 
   async componentDidMount() {
-    // Fetch bank holidays
-    const bankHolidays = await fetchBankHolidays()
-    this.setState({ bankHolidays: bankHolidays })
-
     // Prevent the reuslts from loading half way down the page
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
