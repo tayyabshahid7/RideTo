@@ -9,6 +9,7 @@ import { fetchSearchLocation } from 'services/geolocation'
 import { parseQueryString } from 'services/api'
 import { getStaticData } from 'services/page'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
+import StateProvider from './StateProvider'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -131,25 +132,27 @@ class ResultPageContainer extends Component {
     } = this.state
 
     return (
-      <Router>
-        <Route
-          render={props => (
-            <ResultPage
-              {...props}
-              postcode={postcode}
-              courseType={courseType}
-              courses={courses}
-              loading={loading}
-              date={date}
-              sortByOption={sortByOption}
-              handleSetDate={this.handleSetDate}
-              handeUpdateOption={this.handeUpdateOption}
-              navigation={navigation}
-              userLocation={userLocation}
-            />
-          )}
-        />
-      </Router>
+      <StateProvider>
+        <Router>
+          <Route
+            render={props => (
+              <ResultPage
+                {...props}
+                postcode={postcode}
+                courseType={courseType}
+                courses={courses}
+                loading={loading}
+                date={date}
+                sortByOption={sortByOption}
+                handleSetDate={this.handleSetDate}
+                handeUpdateOption={this.handeUpdateOption}
+                navigation={navigation}
+                userLocation={userLocation}
+              />
+            )}
+          />
+        </Router>
+      </StateProvider>
     )
   }
 }

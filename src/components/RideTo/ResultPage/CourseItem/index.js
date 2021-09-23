@@ -12,6 +12,7 @@ import { loadTypeformScript } from 'utils/helper'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
 import get from 'lodash/get'
 import moment from 'moment'
+import { BankHolidayProvider } from '../StateProvider'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -88,9 +89,10 @@ class CourseItem extends Component {
   }
 
   checkBankHoliday = date => {
-    const { bankHolidays } = this.props
-    const results = get(bankHolidays, 'results', [])
-    return results.some(item => item.date === date)
+    const { context } = this.props
+    const { bankHoliday } = context
+
+    return bankHoliday.some(item => item.date === date)
   }
 
   getPriceData = () => {
@@ -252,4 +254,16 @@ class CourseItem extends Component {
   }
 }
 
-export default CourseItem
+const withContext = Component => {
+  return props => {
+    return (
+      <BankHolidayProvider.Consumer>
+        {context => {
+          return <Component {...props} context={context} />
+        }}
+      </BankHolidayProvider.Consumer>
+    )
+  }
+}
+
+export default withContext(CourseItem)

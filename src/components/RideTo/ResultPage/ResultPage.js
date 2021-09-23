@@ -29,7 +29,7 @@ import { getStaticData, flashDiv } from 'services/page'
 import POMBanner from './POMBanner'
 import loadable from '@loadable/component'
 import MediaQuery from 'react-responsive'
-import { fetchSingleRidetoCourse, fetchBankHolidays } from 'services/course'
+import { fetchSingleRidetoCourse } from 'services/course'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -116,10 +116,6 @@ class ResultPage extends Component {
   }
 
   async componentDidMount() {
-    // Fetch bank holidays
-    const bankHolidays = await fetchBankHolidays()
-    this.setState({ bankHolidays: bankHolidays })
-
     // Prevent the reuslts from loading half way down the page
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
@@ -737,8 +733,6 @@ class ResultPage extends Component {
       } catch {}
     }
 
-    const { bankHolidays } = this.state
-
     return (
       <div className={styles.container}>
         <ResultsHeader
@@ -868,7 +862,6 @@ class ResultPage extends Component {
                               (course, index) =>
                                 course.is_partner && (
                                   <CourseItem
-                                    bankHolidays={bankHolidays}
                                     showCallMessage={
                                       index === 1 ||
                                       (index - 1) % 5 === 0 ||
@@ -911,7 +904,6 @@ class ResultPage extends Component {
                             {courses.unavailable.map((course, index) =>
                               course.is_partner ? (
                                 <CourseItem
-                                  bankHolidays={bankHolidays}
                                   showCallMessage={
                                     index === 2 ||
                                     (courses.unavailable.length < 3 &&
