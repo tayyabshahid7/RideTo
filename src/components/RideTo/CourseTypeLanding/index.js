@@ -125,12 +125,12 @@ class CourseTypeLanding extends React.Component {
                       {courseType.constant !== 'TFL_ONE_ON_ONE' && (
                         <span>
                           {courseType.constant === 'FULL_LICENCE'
-                            ? '500'
+                            ? '1,500'
                             : courseType.constant === 'LICENCE_CBT_RENEWAL'
-                            ? '4,500'
+                            ? '7,500'
                             : courseType.constant === 'INTRO_TO_MOTORCYCLING'
-                            ? '2,500'
-                            : '10,500'}{' '}
+                            ? '5,500'
+                            : '25,500'}{' '}
                           courses sold
                         </span>
                       )}
