@@ -9,6 +9,9 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 import WebMercatorViewport from 'viewport-mercator-project'
 import { lineString } from '@turf/helpers'
 import bbox from '@turf/bbox'
+import moment from 'moment'
+import get from 'lodash/get'
+import { BankHolidayProvider } from '../ResultPage/StateProvider'
 
 mapboxgl.accessToken = MAPBOX_KEY
 
@@ -188,10 +191,36 @@ class MapComponent extends Component {
           )}
         />
         <span className={styles.pinPrice}>
-          {course.price ? `£${parseInt(course.price / 100, 10)}` : '-'}
+          £{this.getPricing(course)}
         </span>
       </div>
     )
+  }
+
+  checkBankHoliday = date => {
+    const { context } = this.props
+    const { bankHoliday } = context
+
+    return bankHoliday.some(item => item.date === date)
+  }
+
+
+  getPricing(course) {
+    const date = course.date || moment().format('YYYY-MM-DD')
+    const getDay = new Date(date).getDay()
+
+    // if its a bank holday
+    if (this.checkBankHoliday(date)) {
+      return parseInt(get(course, 'supplier_pricing[0].bank_holiday_price', ''))
+    }
+
+    // If the date is a week end
+    if (getDay === 0 || getDay === 6) {
+      return parseInt(get(course, 'supplier_pricing[0].weekend_price', ''))
+    } else {
+      // If the date is a week day
+      return parseInt(get(course, 'supplier_pricing[0].weekday_price', ''))
+    }
   }
 
   render() {
@@ -244,4 +273,16 @@ class MapComponent extends Component {
   }
 }
 
-export default MapComponent
+const withContext = Component => {
+  return props => {
+    return (
+      <BankHolidayProvider.Consumer>
+        {context => {
+          return <Component {...props} context={context} />
+        }}
+      </BankHolidayProvider.Consumer>
+    )
+  }
+}
+
+export default withContext(MapComponent)
