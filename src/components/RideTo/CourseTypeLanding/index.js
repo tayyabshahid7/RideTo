@@ -113,7 +113,7 @@ class CourseTypeLanding extends React.Component {
                         data-template-id="5419b6a8b0d04a076446a9ad"
                         data-businessunit-id="59832d5f0000ff0005a80d6b"
                         data-style-height="24px"
-                        data-style-width="250px"
+                        data-style-width="270px"
                         data-theme="light">
                         <a
                           href="https://uk.trustpilot.com/review/rideto.com"
