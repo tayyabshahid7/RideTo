@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import CalendarDayCell from './CalendarDayCell'
 import styles from './CalendarContent.scss'
 import moment from 'moment'
-import { BANK_HOLIDAYS } from 'common/constants'
+import { BankHolidayProvider } from '../ResultPage/StateProvider'
 class CalendarContent extends Component {
   constructor(props) {
     super(props)
     this.getDayPrice = this.getDayPrice.bind(this)
   }
+
   renderWeekdays() {
     return (
       <ul className={styles.calendarWeekdays}>
@@ -23,7 +24,10 @@ class CalendarContent extends Component {
   }
 
   isBankHoliday(date) {
-    return BANK_HOLIDAYS.includes(date)
+    const { context } = this.props
+    const { bankHoliday } = context
+    const formatedDate = moment(date).format('YYYY-MM-DD')
+    return bankHoliday.some(item => item.date === formatedDate)
   }
 
   getDayPrice(day) {
@@ -35,7 +39,7 @@ class CalendarContent extends Component {
     }
 
     if (nonInstantPrices) {
-      if (this.isBankHoliday(moment(day.date).format('DD-MM-YYYY'))) {
+      if (this.isBankHoliday(day.date)) {
         return Math.trunc(nonInstantPrices.bank_holiday)
       } else if (day.date.getDay() === 6 || day.date.getDay() === 0) {
         return Math.trunc(nonInstantPrices.weekend)
@@ -73,4 +77,16 @@ class CalendarContent extends Component {
   }
 }
 
-export default CalendarContent
+const withContext = Component => {
+  return props => {
+    return (
+      <BankHolidayProvider.Consumer>
+        {context => {
+          return <Component {...props} context={context} />
+        }}
+      </BankHolidayProvider.Consumer>
+    )
+  }
+}
+
+export default withContext(CalendarContent)

@@ -10,6 +10,9 @@ import POMCard from 'components/RideTo/ResultPage/POMCard'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 import { loadTypeformScript } from 'utils/helper'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
+import get from 'lodash/get'
+import moment from 'moment'
+import { BankHolidayProvider } from '../StateProvider'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -83,6 +86,32 @@ class CourseItem extends Component {
   reviewClicked = course => {
     this.handleScroll()
     this.props.handleReviewClick(course)
+  }
+
+  checkBankHoliday = date => {
+    const { context } = this.props
+    const { bankHoliday } = context
+
+    return bankHoliday.some(item => item.date === date)
+  }
+
+  getPriceData = () => {
+    const { course } = this.props
+    const date = course.date || moment().format('YYYY-MM-DD')
+    const getDay = new Date(date).getDay()
+
+    // if its a bank holday
+    if (this.checkBankHoliday(date)) {
+      return parseInt(get(course, 'supplier_pricing[0].bank_holiday_price', ''))
+    }
+
+    // If the date is a week end
+    if (getDay === 0 || getDay === 6) {
+      return parseInt(get(course, 'supplier_pricing[0].weekend_price', ''))
+    } else {
+      // If the date is a week day
+      return parseInt(get(course, 'supplier_pricing[0].weekday_price', ''))
+    }
   }
 
   render() {
@@ -183,7 +212,10 @@ class CourseItem extends Component {
                 <div
                   className={styles.price}
                   onClick={() => this.priceClicked(course)}>
-                  £{parseInt(course.price / 100.0, 10)}
+                  £
+                  {courseType === 'FULL_LICENCE'
+                    ? parseInt(course.price / 100.0, 10)
+                    : this.getPriceData()}
                   {courseType === 'FULL_LICENCE' && '/Hr'}
                 </div>
                 <div
@@ -222,4 +254,16 @@ class CourseItem extends Component {
   }
 }
 
-export default CourseItem
+const withContext = Component => {
+  return props => {
+    return (
+      <BankHolidayProvider.Consumer>
+        {context => {
+          return <Component {...props} context={context} />
+        }}
+      </BankHolidayProvider.Consumer>
+    )
+  }
+}
+
+export default withContext(CourseItem)

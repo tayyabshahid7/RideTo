@@ -120,6 +120,12 @@ export const fetchSingleRidetoCourse = async id => {
   return response
 }
 
+export const fetchBankHolidays = async () => {
+  const path = 'config/bankholiday'
+  const response = await get(path, {}, false)
+  return response
+}
+
 export const fetchWidgetCourses = async (
   schoolId,
   startDate,
