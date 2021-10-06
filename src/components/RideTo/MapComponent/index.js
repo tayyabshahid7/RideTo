@@ -209,6 +209,12 @@ class MapComponent extends Component {
     const date = course.date || moment().format('YYYY-MM-DD')
     const getDay = new Date(date).getDay()
 
+    // If hour pricing is avaiable, use it 
+    const hourlyPricing = parseInt(
+      get(course, 'supplier_pricing[0].hour_price', '')
+    )
+    if (hourlyPricing) return hourlyPricing
+
     // if its a bank holday
     if (this.checkBankHoliday(date)) {
       return parseInt(get(course, 'supplier_pricing[0].bank_holiday_price', ''))
