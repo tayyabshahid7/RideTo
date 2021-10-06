@@ -104,24 +104,6 @@ class CourseTypeLanding extends React.Component {
                   <div className={styles.headerInfo}>
                     {header(courseType)}
                     <div className={styles.proof}>
-                      <div
-                        className={classnames(
-                          'trustpilot-widget',
-                          styles.headerTrust
-                        )}
-                        data-locale="en-GB"
-                        data-template-id="5419b6a8b0d04a076446a9ad"
-                        data-businessunit-id="59832d5f0000ff0005a80d6b"
-                        data-style-height="24px"
-                        data-style-width="250px"
-                        data-theme="light">
-                        <a
-                          href="https://uk.trustpilot.com/review/rideto.com"
-                          target="_blank"
-                          rel="noopener noreferrer">
-                          Trustpilot
-                        </a>
-                      </div>
                       {courseType.constant !== 'TFL_ONE_ON_ONE' && (
                         <span>
                           {courseType.constant === 'FULL_LICENCE'
