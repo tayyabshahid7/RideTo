@@ -89,9 +89,7 @@ class CourseItem extends Component {
   }
 
   checkBankHoliday = date => {
-    const { context } = this.props
-    const { bankHoliday } = context
-
+    const bankHoliday = get(this.props, 'context.bankHoliday', [])
     return bankHoliday.some(item => item.date === date)
   }
 
@@ -99,6 +97,12 @@ class CourseItem extends Component {
     const { course } = this.props
     const date = course.date || moment().format('YYYY-MM-DD')
     const getDay = new Date(date).getDay()
+
+    // If hour pricing is avaiable, use it
+    const hourlyPricing = parseInt(
+      get(course, 'supplier_pricing[0].hour_price', '')
+    )
+    if (hourlyPricing) return hourlyPricing
 
     // if its a bank holday
     if (this.checkBankHoliday(date)) {
@@ -212,10 +216,7 @@ class CourseItem extends Component {
                 <div
                   className={styles.price}
                   onClick={() => this.priceClicked(course)}>
-                  £
-                  {courseType === 'FULL_LICENCE'
-                    ? parseInt(course.price / 100.0, 10)
-                    : this.getPriceData()}
+                  £{this.getPriceData()}
                   {courseType === 'FULL_LICENCE' && '/Hr'}
                 </div>
                 <div
