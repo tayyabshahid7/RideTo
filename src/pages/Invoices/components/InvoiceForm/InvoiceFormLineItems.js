@@ -104,6 +104,7 @@ const InvoiceFormLineItems = ({ disabled, value, onChange }) => {
             value={line.description}
             type="text"
             disabled={disabled}
+            maxlength="50"
             onChange={event => handleChange(event, line, index)}
           />
           <ConnectInput
