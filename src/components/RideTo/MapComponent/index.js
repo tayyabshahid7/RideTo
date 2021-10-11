@@ -86,9 +86,15 @@ class MapComponent extends Component {
       viewport = new WebMercatorViewport({
         height,
         width
-      }).fitBounds([[minLng, minLat], [maxLng, maxLat]], {
-        padding: { top: 60, right: 40, bottom: 40, left: 60 }
-      })
+      }).fitBounds(
+        [
+          [minLng, minLat],
+          [maxLng, maxLat]
+        ],
+        {
+          padding: { top: 60, right: 40, bottom: 40, left: 60 }
+        }
+      )
     } else {
       viewport = {
         latitude: locations[0][0],
@@ -190,26 +196,21 @@ class MapComponent extends Component {
             !available && styles.mapPinBgUnavailable
           )}
         />
-        <span className={styles.pinPrice}>
-          £{this.getPricing(course)}
-        </span>
+        <span className={styles.pinPrice}>£{this.getPricing(course)}</span>
       </div>
     )
   }
 
   checkBankHoliday = date => {
-    const { context } = this.props
-    const { bankHoliday } = context
-
+    const bankHoliday = get(this.props, 'context.bankHoliday', [])
     return bankHoliday.some(item => item.date === date)
   }
-
 
   getPricing(course) {
     const date = course.date || moment().format('YYYY-MM-DD')
     const getDay = new Date(date).getDay()
 
-    // If hour pricing is avaiable, use it 
+    // If hour pricing is avaiable, use it
     const hourlyPricing = parseInt(
       get(course, 'supplier_pricing[0].hour_price', '')
     )

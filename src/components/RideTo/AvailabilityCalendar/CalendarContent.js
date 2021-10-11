@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CalendarDayCell from './CalendarDayCell'
 import styles from './CalendarContent.scss'
 import moment from 'moment'
+import get from 'lodash/get'
 import { BankHolidayProvider } from '../ResultPage/StateProvider'
 class CalendarContent extends Component {
   constructor(props) {
@@ -24,8 +25,7 @@ class CalendarContent extends Component {
   }
 
   isBankHoliday(date) {
-    const { context } = this.props
-    const { bankHoliday } = context
+    const bankHoliday = get(this.props, 'context.bankHoliday', [])
     const formatedDate = moment(date).format('YYYY-MM-DD')
     return bankHoliday.some(item => item.date === formatedDate)
   }
