@@ -59,3 +59,5 @@ mountComponent('TestRideForm', 'test-ride-form-root')
 mountComponent('Contact', 'contact-root')
 
 mountComponent('GettingStarted', 'getting-started-root')
+
+mountComponent('FaqsNewContainer', 'rideto-faqs-new')

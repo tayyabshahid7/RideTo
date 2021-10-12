@@ -1,0 +1,105 @@
+.answerItem {
+  padding: 24px 33px;
+}
+
+.isSelected {
+  background: #f8f8f8 !important;
+}
+
+.questionItem {
+  padding: 24px 33px;
+  font-size: 15px;
+  align-items: center;
+  font-family: var(--font-proxima);
+  display: flex;
+  justify-content: space-between;
+  box-shadow: inset 0px -1px 0px #e8e8e8;
+}
+
+.questionContainer {
+  padding: 0 33px;
+  padding-top: 36px;
+  padding-bottom: 20px;
+}
+
+.subHeading {
+  color: black;
+  font-family: var(--font-rift-bold);
+  font-size: 24px;
+}
+
+.heading {
+  color: black;
+  font-size: 60px;
+  font-family: var(--font-rift-bold);
+  text-align: center;
+  margin: 48px 0;
+
+  @media (max-width: 768px) {
+    font-size: 40px;
+  }
+}
+
+.faqsContainer {
+  background: white;
+}
+
+.categoryContainer {
+  @media screen and (min-width: 728px) {
+    display: flex;
+  }
+}
+
+.cardContainer {
+  width: 100%;
+  background-color: #f8f8f8;
+  padding: 24px 20px;
+  cursor: pointer;
+
+  @media screen and (min-width: 728px) {
+    height: 144px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 4px;
+  }
+
+  p {
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-rift);
+    font-size: 15px;
+    font-weight: 600;
+  }
+}
+
+.selectedCard {
+  background-color: white !important;
+  border-top: 3px solid #f8f8f8 !important;
+}
+
+.rightPane {
+  margin-left: 30px;
+  width: 100%;
+}
+
+.desktopPane {
+  width: 85%;
+  margin: 0 auto;
+}
+
+.desktopFlex {
+  display: flex;
+}
+
+.questionCardDesktop {
+  border: 1px solid #e8e8e8;
+  padding: 16px;
+  margin-bottom: 16px;
+  max-width: 312px;
+  width: 312px;
+}
+
+.desktopHeading {
+  margin-top: 80px;
+}
