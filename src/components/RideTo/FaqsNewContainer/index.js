@@ -4,6 +4,9 @@ import classnames from 'classnames'
 import get from 'lodash/get'
 import { get as callApi } from 'services/api'
 import { useMediaQuery } from 'react-responsive'
+import expandSvg from 'assets/images/rideto/Expand.svg'
+import closeSvg from 'assets/images/rideto/CloseDark.svg'
+import SomethingElse from './SomethingElse'
 
 export const fetchFaqs = async () => {
   const path = 'faq'
@@ -15,7 +18,7 @@ function FaqsNewContainer() {
   const [selected, setSelected] = useState('')
   const [response, setResponse] = useState(null)
   const [openCategories, setOpenCategories] = useState([])
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({ maxWidth: 1024 })
 
   const handleClickQuestion = idx => {
     const index = openCategories.indexOf(idx)
@@ -45,7 +48,7 @@ function FaqsNewContainer() {
     setSelected(item)
   }
 
-  const [selectedDesktop, setSelectedDesktop] = useState(1)
+  const [selectedDesktop, setSelectedDesktop] = useState('')
 
   const handleClickDesktop = item => {
     setSelectedDesktop(item)
@@ -58,12 +61,19 @@ function FaqsNewContainer() {
     setOpenCategories([])
   }, [selected])
 
+  useEffect(() => {
+    const categories = get(response, 'results', [])
+    const questions = categories.filter(item => item.name === selected)
+    const item = get(questions, '[0].category[0].content', '')
+
+    setSelectedDesktop(item)
+  }, [selected])
+
   if (response === null) {
     return null
   }
 
   const renderQuestionLayout = () => {
-    console.log('isMobile', isMobile)
     if (isMobile)
       return (
         <>
@@ -87,8 +97,15 @@ function FaqsNewContainer() {
                       styles.questionHeading
                     )}>
                     <span>{item.title}</span>
-                    <span>+</span>
+                    <span>
+                      {isSelected ? (
+                        <img width="15px" alt="icon" src={closeSvg} />
+                      ) : (
+                        <img alt="icon" src={expandSvg} />
+                      )}
+                    </span>
                   </div>
+
                   {isSelected && (
                     <div className={styles.answerItem}>
                       <div dangerouslySetInnerHTML={{ __html: item.content }} />
@@ -157,7 +174,8 @@ function FaqsNewContainer() {
         })}
       </div>
 
-      {renderQuestionLayout()}
+      {selected !== 'Something Else' && renderQuestionLayout()}
+      {selected === 'Something Else' && <SomethingElse />}
     </div>
   )
 }
