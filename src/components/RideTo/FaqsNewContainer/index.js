@@ -82,7 +82,10 @@ function FaqsNewContainer() {
                 <div key={idx} className={parentClass}>
                   <div
                     onClick={() => handleClickQuestion(idx)}
-                    className={styles.questionItem}>
+                    className={classnames(
+                      styles.questionItem,
+                      styles.questionHeading
+                    )}>
                     <span>{item.title}</span>
                     <span>+</span>
                   </div>
@@ -147,8 +150,8 @@ function FaqsNewContainer() {
                 styles.cardContainer,
                 selectedCategory(item.name)
               )}>
-              <span></span>
-              <p>{item.name}</p>
+              <img className={styles.categoryImg} src={item.icon} alt="icon" />
+              <p className={styles.topCategoryTitle}>{item.name}</p>
             </div>
           )
         })}

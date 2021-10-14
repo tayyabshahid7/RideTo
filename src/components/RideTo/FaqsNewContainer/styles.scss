@@ -55,6 +55,9 @@
   background-color: #f8f8f8;
   padding: 24px 20px;
   cursor: pointer;
+  margin-bottom: 1px;
+  display: flex;
+  align-items: center;
 
   @media screen and (min-width: 728px) {
     height: 144px;
@@ -62,6 +65,7 @@
     justify-content: center;
     align-items: center;
     margin-right: 4px;
+    flex-direction: column;
   }
 
   p {
@@ -102,4 +106,26 @@
 
 .desktopHeading {
   margin-top: 80px;
+}
+
+.topCategoryTitle {
+  font-size: 15px;
+  @media screen and (min-width: 728px) {
+    font-size: 18px;
+  }
+}
+
+.categoryImg {
+  width: 32px;
+  margin-right: 16px;
+  @media screen and (min-width: 728px) {
+    display: block;
+    margin-bottom: 16px;
+    width: 35px;
+  }
+}
+
+.questionHeading {
+  font-size: 15px !important;
+  font: var(--font-proxima-bold) !important;
 }
