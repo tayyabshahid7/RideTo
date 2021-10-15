@@ -28,9 +28,14 @@
 }
 
 .somethingElseItem {
-  border: 1px solid #000;
+  border: 1px solid #eee;
   padding: 24px;
   margin-top: 10px;
+
+  &:hover {
+    border: 1px solid #000;
+    transition: border 0.3s ease;
+  }
 
   @media screen and (min-width: 728px) {
     padding: 50px;
@@ -39,7 +44,7 @@
 
   h2 {
     font-family: var(--font-rift-bold);
-
+    margin-top: 16px;
     font-size: 20px;
     letter-spacing: 1px;
   }
@@ -70,4 +75,22 @@
   font-family: var(--font-rift);
   font-size: 20px;
   font-weight: bold;
+}
+
+.contactModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: white;
+}
+
+.closeButton {
+  position: absolute;
+  right: 20px;
+  top: 30px;
+  background: none;
+  border: 0;
+  outline: 0;
 }
