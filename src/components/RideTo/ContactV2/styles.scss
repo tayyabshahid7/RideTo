@@ -1,0 +1,298 @@
+.container {
+  width: 100%;
+  max-width: calc(1112px + 2rem);
+  padding-right: 1rem;
+  padding-left: 1rem;
+  margin: 0 auto;
+  font-size: 15px;
+  line-height: 24px;
+  font-family: var(--font-proxima);
+  color: #141414;
+
+  h2,
+  h3 {
+    font-family: var(--font-rift);
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 24px;
+    line-height: 29px;
+  }
+
+  h3 {
+    font-size: 20px;
+    line-height: 24px;
+  }
+}
+
+.formContainer {
+  margin: auto;
+  width: 100%;
+  max-width: 536px;
+
+  background: #f8f8f8;
+  padding: 30px;
+}
+
+.header {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+
+  @media (min-width: 769px) {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+}
+
+.keyInfo {
+  display: flex;
+  align-items: flex-start;
+}
+
+.keyInfoItem {
+  display: flex;
+  align-items: center;
+  width: 50%;
+  justify-content: center;
+
+  flex-direction: column;
+
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+
+  &,
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  @media (min-width: 769px) {
+    padding-top: 0;
+    justify-content: flex-start;
+
+    flex-direction: row;
+  }
+
+  &:first-child {
+    border-right: 1px solid #d8d8d8;
+
+    @media (min-width: 769px) {
+      border-right: 0;
+    }
+  }
+
+  img {
+    display: block;
+    width: 31px;
+    height: 31px;
+
+    @media (min-width: 769px) {
+      margin-right: 1.75rem;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.keyInfoItemText {
+  display: none;
+
+  @media (min-width: 769px) {
+    display: block;
+  }
+}
+
+.keyInfoItemTextMobile {
+  display: block;
+
+  font-family: var(--font-rift);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 24px;
+  line-height: 29px;
+
+  margin-top: 1rem;
+
+  @media (min-width: 769px) {
+    display: none;
+  }
+}
+
+.body {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  background-color: rgba(#c2c2c2, 0.1);
+
+  @media (min-width: 769px) {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.bodyRow {
+  @media (min-width: 769px) {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+}
+
+.formCol {
+  @media (min-width: 769px) {
+    width: 48%;
+  }
+}
+
+.formTitle {
+  margin-bottom: -0.5rem;
+
+  @media (min-width: 769px) {
+    margin-bottom: 1rem;
+  }
+}
+
+.introText {
+  display: none;
+
+  @media (min-width: 769px) {
+    display: block;
+  }
+}
+
+.mapCol,
+.successMessage {
+}
+
+.mapCol {
+  @media (max-width: 768px) {
+    background-color: transparent;
+    box-shadow: none;
+  }
+}
+
+.mapCol {
+  @media (min-width: 769px) {
+    width: 40%;
+  }
+
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
+
+.mapColInfo {
+  padding-top: 1.5rem;
+
+  @media (min-width: 769px) {
+    padding: 2rem;
+  }
+}
+
+.map {
+  width: 100%;
+  height: 240px;
+}
+
+.form {
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+
+  @media (min-width: 769px) {
+    margin-bottom: 0;
+  }
+
+  > div {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    display: none;
+    opacity: 0.5;
+    color: #141414;
+    font-size: 15px;
+    line-height: 24px;
+    margin-bottom: 0.5rem;
+
+    @media (min-width: 769px) {
+      display: block;
+
+      &::placeholder {
+        color: transparent;
+      }
+    }
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    height: 48px;
+    border: 0;
+    background-color: #fff;
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+
+  textarea {
+    min-height: 320px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+}
+
+.submitButton {
+  display: flex;
+  width: 100%;
+  height: 56px;
+  background-color: #2cceac;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  padding-right: 24px;
+  padding-left: 24px;
+}
+
+.submitButtonText {
+  color: #ffffff;
+  font-family: var(--font-rift);
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.successMessage {
+  padding: 2rem;
+  text-align: center;
+
+  h3 {
+    margin-bottom: 1rem;
+  }
+}
+
+.back {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  text-decoration: underline;
+  color: var(--primary-color);
+}
+
+.error {
+  margin-top: 0.75rem;
+  color: var(--danger-color);
+}
+
+.iconPlane {
+  display: block;
+  margin: 0 auto;
+  margin-bottom: 16px;
+}

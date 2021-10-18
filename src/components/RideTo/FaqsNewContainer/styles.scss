@@ -1,6 +1,13 @@
 .answerItem {
   padding: 24px 33px;
 
+  @media screen and (min-width: 728px) {
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid #eee;
+    margin-bottom: 16px;
+  }
+
   img {
     max-width: 100%;
   }
@@ -8,6 +15,10 @@
 
 .isSelected {
   background: #f8f8f8 !important;
+
+  @media screen and (min-width: 728px) {
+    background: none !important;
+  }
 }
 
 .questionItem {
@@ -18,6 +29,13 @@
   display: flex;
   justify-content: space-between;
   box-shadow: inset 0px -1px 0px #e8e8e8;
+
+  @media screen and (min-width: 728px) {
+    border: 1px solid #eee;
+    margin: 0 auto;
+    width: 90%;
+    margin-bottom: 16px;
+  }
 }
 
 .questionContainer {
@@ -89,7 +107,7 @@
 }
 
 .rightPane {
-  margin-left: 80px;
+  margin-left: 100px;
   width: 100%;
 }
 
@@ -100,6 +118,7 @@
 
 .desktopFlex {
   display: flex;
+  margin-top: 80px;
 }
 
 .questionCardDesktop {
@@ -111,13 +130,12 @@
 }
 
 .desktopHeading {
-  margin-top: 80px;
 }
 
 .topCategoryTitle {
   font-size: 15px;
   @media screen and (min-width: 728px) {
-    font-size: 18px;
+    font-size: 18px !important;
   }
 }
 
@@ -126,6 +144,7 @@
   margin-right: 16px;
   @media screen and (min-width: 728px) {
     display: block;
+    margin: 0 auto;
     margin-bottom: 16px;
     width: 35px;
   }
@@ -134,4 +153,74 @@
 .questionHeading {
   font-size: 15px !important;
   font: var(--font-proxima-bold) !important;
+}
+
+.isSelectedDesktop {
+  border: 1px solid #000;
+  border-left: 4px solid #000;
+}
+
+.desktopHeadingAnswer {
+  font-family: var(--font-rift-bold);
+  font-size: 24px;
+  margin-bottom: 24px;
+}
+
+.needMore {
+  padding: 48px 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  h2 {
+    font-size: 24px;
+    font-family: var(--font-rift-bold);
+  }
+
+  p {
+    font-size: 15px;
+    font: var(--font-proxima-bold) !important;
+  }
+}
+
+.submitButton {
+  display: flex;
+  width: auto;
+  height: 46px;
+  background-color: #2cceac;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  padding-right: 24px;
+  padding-left: 24px;
+
+  span {
+    padding-left: 10px;
+  }
+}
+
+.hollow {
+  background-color: #fff !important;
+  border: 1px solid #2cceac !important;
+  color: #2cceac !important;
+}
+
+.hollowText {
+  color: #2cceac !important;
+}
+
+.submitButtonText {
+  color: #ffffff;
+  font-family: var(--font-rift);
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.buttonContainer {
+  display: flex;
+
+  button {
+    margin: 0px 10px;
+  }
 }

@@ -1,10 +1,12 @@
 import React, { useState, memo } from 'react'
 import styles from './styles.scss'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
-import Contact from '../../Contact'
+import ButtonArrowGreen from 'assets/images/rideto/ButtonArrowGreen.svg'
+import ContactV2 from '../../ContactV2'
 import EmailIcon from 'assets/images/rideto/Email.svg'
 import ChatIcon from 'assets/images/rideto/Chat.svg'
 import closeSvg from 'assets/images/rideto/CloseDark.svg'
+import classnames from 'classnames'
 
 function SomethingElse() {
   const [contactModal, setContactModal] = useState(false)
@@ -46,10 +48,16 @@ function SomethingElse() {
             <button
               onClick={handleContact}
               type="submit"
-              className={styles.submitButton}>
-              <span className={styles.submitButtonText}>Email Us</span>
+              className={classnames(styles.submitButton, styles.hollow)}>
+              <span
+                className={classnames(
+                  styles.submitButtonText,
+                  styles.hollowText
+                )}>
+                Send us an email
+              </span>
               <span>
-                <img src={ButtonArrowWhite} alt="Go" />
+                <img src={ButtonArrowGreen} alt="Go" />
               </span>
             </button>
           </div>
@@ -63,7 +71,7 @@ function SomethingElse() {
             className={styles.closeButton}>
             <img src={closeSvg} alt="close" />
           </button>
-          <Contact />
+          <ContactV2 />
         </div>
       )}
     </>

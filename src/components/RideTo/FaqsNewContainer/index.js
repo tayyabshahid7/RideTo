@@ -8,6 +8,9 @@ import expandSvg from 'assets/images/rideto/Expand.svg'
 import closeSvg from 'assets/images/rideto/CloseDark.svg'
 import SomethingElse from './SomethingElse'
 
+import EmailIcon from 'assets/images/rideto/Email.svg'
+import ChatIcon from 'assets/images/rideto/Chat.svg'
+
 export const fetchFaqs = async () => {
   const path = 'faq'
   const response = await callApi(path, {}, false)
@@ -24,12 +27,11 @@ function FaqsNewContainer() {
     const index = openCategories.indexOf(idx)
 
     if (index > -1) {
-      openCategories.splice(index, 1)
-      setOpenCategories([...openCategories])
+      setOpenCategories([])
       return
     }
 
-    setOpenCategories([...openCategories, idx])
+    setOpenCategories([idx])
   }
 
   useEffect(() => {
@@ -49,9 +51,13 @@ function FaqsNewContainer() {
   }
 
   const [selectedDesktop, setSelectedDesktop] = useState('')
+  const [selectedDesktopItem, setSelectedDesktopItem] = useState(0)
+  const [selectedDesktopTitle, setSelectedDesktopTitle] = useState('')
 
-  const handleClickDesktop = item => {
+  const handleClickDesktop = (item, idx, title) => {
     setSelectedDesktop(item)
+    setSelectedDesktopItem(idx)
+    setSelectedDesktopTitle(title)
   }
 
   const categories = get(response, 'results', [])
@@ -65,7 +71,9 @@ function FaqsNewContainer() {
     const categories = get(response, 'results', [])
     const questions = categories.filter(item => item.name === selected)
     const item = get(questions, '[0].category[0].content', '')
+    const title = get(questions, '[0].category[0].title', '')
 
+    setSelectedDesktopTitle(title)
     setSelectedDesktop(item)
   }, [selected])
 
@@ -119,33 +127,39 @@ function FaqsNewContainer() {
 
     return (
       <div className={styles.desktopPane}>
-        <div className={styles.desktopHeading}>
-          <h1 className={styles.subHeading}> {selected} </h1>
-        </div>
         <div className={styles.desktopFlex}>
           <div className={styles.leftPane}>
+            <div className={styles.desktopHeading}>
+              <h1 className={styles.subHeading}> {selected} </h1>
+            </div>
             {questions[0] &&
               questions[0].category &&
               questions[0].category.map((item, idx) => {
-                const isSelected = openCategories.includes(idx)
-                const parentClass = isSelected
-                  ? classnames(styles.questionItemContainer, styles.isSelected)
-                  : classnames(styles.questionItemContainer)
+                const isSelected = selectedDesktopItem === idx
+                const classNames = isSelected
+                  ? classnames(
+                      styles.questionCardDesktop,
+                      styles.isSelectedDesktop
+                    )
+                  : classnames(styles.questionCardDesktop)
 
                 return (
                   <div
                     key={idx}
-                    onClick={() => handleClickDesktop(item.content)}
-                    className={parentClass}>
-                    <div className={styles.questionCardDesktop}>
-                      {item.title}
-                    </div>
+                    onClick={() =>
+                      handleClickDesktop(item.content, idx, item.title)
+                    }
+                    className={styles.questionItemContainer}>
+                    <div className={classNames}>{item.title}</div>
                   </div>
                 )
               })}
           </div>
 
           <div className={styles.rightPane}>
+            <h2 className={styles.desktopHeadingAnswer}>
+              {selectedDesktopTitle}
+            </h2>
             <div dangerouslySetInnerHTML={{ __html: selectedDesktop }} />
           </div>
         </div>
@@ -176,6 +190,37 @@ function FaqsNewContainer() {
 
       {selected !== 'Something Else' && renderQuestionLayout()}
       {selected === 'Something Else' && <SomethingElse />}
+
+      <div className={styles.needMore}>
+        <div>
+          <h2>not finding what you’re looking for?</h2>
+          <p>Start a live chat or email us.</p>
+
+          <div className={styles.buttonContainer}>
+            <button type="submit" className={classnames(styles.submitButton)}>
+              <img width="20px" src={ChatIcon} alt="Go" />
+
+              <span className={classnames(styles.submitButtonText)}>
+                Live Chat
+              </span>
+            </button>
+
+            <button
+              type="submit"
+              className={classnames(styles.submitButton, styles.hollow)}>
+              <img width="20px" src={EmailIcon} alt="Go" />
+
+              <span
+                className={classnames(
+                  styles.submitButtonText,
+                  styles.hollowText
+                )}>
+                Email Us
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
