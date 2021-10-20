@@ -169,6 +169,11 @@
 .needMore {
   padding: 48px 0;
 
+  @media screen and (max-width: 500px) {
+    padding: 33px;
+    display: block;
+  }
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -195,6 +200,13 @@
   padding-right: 24px;
   padding-left: 24px;
 
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    display: block;
+    margin: 0 !important;
+    margin-bottom: 12px !important;
+  }
+
   span {
     padding-left: 10px;
   }
@@ -219,6 +231,11 @@
 
 .buttonContainer {
   display: flex;
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    display: block;
+  }
 
   button {
     margin: 0px 10px;

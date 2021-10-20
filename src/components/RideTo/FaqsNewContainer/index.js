@@ -7,7 +7,7 @@ import { useMediaQuery } from 'react-responsive'
 import expandSvg from 'assets/images/rideto/Expand.svg'
 import closeSvg from 'assets/images/rideto/CloseDark.svg'
 import SomethingElse from './SomethingElse'
-
+import FeaturedArticles from './FeaturedArticles'
 import EmailIcon from 'assets/images/rideto/Email.svg'
 import ChatIcon from 'assets/images/rideto/Chat.svg'
 
@@ -190,6 +190,8 @@ function FaqsNewContainer() {
 
       {selected !== 'Something Else' && renderQuestionLayout()}
       {selected === 'Something Else' && <SomethingElse />}
+
+      <FeaturedArticles />
 
       <div className={styles.needMore}>
         <div>
