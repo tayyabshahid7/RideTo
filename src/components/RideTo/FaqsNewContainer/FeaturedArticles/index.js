@@ -1,5 +1,4 @@
 import React, { useEffect, useState, memo } from 'react'
-import classnames from 'classnames'
 import get from 'lodash/get'
 import { get as callApi } from 'services/api'
 import styles from './styles.scss'
