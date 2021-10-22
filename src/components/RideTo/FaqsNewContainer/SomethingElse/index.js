@@ -1,18 +1,14 @@
-import React, { useState, memo } from 'react'
+import React, { memo } from 'react'
 import styles from './styles.scss'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import ButtonArrowGreen from 'assets/images/rideto/ButtonArrowGreen.svg'
-import ContactV2 from '../../ContactV2'
 import EmailIcon from 'assets/images/rideto/Email.svg'
 import ChatIcon from 'assets/images/rideto/Chat.svg'
-import closeSvg from 'assets/images/rideto/CloseDark.svg'
 import classnames from 'classnames'
 
-function SomethingElse() {
-  const [contactModal, setContactModal] = useState(false)
-
+function SomethingElse({ openContact }) {
   const handleContact = () => {
-    setContactModal(true)
+    openContact()
   }
 
   return (
@@ -63,17 +59,6 @@ function SomethingElse() {
           </div>
         </div>
       </div>
-
-      {contactModal && (
-        <div className={styles.contactModal}>
-          <button
-            onClick={() => setContactModal(false)}
-            className={styles.closeButton}>
-            <img src={closeSvg} alt="close" />
-          </button>
-          <ContactV2 />
-        </div>
-      )}
     </>
   )
 }
