@@ -7,12 +7,15 @@ import Aeroplane from 'assets/images/rideto/Aeroplane.svg'
 import { post } from 'services/api'
 import MediaQuery from 'react-responsive'
 import { Helmet } from 'react-helmet'
+import closeSvg from 'assets/images/rideto/CloseDark.svg'
 
-function Contact() {
+function Contact({ onClose }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [message, setMessage] = useState('')
   const [sent, setSent] = useState(false)
+  const [order, setOrder] = useState('')
+  const [subject, setSubject] = useState('')
   const [error, setError] = useState('')
 
   const handleSubmit = async event => {
@@ -21,7 +24,11 @@ function Contact() {
     setError('')
 
     try {
-      await post('contact/new-message', { name, email, message }, false)
+      await post(
+        'contact/new-message',
+        { name, email, message, order, subject },
+        false
+      )
       setSent(true)
     } catch (error) {
       setError(Object.values(error.response.data)[0][0])
@@ -66,10 +73,18 @@ function Contact() {
       <section className={styles.body}>
         <div className={styles.container}>
           <div className={styles.formContainer}>
-            <h2 className={styles.formTitle}>Send us a message</h2>
-            <p className={styles.introText}>
-              Got a question? Drop us a message and one of the team will reply.
-            </p>
+            <button onClick={onClose} className={styles.closeButton}>
+              <img src={closeSvg} alt="close" />
+            </button>
+            {!sent && (
+              <>
+                <h2 className={styles.formTitle}>Send us a message</h2>
+                <p className={styles.introText}>
+                  Got a question? Drop us a message and one of the team will
+                  reply.
+                </p>
+              </>
+            )}
             {!sent ? (
               <MediaQuery minWidth={769}>
                 {matches => {
@@ -94,6 +109,24 @@ function Contact() {
                           id="email"
                           onChange={event => setEmail(event.target.value)}
                           placeholder={matches ? '' : 'Email Address'}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="order">Order Number</label>
+                        <input
+                          type="text"
+                          id="order"
+                          onChange={event => setOrder(event.target.value)}
+                          placeholder={matches ? '' : 'Order Number'}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="subject">Subject</label>
+                        <input
+                          type="text"
+                          id="subject"
+                          onChange={event => setSubject(event.target.value)}
+                          placeholder={matches ? '' : 'Subject'}
                         />
                       </div>
                       <div>

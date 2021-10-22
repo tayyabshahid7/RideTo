@@ -8,8 +8,9 @@ import expandSvg from 'assets/images/rideto/Expand.svg'
 import closeSvg from 'assets/images/rideto/CloseDark.svg'
 import SomethingElse from './SomethingElse'
 import FeaturedArticles from './FeaturedArticles'
-import EmailIcon from 'assets/images/rideto/Email.svg'
-import ChatIcon from 'assets/images/rideto/Chat.svg'
+import EmailIconGreen from 'assets/images/rideto/EmailGreen.svg'
+import ChatIconWhite from 'assets/images/rideto/ChatWhite.svg'
+import ContactV2 from '../ContactV2'
 
 export const fetchFaqs = async () => {
   const path = 'faq'
@@ -22,6 +23,7 @@ function FaqsNewContainer() {
   const [response, setResponse] = useState(null)
   const [openCategories, setOpenCategories] = useState([])
   const isMobile = useMediaQuery({ maxWidth: 1024 })
+  const [contactModal, setContactModal] = useState(false)
 
   const handleClickQuestion = idx => {
     const index = openCategories.indexOf(idx)
@@ -50,6 +52,10 @@ function FaqsNewContainer() {
     setSelected(item)
   }
 
+  const openContact = () => {
+    setContactModal(true)
+  }
+
   const [selectedDesktop, setSelectedDesktop] = useState('')
   const [selectedDesktopItem, setSelectedDesktopItem] = useState(0)
   const [selectedDesktopTitle, setSelectedDesktopTitle] = useState('')
@@ -61,7 +67,10 @@ function FaqsNewContainer() {
   }
 
   const categories = get(response, 'results', [])
-  const questions = categories.filter(item => item.name === selected)
+  let questions = categories.filter(item => item.name === selected)
+  const hasQuetion = get(questions, '[0].category', '')
+  if (hasQuetion)
+    questions[0].category = questions[0].category.filter(ques => ques.is_active)
 
   useEffect(() => {
     setOpenCategories([])
@@ -189,7 +198,9 @@ function FaqsNewContainer() {
       </div>
 
       {selected !== 'Something Else' && renderQuestionLayout()}
-      {selected === 'Something Else' && <SomethingElse />}
+      {selected === 'Something Else' && (
+        <SomethingElse openContact={openContact} />
+      )}
 
       <FeaturedArticles />
 
@@ -200,7 +211,7 @@ function FaqsNewContainer() {
 
           <div className={styles.buttonContainer}>
             <button type="submit" className={classnames(styles.submitButton)}>
-              <img width="20px" src={ChatIcon} alt="Go" />
+              <img width="20px" src={ChatIconWhite} alt="Go" />
 
               <span className={classnames(styles.submitButtonText)}>
                 Live Chat
@@ -208,9 +219,10 @@ function FaqsNewContainer() {
             </button>
 
             <button
+              onClick={openContact}
               type="submit"
               className={classnames(styles.submitButton, styles.hollow)}>
-              <img width="20px" src={EmailIcon} alt="Go" />
+              <img width="20px" src={EmailIconGreen} alt="Go" />
 
               <span
                 className={classnames(
@@ -223,6 +235,12 @@ function FaqsNewContainer() {
           </div>
         </div>
       </div>
+
+      {contactModal && (
+        <div className={styles.contactModal}>
+          <ContactV2 onClose={() => setContactModal(false)} />
+        </div>
+      )}
     </div>
   )
 }
