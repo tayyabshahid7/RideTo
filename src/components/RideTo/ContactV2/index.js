@@ -171,9 +171,9 @@ function Contact({ onClose }) {
                     Message sent
                   </h3>
                   <p>We'll be back in touch as soon as possible.</p>
-                  {/* <button className={styles.back} onClick={handleBack}>
-                    Send another message
-                  </button> */}
+                  <button className={styles.buttonClose} onClick={onClose}>
+                    CLOSE
+                  </button>
                 </div>
               </div>
             )}

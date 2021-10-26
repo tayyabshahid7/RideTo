@@ -13,7 +13,7 @@ import ChatIconWhite from 'assets/images/rideto/ChatWhite.svg'
 import ContactV2 from '../ContactV2'
 
 export const fetchFaqs = async () => {
-  const path = 'faq'
+  const path = `faq`
   const response = await callApi(path, {}, false)
   return response
 }
@@ -58,16 +58,24 @@ function FaqsNewContainer() {
 
   const [selectedDesktop, setSelectedDesktop] = useState('')
   const [selectedDesktopItem, setSelectedDesktopItem] = useState(0)
-  const [selectedDesktopTitle, setSelectedDesktopTitle] = useState('')
 
   const handleClickDesktop = (item, idx, title) => {
     setSelectedDesktop(item)
     setSelectedDesktopItem(idx)
-    setSelectedDesktopTitle(title)
   }
 
   const categories = get(response, 'results', [])
   let questions = categories.filter(item => item.name === selected)
+
+  useEffect(() => {
+    // Add is_popular questions to popular category
+    categories.forEach(item => {
+      item.category.forEach(ques => {
+        if (ques.is_popular) categories[0].category.push(ques)
+      })
+    })
+  }, [categories])
+
   const hasQuetion = get(questions, '[0].category', '')
   if (hasQuetion)
     questions[0].category = questions[0].category.filter(ques => ques.is_active)
@@ -79,10 +87,8 @@ function FaqsNewContainer() {
   useEffect(() => {
     const categories = get(response, 'results', [])
     const questions = categories.filter(item => item.name === selected)
-    const item = get(questions, '[0].category[0].content', '')
-    const title = get(questions, '[0].category[0].title', '')
+    const item = get(questions, '[0].category[0]', '')
 
-    setSelectedDesktopTitle(title)
     setSelectedDesktop(item)
   }, [selected])
 
@@ -126,6 +132,14 @@ function FaqsNewContainer() {
                   {isSelected && (
                     <div className={styles.answerItem}>
                       <div dangerouslySetInnerHTML={{ __html: item.content }} />
+                      {/* Add buttons */}
+                      {item.button_tittle && (
+                        <button className={styles.submitButton2}>
+                          <span className={classnames(styles.submitButtonText)}>
+                            <a href={item.button_url}>{item.button_tittle}</a>
+                          </span>
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>
@@ -155,9 +169,7 @@ function FaqsNewContainer() {
                 return (
                   <div
                     key={idx}
-                    onClick={() =>
-                      handleClickDesktop(item.content, idx, item.title)
-                    }
+                    onClick={() => handleClickDesktop(item, idx)}
                     className={styles.questionItemContainer}>
                     <div className={classNames}>{item.title}</div>
                   </div>
@@ -167,9 +179,20 @@ function FaqsNewContainer() {
 
           <div className={styles.rightPane}>
             <h2 className={styles.desktopHeadingAnswer}>
-              {selectedDesktopTitle}
+              {selectedDesktop.title}
             </h2>
-            <div dangerouslySetInnerHTML={{ __html: selectedDesktop }} />
+            <div
+              dangerouslySetInnerHTML={{ __html: selectedDesktop.content }}
+            />
+            {selectedDesktop.button_tittle && (
+              <button className={styles.submitButton2}>
+                <a href={selectedDesktop.button_url}>
+                  <span className={classnames(styles.submitButtonText)}>
+                    {selectedDesktop.button_tittle}
+                  </span>
+                </a>
+              </button>
+            )}
           </div>
         </div>
       </div>

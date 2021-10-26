@@ -28,7 +28,7 @@
   max-width: 536px;
   position: relative;
 
-  background: #f8f8f8;
+  background: #f2f2f2;
   padding: 30px;
 
   @media (max-width: 767px) {
@@ -248,7 +248,7 @@
   }
 
   textarea {
-    min-height: 320px;
+    min-height: 170px;
     padding-top: 24px;
     padding-bottom: 24px;
   }
@@ -309,4 +309,19 @@
   background: none;
   border: 0;
   outline: 0;
+}
+
+.buttonClose {
+  color: #2cceac !important;
+  width: auto;
+  height: 46px;
+  border: 1px solid #2cceac;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  padding-right: 24px;
+  padding-left: 24px;
+  font-family: var(--font-rift);
+  font-size: 18px;
 }
