@@ -114,6 +114,7 @@
 .desktopPane {
   width: 85%;
   margin: 0 auto;
+  margin-bottom: 50px;
 }
 
 .desktopFlex {
@@ -210,6 +211,21 @@
 
   span {
     padding-left: 10px;
+  }
+}
+
+.submitButton2 {
+  display: flex;
+  width: auto;
+  height: 46px;
+  background-color: #2cceac;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  padding-right: 24px;
+  padding-left: 24px;
+  a {
+    color: white !important;
   }
 }
 
