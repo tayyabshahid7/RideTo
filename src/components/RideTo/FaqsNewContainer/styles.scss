@@ -128,6 +128,11 @@
   margin-bottom: 16px;
   max-width: 344px;
   width: 344px;
+
+  &:hover {
+    border: 1px solid #919191;
+    transition: border 0.2s ease;
+  }
 }
 
 .desktopHeading {
@@ -137,6 +142,7 @@
   font-size: 15px;
   @media screen and (min-width: 728px) {
     font-size: 18px !important;
+    text-align: center;
   }
 }
 
@@ -268,4 +274,14 @@
   background: rgba(20, 20, 20, 1);
   overflow: scroll;
   z-index: 10000;
+}
+
+.seperator {
+  width: 100%;
+  background: #f8f8f8;
+  height: 10px;
+}
+
+.closeButtonSvg {
+  margin-left: 10px;
 }

@@ -1,0 +1,36 @@
+.cardContainer {
+  height: 144px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 4px;
+  flex-direction: column;
+  max-height: 100%;
+  width: 100%;
+
+  display: flex;
+  background-color: #f8f8f8;
+
+  p {
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-rift);
+    font-size: 15px;
+    font-weight: 600;
+  }
+}
+
+.categoryImg {
+  width: 28px;
+  height: 28px;
+}
+
+.categoryContainer {
+  display: flex;
+  margin-top: 6px;
+}
+
+.selectedCard {
+  background-color: white !important;
+  border-top: 3px solid #f8f8f8 !important;
+}

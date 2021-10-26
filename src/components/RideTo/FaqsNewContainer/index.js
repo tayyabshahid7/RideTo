@@ -11,6 +11,8 @@ import FeaturedArticles from './FeaturedArticles'
 import EmailIconGreen from 'assets/images/rideto/EmailGreen.svg'
 import ChatIconWhite from 'assets/images/rideto/ChatWhite.svg'
 import ContactV2 from '../ContactV2'
+import Helmet from 'react-helmet'
+import MobileCategories from './MobileCategories'
 
 export const fetchFaqs = async () => {
   const path = `faq`
@@ -22,7 +24,8 @@ function FaqsNewContainer() {
   const [selected, setSelected] = useState('')
   const [response, setResponse] = useState(null)
   const [openCategories, setOpenCategories] = useState([])
-  const isMobile = useMediaQuery({ maxWidth: 1024 })
+  const isTablet = useMediaQuery({ maxWidth: 1024 })
+  const isMobile = useMediaQuery({ maxWidth: 767 })
   const [contactModal, setContactModal] = useState(false)
 
   const handleClickQuestion = idx => {
@@ -97,7 +100,7 @@ function FaqsNewContainer() {
   }
 
   const renderQuestionLayout = () => {
-    if (isMobile)
+    if (isTablet)
       return (
         <>
           <div className={styles.questionContainer}>
@@ -120,7 +123,7 @@ function FaqsNewContainer() {
                       styles.questionHeading
                     )}>
                     <span>{item.title}</span>
-                    <span>
+                    <span className={styles.closeButtonSvg}>
                       {isSelected ? (
                         <img width="15px" alt="icon" src={closeSvg} />
                       ) : (
@@ -201,24 +204,45 @@ function FaqsNewContainer() {
 
   return (
     <div className={styles.faqsContainer}>
+      <Helmet>
+        <script
+          type="text/javascript"
+          id="hs-script-loader"
+          async
+          defer
+          src="//js-na1.hs-scripts.com/4663534.js"></script>
+      </Helmet>
+
       <h1 className={styles.heading}>How can we help? </h1>
 
-      <div className={styles.categoryContainer}>
-        {categories.map((item, idx) => {
-          return (
-            <div
-              key={idx}
-              onClick={() => handleClick(item.name)}
-              className={classnames(
-                styles.cardContainer,
-                selectedCategory(item.name)
-              )}>
-              <img className={styles.categoryImg} src={item.icon} alt="icon" />
-              <p className={styles.topCategoryTitle}>{item.name}</p>
-            </div>
-          )
-        })}
-      </div>
+      {isMobile === false ? (
+        <div className={styles.categoryContainer}>
+          {categories.map((item, idx) => {
+            return (
+              <div
+                key={idx}
+                onClick={() => handleClick(item.name)}
+                className={classnames(
+                  styles.cardContainer,
+                  selectedCategory(item.name)
+                )}>
+                <img
+                  className={styles.categoryImg}
+                  src={item.icon}
+                  alt="icon"
+                />
+                <p className={styles.topCategoryTitle}>{item.name}</p>
+              </div>
+            )
+          })}
+        </div>
+      ) : (
+        <MobileCategories
+          selectedCategory={selectedCategory}
+          onClick={handleClick}
+          categories={categories}
+        />
+      )}
 
       {selected !== 'Something Else' && renderQuestionLayout()}
       {selected === 'Something Else' && (
@@ -264,6 +288,8 @@ function FaqsNewContainer() {
           <ContactV2 onClose={() => setContactModal(false)} />
         </div>
       )}
+
+      <div className={styles.seperator}></div>
     </div>
   )
 }
