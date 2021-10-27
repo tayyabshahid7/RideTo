@@ -254,10 +254,15 @@ function FaqsNewContainer() {
       <div className={styles.needMore}>
         <div>
           <h2>not finding what you’re looking for?</h2>
-          <p>Start a live chat or email us.</p>
+          <p className={styles.needMoreText}>Start a live chat or email us.</p>
 
           <div className={styles.buttonContainer}>
-            <button type="submit" className={classnames(styles.submitButton)}>
+            <button
+              onClick={() => {
+                window.location.href = '#hs-chat-open'
+              }}
+              type="submit"
+              className={classnames(styles.submitButton)}>
               <img width="20px" src={ChatIconWhite} alt="Go" />
 
               <span className={classnames(styles.submitButtonText)}>

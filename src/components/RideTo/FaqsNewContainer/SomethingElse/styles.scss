@@ -79,6 +79,23 @@
   }
 }
 
+.notAvaiableButton {
+  display: flex;
+  width: auto;
+  height: 46px;
+  background: none;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  border: 1px solid #c4c4c4;
+  padding-right: 24px;
+  padding-left: 24px;
+
+  span {
+    color: #c4c4c4;
+  }
+}
+
 .hollow {
   background-color: #fff !important;
   border: 1px solid #2cceac !important;
