@@ -11,6 +11,9 @@ function SomethingElse({ openContact }) {
     openContact()
   }
 
+  const currentTime = new Date().getHours()
+  const isChatAvaiable = currentTime <= 17 && currentTime >= 9
+
   return (
     <>
       <div className={styles.questionContainer}>
@@ -22,14 +25,25 @@ function SomethingElse({ openContact }) {
               <img src={ChatIcon} alt="icon" />
             </span>
             <h2>Live Chat</h2>
-            <p>We’re available Monday to Friday between 9:00am - 6:00pm</p>
+            <p>We’re available 7 days a week between 9:00am - 5:30pm</p>
 
-            <button type="submit" className={styles.submitButton}>
-              <span className={styles.submitButtonText}>Start Chat</span>
-              <span>
-                <img src={ButtonArrowWhite} alt="Go" />
-              </span>
-            </button>
+            {isChatAvaiable ? (
+              <button
+                onClick={() => {
+                  window.location.href = '#hs-chat-open'
+                }}
+                type="submit"
+                className={styles.submitButton}>
+                <span className={styles.submitButtonText}>Start Chat</span>
+                <span>
+                  <img src={ButtonArrowWhite} alt="Go" />
+                </span>
+              </button>
+            ) : (
+              <button type="submit" className={styles.notAvaiableButton}>
+                <span className={styles.submitButtonText}>not available</span>
+              </button>
+            )}
           </div>
 
           <div className={styles.somethingElseItem}>

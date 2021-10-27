@@ -52,7 +52,6 @@ function FeaturedArticles() {
     <div className={styles.featuredArticles}>
       <div className={styles.contentWrapper}>
         <h2 className={styles.heading}>featured articles</h2>
-        {/* <div className={styles.cardWrapper}> */}
         <Container settings={settings}>
           {articleList.slice(0, 3).map((item, idx) => {
             return (
@@ -68,7 +67,6 @@ function FeaturedArticles() {
             )
           })}
         </Container>
-        {/* </div> */}
       </div>
     </div>
   )
