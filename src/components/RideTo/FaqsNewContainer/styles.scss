@@ -295,3 +295,28 @@
 .closeButtonSvg {
   margin-left: 10px;
 }
+
+.submitButtonNotAvaiable {
+  display: flex;
+  width: auto;
+  height: 46px;
+  background: none;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  padding-right: 24px;
+  padding-left: 24px;
+  border: 1px solid #c4c4c4;
+
+  @media screen and (max-width: 500px) {
+    width: 100%;
+    display: block;
+    margin: 0 !important;
+    margin-bottom: 12px !important;
+  }
+
+  span {
+    color: #c4c4c4;
+    padding-left: 10px;
+  }
+}

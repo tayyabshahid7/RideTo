@@ -10,9 +10,11 @@ import SomethingElse from './SomethingElse'
 import FeaturedArticles from './FeaturedArticles'
 import EmailIconGreen from 'assets/images/rideto/EmailGreen.svg'
 import ChatIconWhite from 'assets/images/rideto/ChatWhite.svg'
+import ChatIconGray from 'assets/images/rideto/ChatIconGray.svg'
 import ContactV2 from '../ContactV2'
 import Helmet from 'react-helmet'
 import MobileCategories from './MobileCategories'
+import ButtonContainer from './ButtonContainer'
 
 export const fetchFaqs = async () => {
   const path = `faq`
@@ -69,6 +71,9 @@ function FaqsNewContainer() {
 
   const categories = get(response, 'results', [])
   let questions = categories.filter(item => item.name === selected)
+
+  const currentTime = new Date().getHours()
+  const isChatAvaiable = currentTime <= 17 && currentTime >= 9
 
   useEffect(() => {
     // Add is_popular questions to popular category
@@ -136,13 +141,7 @@ function FaqsNewContainer() {
                     <div className={styles.answerItem}>
                       <div dangerouslySetInnerHTML={{ __html: item.content }} />
                       {/* Add buttons */}
-                      {item.button_tittle && (
-                        <button className={styles.submitButton2}>
-                          <span className={classnames(styles.submitButtonText)}>
-                            <a href={item.button_url}>{item.button_tittle}</a>
-                          </span>
-                        </button>
-                      )}
+                      <ButtonContainer openContact={openContact} {...item} />
                     </div>
                   )}
                 </div>
@@ -187,15 +186,8 @@ function FaqsNewContainer() {
             <div
               dangerouslySetInnerHTML={{ __html: selectedDesktop.content }}
             />
-            {selectedDesktop.button_tittle && (
-              <button className={styles.submitButton2}>
-                <a href={selectedDesktop.button_url}>
-                  <span className={classnames(styles.submitButtonText)}>
-                    {selectedDesktop.button_tittle}
-                  </span>
-                </a>
-              </button>
-            )}
+            {/* Button */}
+            <ButtonContainer openContact={openContact} {...selectedDesktop} />
           </div>
         </div>
       </div>
@@ -257,18 +249,30 @@ function FaqsNewContainer() {
           <p className={styles.needMoreText}>Start a live chat or email us.</p>
 
           <div className={styles.buttonContainer}>
-            <button
-              onClick={() => {
-                window.location.href = '#hs-chat-open'
-              }}
-              type="submit"
-              className={classnames(styles.submitButton)}>
-              <img width="20px" src={ChatIconWhite} alt="Go" />
+            {isChatAvaiable ? (
+              <button
+                onClick={() => {
+                  window.location.href = '#hs-chat-open'
+                }}
+                type="submit"
+                className={classnames(styles.submitButton)}>
+                <img width="20px" src={ChatIconWhite} alt="Go" />
 
-              <span className={classnames(styles.submitButtonText)}>
-                Live Chat
-              </span>
-            </button>
+                <span className={classnames(styles.submitButtonText)}>
+                  Live Chat
+                </span>
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className={classnames(styles.submitButtonNotAvaiable)}>
+                <img width="20px" src={ChatIconGray} alt="Go" />
+
+                <span className={classnames(styles.submitButtonText)}>
+                  not available
+                </span>
+              </button>
+            )}
 
             <button
               onClick={openContact}
