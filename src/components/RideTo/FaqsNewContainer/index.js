@@ -64,6 +64,10 @@ function FaqsNewContainer() {
   const [selectedDesktop, setSelectedDesktop] = useState('')
   const [selectedDesktopItem, setSelectedDesktopItem] = useState(0)
 
+  useEffect(() => {
+    setSelectedDesktopItem(0)
+  }, [selected])
+
   const handleClickDesktop = (item, idx, title) => {
     setSelectedDesktop(item)
     setSelectedDesktopItem(idx)
