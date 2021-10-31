@@ -70,7 +70,7 @@ function UpComingCourse({ course, title, handleClick }) {
                 training.training_date_time ||
                   training.date ||
                   training.requested_date
-              ).format('ddd Do MMMM YYYY')
+              ).format('h:mm a, ddd Do MMMM YYYY')
             : getTrainingStatus(status)}
         </div>
       )}

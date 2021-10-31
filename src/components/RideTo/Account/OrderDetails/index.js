@@ -102,11 +102,11 @@ class OrderDetails extends React.Component {
                 : order.bike_type
             )}
             {order.source === 'RIDETO' &&
-              order.trainings[0].requested_date &&
+              order.trainings[0].training_date_time &&
               renderRow(
                 'Date & Time',
-                moment(order.trainings[0].requested_date, 'YYYY-MM-DD').format(
-                  'ddd D, MMMM'
+                moment(order.trainings[0].training_date_time, 'YYYY-MM-DD').format(
+                  'h:mm a, ddd D, MMMM'
                 )
               )}
             {renderRow(
