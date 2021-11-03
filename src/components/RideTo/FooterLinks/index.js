@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import DetailsAccordionItem from 'components/RideTo/DetailsAccordionItem'
 import styles from './FooterLinks.scss'
 
@@ -75,7 +76,8 @@ class FooterLinks extends Component {
               <a href="/cbt-training">CBT Training</a>
               <a href="/introduction-to-motorcycling">Introduction to Motorcycling</a>
               <a href="/motorcycle-licence">Full Motorcycle Licence</a>
-              <a href="/121-cbt-training">121 CBT Training</a>
+              <a href="/gear-conversion-course">Gear Conversion</a>
+              <a href="/cbt-training-renewal">CBT Renewal</a>
             </div>`}
           isOpen={opened.indexOf('courses') > -1}
           onToggle={isOpen => this.handleToggleAccordion('courses', isOpen)}
