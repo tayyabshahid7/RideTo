@@ -174,11 +174,10 @@ class MapComponent extends Component {
     }
 
     const { handlePinClick } = this.props
-
     if (!handlePinClick) {
       scrollTo()
     } else {
-      handlePinClick(course)
+      handlePinClick(course, 3)
     }
   }
 

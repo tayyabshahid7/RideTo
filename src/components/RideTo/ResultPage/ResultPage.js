@@ -966,6 +966,7 @@ class ResultPage extends Component {
                               userLocation={userLocation}
                               width="100%"
                               hiddenOnMobile
+                              handlePinClick={this.loadCourseDetail}
                             />
                           </MediaQuery>
                         )}
@@ -998,7 +999,7 @@ class ResultPage extends Component {
                 userLocation={userLocation}
                 width="100%"
                 hiddenOnMobile
-                handlePinClick={this.handlePriceClick}
+                handlePinClick={this.loadCourseDetail}
               />
             </MobileMap>
           )}
