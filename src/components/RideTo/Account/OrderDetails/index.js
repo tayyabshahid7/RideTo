@@ -1,14 +1,13 @@
-import React from 'react'
-import moment from 'moment'
-
+import { BikeHires } from 'common/info'
+import DashboardReview from 'components/RideTo/Account/DashboardReview'
 import MapComponent from 'components/RideTo/MapComponent'
+import React from 'react'
+import { formatBikeConstant } from 'common/info'
+import moment from 'moment'
 import { saveSupplierRating } from 'services/supplier'
 import { showReview } from 'services/order'
-import DashboardReview from 'components/RideTo/Account/DashboardReview'
-import { formatBikeConstant } from 'common/info'
-import { BikeHires } from 'common/info'
-
 import styles from './OrderDetails.scss'
+
 const getFriendlyStatus = status => {
   if (status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION') {
     return 'Pending Instructor Confirmation'
@@ -105,7 +104,7 @@ class OrderDetails extends React.Component {
               order.trainings[0].training_date_time &&
               renderRow(
                 'Date & Time',
-                moment(order.trainings[0].training_date_time, 'YYYY-MM-DD').format(
+                moment(order.trainings[0].training_date_time).format(
                   'h:mm a, ddd D, MMMM'
                 )
               )}
