@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
-import styles from './styles.scss'
-import classnames from 'classnames'
-import { useMediaQuery } from 'react-responsive'
-import pomShield from 'assets/images/pom-shield.svg'
+
 import MediaQuery from 'react-responsive'
+import classnames from 'classnames'
+import pomShield from 'assets/images/pom-shield.svg'
+import styles from './styles.scss'
+import { useMediaQuery } from 'react-responsive'
 
 function POMCard({ showCourseTypeInfo }) {
   const isDesktop = useMediaQuery({ minWidth: 768 })
@@ -33,8 +34,7 @@ function POMCard({ showCourseTypeInfo }) {
         </MediaQuery>
         <MediaQuery query="(max-width: 768px)">
           <p className={styles.content}>
-            Find out what the offer is and how it <br /> can be of benefit to
-            you.
+            Find out what the offer is and how it can be of benefit to you.
           </p>
         </MediaQuery>
 
