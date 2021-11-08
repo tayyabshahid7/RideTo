@@ -1,10 +1,10 @@
+import { IconGuarantee } from 'assets/icons'
 import React from 'react'
+import { SupplierContext } from '../supplier-context'
+import SupplierCourseDetail from '../SupplierCourseDetail'
+import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
 import classnames from 'classnames'
 import styles from './SupplierExtraInfo.scss'
-import { SupplierContext } from '../supplier-context'
-import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
-import SupplierCourseDetail from '../SupplierCourseDetail'
-import { IconGuarantee } from 'assets/icons'
 import { useMediaQuery } from 'react-responsive'
 
 const SupplierExtraInfo = ({ course }) => {
@@ -27,7 +27,10 @@ const SupplierExtraInfo = ({ course }) => {
             <IconGuarantee />
           </div>
           <div>
-            <p>Cancel with 5 working days notice to get a full refund.</p>
+            <p>
+              Cancel up to 5 working days before your course to get a refund.
+              Admin fees apply.{' '}
+            </p>
             <a
               href="https://www.rideto.com/terms#cancellations"
               className={styles.link}>
