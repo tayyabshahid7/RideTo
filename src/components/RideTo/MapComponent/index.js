@@ -1,17 +1,19 @@
-import React, { Component, Fragment } from 'react'
-import classnames from 'classnames'
-import MapGL, { Marker, NavigationControl } from 'react-map-gl'
-import styles from './styles.scss'
-import { MAPBOX_KEY } from 'common/constants'
-import { IconMapPin, IconUser, IconBike } from 'assets/icons'
-import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-import WebMercatorViewport from 'viewport-mercator-project'
-import { lineString } from '@turf/helpers'
-import bbox from '@turf/bbox'
-import moment from 'moment'
-import get from 'lodash/get'
+
+import { IconBike, IconMapPin, IconUser } from 'assets/icons'
+import MapGL, { Marker, NavigationControl } from 'react-map-gl'
+import React, { Component, Fragment } from 'react'
+
 import { BankHolidayProvider } from '../ResultPage/StateProvider'
+import { MAPBOX_KEY } from 'common/constants'
+import WebMercatorViewport from 'viewport-mercator-project'
+import bbox from '@turf/bbox'
+import classnames from 'classnames'
+import get from 'lodash/get'
+import { lineString } from '@turf/helpers'
+import mapboxgl from 'mapbox-gl'
+import moment from 'moment'
+import styles from './styles.scss'
 
 mapboxgl.accessToken = MAPBOX_KEY
 
@@ -86,15 +88,9 @@ class MapComponent extends Component {
       viewport = new WebMercatorViewport({
         height,
         width
-      }).fitBounds(
-        [
-          [minLng, minLat],
-          [maxLng, maxLat]
-        ],
-        {
-          padding: { top: 60, right: 40, bottom: 40, left: 60 }
-        }
-      )
+      }).fitBounds([[minLng, minLat], [maxLng, maxLat]], {
+        padding: { top: 60, right: 40, bottom: 40, left: 60 }
+      })
     } else {
       viewport = {
         latitude: locations[0][0],
@@ -196,7 +192,9 @@ class MapComponent extends Component {
             !available && styles.mapPinBgUnavailable
           )}
         />
-        <span className={styles.pinPrice}>£{this.getPricing(course)}</span>
+        {course.supplier_pricing && (
+          <span className={styles.pinPrice}>£{this.getPricing(course)}</span>
+        )}
       </div>
     )
   }
