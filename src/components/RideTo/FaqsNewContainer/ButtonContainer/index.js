@@ -1,26 +1,25 @@
 import React, { memo } from 'react'
+
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import styles from 'components/RideTo/FaqsNewContainer/SomethingElse/styles.scss'
 import styles2 from 'components/RideTo/FaqsNewContainer/styles.scss'
+
 function ButtonContainer({
   openContact,
   button_url,
   button_title,
-  contact_button_type
+  contact_button_type,
+  isChatAvailable
 }) {
   // If there is no button, render nothing
   if (contact_button_type === 'BUTTON_NONE' || contact_button_type === '') {
     return null
   }
 
-  // If button type is chat button
-  const currentTime = new Date().getHours()
-  const isChatAvaiable = currentTime <= 17 && currentTime >= 9
-
   if (contact_button_type === 'BUTTON_LIVE') {
     return (
       <div>
-        {isChatAvaiable ? (
+        {isChatAvailable ? (
           <button
             onClick={() => {
               window.location.href = '#hs-chat-open'
