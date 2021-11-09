@@ -1,18 +1,23 @@
 import React, { memo } from 'react'
-import styles from './styles.scss'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+
 import ButtonArrowGreen from 'assets/images/rideto/ButtonArrowGreen.svg'
-import EmailIcon from 'assets/images/rideto/Email.svg'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import ChatIcon from 'assets/images/rideto/Chat.svg'
+import EmailIcon from 'assets/images/rideto/Email.svg'
 import classnames from 'classnames'
+import moment from 'moment'
+import styles from './styles.scss'
 
 function SomethingElse({ openContact }) {
   const handleContact = () => {
     openContact()
   }
 
-  const currentTime = new Date().getHours()
-  const isChatAvaiable = currentTime <= 17 && currentTime >= 9
+  const currentTime = moment()
+  const endTime = moment()
+    .hour(17)
+    .minutes(30)
+  const isChatAvaiable = currentTime <= endTime && currentTime.hour() >= 9
 
   return (
     <>
