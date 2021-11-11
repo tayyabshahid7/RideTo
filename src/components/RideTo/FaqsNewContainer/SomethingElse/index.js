@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 
 import ButtonArrowGreen from 'assets/images/rideto/ButtonArrowGreen.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
@@ -19,6 +19,20 @@ function SomethingElse({ openContact }) {
     .minutes(30)
   const isChatAvaiable = currentTime <= endTime && currentTime.hour() >= 9
 
+  const [isClicked, setIsClicked] = useState(false)
+
+  useEffect(() => {
+    if (isClicked) {
+      window.location.href = '#hs-chat-close'
+      setIsClicked(!isClicked)
+    }
+  }, [isClicked])
+
+  const onCLickHandler = event => {
+    setIsClicked(true)
+    window.location.href = '#hs-chat-open'
+  }
+
   return (
     <>
       <div className={styles.questionContainer}>
@@ -34,9 +48,7 @@ function SomethingElse({ openContact }) {
 
             {isChatAvaiable ? (
               <button
-                onClick={() => {
-                  window.location.href = '#hs-chat-open'
-                }}
+                onClick={onCLickHandler}
                 type="submit"
                 className={styles.submitButton}>
                 <span className={styles.submitButtonText}>Start Chat</span>
