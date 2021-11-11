@@ -1,14 +1,29 @@
-import React, { memo } from 'react'
-import styles from './styles.scss'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import React, { memo, useEffect, useState } from 'react'
+
 import ButtonArrowGreen from 'assets/images/rideto/ButtonArrowGreen.svg'
-import EmailIcon from 'assets/images/rideto/Email.svg'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import ChatIcon from 'assets/images/rideto/Chat.svg'
+import EmailIcon from 'assets/images/rideto/Email.svg'
 import classnames from 'classnames'
+import styles from './styles.scss'
 
 function SomethingElse({ openContact }) {
   const handleContact = () => {
     openContact()
+  }
+
+  const [isClicked, setIsClicked] = useState(false)
+
+  useEffect(() => {
+    if (isClicked) {
+      window.location.href = '#hs-chat-close'
+      setIsClicked(!isClicked)
+    }
+  }, [isClicked])
+
+  const onCLickHandler = event => {
+    setIsClicked(true)
+    window.location.href = '#hs-chat-open'
   }
 
   const currentTime = new Date().getHours()
@@ -29,9 +44,7 @@ function SomethingElse({ openContact }) {
 
             {isChatAvaiable ? (
               <button
-                onClick={() => {
-                  window.location.href = '#hs-chat-open'
-                }}
+                onClick={onCLickHandler}
                 type="submit"
                 className={styles.submitButton}>
                 <span className={styles.submitButtonText}>Start Chat</span>
