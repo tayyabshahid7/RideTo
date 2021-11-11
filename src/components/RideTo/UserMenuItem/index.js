@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react'
-import classnames from 'classnames'
-import styles from './UserMenuItem.scss'
 import {
-  getUserProfile,
   getToken,
+  getUserProfile,
   isAuthenticated,
   removeToken
 } from 'services/auth'
+
 import UserIcon from './UserIcon'
+import classnames from 'classnames'
+import styles from './UserMenuItem.scss'
 
 class UserMenuItem extends React.Component {
   constructor(props) {
@@ -98,6 +99,8 @@ class UserMenuItem extends React.Component {
                 styles.hiddenOnDesktop
               )}>
               <a href="/account/dashboard">Dashboard</a>
+              <br />
+              <a href="/account/dashboard/#orders-section">My Orders</a>
               <div className={styles.divider} />
               <button className={styles.logoutLink} onClick={this.handleLogout}>
                 Logout

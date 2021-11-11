@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react'
-import styles from './styles.scss'
+
 import UpComingCourse from '../UpComingCourse'
+import styles from './styles.scss'
 
 const DEFAULT_LENGTH = 1
 
@@ -16,7 +17,7 @@ function MyOrders({ orders, handleClick }) {
 
   return (
     <Fragment>
-      <div className={styles.container}>
+      <div id="orders-section" className={styles.container}>
         <h2 className={styles.title}>My orders</h2>
         {orders.length > 0 ? (
           <Fragment>

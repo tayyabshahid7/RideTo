@@ -1,37 +1,38 @@
-import React, { useState, useEffect, Fragment, useRef } from 'react'
-import styles from './styles.scss'
-import RouteToFreedom from './RouteToFreedom'
-import NextStep from './NextStep'
-import Achievements from './Achievements'
-import GuidesAdvice from './GuidesAdvice'
-import MyCheckList from './MyCheckList'
-import News from './News'
-import classnames from 'classnames'
 import { GOALS, STYLES } from './RouteToFreedom/constants'
-import { matchStepsToGoal } from './util'
+import React, { Fragment, useEffect, useRef, useState } from 'react'
 import { fetchOrder, fetchOrders } from 'services/user'
 import {
-  getUserProfile,
-  getToken,
-  isAuthenticated as getIsAuthenticated
-} from 'services/auth'
-import { Desktop } from 'common/breakpoints'
-import { DEFAULT_TIMELINE } from './constants'
-import {
-  updateTimelineStep,
-  updateAchievement,
   fetchUserDetails,
-  updateUserDetail,
-  recordGAEcommerceData
+  recordGAEcommerceData,
+  updateAchievement,
+  updateTimelineStep,
+  updateUserDetail
 } from 'services/dashboard'
-import PasswordReset from './PasswordReset'
-import MyOrders from './MyOrders'
+import {
+  isAuthenticated as getIsAuthenticated,
+  getToken,
+  getUserProfile
+} from 'services/auth'
+
 import { ALL_ACHIEVEMENTS } from './Achievements/constants'
+import Achievements from './Achievements'
 import BookingCompleteBanner from 'components/RideTo/Account/BookingCompleteBanner'
-import SidePanel from 'components/RideTo/SidePanel'
-import OrderDetails from 'components/RideTo/Account/OrderDetails'
-import { findLastStepIndex } from './RouteToFreedom/util'
+import { DEFAULT_TIMELINE } from './constants'
+import { Desktop } from 'common/breakpoints'
+import GuidesAdvice from './GuidesAdvice'
 import Loading from 'components/Loading'
+import MyCheckList from './MyCheckList'
+import MyOrders from './MyOrders'
+import News from './News'
+import NextStep from './NextStep'
+import OrderDetails from 'components/RideTo/Account/OrderDetails'
+import PasswordReset from './PasswordReset'
+import RouteToFreedom from './RouteToFreedom'
+import SidePanel from 'components/RideTo/SidePanel'
+import classnames from 'classnames'
+import { findLastStepIndex } from './RouteToFreedom/util'
+import { matchStepsToGoal } from './util'
+import styles from './styles.scss'
 import { useMediaQuery } from 'react-responsive'
 
 function DashboardPageV2({ match }) {
@@ -199,6 +200,15 @@ function DashboardPageV2({ match }) {
       }
       window.scrollTo(0, 0)
     }
+
+    if (window.location.hash && window.location.hash === '#orders-section') {
+      const orderSection = document.getElementById('orders-section')
+      if (orderSection) {
+        orderSection.scrollIntoView({
+          behavior: 'smooth'
+        })
+      }
+    }
   }, [isLoading])
 
   useEffect(() => {
@@ -295,7 +305,7 @@ function DashboardPageV2({ match }) {
 
     setNextSteps(DEFAULT_TIMELINE)
 
-    // If user is logged in load all ordres
+    // If user is logged in load all orders
     if (isAuthenticated) {
       const user = getUserProfile(getToken())
 
