@@ -1,20 +1,21 @@
-import React, { useEffect, useState, memo } from 'react'
-import styles from './styles.scss'
-import classnames from 'classnames'
-import get from 'lodash/get'
-import { get as callApi } from 'services/api'
-import { useMediaQuery } from 'react-responsive'
-import expandSvg from 'assets/images/rideto/Expand.svg'
-import closeSvg from 'assets/images/rideto/CloseDark.svg'
-import SomethingElse from './SomethingElse'
-import FeaturedArticles from './FeaturedArticles'
-import EmailIconGreen from 'assets/images/rideto/EmailGreen.svg'
-import ChatIconWhite from 'assets/images/rideto/ChatWhite.svg'
+import React, { memo, useEffect, useState } from 'react'
+
+import ButtonContainer from './ButtonContainer'
 import ChatIconGray from 'assets/images/rideto/ChatIconGray.svg'
+import ChatIconWhite from 'assets/images/rideto/ChatWhite.svg'
 import ContactV2 from '../ContactV2'
+import EmailIconGreen from 'assets/images/rideto/EmailGreen.svg'
+import FeaturedArticles from './FeaturedArticles'
 import Helmet from 'react-helmet'
 import MobileCategories from './MobileCategories'
-import ButtonContainer from './ButtonContainer'
+import SomethingElse from './SomethingElse'
+import { get as callApi } from 'services/api'
+import classnames from 'classnames'
+import closeSvg from 'assets/images/rideto/CloseDark.svg'
+import expandSvg from 'assets/images/rideto/Expand.svg'
+import get from 'lodash/get'
+import styles from './styles.scss'
+import { useMediaQuery } from 'react-responsive'
 
 export const fetchFaqs = async () => {
   const path = `faq`
@@ -29,6 +30,7 @@ function FaqsNewContainer() {
   const isTablet = useMediaQuery({ maxWidth: 1024 })
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const [contactModal, setContactModal] = useState(false)
+  const [isClicked, setIsClicked] = useState(false)
 
   const handleClickQuestion = idx => {
     const index = openCategories.indexOf(idx)
@@ -103,6 +105,18 @@ function FaqsNewContainer() {
 
     setSelectedDesktop(item)
   }, [selected])
+
+  useEffect(() => {
+    if (isClicked) {
+      window.location.href = '#hs-chat-close'
+      setIsClicked(!isClicked)
+    }
+  }, [isClicked])
+
+  const onCLickHandler = event => {
+    setIsClicked(true)
+    window.location.href = '#hs-chat-open'
+  }
 
   if (response === null) {
     return null
@@ -255,9 +269,7 @@ function FaqsNewContainer() {
           <div className={styles.buttonContainer}>
             {isChatAvaiable ? (
               <button
-                onClick={() => {
-                  window.location.href = '#hs-chat-open'
-                }}
+                onClick={onCLickHandler}
                 type="submit"
                 className={classnames(styles.submitButton)}>
                 <img width="20px" src={ChatIconWhite} alt="Go" />
