@@ -109,7 +109,12 @@ class UserMenuItem extends React.Component {
             {menuOpen && (
               <div className={styles.overlay}>
                 <div className={styles.navLinks}>
-                  <a href="/account/dashboard">Dashboard</a>
+                  <p>
+                    <a href="/account/dashboard/#orders-section">My Orders</a>
+                  </p>
+                  <p>
+                    <a href="/account/dashboard">Dashboard</a>
+                  </p>
                 </div>
                 <div>
                   <div className={styles.divider} />
