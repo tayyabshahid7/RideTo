@@ -31,6 +31,7 @@ function FaqsNewContainer() {
   const isTablet = useMediaQuery({ maxWidth: 1024 })
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const [contactModal, setContactModal] = useState(false)
+  const [isClicked, setIsClicked] = useState(false)
 
   const handleClickQuestion = idx => {
     const index = openCategories.indexOf(idx)
@@ -110,6 +111,18 @@ function FaqsNewContainer() {
 
     setSelectedDesktop(item)
   }, [selected])
+
+  useEffect(() => {
+    if (isClicked) {
+      window.location.href = '#hs-chat-close'
+      setIsClicked(!isClicked)
+    }
+  }, [isClicked])
+
+  const onCLickHandler = event => {
+    setIsClicked(true)
+    window.location.href = '#hs-chat-open'
+  }
 
   if (response === null) {
     return null
@@ -279,9 +292,7 @@ function FaqsNewContainer() {
               moment().format('HH:mm:ss')
             ) ? (
               <button
-                onClick={() => {
-                  window.location.href = '#hs-chat-open'
-                }}
+                onClick={onCLickHandler}
                 type="submit"
                 className={classnames(styles.submitButton)}>
                 <img width="20px" src={ChatIconWhite} alt="Go" />
