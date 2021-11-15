@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import styles from 'components/RideTo/FaqsNewContainer/SomethingElse/styles.scss'
@@ -12,6 +12,18 @@ function ButtonContainer({
   isChatAvailable
 }) {
   // If there is no button, render nothing
+  const [isClicked, setIsClicked] = useState(false)
+  useEffect(() => {
+    if (isClicked) {
+      window.location.href = '#hs-chat-close'
+      setIsClicked(!isClicked)
+    }
+  }, [isClicked])
+
+  const onCLickHandler = event => {
+    setIsClicked(true)
+    window.location.href = '#hs-chat-open'
+  }
   if (contact_button_type === 'BUTTON_NONE' || contact_button_type === '') {
     return null
   }
@@ -21,9 +33,7 @@ function ButtonContainer({
       <div>
         {isChatAvailable ? (
           <button
-            onClick={() => {
-              window.location.href = '#hs-chat-open'
-            }}
+            onClick={onCLickHandler}
             type="submit"
             className={styles.submitButton}>
             <span className={styles.submitButtonText}>Start Chat</span>
