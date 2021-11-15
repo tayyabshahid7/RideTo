@@ -1,20 +1,22 @@
-import React, { useEffect, useState, memo } from 'react'
-import styles from './styles.scss'
-import classnames from 'classnames'
-import get from 'lodash/get'
-import { get as callApi } from 'services/api'
-import { useMediaQuery } from 'react-responsive'
-import expandSvg from 'assets/images/rideto/Expand.svg'
-import closeSvg from 'assets/images/rideto/CloseDark.svg'
-import SomethingElse from './SomethingElse'
-import FeaturedArticles from './FeaturedArticles'
-import EmailIconGreen from 'assets/images/rideto/EmailGreen.svg'
-import ChatIconWhite from 'assets/images/rideto/ChatWhite.svg'
+import React, { memo, useEffect, useState } from 'react'
+
+import ButtonContainer from './ButtonContainer'
 import ChatIconGray from 'assets/images/rideto/ChatIconGray.svg'
+import ChatIconWhite from 'assets/images/rideto/ChatWhite.svg'
 import ContactV2 from '../ContactV2'
+import EmailIconGreen from 'assets/images/rideto/EmailGreen.svg'
+import FeaturedArticles from './FeaturedArticles'
 import Helmet from 'react-helmet'
 import MobileCategories from './MobileCategories'
-import ButtonContainer from './ButtonContainer'
+import SomethingElse from './SomethingElse'
+import { get as callApi } from 'services/api'
+import classnames from 'classnames'
+import closeSvg from 'assets/images/rideto/CloseDark.svg'
+import expandSvg from 'assets/images/rideto/Expand.svg'
+import get from 'lodash/get'
+import moment from 'moment'
+import styles from './styles.scss'
+import { useMediaQuery } from 'react-responsive'
 
 export const fetchFaqs = async () => {
   const path = `faq`
@@ -76,8 +78,13 @@ function FaqsNewContainer() {
   const categories = get(response, 'results', [])
   let questions = categories.filter(item => item.name === selected)
 
-  const currentTime = new Date().getHours()
-  const isChatAvaiable = currentTime <= 17 && currentTime >= 9
+  const isChatAvailable = (startTime = '09:00:00', endTime = '17:30:00') => {
+    const currentTime = new Date()
+    const startTimeObj = moment(startTime, 'HH:mm:ss')
+    const endTimeObj = moment(endTime, 'HH:mm:ss')
+    const chat = currentTime <= endTimeObj && currentTime >= startTimeObj
+    return chat
+  }
 
   useEffect(() => {
     // Add is_popular questions to popular category
@@ -88,8 +95,8 @@ function FaqsNewContainer() {
     })
   }, [categories])
 
-  const hasQuetion = get(questions, '[0].category', '')
-  if (hasQuetion)
+  const hasQuestion = get(questions, '[0].category', '')
+  if (hasQuestion)
     questions[0].category = questions[0].category.filter(ques => ques.is_active)
 
   useEffect(() => {
@@ -111,7 +118,7 @@ function FaqsNewContainer() {
   const renderQuestionLayout = () => {
     if (isTablet)
       return (
-        <>
+        <React.Fragment>
           <div className={styles.questionContainer}>
             <h1 className={styles.subHeading}> {selected} </h1>
           </div>
@@ -145,13 +152,20 @@ function FaqsNewContainer() {
                     <div className={styles.answerItem}>
                       <div dangerouslySetInnerHTML={{ __html: item.content }} />
                       {/* Add buttons */}
-                      <ButtonContainer openContact={openContact} {...item} />
+                      <ButtonContainer
+                        openContact={openContact}
+                        {...item}
+                        isChatAvailable={isChatAvailable(
+                          item.start_live_chat,
+                          item.end_live_chat
+                        )}
+                      />
                     </div>
                   )}
                 </div>
               )
             })}
-        </>
+        </React.Fragment>
       )
 
     return (
@@ -191,7 +205,14 @@ function FaqsNewContainer() {
               dangerouslySetInnerHTML={{ __html: selectedDesktop.content }}
             />
             {/* Button */}
-            <ButtonContainer openContact={openContact} {...selectedDesktop} />
+            <ButtonContainer
+              openContact={openContact}
+              {...selectedDesktop}
+              isChatAvailable={isChatAvailable(
+                selectedDesktop.start_live_chat,
+                selectedDesktop.end_live_chat
+              )}
+            />
           </div>
         </div>
       </div>
@@ -253,7 +274,10 @@ function FaqsNewContainer() {
           <p className={styles.needMoreText}>Start a live chat or email us.</p>
 
           <div className={styles.buttonContainer}>
-            {isChatAvaiable ? (
+            {isChatAvailable(
+              moment().format('HH:mm:ss'),
+              moment().format('HH:mm:ss')
+            ) ? (
               <button
                 onClick={() => {
                   window.location.href = '#hs-chat-open'
