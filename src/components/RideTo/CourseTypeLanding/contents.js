@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react'
+
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
-import styles from './styles.scss'
-import ShowMore from './ShowMore'
 import FullLicenceBanner from 'components/RideTo/ResultPage/FullLicenceBanner'
+import ShowMore from './ShowMore'
+import styles from './styles.scss'
 
 export const SLUG_COURSE_TYPES = {
   'introduction-to-motorcycling': 'INTRO_TO_MOTORCYCLING',
@@ -163,7 +164,7 @@ export const CONTENT = {
         </div>
         <div style={{ marginTop: '2rem' }}>
           <img
-            src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/infographic-website%402x.png"
+            src="https://rideto-production.imgix.net/static/images/infographic-website-01.png?auto=compress,format"
             alt="Info graphic"
           />
         </div>
