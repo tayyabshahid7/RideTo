@@ -26,6 +26,10 @@ class UserMenuItem extends React.Component {
     this.handleDocumentClick = this.handleDocumentClick.bind(this)
   }
 
+  refreshPage() {
+    window.location.reload()
+  }
+
   handleDocumentClick(event) {
     if (
       this.state.menuOpen &&
@@ -110,7 +114,11 @@ class UserMenuItem extends React.Component {
               <div className={styles.overlay}>
                 <div className={styles.navLinks}>
                   <p>
-                    <a href="/account/dashboard/#orders-section">My Orders</a>
+                    <a
+                      href="/account/dashboard/#orders-section"
+                      onClick={this.refreshPage.bind(this)}>
+                      My Orders
+                    </a>
                   </p>
                   <p>
                     <a href="/account/dashboard">Dashboard</a>
