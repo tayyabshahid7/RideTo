@@ -104,7 +104,11 @@ class UserMenuItem extends React.Component {
               )}>
               <a href="/account/dashboard">Dashboard</a>
               <br />
-              <a href="/account/dashboard/#orders-section">My Orders</a>
+              <a
+                href="/account/dashboard/#orders-section"
+                onClick={this.refreshPage.bind(this)}>
+                My Orders
+              </a>
               <div className={styles.divider} />
               <button className={styles.logoutLink} onClick={this.handleLogout}>
                 Logout
