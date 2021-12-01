@@ -1,26 +1,25 @@
 import React, { Component, Fragment } from 'react'
 
-import classnames from 'classnames'
-import styles from './styles.scss'
-import RideToButton from 'components/RideTo/Button'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import CardIcons from '../CardIcons'
 import Checkbox from 'components/Checkbox'
+import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import FAQS from './faqs'
+import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 // import Input from 'components/RideTo/Input'
 import Loading from 'components/Loading'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
-import { getExpectedPrice } from 'services/order'
-import { checkAllowedDate } from 'services/date'
-import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
-import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
-import { capitalizeFirstLetter } from 'utils/helper'
-import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 import POMSelector from 'components/RideTo/CheckoutPage/POMSelector'
-import Script from 'react-load-script'
-import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
-import CardIcons from '../CardIcons'
-
 import { PoweredByStripe } from '../../../../assets/icons'
+import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
+import RideToButton from 'components/RideTo/Button'
+import Script from 'react-load-script'
+import { capitalizeFirstLetter } from 'utils/helper'
+import { checkAllowedDate } from 'services/date'
+import classnames from 'classnames'
+import { getExpectedPrice } from 'services/order'
 import moneyBack from '../../../../assets/icons/money-back.svg'
-import FAQS from './faqs'
+import styles from './styles.scss'
 
 class OrderSummary extends Component {
   componentDidUpdate(prevProps) {
@@ -183,7 +182,7 @@ class OrderSummary extends Component {
                   onDetailChange('email_optin', event.target.checked)
                 }>
                 <div style={{ fontSize: '15px' }}>
-                  Get weekly ride outs, events & special offers
+                  I consent to receive further emails from RideTo
                 </div>
               </Checkbox>
             </div>
