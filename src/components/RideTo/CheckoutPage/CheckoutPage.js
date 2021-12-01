@@ -1,29 +1,30 @@
 import React, { Component } from 'react'
+import { fetchUser, saveCheckoutEmail } from 'services/user'
+import { getLicenceAge, getPrice } from 'services/course'
+import {
+  getToken,
+  getUserProfile,
+  isAuthenticated,
+  removeToken
+} from 'services/auth'
+
+import OrderSummary from './OrderSummary'
+import UserDetails from './UserDetails'
+import classnames from 'classnames'
+import { createOrder } from 'services/widget'
+import { fetchAddressWithPostcode } from 'services/misc'
+import { getExpectedPrice } from 'services/order'
+import { handleStripePayment } from 'services/stripe'
 import { injectStripe } from 'react-stripe-elements'
+import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
+import { isInstantBook } from 'services/page'
+import loadable from '@loadable/component'
 import moment from 'moment'
 import omit from 'lodash/omit'
 import set from 'lodash/set'
 import styles from './styles.scss'
-import UserDetails from './UserDetails'
-import OrderSummary from './OrderSummary'
-import { fetchAddressWithPostcode } from 'services/misc'
-import { createOrder } from 'services/widget'
-import { handleStripePayment } from 'services/stripe'
-import { getPrice, getLicenceAge } from 'services/course'
-import {
-  getUserProfile,
-  getToken,
-  isAuthenticated,
-  removeToken
-} from 'services/auth'
-import { fetchUser, saveCheckoutEmail } from 'services/user'
-import { isInstantBook } from 'services/page'
-import { getExpectedPrice } from 'services/order'
 import { tldExists } from 'tldjs'
-import classnames from 'classnames'
-import loadable from '@loadable/component'
-import isEqual from 'lodash/isEqual'
-import isEmpty from 'lodash/isEmpty'
 
 const AddressSelectModal = loadable(() =>
   import('components/RideTo/AddressSelectModal')
@@ -107,7 +108,7 @@ class CheckoutPage extends Component {
         postcode: '',
         voucher_code: '',
         accept_terms: false,
-        email_optin: false
+        email_optin: true
       },
       priceInfo: {
         price: 0,
