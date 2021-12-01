@@ -182,7 +182,7 @@ class OrderSummary extends Component {
                   onDetailChange('email_optin', event.target.checked)
                 }>
                 <div style={{ fontSize: '15px' }}>
-                  I consent to receive further emails from RideTo
+                  Sign up to get weekly ride outs, events & special offers
                 </div>
               </Checkbox>
             </div>
