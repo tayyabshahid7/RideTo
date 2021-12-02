@@ -1,9 +1,10 @@
-import React, { useState, Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
+
 import MapComponent from 'components/RideTo/MapComponent'
-import styles from './styles.scss'
-import moment from 'moment'
-import { getTrainingStatus } from 'services/course'
 import classnames from 'classnames'
+import { getTrainingStatus } from 'services/course'
+import moment from 'moment'
+import styles from './styles.scss'
 
 function UpComingCourse({ course, title, handleClick }) {
   const [isMapVisible, setIsMapVisible] = useState(false)
@@ -24,7 +25,7 @@ function UpComingCourse({ course, title, handleClick }) {
             onClick={() => {
               handleClick(course)
             }}
-            className={styles.orderButton}>
+            className={styles.mapButton}>
             {title}
           </button>
         ) : (
@@ -79,8 +80,8 @@ function UpComingCourse({ course, title, handleClick }) {
           onClick={() => {
             handleClick(course)
           }}
-          className={classnames(styles.orderButton, styles.viewDetails)}>
-          View details
+          className={classnames(styles.orderButton)}>
+          View / Edit
         </button>
       )}
     </div>
