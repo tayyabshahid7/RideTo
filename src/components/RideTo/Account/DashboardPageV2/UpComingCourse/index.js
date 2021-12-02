@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react'
 
 import MapComponent from 'components/RideTo/MapComponent'
+import RideToButton from 'components/RideTo/Button'
 import classnames from 'classnames'
 import { getTrainingStatus } from 'services/course'
 import moment from 'moment'
@@ -75,15 +76,17 @@ function UpComingCourse({ course, title, handleClick }) {
             : getTrainingStatus(status)}
         </div>
       )}
-      {handleClick && (
-        <button
-          onClick={() => {
-            handleClick(course)
-          }}
-          className={classnames(styles.orderButton)}>
-          View / Edit
-        </button>
-      )}
+      <div className={styles.viewOrderDetails}>
+        {handleClick && (
+          <RideToButton
+            alt
+            onClick={() => handleClick(course)}
+            id="order-side-panel"
+            className={styles.viewOrderbutton}>
+            View / Edit
+          </RideToButton>
+        )}
+      </div>
     </div>
   )
 }

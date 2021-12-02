@@ -1,5 +1,6 @@
+import { Col, Container, Row } from 'reactstrap'
+
 import React from 'react'
-import { Container, Row, Col } from 'reactstrap'
 import styles from './styles.scss'
 
 function Terms() {
@@ -29,8 +30,8 @@ function Terms() {
               under company registration number
             </span>
             <span class="c18">
-              &nbsp;10454345, and having its registered address at: Reading,
-              United Kingdom, RG4 9QD.
+              &nbsp;10454345, and having its registered address at: 11 Orange
+              Row, Brighton, BN1 1UQ
             </span>
             <span class="c9 c5 c26">&nbsp; </span>
             <span class="c6 c5">
