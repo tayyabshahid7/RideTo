@@ -2,7 +2,6 @@ import React, { Fragment, useState } from 'react'
 
 import MapComponent from 'components/RideTo/MapComponent'
 import RideToButton from 'components/RideTo/Button'
-import classnames from 'classnames'
 import { getTrainingStatus } from 'services/course'
 import moment from 'moment'
 import styles from './styles.scss'

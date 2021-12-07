@@ -1,7 +1,11 @@
+import { getToken, getUserProfile, isAuthenticated } from 'services/auth'
+
 import { BikeHires } from 'common/info'
 import DashboardReview from 'components/RideTo/Account/DashboardReview'
 import MapComponent from 'components/RideTo/MapComponent'
 import React from 'react'
+import RideToButton from 'components/RideTo/Button'
+import { cancelOrder } from 'services/user'
 import { formatBikeConstant } from 'common/info'
 import moment from 'moment'
 import { saveSupplierRating } from 'services/supplier'
@@ -56,10 +60,15 @@ class OrderDetails extends React.Component {
     super(props)
 
     this.state = {
-      reviewSubmitted: false
+      reviewSubmitted: false,
+      cancelButtonIsClicked: false,
+      orderIsCancelled: false,
+      messageCancelOrder: false,
+      message: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleCancelOrder = this.handleCancelOrder.bind(this)
   }
 
   async handleSubmit(rating) {
@@ -70,6 +79,50 @@ class OrderDetails extends React.Component {
     this.setState({
       reviewSubmitted: true
     })
+  }
+
+  componentDidMount() {
+    const { order } = this.props
+    const { status } = order
+    if (status === 'CANCELLED') {
+      this.setState({
+        orderIsCancelled: true
+      })
+    }
+  }
+  // componentWillUnmount() {
+  //   window.location.reload(false)
+  // }
+
+  async handleCancelOrder(event) {
+    const { order } = this.props
+    const { onOrderUpdate } = this.props
+    const { friendly_id } = order
+    if (isAuthenticated()) {
+      const user = getUserProfile(getToken())
+      this.setState({
+        cancelButtonIsClicked: !this.state.cancelButtonIsClicked
+      })
+
+      if (user) {
+        try {
+          const result = await cancelOrder(friendly_id)
+          this.setState({
+            orderIsCancelled: true,
+            message: result.message,
+            messageCancelOrder: true
+          })
+          onOrderUpdate(user.username)
+        } catch (error) {
+          const { response } = error
+          this.setState({
+            orderIsCancelled: false,
+            messageCancelOrder: true,
+            message: response.data.message
+          })
+        }
+      }
+    }
   }
 
   render() {
@@ -118,11 +171,65 @@ class OrderDetails extends React.Component {
           {showReview(order) && !reviewSubmitted && (
             <DashboardReview order={order} onSubmit={this.handleSubmit} />
           )}
+          {!this.state.orderIsCancelled && (
+            <div className={styles.cancelButton}>
+              {!this.state.cancelButtonIsClicked && (
+                <React.Fragment>
+                  <RideToButton
+                    alt
+                    id="order-cancel-btn"
+                    onClick={() => {
+                      this.setState({
+                        cancelButtonIsClicked: !this.state.cancelButtonIsClicked
+                      })
+                    }}>
+                    Cancel Order
+                  </RideToButton>
+                  {this.state.messageCancelOrder && (
+                    <div>
+                      <p>{this.state.message}</p>
+                    </div>
+                  )}
+                </React.Fragment>
+              )}
+              {this.state.cancelButtonIsClicked && (
+                <div>
+                  <p>
+                    Cancelling your order will result in a £20 admin fee,
+                    deducted from your refund. Are you sure you want to cancel
+                    your order?
+                  </p>
+                  <RideToButton alt onClick={this.handleCancelOrder}>
+                    Cancel Order
+                  </RideToButton>
+                  <RideToButton
+                    alt
+                    onClick={() => {
+                      this.setState({
+                        cancelButtonIsClicked: !this.state
+                          .cancelButtonIsClicked,
+                        messageCancelOrder: false
+                      })
+                    }}>
+                    Keep Order
+                  </RideToButton>
+                </div>
+              )}
+            </div>
+          )}
+
+          {!this.state.cancelButtonIsClicked && this.state.messageCancelOrder && (
+            <div>
+              <p>{this.state.message}</p>
+            </div>
+          )}
         </div>
 
-        <div className={styles.map}>
-          <MapComponent courses={[marker]} width="auto" height={240} />
-        </div>
+        {!this.state.cancelButtonIsClicked && !this.state.messageCancelOrder && (
+          <div className={styles.map}>
+            <MapComponent courses={[marker]} width="auto" height={240} />
+          </div>
+        )}
       </div>
     )
   }

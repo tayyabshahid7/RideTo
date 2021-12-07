@@ -145,6 +145,24 @@ function DashboardPageV2({ match }) {
       }
     })
   }
+  const onOrderUpdateHandler = async username => {
+    const { orderId } = match.params
+    try {
+      const result = await fetchOrders(username)
+      if (result.results.length > 0) {
+        setOrders(result.results)
+
+        if (!orderId) {
+          setRecentOrder(result.results[0])
+          setSelectedOrder(result.results[0])
+        }
+      } else {
+        setIsLoading(false)
+      }
+    } catch (error) {
+      setIsLoading(false)
+    }
+  }
 
   const handleCompletedClick = (
     clickedConstant,
@@ -509,7 +527,12 @@ function DashboardPageV2({ match }) {
         visible={selectedOrder}
         headingImage={headingImage}
         onDismiss={handleCloseClick}>
-        {selectedOrder && <OrderDetails order={selectedOrder} />}
+        {selectedOrder && (
+          <OrderDetails
+            order={selectedOrder}
+            onOrderUpdate={onOrderUpdateHandler}
+          />
+        )}
       </SidePanel>
     </Fragment>
   )

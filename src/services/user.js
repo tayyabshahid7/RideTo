@@ -1,6 +1,7 @@
 import { get, post } from 'services/api'
-import { requestToken } from 'services/auth'
+
 import { normalizePostCode } from 'utils/helper'
+import { requestToken } from 'services/auth'
 
 export const saveCheckoutEmail = async (email, course) => {
   const path = `save-checkout-email`
@@ -45,6 +46,10 @@ export const fetchOrders = async username => {
 
 export const fetchOrder = async orderId => {
   return await get(`users/order/${orderId}`, {}, false)
+}
+
+export const cancelOrder = async orderId => {
+  return await post(`users/cancel-order/${orderId}`)
 }
 
 export const getChecklist = () => {
