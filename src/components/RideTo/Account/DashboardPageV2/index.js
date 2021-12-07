@@ -145,6 +145,24 @@ function DashboardPageV2({ match }) {
       }
     })
   }
+  const onOrderUpdateHandler = async username => {
+    const { orderId } = match.params
+    try {
+      const result = await fetchOrders(username)
+      if (result.results.length > 0) {
+        setOrders(result.results)
+
+        if (!orderId) {
+          setRecentOrder(result.results[0])
+          setSelectedOrder(result.results[0])
+        }
+      } else {
+        setIsLoading(false)
+      }
+    } catch (error) {
+      setIsLoading(false)
+    }
+  }
 
   const handleCompletedClick = (
     clickedConstant,
@@ -489,8 +507,8 @@ function DashboardPageV2({ match }) {
             ref={copyrightRef}
             className={classnames(styles.pageItem, styles.pageItemFooter)}>
             <div className={styles.copyFooter}>
-              © 2020 RideTo Ltd. Registered company number 10454345. Registered
-              office: Dunsden Green, Reading, Oxfordshire RG4 9QD
+              © 2021 RideTo Ltd. Registered company number 10454345. Registered
+              office: 11 Orange Row, Brighton, BN1 1UQ
               <br />
               This information is given to you as a guide to support you in your
               choice of licence and RideTo has made every attempt to ensure the
@@ -509,7 +527,12 @@ function DashboardPageV2({ match }) {
         visible={selectedOrder}
         headingImage={headingImage}
         onDismiss={handleCloseClick}>
-        {selectedOrder && <OrderDetails order={selectedOrder} />}
+        {selectedOrder && (
+          <OrderDetails
+            order={selectedOrder}
+            onOrderUpdate={onOrderUpdateHandler}
+          />
+        )}
       </SidePanel>
     </Fragment>
   )
