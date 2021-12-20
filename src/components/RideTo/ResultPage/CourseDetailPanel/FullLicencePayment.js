@@ -20,10 +20,12 @@ function FullLicencePayment({ pricePerHour, hours, style, isWidget, addons }) {
         <span>£{later}</span>
       </div>
       <br />
-      <div className={styles.rowReserved}>
+      <div className={styles.row}>
         <span>
-          We’ll reserve the full amount on your card upon booking, once your
-          course dates are confirmed the full amount will then be charged.
+          {' '}
+          The full amount £{later} will be reserved on your card upon placing a
+          booking. Payment will only be processed once the instructor has
+          confirmed your dates.{' '}
         </span>
       </div>
     </div>
