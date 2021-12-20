@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from './FullLicencePayment.scss'
 import { calcFullLicencePrices } from 'services/course'
+import styles from './FullLicencePayment.scss'
 
 function FullLicencePayment({ pricePerHour, hours, style, isWidget, addons }) {
   if (!hours) {
@@ -18,6 +18,13 @@ function FullLicencePayment({ pricePerHour, hours, style, isWidget, addons }) {
       <div className={styles.row}>
         <span>To pay after booking your first lesson</span>{' '}
         <span>£{later}</span>
+      </div>
+      <br />
+      <div className={styles.rowReserved}>
+        <span>
+          We’ll reserve the full amount on your card upon booking, once your
+          course dates are confirmed the full amount will then be charged.
+        </span>
       </div>
     </div>
   )
