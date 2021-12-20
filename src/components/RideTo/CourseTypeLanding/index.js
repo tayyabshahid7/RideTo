@@ -1,20 +1,21 @@
-import React from 'react'
-import styles from './styles.scss'
-import Script from 'react-load-script'
-import classnames from 'classnames'
-import ShowMore from './ShowMore'
-import { getStaticData } from 'services/page'
 import {
+  CONTENT,
   SLUG_COURSE_TYPES,
   getLocations,
-  CONTENT,
   landingPageUrl
 } from './contents'
-import { normalizePostCode } from 'utils/helper'
-import { getCourseTitle } from 'services/course'
-import { Helmet } from 'react-helmet'
+
 import CourseTypeLandingForm from './CourseTypeLandingForm'
+import { Helmet } from 'react-helmet'
 import MediaQuery from 'react-responsive'
+import React from 'react'
+import Script from 'react-load-script'
+import ShowMore from './ShowMore'
+import classnames from 'classnames'
+import { getCourseTitle } from 'services/course'
+import { getStaticData } from 'services/page'
+import { normalizePostCode } from 'utils/helper'
+import styles from './styles.scss'
 
 class CourseTypeLanding extends React.Component {
   constructor(props) {
@@ -137,7 +138,7 @@ class CourseTypeLanding extends React.Component {
                             <span className={styles.tick}>
                               <i className="fa fa-check" />
                             </span>{' '}
-                            Bike &amp; helmet hire
+                            Bike
                           </li>
                           <li>
                             <span className={styles.tick}>
