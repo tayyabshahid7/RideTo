@@ -335,7 +335,6 @@ function DashboardPageV2({ match }) {
         setIsUserDetailsLoaded(true)
       }
     }
-
     // If there is an order id in url load it as recentOrder
     if (orderId) {
       loadSingleOrder(orderId)
@@ -475,7 +474,9 @@ function DashboardPageV2({ match }) {
                     />
                   </div>
                   <div className={styles.pageItem}>
-                    <MyCheckList userId={userDetails.user_id} />
+                    {isAuthenticated && (
+                      <MyCheckList userId={userDetails.user_id} />
+                    )}
                   </div>
                   <Desktop>
                     <div className={styles.pageItem}>

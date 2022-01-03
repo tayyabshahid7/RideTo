@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 
 import MapComponent from 'components/RideTo/MapComponent'
 import RideToButton from 'components/RideTo/Button'
@@ -16,6 +16,12 @@ function UpComingCourse({ course, title, handleClick }) {
   const showMap = () => {
     setIsMapVisible(prevState => !prevState)
   }
+
+  useEffect(() => {
+    if (window.location.hash && window.location.hash === '#orders-section') {
+      handleClick(course)
+    }
+  }, [])
 
   return (
     <div className={styles.container}>
