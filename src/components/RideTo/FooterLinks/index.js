@@ -37,7 +37,7 @@ class FooterLinks extends Component {
           content={`<div class="footer--links">
               <a href="https://www.rideto.com/contact">Contact Us</a>
               <a href="http://learn.rideto.com/frequently-asked-questions">FAQs</a>
-              <a href="http://www.work.rideto.com/">Delivery Jobs</a>
+              <a href="https://delivery-jobs.co.uk/">Delivery Jobs</a>
               <a href="https://www.rideto.com/blog">Blog</a>
             </div>`}
           isOpen={opened.indexOf('support') > -1}
