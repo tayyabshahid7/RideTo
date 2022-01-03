@@ -62,7 +62,7 @@ class OrderDetails extends React.Component {
     this.state = {
       reviewSubmitted: false,
       cancelButtonIsClicked: false,
-      orderIsCancelled: false,
+      orderIsCancelledOrPending: false,
       messageCancelOrder: false,
       message: ''
     }
@@ -84,9 +84,10 @@ class OrderDetails extends React.Component {
   componentDidMount() {
     const { order } = this.props
     const { status } = order
-    if (status === 'CANCELLED') {
+    console.log(status)
+    if (status !== 'CONFIRMED') {
       this.setState({
-        orderIsCancelled: true
+        orderIsCancelledOrPending: true
       })
     }
   }
@@ -108,7 +109,7 @@ class OrderDetails extends React.Component {
         try {
           const result = await cancelOrder(friendly_id)
           this.setState({
-            orderIsCancelled: true,
+            orderIsCancelledOrPending: true,
             message: result.message,
             messageCancelOrder: true
           })
@@ -116,7 +117,7 @@ class OrderDetails extends React.Component {
         } catch (error) {
           const { response } = error
           this.setState({
-            orderIsCancelled: false,
+            orderIsCancelledOrPending: false,
             messageCancelOrder: true,
             message: response.data.message
           })
@@ -171,8 +172,8 @@ class OrderDetails extends React.Component {
           {showReview(order) && !reviewSubmitted && (
             <DashboardReview order={order} onSubmit={this.handleSubmit} />
           )}
-          {!this.state.orderIsCancelled && (
-            <div className={styles.cancelButton}>
+          {!this.state.orderIsCancelledOrPending && (
+            <div className={styles.cancelButtonRow}>
               {!this.state.cancelButtonIsClicked && (
                 <React.Fragment>
                   <RideToButton
@@ -182,7 +183,8 @@ class OrderDetails extends React.Component {
                       this.setState({
                         cancelButtonIsClicked: !this.state.cancelButtonIsClicked
                       })
-                    }}>
+                    }}
+                    className={styles.cancelButton}>
                     Cancel Order
                   </RideToButton>
                   {this.state.messageCancelOrder && (
@@ -193,26 +195,36 @@ class OrderDetails extends React.Component {
                 </React.Fragment>
               )}
               {this.state.cancelButtonIsClicked && (
-                <div>
-                  <p>
+                <div className={styles.rowContainer}>
+                  <p className={styles.pMessage}>
                     Cancelling your order will result in a £20 admin fee,
                     deducted from your refund. Are you sure you want to cancel
                     your order?
                   </p>
-                  <RideToButton alt onClick={this.handleCancelOrder}>
-                    Cancel Order
-                  </RideToButton>
-                  <RideToButton
-                    alt
-                    onClick={() => {
-                      this.setState({
-                        cancelButtonIsClicked: !this.state
-                          .cancelButtonIsClicked,
-                        messageCancelOrder: false
-                      })
-                    }}>
-                    Keep Order
-                  </RideToButton>
+                  <div className={styles.rowContainer}>
+                    <div className={styles.cancelButton__item}>
+                      <RideToButton
+                        alt
+                        onClick={this.handleCancelOrder}
+                        className={styles.cancelButton}>
+                        Cancel Order
+                      </RideToButton>
+                    </div>
+                    <div className={styles.keepButton__item}>
+                      <RideToButton
+                        alt
+                        className={styles.keepButton}
+                        onClick={() => {
+                          this.setState({
+                            cancelButtonIsClicked: !this.state
+                              .cancelButtonIsClicked,
+                            messageCancelOrder: false
+                          })
+                        }}>
+                        Keep Order
+                      </RideToButton>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>

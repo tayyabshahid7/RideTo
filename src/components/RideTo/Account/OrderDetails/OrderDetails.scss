@@ -38,6 +38,51 @@
   height: 240px;
 }
 
-.cancelButton {
+.cancelButtonRow {
   float: right;
+}
+
+.cancelButton {
+  font-family: var(--font-proxima);
+  border-color: red !important;
+  color: red !important;
+  padding: 10px 15px;
+  font-size: 14px;
+  margin-top: 10px;
+  line-height: normal;
+}
+
+.keepButton {
+  font-family: var(--font-proxima);
+  padding: 10px 15px;
+  font-size: 14px;
+  margin-top: 10px;
+  line-height: normal;
+}
+
+.pMessage {
+  color: red !important;
+  font-weight: bold;
+}
+
+
+.cancelKeepButtons__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.cancelButton__item {
+  display: inline-flex;
+  justify-content: space-between;
+  line-height: 40px;
+}
+
+.keepButton__item {
+  display: inline-flex;
+  float: right;
+  justify-content: space-between;
+  right: 0px;
+  line-height: inherit;
 }
