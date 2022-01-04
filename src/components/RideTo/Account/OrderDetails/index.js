@@ -64,11 +64,56 @@ class OrderDetails extends React.Component {
       cancelButtonIsClicked: false,
       orderIsCancelledOrPending: false,
       messageCancelOrder: false,
+      messageNoticePeriod: false,
+      isOrderCancelled: false,
       message: ''
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancelOrder = this.handleCancelOrder.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick() {
+    const { order } = this.props
+    const today = moment().format('h:mm a, ddd D, MMMM')
+    const current_hour = moment().hour()
+    const training_date = moment(order.trainings[0].training_date_time).format(
+      'h:mm a, ddd D, MMMM'
+    )
+
+    const trainingPeriod = moment(training_date, 'h:mm a, ddd D, MMMM').diff(
+      moment(today, 'h:mm a, ddd D, MMMM'),
+      'days'
+    )
+    const constant = order.trainings[0].constant
+    if (constant === 'FULL_LICENCE') {
+      if (trainingPeriod <= 13) {
+        this.setState({
+          messageNoticePeriod: true,
+          message:
+            'ERROR! Unable to cancel course as it is within the cancellation notice period',
+          cancelButtonIsClicked: false
+        })
+      } else {
+        this.setState({
+          cancelButtonIsClicked: !this.state.cancelButtonIsClicked
+        })
+      }
+    } else if (constant !== 'FULL_LICENCE') {
+      if (trainingPeriod <= 5 && current_hour < 14) {
+        this.setState({
+          messageNoticePeriod: true,
+          message:
+            'ERROR! Unable to cancel course as it is within the cancellation notice period',
+          cancelButtonIsClicked: false
+        })
+      } else {
+        this.setState({
+          cancelButtonIsClicked: !this.state.cancelButtonIsClicked
+        })
+      }
+    }    
   }
 
   async handleSubmit(rating) {
@@ -84,16 +129,18 @@ class OrderDetails extends React.Component {
   componentDidMount() {
     const { order } = this.props
     const { status } = order
-    console.log(status)
+
     if (status !== 'CONFIRMED') {
       this.setState({
         orderIsCancelledOrPending: true
       })
     }
+    if (status === 'CANCELLED'){
+      this.setState({
+        isOrderCancelled: true,
+      })
+    }
   }
-  // componentWillUnmount() {
-  //   window.location.reload(false)
-  // }
 
   async handleCancelOrder(event) {
     const { order } = this.props
@@ -154,8 +201,7 @@ class OrderDetails extends React.Component {
                   ).title
                 : order.bike_type
             )}
-            {order.source === 'RIDETO' &&
-              order.trainings[0].training_date_time &&
+            {order.trainings[0].training_date_time &&
               renderRow(
                 'Date & Time',
                 moment(order.trainings[0].training_date_time).format(
@@ -172,24 +218,35 @@ class OrderDetails extends React.Component {
           {showReview(order) && !reviewSubmitted && (
             <DashboardReview order={order} onSubmit={this.handleSubmit} />
           )}
+          {this.state.isOrderCancelled && (
+            <div>
+              <p>
+                Your order has been cancelled and a refund will be processed
+                shortly
+              </p>
+            </div>
+          )}
           {!this.state.orderIsCancelledOrPending && (
-            <div className={styles.cancelButtonRow}>
+            <div>
               {!this.state.cancelButtonIsClicked && (
                 <React.Fragment>
                   <RideToButton
                     alt
                     id="order-cancel-btn"
-                    onClick={() => {
-                      this.setState({
-                        cancelButtonIsClicked: !this.state.cancelButtonIsClicked
-                      })
-                    }}
+                    onClick={this.handleClick}
                     className={styles.cancelButton}>
                     Cancel Order
                   </RideToButton>
                   {this.state.messageCancelOrder && (
                     <div>
                       <p>{this.state.message}</p>
+                    </div>
+                  )}
+                  {this.state.messageNoticePeriod && (
+                    <div className={styles.cancelButtonRow}>
+                      <p className={styles.pMessage__notice}>
+                        {this.state.message}
+                      </p>
                     </div>
                   )}
                 </React.Fragment>
@@ -237,11 +294,10 @@ class OrderDetails extends React.Component {
           )}
         </div>
 
-        {!this.state.cancelButtonIsClicked && !this.state.messageCancelOrder && (
-          <div className={styles.map}>
-            <MapComponent courses={[marker]} width="auto" height={240} />
-          </div>
-        )}
+        <div className={styles.map}>
+          <br />
+          <MapComponent courses={[marker]} width="auto" height={240} />
+        </div>
       </div>
     )
   }
