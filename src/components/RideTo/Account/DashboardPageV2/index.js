@@ -508,8 +508,8 @@ function DashboardPageV2({ match }) {
             ref={copyrightRef}
             className={classnames(styles.pageItem, styles.pageItemFooter)}>
             <div className={styles.copyFooter}>
-              © 2021 RideTo Ltd. Registered company number 10454345. Registered
-              office: 11 Orange Row, Brighton, BN1 1UQ
+              © 2022 RideTo Ltd. Registered company number 10454345. Registered
+              Office: 11 Orange Row, Brighton, BN1 1UQ
               <br />
               This information is given to you as a guide to support you in your
               choice of licence and RideTo has made every attempt to ensure the
