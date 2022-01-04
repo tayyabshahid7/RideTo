@@ -76,17 +76,16 @@ class OrderDetails extends React.Component {
 
   handleClick() {
     const { order } = this.props
-    const today = moment().format('h:mm a, ddd D, MMMM')
-    const current_hour = moment().hour()
-    const training_date = moment(order.trainings[0].training_date_time).format(
-      'h:mm a, ddd D, MMMM'
-    )
-
-    const trainingPeriod = moment(training_date, 'h:mm a, ddd D, MMMM').diff(
-      moment(today, 'h:mm a, ddd D, MMMM'),
-      'days'
-    )
     const constant = order.trainings[0].constant
+
+    const training_date = moment(
+      order.trainings[0].training_date_time,
+      'YYYY-MM-DD'
+    )
+    const today = moment().startOf('day')
+    const current_hour = moment().hour()
+    const trainingPeriod = moment.duration(training_date.diff(today)).asDays()
+
     if (constant === 'FULL_LICENCE') {
       if (trainingPeriod <= 13) {
         this.setState({
@@ -101,7 +100,14 @@ class OrderDetails extends React.Component {
         })
       }
     } else if (constant !== 'FULL_LICENCE') {
-      if (trainingPeriod <= 5 && current_hour < 14) {
+      if (trainingPeriod < 5) {
+        this.setState({
+          messageNoticePeriod: true,
+          message:
+            'ERROR! Unable to cancel course as it is within the cancellation notice period',
+          cancelButtonIsClicked: false
+        })
+      } else if (trainingPeriod === 5 && current_hour >= 17) {
         this.setState({
           messageNoticePeriod: true,
           message:
