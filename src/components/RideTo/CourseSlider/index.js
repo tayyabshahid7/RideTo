@@ -1,15 +1,14 @@
-import React from 'react'
-import classnames from 'classnames'
-
-import RideToSlider from 'components/RideToSlider'
-import LazySlide from './LazySlide'
-import { getStaticData } from 'services/page'
 import ArrowSlideLeft from 'assets/images/rideto/ArrowSlideLeft.svg'
 import ArrowSlideRight from 'assets/images/rideto/ArrowSlideRight.svg'
-import SidePanel from 'components/RideTo/SidePanel'
-import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
-import styles from './CourseSlider.scss'
 import { COURSETYPE_ORDER_SLIDER } from 'common/constants'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import LazySlide from './LazySlide'
+import React from 'react'
+import RideToSlider from 'components/RideToSlider'
+import SidePanel from 'components/RideTo/SidePanel'
+import classnames from 'classnames'
+import { getStaticData } from 'services/page'
+import styles from './CourseSlider.scss'
 
 const NextArrow = ({ onClick }) => (
   <div className={classnames(styles.arrow, styles.nextArrow)} onClick={onClick}>

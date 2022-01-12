@@ -1,6 +1,5 @@
 import React from 'react'
 import Slider from 'react-slick'
-
 import styles from './RideToSlider.scss'
 
 const RideToSlider = ({ children, settings }) => {

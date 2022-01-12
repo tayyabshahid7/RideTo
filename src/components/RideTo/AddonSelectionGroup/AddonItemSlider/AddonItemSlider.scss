@@ -1,0 +1,72 @@
+.slide {
+  position: relative;
+  display: flex;
+  height: 29.375rem;
+  background: rgba(#000000, 0.1);
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-left: 1rem;
+
+  img {
+    // max-width: 120px;
+    // max-height: 120px;
+    // max-width: calc(100% - 1rem);
+    // max-height: 195px;
+    width: 208px;
+    height: 208px;
+    top: 0px; 
+    object-fit: contain;
+    cursor: pointer;
+
+    @media (min-width: 1025px) {
+      max-height: 139px;
+    }
+  }
+
+  @media (min-width: 1025px) {
+    height: 256px;
+    margin-right: 4px;
+    margin-left: 4px;
+  }
+
+  .title {
+    position: absolute;
+    bottom: 2rem;
+    font-size: 1.375rem;
+    margin: 0;
+    color: var(--dark-color);
+    text-align: center;
+  }
+}
+
+
+
+
+.freeDelivery {
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+}
+
+
+.priceWrap {
+  padding-top: 1rem;
+  border-top: 1px solid var(--light-grey-color);
+  justify-content: space-between;
+  display: flex;
+  
+}
+
+.price {
+  color: #6FC274;
+  font-family: var(--font-proxima-bold);
+  margin-bottom: 1.25rem;
+  line-height: 1;
+}
+
+
+.priceDiscounted {
+  @extend .price;
+  text-decoration-line: line-through; 
+}
