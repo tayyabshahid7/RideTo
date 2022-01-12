@@ -85,6 +85,16 @@ class OrderDetails extends React.Component {
     const today = moment().startOf('day')
     const current_hour = moment().hour()
     const trainingPeriod = moment.duration(training_date.diff(today)).asDays()
+    
+    if (!isAuthenticated()){
+      this.setState({
+        messageNoticePeriod: true,
+        message:
+          'ERROR! Unable to cancel course. Please, login to proceed this cancellation.',
+        cancelButtonIsClicked: false
+      })
+      return
+    }
 
     if (constant === 'FULL_LICENCE') {
       if (trainingPeriod <= 13) {
@@ -176,6 +186,9 @@ class OrderDetails extends React.Component {
           })
         }
       }
+    } else {
+      window.alert('Please, login to cancel this order.')
+      
     }
   }
 
