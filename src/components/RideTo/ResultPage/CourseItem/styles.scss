@@ -86,9 +86,10 @@
 
 .nextDateContainer {
   display: flex;
+  justify-content: space-between;
 
   .nextDateDiv {
-    padding-left: 1.5em;
+    margin-left: 0;
   }
 
   .nextDateAvailable {
@@ -102,8 +103,10 @@
     margin-right: 0;
     margin-bottom: 0;
     background-color: #DAEEF3;
-    padding: .3em 1em;
+    padding: .2em 1em;
     white-space: nowrap;
+    top: -2px;
+    position: relative;
   }
 }
 
