@@ -68,6 +68,7 @@
   text-align: left;
   padding: 0;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .place {
@@ -76,11 +77,37 @@
   line-height: 16px;
   margin-top: 16px;
   max-width: 325px;
+  
 
   &:hover {
     cursor: pointer;
   }
 }
+
+.nextDateContainer {
+  display: flex;
+
+  .nextDateDiv {
+    padding-left: 1.5em;
+  }
+
+  .nextDateAvailable {
+    align-content: center;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: var(--font-rift);
+    line-height: 24px;
+    margin-right: 0;
+    margin-bottom: 0;
+    background-color: #DAEEF3;
+    padding: .3em 1em;
+    white-space: nowrap;
+  }
+}
+
+
 
 .footer {
   display: flex;
