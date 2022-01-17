@@ -120,6 +120,18 @@ class CourseItem extends Component {
     }
   }
 
+  checkNextDayAvailable = () => {
+    const { course } = this.props
+    const date = moment(course.next_date_available, 'YYYY-MM-DD')
+    const todayDate = moment()
+
+    console.log(todayDate.diff(date) >= 0)
+    if (todayDate.diff(date) >= 0) {
+      return null
+    }
+    return date
+  }
+
   render() {
     const {
       course,
@@ -168,12 +180,14 @@ class CourseItem extends Component {
                     {course.location_slug.replace('-', ' ')}
                   </button>
                 </div>
-                <div className={styles.nextDateDiv}>
-                  <p className={styles.nextDateAvailable}>
-                    Next Available -{' '}
-                    {moment(course.next_date_available).format('D MMM')}
-                  </p>
-                </div>
+                {this.checkNextDayAvailable() && (
+                  <div className={styles.nextDateDiv}>
+                    <p className={styles.nextDateAvailable}>
+                      Next Available -{' '}
+                      {moment(course.next_date_available).format('D MMM')}
+                    </p>
+                  </div>
+                )}
               </div>
               <div
                 className={styles.place}
