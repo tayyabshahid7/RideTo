@@ -60,7 +60,8 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
     <div>
       <Slick {...settings}>
         {addons.map((addon, index) => (
-          <div key={index}>
+          <div key={index} className={styles.itemContainer}>
+            <img src={addon.images[0]} alt="Addon Image" />
             <p>{addon.name}</p>
           </div>
           // <div key={index} className={styles.slide}>

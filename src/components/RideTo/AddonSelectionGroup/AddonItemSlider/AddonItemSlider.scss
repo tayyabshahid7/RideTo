@@ -1,3 +1,27 @@
+
+.itemContainer {
+  background: white;
+  justify-content: center;
+  padding: 1.5em;
+  border: 1px solid black;
+  margin: 0 1em;
+
+  img {
+    max-width: 120px;
+    max-height: 120px;
+    // max-width: calc(100% - 1rem);
+    // max-height: 195px;
+    top: 0px; 
+    object-fit: contain;
+    cursor: pointer;
+
+    // @media (min-width: 1025px) {
+    //   max-height: 139px;
+    // }
+  }
+}
+
+
 .slide {
   position: relative;
   display: flex;

@@ -27,18 +27,26 @@ class AddonSelectionGroup extends React.Component {
     const name = addon_group[0]
     const addons = addon_group[1]
     return (
-      <React.Fragment>
-        <h2 className={styles.title}>{GROUPS[name]}</h2>
-        <div className={styles.addonItemContainer}>
-          <AddonItemSlider
-            addons={addons}
-            onDetails={onDetails}
-            isAdded={isAdded}
-            onAdd={onAdd}
-            onRemove={onRemove}
-          />
-        </div>
-      </React.Fragment>
+      <section className={styles.addonGroupSection}>
+        <ul>
+          <li>
+            <div className={styles.titleContainer}>
+              <h2 className={styles.groupTitle}>{GROUPS[name]}</h2>
+            </div>
+          </li>
+          <li>
+            <div className={styles.addonItemContainer}>
+              <AddonItemSlider
+                addons={addons}
+                onDetails={onDetails}
+                isAdded={isAdded}
+                onAdd={onAdd}
+                onRemove={onRemove}
+              />
+            </div>
+          </li>
+        </ul>
+      </section>
     )
   }
 }
