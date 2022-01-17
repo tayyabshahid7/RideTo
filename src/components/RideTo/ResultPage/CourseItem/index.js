@@ -125,7 +125,6 @@ class CourseItem extends Component {
     const date = moment(course.next_date_available, 'YYYY-MM-DD')
     const todayDate = moment()
 
-    console.log(todayDate.diff(date) >= 0)
     if (todayDate.diff(date) >= 0) {
       return null
     }
