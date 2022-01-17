@@ -60,38 +60,41 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
     <div>
       <Slick {...settings}>
         {addons.map((addon, index) => (
-          <div key={index} className={styles.slide}>
-            <div>
-              <img src={addon.images[0]} alt="" onClick={imageClick} />
-            </div>
-
-            <div className={styles.priceWrap}>
-              <div className={fullPriceStyle(addon)}>£{addon.full_price}</div>
-              {isDiscount(addon) && (
-                <div className={styles.price}> £{addon.discount_price}</div>
-              )}
-            </div>
-            <div className={styles.freeDelivery}>Includes FREE delivery</div>
-            <h4 className={styles.title}>{addon.name}</h4>
-
-            <div>
-              {addon.sizes.length > 1 && (
-                <AddonSizes
-                  sizes={addon.sizes}
-                  selected={addon.selectedSize}
-                  onClick={handleSelectSize}
-                  sizeRequired={addon.sizeRequired}
-                />
-              )}
-              <RideToButton
-                id={`addon-${kebabCase(addon.name)}`}
-                alt={isAdded}
-                className={styles.selectButton}
-                onClick={() => onClick(addon)}>
-                <span>{!isAdded ? 'Select' : 'Remove'}</span>
-              </RideToButton>
-            </div>
+          <div key={index}>
+            <p>{addon.name}</p>
           </div>
+          // <div key={index} className={styles.slide}>
+          //   <div>
+          //     <img src={addon.images[0]} alt="" onClick={imageClick} />
+          //   </div>
+
+          //   <div className={styles.priceWrap}>
+          //     <div className={fullPriceStyle(addon)}>£{addon.full_price}</div>
+          //     {isDiscount(addon) && (
+          //       <div className={styles.price}> £{addon.discount_price}</div>
+          //     )}
+          //   </div>
+          //   <div className={styles.freeDelivery}>Includes FREE delivery</div>
+          //   <h4 className={styles.title}>{addon.name}</h4>
+
+          //   <div>
+          //     {addon.sizes.length > 1 && (
+          //       <AddonSizes
+          //         sizes={addon.sizes}
+          //         selected={addon.selectedSize}
+          //         onClick={handleSelectSize}
+          //         sizeRequired={addon.sizeRequired}
+          //       />
+          //     )}
+          //     <RideToButton
+          //       id={`addon-${kebabCase(addon.name)}`}
+          //       alt={isAdded}
+          //       className={styles.selectButton}
+          //       onClick={() => onClick(addon)}>
+          //       <span>{!isAdded ? 'Select' : 'Remove'}</span>
+          //     </RideToButton>
+          //   </div>
+          // </div>
         ))}
       </Slick>
     </div>

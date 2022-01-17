@@ -384,7 +384,7 @@ class AddonSelection extends React.Component {
           </Desktop>
           <Row>
             {addonGroups.map((addon_group, i) => (
-              <Col key={i}>
+              <Col className={styles.addonsGroupContainer} key={i}>
                 <AddonSelectionGroup
                   addon_group={addon_group}
                   isAdded={this.isAddonSelected(addon_group)}
