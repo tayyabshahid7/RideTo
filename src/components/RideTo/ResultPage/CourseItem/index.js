@@ -1,18 +1,20 @@
-import React, { Component, Fragment } from 'react'
-import classnames from 'classnames'
-import { UncontrolledTooltip } from 'reactstrap'
-import styles from './styles.scss'
-import StarsComponent from 'components/RideTo/StarsComponent'
-import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
+
+import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
+import React, { Component, Fragment } from 'react'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
-import POMCard from 'components/RideTo/ResultPage/POMCard'
-import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
-import { loadTypeformScript } from 'utils/helper'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
-import get from 'lodash/get'
-import moment from 'moment'
+
 import { BankHolidayProvider } from '../StateProvider'
+import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import POMCard from 'components/RideTo/ResultPage/POMCard'
+import StarsComponent from 'components/RideTo/StarsComponent'
+import { UncontrolledTooltip } from 'reactstrap'
+import classnames from 'classnames'
+import get from 'lodash/get'
+import { loadTypeformScript } from 'utils/helper'
+import moment from 'moment'
+import styles from './styles.scss'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -158,11 +160,21 @@ class CourseItem extends Component {
           </div>
           <div className={styles.info}>
             <div className={styles.upperSection}>
-              <button
-                className={styles.courseName}
-                onClick={() => this.detailClicked(course)}>
-                {course.location_slug.replace('-', ' ')}
-              </button>
+              <div className={styles.nextDateContainer}>
+                <div>
+                  <button
+                    className={styles.courseName}
+                    onClick={() => this.detailClicked(course)}>
+                    {course.location_slug.replace('-', ' ')}
+                  </button>
+                </div>
+                <div className={styles.nextDateDiv}>
+                  <p className={styles.nextDateAvailable}>
+                    Next Available -{' '}
+                    {moment(course.next_date_available).format('D MMM')}
+                  </p>
+                </div>
+              </div>
               <div
                 className={styles.place}
                 onClick={() => this.detailClicked(course)}>
