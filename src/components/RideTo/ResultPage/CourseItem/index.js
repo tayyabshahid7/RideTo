@@ -181,10 +181,12 @@ class CourseItem extends Component {
                 </div>
                 {this.checkNextDayAvailable() && (
                   <div className={styles.nextDateDiv}>
-                    <p className={styles.nextDateAvailable}>
+                    <button
+                      className={styles.nextDateAvailable}
+                      onClick={() => this.priceClicked(course)}>
                       Next Available -{' '}
                       {moment(course.next_date_available).format('D MMM')}
-                    </p>
+                    </button>
                   </div>
                 )}
               </div>
