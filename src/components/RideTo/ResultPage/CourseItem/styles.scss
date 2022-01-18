@@ -6,7 +6,7 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
-    height: 370px;
+    // height: 370px;
   }
 }
 
@@ -47,7 +47,7 @@
     padding: 20px 24px 10px;
   }
   @media (min-width: 769px) {
-    max-width: 345px;
+    max-width: 365px;
   }
 }
 
@@ -68,19 +68,63 @@
   text-align: left;
   padding: 0;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .place {
   font-size: 14px;
   font-family: var(--font-proxima);
   line-height: 16px;
-  margin-top: 16px;
+  margin-top: 9.5px;
   max-width: 325px;
+  
 
   &:hover {
     cursor: pointer;
   }
 }
+
+.nextDateContainer {
+  display: flex;
+  justify-content: space-between;
+
+  .nextDateDiv {
+    margin-left: 0;
+  }
+
+  .nextDateAvailable {
+    border: 0;
+    align-content: center;
+    display: inline;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-family: var(--font-rift);
+    line-height: 24px;
+    background-color: #DAEEF3;
+    padding: .1em .5em;
+    white-space: nowrap;
+    top: -3px;
+    position: relative;
+    margin: 0;
+    &:hover {
+      cursor: pointer;
+    }
+    span {
+        display: none;
+      }
+    @media (min-width: 580px) {
+      display: inline-block;
+      padding: .2em 1em;
+      span {
+        display:contents;
+      }
+    }
+  
+  }
+}
+
+
 
 .footer {
   display: flex;
@@ -119,10 +163,9 @@
     justify-content: center;
     align-items: center;
     height: 100%;
-    margin: 0px;
+    margin: 0 0 0 10px;
     padding: 11px 25px;
     border: 1px solid var(--primary-color);
-    margin: 0px 10px;
   }
 }
 
@@ -168,7 +211,7 @@
 
 .arrowIcon {
   margin-top: 0px;
-  margin-left: 16px;
+  margin-left: 10px;
 }
 
 .extraInfo {
