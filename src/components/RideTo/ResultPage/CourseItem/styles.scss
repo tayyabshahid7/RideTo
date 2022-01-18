@@ -93,19 +93,29 @@
   }
 
   .nextDateAvailable {
+    border: 0;
     align-content: center;
-    display: inline-block;
-    font-size: 15px;
+    display: inline;
+    font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
     font-family: var(--font-rift);
     line-height: 24px;
     background-color: #DAEEF3;
-    padding: .2em 1em;
+    padding: .1em .5em;
     white-space: nowrap;
     top: -3px;
     position: relative;
-    margin: 0 0 0 10px;
+    margin: 0;
+    &:hover {
+      cursor: pointer;
+    }
+    @media (min-width: 580px) {
+      display: inline-block;
+      font-size: 15px;
+      padding: .2em 1em;
+    }
+  
   }
 }
 
