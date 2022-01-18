@@ -15,14 +15,14 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
     nextArrow: <NextArrow />,
     dots: true,
     prevArrow: <PrevArrow />,
-    slidesToShow: 3,
+    slidesToShow: 1,
     infinite: true,
     appendDots: dots => (
       <div
         style={{
           backgroundColor: '#ddd',
-          borderRadius: '10px',
-          padding: '10px'
+          borderRadius: '1px',
+          padding: '1px'
         }}>
         <ul style={{ margin: '0px' }}> {dots} </ul>
       </div>
@@ -61,8 +61,23 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
       <Slick {...settings}>
         {addons.map((addon, index) => (
           <div key={index} className={styles.itemContainer}>
-            <img src={addon.images[0]} alt="Addon Image" />
-            <p>{addon.name}</p>
+            <div className={styles.imageContainer}>
+              <img src={addon.images[0]} alt="Addon Image" />
+            </div>
+            <div className={styles.price}>{addon.price}</div>
+            <div className={styles.freeDeliveryText}>
+              Includes FREE Delivery
+            </div>
+            <div className={styles.addonNameContainer}>
+              <p>{addon.name}</p>
+            </div>
+            <div className={styles.ratingStart}>blablabla</div>
+            <div className="selecteSizeButton">
+              <button> Select Size</button>
+            </div>
+            <div className={styles.addToBacketButton}>
+              <button>Add to basket</button>
+            </div>
           </div>
           // <div key={index} className={styles.slide}>
           //   <div>

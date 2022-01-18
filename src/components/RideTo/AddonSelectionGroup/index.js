@@ -34,16 +34,14 @@ class AddonSelectionGroup extends React.Component {
               <h2 className={styles.groupTitle}>{GROUPS[name]}</h2>
             </div>
           </li>
-          <li>
-            <div className={styles.addonItemContainer}>
-              <AddonItemSlider
-                addons={addons}
-                onDetails={onDetails}
-                isAdded={isAdded}
-                onAdd={onAdd}
-                onRemove={onRemove}
-              />
-            </div>
+          <li className={styles.addonItemContainer}>
+            <AddonItemSlider
+              addons={addons}
+              onDetails={onDetails}
+              isAdded={isAdded}
+              onAdd={onAdd}
+              onRemove={onRemove}
+            />
           </li>
         </ul>
       </section>
