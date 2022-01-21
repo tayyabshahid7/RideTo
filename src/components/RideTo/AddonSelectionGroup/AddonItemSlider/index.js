@@ -7,29 +7,41 @@ import AddonSizes from './AddonSizes'
 import React from 'react'
 import RideToButton from 'components/RideTo/Button'
 import Slick from 'react-slick'
+import StarsComponent from '../../StarsComponent'
 import kebabCase from 'lodash/kebabCase'
 import styles from './AddonItemSlider.scss'
+import { useMediaQuery } from 'react-responsive'
 
 const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
+  const addonsToShow = () => {
+    if (addons.length > 1) {
+      if (useMediaQuery({ maxWidth: 768 })) {
+        return 2
+      } else {
+        return 3
+      }
+    }
+    return 1
+  }
+
   const settings = {
     nextArrow: <NextArrow />,
-    dots: true,
+    // dots: true,
     prevArrow: <PrevArrow />,
-    slidesToShow: 1,
+    slidesToShow: addonsToShow(),
     infinite: true,
-    appendDots: dots => (
-      <div
-        style={{
-          backgroundColor: '#ddd',
-          borderRadius: '1px',
-          padding: '1px'
-        }}>
-        <ul style={{ margin: '0px' }}> {dots} </ul>
-      </div>
-    )
+    className: styles.slider
+    // appendDots: dots => (
+    //   <div
+    //     style={{
+    //       backgroundColor: '#ddd',
+    //       borderRadius: '1px',
+    //       padding: '1px'
+    //     }}>
+    //     <ul style={{ margin: '0px' }}> {dots} </ul>
+    //   </div>
+    // )
   }
-  console.log(addons)
-
   function handleSelectSize(selectedSize) {
     const { onSizeUpdate, addon } = this.props
     onSizeUpdate(addon, selectedSize)
@@ -56,61 +68,24 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
     console.log('Click')
   }
 
+  const onClick = isAdded ? onRemove : onAdd
+
   return (
     <div>
       <Slick {...settings}>
         {addons.map((addon, index) => (
-          <div key={index} className={styles.itemContainer}>
-            <div className={styles.imageContainer}>
-              <img src={addon.images[0]} alt="Addon Image" />
-            </div>
-            <div className={styles.price}>{addon.price}</div>
-            <div className={styles.freeDeliveryText}>
-              Includes FREE Delivery
-            </div>
-            <div className={styles.addonNameContainer}>
-              <p>{addon.name}</p>
-            </div>
-            <div className={styles.ratingStart}>blablabla</div>
-            <div className="selecteSizeButton">
-              <button> Select Size</button>
-            </div>
-            <div className={styles.addToBacketButton}>
-              <button>Add to basket</button>
-            </div>
-          </div>
-          // <div key={index} className={styles.slide}>
-          //   <div>
-          //     <img src={addon.images[0]} alt="" onClick={imageClick} />
-          //   </div>
-
-          //   <div className={styles.priceWrap}>
-          //     <div className={fullPriceStyle(addon)}>£{addon.full_price}</div>
-          //     {isDiscount(addon) && (
-          //       <div className={styles.price}> £{addon.discount_price}</div>
-          //     )}
-          //   </div>
-          //   <div className={styles.freeDelivery}>Includes FREE delivery</div>
-          //   <h4 className={styles.title}>{addon.name}</h4>
-
-          //   <div>
-          //     {addon.sizes.length > 1 && (
-          //       <AddonSizes
-          //         sizes={addon.sizes}
-          //         selected={addon.selectedSize}
-          //         onClick={handleSelectSize}
-          //         sizeRequired={addon.sizeRequired}
-          //       />
-          //     )}
-          //     <RideToButton
-          //       id={`addon-${kebabCase(addon.name)}`}
-          //       alt={isAdded}
-          //       className={styles.selectButton}
-          //       onClick={() => onClick(addon)}>
-          //       <span>{!isAdded ? 'Select' : 'Remove'}</span>
-          //     </RideToButton>
-          //   </div>
-          // </div>
+          <AddonCard
+            key={index}
+            addon={addon}
+            image={addon.images[0]}
+            price={addon.full_price}
+            title={addon.name}
+            sizes={addon.sizes}
+            selectedSize={addon.selectedSize}
+            handleSelectSize={handleSelectSize}
+            sizeRequired={addon.sizeRequired}
+            isAdded={isAdded}
+          />
         ))}
       </Slick>
     </div>
@@ -118,3 +93,42 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
 }
 
 export default AddonItemSlider
+
+function AddonCard(props) {
+  return (
+    <div className={styles.card}>
+      <div className={styles.card__body}>
+        <img src={props.image} className={styles.card__image}></img>
+        <p className={styles.card__price}>£{props.price}</p>
+        <p className={styles.card__freeDelivery}>Includes FREE Delivery</p>
+        <h2 className={styles.card__title}>{props.title}</h2>
+        <StarsComponent
+          className={styles.card__rating}
+          starClassName={styles.card__star}
+          rating={4}
+        />
+      </div>
+      <div className={styles.card__buttonWrapper}>
+        <div className={styles.card__selectSizeButton}>
+          {props.sizes.length > 1 && (
+            <AddonSizes
+              sizes={props.sizes}
+              selected={props.selectedSize}
+              onClick={props.handleSelectSize}
+              sizeRequired={props.sizeRequired}
+            />
+          )}
+        </div>
+        <div className={styles.addToBacketButton}>
+          <RideToButton
+            id={`addon-${kebabCase(props.name)}`}
+            alt={props.isAdded}
+            className={styles.selectButton}
+            onClick={() => onClick(props.addon)}>
+            <span>{!props.isAdded ? 'Add to Basket' : 'Remove'}</span>
+          </RideToButton>
+        </div>
+      </div>
+    </div>
+  )
+}

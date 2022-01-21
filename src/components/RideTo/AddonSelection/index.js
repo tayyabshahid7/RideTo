@@ -334,11 +334,13 @@ class AddonSelection extends React.Component {
         <Container>
           <Row>
             <Col md="6">
-              <h1 className={styles.heading}>New Rider Essentials</h1>
-              <div className={styles.subHeading}>
-                Get riding faster by adding the gear you need, delivered to your
-                door.
-              </div>
+              <Col className={styles.headingWrapper}>
+                <h1 className={styles.heading}>New Rider Essentials</h1>
+                <div className={styles.subHeading}>
+                  Get riding faster by adding the gear you need, delivered to
+                  your door.
+                </div>
+              </Col>
             </Col>
             <Mobile>
               <Col md="12">
@@ -358,14 +360,14 @@ class AddonSelection extends React.Component {
               </Col>
             </Mobile>
             <Col md="6" className={styles.skipLink}>
-              <Button
+              {/* <Button
                 id="addons-checkout-button"
                 color="primary"
                 className={styles.checkoutButton}
                 onClick={this.handleContinue}>
                 <span>Continue To Checkout</span>
                 <IconArrowRight className={styles.arrowIcon} />
-              </Button>
+              </Button> */}
             </Col>
           </Row>
           <Desktop>
@@ -382,20 +384,18 @@ class AddonSelection extends React.Component {
               </div>
             </div>
           </Desktop>
-          <Row>
-            {addonGroups.map((addon_group, i) => (
-              <Col className={styles.addonsGroupContainer} key={i}>
-                <AddonSelectionGroup
-                  addon_group={addon_group}
-                  isAdded={this.isAddonSelected(addon_group)}
-                  onAdd={this.handleAddAddon}
-                  onRemove={this.handleRemoveAddon}
-                  onSizeUpdate={this.handleSizeUpdate}
-                  onDetails={this.handleDetails}
-                />
-              </Col>
-            ))}
-          </Row>
+          {addonGroups.map((addon_group, i) => (
+            <Row className={styles.addonsGroupContainer} key={i}>
+              <AddonSelectionGroup
+                addon_group={addon_group}
+                isAdded={this.isAddonSelected(addon_group)}
+                onAdd={this.handleAddAddon}
+                onRemove={this.handleRemoveAddon}
+                onSizeUpdate={this.handleSizeUpdate}
+                onDetails={this.handleDetails}
+              />
+            </Row>
+          ))}
           {/* <Row>
             {addons.map((addon, i) => (
               <Col xs="12" key={i}>

@@ -3,7 +3,11 @@
   display: block !important;
   ul {
      list-style-type: none;
+     padding-inline-start: 10px;
     
+     li {
+      
+     }
   }
  
 
@@ -20,6 +24,7 @@
   
   .addonItemContainer  {
     border: 1px solid black;
+    display: block;
   }
 }
 
