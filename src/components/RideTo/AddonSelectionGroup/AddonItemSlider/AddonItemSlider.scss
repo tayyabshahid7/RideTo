@@ -5,7 +5,7 @@
 }
 
 .card {
-  overflow: hidden;
+  overflow: visible;
   background: white;
   display: flex;
   flex-direction: column;
@@ -62,6 +62,7 @@
   }
 
   .buttonWrapper {
+    display: block;
     border: 2px solid red;
     margin-bottom: 0;
   }
