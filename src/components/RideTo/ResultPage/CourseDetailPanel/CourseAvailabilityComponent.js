@@ -1,15 +1,17 @@
-import React from 'react'
-import moment from 'moment'
-import classnames from 'classnames'
-import styles from './styles.scss'
+import {
+  fetchNextDateAvailable,
+  fetchPlatformCourseBikes,
+  fetchPlatformCourseTimes,
+  fetchPlatformCourses
+} from 'services/course'
+
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import Loading from 'components/Loading'
-import {
-  fetchPlatformCourses,
-  fetchPlatformCourseTimes,
-  fetchPlatformCourseBikes
-} from 'services/course'
+import React from 'react'
+import classnames from 'classnames'
+import moment from 'moment'
+import styles from './styles.scss'
 
 class CourseAvailabilityComponent extends React.Component {
   constructor(props) {
@@ -25,10 +27,16 @@ class CourseAvailabilityComponent extends React.Component {
       date = moment(this.props.date).toDate()
     }
     if (!this.props.supplier.instant_book) {
-      if (this.props.supplier.excluded_dates.includes(this.props.supplier.next_date_available)) {
-        this.props.onUpdate({ instantDate: null })  
+      if (
+        this.props.supplier.excluded_dates.includes(
+          this.props.supplier.next_date_available
+        )
+      ) {
+        this.props.onUpdate({ instantDate: null })
       } else {
-        this.props.onUpdate({ instantDate: this.props.supplier.next_date_available })
+        this.props.onUpdate({
+          instantDate: this.props.supplier.next_date_available
+        })
       }
     }
 
@@ -46,10 +54,22 @@ class CourseAvailabilityComponent extends React.Component {
     this.bikePicker = React.createRef()
   }
 
+  getNextDateAvailable(supplierId, courseType) {
+    fetchNextDateAvailable(supplierId, courseType).then(data => {
+      this.setState({ initialDate: data.next_date_available })
+      this.props.onUpdate({
+        instantDate: data.next_date_available
+      })
+    })
+  }
+
   componentDidMount() {
-    if (this.props.supplier.instant_book) {
+    const { courseType, supplier } = this.props
+    if (supplier.instant_book) {
       this.setState({ loadingCourses: true }, () => this.loadCourses())
     }
+
+    this.getNextDateAvailable(supplier.id, courseType)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -212,7 +232,6 @@ class CourseAvailabilityComponent extends React.Component {
     const { supplier, courseType, onUpdate, bike_hire } = this.props
 
     const dayCourses = courses.filter(x => x.date === instantDate)
-
     if (toValidate) {
       if (!dayCourses.length) {
         onUpdate({ instantDate: null })
