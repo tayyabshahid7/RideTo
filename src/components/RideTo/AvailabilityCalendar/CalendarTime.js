@@ -1,11 +1,14 @@
 import React, { useEffect } from 'react'
+
 import classnames from 'classnames'
 import moment from 'moment'
-import { useMediaQuery } from 'react-responsive'
 import styles from './CalendarTime.scss'
+import { useMediaQuery } from 'react-responsive'
 
 export default function CalendarTime({ courses, handleTimeSelect, calendar }) {
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({
+    maxWidth: 767
+  })
 
   useEffect(() => {
     if (courses.length === 1) {
@@ -31,7 +34,6 @@ export default function CalendarTime({ courses, handleTimeSelect, calendar }) {
     return null
   }
 
-  console.log(courses)
   return (
     <div className={classnames(!isSingleTime && styles.container)}>
       {courses.map((course, index) => {

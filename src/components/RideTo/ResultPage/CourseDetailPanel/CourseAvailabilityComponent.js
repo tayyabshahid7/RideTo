@@ -56,7 +56,17 @@ class CourseAvailabilityComponent extends React.Component {
 
   getNextDateAvailable(supplierId, courseType) {
     fetchNextDateAvailable(supplierId, courseType).then(data => {
-      this.setState({ initialDate: data.next_date_available })
+      this.setState({
+        initialDate: data.next_date_available,
+        calendar: {
+          year: moment(data.next_date_available)
+            .toDate()
+            .getFullYear(),
+          month: moment(data.next_date_available)
+            .toDate()
+            .getMonth()
+        }
+      })
       this.props.onUpdate({
         instantDate: data.next_date_available
       })
