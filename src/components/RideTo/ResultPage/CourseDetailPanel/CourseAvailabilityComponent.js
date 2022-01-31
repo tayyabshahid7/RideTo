@@ -56,6 +56,28 @@ class CourseAvailabilityComponent extends React.Component {
 
   getNextDateAvailable(supplierId, courseType) {
     fetchNextDateAvailable(supplierId, courseType).then(data => {
+      let showInstantDate = null
+      const dateInArray =
+        (
+          this.props.supplier.excluded_dates.find(item => {
+            return item === data.next_date_available
+          }) || []
+        ).length > 0
+      const nextDtAvailableIsBeforeToday = moment().isBefore(
+        data.next_date_available
+      )
+
+      if (nextDtAvailableIsBeforeToday) {
+        showInstantDate = data.next_date_available
+      }
+      if (showInstantDate && !this.props.supplier.instant_book) {
+        if (!dateInArray) {
+          showInstantDate = data.next_date_available
+        } else {
+          showInstantDate = null
+        }
+      }
+
       this.setState({
         initialDate: data.next_date_available,
         calendar: {
@@ -68,7 +90,7 @@ class CourseAvailabilityComponent extends React.Component {
         }
       })
       this.props.onUpdate({
-        instantDate: data.next_date_available
+        instantDate: showInstantDate
       })
     })
   }
