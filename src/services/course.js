@@ -1,10 +1,11 @@
-import moment from 'moment'
-import axios from 'axios'
-import { get, destroy, post, put, patch } from 'services/api'
-import { s } from 'utils/helper'
+import { destroy, get, patch, post, put } from 'services/api'
+
 import { Features } from 'common/info'
-import { parseQueryString } from 'services/api'
+import axios from 'axios'
 import { getStaticData } from 'services/page'
+import moment from 'moment'
+import { parseQueryString } from 'services/api'
+import { s } from 'utils/helper'
 
 export const getCourseSpaceText = course => {
   const availableSpaces = course.spaces - course.orders.length
@@ -149,6 +150,15 @@ export const fetchWidgetCourses = async (
   const response = await get(path, params)
 
   return response.results
+}
+
+export const fetchNextDateAvailable = async (schoolId, courseType) => {
+  const path = `suppliers/${schoolId}/next-date-available/`
+  let params = {
+    course_type: courseType
+  }
+  const response = await get(path, params)
+  return response
 }
 
 export const fetchPlatformCourses = async (
