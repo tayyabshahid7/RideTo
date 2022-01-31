@@ -14,6 +14,7 @@ import moment from 'moment'
 import styles from './styles.scss'
 
 class CourseAvailabilityComponent extends React.Component {
+  _isMounted = false
   constructor(props) {
     super(props)
 
@@ -78,17 +79,18 @@ class CourseAvailabilityComponent extends React.Component {
         }
       }
 
-      this.setState({
-        initialDate: data.next_date_available,
-        calendar: {
-          year: moment(data.next_date_available)
-            .toDate()
-            .getFullYear(),
-          month: moment(data.next_date_available)
-            .toDate()
-            .getMonth()
-        }
-      })
+      this._isMounted &&
+        this.setState({
+          initialDate: data.next_date_available,
+          calendar: {
+            year: moment(data.next_date_available)
+              .toDate()
+              .getFullYear(),
+            month: moment(data.next_date_available)
+              .toDate()
+              .getMonth()
+          }
+        })
       this.props.onUpdate({
         instantDate: showInstantDate
       })
@@ -96,12 +98,13 @@ class CourseAvailabilityComponent extends React.Component {
   }
 
   componentDidMount() {
+    this._isMounted = true
     const { courseType, supplier } = this.props
     if (supplier.instant_book) {
       this.setState({ loadingCourses: true }, () => this.loadCourses())
     }
 
-    this.getNextDateAvailable(supplier.id, courseType)
+    this._isMounted && this.getNextDateAvailable(supplier.id, courseType)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -339,6 +342,10 @@ class CourseAvailabilityComponent extends React.Component {
   handleChangeRawEvent(event) {
     const { onUpdate } = this.props
     onUpdate({ [event.target.name]: event.target.value })
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render() {
