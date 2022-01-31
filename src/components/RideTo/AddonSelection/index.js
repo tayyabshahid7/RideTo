@@ -142,6 +142,7 @@ class AddonSelection extends React.Component {
     this.handleContinue = this.handleContinue.bind(this)
     this.handleSizeUpdate = this.handleSizeUpdate.bind(this)
     this.updateAddonSize = this.updateAddonSize.bind(this)
+    this.handleIsAddonSelected = this.isAddonSelected.bind(this)
   }
 
   handleAddAddon(addon) {
@@ -190,7 +191,7 @@ class AddonSelection extends React.Component {
 
   handleSizeUpdate(addon, selectedSize) {
     const { addons, selectedAddons } = this.state
-
+    console.log(addon)
     this.setState(
       {
         addons: this.updateAddonSize(addons, addon, selectedSize),
@@ -210,6 +211,7 @@ class AddonSelection extends React.Component {
         }
       }
     )
+    console.log(this.state.selectedAddons)
   }
 
   async handleContinue() {
@@ -314,7 +316,6 @@ class AddonSelection extends React.Component {
       helmet_hire
     } = this.state
 
-    console.log(addonGroups)
     let checklistItems = CHECKLIST_ITEMS.slice()
     if (gloves_jacket_included) {
       checklistItems[3].keywords = []
@@ -388,7 +389,7 @@ class AddonSelection extends React.Component {
             <Row className={styles.addonsGroupContainer} key={i}>
               <AddonSelectionGroup
                 addon_group={addon_group}
-                isAdded={this.isAddonSelected(addon_group)}
+                isAdded={this.handleIsAddonSelected}
                 onAdd={this.handleAddAddon}
                 onRemove={this.handleRemoveAddon}
                 onSizeUpdate={this.handleSizeUpdate}

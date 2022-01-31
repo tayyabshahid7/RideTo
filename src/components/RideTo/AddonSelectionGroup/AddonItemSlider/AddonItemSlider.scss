@@ -5,13 +5,15 @@
 }
 
 .card {
+  width: 100%;
+  border: 1px solid black;
   overflow: visible;
   background: white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem;
-  width: 244px;
+  
   border-right: 2rem;
 
   &__image {
@@ -77,6 +79,7 @@
   justify-content: center;
   border: 1px solid var(--primary-color);
   align-items: center;
+  color: white !important;
 }
 
 

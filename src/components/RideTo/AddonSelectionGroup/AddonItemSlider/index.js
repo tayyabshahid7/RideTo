@@ -14,42 +14,31 @@ import styles from './AddonItemSlider.scss'
 
 // import { useMediaQuery } from 'react-responsive'
 
-const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
+const AddonItemSlider = props => {
+  const { addons, isAdded, onAdd, onRemove, onSizeUpdate, onDetails } = props
   const [modal, setModal] = useState(false)
-
-  // const addonsToShow = () => {
-  //   if (addons.length > 1) {
-  //     if (useMediaQuery({ maxWidth: 768 })) {
-  //       return 2
-  //     } else {
-  //       return 3
-  //     }
-  //   }
-  //   return 1
-  // }
-  const addonLength = addons.length > 1
 
   const settings = {
     nextArrow: <NextArrow />,
     // dots: true,
     prevArrow: <PrevArrow />,
-    slidesToShow: addonLength ? 4 : 1,
+    slidesToShow: 4.2,
     infinite: addons.length > 3,
     className: styles.slider,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: addonLength ? 3 : 1,
+          slidesToShow: 3.2,
           slidesToScroll: 1,
           infinite: addons.length > 2,
           dots: true
         }
       },
       {
-        breakpoint: 600,
+        breakpoint: 768,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 2.2,
           slidesToScroll: 1,
           initialSlide: 1
         }
@@ -57,17 +46,12 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1.2,
           slidesToScroll: 1
         }
       }
     ]
   }
-  function handleSelectSize(selectedSize) {
-    const { onSizeUpdate, addon } = this.props
-    onSizeUpdate(addon, selectedSize)
-  }
-
   function isDiscount(addon) {
     return (
       addon.full_price &&
@@ -89,8 +73,6 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
     setModal(!modal)
   }
 
-  const onClick = isAdded ? onRemove : onAdd
-
   return (
     <div>
       {modal && <AddonSelectModal toggleModal={toggleModal} />}
@@ -104,9 +86,11 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
             title={addon.name}
             sizes={addon.sizes}
             selectedSize={addon.selectedSize}
-            handleSelectSize={handleSelectSize}
+            onSizeUpdate={onSizeUpdate}
             sizeRequired={addon.sizeRequired}
-            isAdded={isAdded}
+            isAdded={isAdded(addon)}
+            onRemove={onRemove}
+            onAdd={onAdd}
             toggleModal={toggleModal}
           />
         ))}
@@ -118,6 +102,13 @@ const AddonItemSlider = ({ addons, isAdded, onAdd, onRemove, onDetails }) => {
 export default AddonItemSlider
 
 function AddonCard(props) {
+  const onClick = props.isAdded ? props.onRemove : props.onAdd
+
+  const handleSelectSize = selectedSize => {
+    const { onSizeUpdate, addon } = props
+    console.log(selectedSize)
+    onSizeUpdate(addon, selectedSize)
+  }
   return (
     <div className={styles.card}>
       <div className={styles.card__body}>
@@ -141,7 +132,7 @@ function AddonCard(props) {
             <AddonSizes
               sizes={props.sizes}
               selected={props.selectedSize}
-              onClick={props.handleSelectSize}
+              onClick={handleSelectSize}
               sizeRequired={props.sizeRequired}
             />
           )}
@@ -151,7 +142,7 @@ function AddonCard(props) {
             id={`addon-${kebabCase(props.name)}`}
             alt={props.isAdded}
             className={styles.selectButton}
-            onClick={() => props.onClick(props.addon)}>
+            onClick={() => onClick(props.addon)}>
             <span>{!props.isAdded ? 'Add to Basket' : 'Remove'}</span>
           </RideToButton>
         </div>
