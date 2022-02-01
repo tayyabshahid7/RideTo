@@ -68,8 +68,17 @@ class CourseAvailabilityComponent extends React.Component {
         data.next_date_available
       )
 
+      const DtAvailableIsSameToday = moment().isSame(data.next_date_available)
+
       if (nextDtAvailableIsBeforeToday) {
         showInstantDate = data.next_date_available
+      }
+
+      let momentDate = moment(data.next_date_available)
+      if (
+        this.props.supplier.excluded_days.includes(momentDate.format('dddd'))
+      ) {
+        showInstantDate = null
       }
       if (showInstantDate && !this.props.supplier.instant_book) {
         if (!dateInArray) {
@@ -78,17 +87,21 @@ class CourseAvailabilityComponent extends React.Component {
           showInstantDate = null
         }
       }
+      if (DtAvailableIsSameToday) {
+        showInstantDate = null
+      }
+
+      const initialCalendarDate =
+        data.next_date_available && nextDtAvailableIsBeforeToday
+          ? moment(data.next_date_available)
+          : moment()
 
       this._isMounted &&
         this.setState({
-          initialDate: data.next_date_available,
+          initialDate: showInstantDate,
           calendar: {
-            year: moment(data.next_date_available)
-              .toDate()
-              .getFullYear(),
-            month: moment(data.next_date_available)
-              .toDate()
-              .getMonth()
+            year: initialCalendarDate.format('YYYY'),
+            month: initialCalendarDate.toDate().getMonth()
           }
         })
       this.props.onUpdate({

@@ -122,6 +122,11 @@ class CourseItem extends Component {
 
   checkNextDayAvailable = () => {
     const { course, courseType } = this.props
+
+    if (!course.next_date_available) {
+      return null
+    }
+
     const date = moment(course.next_date_available, 'YYYY-MM-DD')
     const todayDate = moment()
 
