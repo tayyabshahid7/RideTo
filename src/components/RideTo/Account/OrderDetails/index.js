@@ -224,6 +224,7 @@ class OrderDetails extends React.Component {
     const courseTitle = order.course_title || order.trainings[0].course_type
     const trainingBikeType =
       order.trainings && order.trainings[0] && order.trainings[0].bike_type
+    const isFullLicence = order.trainings[0].constant === 'FULL_LICENCE'
     return (
       <div className={styles.orderDetails}>
         <div className={styles.description}>
@@ -265,29 +266,31 @@ class OrderDetails extends React.Component {
             </div>
           )}
           <div>
-            {!this.state.isOrderCancelled && !this.state.cancelButtonIsClicked && (
-              <React.Fragment>
-                <RideToButton
-                  alt
-                  id="order-cancel-btn"
-                  onClick={this.handleClick}
-                  className={styles.cancelButton}>
-                  Cancel Order
-                </RideToButton>
-                {/* {this.state.messageCancelOrder && (
+            {!isFullLicence &&
+              !this.state.isOrderCancelled &&
+              !this.state.cancelButtonIsClicked && (
+                <React.Fragment>
+                  <RideToButton
+                    alt
+                    id="order-cancel-btn"
+                    onClick={this.handleClick}
+                    className={styles.cancelButton}>
+                    Cancel Order
+                  </RideToButton>
+                  {/* {this.state.messageCancelOrder && (
                   <div>
                     <p>{this.state.message}</p>
                   </div>
                 )} */}
-                {this.state.messageNoticePeriod && (
-                  <div className={styles.cancelButtonRow}>
-                    <p className={styles.pMessage__notice}>
-                      {this.state.message}
-                    </p>
-                  </div>
-                )}
-              </React.Fragment>
-            )}
+                  {this.state.messageNoticePeriod && (
+                    <div className={styles.cancelButtonRow}>
+                      <p className={styles.pMessage__notice}>
+                        {this.state.message}
+                      </p>
+                    </div>
+                  )}
+                </React.Fragment>
+              )}
             {!this.state.isOrderCancelled && this.state.cancelButtonIsClicked && (
               <div className={styles.rowContainer}>
                 {this.state.isOrderPending && (
