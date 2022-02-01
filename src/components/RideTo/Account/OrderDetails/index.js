@@ -81,7 +81,7 @@ class OrderDetails extends React.Component {
   handleClick() {
     const { order } = this.props
     const constant = order.trainings[0].constant
-
+    const training_status = order.trainings[0].status
     const training_date = moment(
       order.trainings[0].training_date_time
         ? order.trainings[0].training_date_time
@@ -103,7 +103,11 @@ class OrderDetails extends React.Component {
     }
 
     if (constant === 'FULL_LICENCE') {
-      if (trainingPeriod <= 13) {
+      if (
+        trainingPeriod <= 13 &&
+        !training_status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
+        !training_status === 'TRAINING_WAITING_RIDER_CONFIRMATION'
+      ) {
         this.setState({
           messageNoticePeriod: true,
           message:
@@ -123,7 +127,12 @@ class OrderDetails extends React.Component {
             'ERROR! Unable to cancel course as it is within the cancellation notice period',
           cancelButtonIsClicked: false
         })
-      } else if (trainingPeriod === 5 && current_hour >= 17) {
+      } else if (
+        trainingPeriod === 5 &&
+        current_hour >= 17 &&
+        !training_status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
+        !training_status === 'TRAINING_WAITING_RIDER_CONFIRMATION'
+      ) {
         this.setState({
           messageNoticePeriod: true,
           message:
@@ -247,7 +256,7 @@ class OrderDetails extends React.Component {
             <div>
               <p>
                 Your order has been cancelled and a refund will be processed
-                shortly
+                shortly.
               </p>
             </div>
           )}
