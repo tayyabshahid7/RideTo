@@ -103,7 +103,11 @@ class OrderDetails extends React.Component {
     }
 
     if (constant === 'FULL_LICENCE') {
-      if (trainingPeriod <= 13) {
+      if (
+        trainingPeriod <= 13 &&
+        !training_status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
+        !training_status === 'TRAINING_WAITING_RIDER_CONFIRMATION'
+      ) {
         this.setState({
           messageNoticePeriod: true,
           message:
