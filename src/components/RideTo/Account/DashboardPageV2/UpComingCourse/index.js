@@ -18,7 +18,11 @@ function UpComingCourse({ course, title, handleClick }) {
   }
 
   useEffect(() => {
-    if (window.location.hash && window.location.hash === '#orders-section') {
+    if (
+      window.location.hash &&
+      window.location.hash === '#orders-section' &&
+      handleClick
+    ) {
       handleClick(course)
     }
   }, [])
