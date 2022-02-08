@@ -79,8 +79,12 @@ function FaqsNewContainer() {
   const categories = get(response, 'results', [])
   let questions = categories.filter(item => item.name === selected)
 
-  const isChatAvailable = (startTime = '09:00:00', endTime = '17:30:00') => {
-    const currentTime = new Date()
+  const isChatAvailable = (startTime = '09:00:00', endTime = '18:00:00') => {
+    const currentTime = moment()
+
+    if (currentTime.day() === 0) {
+      return false
+    }
     const startTimeObj = moment(startTime, 'HH:mm:ss')
     const endTimeObj = moment(endTime, 'HH:mm:ss')
     const chat = currentTime <= endTimeObj && currentTime >= startTimeObj
@@ -287,10 +291,7 @@ function FaqsNewContainer() {
           <p className={styles.needMoreText}>Start a live chat or email us.</p>
 
           <div className={styles.buttonContainer}>
-            {isChatAvailable(
-              moment().format('HH:mm:ss'),
-              moment().format('HH:mm:ss')
-            ) ? (
+            {isChatAvailable() ? (
               <button
                 onClick={onCLickHandler}
                 type="submit"
