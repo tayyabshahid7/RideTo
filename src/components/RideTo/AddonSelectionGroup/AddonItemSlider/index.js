@@ -2,9 +2,9 @@ import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
 import { NextArrow, PrevArrow } from './Arrows'
-import React, { useState } from 'react'
+import React, { Fragment, useState } from 'react'
 
-import AddonSelectModal from './../AddonSelectModal'
+import AddonSelectModal from './AddonSelectModal'
 import AddonSizes from './AddonSizes'
 import RideToButton from 'components/RideTo/Button'
 import Slick from 'react-slick'
@@ -16,7 +16,6 @@ import styles from './AddonItemSlider.scss'
 
 const AddonItemSlider = props => {
   const { addons, isAdded, onAdd, onRemove, onSizeUpdate, onDetails } = props
-  const [modal, setModal] = useState(false)
 
   const settings = {
     nextArrow: <NextArrow />,
@@ -69,13 +68,8 @@ const AddonItemSlider = props => {
     }
   }
 
-  const toggleModal = () => {
-    setModal(!modal)
-  }
-
   return (
     <div>
-      {modal && <AddonSelectModal toggleModal={toggleModal} />}
       <Slick {...settings}>
         {addons.map((addon, index) => (
           <AddonCard
@@ -91,7 +85,6 @@ const AddonItemSlider = props => {
             isAdded={isAdded(addon)}
             onRemove={onRemove}
             onAdd={onAdd}
-            toggleModal={toggleModal}
           />
         ))}
       </Slick>
@@ -102,6 +95,7 @@ const AddonItemSlider = props => {
 export default AddonItemSlider
 
 function AddonCard(props) {
+  const [modal, setModal] = useState(false)
   const onClick = props.isAdded ? props.onRemove : props.onAdd
 
   const handleSelectSize = selectedSize => {
@@ -109,44 +103,59 @@ function AddonCard(props) {
     console.log(selectedSize)
     onSizeUpdate(addon, selectedSize)
   }
+
+  const toggleModal = () => {
+    setModal(!modal)
+  }
+
   return (
-    <div className={styles.card}>
-      <div className={styles.card__body}>
-        <img
-          src={props.image}
-          className={styles.card__image}
-          onClick={props.toggleModal}
+    <Fragment>
+      {modal && (
+        <AddonSelectModal
+          showModal={modal}
+          onClose={toggleModal}
+          title={props.title}
+          images={props.addon.images}
         />
-        <p className={styles.card__price}>£{props.price}</p>
-        <p className={styles.card__freeDelivery}>Includes FREE Delivery</p>
-        <h2 className={styles.card__title}>{props.title}</h2>
-        <StarsComponent
-          className={styles.card__rating}
-          starClassName={styles.card__star}
-          rating={4}
-        />
-      </div>
-      <div className={styles.card__buttonWrapper}>
-        <div className={styles.card__selectSizeButton}>
-          {props.sizes.length > 1 && (
-            <AddonSizes
-              sizes={props.sizes}
-              selected={props.selectedSize}
-              onClick={handleSelectSize}
-              sizeRequired={props.sizeRequired}
-            />
-          )}
+      )}
+      <div className={styles.card}>
+        <div className={styles.card__body}>
+          <img
+            src={props.image}
+            className={styles.card__image}
+            onClick={toggleModal}
+          />
+          <p className={styles.card__price}>£{props.price}</p>
+          <p className={styles.card__freeDelivery}>Includes FREE Delivery</p>
+          <h2 className={styles.card__title}>{props.title}</h2>
+          <StarsComponent
+            className={styles.card__rating}
+            starClassName={styles.card__star}
+            rating={4}
+          />
         </div>
-        <div className={styles.addToBacketButton}>
-          <RideToButton
-            id={`addon-${kebabCase(props.name)}`}
-            alt={props.isAdded}
-            className={styles.selectButton}
-            onClick={() => onClick(props.addon)}>
-            <span>{!props.isAdded ? 'Add to Basket' : 'Remove'}</span>
-          </RideToButton>
+        <div className={styles.card__buttonWrapper}>
+          <div className={styles.card__selectSizeButton}>
+            {props.sizes.length > 1 && (
+              <AddonSizes
+                sizes={props.sizes}
+                selected={props.selectedSize}
+                onClick={handleSelectSize}
+                sizeRequired={props.sizeRequired}
+              />
+            )}
+          </div>
+          <div className={styles.addToBacketButton}>
+            <RideToButton
+              id={`addon-${kebabCase(props.name)}`}
+              alt={props.isAdded}
+              className={styles.selectButton}
+              onClick={() => onClick(props.addon)}>
+              <span>{!props.isAdded ? 'Add to Basket' : 'Remove'}</span>
+            </RideToButton>
+          </div>
         </div>
       </div>
-    </div>
+    </Fragment>
   )
 }

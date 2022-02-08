@@ -101,7 +101,7 @@
     "react-toggle": "^4.0.2",
     "react-waypoint": "^9.0.2",
     "react-youtube": "^7.9.0",
-    "reactstrap": "^6.3.0",
+    "reactstrap": "^9.0.1",
     "redux": "^4.0.0",
     "redux-core": "^0.1.1",
     "redux-logger": "^3.0.6",
