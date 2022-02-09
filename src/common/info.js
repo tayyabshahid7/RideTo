@@ -1,11 +1,12 @@
-import moment from 'moment'
 import {
   BIKE_HIRE,
-  RIDING_EXPERIENCE,
-  SORTBY,
+  DATE_FORMAT,
   RIDER_TYPE,
-  DATE_FORMAT
+  RIDING_EXPERIENCE,
+  SORTBY
 } from './constants'
+
+import moment from 'moment'
 
 export const BikeHires = [
   { value: BIKE_HIRE.NO, title: 'No' },
@@ -301,7 +302,8 @@ export const SortByOptions = [
   { value: SORTBY.DISTANCE, title: 'Sort by Distance' },
   { value: SORTBY.PRICE_DOWN_UP, title: 'Sort by Price' },
   // { value: SORTBY.PRICE_UP_DOWN, title: 'Sort by Price Desc' },
-  { value: SORTBY.RATING, title: 'Sort by Rating' }
+  { value: SORTBY.RATING, title: 'Sort by Rating' },
+  { value: SORTBY.NEXT_AVAILABLE_DATE_UP, title: 'Sort by Next Available Date' }
 ]
 
 export const Features = [
