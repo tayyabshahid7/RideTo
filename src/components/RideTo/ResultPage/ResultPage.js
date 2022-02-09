@@ -800,10 +800,7 @@ class ResultPage extends Component {
                               {resultsCount} training sites sorted by{' '}
                               {this.renderSortByDropdown(true)}
                               <span className={styles.desktopSortByValue}>
-                                {sortByOption
-                                  .replace('-', '')
-                                  .split('_')
-                                  .join(' ')}
+                                {sortByOption.replace('-', '')}
                               </span>
                             </div>
                           </MediaQuery>

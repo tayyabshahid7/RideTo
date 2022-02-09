@@ -65,8 +65,8 @@ export const SORTBY = {
          PRICE_DOWN_UP: 'price',
          PRICE_UP_DOWN: '-price',
          RATING: '-rating',
-         NEXT_AVAILABLE_DATE_UP: 'next_available_date',
-         NEXT_AVAILABLE_DATE_DOWN: '-next_available_date'
+         NEXT_AVAILABLE_DATE_UP: 'date',
+         NEXT_AVAILABLE_DATE_DOWN: '-date'
        }
 
 export const MAPBOX_KEY = process.env.REACT_APP_MAPBOX_KEY
