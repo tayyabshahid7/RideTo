@@ -1,35 +1,36 @@
-import React, { Component } from 'react'
-import moment from 'moment'
-import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
+import { Col, Container, Row } from 'reactstrap'
 import {
-  UncontrolledDropdown,
-  DropdownToggle,
+  DropdownItem,
   DropdownMenu,
-  DropdownItem
+  DropdownToggle,
+  UncontrolledDropdown
 } from 'reactstrap'
-import { Container, Row, Col } from 'reactstrap'
+import React, { Component } from 'react'
 import { SortByOptions, getTitleFor } from 'common/info'
-import { LICENCE_TYPES } from 'common/constants'
-import ResultsHeader from './ResultsHeader'
-import styles from './ResultPage.scss'
-import DateSelector from './DateSelector'
-import CourseItem from './CourseItem'
-import RideToButton from 'components/RideTo/Button'
+import { deleteParam, normalizePostCode, setParam } from 'utils/helper'
+import { flashDiv, getStaticData } from 'services/page'
+
+import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import CourseItem from './CourseItem'
+import DateSelector from './DateSelector'
+import { LICENCE_TYPES } from 'common/constants'
 import Loading from 'components/Loading'
-import { parseQueryString } from 'services/api'
+import MediaQuery from 'react-responsive'
+import POMBanner from './POMBanner'
+import { Redirect } from 'react-router-dom'
+import ResultsHeader from './ResultsHeader'
+import RideToButton from 'components/RideTo/Button'
 import classnames from 'classnames'
 import { fetchCoursesTypes } from 'services/course-type'
-import isEqual from 'lodash/isEqual'
-import { isBankHoliday } from 'services/misc'
-import { getCourseIdFromSearch } from 'services/course'
-import { Redirect } from 'react-router-dom'
-import { setParam, deleteParam, normalizePostCode } from 'utils/helper'
-import { getStaticData, flashDiv } from 'services/page'
-import POMBanner from './POMBanner'
-import loadable from '@loadable/component'
-import MediaQuery from 'react-responsive'
 import { fetchSingleRidetoCourse } from 'services/course'
+import { getCourseIdFromSearch } from 'services/course'
+import { isBankHoliday } from 'services/misc'
+import isEqual from 'lodash/isEqual'
+import loadable from '@loadable/component'
+import moment from 'moment'
+import { parseQueryString } from 'services/api'
+import styles from './ResultPage.scss'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -812,7 +813,7 @@ class ResultPage extends Component {
                               <div className={classnames(styles.schoolCount)}>
                                 <span>{resultsCount} Results by </span>
                                 {this.renderSortByDropdown(true)}
-                                <i className="fas fa-caret-down"></i>
+                                {/* <i className="fas fa-caret-down"></i> */}
                                 <span className={styles.desktopSortByValue}>
                                   {sortByOption.replace('-', '')}
                                 </span>
