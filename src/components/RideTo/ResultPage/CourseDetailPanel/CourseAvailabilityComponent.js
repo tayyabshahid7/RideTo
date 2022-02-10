@@ -14,6 +14,7 @@ import moment from 'moment'
 import styles from './styles.scss'
 
 class CourseAvailabilityComponent extends React.Component {
+  _isMounted = false
   constructor(props) {
     super(props)
 
@@ -56,30 +57,67 @@ class CourseAvailabilityComponent extends React.Component {
 
   getNextDateAvailable(supplierId, courseType) {
     fetchNextDateAvailable(supplierId, courseType).then(data => {
-      this.setState({
-        initialDate: data.next_date_available,
-        calendar: {
-          year: moment(data.next_date_available)
-            .toDate()
-            .getFullYear(),
-          month: moment(data.next_date_available)
-            .toDate()
-            .getMonth()
+      let showInstantDate = null
+      const dateInArray =
+        (
+          this.props.supplier.excluded_dates.find(item => {
+            return item === data.next_date_available
+          }) || []
+        ).length > 0
+      const nextDtAvailableIsBeforeToday = moment().isBefore(
+        data.next_date_available
+      )
+
+      const DtAvailableIsSameToday = moment().isSame(data.next_date_available)
+
+      if (nextDtAvailableIsBeforeToday) {
+        showInstantDate = data.next_date_available
+      }
+
+      let momentDate = moment(data.next_date_available)
+      if (
+        this.props.supplier.excluded_days.includes(momentDate.format('dddd'))
+      ) {
+        showInstantDate = null
+      }
+      if (showInstantDate && !this.props.supplier.instant_book) {
+        if (!dateInArray) {
+          showInstantDate = data.next_date_available
+        } else {
+          showInstantDate = null
         }
-      })
+      }
+      if (DtAvailableIsSameToday) {
+        showInstantDate = null
+      }
+
+      const initialCalendarDate =
+        data.next_date_available && nextDtAvailableIsBeforeToday
+          ? moment(data.next_date_available)
+          : moment()
+
+      this._isMounted &&
+        this.setState({
+          initialDate: showInstantDate,
+          calendar: {
+            year: initialCalendarDate.format('YYYY'),
+            month: initialCalendarDate.toDate().getMonth()
+          }
+        })
       this.props.onUpdate({
-        instantDate: data.next_date_available
+        instantDate: showInstantDate
       })
     })
   }
 
   componentDidMount() {
+    this._isMounted = true
     const { courseType, supplier } = this.props
     if (supplier.instant_book) {
       this.setState({ loadingCourses: true }, () => this.loadCourses())
     }
 
-    this.getNextDateAvailable(supplier.id, courseType)
+    this._isMounted && this.getNextDateAvailable(supplier.id, courseType)
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -317,6 +355,10 @@ class CourseAvailabilityComponent extends React.Component {
   handleChangeRawEvent(event) {
     const { onUpdate } = this.props
     onUpdate({ [event.target.name]: event.target.value })
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   render() {

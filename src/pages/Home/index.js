@@ -1,11 +1,10 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import styles from './styles.scss'
-import { IconLongArrowRight } from 'assets/icons/'
-import classnames from 'classnames'
-
 import { Button } from 'components/ConnectForm'
+import { IconLongArrowRight } from 'assets/icons/'
+import { Link } from 'react-router-dom'
 import Logo from 'components/common/Logo'
+import React from 'react'
+import classnames from 'classnames'
+import styles from './styles.scss'
 
 function Home() {
   return (
@@ -87,8 +86,8 @@ function Home() {
           </a>
         </section>
         <p className={styles.copyright}>
-          © 2020 RideTo Ltd, Registered Company Number: 10454345, Registered
-          Office: Dunsden Green, Reading, Oxfordshire RG4 9QD
+          © 2022 RideTo Ltd, Registered Company Number: 10454345, Registered
+          Office: 11 Orange Row, Brighton, BN1 1UQ
         </p>
       </section>
     </div>

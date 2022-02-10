@@ -1,9 +1,10 @@
-import React, { useState, Fragment } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
+
 import MapComponent from 'components/RideTo/MapComponent'
-import styles from './styles.scss'
-import moment from 'moment'
+import RideToButton from 'components/RideTo/Button'
 import { getTrainingStatus } from 'services/course'
-import classnames from 'classnames'
+import moment from 'moment'
+import styles from './styles.scss'
 
 function UpComingCourse({ course, title, handleClick }) {
   const [isMapVisible, setIsMapVisible] = useState(false)
@@ -16,6 +17,16 @@ function UpComingCourse({ course, title, handleClick }) {
     setIsMapVisible(prevState => !prevState)
   }
 
+  useEffect(() => {
+    if (
+      window.location.hash &&
+      window.location.hash === '#orders-section' &&
+      handleClick
+    ) {
+      handleClick(course)
+    }
+  }, [])
+
   return (
     <div className={styles.container}>
       <h3 className={styles.subtitle}>
@@ -24,7 +35,7 @@ function UpComingCourse({ course, title, handleClick }) {
             onClick={() => {
               handleClick(course)
             }}
-            className={styles.orderButton}>
+            className={styles.mapButton}>
             {title}
           </button>
         ) : (
@@ -74,15 +85,17 @@ function UpComingCourse({ course, title, handleClick }) {
             : getTrainingStatus(status)}
         </div>
       )}
-      {handleClick && (
-        <button
-          onClick={() => {
-            handleClick(course)
-          }}
-          className={classnames(styles.orderButton, styles.viewDetails)}>
-          View details
-        </button>
-      )}
+      <div className={styles.viewOrderDetails}>
+        {handleClick && (
+          <RideToButton
+            alt
+            onClick={() => handleClick(course)}
+            id="order-side-panel"
+            className={styles.viewOrderbutton}>
+            View / Edit
+          </RideToButton>
+        )}
+      </div>
     </div>
   )
 }
