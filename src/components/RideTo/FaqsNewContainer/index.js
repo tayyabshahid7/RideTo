@@ -111,8 +111,22 @@ function FaqsNewContainer() {
   useEffect(() => {
     const categories = get(response, 'results', [])
     const questions = categories.filter(item => item.name === selected)
-    const item = get(questions, '[0].category[0]', '')
+    let item = get(questions, '[0].category[0]', '')
+    if (
+      window.location.hash &&
+      window.location.hash === '#changeorcancelbooking'
+    ) {
+      let loadItems = get(questions, '[0].category', '')
 
+      if (loadItems) {
+        loadItems.map((i, idx) => {
+          if (i.slug === 'how-do-i-change-or-cancel-my-booking') {
+            item = i
+            setSelectedDesktopItem(idx)
+          }
+        })
+      }
+    }
     setSelectedDesktop(item)
   }, [selected])
 
