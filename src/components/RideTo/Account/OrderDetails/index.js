@@ -297,7 +297,7 @@ class OrderDetails extends React.Component {
                           </span>{' '}
                           or visit our{' '}
                           <a
-                            href="http://localhost:8000/contact#changeorcancelbooking"
+                            href="/contact#changeorcancelbooking"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.HelpPage}>
