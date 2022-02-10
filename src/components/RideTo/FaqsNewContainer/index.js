@@ -124,6 +124,7 @@ function FaqsNewContainer() {
             item = i
             setSelectedDesktopItem(idx)
           }
+          return item
         })
       }
     }
