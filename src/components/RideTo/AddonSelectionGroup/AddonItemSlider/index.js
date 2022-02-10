@@ -116,6 +116,10 @@ function AddonCard(props) {
           onClose={toggleModal}
           title={props.title}
           images={props.addon.images}
+          sizes={props.sizes}
+          selected={props.selectedSize}
+          onClick={handleSelectSize}
+          sizeRequired={props.sizeRequired}
         />
       )}
       <div className={styles.card}>

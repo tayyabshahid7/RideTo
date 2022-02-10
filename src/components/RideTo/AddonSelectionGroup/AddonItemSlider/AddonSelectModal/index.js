@@ -21,7 +21,16 @@ const CloseButtonIcon = ({ icon, onClick }) => {
   )
 }
 
-const AddonSelectModal = ({ showModal, onClose, title, images }) => {
+const AddonSelectModal = ({
+  showModal,
+  onClose,
+  title,
+  images,
+  sizes,
+  selectedSize,
+  handleSelectSize,
+  sizeRequired
+}) => {
   const settings = {
     slidesToShow: 3.2,
     infinite: true,
@@ -93,10 +102,10 @@ const AddonSelectModal = ({ showModal, onClose, title, images }) => {
             <div className={styles.card__selectSizeButton}>
               {props.sizes.length > 1 && (
                 <AddonSizes
-                  sizes={props.sizes}
-                  selected={props.selectedSize}
+                  sizes={sizes}
+                  selected={selectedSize}
                   onClick={handleSelectSize}
-                  sizeRequired={props.sizeRequired}
+                  sizeRequired={sizeRequired}
                 />
               )}
             </div>
