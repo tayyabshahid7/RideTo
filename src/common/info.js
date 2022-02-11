@@ -318,10 +318,10 @@ export const Faqs = [
 
 export const SortByOptions = [
          { value: SORTBY.DISTANCE, title: 'Sort by Distance' },
+         { value: SORTBY.NEXT_AVAILABLE_DATE_UP, title: 'Sort by Date' },
          { value: SORTBY.PRICE_DOWN_UP, title: 'Sort by Price' },
          // { value: SORTBY.PRICE_UP_DOWN, title: 'Sort by Price Desc' },
-         { value: SORTBY.RATING, title: 'Sort by Rating' },
-         { value: SORTBY.NEXT_AVAILABLE_DATE_UP, title: 'Sort by Date' }
+         { value: SORTBY.RATING, title: 'Sort by Rating' }
        ]
 
 export const Features = [
