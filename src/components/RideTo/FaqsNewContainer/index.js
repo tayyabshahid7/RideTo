@@ -74,6 +74,7 @@ function FaqsNewContainer() {
   const handleClickDesktop = (item, idx, title) => {
     setSelectedDesktop(item)
     setSelectedDesktopItem(idx)
+    window.location.hash = `#${item.slug}`
   }
 
   const categories = get(response, 'results', [])
@@ -114,7 +115,7 @@ function FaqsNewContainer() {
     let item = get(questions, '[0].category[0]', '')
     if (
       window.location.hash &&
-      window.location.hash === '#changeorcancelbooking'
+      window.location.hash === '#how-do-i-change-or-cancel-my-booking'
     ) {
       let loadItems = get(questions, '[0].category', '')
 
