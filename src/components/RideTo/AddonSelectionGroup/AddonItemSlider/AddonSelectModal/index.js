@@ -57,7 +57,6 @@ const AddonSelectModal = ({
       }
     ]
   }
-  console.log(images)
   return (
     <Modal
       isOpen={showModal}
@@ -100,7 +99,7 @@ const AddonSelectModal = ({
           </div>
           <div className={styles.card__buttonWrapper}>
             <div className={styles.card__selectSizeButton}>
-              {props.sizes.length > 1 && (
+              {sizes.length > 1 && (
                 <AddonSizes
                   sizes={sizes}
                   selected={selectedSize}
@@ -110,13 +109,13 @@ const AddonSelectModal = ({
               )}
             </div>
             <div className={styles.addToBacketButton}>
-              <RideToButton
+              {/* <RideToButton
                 id={`addon-${kebabCase(props.name)}`}
                 alt={props.isAdded}
                 className={styles.selectButton}
                 onClick={() => onClick(props.addon)}>
                 <span>{!props.isAdded ? 'Add to Basket' : 'Remove'}</span>
-              </RideToButton>
+              </RideToButton> */}
             </div>
           </div>
         </div>

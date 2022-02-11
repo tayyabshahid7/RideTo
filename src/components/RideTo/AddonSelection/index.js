@@ -147,7 +147,6 @@ class AddonSelection extends React.Component {
 
   handleAddAddon(addon) {
     const { addons } = this.state
-
     if (!addon.selectedSize) {
       this.setState({
         addons: addons.map(a =>
@@ -191,7 +190,6 @@ class AddonSelection extends React.Component {
 
   handleSizeUpdate(addon, selectedSize) {
     const { addons, selectedAddons } = this.state
-    console.log(addon)
     this.setState(
       {
         addons: this.updateAddonSize(addons, addon, selectedSize),
@@ -211,7 +209,6 @@ class AddonSelection extends React.Component {
         }
       }
     )
-    console.log(this.state.selectedAddons)
   }
 
   async handleContinue() {
@@ -271,7 +268,6 @@ class AddonSelection extends React.Component {
 
   isAddonSelected(addon) {
     const { selectedAddons } = this.state
-
     return selectedAddons.filter(item => item.id === addon.id).length > 0
   }
 
