@@ -11,6 +11,10 @@
 .row {
   display: flex;
   justify-content: space-between;
+  .row__fullAmount{
+    font-size: 15px;
+    line-height: 19px;
+  }
 }
 
 
