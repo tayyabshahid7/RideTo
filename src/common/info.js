@@ -14,7 +14,13 @@ export const BikeHires = [
   { value: BIKE_HIRE.AUTO_50CC, title: 'Automatic 50cc' },
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' },
   { value: BIKE_HIRE.MANUAL, title: 'Manual 125cc' },
-  { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' }
+  { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' },
+  { value: BIKE_HIRE.BIKE_TYPE_A_MANUAL, title: 'A Manual Bike' },
+  { value: BIKE_HIRE.BIKE_TYPE_A1_MANUAL, title: 'A1 Manual Bike' },
+  { value: BIKE_HIRE.BIKE_TYPE_A2_MANUAL, title: 'A2 Manual Bike' },
+  { value: BIKE_HIRE.BIKE_TYPE_A_AUTO, title: 'A Auto Bike' },
+  { value: BIKE_HIRE.BIKE_TYPE_A1_AUTO, title: 'A1 Auto Bike' },
+  { value: BIKE_HIRE.BIKE_TYPE_A2_AUTO, title: 'A2 Auto Bike' }
 ]
 
 export function getFullLicenseBikeHires(course, prevBikeType) {
@@ -245,6 +251,18 @@ export function formatBikeConstant(constant) {
     case 'BIKE_TYPE_NONE':
     case 'none':
     case 'no':
+    case 'BIKE_TYPE_A_MANUAL':
+      return BIKE_HIRE.BIKE_TYPE_A_MANUAL
+    case 'BIKE_TYPE_A1_MANUAL':
+      return BIKE_HIRE.BIKE_TYPE_A1_MANUAL
+    case 'BIKE_TYPE_A2_MANUAL':
+      return BIKE_HIRE.BIKE_TYPE_A2_MANUAL
+    case 'BIKE_TYPE_A_AUTO':
+      return BIKE_HIRE.BIKE_TYPE_A_AUTO
+    case 'BIKE_TYPE_A1_AUTO':
+      return BIKE_HIRE.BIKE_TYPE_A1_AUTO
+    case 'BIKE_TYPE_A2_AUTO':
+      return BIKE_HIRE.BIKE_TYPE_A2_AUTO
     default:
       return BIKE_HIRE.NO
   }
