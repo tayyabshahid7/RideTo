@@ -280,7 +280,7 @@ class OrderSummary extends Component {
               return to the results page to pick a later date.
             </div>
           )}
-          {(!instantBook || isFullLicence) && (
+          {!instantBook && (
             <div id="terms-conditions-section" className={styles.information}>
               <p>
                 You won't be charged until your booking is confirmed, we'll just
