@@ -269,27 +269,45 @@ class OrderDetails extends React.Component {
             {!isFullLicence &&
               !this.state.isOrderCancelled &&
               !this.state.cancelButtonIsClicked && (
-                <React.Fragment>
-                  <RideToButton
-                    alt
-                    id="order-cancel-btn"
-                    onClick={this.handleClick}
-                    className={styles.cancelButton}>
-                    Cancel Order
-                  </RideToButton>
-                  {/* {this.state.messageCancelOrder && (
+                <div className={styles.rowContainer}>
                   <div>
-                    <p>{this.state.message}</p>
+                    <RideToButton
+                      alt
+                      id="order-cancel-btn"
+                      onClick={this.handleClick}
+                      className={styles.cancelButton}>
+                      Cancel Order
+                    </RideToButton>
                   </div>
-                )} */}
-                  {this.state.messageNoticePeriod && (
-                    <div className={styles.cancelButtonRow}>
-                      <p className={styles.pMessage__notice}>
-                        {this.state.message}
-                      </p>
-                    </div>
-                  )}
-                </React.Fragment>
+                  <div>
+                    {this.state.messageNoticePeriod && (
+                      <div className={styles.cancelButtonRow}>
+                        <p className={styles.pMessage__notice}>
+                          {this.state.message}
+                        </p>
+                      </div>
+                    )}
+                    {!this.state.messageNoticePeriod && (
+                      <div className={styles.pMessage__changeDate}>
+                        <p className={styles.pMessageChangeDate}>
+                          To change the date or details of your training, please
+                          email{' '}
+                          <span className={styles.pEmail}>
+                            hello@rideto.com
+                          </span>{' '}
+                          or visit our{' '}
+                          <a
+                            href="/contact#how-do-i-change-or-cancel-my-booking"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.HelpPage}>
+                            Help Page
+                          </a>
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
               )}
             {!this.state.isOrderCancelled && this.state.cancelButtonIsClicked && (
               <div className={styles.rowContainer}>

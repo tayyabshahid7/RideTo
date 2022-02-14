@@ -92,7 +92,7 @@ function UpComingCourse({ course, title, handleClick }) {
             onClick={() => handleClick(course)}
             id="order-side-panel"
             className={styles.viewOrderbutton}>
-            View / Edit
+            View / Manage
           </RideToButton>
         )}
       </div>

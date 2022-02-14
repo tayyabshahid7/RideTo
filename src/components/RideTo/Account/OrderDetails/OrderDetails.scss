@@ -6,7 +6,7 @@
   font-family: var(--font-proxima);
   font-size: 14px;
   padding: 50px 60px;
-  padding-bottom: 64px;
+  padding-bottom: 70px;
 
   h4,
   h5 {
@@ -36,7 +36,7 @@
 
 .map {
   height: 240px;
-  padding-top: 1.2em;
+  padding-top: 2em;
 }
 
 .cancelButtonRow {
@@ -66,6 +66,29 @@
 .pMessage {
   color: red !important;
   font-weight: bold;
+}
+
+
+.pMessage__changeDate{
+  position: static;
+  display: inline-flex;
+  float: right;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.pMessageChangeDate {
+  font-weight: 500;
+  text-align: right;
+  .pEmail {
+    color: var(--primary-color);
+    font-weight: bold;
+  }
+  .HelpPage {
+    color: var(--primary-color) !important;
+    font-weight: bold;
+    cursor: pointer;
+  }
 }
 
 .pMessage__notice {
