@@ -4,7 +4,7 @@
 
 .headingWrapper {
   @media (max-width: 768px) {
-    max-width: 16em;
+    // max-width: 16em;
     padding: 0;
     margin-left: 0;
     margin-right: auto;
@@ -13,10 +13,10 @@
 
 .heading {
   font-family: var(--font-rift-bold);
-  font-size: 2rem;
+  font-size: 40px;
   padding: 0;
   margin: 0;
-  margin-top: 2rem;
+  margin-top: 10px;
 
   @media (min-width: 768px) {
     font-size: 40px;
@@ -30,7 +30,7 @@
   color: var(--grey-color);
   margin-bottom: 24px;
   @media (max-width: 768px) {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     justify-content: center;
     font-size: 15px;
   }
@@ -63,6 +63,7 @@
   line-height: 24px !important;
   font-weight: bold !important;
   background: #000;
+  border: 25px !important;
 
   > * {
     pointer-events: none;

@@ -7,7 +7,7 @@ import React, { Fragment, useState } from 'react'
 import AddonSelectModal from './AddonSelectModal'
 import AddonSizes from './AddonSizes'
 import RideToButton from 'components/RideTo/Button'
-import Slick from 'react-slick'
+import RideToSlider from '../../../RideToSlider'
 import StarsComponent from '../../StarsComponent'
 import kebabCase from 'lodash/kebabCase'
 import styles from './AddonItemSlider.scss'
@@ -19,34 +19,39 @@ const AddonItemSlider = props => {
 
   const settings = {
     nextArrow: <NextArrow />,
-    // dots: true,
+    dots: true,
     prevArrow: <PrevArrow />,
-    slidesToShow: 4.2,
-    infinite: addons.length > 3,
+    slidesToShow: 4.5,
+    infinite: false,
     className: styles.slider,
+    centerPadding: '0',
+    adaptiveHeight: true,
+    appendDots: dots => <ul>{dots}</ul>,
+    customPaging: i => <div className={styles.dot}></div>,
     responsive: [
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3.2,
+          slidesToShow: 3.5,
           slidesToScroll: 1,
-          infinite: addons.length > 2,
-          dots: true
+          infinite: false
         }
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 2.2,
+          slidesToShow: 2.4,
           slidesToScroll: 1,
-          initialSlide: 1
+          initialSlide: 1,
+          infinite: false
         }
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1.2,
-          slidesToScroll: 1
+          slidesToShow: 1.4,
+          slidesToScroll: 1,
+          infinite: false
         }
       }
     ]
@@ -69,8 +74,8 @@ const AddonItemSlider = props => {
   }
 
   return (
-    <div>
-      <Slick {...settings}>
+    <div className={styles.sliderWrapper}>
+      <RideToSlider settings={settings}>
         {addons.map((addon, index) => (
           <AddonCard
             key={index}
@@ -87,7 +92,7 @@ const AddonItemSlider = props => {
             onAdd={onAdd}
           />
         ))}
-      </Slick>
+      </RideToSlider>
     </div>
   )
 }
@@ -103,7 +108,8 @@ function AddonCard(props) {
     onSizeUpdate(addon, selectedSize)
   }
 
-  const toggleModal = () => {
+  const toggleModal = event => {
+    event.preventDefault()
     setModal(!modal)
   }
 
@@ -119,6 +125,10 @@ function AddonCard(props) {
           selected={props.selectedSize}
           onClick={handleSelectSize}
           sizeRequired={props.sizeRequired}
+          isAdded={props.isAdded}
+          name={props.name}
+          addon={props.addon}
+          onClick={onClick}
         />
       )}
       <div className={styles.card}>

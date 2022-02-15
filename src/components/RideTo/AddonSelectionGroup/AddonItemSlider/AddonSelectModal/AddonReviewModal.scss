@@ -1,0 +1,33 @@
+.reviewName {
+    font-family: var(--font-rift);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+    margin: 8px 0px;
+}
+
+.reviewDescription{
+    font-family: var(--font-proxima);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    color: #141414;
+    margin: 8px 0px;
+}
+
+.reviewDate{
+    font-family: var(--font-proxima);
+    font-style: normal;
+    font-weight: normal;
+    font-size: 15px;
+    line-height: 24px;
+    color: #141414;
+    opacity: 0.5;
+    margin: 8px 0px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #EEEEEE;
+    margin-bottom: 24px;
+}

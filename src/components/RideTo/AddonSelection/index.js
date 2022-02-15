@@ -341,6 +341,16 @@ class AddonSelection extends React.Component {
             </Col>
             <Mobile>
               <Col md="12">
+                <div className={styles.checkoutWrapper}>
+                  <Button
+                    id="addons-checkout-button"
+                    color="primary"
+                    className={styles.checkoutButton}
+                    onClick={this.handleContinue}>
+                    <span>Continue To Checkout</span>
+                    <IconArrowRight className={styles.arrowIcon} />
+                  </Button>
+                </div>
                 <div className={styles.checkListContainer}>
                   <h4>ON THE DAY OF TRAINING YOU'LL NEED TO BRING:</h4>
                   <div className={styles.checkLists}>

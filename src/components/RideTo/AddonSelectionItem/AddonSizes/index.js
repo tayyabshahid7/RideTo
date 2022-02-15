@@ -9,14 +9,10 @@ const AddonSizes = ({ sizes, selected, onClick, sizeRequired }) => {
   const handleChange = event => {
     const size = sizes.find(({ code }) => code === event.target.value)
 
-    console.log('size')
-    console.log(size)
     if (size.quantity) {
       onClick(size)
     }
   }
-
-  console.log(sizes, selected, onClick, sizeRequired)
 
   return (
     <Fragment>

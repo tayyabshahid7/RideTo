@@ -1,12 +1,33 @@
+.sliderWrapper {
+  display: block;
+}
+
+.slick-list > div {
+  margin-left: 0;
+  }
+
 
 .slider {
-  border: 1px solid black;
   min-width: 244px;
 }
 
+.dot {
+    height: 4px;
+    width: 76px;
+    background: #141414;
+    position: relative;
+    opacity: 0.1;
+}
+
+.slick-dots .slick-active .dot {
+  width: 56px;
+  top: 0px;
+  overflow: hidden;
+}
+
 .card {
-  width: 100%;
-  border: 1px solid black;
+  width: 244px;
+  height: auto;
   overflow: visible;
   background: white;
   display: flex;
@@ -14,7 +35,6 @@
   justify-content: space-between;
   padding: 1.5rem;
   
-  border-right: 2rem;
 
   &__image {
     max-width: 100%;
@@ -61,6 +81,10 @@
 
   &__star {
     
+  }
+
+  &__selectSizeButton > * {
+    margin-bottom: 8px;
   }
 
   .buttonWrapper {
