@@ -1,0 +1,177 @@
+.sliderWrapper {
+  display: block;
+}
+
+.slick-list > div {
+  margin-left: 0;
+  }
+
+
+.slider {
+  min-width: 244px;
+}
+
+.dot {
+    height: 4px;
+    width: 76px;
+    background: #141414;
+    position: relative;
+    opacity: 0.1;
+}
+
+.slick-dots .slick-active .dot {
+  width: 56px;
+  top: 0px;
+  overflow: hidden;
+}
+
+.card {
+  width: 244px;
+  height: auto;
+  overflow: visible;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  
+
+  &__image {
+    max-width: 100%;
+    max-height: 7.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain;
+    cursor: pointer;
+  }
+
+  &__price {
+    text-align: center;
+    font-size: 22px;
+    margin-top: 16px;
+    padding-top: 0;
+    color: #6FC274;
+    font-family: var(--font-rift-bold);
+    // margin-bottom: 1.25rem;
+  }
+
+  &__freeDelivery {
+    font-size: 13px;
+    font-family: var(--font-proxima);
+    text-align: center;
+    color: #141414;
+    flex-grow: 0;
+  }
+  &__title {
+    font-family: var(--font-rift-bold);
+    padding: .2em;
+    align-self: stretch;
+    font-style: normal;
+    font-size: 22px;
+    text-align: center;
+    color: #000000;
+  }
+
+  &__rating {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.75rem;
+  }
+
+  &__star {
+    
+  }
+
+  &__selectSizeButton > * {
+    margin-bottom: 8px;
+  }
+
+  .buttonWrapper {
+    display: block;
+    border: 2px solid red;
+    margin-bottom: 0;
+  }
+}
+
+
+.selectButton {
+  background-color: #2CCEAC;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: center;
+  justify-content: center;
+  border: 1px solid var(--primary-color);
+  align-items: center;
+  color: white !important;
+}
+
+
+
+// .slide {
+//   position: relative;
+//   display: flex;
+//   height: 29.375rem;
+//   background: rgba(#000000, 0.1);
+//   align-items: center;
+//   text-align: center;
+//   flex-direction: column;
+//   justify-content: space-between;
+//   margin-left: 1rem;
+
+//   img {
+//     // max-width: 120px;
+//     // max-height: 120px;
+//     // max-width: calc(100% - 1rem);
+//     // max-height: 195px;
+//     width: 208px;
+//     height: 208px;
+//     top: 0px; 
+//     object-fit: contain;
+//     cursor: pointer;
+
+//     @media (min-width: 1025px) {
+//       max-height: 139px;
+//     }
+//   }
+
+//   @media (min-width: 1025px) {
+//     height: 256px;
+//     margin-right: 4px;
+//     margin-left: 4px;
+//   }
+
+//   .title {
+//     position: absolute;
+//     bottom: 2rem;
+//     font-size: 1.375rem;
+//     margin: 0;
+//     color: var(--dark-color);
+//     text-align: center;
+//   }
+// }
+
+
+
+
+// .freeDelivery {
+//   margin-bottom: 1rem;
+//   font-size: 0.875rem;
+// }
+
+
+// .priceWrap {
+//   padding-top: 1rem;
+//   border-top: 1px solid var(--light-grey-color);
+//   justify-content: space-between;
+//   display: flex;
+  
+// }
+
+
+
+
+// .priceDiscounted {
+//   @extend .price;
+//   text-decoration-line: line-through; 
+// }

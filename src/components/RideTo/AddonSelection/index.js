@@ -1,17 +1,18 @@
-import React from 'react'
-import { Container, Row, Col, Button } from 'reactstrap'
-import moment from 'moment'
-import classnames from 'classnames'
-import _ from 'lodash'
-import { parseQueryString } from 'services/api'
-import { getSupplier, getAddons } from 'services/page'
-import NavigationComponent from 'components/RideTo/NavigationComponent'
-import AddonSelectionItem from 'components/RideTo/AddonSelectionItem'
-import styles from './AddonSelection.scss'
-import { getCourseTitle } from 'services/course'
-import { IconArrowRight } from 'assets/icons'
+import { Button, Col, Container, Row } from 'reactstrap'
 import { Desktop, Mobile } from 'common/breakpoints'
-import { IconHelmet, IconMask, IconJacket, IconBoots } from 'assets/icons'
+import { IconBoots, IconHelmet, IconJacket, IconMask } from 'assets/icons'
+import { getAddons, getSupplier } from 'services/page'
+
+import AddonSelectionGroup from 'components/RideTo/AddonSelectionGroup'
+import { IconArrowRight } from 'assets/icons'
+import NavigationComponent from 'components/RideTo/NavigationComponent'
+import React from 'react'
+import _ from 'lodash'
+import classnames from 'classnames'
+import { getCourseTitle } from 'services/course'
+import moment from 'moment'
+import { parseQueryString } from 'services/api'
+import styles from './AddonSelection.scss'
 
 const CHECKLIST_ITEMS = [
   {
@@ -96,6 +97,9 @@ class AddonSelection extends React.Component {
     let addons = getAddons().filter(
       ({ name }) => name !== 'Peace Of Mind Policy'
     )
+
+    let addonGroupsObj = {}
+
     addons.forEach(addon => {
       if (addon.sizes && addon.sizes.length > 0) {
         addon.selectedSize = null
@@ -103,10 +107,24 @@ class AddonSelection extends React.Component {
       if (addon.sizes && addon.sizes.length === 1) {
         addon.selectedSize = addon.sizes[0]
       }
+      if (!addon.addon_group) {
+        addon.addon_group = 'OTHER'
+      }
+      if (addon.addon_group in addonGroupsObj) {
+        addonGroupsObj[addon.addon_group].push(addon)
+      } else {
+        addonGroupsObj[addon.addon_group] = []
+        addonGroupsObj[addon.addon_group].push(addon)
+      }
     })
+    const addonGroups = Object.keys(addonGroupsObj).map(key => [
+      key,
+      addonGroupsObj[key]
+    ])
 
     this.state = {
       addons,
+      addonGroups,
       postcode: qs.postcode || '',
       courseType: qs.courseType || '',
       qs: qs || {},
@@ -124,11 +142,11 @@ class AddonSelection extends React.Component {
     this.handleContinue = this.handleContinue.bind(this)
     this.handleSizeUpdate = this.handleSizeUpdate.bind(this)
     this.updateAddonSize = this.updateAddonSize.bind(this)
+    this.handleIsAddonSelected = this.isAddonSelected.bind(this)
   }
 
   handleAddAddon(addon) {
     const { addons } = this.state
-
     if (!addon.selectedSize) {
       this.setState({
         addons: addons.map(a =>
@@ -172,7 +190,6 @@ class AddonSelection extends React.Component {
 
   handleSizeUpdate(addon, selectedSize) {
     const { addons, selectedAddons } = this.state
-
     this.setState(
       {
         addons: this.updateAddonSize(addons, addon, selectedSize),
@@ -251,7 +268,6 @@ class AddonSelection extends React.Component {
 
   isAddonSelected(addon) {
     const { selectedAddons } = this.state
-
     return selectedAddons.filter(item => item.id === addon.id).length > 0
   }
 
@@ -290,11 +306,12 @@ class AddonSelection extends React.Component {
     // return null
 
     const {
-      addons,
+      addonGroups,
       navigation,
       gloves_jacket_included,
       helmet_hire
     } = this.state
+
     let checklistItems = CHECKLIST_ITEMS.slice()
     if (gloves_jacket_included) {
       checklistItems[3].keywords = []
@@ -314,14 +331,26 @@ class AddonSelection extends React.Component {
         <Container>
           <Row>
             <Col md="6">
-              <h1 className={styles.heading}>New Rider Essentials</h1>
-              <div className={styles.subHeading}>
-                Get on the road faster with the rider gear you need delivered to
-                your door. FREE delivery with ALL orders.
-              </div>
+              <Col className={styles.headingWrapper}>
+                <h1 className={styles.heading}>New Rider Essentials</h1>
+                <div className={styles.subHeading}>
+                  Get riding faster by adding the gear you need, delivered to
+                  your door.
+                </div>
+              </Col>
             </Col>
             <Mobile>
               <Col md="12">
+                <div className={styles.checkoutWrapper}>
+                  <Button
+                    id="addons-checkout-button"
+                    color="primary"
+                    className={styles.checkoutButton}
+                    onClick={this.handleContinue}>
+                    <span>Continue To Checkout</span>
+                    <IconArrowRight className={styles.arrowIcon} />
+                  </Button>
+                </div>
                 <div className={styles.checkListContainer}>
                   <h4>ON THE DAY OF TRAINING YOU'LL NEED TO BRING:</h4>
                   <div className={styles.checkLists}>
@@ -338,14 +367,14 @@ class AddonSelection extends React.Component {
               </Col>
             </Mobile>
             <Col md="6" className={styles.skipLink}>
-              <Button
+              {/* <Button
                 id="addons-checkout-button"
                 color="primary"
                 className={styles.checkoutButton}
                 onClick={this.handleContinue}>
                 <span>Continue To Checkout</span>
                 <IconArrowRight className={styles.arrowIcon} />
-              </Button>
+              </Button> */}
             </Col>
           </Row>
           <Desktop>
@@ -362,7 +391,19 @@ class AddonSelection extends React.Component {
               </div>
             </div>
           </Desktop>
-          <Row>
+          {addonGroups.map((addon_group, i) => (
+            <Row className={styles.addonsGroupContainer} key={i}>
+              <AddonSelectionGroup
+                addon_group={addon_group}
+                isAdded={this.handleIsAddonSelected}
+                onAdd={this.handleAddAddon}
+                onRemove={this.handleRemoveAddon}
+                onSizeUpdate={this.handleSizeUpdate}
+                // onDetails={this.handleDetails}
+              />
+            </Row>
+          ))}
+          {/* <Row>
             {addons.map((addon, i) => (
               <Col xs="12" key={i}>
                 <AddonSelectionItem
@@ -375,7 +416,7 @@ class AddonSelection extends React.Component {
                 />
               </Col>
             ))}
-          </Row>
+          </Row> */}
           <div className={styles.checkoutWrapper}>
             <Button
               id="addons-checkout-button"

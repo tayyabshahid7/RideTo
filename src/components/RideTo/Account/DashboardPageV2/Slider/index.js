@@ -1,11 +1,13 @@
-import React from 'react'
-import Slick from 'react-slick'
-import styles from './styles.scss'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+
 import { NextArrow, PrevArrow } from './Arrows'
-import { useMediaQuery } from 'react-responsive'
+
+import React from 'react'
+import Slick from 'react-slick'
 import classnames from 'classnames'
+import styles from './styles.scss'
+import { useMediaQuery } from 'react-responsive'
 
 function Slider({ gear, constant }) {
   const isDesktop = useMediaQuery({ minWidth: 1025 })
