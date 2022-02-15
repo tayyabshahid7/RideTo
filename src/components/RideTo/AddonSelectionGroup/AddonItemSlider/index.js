@@ -15,7 +15,7 @@ import styles from './AddonItemSlider.scss'
 // import { useMediaQuery } from 'react-responsive'
 
 const AddonItemSlider = props => {
-  const { addons, isAdded, onAdd, onRemove, onSizeUpdate, onDetails } = props
+  const { addons, isAdded, onAdd, onRemove, onSizeUpdate } = props
 
   const settings = {
     nextArrow: <NextArrow />,
@@ -65,7 +65,6 @@ const AddonItemSlider = props => {
   }
 
   const fullPriceStyle = addon => {
-    console.log(isDiscount(addon))
     if (!isDiscount(addon)) {
       return styles.price
     } else {
@@ -82,6 +81,7 @@ const AddonItemSlider = props => {
             addon={addon}
             image={addon.images[0]}
             price={addon.full_price}
+            fullPriceStyle={fullPriceStyle(addon)}
             title={addon.name}
             sizes={addon.sizes}
             selectedSize={addon.selectedSize}
@@ -128,13 +128,14 @@ function AddonCard(props) {
           isAdded={props.isAdded}
           name={props.name}
           addon={props.addon}
-          onClick={onClick}
+          onClickAddAddon={onClick}
         />
       )}
       <div className={styles.card}>
         <div className={styles.card__body}>
           <img
             src={props.image}
+            alt={props.addon.name}
             className={styles.card__image}
             onClick={toggleModal}
           />

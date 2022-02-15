@@ -399,7 +399,7 @@ class AddonSelection extends React.Component {
                 onAdd={this.handleAddAddon}
                 onRemove={this.handleRemoveAddon}
                 onSizeUpdate={this.handleSizeUpdate}
-                onDetails={this.handleDetails}
+                // onDetails={this.handleDetails}
               />
             </Row>
           ))}

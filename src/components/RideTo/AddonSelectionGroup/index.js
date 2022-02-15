@@ -12,10 +12,6 @@ const GROUPS = {
   CLOTHES_BOOTS: 'Clothes & Boots'
 }
 class AddonSelectionGroup extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-
   render() {
     const {
       addon_group,

@@ -35,7 +35,7 @@ const AddonSelectModal = ({
   isAdded,
   name,
   addon,
-  onClick
+  onClickAddAddon
 }) => {
   const [detailReviewButton, setDetailReviewButton] = useState(true)
 
@@ -65,7 +65,6 @@ const AddonSelectModal = ({
       }
     ]
   }
-  console.log(addon)
   return (
     <Modal
       isOpen={showModal}
@@ -122,7 +121,7 @@ const AddonSelectModal = ({
                 id={`addon-${kebabCase(name)}`}
                 alt={isAdded}
                 className={styles.card__selectButton}
-                onClick={() => onClick(addon)}>
+                onClick={() => onClickAddAddon(addon)}>
                 <span>{!isAdded ? 'Add to Basket' : 'Remove'}</span>
               </RideToButton>
             </div>
