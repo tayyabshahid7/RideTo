@@ -1,7 +1,3 @@
-import 'slick-carousel/slick/slick.css'
-import 'slick-carousel/slick/slick-theme.css'
-
-import { NextArrow, PrevArrow } from './Arrows'
 import React, { Fragment, useState } from 'react'
 
 import AddonSelectModal from './AddonSelectModal'
@@ -9,6 +5,7 @@ import AddonSizes from './AddonSizes'
 import RideToButton from 'components/RideTo/Button'
 import RideToSlider from '../../../RideToSlider'
 import StarsComponent from '../../StarsComponent'
+import classnames from 'classnames'
 import kebabCase from 'lodash/kebabCase'
 import styles from './AddonItemSlider.scss'
 
@@ -18,16 +15,22 @@ const AddonItemSlider = props => {
   const { addons, isAdded, onAdd, onRemove, onSizeUpdate } = props
 
   const settings = {
-    nextArrow: <NextArrow />,
+    // nextArrow: <NextArrow />,
     dots: true,
-    prevArrow: <PrevArrow />,
+    // prevArrow: <PrevArrow />,
     slidesToShow: 4.5,
     infinite: false,
     className: styles.slider,
     centerPadding: '0',
     adaptiveHeight: true,
-    appendDots: dots => <ul>{dots}</ul>,
-    customPaging: i => <div className={styles.dot}></div>,
+    customPaging: i => {
+      return (
+        <button>
+          <div className={styles.dot} />
+        </button>
+      )
+    },
+    dotsClass: styles.dots,
     responsive: [
       {
         breakpoint: 1024,
@@ -66,7 +69,7 @@ const AddonItemSlider = props => {
 
   const fullPriceStyle = addon => {
     if (!isDiscount(addon)) {
-      return styles.price
+      return styles.card__price
     } else {
       return styles.priceDiscounted
     }

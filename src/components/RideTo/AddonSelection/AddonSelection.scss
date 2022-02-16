@@ -43,7 +43,7 @@
   font-family: var(--font-proxima-bold);
 
   @media (max-width: 768px) {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
   }
 }
 
@@ -89,6 +89,7 @@
   @media (max-width: 768px) {
     display: block;
     margin-top: 0;
+    padding-bottom: 2.5rem;
   }
 }
 
@@ -119,11 +120,12 @@
 .checkListContainer {
   border-top: 1px solid rgba(#979797, 0.1);
   padding-top: 32px;
+  border-bottom: 1px solid #EEEEEE;
 
   h4 {
     font-family: var(--font-rift-bold);
     margin-bottom: 16px;
-    font-size: 18px;
+    font-size: 24px;
     line-height: 24px;
   }
 
@@ -245,6 +247,6 @@
 .addonsGroupContainer {
   display: block;
   grid-template-columns: repeat(auto-fit, minmax(12rem, 16rem));
-  gap: 2rem;
+  gap: 1rem;
   justify-content: center;
 }
