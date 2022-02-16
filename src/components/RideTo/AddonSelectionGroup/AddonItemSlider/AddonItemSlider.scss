@@ -9,25 +9,72 @@
 
 .slider {
   min-width: 244px;
+  :global(.slick-track){
+    margin-left: 0;
+  }
 }
 
-.dot {
-    height: 4px;
+.dot {  
+  height: 4px;
+  width: 76px;
+  background: #E1E1E1;
+  position: relative;
+  margin-top: 1.5rem;
+  cursor: pointer;
+  @media (max-width: 400px) {
+    width: 25px;
+  }
+  &:active {
+    background: #141414 ;    
+  }
+
+}
+
+.dots {
+  :global(.slick-dots){
+  }
+}
+
+.dots li {
+  position: relative;
+  display: inline-block;
+  height: 20px;
+  width: 76px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+  @media (max-width: 400px) {
+    width: 25px;
+  }
+  button {
+    border: 0;
+    background: transparent;
+    display: block;
     width: 76px;
-    background: #141414;
-    position: relative;
-    opacity: 0.1;
-}
+    &:focus{
+      outline: none;
+    }
+    @media (max-width: 400px) {
+      width: 25px;
+    }
+  }
 
-.slick-dots .slick-active .dot {
-  width: 56px;
-  top: 0px;
-  overflow: hidden;
+  &:global(.slick-active) {
+    .dot {
+      opacity: 1;
+      background: #141414;
+      width: 76px;
+
+      @media (max-width: 400px) {
+        width: 25px;
+      }
+    }
+  }
 }
 
 .card {
   width: 244px;
-  height: auto;
+  height: 562px;
   overflow: visible;
   background: white;
   display: flex;
@@ -171,7 +218,7 @@
 
 
 
-// .priceDiscounted {
-//   @extend .price;
-//   text-decoration-line: line-through; 
-// }
+.priceDiscounted {
+  @extend .card__price;
+  text-decoration-line: line-through; 
+}
