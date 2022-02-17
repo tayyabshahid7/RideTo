@@ -1,22 +1,26 @@
-import React, { useState, useRef } from 'react'
-import classnames from 'classnames'
-import styles from './SupplierInfo.scss'
-import { IconPlace, IconTram } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
+
+import { IconPlace, IconTram } from 'assets/icons'
+import React, { useRef, useState } from 'react'
+
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import IconText from '../IconText'
-import { getFeatureInfo } from 'services/course'
-import { UncontrolledTooltip } from 'reactstrap'
-import StarsComponent from 'components/RideTo/StarsComponent'
+import MapComponent from 'components/RideTo/MapComponent'
 import ReviewItem from 'components/RideTo/ReviewItem'
 import ReviewsBarComponent from 'components/RideTo/ReviewsBarComponent'
-import MapComponent from 'components/RideTo/MapComponent'
-import { useMediaQuery } from 'react-responsive'
 import RideToButton from 'components/RideTo/Button'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import StarsComponent from 'components/RideTo/StarsComponent'
 import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
+import { UncontrolledTooltip } from 'reactstrap'
+import classnames from 'classnames'
+import { getFeatureInfo } from 'services/course'
+import styles from './SupplierInfo.scss'
+import { useMediaQuery } from 'react-responsive'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
 const ratings = supplier.ratings ? supplier.ratings : []
+const totalReviews = supplier.google_number_of_reviews
+const googleRating = supplier.google_rating
 const trampText = supplier.nearest_tube_station
 supplier.lat = parseFloat(supplier.latitude)
 supplier.lng = parseFloat(supplier.longitude)
@@ -37,15 +41,6 @@ const reviews = {
   '3 Star': 0,
   '2 Star': 0,
   '1 Star': 0
-}
-
-let avgRating = 0
-ratings.forEach(rating => {
-  reviews[`${rating.rating} Star`]++
-  avgRating += rating.rating
-})
-if (ratings.length) {
-  avgRating /= ratings.length
 }
 
 const SupplierInfo = ({ onShowExtra }) => {
@@ -94,7 +89,7 @@ const SupplierInfo = ({ onShowExtra }) => {
     gloves_jacket_included: true,
     on_site_cafe: true,
     on_site_parking: true,
-    indoor_classroom: true,
+    indoor_classroom: true
   }
 
   const validFeatures = Object.keys(feature).filter(x => supplier[x])
@@ -129,14 +124,14 @@ const SupplierInfo = ({ onShowExtra }) => {
           </div>
           <div className={styles.reviews}>
             <StarsComponent
-              rating={avgRating}
+              rating={googleRating}
               className={styles.starComponent}
               onClick={() => handleReviewClick()}
             />
             <span
               onClick={() => handleReviewClick()}
               className={styles.reviewCount}>
-              {ratings.length}
+              {totalReviews}
             </span>
           </div>
         </div>
@@ -212,7 +207,7 @@ const SupplierInfo = ({ onShowExtra }) => {
         </div>
 
         <div ref={reviewBlock} className={styles.reviewsBlock}>
-          <h4 className={styles.blockTitle}>{ratings.length} REVIEWS</h4>
+          <h4 className={styles.blockTitle}>{totalReviews} REVIEWS</h4>
           <ReviewsBarComponent reviews={reviews} />
           <div className={styles.reviewList}>
             {ratings.slice(0, showCnt).map(rating => (
