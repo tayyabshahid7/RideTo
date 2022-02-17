@@ -92,7 +92,35 @@
     cursor: pointer;
   }
 
+  &__priceWrapper:after, &__priceWrapper:before {
+    clear: both;
+    content: "";
+    display: flex;
+  }
+
+
+  &__discountedPrice {
+    font-family: var(--font-rift-bold);
+    display: inline-block;
+    text-align: center;
+    color: #2CCEAC;
+    letter-spacing: 0.01em;
+    text-decoration-line: line-through;
+    line-height: 29px;
+    text-align: center;
+    font-size: 22px;
+    margin-top: 16px;
+    margin-left: 0;
+    margin-right: 0;
+    padding-top: 0;
+    padding: 0;
+    p{
+      padding: 0;
+    }
+  }
+
   &__price {
+    display: inline-block;
     text-align: center;
     font-size: 22px;
     margin-top: 16px;
@@ -101,6 +129,7 @@
     font-family: var(--font-rift-bold);
     // margin-bottom: 1.25rem;
   }
+  
 
   &__freeDelivery {
     font-size: 13px;
@@ -218,7 +247,7 @@
 
 
 
-.priceDiscounted {
-  @extend .card__price;
-  text-decoration-line: line-through; 
-}
+// .priceDiscounted {
+//   @extend .card__price;
+//   text-decoration-line: line-through; 
+// }
