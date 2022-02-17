@@ -5,7 +5,6 @@ import AddonSizes from './AddonSizes'
 import RideToButton from 'components/RideTo/Button'
 import RideToSlider from '../../../RideToSlider'
 import StarsComponent from '../../StarsComponent'
-import classnames from 'classnames'
 import kebabCase from 'lodash/kebabCase'
 import styles from './AddonItemSlider.scss'
 
@@ -85,6 +84,7 @@ const AddonItemSlider = props => {
             image={addon.images[0]}
             price={addon.full_price}
             fullPriceStyle={fullPriceStyle(addon)}
+            isDiscount={isDiscount(addon)}
             title={addon.name}
             sizes={addon.sizes}
             selectedSize={addon.selectedSize}
@@ -142,7 +142,18 @@ function AddonCard(props) {
             className={styles.card__image}
             onClick={toggleModal}
           />
-          <p className={styles.card__price}>£{props.price}</p>
+          {props.isDiscount && (
+            <div className={styles.card__priceWrapper}>
+              <div className={styles.card__discountedPrice}>£{props.price}</div>
+              <div className={styles.card__price}>
+                £{props.addon.discount_price}
+              </div>
+            </div>
+          )}
+          {!props.isDiscount && (
+            <div className={styles.card__price}>£{props.price}</div>
+          )}
+
           <p className={styles.card__freeDelivery}>Includes FREE Delivery</p>
           <h2 className={styles.card__title}>{props.title}</h2>
           <StarsComponent
