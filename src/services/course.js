@@ -641,8 +641,8 @@ export const calcFullLicencePrices = (pricePerHour, hours, addons = []) => {
     0
   )
   const total = (pricePerHour / 100) * hours
-  const now = 25 + addonsPrice
-  const later = total - 25
+  const now = total ? 25 + addonsPrice : addonsPrice
+  const later = total ? total - 25 : 0
 
   return [formatNum(now), formatNum(later)]
 }
