@@ -122,8 +122,8 @@ class OrderDetails extends React.Component {
     } else if (constant !== 'FULL_LICENCE') {
       if (
         trainingPeriod < 5 &&
-        !training_status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
-        !training_status === 'TRAINING_WAITING_RIDER_CONFIRMATION'
+        training_status !== 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
+        training_status !== 'TRAINING_WAITING_RIDER_CONFIRMATION'
       ) {
         this.setState({
           messageNoticePeriod: true,
@@ -134,8 +134,8 @@ class OrderDetails extends React.Component {
       } else if (
         trainingPeriod === 5 &&
         current_hour >= 17 &&
-        !training_status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
-        !training_status === 'TRAINING_WAITING_RIDER_CONFIRMATION'
+        training_status !== 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
+        training_status !== 'TRAINING_WAITING_RIDER_CONFIRMATION'
       ) {
         this.setState({
           messageNoticePeriod: true,
