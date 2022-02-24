@@ -1,15 +1,16 @@
 import React, { Component } from 'react'
-import moment from 'moment'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
+import { fetchRidetoCourses, getCourseTitle } from 'services/course'
+
 import { DATE_FORMAT } from 'common/constants'
 import ResultPage from './ResultPage'
 // import SampleData from './SampleData.json'
 import { SORTBY } from 'common/constants'
-import { fetchRidetoCourses, getCourseTitle } from 'services/course'
-import { fetchSearchLocation } from 'services/geolocation'
-import { parseQueryString } from 'services/api'
-import { getStaticData } from 'services/page'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
 import StateProvider from './StateProvider'
+import { fetchSearchLocation } from 'services/geolocation'
+import { getStaticData } from 'services/page'
+import moment from 'moment'
+import { parseQueryString } from 'services/api'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -46,7 +47,7 @@ class ResultPageContainer extends Component {
 
     this.state = {
       date: null,
-      sortByOption: SORTBY.DISTANCE,
+      sortByOption: SORTBY.NEXT_AVAILABLE_DATE_UP,
       userLocation: null,
       postcode,
       courseType,
@@ -93,7 +94,8 @@ class ResultPageContainer extends Component {
         postcode: postcode,
         radius_miles: 30,
         date,
-        ordering: sortByOption
+        ordering: sortByOption,
+        available: 'True'
       })
       if (results) {
         this.setState({
