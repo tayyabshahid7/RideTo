@@ -1,0 +1,36 @@
+.wrap {
+  display: block;
+  margin-top: 15px;
+
+}
+
+.slider {
+
+  :global(.slick-dots){
+    bottom: -27px;
+    text-align: center;
+
+    li {
+      margin: 0;
+      cursor: pointer;
+
+      button {
+      padding: 0;
+      opacity: 1;
+        &:before {
+          content: '';
+          background: #141414;
+          height: 4px;
+        }
+      }
+
+    }
+  }
+}
+
+.addonImage {
+  background-color: white;
+  padding: 12px;
+  object-fit: contain;
+  cursor: pointer;
+}

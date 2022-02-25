@@ -132,6 +132,9 @@
                         &:hover {
                               background-color: white;  
                         }
+                    .card__active {
+                        background-color: white;  
+                    }
                     }
                 }
                 .card__detailReviewText {
@@ -150,6 +153,9 @@
 
 .slick {
     position: relative;
+    // :global(.slick-list, .slick-track){
+    //     touch-action: pan-y;;
+    //   }
 }
 
 .buttonClose {

@@ -4,12 +4,13 @@ import 'slick-carousel/slick/slick-theme.css'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import React, { useState } from 'react'
 
+import AddonImageSliderModal from '../../AddonImageSliderModal'
 import AddonReviewModal from './AddonReviewModal'
 import AddonSizes from '../AddonSizes'
 import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import RideToButton from 'components/RideTo/Button'
-import RideToSlider from '../../../../RideToSlider'
 import StarsComponent from '../../../StarsComponent'
+import classnames from 'classnames'
 import kebabCase from 'lodash/kebabCase'
 import styles from './AddonSelectModal.scss'
 
@@ -39,37 +40,11 @@ const AddonSelectModal = ({
 }) => {
   const [detailReviewButton, setDetailReviewButton] = useState(true)
 
-  const settings = {
-    slidesToShow: 4,
-    infinite: false,
-    dots: true,
-    className: styles.slick,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-          infinite: false,
-          dots: true
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: false,
-          dots: true
-        }
-      }
-    ]
-  }
   return (
     <Modal
       isOpen={showModal}
       toggle={onClose}
-      fullscreen
+      fullscreen="true"
       scrollable
       backdrop="static"
       modalClassName={styles.modal}>
@@ -92,19 +67,7 @@ const AddonSelectModal = ({
               rating={4}
             />
           </div>
-          <div className={styles.modal__addonSlickImage_container}>
-            <RideToSlider settings={settings}>
-              {images.map((image, index) => (
-                <div key={index} className={styles.modal__addonImageContainer}>
-                  <img
-                    src={image}
-                    alt={image.name}
-                    className={styles.modal__addonImage}
-                  />
-                </div>
-              ))}
-            </RideToSlider>
-          </div>
+          <AddonImageSliderModal images={images} />
           <div className={styles.card__buttonWrapper}>
             <div className={styles.card__selectSizeButton}>
               {sizes.length > 1 && (
@@ -129,7 +92,10 @@ const AddonSelectModal = ({
           <div className={styles.card__detailReviewWrapper}>
             <div className={styles.card__detailReviewButtonWrapper}>
               <button
-                className={styles.card__detailReviewButton}
+                className={classnames(
+                  styles.card__detailReviewButton,
+                  detailReviewButton && styles.card__active
+                )}
                 onClick={() => {
                   setDetailReviewButton(true)
                 }}>
@@ -165,14 +131,6 @@ const AddonSelectModal = ({
           </div>
         </div>
       </ModalBody>
-      {/* <ModalFooter> */}
-      {/* <Button color="danger" onClick={onDelete}>
-          Delete
-        </Button>
-        <Button color="link" onClick={onClose}>
-          Cancel
-        </Button> */}
-      {/* </ModalFooter> */}
     </Modal>
   )
 }
