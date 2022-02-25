@@ -145,6 +145,9 @@ function AddonCard(props) {
           addon={props.addon}
           onClickAddAddon={onClick}
           rating={getRating()}
+          price={props.price}
+          priceDiscounted={props.addon.discount_price}
+          isDiscount={props.isDiscount}
         />
       )}
       <div className={styles.card}>
@@ -158,9 +161,10 @@ function AddonCard(props) {
           {props.isDiscount && (
             <div className={styles.card__priceWrapper}>
               <span className={styles.card__discountedPrice}>
-                £{props.price}{' '}
+                £{props.price}
               </span>
               <span className={styles.card__price}>
+                {' '}
                 £{props.addon.discount_price}
               </span>
             </div>

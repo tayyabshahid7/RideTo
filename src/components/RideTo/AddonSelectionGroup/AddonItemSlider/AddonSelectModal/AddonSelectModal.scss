@@ -46,6 +46,20 @@
                 font-family: var(--font-rift-bold);
         
             }
+            
+            .modal__discountedPrice {
+                text-align: left;
+                margin-top: 5px;
+                padding-top: 0;
+                font-family: var(--font-rift);
+                color: #2cceac;
+                letter-spacing: 0.01em;
+                text-decoration-line: line-through;
+                line-height: 29px;
+                font-size: 22px;
+        
+            }
+
             .modal__freeDelivery {
                 font-size: 13px;
                 font-family: var(--font-proxima);
