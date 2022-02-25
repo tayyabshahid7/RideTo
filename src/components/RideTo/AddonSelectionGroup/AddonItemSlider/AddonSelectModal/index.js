@@ -36,7 +36,8 @@ const AddonSelectModal = ({
   isAdded,
   name,
   addon,
-  onClickAddAddon
+  onClickAddAddon,
+  rating
 }) => {
   const [detailReviewButton, setDetailReviewButton] = useState(true)
 
@@ -64,7 +65,7 @@ const AddonSelectModal = ({
             <StarsComponent
               className={styles.modal__rating}
               starClassName={styles.modal__star}
-              rating={4}
+              rating={rating}
             />
           </div>
           <AddonImageSliderModal images={images} />
