@@ -13,12 +13,13 @@ const AddonItemSlider = props => {
 
   const settings = {
     dots: true,
-    speed: 500,
-    slidesToShow: 4.5,
-    infinite: false,
     className: styles.slider,
-    centerPadding: '0',
-    adaptiveHeight: true,
+    speed: 500,
+    arrows: false,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    infinite: false,
+    variableWidth: true,
     customPaging: i => {
       return (
         <button>
@@ -29,28 +30,18 @@ const AddonItemSlider = props => {
     dotsClass: styles.dots,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 574,
         settings: {
-          slidesToShow: 3.5,
+          slidesToShow: 2,
           slidesToScroll: 1,
-          infinite: false
+          initialSlide: 1
         }
       },
       {
-        breakpoint: 768,
+        breakpoint: 510,
         settings: {
-          slidesToShow: 2.4,
-          slidesToScroll: 1,
-          initialSlide: 1,
-          infinite: false
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1.4,
-          slidesToScroll: 1,
-          infinite: false
+          slidesToShow: 1,
+          slidesToScroll: 1
         }
       }
     ]

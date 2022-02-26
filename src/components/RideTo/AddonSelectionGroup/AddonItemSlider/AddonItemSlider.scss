@@ -1,15 +1,19 @@
 .sliderWrapper {
-  display: block;
+  // display: block;
 }
 
-.slick-list > div {
-  margin-left: 0;
-}
+.slider { 
+  :global(.slick-list) {
+  }
 
-.slider {
-  min-width: 244px;
-  :global(.slick-track) {
-    margin-left: 0;
+  :global {
+    .slick-track {
+        display: flex;
+        float: left;
+        .slick-slide {
+          margin-right: 15px;
+        }
+    }
   }
 }
 
@@ -77,6 +81,10 @@
   flex-direction: column;
   justify-content: space-between;
   padding: 1.5rem;
+  @media (min-width: 992px) {
+    width: 320px;
+    height: 558px;
+  }
 
   &__image {
     max-width: 100%;
