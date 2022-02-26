@@ -8,20 +8,18 @@ import StarsComponent from '../../StarsComponent'
 import kebabCase from 'lodash/kebabCase'
 import styles from './AddonItemSlider.scss'
 
-// import { useMediaQuery } from 'react-responsive'
-
 const AddonItemSlider = props => {
   const { addons, isAdded, onAdd, onRemove, onSizeUpdate } = props
 
   const settings = {
-    // nextArrow: <NextArrow />,
     dots: true,
-    // prevArrow: <PrevArrow />,
-    slidesToShow: 4.5,
-    infinite: false,
     className: styles.slider,
-    centerPadding: '0',
-    adaptiveHeight: true,
+    speed: 500,
+    arrows: false,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    infinite: false,
+    variableWidth: true,
     customPaging: i => {
       return (
         <button>
@@ -32,28 +30,18 @@ const AddonItemSlider = props => {
     dotsClass: styles.dots,
     responsive: [
       {
-        breakpoint: 1024,
+        breakpoint: 574,
         settings: {
-          slidesToShow: 3.5,
+          slidesToShow: 2,
           slidesToScroll: 1,
-          infinite: false
+          initialSlide: 1
         }
       },
       {
-        breakpoint: 768,
+        breakpoint: 510,
         settings: {
-          slidesToShow: 2.4,
-          slidesToScroll: 1,
-          initialSlide: 1,
-          infinite: false
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1.4,
-          slidesToScroll: 1,
-          infinite: false
+          slidesToShow: 1,
+          slidesToScroll: 1
         }
       }
     ]
@@ -106,6 +94,21 @@ function AddonCard(props) {
   const [modal, setModal] = useState(false)
   const onClick = props.isAdded ? props.onRemove : props.onAdd
 
+  const getRating = () => {
+    const { addon } = props
+    const { ratings } = addon
+
+    if (ratings.length === 0) {
+      return 3
+    }
+
+    let avgRating = 0
+    for (let i = 0; i < ratings.length; i++) {
+      avgRating += ratings[i].rating
+    }
+    return avgRating / ratings.length
+  }
+
   const handleSelectSize = selectedSize => {
     const { onSizeUpdate, addon } = props
     onSizeUpdate(addon, selectedSize)
@@ -132,6 +135,10 @@ function AddonCard(props) {
           name={props.name}
           addon={props.addon}
           onClickAddAddon={onClick}
+          rating={getRating()}
+          price={props.price}
+          priceDiscounted={props.addon.discount_price}
+          isDiscount={props.isDiscount}
         />
       )}
       <div className={styles.card}>
@@ -144,10 +151,13 @@ function AddonCard(props) {
           />
           {props.isDiscount && (
             <div className={styles.card__priceWrapper}>
-              <div className={styles.card__discountedPrice}>£{props.price}</div>
-              <div className={styles.card__price}>
+              <span className={styles.card__discountedPrice}>
+                £{props.price}
+              </span>
+              <span className={styles.card__price}>
+                {' '}
                 £{props.addon.discount_price}
-              </div>
+              </span>
             </div>
           )}
           {!props.isDiscount && (
@@ -159,7 +169,7 @@ function AddonCard(props) {
           <StarsComponent
             className={styles.card__rating}
             starClassName={styles.card__star}
-            rating={4}
+            rating={getRating()}
           />
         </div>
         <div className={styles.card__buttonWrapper}>

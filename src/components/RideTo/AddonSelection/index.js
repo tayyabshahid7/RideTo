@@ -366,16 +366,18 @@ class AddonSelection extends React.Component {
                 </div>
               </Col>
             </Mobile>
-            <Col md="6" className={styles.skipLink}>
-              {/* <Button
-                id="addons-checkout-button"
-                color="primary"
-                className={styles.checkoutButton}
-                onClick={this.handleContinue}>
-                <span>Continue To Checkout</span>
-                <IconArrowRight className={styles.arrowIcon} />
-              </Button> */}
-            </Col>
+            <Desktop>
+              <Col md="6" className={styles.skipLink}>
+                <Button
+                  id="addons-checkout-button"
+                  color="primary"
+                  className={styles.checkoutButton}
+                  onClick={this.handleContinue}>
+                  <span>Continue To Checkout</span>
+                  <IconArrowRight className={styles.arrowIcon} />
+                </Button>
+              </Col>
+            </Desktop>
           </Row>
           <Desktop>
             <div className={styles.checkListContainer}>
@@ -392,7 +394,7 @@ class AddonSelection extends React.Component {
             </div>
           </Desktop>
           {addonGroups.map((addon_group, i) => (
-            <Row className={styles.addonsGroupContainer} key={i}>
+            <Row md="6" className={styles.addonsGroupContainer} key={i}>
               <AddonSelectionGroup
                 addon_group={addon_group}
                 isAdded={this.handleIsAddonSelected}

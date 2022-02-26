@@ -36,7 +36,11 @@ const AddonSelectModal = ({
   isAdded,
   name,
   addon,
-  onClickAddAddon
+  onClickAddAddon,
+  rating,
+  price,
+  priceDiscounted,
+  isDiscount
 }) => {
   const [detailReviewButton, setDetailReviewButton] = useState(true)
 
@@ -56,7 +60,13 @@ const AddonSelectModal = ({
       <ModalBody className={styles.modal__body}>
         <div className={styles.modal__bodyContainer}>
           <div className={styles.modal__title}>{title}</div>
-          <div className={styles.modal__price}>£19.99</div>
+          {isDiscount && (
+            <div className={styles.card__priceWrapper}>
+              <span className={styles.modal__discountedPrice}>£{price}</span>
+              <span className={styles.modal__price}> £{priceDiscounted}</span>
+            </div>
+          )}
+          {!isDiscount && <div className={styles.modal__price}>£{price}</div>}
           <div>
             <p className={styles.modal__freeDelivery}>Includes FREE delivery</p>
           </div>
@@ -64,7 +74,7 @@ const AddonSelectModal = ({
             <StarsComponent
               className={styles.modal__rating}
               starClassName={styles.modal__star}
-              rating={4}
+              rating={rating}
             />
           </div>
           <AddonImageSliderModal images={images} />
