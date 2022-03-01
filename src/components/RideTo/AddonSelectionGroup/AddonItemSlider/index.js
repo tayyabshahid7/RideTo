@@ -98,6 +98,10 @@ function AddonCard(props) {
     const { addon } = props
     const { ratings } = addon
 
+    if (!ratings) {
+      return 3
+    }
+
     if (ratings.length === 0) {
       return 3
     }
