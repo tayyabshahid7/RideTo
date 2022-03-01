@@ -47,7 +47,7 @@ class ResultPageContainer extends Component {
 
     this.state = {
       date: null,
-      sortByOption: SORTBY.NEXT_AVAILABLE_DATE_UP,
+      sortByOption: SORTBY.DISTANCE,
       userLocation: null,
       postcode,
       courseType,
