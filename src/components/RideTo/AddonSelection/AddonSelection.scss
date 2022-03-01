@@ -245,7 +245,7 @@
 
 
 .addonsGroupContainer {
-  display: block;
+  display: block !important;
   grid-template-columns: repeat(auto-fit, minmax(12rem, 16rem));
   gap: 1rem;
   justify-content: center;

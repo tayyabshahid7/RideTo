@@ -9,6 +9,7 @@
 
   :global {
     .slick-track {
+        display: flex;
         float: left;
         .slick-slide {
           margin-right: 15px;
