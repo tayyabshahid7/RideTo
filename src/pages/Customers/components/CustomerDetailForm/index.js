@@ -1,21 +1,22 @@
-import React from 'react'
-import { Form } from 'reactstrap'
-import styles from './CustomerDetailForm.scss'
-import { find } from 'lodash'
 import {
-  isRideTo,
-  getRidingExperienceOptions,
-  getCurrentLicenceOptions,
-  getBooleanSelectOptions
-} from 'services/customer'
-import {
-  ConnectInput,
-  ConnectSelect,
+  Button,
   ConnectAgeInput,
-  Button
+  ConnectInput,
+  ConnectSelect
 } from 'components/ConnectForm'
+import {
+  getBooleanSelectOptions,
+  getCurrentLicenceOptions,
+  getRidingExperienceOptions,
+  isRideTo
+} from 'services/customer'
+
+import { Form } from 'reactstrap'
+import React from 'react'
 import classnames from 'classnames'
+import { find } from 'lodash'
 import isMobile from 'is-mobile'
+import styles from './CustomerDetailForm.scss'
 
 class CustomerDetailForm extends React.Component {
   handleChange = ({ target }) => {
@@ -133,6 +134,14 @@ class CustomerDetailForm extends React.Component {
             disabled={!isAdmin}
           />
         )}
+        <ConnectInput
+          name="address"
+          value={customer.address || ''}
+          label="Address"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
         <ConnectInput
           name="cbt_certificate_number"
           value={customer.cbt_certificate_number || ''}
