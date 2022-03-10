@@ -143,6 +143,14 @@ class CustomerDetailForm extends React.Component {
           disabled={!isAdmin}
         />
         <ConnectInput
+          name="postcode"
+          value={customer.postcode || ''}
+          label="Postcode"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
+        <ConnectInput
           name="cbt_certificate_number"
           value={customer.cbt_certificate_number || ''}
           label="CBT Certificate Number"
