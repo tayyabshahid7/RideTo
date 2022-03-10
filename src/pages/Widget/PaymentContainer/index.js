@@ -359,7 +359,8 @@ class PaymentContainer extends React.Component {
       isRenewal,
       trainings,
       voucher_code,
-      discount
+      discount,
+      requirePreviousCBTDate
     } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
 
@@ -393,6 +394,7 @@ class PaymentContainer extends React.Component {
                 onChange={this.handleChangeDetails}
                 bikeType={trainings[0].bike_type}
                 courseType={course.course_type}
+                requirePreviousCBTDate={requirePreviousCBTDate}
               />
             )}
 

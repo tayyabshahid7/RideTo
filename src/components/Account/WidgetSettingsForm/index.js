@@ -63,7 +63,6 @@ class WidgetSettingsForm extends React.Component {
   }
 
   handleChangeRawEvent({ target }) {
-    console.log(target)
     const { name, type, checked, value: targetValue } = target
     const value = type === 'checkbox' ? checked : targetValue
     const { settings } = this.state
