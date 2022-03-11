@@ -143,9 +143,41 @@ class CustomerDetailForm extends React.Component {
           disabled={!isAdmin}
         />
         <ConnectInput
+          name="address_2"
+          value={customer.address_2 || ''}
+          label="Address 2"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
+        <ConnectInput
           name="postcode"
           value={customer.postcode || ''}
           label="Postcode"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
+        <ConnectInput
+          name="town"
+          value={customer.town || ''}
+          label="Town"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
+        <ConnectInput
+          name="country"
+          value={customer.country || ''}
+          label="Country"
+          type="text"
+          onChange={this.handleChange}
+          disabled={!isAdmin}
+        />
+        <ConnectInput
+          name="county"
+          value={customer.county || ''}
+          label="County"
           type="text"
           onChange={this.handleChange}
           disabled={!isAdmin}
