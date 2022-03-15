@@ -1,17 +1,18 @@
-import React, { Fragment } from 'react'
-import { Row, Col, Form } from 'reactstrap'
-import styles from './styles.scss'
 import {
-  ConnectTextArea,
   Button,
-  ConnectCheckbox
+  ConnectCheckbox,
+  ConnectTextArea
 } from 'components/ConnectForm'
-import Loading from 'components/Loading'
-import classnames from 'classnames'
-import WidgetPromoCodes from './WidgetPromoCodes'
-import { ConnectSelect } from 'components/ConnectForm'
+import { Col, Form, Row } from 'reactstrap'
+import React, { Fragment } from 'react'
+
 import Checkbox from 'components/Checkbox'
+import { ConnectSelect } from 'components/ConnectForm'
+import Loading from 'components/Loading'
+import WidgetPromoCodes from './WidgetPromoCodes'
+import classnames from 'classnames'
 import range from 'lodash/range'
+import styles from './styles.scss'
 
 const TIMES = [
   ...range(8, 24).map(hour => {
@@ -41,7 +42,8 @@ class WidgetSettingsForm extends React.Component {
       terms: '',
       last_time_book: '18:00:00',
       disabled_widget_cuttoff_time: '',
-      enable_third_party_optin: false
+      enable_third_party_optin: false,
+      request_previous_cbt_date: false
     }
     Object.assign(settings, this.props.settings ? this.props.settings : {})
 
@@ -157,7 +159,8 @@ class WidgetSettingsForm extends React.Component {
       terms,
       last_time_book,
       disabled_widget_cuttoff_time,
-      enable_third_party_optin
+      enable_third_party_optin,
+      request_previous_cbt_date
     } = this.state.settings
     return (
       <div className={styles.container}>
@@ -216,6 +219,38 @@ class WidgetSettingsForm extends React.Component {
                   name="enable_third_party_optin"
                   type="checkbox"
                   checked={enable_third_party_optin}
+                  onChange={this.handleChangeRawEvent.bind(this)}
+                />
+                <Fragment>
+                  <div className="mt-3 text-right">
+                    <Button disabled={!isChanged} type="submit" color="primary">
+                      Save
+                    </Button>
+                    <Button
+                      disabled={!isChanged}
+                      color="white"
+                      onClick={this.handleCancel}>
+                      Cancel
+                    </Button>
+                  </div>
+                </Fragment>
+              </div>
+            </div>
+            <div className={styles.box}>
+              <div className={styles.leftCol}>
+                <h3 className={styles.title}>CBT Renewal Field</h3>
+                <p>
+                  You can select whether you require customers to submit the
+                  date of their previous CBT by turning this feature on/off
+                  here.
+                </p>
+              </div>
+              <div className={styles.rightCol}>
+                <ConnectCheckbox
+                  label="Active"
+                  name="request_previous_cbt_date"
+                  type="checkbox"
+                  checked={request_previous_cbt_date}
                   onChange={this.handleChangeRawEvent.bind(this)}
                 />
                 <Fragment>

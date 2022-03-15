@@ -1,23 +1,25 @@
-import React from 'react'
-import moment from 'moment'
+import 'react-toastify/dist/ReactToastify.css'
+
 import { Elements, StripeProvider } from 'react-stripe-elements'
-import CheckoutForm from 'pages/Widget/components/CheckoutForm'
-import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
-import OrderDetails from 'pages/Widget/components/OrderDetails'
-import BookingSummary from 'pages/Widget/components/BookingSummary'
-import { fetchWidgetSingleCourse, getPrice } from 'services/course'
+import { ToastContainer, toast } from 'react-toastify'
 import {
   createOrder,
-  getTotalOrderPrice,
-  getInitialSuppliers
+  getInitialSuppliers,
+  getTotalOrderPrice
 } from 'services/widget'
-import { parseQueryString } from 'services/api'
-import styles from './PaymentContainer.scss'
-import { ToastContainer, toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { fetchWidgetSingleCourse, getPrice } from 'services/course'
+
+import BookingSummary from 'pages/Widget/components/BookingSummary'
+import CheckoutForm from 'pages/Widget/components/CheckoutForm'
+import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
+import { EMAIL_EXTENSIONS } from 'common/emailExtensions'
+import OrderDetails from 'pages/Widget/components/OrderDetails'
+import React from 'react'
 import { capitalizeFirstLetter } from 'utils/helper'
 import { handleStripePayment } from 'services/stripe'
-import { EMAIL_EXTENSIONS } from 'common/emailExtensions'
+import moment from 'moment'
+import { parseQueryString } from 'services/api'
+import styles from './PaymentContainer.scss'
 
 const REQUIRED_FIELDS = [
   'first_name',
@@ -64,7 +66,8 @@ class PaymentContainer extends React.Component {
       totalPrice: 0,
       voucher_code: '',
       discount: 0,
-      cardElement: null
+      cardElement: null,
+      requirePreviousCBTDate: false
     }
 
     this.handlePayment = this.handlePayment.bind(this)
@@ -86,6 +89,7 @@ class PaymentContainer extends React.Component {
     let supplier
     let totalPrice
     let discount = 0
+    let requirePreviousCBTDate = false
 
     if (isFullLicence) {
       const training = trainings[0]
@@ -129,13 +133,15 @@ class PaymentContainer extends React.Component {
       }
       supplier = this.suppliers.filter(({ id }) => id === course.supplier)[0]
       totalPrice = getTotalOrderPrice(course, hire, discount)
+      requirePreviousCBTDate = course.request_previous_cbt_date
     }
 
     this.setState({
       course,
       supplier,
       totalPrice,
-      discount
+      discount,
+      requirePreviousCBTDate
     })
   }
 
@@ -166,8 +172,7 @@ class PaymentContainer extends React.Component {
   }
 
   validateDetails = details => {
-    const { isRenewal } = this.state
-
+    const { isRenewal, requirePreviousCBTDate } = this.state
     const errors = {}
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
@@ -175,7 +180,7 @@ class PaymentContainer extends React.Component {
         window.document.body.scrollIntoView()
       }
     })
-    if (isRenewal && !details.prev_cbt_date) {
+    if (isRenewal && requirePreviousCBTDate && !details.prev_cbt_date) {
       errors['prev_cbt_date'] = 'This field is required.'
       window.document.body.scrollIntoView()
     }
@@ -354,7 +359,8 @@ class PaymentContainer extends React.Component {
       isRenewal,
       trainings,
       voucher_code,
-      discount
+      discount,
+      requirePreviousCBTDate
     } = this.state
     const isLoading = !Boolean(course) || !Boolean(supplier)
 
@@ -388,6 +394,7 @@ class PaymentContainer extends React.Component {
                 onChange={this.handleChangeDetails}
                 bikeType={trainings[0].bike_type}
                 courseType={course.course_type}
+                requirePreviousCBTDate={requirePreviousCBTDate}
               />
             )}
 
