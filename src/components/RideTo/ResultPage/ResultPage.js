@@ -352,7 +352,6 @@ class ResultPage extends Component {
 
   renderSortByDropdown(shortOptions) {
     const { handeUpdateOption, sortByOption, courseType } = this.props
-    window.location.hash = `sortBy=${sortByOption}`
     return (
       <UncontrolledDropdown className={styles.sortButtonWrap}>
         <DropdownToggle caret color="lightgrey" className={styles.sortButton}>

@@ -19,6 +19,7 @@ class ResultPageContainer extends Component {
     const qs = parseQueryString(window.location.search.slice(1))
     const postcode = staticData.postcode || qs.postcode || ''
     const courseType = staticData.courseType || qs.courseType || ''
+    const sortByOption = staticData.sortBy || qs.sortBy || ''
 
     this.navigation = [
       {
@@ -47,7 +48,7 @@ class ResultPageContainer extends Component {
 
     this.state = {
       date: null,
-      sortByOption: SORTBY.DISTANCE,
+      sortByOption,
       userLocation: null,
       postcode,
       courseType,
