@@ -4,13 +4,14 @@ import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 
 import { DATE_FORMAT } from 'common/constants'
 import ResultPage from './ResultPage'
-// import SampleData from './SampleData.json'
-import { SORTBY } from 'common/constants'
+import { SORTBY } from '../../../common/constants'
 import StateProvider from './StateProvider'
 import { fetchSearchLocation } from 'services/geolocation'
 import { getStaticData } from 'services/page'
 import moment from 'moment'
 import { parseQueryString } from 'services/api'
+
+// import SampleData from './SampleData.json'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -19,7 +20,9 @@ class ResultPageContainer extends Component {
     const qs = parseQueryString(window.location.search.slice(1))
     const postcode = staticData.postcode || qs.postcode || ''
     const courseType = staticData.courseType || qs.courseType || ''
-    const sortByOption = staticData.sortBy || qs.sortBy || ''
+    const sortByOption = staticData.sortBy || qs.sortBy || SORTBY.DISTANCE
+
+    console.log(sortByOption)
 
     this.navigation = [
       {
