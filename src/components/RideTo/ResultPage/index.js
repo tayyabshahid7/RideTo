@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Route, BrowserRouter as Router } from 'react-router-dom'
+import { checkDateAvailability, normalizePostCode } from 'utils/helper'
 import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 
 import { DATE_FORMAT } from 'common/constants'
@@ -21,8 +22,7 @@ class ResultPageContainer extends Component {
     const postcode = staticData.postcode || qs.postcode || ''
     const courseType = staticData.courseType || qs.courseType || ''
     const sortByOption = staticData.sortBy || qs.sortBy || SORTBY.DISTANCE
-
-    console.log(sortByOption)
+    const date = qs.date || null
 
     this.navigation = [
       {
@@ -50,7 +50,7 @@ class ResultPageContainer extends Component {
     ]
 
     this.state = {
-      date: null,
+      date,
       sortByOption,
       userLocation: null,
       postcode,
@@ -82,16 +82,20 @@ class ResultPageContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { date, sortByOption } = this.state
+    const { date, sortByOption, postcode, courseType } = this.state
+    const normalizedPostCode = normalizePostCode(postcode)
+    let dateChecked = null
     if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
-      this.loadCourses()
+      if (date) {
+        dateChecked = checkDateAvailability(date)
+      }
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&sortBy=${sortByOption}&date=${dateChecked}`
     }
   }
 
   async loadCourses() {
     try {
       const { date, sortByOption, courseType, postcode } = this.state
-
       this.setState({ loading: true })
       let results = await fetchRidetoCourses({
         course_type: courseType,
