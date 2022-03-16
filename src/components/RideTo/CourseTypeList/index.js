@@ -22,7 +22,7 @@ const getBookUrl = (courseType, postcode) => {
   if (courseType === 'TFL_ONE_ON_ONE') {
     return 'https://rideto.typeform.com/to/axybpw'
   } else {
-    return `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&sortBy=${SORTBY.DISTANCE}`
+    return `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=30&sortBy=${SORTBY.DISTANCE}`
   }
 }
 
