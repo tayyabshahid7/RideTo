@@ -84,17 +84,22 @@ class ResultPageContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { date, sortByOption, postcode, courseType } = this.state
+    const {
+      date,
+      sortByOption,
+      postcode,
+      courseType,
+      radius_miles
+    } = this.state
     const normalizedPostCode = normalizePostCode(postcode)
     let dateChecked = null
     if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
       if (date) {
         dateChecked = checkDateAvailability(date)
-        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=30&sortBy=${sortByOption}&date=${dateChecked}`
+        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}&date=${dateChecked}`
         return
       }
-      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=30&sortBy=${sortByOption}`
-      
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}`
     }
   }
 

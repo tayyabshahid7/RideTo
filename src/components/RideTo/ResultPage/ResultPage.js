@@ -177,9 +177,10 @@ class ResultPage extends Component {
     const actualPostcode = qs.postcode ? qs.postcode.toUpperCase() : ''
     const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
     const sortby = qs.sortBy || SORTBY.DISTANCE
+    const radius_miles = qs.radius_miles || 30
     if (actualPostcode !== newPostcode) {
       const normalizedPostCode = normalizePostCode(newPostcode)
-      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=30&sortBy=${sortby}`
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortby}`
     }
   }
 
@@ -189,6 +190,7 @@ class ResultPage extends Component {
     let postcode = ''
     let actualCourseType = ''
     const sortby = qs.sortBy || SORTBY.DISTANCE
+    const radius_miles = qs.radius_miles || 30
     if (pathname.startsWith('/cbt-training/')) {
       postcode = pathname.replace('/cbt-training/', '')
       actualCourseType = 'LICENCE_CBT'
@@ -203,7 +205,7 @@ class ResultPage extends Component {
     }
     if (actualCourseType !== newCourseType) {
       const normalizedPostCode = normalizePostCode(postcode)
-      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${newCourseType}&radius_miles=30&sortBy=${sortby}`
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${newCourseType}&radius_miles=${radius_miles}&sortBy=${sortby}`
     }
   }
 
