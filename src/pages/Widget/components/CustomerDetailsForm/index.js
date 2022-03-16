@@ -1,15 +1,15 @@
-import React from 'react'
-import moment from 'moment'
+import {
+  getCurrentLicenceOptions,
+  getRidingExperienceOptions
+} from 'services/customer'
 
-import LabelField from 'pages/Widget/components/LabelField'
 import DateInput from 'components/DateInput'
+import LabelField from 'pages/Widget/components/LabelField'
 import LicenceInput from 'components/RideTo/LicenceInput'
 import MinimalSelect from 'components/MinimalSelect'
-import {
-  getRidingExperienceOptions,
-  getCurrentLicenceOptions
-} from 'services/customer'
+import React from 'react'
 import { getLicenceAge } from 'services/course'
+import moment from 'moment'
 import styles from './CustomerDetailsForm.scss'
 
 const handleChange = (event, details, errors, onChange) => {
@@ -25,7 +25,8 @@ const CustomerDetailsForm = ({
   fullLicenceType,
   isRenewal,
   bikeType,
-  courseType: { constant }
+  courseType: { constant },
+  requirePreviousCBTDate = true
 }) => {
   const isManual = bikeType === 'manual'
   const isCBT = constant === 'LICENCE_CBT'
@@ -129,7 +130,7 @@ const CustomerDetailsForm = ({
         />
       </LabelField>
 
-      {isRenewal && (
+      {isRenewal && requirePreviousCBTDate && (
         <LabelField
           label="Previous CBT Completion Date"
           name="prev_cbt_date"
