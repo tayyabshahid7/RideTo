@@ -179,7 +179,7 @@ class ResultPage extends Component {
     const sortby = qs.sortBy || SORTBY.DISTANCE
     if (actualPostcode !== newPostcode) {
       const normalizedPostCode = normalizePostCode(newPostcode)
-      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&sortBy=${sortby}`
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=30&sortBy=${sortby}`
     }
   }
 
@@ -203,7 +203,7 @@ class ResultPage extends Component {
     }
     if (actualCourseType !== newCourseType) {
       const normalizedPostCode = normalizePostCode(postcode)
-      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${newCourseType}&sortBy=${sortby}`
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${newCourseType}&radius_miles=30&sortBy=${sortby}`
     }
   }
 
