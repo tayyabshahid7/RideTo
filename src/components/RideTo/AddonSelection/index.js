@@ -175,7 +175,7 @@ class AddonSelection extends React.Component {
   }
 
   updateAddonSize(arr, addon, selectedSize) {
-    return arr.map(a => {
+    const result = arr.map(a => {
       if (a.id === addon.id) {
         return {
           ...a,
@@ -183,13 +183,18 @@ class AddonSelection extends React.Component {
           sizeRequired: false
         }
       }
-
       return a
     })
+
+    console.log('result:', result)
+    return result
   }
 
   handleSizeUpdate(addon, selectedSize) {
     const { addons, selectedAddons } = this.state
+    console.log('addon', addon)
+    console.log('selectedSize', selectedSize)
+    console.log('selectedAddons', selectedAddons)
     this.setState(
       {
         addons: this.updateAddonSize(addons, addon, selectedSize),

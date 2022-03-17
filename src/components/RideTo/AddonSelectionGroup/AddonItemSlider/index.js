@@ -115,6 +115,7 @@ function AddonCard(props) {
 
   const handleSelectSize = selectedSize => {
     const { onSizeUpdate, addon } = props
+    console.log('handleSelectSize', selectedSize)
     onSizeUpdate(addon, selectedSize)
   }
 
@@ -133,7 +134,7 @@ function AddonCard(props) {
           images={props.addon.images}
           sizes={props.sizes}
           selected={props.selectedSize}
-          onClick={handleSelectSize}
+          handleSelectSize={handleSelectSize}
           sizeRequired={props.sizeRequired}
           isAdded={props.isAdded}
           name={props.name}
