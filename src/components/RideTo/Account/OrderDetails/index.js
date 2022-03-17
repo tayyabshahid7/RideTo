@@ -5,9 +5,11 @@ import DashboardReview from 'components/RideTo/Account/DashboardReview'
 import MapComponent from 'components/RideTo/MapComponent'
 import React from 'react'
 import RideToButton from 'components/RideTo/Button'
+import { addWeekdays } from 'utils/helper'
 import { cancelOrder } from 'services/user'
 import { formatBikeConstant } from 'common/info'
 import moment from 'moment'
+import momentTz from 'moment-timezone'
 import { saveSupplierRating } from 'services/supplier'
 import { showReview } from 'services/order'
 import styles from './OrderDetails.scss'
@@ -78,7 +80,7 @@ class OrderDetails extends React.Component {
     this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick() {
+  async handleClick() {
     const { order } = this.props
     const constant = order.trainings[0].constant
     const training_status = order.trainings[0].status
@@ -88,9 +90,17 @@ class OrderDetails extends React.Component {
         : order.trainings[0].requested_date,
       'YYYY-MM-DD'
     )
-    const today = moment().startOf('day')
-    const current_hour = moment().hour()
-    const trainingPeriod = moment.duration(training_date.diff(today)).asDays()
+    const today = momentTz().tz('Europe/London')
+    const current_hour = today.hour()
+
+    var daysToCancel = 5
+    if (constant === 'FULL_LICENCE') {
+      daysToCancel = 13
+    }
+    const lastDayToCancel = await addWeekdays(moment(), daysToCancel)
+    const trainingPeriod = moment
+      .duration(training_date.diff(lastDayToCancel))
+      .asDays()
 
     if (!isAuthenticated()) {
       this.setState({
@@ -102,52 +112,33 @@ class OrderDetails extends React.Component {
       return
     }
 
-    if (constant === 'FULL_LICENCE') {
-      if (
-        trainingPeriod <= 13 &&
-        !training_status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
-        !training_status === 'TRAINING_WAITING_RIDER_CONFIRMATION'
-      ) {
-        this.setState({
-          messageNoticePeriod: true,
-          message:
-            'ERROR! Unable to cancel course as it is within the cancellation notice period',
-          cancelButtonIsClicked: false
-        })
-      } else {
-        this.setState({
-          cancelButtonIsClicked: !this.state.cancelButtonIsClicked
-        })
-      }
-    } else if (constant !== 'FULL_LICENCE') {
-      if (
-        trainingPeriod < 5 &&
-        training_status !== 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
-        training_status !== 'TRAINING_WAITING_RIDER_CONFIRMATION'
-      ) {
-        this.setState({
-          messageNoticePeriod: true,
-          message:
-            'ERROR! Unable to cancel course as it is within the cancellation notice period',
-          cancelButtonIsClicked: false
-        })
-      } else if (
-        trainingPeriod === 5 &&
-        current_hour >= 17 &&
-        training_status !== 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
-        training_status !== 'TRAINING_WAITING_RIDER_CONFIRMATION'
-      ) {
-        this.setState({
-          messageNoticePeriod: true,
-          message:
-            'ERROR! Unable to cancel course as it is within the cancellation notice period',
-          cancelButtonIsClicked: false
-        })
-      } else {
-        this.setState({
-          cancelButtonIsClicked: !this.state.cancelButtonIsClicked
-        })
-      }
+    if (
+      trainingPeriod < 0 &&
+      training_status !== 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
+      training_status !== 'TRAINING_WAITING_RIDER_CONFIRMATION'
+    ) {
+      this.setState({
+        messageNoticePeriod: true,
+        message:
+          'ERROR! Unable to cancel course as it is within the cancellation notice period',
+        cancelButtonIsClicked: false
+      })
+    } else if (
+      trainingPeriod === 0 &&
+      current_hour >= 17 &&
+      training_status !== 'TRAINING_WAITING_SCHOOL_CONFIRMATION' &&
+      training_status !== 'TRAINING_WAITING_RIDER_CONFIRMATION'
+    ) {
+      this.setState({
+        messageNoticePeriod: true,
+        message:
+          'ERROR! Unable to cancel course as it is within the cancellation notice period',
+        cancelButtonIsClicked: false
+      })
+    } else {
+      this.setState({
+        cancelButtonIsClicked: !this.state.cancelButtonIsClicked
+      })
     }
   }
 

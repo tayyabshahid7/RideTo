@@ -1,13 +1,15 @@
-import moment from 'moment'
-import _ from 'lodash'
 import {
   DATE_FORMAT,
-  WEEK_VIEW_START_TIME_STRING,
   DAY_FORMAT3,
+  DAY_FORMAT4,
   WEEK_VIEW_START_TIME,
-  WORK_HOURS,
-  DAY_FORMAT4
+  WEEK_VIEW_START_TIME_STRING,
+  WORK_HOURS
 } from 'common/constants'
+
+import _ from 'lodash'
+import axios from 'axios'
+import moment from 'moment'
 
 export function s(number) {
   if (number === 1) {
@@ -280,7 +282,14 @@ function isBankHoliday(holidays, date) {
   return holidays.find(x => x.date === date.format('YYYY-MM-DD'))
 }
 
-export function addWeekdays(date, days, bankHolidays) {
+export async function addWeekdays(date, days, bankHolidays) {
+  let bankHolidaysUpdated
+  if (!bankHolidays) {
+    const tmp = await axios.get('https://www.gov.uk/bank-holidays.json')
+    bankHolidaysUpdated = tmp.data['england-and-wales'].events
+  } else {
+    bankHolidaysUpdated = bankHolidays
+  }
   date = moment(date) // use a clone
   while (days > 0) {
     date = date.add(1, 'days')
@@ -288,7 +297,7 @@ export function addWeekdays(date, days, bankHolidays) {
     if (
       date.isoWeekday() !== 6 &&
       date.isoWeekday() !== 7 &&
-      !isBankHoliday(bankHolidays, date)
+      !isBankHoliday(bankHolidaysUpdated, date)
     ) {
       days -= 1
     }
