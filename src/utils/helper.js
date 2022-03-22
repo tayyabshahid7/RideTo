@@ -8,10 +8,7 @@ import {
 } from 'common/constants'
 
 import _ from 'lodash'
-<<<<<<< HEAD
 import axios from 'axios'
-=======
->>>>>>> PRODEV-2761
 import moment from 'moment'
 
 export function s(number) {
