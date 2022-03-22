@@ -21,6 +21,7 @@ import POMBanner from './POMBanner'
 import { Redirect } from 'react-router-dom'
 import ResultsHeader from './ResultsHeader'
 import RideToButton from 'components/RideTo/Button'
+import { SORTBY } from 'common/constants'
 import classnames from 'classnames'
 import { fetchCoursesTypes } from 'services/course-type'
 import { fetchSingleRidetoCourse } from 'services/course'
@@ -175,9 +176,11 @@ class ResultPage extends Component {
     const qs = parseQueryString(window.location.search.slice(1))
     const actualPostcode = qs.postcode ? qs.postcode.toUpperCase() : ''
     const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
+    const sortby = qs.sortBy || SORTBY.DISTANCE
+    const radius_miles = qs.radius_miles || 30
     if (actualPostcode !== newPostcode) {
       const normalizedPostCode = normalizePostCode(newPostcode)
-      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}`
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortby}`
     }
   }
 
@@ -186,6 +189,8 @@ class ResultPage extends Component {
     const { pathname } = window.location
     let postcode = ''
     let actualCourseType = ''
+    const sortby = qs.sortBy || SORTBY.DISTANCE
+    const radius_miles = qs.radius_miles || 30
     if (pathname.startsWith('/cbt-training/')) {
       postcode = pathname.replace('/cbt-training/', '')
       actualCourseType = 'LICENCE_CBT'
@@ -200,7 +205,7 @@ class ResultPage extends Component {
     }
     if (actualCourseType !== newCourseType) {
       const normalizedPostCode = normalizePostCode(postcode)
-      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${newCourseType}`
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${newCourseType}&radius_miles=${radius_miles}&sortBy=${sortby}`
     }
   }
 

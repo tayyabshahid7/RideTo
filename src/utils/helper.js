@@ -8,7 +8,10 @@ import {
 } from 'common/constants'
 
 import _ from 'lodash'
+<<<<<<< HEAD
 import axios from 'axios'
+=======
+>>>>>>> PRODEV-2761
 import moment from 'moment'
 
 export function s(number) {
@@ -16,6 +19,23 @@ export function s(number) {
     return ''
   }
   return 's'
+}
+
+export function checkDateAvailability(date) {
+  let now = moment()
+  var dateToCheck = now.hour(13)
+
+  let evalDate = date
+  let daysToAdd = 1
+  if (now.isAfter(date)) {
+    if (!moment().isAfter(dateToCheck)) {
+      daysToAdd = 1
+    } else {
+      daysToAdd = 2
+    }
+    evalDate = now.add(daysToAdd, 'days').format('YYYY-MM-DD')
+  }
+  return evalDate
 }
 
 export function getStarTimeForEventForDate(event, date) {
