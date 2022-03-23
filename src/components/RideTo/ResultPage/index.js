@@ -1,16 +1,18 @@
 import React, { Component } from 'react'
 import { Route, BrowserRouter as Router } from 'react-router-dom'
+import { checkDateAvailability, normalizePostCode } from 'utils/helper'
 import { fetchRidetoCourses, getCourseTitle } from 'services/course'
 
 import { DATE_FORMAT } from 'common/constants'
 import ResultPage from './ResultPage'
-// import SampleData from './SampleData.json'
-import { SORTBY } from 'common/constants'
+import { SORTBY } from '../../../common/constants'
 import StateProvider from './StateProvider'
 import { fetchSearchLocation } from 'services/geolocation'
 import { getStaticData } from 'services/page'
 import moment from 'moment'
 import { parseQueryString } from 'services/api'
+
+// import SampleData from './SampleData.json'
 
 class ResultPageContainer extends Component {
   constructor(props) {
@@ -19,6 +21,9 @@ class ResultPageContainer extends Component {
     const qs = parseQueryString(window.location.search.slice(1))
     const postcode = staticData.postcode || qs.postcode || ''
     const courseType = staticData.courseType || qs.courseType || ''
+    const sortByOption = staticData.sortBy || qs.sortBy || SORTBY.DISTANCE
+    const date = qs.date || null
+    const radius_miles = qs.radius_miles || 30
 
     this.navigation = [
       {
@@ -46,8 +51,9 @@ class ResultPageContainer extends Component {
     ]
 
     this.state = {
-      date: null,
-      sortByOption: SORTBY.DISTANCE,
+      date,
+      radius_miles,
+      sortByOption,
       userLocation: null,
       postcode,
       courseType,
@@ -78,21 +84,33 @@ class ResultPageContainer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { date, sortByOption } = this.state
+    const {
+      date,
+      sortByOption,
+      postcode,
+      courseType,
+      radius_miles
+    } = this.state
+    const normalizedPostCode = normalizePostCode(postcode)
+    let dateChecked = null
     if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
-      this.loadCourses()
+      if (date) {
+        dateChecked = checkDateAvailability(date)
+        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}&date=${dateChecked}`
+        return
+      }
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}`
     }
   }
 
   async loadCourses() {
     try {
-      const { date, sortByOption, courseType, postcode } = this.state
-
+      const { date, sortByOption, courseType, postcode, radius_miles } = this.state
       this.setState({ loading: true })
       let results = await fetchRidetoCourses({
         course_type: courseType,
         postcode: postcode,
-        radius_miles: 30,
+        radius_miles: radius_miles,
         date,
         ordering: sortByOption,
         available: 'True'
