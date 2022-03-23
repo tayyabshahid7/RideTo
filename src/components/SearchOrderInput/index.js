@@ -6,7 +6,6 @@ const SearchOrderInput = ({ onChange }) => {
   const [order, setOrder] = useState(null)
 
   const handleChangeOption = value => {
-    console.log(value)
     setOrder(value)
     if (onChange) {
       onChange(value)
@@ -21,7 +20,6 @@ const SearchOrderInput = ({ onChange }) => {
         page: 1
       }
       const result = await fetchFilteredOrders(params)
-      console.log(result)
       const tmp = result.results.map(x => ({
         id: x.id,
         name: x.id

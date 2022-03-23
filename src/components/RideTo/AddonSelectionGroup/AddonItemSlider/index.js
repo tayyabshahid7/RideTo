@@ -115,7 +115,6 @@ function AddonCard(props) {
 
   const handleSelectSize = selectedSize => {
     const { onSizeUpdate, addon } = props
-    console.log('handleSelectSize', selectedSize)
     onSizeUpdate(addon, selectedSize)
   }
 
