@@ -13,6 +13,7 @@ import StarsComponent from '../../../StarsComponent'
 import classnames from 'classnames'
 import kebabCase from 'lodash/kebabCase'
 import styles from './AddonSelectModal.scss'
+import { useMediaQuery } from 'react-responsive'
 
 const CloseButtonIcon = ({ icon, onClick }) => {
   return (
@@ -43,10 +44,14 @@ const AddonSelectModal = ({
   isDiscount
 }) => {
   const [detailReviewButton, setDetailReviewButton] = useState(true)
+  const isMobile = useMediaQuery({ maxWidth: 1024 })
+
+  const modalSize = isMobile ? '' : 'xl'
 
   return (
     <Modal
       isOpen={showModal}
+      size={modalSize}
       toggle={onClose}
       fullscreen="true"
       scrollable
