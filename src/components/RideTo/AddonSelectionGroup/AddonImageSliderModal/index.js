@@ -3,10 +3,6 @@ import RideToSlider from 'components/RideToSlider'
 import styles from './AddonImageSliderModal.scss'
 
 const AddonImageSliderModal = ({ images }) => {
-  // const nextClick = e => {
-  //   console.log(e)
-  // }
-
   const settings = {
     dots: true,
     slidesToShow: 1,

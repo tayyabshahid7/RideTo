@@ -308,6 +308,7 @@ class AddonSelection extends React.Component {
 
     const {
       addonGroups,
+      addons,
       navigation,
       gloves_jacket_included,
       helmet_hire
@@ -398,6 +399,7 @@ class AddonSelection extends React.Component {
             <Row md="6" className={styles.addonsGroupContainer} key={i}>
               <AddonSelectionGroup
                 addon_group={addon_group}
+                addons={addons}
                 isAdded={this.handleIsAddonSelected}
                 onAdd={this.handleAddAddon}
                 onRemove={this.handleRemoveAddon}
