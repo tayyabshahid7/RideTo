@@ -2,11 +2,16 @@
   display: block;
   margin-top: 15px;
 
+  :global {
+    .slick-prev::before,
+    .slick-next:before {
+      content: none;
+    }
+  }
 }
 
 .slider {
-
-  :global(.slick-dots){
+  :global(.slick-dots) {
     bottom: -27px;
     text-align: center;
 
@@ -15,15 +20,14 @@
       cursor: pointer;
 
       button {
-      padding: 0;
-      opacity: 1;
+        padding: 0;
+        opacity: 1;
         &:before {
           content: '';
           background: #141414;
           height: 4px;
         }
       }
-
     }
   }
 }

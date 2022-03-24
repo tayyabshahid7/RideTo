@@ -7,15 +7,20 @@ import RideToSlider from '../../../RideToSlider'
 import StarsComponent from '../../StarsComponent'
 import kebabCase from 'lodash/kebabCase'
 import styles from './AddonItemSlider.scss'
+import { useMediaQuery } from 'react-responsive'
+
+import { NextArrow, PrevArrow } from './SliderArrows'
 
 const AddonItemSlider = props => {
   const { addons, allAddons, isAdded, onAdd, onRemove, onSizeUpdate } = props
-
+  const isMobile = useMediaQuery({ maxWidth: 767 })
   const settings = {
     dots: true,
     className: styles.slider,
     speed: 500,
-    arrows: false,
+    arrows: isMobile ? false : true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
     slidesToShow: 3,
     slidesToScroll: 1,
     infinite: false,
