@@ -38,10 +38,10 @@ class ShiftListComponent extends Component {
     let { isAdmin, staff, match, staffLoading } = this.props
     const { date, staffId } = match.params
     let backLink = '/calendar'
-    console.log(staff)
+
 
     staff = staff.filter(x => x.instructor_id === parseInt(staffId))
-    console.log(staffId, staff)
+
 
     if (!isAdmin) {
       return <div>No access</div>

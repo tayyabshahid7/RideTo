@@ -1,9 +1,9 @@
-import React from 'react'
-import AddonSizes from './AddonSizes'
 import AddonImageSlider from './AddonImageSlider'
-import styles from './AddonSelectionItem.scss'
+import AddonSizes from './AddonSizes'
+import React from 'react'
 import RideToButton from 'components/RideTo/Button'
 import kebabCase from 'lodash/kebabCase'
+import styles from './AddonSelectionItem.scss'
 
 class AddonSelectionItem extends React.Component {
   constructor(props) {

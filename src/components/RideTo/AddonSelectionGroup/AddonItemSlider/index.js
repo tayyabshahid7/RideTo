@@ -9,7 +9,7 @@ import kebabCase from 'lodash/kebabCase'
 import styles from './AddonItemSlider.scss'
 
 const AddonItemSlider = props => {
-  const { addons, isAdded, onAdd, onRemove, onSizeUpdate } = props
+  const { addons, allAddons, isAdded, onAdd, onRemove, onSizeUpdate } = props
 
   const settings = {
     dots: true,
@@ -65,24 +65,27 @@ const AddonItemSlider = props => {
   return (
     <div className={styles.sliderWrapper}>
       <RideToSlider settings={settings}>
-        {addons.map((addon, index) => (
-          <AddonCard
-            key={index}
-            addon={addon}
-            image={addon.images[0]}
-            price={addon.full_price}
-            fullPriceStyle={fullPriceStyle(addon)}
-            isDiscount={isDiscount(addon)}
-            title={addon.name}
-            sizes={addon.sizes}
-            selectedSize={addon.selectedSize}
-            onSizeUpdate={onSizeUpdate}
-            sizeRequired={addon.sizeRequired}
-            isAdded={isAdded(addon)}
-            onRemove={onRemove}
-            onAdd={onAdd}
-          />
-        ))}
+        {addons.map((a, index) => {
+          const addon = allAddons.find(x => x.id === a.id)
+          return (
+            <AddonCard
+              key={index}
+              addon={addon}
+              image={addon.images[0]}
+              price={addon.full_price}
+              fullPriceStyle={fullPriceStyle(addon)}
+              isDiscount={isDiscount(addon)}
+              title={addon.name}
+              sizes={addon.sizes}
+              selectedSize={addon.selectedSize}
+              onSizeUpdate={onSizeUpdate}
+              sizeRequired={addon.sizeRequired}
+              isAdded={isAdded(addon)}
+              onRemove={onRemove}
+              onAdd={onAdd}
+            />
+          )
+        })}
       </RideToSlider>
     </div>
   )
@@ -133,7 +136,7 @@ function AddonCard(props) {
           images={props.addon.images}
           sizes={props.sizes}
           selected={props.selectedSize}
-          onClick={handleSelectSize}
+          handleSelectSize={handleSelectSize}
           sizeRequired={props.sizeRequired}
           isAdded={props.isAdded}
           name={props.name}
@@ -187,7 +190,7 @@ function AddonCard(props) {
               />
             )}
           </div>
-          <div className={styles.addToBacketButton}>
+          <div className={styles.addToBucketButton}>
             <RideToButton
               id={`addon-${kebabCase(props.name)}`}
               alt={props.isAdded}

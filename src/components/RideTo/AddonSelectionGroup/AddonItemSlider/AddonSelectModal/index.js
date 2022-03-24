@@ -30,7 +30,7 @@ const AddonSelectModal = ({
   title,
   images,
   sizes,
-  selectedSize,
+  selected,
   handleSelectSize,
   sizeRequired,
   isAdded,
@@ -83,7 +83,7 @@ const AddonSelectModal = ({
               {sizes.length > 1 && (
                 <AddonSizes
                   sizes={sizes}
-                  selected={selectedSize}
+                  selected={selected}
                   onClick={handleSelectSize}
                   sizeRequired={sizeRequired}
                 />

@@ -13,7 +13,6 @@ const AddonSizes = ({ sizes, selected, onClick, sizeRequired }) => {
       onClick(size)
     }
   }
-
   return (
     <Fragment>
       <Select

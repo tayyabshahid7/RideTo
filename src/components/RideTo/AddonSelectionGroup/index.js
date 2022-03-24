@@ -15,6 +15,7 @@ class AddonSelectionGroup extends React.Component {
   render() {
     const {
       addon_group,
+      addons,
       isAdded,
       onAdd,
       onRemove,
@@ -22,7 +23,7 @@ class AddonSelectionGroup extends React.Component {
       onSizeUpdate
     } = this.props
     const name = addon_group[0]
-    const addons = addon_group[1]
+    const addonsFilteredGroup = addon_group[1]
     return (
       <section className={styles.addonGroupSection}>
         <ul>
@@ -34,7 +35,8 @@ class AddonSelectionGroup extends React.Component {
           <li>
             <div className={styles.addonItemContainer}>
               <AddonItemSlider
-                addons={addons}
+                addons={addonsFilteredGroup}
+                allAddons={addons}
                 isAdded={isAdded}
                 onAdd={onAdd}
                 onRemove={onRemove}

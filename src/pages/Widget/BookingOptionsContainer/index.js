@@ -234,7 +234,6 @@ class BookingOptionsContainer extends React.Component {
         : availableCourses[0]
       data.selectedBikeHire = selectedBikeHire
 
-      console.log('changed', selectedCourses[0])
     }
 
     if (isFullLicence) {
