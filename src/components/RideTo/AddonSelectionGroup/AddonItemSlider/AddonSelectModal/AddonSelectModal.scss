@@ -121,6 +121,9 @@
         background-color: white;
         margin-top: 32px;
         border: 1px solid #e1e1e1;
+        @media (min-width: 1025px) {
+          background-color: #f2f2f2;
+        }
 
         .card__detailReviewButtonWrapper {
           display: flex;
@@ -137,12 +140,14 @@
             &:hover {
               background-color: white;
             }
-            .card__active {
-              background-color: white;
+
+            @media (min-width: 1025px) {
+              flex: none;
             }
           }
         }
         .card__detailReviewText {
+          background-color: white;
           padding: 24px;
           font-family: var(--font-proxima);
           font-size: 15px;
@@ -154,6 +159,9 @@
       }
     }
   }
+}
+.active {
+  background-color: white !important;
 }
 
 .slick {

@@ -109,7 +109,7 @@ const AddonSelectModal = ({
               <button
                 className={classnames(
                   styles.card__detailReviewButton,
-                  detailReviewButton && styles.card__active
+                  detailReviewButton && styles.active
                 )}
                 onClick={() => {
                   setDetailReviewButton(true)
@@ -117,7 +117,10 @@ const AddonSelectModal = ({
                 Details
               </button>
               <button
-                className={styles.card__detailReviewButton}
+                className={classnames(
+                  styles.card__detailReviewButton,
+                  !detailReviewButton && styles.active
+                )}
                 onClick={() => {
                   setDetailReviewButton(false)
                 }}>
