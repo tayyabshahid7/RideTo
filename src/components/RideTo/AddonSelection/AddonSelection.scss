@@ -124,7 +124,7 @@
 .checkListContainer {
   border-top: 1px solid rgba(#979797, 0.1);
   padding-top: 32px;
-  border-bottom: 1px solid #EEEEEE;
+  border-bottom: 1px solid #eeeeee;
 
   h4 {
     font-family: var(--font-rift-bold);
@@ -175,7 +175,7 @@
   line-height: 10px;
   color: white;
   font-weight: bold;
-  background: #EC8936;
+  background: #ec8936;
   padding: 3px 4px;
   border-radius: 2px;
   letter-spacing: 1px;
@@ -247,10 +247,33 @@
   }
 }
 
-
 .addonsGroupContainer {
   display: block !important;
   grid-template-columns: repeat(auto-fit, minmax(12rem, 16rem));
   gap: 1rem;
   justify-content: center;
+}
+
+.showMoreButton {
+  display: block;
+  width: 100%;
+  padding: 8px 32px;
+  align-self: center;
+  justify-content: center;
+  background: inherit;
+  text-transform: uppercase;
+  font-weight: bold;
+
+  &:focus-visible,
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    border: none;
+    outline: 1px solid black;
+    span {
+      color: black;
+    }
+  }
 }

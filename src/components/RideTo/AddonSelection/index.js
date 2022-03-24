@@ -2,6 +2,7 @@ import { Button, Col, Container, Row } from 'reactstrap'
 import { Desktop, Mobile } from 'common/breakpoints'
 import { IconBoots, IconHelmet, IconJacket, IconMask } from 'assets/icons'
 import { getAddons, getSupplier } from 'services/page'
+import RideToButton from 'components/RideTo/Button'
 
 import AddonSelectionGroup from 'components/RideTo/AddonSelectionGroup'
 import { IconArrowRight } from 'assets/icons'
@@ -124,7 +125,8 @@ class AddonSelection extends React.Component {
 
     this.state = {
       addons,
-      addonGroups,
+      addonGroups: addonGroups.slice(0, 2),
+      allGroupsAvailable: addonGroups,
       postcode: qs.postcode || '',
       courseType: qs.courseType || '',
       qs: qs || {},
@@ -133,7 +135,8 @@ class AddonSelection extends React.Component {
       supplier: null,
       navigation: this.navigation,
       gloves_jacket_included: checkoutData.gloves_jacket_included,
-      helmet_hire: checkoutData.helmet_hire
+      helmet_hire: checkoutData.helmet_hire,
+      showThreeGroupsOnly: true
     }
 
     this.handleAddAddon = this.handleAddAddon.bind(this)
@@ -143,6 +146,7 @@ class AddonSelection extends React.Component {
     this.handleSizeUpdate = this.handleSizeUpdate.bind(this)
     this.updateAddonSize = this.updateAddonSize.bind(this)
     this.handleIsAddonSelected = this.isAddonSelected.bind(this)
+    this.handleShowMoreGroups = this.handleShowMoreGroups.bind(this)
   }
 
   handleAddAddon(addon) {
@@ -246,6 +250,17 @@ class AddonSelection extends React.Component {
     })
   }
 
+  handleShowMoreGroups() {
+    const { showThreeGroupsOnly, addonGroups, allGroupsAvailable } = this.state
+    if (showThreeGroupsOnly) {
+      this.setState({ addonGroups: allGroupsAvailable })
+    } else {
+      this.setState({ addonGroups: addonGroups.slice(0, 2) })
+    }
+
+    this.setState({ showThreeGroupsOnly: !showThreeGroupsOnly })
+  }
+
   handleHighlightAddon(keywords) {
     const { addons } = this.state
 
@@ -311,7 +326,8 @@ class AddonSelection extends React.Component {
       addons,
       navigation,
       gloves_jacket_included,
-      helmet_hire
+      helmet_hire,
+      showThreeGroupsOnly
     } = this.state
 
     let checklistItems = CHECKLIST_ITEMS.slice()
@@ -404,24 +420,18 @@ class AddonSelection extends React.Component {
                 onAdd={this.handleAddAddon}
                 onRemove={this.handleRemoveAddon}
                 onSizeUpdate={this.handleSizeUpdate}
-                // onDetails={this.handleDetails}
               />
             </Row>
           ))}
-          {/* <Row>
-            {addons.map((addon, i) => (
-              <Col xs="12" key={i}>
-                <AddonSelectionItem
-                  addon={addon}
-                  isAdded={this.isAddonSelected(addon)}
-                  onAdd={this.handleAddAddon}
-                  onRemove={this.handleRemoveAddon}
-                  onSizeUpdate={this.handleSizeUpdate}
-                  onDetails={this.handleDetails}
-                />
-              </Col>
-            ))}
-          </Row> */}
+          <Row md="6">
+            <RideToButton
+              id="addon-show-more-button"
+              alt="show-more-button"
+              className={styles.showMoreButton}
+              onClick={this.handleShowMoreGroups}>
+              <span>{showThreeGroupsOnly ? 'Show More' : 'Show Less'} </span>
+            </RideToButton>
+          </Row>
           <div className={styles.checkoutWrapper}>
             <Button
               id="addons-checkout-button"
@@ -433,21 +443,6 @@ class AddonSelection extends React.Component {
             </Button>
           </div>
         </Container>
-        {/*
-        <SidePanel
-          visible={detailsAddon !== null}
-          headingImage={detailsImage}
-          onDismiss={() => this.handleDetails(null)}>
-          {detailsAddon && (
-            <AddonDetails
-              isAdded={this.isAddonSelected(detailsAddon)}
-              addon={detailsAddon}
-              onAdd={this.handleAddAddon}
-              onRemove={this.handleRemoveAddon}
-            />
-          )}
-        </SidePanel>
-        */}
       </React.Fragment>
     )
   }
