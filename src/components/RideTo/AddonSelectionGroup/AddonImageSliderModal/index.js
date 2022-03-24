@@ -11,7 +11,7 @@ const AddonImageSliderModal = ({ images }) => {
     dots: true,
     slidesToShow: 3,
     slidesToScroll: 1,
-    infinite: true,
+    infinite: false,
     arrows: isMobile ? false : true,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
@@ -20,9 +20,11 @@ const AddonImageSliderModal = ({ images }) => {
       {
         breakpoint: 1024,
         settings: {
+          infinite: true,
           slidesToShow: 1,
           slidesToScroll: 1,
-          initialSlide: 1
+          initialSlide: 1,
+          arrows: false
         }
       }
     ]
