@@ -11,6 +11,7 @@ const AddonImageSliderModal = ({ images }) => {
     dots: true,
     slidesToShow: 3,
     slidesToScroll: 1,
+    swipeToSlide: true,
     infinite: false,
     arrows: isMobile ? false : true,
     nextArrow: <NextArrow />,

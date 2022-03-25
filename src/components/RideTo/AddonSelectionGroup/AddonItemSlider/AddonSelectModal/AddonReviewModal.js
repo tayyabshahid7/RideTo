@@ -9,7 +9,7 @@ const AddonReviewModal = props => {
   return (
     <React.Fragment>
       <div className={styles.reviewName}>{name}</div>
-      <StarsComponent>{rating}</StarsComponent>
+      <StarsComponent rating={rating} />
       <div className={styles.reviewDescription}>{description}</div>
       <div className={styles.reviewDate}>
         {moment(date).format('MMMM YYYY')}

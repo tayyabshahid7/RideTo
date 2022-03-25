@@ -155,7 +155,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1.75rem;
+    margin-bottom: 0.5em;
   }
 
   &__star {
@@ -181,4 +181,35 @@
   border: 1px solid var(--primary-color);
   align-items: center;
   color: white !important;
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
+}
+
+.removeButton {
+  background-color: transparent !important;
+  width: 100%;
+  padding: 8px 16px;
+  text-align: center;
+  justify-content: center;
+  border: 1px solid var(--primary-color);
+  align-items: center;
+  color: var(--primary-color);
+
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 22px;
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+  }
 }

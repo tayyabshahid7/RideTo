@@ -1,7 +1,7 @@
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 
-import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { Modal, ModalBody } from 'reactstrap'
 import React, { useState } from 'react'
 
 import AddonImageSliderModal from '../../AddonImageSliderModal'
@@ -57,11 +57,8 @@ const AddonSelectModal = ({
       scrollable
       backdrop="static"
       modalClassName={styles.modal}>
-      <ModalHeader
-        close={<CloseButtonIcon icon={CloseDark} onClick={onClose} />}
-        toggle={onClose}
-        className={styles.header}
-      />
+      <CloseButtonIcon icon={CloseDark} onClick={onClose} />
+
       <ModalBody className={styles.modal__body}>
         <div className={styles.modal__bodyContainer}>
           <div className={styles.modal__title}>{title}</div>
