@@ -23,6 +23,7 @@ const AddonItemSlider = props => {
     prevArrow: <PrevArrow />,
     slidesToShow: 3,
     slidesToScroll: 1,
+    swipeToSlide: true,
     infinite: false,
     variableWidth: true,
     customPaging: i => {
@@ -130,6 +131,7 @@ function AddonCard(props) {
     event.preventDefault()
     setModal(!modal)
   }
+  const buttonStyle = !props.isAdded ? styles.selectButton : styles.removeButton
 
   return (
     <Fragment>
@@ -199,7 +201,7 @@ function AddonCard(props) {
             <RideToButton
               id={`addon-${kebabCase(props.name)}`}
               alt={props.isAdded}
-              className={styles.selectButton}
+              className={buttonStyle}
               onClick={() => onClick(props.addon)}>
               <span>{!props.isAdded ? 'Add to Basket' : 'Remove'}</span>
             </RideToButton>

@@ -263,6 +263,7 @@
   background: inherit;
   text-transform: uppercase;
   font-weight: bold;
+  color: #2cceac;
 
   &:focus-visible,
   &:focus {
@@ -271,9 +272,14 @@
 
   &:hover {
     border: none;
-    outline: 1px solid black;
+    outline: 1px solid #2cceac;
     span {
-      color: black;
+      color: #2cceac;
     }
   }
+}
+
+.showMoreLessButtonContainer {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
 }

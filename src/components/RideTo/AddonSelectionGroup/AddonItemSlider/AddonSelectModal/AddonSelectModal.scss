@@ -1,21 +1,38 @@
-.modal {
+.closeButton {
+  background-color: transparent;
+  border: none;
+  right: 0px;
+  top: 0px;
+  position: absolute;
+  margin: 24px;
+  z-index: 20000;
+}
+
+.buttonClose {
+  background-color: transparent;
+  border: none;
+  right: 0px;
+  top: 0px;
+  position: absolute;
+  margin: 24px;
   z-index: 20000;
 
-  .header {
-    background-color: #f2f2f2 !important;
-    border-bottom: 0;
-    border-top: 2.307rem !important;
-    padding-bottom: 0;
-    padding-top: 49.5px !important;
-    padding-left: 32px !important;
-    padding-right: 32px !important;
+  .imgButtonCloseContainer {
+    img {
+      width: 26px;
+      height: 26px;
+    }
   }
+}
+
+.modal {
+  z-index: 20000;
 
   .modal__body {
     background-color: #f2f2f2 !important;
     padding-left: 32px !important;
     padding-right: 32px !important;
-    padding-top: 2px !important;
+    padding-top: 32px !important;
 
     .modal__bodyContainer {
       padding-top: 0;
@@ -25,7 +42,7 @@
         padding: 0;
         align-self: stretch;
         font-style: normal;
-        font-size: 24px;
+        font-size: 40px;
         text-align: left;
         color: #000000;
         line-height: 95%;
@@ -34,7 +51,7 @@
 
       .modal__price {
         text-align: left;
-        font-size: 24px;
+        font-size: 30px;
         margin-top: 5px;
         padding-top: 0;
         color: #6fc274;
@@ -73,7 +90,7 @@
       .modal__addonSlickImage_container {
         margin-top: 15px;
         .modal__addonImageContainer {
-          background-color: white;
+          background-color: f8f8f8;
           max-width: 311px;
           max-height: 311px;
           position: relative;
@@ -166,18 +183,4 @@
 
 .slick {
   position: relative;
-}
-
-.buttonClose {
-  background-color: #f2f2f2;
-  border: none;
-
-  .imgButtonCloseContainer {
-    display: block;
-
-    img {
-      width: 19px;
-      height: 19px;
-    }
-  }
 }

@@ -423,7 +423,7 @@ class AddonSelection extends React.Component {
               />
             </Row>
           ))}
-          <Row md="6">
+          <div className={styles.checkoutWrapper}>
             <RideToButton
               id="addon-show-more-button"
               alt="show-more-button"
@@ -431,7 +431,7 @@ class AddonSelection extends React.Component {
               onClick={this.handleShowMoreGroups}>
               <span>{showThreeGroupsOnly ? 'Show More' : 'Show Less'} </span>
             </RideToButton>
-          </Row>
+          </div>
           <div className={styles.checkoutWrapper}>
             <Button
               id="addons-checkout-button"
