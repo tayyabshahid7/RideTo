@@ -32,6 +32,7 @@ import loadable from '@loadable/component'
 import moment from 'moment'
 import { parseQueryString } from 'services/api'
 import styles from './ResultPage.scss'
+import POMSelector from '../CheckoutPage/POMSelector'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -1059,6 +1060,7 @@ class ResultPage extends Component {
                 isErrored={isErrored}
               />
             )}
+            <POMSelector />
           </SidePanel>
         )}
         {showDateSelectorModal && !loading && (
