@@ -9,7 +9,7 @@ const GROUPS = {
   HELMET: 'Helmet',
   BOOTS_JEANS: 'Boots & Jeans',
   HELMET_GLOVES: 'Helmet & Gloves',
-  CLOTHES_BOOTS: 'Clothes & Boots'
+  CLOTHES_BOOTS: 'Boots & Clothing'
 }
 class AddonSelectionGroup extends React.Component {
   render() {
