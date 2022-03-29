@@ -108,11 +108,11 @@ function AddonCard(props) {
     const { ratings } = addon
 
     if (!ratings) {
-      return 3
+      return null
     }
 
     if (ratings.length === 0) {
-      return 3
+      return null
     }
 
     let avgRating = 0
@@ -180,11 +180,13 @@ function AddonCard(props) {
 
           <p className={styles.card__freeDelivery}>Includes FREE Delivery</p>
           <h2 className={styles.card__title}>{props.title}</h2>
-          <StarsComponent
-            className={styles.card__rating}
-            starClassName={styles.card__star}
-            rating={getRating()}
-          />
+          {getRating() && (
+            <StarsComponent
+              className={styles.card__rating}
+              starClassName={styles.card__star}
+              rating={getRating()}
+            />
+          )}
         </div>
         <div className={styles.card__buttonWrapper}>
           <div className={styles.card__selectSizeButton}>
