@@ -7,7 +7,7 @@ import shield from 'assets/images/security.svg'
 import PeaceOfMindPolicyInfo from 'components/RideTo/CheckoutPage/PeaceOfMindPolicyInfo'
 
 function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
-  // const { discount_price } = createPOM()
+  const { discount_price } = createPOM()
 
   return (
     <div
@@ -16,7 +16,7 @@ function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
         <img src={shield} alt="Shield" className={styles.pomShield} />
       </div>
       <div className={classnames(styles.price, popup && styles.priceBold)}>
-        {/* Only £{discount_price} */}
+        Only £{discount_price}
       </div>
       <div className={styles.header}>
         <div className={styles.headerText}>
@@ -32,7 +32,7 @@ function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
               styles.headerSwitch,
               hasPOM && styles.headerSwitchSelected
             )}
-            onClick={() => {}}>
+            onClick={handlePOMToggleClick}>
             <div className={styles.headerSwitchSlider} />
           </button>
         )}
