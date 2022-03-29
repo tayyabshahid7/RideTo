@@ -203,7 +203,9 @@ function AddonCard(props) {
               alt={props.isAdded}
               className={buttonStyle}
               onClick={() => onClick(props.addon)}>
-              <span>{!props.isAdded ? 'Add to Basket' : 'Remove'}</span>
+              <span>
+                {!props.isAdded ? 'Add to Basket' : 'Remove From Basket'}
+              </span>
             </RideToButton>
           </div>
         </div>
