@@ -97,7 +97,7 @@ const AddonSelectModal = ({
                 alt={isAdded}
                 className={styles.card__selectButton}
                 onClick={() => onClickAddAddon(addon)}>
-                <span>{!isAdded ? 'Add to Basket' : 'Remove'}</span>
+                <span>{!isAdded ? 'Add to Basket' : 'Remove From Basket'}</span>
               </RideToButton>
             </div>
           </div>
