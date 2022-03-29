@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react'
-
 import Select from 'components/RideTo/Select'
 import styles from './AddonSizes.scss'
 
@@ -13,14 +12,13 @@ const AddonSizes = ({ sizes, selected, onClick, sizeRequired }) => {
       onClick(size)
     }
   }
-
   return (
     <Fragment>
       <Select
         className={styles.selectSize}
         value={selected ? selected.code : ''}
         onChange={handleChange}>
-        <option value="" hidden disabled>
+        <option className={styles.option} value="" hidden disabled>
           Select Size
         </option>
         {sizes.map(size => (

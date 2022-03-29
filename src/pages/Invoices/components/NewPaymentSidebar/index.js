@@ -66,7 +66,6 @@ const NewPaymentSidebar = ({
     return null
   }
 
-  console.log('payment form', order, invoice)
 
   const customer = {
     email: invoice.customer_email,

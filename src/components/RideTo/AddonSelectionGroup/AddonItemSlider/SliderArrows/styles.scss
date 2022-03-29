@@ -1,0 +1,69 @@
+.button {
+  position: absolute;
+  padding: 0;
+  appearance: none;
+  outline: none;
+  border: 0;
+  z-index: 1;
+}
+
+.buttonNext {
+  display: flex;
+  right: -1px;
+  top: 0;
+  min-height: 93% !important;
+  height: auto;
+  width: 5rem;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 1px,
+    rgb(255, 255, 255) 50%
+  ) !important;
+
+  img {
+    right: 1px;
+    margin-left: auto;
+    margin-right: 1rem;
+    display: block;
+  }
+}
+
+:global(.slick-next) {
+  transform: none !important;
+}
+
+:global(.slick-prev) {
+  transform: none !important;
+  top: 0 !important;
+}
+
+.buttonPrevious {
+  display: flex;
+  left: -1px;
+  min-height: 93% !important;
+  height: auto;
+  width: 5rem;
+  background: linear-gradient(
+    to left,
+    rgba(255, 255, 255, 0) 1px,
+    rgb(255, 255, 255) 50%
+  ) !important;
+  img {
+    left: 1px;
+    margin-right: auto;
+    margin-left: 1rem;
+    display: block;
+  }
+}
+
+.srOnly {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important; // Fix for https://github.com/twbs/bootstrap/issues/25686
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}

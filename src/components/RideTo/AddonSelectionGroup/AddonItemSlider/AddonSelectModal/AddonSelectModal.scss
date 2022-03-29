@@ -1,0 +1,186 @@
+.closeButton {
+  background-color: transparent;
+  border: none;
+  right: 0px;
+  top: 0px;
+  position: absolute;
+  margin: 24px;
+  z-index: 20000;
+}
+
+.buttonClose {
+  background-color: transparent;
+  border: none;
+  right: 0px;
+  top: 0px;
+  position: absolute;
+  margin: 24px;
+  z-index: 20000;
+
+  .imgButtonCloseContainer {
+    img {
+      width: 26px;
+      height: 26px;
+    }
+  }
+}
+
+.modal {
+  z-index: 20000;
+
+  .modal__body {
+    background-color: #f8f8f8 !important;
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+    padding-top: 32px !important;
+
+    .modal__bodyContainer {
+      padding-top: 0;
+
+      .modal__title {
+        font-family: var(--font-rift-bold);
+        padding: 0;
+        align-self: stretch;
+        font-style: normal;
+        font-size: 40px;
+        text-align: left;
+        color: #000000;
+        line-height: 95%;
+        letter-spacing: 1px;
+      }
+
+      .modal__price {
+        text-align: left;
+        font-size: 30px;
+        margin-top: 5px;
+        padding-top: 0;
+        color: #6fc274;
+        font-family: var(--font-rift-bold);
+      }
+
+      .modal__discountedPrice {
+        text-align: left;
+        margin-top: 5px;
+        padding-top: 0;
+        font-family: var(--font-rift);
+        color: #2cceac;
+        letter-spacing: 0.01em;
+        text-decoration-line: line-through;
+        line-height: 29px;
+        font-size: 22px;
+      }
+
+      .modal__freeDelivery {
+        font-size: 13px;
+        font-family: var(--font-proxima);
+        text-align: left;
+        color: #141414;
+        line-height: 16px;
+        margin: 7px 0px;
+      }
+      .modal__starContainer {
+        margin: 0px;
+
+        .modal__rating {
+        }
+
+        .modal__star {
+        }
+      }
+      .modal__addonSlickImage_container {
+        margin-top: 15px;
+        .modal__addonImageContainer {
+          background-color: f8f8f8;
+          max-width: 311px;
+          max-height: 311px;
+          position: relative;
+          display: flex;
+          flex-direction: row;
+          align-items: flex-start;
+          padding: 12px;
+
+          img {
+            max-width: 100%;
+            max-height: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            object-fit: contain;
+            flex: none;
+            order: 0;
+            align-self: stretch;
+            flex-grow: 1;
+            margin: 0px 0px;
+          }
+        }
+      }
+
+      .card__buttonWrapper {
+        margin-top: 32px;
+
+        .card__selectSizeButton > * {
+          margin-bottom: 8px;
+        }
+        .card__addToBucketButton {
+          .card__selectButton {
+            background-color: #2cceac;
+            width: 100%;
+            padding: 8px 16px;
+            text-align: center;
+            justify-content: center;
+            border: 1px solid var(--primary-color);
+            align-items: center;
+            color: white !important;
+          }
+        }
+      }
+
+      .card__detailReviewWrapper {
+        background-color: white;
+        margin-top: 32px;
+        border: 1px solid #e1e1e1;
+        @media (min-width: 1025px) {
+          background-color: #f2f2f2;
+        }
+
+        .card__detailReviewButtonWrapper {
+          display: flex;
+          .card__detailReviewButton {
+            flex-wrap: wrap;
+            flex: 0 0 50%;
+            font-family: var(--font-rift-bold);
+            padding: 12px 16px;
+            text-align: center;
+            justify-content: center;
+            background-color: #f2f2f2;
+            border: none;
+            outline: none;
+            &:hover {
+              background-color: white;
+            }
+
+            @media (min-width: 1025px) {
+              flex: none;
+            }
+          }
+        }
+        .card__detailReviewText {
+          background-color: white;
+          padding: 24px;
+          font-family: var(--font-proxima);
+          font-size: 15px;
+          line-height: 24px;
+          white-space: pre-wrap;
+          .card__description {
+          }
+        }
+      }
+    }
+  }
+}
+.active {
+  background-color: white !important;
+}
+
+.slick {
+  position: relative;
+}
