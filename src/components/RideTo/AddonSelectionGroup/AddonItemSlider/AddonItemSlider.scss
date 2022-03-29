@@ -71,6 +71,7 @@
 
 .card {
   width: 244px;
+  min-height: 562px;
   overflow: visible;
   background: white;
   display: flex;
@@ -79,7 +80,6 @@
   padding: 1.5rem;
   @media (min-width: 992px) {
     width: 320px;
-    height: 558px;
   }
 
   &__image {
