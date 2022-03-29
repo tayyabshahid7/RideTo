@@ -10,7 +10,8 @@
 .buttonNext {
   display: flex;
   right: -1px;
-  min-height: 95% !important;
+  top: 0;
+  min-height: 93% !important;
   height: auto;
   width: 5rem;
   background: linear-gradient(
@@ -27,10 +28,19 @@
   }
 }
 
+:global(.slick-next) {
+  transform: none !important;
+}
+
+:global(.slick-prev) {
+  transform: none !important;
+  top: 0 !important;
+}
+
 .buttonPrevious {
   display: flex;
   left: -1px;
-  min-height: 95% !important;
+  min-height: 93% !important;
   height: auto;
   width: 5rem;
   background: linear-gradient(
