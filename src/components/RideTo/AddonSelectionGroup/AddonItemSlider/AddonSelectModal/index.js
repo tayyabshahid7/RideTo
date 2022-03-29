@@ -73,11 +73,13 @@ const AddonSelectModal = ({
             <p className={styles.modal__freeDelivery}>Includes FREE delivery</p>
           </div>
           <div className={styles.modal__starContainer}>
-            <StarsComponent
-              className={styles.modal__rating}
-              starClassName={styles.modal__star}
-              rating={rating}
-            />
+            {rating && (
+              <StarsComponent
+                className={styles.modal__rating}
+                starClassName={styles.modal__star}
+                rating={rating}
+              />
+            )}
           </div>
           <AddonImageSliderModal images={images} />
           <div className={styles.card__buttonWrapper}>
