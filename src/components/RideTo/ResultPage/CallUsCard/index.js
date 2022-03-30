@@ -23,7 +23,7 @@ function CallUsCard() {
       <a
         target={isDesktop ? undefined : '_blank'}
         id="results-page-take-quiz-now-button"
-        href="https://rideto.typeform.com/to/XeXuVE"
+        href="https://rideto.typeform.com/to/Oz2Xj6wN"
         className={classnames(
           styles.button,
           isDesktop ? 'typeform-share' : undefined
