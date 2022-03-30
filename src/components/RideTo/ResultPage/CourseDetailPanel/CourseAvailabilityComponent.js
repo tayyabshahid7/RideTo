@@ -336,15 +336,6 @@ class CourseAvailabilityComponent extends React.Component {
       this.props.instantDate === instantDate ? this.props.instantCourse : null
     this.setState({ calendar: { ...calendar } })
     onUpdate({ instantCourse, instantDate })
-
-    if (!bike_hire && !this.props.fromSupplier) {
-      setTimeout(() => {
-        this.bikePicker.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'end'
-        })
-      }, 99)
-    }
   }
 
   handleTimeSelect = async instantCourse => {
