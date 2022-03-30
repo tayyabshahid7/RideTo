@@ -42,15 +42,18 @@ class AddonSelection extends React.Component {
   constructor(props) {
     super(props)
 
-    // Clear addons on landing on page
     const checkoutData = JSON.parse(sessionStorage.getItem('checkout-data'))
-    sessionStorage.setItem(
-      'checkout-data',
-      JSON.stringify({
-        ...checkoutData,
-        addons: []
-      })
-    )
+
+    let selectedAddons = []
+
+    if (checkoutData.addons.length > 0) {
+      const pom = checkoutData.addons.filter(
+        ({ name }) => name === 'Peace Of Mind Policy'
+      )
+      if (pom) {
+        selectedAddons = [pom[0]]
+      }
+    }
 
     const qs = parseQueryString(window.location.search.slice(1))
 
@@ -130,7 +133,7 @@ class AddonSelection extends React.Component {
       postcode: qs.postcode || '',
       courseType: qs.courseType || '',
       qs: qs || {},
-      selectedAddons: [],
+      selectedAddons,
       detailsAddon: null,
       supplier: null,
       navigation: this.navigation,
