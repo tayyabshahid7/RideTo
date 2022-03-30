@@ -25,7 +25,7 @@ const GET_A_LICENCE = {
   },
   links: [
     {
-      url: 'https://rideto.typeform.com/to/XeXuVE',
+      url: 'https://rideto.typeform.com/to/Oz2Xj6wN',
       text: 'Licence calculator',
       typeform: true
     }
