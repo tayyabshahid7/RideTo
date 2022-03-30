@@ -85,8 +85,6 @@ class ResultPage extends Component {
       addons: []
     }
 
-    this.POM = createPOM()
-
     this.onSelectPackage = this.onSelectPackage.bind(this)
     this.onBookNow = this.onBookNow.bind(this)
     this.handlePostcodeChange = this.handlePostcodeChange.bind(this)
@@ -365,8 +363,9 @@ class ResultPage extends Component {
   }
 
   handleAddPOM() {
+    const pom = createPOM()
     this.setState({
-      addons: [this.POM],
+      addons: [pom],
       addedPOM: true
     })
   }
