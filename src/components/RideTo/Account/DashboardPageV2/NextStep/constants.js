@@ -45,7 +45,7 @@ export const STEP_LICENCE = {
   },
   form: {
     icon: calculator,
-    href: 'https://rideto.typeform.com/to/XeXuVE',
+    href: 'https://rideto.typeform.com/to/Oz2Xj6wN',
     buttonText: 'Open licence calculator'
   },
   status: 'Next Step',
