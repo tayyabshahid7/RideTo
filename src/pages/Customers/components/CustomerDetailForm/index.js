@@ -72,6 +72,23 @@ class CustomerDetailForm extends React.Component {
             </a>
           )}
         </div>
+        <div className={styles.phoneInput}>
+          <ConnectInput
+            name="alternative_phone"
+            value={customer.alternative_phone || ''}
+            label="Alternative Phone Number"
+            type="phone"
+            onChange={this.handleChange}
+            disabled={!isAdmin}
+          />
+          {isMobile() && customer.alternative_phone && (
+            <a
+              className={styles.callButton}
+              href={`tel:${customer.alternative_phone}`}>
+              Call
+            </a>
+          )}
+        </div>
         <ConnectAgeInput
           name="birthdate"
           value={customer.birthdate || ''}
