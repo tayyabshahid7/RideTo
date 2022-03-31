@@ -32,6 +32,8 @@ function FaqsNewContainer() {
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const [contactModal, setContactModal] = useState(false)
   const [isClicked, setIsClicked] = useState(false)
+  const [selectedDesktop, setSelectedDesktop] = useState('')
+  const [selectedDesktopItem, setSelectedDesktopItem] = useState(0)
 
   const handleClickQuestion = idx => {
     const index = openCategories.indexOf(idx)
@@ -44,11 +46,30 @@ function FaqsNewContainer() {
     setOpenCategories([idx])
   }
 
+  const filterCategoryBySlug = (categories, slug) => {
+    let filteredCategory = null
+    categories.forEach(category => {
+      category.category.forEach(ques => {
+        if (ques.slug === slug) {
+          filteredCategory = category
+        }
+      })
+    })
+    return filteredCategory ? filteredCategory.name : null
+  }
+
   useEffect(() => {
     fetchFaqs().then(res => {
       setResponse(res)
-      const defCategory = get(res, 'results[0].name', '')
-      setSelected(defCategory)
+      let category = get(res, 'results[0].name', '')
+      if (window.location.hash) {
+        const slug = window.location.hash.replace('#', '')
+        const filteredCategory = filterCategoryBySlug(res.results, slug)
+        if (filteredCategory) {
+          category = filteredCategory
+        }
+      }
+      setSelected(category)
     })
   }, [])
 
@@ -64,14 +85,11 @@ function FaqsNewContainer() {
     setContactModal(true)
   }
 
-  const [selectedDesktop, setSelectedDesktop] = useState('')
-  const [selectedDesktopItem, setSelectedDesktopItem] = useState(0)
-
   useEffect(() => {
     setSelectedDesktopItem(0)
   }, [selected])
 
-  const handleClickDesktop = (item, idx, title) => {
+  const handleClickDesktop = (item, idx) => {
     setSelectedDesktop(item)
     setSelectedDesktopItem(idx)
     window.location.hash = `#${item.slug}`
@@ -113,15 +131,13 @@ function FaqsNewContainer() {
     const categories = get(response, 'results', [])
     const questions = categories.filter(item => item.name === selected)
     let item = get(questions, '[0].category[0]', '')
-    if (
-      window.location.hash &&
-      window.location.hash === '#how-do-i-change-or-cancel-my-booking'
-    ) {
+    if (window.location.hash) {
       let loadItems = get(questions, '[0].category', '')
 
       if (loadItems) {
+        const slug = window.location.hash.replace('#', '')
         loadItems.map((i, idx) => {
-          if (i.slug === 'how-do-i-change-or-cancel-my-booking') {
+          if (i.slug === slug) {
             item = i
             setSelectedDesktopItem(idx)
           }
