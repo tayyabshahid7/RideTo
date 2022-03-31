@@ -277,7 +277,7 @@ class CourseAvailabilityComponent extends React.Component {
 
   handleDateSelect = async (instantDate, toValidate = false) => {
     const { calendar, courses } = this.state
-    const { supplier, courseType, onUpdate, bike_hire } = this.props
+    const { supplier, courseType, onUpdate } = this.props
 
     const dayCourses = courses.filter(x => x.date === instantDate)
     if (toValidate) {
