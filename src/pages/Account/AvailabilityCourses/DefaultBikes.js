@@ -4,6 +4,7 @@ import { Table } from 'reactstrap'
 import DefaultBikesModal from './DefaultBikesModal'
 import RowItem from './RowItem'
 import { ConnectSingleSelect } from 'components/ConnectForm'
+import { getCourseTypes } from 'services/course'
 
 function DefaultBikes({ schools, info }) {
   const [activeCourse, setActiveCourse] = useState(null)
@@ -17,10 +18,15 @@ function DefaultBikes({ schools, info }) {
   }, [])
 
   useEffect(() => {
-    const courses = info.courseTypes.filter(courseType =>
-      courseType.schoolIds.includes(schoolId)
-    )
-    setCourseList(courses)
+    if (schoolId) {
+      getCourseTypes(schoolId).then(courseTypes => {
+        setCourseList(courseTypes)
+      })
+    }
+    // const courses = info.courseTypes.filter(courseType =>
+    //   courseType.schoolIds.includes(schoolId)
+    // )
+    // setCourseList(courses)
   }, [schoolId, info.courseTypes])
 
   const handleChangeSchool = id => {
@@ -55,14 +61,15 @@ function DefaultBikes({ schools, info }) {
               </tr>
             </thead>
             <tbody>
-              {courseList.map(courseType => (
-                <RowItem
-                  key={courseType.id}
-                  schoolId={schoolId}
-                  courseType={courseType}
-                  setActiveCourse={setActiveCourse}
-                />
-              ))}
+              {courseList &&
+                courseList.map(courseType => (
+                  <RowItem
+                    key={courseType.id}
+                    schoolId={schoolId}
+                    courseType={courseType}
+                    setActiveCourse={setActiveCourse}
+                  />
+                ))}
             </tbody>
           </Table>
         </div>
