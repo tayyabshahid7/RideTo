@@ -6,12 +6,21 @@ import { createPOM } from 'utils/helper'
 import shield from 'assets/images/security.svg'
 import PeaceOfMindPolicyInfo from 'components/RideTo/CheckoutPage/PeaceOfMindPolicyInfo'
 
-function POMSelector({ handlePOMToggleClick, hasPOM, popup = false }) {
+function POMSelector({
+  handlePOMToggleClick,
+  hasPOM,
+  popup = false,
+  className
+}) {
   const { discount_price } = createPOM()
 
   return (
     <div
-      className={classnames(styles.container, popup && styles.containerPopup)}>
+      className={classnames(
+        styles.container,
+        className,
+        popup && styles.containerPopup
+      )}>
       <div>
         <img src={shield} alt="Shield" className={styles.pomShield} />
       </div>

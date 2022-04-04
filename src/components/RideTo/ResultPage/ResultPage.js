@@ -1097,6 +1097,7 @@ class ResultPage extends Component {
               <POMSelector
                 handlePOMToggleClick={this.handlePOMToggleClick}
                 hasPOM={addedPOM}
+                className={styles.POM}
               />
             </div>
           </SidePanel>
