@@ -9,6 +9,9 @@
 .pageContainer {
   // padding-top: 88px;
   padding-top: 25px;
+  &:visited { 
+    color: black !important; 
+  }
 
   @media (max-width: 768px) {
     // padding-top: 24px;
