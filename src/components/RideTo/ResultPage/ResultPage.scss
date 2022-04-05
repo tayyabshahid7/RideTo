@@ -329,6 +329,19 @@
   }
 }
 
+.POMContainer {
+  width: 100%;
+
+  .POM {
+    margin: 2.5rem 0 0;
+    @media (max-width: 768px) {
+      margin: 2.5rem 0rem 0rem !important;
+      padding: 0 2rem 2rem !important;
+    }
+
+  }
+}
+
 .actionStatic {
   margin-top: -40px;
   margin-right: 25px;
