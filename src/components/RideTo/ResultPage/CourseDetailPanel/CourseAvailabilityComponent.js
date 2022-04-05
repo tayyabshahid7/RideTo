@@ -277,7 +277,7 @@ class CourseAvailabilityComponent extends React.Component {
 
   handleDateSelect = async (instantDate, toValidate = false) => {
     const { calendar, courses } = this.state
-    const { supplier, courseType, onUpdate, bike_hire } = this.props
+    const { supplier, courseType, onUpdate } = this.props
 
     const dayCourses = courses.filter(x => x.date === instantDate)
     if (toValidate) {
@@ -336,15 +336,6 @@ class CourseAvailabilityComponent extends React.Component {
       this.props.instantDate === instantDate ? this.props.instantCourse : null
     this.setState({ calendar: { ...calendar } })
     onUpdate({ instantCourse, instantDate })
-
-    if (!bike_hire && !this.props.fromSupplier) {
-      setTimeout(() => {
-        this.bikePicker.current.scrollIntoView({
-          behavior: 'smooth',
-          block: 'end'
-        })
-      }, 99)
-    }
   }
 
   handleTimeSelect = async instantCourse => {
