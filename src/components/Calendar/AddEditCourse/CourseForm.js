@@ -1,26 +1,27 @@
+import {
+  Button,
+  ConnectInput,
+  ConnectLabeledContent,
+  ConnectSingleSelect,
+  ConnectTextArea
+} from 'components/ConnectForm'
+import { Col, Row } from 'reactstrap'
+import { DAY_FORMAT3, SHIFT_TYPES, TEST_STATUS_CHOICES } from 'common/constants'
+
+import BikeNumberPicker from 'components/BikeNumberPicker'
+import { DEFAULT_SETTINGS } from 'common/constants'
+import LoadingMask from 'components/LoadingMask'
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import moment from 'moment'
-import { Col, Row } from 'reactstrap'
-import range from 'lodash/range'
-import styles from './styles.scss'
-import { DAY_FORMAT3, TEST_STATUS_CHOICES, SHIFT_TYPES } from 'common/constants'
-import LoadingMask from 'components/LoadingMask'
-import pick from 'lodash/pick'
-import BikeNumberPicker from 'components/BikeNumberPicker'
-import {
-  ConnectInput,
-  ConnectSingleSelect,
-  ConnectTextArea,
-  Button,
-  ConnectLabeledContent
-} from 'components/ConnectForm'
-import { actions as notifyActions } from 'store/notification'
-import { getDaysStaff } from 'store/staff'
 import { getDaysCourses } from 'store/course'
+import { getDaysStaff } from 'store/staff'
+import moment from 'moment'
+import { actions as notifyActions } from 'store/notification'
+import pick from 'lodash/pick'
+import range from 'lodash/range'
 import { removeWeekdays } from 'utils/helper'
-import { DEFAULT_SETTINGS } from 'common/constants'
+import styles from './styles.scss'
 
 const fullLicenceBikeFields = [
   'a1_auto_bikes',
@@ -46,7 +47,7 @@ class CourseForm extends React.Component {
   constructor(props) {
     super(props)
     const lastDate = removeWeekdays(moment(props.date), 4, props.bankHolidays)
-
+    console.log(props)
     const course = {
       course_type_id: '',
       instructor_id: '',
@@ -120,6 +121,15 @@ class CourseForm extends React.Component {
       })
     }
 
+    if (!course.time) {
+      const { start_time } = this.getStartEndTimes(1)
+      course.time = start_time
+    }
+
+    if (!course.duration) {
+      course.duration = 480
+    }
+
     this.state = {
       course: course,
       edited: false,
@@ -170,6 +180,10 @@ class CourseForm extends React.Component {
       this.loadPricing()
       return
     }
+  }
+
+  getStartEndTimes(supplierId) {
+    return { start_time: '10:00:00', end_time: '19:00:00' }
   }
 
   setCourseType = (course, courseTypes) => {
@@ -261,7 +275,7 @@ class CourseForm extends React.Component {
 
   getFinishTime = (time, duration) => {
     if (!time) {
-      return '00:00'
+      return '18:00'
     }
 
     return moment(time, 'HH:mm')
