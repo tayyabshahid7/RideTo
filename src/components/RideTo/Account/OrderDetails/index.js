@@ -288,7 +288,7 @@ class OrderDetails extends React.Component {
                           </span>{' '}
                           or visit our{' '}
                           <a
-                            href="/contact#how-do-i-change-or-cancel-my-booking"
+                            href="/contact#how-do-i-change-or-cancel-my-booking-1"
                             target="_blank"
                             rel="noopener noreferrer"
                             className={styles.HelpPage}>
