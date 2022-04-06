@@ -1,26 +1,28 @@
+import {
+  Button,
+  ConnectInput,
+  ConnectLabeledContent,
+  ConnectSingleSelect,
+  ConnectTextArea
+} from 'components/ConnectForm'
+import { Col, Row } from 'reactstrap'
+import { DAY_FORMAT3, SHIFT_TYPES, TEST_STATUS_CHOICES } from 'common/constants'
+
+import BikeNumberPicker from 'components/BikeNumberPicker'
+import { DEFAULT_SETTINGS } from 'common/constants'
+import LoadingMask from 'components/LoadingMask'
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import moment from 'moment'
-import { Col, Row } from 'reactstrap'
-import range from 'lodash/range'
-import styles from './styles.scss'
-import { DAY_FORMAT3, TEST_STATUS_CHOICES, SHIFT_TYPES } from 'common/constants'
-import LoadingMask from 'components/LoadingMask'
-import pick from 'lodash/pick'
-import BikeNumberPicker from 'components/BikeNumberPicker'
-import {
-  ConnectInput,
-  ConnectSingleSelect,
-  ConnectTextArea,
-  Button,
-  ConnectLabeledContent
-} from 'components/ConnectForm'
-import { actions as notifyActions } from 'store/notification'
-import { getDaysStaff } from 'store/staff'
 import { getDaysCourses } from 'store/course'
+import { getDaysStaff } from 'store/staff'
+import moment from 'moment'
+import { actions as notifyActions } from 'store/notification'
+import pick from 'lodash/pick'
+import range from 'lodash/range'
 import { removeWeekdays } from 'utils/helper'
-import { DEFAULT_SETTINGS } from 'common/constants'
+import styles from './styles.scss'
+import { getStartTimeDurationForCourse } from '../../../services/course'
 
 const fullLicenceBikeFields = [
   'a1_auto_bikes',
@@ -46,7 +48,6 @@ class CourseForm extends React.Component {
   constructor(props) {
     super(props)
     const lastDate = removeWeekdays(moment(props.date), 4, props.bankHolidays)
-
     const course = {
       course_type_id: '',
       instructor_id: '',
@@ -130,6 +131,7 @@ class CourseForm extends React.Component {
 
   componentDidMount() {
     this.loadPricing()
+    this.loadDefaultStartEndTime()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -158,16 +160,19 @@ class CourseForm extends React.Component {
 
     if (course_type_id && course_type_id !== prevState.course.course_type_id) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
 
     if (date && date !== prevState.course.date) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
 
     if (supplier && supplier !== prevState.supplier) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
   }
@@ -180,6 +185,33 @@ class CourseForm extends React.Component {
       } else {
         course.course_type_id = courseTypes[0].id
       }
+    }
+  }
+
+  async loadDefaultStartEndTime() {
+    const { pricing } = this.props
+    const { supplier, course } = this.state
+    const { course_type_id, date } = this.state.course
+
+    if (
+      !course.time ||
+      pricing.schoolId !== supplier ||
+      pricing.course_type !== course_type_id
+    ) {
+      const response = await getStartTimeDurationForCourse(
+        supplier,
+        course_type_id,
+        date
+      )
+
+      const time = response.start_time
+      const duration = response.duration
+
+      console.log(time, duration)
+      this.setState({
+        course: { ...course, time, duration },
+        edited: true
+      })
     }
   }
 
