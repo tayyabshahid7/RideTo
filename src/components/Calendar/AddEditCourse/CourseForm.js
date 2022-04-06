@@ -22,6 +22,7 @@ import pick from 'lodash/pick'
 import range from 'lodash/range'
 import { removeWeekdays } from 'utils/helper'
 import styles from './styles.scss'
+import { getStartTimeDurationForCourse } from '../../../services/course'
 
 const fullLicenceBikeFields = [
   'a1_auto_bikes',
@@ -47,7 +48,6 @@ class CourseForm extends React.Component {
   constructor(props) {
     super(props)
     const lastDate = removeWeekdays(moment(props.date), 4, props.bankHolidays)
-    console.log(props)
     const course = {
       course_type_id: '',
       instructor_id: '',
@@ -121,15 +121,6 @@ class CourseForm extends React.Component {
       })
     }
 
-    if (!course.time) {
-      const { start_time } = this.getStartEndTimes(1)
-      course.time = start_time
-    }
-
-    if (!course.duration) {
-      course.duration = 480
-    }
-
     this.state = {
       course: course,
       edited: false,
@@ -140,6 +131,7 @@ class CourseForm extends React.Component {
 
   componentDidMount() {
     this.loadPricing()
+    this.loadDefaultStartEndTime()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -168,22 +160,21 @@ class CourseForm extends React.Component {
 
     if (course_type_id && course_type_id !== prevState.course.course_type_id) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
 
     if (date && date !== prevState.course.date) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
 
     if (supplier && supplier !== prevState.supplier) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
-  }
-
-  getStartEndTimes(supplierId) {
-    return { start_time: '10:00:00', end_time: '19:00:00' }
   }
 
   setCourseType = (course, courseTypes) => {
@@ -194,6 +185,33 @@ class CourseForm extends React.Component {
       } else {
         course.course_type_id = courseTypes[0].id
       }
+    }
+  }
+
+  async loadDefaultStartEndTime() {
+    const { pricing } = this.props
+    const { supplier, course } = this.state
+    const { course_type_id, date } = this.state.course
+
+    if (
+      !course.time ||
+      pricing.schoolId !== supplier ||
+      pricing.course_type !== course_type_id
+    ) {
+      const response = await getStartTimeDurationForCourse(
+        supplier,
+        course_type_id,
+        date
+      )
+
+      const time = response.start_time
+      const duration = response.duration
+
+      console.log(time, duration)
+      this.setState({
+        course: { ...course, time, duration },
+        edited: true
+      })
     }
   }
 
@@ -275,7 +293,7 @@ class CourseForm extends React.Component {
 
   getFinishTime = (time, duration) => {
     if (!time) {
-      return '18:00'
+      return '00:00'
     }
 
     return moment(time, 'HH:mm')

@@ -404,6 +404,16 @@ export const getPricingForCourse = async (schoolId, course_type, datetime) => {
   return response
 }
 
+export const getStartTimeDurationForCourse = async (
+  schoolId,
+  course_type,
+  datetime
+) => {
+  const path = `school/${schoolId}/course-time`
+  const response = await get(path, { course_type, datetime })
+  return response
+}
+
 export const getPrice = async ({
   supplierId,
   date,
