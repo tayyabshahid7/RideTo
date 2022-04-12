@@ -25,6 +25,11 @@ import omit from 'lodash/omit'
 import set from 'lodash/set'
 import styles from './styles.scss'
 import { tldExists } from 'tldjs'
+import {
+  createPaymentIntentSecretClient,
+  getPaymentIntentSecretClient,
+  updatePaymentIntentSecretClient
+} from '../../../services/stripe'
 
 const AddressSelectModal = loadable(() =>
   import('components/RideTo/AddressSelectModal')
@@ -135,7 +140,10 @@ class CheckoutPage extends Component {
         addon => addon.name !== 'Peace Of Mind Policy'
       ).length,
       cardElement: null,
-      emailSubmitted: false
+      emailSubmitted: false,
+      stripeClientSecret: null,
+      stripePaymentIntentID: '',
+      totalPrice: 0
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -146,15 +154,39 @@ class CheckoutPage extends Component {
     this.handleVoucherApply = this.handleVoucherApply.bind(this)
     this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
     this.handleChangeEmailClick = this.handleChangeEmailClick.bind(this)
+    this.handleChangeTotalPrice = this.handleChangeTotalPrice.bind(this)
   }
 
   onUpdate(data) {
     this.setState({ ...data })
   }
 
+  async handleChangeTotalPrice() {
+    await this.fetchSecretClient()
+  }
+
+  async fetchSecretClient() {
+    const { priceInfo } = this.state
+    const { checkoutData } = this.props
+    const { addons } = checkoutData
+    const expected_price = getExpectedPrice(priceInfo, addons, checkoutData)
+    this.setState({ totalPrice: expected_price })
+    const { client_secret, id } = await createPaymentIntentSecretClient(
+      expected_price
+    )
+
+    if (client_secret) {
+      this.setState({
+        stripeClientSecret: client_secret,
+        stripePaymentIntentID: id
+      })
+    }
+  }
+
   async componentDidMount() {
     await this.loadPrice() // need to wait since getLoggedInUserDetails also sets state of details
     this.getLoggedInUserDetails()
+    await this.fetchSecretClient()
   }
 
   async getLoggedInUserDetails() {
@@ -432,11 +464,33 @@ class CheckoutPage extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { handeUpdateOption } = this.props
-    const { details, showCardDetails, physicalAddonsCount } = this.state
+  async componentDidUpdate(prevProps, prevState) {
+    const { handeUpdateOption, checkoutData } = this.props
+    const {
+      details,
+      showCardDetails,
+      physicalAddonsCount,
+      stripePaymentIntentID,
+      stripeClientSecret,
+      priceInfo
+    } = this.state
+    const { addons } = checkoutData
+
     const needsAddress = physicalAddonsCount > 0
 
+    const price = getExpectedPrice(priceInfo, addons, checkoutData)
+
+    if (stripeClientSecret && prevState.totalPrice !== price) {
+      const { amount } = await getPaymentIntentSecretClient(
+        stripePaymentIntentID
+      )
+      if (price !== amount) {
+        await updatePaymentIntentSecretClient(price, stripePaymentIntentID)
+        this.setState({
+          totalPrice: price
+        })
+      }
+    }
     if (
       !needsAddress &&
       REQUIRED_USER_FIELDS.some(
@@ -958,7 +1012,8 @@ class CheckoutPage extends Component {
       showCardDetails,
       physicalAddonsCount,
       emailSubmitted,
-      showUserDetails
+      showUserDetails,
+      stripeClientSecret
     } = this.state
 
     return (
@@ -996,6 +1051,7 @@ class CheckoutPage extends Component {
               emailSubmitted={emailSubmitted}
               showUserDetails={showUserDetails}
               handleChangeEmailClick={this.handleChangeEmailClick}
+              stripeClientSecret={stripeClientSecret}
             />
           </div>
           <div className={styles.rightPanel}>

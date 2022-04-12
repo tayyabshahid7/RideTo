@@ -23,6 +23,7 @@ import CardIcons from '../CardIcons'
 import AddressForm from 'components/AddressForm'
 import Button from 'components/RideTo/Button'
 import { isAuthenticated } from 'services/auth'
+import StripeComponent from '../StripeCheckout'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -636,12 +637,55 @@ class UserDetails extends Component {
     )
   }
 
+  stripeCheckout() {
+    const {
+      // details,
+      // errors = {},
+      showCardDetails,
+      handlePaymentButtonClick,
+      stripeClientSecret,
+      // setCardElement,
+      showUserDetails
+    } = this.props
+
+    return (
+      <div
+        className={classnames(
+          styles.whiteBox,
+          styles.checkForm,
+          showUserDetails && styles.hidePayment
+        )}
+        ref={this.cardDetails}>
+        <button
+          onClick={handlePaymentButtonClick}
+          id="checkout-payment-details"
+          className={classnames(styles.title, styles.paymentButton)}>
+          Payment Details
+          {!showCardDetails ? (
+            <img src={addBlack} alt="Add" width="15" height="15" />
+          ) : (
+            <img src={closeDark} alt="Close" width="15" height="15" />
+          )}
+        </button>
+        <div
+          className={classnames(
+            styles.rowItem,
+            styles.cardDetails,
+            showCardDetails && styles.hideCardDetails
+          )}>
+          <StripeComponent stripeClientSecret={stripeClientSecret} />
+        </div>
+      </div>
+    )
+  }
+
   render() {
     return (
       <div className={styles.container}>
         {this.renderEmail()}
         {this.renderUserInfo()}
-        {this.renderPaymentForm()}
+        {/* {this.renderPaymentForm()} */}
+        {this.stripeCheckout()}
       </div>
     )
   }
