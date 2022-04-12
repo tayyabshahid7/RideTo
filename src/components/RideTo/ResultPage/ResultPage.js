@@ -1093,13 +1093,15 @@ class ResultPage extends Component {
                 isErrored={isErrored}
               />
             )}
-            <div className={styles.POMContainer}>
-              <POMSelector
-                handlePOMToggleClick={this.handlePOMToggleClick}
-                hasPOM={addedPOM}
-                className={styles.POM}
-              />
-            </div>
+            {!isFullLicence && activeTab === 3 && (
+              <div className={styles.POMContainer}>
+                <POMSelector
+                  handlePOMToggleClick={this.handlePOMToggleClick}
+                  hasPOM={addedPOM}
+                  className={styles.POM}
+                />
+              </div>
+            )}
           </SidePanel>
         )}
         {showDateSelectorModal && !loading && (
