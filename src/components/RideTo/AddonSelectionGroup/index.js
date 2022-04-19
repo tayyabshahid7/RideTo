@@ -1,5 +1,5 @@
-import AddonItemSlider from './AddonItemSlider'
 import React from 'react'
+import AddonItemSlider from './AddonItemSlider'
 import styles from './AddonSelectionGroup.scss'
 
 const GROUPS = {
@@ -25,7 +25,7 @@ class AddonSelectionGroup extends React.Component {
     const name = addon_group[0]
     const addonsFilteredGroup = addon_group[1]
     return (
-      <section className={styles.addonGroupSection}>
+      <section id={name} className={styles.addonGroupSection}>
         <ul>
           <li>
             <div className={styles.titleContainer}>
