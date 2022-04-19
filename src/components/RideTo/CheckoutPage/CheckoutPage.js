@@ -1,35 +1,29 @@
+import loadable from '@loadable/component'
+import { ElementsConsumer } from '@stripe/react-stripe-js'
+import classnames from 'classnames'
+// import { handleStripePayment } from 'services/stripe'
+import isEmpty from 'lodash/isEmpty'
+import isEqual from 'lodash/isEqual'
+import omit from 'lodash/omit'
+import set from 'lodash/set'
+import moment from 'moment'
 import React, { Component } from 'react'
-import { fetchUser, saveCheckoutEmail } from 'services/user'
-import { getLicenceAge, getPrice } from 'services/course'
 import {
   getToken,
   getUserProfile,
   isAuthenticated,
   removeToken
 } from 'services/auth'
-
-import OrderSummary from './OrderSummary'
-import UserDetails from './UserDetails'
-import classnames from 'classnames'
-import { createOrder } from 'services/widget'
+import { getLicenceAge, getPrice } from 'services/course'
 import { fetchAddressWithPostcode } from 'services/misc'
 import { getExpectedPrice } from 'services/order'
-import { handleStripePayment } from 'services/stripe'
-import { injectStripe } from 'react-stripe-elements'
-import isEmpty from 'lodash/isEmpty'
-import isEqual from 'lodash/isEqual'
 import { isInstantBook } from 'services/page'
-import loadable from '@loadable/component'
-import moment from 'moment'
-import omit from 'lodash/omit'
-import set from 'lodash/set'
-import styles from './styles.scss'
+import { fetchUser, saveCheckoutEmail } from 'services/user'
+import { createOrder } from 'services/widget'
 import { tldExists } from 'tldjs'
-import {
-  createPaymentIntentSecretClient,
-  getPaymentIntentSecretClient,
-  updatePaymentIntentSecretClient
-} from '../../../services/stripe'
+import OrderSummary from './OrderSummary'
+import styles from './styles.scss'
+import UserDetails from './UserDetails'
 
 const AddressSelectModal = loadable(() =>
   import('components/RideTo/AddressSelectModal')
@@ -115,11 +109,7 @@ class CheckoutPage extends Component {
         accept_terms: false,
         email_optin: true
       },
-      priceInfo: {
-        price: 0,
-        discount: 0,
-        bike_hire_cost: 0
-      },
+      priceInfo: this.props.priceInfo,
       manualAddress: false,
       postcodeLookingup: false,
       addresses: [],
@@ -131,7 +121,7 @@ class CheckoutPage extends Component {
       saving: false,
       showAddressSelectorModal: false,
       voucher_code: '',
-      loadingPrice: false,
+      loadingPrice: this.props.loadingPrice,
       showMap: false,
       trainings: this.props.trainings,
       showUserDetails: false,
@@ -141,8 +131,8 @@ class CheckoutPage extends Component {
       ).length,
       cardElement: null,
       emailSubmitted: false,
-      stripeClientSecret: null,
-      stripePaymentIntentID: '',
+      clientSecret: this.props.clientSecret,
+      stripePaymentIntentID: this.props.stripePaymentIntentID,
       totalPrice: 0
     }
 
@@ -154,39 +144,14 @@ class CheckoutPage extends Component {
     this.handleVoucherApply = this.handleVoucherApply.bind(this)
     this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
     this.handleChangeEmailClick = this.handleChangeEmailClick.bind(this)
-    this.handleChangeTotalPrice = this.handleChangeTotalPrice.bind(this)
   }
 
   onUpdate(data) {
     this.setState({ ...data })
   }
 
-  async handleChangeTotalPrice() {
-    await this.fetchSecretClient()
-  }
-
-  async fetchSecretClient() {
-    const { priceInfo } = this.state
-    const { checkoutData } = this.props
-    const { addons } = checkoutData
-    const expected_price = getExpectedPrice(priceInfo, addons, checkoutData)
-    this.setState({ totalPrice: expected_price })
-    const { client_secret, id } = await createPaymentIntentSecretClient(
-      expected_price
-    )
-
-    if (client_secret) {
-      this.setState({
-        stripeClientSecret: client_secret,
-        stripePaymentIntentID: id
-      })
-    }
-  }
-
   async componentDidMount() {
-    await this.loadPrice() // need to wait since getLoggedInUserDetails also sets state of details
     this.getLoggedInUserDetails()
-    await this.fetchSecretClient()
   }
 
   async getLoggedInUserDetails() {
@@ -465,32 +430,9 @@ class CheckoutPage extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const { handeUpdateOption, checkoutData } = this.props
-    const {
-      details,
-      showCardDetails,
-      physicalAddonsCount,
-      stripePaymentIntentID,
-      stripeClientSecret,
-      priceInfo
-    } = this.state
-    const { addons } = checkoutData
-
+    const { handeUpdateOption } = this.props
+    const { details, showCardDetails, physicalAddonsCount } = this.state
     const needsAddress = physicalAddonsCount > 0
-
-    const price = getExpectedPrice(priceInfo, addons, checkoutData)
-
-    if (stripeClientSecret && prevState.totalPrice !== price) {
-      const { amount } = await getPaymentIntentSecretClient(
-        stripePaymentIntentID
-      )
-      if (price !== amount) {
-        await updatePaymentIntentSecretClient(price, stripePaymentIntentID)
-        this.setState({
-          totalPrice: price
-        })
-      }
-    }
     if (
       !needsAddress &&
       REQUIRED_USER_FIELDS.some(
@@ -744,9 +686,16 @@ class CheckoutPage extends Component {
   }
 
   async handlePayment() {
-    const { details, physicalAddonsCount, cardElement } = this.state
-    const { stripe } = this.props
+    const { details, physicalAddonsCount } = this.state
+    const { context } = this.props
+    const { stripe, elements } = context
 
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return
+    }
+    console.log(stripe, elements)
     if (physicalAddonsCount <= 0) {
       details.address = NO_ADDONS_ADDRESS
     }
@@ -774,12 +723,12 @@ class CheckoutPage extends Component {
 
     this.setState({ errors: {}, saving: true })
     try {
-      const { error, token } = await handleStripePayment({
-        stripe,
-        cardElement,
-        full_name: details.card_name,
-        email: details.email,
-        phone: details.phone
+      const { error } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          // Make sure to change this to your payment completion page
+          return_url: 'http://localhost:8000'
+        }
       })
 
       if (error) {
@@ -789,7 +738,7 @@ class CheckoutPage extends Component {
         })
         this.setState({ saving: false })
       } else {
-        this.submitOrder(token)
+        // this.submitOrder(token)
       }
     } catch (error) {
       console.log('Error:', error)
@@ -995,7 +944,9 @@ class CheckoutPage extends Component {
   }
 
   render() {
-    const { courseType } = this.props.checkoutData
+    const { checkoutData } = this.props
+    const { courseType } = checkoutData
+
     const {
       details,
       manualAddress,
@@ -1013,9 +964,8 @@ class CheckoutPage extends Component {
       physicalAddonsCount,
       emailSubmitted,
       showUserDetails,
-      stripeClientSecret
+      clientSecret
     } = this.state
-
     return (
       <React.Fragment>
         <div className={styles.container}>
@@ -1051,7 +1001,7 @@ class CheckoutPage extends Component {
               emailSubmitted={emailSubmitted}
               showUserDetails={showUserDetails}
               handleChangeEmailClick={this.handleChangeEmailClick}
-              stripeClientSecret={stripeClientSecret}
+              clientSecret={clientSecret}
             />
           </div>
           <div className={styles.rightPanel}>
@@ -1071,6 +1021,7 @@ class CheckoutPage extends Component {
               handleMapButtonClick={this.handleMapButtonClick}
               trainings={trainings}
               showCardDetails={showCardDetails}
+              clientSecret={clientSecret}
             />
           </div>
           {showAddressSelectorModal && (
@@ -1087,4 +1038,18 @@ class CheckoutPage extends Component {
   }
 }
 
-export default injectStripe(CheckoutPage)
+// export default CheckoutPage
+
+const withContext = Component => {
+  return props => {
+    return (
+      <ElementsConsumer>
+        {context => {
+          return <Component {...props} context={context} />
+        }}
+      </ElementsConsumer>
+    )
+  }
+}
+
+export default withContext(CheckoutPage)

@@ -1,29 +1,29 @@
-import React, { Component } from 'react'
-import classnames from 'classnames'
-import {
-  CardNumberElement,
-  CardExpiryElement,
-  CardCVCElement,
-  PostalCodeElement
-} from 'react-stripe-elements'
-import DateInput from 'components/RideTo/DateInput'
-// import LicenceInput from 'components/RideTo/LicenceInput'
-import PhoneInput from 'components/RideTo/PhoneInput'
-import Input from 'components/RideTo/Input'
-import { RidingExperiences, RiderTypes } from 'common/info'
-import Select from 'components/RideTo/Select'
-import { getCurrentLicenceOptions } from 'services/customer'
-import styles from './styles.scss'
-import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
-import NextSteps from './NextSteps'
 import addBlack from 'assets/images/rideto/AddBlack.svg'
 import closeDark from 'assets/images/rideto/CloseDark.svg'
-import SectionSplitter from '../SectionSplitter'
-import CardIcons from '../CardIcons'
+import classnames from 'classnames'
+import { RiderTypes, RidingExperiences } from 'common/info'
 import AddressForm from 'components/AddressForm'
 import Button from 'components/RideTo/Button'
+import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
+import DateInput from 'components/RideTo/DateInput'
+import Input from 'components/RideTo/Input'
+// import LicenceInput from 'components/RideTo/LicenceInput'
+import PhoneInput from 'components/RideTo/PhoneInput'
+import Select from 'components/RideTo/Select'
+import React, { Component } from 'react'
+import {
+  CardCVCElement,
+  CardExpiryElement,
+  CardNumberElement,
+  PostalCodeElement
+} from 'react-stripe-elements'
 import { isAuthenticated } from 'services/auth'
+import { getCurrentLicenceOptions } from 'services/customer'
+import CardIcons from '../CardIcons'
+import SectionSplitter from '../SectionSplitter'
 import StripeComponent from '../StripeCheckout'
+import NextSteps from './NextSteps'
+import styles from './styles.scss'
 
 class UserDetails extends Component {
   constructor(props) {
@@ -643,8 +643,6 @@ class UserDetails extends Component {
       // errors = {},
       showCardDetails,
       handlePaymentButtonClick,
-      stripeClientSecret,
-      // setCardElement,
       showUserDetails
     } = this.props
 
@@ -653,7 +651,7 @@ class UserDetails extends Component {
         className={classnames(
           styles.whiteBox,
           styles.checkForm,
-          showUserDetails && styles.hidePayment
+          !showUserDetails && styles.hidePayment
         )}
         ref={this.cardDetails}>
         <button
@@ -661,7 +659,7 @@ class UserDetails extends Component {
           id="checkout-payment-details"
           className={classnames(styles.title, styles.paymentButton)}>
           Payment Details
-          {!showCardDetails ? (
+          {showCardDetails ? (
             <img src={addBlack} alt="Add" width="15" height="15" />
           ) : (
             <img src={closeDark} alt="Close" width="15" height="15" />
@@ -671,9 +669,12 @@ class UserDetails extends Component {
           className={classnames(
             styles.rowItem,
             styles.cardDetails,
-            showCardDetails && styles.hideCardDetails
+            !showCardDetails && styles.hideCardDetails
           )}>
-          <StripeComponent stripeClientSecret={stripeClientSecret} />
+          <StripeComponent
+            {...this.props}
+            stripeElementChange={this.stripeElementChange}
+          />
         </div>
       </div>
     )

@@ -1,19 +1,30 @@
-import React, { Component } from 'react'
-import moment from 'moment'
+import { Elements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { DATE_FORMAT } from 'common/constants'
-import CheckoutPage from './CheckoutPage'
-import { Elements, StripeProvider } from 'react-stripe-elements'
-import { getSupplier, isInstantBook } from 'services/page'
-import { createPOM } from 'utils/helper'
-import { ToastContainer, toast } from 'react-toastify'
+import moment from 'moment'
+import React, { Component } from 'react'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import styles from './styles.scss'
-import { capitalizeFirstLetter, normalizePostCode } from 'utils/helper'
-
 import { Modal } from 'reactstrap'
+import { getPrice } from 'services/course'
+import { getExpectedPrice } from 'services/order'
+import { getSupplier, isInstantBook } from 'services/page'
+import {
+  capitalizeFirstLetter,
+  createPOM,
+  normalizePostCode
+} from 'utils/helper'
+import {
+  createPaymentIntentSecretClient,
+  updatePaymentIntentSecretClient
+} from '../../../services/stripe'
+import CheckoutPage from './CheckoutPage'
 import POMModal from './POMModal'
+import styles from './styles.scss'
 
 const POM_NAME = 'Peace Of Mind Policy'
+
+const stripePromise = loadStripe(window.RIDETO_PAGE.stripe_key)
 
 function addCheckoutToHeader() {
   const logoPhone = document.querySelector('.heading--logo-phone')
@@ -60,7 +71,15 @@ class CheckoutPageContainer extends Component {
       )
         ? true
         : false,
-      isInexperienced: false
+      isInexperienced: false,
+      priceInfo: {
+        price: 0,
+        discount: 0,
+        bike_hire_cost: 0
+      },
+      loadingPrice: true,
+      clientSecret: '',
+      stripePaymentIntentID: ''
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
@@ -73,6 +92,68 @@ class CheckoutPageContainer extends Component {
     this.POM = createPOM()
   }
 
+  async componentDidMount() {
+    await this.getInitialPrice()
+    await this.fetchSecretClient()
+  }
+
+  async fetchSecretClient() {
+    const { priceInfo, checkoutData } = this.state
+    const { addons } = checkoutData
+    const expected_price = getExpectedPrice(priceInfo, addons, checkoutData)
+    this.setState({ totalPrice: expected_price })
+    const { client_secret, id } = await createPaymentIntentSecretClient(
+      expected_price
+    )
+
+    if (client_secret) {
+      this.setState({
+        clientSecret: client_secret,
+        stripePaymentIntentID: id
+      })
+    }
+  }
+
+  async getInitialPrice() {
+    try {
+      const { instantBook, checkoutData, trainings } = this.state
+      const { supplierId, courseId, date, courseType, addons } = checkoutData
+      const isFullLicence = courseType === 'FULL_LICENCE'
+      const hasHighwayCode = !!addons.find(
+        ({ name }) => name === 'Highway Code Book'
+      )
+      let params = {
+        supplierId,
+        courseId,
+        date,
+        course_type: courseType,
+        order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
+        highway_code: hasHighwayCode
+      }
+      if (isFullLicence) {
+        const training = trainings[0]
+        let response = await getPrice({
+          supplierId: training.supplier_id,
+          course_type: training.course_type,
+          hours: training.package_hours,
+          order_source: 'RIDETO',
+          highway_code: hasHighwayCode
+        })
+        this.setState({
+          priceInfo: { ...response }
+        })
+      } else {
+        let response = await getPrice(params)
+
+        this.setState({
+          priceInfo: { ...response }
+        })
+      }
+    } catch (error) {
+      console.log('Error', error)
+    }
+  }
+
   handleSetDate(date) {
     this.setState({ date: moment(date).format(DATE_FORMAT) })
   }
@@ -81,32 +162,56 @@ class CheckoutPageContainer extends Component {
     this.setState({ ...data })
   }
 
-  handleAddPOM() {
-    const { checkoutData } = this.state
+  async handleAddPOM() {
+    const { checkoutData, stripePaymentIntentID } = this.state
     const newCheckoutData = { ...checkoutData }
 
     if (!newCheckoutData.addons.some(addon => addon.name === POM_NAME)) {
       newCheckoutData.addons = [...newCheckoutData.addons, this.POM]
     }
 
-    this.setState({
-      checkoutData: newCheckoutData,
-      hasPOM: true,
-      isInexperienced: false
-    })
+    this.setState(
+      {
+        checkoutData: newCheckoutData,
+        hasPOM: true,
+        isInexperienced: false
+      },
+      async () => {
+        const price = getExpectedPrice(
+          this.state.priceInfo,
+          this.state.checkoutData.addons,
+          this.state.checkoutData
+        )
+        console.log(this.state.priceInfo)
+        await updatePaymentIntentSecretClient(price, stripePaymentIntentID)
+        return
+      }
+    )
   }
 
   handleRemovePOM() {
-    const { checkoutData } = this.state
+    const { checkoutData, stripePaymentIntentID } = this.state
 
-    this.setState({
-      checkoutData: {
-        ...checkoutData,
-        addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
+    this.setState(
+      {
+        checkoutData: {
+          ...checkoutData,
+          addons: checkoutData.addons.filter(addon => addon.name !== POM_NAME)
+        },
+        hasPOM: false,
+        isInexperienced: false
       },
-      hasPOM: false,
-      isInexperienced: false
-    })
+      async () => {
+        const price = getExpectedPrice(
+          this.state.priceInfo,
+          this.state.checkoutData.addons,
+          this.state.checkoutData
+        )
+        console.log(this.state.priceInfo)
+        await updatePaymentIntentSecretClient(price, stripePaymentIntentID)
+        return
+      }
+    )
   }
 
   handlePOMToggleClick() {
@@ -140,12 +245,32 @@ class CheckoutPageContainer extends Component {
       instantBook,
       trainings,
       hasPOM,
-      isInexperienced
+      isInexperienced,
+      clientSecret,
+      stripePaymentIntentID,
+      priceInfo
     } = this.state
     const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(
       checkoutData.courseType
     )
 
+    // Set stripe element appearance
+    const appearance = {
+      theme: 'stripe',
+      variables: {
+        colorPrimary: '#141414',
+        colorText: '#141414',
+        borderRadius: '0',
+        spacingUnit: '5px',
+        fontFamily: 'ProximaNova, Helvetica, Arial, sans-serif',
+        colorIconHover: '#141414'
+      }
+    }
+    const options = {
+      appearance,
+      clientSecret,
+      locale: 'en-GB'
+    }
     return (
       <React.Fragment>
         <ToastContainer
@@ -163,8 +288,8 @@ class CheckoutPageContainer extends Component {
             handleAddPOM={this.handleAddPOM}
           />
         </Modal>
-        <StripeProvider apiKey={this.stripePublicKey}>
-          <Elements>
+        {clientSecret && (
+          <Elements stripe={stripePromise} options={options}>
             <CheckoutPage
               checkoutData={checkoutData}
               loading={loading}
@@ -175,9 +300,12 @@ class CheckoutPageContainer extends Component {
               hasPOM={hasPOM}
               showPromoNotification={this.showPromoNotification}
               handeUpdateOption={this.handeUpdateOption}
+              clientSecret={clientSecret}
+              stripePaymentIntentID={stripePaymentIntentID}
+              priceInfo={priceInfo}
             />
           </Elements>
-        </StripeProvider>
+        )}
       </React.Fragment>
     )
   }

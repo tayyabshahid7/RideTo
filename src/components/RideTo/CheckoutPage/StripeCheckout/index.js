@@ -1,38 +1,89 @@
-import React from 'react'
-import { loadStripe } from '@stripe/stripe-js'
-import { Elements } from '@stripe/react-stripe-js'
-
-import CheckoutForm from './CheckoutForm'
-import styles from './StripeCheckout.module.scss'
-import { STRIPE_KEY } from '../../../../common/constants'
-
-const stripePromise = loadStripe(STRIPE_KEY)
+import { PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
+import React, { useEffect, useState } from 'react'
 
 export default function StripeComponent(props) {
-  const { stripeClientSecret: clientSecret } = props
-  const appearance = {
-    theme: 'stripe',
-    variables: {
-      colorPrimary: '#141414',
-      colorText: '#141414',
-      borderRadius: '0',
-      spacingUnit: '5px',
-      fontFamily: 'ProximaNova, Helvetica, Arial, sans-serif',
-      colorIconHover: '#141414'
-    }
-  }
-  const options = {
-    clientSecret,
-    appearance
-  }
+  const stripe = useStripe()
+  const elements = useElements()
 
+  const [message, setMessage] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if (!stripe) {
+      return
+    }
+
+    const clientSecret = new URLSearchParams(window.location.search).get(
+      'payment_intent_client_secret'
+    )
+
+    if (!clientSecret) {
+      return
+    }
+
+    stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
+      switch (paymentIntent.status) {
+        case 'succeeded':
+          setMessage('Payment succeeded!')
+          break
+        case 'processing':
+          setMessage('Your payment is processing.')
+          break
+        case 'requires_payment_method':
+          setMessage('Your payment was not successful, please try again.')
+          break
+        default:
+          setMessage('Something went wrong.')
+          break
+      }
+    })
+  }, [stripe])
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    if (!stripe || !elements) {
+      // Stripe.js has not yet loaded.
+      // Make sure to disable form submission until Stripe.js has loaded.
+      return
+    }
+
+    setIsLoading(true)
+    console.log(elements)
+
+    const { error } = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        // Make sure to change this to your payment completion page
+        return_url: 'http://localhost:8000'
+      }
+    })
+
+    // This point will only be reached if there is an immediate error when
+    // confirming the payment. Otherwise, your customer will be redirected to
+    // your `return_url`. For some payment methods like iDEAL, your customer will
+    // be redirected to an intermediate site first to authorize the payment, then
+    // redirected to the `return_url`.
+    if (error.type === 'card_error' || error.type === 'validation_error') {
+      setMessage(error.message)
+    } else {
+      setMessage('An unexpected error occured.')
+    }
+
+    setIsLoading(false)
+  }
+  const { stripeElementChange } = props
   return (
-    <div className={styles.app}>
-      {clientSecret && (
-        <Elements options={options} stripe={stripePromise}>
-          <CheckoutForm handleSubmit={props.handleSubmit} />
-        </Elements>
-      )}
-    </div>
+    <form id="payment-form" onSubmit={handleSubmit}>
+      <PaymentElement
+        id="payment-element"
+        onChange={element => {
+          const { complete, empty } = element
+          if (!empty && complete) {
+            stripeElementChange(element, 'payment')
+          }
+        }}
+      />
+    </form>
   )
 }
