@@ -8,6 +8,8 @@
     "@fortawesome/react-fontawesome": "^0.1.8",
     "@loadable/component": "^5.2.1",
     "@sentry/browser": "^5.7.1",
+    "@stripe/react-stripe-js": "^1.7.0",
+    "@stripe/stripe-js": "^1.26.0",
     "@turf/bbox": "^6.0.1",
     "@turf/helpers": "^6.1.4",
     "autoprefixer": "9.4.0",
