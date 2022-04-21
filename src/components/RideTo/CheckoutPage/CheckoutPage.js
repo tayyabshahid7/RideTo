@@ -14,13 +14,14 @@ import {
   isAuthenticated,
   removeToken
 } from 'services/auth'
+import { createPlatformOrder } from 'services/checkout'
 import { getLicenceAge, getPrice } from 'services/course'
 import { fetchAddressWithPostcode } from 'services/misc'
 import { getExpectedPrice } from 'services/order'
 import { isInstantBook } from 'services/page'
 import { fetchUser, saveCheckoutEmail } from 'services/user'
-import { createOrder } from 'services/widget'
 import { tldExists } from 'tldjs'
+import { updatePaymentIntentSecretClient } from '../../../services/stripe'
 import OrderSummary from './OrderSummary'
 import styles from './styles.scss'
 import UserDetails from './UserDetails'
@@ -35,11 +36,11 @@ const REQUIRED_FIELDS = [
   'current_licence',
   'riding_experience',
   'rider_type',
-  'card_name',
-  'card_number',
-  'cvv',
-  'card_zip',
-  'expiry_date',
+  // 'card_name',
+  // 'card_number',
+  // 'cvv',
+  // 'card_zip',
+  // 'expiry_date',
   'first_name',
   'last_name',
   'email'
@@ -62,9 +63,9 @@ const USER_FIELDS = [
   'prev_cbt_date'
 ]
 
-const CARD_FIELDS = REQUIRED_FIELDS.filter(
-  field => !USER_FIELDS.includes(field)
-)
+// const CARD_FIELDS = REQUIRED_FIELDS.filter(
+//   field => !USER_FIELDS.includes(field)
+// )
 
 const NO_ADDONS_ADDRESS = {
   address_1: 'no',
@@ -133,7 +134,8 @@ class CheckoutPage extends Component {
       emailSubmitted: false,
       clientSecret: this.props.clientSecret,
       stripePaymentIntentID: this.props.stripePaymentIntentID,
-      totalPrice: 0
+      totalPrice: 0,
+      paymentType: 'card'
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -144,10 +146,21 @@ class CheckoutPage extends Component {
     this.handleVoucherApply = this.handleVoucherApply.bind(this)
     this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
     this.handleChangeEmailClick = this.handleChangeEmailClick.bind(this)
+    this.handleOnPaymentChange = this.handleOnPaymentChange.bind(this)
   }
 
   onUpdate(data) {
     this.setState({ ...data })
+  }
+
+  async handleOnPaymentChange(data) {
+    const { stripePaymentIntentID } = this.props
+    this.setState({ ...data }, async () => {
+      await updatePaymentIntentSecretClient(stripePaymentIntentID, {
+        payment_type: this.state.paymentType
+      })
+      return
+    })
   }
 
   async componentDidMount() {
@@ -481,7 +494,7 @@ class CheckoutPage extends Component {
       }
 
       const userError = errors.some(([key]) => USER_FIELDS.includes(key))
-      const cardError = errors.some(([key]) => CARD_FIELDS.includes(key))
+      // const cardError = errors.some(([key]) => CARD_FIELDS.includes(key))
 
       if (userError) {
         this.setState({
@@ -489,11 +502,11 @@ class CheckoutPage extends Component {
         })
       }
 
-      if (cardError) {
-        this.setState({
-          showCardDetails: true
-        })
-      }
+      // if (cardError) {
+      //   this.setState({
+      //     showCardDetails: true
+      //   })
+      // }
     }
 
     if (
@@ -618,7 +631,7 @@ class CheckoutPage extends Component {
     this.setState({
       errors
     })
-
+    console.log(this.state.errors)
     return !hasError
   }
 
@@ -687,7 +700,7 @@ class CheckoutPage extends Component {
 
   async handlePayment() {
     const { details, physicalAddonsCount } = this.state
-    const { context } = this.props
+    const { context, stripePaymentIntentID } = this.props
     const { stripe, elements } = context
 
     if (!stripe || !elements) {
@@ -695,13 +708,10 @@ class CheckoutPage extends Component {
       // Make sure to disable form submission until Stripe.js has loaded.
       return
     }
-    console.log(stripe, elements)
     if (physicalAddonsCount <= 0) {
       details.address = NO_ADDONS_ADDRESS
     }
     // details.address = NO_ADDONS_ADDRESS
-
-    this.setState({ saving: true })
 
     //Check if email already exists or user logged in
     const result = await this.checkEmail(details.email)
@@ -722,12 +732,13 @@ class CheckoutPage extends Component {
     }
 
     this.setState({ errors: {}, saving: true })
+
+    const { order } = await this.submitOrder(stripePaymentIntentID)
     try {
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          // Make sure to change this to your payment completion page
-          return_url: 'http://localhost:8000'
+          return_url: `${window.location.origin}/${order.id}/thank-you/`
         }
       })
 
@@ -738,7 +749,6 @@ class CheckoutPage extends Component {
         })
         this.setState({ saving: false })
       } else {
-        // this.submitOrder(token)
       }
     } catch (error) {
       console.log('Error:', error)
@@ -778,7 +788,7 @@ class CheckoutPage extends Component {
       user_birthdate: birthdate.format('YYYY-MM-DD'),
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
-      token: stripeToken.id,
+      token: stripeToken,
       expected_price: getExpectedPrice(priceInfo, addons, checkoutData),
       name: `${details.first_name} ${details.last_name}`,
       user_date: date,
@@ -793,7 +803,7 @@ class CheckoutPage extends Component {
     }
 
     try {
-      const response = await createOrder(data)
+      const response = await createPlatformOrder(data)
       if (response) {
         const { order, token: userToken, username } = response
         if (userToken !== null) {
@@ -809,7 +819,9 @@ class CheckoutPage extends Component {
           window.localStorage.setItem('username', firstName)
         }
         window.localStorage.setItem('gaok', true) // Set Google Analytics Flag
-        window.location.href = `/${order.id}/thank-you/`
+        // window.location.href = `/${order.id}/thank-you/`
+
+        return { order, username }
       } else {
         this.setState({ saving: false })
       }

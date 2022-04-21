@@ -24,7 +24,9 @@ import styles from './styles.scss'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
-const stripePromise = loadStripe(window.RIDETO_PAGE.stripe_key)
+const stripePromise = loadStripe(window.RIDETO_PAGE.stripe_key, {
+  locale: 'en-GB'
+})
 
 function addCheckoutToHeader() {
   const logoPhone = document.querySelector('.heading--logo-phone')
@@ -98,12 +100,13 @@ class CheckoutPageContainer extends Component {
   }
 
   async fetchSecretClient() {
-    const { priceInfo, checkoutData } = this.state
+    const { priceInfo, checkoutData, supplier } = this.state
     const { addons } = checkoutData
     const expected_price = getExpectedPrice(priceInfo, addons, checkoutData)
     this.setState({ totalPrice: expected_price })
     const { client_secret, id } = await createPaymentIntentSecretClient(
-      expected_price
+      expected_price,
+      supplier.id
     )
 
     if (client_secret) {
@@ -182,8 +185,9 @@ class CheckoutPageContainer extends Component {
           this.state.checkoutData.addons,
           this.state.checkoutData
         )
-        console.log(this.state.priceInfo)
-        await updatePaymentIntentSecretClient(price, stripePaymentIntentID)
+        await updatePaymentIntentSecretClient(stripePaymentIntentID, {
+          amount: price
+        })
         return
       }
     )
@@ -207,8 +211,9 @@ class CheckoutPageContainer extends Component {
           this.state.checkoutData.addons,
           this.state.checkoutData
         )
-        console.log(this.state.priceInfo)
-        await updatePaymentIntentSecretClient(price, stripePaymentIntentID)
+        await updatePaymentIntentSecretClient(stripePaymentIntentID, {
+          amount: price
+        })
         return
       }
     )
@@ -266,7 +271,7 @@ class CheckoutPageContainer extends Component {
         colorIconHover: '#141414'
       }
     }
-    const options = {
+    const stripeOptions = {
       appearance,
       clientSecret,
       locale: 'en-GB'
@@ -289,7 +294,7 @@ class CheckoutPageContainer extends Component {
           />
         </Modal>
         {clientSecret && (
-          <Elements stripe={stripePromise} options={options}>
+          <Elements stripe={stripePromise} options={stripeOptions}>
             <CheckoutPage
               checkoutData={checkoutData}
               loading={loading}
