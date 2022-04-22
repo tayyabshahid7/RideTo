@@ -733,6 +733,10 @@ class CheckoutPage extends Component {
 
     this.setState({ errors: {}, saving: true })
 
+    await updatePaymentIntentSecretClient(stripePaymentIntentID, {
+      payment_type: this.state.paymentType
+    })
+
     const { order } = await this.submitOrder(stripePaymentIntentID)
     try {
       const { error } = await stripe.confirmPayment({
@@ -758,7 +762,7 @@ class CheckoutPage extends Component {
 
   async submitOrder(stripeToken) {
     const { checkoutData, trainings } = this.props
-    const { priceInfo } = this.state
+    const { priceInfo, paymentType } = this.state
     const details = omit(this.state.details, [
       'card_name',
       'billingAddress',
@@ -799,7 +803,8 @@ class CheckoutPage extends Component {
       source: isInstantBook() ? 'RIDETO_INSTANT' : 'RIDETO',
       accept_equipment_responsibility: true,
       trainings: trainings,
-      third_party_optin: false
+      third_party_optin: false,
+      stripe_payment_type: paymentType
     }
 
     try {
