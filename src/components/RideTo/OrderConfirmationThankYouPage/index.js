@@ -1,11 +1,11 @@
+import Loading from 'components/Loading'
 import React, { useEffect, useState } from 'react'
 import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelectionConfirmation.scss'
-import Loading from 'components/Loading'
 
 const rideToMinimalGreenImg =
   'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
-const Header = () => {
+const Header = ({ status }) => {
   return (
     <div className={styles.header}>
       <div className={styles.headerLogoWrapper}>
@@ -15,13 +15,40 @@ const Header = () => {
           alt="rideto logo green"
         />
       </div>
-      <h4 className={styles.headerTitle}>Thank You!</h4>
+      {status !== 'failed' && (
+        <h4 className={styles.headerTitle}>Thank You!</h4>
+      )}
+      {status === 'failed' && (
+        <h4 className={styles.headerTitle}>Failed payment title here</h4>
+      )}
     </div>
   )
 }
 
 const OrderConfirmationThankYouPage = () => {
   const [orderId, setOrderId] = useState(null)
+  const [status, setStatus] = useState('')
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const context = getStaticData('RIDETO_PAGE')
+      const redirectStatus = new URLSearchParams(window.location.search).get(
+        'redirect_status'
+      )
+      setStatus(redirectStatus)
+      setOrderId(context['orderId'])
+    }
+
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    if (orderId && status !== 'failed') {
+      setTimeout(() => {
+        window.location = `/account/dashboard/${orderId}`
+      }, 2000)
+    }
+  }, [status, orderId])
 
   const ConfirmationText = ({ userName }) => {
     return (
@@ -35,23 +62,36 @@ const OrderConfirmationThankYouPage = () => {
     )
   }
 
-  useEffect(() => {
-    const context = getStaticData('RIDETO_PAGE')
-    setOrderId(context['orderId'])
+  const PaymentFailedText = ({ userName }) => {
+    return (
+      <div className={styles.headerTextWrapper}>
+        <p>Payment text error here</p>
+        <p>
+          Please try again text here
+          <a href={'/'}>Home page button ?</a>.
+        </p>
+      </div>
+    )
+  }
 
-    setTimeout(() => {
-      window.location = `/account/dashboard/${context['orderId']}`
-    }, 2000)
-  }, [])
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <Header />
+        <Header status={status} />
 
         <div className={styles.body}>
           <div className={styles.confirmationTextWrapper}>
-            <ConfirmationText />
-            <Loading loading={true} />
+            {status !== 'failed' && (
+              <>
+                <ConfirmationText />
+                <Loading loading={true} />
+              </>
+            )}
+            {status === 'failed' && (
+              <>
+                <PaymentFailedText />
+              </>
+            )}
           </div>
         </div>
       </div>

@@ -733,6 +733,10 @@ class CheckoutPage extends Component {
 
     this.setState({ errors: {}, saving: true })
 
+    await updatePaymentIntentSecretClient(stripePaymentIntentID, {
+      payment_type: this.state.paymentType
+    })
+
     const { order } = await this.submitOrder(stripePaymentIntentID)
     try {
       const { error } = await stripe.confirmPayment({
