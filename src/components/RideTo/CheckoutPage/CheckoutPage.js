@@ -631,7 +631,6 @@ class CheckoutPage extends Component {
     this.setState({
       errors
     })
-    console.log(this.state.errors)
     return !hasError
   }
 
@@ -810,7 +809,12 @@ class CheckoutPage extends Component {
     try {
       const response = await createPlatformOrder(data)
       if (response) {
-        const { order, token: userToken, username } = response
+        const {
+          order,
+          token: userToken,
+          username,
+          skip_card_validation: skipCardValidation
+        } = response
         if (userToken !== null) {
           // window.localStorage.setItem('token', JSON.stringify(userToken))
           window.localStorage.setItem('token', userToken)
@@ -824,7 +828,11 @@ class CheckoutPage extends Component {
           window.localStorage.setItem('username', firstName)
         }
         window.localStorage.setItem('gaok', true) // Set Google Analytics Flag
-        // window.location.href = `/${order.id}/thank-you/`
+
+        // If order price is 0, we skip the payment
+        if (skipCardValidation) {
+          window.location.href = `/${order.id}/thank-you/`
+        }
 
         return { order, username }
       } else {

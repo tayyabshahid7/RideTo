@@ -101,12 +101,13 @@ class CheckoutPageContainer extends Component {
 
   async fetchSecretClient() {
     const { priceInfo, checkoutData, supplier } = this.state
-    const { addons } = checkoutData
+    const { addons, courseType } = checkoutData
     const expected_price = getExpectedPrice(priceInfo, addons, checkoutData)
     this.setState({ totalPrice: expected_price })
     const { client_secret, id } = await createPaymentIntentSecretClient(
       expected_price,
-      supplier.id
+      supplier.id,
+      courseType
     )
 
     if (client_secret) {
