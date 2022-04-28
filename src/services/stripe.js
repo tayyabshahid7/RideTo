@@ -70,10 +70,14 @@ export const updatePaymentIntentSecretClient = async (intent, params = {}) => {
   return client_secret
 }
 
-export const createPaymentIntentSecretClient = async (price, supplierId) => {
+export const createPaymentIntentSecretClient = async (
+  price,
+  supplierId,
+  courseType
+) => {
   const { client_secret, id } = await post(
     'create-payment-intent/',
-    { amount: price, supplier_id: supplierId },
+    { amount: price, supplier_id: supplierId, course_type: courseType },
     false
   )
   return { client_secret, id }
