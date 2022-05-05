@@ -154,11 +154,30 @@ class CheckoutPage extends Component {
   }
 
   async handleOnPaymentChange(data) {
-    const { stripePaymentIntentID } = this.props
+    const { priceInfo } = this.state
+    const { stripePaymentIntentID, checkoutData } = this.props
+    const { addons } = checkoutData
     this.setState({ ...data }, async () => {
+      const { price, fee, priceBeforeFee } = await getExpectedPrice(
+        priceInfo,
+        addons,
+        checkoutData,
+        this.state.paymentType
+      )
       await updatePaymentIntentSecretClient(stripePaymentIntentID, {
-        payment_type: this.state.paymentType
+        payment_type: this.state.paymentType,
+        amount: price
       })
+
+      this.setState({
+        priceInfo: {
+          ...priceInfo,
+          price: price,
+          fee: fee,
+          priceBeforeFee: priceBeforeFee
+        }
+      })
+
       return
     })
   }
@@ -699,7 +718,7 @@ class CheckoutPage extends Component {
 
   async handlePayment() {
     const { details, physicalAddonsCount } = this.state
-    const { context, stripePaymentIntentID } = this.props
+    const { context, stripePaymentIntentID, paymentType } = this.props
     const { stripe, elements } = context
 
     if (!stripe || !elements) {
@@ -733,7 +752,7 @@ class CheckoutPage extends Component {
     this.setState({ errors: {}, saving: true })
 
     await updatePaymentIntentSecretClient(stripePaymentIntentID, {
-      payment_type: this.state.paymentType
+      payment_type: paymentType
     })
 
     const { order } = await this.submitOrder(stripePaymentIntentID)
@@ -760,8 +779,8 @@ class CheckoutPage extends Component {
   }
 
   async submitOrder(stripeToken) {
-    const { checkoutData, trainings } = this.props
-    const { priceInfo, paymentType } = this.state
+    const { checkoutData, trainings, paymentType } = this.props
+    const { priceInfo } = this.state
     const details = omit(this.state.details, [
       'card_name',
       'billingAddress',
@@ -784,6 +803,12 @@ class CheckoutPage extends Component {
     })
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
 
+    const { price } = await getExpectedPrice(
+      priceInfo,
+      addons,
+      checkoutData,
+      paymentType
+    )
     const data = {
       ...details,
       // email_optin: details.email_optin || false,
@@ -792,7 +817,7 @@ class CheckoutPage extends Component {
       user_age: moment().diff(birthdate, 'years'),
       current_licences: [details.current_licence],
       token: stripeToken,
-      expected_price: getExpectedPrice(priceInfo, addons, checkoutData),
+      expected_price: price,
       name: `${details.first_name} ${details.last_name}`,
       user_date: date,
       selected_licence: courseType,
@@ -989,7 +1014,8 @@ class CheckoutPage extends Component {
       physicalAddonsCount,
       emailSubmitted,
       showUserDetails,
-      clientSecret
+      clientSecret,
+      paymentType
     } = this.state
     return (
       <React.Fragment>
@@ -1047,6 +1073,7 @@ class CheckoutPage extends Component {
               trainings={trainings}
               showCardDetails={showCardDetails}
               clientSecret={clientSecret}
+              paymentType={paymentType}
             />
           </div>
           {showAddressSelectorModal && (

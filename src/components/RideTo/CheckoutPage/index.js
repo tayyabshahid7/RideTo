@@ -76,6 +76,8 @@ class CheckoutPageContainer extends Component {
       isInexperienced: false,
       priceInfo: {
         price: 0,
+        priceBeforeFee: 0,
+        fee: 0,
         discount: 0,
         bike_hire_cost: 0
       },
@@ -100,9 +102,14 @@ class CheckoutPageContainer extends Component {
   }
 
   async fetchSecretClient() {
-    const { priceInfo, checkoutData, supplier } = this.state
+    const { priceInfo, checkoutData, supplier, paymentType } = this.state
     const { addons, courseType } = checkoutData
-    const expected_price = getExpectedPrice(priceInfo, addons, checkoutData)
+    const { price: expected_price } = await getExpectedPrice(
+      priceInfo,
+      addons,
+      checkoutData,
+      paymentType
+    )
     this.setState({ totalPrice: expected_price })
     const { client_secret, id } = await createPaymentIntentSecretClient(
       expected_price,
@@ -144,13 +151,12 @@ class CheckoutPageContainer extends Component {
           highway_code: hasHighwayCode
         })
         this.setState({
-          priceInfo: { ...response }
+          priceInfo: { ...response, priceBeforeFee: response.price }
         })
       } else {
         let response = await getPrice(params)
-
         this.setState({
-          priceInfo: { ...response }
+          priceInfo: { ...response, priceBeforeFee: response.price }
         })
       }
     } catch (error) {
@@ -181,10 +187,11 @@ class CheckoutPageContainer extends Component {
         isInexperienced: false
       },
       async () => {
-        const price = getExpectedPrice(
+        const { price } = await getExpectedPrice(
           this.state.priceInfo,
           this.state.checkoutData.addons,
-          this.state.checkoutData
+          this.state.checkoutData,
+          this.state.paymentType
         )
         await updatePaymentIntentSecretClient(stripePaymentIntentID, {
           amount: price
@@ -194,7 +201,7 @@ class CheckoutPageContainer extends Component {
     )
   }
 
-  handleRemovePOM() {
+  async handleRemovePOM() {
     const { checkoutData, stripePaymentIntentID } = this.state
 
     this.setState(
@@ -207,10 +214,11 @@ class CheckoutPageContainer extends Component {
         isInexperienced: false
       },
       async () => {
-        const price = getExpectedPrice(
+        const { price } = await getExpectedPrice(
           this.state.priceInfo,
           this.state.checkoutData.addons,
-          this.state.checkoutData
+          this.state.checkoutData,
+          this.state.paymentType
         )
         await updatePaymentIntentSecretClient(stripePaymentIntentID, {
           amount: price

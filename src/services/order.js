@@ -1,6 +1,6 @@
-import moment from 'moment'
-import { get, getXlsx, put, post } from 'services/api'
 import { BIKE_HIRE } from 'common/constants'
+import moment from 'moment'
+import { get, getXlsx, post, put } from 'services/api'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 const FILTERS = [
@@ -55,6 +55,16 @@ const PAYMENT_STATUS_MAP = {
     text: 'Outstanding',
     type: 'default'
   }
+}
+
+export const getKlarnaFee = async (amount, paymentMethod) => {
+  const path = 'payment-intent-fee/'
+  const data = {
+    amount: amount,
+    payment_method: paymentMethod
+  }
+  const response = await post(path, data)
+  return response
 }
 
 export const getPaymentStatus = status => {
@@ -219,16 +229,27 @@ export const getNonCompleteOptions = () => {
   ]
 }
 
-export const getExpectedPrice = (priceInfo, addons = [], checkoutData = {}) => {
-  return (
-    priceInfo.price +
-    addons.reduce(
-      (total, { discount_price }) =>
-        (total += parseFloat(discount_price) * 100),
-      0
-    ) +
-    (shouldAddBikeHire(checkoutData) ? priceInfo.bike_hire_cost : 0)
+export const getExpectedPrice = async (
+  priceInfo,
+  addons = [],
+  checkoutData = {},
+  paymentType = 'card'
+) => {
+  const addonsPrice = addons.reduce(
+    (total, { discount_price }) => (total += parseFloat(discount_price) * 100),
+    0
   )
+
+  const bikeHirePrice = shouldAddBikeHire(checkoutData)
+    ? priceInfo.bike_hire_cost
+    : 0
+
+  const price = priceInfo.priceBeforeFee + addonsPrice + bikeHirePrice
+
+  const { total, fee, amount } = await getKlarnaFee(price, paymentType)
+
+  const result = { price: total, fee: fee, priceBeforeFee: amount }
+  return result
 }
 
 export const shouldAddBikeHire = ({ courseType, bike_hire }) => {
