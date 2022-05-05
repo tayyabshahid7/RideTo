@@ -82,7 +82,7 @@
     width: 320px;
   }
   @media (max-width: 765px){
-    min-height: 490px;
+    min-height: 490px !important;
   }
 
   &__image {
@@ -161,7 +161,7 @@
   min-height: 480px !important;
   
   @media (max-width: 765px) {
-    min-height: 430px;
+    min-height: 430px !important;
   }
 }
 .selectButton {
