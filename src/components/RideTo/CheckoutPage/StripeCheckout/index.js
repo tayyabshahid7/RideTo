@@ -12,7 +12,6 @@ export default function StripeComponent(props) {
           const { complete, empty, value } = element
           const { type } = value
           if (paymentType !== type) {
-            console.log(paymentType)
             setPaymentType(type)
             onPaymentChange({ paymentType: type })
           }
