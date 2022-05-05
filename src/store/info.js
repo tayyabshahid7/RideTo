@@ -1,10 +1,10 @@
 import { RidingExperiences } from 'common/info'
 import {
+  getBankHolidays,
   getCourseTypes,
-  updateDefaultBikeHire,
-  getBankHolidays
+  updateDefaultBikeHire
 } from 'services/course'
-import { createRequestTypes, REQUEST, SUCCESS, FAILURE } from './common'
+import { createRequestTypes, FAILURE, REQUEST, SUCCESS } from './common'
 
 const GET_COURSE_TYPES = createRequestTypes('rideto/info/GET/COURSE_TYPES')
 const GET_ALL_COURSE_TYPES = createRequestTypes(
@@ -54,8 +54,13 @@ export const getAllCourseTypes = schoolIds => async dispatch => {
         const tmp = courseTypes.find(x => x.id === type.id)
         if (tmp) {
           tmp.schoolIds.push(schoolIds[index])
+          tmp.bikeHireType.push(type.bike_hire_setup[0])
         } else {
-          courseTypes.push({ ...type, schoolIds: [schoolIds[index]] })
+          courseTypes.push({
+            ...type,
+            schoolIds: [schoolIds[index]],
+            bikeHireType: [type.bike_hire_setup[0]]
+          })
         }
       })
     })
