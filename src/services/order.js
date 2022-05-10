@@ -246,9 +246,13 @@ export const getExpectedPrice = async (
 
   const price = priceInfo.priceBeforeFee + addonsPrice + bikeHirePrice
 
-  const { total, fee, amount } = await getKlarnaFee(price, paymentType)
+  const { total, fee } = await getKlarnaFee(price, paymentType)
 
-  const result = { price: total, fee: fee, priceBeforeFee: amount }
+  const result = {
+    price: total,
+    fee: fee,
+    priceBeforeFee: priceInfo.priceBeforeFee
+  }
   return result
 }
 

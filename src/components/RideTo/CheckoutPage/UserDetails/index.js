@@ -643,7 +643,8 @@ class UserDetails extends Component {
       // errors = {},
       showCardDetails,
       handlePaymentButtonClick,
-      showUserDetails
+      showUserDetails,
+      onPaymentChange
     } = this.props
 
     return (
@@ -673,6 +674,7 @@ class UserDetails extends Component {
           )}>
           <StripeComponent
             {...this.props}
+            onPaymentChange={onPaymentChange}
             stripeElementChange={this.stripeElementChange}
           />
         </div>

@@ -15,12 +15,13 @@ import {
   removeToken
 } from 'services/auth'
 import { createPlatformOrder } from 'services/checkout'
-import { getLicenceAge, getPrice } from 'services/course'
+import { getLicenceAge } from 'services/course'
 import { fetchAddressWithPostcode } from 'services/misc'
 import { getExpectedPrice } from 'services/order'
 import { isInstantBook } from 'services/page'
 import { fetchUser, saveCheckoutEmail } from 'services/user'
 import { tldExists } from 'tldjs'
+import { getPriceV2 } from '../../../services/course'
 import { updatePaymentIntentSecretClient } from '../../../services/stripe'
 import OrderSummary from './OrderSummary'
 import styles from './styles.scss'
@@ -110,7 +111,6 @@ class CheckoutPage extends Component {
         accept_terms: false,
         email_optin: true
       },
-      priceInfo: this.props.priceInfo,
       manualAddress: false,
       postcodeLookingup: false,
       addresses: [],
@@ -154,7 +154,7 @@ class CheckoutPage extends Component {
   }
 
   async handleOnPaymentChange(data) {
-    const { priceInfo } = this.state
+    const { priceInfo, handleUpdateOption } = this.props
     const { stripePaymentIntentID, checkoutData } = this.props
     const { addons } = checkoutData
     this.setState({ ...data }, async () => {
@@ -169,7 +169,8 @@ class CheckoutPage extends Component {
         amount: price
       })
 
-      this.setState({
+      handleUpdateOption({
+        paymentType: this.state.paymentType,
         priceInfo: {
           ...priceInfo,
           price: price,
@@ -222,7 +223,7 @@ class CheckoutPage extends Component {
 
   async loadPrice(voucher_code) {
     try {
-      const { instantBook } = this.props
+      const { instantBook, handleUpdateOption } = this.props
       const {
         supplierId,
         courseId,
@@ -230,7 +231,7 @@ class CheckoutPage extends Component {
         courseType,
         addons
       } = this.props.checkoutData
-      const { details, trainings } = this.state
+      const { details, trainings, paymentType } = this.state
       const isFullLicence = courseType === 'FULL_LICENCE'
       const hasHighwayCode = !!addons.find(
         ({ name }) => name === 'Highway Code Book'
@@ -242,18 +243,20 @@ class CheckoutPage extends Component {
         course_type: courseType,
         voucher_code,
         order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
-        highway_code: hasHighwayCode
+        highway_code: hasHighwayCode,
+        payment_type: paymentType
       }
       this.setState({ loadingPrice: true })
       if (isFullLicence) {
         const training = trainings[0]
-        let response = await getPrice({
+        let response = await getPriceV2({
           supplierId: training.supplier_id,
           course_type: training.course_type,
           hours: training.package_hours,
           voucher_code,
           order_source: 'RIDETO',
-          highway_code: hasHighwayCode
+          highway_code: hasHighwayCode,
+          payment_type: paymentType
         })
 
         if (voucher_code && response.discount) {
@@ -263,9 +266,9 @@ class CheckoutPage extends Component {
             this.props.showPromoNotification('Invalid promo code.', 'error')
           }
         }
+        handleUpdateOption({ priceInfo: { ...response } })
 
         this.setState({
-          priceInfo: { ...response },
           loadingPrice: false,
           details: {
             ...details,
@@ -273,7 +276,7 @@ class CheckoutPage extends Component {
           }
         })
       } else {
-        let response = await getPrice(params)
+        let response = await getPriceV2(params)
         if (voucher_code && response.discount) {
           details.voucher_code = voucher_code
           this.props.showPromoNotification('Promo code applied!', 'add')
@@ -283,8 +286,8 @@ class CheckoutPage extends Component {
             this.props.showPromoNotification('Invalid promo code.', 'error')
           }
         }
+        handleUpdateOption({ priceInfo: { ...response } })
         this.setState({
-          priceInfo: { ...response },
           loadingPrice: false,
           details
         })
@@ -462,7 +465,7 @@ class CheckoutPage extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
-    const { handeUpdateOption } = this.props
+    const { handleUpdateOption } = this.props
     const { details, showCardDetails, physicalAddonsCount } = this.state
     const needsAddress = physicalAddonsCount > 0
     if (
@@ -497,7 +500,7 @@ class CheckoutPage extends Component {
         'Off road motorcycling'
       ].includes(details.riding_experience)
     ) {
-      handeUpdateOption({
+      handleUpdateOption({
         isInexperienced: true
       })
     }
@@ -779,8 +782,8 @@ class CheckoutPage extends Component {
   }
 
   async submitOrder(stripeToken) {
-    const { checkoutData, trainings, paymentType } = this.props
-    const { priceInfo } = this.state
+    const { paymentType } = this.state
+    const { checkoutData, trainings, priceInfo } = this.props
     const details = omit(this.state.details, [
       'card_name',
       'billingAddress',
@@ -994,14 +997,13 @@ class CheckoutPage extends Component {
   }
 
   render() {
-    const { checkoutData } = this.props
+    const { checkoutData, priceInfo } = this.props
     const { courseType } = checkoutData
 
     const {
       details,
       manualAddress,
       postcodeLookingup,
-      priceInfo,
       errors,
       saving,
       showAddressSelectorModal,
