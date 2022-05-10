@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Modal } from 'reactstrap'
-import { getPrice } from 'services/course'
 import { getExpectedPrice } from 'services/order'
 import { getSupplier, isInstantBook } from 'services/page'
 import {
@@ -14,6 +13,7 @@ import {
   createPOM,
   normalizePostCode
 } from 'utils/helper'
+import { getPriceV2 } from '../../../services/course'
 import {
   createPaymentIntentSecretClient,
   updatePaymentIntentSecretClient
@@ -76,17 +76,20 @@ class CheckoutPageContainer extends Component {
       isInexperienced: false,
       priceInfo: {
         price: 0,
+        priceBeforeFee: 0,
+        fee: 0,
         discount: 0,
         bike_hire_cost: 0
       },
       loadingPrice: true,
       clientSecret: '',
-      stripePaymentIntentID: ''
+      stripePaymentIntentID: '',
+      paymentType: 'card'
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
     this.handleSetDate = this.handleSetDate.bind(this)
-    this.handeUpdateOption = this.handeUpdateOption.bind(this)
+    this.handleUpdateOption = this.handleUpdateOption.bind(this)
     this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
     this.showPromoNotification = this.showPromoNotification.bind(this)
     this.handleAddPOM = this.handleAddPOM.bind(this)
@@ -100,9 +103,14 @@ class CheckoutPageContainer extends Component {
   }
 
   async fetchSecretClient() {
-    const { priceInfo, checkoutData, supplier } = this.state
+    const { priceInfo, checkoutData, supplier, paymentType } = this.state
     const { addons, courseType } = checkoutData
-    const expected_price = getExpectedPrice(priceInfo, addons, checkoutData)
+    const { price: expected_price } = await getExpectedPrice(
+      priceInfo,
+      addons,
+      checkoutData,
+      paymentType
+    )
     this.setState({ totalPrice: expected_price })
     const { client_secret, id } = await createPaymentIntentSecretClient(
       expected_price,
@@ -136,7 +144,7 @@ class CheckoutPageContainer extends Component {
       }
       if (isFullLicence) {
         const training = trainings[0]
-        let response = await getPrice({
+        let response = await getPriceV2({
           supplierId: training.supplier_id,
           course_type: training.course_type,
           hours: training.package_hours,
@@ -147,8 +155,7 @@ class CheckoutPageContainer extends Component {
           priceInfo: { ...response }
         })
       } else {
-        let response = await getPrice(params)
-
+        let response = await getPriceV2(params)
         this.setState({
           priceInfo: { ...response }
         })
@@ -162,12 +169,12 @@ class CheckoutPageContainer extends Component {
     this.setState({ date: moment(date).format(DATE_FORMAT) })
   }
 
-  handeUpdateOption(data) {
+  handleUpdateOption(data) {
     this.setState({ ...data })
   }
 
   async handleAddPOM() {
-    const { checkoutData, stripePaymentIntentID } = this.state
+    const { checkoutData, stripePaymentIntentID, priceInfo } = this.state
     const newCheckoutData = { ...checkoutData }
 
     if (!newCheckoutData.addons.some(addon => addon.name === POM_NAME)) {
@@ -181,21 +188,26 @@ class CheckoutPageContainer extends Component {
         isInexperienced: false
       },
       async () => {
-        const price = getExpectedPrice(
+        const { price, fee, priceBeforeFee } = await getExpectedPrice(
           this.state.priceInfo,
           this.state.checkoutData.addons,
-          this.state.checkoutData
+          this.state.checkoutData,
+          this.state.paymentType
         )
         await updatePaymentIntentSecretClient(stripePaymentIntentID, {
           amount: price
+        })
+
+        this.setState({
+          priceInfo: { ...priceInfo, price, fee, priceBeforeFee }
         })
         return
       }
     )
   }
 
-  handleRemovePOM() {
-    const { checkoutData, stripePaymentIntentID } = this.state
+  async handleRemovePOM() {
+    const { checkoutData, stripePaymentIntentID, priceInfo } = this.state
 
     this.setState(
       {
@@ -207,13 +219,17 @@ class CheckoutPageContainer extends Component {
         isInexperienced: false
       },
       async () => {
-        const price = getExpectedPrice(
+        const { price, fee, priceBeforeFee } = await getExpectedPrice(
           this.state.priceInfo,
           this.state.checkoutData.addons,
-          this.state.checkoutData
+          this.state.checkoutData,
+          this.state.paymentType
         )
         await updatePaymentIntentSecretClient(stripePaymentIntentID, {
           amount: price
+        })
+        this.setState({
+          priceInfo: { ...priceInfo, price, fee, priceBeforeFee }
         })
         return
       }
@@ -305,7 +321,7 @@ class CheckoutPageContainer extends Component {
               handlePOMToggleClick={this.handlePOMToggleClick}
               hasPOM={hasPOM}
               showPromoNotification={this.showPromoNotification}
-              handeUpdateOption={this.handeUpdateOption}
+              handleUpdateOption={this.handleUpdateOption}
               clientSecret={clientSecret}
               stripePaymentIntentID={stripePaymentIntentID}
               priceInfo={priceInfo}
