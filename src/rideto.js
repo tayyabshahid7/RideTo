@@ -1,10 +1,10 @@
-import mountComponent from 'utils/mountComponent'
-import { setVersionInfo } from 'services/version'
 import menuToggle from 'menuToggle'
+import 'react-toastify/dist/ReactToastify.css'
+import { setVersionInfo } from 'services/version'
+import mountComponent from 'utils/mountComponent'
 // import 'bootstrap'
 import './rideto_bootstrap.scss'
 import './rideto_constants.scss'
-import 'react-toastify/dist/ReactToastify.css'
 
 setVersionInfo()
 
@@ -26,6 +26,8 @@ mountComponent('ReviewSlider', 'rideto-home-reviews')
 mountComponent('CourseMenuItem', 'rideto-home-course-menu')
 
 // mountComponent('NewsLetterBanner', 'rideto-news-letter-banner')
+
+mountComponent('KlarnaBanner', 'rideto-klarna-banner')
 
 mountComponent('CourseAlternativeDatesSelection', 'alternative-dates-root')
 
