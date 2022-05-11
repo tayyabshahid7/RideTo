@@ -19,7 +19,7 @@ const Header = ({ status }) => {
         <h4 className={styles.headerTitle}>Thank You!</h4>
       )}
       {status === 'failed' && (
-        <h4 className={styles.headerTitle}>Failed payment title here</h4>
+        <h4 className={styles.headerTitle}>Payment Failed.</h4>
       )}
     </div>
   )
@@ -63,12 +63,13 @@ const OrderConfirmationThankYouPage = () => {
   }
 
   const PaymentFailedText = ({ userName }) => {
+    const supplier = new URLSearchParams(window.location.search).get('supplier')
     return (
       <div className={styles.headerTextWrapper}>
-        <p>Payment text error here</p>
+        <p>Please try again or try another payment method.</p>
         <p>
-          Please try again text here
-          <a href={'/'}>Home page button ?</a>.
+          If you are not redirected within 5 seconds please click{' '}
+          <a href={`/${supplier}/checkout/`}>here.</a>.
         </p>
       </div>
     )

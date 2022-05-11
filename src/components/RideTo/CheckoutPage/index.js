@@ -288,10 +288,17 @@ class CheckoutPageContainer extends Component {
         colorIconHover: '#141414'
       }
     }
+    const proximaNova = {
+      family: 'ProximaNova',
+      src:
+        'url(https://www.connectmct.com/static/client/src/fonts/webfonts/ProximaNovaAltRegular-webfont.woff)',
+      weight: '400'
+    }
     const stripeOptions = {
       appearance,
       clientSecret,
-      locale: 'en-GB'
+      locale: 'en-GB',
+      fonts: [proximaNova]
     }
     return (
       <React.Fragment>

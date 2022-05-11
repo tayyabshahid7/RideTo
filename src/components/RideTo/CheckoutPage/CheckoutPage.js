@@ -721,7 +721,7 @@ class CheckoutPage extends Component {
 
   async handlePayment() {
     const { details, physicalAddonsCount } = this.state
-    const { context, stripePaymentIntentID, paymentType } = this.props
+    const { context, stripePaymentIntentID, paymentType, supplier } = this.props
     const { stripe, elements } = context
 
     if (!stripe || !elements) {
@@ -763,7 +763,7 @@ class CheckoutPage extends Component {
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${window.location.origin}/${order.id}/thank-you/`
+          return_url: `${window.location.origin}/${order.id}/thank-you/?supplier=${supplier.slug}`
         }
       })
 
