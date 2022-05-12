@@ -220,7 +220,7 @@ class CourseForm extends React.Component {
 
     if (courseType) {
       const bikeSetup = courseType.bikeHireType.find(
-        x => x.supplier.id === parseInt(supplier)
+        x => x !== undefined && x.supplier.id === parseInt(supplier)
       )
 
       if (bikeSetup) {
