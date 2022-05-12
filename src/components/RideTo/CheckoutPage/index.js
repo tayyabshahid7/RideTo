@@ -286,12 +286,17 @@ class CheckoutPageContainer extends Component {
         spacingUnit: '5px',
         fontFamily: 'ProximaNova, Helvetica, Arial, sans-serif',
         colorIconHover: '#141414'
+      },
+      rules: {
+        '.Label': {
+          textTransform: 'capitalize'
+        }
       }
     }
     const proximaNova = {
       family: 'ProximaNova',
       src:
-        'url(https://www.connectmct.com/static/client/src/fonts/webfonts/ProximaNovaAltRegular-webfont.woff)',
+        'url(https://bike-tests.s3.eu-west-2.amazonaws.com/ProximaNovaAltRegular-webfont.woff)',
       weight: '400'
     }
     const stripeOptions = {
