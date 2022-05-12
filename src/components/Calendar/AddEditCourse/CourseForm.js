@@ -70,6 +70,7 @@ class CourseForm extends React.Component {
     this.setCourseType(course, this.courseTypes)
 
     let supplier = ''
+    console.log(this.props)
     if (this.props.schools) {
       supplier = this.props.schools[0].id
 
@@ -220,7 +221,7 @@ class CourseForm extends React.Component {
 
     if (courseType) {
       const bikeSetup = courseType.bikeHireType.find(
-        x => x.supplier.id === parseInt(supplier)
+        x => x !== undefined && x.supplier.id === parseInt(supplier)
       )
 
       if (bikeSetup) {
