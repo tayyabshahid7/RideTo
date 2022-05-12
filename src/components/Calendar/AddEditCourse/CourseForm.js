@@ -70,7 +70,6 @@ class CourseForm extends React.Component {
     this.setCourseType(course, this.courseTypes)
 
     let supplier = ''
-    console.log(this.props)
     if (this.props.schools) {
       supplier = this.props.schools[0].id
 
