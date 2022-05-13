@@ -21,7 +21,7 @@ import { isAuthenticated } from 'services/auth'
 import { getCurrentLicenceOptions } from 'services/customer'
 import CardIcons from '../CardIcons'
 import SectionSplitter from '../SectionSplitter'
-import StripeComponent from '../StripeCheckout'
+import StripeComponent from '../StripeComponent'
 import NextSteps from './NextSteps'
 import styles from './styles.scss'
 

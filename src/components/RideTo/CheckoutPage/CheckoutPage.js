@@ -721,7 +721,13 @@ class CheckoutPage extends Component {
 
   async handlePayment() {
     const { details, physicalAddonsCount } = this.state
-    const { context, stripePaymentIntentID, paymentType, supplier } = this.props
+    const {
+      context,
+      stripePaymentIntentID,
+      paymentType,
+      supplier,
+      priceInfo
+    } = this.props
     const { stripe, elements } = context
 
     if (!stripe || !elements) {
@@ -756,6 +762,17 @@ class CheckoutPage extends Component {
 
     await updatePaymentIntentSecretClient(stripePaymentIntentID, {
       payment_type: paymentType
+    })
+
+    await stripe.paymentRequest({
+      country: 'GB',
+      currency: 'gbp',
+      total: {
+        label: 'Rideto Training',
+        amount: priceInfo.price
+      },
+      requestPayerName: true,
+      requestPayerEmail: true
     })
 
     const { order } = await this.submitOrder(stripePaymentIntentID)
