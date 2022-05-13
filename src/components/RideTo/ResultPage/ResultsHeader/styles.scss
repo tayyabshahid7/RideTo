@@ -185,6 +185,12 @@
   height: 54px;
   @media (max-width: 769px) {
     height: 40px;
+    *,
+    *:visited,
+    *::before,
+    *::after {
+      color: inherit !important;
+    }
   }
 }
 
