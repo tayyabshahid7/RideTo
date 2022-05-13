@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 export default function StripeComponent(props) {
   const [paymentType, setPaymentType] = useState('')
   const { stripeElementChange, onPaymentChange } = props
+
   return (
     <form id="payment-form">
       <PaymentElement
