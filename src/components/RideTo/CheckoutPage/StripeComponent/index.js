@@ -5,10 +5,16 @@ export default function StripeComponent(props) {
   const [paymentType, setPaymentType] = useState('')
   const { stripeElementChange, onPaymentChange } = props
 
+  const options = {
+    paymentMethodOrder: ['card', 'klarna'],
+    wallets: { applePay: 'auto', googlePay: 'auto' }
+  }
+
   return (
     <form id="payment-form">
       <PaymentElement
         id="payment"
+        options={options}
         onChange={element => {
           const { complete, empty, value } = element
           const { type } = value
