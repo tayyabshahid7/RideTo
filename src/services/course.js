@@ -426,7 +426,7 @@ export const getPriceV2 = async ({
 }) => {
   const path = 'v2/get-price'
   let params = courseId
-    ? { course_id: courseId }
+    ? { course_id: courseId, course_type, date, supplier_id: supplierId }
     : {
         course_type,
         date,
