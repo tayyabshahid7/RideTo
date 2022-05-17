@@ -8,7 +8,7 @@ export default function KlarnaBanner() {
   return (
     <div className={styles.container}>
       {!isMobile ? (
-        <span>Split your purchase into 4 interest-free payments*</span>
+        <span>Split your purchase into 3 interest-free payments*</span>
       ) : (
         <span>Buy Now, Pay Later</span>
       )}
