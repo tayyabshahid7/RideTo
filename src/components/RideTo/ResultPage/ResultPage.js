@@ -1,37 +1,38 @@
-import { Col, Container, Row } from 'reactstrap'
+import loadable from '@loadable/component'
+import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import classnames from 'classnames'
+import { LICENCE_TYPES, SORTBY } from 'common/constants'
+import { getTitleFor, SortByOptions } from 'common/info'
+import Loading from 'components/Loading'
+import RideToButton from 'components/RideTo/Button'
+import isEqual from 'lodash/isEqual'
+import moment from 'moment'
+import React, { Component } from 'react'
+import MediaQuery from 'react-responsive'
+import { Redirect } from 'react-router-dom'
 import {
+  Col,
+  Container,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
+  Row,
   UncontrolledDropdown
 } from 'reactstrap'
-import React, { Component } from 'react'
-import { SortByOptions, getTitleFor } from 'common/info'
-import { deleteParam, normalizePostCode, setParam } from 'utils/helper'
+import { parseQueryString } from 'services/api'
+import { fetchSingleRidetoCourse, getCourseIdFromSearch } from 'services/course'
+import { fetchCoursesTypes } from 'services/course-type'
+import { isBankHoliday } from 'services/misc'
 import { flashDiv, getStaticData } from 'services/page'
-
-import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import { deleteParam, normalizePostCode, setParam } from 'utils/helper'
+import { createPOM } from '../../../utils/helper'
+import POMSelector from '../CheckoutPage/POMSelector'
 import CourseItem from './CourseItem'
 import DateSelector from './DateSelector'
-import { LICENCE_TYPES } from 'common/constants'
-import Loading from 'components/Loading'
-import MediaQuery from 'react-responsive'
 import POMBanner from './POMBanner'
-import { Redirect } from 'react-router-dom'
-import ResultsHeader from './ResultsHeader'
-import RideToButton from 'components/RideTo/Button'
-import { SORTBY } from 'common/constants'
-import classnames from 'classnames'
-import { fetchCoursesTypes } from 'services/course-type'
-import { fetchSingleRidetoCourse } from 'services/course'
-import { getCourseIdFromSearch } from 'services/course'
-import { isBankHoliday } from 'services/misc'
-import isEqual from 'lodash/isEqual'
-import loadable from '@loadable/component'
-import moment from 'moment'
-import { parseQueryString } from 'services/api'
 import styles from './ResultPage.scss'
+import ResultsHeader from './ResultsHeader'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -50,6 +51,8 @@ const CourseDetailPanel = loadable(() => import('./CourseDetailPanel'))
 const CourseItemNonPartner = loadable(() => import('./CourseItemNonPartner'))
 
 const MobileMap = loadable(() => import('./MobileMap'))
+
+const POM_NAME = 'Peace Of Mind Policy'
 
 class ResultPage extends Component {
   constructor(props) {
@@ -76,7 +79,9 @@ class ResultPage extends Component {
       isErrored: false,
       formCompletedWithoutTheory: false,
       isMobileMapVisible: false,
-      openedCourseTypeDetails: null
+      openedCourseTypeDetails: null,
+      addedPOM: false,
+      addons: []
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -91,6 +96,7 @@ class ResultPage extends Component {
     this.hideCourseTypeInfo = this.hideCourseTypeInfo.bind(this)
     this.handleBackClick = this.handleBackClick.bind(this)
     this.handleCloseMap = this.handleCloseMap.bind(this)
+    this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
 
     window.sessionStorage.removeItem('trainings')
 
@@ -279,7 +285,8 @@ class ResultPage extends Component {
       bike_hire,
       selectedPackageHours,
       selectedLicenceType,
-      selectedTimeDays
+      selectedTimeDays,
+      addons
     } = this.state
     const { postcode, courseType } = this.props
     let trainings = []
@@ -319,7 +326,6 @@ class ResultPage extends Component {
 
     window.sessionStorage.setItem('trainings', JSON.stringify(trainings))
 
-    // const next = `/${selectedCourse.supplier_slug}/checkout`
     let next
 
     if (courseType === 'FULL_LICENCE') {
@@ -337,7 +343,7 @@ class ResultPage extends Component {
       courseType,
       bike_hire,
       supplierId: selectedCourse.id,
-      addons: [],
+      addons,
       gloves_jacket_included: selectedCourse.gloves_jacket_included,
       helmet_hire: selectedCourse.helmet_hire
     }
@@ -353,6 +359,32 @@ class ResultPage extends Component {
     sessionStorage.setItem('checkout-data', JSON.stringify(checkoutData))
     sessionStorage.setItem('login-next', JSON.stringify(next))
     window.location = next
+  }
+
+  handleAddPOM() {
+    const pom = createPOM()
+    this.setState({
+      addons: [pom],
+      addedPOM: true
+    })
+  }
+
+  handleRemovePOM() {
+    const { addons } = this.state
+    this.setState({
+      addons: addons.filter(addon => addon.name !== POM_NAME),
+      addedPOM: false
+    })
+  }
+
+  handlePOMToggleClick() {
+    const { addedPOM } = this.state
+
+    if (addedPOM) {
+      this.handleRemovePOM()
+    } else {
+      this.handleAddPOM()
+    }
   }
 
   renderSortByDropdown(shortOptions) {
@@ -664,7 +696,8 @@ class ResultPage extends Component {
       selectedCourseType,
       isErrored,
       isMobileMapVisible,
-      openedCourseTypeDetails
+      openedCourseTypeDetails,
+      addedPOM
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -1058,6 +1091,15 @@ class ResultPage extends Component {
                 selectedTimeDays={selectedTimeDays}
                 isErrored={isErrored}
               />
+            )}
+            {hasPOM && activeTab === 3 && (
+              <div className={styles.POMContainer}>
+                <POMSelector
+                  handlePOMToggleClick={this.handlePOMToggleClick}
+                  hasPOM={addedPOM}
+                  className={styles.POM}
+                />
+              </div>
             )}
           </SidePanel>
         )}

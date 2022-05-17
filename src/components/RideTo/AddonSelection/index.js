@@ -1,40 +1,43 @@
-import { Button, Col, Container, Row } from 'reactstrap'
-import { Desktop, Mobile } from 'common/breakpoints'
-import { IconBoots, IconHelmet, IconJacket, IconMask } from 'assets/icons'
-import { getAddons, getSupplier } from 'services/page'
-import RideToButton from 'components/RideTo/Button'
-
-import AddonSelectionGroup from 'components/RideTo/AddonSelectionGroup'
-import { IconArrowRight } from 'assets/icons'
-import NavigationComponent from 'components/RideTo/NavigationComponent'
-import React from 'react'
-import _ from 'lodash'
+import {
+  IconArrowRight,
+  IconBoots,
+  IconHelmet,
+  IconJacket,
+  IconMask
+} from 'assets/icons'
 import classnames from 'classnames'
-import { getCourseTitle } from 'services/course'
+import { Desktop, Mobile } from 'common/breakpoints'
+import AddonSelectionGroup from 'components/RideTo/AddonSelectionGroup'
+import RideToButton from 'components/RideTo/Button'
+import NavigationComponent from 'components/RideTo/NavigationComponent'
 import moment from 'moment'
+import React from 'react'
+import { Button, Col, Container, Row } from 'reactstrap'
 import { parseQueryString } from 'services/api'
+import { getCourseTitle } from 'services/course'
+import { getAddons, getSupplier } from 'services/page'
 import styles from './AddonSelection.scss'
 
 const CHECKLIST_ITEMS = [
   {
     icon: <IconMask />,
     title: 'A face\ncovering',
-    keywords: ['FACE_COVER']
+    keywords: ['OTHER']
   },
   {
     icon: <IconBoots />,
-    title: 'Sturdy boots\nand jeans',
-    keywords: ['BOOTS_JEANS']
+    title: 'Sturdy boots',
+    keywords: ['CLOTHES_BOOTS']
   },
   {
     icon: <IconHelmet />,
     title: 'Motorcycle\nhelmet',
-    keywords: ['HELMET']
+    keywords: ['HELMET_GLOVES']
   },
   {
     icon: <IconJacket />,
-    title: 'A thick jacket \nand motorcycle gloves',
-    keywords: ['JACKET_GLOVES']
+    title: 'A thick jacket',
+    keywords: ['CLOTHES_BOOTS']
   }
 ]
 
@@ -42,15 +45,18 @@ class AddonSelection extends React.Component {
   constructor(props) {
     super(props)
 
-    // Clear addons on landing on page
     const checkoutData = JSON.parse(sessionStorage.getItem('checkout-data'))
-    sessionStorage.setItem(
-      'checkout-data',
-      JSON.stringify({
-        ...checkoutData,
-        addons: []
-      })
-    )
+
+    let selectedAddons = []
+
+    if (checkoutData.addons.length > 0) {
+      const pom = checkoutData.addons.filter(
+        ({ name }) => name === 'Peace Of Mind Policy'
+      )
+      if (pom) {
+        selectedAddons = [pom[0]]
+      }
+    }
 
     const qs = parseQueryString(window.location.search.slice(1))
 
@@ -125,12 +131,12 @@ class AddonSelection extends React.Component {
 
     this.state = {
       addons,
-      addonGroups: addonGroups.slice(0, 2),
+      addonGroups: addonGroups.slice(0, 3),
       allGroupsAvailable: addonGroups,
       postcode: qs.postcode || '',
       courseType: qs.courseType || '',
       qs: qs || {},
-      selectedAddons: [],
+      selectedAddons,
       detailsAddon: null,
       supplier: null,
       navigation: this.navigation,
@@ -255,7 +261,7 @@ class AddonSelection extends React.Component {
     if (showThreeGroupsOnly) {
       this.setState({ addonGroups: allGroupsAvailable })
     } else {
-      this.setState({ addonGroups: addonGroups.slice(0, 2) })
+      this.setState({ addonGroups: addonGroups.slice(0, 3) })
     }
 
     this.setState({ showThreeGroupsOnly: !showThreeGroupsOnly })
@@ -271,11 +277,13 @@ class AddonSelection extends React.Component {
     if (!items.length) {
       return
     }
-    items.forEach(item => (item.price = parseFloat(item.discount_price)))
-    items = _.orderBy(items, 'price').reverse()
 
     // scroll to addon
-    const addonEl = document.getElementById('addon-' + items[0].id)
+    const addonEl = document.getElementById(items[0].addon_group)
+    if (!addonEl) {
+      return
+    }
+
     addonEl.scrollIntoView({
       behavior: 'smooth',
       inline: 'nearest'
@@ -424,13 +432,15 @@ class AddonSelection extends React.Component {
             </Row>
           ))}
           <div className={styles.checkoutWrapper}>
-            <RideToButton
-              id="addon-show-more-button"
-              alt="show-more-button"
-              className={styles.showMoreButton}
-              onClick={this.handleShowMoreGroups}>
-              <span>{showThreeGroupsOnly ? 'Show More' : 'Show Less'} </span>
-            </RideToButton>
+            {!addonGroups.length > 3 && (
+              <RideToButton
+                id="addon-show-more-button"
+                alt="show-more-button"
+                className={styles.showMoreButton}
+                onClick={this.handleShowMoreGroups}>
+                <span>{showThreeGroupsOnly ? 'Show More' : 'Show Less'} </span>
+              </RideToButton>
+            )}
           </div>
           <div className={styles.checkoutWrapper}>
             <Button

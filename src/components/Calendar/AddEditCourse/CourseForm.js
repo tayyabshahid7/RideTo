@@ -1,26 +1,30 @@
-import React from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import moment from 'moment'
-import { Col, Row } from 'reactstrap'
-import range from 'lodash/range'
-import styles from './styles.scss'
-import { DAY_FORMAT3, TEST_STATUS_CHOICES, SHIFT_TYPES } from 'common/constants'
-import LoadingMask from 'components/LoadingMask'
-import pick from 'lodash/pick'
+import {
+  DAY_FORMAT3,
+  DEFAULT_SETTINGS,
+  SHIFT_TYPES,
+  TEST_STATUS_CHOICES
+} from 'common/constants'
 import BikeNumberPicker from 'components/BikeNumberPicker'
 import {
-  ConnectInput,
-  ConnectSingleSelect,
-  ConnectTextArea,
   Button,
-  ConnectLabeledContent
+  ConnectInput,
+  ConnectLabeledContent,
+  ConnectSingleSelect,
+  ConnectTextArea
 } from 'components/ConnectForm'
+import LoadingMask from 'components/LoadingMask'
+import pick from 'lodash/pick'
+import range from 'lodash/range'
+import moment from 'moment'
+import React from 'react'
+import { connect } from 'react-redux'
+import { Col, Row } from 'reactstrap'
+import { bindActionCreators } from 'redux'
+import { getDaysCourses } from 'store/course'
 import { actions as notifyActions } from 'store/notification'
 import { getDaysStaff } from 'store/staff'
-import { getDaysCourses } from 'store/course'
 import { removeWeekdays } from 'utils/helper'
-import { DEFAULT_SETTINGS } from 'common/constants'
+import styles from './styles.scss'
 
 const fullLicenceBikeFields = [
   'a1_auto_bikes',
@@ -215,8 +219,8 @@ class CourseForm extends React.Component {
     let settings = DEFAULT_SETTINGS
 
     if (courseType) {
-      const bikeSetup = courseType.bike_hire_setup.find(
-        x => x.supplier.id === parseInt(supplier)
+      const bikeSetup = courseType.bikeHireType.find(
+        x => x !== undefined && x.supplier.id === parseInt(supplier)
       )
 
       if (bikeSetup) {
