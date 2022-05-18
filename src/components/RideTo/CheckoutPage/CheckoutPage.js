@@ -918,7 +918,7 @@ class CheckoutPage extends Component {
 
   handleEmailSubmit = async () => {
     const { checkoutData } = this.props
-    const { details } = this.state
+    const { details, stripePaymentIntentID } = this.state
 
     //Check if email already exists or user logged in
     const result = await this.checkEmail(details.email)
@@ -936,7 +936,11 @@ class CheckoutPage extends Component {
       return
     }
 
-    const resultEmail = await saveCheckoutEmail(details.email, checkoutData)
+    const resultEmail = await saveCheckoutEmail(
+      details.email,
+      checkoutData,
+      stripePaymentIntentID
+    )
 
     if (!resultEmail.error) {
       this.setState({
