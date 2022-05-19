@@ -1,6 +1,16 @@
-import { GOALS, STYLES } from './RouteToFreedom/constants'
+import classnames from 'classnames'
+import { Desktop } from 'common/breakpoints'
+import Loading from 'components/Loading'
+import BookingCompleteBanner from 'components/RideTo/Account/BookingCompleteBanner'
+import OrderDetails from 'components/RideTo/Account/OrderDetails'
+import SidePanel from 'components/RideTo/SidePanel'
 import React, { Fragment, useEffect, useRef, useState } from 'react'
-import { fetchOrder, fetchOrders } from 'services/user'
+import { useMediaQuery } from 'react-responsive'
+import {
+  getToken,
+  getUserProfile,
+  isAuthenticated as getIsAuthenticated
+} from 'services/auth'
 import {
   fetchUserDetails,
   recordGAEcommerceData,
@@ -8,32 +18,21 @@ import {
   updateTimelineStep,
   updateUserDetail
 } from 'services/dashboard'
-import {
-  isAuthenticated as getIsAuthenticated,
-  getToken,
-  getUserProfile
-} from 'services/auth'
-
-import { ALL_ACHIEVEMENTS } from './Achievements/constants'
+import { fetchOrder, fetchOrders } from 'services/user'
 import Achievements from './Achievements'
-import BookingCompleteBanner from 'components/RideTo/Account/BookingCompleteBanner'
+import { ALL_ACHIEVEMENTS } from './Achievements/constants'
 import { DEFAULT_TIMELINE } from './constants'
-import { Desktop } from 'common/breakpoints'
 import GuidesAdvice from './GuidesAdvice'
-import Loading from 'components/Loading'
 import MyCheckList from './MyCheckList'
 import MyOrders from './MyOrders'
 import News from './News'
 import NextStep from './NextStep'
-import OrderDetails from 'components/RideTo/Account/OrderDetails'
 import PasswordReset from './PasswordReset'
 import RouteToFreedom from './RouteToFreedom'
-import SidePanel from 'components/RideTo/SidePanel'
-import classnames from 'classnames'
+import { GOALS, STYLES } from './RouteToFreedom/constants'
 import { findLastStepIndex } from './RouteToFreedom/util'
-import { matchStepsToGoal } from './util'
 import styles from './styles.scss'
-import { useMediaQuery } from 'react-responsive'
+import { matchStepsToGoal } from './util'
 
 function DashboardPageV2({ match }) {
   const [userDetails, setUserDetails] = useState(null)
@@ -509,7 +508,7 @@ function DashboardPageV2({ match }) {
             className={classnames(styles.pageItem, styles.pageItemFooter)}>
             <div className={styles.copyFooter}>
               © 2022 RideTo Ltd. Registered company number 10454345. Registered
-              Office: 11 Orange Row, Brighton, BN1 1UQ
+              Office: Dunsden Green, Reading, RG4 9QD
               <br />
               This information is given to you as a guide to support you in your
               choice of licence and RideTo has made every attempt to ensure the
