@@ -1,17 +1,15 @@
-import { getToken, getUserProfile, isAuthenticated } from 'services/auth'
-
-import { BikeHires } from 'common/info'
+import { BikeHires, formatBikeConstant } from 'common/info'
 import DashboardReview from 'components/RideTo/Account/DashboardReview'
-import MapComponent from 'components/RideTo/MapComponent'
-import React from 'react'
 import RideToButton from 'components/RideTo/Button'
-import { addWeekdays } from 'utils/helper'
-import { cancelOrder } from 'services/user'
-import { formatBikeConstant } from 'common/info'
+import MapComponent from 'components/RideTo/MapComponent'
 import moment from 'moment'
 import momentTz from 'moment-timezone'
-import { saveSupplierRating } from 'services/supplier'
+import React from 'react'
+import { getToken, getUserProfile, isAuthenticated } from 'services/auth'
 import { showReview } from 'services/order'
+import { saveSupplierRating } from 'services/supplier'
+import { cancelOrder } from 'services/user'
+import { addWeekdays } from 'utils/helper'
 import styles from './OrderDetails.scss'
 
 const getFriendlyStatus = status => {
@@ -309,7 +307,7 @@ class OrderDetails extends React.Component {
                 )}
                 {!this.state.isOrderPending && (
                   <p className={styles.pMessage}>
-                    Cancelling your order will result in a £20 admin fee,
+                    Cancelling your order will result in a £25 admin fee,
                     deducted from your refund. Are you sure you want to cancel
                     your order?
                   </p>
