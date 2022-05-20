@@ -223,7 +223,11 @@ class CheckoutPage extends Component {
 
   async loadPrice(voucher_code) {
     try {
-      const { instantBook, handleUpdateOption } = this.props
+      const {
+        instantBook,
+        handleUpdateOption,
+        stripePaymentIntentID
+      } = this.props
       const {
         supplierId,
         courseId,
@@ -244,7 +248,8 @@ class CheckoutPage extends Component {
         voucher_code,
         order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
         highway_code: hasHighwayCode,
-        payment_type: paymentType
+        payment_type: paymentType,
+        intent_id: stripePaymentIntentID
       }
       this.setState({ loadingPrice: true })
       if (isFullLicence) {
@@ -256,7 +261,8 @@ class CheckoutPage extends Component {
           voucher_code,
           order_source: 'RIDETO',
           highway_code: hasHighwayCode,
-          payment_type: paymentType
+          payment_type: paymentType,
+          intent_id: stripePaymentIntentID
         })
 
         if (voucher_code && response.discount) {
