@@ -244,7 +244,10 @@ export const getExpectedPrice = async (
     ? priceInfo.bike_hire_cost
     : 0
 
-  const price = priceInfo.priceBeforeFee + addonsPrice + bikeHirePrice
+  const discountPrice = priceInfo.discount ? priceInfo.discount : 0
+
+  const price =
+    priceInfo.priceBeforeFee + addonsPrice + bikeHirePrice - discountPrice
 
   const { total, fee } = await getKlarnaFee(price, paymentType)
 
