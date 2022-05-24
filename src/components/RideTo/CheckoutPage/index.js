@@ -112,10 +112,16 @@ class CheckoutPageContainer extends Component {
       paymentType
     )
     this.setState({ totalPrice: expected_price })
+
+    const { stripePaymentIntentID } = JSON.parse(
+      window.localStorage.getItem('stripePaymentIntent')
+    ) || { clientSecret: '', stripePaymentIntentID: '' }
+
     const { client_secret, id } = await createPaymentIntentSecretClient(
       expected_price,
       supplier.id,
-      courseType
+      courseType,
+      stripePaymentIntentID
     )
 
     if (client_secret) {
@@ -123,6 +129,14 @@ class CheckoutPageContainer extends Component {
         clientSecret: client_secret,
         stripePaymentIntentID: id
       })
+
+      window.localStorage.setItem(
+        'stripePaymentIntent',
+        JSON.stringify({
+          clientSecret: client_secret,
+          stripePaymentIntentID: id
+        })
+      )
     }
   }
 
