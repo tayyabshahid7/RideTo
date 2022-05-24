@@ -45,6 +45,7 @@ const OrderConfirmationThankYouPage = () => {
   useEffect(() => {
     if (orderId && status !== 'failed') {
       setTimeout(() => {
+        window.localStorage.removeItem('stripePaymentIntent')
         window.location = `/account/dashboard/${orderId}`
       }, 2000)
     }

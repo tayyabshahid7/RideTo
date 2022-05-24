@@ -73,11 +73,17 @@ export const updatePaymentIntentSecretClient = async (intent, params = {}) => {
 export const createPaymentIntentSecretClient = async (
   price,
   supplierId,
-  courseType
+  courseType,
+  stripePaymentIntentID = ''
 ) => {
   const { client_secret, id } = await post(
     'create-payment-intent/',
-    { amount: price, supplier_id: supplierId, course_type: courseType },
+    {
+      amount: price,
+      supplier_id: supplierId,
+      course_type: courseType,
+      payment_intent: stripePaymentIntentID
+    },
     false
   )
   return { client_secret, id }
