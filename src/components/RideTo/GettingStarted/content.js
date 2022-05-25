@@ -1,13 +1,13 @@
 const image1 =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-1.jpg'
+  'https://rideto-production.imgix.net/static/images/getting-started-1.jpg?q=80&auto=format,compress,true'
 const image2 =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-2.jpg'
+  'https://rideto-production.imgix.net/static/images/getting-started-2.jpg?q=80&auto=format,compress,true'
 const image3 =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-3.jpg'
+  'https://rideto-production.imgix.net/static/images/getting-started-3.jpg?q=80&auto=format,compress,true'
 const image4 =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-4.jpg'
+  'https://rideto-production.imgix.net/static/images/getting-started-4.jpg?q=80&auto=format,compress,true'
 const image5 =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-5.jpg'
+  'https://rideto-production.imgix.net/static/images/getting-started-5.jpg?q=80&auto=format,compress,true'
 
 const GET_A_LICENCE = {
   name: 'Get a licence',

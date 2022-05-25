@@ -1,12 +1,10 @@
-import React, { Component, Fragment } from 'react'
-
-import classnames from 'classnames'
-import styles from './Faqs.scss'
-
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
+import classnames from 'classnames'
 import Button from 'components/RideTo/Button'
-import SidePanel from 'components/RideTo/SidePanel'
 import FaqsDetails from 'components/RideTo/FaqsDetails'
+import SidePanel from 'components/RideTo/SidePanel'
+import React, { Component, Fragment } from 'react'
+import styles from './Faqs.scss'
 
 export class Faqs extends Component {
   constructor(props) {
@@ -58,14 +56,14 @@ export class Faqs extends Component {
             </div>
             <div className={styles.images}>
               <img
-                src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/home-carousel-image-3.jpg"
+                src="https://rideto-production.imgix.net/static/images/home-carousel-image-3.jpg?q=80&auto=format,compress,true"
                 className={classnames(styles.getStartedImage, styles.right)}
                 height="480"
                 width="340"
                 alt=""
               />
               <img
-                src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/home-page-image-2.jpg"
+                src="https://rideto-production.imgix.net/static/images/home-page-image-2.jpg?q=80&auto=format,compress,true"
                 className={classnames(styles.getStartedImage, styles.left)}
                 height="480"
                 width="340"
@@ -76,7 +74,9 @@ export class Faqs extends Component {
         </div>
         <SidePanel
           visible={sidePanelVisible}
-          headingImage={'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/home-carousel-image-1.jpg'}
+          headingImage={
+            'https://rideto-production.imgix.net/static/images/home-carousel-image-1.jpg?q=80&auto=format,compress,true'
+          }
           onDismiss={() => this.setState({ sidePanelVisible: false })}>
           <FaqsDetails />
         </SidePanel>

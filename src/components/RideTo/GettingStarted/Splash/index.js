@@ -1,11 +1,11 @@
+import WhiteArrowDown from 'assets/images/rideto/WhiteArrowDown.svg'
 import React from 'react'
 import styles from './styles.scss'
-import WhiteArrowDown from 'assets/images/rideto/WhiteArrowDown.svg'
 // import Div100vh from 'react-div-100vh'
 // import { useMediaQuery } from 'react-responsive'
 
 const imageSplash =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/getting-started-splash.jpg'
+  'https://rideto-production.imgix.net/static/images/getting-started-splash.jpg?q=80&auto=format,compress,true'
 
 function Splash({ scrollTo }) {
   // let height = 'calc(100rvh - 56px)'
