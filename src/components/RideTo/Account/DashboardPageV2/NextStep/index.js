@@ -1,22 +1,22 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import styles from './styles.scss'
-import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
-import Button from 'components/RideTo/Button'
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
-import Form from './Form'
+import classnames from 'classnames'
+import Button from 'components/RideTo/Button'
+import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
+import kebabCase from 'lodash/kebabCase'
+import React, { Fragment, useEffect, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+import { fetchBikes } from 'services/dashboard'
 import CircleList from '../CircleList'
-import FAQs from '../FAQs'
-import UpComingCourse from '../UpComingCourse'
 import CourseFeedback from '../CourseFeedback'
+import FAQs from '../FAQs'
 import Slider from '../Slider'
 import StatusIcon from '../StatusIcon'
-import { useMediaQuery } from 'react-responsive'
-import WithTitle from './WithTitle'
-import classnames from 'classnames'
-import { getNextStep, getNextStepConstant } from './util'
+import UpComingCourse from '../UpComingCourse'
+import Form from './Form'
 import MyCheckbox from './MyCheckbox'
-import { fetchBikes } from 'services/dashboard'
-import kebabCase from 'lodash/kebabCase'
+import styles from './styles.scss'
+import { getNextStep, getNextStepConstant } from './util'
+import WithTitle from './WithTitle'
 
 function NextStep({
   nextStep,
@@ -59,7 +59,7 @@ function NextStep({
             link:
               'https://www.rideto.com/blog/Rent-To-Buy-Electric-Scooters-RideTo-Scooter-Hire',
             image:
-              'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/askoll-es3-evolution-3000w--248-p.jpg'
+              'https://rideto-production.imgix.net/static/images/askoll-es3-evolution-3000w--248-p.jpg?q=80&auto=format,compress,true'
           },
           ...response.results.map(bike => {
             return {

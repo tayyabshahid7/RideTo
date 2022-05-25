@@ -1,11 +1,11 @@
 import React from 'react'
 import { useMediaQuery } from 'react-responsive'
 const mobile =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+Keyworker+Banner_600x300px-01.jpg'
+  'https://rideto-production.imgix.net/static/images/RideTo+Keyworker+Banner_600x300px-01.jpg?q=80&auto=format,compress,true'
 const tablet =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+Keyworker+Banner_1000x400px-03.jpg'
+  'https://rideto-production.imgix.net/static/images/RideTo+Keyworker+Banner_1000x400px-03.jpg?q=80&auto=format,compress,true'
 const desktop =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+Keyworker+Banner_1036x312px-02.jpg'
+  'https://rideto-production.imgix.net/static/images/RideTo+Keyworker+Banner_1036x312px-02.jpg?q=80&auto=format,compress,true'
 
 const style = {
   width: '100%',

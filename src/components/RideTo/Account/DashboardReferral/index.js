@@ -1,16 +1,18 @@
 import React, { useRef, useState } from 'react'
-import {
-  FacebookShareButton,
-  WhatsappShareButton,
-  EmailShareButton
-} from 'react-share'
-import { FacebookIcon, WhatsappIcon, EmailIcon } from 'react-share'
-import styles from './styles.scss'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  WhatsappIcon,
+  WhatsappShareButton
+} from 'react-share'
+import styles from './styles.scss'
 
 function DashboardReferral() {
   const img =
-    'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideto-brighton.jpg'
+    'https://rideto-production.imgix.net/static/images/rideto-brighton.jpg?q=80&auto=format,compress,true'
   const url = 'http://bit.ly/30orwL4'
   const whatsappUrl = 'http://bit.ly/30nahtD'
   const facebookUrl = 'http://bit.ly/30lQris'

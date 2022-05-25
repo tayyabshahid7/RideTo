@@ -1,14 +1,14 @@
-import React, { Fragment } from 'react'
 import classnames from 'classnames'
-import { getStaticData } from 'services/page'
-import styles from './CourseAlternativeDatesSelection.scss'
-import AlternativeLocationsOption from './AlternativeLocationsOption'
-import { updateSchoolTrainingRejectionWithAlternativeDates } from 'services/course'
-import moment from 'moment'
 import Loading from 'components/Loading'
+import moment from 'moment'
+import React, { Fragment } from 'react'
+import { updateSchoolTrainingRejectionWithAlternativeDates } from 'services/course'
+import { getStaticData } from 'services/page'
+import AlternativeLocationsOption from './AlternativeLocationsOption'
+import styles from './CourseAlternativeDatesSelection.scss'
 
 const rideToMinimalGreenImg =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
+  'https://rideto-production.imgix.net/static/images/rideToMinimalGreen.jpg?q=80&auto=format,compress,true'
 
 const Header = ({ userName, alreadyResponded }) => {
   const HeaderText = ({ userName, alreadyResponded }) => {
