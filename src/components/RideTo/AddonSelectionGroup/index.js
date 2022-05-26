@@ -36,6 +36,7 @@ class AddonSelectionGroup extends React.Component {
             <div className={styles.addonItemContainer}>
               <AddonItemSlider
                 addons={addonsFilteredGroup}
+                groupName={name}
                 allAddons={addons}
                 isAdded={isAdded}
                 onAdd={onAdd}

@@ -19,6 +19,9 @@
   option:disabled {
     color: #ccc;
   }
+  @media (max-width: 765px) {
+    margin-bottom: 0.5rem !important;
+  }
 }
 
 option {
