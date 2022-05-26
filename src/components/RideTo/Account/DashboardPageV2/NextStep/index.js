@@ -130,9 +130,10 @@ function NextStep({
                         fullLicence={included.type === 'das'}
                         bikeHire={recentOrder.bike_type}
                         hasGloves={recentOrder.gloves_jacket_included}
+                        popup={false}
                       />
                     ) : (
-                      <OrderIncluded items={included.items} />
+                      <OrderIncluded items={included.items} popup={false} />
                     )}
                   </WithTitle>
                 )}
