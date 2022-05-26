@@ -1,17 +1,19 @@
-import React, { Component } from 'react'
-import moment from 'moment'
 import { DATE_FORMAT } from 'common/constants'
-import CheckoutPage from './CheckoutPage'
+import moment from 'moment'
+import React, { Component } from 'react'
 import { Elements, StripeProvider } from 'react-stripe-elements'
-import { getSupplier, isInstantBook } from 'services/page'
-import { createPOM } from 'utils/helper'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import styles from './styles.scss'
-import { capitalizeFirstLetter, normalizePostCode } from 'utils/helper'
-
 import { Modal } from 'reactstrap'
+import { getSupplier, isInstantBook } from 'services/page'
+import {
+  capitalizeFirstLetter,
+  createPOM,
+  normalizePostCode
+} from 'utils/helper'
+import CheckoutPage from './CheckoutPage'
 import POMModal from './POMModal'
+import styles from './styles.scss'
 
 const POM_NAME = 'Peace Of Mind Policy'
 
@@ -154,10 +156,7 @@ class CheckoutPageContainer extends Component {
           pauseOnHover={false}
           pauseOnFocusLoss={false}
         />
-        <Modal
-          isOpen={offersPOM && isInexperienced && !hasPOM}
-          size="md"
-          className={styles.modalContent}>
+        <Modal isOpen={true} size="md" className={styles.modalContent}>
           <POMModal
             closeModal={this.closePOMModal}
             handleAddPOM={this.handleAddPOM}

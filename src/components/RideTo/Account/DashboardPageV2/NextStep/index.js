@@ -1,22 +1,22 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import styles from './styles.scss'
-import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
-import Button from 'components/RideTo/Button'
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
-import Form from './Form'
+import classnames from 'classnames'
+import Button from 'components/RideTo/Button'
+import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
+import kebabCase from 'lodash/kebabCase'
+import React, { Fragment, useEffect, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
+import { fetchBikes } from 'services/dashboard'
 import CircleList from '../CircleList'
-import FAQs from '../FAQs'
-import UpComingCourse from '../UpComingCourse'
 import CourseFeedback from '../CourseFeedback'
+import FAQs from '../FAQs'
 import Slider from '../Slider'
 import StatusIcon from '../StatusIcon'
-import { useMediaQuery } from 'react-responsive'
-import WithTitle from './WithTitle'
-import classnames from 'classnames'
-import { getNextStep, getNextStepConstant } from './util'
+import UpComingCourse from '../UpComingCourse'
+import Form from './Form'
 import MyCheckbox from './MyCheckbox'
-import { fetchBikes } from 'services/dashboard'
-import kebabCase from 'lodash/kebabCase'
+import styles from './styles.scss'
+import { getNextStep, getNextStepConstant } from './util'
+import WithTitle from './WithTitle'
 
 function NextStep({
   nextStep,
@@ -130,9 +130,10 @@ function NextStep({
                         fullLicence={included.type === 'das'}
                         bikeHire={recentOrder.bike_type}
                         hasGloves={recentOrder.gloves_jacket_included}
+                        popup={false}
                       />
                     ) : (
-                      <OrderIncluded items={included.items} />
+                      <OrderIncluded items={included.items} popup={false} />
                     )}
                   </WithTitle>
                 )}

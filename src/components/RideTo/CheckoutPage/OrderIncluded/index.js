@@ -1,7 +1,8 @@
+import classnames from 'classnames'
 import React from 'react'
-import styles from './styles.scss'
 import { getMotorbikeLabel } from 'services/widget'
 import { capitalizeFirstLetter } from 'utils/helper'
+import styles from './styles.scss'
 
 function OrderIncluded({
   bikeHire,
@@ -11,7 +12,8 @@ function OrderIncluded({
   package_hours,
   fullLicence = false,
   isWidget = false,
-  items
+  items,
+  popup = false
 }) {
   if (items) {
     return (
@@ -32,14 +34,20 @@ function OrderIncluded({
 
   if (pom) {
     return (
-      <div className={styles.wrapper}>
+      <div className={classnames(styles.wrapper, popup && styles.popUp)}>
         <ul className={styles.list}>
           <li>
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
+            <span className={styles.text}>Covers failure to complete CBT*</span>
+          </li>
+          <li>
+            <span className={styles.tick}>
+              <i className="fa fa-check" />
+            </span>{' '}
             <span className={styles.text}>
-              Covers failure to achieve CBT on 1st day
+              <strong>We'll pay for your 2nd day</strong> if you need it
             </span>
           </li>
           <li>
@@ -47,17 +55,14 @@ function OrderIncluded({
               <i className="fa fa-check" />
             </span>{' '}
             <span className={styles.text}>
-              <strong>We'll pay for your 2nd day</strong> of training if you
-              need it
+              <strong>Save over £150 </strong> on extra training costs
             </span>
           </li>
           <li>
             <span className={styles.tick}>
               <i className="fa fa-check" />
             </span>{' '}
-            <span className={styles.text}>
-              Complete <strong>peace of mind</strong> for new riders
-            </span>
+            <span className={styles.text}>Recommend for new riders</span>
           </li>
         </ul>
       </div>

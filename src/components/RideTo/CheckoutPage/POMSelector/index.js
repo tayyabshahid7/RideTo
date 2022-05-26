@@ -1,10 +1,10 @@
-import React from 'react'
-import styles from './styles.scss'
-import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
-import classnames from 'classnames'
-import { createPOM } from 'utils/helper'
 import shield from 'assets/images/security.svg'
+import classnames from 'classnames'
+import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import PeaceOfMindPolicyInfo from 'components/RideTo/CheckoutPage/PeaceOfMindPolicyInfo'
+import React from 'react'
+import { createPOM } from 'utils/helper'
+import styles from './styles.scss'
 
 function POMSelector({
   handlePOMToggleClick,
@@ -24,13 +24,16 @@ function POMSelector({
       <div>
         <img src={shield} alt="Shield" className={styles.pomShield} />
       </div>
-      <div className={classnames(styles.price, popup && styles.priceBold)}>
-        Only £{discount_price}
-      </div>
+      {!popup && (
+        <div className={classnames(styles.price, popup && styles.priceBold)}>
+          Only £{discount_price}
+        </div>
+      )}
       <div className={styles.header}>
         <div className={styles.headerText}>
           <div>
-            Peace of mind policy
+            {popup && <span>Add the Peace of mind policy</span>}
+            {!popup && <span>Peace of mind policy</span>}
             {!popup && <PeaceOfMindPolicyInfo />}
           </div>
         </div>
@@ -46,7 +49,13 @@ function POMSelector({
           </button>
         )}
       </div>
-      <OrderIncluded pom />
+      {popup && (
+        <div
+          className={classnames(styles.pricePopup, popup && styles.priceBold)}>
+          For Only £{discount_price}
+        </div>
+      )}
+      <OrderIncluded pom popup={popup} />
       <div className={styles.tAndC}>
         Terms and conditions apply.
         <br />
