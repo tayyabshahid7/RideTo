@@ -62,6 +62,11 @@ class CheckoutPageContainer extends Component {
       )
         ? true
         : false,
+      addedPOMFromResultsPage:this.checkoutData.addons.find(
+        ({ name }) => name === 'Peace Of Mind Policy'
+      )
+        ? true
+        : false,
       isInexperienced: false
     }
 
@@ -142,7 +147,8 @@ class CheckoutPageContainer extends Component {
       instantBook,
       trainings,
       hasPOM,
-      isInexperienced
+      isInexperienced,
+      addedPOMFromResultsPage
     } = this.state
     const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(
       checkoutData.courseType
@@ -177,6 +183,7 @@ class CheckoutPageContainer extends Component {
               hasPOM={hasPOM}
               showPromoNotification={this.showPromoNotification}
               handeUpdateOption={this.handeUpdateOption}
+              addedPOMFromResultsPage={addedPOMFromResultsPage}
             />
           </Elements>
         </StripeProvider>

@@ -84,11 +84,10 @@
   > div {
     display: flex;
     align-items: center;
-
-    > * {
-      margin-left: 8px;
-    }
   }
+}
+.headerTextCheckout {
+  font-size: 20px;
 }
 
 .price {
@@ -124,23 +123,14 @@
   margin-left: 2rem;
 }
 
-.headerSwitch {
-  appearance: none;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  width: 52px;
-  height: 26px;
-  border-radius: 13px;
-  background-color: #bdc8ca;
-  border: 2px solid #bdc8ca;
-  cursor: pointer;
-  flex-shrink: 0;
-  flex: 0 0 52px;
+.headerAddButton {
+  width: 9rem;
+  height: 2.5rem;
+  font-weight: 300;
+  text-transform: none;
+  outline: 0;
 
   &:hover {
-    background-color: darken(#bdc8ca, 5%);
-    border: 2px solid darken(#bdc8ca, 5%);
   }
 
   > * {
@@ -158,13 +148,13 @@
   transition: left 0.1s ease-out;
 }
 
-.headerSwitchSelected {
-  background-color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+.headerAddButtonSelected {
+  background-color: black;
 
   &:hover {
-    background-color: darken(#2cceac, 5%);
+    background-color: white;
     border: 2px solid darken(#2cceac, 5%);
+    color: var(--primary-color) !important;
   }
 
   &:focus {
@@ -174,4 +164,26 @@
   .headerSwitchSlider {
     left: 26px;
   }
+}
+
+.AddedButton {
+  display: inline-block;
+}
+
+.tick {
+  margin-left: 0.5rem;
+  font-size: 1rem;
+}
+
+.headerAddButtonCheckout {
+  height: 2rem;
+  display: inline-flex;
+  font-size: 20px !important;
+
+  li {
+    font-size: 10px;
+  }
+  // span {
+  //   font-size: 10px;
+  // }
 }

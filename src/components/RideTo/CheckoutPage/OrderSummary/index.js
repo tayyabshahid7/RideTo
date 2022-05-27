@@ -1,24 +1,23 @@
-import React, { Component, Fragment } from 'react'
-
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
-import CardIcons from '../CardIcons'
+import classnames from 'classnames'
 import Checkbox from 'components/Checkbox'
-import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
-import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
-import FAQS from './faqs'
-import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 // import Input from 'components/RideTo/Input'
 import Loading from 'components/Loading'
-import POMSelector from 'components/RideTo/CheckoutPage/POMSelector'
-import { PoweredByStripe } from '../../../../assets/icons'
-import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
 import RideToButton from 'components/RideTo/Button'
+import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
+import POMSelector from 'components/RideTo/CheckoutPage/POMSelector'
+import PromoCode from 'components/RideTo/CheckoutPage/PromoCode'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
+import React, { Component, Fragment } from 'react'
 import Script from 'react-load-script'
-import { capitalizeFirstLetter } from 'utils/helper'
 import { checkAllowedDate } from 'services/date'
-import classnames from 'classnames'
 import { getExpectedPrice } from 'services/order'
+import { capitalizeFirstLetter } from 'utils/helper'
+import { PoweredByStripe } from '../../../../assets/icons'
 import moneyBack from '../../../../assets/icons/money-back.svg'
+import CardIcons from '../CardIcons'
+import FAQS from './faqs'
 import styles from './styles.scss'
 
 class OrderSummary extends Component {
@@ -124,7 +123,8 @@ class OrderSummary extends Component {
       trainings,
       handlePOMToggleClick,
       hasPOM,
-      showCardDetails
+      showCardDetails,
+      addedPOMFromResultsPage
     } = this.props
     const { courseType } = checkoutData
     let confirmDisabled =
@@ -160,10 +160,11 @@ class OrderSummary extends Component {
               hasPOM={hasPOM}
             />
           </div>
-          {offersPOM ? (
+          {offersPOM && !addedPOMFromResultsPage ? (
             <POMSelector
               handlePOMToggleClick={handlePOMToggleClick}
               hasPOM={hasPOM}
+              onCheckoutPage={true}
             />
           ) : (
             <div className={styles.POMPlaceholder} />

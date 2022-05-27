@@ -1,8 +1,9 @@
 import shield from 'assets/images/security.svg'
 import classnames from 'classnames'
+import RideToButton from 'components/RideTo/Button'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import PeaceOfMindPolicyInfo from 'components/RideTo/CheckoutPage/PeaceOfMindPolicyInfo'
-import React from 'react'
+import React, { useState } from 'react'
 import { createPOM } from 'utils/helper'
 import styles from './styles.scss'
 
@@ -10,10 +11,11 @@ function POMSelector({
   handlePOMToggleClick,
   hasPOM,
   popup = false,
+  onCheckoutPage = false,
   className
 }) {
   const { discount_price } = createPOM()
-
+  const [addedButtonTextOnHover, setAddedButtonTextOnHover] = useState('Added')
   return (
     <div
       className={classnames(
@@ -30,7 +32,11 @@ function POMSelector({
         </div>
       )}
       <div className={styles.header}>
-        <div className={styles.headerText}>
+        <div
+          className={classnames(
+            styles.headerText,
+            onCheckoutPage && styles.headerTextCheckout
+          )}>
           <div>
             {popup && <span>Add the Peace of mind policy</span>}
             {!popup && <span>Peace of mind policy</span>}
@@ -38,15 +44,29 @@ function POMSelector({
           </div>
         </div>
         {!popup && (
-          <button
-            id="pom-switch"
+          <RideToButton
+            id="pom-add-button"
             className={classnames(
-              styles.headerSwitch,
-              hasPOM && styles.headerSwitchSelected
+              styles.headerAddButton,
+              hasPOM && styles.headerAddButtonSelected,
+              onCheckoutPage && styles.headerAddButtonCheckout
             )}
-            onClick={handlePOMToggleClick}>
-            <div className={styles.headerSwitchSlider} />
-          </button>
+            onClick={handlePOMToggleClick}
+            onMouseOver={() => setAddedButtonTextOnHover('Remove')}
+            onMouseLeave={() => setAddedButtonTextOnHover('Added')}>
+            {hasPOM ? (
+              <span className={styles.AddedButton}>
+                {addedButtonTextOnHover}
+                {addedButtonTextOnHover === 'Added' ? (
+                  <i className={classnames('fa fa-check', styles.tick)} />
+                ) : (
+                  ''
+                )}
+              </span>
+            ) : (
+              'Add'
+            )}
+          </RideToButton>
         )}
       </div>
       {popup && (
