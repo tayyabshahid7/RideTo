@@ -156,7 +156,10 @@ class CheckoutPageContainer extends Component {
           pauseOnHover={false}
           pauseOnFocusLoss={false}
         />
-        <Modal isOpen={true} size="md" className={styles.modalContent}>
+        <Modal
+          isOpen={offersPOM && isInexperienced && !hasPOM}
+          size="md"
+          className={styles.modalContent}>
           <POMModal
             closeModal={this.closePOMModal}
             handleAddPOM={this.handleAddPOM}
