@@ -1,7 +1,7 @@
 
 tasks:
   - init: nvm install 10 && nvm use 10 && yarn
-    command: yarn
+    command: nvm install 10 && nvm use 10 && yarn
 ports:
   - port: 3000
     onOpen: open-browser
