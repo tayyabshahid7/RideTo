@@ -73,6 +73,7 @@ class CheckoutPageContainer extends Component {
       )
         ? true
         : false,
+
       isInexperienced: false,
       priceInfo: {
         price: 0,
@@ -84,7 +85,12 @@ class CheckoutPageContainer extends Component {
       loadingPrice: true,
       clientSecret: '',
       stripePaymentIntentID: '',
-      paymentType: 'card'
+      paymentType: 'card',
+      addedPOMFromResultsPage: this.checkoutData.addons.find(
+        ({ name }) => name === 'Peace Of Mind Policy'
+      )
+        ? true
+        : false
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
@@ -282,9 +288,12 @@ class CheckoutPageContainer extends Component {
       trainings,
       hasPOM,
       isInexperienced,
+
       clientSecret,
       stripePaymentIntentID,
-      priceInfo
+      priceInfo,
+
+      addedPOMFromResultsPage
     } = this.state
     const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(
       checkoutData.courseType
@@ -327,7 +336,10 @@ class CheckoutPageContainer extends Component {
           pauseOnHover={false}
           pauseOnFocusLoss={false}
         />
-        <Modal isOpen={offersPOM && isInexperienced && !hasPOM} size="md" className={styles.modalContent}>
+        <Modal
+          isOpen={offersPOM && isInexperienced && !hasPOM}
+          size="md"
+          className={styles.modalContent}>
           <POMModal
             closeModal={this.closePOMModal}
             handleAddPOM={this.handleAddPOM}
@@ -348,6 +360,7 @@ class CheckoutPageContainer extends Component {
               clientSecret={clientSecret}
               stripePaymentIntentID={stripePaymentIntentID}
               priceInfo={priceInfo}
+              addedPOMFromResultsPage={addedPOMFromResultsPage}
             />
           </Elements>
         )}

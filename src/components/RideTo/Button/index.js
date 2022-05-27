@@ -1,6 +1,5 @@
-import React from 'react'
 import classnames from 'classnames'
-
+import React from 'react'
 import styles from './Button.scss'
 
 const Button = React.forwardRef(
@@ -13,7 +12,9 @@ const Button = React.forwardRef(
       target = null,
       alt = false,
       modern = false,
-      id
+      id,
+      onMouseOver,
+      onMouseLeave
     },
     ref
   ) => {
@@ -29,7 +30,13 @@ const Button = React.forwardRef(
         {children}
       </a>
     ) : (
-      <button onClick={onClick} className={classes} ref={ref} id={id}>
+      <button
+        onClick={onClick}
+        className={classes}
+        ref={ref}
+        id={id}
+        onMouseOver={onMouseOver}
+        onMouseLeave={onMouseLeave}>
         {children}
       </button>
     )

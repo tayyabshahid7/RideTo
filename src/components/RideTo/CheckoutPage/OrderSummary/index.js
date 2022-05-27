@@ -131,7 +131,8 @@ class OrderSummary extends Component {
       trainings,
       handlePOMToggleClick,
       hasPOM,
-      showCardDetails
+      showCardDetails,
+      addedPOMFromResultsPage
     } = this.props
     const { courseType } = checkoutData
     let confirmDisabled =
@@ -167,10 +168,11 @@ class OrderSummary extends Component {
               hasPOM={hasPOM}
             />
           </div>
-          {offersPOM ? (
+          {offersPOM && !addedPOMFromResultsPage ? (
             <POMSelector
               handlePOMToggleClick={handlePOMToggleClick}
               hasPOM={hasPOM}
+              onCheckoutPage={true}
             />
           ) : (
             <div className={styles.POMPlaceholder} />
