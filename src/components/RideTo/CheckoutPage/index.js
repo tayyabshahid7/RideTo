@@ -77,6 +77,8 @@ class CheckoutPageContainer extends Component {
       priceInfo: {
         price: 0,
         priceBeforeFee: 0,
+        priceWithoutAddon: 0,
+        addonsPrice: 0,
         fee: 0,
         discount: 0,
         bike_hire_cost: 0
@@ -154,7 +156,8 @@ class CheckoutPageContainer extends Component {
         date,
         course_type: courseType,
         order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
-        highway_code: hasHighwayCode
+        highway_code: hasHighwayCode,
+        addons
       }
       if (isFullLicence) {
         const training = trainings[0]
@@ -163,7 +166,8 @@ class CheckoutPageContainer extends Component {
           course_type: training.course_type,
           hours: training.package_hours,
           order_source: 'RIDETO',
-          highway_code: hasHighwayCode
+          highway_code: hasHighwayCode,
+          addons
         })
         this.setState({
           priceInfo: { ...response }
@@ -202,18 +206,30 @@ class CheckoutPageContainer extends Component {
         isInexperienced: false
       },
       async () => {
-        const { price, fee, priceBeforeFee } = await getExpectedPrice(
+        const {
+          price,
+          fee,
+          priceBeforeFee,
+          priceWithoutAddon
+        } = await getExpectedPrice(
           this.state.priceInfo,
           this.state.checkoutData.addons,
           this.state.checkoutData,
           this.state.paymentType
         )
+        console.log('add POM', price, fee, priceBeforeFee, priceWithoutAddon)
         await updatePaymentIntentSecretClient(stripePaymentIntentID, {
           amount: price
         })
 
         this.setState({
-          priceInfo: { ...priceInfo, price, fee, priceBeforeFee }
+          priceInfo: {
+            ...priceInfo,
+            price,
+            fee,
+            priceBeforeFee,
+            priceWithoutAddon
+          }
         })
         return
       }
@@ -233,7 +249,12 @@ class CheckoutPageContainer extends Component {
         isInexperienced: false
       },
       async () => {
-        const { price, fee, priceBeforeFee } = await getExpectedPrice(
+        const {
+          price,
+          fee,
+          priceBeforeFee,
+          priceWithoutAddon
+        } = await getExpectedPrice(
           this.state.priceInfo,
           this.state.checkoutData.addons,
           this.state.checkoutData,
@@ -243,7 +264,13 @@ class CheckoutPageContainer extends Component {
           amount: price
         })
         this.setState({
-          priceInfo: { ...priceInfo, price, fee, priceBeforeFee }
+          priceInfo: {
+            ...priceInfo,
+            price,
+            fee,
+            priceBeforeFee,
+            priceWithoutAddon
+          }
         })
         return
       }

@@ -154,16 +154,30 @@ class CheckoutPage extends Component {
   }
 
   async handleOnPaymentChange(data) {
-    const { priceInfo, handleUpdateOption } = this.props
-    const { stripePaymentIntentID, checkoutData } = this.props
+    const {
+      priceInfo,
+      handleUpdateOption,
+      stripePaymentIntentID,
+      checkoutData,
+      instantBook
+    } = this.props
+    const { voucher_code } = this.state
     const { addons } = checkoutData
     this.setState({ ...data }, async () => {
-      const { price, fee, priceBeforeFee } = await getExpectedPrice(
+      const {
+        price,
+        fee,
+        priceBeforeFee,
+        priceWithoutAddon
+      } = await getExpectedPrice({
         priceInfo,
-        addons,
         checkoutData,
-        this.state.paymentType
-      )
+        addons,
+        voucher_code,
+        hours: 0,
+        order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
+        paymentType: this.state.paymentType
+      })
       await updatePaymentIntentSecretClient(stripePaymentIntentID, {
         payment_type: this.state.paymentType,
         amount: price
@@ -175,7 +189,8 @@ class CheckoutPage extends Component {
           ...priceInfo,
           price: price,
           fee: fee,
-          priceBeforeFee: priceBeforeFee
+          priceBeforeFee: priceBeforeFee,
+          priceWithoutAddon: priceWithoutAddon
         }
       })
 
@@ -249,7 +264,8 @@ class CheckoutPage extends Component {
         order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
         highway_code: hasHighwayCode,
         payment_type: paymentType,
-        intent_id: stripePaymentIntentID
+        intent_id: stripePaymentIntentID,
+        addons
       }
       this.setState({ loadingPrice: true })
       if (isFullLicence) {
@@ -262,7 +278,8 @@ class CheckoutPage extends Component {
           order_source: 'RIDETO',
           highway_code: hasHighwayCode,
           payment_type: paymentType,
-          intent_id: stripePaymentIntentID
+          intent_id: stripePaymentIntentID,
+          addons
         })
 
         if (voucher_code && response.discount) {
