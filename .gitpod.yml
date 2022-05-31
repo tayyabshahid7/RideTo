@@ -1,11 +1,15 @@
 
-tasks:
-  - init: nvm install 10 && nvm use 10 && yarn
-    command: nvm install 10 && nvm use 10 && yarn
-ports:
-  - port: 3000
-    onOpen: open-browser
+image:
+  file: .gitpod.dockerfile
 
+tasks:
+  - name: Initialization
+    init: /bin/zsh -i -c yarn
+    command:  /bin/zsh -l
+
+ports:
+- port: 3000
+  onOpen: open-browser
 
 vscode:
   extensions:
