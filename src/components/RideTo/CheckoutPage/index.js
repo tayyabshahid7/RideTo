@@ -67,6 +67,7 @@ class CheckoutPageContainer extends Component {
       checkoutData: this.checkoutData || { addons: [] },
       trainings: this.trainings,
       supplier,
+      voucher_code: '',
       instantBook: isInstantBook(),
       hasPOM: this.checkoutData.addons.find(
         ({ name }) => name === 'Peace Of Mind Policy'
@@ -205,7 +206,7 @@ class CheckoutPageContainer extends Component {
   }
 
   async handleAddPOM() {
-    const { checkoutData, stripePaymentIntentID } = this.state
+    const { checkoutData, stripePaymentIntentID, voucher_code } = this.state
     const newCheckoutData = { ...checkoutData }
 
     if (!newCheckoutData.addons.some(addon => addon.name === POM_NAME)) {
@@ -228,7 +229,8 @@ class CheckoutPageContainer extends Component {
           priceInfo,
           checkoutData,
           addons,
-          paymentType
+          paymentType,
+          voucher_code
         }
 
         const {
@@ -256,7 +258,12 @@ class CheckoutPageContainer extends Component {
   }
 
   async handleRemovePOM() {
-    const { checkoutData, stripePaymentIntentID, priceInfo } = this.state
+    const {
+      checkoutData,
+      stripePaymentIntentID,
+      priceInfo,
+      voucher_code
+    } = this.state
 
     this.setState(
       {
@@ -272,7 +279,8 @@ class CheckoutPageContainer extends Component {
           priceInfo: this.state.priceInfo,
           checkoutData: this.state.checkoutData,
           paymentType: this.state.paymentType,
-          addons: this.state.checkoutData.addons
+          addons: this.state.checkoutData.addons,
+          voucher_code
         }
         const {
           price,
