@@ -1,6 +1,7 @@
 import { BIKE_HIRE } from 'common/constants'
 import moment from 'moment'
 import { get, getXlsx, post, put } from 'services/api'
+import { getPriceV2 } from './course'
 
 const DATE_FORMAT = 'YYYY-MM-DD'
 const FILTERS = [
@@ -229,32 +230,49 @@ export const getNonCompleteOptions = () => {
   ]
 }
 
-export const getExpectedPrice = async (
+export const getExpectedPrice = async ({
   priceInfo,
-  addons = [],
-  checkoutData = {},
-  paymentType = 'card'
-) => {
-  const addonsPrice = addons.reduce(
-    (total, { discount_price }) => (total += parseFloat(discount_price) * 100),
-    0
+  checkoutData,
+  voucher_code = '',
+  paymentType = 'card',
+  hours = null,
+  order_source = 'RIDETO',
+  paymentIntent = ''
+}) => {
+  const { supplierId, courseId, date, courseType, addons } = checkoutData
+
+  const hasHighwayCode = !!addons.find(
+    ({ name }) => name === 'Highway Code Book'
   )
 
   const bikeHirePrice = shouldAddBikeHire(checkoutData)
     ? priceInfo.bike_hire_cost
     : 0
 
-  const discountPrice = priceInfo.discount ? priceInfo.discount : 0
+  const params = {
+    supplierId,
+    date,
+    course_type: courseType,
+    courseId,
+    voucher_code,
+    hours: hours,
+    order_source,
+    highway_code: hasHighwayCode,
+    payment_type: paymentType,
+    intent_id: paymentIntent,
+    addons
+  }
+  const { price, fee, priceBeforeFee, priceWithoutAddon } = await getPriceV2(
+    params
+  )
 
-  const price =
-    priceInfo.priceBeforeFee + addonsPrice + bikeHirePrice - discountPrice
-
-  const { total, fee } = await getKlarnaFee(price, paymentType)
+  const total = price + bikeHirePrice
 
   const result = {
     price: total,
     fee: fee,
-    priceBeforeFee: priceInfo.priceBeforeFee
+    priceBeforeFee: priceBeforeFee,
+    priceWithoutAddon: priceWithoutAddon
   }
   return result
 }

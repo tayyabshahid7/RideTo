@@ -407,28 +407,35 @@ export const getPriceV2 = async ({
   date,
   course_type,
   courseId,
-  voucher_code = null,
+  voucher_code = '',
   hours,
-  full_licence_course_id,
   order_source,
   highway_code = false,
-  payment_type = 'card'
+  payment_type = 'card',
+  intent_id = '',
+  addons
 }) => {
   const path = 'v2/get-price'
-  let params = courseId
-    ? { course_id: courseId, course_type, date, supplier_id: supplierId }
-    : {
-        course_type,
-        date,
-        supplier_id: supplierId,
-        hours,
-        ...(full_licence_course_id && { course_id: full_licence_course_id })
-      }
-  if (voucher_code) params.voucher_code = voucher_code
-  if (order_source) params.order_source = order_source
-  params.highway_code = highway_code
-  params.payment_type = payment_type
-  const response = await get(path, params, false)
+  let params = {
+    course_id: courseId,
+    course_type,
+    date,
+    supplier_id: supplierId,
+    hours,
+    payment_type,
+    highway_code,
+    intent_id,
+    order_source,
+    voucher_code
+  }
+
+  params.addons = []
+  if (addons) {
+    addons.forEach(addon => {
+      params.addons.push(addon.id)
+    })
+  }
+  const response = await post(path, params, false)
   return response
 }
 

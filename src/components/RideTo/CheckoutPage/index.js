@@ -67,6 +67,7 @@ class CheckoutPageContainer extends Component {
       checkoutData: this.checkoutData || { addons: [] },
       trainings: this.trainings,
       supplier,
+      voucher_code: '',
       instantBook: isInstantBook(),
       hasPOM: this.checkoutData.addons.find(
         ({ name }) => name === 'Peace Of Mind Policy'
@@ -77,6 +78,8 @@ class CheckoutPageContainer extends Component {
       priceInfo: {
         price: 0,
         priceBeforeFee: 0,
+        priceWithoutAddon: 0,
+        addonsPrice: 0,
         fee: 0,
         discount: 0,
         bike_hire_cost: 0
@@ -103,22 +106,26 @@ class CheckoutPageContainer extends Component {
   }
 
   async fetchSecretClient() {
-    const { priceInfo, checkoutData, supplier, paymentType } = this.state
-    const { addons, courseType } = checkoutData
-    const { price: expected_price } = await getExpectedPrice(
+    const {
       priceInfo,
-      addons,
       checkoutData,
-      paymentType
-    )
-    this.setState({ totalPrice: expected_price })
+      supplier,
+      paymentType,
+      trainings
+    } = this.state
+    const { courseType } = checkoutData
+    const isFullLicence = courseType === 'FULL_LICENCE'
+    const hours = isFullLicence ? trainings[0].package_hours : 0
+
+    const params = { priceInfo, checkoutData, paymentType, hours }
+    const { price } = await getExpectedPrice(params)
 
     const { stripePaymentIntentID } = JSON.parse(
       window.localStorage.getItem('stripePaymentIntent')
     ) || { clientSecret: '', stripePaymentIntentID: '' }
 
     const { client_secret, id } = await createPaymentIntentSecretClient(
-      expected_price,
+      price,
       supplier.id,
       courseType,
       stripePaymentIntentID
@@ -148,13 +155,17 @@ class CheckoutPageContainer extends Component {
       const hasHighwayCode = !!addons.find(
         ({ name }) => name === 'Highway Code Book'
       )
+
       let params = {
         supplierId,
-        courseId,
         date,
+        courseId,
+        voucher_code: '',
         course_type: courseType,
         order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
-        highway_code: hasHighwayCode
+        highway_code: hasHighwayCode,
+        payment_type: 'card',
+        addons
       }
       if (isFullLicence) {
         const training = trainings[0]
@@ -163,7 +174,8 @@ class CheckoutPageContainer extends Component {
           course_type: training.course_type,
           hours: training.package_hours,
           order_source: 'RIDETO',
-          highway_code: hasHighwayCode
+          highway_code: hasHighwayCode,
+          addons
         })
         this.setState({
           priceInfo: { ...response }
@@ -188,7 +200,7 @@ class CheckoutPageContainer extends Component {
   }
 
   async handleAddPOM() {
-    const { checkoutData, stripePaymentIntentID, priceInfo } = this.state
+    const { checkoutData, stripePaymentIntentID, voucher_code } = this.state
     const newCheckoutData = { ...checkoutData }
 
     if (!newCheckoutData.addons.some(addon => addon.name === POM_NAME)) {
@@ -202,18 +214,37 @@ class CheckoutPageContainer extends Component {
         isInexperienced: false
       },
       async () => {
-        const { price, fee, priceBeforeFee } = await getExpectedPrice(
-          this.state.priceInfo,
-          this.state.checkoutData.addons,
-          this.state.checkoutData,
-          this.state.paymentType
-        )
+        const priceInfo = this.state.priceInfo
+        const checkoutData = this.state.checkoutData
+        const addons = this.state.checkoutData.addons
+        const paymentType = this.state.paymentType
+
+        const params = {
+          priceInfo,
+          checkoutData,
+          addons,
+          paymentType,
+          voucher_code
+        }
+
+        const {
+          price,
+          fee,
+          priceBeforeFee,
+          priceWithoutAddon
+        } = await getExpectedPrice(params)
         await updatePaymentIntentSecretClient(stripePaymentIntentID, {
           amount: price
         })
 
         this.setState({
-          priceInfo: { ...priceInfo, price, fee, priceBeforeFee }
+          priceInfo: {
+            ...priceInfo,
+            price,
+            fee,
+            priceBeforeFee,
+            priceWithoutAddon
+          }
         })
         return
       }
@@ -221,7 +252,12 @@ class CheckoutPageContainer extends Component {
   }
 
   async handleRemovePOM() {
-    const { checkoutData, stripePaymentIntentID, priceInfo } = this.state
+    const {
+      checkoutData,
+      stripePaymentIntentID,
+      priceInfo,
+      voucher_code
+    } = this.state
 
     this.setState(
       {
@@ -233,17 +269,30 @@ class CheckoutPageContainer extends Component {
         isInexperienced: false
       },
       async () => {
-        const { price, fee, priceBeforeFee } = await getExpectedPrice(
-          this.state.priceInfo,
-          this.state.checkoutData.addons,
-          this.state.checkoutData,
-          this.state.paymentType
-        )
+        const params = {
+          priceInfo: this.state.priceInfo,
+          checkoutData: this.state.checkoutData,
+          paymentType: this.state.paymentType,
+          addons: this.state.checkoutData.addons,
+          voucher_code
+        }
+        const {
+          price,
+          fee,
+          priceBeforeFee,
+          priceWithoutAddon
+        } = await getExpectedPrice(params)
         await updatePaymentIntentSecretClient(stripePaymentIntentID, {
           amount: price
         })
         this.setState({
-          priceInfo: { ...priceInfo, price, fee, priceBeforeFee }
+          priceInfo: {
+            ...priceInfo,
+            price,
+            fee,
+            priceBeforeFee,
+            priceWithoutAddon
+          }
         })
         return
       }

@@ -96,7 +96,7 @@ export const handleStripePayment = async ({
   email,
   phone
 }) => {
-  const { client_secret } = await post('get-intent/', {}, false)
+  const { client_secret } = await get('get-intent/', {}, false)
 
   const { setupIntent, error } = await stripe.handleCardSetup(
     client_secret,
