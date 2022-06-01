@@ -230,15 +230,15 @@ export const getNonCompleteOptions = () => {
   ]
 }
 
-export const getExpectedPrice = async (
+export const getExpectedPrice = async ({
   priceInfo,
-  checkoutData = {},
-  voucher_code,
+  checkoutData,
+  voucher_code = '',
   paymentType = 'card',
   hours = null,
   order_source = 'RIDETO',
-  paymentIntent
-) => {
+  paymentIntent = ''
+}) => {
   const { supplierId, courseId, date, courseType, addons } = checkoutData
 
   const hasHighwayCode = !!addons.find(
@@ -249,19 +249,22 @@ export const getExpectedPrice = async (
     ? priceInfo.bike_hire_cost
     : 0
 
-  const { price, fee, priceBeforeFee, priceWithoutAddon } = await getPriceV2({
+  const params = {
     supplierId,
     date,
     course_type: courseType,
     courseId,
     voucher_code,
     hours: hours,
-    order_source: order_source,
+    order_source,
     highway_code: hasHighwayCode,
     payment_type: paymentType,
     intent_id: paymentIntent,
     addons
-  })
+  }
+  const { price, fee, priceBeforeFee, priceWithoutAddon } = await getPriceV2(
+    params
+  )
 
   const total = price + bikeHirePrice
 

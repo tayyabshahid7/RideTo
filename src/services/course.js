@@ -407,7 +407,7 @@ export const getPriceV2 = async ({
   date,
   course_type,
   courseId,
-  voucher_code = null,
+  voucher_code = '',
   hours,
   order_source,
   highway_code = false,
@@ -421,14 +421,13 @@ export const getPriceV2 = async ({
     course_type,
     date,
     supplier_id: supplierId,
-    hours
+    hours,
+    payment_type,
+    highway_code,
+    intent_id,
+    order_source,
+    voucher_code
   }
-
-  if (voucher_code) params.voucher_code = voucher_code
-  if (order_source) params.order_source = order_source
-  params.highway_code = highway_code
-  params.payment_type = payment_type
-  params.intent_id = intent_id
 
   params.addons = []
   if (addons) {

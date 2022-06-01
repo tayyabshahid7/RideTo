@@ -161,23 +161,28 @@ class CheckoutPage extends Component {
       checkoutData,
       instantBook
     } = this.props
-    const { voucher_code } = this.state
-    const { addons } = checkoutData
+    const { voucher_code, trainings } = this.state
+    const { addons, courseType } = checkoutData
     this.setState({ ...data }, async () => {
+      const isFullLicence = courseType === 'FULL_LICENCE'
+      const hours = isFullLicence ? trainings[0].package_hours : 0
+      const order_source = instantBook ? 'RIDETO_INSTANT' : 'RIDETO'
+      const paymentType = this.state.paymentType
+      const params = {
+        priceInfo,
+        checkoutData,
+        addons,
+        hours,
+        voucher_code,
+        order_source,
+        paymentType
+      }
       const {
         price,
         fee,
         priceBeforeFee,
         priceWithoutAddon
-      } = await getExpectedPrice({
-        priceInfo,
-        checkoutData,
-        addons,
-        voucher_code,
-        hours: 0,
-        order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
-        paymentType: this.state.paymentType
-      })
+      } = await getExpectedPrice(params)
       await updatePaymentIntentSecretClient(stripePaymentIntentID, {
         payment_type: this.state.paymentType,
         amount: price
@@ -822,7 +827,7 @@ class CheckoutPage extends Component {
   }
 
   async submitOrder(stripeToken) {
-    const { paymentType } = this.state
+    const { paymentType, voucher_code } = this.state
     const { checkoutData, trainings, priceInfo } = this.props
     const details = omit(this.state.details, [
       'card_name',
@@ -845,13 +850,17 @@ class CheckoutPage extends Component {
       return ad
     })
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
-
-    const { price } = await getExpectedPrice(
+    const isFullLicence = courseType === 'FULL_LICENCE'
+    const hours = isFullLicence ? trainings[0].package_hours : 0
+    const params = {
       priceInfo,
       addons,
+      voucher_code,
       checkoutData,
+      hours,
       paymentType
-    )
+    }
+    const { price } = await getExpectedPrice(params)
     const data = {
       ...details,
       // email_optin: details.email_optin || false,
