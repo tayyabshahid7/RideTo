@@ -154,16 +154,35 @@ class CheckoutPage extends Component {
   }
 
   async handleOnPaymentChange(data) {
-    const { priceInfo, handleUpdateOption } = this.props
-    const { stripePaymentIntentID, checkoutData } = this.props
-    const { addons } = checkoutData
+    const {
+      priceInfo,
+      handleUpdateOption,
+      stripePaymentIntentID,
+      checkoutData,
+      instantBook
+    } = this.props
+    const { voucher_code, trainings } = this.state
+    const { addons, courseType } = checkoutData
     this.setState({ ...data }, async () => {
-      const { price, fee, priceBeforeFee } = await getExpectedPrice(
+      const isFullLicence = courseType === 'FULL_LICENCE'
+      const hours = isFullLicence ? trainings[0].package_hours : 0
+      const order_source = instantBook ? 'RIDETO_INSTANT' : 'RIDETO'
+      const paymentType = this.state.paymentType
+      const params = {
         priceInfo,
-        addons,
         checkoutData,
-        this.state.paymentType
-      )
+        addons,
+        hours,
+        voucher_code,
+        order_source,
+        paymentType
+      }
+      const {
+        price,
+        fee,
+        priceBeforeFee,
+        priceWithoutAddon
+      } = await getExpectedPrice(params)
       await updatePaymentIntentSecretClient(stripePaymentIntentID, {
         payment_type: this.state.paymentType,
         amount: price
@@ -175,7 +194,8 @@ class CheckoutPage extends Component {
           ...priceInfo,
           price: price,
           fee: fee,
-          priceBeforeFee: priceBeforeFee
+          priceBeforeFee: priceBeforeFee,
+          priceWithoutAddon: priceWithoutAddon
         }
       })
 
@@ -249,7 +269,8 @@ class CheckoutPage extends Component {
         order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
         highway_code: hasHighwayCode,
         payment_type: paymentType,
-        intent_id: stripePaymentIntentID
+        intent_id: stripePaymentIntentID,
+        addons
       }
       this.setState({ loadingPrice: true })
       if (isFullLicence) {
@@ -262,7 +283,8 @@ class CheckoutPage extends Component {
           order_source: 'RIDETO',
           highway_code: hasHighwayCode,
           payment_type: paymentType,
-          intent_id: stripePaymentIntentID
+          intent_id: stripePaymentIntentID,
+          addons
         })
 
         if (voucher_code && response.discount) {
@@ -805,7 +827,7 @@ class CheckoutPage extends Component {
   }
 
   async submitOrder(stripeToken) {
-    const { paymentType } = this.state
+    const { paymentType, voucher_code } = this.state
     const { checkoutData, trainings, priceInfo } = this.props
     const details = omit(this.state.details, [
       'card_name',
@@ -828,13 +850,17 @@ class CheckoutPage extends Component {
       return ad
     })
     const birthdate = moment(details.user_birthdate, 'DD/MM/YYYY')
-
-    const { price } = await getExpectedPrice(
+    const isFullLicence = courseType === 'FULL_LICENCE'
+    const hours = isFullLicence ? trainings[0].package_hours : 0
+    const params = {
       priceInfo,
       addons,
+      voucher_code,
       checkoutData,
+      hours,
       paymentType
-    )
+    }
+    const { price } = await getExpectedPrice(params)
     const data = {
       ...details,
       // email_optin: details.email_optin || false,
