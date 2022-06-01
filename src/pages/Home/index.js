@@ -1,9 +1,9 @@
-import { Button } from 'components/ConnectForm'
 import { IconLongArrowRight } from 'assets/icons/'
-import { Link } from 'react-router-dom'
-import Logo from 'components/common/Logo'
-import React from 'react'
 import classnames from 'classnames'
+import Logo from 'components/common/Logo'
+import { Button } from 'components/ConnectForm'
+import React from 'react'
+import { Link } from 'react-router-dom'
 import styles from './styles.scss'
 
 function Home() {
@@ -87,7 +87,7 @@ function Home() {
         </section>
         <p className={styles.copyright}>
           © 2022 RideTo Ltd, Registered Company Number: 10454345, Registered
-          Office: 11 Orange Row, Brighton, BN1 1UQ
+          Office: Dunsden Green, Reading, RG4 9QD
         </p>
       </section>
     </div>

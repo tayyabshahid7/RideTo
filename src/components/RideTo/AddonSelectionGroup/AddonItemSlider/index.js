@@ -1,18 +1,25 @@
-import React, { Fragment, useState } from 'react'
-
-import AddonSelectModal from './AddonSelectModal'
-import AddonSizes from './AddonSizes'
+import classnames from 'classnames'
 import RideToButton from 'components/RideTo/Button'
+import kebabCase from 'lodash/kebabCase'
+import React, { Fragment, useState } from 'react'
+import { useMediaQuery } from 'react-responsive'
 import RideToSlider from '../../../RideToSlider'
 import StarsComponent from '../../StarsComponent'
-import kebabCase from 'lodash/kebabCase'
 import styles from './AddonItemSlider.scss'
-import { useMediaQuery } from 'react-responsive'
-
+import AddonSelectModal from './AddonSelectModal'
+import AddonSizes from './AddonSizes'
 import { NextArrow, PrevArrow } from './SliderArrows'
 
 const AddonItemSlider = props => {
-  const { addons, allAddons, isAdded, onAdd, onRemove, onSizeUpdate } = props
+  const {
+    addons,
+    allAddons,
+    isAdded,
+    onAdd,
+    onRemove,
+    onSizeUpdate,
+    groupName
+  } = props
   const isMobile = useMediaQuery({ maxWidth: 767 })
   const settings = {
     dots: true,
@@ -77,6 +84,7 @@ const AddonItemSlider = props => {
             <AddonCard
               key={index}
               addon={addon}
+              groupName={groupName}
               image={addon.images[0]}
               price={addon.full_price}
               fullPriceStyle={fullPriceStyle(addon)}
@@ -100,6 +108,7 @@ const AddonItemSlider = props => {
 export default AddonItemSlider
 
 function AddonCard(props) {
+  const { groupName } = props
   const [modal, setModal] = useState(false)
   const onClick = props.isAdded ? props.onRemove : props.onAdd
 
@@ -155,7 +164,11 @@ function AddonCard(props) {
           isDiscount={props.isDiscount}
         />
       )}
-      <div className={styles.card}>
+      <div
+        className={classnames(
+          styles.card,
+          groupName === 'OTHER' && styles.cardOther
+        )}>
         <div className={styles.card__body}>
           <img
             src={props.image}

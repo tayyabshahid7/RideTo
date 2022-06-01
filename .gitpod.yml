@@ -1,0 +1,35 @@
+
+image:
+  file: .gitpod.dockerfile
+
+tasks:
+  - name: Initialization
+    init: /bin/zsh -i -c yarn
+    command:  /bin/zsh -l
+
+ports:
+- port: 3000
+  onOpen: open-browser
+
+vscode:
+  extensions:
+    - ms-azuretools.vscode-docker
+    - GitHub.github-vscode-theme
+    - eamodio.gitlens
+    - mikestead.dotenv
+    - streetsidesoftware.code-spell-checker
+    - esbenp.prettier-vscode
+    - ms-dotnettools.vscode-dotnet-runtime
+    - streetsidesoftware.code-spell-checker-portuguese-brazilian
+    - adpyke.codesnap
+    - kamikillerto.vscode-colorize
+    - clinyong.vscode-css-modules
+    - dbaeumer.vscode-eslint
+    - ecmel.vscode-html-css
+    - wix.vscode-import-cost
+    - PKief.material-icon-theme
+    - csstools.postcss
+    - ms-python.python
+    - Wscats.omi-snippets
+    - TabNine.tabnine-vscode
+    - bradlc.vscode-tailwindcss
