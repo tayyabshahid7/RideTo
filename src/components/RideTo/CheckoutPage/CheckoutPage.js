@@ -328,6 +328,8 @@ class CheckoutPage extends Component {
 
   handleVoucherApply() {
     const { voucher_code } = this.state
+    const {handleUpdateOption} = this.props
+    handleUpdateOption({voucher_code: voucher_code})
     this.loadPrice(voucher_code)
   }
 
