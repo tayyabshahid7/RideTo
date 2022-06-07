@@ -512,7 +512,7 @@ class ResultPage extends Component {
               }
             }
           }}>
-          <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
+          <span>CONTINUE</span>
           <img src={ButtonArrowWhite} alt="arrow" />
         </RideToButton>
         <div ref={this.bottomAnchor}></div>

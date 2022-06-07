@@ -64,7 +64,7 @@ function POMSelector({
                 )}
               </span>
             ) : (
-              'Add'
+              <span>Add</span>
             )}
           </RideToButton>
         )}
@@ -77,9 +77,9 @@ function POMSelector({
       )}
       <OrderIncluded pom popup={popup} />
       <div className={styles.tAndC}>
-        Terms and conditions apply.
+        *Terms and conditions apply.
         <br />
-        Does not cover lack of highway code understanding.
+        *Does not cover lack of highway code understanding.
       </div>
     </div>
   )
