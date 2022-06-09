@@ -100,7 +100,7 @@
 }
 
 .main {
-  padding: 16px 0 32px;
+  // padding: 16px 16px 0 32px;
 
   @media (min-width: 769px) {
     min-height: 200px;
@@ -126,7 +126,7 @@
     font-size: 2.5rem;
   }
   @media (max-width: 768px) {
-    margin: 0 0 15px;
+    margin: 8px 0 8px 0px;
     font-size: 1.3rem;
     text-align: left;
   }
