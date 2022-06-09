@@ -24,6 +24,7 @@ import { getDaysCourses } from 'store/course'
 import { actions as notifyActions } from 'store/notification'
 import { getDaysStaff } from 'store/staff'
 import { removeWeekdays } from 'utils/helper'
+import { getStartTimeDurationForCourse } from '../../../services/course'
 import styles from './styles.scss'
 
 const fullLicenceBikeFields = [
@@ -50,7 +51,6 @@ class CourseForm extends React.Component {
   constructor(props) {
     super(props)
     const lastDate = removeWeekdays(moment(props.date), 4, props.bankHolidays)
-
     const course = {
       course_type_id: '',
       instructor_id: '',
@@ -134,6 +134,7 @@ class CourseForm extends React.Component {
 
   componentDidMount() {
     this.loadPricing()
+    this.loadDefaultStartEndTime()
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -162,16 +163,19 @@ class CourseForm extends React.Component {
 
     if (course_type_id && course_type_id !== prevState.course.course_type_id) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
 
     if (date && date !== prevState.course.date) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
 
     if (supplier && supplier !== prevState.supplier) {
       this.loadPricing()
+      this.loadDefaultStartEndTime()
       return
     }
   }
@@ -184,6 +188,33 @@ class CourseForm extends React.Component {
       } else {
         course.course_type_id = courseTypes[0].id
       }
+    }
+  }
+
+  async loadDefaultStartEndTime() {
+    const { pricing } = this.props
+    const { supplier, course } = this.state
+    const { course_type_id, date } = this.state.course
+
+    if (
+      !course.time ||
+      pricing.schoolId !== supplier ||
+      pricing.course_type !== course_type_id
+    ) {
+      const response = await getStartTimeDurationForCourse(
+        supplier,
+        course_type_id,
+        date
+      )
+
+      const time = response.start_time
+      const duration = response.duration
+
+      console.log(time, duration)
+      this.setState({
+        course: { ...course, time, duration },
+        edited: true
+      })
     }
   }
 
