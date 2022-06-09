@@ -217,7 +217,7 @@ class OrderSummary extends Component {
                   <li>Can speak and understand English & the Highway Code</li>
                   <li>Can ride an adult size bicycle</li>
                   <li>
-                    Will wear suitable clothing including thick trousers and
+                    Will wear suitable clothing including heavy denim jeans and
                     boots
                   </li>
                   {isRenewal && <li>Will bring my valid CBT Certificate</li>}
