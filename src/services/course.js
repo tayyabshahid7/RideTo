@@ -1,10 +1,8 @@
-import { destroy, get, patch, post, put } from 'services/api'
-
-import { Features } from 'common/info'
 import axios from 'axios'
-import { getStaticData } from 'services/page'
+import { Features } from 'common/info'
 import moment from 'moment'
-import { parseQueryString } from 'services/api'
+import { destroy, get, parseQueryString, patch, post, put } from 'services/api'
+import { getStaticData } from 'services/page'
 import { s } from 'utils/helper'
 
 export const getCourseSpaceText = course => {
@@ -411,6 +409,44 @@ export const getStartTimeDurationForCourse = async (
 ) => {
   const path = `school/${schoolId}/course-time`
   const response = await get(path, { course_type, datetime })
+  return response
+}
+
+export const getPriceV2 = async ({
+  supplierId,
+  date,
+  course_type,
+  courseId,
+  voucher_code = '',
+  hours,
+  order_source,
+  highway_code = false,
+  payment_type = 'card',
+  intent_id = '',
+  addons
+}) => {
+  const path = 'v2/get-price'
+  let params = {
+    course_id: courseId,
+    course_type,
+    date,
+    supplier_id: supplierId,
+    hours,
+    payment_type,
+    highway_code,
+    intent_id,
+    order_source,
+    voucher_code
+  }
+
+  params.addons = []
+  if (addons) {
+    addons.forEach(addon => {
+      params.addons.push(addon.id)
+    })
+  }
+  const response = await post(path, params, false)
+
   return response
 }
 

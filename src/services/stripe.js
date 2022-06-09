@@ -1,4 +1,4 @@
-import { get, post } from 'services/api'
+import { get, patch, post } from 'services/api'
 
 const handleServerResponse = async ({
   stripe,
@@ -50,6 +50,43 @@ const handleServerResponse = async ({
 
     return { token: { id: customer_id } }
   }
+}
+
+export const getPaymentIntentSecretClient = async intent => {
+  const { amount, client_secret, id } = await get(
+    'get-payment-intent/',
+    { intent: intent },
+    false
+  )
+  return { amount, client_secret, id }
+}
+
+export const updatePaymentIntentSecretClient = async (intent, params = {}) => {
+  params = {
+    intent,
+    ...params
+  }
+  const { client_secret } = await patch('update-payment-intent/', params, false)
+  return client_secret
+}
+
+export const createPaymentIntentSecretClient = async (
+  price,
+  supplierId,
+  courseType,
+  stripePaymentIntentID = ''
+) => {
+  const { client_secret, id } = await post(
+    'create-payment-intent/',
+    {
+      amount: price,
+      supplier_id: supplierId,
+      course_type: courseType,
+      payment_intent: stripePaymentIntentID
+    },
+    false
+  )
+  return { client_secret, id }
 }
 
 export const handleStripePayment = async ({
