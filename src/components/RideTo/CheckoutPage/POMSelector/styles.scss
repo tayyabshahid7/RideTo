@@ -23,24 +23,29 @@
 
 .containerPopup.containerPopup {
   position: relative;
-  margin: 0;
-  overflow: hidden;
+  align-items: center;
+  margin: 0.5rem 0.5rem 1rem;
+  padding: 0 0.5rem 1rem;
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   @media (max-width: 768px) {
-    padding: 0 1rem;
+    margin: 0.5rem 0 1rem;
+    padding: 0 0 1.5rem;
   }
 
   .pomShield {
-    display: block;
-    float: none;
-    margin: 0;
-    position: absolute;
-    top: 35px;
-    right: 2.5rem;
+    height: 64px;
+    right: 50%;
+    left: 50%;
+    margin-top: 0;
+    margin-bottom: 0;
 
     @media (max-width: 768px) {
-      display: none;
-      right: 2rem;
     }
   }
 }
@@ -95,15 +100,28 @@
   margin-bottom: 0.25rem;
 }
 
+.pricePopup {
+  color: rgba(#141414, 0.5);
+  font-size: 16px;
+  line-height: 16px;
+  margin-top: 1.2rem;
+  margin-left: 2rem;
+  display: block;
+  margin-bottom: 0.25rem;
+  justify-content: start !important;
+}
+
 .priceBold {
   font-family: var(--font-proxima-bold);
-  color: #141414;
+  color: var(--primary-color);
 }
 
 .tAndC {
   font-size: 12px;
   line-height: 16px;
   margin-top: 1rem;
+  justify-content: start !important;
+  margin-left: 2rem;
 }
 
 .headerSwitch {
