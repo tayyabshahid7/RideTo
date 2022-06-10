@@ -1,17 +1,14 @@
-
-
 image:
   file: .gitpod.dockerfile
 
 tasks:
   - name: Initialization
     init: /bin/zsh -i -c yarn
-    command:  /bin/zsh -l
+    command: /bin/zsh -l
 
 ports:
-- port: 3000
-  onOpen: open-browser
-
+  - port: 3000
+    onOpen: open-browser
 
 vscode:
   extensions:

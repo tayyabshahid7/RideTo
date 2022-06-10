@@ -446,6 +446,7 @@ export const getPriceV2 = async ({
     })
   }
   const response = await post(path, params, false)
+
   return response
 }
 
