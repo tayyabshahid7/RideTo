@@ -49,6 +49,11 @@ const OrderConfirmationThankYouPage = () => {
         window.location = `/account/dashboard/${orderId}`
       }, 2000)
     }
+    if (orderId && status === 'failed') {
+      setTimeout(() => {
+        window.location = `/account/dashboard/${orderId}`
+      }, 2000)
+    }
   }, [status, orderId])
 
   const ConfirmationText = ({ userName }) => {
