@@ -50,12 +50,7 @@ class AddonSelection extends React.Component {
     let selectedAddons = []
 
     if (checkoutData.addons.length > 0) {
-      const pom = checkoutData.addons.filter(
-        ({ name }) => name === 'Peace Of Mind Policy'
-      )
-      if (pom) {
-        selectedAddons = [pom[0]]
-      }
+      selectedAddons = checkoutData.addons
     }
 
     const qs = parseQueryString(window.location.search.slice(1))
