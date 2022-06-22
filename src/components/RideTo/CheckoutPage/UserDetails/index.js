@@ -660,7 +660,7 @@ class UserDetails extends Component {
           id="checkout-payment-details"
           className={classnames(styles.title, styles.paymentButton)}>
           Payment Details
-          {showCardDetails ? (
+          {!showCardDetails ? (
             <img src={addBlack} alt="Add" width="15" height="15" />
           ) : (
             <img src={closeDark} alt="Close" width="15" height="15" />
