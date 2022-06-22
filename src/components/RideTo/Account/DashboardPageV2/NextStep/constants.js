@@ -451,7 +451,7 @@ export const STEP_INSURE = {
   },
   form: {
     icon: quote,
-    href: 'http://tidd.ly/a35e0aed',
+    href: '',
     text: 'Best Insurance Price Guaranteed!',
     buttonText: 'Get a quote'
   },

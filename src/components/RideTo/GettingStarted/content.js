@@ -47,9 +47,7 @@ const GET_INSURED = {
   title: "We'll beat your best insurance quote guaranteed*",
   text:
     "The least exciting, but important part of riding is getting the right cover. We've partnered with The Bike Insurer to get you the best price guaranteed on your insurance. Click to get a quick quote and be on the road in no time. ",
-  links: [
-    { url: 'http://tidd.ly/a35e0aed', text: 'Get a quote', external: true }
-  ]
+  links: [{ url: '', text: 'Get a quote', external: true }]
 }
 
 const GET_THE_GEAR = {
