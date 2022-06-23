@@ -16,6 +16,12 @@ function POMSelector({
 }) {
   const { discount_price } = createPOM()
   const [addedButtonTextOnHover, setAddedButtonTextOnHover] = useState('Added')
+
+  function handleAddPOM() {
+    handlePOMToggleClick()
+    setAddedButtonTextOnHover('Added')
+  }
+
   return (
     <div
       className={classnames(
@@ -51,7 +57,7 @@ function POMSelector({
               hasPOM && styles.headerAddButtonSelected,
               onCheckoutPage && styles.headerAddButtonCheckout
             )}
-            onClick={handlePOMToggleClick}
+            onClick={handleAddPOM}
             onMouseOver={() => setAddedButtonTextOnHover('Remove')}
             onMouseLeave={() => setAddedButtonTextOnHover('Added')}>
             {hasPOM ? (
