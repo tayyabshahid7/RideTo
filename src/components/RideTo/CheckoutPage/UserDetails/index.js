@@ -40,9 +40,63 @@ class UserDetails extends Component {
     this.handlePhoneChange = this.handlePhoneChange.bind(this)
     this.handleSearchPostcode = this.handleSearchPostcode.bind(this)
     this.stripeElementChange = this.stripeElementChange.bind(this)
+    this.handleEnterPressFirstName = this.handleEnterPressFirstName.bind(this)
+    this.handleEnterPressLastName = this.handleEnterPressLastName.bind(this)
+    this.handleEnterPressDOB = this.handleEnterPressDOB.bind(this)
+    this.handleEnterPressPhoneNumber = this.handleEnterPressPhoneNumber.bind(
+      this
+    )
+    this.handleEnterPressCurrentLicence = this.handleEnterPressCurrentLicence.bind(
+      this
+    )
+    this.handleEnterPressRidingExperience = this.handleEnterPressRidingExperience.bind(
+      this
+    )
 
     this.userDetails = React.createRef()
     this.cardDetails = React.createRef()
+  }
+
+  handleEnterPressFirstName(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('last_name')
+      input.focus()
+    }
+  }
+
+  handleEnterPressLastName(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('user_birthdate')
+      input.focus()
+    }
+  }
+
+  handleEnterPressDOB(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('phone_number')
+      input.focus()
+    }
+  }
+
+  handleEnterPressPhoneNumber(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('current_licence')
+      input.focus()
+    }
+  }
+
+  handleEnterPressCurrentLicence(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('riding_experience')
+      input.focus()
+    }
+  }
+
+  handleEnterPressRidingExperience(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('rider_type')
+      input.focus()
+    }
   }
 
   componentDidUpdate(prevProps) {
@@ -252,11 +306,13 @@ class UserDetails extends Component {
               errors.first_name && styles.inputError
             )}
             onChange={this.handleChange}
+            onKeyUp={this.handleEnterPressFirstName}
           />
           {errors.first_name && (
             <div className={styles.error}>{errors.first_name}</div>
           )}
           <Input
+            id="last_name"
             label="Last Name"
             placeholder="Last name"
             name="last_name"
@@ -266,6 +322,7 @@ class UserDetails extends Component {
               errors.last_name && styles.inputError
             )}
             onChange={this.handleChange}
+            onKeyUp={this.handleEnterPressLastName}
           />
           {errors.last_name && (
             <div className={styles.error}>{errors.last_name}</div>
@@ -284,6 +341,7 @@ class UserDetails extends Component {
               value={details.user_birthdate}
               onChange={this.handleChange}
               required
+              onKeyUp={this.handleEnterPressDOB}
             />
           </div>
           {errors.user_birthdate && (
@@ -295,17 +353,20 @@ class UserDetails extends Component {
               errors.phone && styles.inputError
             )}>
             <PhoneInput
+              id="phone_number"
               label="Mobile Number"
               placeholder="Mobile Number"
               name="phone"
               value={details.phone}
               onChange={this.handlePhoneChange}
               required
+              onKeyUp={this.handleEnterPressPhoneNumber}
             />
           </div>
           {errors.phone && <div className={styles.error}>{errors.phone}</div>}
           <div className={styles.selectElement}>
             <Select
+              id="current_licence"
               label="Current Licence"
               value={details.current_licence}
               name="current_licence"
@@ -313,7 +374,8 @@ class UserDetails extends Component {
                 styles.input,
                 errors.current_licence && styles.inputError
               )}
-              onChange={this.handleChange}>
+              onChange={this.handleChange}
+              onKeyUp={this.handleEnterPressCurrentLicence}>
               <option value="" hidden disabled></option>
               {currentLicenceOptions.map(licenseOption => (
                 <option value={licenseOption.id} key={licenseOption.id}>
@@ -382,6 +444,7 @@ class UserDetails extends Component {
           )}
           <div className={styles.selectElement}>
             <Select
+              id="riding_experience"
               label="Riding Experience"
               value={details.riding_experience}
               name="riding_experience"
@@ -390,7 +453,8 @@ class UserDetails extends Component {
                 errors.riding_experience && styles.inputError
               )}
               onChange={this.handleChange}
-              required>
+              required
+              onKeyUp={this.handleEnterPressRidingExperience}>
               <option value="" hidden disabled></option>
               {RidingExperiences.map(ridingExperience => (
                 <option
@@ -409,6 +473,7 @@ class UserDetails extends Component {
           )}
           <div className={styles.selectElement}>
             <Select
+              id="rider_type"
               label="Rider Type"
               value={details.rider_type}
               name="rider_type"
