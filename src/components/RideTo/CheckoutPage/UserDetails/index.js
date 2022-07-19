@@ -52,7 +52,6 @@ class UserDetails extends Component {
     this.handleEnterPressRidingExperience = this.handleEnterPressRidingExperience.bind(
       this
     )
-    this.validateInput = this.validateInput.bind(this)
 
     this.userDetails = React.createRef()
     this.cardDetails = React.createRef()
@@ -100,12 +99,6 @@ class UserDetails extends Component {
     }
   }
 
-  validateInput(inputName) {
-    const {details} = this.props
-    console.log(details)
-    console.log(inputName)
-    return
-  }
 
   componentDidUpdate(prevProps) {
     const { showCardDetails, showUserDetails } = this.props
@@ -294,7 +287,7 @@ class UserDetails extends Component {
       <div
         className={classnames(
           styles.whiteBox,
-          showUserDetails && !userAuthenticated && styles.hideDetails
+          !showUserDetails && !userAuthenticated && styles.hideDetails
         )}>
         <div
           ref={this.userDetails}
@@ -314,7 +307,6 @@ class UserDetails extends Component {
             )}
             onChange={this.handleChange}
             onKeyUp={this.handleEnterPressFirstName}
-            onBlur={this.validateInput}
             
           />
           {errors.first_name && (
