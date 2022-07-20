@@ -148,6 +148,7 @@ class CheckoutPage extends Component {
     this.handleChangeEmailClick = this.handleChangeEmailClick.bind(this)
     this.handleOnPaymentChange = this.handleOnPaymentChange.bind(this)
     this.handleErrors = this.handleErrors.bind(this)
+    this.isValidDate = this.isValidDate.bind(this)
   }
 
   onUpdate(data) {
@@ -329,8 +330,8 @@ class CheckoutPage extends Component {
 
   handleVoucherApply() {
     const { voucher_code } = this.state
-    const {handleUpdateOption} = this.props
-    handleUpdateOption({voucher_code: voucher_code})
+    const { handleUpdateOption } = this.props
+    handleUpdateOption({ voucher_code: voucher_code })
     this.loadPrice(voucher_code)
   }
 
@@ -347,12 +348,10 @@ class CheckoutPage extends Component {
     let { details, errors } = this.state
     let newDetails = { ...details }
     let newErrors = { ...errors }
-    console.log(errors)
     newErrors.divId = false
     set(newDetails, path, value)
     set(newErrors, path, null)
     this.setState({ details: newDetails, errors: newErrors })
-    this.validateDetail(path)
   }
 
   async handlePostalcodeSubmit(postcode) {
@@ -573,31 +572,6 @@ class CheckoutPage extends Component {
       })
     }
   }
-
-  validateDetail(field) {
-    const errors = { address: {}, billingAddress: {}, divId: false }
-  
-    if (field ==='phone' && !field.match(/^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$/)) {
-        errors['phone'] = 'Invalid phone number'
-        if (!errors.divId) errors.divId = this.getErrorDivId('phone')
-        this.setState({
-          errors
-        })
-      }
-    
-    if (field ==='phone' && field.match(/^\+44\d{10}$/)) {
-        errors['phone'] = ''
-        if (!errors.divId) errors.divId = this.getErrorDivId('phone')
-        this.setState({
-          errors
-        })
-      }
-
-    this.setState({
-        errors
-      })
-  }
-  
 
   validateDetails(details) {
     const { physicalAddonsCount } = this.state
@@ -1113,6 +1087,7 @@ class CheckoutPage extends Component {
             <UserDetails
               {...this.props}
               details={details}
+              isValidDate={this.isValidDate}
               errors={errors}
               priceInfo={priceInfo}
               onDetailChange={this.handleValueChange}
