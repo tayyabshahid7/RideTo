@@ -291,7 +291,7 @@ class ResultPage extends Component {
     const { postcode, courseType } = this.props
     let trainings = []
     const qs = parseQueryString(window.location.search.slice(1))
-    const skipAddonPage = qs.skipaddonspage || true
+    const skipAddonPage = qs.skipaddonspage || 'true'
 
     if (!selectedCourse) {
       return
@@ -330,7 +330,7 @@ class ResultPage extends Component {
 
     let next
 
-    if (skipAddonPage) {
+    if (skipAddonPage === 'true') {
       next = `/${selectedCourse.supplier_slug}/checkout`
     } else {
       if (courseType === 'FULL_LICENCE') {
