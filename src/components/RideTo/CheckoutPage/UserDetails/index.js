@@ -190,6 +190,7 @@ class UserDetails extends Component {
                 errors.email && styles.inputError
               )}
               onChange={this.handleChange}
+              onKeyUp={e => e.key === 'Enter' && handleEmailSubmit()}
               disabled={userAuthenticated || emailSubmitted}
             />
             {!emailSubmitted ? (
