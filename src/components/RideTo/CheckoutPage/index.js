@@ -94,12 +94,7 @@ class CheckoutPageContainer extends Component {
       loadingPrice: true,
       clientSecret: '',
       stripePaymentIntentID: '',
-      paymentType: 'card',
-      addedPOMFromResultsPage: this.checkoutData.addons.find(
-        ({ name }) => name === 'Peace Of Mind Policy'
-      )
-        ? true
-        : false
+      paymentType: 'card'
     }
 
     this.stripePublicKey = window.RIDETO_PAGE.stripe_key
