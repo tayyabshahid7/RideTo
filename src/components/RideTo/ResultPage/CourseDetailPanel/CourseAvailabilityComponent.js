@@ -270,7 +270,7 @@ class CourseAvailabilityComponent extends React.Component {
     let year = calendar.year
     if (month > 11) {
       month = 0
-      year = year + 1
+      year = parseInt(year) + 1
     }
     this.setState({ calendar: { ...calendar, month, year } })
   }

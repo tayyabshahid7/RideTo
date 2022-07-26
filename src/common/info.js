@@ -9,7 +9,7 @@ import {
 import moment from 'moment'
 
 export const BikeHires = [
-  { value: BIKE_HIRE.NO, title: 'No' },
+  { value: BIKE_HIRE.NO, title: 'Own Bike' },
   { value: BIKE_HIRE.AUTO, title: 'Automatic' },
   { value: BIKE_HIRE.AUTO_50CC, title: 'Automatic 50cc' },
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' },
@@ -251,6 +251,7 @@ export function formatBikeConstant(constant) {
     case 'BIKE_TYPE_NONE':
     case 'none':
     case 'no':
+      return BIKE_HIRE.NO
     case 'BIKE_TYPE_A_MANUAL':
       return BIKE_HIRE.BIKE_TYPE_A_MANUAL
     case 'BIKE_TYPE_A1_MANUAL':
@@ -317,12 +318,12 @@ export const Faqs = [
 ]
 
 export const SortByOptions = [
-         { value: SORTBY.DISTANCE, title: 'Sort by Distance' },
-         { value: SORTBY.NEXT_AVAILABLE_DATE_UP, title: 'Sort by Date' },
-         { value: SORTBY.PRICE_DOWN_UP, title: 'Sort by Price' },
-         // { value: SORTBY.PRICE_UP_DOWN, title: 'Sort by Price Desc' },
-         { value: SORTBY.RATING, title: 'Sort by Rating' }
-       ]
+  { value: SORTBY.DISTANCE, title: 'Sort by Distance' },
+  { value: SORTBY.NEXT_AVAILABLE_DATE_UP, title: 'Sort by Date' },
+  { value: SORTBY.PRICE_DOWN_UP, title: 'Sort by Price' },
+  // { value: SORTBY.PRICE_UP_DOWN, title: 'Sort by Price Desc' },
+  { value: SORTBY.RATING, title: 'Sort by Rating' }
+]
 
 export const Features = [
   {

@@ -1,6 +1,5 @@
-import React, { Component } from 'react'
-
 import DetailsAccordionItem from 'components/RideTo/DetailsAccordionItem'
+import React, { Component } from 'react'
 import styles from './FooterLinks.scss'
 
 class FooterLinks extends Component {
@@ -39,6 +38,7 @@ class FooterLinks extends Component {
               <a href="http://learn.rideto.com/frequently-asked-questions">FAQs</a>
               <a href="https://delivery-jobs.co.uk/">Delivery Jobs</a>
               <a href="https://www.rideto.com/blog">Blog</a>
+              <a href="https://store.rideto.com/pages/paying-with-klarna">Paying With Klarna</a>
             </div>`}
           isOpen={opened.indexOf('support') > -1}
           onToggle={isOpen => this.handleToggleAccordion('support', isOpen)}

@@ -12,7 +12,6 @@ import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/F
 import React, { Component, Fragment } from 'react'
 import Script from 'react-load-script'
 import { checkAllowedDate } from 'services/date'
-import { getExpectedPrice } from 'services/order'
 import { capitalizeFirstLetter } from 'utils/helper'
 import { PoweredByStripe } from '../../../../assets/icons'
 import moneyBack from '../../../../assets/icons/money-back.svg'
@@ -60,9 +59,18 @@ class OrderSummary extends Component {
   renderPrices(isFullLicence) {
     const { checkoutData, priceInfo, trainings } = this.props
     const { addons } = checkoutData
-    let price = getExpectedPrice(priceInfo, addons, checkoutData)
+    let { price, fee, discount } = priceInfo
     return (
       <div>
+        {fee > 0 && (
+          <div className={styles.discountRow}>
+            {this.renderRow(
+              `Klarna fee`,
+              `£${parseFloat(fee / 100).toFixed(2)}`,
+              200
+            )}
+          </div>
+        )}
         {addons.length > 0 &&
           addons.map(addon => (
             <div key={addon.id} className={styles.discountRow}>
@@ -73,11 +81,11 @@ class OrderSummary extends Component {
               )}
             </div>
           ))}
-        {priceInfo.discount > 0 && (
+        {discount > 0 && (
           <div className={styles.discountRow}>
             {this.renderRow(
               'Discount',
-              `- £${(priceInfo.discount / 100.0).toFixed(2)}`,
+              `- £${(discount / 100.0).toFixed(2)}`,
               200
             )}
           </div>
@@ -93,7 +101,7 @@ class OrderSummary extends Component {
           ) : (
             <FullLicencePayment
               addons={addons}
-              pricePerHour={priceInfo.price / trainings[0].package_hours}
+              pricePerHour={price / trainings[0].package_hours}
               hours={trainings[0].package_hours}
               style={{ marginTop: '3px' }}
             />
@@ -218,7 +226,7 @@ class OrderSummary extends Component {
                   <li>Can speak and understand English & the Highway Code</li>
                   <li>Can ride an adult size bicycle</li>
                   <li>
-                    Will wear suitable clothing including thick trousers and
+                    Will wear suitable clothing including heavy denim jeans and
                     boots
                   </li>
                   {isRenewal && <li>Will bring my valid CBT Certificate</li>}

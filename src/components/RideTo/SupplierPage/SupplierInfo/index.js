@@ -1,21 +1,19 @@
-import * as FeatureIcons from 'assets/icons/features'
-
 import { IconPlace, IconTram } from 'assets/icons'
-import React, { useRef, useState } from 'react'
-
+import * as FeatureIcons from 'assets/icons/features'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
-import IconText from '../IconText'
+import classnames from 'classnames'
+import RideToButton from 'components/RideTo/Button'
 import MapComponent from 'components/RideTo/MapComponent'
 import ReviewItem from 'components/RideTo/ReviewItem'
 import ReviewsBarComponent from 'components/RideTo/ReviewsBarComponent'
-import RideToButton from 'components/RideTo/Button'
 import StarsComponent from 'components/RideTo/StarsComponent'
-import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
-import { UncontrolledTooltip } from 'reactstrap'
-import classnames from 'classnames'
-import { getFeatureInfo } from 'services/course'
-import styles from './SupplierInfo.scss'
+import React, { useRef, useState } from 'react'
 import { useMediaQuery } from 'react-responsive'
+import { UncontrolledTooltip } from 'reactstrap'
+import { getFeatureInfo } from 'services/course'
+import IconText from '../IconText'
+import SupplierCourseImageSlider from '../SupplierCourseImageSlider'
+import styles from './SupplierInfo.scss'
 
 const supplier = window.RIDETO_PAGE.supplier.supplier
 const ratings = supplier.ratings ? supplier.ratings : []
@@ -156,7 +154,7 @@ const SupplierInfo = ({ onShowExtra }) => {
         <div className={styles.aboutContainer} id="rideto-supplier-about">
           <h2 className={styles.blockTitle}>About {supplier.name}</h2>
           <div className={styles.aboutLines}>
-            <p>{supplier.rideto_opinion}</p>
+            <p dangerouslySetInnerHTML={{ __html: supplier.rideto_opinion }} />
           </div>
         </div>
 

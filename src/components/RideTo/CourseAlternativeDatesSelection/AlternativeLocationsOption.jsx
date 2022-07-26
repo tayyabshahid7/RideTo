@@ -441,7 +441,7 @@ class AlternativeLocationsOption extends React.Component {
                 }
               }
             }}>
-            <span>{isFullLicence ? 'CONTINUE' : 'SELECT'}</span>
+            <span>{isFullLicence ? 'CONTINUE' : 'CONFIRM'}</span>
             <img src={ButtonArrowWhite} alt="arrow" />
           </RideToButton>
           <div ref={this.bottomAnchor}></div>
