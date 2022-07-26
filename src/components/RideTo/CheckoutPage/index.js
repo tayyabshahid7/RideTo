@@ -75,6 +75,12 @@ class CheckoutPageContainer extends Component {
         ? true
         : false,
 
+      addedPOMFromResultsPage: this.checkoutData.addons.find(
+        ({ name }) => name === 'Peace Of Mind Policy'
+      )
+        ? true
+        : false,
+
       isInexperienced: false,
       priceInfo: {
         price: 0,
@@ -337,11 +343,9 @@ class CheckoutPageContainer extends Component {
       trainings,
       hasPOM,
       isInexperienced,
-
       clientSecret,
       stripePaymentIntentID,
       priceInfo,
-
       addedPOMFromResultsPage
     } = this.state
     const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(
