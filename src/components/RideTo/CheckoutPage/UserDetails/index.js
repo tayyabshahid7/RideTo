@@ -7,7 +7,7 @@ import Button from 'components/RideTo/Button'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 import DateInput from 'components/RideTo/DateInput'
 import Input from 'components/RideTo/Input'
-// import LicenceInput from 'components/RideTo/LicenceInput'
+import LicenceInput from 'components/RideTo/LicenceInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Select from 'components/RideTo/Select'
 import React, { Component } from 'react'
@@ -52,11 +52,15 @@ class UserDetails extends Component {
     this.handleEnterPressRidingExperience = this.handleEnterPressRidingExperience.bind(
       this
     )
+    this.handleEnterPressDriveLicenceNumber = this.handleEnterPressDriveLicenceNumber.bind(
+      this
+    )
 
     this.validateFirstName = this.validateFirstName.bind(this)
     this.validateLastName = this.validateLastName.bind(this)
     this.validateDOB = this.validateDOB.bind(this)
     this.validatePhone = this.validatePhone.bind(this)
+    this.validateDriveLicenceNumber = this.validateDriveLicenceNumber.bind(this)
 
     this.userDetails = React.createRef()
     this.cardDetails = React.createRef()
@@ -118,8 +122,33 @@ class UserDetails extends Component {
       if (!errors.divId) errors.divId = getErrorDivId('phone')
       handleErrors({ ...errors })
     } else {
-      if (errors.first_name) {
-        delete errors.first_name
+      if (errors.phone) {
+        delete errors.phone
+        handleErrors({ ...errors })
+      }
+    }
+  }
+
+  validateDriveLicenceNumber(e) {
+    const { handleErrors, errors, getErrorDivId } = this.props
+
+    const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+
+    if (
+      !drivingLicenceRegex.test(
+        e.target.value
+          .split(' ')
+          .join('')
+          .toUpperCase()
+      )
+    ) {
+      errors['driving_licence_number'] =
+        'Please enter a valid driving licence number'
+      if (!errors.divId) errors.divId = getErrorDivId('driving_licence_number')
+      handleErrors({ ...errors })
+    } else {
+      if (errors.driving_licence_number) {
+        delete errors.driving_licence_number
         handleErrors({ ...errors })
       }
     }
@@ -147,6 +176,13 @@ class UserDetails extends Component {
   }
 
   handleEnterPressCurrentLicence(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('riding_experience')
+      input.focus()
+    }
+  }
+
+  handleEnterPressDriveLicenceNumber(e) {
     if (e.key === 'Enter') {
       const input = document.getElementById('riding_experience')
       input.focus()
@@ -455,12 +491,18 @@ class UserDetails extends Component {
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
-          {/* <div
+          <div
             className={classnames(
               styles.input,
-              errors.driving_licence_number && styles.inputError
+              errors.driving_licence_number && styles.inputError,
+              details.current_licence ===
+                'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE' && styles.disabled
             )}>
             <LicenceInput
+              disabled={
+                details.current_licence ===
+                'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE'
+              }
               label="Driving Licence Number"
               placeholder="_____ ______ __ _ __"
               name="driving_licence_number"
@@ -471,11 +513,13 @@ class UserDetails extends Component {
                 errors.driving_licence_number && styles.inputError
               )}
               onChange={this.handleChange}
+              onKeyUp={this.handleEnterPressDriveLicenceNumber}
+              onBlur={this.validateDriveLicenceNumber}
             />
           </div>
           {errors.driving_licence_number && (
             <div className={styles.error}>{errors.driving_licence_number}</div>
-          )} */}
+          )}
           {isRenewal && (
             <>
               <div
