@@ -56,6 +56,11 @@ class UserDetails extends Component {
       this
     )
 
+    this.validateFirstName = this.validateFirstName.bind(this)
+    this.validateLastName = this.validateLastName.bind(this)
+    this.validateDOB = this.validateDOB.bind(this)
+    this.validatePhone = this.validatePhone.bind(this)
+
     this.userDetails = React.createRef()
     this.cardDetails = React.createRef()
   }
@@ -64,6 +69,62 @@ class UserDetails extends Component {
     if (e.key === 'Enter') {
       const input = document.getElementById('last_name')
       input.focus()
+    }
+  }
+
+  validateFirstName(e) {
+    const { handleErrors, errors, getErrorDivId } = this.props
+    if (!e.target.value) {
+      errors['first_name'] = 'Please enter a valid first name'
+      errors.divId = getErrorDivId('first_name')
+      handleErrors({ ...errors })
+    } else {
+      if (errors.first_name) {
+        delete errors.first_name
+        handleErrors({ ...errors })
+      }
+    }
+  }
+
+  validateLastName(e) {
+    const { handleErrors, errors, getErrorDivId } = this.props
+    if (!e.target.value) {
+      errors['last_name'] = 'Please enter a valid last name'
+      errors.divId = getErrorDivId('last_name')
+      handleErrors({ ...errors })
+    } else {
+      if (errors.last_name) {
+        delete errors.last_name
+        handleErrors({ ...errors })
+      }
+    }
+  }
+
+  validateDOB(e) {
+    const { handleErrors, errors, getErrorDivId, isValidDate } = this.props
+
+    const validatedDate = isValidDate(e.target.value)
+
+    if (!validatedDate) {
+      errors['user_birthdate'] =
+        'You must be at least 16 years old to do your training. (On the selected date of training)'
+      errors.divId = getErrorDivId('user_birthdate')
+      handleErrors({ ...errors })
+    }
+  }
+
+  validatePhone(e) {
+    const { handleErrors, errors, getErrorDivId } = this.props
+
+    if (!e.target.value.match(/^\+44\d{10}$/)) {
+      errors['phone'] = 'Invalid phone number'
+      if (!errors.divId) errors.divId = getErrorDivId('phone')
+      handleErrors({ ...errors })
+    } else {
+      if (errors.first_name) {
+        delete errors.first_name
+        handleErrors({ ...errors })
+      }
     }
   }
 
@@ -317,6 +378,7 @@ class UserDetails extends Component {
             )}
             onChange={this.handleChange}
             onKeyUp={this.handleEnterPressFirstName}
+            onBlur={this.validateFirstName}
           />
           {errors.first_name && (
             <div className={styles.error}>{errors.first_name}</div>
@@ -333,6 +395,7 @@ class UserDetails extends Component {
             )}
             onChange={this.handleChange}
             onKeyUp={this.handleEnterPressLastName}
+            onBlur={this.validateLastName}
           />
           {errors.last_name && (
             <div className={styles.error}>{errors.last_name}</div>
@@ -352,6 +415,7 @@ class UserDetails extends Component {
               onChange={this.handleChange}
               required
               onKeyUp={this.handleEnterPressDOB}
+              onBlur={this.validateDOB}
             />
           </div>
           {errors.user_birthdate && (
@@ -371,6 +435,7 @@ class UserDetails extends Component {
               onChange={this.handlePhoneChange}
               required
               onKeyUp={this.handleEnterPressPhoneNumber}
+              onBlur={this.validatePhone}
             />
           </div>
           {errors.phone && <div className={styles.error}>{errors.phone}</div>}

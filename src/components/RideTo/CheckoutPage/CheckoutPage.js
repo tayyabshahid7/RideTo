@@ -147,6 +147,8 @@ class CheckoutPage extends Component {
     this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
     this.handleChangeEmailClick = this.handleChangeEmailClick.bind(this)
     this.handleOnPaymentChange = this.handleOnPaymentChange.bind(this)
+    this.handleErrors = this.handleErrors.bind(this)
+    this.isValidDate = this.isValidDate.bind(this)
   }
 
   onUpdate(data) {
@@ -1086,11 +1088,14 @@ class CheckoutPage extends Component {
             <UserDetails
               {...this.props}
               details={details}
+              isValidDate={this.isValidDate}
               errors={errors}
               priceInfo={priceInfo}
               onDetailChange={this.handleValueChange}
+              getErrorDivId={this.getErrorDivId}
               onPaymentChange={this.handleOnPaymentChange}
               onChange={this.onUpdate}
+              handleErrors={this.handleErrors}
               manualAddress={manualAddress}
               onPostalCodeSubmit={this.handlePostalcodeSubmit}
               postcodeLookingup={postcodeLookingup}
