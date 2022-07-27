@@ -290,6 +290,8 @@ class ResultPage extends Component {
     } = this.state
     const { postcode, courseType } = this.props
     let trainings = []
+    const qs = parseQueryString(window.location.search.slice(1))
+    const skipAddonPage = qs.skipaddonspage || 'true'
 
     if (!selectedCourse) {
       return
@@ -328,14 +330,18 @@ class ResultPage extends Component {
 
     let next
 
-    if (courseType === 'FULL_LICENCE') {
-      next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${selectedCourse.id}`
-    } else if (selectedCourse.instant_book) {
-      if (instantCourse) {
-        next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&courseId=${instantCourse.id}&supplierId=${selectedCourse.id}&date=${instantDate}`
-      }
+    if (skipAddonPage === 'true') {
+      next = `/${selectedCourse.supplier_slug}/checkout`
     } else {
-      next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${selectedCourse.id}&date=${instantDate}`
+      if (courseType === 'FULL_LICENCE') {
+        next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${selectedCourse.id}`
+      } else if (selectedCourse.instant_book) {
+        if (instantCourse) {
+          next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&courseId=${instantCourse.id}&supplierId=${selectedCourse.id}&date=${instantDate}`
+        }
+      } else {
+        next = `/course-addons/?postcode=${postcode}&courseType=${courseType}&bike_hire=${bike_hire}&supplierId=${selectedCourse.id}&date=${instantDate}`
+      }
     }
 
     let checkoutData = {
