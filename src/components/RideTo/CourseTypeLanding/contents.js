@@ -105,10 +105,7 @@ export const CONTENT = {
             pulling away from behind a parked car and a hill start.
           </p>
         </div>
-        <FullLicenceBanner
-          className={styles.fastTrackAdvert}
-          href="https://rideto.typeform.com/to/CvduD4"
-        />
+        <FullLicenceBanner className={styles.fastTrackAdvert} href="/" />
         <div>
           <h2>Requirements</h2>
           <p>

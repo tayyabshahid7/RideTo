@@ -898,7 +898,7 @@ class ResultPage extends Component {
                         {isFullLicence && (
                           <FullLicenceBanner
                             className={styles.fastTrackAdvert}
-                            href="https://rideto.typeform.com/to/CvduD4"
+                            href="/"
                           />
                         )}
                         {courses.available.length > 0 && (

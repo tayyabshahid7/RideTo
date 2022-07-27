@@ -1,5 +1,5 @@
-import React from 'react'
 import { Desktop, Mobile } from 'common/breakpoints'
+import React from 'react'
 
 function FullLicenceBanner({ className, href }) {
   return (
@@ -7,7 +7,7 @@ function FullLicenceBanner({ className, href }) {
       <Mobile>
         <a href={href}>
           <img
-            src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/Full%20licence_Pay%20Monthly_600x300px.jpg"
+            src="https://rideto-production.imgix.net/static/images/Full_licence_Pay_Monthly_600x300px.png"
             className={className}
             alt="Full licence fast-track package"
           />
@@ -16,7 +16,7 @@ function FullLicenceBanner({ className, href }) {
       <Desktop>
         <a href={href}>
           <img
-            src="https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/Full%20licence_Pay%20Monthly_1036x312px.jpg"
+            src="https://rideto-production.imgix.net/static/images/Full_licence_Pay_Monthly_1036x312px.png"
             className={className}
             alt="Full licence fast-track package"
           />
