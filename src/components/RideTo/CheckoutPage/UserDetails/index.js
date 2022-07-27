@@ -7,7 +7,7 @@ import Button from 'components/RideTo/Button'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
 import DateInput from 'components/RideTo/DateInput'
 import Input from 'components/RideTo/Input'
-// import LicenceInput from 'components/RideTo/LicenceInput'
+import LicenceInput from 'components/RideTo/LicenceInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Select from 'components/RideTo/Select'
 import React, { Component } from 'react'
@@ -52,6 +52,9 @@ class UserDetails extends Component {
     this.handleEnterPressRidingExperience = this.handleEnterPressRidingExperience.bind(
       this
     )
+    this.handleEnterPressDriveLicenceNumber = this.handleEnterPressDriveLicenceNumber.bind(
+      this
+    )
 
     this.userDetails = React.createRef()
     this.cardDetails = React.createRef()
@@ -86,6 +89,13 @@ class UserDetails extends Component {
   }
 
   handleEnterPressCurrentLicence(e) {
+    if (e.key === 'Enter') {
+      const input = document.getElementById('riding_experience')
+      input.focus()
+    }
+  }
+
+  handleEnterPressDriveLicenceNumber(e) {
     if (e.key === 'Enter') {
       const input = document.getElementById('riding_experience')
       input.focus()
@@ -390,12 +400,18 @@ class UserDetails extends Component {
           {errors.current_licence && (
             <div className={styles.error}>{errors.current_licence}</div>
           )}
-          {/* <div
+          <div
             className={classnames(
               styles.input,
-              errors.driving_licence_number && styles.inputError
+              errors.driving_licence_number && styles.inputError,
+              details.current_licence ===
+                'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE' && styles.disabled
             )}>
             <LicenceInput
+              disabled={
+                details.current_licence ===
+                'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE'
+              }
               label="Driving Licence Number"
               placeholder="_____ ______ __ _ __"
               name="driving_licence_number"
@@ -406,11 +422,12 @@ class UserDetails extends Component {
                 errors.driving_licence_number && styles.inputError
               )}
               onChange={this.handleChange}
+              onKeyUp={this.handleEnterPressDriveLicenceNumber}
             />
           </div>
           {errors.driving_licence_number && (
             <div className={styles.error}>{errors.driving_licence_number}</div>
-          )} */}
+          )}
           {isRenewal && (
             <>
               <div
