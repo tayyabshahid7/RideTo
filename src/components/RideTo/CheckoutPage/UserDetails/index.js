@@ -60,6 +60,7 @@ class UserDetails extends Component {
     this.validateLastName = this.validateLastName.bind(this)
     this.validateDOB = this.validateDOB.bind(this)
     this.validatePhone = this.validatePhone.bind(this)
+    this.validateDriveLicenceNumber = this.validateDriveLicenceNumber.bind(this)
 
     this.userDetails = React.createRef()
     this.cardDetails = React.createRef()
@@ -121,8 +122,33 @@ class UserDetails extends Component {
       if (!errors.divId) errors.divId = getErrorDivId('phone')
       handleErrors({ ...errors })
     } else {
-      if (errors.first_name) {
-        delete errors.first_name
+      if (errors.phone) {
+        delete errors.phone
+        handleErrors({ ...errors })
+      }
+    }
+  }
+
+  validateDriveLicenceNumber(e) {
+    const { handleErrors, errors, getErrorDivId } = this.props
+
+    const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+
+    if (
+      !drivingLicenceRegex.test(
+        e.target.value
+          .split(' ')
+          .join('')
+          .toUpperCase()
+      )
+    ) {
+      errors['driving_licence_number'] =
+        'Please enter a valid driving licence number'
+      if (!errors.divId) errors.divId = getErrorDivId('driving_licence_number')
+      handleErrors({ ...errors })
+    } else {
+      if (errors.driving_licence_number) {
+        delete errors.driving_licence_number
         handleErrors({ ...errors })
       }
     }
@@ -488,6 +514,7 @@ class UserDetails extends Component {
               )}
               onChange={this.handleChange}
               onKeyUp={this.handleEnterPressDriveLicenceNumber}
+              onBlur={this.validateDriveLicenceNumber}
             />
           </div>
           {errors.driving_licence_number && (

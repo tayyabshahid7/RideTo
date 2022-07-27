@@ -345,7 +345,6 @@ class CheckoutPage extends Component {
   }
 
   handleValueChange(path, value) {
-    console.log(value)
     let { details, errors } = this.state
     let newDetails = { ...details }
     let newErrors = { ...errors }
