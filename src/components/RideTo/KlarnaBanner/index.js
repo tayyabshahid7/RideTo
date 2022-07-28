@@ -12,9 +12,9 @@ export default function KlarnaBanner() {
       ) : (
         <span>Buy Now, Pay Later</span>
       )}
-      <button>
+      <a href="https://www.rideto.com/blog/motorcycle-cbt-on-finance">
         <img src={klarna} alt="klarna logo" />
-      </button>
+      </a>
     </div>
   )
 }
