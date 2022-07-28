@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react'
-import styles from './styles.scss'
-import { getCourseTitle } from 'services/course'
-import { getStaticData } from 'services/page'
-import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import * as FeatureIcons from 'assets/icons/features'
+import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import MapComponent from 'components/RideTo/MapComponent'
 import StarsComponent from 'components/RideTo/StarsComponent'
+import React, { Fragment } from 'react'
+import { getCourseTitle } from 'services/course'
+import { getStaticData } from 'services/page'
+import styles from './styles.scss'
 
 class CourseInformationComponent extends React.Component {
   constructor(props) {
@@ -60,6 +60,7 @@ class CourseInformationComponent extends React.Component {
       ? "On the day of the training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots (something which protect your feet such as walking boots) and suitable clothes for being outside all day."
       : "On the day of training you'll need to bring a Valid UK Driving or Provisional Licence, wear sturdy Jeans and Boots and suitable clothes for being outside all day. You must also bring your valid CBT and Motorcycle Theory certificates."
 
+    const instructorStr = instructorText.replace(/<[^>]+>/g, '')
     return (
       <Fragment>
         <div className={styles.content}>
@@ -107,7 +108,7 @@ class CourseInformationComponent extends React.Component {
           <div className={styles.subtitle}>The Instructor</div>
           {course.publish_supplier_page && course.supplier_page_link ? (
             <div className={styles.desc}>
-              {instructorText}
+              {instructorStr}
               {course.rideto_opinion.length > 500 && (
                 <a
                   className={styles.supplierLink}
