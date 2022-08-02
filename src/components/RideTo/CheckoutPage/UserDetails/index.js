@@ -134,22 +134,25 @@ class UserDetails extends Component {
 
     const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
 
-    if (
-      !drivingLicenceRegex.test(
-        e.target.value
-          .split(' ')
-          .join('')
-          .toUpperCase()
-      )
-    ) {
-      errors['driving_licence_number'] =
-        'Please enter a valid driving licence number'
-      if (!errors.divId) errors.divId = getErrorDivId('driving_licence_number')
-      handleErrors({ ...errors })
-    } else {
-      if (errors.driving_licence_number) {
-        delete errors.driving_licence_number
+    if (e.target.value) {
+      if (
+        !drivingLicenceRegex.test(
+          e.target.value
+            .split(' ')
+            .join('')
+            .toUpperCase()
+        )
+      ) {
+        errors['driving_licence_number'] =
+          'Please enter a valid driving licence number'
+        if (!errors.divId)
+          errors.divId = getErrorDivId('driving_licence_number')
         handleErrors({ ...errors })
+      } else {
+        if (errors.driving_licence_number) {
+          delete errors.driving_licence_number
+          handleErrors({ ...errors })
+        }
       }
     }
   }
@@ -503,7 +506,7 @@ class UserDetails extends Component {
                 details.current_licence ===
                 'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE'
               }
-              label="Driving Licence Number"
+              label="Driving License Number (Optional)"
               placeholder="_____ ______ __ _ __"
               name="driving_licence_number"
               id="driving_licence_number"
@@ -516,6 +519,9 @@ class UserDetails extends Component {
               onKeyUp={this.handleEnterPressDriveLicenceNumber}
               onBlur={this.validateDriveLicenceNumber}
             />
+          </div>
+          <div className={styles.subtext}>
+            You MUST bring your license on the day of training
           </div>
           {errors.driving_licence_number && (
             <div className={styles.error}>{errors.driving_licence_number}</div>
