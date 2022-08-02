@@ -88,14 +88,6 @@
   > div {
     display: flex;
     align-items: center;
-
-    @media (max-width: 372px) {
-      display: block;
-      > div {
-        margin-left: 55px;
-        margin-top: -22px;
-      }
-    }
   }
 }
 .headerTextCheckout {
