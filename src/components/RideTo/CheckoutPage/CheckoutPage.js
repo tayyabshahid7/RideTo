@@ -127,6 +127,7 @@ class CheckoutPage extends Component {
       trainings: this.props.trainings,
       showUserDetails: false,
       showCardDetails: false,
+      paymentDetailsReady: false,
       physicalAddonsCount: this.props.checkoutData.addons.filter(
         addon => addon.name !== 'Peace Of Mind Policy'
       ).length,
@@ -1074,7 +1075,8 @@ class CheckoutPage extends Component {
       emailSubmitted,
       showUserDetails,
       clientSecret,
-      paymentType
+      paymentType,
+      paymentDetailsReady
     } = this.state
     return (
       <React.Fragment>
@@ -1136,6 +1138,7 @@ class CheckoutPage extends Component {
               showCardDetails={showCardDetails}
               clientSecret={clientSecret}
               paymentType={paymentType}
+              paymentDetailsReady={paymentDetailsReady}
             />
           </div>
           {showAddressSelectorModal && (
