@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 
 export default function StripeComponent(props) {
   const [paymentType, setPaymentType] = useState('')
-  const { stripeElementChange, onPaymentChange } = props
+  const { stripeElementChange, onPaymentChange, onChange } = props
 
   const options = {
     paymentMethodOrder: ['card', 'klarna'],
@@ -24,6 +24,9 @@ export default function StripeComponent(props) {
           }
           if (!empty && complete) {
             stripeElementChange(element, 'payment')
+            onChange({ paymentDetailsReady: true })
+          } else {
+            onChange({ paymentDetailsReady: false })
           }
         }}
       />
