@@ -132,11 +132,16 @@ class OrderSummary extends Component {
       handlePOMToggleClick,
       hasPOM,
       showCardDetails,
-      addedPOMFromResultsPage
+      addedPOMFromResultsPage,
+      paymentDetailsReady
     } = this.props
     const { courseType } = checkoutData
     let confirmDisabled =
-      saving || !details.accept_terms || !this.isValidDate() || !showCardDetails
+      saving ||
+      !details.accept_terms ||
+      !this.isValidDate() ||
+      !showCardDetails ||
+      !paymentDetailsReady
     const isFullLicence = checkoutData.courseType === 'FULL_LICENCE'
     const isRenewal = checkoutData.courseType === 'LICENCE_CBT_RENEWAL'
     const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(

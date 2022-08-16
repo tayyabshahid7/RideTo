@@ -127,6 +127,7 @@ class CheckoutPage extends Component {
       trainings: this.props.trainings,
       showUserDetails: false,
       showCardDetails: false,
+      paymentDetailsReady: false,
       physicalAddonsCount: this.props.checkoutData.addons.filter(
         addon => addon.name !== 'Peace Of Mind Policy'
       ).length,
@@ -147,6 +148,8 @@ class CheckoutPage extends Component {
     this.handleMapButtonClick = this.handleMapButtonClick.bind(this)
     this.handleChangeEmailClick = this.handleChangeEmailClick.bind(this)
     this.handleOnPaymentChange = this.handleOnPaymentChange.bind(this)
+    this.handleErrors = this.handleErrors.bind(this)
+    this.isValidDate = this.isValidDate.bind(this)
   }
 
   onUpdate(data) {
@@ -328,8 +331,8 @@ class CheckoutPage extends Component {
 
   handleVoucherApply() {
     const { voucher_code } = this.state
-    const {handleUpdateOption} = this.props
-    handleUpdateOption({voucher_code: voucher_code})
+    const { handleUpdateOption } = this.props
+    handleUpdateOption({ voucher_code: voucher_code })
     this.loadPrice(voucher_code)
   }
 
@@ -1072,7 +1075,8 @@ class CheckoutPage extends Component {
       emailSubmitted,
       showUserDetails,
       clientSecret,
-      paymentType
+      paymentType,
+      paymentDetailsReady
     } = this.state
     return (
       <React.Fragment>
@@ -1085,11 +1089,14 @@ class CheckoutPage extends Component {
             <UserDetails
               {...this.props}
               details={details}
+              isValidDate={this.isValidDate}
               errors={errors}
               priceInfo={priceInfo}
               onDetailChange={this.handleValueChange}
+              getErrorDivId={this.getErrorDivId}
               onPaymentChange={this.handleOnPaymentChange}
               onChange={this.onUpdate}
+              handleErrors={this.handleErrors}
               manualAddress={manualAddress}
               onPostalCodeSubmit={this.handlePostalcodeSubmit}
               postcodeLookingup={postcodeLookingup}
@@ -1131,6 +1138,7 @@ class CheckoutPage extends Component {
               showCardDetails={showCardDetails}
               clientSecret={clientSecret}
               paymentType={paymentType}
+              paymentDetailsReady={paymentDetailsReady}
             />
           </div>
           {showAddressSelectorModal && (
