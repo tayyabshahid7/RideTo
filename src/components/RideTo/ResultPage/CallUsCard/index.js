@@ -1,5 +1,7 @@
 import classnames from 'classnames'
 import React from 'react'
+
+import { PopupButton } from '@typeform/embed-react'
 import styles from './styles.scss'
 
 function CallUsCard() {
@@ -9,13 +11,9 @@ function CallUsCard() {
       <p className={styles.content}>
         Find out what licence and course is right for you.
       </p>
-      <a
-        target={'_blank'}
-        id="results-page-take-quiz-now-button"
-        href="https://rideto.typeform.com/to/Oz2Xj6wN"
-        className={classnames(styles.button, 'typeform-share')}>
+      <PopupButton id="Oz2Xj6wN" className={classnames(styles.button)}>
         Take quiz now
-      </a>
+      </PopupButton>
     </div>
   )
 }
