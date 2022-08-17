@@ -1,7 +1,7 @@
-import React from 'react'
 import { BIKE_HIRE } from 'common/constants'
-import { getMotorbikeLabel, asPoundSterling } from 'services/widget'
 import Checkbox from 'components/WidgetCheckbox'
+import React from 'react'
+import { asPoundSterling, getMotorbikeLabel } from 'services/widget'
 import styles from './MotorbikeOptions.scss'
 
 const MotorbikeOptions = ({
@@ -11,9 +11,12 @@ const MotorbikeOptions = ({
   onChange,
   ownBike = false
 }) => {
-  let { bike_hire_cost } = course.pricing
+  let { bike_hire_cost, manual_bike_hire_cost } = course.pricing
+  if (!manual_bike_hire_cost) {
+    manual_bike_hire_cost = bike_hire_cost
+  }
 
-  const isFree = !bike_hire_cost
+  const isFree = !bike_hire_cost && !manual_bike_hire_cost
 
   const fullText = <span className={styles.full}> - Fully Booked</span>
 

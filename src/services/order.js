@@ -277,8 +277,11 @@ export const getExpectedPrice = async ({
   return result
 }
 
-export const shouldAddBikeHire = ({ courseType, bike_hire }) => {
-  if (courseType === 'LICENCE_CBT_RENEWAL' && bike_hire !== BIKE_HIRE.NO) {
+export const shouldAddBikeHire = (
+  { courseType, bike_hire },
+  { bike_hire_cost, manual_bike_hire_cost }
+) => {
+  if ((bike_hire_cost || manual_bike_hire_cost) && bike_hire !== BIKE_HIRE.NO) {
     return true
   }
   return false
