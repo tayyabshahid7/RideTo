@@ -96,7 +96,9 @@ const BikePicker = React.forwardRef(
                 isWidget && styles.widgetBtn,
                 bike_hire === BIKE_HIRE.NO && styles.activeBtn
               )}
-              onClick={() => onUpdate({ bike_hire: BIKE_HIRE.NO })}
+              onClick={() =>
+                onUpdate({ bike_hire: BIKE_HIRE.NO, manual_bike_hire_cost })
+              }
               disabled={isOwnFull}>
               {getMotorbikeLabel(BIKE_HIRE.NO)}
               {isOwnFull ? fullText : null}
@@ -123,7 +125,8 @@ const BikePicker = React.forwardRef(
                     bike_hire: BIKE_HIRE.AUTO,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
-                    selectedPackageDates: []
+                    selectedPackageDates: [],
+                    manual_bike_hire_cost
                   })
                 }
                 disabled={
@@ -136,9 +139,6 @@ const BikePicker = React.forwardRef(
                   isInstantBook
                 )}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
-                {!isCbtRenewal &&
-                  manual_bike_hire_cost < 0 &&
-                  ` £${course.bike_hire_cost / 100}`}
                 {isAutoFull ? fullText : null}
               </button>
             )}
@@ -156,7 +156,8 @@ const BikePicker = React.forwardRef(
                     bike_hire: BIKE_HIRE.AUTO_50CC,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
-                    selectedPackageDates: []
+                    selectedPackageDates: [],
+                    manual_bike_hire_cost
                   })
                 }
                 disabled={
@@ -187,7 +188,8 @@ const BikePicker = React.forwardRef(
                     bike_hire: BIKE_HIRE.AUTO_125CC,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
-                    selectedPackageDates: []
+                    selectedPackageDates: [],
+                    manual_bike_hire_cost
                   })
                 }
                 disabled={isAuto125Full || !isAuto125Available}>
@@ -211,14 +213,15 @@ const BikePicker = React.forwardRef(
                     bike_hire: BIKE_HIRE.MANUAL_50CC,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
-                    selectedPackageDates: []
+                    selectedPackageDates: [],
+                    manual_bike_hire_cost
                   })
                 }
                 disabled={isManual50Full || !isManual50Available}>
                 {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {!isCbtRenewal &&
-                  manual_bike_hire_cost < 0 &&
+                  manual_bike_hire_cost > 0 &&
                   ` (+£${manual_bike_hire_cost / 100})`}
                 {isManual50Full ? fullText : null}
               </button>
@@ -238,7 +241,8 @@ const BikePicker = React.forwardRef(
                     bike_hire: BIKE_HIRE.MANUAL,
                     selectedLicenceType: null,
                     selectedPackageDays: '',
-                    selectedPackageDates: []
+                    selectedPackageDates: [],
+                    manual_bike_hire_cost
                   })
                 }
                 disabled={
@@ -248,7 +252,7 @@ const BikePicker = React.forwardRef(
                 {getMotorbikeLabel(BIKE_HIRE.MANUAL, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {!isCbtRenewal &&
-                  manual_bike_hire_cost < 0 &&
+                  manual_bike_hire_cost > 0 &&
                   ` (+£${manual_bike_hire_cost / 100})`}
                 {isManualFull ? fullText : null}
               </button>

@@ -277,10 +277,11 @@ export const getExpectedPrice = async ({
   return result
 }
 
-export const shouldAddBikeHire = (
-  { courseType, bike_hire },
-  { bike_hire_cost, manual_bike_hire_cost }
-) => {
+export const shouldAddBikeHire = ({
+  bike_hire,
+  bike_hire_cost,
+  manual_bike_hire_cost
+}) => {
   if ((bike_hire_cost || manual_bike_hire_cost) && bike_hire !== BIKE_HIRE.NO) {
     return true
   }
