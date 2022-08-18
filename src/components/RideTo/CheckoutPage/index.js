@@ -157,7 +157,14 @@ class CheckoutPageContainer extends Component {
   async getInitialPrice() {
     try {
       const { instantBook, checkoutData, trainings } = this.state
-      const { supplierId, courseId, date, courseType, addons } = checkoutData
+      const {
+        supplierId,
+        courseId,
+        date,
+        courseType,
+        addons,
+        bike_hire
+      } = checkoutData
       const isFullLicence = courseType === 'FULL_LICENCE'
       const hasHighwayCode = !!addons.find(
         ({ name }) => name === 'Highway Code Book'
@@ -172,7 +179,8 @@ class CheckoutPageContainer extends Component {
         order_source: instantBook ? 'RIDETO_INSTANT' : 'RIDETO',
         highway_code: hasHighwayCode,
         payment_type: 'card',
-        addons
+        addons,
+        bike_hire
       }
       if (isFullLicence) {
         const training = trainings[0]
@@ -182,7 +190,8 @@ class CheckoutPageContainer extends Component {
           hours: training.package_hours,
           order_source: 'RIDETO',
           highway_code: hasHighwayCode,
-          addons
+          addons,
+          bike_hire
         })
         this.setState({
           priceInfo: { ...response }

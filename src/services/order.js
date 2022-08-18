@@ -239,7 +239,14 @@ export const getExpectedPrice = async ({
   order_source = 'RIDETO',
   paymentIntent = ''
 }) => {
-  const { supplierId, courseId, date, courseType, addons } = checkoutData
+  const {
+    supplierId,
+    courseId,
+    date,
+    courseType,
+    addons,
+    bike_hire
+  } = checkoutData
 
   const hasHighwayCode = !!addons.find(
     ({ name }) => name === 'Highway Code Book'
@@ -260,7 +267,8 @@ export const getExpectedPrice = async ({
     highway_code: hasHighwayCode,
     payment_type: paymentType,
     intent_id: paymentIntent,
-    addons
+    addons,
+    bike_hire
   }
   const { price, fee, priceBeforeFee, priceWithoutAddon } = await getPriceV2(
     params
