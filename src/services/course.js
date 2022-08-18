@@ -423,7 +423,8 @@ export const getPriceV2 = async ({
   highway_code = false,
   payment_type = 'card',
   intent_id = '',
-  addons
+  addons,
+  bike_hire
 }) => {
   const path = 'v2/get-price'
   let params = {
@@ -436,7 +437,8 @@ export const getPriceV2 = async ({
     highway_code,
     intent_id,
     order_source,
-    voucher_code
+    voucher_code,
+    bike_hire
   }
 
   params.addons = []

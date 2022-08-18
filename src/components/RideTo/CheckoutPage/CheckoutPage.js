@@ -257,7 +257,8 @@ class CheckoutPage extends Component {
         courseId,
         date,
         courseType,
-        addons
+        addons,
+        bike_hire
       } = this.props.checkoutData
       const { details, trainings, paymentType, bike_type } = this.state
 
@@ -275,7 +276,8 @@ class CheckoutPage extends Component {
         highway_code: hasHighwayCode,
         payment_type: paymentType,
         intent_id: stripePaymentIntentID,
-        addons
+        addons,
+        bike_hire
       }
       this.setState({ loadingPrice: true })
       if (isFullLicence) {
@@ -289,7 +291,8 @@ class CheckoutPage extends Component {
           highway_code: hasHighwayCode,
           payment_type: paymentType,
           intent_id: stripePaymentIntentID,
-          addons
+          addons,
+          bike_hire
         })
 
         if (voucher_code && response.discount) {
