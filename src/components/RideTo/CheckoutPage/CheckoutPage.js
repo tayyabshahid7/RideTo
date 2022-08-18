@@ -136,7 +136,8 @@ class CheckoutPage extends Component {
       clientSecret: this.props.clientSecret,
       stripePaymentIntentID: this.props.stripePaymentIntentID,
       totalPrice: 0,
-      paymentType: 'card'
+      paymentType: 'card',
+      bike_type: this.props.trainings[0].bike_type
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -258,7 +259,8 @@ class CheckoutPage extends Component {
         courseType,
         addons
       } = this.props.checkoutData
-      const { details, trainings, paymentType } = this.state
+      const { details, trainings, paymentType, bike_type } = this.state
+
       const isFullLicence = courseType === 'FULL_LICENCE'
       const hasHighwayCode = !!addons.find(
         ({ name }) => name === 'Highway Code Book'
@@ -300,6 +302,13 @@ class CheckoutPage extends Component {
         handleUpdateOption({ priceInfo: { ...response } })
 
         this.setState({
+          priceInfo: {
+            ...response,
+            ...(bike_type === 'manual' &&
+              response.manual_bike_hire_cost && {
+                bike_hire_cost: response.manual_bike_hire_cost
+              })
+          },
           loadingPrice: false,
           details: {
             ...details,
@@ -319,6 +328,13 @@ class CheckoutPage extends Component {
         }
         handleUpdateOption({ priceInfo: { ...response } })
         this.setState({
+          priceInfo: {
+            ...response,
+            ...(bike_type === 'manual' &&
+              response.manual_bike_hire_cost && {
+                bike_hire_cost: response.manual_bike_hire_cost
+              })
+          },
           loadingPrice: false,
           details
         })

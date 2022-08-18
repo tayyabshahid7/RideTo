@@ -1,19 +1,21 @@
-import React, { useState, useEffect, useRef } from 'react'
-import moment from 'moment'
-import classnames from 'classnames'
-import RideToButton from 'components/RideTo/Button'
-import styles from './SupplierCourseDetail.scss'
-import { AVAILABLE_COURSE_TYPES } from 'common/constants'
 import dropdownSmall from 'assets/icons/DropdownSmall.svg'
-import { flashDiv } from 'services/page'
-import { LICENCE_TYPES } from 'common/constants'
-import CourseAvailabilityComponent from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponent'
-import { SupplierContext } from '../supplier-context'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
+import classnames from 'classnames'
+import {
+  AVAILABLE_COURSE_TYPES,
+  BIKE_HIRE,
+  LICENCE_TYPES
+} from 'common/constants'
+import RideToButton from 'components/RideTo/Button'
+import CourseAvailabilityComponent from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponent'
 import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence'
+import moment from 'moment'
+import React, { useEffect, useRef, useState } from 'react'
 import { isBankHoliday } from 'services/misc'
-import { BIKE_HIRE } from 'common/constants'
+import { flashDiv } from 'services/page'
+import { SupplierContext } from '../supplier-context'
+import styles from './SupplierCourseDetail.scss'
 
 const date = moment().format('YYYY-MM-DD')
 

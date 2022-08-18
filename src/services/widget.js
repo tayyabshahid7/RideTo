@@ -1,7 +1,7 @@
 import { BIKE_HIRE } from 'common/constants'
-import { getBikeHireOptions } from 'services/order'
 import moment from 'moment'
 import { post } from 'services/api'
+import { getBikeHireOptions } from 'services/order'
 
 export const createStripeToken = async (stripe, data) => {
   return await stripe.createToken({ ...data })
@@ -63,15 +63,14 @@ export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
 export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
   const { pricing } = course
 
-  // if (course_type && course_type.name !== 'CBT Training Renewal') {
-  //   return pricing.price
-  // }
-
-  const subTotal =
+  let subTotal =
     bikeHire && bikeHire !== BIKE_HIRE.NO
       ? pricing.price + pricing.bike_hire_cost
       : pricing.price
 
+  if (bikeHire === BIKE_HIRE.MANUAL && pricing.manual_bike_hire_cost) {
+    subTotal = pricing.price + pricing.manual_bike_hire_cost
+  }
   return subTotal - discount
 }
 
