@@ -88,12 +88,11 @@
   > div {
     display: flex;
     align-items: center;
+  }
 
-    @media (max-width: 425px) {
-      > div {
-        align-items: flex-end;
-        font-size: 1.125rem;
-      }
+  @media (max-width: 280px) {
+    div {
+      font-size: 1rem;
     }
   }
 }
