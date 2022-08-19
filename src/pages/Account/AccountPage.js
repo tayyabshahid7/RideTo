@@ -1,17 +1,17 @@
+import { STRIPE_KEY } from 'common/constants'
+import AccountSubNavbar from 'components/Account/AccountSubNavbar'
 import React, { Component } from 'react'
 import { Route } from 'react-router'
-import AccountSubNavbar from 'components/Account/AccountSubNavbar'
-import AvailabilityCourses from './AvailabilityCourses'
+import { Elements, StripeProvider } from 'react-stripe-elements'
 import AccountPassword from './AccountPassword'
+import AvailabilityCourses from './AvailabilityCourses'
+import Bikes from './Bikes'
 import BookingWidgetSettings from './BookingWidgetSettings'
+import CsvUpload from './CsvUpload'
 import EmailSettings from './EmailSettings'
 import Instructors from './Instructors'
-import CsvUpload from './CsvUpload'
 import SMSSettings from './SMSSettings'
-import Bikes from './Bikes'
 import styles from './styles.scss'
-import { STRIPE_KEY } from 'common/constants'
-import { StripeProvider, Elements } from 'react-stripe-elements'
 
 class AccountPage extends Component {
   render() {
@@ -80,7 +80,7 @@ class AccountPage extends Component {
           <Route
             exact
             path="/account/bikes"
-            render={routeProps => <Bikes {...routeProps} schoolId={schoolId} />}
+            render={routeProps => <Bikes {...routeProps} />}
           />
         </div>
       </div>

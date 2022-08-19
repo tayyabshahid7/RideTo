@@ -1,8 +1,23 @@
 import React from 'react'
-import styles from './styles.scss'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import Bikes from './Bikes'
 
-function Bikes() {
-  return <div className={styles.message}>Feature coming soon</div>
+function BikesContainer(props) {
+  console.log(props)
+
+  return <Bikes {...props} />
 }
 
-export default Bikes
+const mapStateToProps = (state, ownProps) => {
+  return {
+    schools: state.auth.user.suppliers
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(BikesContainer)
