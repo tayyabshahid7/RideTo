@@ -1,22 +1,22 @@
-import React, { Fragment } from 'react'
-import moment from 'moment'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import isEqual from 'lodash/isEqual'
-import styles from './styles.scss'
-import CreateBulkCourse from 'components/Account/CreateBulkCourse'
 import classnames from 'classnames'
+import CreateBulkCourse from 'components/Account/CreateBulkCourse'
+import isEqual from 'lodash/isEqual'
+import moment from 'moment'
+import React, { Fragment } from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import styles from './styles.scss'
 // import CalendarLabels from './CalendarLabels'
-import SchoolSelect from 'components/SchoolSelect'
 import { Button, ConnectReactSelect } from 'components/ConnectForm'
 import Loading from 'components/Loading'
-import DefaultBikes from './DefaultBikes'
-import DefaultCourses from './DefaultCourses'
+import SchoolSelect from 'components/SchoolSelect'
 import {
-  getTestCentres,
   getDefaultTestCentres,
+  getTestCentres,
   setDefaultTestCentres
 } from 'store/testCentre'
+import DefaultBikes from './DefaultBikes'
+import DefaultCourses from './DefaultCourses'
 import OrderCancellationSetting from './OrderCancellationSetting'
 
 class AvailabilityCourses extends React.Component {
@@ -36,7 +36,6 @@ class AvailabilityCourses extends React.Component {
     this.handleAvailableDaysChange = this.handleAvailableDaysChange.bind(this)
     this.handleSupplierChange = this.handleSupplierChange.bind(this)
   }
-
   componentDidMount() {
     this.props.getTestCentres()
     this.props.getDefaultTestCentres()

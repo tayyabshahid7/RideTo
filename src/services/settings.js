@@ -6,6 +6,12 @@ export const getDefaultDays = async schoolId => {
   return response
 }
 
+export const getBikeHirePricing = async schoolId => {
+  const path = `school/${schoolId}/bike-hire-pricing`
+  const response = await get(path, {})
+  return response
+}
+
 export const saveDefaultDays = async (params = {}, schoolId) => {
   const path = `school/${schoolId}/default-open-days`
   const response = await put(path, params)
