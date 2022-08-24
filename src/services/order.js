@@ -252,10 +252,6 @@ export const getExpectedPrice = async ({
     ({ name }) => name === 'Highway Code Book'
   )
 
-  const bikeHirePrice = shouldAddBikeHire(checkoutData)
-    ? priceInfo.bike_hire_cost
-    : 0
-
   const params = {
     supplierId,
     date,
@@ -274,7 +270,7 @@ export const getExpectedPrice = async ({
     params
   )
 
-  const total = price + bikeHirePrice
+  const total = price + priceInfo.bike_hire_cost
 
   const result = {
     price: total,

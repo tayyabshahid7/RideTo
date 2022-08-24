@@ -260,7 +260,7 @@ class CheckoutPage extends Component {
         addons,
         bike_hire
       } = this.props.checkoutData
-      const { details, trainings, paymentType, bike_type } = this.state
+      const { details, trainings, paymentType } = this.state
 
       const isFullLicence = courseType === 'FULL_LICENCE'
       const hasHighwayCode = !!addons.find(
@@ -305,13 +305,7 @@ class CheckoutPage extends Component {
         handleUpdateOption({ priceInfo: { ...response } })
 
         this.setState({
-          priceInfo: {
-            ...response,
-            ...(bike_type === 'manual' &&
-              response.manual_bike_hire_cost && {
-                bike_hire_cost: response.manual_bike_hire_cost
-              })
-          },
+          priceInfo: { ...response },
           loadingPrice: false,
           details: {
             ...details,
@@ -331,13 +325,7 @@ class CheckoutPage extends Component {
         }
         handleUpdateOption({ priceInfo: { ...response } })
         this.setState({
-          priceInfo: {
-            ...response,
-            ...(bike_type === 'manual' &&
-              response.manual_bike_hire_cost && {
-                bike_hire_cost: response.manual_bike_hire_cost
-              })
-          },
+          priceInfo: { ...response },
           loadingPrice: false,
           details
         })

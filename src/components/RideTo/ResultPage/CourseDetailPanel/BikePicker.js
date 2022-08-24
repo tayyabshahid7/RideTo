@@ -149,8 +149,8 @@ const BikePicker = React.forwardRef(
                 )}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {!isCbtRenewal &&
-                  auto_bike_hire_cost > 0 &&
-                  ` ( + £${auto_bike_hire_cost / 100} )`}
+                  course.auto_bikes_pricing > 0 &&
+                  ` ( + £${course.auto_bikes_pricing / 100} )`}
                 {isAutoFull ? fullText : null}
               </button>
             )}
@@ -184,8 +184,8 @@ const BikePicker = React.forwardRef(
                 )}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {!isCbtRenewal &&
-                  auto_bike_hire_cost > 0 &&
-                  ` ( + £${auto_bike_hire_cost / 100} )`}
+                  course.auto_bikes_50cc_pricing > 0 &&
+                  ` ( + £${course.auto_bikes_50cc_pricing / 100} )`}
                 {isAuto50Full ? fullText : null}
               </button>
             )}
@@ -213,8 +213,8 @@ const BikePicker = React.forwardRef(
                 {getMotorbikeLabel(BIKE_HIRE.AUTO_125CC, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {!isCbtRenewal &&
-                  auto_bike_hire_cost > 0 &&
-                  ` ( + £${auto_bike_hire_cost / 100} )`}
+                  course.auto_bikes_125cc_pricing > 0 &&
+                  ` ( + £${course.auto_bikes_125cc_pricing / 100} )`}
                 {isAuto125Full ? fullText : null}
               </button>
             )}
@@ -242,8 +242,8 @@ const BikePicker = React.forwardRef(
                 {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {!isCbtRenewal &&
-                  manual_bike_hire_cost > 0 &&
-                  ` ( + £${manual_bike_hire_cost / 100} )`}
+                  course.manual_bikes_50cc_pricing > 0 &&
+                  ` ( + £${course.manual_bikes_50cc_pricing / 100} )`}
                 {isManual50Full ? fullText : null}
               </button>
             )}
@@ -273,8 +273,8 @@ const BikePicker = React.forwardRef(
                 {getMotorbikeLabel(BIKE_HIRE.MANUAL, isFullLicence)}{' '}
                 {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
                 {!isCbtRenewal &&
-                  manual_bike_hire_cost > 0 &&
-                  ` ( + £${manual_bike_hire_cost / 100} )`}
+                  course.manual_bikes_pricing > 0 &&
+                  ` ( + £${course.manual_bikes_pricing / 100} )`}
                 {isManualFull ? fullText : null}
               </button>
             )}
