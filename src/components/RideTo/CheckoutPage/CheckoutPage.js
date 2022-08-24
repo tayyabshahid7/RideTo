@@ -95,7 +95,7 @@ class CheckoutPage extends Component {
         user_birthdate: '',
         phone: '',
         current_licence: '',
-        // driving_licence_number: '',
+        driving_licence_number: '',
         prev_cbt_date: '',
         riding_experience: '',
         rider_type: '',
@@ -482,7 +482,7 @@ class CheckoutPage extends Component {
 
   getErrorDivId(field) {
     switch (field) {
-      // case 'driving_licence_number':
+      case 'driving_licence_number':
       case 'user_birthdate':
       case 'phone':
       case 'current_licence':
@@ -661,23 +661,23 @@ class CheckoutPage extends Component {
       hasError = true
     }
 
-    // if (details.driving_licence_number) {
-    //   const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
-    //   if (
-    //     !drivingLicenceRegex.test(
-    //       details.driving_licence_number
-    //         .split(' ')
-    //         .join('')
-    //         .toUpperCase()
-    //     )
-    //   ) {
-    //     errors['driving_licence_number'] =
-    //       'Please enter a valid driving licence number'
-    //     if (!errors.divId)
-    //       errors.divId = this.getErrorDivId('driving_licence_number')
-    //     hasError = true
-    //   }
-    // }
+    if (details.driving_licence_number) {
+      const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+      if (
+        !drivingLicenceRegex.test(
+          details.driving_licence_number
+            .split(' ')
+            .join('')
+            .toUpperCase()
+        )
+      ) {
+        errors['driving_licence_number'] =
+          'Please enter a valid driving licence number'
+        if (!errors.divId)
+          errors.divId = this.getErrorDivId('driving_licence_number')
+        hasError = true
+      }
+    }
 
     if (
       !details.email.match(
@@ -1033,7 +1033,7 @@ class CheckoutPage extends Component {
         last_name: '',
         // email: '',
         user_birthdate: '',
-        // driving_licence_number: '',
+        driving_licence_number: '',
         prev_cbt_date: '',
         phone: '',
         current_licence: '',

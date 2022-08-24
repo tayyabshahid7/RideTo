@@ -240,6 +240,7 @@ class OrderDetails extends React.Component {
               'Location',
               `${training_location.town}, ${training_location.postcode}`
             )}
+            {renderRow('Driving Licence', order.driving_licence_number)}
             {renderTraining(order, this.state.isOrderCancelled)}
           </div>
 
