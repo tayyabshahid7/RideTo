@@ -11,12 +11,24 @@ const MotorbikeOptions = ({
   onChange,
   ownBike = false
 }) => {
-  let { bike_hire_cost, manual_bike_hire_cost } = course.pricing
-  if (!manual_bike_hire_cost) {
-    manual_bike_hire_cost = bike_hire_cost
-  }
+  let {
+    bike_hire_cost,
+    bike_type_manual_price,
+    bike_type_auto_50_price,
+    bike_type_auto_125_price,
+    bike_type_auto_price,
+    bike_type_manual_50_price
+  } = course.pricing
 
-  const isFree = !bike_hire_cost && !manual_bike_hire_cost
+  const isRenewal = course.course_type.constant === 'LICENCE_CBT_RENEWAL'
+
+  const isFree =
+    !bike_hire_cost &&
+    !bike_type_manual_price &&
+    !bike_type_auto_50_price &&
+    !bike_type_auto_125_price &&
+    !bike_type_auto_price &&
+    !bike_type_manual_50_price
 
   const fullText = <span className={styles.full}> - Fully Booked</span>
 
@@ -65,10 +77,15 @@ const MotorbikeOptions = ({
           disabled={isAutoFull}>
           {getMotorbikeLabel(BIKE_HIRE.AUTO)}
           {isAutoFull ? fullText : null}
-          {bike_hire_cost > 0 && (
+          {!isRenewal && bike_type_auto_price > 0 && (
             <div className={styles.price}>{`(+${asPoundSterling(
-              bike_hire_cost
+              bike_type_auto_price
             )})`}</div>
+          )}
+          {isRenewal && bike_hire_cost > 0 && (
+            <div className={styles.price}>
+              {`(+${asPoundSterling(bike_hire_cost)})`}
+            </div>
           )}
         </Checkbox>
       )}
@@ -83,10 +100,15 @@ const MotorbikeOptions = ({
           disabled={isAuto50Full}>
           {getMotorbikeLabel(BIKE_HIRE.AUTO_50CC)}
           {isAuto50Full ? fullText : null}
-          {bike_hire_cost > 0 && (
+          {!isRenewal && bike_type_auto_50_price > 0 && (
             <div className={styles.price}>{`(+${asPoundSterling(
-              bike_hire_cost
+              bike_type_auto_50_price
             )})`}</div>
+          )}
+          {isRenewal && bike_hire_cost > 0 && (
+            <div className={styles.price}>
+              {`(+${asPoundSterling(bike_hire_cost)})`}
+            </div>
           )}
         </Checkbox>
       )}
@@ -101,7 +123,12 @@ const MotorbikeOptions = ({
           disabled={isAuto125Full}>
           {getMotorbikeLabel(BIKE_HIRE.AUTO_125CC)}
           {isAuto125Full ? fullText : null}
-          {bike_hire_cost > 0 && (
+          {!isRenewal && bike_type_auto_125_price > 0 && (
+            <div className={styles.price}>
+              {`(+${asPoundSterling(bike_type_auto_125_price)})`}
+            </div>
+          )}
+          {isRenewal && bike_hire_cost > 0 && (
             <div className={styles.price}>
               {`(+${asPoundSterling(bike_hire_cost)})`}
             </div>
@@ -119,7 +146,12 @@ const MotorbikeOptions = ({
           disabled={isManual50Full}>
           {getMotorbikeLabel(BIKE_HIRE.MANUAL_50CC)}
           {isManual50Full ? fullText : null}
-          {bike_hire_cost > 0 && (
+          {!isRenewal && bike_type_manual_50_price > 0 && (
+            <div className={styles.price}>
+              {`(+${asPoundSterling(bike_type_manual_50_price)})`}
+            </div>
+          )}
+          {isRenewal && bike_hire_cost > 0 && (
             <div className={styles.price}>
               {`(+${asPoundSterling(bike_hire_cost)})`}
             </div>
@@ -137,7 +169,12 @@ const MotorbikeOptions = ({
           disabled={isManualFull}>
           {getMotorbikeLabel(BIKE_HIRE.MANUAL)}
           {isManualFull ? fullText : null}
-          {bike_hire_cost > 0 && (
+          {!isRenewal && bike_type_manual_price > 0 && (
+            <div className={styles.price}>
+              {`(+${asPoundSterling(bike_type_manual_price)})`}
+            </div>
+          )}
+          {isRenewal && bike_hire_cost > 0 && (
             <div className={styles.price}>
               {`(+${asPoundSterling(bike_hire_cost)})`}
             </div>
