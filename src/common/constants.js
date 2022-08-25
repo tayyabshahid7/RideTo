@@ -41,19 +41,19 @@ export const SINGLE_DAY_IN_SECONDS = 60 * 60 * 24
 // export const COLOR_RED_1 = '#fa0e0e'
 // export const COLOR_YELLOW_1 = '#fa840e'
 export const BIKE_HIRE = {
-         NO: 'BIKE_TYPE_NONE',
-         AUTO: 'BIKE_TYPE_AUTO',
-         AUTO_50CC: 'BIKE_TYPE_AUTO_50CC',
-         AUTO_125CC: 'BIKE_TYPE_AUTO_125CC',
-         MANUAL: 'BIKE_TYPE_MANUAL',
-         MANUAL_50CC: 'BIKE_TYPE_MANUAL_50CC',
-         BIKE_TYPE_A_MANUAL: 'BIKE_TYPE_A_MANUAL',
-         BIKE_TYPE_A_AUTO: 'BIKE_TYPE_A_AUTO',
-         BIKE_TYPE_A1_MANUAL: 'BIKE_TYPE_A1_MANUAL',
-         BIKE_TYPE_A1_AUTO: 'BIKE_TYPE_A1_AUTO',
-         BIKE_TYPE_A2_MANUAL: 'BIKE_TYPE_A2_MANUAL',
-         BIKE_TYPE_A2_AUTO: 'BIKE_TYPE_A2_AUTO'
-       }
+  NO: 'BIKE_TYPE_NONE',
+  AUTO: 'BIKE_TYPE_AUTO',
+  AUTO_50CC: 'BIKE_TYPE_AUTO_50CC',
+  AUTO_125CC: 'BIKE_TYPE_AUTO_125CC',
+  MANUAL: 'BIKE_TYPE_MANUAL',
+  MANUAL_50CC: 'BIKE_TYPE_MANUAL_50CC',
+  BIKE_TYPE_A_MANUAL: 'BIKE_TYPE_A_MANUAL',
+  BIKE_TYPE_A_AUTO: 'BIKE_TYPE_A_AUTO',
+  BIKE_TYPE_A1_MANUAL: 'BIKE_TYPE_A1_MANUAL',
+  BIKE_TYPE_A1_AUTO: 'BIKE_TYPE_A1_AUTO',
+  BIKE_TYPE_A2_MANUAL: 'BIKE_TYPE_A2_MANUAL',
+  BIKE_TYPE_A2_AUTO: 'BIKE_TYPE_A2_AUTO'
+}
 
 export const RIDING_EXPERIENCE = {
   CYCLING: 'Cycling experience',
@@ -62,13 +62,13 @@ export const RIDING_EXPERIENCE = {
 }
 
 export const SORTBY = {
-         DISTANCE: 'distance',
-         PRICE_DOWN_UP: 'price',
-         PRICE_UP_DOWN: '-price',
-         RATING: '-rating',
-         NEXT_AVAILABLE_DATE_UP: 'date',
-         NEXT_AVAILABLE_DATE_DOWN: '-date'
-       }
+  DISTANCE: 'distance',
+  PRICE_DOWN_UP: 'price',
+  PRICE_UP_DOWN: '-price',
+  RATING: '-rating',
+  NEXT_AVAILABLE_DATE_UP: 'date',
+  NEXT_AVAILABLE_DATE_DOWN: '-date'
+}
 
 export const MAPBOX_KEY = process.env.REACT_APP_MAPBOX_KEY
 
@@ -172,28 +172,51 @@ export const CALENDAR_COLOURS = {
 export const DEFAULT_SETTINGS = {
   available_auto_bikes: true,
   default_number_auto_bikes: 2,
+  pricing_auto_bikes: 0.0,
+
   available_auto_50cc_bikes: false,
   default_number_auto_50cc_bikes: 0,
+  pricing_auto_50cc_bikes: 0.0,
+
   available_auto_125cc_bikes: false,
   default_number_auto_125cc_bikes: 0,
+  pricing_auto_125cc_bikes: 0.0,
+
   available_manual_50cc_bikes: false,
   default_number_manual_50cc_bikes: 0,
+  pricing_manual_50cc_bikes: 0.0,
+
   available_manual_125cc_bikes: true,
   default_number_manual_125cc_bikes: 2,
+  pricing_manual_125cc_bikes: 0.0,
+
   available_own_bikes: false,
   default_number_own_bikes: 0,
+  pricing_own_bikes: '0.00',
+
   available_a1_auto_bikes: false,
   a1_auto_bikes: 0,
+  pricing_a1_auto_bikes: 0.0,
+
   available_a1_manual_bikes: false,
   a1_manual_bikes: 0,
+  pricing_a1_manual_bikes: 0.0,
+
   available_a2_auto_bikes: false,
   a2_auto_bikes: 0,
+  pricing_a2_auto_bikes: 0.0,
+
   available_a2_manual_bikes: true,
   a2_manual_bikes: 2,
+  pricing_a2_manual_bikes: 0.0,
+
   available_a_auto_bikes: false,
   a_auto_bikes: 0,
+  pricing_a_auto_bikes: 0.0,
   available_a_manual_bikes: true,
-  a_manual_bikes: 2
+
+  a_manual_bikes: 2,
+  pricing_a_manual_bikes: 0.0
 }
 
 export const COURSE_ORDER = {

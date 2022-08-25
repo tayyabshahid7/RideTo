@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import Modal from 'react-modal'
-import { Table } from 'reactstrap'
+import { COURSE_ORDER, DEFAULT_SETTINGS } from 'common/constants'
 import BikeNumberPicker from 'components/BikeNumberPicker'
-import { Button } from 'components/ConnectForm'
+import { Button, ConnectInput } from 'components/ConnectForm'
 import upperFirst from 'lodash/upperFirst'
-import styles from './BikesModal.scss'
+import React, { useEffect, useState } from 'react'
+import Modal from 'react-modal'
+import { connect } from 'react-redux'
+import { Table } from 'reactstrap'
+import { bindActionCreators } from 'redux'
 import { updateDefaultBikes } from 'store/info'
-import { DEFAULT_SETTINGS, COURSE_ORDER } from 'common/constants'
+import styles from './BikesModal.scss'
 
 if (process.env.NODE_ENV !== 'test') {
   Modal.setAppElement('#root')
@@ -53,6 +53,10 @@ function getCountKey(key) {
   return key.replace('available_', replacement)
 }
 
+function getBikeHirePricing(key) {
+  return key.replace('available_', 'pricing_')
+}
+
 export function formatName(key) {
   return upperFirst(key.replace('available_', '').replace(/_/g, ' '))
 }
@@ -94,13 +98,15 @@ function DefaultBikesModal({
     .filter(bike => filterBikes(courseType, bike))
     .map(([key, value]) => {
       const countKey = getCountKey(key)
-
+      const pricingKey = getBikeHirePricing(key)
       return {
         key,
         countKey,
         name: formatName(key),
         available: value,
-        count: settings[countKey]
+        count: settings[countKey],
+        pricing: settings[pricingKey],
+        pricingKey: pricingKey
       }
     })
 
@@ -133,6 +139,16 @@ function DefaultBikesModal({
     setIsChanged(true)
   }
 
+  const handleChangePrice = e => {
+    const { name, value } = e.target
+    const tmp = Object.assign({}, settings)
+
+    tmp[name] = value
+
+    setSettings(tmp)
+    setIsChanged(true)
+  }
+
   courses.sort((a, b) => {
     return COURSE_ORDER[a.key] > COURSE_ORDER[b.key] ? 1 : -1
   })
@@ -157,11 +173,23 @@ function DefaultBikesModal({
                   <th>Bikes</th>
                   <th className="text-center">Available</th>
                   <th className="text-center">Number Available</th>
+                  <th className="text-center">Bike Price</th>
                 </tr>
               </thead>
               <tbody className={styles.tableBody}>
                 {courses.map(
-                  ({ name, available, key, countKey, count }, index) => (
+                  (
+                    {
+                      name,
+                      available,
+                      key,
+                      countKey,
+                      count,
+                      pricing,
+                      pricingKey
+                    },
+                    index
+                  ) => (
                     <tr key={index}>
                       <td>{name}</td>
                       <td className="text-center">
@@ -190,6 +218,19 @@ function DefaultBikesModal({
                             }}
                           />
                         )}
+                      </td>
+                      <td className="text-center">
+                        <ConnectInput
+                          prefix="£"
+                          type="number"
+                          min="0"
+                          disabled={!available}
+                          value={pricing}
+                          name={pricingKey}
+                          onChange={handleChangePrice}
+                          className="text-center"
+                          basic
+                        />
                       </td>
                     </tr>
                   )
