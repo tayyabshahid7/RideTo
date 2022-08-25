@@ -1,9 +1,9 @@
-import React from 'react'
-import styles from './styles.scss'
 import classnames from 'classnames'
+import React from 'react'
+import 'react-datepicker/dist/react-datepicker-cssmodules.css'
 import TimeField from 'react-simple-timefield'
 import ConnectDatePicker from './ConnectDatePicker'
-import 'react-datepicker/dist/react-datepicker-cssmodules.css'
+import styles from './styles.scss'
 
 export default function ConnectInput(props) {
   let {

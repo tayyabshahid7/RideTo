@@ -1,10 +1,10 @@
-import React, { useEffect, useState, Fragment } from 'react'
-import styles from './styles.scss'
+import { ConnectSingleSelect } from 'components/ConnectForm'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Table } from 'reactstrap'
+import { getCourseTypes } from 'services/course'
 import DefaultBikesModal from './DefaultBikesModal'
 import RowItem from './RowItem'
-import { ConnectSingleSelect } from 'components/ConnectForm'
-import { getCourseTypes } from 'services/course'
+import styles from './styles.scss'
 
 function DefaultBikes({ schools, info }) {
   const [activeCourse, setActiveCourse] = useState(null)
