@@ -68,9 +68,30 @@ export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
       ? pricing.price + pricing.bike_hire_cost
       : pricing.price
 
-  if (bikeHire === BIKE_HIRE.MANUAL && pricing.manual_bike_hire_cost) {
-    subTotal = pricing.price + pricing.manual_bike_hire_cost
+  if (bikeHire === BIKE_HIRE.MANUAL && pricing.bike_type_manual_price) {
+    subTotal = pricing.price + pricing.bike_type_manual_price
   }
+
+  if (bikeHire === BIKE_HIRE.AUTO && pricing.bike_type_auto_price) {
+    subTotal = pricing.price + pricing.bike_type_auto_price
+  }
+
+  if (bikeHire === BIKE_HIRE.AUTO_50CC && pricing.bike_type_auto_50_price) {
+    subTotal = pricing.price + pricing.bike_type_auto_50_price
+  }
+
+  if (bikeHire === BIKE_HIRE.AUTO_125CC && pricing.bike_type_auto_125_price) {
+    subTotal = pricing.price + pricing.bike_type_auto_125_price
+  }
+
+  if (bikeHire === BIKE_HIRE.MANUAL_50CC && pricing.bike_type_manual_50_price) {
+    subTotal = pricing.price + pricing.bike_type_manual_50_price
+  }
+
+  if (bikeHire === BIKE_HIRE.MANUAL_50CC && pricing.bike_type_manual_50_price) {
+    subTotal = pricing.price + pricing.bike_type_manual_50_price
+  }
+
   return subTotal - discount
 }
 
