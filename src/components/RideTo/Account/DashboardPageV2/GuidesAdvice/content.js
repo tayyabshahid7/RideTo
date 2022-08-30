@@ -26,7 +26,7 @@ export const ITEMS = [
     url: 'https://www.rideto.com/blog/instructor-advice-top-tips-for-new-riders'
   },
   {
-    title: 'Top Tips For Getting Your Full Motorcycle License',
+    title: 'Top Tips For Getting Your Full Motorcycle Licence',
     url: 'https://www.rideto.com/blog/top-tips-to-getting-a-motorcycle-license'
   },
   {
