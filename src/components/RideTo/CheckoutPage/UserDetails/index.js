@@ -506,7 +506,7 @@ class UserDetails extends Component {
                 details.current_licence ===
                 'CURRENT_LICENCES_FULL_EU_DRIVING_LICENCE'
               }
-              label="Driving License Number (Optional)"
+              label="Driving Licence Number (Optional)"
               placeholder="_____ ______ __ _ __"
               name="driving_licence_number"
               id="driving_licence_number"

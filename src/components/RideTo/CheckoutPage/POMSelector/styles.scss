@@ -80,7 +80,7 @@
   margin-bottom: 1.5rem;
 
   @media (max-width: 425px) {
-    font-size: 22px;
+    font-size: 1.125rem;
   }
 }
 
@@ -88,13 +88,11 @@
   > div {
     display: flex;
     align-items: center;
+  }
 
-    @media (max-width: 372px) {
-      display: block;
-      > div {
-        margin-left: 55px;
-        margin-top: -22px;
-      }
+  @media (max-width: 280px) {
+    div {
+      font-size: 1rem;
     }
   }
 }
@@ -142,6 +140,9 @@
   text-transform: none;
   outline: 0;
   justify-content: center;
+  @media (max-width: 425px) {
+    width: 6rem;
+  }
 
   &:hover {
   }
