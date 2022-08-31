@@ -52,7 +52,10 @@ const OrderConfirmationThankYouPage = () => {
     }
     if (orderId && status === 'failed') {
       setTimeout(() => {
-        window.location = `/account/dashboard/${orderId}`
+        const supplier = new URLSearchParams(window.location.search).get(
+          'supplier'
+        )
+        window.location = `/${supplier}/checkout/`
       }, 2000)
     }
   }, [status, orderId])
