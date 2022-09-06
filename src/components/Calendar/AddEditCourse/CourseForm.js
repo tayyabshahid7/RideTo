@@ -210,7 +210,6 @@ class CourseForm extends React.Component {
       const time = response.start_time
       const duration = response.duration
 
-      console.log(time, duration)
       this.setState({
         course: { ...course, time, duration },
         edited: true
@@ -612,8 +611,26 @@ class CourseForm extends React.Component {
       available_a2_auto_bikes,
       available_a2_manual_bikes,
       available_a_auto_bikes,
-      available_a_manual_bikes
+      available_a_manual_bikes,
+      pricing_auto_bikes,
+      pricing_auto_50cc_bikes,
+      pricing_auto_125cc_bikes,
+      pricing_manual_50cc_bikes,
+      pricing_manual_125cc_bikes
     } = this.state.defaultBikes
+
+    const bikeHirePriceAuto =
+      pricing_auto_bikes > 0 ? `(+£${pricing_auto_bikes})` : ''
+    const bikeHirePriceAuto50 =
+      pricing_auto_50cc_bikes > 0 ? `(+£${pricing_auto_50cc_bikes})` : ''
+    const bikeHirePriceAuto125 =
+      pricing_auto_125cc_bikes > 0 ? `(+£${pricing_auto_125cc_bikes})` : ''
+
+    const bikeHirePriceManual50 =
+      pricing_manual_50cc_bikes > 0 ? `(+£${pricing_manual_50cc_bikes})` : ''
+    const bikeHirePriceManual125 =
+      pricing_manual_125cc_bikes > 0 ? `(+£${pricing_manual_125cc_bikes})` : ''
+
     const loading =
       staffCalendar.loading || courseCalendar.loading || coursePackage.loading
 
@@ -784,7 +801,7 @@ class CourseForm extends React.Component {
                       <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
-                          label="Automatic"
+                          label={`Automatic ${bikeHirePriceAuto}`}
                           value={auto_bikes}
                           id="auto_bikes"
                           isEditable={isEditable}
@@ -804,7 +821,7 @@ class CourseForm extends React.Component {
                       <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
-                          label="Automatic 50cc"
+                          label={`Automatic 50cc ${bikeHirePriceAuto50}`}
                           value={auto_50cc_bikes}
                           id="auto_50cc_bikes"
                           isEditable={isEditable}
@@ -824,7 +841,7 @@ class CourseForm extends React.Component {
                       <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
-                          label="Automatic 125cc"
+                          label={`Automatic 125cc ${bikeHirePriceAuto125}`}
                           value={auto_125cc_bikes}
                           id="auto_125cc_bikes"
                           isEditable={isEditable}
@@ -844,7 +861,7 @@ class CourseForm extends React.Component {
                       <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
-                          label="Manual 50cc"
+                          label={`Manual 50cc ${bikeHirePriceManual50}`}
                           value={manual_50cc_bikes}
                           id="manual_50cc_bikes"
                           isEditable={isEditable}
@@ -864,7 +881,7 @@ class CourseForm extends React.Component {
                       <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
-                          label="Manual 125cc"
+                          label={`Manual 125cc ${bikeHirePriceManual125}`}
                           value={manual_bikes}
                           id="manual_bikes"
                           isEditable={isEditable}
