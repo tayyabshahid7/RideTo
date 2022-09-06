@@ -38,7 +38,10 @@ function DefaultBikes({ schools, info }) {
       <div className={styles.defaultBikes}>
         <div className={styles.title}>Default Bikes</div>
         <div className="pb-4">
-          <p>Set the default bikes available for each course</p>
+          <p>
+            Set the default bikes available for each course and any additional
+            bike hire charges
+          </p>
           <ConnectSingleSelect
             basic
             name="school"

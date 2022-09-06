@@ -65,3 +65,9 @@
 .bikePicker {
   justify-content: center;
 }
+
+.price {
+  > div {
+    margin-bottom: 0px !important;
+  }
+}
