@@ -2,12 +2,12 @@ import React, { Fragment, useState } from 'react'
 import styles from './styles.scss'
 // import call from 'assets/icons/contact/call.svg'
 // import chat from 'assets/icons/contact/chat.svg'
-import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import Aeroplane from 'assets/images/rideto/Aeroplane.svg'
-import { post } from 'services/api'
-import MediaQuery from 'react-responsive'
-import { Helmet } from 'react-helmet'
+import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import closeSvg from 'assets/images/rideto/CloseDark.svg'
+import { Helmet } from 'react-helmet'
+import MediaQuery from 'react-responsive'
+import { post } from 'services/api'
 
 function Contact({ onClose }) {
   const [name, setName] = useState('')
@@ -91,14 +91,14 @@ function Contact({ onClose }) {
                   return (
                     <form className={styles.form} onSubmit={handleSubmit}>
                       <div>
-                        <label htmlFor="name">Name</label>
+                        <label htmlFor="name">First Name</label>
                         <input
                           required
                           type="text"
                           id="name"
                           onChange={event => setName(event.target.value)}
                           value={name}
-                          placeholder={matches ? '' : 'Name'}
+                          placeholder={matches ? '' : 'First Name'}
                         />
                       </div>
                       <div>
