@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { COURSE_ORDER, DEFAULT_SETTINGS } from 'common/constants'
 import BikeNumberPicker from 'components/BikeNumberPicker'
 import { Button, ConnectInput } from 'components/ConnectForm'
@@ -219,7 +220,7 @@ function DefaultBikesModal({
                           />
                         )}
                       </td>
-                      <td className="text-center">
+                      <td className={classnames('text-center', styles.price)}>
                         <ConnectInput
                           prefix="£"
                           type="number"
