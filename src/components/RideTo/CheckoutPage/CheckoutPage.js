@@ -302,6 +302,8 @@ class CheckoutPage extends Component {
             this.props.showPromoNotification('Invalid promo code.', 'error')
           }
         }
+        const price = response.price + response.bike_hire_cost
+        response = { ...response, price }
         handleUpdateOption({ priceInfo: { ...response } })
 
         this.setState({
@@ -323,6 +325,8 @@ class CheckoutPage extends Component {
             this.props.showPromoNotification('Invalid promo code.', 'error')
           }
         }
+        const price = response.price + response.bike_hire_cost
+        response = { ...response, price }
         handleUpdateOption({ priceInfo: { ...response } })
         this.setState({
           priceInfo: { ...response },
