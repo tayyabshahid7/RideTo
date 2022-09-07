@@ -537,7 +537,7 @@ function Terms() {
           </p>
           <p class="c8">
             <span class="c5">
-              (vi) license, sell, rent, lease, transfer, assign, distribute,
+              (vi) licence, sell, rent, lease, transfer, assign, distribute,
               display, disclose, or otherwise commercially exploit the RideTo
               website{' '}
             </span>

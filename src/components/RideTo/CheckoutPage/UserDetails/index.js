@@ -521,7 +521,7 @@ class UserDetails extends Component {
             />
           </div>
           <div className={styles.subtext}>
-            You MUST bring your license on the day of training
+            You MUST bring your licence on the day of training
           </div>
           {errors.driving_licence_number && (
             <div className={styles.error}>{errors.driving_licence_number}</div>

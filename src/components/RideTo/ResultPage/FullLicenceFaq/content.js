@@ -1,5 +1,5 @@
 const CONTENT = {
-  title: 'Common questions about the full license training course',
+  title: 'Common questions about the full licence training course',
   faqs: {
     'What licence can I get? ':
       "At 17 years old you can get an 'A1' licence, at 19 and 'A2'licence and 24+ a full unrestricted 'A' licence. An A1 licence allows you to ride up to 125cc, an A2 up to 35 Kw of power and an A licence allows you to ride any sized bike.",
