@@ -23,6 +23,7 @@ const customStyles = {
   content: {
     width: '80%',
     maxWidth: '690px',
+    maxHeight: '100vh',
     top: '50%',
     left: '50%',
     right: 'auto',
