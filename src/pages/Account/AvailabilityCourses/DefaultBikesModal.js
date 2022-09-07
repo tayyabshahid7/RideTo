@@ -168,7 +168,7 @@ function DefaultBikesModal({
             <b>Course:</b> {courseType.name}
           </div>
           <div className={styles.courseDetails}>
-            <Table borderless size="sm">
+            <Table responsive borderless size="sm">
               <thead className={styles.tableHead}>
                 <tr>
                   <th>Bikes</th>
