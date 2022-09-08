@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelectionConfirmation.scss'
 const rideToMinimalGreenImg =
@@ -48,7 +48,7 @@ const CourseAlternativeDatesSelectionConfirmation = () => {
         </p>
         <p>
           Any booking made through RideTo.com is subject to our 5 working day
-          cancellation policy. Full license courses are subject to our 11
+          cancellation policy. Full licence courses are subject to our 11
           working days cancellation policy. All bookings are subject to our{' '}
           <a href="https://www.rideto.com/terms">full terms and conditions</a>.
           This includes any changes to bookings made in writing, email, online
