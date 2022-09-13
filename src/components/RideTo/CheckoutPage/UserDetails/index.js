@@ -105,10 +105,11 @@ class UserDetails extends Component {
     const { handleErrors, errors, getErrorDivId, isValidDate } = this.props
 
     const validatedDate = isValidDate(e.target.value)
-
-    if (!validatedDate) {
-      errors['user_birthdate'] =
+    if (validatedDate && validatedDate.error) {
+      const errorMessage =
         'You must be at least 16 years old to do your training. (On the selected date of training)'
+      errors['user_birthdate'] = validatedDate.message || errorMessage
+
       errors.divId = getErrorDivId('user_birthdate')
       handleErrors({ ...errors })
     }
