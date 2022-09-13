@@ -423,6 +423,7 @@ class CheckoutPage extends Component {
     let minYears = 16
     let maxYears = 100
     let trainingDate = moment(this.props.checkoutData.date, 'YYYY-MM-DD')
+    const bikeType = trainings[0].bike_type
 
     if (courseType === 'FULL_LICENCE') {
       trainingDate = moment(trainings[0].requested_date, 'YYYY-MM-DD')
@@ -452,6 +453,17 @@ class CheckoutPage extends Component {
         return {
           error: true,
           message: 'Please enter a valid date.'
+        }
+      }
+
+      if (
+        bikeType === 'BIKE_TYPE_MANUAL' &&
+        trainingDate.diff(date, 'years') < 17
+      ) {
+        return {
+          error: true,
+          message:
+            'You must be at least 17 years old to do your training. (On the selected date of training)'
         }
       }
     }
