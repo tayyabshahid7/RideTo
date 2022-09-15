@@ -15,7 +15,7 @@ import {
 } from 'reactstrap'
 import {
   fetchSingleRidetoCourse,
-  updateSchoolTrainingRejectionWithAlternativeSchool
+  updateSchoolTrainingRejectionWithAlternativeDates
 } from 'services/course'
 import { isBankHoliday } from 'services/misc'
 import { flashDiv } from 'services/page'
@@ -23,13 +23,13 @@ import CourseDetailPanel from '../ResultPage/CourseDetailPanel'
 import CourseItem from '../ResultPage/CourseItem'
 import styles from './CourseAlternativeDatesSelection.scss'
 
-class AlternativeLocationsOption extends React.Component {
+class CourseLocationSelection extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
       clicked: false,
-      courses: {},
+      course: {},
       courseType: null,
       courseTypes: null,
       alternativeDates: [],
@@ -102,7 +102,8 @@ class AlternativeLocationsOption extends React.Component {
     const courseTypes = this.props.courseTypes
     const orderId = this.props.orderId
     const signature = this.props.signature
-    const courses = this.props.courses
+    const course = this.props.course
+    console.log(this.props)
 
     const loading = false
 
@@ -118,7 +119,7 @@ class AlternativeLocationsOption extends React.Component {
       orderId,
       courseType,
       courseTypes,
-      courses,
+      course,
       courseTypesOptions: courseTypes,
       selectedCourseType: courseTypes.find(
         course => course.constant === this.props.courseType
@@ -222,7 +223,6 @@ class AlternativeLocationsOption extends React.Component {
     const {
       selectedCourse,
       instantDate,
-      instantCourse,
       bike_hire,
       orderId,
       clicked
@@ -270,17 +270,10 @@ class AlternativeLocationsOption extends React.Component {
             parsedBikeType = 'BIKE_TYPE_NONE'
             break
         }
-        let time = null
-        if (instantCourse) {
-          time = instantCourse.time
-        }
-
-        await updateSchoolTrainingRejectionWithAlternativeSchool(
+        await updateSchoolTrainingRejectionWithAlternativeDates(
           {
-            bike_hire: parsedBikeType,
-            supplier: selectedCourse.id,
             date: instantDate,
-            time
+            bike_hire: parsedBikeType
           },
           orderId
         )
@@ -473,7 +466,7 @@ class AlternativeLocationsOption extends React.Component {
     const {
       courseType,
       loading,
-      courses,
+      course,
       selectedCourse,
       activeTab,
       instantCourse,
@@ -514,6 +507,7 @@ class AlternativeLocationsOption extends React.Component {
     if (showDayOfWeekPicker && selectedTimeDays.length < 1) {
       bookNowDisabled = true
     }
+    console.log(course)
 
     return (
       <Fragment>
@@ -562,37 +556,30 @@ class AlternativeLocationsOption extends React.Component {
           )}>
           <div className={styles.optionHeader}>
             <h5 className={styles.optionTitle}>
-              <span>{index}. Other instant book locations:</span>
+              <span>{index}. Alternative dates:</span>
             </h5>
 
             <p className={styles.optionSupTitle}>
-              We also have the below instant book locations near your chosen
-              instructor. These are live instructor diaries, so you're
-              guaranteed to get the space shown. Click to move your booking to
-              one of these instructors. Any price difference will be
-              automatically refunded or charged.
+              Your chosen instructor has updated their calendar wih available
+              dates. Please select an alternative date which works for you.
             </p>
           </div>
 
           <div className={styles.optionContent}>
-            {courses.map(course => {
-              return (
-                <CourseItem
-                  courseType={courseType}
-                  showCallMessage={false}
-                  id={`card-course-${course.id}`}
-                  unavaiableDate={false}
-                  course={course}
-                  className={styles.alternativeLocationCourseItem}
-                  key={course.id}
-                  handleDetailClick={() => {
-                    this.handleDetailClick(course)
-                  }}
-                  handlePriceClick={this.handlePriceClick}
-                  handleReviewClick={this.handleReviewClick}
-                />
-              )
-            })}
+            <CourseItem
+              courseType={courseType}
+              showCallMessage={false}
+              id={`card-course-${course.id}`}
+              unavaiableDate={false}
+              course={course}
+              className={styles.alternativeLocationCourseItem}
+              key={course.id}
+              handleDetailClick={() => {
+                this.handleDetailClick(course)
+              }}
+              handlePriceClick={this.handlePriceClick}
+              handleReviewClick={this.handleReviewClick}
+            />
           </div>
         </div>
       </Fragment>
@@ -600,4 +587,4 @@ class AlternativeLocationsOption extends React.Component {
   }
 }
 
-export default AlternativeLocationsOption
+export default CourseLocationSelection
