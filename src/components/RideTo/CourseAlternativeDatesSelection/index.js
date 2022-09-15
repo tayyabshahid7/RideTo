@@ -1,11 +1,9 @@
 import classnames from 'classnames'
-import Loading from 'components/Loading'
-import moment from 'moment'
 import React, { Fragment } from 'react'
-import { updateSchoolTrainingRejectionWithAlternativeDates } from 'services/course'
 import { getStaticData } from 'services/page'
 import AlternativeLocationsOption from './AlternativeLocationsOption'
 import styles from './CourseAlternativeDatesSelection.scss'
+import CourseLocationSelection from './CourseLocationSelection'
 
 const rideToMinimalGreenImg =
   'https://rideto-production.imgix.net/static/images/rideToMinimalGreen.jpg?q=80&auto=format,compress,true'
@@ -52,68 +50,7 @@ const Header = ({ userName, alreadyResponded }) => {
   )
 }
 
-const AlternativeDatesOption = ({
-  index,
-  alternativeDates,
-  courseId,
-  onClick,
-  clicked,
-  error
-}) => {
-  return (
-    <div
-      className={classnames(
-        styles.alternativeDatesOption,
-        styles.optionWrapper
-      )}>
-      <div className={styles.optionHeader}>
-        <h5 className={styles.optionTitle}>
-          <span>{index}. Alternative dates:</span>
-        </h5>
-
-        <p className={styles.optionSupTitle}>
-          The Instructor offered the below alternative dates. Click to accept
-          one of these:
-        </p>
-      </div>
-      {error && <div className={styles.error}>{error}</div>}
-      <Loading loading={clicked} className={styles.alternativeDateLinkWrapper}>
-        <div className={styles.optionContent}>
-          {alternativeDates.map(date => {
-            return (
-              <div
-                className={styles.alternativeDateLink}
-                onClick={() => onClick(date.date)}
-                key={date}>
-                {moment(date.date).format('dddd, Do MMMM')}
-                {!!date.price_difference && (
-                  <span>
-                    &nbsp;({date.price_difference < 0 ? '+' : '-'}£
-                    {Math.floor(Math.abs(date.price_difference) / 100)})
-                  </span>
-                )}
-              </div>
-            )
-          })}
-        </div>
-      </Loading>
-
-      <div className={styles.optionFooter}>
-        <strong>There are also other dates available,</strong> drop us an email
-        to{' '}
-        <a
-          href={`mailto:hello@rideto.com?Subject=Order#RT${courseId}%20-%20Course%20dates%20unavailable`}>
-          hello@rideto.com
-        </a>{' '}
-        and quote your order reference RT#{courseId}. A member of the team will
-        be able to find an alternative date at this location which works for
-        you.
-      </div>
-    </div>
-  )
-}
-
-const ContactUsOption = ({ index, courseId }) => {
+const ContactUsOption = ({ index, orderId }) => {
   return (
     <div className={classnames(styles.contactUsOption, styles.optionWrapper)}>
       <div className={styles.optionHeader}>
@@ -124,12 +61,12 @@ const ContactUsOption = ({ index, courseId }) => {
         <p className={styles.optionSupTitle}>
           Drop us an email to{' '}
           <a
-            href={`mailto:hello@rideto.com?Subject=Order#RT${courseId}%20-%20Course%20dates%20unavailable`}>
+            href={`mailto:hello@rideto.com?Subject=Order#RT${orderId}%20-%20Course%20dates%20unavailable`}>
             hello@rideto.com
           </a>{' '}
-          and quote your order reference RT#{courseId}. A member of the team
-          will be able to find an alternative date at this location which works
-          for you.
+          and quote your order reference RT#{orderId}. A member of the team will
+          be able to find an alternative date at this location which works for
+          you.
         </p>
       </div>
     </div>
@@ -143,10 +80,11 @@ class CourseAlternativeDatesSelection extends React.Component {
       clicked: false,
       error: '',
       courses: {},
+      supplierData: {},
       courseType: null,
       courseTypes: null,
       alternativeDates: [],
-      courseId: null,
+      orderId: null,
       userName: '',
       signature: '',
       selectedCourse: null,
@@ -173,46 +111,23 @@ class CourseAlternativeDatesSelection extends React.Component {
     }
   }
 
-  selectedDate = async date => {
-    if (!this.state.clicked) {
-      this.setState({ clicked: true }, async () => {
-        try {
-          await updateSchoolTrainingRejectionWithAlternativeDates(
-            {
-              date: date
-            },
-            this.state.courseId
-          )
-          window.location = `/training_rejection/${this.state.signature}/${this.state.courseId}/confirmation/`
-        } catch (error) {
-          this.setState({ clicked: false })
-          this.setState({
-            error:
-              'Date requested unsuccessful, please contact hello@rideto.com if the problem persists'
-          })
-          console.error(error)
-        }
-      })
-    }
-  }
-
   componentDidMount() {
     const context = getStaticData('RIDETO_PAGE')
     const userName = context.firstName
     const courseType = context.courseType
     const courseTypes = context.courseTypes
-    const courseId = context.friendlyId
+    const orderId = context.friendlyId
     const signature = context.signature
     const supplier = context.supplier
     const alreadyResponded = context.already_responded !== 'False'
 
-    const alternativeDates = JSON.parse(
-      context.alternativeDates.replace(/'/g, '"')
-    )['dates']
-    const courses =
-      context.courses !== 'None' ? JSON.parse(context.courses) : null
+    const courses = context.courses ? JSON.parse(context.courses) : null
 
     const loading = false
+
+    const supplierData = context.supplierData
+      ? JSON.parse(context.supplierData)
+      : null
 
     this.setState({
       userName,
@@ -221,10 +136,10 @@ class CourseAlternativeDatesSelection extends React.Component {
       alreadyResponded,
       courseType,
       courseTypes,
-      courseId,
-      alternativeDates,
+      orderId,
       courses,
-      loading
+      loading,
+      supplierData
     })
   }
 
@@ -234,12 +149,11 @@ class CourseAlternativeDatesSelection extends React.Component {
       userName,
       alreadyResponded,
       courses,
-      alternativeDates,
-      courseId,
+      orderId,
       courseType,
       courseTypes,
       signature,
-      error
+      supplierData
     } = this.state
 
     if (loading) return <div>Loading ...</div>
@@ -256,13 +170,17 @@ class CourseAlternativeDatesSelection extends React.Component {
               <Header userName={userName} />
               <div className={styles.body}>
                 <div className={styles.optionsContainer}>
-                  <AlternativeDatesOption
+                  <CourseLocationSelection
                     index={1}
-                    clicked={this.state.clicked}
-                    onClick={this.selectedDate}
-                    alternativeDates={alternativeDates}
-                    courseId={courseId}
-                    error={error}
+                    userName={userName}
+                    courseType={courseType}
+                    courseTypes={courseTypes}
+                    orderId={orderId}
+                    course={supplierData}
+                    signature={signature}
+                    handleDetailClick={this.handleDetailClick}
+                    handlePriceClick={this.handlePriceClick}
+                    handleReviewClick={this.handleReviewClick}
                   />
 
                   {courses && (
@@ -271,7 +189,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                       userName={userName}
                       courseType={courseType}
                       courseTypes={courseTypes}
-                      courseId={courseId}
+                      orderId={orderId}
                       courses={courses}
                       signature={signature}
                       handleDetailClick={this.handleDetailClick}
@@ -280,10 +198,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                     />
                   )}
 
-                  <ContactUsOption
-                    index={courses ? 3 : 2}
-                    courseId={courseId}
-                  />
+                  <ContactUsOption index={courses ? 3 : 2} courseId={orderId} />
                 </div>
               </div>
             </Fragment>
