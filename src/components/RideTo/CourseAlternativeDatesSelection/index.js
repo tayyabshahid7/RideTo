@@ -81,10 +81,13 @@ class CourseAlternativeDatesSelection extends React.Component {
       error: '',
       courses: {},
       supplierData: {},
+      paymentType: 'card',
+      trainingPrice: 0,
+      bankHolidays: [],
       courseType: null,
       courseTypes: null,
       alternativeDates: [],
-      orderId: null,
+      orderId: '',
       userName: '',
       signature: '',
       selectedCourse: null,
@@ -119,7 +122,10 @@ class CourseAlternativeDatesSelection extends React.Component {
     const orderId = context.friendlyId
     const signature = context.signature
     const supplier = context.supplier
+    const paymentType = context.paymentType
     const alreadyResponded = context.already_responded !== 'False'
+    const trainingPrice = context.trainingPrice
+    const bankHolidays = context.bankHolidays
 
     const courses = context.courses ? JSON.parse(context.courses) : null
 
@@ -136,10 +142,13 @@ class CourseAlternativeDatesSelection extends React.Component {
       alreadyResponded,
       courseType,
       courseTypes,
-      orderId,
+      orderId: orderId,
       courses,
       loading,
-      supplierData
+      supplierData,
+      paymentType,
+      trainingPrice,
+      bankHolidays
     })
   }
 
@@ -153,7 +162,10 @@ class CourseAlternativeDatesSelection extends React.Component {
       courseType,
       courseTypes,
       signature,
-      supplierData
+      supplierData,
+      paymentType,
+      trainingPrice,
+      bankHolidays
     } = this.state
 
     if (loading) return <div>Loading ...</div>
@@ -181,6 +193,9 @@ class CourseAlternativeDatesSelection extends React.Component {
                     handleDetailClick={this.handleDetailClick}
                     handlePriceClick={this.handlePriceClick}
                     handleReviewClick={this.handleReviewClick}
+                    paymentType={paymentType}
+                    trainingPrice={trainingPrice}
+                    bankHolidays={bankHolidays}
                   />
 
                   {courses && (
@@ -198,7 +213,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                     />
                   )}
 
-                  <ContactUsOption index={courses ? 3 : 2} courseId={orderId} />
+                  <ContactUsOption index={courses ? 3 : 2} orderId={orderId} />
                 </div>
               </div>
             </Fragment>

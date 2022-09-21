@@ -36,6 +36,9 @@ class CourseLocationSelection extends React.Component {
       orderId: null,
       signature: '',
       userName: '',
+      paymentType: '',
+      trainingPrice: 0,
+      bankHolidays: [],
       selectedCourse: null,
       loading: true,
       showDateSelectorModal: false,
@@ -103,7 +106,9 @@ class CourseLocationSelection extends React.Component {
     const orderId = this.props.orderId
     const signature = this.props.signature
     const course = this.props.course
-    console.log(this.props)
+    const paymentType = this.props.paymentType
+    const trainingPrice = this.props.trainingPrice
+    const bankHolidays = this.props.bankHolidays
 
     const loading = false
 
@@ -120,6 +125,9 @@ class CourseLocationSelection extends React.Component {
       courseType,
       courseTypes,
       course,
+      paymentType,
+      trainingPrice,
+      bankHolidays,
       courseTypesOptions: courseTypes,
       selectedCourseType: courseTypes.find(
         course => course.constant === this.props.courseType
@@ -476,7 +484,10 @@ class CourseLocationSelection extends React.Component {
       selectedPackageHours,
       showDayOfWeekPicker,
       selectedTimeDays,
-      isErrored
+      isErrored,
+      paymentType,
+      trainingPrice,
+      bankHolidays
     } = this.state
 
     if (loading) return <div>Loading ...</div>
@@ -507,7 +518,6 @@ class CourseLocationSelection extends React.Component {
     if (showDayOfWeekPicker && selectedTimeDays.length < 1) {
       bookNowDisabled = true
     }
-    console.log(course)
 
     return (
       <Fragment>
@@ -545,6 +555,9 @@ class CourseLocationSelection extends React.Component {
                 timeDayChange={this.timeDayChange}
                 selectedTimeDays={selectedTimeDays}
                 isErrored={isErrored}
+                paymentType={paymentType}
+                trainingPrice={trainingPrice}
+                bankHolidays={bankHolidays}
               />
             )}
           </SidePanel>
