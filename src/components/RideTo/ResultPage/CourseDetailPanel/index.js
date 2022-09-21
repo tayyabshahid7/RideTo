@@ -1,10 +1,10 @@
-import React from 'react'
 import classnames from 'classnames'
-import styles from './styles.scss'
-import CourseReviewsComponent from './CourseReviewsComponent'
+import React from 'react'
 import CourseAvailabilityComponent from './CourseAvailabilityComponent'
 import CourseAvailabilityComponentFullLicence from './CourseAvailabilityComponentFullLicence'
 import CourseInformationComponent from './CourseInformationComponent'
+import CourseReviewsComponent from './CourseReviewsComponent'
+import styles from './styles.scss'
 
 class CourseDetailPanel extends React.Component {
   constructor(props) {
@@ -39,7 +39,10 @@ class CourseDetailPanel extends React.Component {
       showDayOfWeekPicker,
       timeDayChange,
       selectedTimeDays,
-      isErrored
+      isErrored,
+      paymentType,
+      trainingPrice,
+      bankHolidays
     } = this.props
 
     return (
@@ -83,6 +86,9 @@ class CourseDetailPanel extends React.Component {
             instantDate={instantDate}
             bike_hire={bike_hire}
             onUpdate={onUpdate}
+            paymentType={paymentType}
+            trainingPrice={trainingPrice}
+            bankHolidays={bankHolidays}
           />
         )}
         {activeTab === 3 && courseType === 'FULL_LICENCE' && (

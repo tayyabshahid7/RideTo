@@ -1,16 +1,16 @@
 import {
   fetchNextDateAvailable,
   fetchPlatformCourseBikes,
-  fetchPlatformCourseTimes,
-  fetchPlatformCourses
+  fetchPlatformCourses,
+  fetchPlatformCourseTimes
 } from 'services/course'
 
+import classnames from 'classnames'
+import Loading from 'components/Loading'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
-import Loading from 'components/Loading'
-import React from 'react'
-import classnames from 'classnames'
 import moment from 'moment'
+import React from 'react'
 import styles from './styles.scss'
 
 class CourseAvailabilityComponent extends React.Component {
@@ -162,8 +162,29 @@ class CourseAvailabilityComponent extends React.Component {
     return firstDateInMonthCalendar
   }
 
+  isBankHoliday(date) {
+    const { bankHolidays } = this.props || []
+    const formattedDate = date.format('YYYY-MM-DD')
+    return bankHolidays.includes(formattedDate)
+  }
+
+  getDayPrice(day) {
+    const { supplier } = this.props
+    const { week_prices } = supplier
+
+    if (this.isBankHoliday(day)) {
+      return week_prices.bank_holiday * 100
+    } else if (day.day() === 6 || day.day() === 0) {
+      return week_prices.weekend * 100
+    } else {
+      return week_prices.weekday * 100
+    }
+  }
+
   generateDaysDataFromCalendar(courseLocation, calendar) {
     const { courses } = this.state
+    const { paymentType, trainingPrice } = this.props
+
     let dates = []
     dates = this.generateCalendarDaysForMonth(calendar)
     let today = moment()
@@ -186,6 +207,15 @@ class CourseAvailabilityComponent extends React.Component {
       let disabled = false
       let invisible = date.getMonth() !== calendar.month
       let dayCourses = courses.filter(x => x.date === dateInString)
+
+      if (paymentType && paymentType === 'klarna') {
+        const trainingPricing = trainingPrice
+        const trainingPricingAPI = this.getDayPrice(momentDate).toString()
+        if (trainingPricing !== trainingPricingAPI) {
+          disabled = true
+        }
+      }
+
       if (
         courseLocation.excluded_days &&
         courseLocation.excluded_days.includes(momentDate.format('dddd'))
