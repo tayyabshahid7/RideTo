@@ -230,6 +230,10 @@
     display: flex;
     flex-wrap: nowrap;
   }
+  @media (max-width: 768px) {
+    padding-bottom: 16px;
+    border-bottom: 1px solid #e7e7e7;
+  }
 }
 
 .detailIcon {
@@ -320,4 +324,48 @@
 
 .markerTop {
   z-index: 100;
+}
+
+.availabilityText {
+  font-family: var(--font-rift);
+  text-transform: uppercase;
+  color: #898989;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 0px 16px 0px 16px;
+}
+
+.wrap {
+  display: block;
+  min-height: 30px;
+  @media (max-width: 768px) {
+    justify-content: space-between;
+
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+    justify-content: flex-end;
+  }
+}
+
+.slider {
+  :global {
+    .slick-list {
+    }
+
+    .slick-track {
+      display: flex;
+      float: left;
+      .slick-slide {
+        margin-right: 15px;
+        padding-bottom: 0.5em;
+      }
+    }
+
+    .slick-prev::before,
+    .slick-next:before {
+      content: none;
+    }
+  }
 }

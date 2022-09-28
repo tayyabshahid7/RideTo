@@ -1,20 +1,23 @@
-import * as FeatureIcons from 'assets/icons/features'
-
 import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
+import * as FeatureIcons from 'assets/icons/features'
+import RideToSlider from 'components/RideToSlider'
+// import RideToSlider from 'components/RideToSlider'
 import React, { Component, Fragment } from 'react'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
 
-import { BankHolidayProvider } from '../StateProvider'
+import classnames from 'classnames'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
 import POMCard from 'components/RideTo/ResultPage/POMCard'
 import StarsComponent from 'components/RideTo/StarsComponent'
-import { UncontrolledTooltip } from 'reactstrap'
-import classnames from 'classnames'
 import get from 'lodash/get'
-import { loadTypeformScript } from 'utils/helper'
 import moment from 'moment'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { UncontrolledTooltip } from 'reactstrap'
+import { loadTypeformScript } from 'utils/helper'
+import { BankHolidayProvider } from '../StateProvider'
 import styles from './styles.scss'
+
+import { Desktop, Mobile } from 'common/breakpoints'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -153,9 +156,21 @@ class CourseItem extends Component {
 
     const isTypeform = this.isFullLicenceTypeform(course)
 
+    const settings = {
+      dots: false,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      initialSlide: 0,
+      className: styles.slider
+    }
+
     if (isTypeform) {
       loadTypeformScript()
     }
+
+    const availableDates = ['test', 'test2', 'test2', 'test2', 'test2']
 
     const isFullLicence = courseType === 'FULL_LICENCE'
 
@@ -187,16 +202,18 @@ class CourseItem extends Component {
                     {course.location_slug.replace('-', ' ')}
                   </button>
                 </div>
-                {this.checkNextDayAvailable() && (
-                  <div className={styles.nextDateDiv}>
-                    <button
-                      className={styles.nextDateAvailable}
-                      onClick={() => this.priceClicked(course)}>
-                      Next Available<span> Date</span> -{' '}
-                      {moment(course.next_date_available).format('D MMM')}
-                    </button>
-                  </div>
-                )}
+                <Desktop>
+                  {this.checkNextDayAvailable() && (
+                    <div className={styles.nextDateDiv}>
+                      <button
+                        className={styles.nextDateAvailable}
+                        onClick={() => this.priceClicked(course)}>
+                        Next Available<span> Date</span> -{' '}
+                        {moment(course.next_date_available).format('D MMM')}
+                      </button>
+                    </div>
+                  )}
+                </Desktop>
               </div>
               <div
                 className={styles.place}
@@ -248,21 +265,40 @@ class CourseItem extends Component {
           <div className={styles.footer}>
             {!isTypeform ? (
               <Fragment>
-                <div
-                  className={styles.price}
-                  onClick={() => this.priceClicked(course)}>
-                  £{this.getPriceData()}
-                  {courseType === 'FULL_LICENCE' && '/Hr'}
-                </div>
-                <div
-                  className={classnames(
-                    styles.cta,
-                    unavaiableDate && styles.ctaDateUnavailable
-                  )}
-                  onClick={() => this.priceClicked(course)}>
-                  <div>Select</div>
-                  <IconArrowRight className={styles.arrowIcon} />
-                </div>
+                <Desktop>
+                  <div
+                    className={styles.price}
+                    onClick={() => this.priceClicked(course)}>
+                    £{this.getPriceData()}
+                    {courseType === 'FULL_LICENCE' && '/Hr'}
+                  </div>
+                  <div
+                    className={classnames(
+                      styles.cta,
+                      unavaiableDate && styles.ctaDateUnavailable
+                    )}
+                    onClick={() => this.priceClicked(course)}>
+                    <div>Select</div>
+                    <IconArrowRight className={styles.arrowIcon} />
+                  </div>
+                </Desktop>
+                <Mobile>
+                  <p className={styles.availabilityText}>Availability</p>
+                  <div className={classnames(styles.wrap)}>
+                    test
+                    <RideToSlider settings={settings}>
+                      {availableDates.map((item, index) => {
+                        return (
+                          <div key={index}>
+                            <p>{item}</p>
+                            <p>Time</p>
+                          </div>
+                        )
+                      })}
+                    </RideToSlider>
+                  </div>
+                  {/* </div> */}
+                </Mobile>
               </Fragment>
             ) : (
               <a
