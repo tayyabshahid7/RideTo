@@ -1,20 +1,23 @@
-import * as FeatureIcons from 'assets/icons/features'
-
 import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
+import * as FeatureIcons from 'assets/icons/features'
+import RideToSlider from 'components/RideToSlider'
 import React, { Component, Fragment } from 'react'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
+import AvailableDateBox from './AvailableDateBox'
 
-import { BankHolidayProvider } from '../StateProvider'
+import classnames from 'classnames'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
-import { LazyLoadImage } from 'react-lazy-load-image-component'
 import POMCard from 'components/RideTo/ResultPage/POMCard'
 import StarsComponent from 'components/RideTo/StarsComponent'
-import { UncontrolledTooltip } from 'reactstrap'
-import classnames from 'classnames'
 import get from 'lodash/get'
-import { loadTypeformScript } from 'utils/helper'
 import moment from 'moment'
+import { LazyLoadImage } from 'react-lazy-load-image-component'
+import { UncontrolledTooltip } from 'reactstrap'
+import { loadTypeformScript } from 'utils/helper'
+import { BankHolidayProvider } from '../StateProvider'
 import styles from './styles.scss'
+
+import { Desktop, Mobile } from 'common/breakpoints'
 
 class CourseItem extends Component {
   highlightPinOnMap(event) {
@@ -90,6 +93,11 @@ class CourseItem extends Component {
     this.props.handleReviewClick(course)
   }
 
+  nextDateAvailableClicked = (course, date) => {
+    this.handleScroll()
+    this.props.handleNextAvailableClick(course, date)
+  }
+
   checkBankHoliday = date => {
     const bankHoliday = get(this.props, 'context.bankHoliday', [])
     return bankHoliday.some(item => item.date === date)
@@ -151,13 +159,49 @@ class CourseItem extends Component {
       courseType
     } = this.props
 
+    const { next_9_available_dates: availableDates } = course
+
     const isTypeform = this.isFullLicenceTypeform(course)
+
+    const settings = {
+      dots: false,
+      infinite: false,
+      speed: 500,
+      slidesToShow: 4.5,
+      slidesToScroll: 3,
+      className: styles.slider,
+      responsive: [
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 3.5,
+            slidesToScroll: 3
+          }
+        },
+        {
+          breakpoint: 423,
+          settings: {
+            slidesToShow: 2.5,
+            slidesToScroll: 2
+          }
+        },
+        {
+          breakpoint: 315,
+          settings: {
+            slidesToShow: 1.5,
+            slidesToScroll: 1
+          }
+        }
+      ]
+    }
 
     if (isTypeform) {
       loadTypeformScript()
     }
 
     const isFullLicence = courseType === 'FULL_LICENCE'
+
+    const footer = isFullLicence ? styles.footer : styles.footerCBTCourse
 
     return (
       <Fragment>
@@ -187,16 +231,18 @@ class CourseItem extends Component {
                     {course.location_slug.replace('-', ' ')}
                   </button>
                 </div>
-                {this.checkNextDayAvailable() && (
-                  <div className={styles.nextDateDiv}>
-                    <button
-                      className={styles.nextDateAvailable}
-                      onClick={() => this.priceClicked(course)}>
-                      Next Available<span> Date</span> -{' '}
-                      {moment(course.next_date_available).format('D MMM')}
-                    </button>
-                  </div>
-                )}
+                <Desktop>
+                  {this.checkNextDayAvailable() && (
+                    <div className={styles.nextDateDiv}>
+                      <button
+                        className={styles.nextDateAvailable}
+                        onClick={() => this.priceClicked(course)}>
+                        Next Available<span> Date</span> -{' '}
+                        {moment(course.next_date_available).format('D MMM')}
+                      </button>
+                    </div>
+                  )}
+                </Desktop>
               </div>
               <div
                 className={styles.place}
@@ -217,7 +263,11 @@ class CourseItem extends Component {
                   this.renderIcon('instant_book')}
               </div>
             </div>
-            <div className={styles.extraInfo}>
+            <div
+              className={classnames(
+                styles.extraInfo,
+                courseType !== 'FULL_LICENCE' && styles.extraInfoMobile
+              )}>
               <div>
                 <IconDistance className={styles.mileIcon} />{' '}
                 {course.distance_miles.toFixed(2)}
@@ -245,24 +295,75 @@ class CourseItem extends Component {
               </div>
             </div>
           </div>
-          <div className={styles.footer}>
+          <div className={footer}>
             {!isTypeform ? (
               <Fragment>
-                <div
-                  className={styles.price}
-                  onClick={() => this.priceClicked(course)}>
-                  £{this.getPriceData()}
-                  {courseType === 'FULL_LICENCE' && '/Hr'}
-                </div>
-                <div
-                  className={classnames(
-                    styles.cta,
-                    unavaiableDate && styles.ctaDateUnavailable
+                <Desktop>
+                  <div
+                    className={styles.price}
+                    onClick={() => this.priceClicked(course)}>
+                    £{this.getPriceData()}
+                    {courseType === 'FULL_LICENCE' && '/Hr'}
+                  </div>
+                  <div
+                    className={classnames(
+                      styles.cta,
+                      unavaiableDate && styles.ctaDateUnavailable
+                    )}
+                    onClick={() => this.priceClicked(course)}>
+                    <div>Select</div>
+                    <IconArrowRight className={styles.arrowIcon} />
+                  </div>
+                </Desktop>
+                <Mobile>
+                  {courseType === 'FULL_LICENCE' && (
+                    <Fragment>
+                      <div
+                        className={styles.price}
+                        onClick={() => this.priceClicked(course)}>
+                        £{this.getPriceData()}
+                        {courseType === 'FULL_LICENCE' && '/Hr'}
+                      </div>
+                      <div
+                        className={classnames(
+                          styles.cta,
+                          unavaiableDate && styles.ctaDateUnavailable
+                        )}
+                        onClick={() => this.priceClicked(course)}>
+                        <div>Select</div>
+                        <IconArrowRight className={styles.arrowIcon} />
+                      </div>
+                    </Fragment>
                   )}
-                  onClick={() => this.priceClicked(course)}>
-                  <div>Select</div>
-                  <IconArrowRight className={styles.arrowIcon} />
-                </div>
+                  {courseType !== 'FULL_LICENCE' && (
+                    <Fragment>
+                      <p className={styles.availabilityText}>Availability</p>
+                      <div className={classnames(styles.wrap)}>
+                        <RideToSlider settings={settings}>
+                          {availableDates.map((item, index) => {
+                            const { date, time, price } = item
+                            return (
+                              <AvailableDateBox
+                                key={index}
+                                index={index}
+                                date={date}
+                                time={time}
+                                price={price}
+                                arrSize={availableDates.length}
+                                onClick={() =>
+                                  this.nextDateAvailableClicked(course, date)
+                                }
+                                moreDatesOnClick={() =>
+                                  this.priceClicked(course, date)
+                                }
+                              />
+                            )
+                          })}
+                        </RideToSlider>
+                      </div>
+                    </Fragment>
+                  )}
+                </Mobile>
               </Fragment>
             ) : (
               <a

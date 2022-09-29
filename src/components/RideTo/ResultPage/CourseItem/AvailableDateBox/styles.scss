@@ -1,0 +1,64 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px 10px;
+  gap: 4px;
+  border: 1px;
+
+  width: 99px;
+  height: 68px;
+
+  background: #deedf2;
+  &:hover,
+  &:active {
+    border: 1px solid #141414;
+  }
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+.date {
+  font-family: var(--font-inter);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  color: #141414;
+}
+
+.time {
+  font-family: var(--font-inter);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  color: #141414;
+}
+
+.price {
+  font-family: var(--font-inter);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  /* identical to box height, or 114% */
+
+  color: #141414;
+}
+
+.moreDates {
+  font-family: var(--font-inter);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.5em;
+  overflow: hidden;
+  word-wrap: break-word;
+  padding: 0px 10px;
+
+  color: #141414;
+}

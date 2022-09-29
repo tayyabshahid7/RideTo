@@ -167,9 +167,9 @@ class ResultPage extends Component {
     })
   }
 
-  loadCourseDetail = async (course, activeTab) => {
+  loadCourseDetail = async (course, activeTab, date = null) => {
     const selectedCourse = await fetchSingleRidetoCourse(course.id)
-    selectedCourse.next_date_available = course.next_date_available
+    selectedCourse.next_date_available = date || course.next_date_available
 
     this.setState({
       selectedCourse,
@@ -934,6 +934,9 @@ class ResultPage extends Component {
                                     }
                                     handleReviewClick={course =>
                                       this.loadCourseDetail(course, 2)
+                                    }
+                                    handleNextAvailableClick={(course, date) =>
+                                      this.loadCourseDetail(course, 3, date)
                                     }
                                   />
                                 )
