@@ -1,9 +1,9 @@
 import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import RideToSlider from 'components/RideToSlider'
-// import RideToSlider from 'components/RideToSlider'
 import React, { Component, Fragment } from 'react'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
+import AvailableDateBox from './AvailableDateBox'
 
 import classnames from 'classnames'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
@@ -93,6 +93,11 @@ class CourseItem extends Component {
     this.props.handleReviewClick(course)
   }
 
+  nextDateAvailableClicked = (course, date) => {
+    this.handleScroll()
+    this.props.handleNextAvailableClick(course, date)
+  }
+
   checkBankHoliday = date => {
     const bankHoliday = get(this.props, 'context.bankHoliday', [])
     return bankHoliday.some(item => item.date === date)
@@ -154,25 +159,49 @@ class CourseItem extends Component {
       courseType
     } = this.props
 
+    const { next_9_available_dates: availableDates } = course
+
     const isTypeform = this.isFullLicenceTypeform(course)
 
     const settings = {
       dots: false,
       infinite: false,
       speed: 500,
-      slidesToShow: 3,
-      slidesToScroll: 1,
-      initialSlide: 0,
-      className: styles.slider
+      slidesToShow: 4.5,
+      slidesToScroll: 3,
+      className: styles.slider,
+      responsive: [
+        {
+          breakpoint: 480,
+          settings: {
+            slidesToShow: 3.5,
+            slidesToScroll: 3
+          }
+        },
+        {
+          breakpoint: 423,
+          settings: {
+            slidesToShow: 2.5,
+            slidesToScroll: 2
+          }
+        },
+        {
+          breakpoint: 315,
+          settings: {
+            slidesToShow: 1.5,
+            slidesToScroll: 1
+          }
+        }
+      ]
     }
 
     if (isTypeform) {
       loadTypeformScript()
     }
 
-    const availableDates = ['test', 'test2', 'test2', 'test2', 'test2']
-
     const isFullLicence = courseType === 'FULL_LICENCE'
+
+    const footer = isFullLicence ? styles.footer : styles.footerCBTCourse
 
     return (
       <Fragment>
@@ -234,7 +263,11 @@ class CourseItem extends Component {
                   this.renderIcon('instant_book')}
               </div>
             </div>
-            <div className={styles.extraInfo}>
+            <div
+              className={classnames(
+                styles.extraInfo,
+                courseType !== 'FULL_LICENCE' && styles.extraInfoMobile
+              )}>
               <div>
                 <IconDistance className={styles.mileIcon} />{' '}
                 {course.distance_miles.toFixed(2)}
@@ -262,7 +295,7 @@ class CourseItem extends Component {
               </div>
             </div>
           </div>
-          <div className={styles.footer}>
+          <div className={footer}>
             {!isTypeform ? (
               <Fragment>
                 <Desktop>
@@ -283,21 +316,53 @@ class CourseItem extends Component {
                   </div>
                 </Desktop>
                 <Mobile>
-                  <p className={styles.availabilityText}>Availability</p>
-                  <div className={classnames(styles.wrap)}>
-                    test
-                    <RideToSlider settings={settings}>
-                      {availableDates.map((item, index) => {
-                        return (
-                          <div key={index}>
-                            <p>{item}</p>
-                            <p>Time</p>
-                          </div>
-                        )
-                      })}
-                    </RideToSlider>
-                  </div>
-                  {/* </div> */}
+                  {courseType === 'FULL_LICENCE' && (
+                    <Fragment>
+                      <div
+                        className={styles.price}
+                        onClick={() => this.priceClicked(course)}>
+                        £{this.getPriceData()}
+                        {courseType === 'FULL_LICENCE' && '/Hr'}
+                      </div>
+                      <div
+                        className={classnames(
+                          styles.cta,
+                          unavaiableDate && styles.ctaDateUnavailable
+                        )}
+                        onClick={() => this.priceClicked(course)}>
+                        <div>Select</div>
+                        <IconArrowRight className={styles.arrowIcon} />
+                      </div>
+                    </Fragment>
+                  )}
+                  {courseType !== 'FULL_LICENCE' && (
+                    <Fragment>
+                      <p className={styles.availabilityText}>Availability</p>
+                      <div className={classnames(styles.wrap)}>
+                        <RideToSlider settings={settings}>
+                          {availableDates.map((item, index) => {
+                            const { date, time, price } = item
+                            return (
+                              <AvailableDateBox
+                                key={index}
+                                index={index}
+                                date={date}
+                                time={time}
+                                price={price}
+                                arrSize={availableDates.length}
+                                onClick={() =>
+                                  this.nextDateAvailableClicked(course, date)
+                                }
+                                moreDatesOnClick={() =>
+                                  this.priceClicked(course, date)
+                                }
+                              />
+                            )
+                          })}
+                        </RideToSlider>
+                      </div>
+                    </Fragment>
+                  )}
                 </Mobile>
               </Fragment>
             ) : (
