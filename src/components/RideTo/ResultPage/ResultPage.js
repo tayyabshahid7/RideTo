@@ -973,6 +973,9 @@ class ResultPage extends Component {
                                   handleReviewClick={course =>
                                     this.loadCourseDetail(course, 2)
                                   }
+                                  handleNextAvailableClick={(course, date) =>
+                                    this.loadCourseDetail(course, 3, date)
+                                  }
                                 />
                               ) : (
                                 <CourseItemNonPartner
