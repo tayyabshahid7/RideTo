@@ -361,6 +361,15 @@ class CourseItem extends Component {
                           })}
                         </RideToSlider>
                       </div>
+                      {unavaiableDate && (
+                        <div className={styles.moreResults}>
+                          <p>
+                            There is no availability on Jun 29, 2022 so we’ve
+                            listed some dates above if you’re happy to be
+                            flexible.
+                          </p>
+                        </div>
+                      )}
                     </Fragment>
                   )}
                 </Mobile>
