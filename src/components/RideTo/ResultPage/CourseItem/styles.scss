@@ -359,11 +359,15 @@
     }
 
     .slick-slide {
+      overflow: hidden;
       display: block;
-      margin-right: 8px !important;
+      margin-right: 8px;
+      width: 99px;
+      min-width: 99px;
     }
-    .slick-arrow {
-      display: none;
+
+    .slick-list {
+      margin: 0 -8px;
     }
   }
 }
