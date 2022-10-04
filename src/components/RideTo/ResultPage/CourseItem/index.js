@@ -166,22 +166,24 @@ class CourseItem extends Component {
     const settings = {
       dots: false,
       infinite: false,
-      speed: 1000,
-      slidesToShow: 4.5,
+      arrows: false,
+      // useTransform: false,
+      speed: 500,
+      slidesToShow: 5.1,
       className: styles.slider,
       swipeToSlide: true,
-      arrows: false,
+
       responsive: [
         {
           breakpoint: 528,
           settings: {
-            slidesToShow: 3.5
+            slidesToShow: 3.1
           }
         },
         {
           breakpoint: 375,
           settings: {
-            slidesToShow: 2.5
+            slidesToShow: 2.2
           }
         }
       ]
