@@ -158,6 +158,7 @@
 
   @media (max-width: 768px) {
     justify-content: space-between;
+    padding: 0px 0px 10px 5px;
   }
 
   @media (min-width: 769px) {
@@ -349,7 +350,7 @@
 
 .slider {
   display: grid;
-  padding-left: 16px;
+  // padding-left: 16px;
   grid-gap: 4px;
 
   :global {
@@ -359,7 +360,6 @@
     }
 
     .slick-slide {
-      overflow: hidden;
       display: block;
       margin-right: 8px;
       width: 99px;
@@ -367,7 +367,11 @@
     }
 
     .slick-list {
-      margin: 0 -8px;
+      // margin: 0 -8px;
+    }
+    .slick-prev::before,
+    .slick-next::before {
+      content: none;
     }
   }
 }
