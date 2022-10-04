@@ -352,11 +352,6 @@
   padding-left: 16px;
   grid-gap: 4px;
 
-  div[class='slick-slide'] {
-    padding: 0 4px;
-    display: block;
-  }
-
   :global {
     .slick-track {
       display: flex;
@@ -365,6 +360,10 @@
 
     .slick-slide {
       display: block;
+      margin-right: 8px !important;
+    }
+    .slick-arrow {
+      display: none;
     }
   }
 }

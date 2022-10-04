@@ -170,6 +170,8 @@ class CourseItem extends Component {
       slidesToShow: 4.5,
       slidesToScroll: 3,
       className: styles.slider,
+      swipeToSlide: true,
+      variableWidth: true,
       responsive: [
         {
           breakpoint: 480,
@@ -183,13 +185,6 @@ class CourseItem extends Component {
           settings: {
             slidesToShow: 2.5,
             slidesToScroll: 2
-          }
-        },
-        {
-          breakpoint: 315,
-          settings: {
-            slidesToShow: 1.5,
-            slidesToScroll: 1
           }
         }
       ]
