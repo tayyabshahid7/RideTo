@@ -362,8 +362,8 @@
     .slick-slide {
       display: block;
       margin-right: 8px;
-      width: 99px;
-      min-width: 99px;
+      width: 99px !important;
+      min-width: 99px !important;
     }
 
     .slick-list {
