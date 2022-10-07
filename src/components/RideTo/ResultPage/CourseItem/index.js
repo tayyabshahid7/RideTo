@@ -2,6 +2,7 @@ import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
 import RideToSlider from 'components/RideToSlider'
 import React, { Component, Fragment } from 'react'
+import { parseQueryString } from 'services/api'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
 import AvailableDateBox from './AvailableDateBox'
 
@@ -167,23 +168,28 @@ class CourseItem extends Component {
       dots: false,
       infinite: false,
       arrows: false,
-      // useTransform: false,
       speed: 500,
-      slidesToShow: 5.1,
+      slidesToShow: 4,
       className: styles.slider,
       swipeToSlide: true,
 
       responsive: [
         {
-          breakpoint: 528,
+          breakpoint: 460,
           settings: {
-            slidesToShow: 3.1
+            slidesToShow: 3
           }
         },
         {
-          breakpoint: 375,
+          breakpoint: 354,
           settings: {
-            slidesToShow: 2.2
+            slidesToShow: 2.8
+          }
+        },
+        {
+          breakpoint: 300,
+          settings: {
+            slidesToShow: 2.5
           }
         }
       ]
@@ -196,6 +202,10 @@ class CourseItem extends Component {
     const isFullLicence = courseType === 'FULL_LICENCE'
 
     const footer = isFullLicence ? styles.footer : styles.footerCBTCourse
+
+    const qs = parseQueryString(window.location.search.slice(1))
+    const dateQuery = moment(qs.date, 'YYYY-MM-DD', true)
+    const selectedDate = dateQuery ? dateQuery.format('MMM D, YYYY') : ''
 
     return (
       <Fragment>
@@ -355,10 +365,10 @@ class CourseItem extends Component {
                           })}
                         </RideToSlider>
                       </div>
-                      {unavaiableDate && (
+                      {unavaiableDate && selectedDate && (
                         <div className={styles.moreResults}>
                           <p>
-                            There is no availability on Jun 29, 2022 so we’ve
+                            There is no availability on {selectedDate} so we’ve
                             listed some dates above if you’re happy to be
                             flexible.
                           </p>
