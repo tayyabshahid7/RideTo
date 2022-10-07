@@ -1,17 +1,17 @@
-import React, { Component, Fragment } from 'react'
-import styles from './styles.scss'
-import { getDasBikeTypes } from 'services/course'
-import ToggleQuiz from 'components/RideTo/ResultPage/CourseDetailPanel/ToggleQuiz'
-import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
-import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
-import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
-import DayOfWeekPicker from 'components/RideTo/ResultPage/CourseDetailPanel/DayOfWeekPicker'
 import classnames from 'classnames'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
+import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
+import DayOfWeekPicker from 'components/RideTo/ResultPage/CourseDetailPanel/DayOfWeekPicker'
 import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 import HelpForm from 'components/RideTo/ResultPage/CourseDetailPanel/HelpForm'
+import LicencePicker from 'components/RideTo/ResultPage/CourseDetailPanel/LicencePicker'
+import PackagePicker from 'components/RideTo/ResultPage/CourseDetailPanel/PackagePicker'
+import ToggleQuiz from 'components/RideTo/ResultPage/CourseDetailPanel/ToggleQuiz'
+import React, { Component, Fragment } from 'react'
+import { getDasBikeTypes } from 'services/course'
 import { getCourseTypesData } from 'services/page'
+import styles from './styles.scss'
 
 class CourseAvailabilityComponentFullLicence extends Component {
   constructor(props) {
@@ -191,7 +191,9 @@ class CourseAvailabilityComponentFullLicence extends Component {
                     selectedLicenceType={selectedLicenceType}
                     onUpdate={onUpdate}
                     licences={
-                      bike_hire === 'manual' ? manualLicences : autoLicences
+                      bike_hire === 'manual' || bike_hire === 'BIKE_TYPE_MANUAL'
+                        ? manualLicences
+                        : autoLicences
                     }
                   />
                   <PackagePicker
