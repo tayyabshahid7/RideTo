@@ -348,6 +348,8 @@
 
 .wrap {
   padding: 0;
+  height: 96px;
+  text-align: center;
 }
 
 .slider {
@@ -391,7 +393,7 @@
   text-align: left;
   // padding: 0px 16px 0px 16px;
   margin-top: 6px;
-  margin-bottom: 16px;
+  // margin-bottom: 16px;
 }
 
 .moreResults {
@@ -410,5 +412,22 @@
     margin: 0;
 
     color: #141414;
+  }
+}
+
+.outer {
+  width: 100%; /* fallback if needed */
+  width: calc(100% - 4em);
+  max-width: 600px;
+  height: 100px;
+  white-space: nowrap;
+  position: relative;
+  overflow-x: scroll;
+  overflow-y: hidden;
+
+  div {
+    display: inline-block;
+    zoom: 1;
+    margin-right: 8px;
   }
 }

@@ -21,16 +21,21 @@ export default function AvailableDateBox({
 
   if (index === arrSize - 1) {
     return (
-      <button className={styles.box} onClick={moreDatesOnClick}>
-        <span className={styles.moreDates}>More dates</span>
-      </button>
+      <div>
+        <button className={styles.wrapper} onClick={moreDatesOnClick}>
+          <span className={styles.moreDates}>More </span>
+          <span className={styles.moreDates}>dates</span>
+        </button>
+      </div>
     )
   }
   return (
-    <button className={styles.box} onClick={onClick}>
-      <span className={styles.date}>{formattedDate}</span>
-      <span className={styles.time}>{formattedTime}</span>
-      <span className={styles.price}>{formattedPrice}</span>
-    </button>
+    <div>
+      <button className={styles.box} onClick={onClick}>
+        <span className={styles.date}>{formattedDate}</span>
+        <span className={styles.time}>{formattedTime}</span>
+        <span className={styles.price}>{formattedPrice}</span>
+      </button>
+    </div>
   )
 }
