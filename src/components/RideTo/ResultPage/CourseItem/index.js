@@ -168,10 +168,12 @@ class CourseItem extends Component {
       dots: false,
       infinite: false,
       arrows: false,
-      speed: 1000,
+      speed: 3000,
       slidesToShow: 4,
       className: styles.slider,
       swipeToSlide: true,
+      cssEase: 'linear',
+      variableWidth: true,
 
       responsive: [
         {
