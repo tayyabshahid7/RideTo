@@ -1,6 +1,5 @@
 import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
-import RideToSlider from 'components/RideToSlider'
 import React, { Component, Fragment } from 'react'
 import { parseQueryString } from 'services/api'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
@@ -164,39 +163,6 @@ class CourseItem extends Component {
 
     const isTypeform = this.isFullLicenceTypeform(course)
 
-    const settings = {
-      dots: false,
-      infinite: false,
-      arrows: false,
-      speed: 3000,
-      slidesToShow: 4,
-      className: styles.slider,
-      swipeToSlide: true,
-      cssEase: 'linear',
-      variableWidth: true,
-
-      responsive: [
-        {
-          breakpoint: 460,
-          settings: {
-            slidesToShow: 3
-          }
-        },
-        {
-          breakpoint: 354,
-          settings: {
-            slidesToShow: 2.8
-          }
-        },
-        {
-          breakpoint: 300,
-          settings: {
-            slidesToShow: 2.5
-          }
-        }
-      ]
-    }
-
     if (isTypeform) {
       loadTypeformScript()
     }
@@ -347,7 +313,7 @@ class CourseItem extends Component {
                         Availability
                       </span>
                       <div className={classnames(styles.wrap)}>
-                        <RideToSlider settings={settings}>
+                        <div className={styles.outer}>
                           {availableDates.map((item, index) => {
                             const { date, time, price } = item
                             return (
@@ -367,7 +333,7 @@ class CourseItem extends Component {
                               />
                             )
                           })}
-                        </RideToSlider>
+                        </div>
                       </div>
                       {unavaiableDate && selectedDate && (
                         <div className={styles.moreResults}>

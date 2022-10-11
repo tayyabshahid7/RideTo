@@ -50,15 +50,32 @@
   color: #141414;
 }
 
-.moreDates {
+.wrapper {
+  text-align: center;
+  box-sizing: 0;
+  padding: 8px 15px;
+  justify-content: center;
+
   font-family: var(--font-inter);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 1.5em;
-  overflow: hidden;
-  word-wrap: break-word;
-  padding: 0px 10px;
-
+  line-height: 1em;
   color: #141414;
+
+  width: 99px;
+  height: 68px;
+  white-space: normal;
+  outline: none;
+  border: 0;
+
+  background: #deedf2;
+  &:hover,
+  &:active {
+    border: 1px solid #141414;
+  }
+  &:active,
+  &:focus {
+    outline: none;
+  }
 }
