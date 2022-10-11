@@ -168,7 +168,7 @@ class CourseItem extends Component {
       dots: false,
       infinite: false,
       arrows: false,
-      speed: 500,
+      speed: 1000,
       slidesToShow: 4,
       className: styles.slider,
       swipeToSlide: true,
