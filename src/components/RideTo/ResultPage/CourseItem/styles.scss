@@ -44,7 +44,7 @@
   justify-content: space-between;
   padding: 28px 30px;
   @media (max-width: 768px) {
-    padding: 20px 24px 10px;
+    padding: 20px 16px 10px;
   }
   @media (min-width: 769px) {
     max-width: 365px;
@@ -158,7 +158,8 @@
 
   @media (max-width: 768px) {
     justify-content: space-between;
-    padding: 0px 0px 10px 5px;
+    padding-left: 16px;
+    padding-right: 0;
   }
 
   @media (min-width: 769px) {
@@ -346,6 +347,7 @@
 }
 
 .wrap {
+  padding: 0;
 }
 
 .slider {
@@ -367,7 +369,7 @@
     }
 
     .slick-list {
-      // margin: 0 -8px;
+      margin-left: 0;
     }
     .slick-prev::before,
     .slick-next::before {
@@ -387,8 +389,9 @@
   line-height: 16px;
   vertical-align: top;
   text-align: left;
-  padding: 0px 16px 0px 16px;
-  margin-top: 5px;
+  // padding: 0px 16px 0px 16px;
+  margin-top: 6px;
+  margin-bottom: 16px;
 }
 
 .moreResults {

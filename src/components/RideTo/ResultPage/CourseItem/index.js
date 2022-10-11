@@ -341,7 +341,9 @@ class CourseItem extends Component {
                   )}
                   {courseType !== 'FULL_LICENCE' && (
                     <Fragment>
-                      <p className={styles.availabilityText}>Availability</p>
+                      <span className={styles.availabilityText}>
+                        Availability
+                      </span>
                       <div className={classnames(styles.wrap)}>
                         <RideToSlider settings={settings}>
                           {availableDates.map((item, index) => {
