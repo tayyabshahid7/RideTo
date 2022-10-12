@@ -11,10 +11,6 @@ import LicenceInput from 'components/RideTo/LicenceInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Select from 'components/RideTo/Select'
 import React, { Component } from 'react'
-import {
-  isPossiblePhoneNumber,
-  parsePhoneNumber
-} from 'react-phone-number-input'
 
 import {
   CardCVCElement,
@@ -122,14 +118,11 @@ class UserDetails extends Component {
 
   validatePhone(e) {
     const { handleErrors, errors, getErrorDivId } = this.props
-
-    const phoneString = e.target.value.toString()
-    const phoneNumber = parsePhoneNumber(phoneString)
-
-    const isPossibleNumber = isPossiblePhoneNumber(phoneString)
-    const isNumberFromUK = phoneNumber.country === 'GB'
-
-    if (!isPossibleNumber || !isNumberFromUK) {
+    if (
+      !e.target.value.match(
+        /^(((\+44\s?\d{4}|\(?0\d{4}\)?)\s?\d{3}\s?\d{3})|((\+44\s?\d{3}|\(?0\d{3}\)?)\s?\d{3}\s?\d{4})|((\+44\s?\d{2}|\(?0\d{2}\)?)\s?\d{4}\s?\d{4}))(\s?\#(\d{4}|\d{3}))?$/
+      )
+    ) {
       errors['phone'] = 'Invalid phone number'
       if (!errors.divId) errors.divId = getErrorDivId('phone')
       handleErrors({ ...errors })
