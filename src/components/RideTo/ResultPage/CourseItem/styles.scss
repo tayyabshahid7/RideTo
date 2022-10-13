@@ -418,13 +418,15 @@
 .outer {
   width: 100%;
   max-width: 520px;
-  height: 100px;
+  height: 96px;
+  display: inline-flex;
   white-space: nowrap;
   position: absolute;
   overflow-x: scroll;
   overflow-y: hidden;
   padding-top: 16px;
   padding-right: 23px;
+  margin-bottom: auto;
 
   div {
     display: inline-block;

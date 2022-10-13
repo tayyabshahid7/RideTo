@@ -21,10 +21,10 @@ export default function AvailableDateBox({
 
   if (index === arrSize - 1) {
     return (
-      <div>
-        <button className={styles.moreDatesBox} onClick={moreDatesOnClick}>
-          <p>More</p>
-          <p>dates</p>
+      <div className={styles.AvailableDateBoxDiv} onClick={moreDatesOnClick}>
+        <button>
+          <span>More</span>
+          <span>dates</span>
         </button>
       </div>
     )
