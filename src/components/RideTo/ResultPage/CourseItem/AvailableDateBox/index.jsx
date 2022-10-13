@@ -22,9 +22,9 @@ export default function AvailableDateBox({
   if (index === arrSize - 1) {
     return (
       <div>
-        <button className={styles.wrapper} onClick={moreDatesOnClick}>
-          <span className={styles.moreDates}>More </span>
-          <span className={styles.moreDates}>dates</span>
+        <button className={styles.moreDatesBox} onClick={moreDatesOnClick}>
+          <p>More</p>
+          <p>dates</p>
         </button>
       </div>
     )
