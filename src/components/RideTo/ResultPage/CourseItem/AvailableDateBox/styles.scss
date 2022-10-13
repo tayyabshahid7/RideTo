@@ -1,14 +1,13 @@
 .box {
-  display: flex;
+  width: 99px;
+  height: 68px;
+  display: flex !important;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding: 8px 10px;
   gap: 4px;
   border: 1px;
-
-  width: 99px;
-  height: 68px;
 
   background: #deedf2;
   &:hover,
@@ -45,29 +44,25 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
-  /* identical to box height, or 114% */
-
   color: #141414;
 }
 
-.wrapper {
-  text-align: center;
-  box-sizing: 0;
-  padding: 8px 15px;
-  justify-content: center;
+.moreDatesBox {
+  width: 98px;
+  height: 68px;
+  display: flex !important;
+  flex-direction: column;
+  padding: 6px 12px;
+  border: 0;
 
   font-family: var(--font-inter);
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
-  line-height: 1em;
+  line-height: 16px;
   color: #141414;
 
-  width: 99px;
-  height: 68px;
-  white-space: normal;
-  outline: none;
-  border: 0;
+  text-align: center;
 
   background: #deedf2;
   &:hover,
@@ -77,5 +72,9 @@
   &:active,
   &:focus {
     outline: none;
+  }
+
+  p {
+    margin: 0;
   }
 }
