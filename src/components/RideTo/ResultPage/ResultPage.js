@@ -794,8 +794,8 @@ class ResultPage extends Component {
           showCourseTypeInfo={this.showCourseTypeInfo}
         />
         <Container className={styles.pageContainer}>
-          <Row>
-            <Col>
+          <Row className={styles.row}>
+            <Col className={styles.col}>
               <Loading
                 loading={loading}
                 position="top"
