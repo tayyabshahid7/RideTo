@@ -192,6 +192,10 @@
   font-family: var(--font-rift-bold);
   line-height: 29px;
   margin-bottom: 50px;
+
+  @media (max-width: 575px) {
+    margin-left: 16px;
+  }
 }
 
 .instruction {
@@ -442,5 +446,19 @@
     font-size: 15px !important;
     font-weight: normal;
     text-decoration: underline;
+  }
+}
+
+.row {
+  @media (max-width: 576px) {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}
+
+.col {
+  @media (max-width: 576px) {
+    padding-right: 0;
+    padding-left: 0;
   }
 }
