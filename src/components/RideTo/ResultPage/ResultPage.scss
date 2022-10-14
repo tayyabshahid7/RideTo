@@ -451,14 +451,14 @@
 
 .row {
   @media (max-width: 576px) {
-    margin-right: 0;
-    margin-left: 0;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
   }
 }
 
 .col {
   @media (max-width: 576px) {
-    padding-right: 0;
-    padding-left: 0;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
   }
 }
