@@ -418,6 +418,7 @@
 
 .outer {
   width: 100%;
+  max-width: calc(100vw - 20px);
   height: 96px;
   display: inline-flex;
   white-space: nowrap;
