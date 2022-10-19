@@ -93,9 +93,13 @@ class CourseItem extends Component {
     this.props.handleReviewClick(course)
   }
 
-  nextDateAvailableClicked = (course, date) => {
+  nextDateAvailableClicked = (course, date = null) => {
     this.handleScroll()
-    this.props.handleNextAvailableClick(course, date)
+    if (date) {
+      this.props.handleNextAvailableClick(course, date)
+    } else {
+      this.props.handlePriceClick(course)
+    }
   }
 
   checkBankHoliday = date => {
@@ -184,7 +188,7 @@ class CourseItem extends Component {
           className={classnames(styles.container, className)}>
           <div
             className={styles.photo}
-            onClick={() => this.detailClicked(course)}>
+            onClick={() => this.priceClicked(course)}>
             <LazyLoadImage
               src={course.image_thumbnail || course.image}
               className={styles.image}
@@ -199,7 +203,7 @@ class CourseItem extends Component {
                 <div>
                   <button
                     className={styles.courseName}
-                    onClick={() => this.detailClicked(course)}>
+                    onClick={() => this.priceClicked(course)}>
                     {course.location_slug.replace('-', ' ')}
                   </button>
                 </div>
@@ -218,7 +222,7 @@ class CourseItem extends Component {
               </div>
               <div
                 className={styles.place}
-                onClick={() => this.detailClicked(course)}>
+                onClick={() => this.priceClicked(course)}>
                 {course.place}, {course.postcode}
               </div>
               <div className={styles.icons}>

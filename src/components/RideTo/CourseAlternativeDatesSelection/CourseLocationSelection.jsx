@@ -584,9 +584,8 @@ class CourseLocationSelection extends React.Component {
             </h5>
 
             <p className={styles.optionSupTitle}>
-              Your chosen instructor has updated their calendar with available
-              dates. Please click ‘select’ to view and request an alternative
-              date which works for you.
+              Your chosen instructor has updated their calendar with the latest
+              available dates below. Please select a date which works for you.
             </p>
           </div>
 

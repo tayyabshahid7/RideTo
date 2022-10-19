@@ -127,7 +127,9 @@ class CourseAlternativeDatesSelection extends React.Component {
     const trainingPrice = context.trainingPrice
     const bankHolidays = context.bankHolidays
 
-    const courses = context.courses ? JSON.parse(context.courses) : null
+    const coursesParsed = JSON.parse(context.courses)
+
+    const courses = coursesParsed.length !== 0 ? coursesParsed : null
 
     const loading = false
 

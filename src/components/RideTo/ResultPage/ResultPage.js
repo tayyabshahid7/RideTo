@@ -98,6 +98,10 @@ class ResultPage extends Component {
     this.handleCloseMap = this.handleCloseMap.bind(this)
     this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
 
+    this.loadCourseDetailNextAvailableDate = this.loadCourseDetailNextAvailableDate.bind(
+      this
+    )
+
     window.sessionStorage.removeItem('trainings')
 
     this.bottomAnchor = React.createRef()
@@ -169,7 +173,24 @@ class ResultPage extends Component {
 
   loadCourseDetail = async (course, activeTab, date = null) => {
     const selectedCourse = await fetchSingleRidetoCourse(course.id)
-    selectedCourse.next_date_available = date || course.next_date_available
+
+    if (date) {
+      selectedCourse.next_date_available = date
+    } else {
+      selectedCourse.next_date_available = course.next_date_available
+    }
+
+    this.setState({
+      selectedCourse,
+      activeTab: activeTab,
+      instantDate: this.props.date
+    })
+  }
+
+  loadCourseDetailNextAvailableDate = async (course, activeTab = 3, date) => {
+    const selectedCourse = await fetchSingleRidetoCourse(course.id)
+
+    selectedCourse.next_date_available = date
 
     this.setState({
       selectedCourse,
@@ -936,7 +957,11 @@ class ResultPage extends Component {
                                       this.loadCourseDetail(course, 2)
                                     }
                                     handleNextAvailableClick={(course, date) =>
-                                      this.loadCourseDetail(course, 3, date)
+                                      this.loadCourseDetailNextAvailableDate(
+                                        course,
+                                        3,
+                                        date
+                                      )
                                     }
                                   />
                                 )
@@ -974,7 +999,11 @@ class ResultPage extends Component {
                                     this.loadCourseDetail(course, 2)
                                   }
                                   handleNextAvailableClick={(course, date) =>
-                                    this.loadCourseDetail(course, 3, date)
+                                    this.loadCourseDetailNextAvailableDate(
+                                      course,
+                                      3,
+                                      date
+                                    )
                                   }
                                 />
                               ) : (
