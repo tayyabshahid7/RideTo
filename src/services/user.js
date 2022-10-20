@@ -52,8 +52,12 @@ export const fetchOrder = async orderId => {
   return await get(`users/order/${orderId}`, {}, false)
 }
 
-export const cancelOrder = async orderId => {
-  return await post(`users/cancel-order/${orderId}`)
+export const cancelOrder = async (orderId, cancellationReason) => {
+  return await post(
+    `users/cancel-order/${orderId}`,
+    { reason: cancellationReason },
+    false
+  )
 }
 
 export const getChecklist = () => {
