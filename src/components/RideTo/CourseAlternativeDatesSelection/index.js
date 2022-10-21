@@ -198,7 +198,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                     bankHolidays={bankHolidays}
                   />
 
-                  {courses && (
+                  {!paymentType === 'klarna' && courses && (
                     <AlternativeLocationsOption
                       index={2}
                       userName={userName}
@@ -213,7 +213,10 @@ class CourseAlternativeDatesSelection extends React.Component {
                     />
                   )}
 
-                  <ContactUsOption index={courses ? 3 : 2} orderId={orderId} />
+                  <ContactUsOption
+                    index={courses && !paymentType === 'klarna' ? 3 : 2}
+                    orderId={orderId}
+                  />
                 </div>
               </div>
             </Fragment>
