@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
 import classnames from 'classnames'
-import styles from './styles.scss'
+import React, { Component } from 'react'
 import { calcFullLicencePrices } from 'services/course'
+import styles from './styles.scss'
 
 const packages = [
   {
@@ -41,9 +41,9 @@ class PackagePicker extends Component {
   }
 
   displayPrice(pricePerHour, hours) {
-    const [now, later] = calcFullLicencePrices(pricePerHour, hours)
+    const total = calcFullLicencePrices(pricePerHour, hours)
 
-    return `£${now} now, £${later} later`
+    return `£${total}`
   }
 
   onShowAllClick = () => {
