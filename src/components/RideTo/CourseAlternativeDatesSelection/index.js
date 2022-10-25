@@ -170,6 +170,8 @@ class CourseAlternativeDatesSelection extends React.Component {
       bankHolidays
     } = this.state
 
+    const showAlternatives = paymentType !== 'klarna' && courses
+
     if (loading) return <div>Loading ...</div>
 
     return (
@@ -200,7 +202,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                     bankHolidays={bankHolidays}
                   />
 
-                  {!paymentType === 'klarna' && courses && (
+                  {showAlternatives && (
                     <AlternativeLocationsOption
                       index={2}
                       userName={userName}
@@ -216,7 +218,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                   )}
 
                   <ContactUsOption
-                    index={courses && !paymentType === 'klarna' ? 3 : 2}
+                    index={showAlternatives ? 3 : 2}
                     orderId={orderId}
                   />
                 </div>
