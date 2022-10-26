@@ -14,7 +14,9 @@ export default function AvailableDateBox({
 }) {
   const formattedPrice = new Intl.NumberFormat('en-GB', {
     style: 'currency',
-    currency: 'GBP'
+    currency: 'GBP',
+    maximumFractionDigits: 0,
+    minimumFractionDigits: 0
   }).format(price / 100)
   const formattedDate = moment(date).format('ddd MMM DD')
   const formattedTime = moment(time, 'h:mm').format('hh:mma')
