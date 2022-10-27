@@ -12,10 +12,7 @@ export default function AvailableDateBox({
   onClick,
   moreDatesOnClick
 }) {
-  const formattedPrice = new Intl.NumberFormat('en-GB', {
-    style: 'currency',
-    currency: 'GBP'
-  }).format(price / 100)
+  const formattedPrice = Math.trunc(price / 100)
 
   const formattedDate = moment(date).format('ddd MMM DD')
   const formattedTime = moment(time, 'h:mm').format('hh:mma')
@@ -35,7 +32,7 @@ export default function AvailableDateBox({
       <button className={styles.box} onClick={onClick}>
         <span className={styles.date}>{formattedDate}</span>
         <span className={styles.time}>{formattedTime}</span>
-        <span className={styles.price}>{formattedPrice}</span>
+        <span className={styles.price}>£{formattedPrice}</span>
       </button>
     </div>
   )
