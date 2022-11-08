@@ -14,6 +14,8 @@ import { addWeekdays } from 'utils/helper'
 import CancellationReasonSelect from './CancellationReason'
 import styles from './OrderDetails.scss'
 
+import Loading from 'components/Loading'
+
 const getFriendlyStatus = status => {
   if (status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION') {
     return 'Pending Instructor Confirmation'
@@ -73,7 +75,8 @@ class OrderDetails extends React.Component {
       isOrderCancelled: false,
       message: '',
       showMessage: false,
-      cancellationReasonValue: ''
+      cancellationReasonValue: '',
+      loading: false
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -188,7 +191,8 @@ class OrderDetails extends React.Component {
     if (isAuthenticated()) {
       const user = getUserProfile(getToken())
       this.setState({
-        cancelButtonIsClicked: !this.state.cancelButtonIsClicked
+        cancelButtonIsClicked: !this.state.cancelButtonIsClicked,
+        loading: true
       })
 
       if (user) {
@@ -196,7 +200,8 @@ class OrderDetails extends React.Component {
           this.setState({
             cancellationReasonValue: 'NO_SET',
             cancelButtonIsClicked: true,
-            isOrderCancelled: false
+            isOrderCancelled: false,
+            loading: false
           })
           return
         }
@@ -205,7 +210,8 @@ class OrderDetails extends React.Component {
           this.setState({
             messageCancelOrder: true,
             message: result.message,
-            isOrderCancelled: true
+            isOrderCancelled: true,
+            loading: false
           })
           onOrderUpdate(user.username)
         } catch (error) {
@@ -213,7 +219,8 @@ class OrderDetails extends React.Component {
           this.setState({
             messageCancelOrder: true,
             message: response.data.message,
-            isOrderCancelled: false
+            isOrderCancelled: false,
+            loading: false
           })
         }
       }
@@ -224,7 +231,7 @@ class OrderDetails extends React.Component {
 
   render() {
     const { order } = this.props
-    const { reviewSubmitted, cancellationReasonValue } = this.state
+    const { reviewSubmitted, cancellationReasonValue, loading } = this.state
     const { training_location } = order
     const marker = {
       id: 1,
@@ -282,13 +289,15 @@ class OrderDetails extends React.Component {
               !this.state.cancelButtonIsClicked && (
                 <div className={styles.rowContainer}>
                   <div>
-                    <RideToButton
-                      alt
-                      id="order-cancel-btn"
-                      onClick={this.handleClick}
-                      className={styles.cancelButton}>
-                      Cancel Order
-                    </RideToButton>
+                    <Loading loading={loading}>
+                      <RideToButton
+                        alt
+                        id="order-cancel-btn"
+                        onClick={this.handleClick}
+                        className={styles.cancelButton}>
+                        Cancel Order
+                      </RideToButton>
+                    </Loading>
                   </div>
                   <div>
                     {this.state.messageNoticePeriod && (
@@ -340,6 +349,7 @@ class OrderDetails extends React.Component {
                     placeholder="Select reason for cancellation"
                     onChange={this.handleCancellationReasonChange}
                   />
+
                   <div className={classnames(styles.cancelButton__item)}>
                     <RideToButton
                       alt
@@ -351,6 +361,7 @@ class OrderDetails extends React.Component {
                       Cancel Order
                     </RideToButton>
                   </div>
+
                   <div className={styles.keepButton__item}>
                     <RideToButton
                       alt

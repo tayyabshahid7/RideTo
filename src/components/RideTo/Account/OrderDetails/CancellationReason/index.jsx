@@ -24,7 +24,6 @@ const VALUES = [
 ]
 
 function CancellationReasonSelect({ value, onChange, placeholder }) {
-  console.log(value)
   const warn =
     value === 'NO_SET' || value === undefined
       ? classnames(styles.select, styles.warn)
