@@ -1,0 +1,73 @@
+.box {
+  width: 99px;
+  height: 68px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px 10px;
+  gap: 4px;
+  border: 1px;
+
+  background: #deedf2;
+  &:hover,
+  &:active {
+    border: 1px solid #141414;
+  }
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+.date {
+  font-family: var(--font-inter);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  color: #141414;
+}
+
+.time {
+  font-family: var(--font-inter);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 16px;
+  color: #141414;
+}
+
+.price {
+  font-family: var(--font-inter);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  color: #141414;
+}
+
+.AvailableDateBoxDiv {
+  width: 98px !important;
+  height: 68px !important;
+  background: #deedf2 !important;
+
+  button {
+    width: 98px !important;
+    height: 68px !important;
+    outline: none;
+    border: none;
+    background: none;
+    align-items: center !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    font-family: var(--font-inter);
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    font-size: 14px;
+    color: #141414;
+  }
+}

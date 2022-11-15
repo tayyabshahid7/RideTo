@@ -21,16 +21,22 @@ class CourseAvailabilityComponent extends React.Component {
     let date = this.props.supplier.next_date_available
       ? new Date(this.props.supplier.next_date_available)
       : new Date()
+
     if (moment().isAfter(moment(date))) {
       date = moment().toDate()
     }
+
     if (this.props.date && moment(this.props.date).isAfter(moment(date))) {
       date = moment(this.props.date).toDate()
     }
+
     if (!this.props.supplier.instant_book) {
       if (
         this.props.supplier.excluded_dates.includes(
           this.props.supplier.next_date_available
+        ) ||
+        this.props.supplier.excluded_days.includes(
+          moment(this.props.supplier.next_date_available).format('dddd')
         )
       ) {
         this.props.onUpdate({ instantDate: null })
@@ -112,12 +118,12 @@ class CourseAvailabilityComponent extends React.Component {
 
   componentDidMount() {
     this._isMounted = true
-    const { courseType, supplier } = this.props
+    const { supplier } = this.props
     if (supplier.instant_book) {
       this.setState({ loadingCourses: true }, () => this.loadCourses())
     }
 
-    this._isMounted && this.getNextDateAvailable(supplier.id, courseType)
+    // this._isMounted && this.getNextDateAvailable(supplier.id, courseType)
   }
 
   componentDidUpdate(prevProps, prevState) {
