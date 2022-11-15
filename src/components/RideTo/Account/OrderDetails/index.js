@@ -331,7 +331,7 @@ class OrderDetails extends React.Component {
               )}
             {!this.state.isOrderCancelled && this.state.cancelButtonIsClicked && (
               <div className={styles.rowContainer}>
-                {this.state.isOrderPending && (
+                {!this.state.isOrderPending && (
                   <p className={styles.pMessage}>
                     Cancelling your order will result in a £25 admin fee,
                     deducted from your refund. Are you sure you want to cancel
