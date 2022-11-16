@@ -4,6 +4,7 @@ import React, { Component, Fragment } from 'react'
 import { parseQueryString } from 'services/api'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
 import AvailableDateBox from './AvailableDateBox'
+import MoreDatesBox from './AvailableDateBox/moreDates'
 
 import classnames from 'classnames'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
@@ -323,11 +324,9 @@ class CourseItem extends Component {
                             return (
                               <AvailableDateBox
                                 key={index}
-                                index={index}
                                 date={date}
                                 time={time}
                                 price={price}
-                                arrSize={availableDates.length}
                                 onClick={() =>
                                   this.nextDateAvailableClicked(course, date)
                                 }
@@ -337,6 +336,9 @@ class CourseItem extends Component {
                               />
                             )
                           })}
+                          <MoreDatesBox
+                            moreDatesOnClick={() => this.priceClicked(course)}
+                          />
                         </div>
                       </div>
                       {unavaiableDate && selectedDate && (
