@@ -42,9 +42,20 @@ class PaymentContainer extends React.Component {
 
     const query = parseQueryString(window.location.search.slice(1))
 
-    const trainings = JSON.parse(
-      window.sessionStorage.getItem('widgetTrainings')
-    )
+    let trainings = JSON.parse(window.sessionStorage.getItem('widgetTrainings'))
+
+    if (!trainings) {
+      trainings = [
+        {
+          bike_type: query.hire,
+          course_type: query.courseType,
+          requested_date: query.requestedDate,
+          requested_time: query.requestedTime,
+          school_course_id: query.schoolId,
+          supplier_id: query.supplierId
+        }
+      ]
+    }
 
     const isRenewal =
       trainings && trainings[0].course_type === 'LICENCE_CBT_RENEWAL'
