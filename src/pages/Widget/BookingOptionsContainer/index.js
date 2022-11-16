@@ -1,24 +1,24 @@
-import React from 'react'
-import moment from 'moment'
 import _ from 'lodash'
+import moment from 'moment'
+import React from 'react'
 import { Redirect } from 'react-router-dom'
 
+import { LICENCE_TYPES } from 'common/constants'
 import CourseAvailabilityComponentFullLicence from 'components/RideTo/ResultPage/CourseDetailPanel/CourseAvailabilityComponentFullLicence.js'
-import Calendar from 'pages/Widget/components/Calendar'
-import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
-import CourseSelect from 'pages/Widget/components/CourseSelect'
 import BookingOption from 'pages/Widget/components/BookingOption'
+import Calendar from 'pages/Widget/components/Calendar'
+import CourseSelect from 'pages/Widget/components/CourseSelect'
+import MotorbikeOptions from 'pages/Widget/components/MotorbikeOptions'
 import { fetchWidgetCourses, getCourseTypes } from 'services/course'
 import {
-  showOwnBikeHire,
-  getTotalOrderPrice,
   asPoundSterling,
   getEarliestDate,
-  getValidCourses
+  getTotalOrderPrice,
+  getValidCourses,
+  showOwnBikeHire
 } from 'services/widget'
-import { LICENCE_TYPES } from 'common/constants'
-import ButtonArrowWhite from '../../../assets/images/rideto/ButtonArrowWhite.svg'
 import ArrowLeft from '../../../assets/images/rideto/ArrowLeft.svg'
+import ButtonArrowWhite from '../../../assets/images/rideto/ButtonArrowWhite.svg'
 import styles from './BookingOptionsContainer.scss'
 
 import classnames from 'classnames'
@@ -233,7 +233,6 @@ class BookingOptionsContainer extends React.Component {
         ? selectedCourses[0]
         : availableCourses[0]
       data.selectedBikeHire = selectedBikeHire
-
     }
 
     if (isFullLicence) {
@@ -399,7 +398,11 @@ class BookingOptionsContainer extends React.Component {
     this.setState({
       submit: `/widget/${slug}/payment/${
         isFullLicence ? 'FULL_LICENCE' : selectedCourse.id
-      }?hire=${selectedBikeHire}`
+      }?hire=${selectedBikeHire}&schoolId=${selectedCourse.id}&courseType=${
+        selectedCourse.course_type.constant
+      }&supplierId=${selectedSupplier.id}&requestedDate=${
+        selectedCourse.date
+      }&requestedTime=${selectedCourse.time}`
     })
   }
 
