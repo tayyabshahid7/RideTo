@@ -257,6 +257,10 @@
   font-size: 12px;
   margin-top: 20px;
   line-height: 1.2;
+
+  @media (min-width: 768px) {
+    margin-top: 40px;
+  }
 }
 
 .mapButton {

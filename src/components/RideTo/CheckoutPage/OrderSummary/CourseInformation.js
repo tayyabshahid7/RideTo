@@ -1,13 +1,13 @@
-import React, { Fragment, useState, useEffect } from 'react'
-import moment from 'moment'
-import styles from './styles.scss'
-import { getCourseTitle } from 'services/course'
-import MapComponent from 'components/RideTo/MapComponent'
+import axios from 'axios'
+import classnames from 'classnames'
+import { BIKE_HIRE } from 'common/constants'
 import OrderIncluded from 'components/RideTo/CheckoutPage/OrderIncluded'
 import RefundInfo from 'components/RideTo/CheckoutPage/RefundInfo'
-import { BIKE_HIRE } from 'common/constants'
-import classnames from 'classnames'
-import axios from 'axios'
+import MapComponent from 'components/RideTo/MapComponent'
+import moment from 'moment'
+import React, { Fragment, useEffect, useState } from 'react'
+import { getCourseTitle } from 'services/course'
+import styles from './styles.scss'
 
 function renderRow(title, content, index, priceHighlight = false) {
   return (
@@ -50,12 +50,9 @@ async function addWeekdays(date, days) {
 function CourseInformation({
   checkoutData,
   supplier,
-  priceInfo,
   showMap,
   handleMapButtonClick,
-  trainings,
-  handlePOMToggleClick,
-  hasPOM
+  trainings
 }) {
   const {
     courseType,
@@ -145,15 +142,6 @@ function CourseInformation({
           )}
         </div>
 
-        {priceInfo.bike_hire_cost > 0 && bike_hire !== BIKE_HIRE.NO ? (
-          <div className={styles.bikeHireCost}>
-            {renderRow(
-              'Bike Hire Cost',
-              `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
-              101
-            )}
-          </div>
-        ) : null}
         <div className={styles.rowItem}>
           <div className={styles.subtitle}>REFUND POLICY</div>
           {diffDays !== undefined && (
