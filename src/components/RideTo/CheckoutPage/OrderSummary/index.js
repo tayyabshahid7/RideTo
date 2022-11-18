@@ -2,6 +2,7 @@ import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import classnames from 'classnames'
 import Checkbox from 'components/Checkbox'
 // import Input from 'components/RideTo/Input'
+import { BIKE_HIRE } from 'common/constants'
 import Loading from 'components/Loading'
 import RideToButton from 'components/RideTo/Button'
 import CourseInformation from 'components/RideTo/CheckoutPage/OrderSummary/CourseInformation'
@@ -58,10 +59,19 @@ class OrderSummary extends Component {
 
   renderPrices(isFullLicence) {
     const { checkoutData, priceInfo, trainings } = this.props
-    const { addons } = checkoutData
+    const { addons, bike_hire } = checkoutData
     let { price, fee, discount } = priceInfo
     return (
       <div>
+        {priceInfo.bike_hire_cost > 0 && bike_hire !== BIKE_HIRE.NO && (
+          <div className={styles.discountRow}>
+            {this.renderRow(
+              `Bike Hire Cost`,
+              `£${(priceInfo.bike_hire_cost / 100.0).toFixed(2)}`,
+              200
+            )}
+          </div>
+        )}
         {fee > 0 && (
           <div className={styles.discountRow}>
             {this.renderRow(
