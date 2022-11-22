@@ -12,6 +12,7 @@ import CourseTypeDetails from 'components/RideTo/CourseTypeDetails'
 import FullLicencePayment from 'components/RideTo/ResultPage/CourseDetailPanel/FullLicencePayment'
 import React, { Component, Fragment } from 'react'
 import Script from 'react-load-script'
+import { getCourseTitle } from 'services/course'
 import { checkAllowedDate } from 'services/date'
 import { capitalizeFirstLetter } from 'utils/helper'
 import { PoweredByStripe } from '../../../../assets/icons'
@@ -59,8 +60,8 @@ class OrderSummary extends Component {
 
   renderPrices(isFullLicence) {
     const { checkoutData, priceInfo, trainings } = this.props
-    const { addons, bike_hire } = checkoutData
-    let { price, fee, discount } = priceInfo
+    const { addons, bike_hire, courseType } = checkoutData
+    let { price, fee, discount, priceWithoutAddon } = priceInfo
     return (
       <div>
         {priceInfo.bike_hire_cost > 0 && bike_hire !== BIKE_HIRE.NO && (
@@ -96,6 +97,15 @@ class OrderSummary extends Component {
             {this.renderRow(
               'Discount',
               `- £${(discount / 100.0).toFixed(2)}`,
+              200
+            )}
+          </div>
+        )}
+        {priceWithoutAddon && (
+          <div className={styles.discountRow}>
+            {this.renderRow(
+              `${getCourseTitle(courseType)}`,
+              `£${(priceWithoutAddon / 100.0).toFixed(2)}`,
               200
             )}
           </div>
