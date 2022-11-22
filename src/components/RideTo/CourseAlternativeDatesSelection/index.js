@@ -127,7 +127,9 @@ class CourseAlternativeDatesSelection extends React.Component {
     const trainingPrice = context.trainingPrice
     const bankHolidays = context.bankHolidays
 
-    const courses = context.courses ? JSON.parse(context.courses) : null
+    const coursesParsed = JSON.parse(context.courses)
+
+    const courses = coursesParsed.length !== 0 ? coursesParsed : null
 
     const loading = false
 
@@ -168,6 +170,8 @@ class CourseAlternativeDatesSelection extends React.Component {
       bankHolidays
     } = this.state
 
+    const showAlternatives = paymentType !== 'klarna' && courses
+
     if (loading) return <div>Loading ...</div>
 
     return (
@@ -198,7 +202,7 @@ class CourseAlternativeDatesSelection extends React.Component {
                     bankHolidays={bankHolidays}
                   />
 
-                  {courses && (
+                  {showAlternatives && (
                     <AlternativeLocationsOption
                       index={2}
                       userName={userName}
@@ -213,7 +217,10 @@ class CourseAlternativeDatesSelection extends React.Component {
                     />
                   )}
 
-                  <ContactUsOption index={courses ? 3 : 2} orderId={orderId} />
+                  <ContactUsOption
+                    index={showAlternatives ? 3 : 2}
+                    orderId={orderId}
+                  />
                 </div>
               </div>
             </Fragment>

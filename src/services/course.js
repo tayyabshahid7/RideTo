@@ -749,6 +749,8 @@ export const getTrainingStatus = status => {
     return 'Not attended'
   } else if (status === 'TRAINING_PASSED') {
     return 'Completed'
+  } else if (status === 'TRAINING_CREATED') {
+    return 'Created'
   } else {
     return status
   }

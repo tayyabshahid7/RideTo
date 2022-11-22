@@ -135,6 +135,16 @@ class AlternativeLocationsOption extends React.Component {
       instantDate: this.props.date
     })
   }
+  loadCourseDetail = async (course, activeTab, date = null) => {
+    const selectedCourse = await fetchSingleRidetoCourse(course.id)
+    selectedCourse.next_date_available = date || course.next_date_available
+
+    this.setState({
+      selectedCourse,
+      activeTab: activeTab,
+      instantDate: this.props.date
+    })
+  }
 
   async handlePriceClick(course) {
     const selectedCourse = await fetchSingleRidetoCourse(course.id)
@@ -590,6 +600,9 @@ class AlternativeLocationsOption extends React.Component {
                   }}
                   handlePriceClick={this.handlePriceClick}
                   handleReviewClick={this.handleReviewClick}
+                  handleNextAvailableClick={(course, date) => {
+                    this.loadCourseDetail(course, 3, date)
+                  }}
                 />
               )
             })}

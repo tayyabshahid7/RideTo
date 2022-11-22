@@ -53,6 +53,10 @@
   line-height: normal;
   right: 0px;
   float: right;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 .keepButton {
@@ -61,15 +65,23 @@
   font-size: 14px;
   margin-top: 10px;
   line-height: normal;
+  &:focus {
+    outline: none;
+  }
+}
+
+.setupButton {
+  width: 100%;
+  justify-content: center;
 }
 
 .pMessage {
   color: red !important;
   font-weight: bold;
+  margin-bottom: 0;
 }
 
-
-.pMessage__changeDate{
+.pMessage__changeDate {
   position: static;
   display: inline-flex;
   float: right;
@@ -98,6 +110,12 @@
   text-align: right;
 }
 
+.rowContainerButtons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
 
 .cancelKeepButtons__list {
   list-style: none;
@@ -107,15 +125,17 @@
 }
 
 .cancelButton__item {
-  display: inline-flex;
-  justify-content: space-between;
-  line-height: 40px;
+  // display: inline-flex;
+  // justify-content: space-between;
+  // line-height: 40px;
 }
 
 .keepButton__item {
-  display: inline-flex;
-  float: right;
-  justify-content: space-between;
-  right: 0px;
-  line-height: inherit;
+}
+
+.pText {
+  font-size: 15px;
+  margin-top: 10px !important;
+  margin-bottom: 10px;
+  line-height: 16px;
 }

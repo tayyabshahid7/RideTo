@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useState } from 'react'
 
-import MapComponent from 'components/RideTo/MapComponent'
 import RideToButton from 'components/RideTo/Button'
-import { getTrainingStatus } from 'services/course'
+import MapComponent from 'components/RideTo/MapComponent'
 import moment from 'moment'
+import { getTrainingStatus } from 'services/course'
 import styles from './styles.scss'
 
 function UpComingCourse({ course, title, handleClick }) {
@@ -76,7 +76,7 @@ function UpComingCourse({ course, title, handleClick }) {
       {!isFullLicence && (
         <div>
           <h4>Date & time</h4>
-          {status === 'TRAINING_CONFIRMED'
+          {status === 'TRAINING_CONFIRMED' || status === 'TRAINING_CREATED'
             ? moment(
                 training.training_date_time ||
                   training.date ||

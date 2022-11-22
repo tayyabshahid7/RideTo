@@ -1,3 +1,4 @@
+import classnames from 'classnames'
 import { BikeHires, formatBikeConstant } from 'common/info'
 import DashboardReview from 'components/RideTo/Account/DashboardReview'
 import RideToButton from 'components/RideTo/Button'
@@ -10,7 +11,10 @@ import { showReview } from 'services/order'
 import { saveSupplierRating } from 'services/supplier'
 import { cancelOrder } from 'services/user'
 import { addWeekdays } from 'utils/helper'
+import CancellationReasonSelect from './CancellationReason'
 import styles from './OrderDetails.scss'
+
+import Loading from 'components/Loading'
 
 const getFriendlyStatus = status => {
   if (status === 'TRAINING_WAITING_SCHOOL_CONFIRMATION') {
@@ -70,12 +74,23 @@ class OrderDetails extends React.Component {
       messageNoticePeriod: false,
       isOrderCancelled: false,
       message: '',
-      showMessage: false
+      showMessage: false,
+      cancellationReasonValue: '',
+      loading: false
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleCancelOrder = this.handleCancelOrder.bind(this)
     this.handleClick = this.handleClick.bind(this)
+    this.handleCancellationReasonChange = this.handleCancellationReasonChange.bind(
+      this
+    )
+  }
+
+  handleCancellationReasonChange(event) {
+    this.setState({
+      cancellationReasonValue: event.target.value
+    })
   }
 
   async handleClick() {
@@ -172,19 +187,31 @@ class OrderDetails extends React.Component {
     const { order } = this.props
     const { onOrderUpdate } = this.props
     const { friendly_id } = order
+    const { cancellationReasonValue } = this.state
     if (isAuthenticated()) {
       const user = getUserProfile(getToken())
       this.setState({
-        cancelButtonIsClicked: !this.state.cancelButtonIsClicked
+        cancelButtonIsClicked: !this.state.cancelButtonIsClicked,
+        loading: true
       })
 
       if (user) {
+        if (!cancellationReasonValue) {
+          this.setState({
+            cancellationReasonValue: 'NO_SET',
+            cancelButtonIsClicked: true,
+            isOrderCancelled: false,
+            loading: false
+          })
+          return
+        }
         try {
-          const result = await cancelOrder(friendly_id)
+          const result = await cancelOrder(friendly_id, cancellationReasonValue)
           this.setState({
             messageCancelOrder: true,
             message: result.message,
-            isOrderCancelled: true
+            isOrderCancelled: true,
+            loading: false
           })
           onOrderUpdate(user.username)
         } catch (error) {
@@ -192,7 +219,8 @@ class OrderDetails extends React.Component {
           this.setState({
             messageCancelOrder: true,
             message: response.data.message,
-            isOrderCancelled: false
+            isOrderCancelled: false,
+            loading: false
           })
         }
       }
@@ -203,7 +231,7 @@ class OrderDetails extends React.Component {
 
   render() {
     const { order } = this.props
-    const { reviewSubmitted } = this.state
+    const { reviewSubmitted, cancellationReasonValue, loading } = this.state
     const { training_location } = order
     const marker = {
       id: 1,
@@ -261,13 +289,15 @@ class OrderDetails extends React.Component {
               !this.state.cancelButtonIsClicked && (
                 <div className={styles.rowContainer}>
                   <div>
-                    <RideToButton
-                      alt
-                      id="order-cancel-btn"
-                      onClick={this.handleClick}
-                      className={styles.cancelButton}>
-                      Cancel Order
-                    </RideToButton>
+                    <Loading loading={loading}>
+                      <RideToButton
+                        alt
+                        id="order-cancel-btn"
+                        onClick={this.handleClick}
+                        className={styles.cancelButton}>
+                        Cancel Order
+                      </RideToButton>
+                    </Loading>
                   </div>
                   <div>
                     {this.state.messageNoticePeriod && (
@@ -301,11 +331,6 @@ class OrderDetails extends React.Component {
               )}
             {!this.state.isOrderCancelled && this.state.cancelButtonIsClicked && (
               <div className={styles.rowContainer}>
-                {this.state.isOrderPending && (
-                  <p className={styles.pMessage}>
-                    Are you sure you want to cancel your pending order?
-                  </p>
-                )}
                 {!this.state.isOrderPending && (
                   <p className={styles.pMessage}>
                     Cancelling your order will result in a £25 admin fee,
@@ -314,19 +339,36 @@ class OrderDetails extends React.Component {
                   </p>
                 )}
 
-                <div className={styles.rowContainer}>
-                  <div className={styles.cancelButton__item}>
+                <div className={styles.rowContainerButtons}>
+                  <p className={styles.pText}>
+                    Let us know why you're cancelling, maybe we can help.
+                    (required)
+                  </p>
+                  <CancellationReasonSelect
+                    value={cancellationReasonValue}
+                    placeholder="Select reason for cancellation"
+                    onChange={this.handleCancellationReasonChange}
+                  />
+
+                  <div className={classnames(styles.cancelButton__item)}>
                     <RideToButton
                       alt
                       onClick={this.handleCancelOrder}
-                      className={styles.cancelButton}>
+                      className={classnames(
+                        styles.cancelButton,
+                        styles.setupButton
+                      )}>
                       Cancel Order
                     </RideToButton>
                   </div>
+
                   <div className={styles.keepButton__item}>
                     <RideToButton
                       alt
-                      className={styles.keepButton}
+                      className={classnames(
+                        styles.keepButton,
+                        styles.setupButton
+                      )}
                       onClick={() => {
                         this.setState({
                           cancelButtonIsClicked: !this.state

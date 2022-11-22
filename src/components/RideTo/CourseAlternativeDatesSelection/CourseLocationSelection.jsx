@@ -165,6 +165,17 @@ class CourseLocationSelection extends React.Component {
     })
   }
 
+  loadCourseDetail = async (course, activeTab, date = null) => {
+    const selectedCourse = await fetchSingleRidetoCourse(course.id)
+    selectedCourse.next_date_available = date || course.next_date_available
+
+    this.setState({
+      selectedCourse,
+      activeTab: activeTab,
+      instantDate: this.props.date
+    })
+  }
+
   onSelectDate(date) {
     const { handleSetDate } = this.props
     const { showDateSelectorModal } = this.state
@@ -573,9 +584,8 @@ class CourseLocationSelection extends React.Component {
             </h5>
 
             <p className={styles.optionSupTitle}>
-              Your chosen instructor has updated their calendar with available
-              dates. Please click ‘select’ to view and request an alternative
-              date which works for you.
+              Your chosen instructor has updated their calendar with the latest
+              available dates below. Please select a date which works for you.
             </p>
           </div>
 
@@ -593,6 +603,9 @@ class CourseLocationSelection extends React.Component {
               }}
               handlePriceClick={this.handlePriceClick}
               handleReviewClick={this.handleReviewClick}
+              handleNextAvailableClick={(course, date) => {
+                this.loadCourseDetail(course, 3, date)
+              }}
             />
           </div>
         </div>

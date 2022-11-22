@@ -204,7 +204,8 @@ export const getTrainingStatusOptions = (isRideTo = false) => {
       { id: 'TRAINING_CONFIRMED', name: 'Confirmed' },
       { id: 'TRAINING_FAILED', name: 'Not completed' },
       { id: 'TRAINING_NO_SHOW', name: 'Not attended' },
-      { id: 'TRAINING_PASSED', name: 'Completed' }
+      { id: 'TRAINING_PASSED', name: 'Completed' },
+      { id: 'TRAINING_CREATED', name: 'Created' }
     ]
   }
 
@@ -213,7 +214,8 @@ export const getTrainingStatusOptions = (isRideTo = false) => {
     { id: 'TRAINING_FAILED', name: 'Not completed' },
     { id: 'TRAINING_CANCELLED', name: 'Cancelled' },
     { id: 'TRAINING_NO_SHOW', name: 'Not attended' },
-    { id: 'TRAINING_PASSED', name: 'Completed' }
+    { id: 'TRAINING_PASSED', name: 'Completed' },
+    { id: 'TRAINING_CREATED', name: 'Created' }
   ]
 }
 

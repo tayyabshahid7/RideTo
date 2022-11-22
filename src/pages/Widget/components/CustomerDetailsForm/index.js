@@ -4,12 +4,12 @@ import {
 } from 'services/customer'
 
 import DateInput from 'components/DateInput'
-import LabelField from 'pages/Widget/components/LabelField'
-import LicenceInput from 'components/RideTo/LicenceInput'
 import MinimalSelect from 'components/MinimalSelect'
+import LicenceInput from 'components/RideTo/LicenceInput'
+import moment from 'moment'
+import LabelField from 'pages/Widget/components/LabelField'
 import React from 'react'
 import { getLicenceAge } from 'services/course'
-import moment from 'moment'
 import styles from './CustomerDetailsForm.scss'
 
 const handleChange = (event, details, errors, onChange) => {
@@ -30,6 +30,7 @@ const CustomerDetailsForm = ({
 }) => {
   const isManual = bikeType === 'manual'
   const isCBT = constant === 'LICENCE_CBT'
+  const isMOT = constant === 'MOT'
   const minAge = isManual ? 17 : 16
   let bdayError = `Please enter the date in the format DD/MM/YYYY. You MUST be at least ${
     !fullLicenceType ? minAge : getLicenceAge(fullLicenceType)
@@ -173,53 +174,57 @@ const CustomerDetailsForm = ({
         />
       </LabelField>
 
-      <LabelField
-        label="Driving Licence Number"
-        name="driving_licence_number"
-        style={labelStyle}
-        error={errors.driving_licence_number}>
-        <LicenceInput
-          placeholder="_____ ______ __ _ __"
+      {!isMOT && (
+        <LabelField
+          label="Driving Licence Number"
           name="driving_licence_number"
-          id="driving_licence_number"
-          value={details.driving_licence_number}
-          style={{ width: 'auto' }}
-          onChange={event => {
-            if (errors.driving_licence_number) {
-              const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
-              if (
-                drivingLicenceRegex.test(
-                  event.target.value
-                    .split(' ')
-                    .join('')
-                    .toUpperCase()
-                )
-              ) {
-                delete errors.driving_licence_number
+          style={labelStyle}
+          error={errors.driving_licence_number}>
+          <LicenceInput
+            placeholder="_____ ______ __ _ __"
+            name="driving_licence_number"
+            id="driving_licence_number"
+            value={details.driving_licence_number}
+            style={{ width: 'auto' }}
+            onChange={event => {
+              if (errors.driving_licence_number) {
+                const drivingLicenceRegex = /^^[A-Z9]{5}\d{6}[A-Z9]{2}\d[A-Z]{2}$$/
+                if (
+                  drivingLicenceRegex.test(
+                    event.target.value
+                      .split(' ')
+                      .join('')
+                      .toUpperCase()
+                  )
+                ) {
+                  delete errors.driving_licence_number
+                }
               }
-            }
-            onChange(
-              { ...details, driving_licence_number: event.target.value },
-              errors
-            )
-          }}
-        />
-      </LabelField>
+              onChange(
+                { ...details, driving_licence_number: event.target.value },
+                errors
+              )
+            }}
+          />
+        </LabelField>
+      )}
 
-      <LabelField
-        label="Riding Experience"
-        name="riding_experience"
-        style={labelStyle}
-        error={errors.riding_experience}>
-        <MinimalSelect
-          placeholder
-          options={ridingExperienceOptions}
-          selected={details.riding_experience}
-          onChange={value => {
-            onChange({ ...details, riding_experience: value }, errors)
-          }}
-        />
-      </LabelField>
+      {!isMOT && (
+        <LabelField
+          label="Riding Experience"
+          name="riding_experience"
+          style={labelStyle}
+          error={errors.riding_experience}>
+          <MinimalSelect
+            placeholder
+            options={ridingExperienceOptions}
+            selected={details.riding_experience}
+            onChange={value => {
+              onChange({ ...details, riding_experience: value }, errors)
+            }}
+          />
+        </LabelField>
+      )}
     </div>
   )
 }

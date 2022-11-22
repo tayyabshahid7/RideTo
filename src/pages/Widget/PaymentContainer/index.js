@@ -1,24 +1,24 @@
 import 'react-toastify/dist/ReactToastify.css'
 
 import { Elements, StripeProvider } from 'react-stripe-elements'
-import { ToastContainer, toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
+import { fetchWidgetSingleCourse, getPrice } from 'services/course'
 import {
   createOrder,
   getInitialSuppliers,
   getTotalOrderPrice
 } from 'services/widget'
-import { fetchWidgetSingleCourse, getPrice } from 'services/course'
 
+import { EMAIL_EXTENSIONS } from 'common/emailExtensions'
+import moment from 'moment'
 import BookingSummary from 'pages/Widget/components/BookingSummary'
 import CheckoutForm from 'pages/Widget/components/CheckoutForm'
 import CustomerDetailsForm from 'pages/Widget/components/CustomerDetailsForm'
-import { EMAIL_EXTENSIONS } from 'common/emailExtensions'
 import OrderDetails from 'pages/Widget/components/OrderDetails'
 import React from 'react'
-import { capitalizeFirstLetter } from 'utils/helper'
-import { handleStripePayment } from 'services/stripe'
-import moment from 'moment'
 import { parseQueryString } from 'services/api'
+import { handleStripePayment } from 'services/stripe'
+import { capitalizeFirstLetter } from 'utils/helper'
 import styles from './PaymentContainer.scss'
 
 const REQUIRED_FIELDS = [
@@ -42,12 +42,25 @@ class PaymentContainer extends React.Component {
 
     const query = parseQueryString(window.location.search.slice(1))
 
-    const trainings = JSON.parse(
-      window.sessionStorage.getItem('widgetTrainings')
-    )
+    let trainings = JSON.parse(window.sessionStorage.getItem('widgetTrainings'))
+
+    if (!trainings) {
+      trainings = [
+        {
+          bike_type: query.hire,
+          course_type: query.courseType,
+          requested_date: query.requestedDate,
+          requested_time: query.requestedTime,
+          school_course_id: query.schoolId,
+          supplier_id: query.supplierId
+        }
+      ]
+    }
 
     const isRenewal =
       trainings && trainings[0].course_type === 'LICENCE_CBT_RENEWAL'
+
+    const isMOT = trainings && trainings[0].course_type === 'MOT'
 
     this.state = {
       course: null,
@@ -63,6 +76,7 @@ class PaymentContainer extends React.Component {
       trainings,
       isFullLicence: this.props.match.params.courseId === 'FULL_LICENCE',
       isRenewal,
+      isMOT,
       totalPrice: 0,
       voucher_code: '',
       discount: 0,
@@ -172,7 +186,7 @@ class PaymentContainer extends React.Component {
   }
 
   validateDetails = details => {
-    const { isRenewal, requirePreviousCBTDate } = this.state
+    const { isRenewal, isMOT, requirePreviousCBTDate } = this.state
     const errors = {}
     REQUIRED_FIELDS.forEach(field => {
       if (!details[field]) {
@@ -180,6 +194,9 @@ class PaymentContainer extends React.Component {
         window.document.body.scrollIntoView()
       }
     })
+    if (isMOT && errors && errors.riding_experience) {
+      delete errors.riding_experience
+    }
     if (isRenewal && requirePreviousCBTDate && !details.prev_cbt_date) {
       errors['prev_cbt_date'] = 'This field is required.'
       window.document.body.scrollIntoView()

@@ -1,0 +1,15 @@
+.select {
+  display: block;
+  width: 100%;
+  background-color: #fff;
+  height: 40px;
+  padding: 10px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.warn {
+  border: 2px solid red;
+  color: red;
+}
