@@ -49,6 +49,7 @@ export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
     auto_50cc: !isFullLicence
       ? 'Automatic 50cc Scooter'
       : 'Automatic 50cc Scooter',
+    auto_electric: 'Automatic Electric Scooter',
     manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
     no: 'Own Bike'
   }
@@ -78,6 +79,12 @@ export const getTotalOrderPrice = (course, bikeHire, discount = 0) => {
 
   if (bikeHire === BIKE_HIRE.AUTO_50CC && pricing.bike_type_auto_50_price) {
     subTotal = pricing.price + pricing.bike_type_auto_50_price
+  }
+  if (
+    bikeHire === BIKE_HIRE.AUTO_ELECTRIC &&
+    pricing.bike_type_auto_electric_price
+  ) {
+    subTotal = pricing.price + pricing.bike_type_auto_electric_price
   }
 
   if (bikeHire === BIKE_HIRE.AUTO_125CC && pricing.bike_type_auto_125_price) {

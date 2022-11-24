@@ -40,6 +40,7 @@ const generalBikeFields = [
   'own_bikes',
   'auto_bikes',
   'auto_50cc_bikes',
+  'auto_electric_bikes',
   'auto_125cc_bikes',
   'manual_bikes',
   'manual_50cc_bikes'
@@ -603,6 +604,7 @@ class CourseForm extends React.Component {
       available_auto_bikes,
       available_auto_50cc_bikes,
       available_auto_125cc_bikes,
+      available_auto_electric_bikes,
       available_manual_50cc_bikes,
       available_manual_125cc_bikes,
       available_own_bikes,
@@ -615,6 +617,7 @@ class CourseForm extends React.Component {
       pricing_auto_bikes,
       pricing_auto_50cc_bikes,
       pricing_auto_125cc_bikes,
+      pricing_auto_electric_bikes,
       pricing_manual_50cc_bikes,
       pricing_manual_125cc_bikes
     } = this.state.defaultBikes
@@ -623,6 +626,10 @@ class CourseForm extends React.Component {
       pricing_auto_bikes > 0 ? `(+£${pricing_auto_bikes})` : ''
     const bikeHirePriceAuto50 =
       pricing_auto_50cc_bikes > 0 ? `(+£${pricing_auto_50cc_bikes})` : ''
+    const bikeHirePriceAutoElectric =
+      pricing_auto_electric_bikes > 0
+        ? `(+£${pricing_auto_electric_bikes})`
+        : ''
     const bikeHirePriceAuto125 =
       pricing_auto_125cc_bikes > 0 ? `(+£${pricing_auto_125cc_bikes})` : ''
 
@@ -648,6 +655,7 @@ class CourseForm extends React.Component {
       auto_bikes,
       auto_50cc_bikes,
       auto_125cc_bikes,
+      auto_electric_bikes,
       manual_50cc_bikes,
       manual_bikes,
       a1_auto_bikes,
@@ -851,6 +859,29 @@ class CourseForm extends React.Component {
                           }}
                           onClickPlus={() => {
                             this.handleBikeButtonClick('auto_125cc_bikes', 1)
+                          }}
+                        />
+                      </Col>
+                    </Row>
+                  )}
+                  {available_auto_electric_bikes && (
+                    <Row>
+                      <Col>
+                        <BikeNumberPicker
+                          className={styles.numberPicker}
+                          label={`Automatic Electric ${bikeHirePriceAutoElectric}`}
+                          value={auto_electric_bikes}
+                          id="auto_125cc_bikes"
+                          isEditable={isEditable}
+                          onChange={this.handleChangeRawEvent.bind(this)}
+                          onClickMinus={() => {
+                            this.handleBikeButtonClick(
+                              'auto_electric_bikes',
+                              -1
+                            )
+                          }}
+                          onClickPlus={() => {
+                            this.handleBikeButtonClick('auto_electric_bikes', 1)
                           }}
                         />
                       </Col>

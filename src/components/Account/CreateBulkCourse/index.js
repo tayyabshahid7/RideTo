@@ -1,16 +1,16 @@
-import React from 'react'
-import moment from 'moment'
-import { Row, Col, Form } from 'reactstrap'
-import styles from './styles.scss'
-import Loading from 'components/Loading'
 import classnames from 'classnames'
-import {
-  ConnectInput,
-  ConnectSingleSelect,
-  Button
-} from 'components/ConnectForm'
 import { DEFAULT_SETTINGS } from 'common/constants'
+import {
+  Button,
+  ConnectInput,
+  ConnectSingleSelect
+} from 'components/ConnectForm'
+import Loading from 'components/Loading'
+import moment from 'moment'
+import React from 'react'
+import { Col, Form, Row } from 'reactstrap'
 import { filterExtraCourses } from 'services/course'
+import styles from './styles.scss'
 
 class CreateBulkCourse extends React.Component {
   constructor(props) {
@@ -30,6 +30,7 @@ class CreateBulkCourse extends React.Component {
       notes: '',
       auto_bikes: '',
       auto_50cc_bikes: '',
+      auto_electric_bikes: '',
       manual_bikes: '',
       auto_125cc_bikes: '',
       manual_50cc_bikes: '',
@@ -57,10 +58,11 @@ class CreateBulkCourse extends React.Component {
   componentDidMount() {
     const { info } = this.props
 
-    const tmpCourses = info.courseTypes
-      .filter(filterExtraCourses)
+    const tmpCourses = info.courseTypes.filter(filterExtraCourses)
 
-    const course_type_id = tmpCourses.length ? tmpCourses[0].id.toString() : null
+    const course_type_id = tmpCourses.length
+      ? tmpCourses[0].id.toString()
+      : null
 
     this.setState(
       {
@@ -110,6 +112,7 @@ class CreateBulkCourse extends React.Component {
       auto_bikes: settings.default_number_auto_bikes,
       auto_50cc_bikes: settings.default_number_auto_50cc_bikes,
       auto_125cc_bikes: settings.default_number_auto_125cc_bikes,
+      auto_electric_bikes: settings.default_number_auto_electric_bikes,
       manual_bikes: settings.default_number_manual_125cc_bikes,
       manual_50cc_bikes: settings.default_number_manual_50cc_bikes,
       own_bikes: settings.default_number_own_bikes
@@ -153,6 +156,7 @@ class CreateBulkCourse extends React.Component {
       notes,
       auto_bikes,
       auto_50cc_bikes,
+      auto_electric_bikes,
       manual_bikes,
       auto_125cc_bikes,
       manual_50cc_bikes,
@@ -195,6 +199,7 @@ class CreateBulkCourse extends React.Component {
       spaces,
       auto_bikes: auto_bikes || 0,
       auto_50cc_bikes: auto_50cc_bikes || 0,
+      auto_electric_bikes: auto_electric_bikes || 0,
       manual_bikes: manual_bikes || 0,
       auto_125cc_bikes: auto_125cc_bikes || 0,
       manual_50cc_bikes: manual_50cc_bikes || 0,
@@ -270,6 +275,7 @@ class CreateBulkCourse extends React.Component {
       notes,
       auto_bikes,
       auto_50cc_bikes,
+      auto_electric_bikes,
       manual_bikes,
       auto_125cc_bikes,
       manual_50cc_bikes,
@@ -289,6 +295,8 @@ class CreateBulkCourse extends React.Component {
       available_auto_bikes,
       default_number_auto_50cc_bikes,
       available_auto_50cc_bikes,
+      default_number_auto_electric_bikes,
+      available_auto_electric_bikes,
       default_number_auto_125cc_bikes,
       available_auto_125cc_bikes,
       default_number_manual_50cc_bikes,
@@ -386,6 +394,23 @@ class CreateBulkCourse extends React.Component {
                         name="auto_bikes"
                         value={auto_bikes || default_number_auto_bikes}
                         label="Automatic"
+                        className="form-group"
+                        type="number"
+                        onChange={this.handleChangeRawEvent.bind(this)}
+                        raw
+                      />
+                    </Col>
+                  )}
+                  {available_auto_electric_bikes && (
+                    <Col>
+                      <ConnectInput
+                        basic
+                        name="auto_electric_bikes"
+                        value={
+                          auto_electric_bikes ||
+                          default_number_auto_electric_bikes
+                        }
+                        label="Automatic Electric"
                         className="form-group"
                         type="number"
                         onChange={this.handleChangeRawEvent.bind(this)}

@@ -423,6 +423,17 @@ class CourseAvailabilityComponent extends React.Component {
         !!instantCourse.auto_50cc_bikes &&
         instantCourse.auto_50cc_bikes > 0)
 
+    // determining course state for auto 50cc bikes
+    const isAutoElectricFull =
+      instantCourse &&
+      // !!instantCourse.auto_electric_bikes &&
+      instantCourse.auto_electric_count >= instantCourse.auto_electric_bikes
+    const isAutoElectricAvailable =
+      !instantCourse ||
+      (instantCourse &&
+        !!instantCourse.auto_electric_bikes &&
+        instantCourse.auto_electric_bikes > 0)
+
     // determining course state for auto 125cc bikes
     const isAuto125Full =
       instantCourse &&
@@ -499,11 +510,13 @@ class CourseAvailabilityComponent extends React.Component {
             isAutoFull={isAutoFull}
             isAuto50Full={isAuto50Full}
             isAuto125Full={isAuto125Full}
+            isAutoElectricFull={isAutoElectricFull}
             isManualFull={isManualFull}
             isManual50Full={isManual50Full}
             isAutoAvailable={isAutoAvailable}
             isAuto50Available={isAuto50Available}
             isAuto125Available={isAuto125Available}
+            isAutoElectricAvailable={isAutoElectricAvailable}
             isManualAvailable={isManualAvailable}
             isManual50Available={isManual50Available}
             has_auto_bikes={supplier.has_auto_bikes}
@@ -511,6 +524,7 @@ class CourseAvailabilityComponent extends React.Component {
             has_auto_bikes_125cc={
               isInstantBook && supplier.has_auto_bikes_125cc
             }
+            has_auto_bikes_electric={supplier.has_auto_bikes_electric}
             has_manual_bikes={supplier.has_manual_bikes}
             has_manual_50cc={isInstantBook && supplier.has_manual_50cc}
             isInstantBook={isInstantBook}
