@@ -16,6 +16,7 @@ const MotorbikeOptions = ({
     bike_type_manual_price,
     bike_type_auto_50_price,
     bike_type_auto_125_price,
+    bike_type_auto_electric_price,
     bike_type_auto_price,
     bike_type_manual_50_price
   } = course.pricing
@@ -37,6 +38,10 @@ const MotorbikeOptions = ({
 
   // determining course state for auto 50cc bikes
   const isAuto50Full = course.auto_50cc_count >= course.auto_50cc_bikes
+
+  // determining course state for auto 50cc bikes
+  const isAutoElectricFull =
+    course.auto_electric_count >= course.auto_electric_bikes
 
   // determining course state for auto 125cc bikes
   const isAuto125Full = course.auto_125cc_count >= course.auto_125cc_bikes
@@ -126,6 +131,29 @@ const MotorbikeOptions = ({
           {!isRenewal && bike_type_auto_125_price > 0 && (
             <div className={styles.price}>
               {`(+${asPoundSterling(bike_type_auto_125_price)})`}
+            </div>
+          )}
+          {isRenewal && bike_hire_cost > 0 && (
+            <div className={styles.price}>
+              {`(+${asPoundSterling(bike_hire_cost)})`}
+            </div>
+          )}
+        </Checkbox>
+      )}
+
+      {/* Auto Bikes Electric  */}
+
+      {isAvailable('auto_electric_bikes') && (
+        <Checkbox
+          checked={selected === BIKE_HIRE.AUTO_ELECTRIC}
+          extraClass="WidgetCheckbox"
+          onChange={() => onChange(BIKE_HIRE.AUTO_ELECTRIC)}
+          disabled={isAutoElectricFull}>
+          {getMotorbikeLabel(BIKE_HIRE.AUTO_ELECTRIC)}
+          {isAutoElectricFull ? fullText : null}
+          {!isRenewal && bike_type_auto_electric_price > 0 && (
+            <div className={styles.price}>
+              {`(+${asPoundSterling(bike_type_auto_electric_price)})`}
             </div>
           )}
           {isRenewal && bike_hire_cost > 0 && (
