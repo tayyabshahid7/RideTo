@@ -33,6 +33,13 @@
   stroke: white;
 }
 
+.NewUserIcon {
+  position: absolute;
+  top: 15px;
+  stroke: white;
+  z-index: 999 !important;
+}
+
 .pinPrice {
   color: white;
   position: absolute;
