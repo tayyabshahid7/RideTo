@@ -1,18 +1,20 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { IconBike, IconMapPin, IconUser } from 'assets/icons'
-import MapGL, { Marker, NavigationControl } from 'react-map-gl'
+import { IconBike, IconMapPin, IconUser, IconUserNew } from 'assets/icons'
 import React, { Component, Fragment } from 'react'
+import MapGL, { Marker, NavigationControl } from 'react-map-gl'
 
-import { BankHolidayProvider } from '../ResultPage/StateProvider'
-import { MAPBOX_KEY } from 'common/constants'
-import WebMercatorViewport from 'viewport-mercator-project'
 import bbox from '@turf/bbox'
-import classnames from 'classnames'
-import get from 'lodash/get'
 import { lineString } from '@turf/helpers'
+import classnames from 'classnames'
+import { Desktop, Mobile } from 'common/breakpoints'
+import { MAPBOX_KEY } from 'common/constants'
+import get from 'lodash/get'
 import mapboxgl from 'mapbox-gl'
 import moment from 'moment'
+import WebMercatorViewport from 'viewport-mercator-project'
+import { BankHolidayProvider } from '../ResultPage/StateProvider'
+import NewIconMapPin from './NewIconMapPin'
 import styles from './styles.scss'
 
 mapboxgl.accessToken = MAPBOX_KEY
@@ -178,23 +180,43 @@ class MapComponent extends Component {
   }
 
   renderPin(course, available) {
+    const { instant_book: isInstantBook, supplier_pricing } = course
+
+    let formattedPricing = null
+    if (supplier_pricing) {
+      formattedPricing = `£${this.getPricing(course)}`
+    }
+
     return (
-      <div
-        id={`course-${course.id}`}
-        onClick={event => {
-          this.highlightResultCard(event, course)
-        }}
-        className={styles.coursePin}>
-        <IconMapPin
-          className={classnames(
-            styles.mapPinBg,
-            !available && styles.mapPinBgUnavailable
-          )}
-        />
-        {course.supplier_pricing && (
-          <span className={styles.pinPrice}>£{this.getPricing(course)}</span>
-        )}
-      </div>
+      <>
+        <Desktop>
+          <div
+            id={`course-${course.id}`}
+            onClick={event => {
+              this.highlightResultCard(event, course)
+            }}
+            className={styles.coursePin}>
+            <IconMapPin
+              className={classnames(
+                styles.mapPinBg,
+                !available && styles.mapPinBgUnavailable
+              )}
+            />
+            {course.supplier_pricing && (
+              <span className={styles.pinPrice}>
+                £{this.getPricing(course)}
+              </span>
+            )}
+          </div>
+        </Desktop>
+        <Mobile>
+          <NewIconMapPin
+            pricing={formattedPricing}
+            isInstantBooking={isInstantBook}
+            getPricing={this.getPricing.bind(this)}
+          />
+        </Mobile>
+      </>
     )
   }
 
@@ -250,8 +272,13 @@ class MapComponent extends Component {
               <div id={`user-pin`} className={styles.coursePin}>
                 {!checkout ? (
                   <Fragment>
-                    <IconMapPin className={styles.mapPinBg} />
-                    <IconUser className={styles.userIcon} />
+                    <Desktop>
+                      <IconMapPin className={styles.mapPinBg} />
+                      <IconUser className={styles.userIcon} />
+                    </Desktop>
+                    <Mobile>
+                      <IconUserNew className={styles.NewUserIcon} />
+                    </Mobile>
                   </Fragment>
                 ) : (
                   <IconBike className={styles.userIcon} />
