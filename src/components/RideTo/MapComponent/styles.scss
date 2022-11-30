@@ -5,6 +5,10 @@
   align-items: center;
   height: 64px;
   width: 50px;
+  @media (max-width: 768px) {
+    height: 30px;
+    width: 30px;
+  }
 }
 
 .mapPinBg {
@@ -37,7 +41,9 @@
   position: absolute;
   top: 15px;
   stroke: white;
-  z-index: 999 !important;
+  &:hover {
+    z-index: -1;
+  }
 }
 
 .pinPrice {

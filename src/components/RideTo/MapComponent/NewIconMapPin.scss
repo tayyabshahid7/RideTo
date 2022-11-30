@@ -5,6 +5,15 @@
   padding: 6px 12px;
   isolation: isolate;
   background-color: black;
+  z-index: 10 !important;
+
+  &:hover {
+    background-color: var(--primary-color);
+    cursor: pointer;
+    .triangleTopLeft {
+      border-top: 7px solid var(--primary-color);
+    }
+  }
 
   .triangleTopLeft {
     width: 0;
@@ -16,6 +25,9 @@
     top: 36px;
 
     position: absolute;
+    &:hover {
+      fill: var(--primary-color);
+    }
   }
 
   img {
@@ -31,4 +43,7 @@
   text-align: center;
   pointer-events: none;
   // padding: 0 12px 12px;
+  &:hover {
+    fill: var(--primary-color);
+  }
 }
