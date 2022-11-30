@@ -1,6 +1,7 @@
 import InstantBookingIcon from 'assets/icons/IconInstantBookingWhite.svg'
 import React from 'react'
 import styles from './NewIconMapPin.scss'
+
 const NewIconMapPin = props => {
   const { pricing, isInstantBooking = false } = props
   return (

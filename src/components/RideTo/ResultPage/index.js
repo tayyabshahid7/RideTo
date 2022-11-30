@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import { Route, BrowserRouter as Router } from 'react-router-dom'
-import { checkDateAvailability, normalizePostCode } from 'utils/helper'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { fetchRidetoCourses, getCourseTitle } from 'services/course'
+import { checkDateAvailability, normalizePostCode } from 'utils/helper'
 
 import { DATE_FORMAT } from 'common/constants'
-import ResultPage from './ResultPage'
-import { SORTBY } from '../../../common/constants'
-import StateProvider from './StateProvider'
-import { fetchSearchLocation } from 'services/geolocation'
-import { getStaticData } from 'services/page'
 import moment from 'moment'
 import { parseQueryString } from 'services/api'
+import { fetchSearchLocation } from 'services/geolocation'
+import { getStaticData } from 'services/page'
+import { SORTBY } from '../../../common/constants'
+import ResultPage from './ResultPage'
+import StateProvider from './StateProvider'
 
 // import SampleData from './SampleData.json'
 
@@ -105,7 +105,13 @@ class ResultPageContainer extends Component {
 
   async loadCourses() {
     try {
-      const { date, sortByOption, courseType, postcode, radius_miles } = this.state
+      const {
+        date,
+        sortByOption,
+        courseType,
+        postcode,
+        radius_miles
+      } = this.state
       this.setState({ loading: true })
       let results = await fetchRidetoCourses({
         course_type: courseType,

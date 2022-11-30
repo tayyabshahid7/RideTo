@@ -1,21 +1,28 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styles from './styles.scss'
 
-function MobileMap({ children, handleCloseMap }) {
-  useEffect(() => {
-    document.body.classList.add('map-open')
-    window.scrollTo(0, 0)
+import { IconLocale } from 'assets/icons'
 
-    return () => {
-      document.body.classList.remove('map-open')
-    }
-  }, [])
-
+function MobileMap({
+  children,
+  handleSearchLocationButton,
+  hasSearchLocation,
+  handleMyLocation
+}) {
   return (
     <div className={styles.container}>
-      <button className={styles.closeButton} onClick={handleCloseMap}>
-        Exit map
+      <button className={styles.closeButton} onClick={handleMyLocation}>
+        <IconLocale />
       </button>
+
+      {hasSearchLocation && (
+        <button
+          className={styles.searchLocationButton}
+          onClick={handleSearchLocationButton}>
+          Search Location
+        </button>
+      )}
+
       <div className={styles.map}>{children}</div>
     </div>
   )
