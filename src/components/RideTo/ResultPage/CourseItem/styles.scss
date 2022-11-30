@@ -504,11 +504,16 @@
   padding-top: 16px;
   padding-right: 23px;
   margin-bottom: auto;
+  vertical-align: middle;
 
   div {
     display: inline-block;
     zoom: 1;
     margin-right: 8px;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
@@ -524,15 +529,22 @@
 
   border-bottom: 1px solid #e7e7e7;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   div {
     font-family: var(--font-inter);
     font-style: normal;
     font-weight: 400;
-    font-size: 13px;
-    line-height: 16px;
     display: inline-block;
     margin-top: 12px;
     margin-right: 8px;
+
+    span {
+      font-size: 13px;
+      line-height: 16px;
+    }
   }
 
   @media (max-width: 575px) {
