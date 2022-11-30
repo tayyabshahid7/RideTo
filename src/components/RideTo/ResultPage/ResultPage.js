@@ -1164,7 +1164,7 @@ class ResultPage extends Component {
         {isFullLicence && <FullLicenceFaq />}
 
         <MediaQuery maxWidth={768}>
-          {!isMobileMapVisible && courses && userLocation && (
+          {isMobileMapVisible && courses && userLocation && (
             <MobileMap
               hasSearchLocation={hasSearchLocation}
               handleSearchLocationButton={this.handleSearchLocationButton}
