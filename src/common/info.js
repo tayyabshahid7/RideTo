@@ -12,7 +12,7 @@ export const BikeHires = [
   { value: BIKE_HIRE.NO, title: 'Own Bike' },
   { value: BIKE_HIRE.AUTO, title: 'Automatic' },
   { value: BIKE_HIRE.AUTO_50CC, title: 'Automatic 50cc' },
-  { value: BIKE_HIRE.AUTO_ELECTRIC, title: 'Automatic Electric' },
+  { value: BIKE_HIRE.AUTO_ELECTRIC, title: 'Electric Moped' },
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' },
   { value: BIKE_HIRE.MANUAL, title: 'Manual 125cc' },
   { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' },

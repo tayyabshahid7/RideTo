@@ -172,10 +172,10 @@ export const getBikeHireOptions = isFullLicence => {
   return {
     [BIKE_HIRE.NO]: 'Own Bike',
     [BIKE_HIRE.AUTO]: !isFullLicence ? 'Automatic Scooter' : 'Automatic',
-    [BIKE_HIRE.AUTO_ELECTRIC]: !isFullLicence
-      ? 'Automatic Electric Scooter'
-      : 'Automatic Electric',
-    [BIKE_HIRE.AUTO_50CC]: 'Automatic Electric Scooter',
+    [BIKE_HIRE.AUTO_50CC]: !isFullLicence
+      ? 'Automatic 50cc Scooter'
+      : 'Automatic',
+    [BIKE_HIRE.AUTO_ELECTRIC]: 'Electric Moped',
     [BIKE_HIRE.AUTO_125CC]: 'Automatic 125cc Scooter',
     [BIKE_HIRE.MANUAL_50CC]: 'Manual 50cc Motorcycle',
     [BIKE_HIRE.MANUAL]: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual'

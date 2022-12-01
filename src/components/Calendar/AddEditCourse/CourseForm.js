@@ -869,7 +869,7 @@ class CourseForm extends React.Component {
                       <Col>
                         <BikeNumberPicker
                           className={styles.numberPicker}
-                          label={`Automatic Electric ${bikeHirePriceAutoElectric}`}
+                          label={`Electric Moped ${bikeHirePriceAutoElectric}`}
                           value={auto_electric_bikes}
                           id="auto_125cc_bikes"
                           isEditable={isEditable}

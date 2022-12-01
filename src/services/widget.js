@@ -49,7 +49,7 @@ export const getMotorbikeLabel = (bikeHire, isFullLicence, isInstantBook) => {
     auto_50cc: !isFullLicence
       ? 'Automatic 50cc Scooter'
       : 'Automatic 50cc Scooter',
-    auto_electric: 'Automatic Electric Scooter',
+    auto_electric: 'Electric Moped',
     manual: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual',
     no: 'Own Bike'
   }
