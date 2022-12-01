@@ -108,7 +108,7 @@ class AddOrderItem extends React.Component {
       if (!available_auto_electric_bikes) {
         availableBikeHireTypes = filter(
           availableBikeHireTypes,
-          bikeHireType => bikeHireType.title !== 'Automatic Electric'
+          bikeHireType => bikeHireType.title !== 'Electric Moped'
         )
       }
       if (!available_manual_50cc_bikes) {

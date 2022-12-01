@@ -410,7 +410,7 @@ class CreateBulkCourse extends React.Component {
                           auto_electric_bikes ||
                           default_number_auto_electric_bikes
                         }
-                        label="Automatic Electric"
+                        label="Electric Moped"
                         className="form-group"
                         type="number"
                         onChange={this.handleChangeRawEvent.bind(this)}
