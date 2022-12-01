@@ -119,8 +119,18 @@ class ResultPage extends Component {
   }
 
   componentWillReceiveProps(props) {
+    let lat = 51.711712
+    let lng = -0.327693
+
+    if (props.userLocation) {
+      lat = props.userLocation.lat
+      lng = props.userLocation.lng
+    }
+
     this.setState({
-      coursesOnMap: props.courses
+      coursesOnMap: props.courses,
+      lat,
+      lng
     })
   }
 
@@ -1133,9 +1143,12 @@ class ResultPage extends Component {
                         {courses && userLocation && (
                           <MediaQuery minWidth={769}>
                             <MapComponent
+                              lat={lat}
+                              lng={lng}
                               className={styles.mapWrapper}
                               courses={courses}
                               userLocation={userLocation}
+                              handleSearchLocation={this.handleSearchLocation}
                               width="100%"
                               hiddenOnMobile
                               handlePinClick={this.loadCourseDetail}
