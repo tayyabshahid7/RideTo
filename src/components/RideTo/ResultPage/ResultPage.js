@@ -21,7 +21,11 @@ import {
   UncontrolledDropdown
 } from 'reactstrap'
 import { parseQueryString } from 'services/api'
-import { fetchSingleRidetoCourse, getCourseIdFromSearch } from 'services/course'
+import {
+  fetchRidetoCourses,
+  fetchSingleRidetoCourse,
+  getCourseIdFromSearch
+} from 'services/course'
 import { fetchCoursesTypes } from 'services/course-type'
 import { isBankHoliday } from 'services/misc'
 import { flashDiv, getStaticData } from 'services/page'
@@ -81,7 +85,11 @@ class ResultPage extends Component {
       isMobileMapVisible: false,
       openedCourseTypeDetails: null,
       addedPOM: false,
-      addons: []
+      addons: [],
+      hasSearchLocation: false,
+      lat: 51.711712,
+      lng: -0.327693,
+      coursesOnMap: {}
     }
 
     this.onSelectPackage = this.onSelectPackage.bind(this)
@@ -95,16 +103,35 @@ class ResultPage extends Component {
     this.showCourseTypeInfo = this.showCourseTypeInfo.bind(this)
     this.hideCourseTypeInfo = this.hideCourseTypeInfo.bind(this)
     this.handleBackClick = this.handleBackClick.bind(this)
-    this.handleCloseMap = this.handleCloseMap.bind(this)
+    // this.handleCloseMap = this.handleCloseMap.bind(this)
     this.handlePOMToggleClick = this.handlePOMToggleClick.bind(this)
+    this.handleSearchLocation = this.handleSearchLocation.bind(this)
+    this.handleSearchLocationButton = this.handleSearchLocationButton.bind(this)
 
     this.loadCourseDetailNextAvailableDate = this.loadCourseDetailNextAvailableDate.bind(
       this
     )
+    this.handleMyLocation = this.handleMyLocation.bind(this)
 
     window.sessionStorage.removeItem('trainings')
 
     this.bottomAnchor = React.createRef()
+  }
+
+  componentWillReceiveProps(props) {
+    let lat = 51.711712
+    let lng = -0.327693
+
+    if (props.userLocation) {
+      lat = props.userLocation.lat
+      lng = props.userLocation.lng
+    }
+
+    this.setState({
+      coursesOnMap: props.courses,
+      lat,
+      lng
+    })
   }
 
   handleBackClick() {
@@ -128,7 +155,7 @@ class ResultPage extends Component {
   }
 
   async componentDidMount() {
-    // Prevent the reuslts from loading half way down the page
+    // Prevent the results from loading half way down the page
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
     }
@@ -169,6 +196,34 @@ class ResultPage extends Component {
         course => course.constant === this.props.courseType
       )
     })
+  }
+
+  async loadCoursesLatLng(lat, lng) {
+    try {
+      const { courseType, postcode } = this.props
+      this.setState({ loading: true })
+      let results = await fetchRidetoCourses({
+        postcode: postcode,
+        course_type: courseType,
+        lat,
+        lng,
+        available: 'True',
+        all_suppliers: 'True'
+      })
+      if (results) {
+        this.setState({
+          coursesOnMap: {
+            available: results.filter(({ is_available_on: a }) => a),
+            unavailable: results.filter(({ is_available_on: a }) => !a)
+          },
+          loading: false
+        })
+      } else {
+        this.setState({ coursesOnMap: null })
+      }
+    } catch (error) {
+      this.setState({ coursesOnMap: null })
+    }
   }
 
   loadCourseDetail = async (course, activeTab, date = null) => {
@@ -693,6 +748,48 @@ class ResultPage extends Component {
     })
   }
 
+  handleSearchLocation(event) {
+    const { lngLat } = event
+    const lng = lngLat[0]
+    const lat = lngLat[1]
+
+    this.setState({ lat, lng, hasSearchLocation: true })
+  }
+
+  handleSearchLocationButton() {
+    const { lat, lng } = this.state
+    this.loadCoursesLatLng(lat, lng)
+  }
+
+  async handleMyLocation() {
+    this.setState({ loading: true })
+    if (!navigator.geolocation) {
+      return
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        const lat = pos.coords.latitude
+        const lng = pos.coords.longitude
+
+        if (lat && lng) {
+          this.setState({
+            lat,
+            lng,
+            hasSearchLocation: true,
+            loading: false
+          })
+        }
+      },
+      err => {
+        console.log(err)
+        alert('fetching the position failed')
+        this.setState({ loading: false })
+      },
+      { enableHighAccuracy: false, timeout: 20000, maximumAge: 0 }
+    )
+  }
+
   render() {
     const {
       courses,
@@ -725,7 +822,11 @@ class ResultPage extends Component {
       isErrored,
       isMobileMapVisible,
       openedCourseTypeDetails,
-      addedPOM
+      addedPOM,
+      hasSearchLocation,
+      lat,
+      lng,
+      coursesOnMap
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -1042,9 +1143,12 @@ class ResultPage extends Component {
                         {courses && userLocation && (
                           <MediaQuery minWidth={769}>
                             <MapComponent
+                              lat={lat}
+                              lng={lng}
                               className={styles.mapWrapper}
                               courses={courses}
                               userLocation={userLocation}
+                              handleSearchLocation={this.handleSearchLocation}
                               width="100%"
                               hiddenOnMobile
                               handlePinClick={this.loadCourseDetail}
@@ -1074,9 +1178,17 @@ class ResultPage extends Component {
 
         <MediaQuery maxWidth={768}>
           {isMobileMapVisible && courses && userLocation && (
-            <MobileMap handleCloseMap={this.handleCloseMap}>
+            <MobileMap
+              hasSearchLocation={hasSearchLocation}
+              handleSearchLocationButton={this.handleSearchLocationButton}
+              handleMyLocation={this.handleMyLocation}>
               <MapComponent
-                courses={courses}
+                lat={lat}
+                lng={lng}
+                courses={coursesOnMap}
+                postcode={postcode}
+                courseType={courseType}
+                handleSearchLocation={this.handleSearchLocation}
                 userLocation={userLocation}
                 width="100%"
                 hiddenOnMobile

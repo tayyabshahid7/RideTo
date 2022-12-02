@@ -1,18 +1,20 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
-import { IconBike, IconMapPin, IconUser } from 'assets/icons'
-import MapGL, { Marker, NavigationControl } from 'react-map-gl'
+import { IconBike, IconMapPin, IconUser, IconUserNew } from 'assets/icons'
 import React, { Component, Fragment } from 'react'
+import MapGL, { Marker, NavigationControl } from 'react-map-gl'
 
-import { BankHolidayProvider } from '../ResultPage/StateProvider'
-import { MAPBOX_KEY } from 'common/constants'
-import WebMercatorViewport from 'viewport-mercator-project'
 import bbox from '@turf/bbox'
-import classnames from 'classnames'
-import get from 'lodash/get'
 import { lineString } from '@turf/helpers'
+import classnames from 'classnames'
+import { Desktop, Mobile } from 'common/breakpoints'
+import { MAPBOX_KEY } from 'common/constants'
+import get from 'lodash/get'
 import mapboxgl from 'mapbox-gl'
 import moment from 'moment'
+import WebMercatorViewport from 'viewport-mercator-project'
+import { BankHolidayProvider } from '../ResultPage/StateProvider'
+import NewIconMapPin from './NewIconMapPin'
 import styles from './styles.scss'
 
 mapboxgl.accessToken = MAPBOX_KEY
@@ -29,7 +31,14 @@ class MapComponent extends Component {
     super(props)
 
     this.state = {
-      viewport: {}
+      viewport: {},
+      lat: this.props.userLocation.lat,
+      lng: this.props.userLocation.lng,
+      updatedPin: false,
+      courses: {
+        available: [],
+        unavailable: []
+      }
     }
 
     this.updateViewport = this.updateViewport.bind(this)
@@ -37,6 +46,11 @@ class MapComponent extends Component {
     this.renderPin = this.renderPin.bind(this)
     this.updateDimensions = this.updateDimensions.bind(this)
     this.highlightResultCard = this.highlightResultCard.bind(this)
+    this.handlePinClick = this.handlePinClick.bind(this)
+  }
+
+  componentWillReceiveProps(props) {
+    this.setState({ courses: props.courses })
   }
 
   componentDidMount() {
@@ -60,6 +74,13 @@ class MapComponent extends Component {
       const available = courses.available || []
       const unavailable = courses.unavailable || []
 
+      this.setState({
+        courses: {
+          available,
+          unavailable
+        }
+      })
+
       locations = [...available, ...unavailable].map(course => [
         course.lat,
         course.lng
@@ -68,6 +89,10 @@ class MapComponent extends Component {
 
     if (userLocation) {
       locations.push([userLocation.lat, userLocation.lng])
+      this.setState({
+        lat: userLocation.lat,
+        lng: userLocation.lng
+      })
     }
 
     let height = this.refs.mapContainer.offsetHeight || defaultHeight
@@ -96,8 +121,7 @@ class MapComponent extends Component {
         latitude: locations[0][0],
         longitude: locations[0][1],
         height,
-        width,
-        zoom: 10
+        width
       }
     }
 
@@ -178,23 +202,46 @@ class MapComponent extends Component {
   }
 
   renderPin(course, available) {
+    const { instant_book: isInstantBook, supplier_pricing } = course
+    const { handlePinClick } = this.props
+
+    let formattedPricing = null
+    if (supplier_pricing) {
+      formattedPricing = `£${this.getPricing(course)}`
+    }
+
     return (
-      <div
-        id={`course-${course.id}`}
-        onClick={event => {
-          this.highlightResultCard(event, course)
-        }}
-        className={styles.coursePin}>
-        <IconMapPin
-          className={classnames(
-            styles.mapPinBg,
-            !available && styles.mapPinBgUnavailable
-          )}
-        />
-        {course.supplier_pricing && (
-          <span className={styles.pinPrice}>£{this.getPricing(course)}</span>
-        )}
-      </div>
+      <>
+        <Desktop>
+          <div
+            id={`course-${course.id}`}
+            onClick={event => {
+              this.highlightResultCard(event, course)
+            }}
+            className={styles.coursePin}>
+            <IconMapPin
+              className={classnames(
+                styles.mapPinBg,
+                !available && styles.mapPinBgUnavailable
+              )}
+            />
+            {course.supplier_pricing && (
+              <span className={styles.pinPrice}>
+                £{this.getPricing(course)}
+              </span>
+            )}
+          </div>
+        </Desktop>
+        <Mobile>
+          <NewIconMapPin
+            course={course}
+            pricing={formattedPricing}
+            isInstantBooking={isInstantBook}
+            getPricing={this.getPricing.bind(this)}
+            handlePinClick={handlePinClick}
+          />
+        </Mobile>
+      </>
     )
   }
 
@@ -227,9 +274,14 @@ class MapComponent extends Component {
     }
   }
 
+  handlePinClick(event) {
+    const { handleSearchLocation } = this.props
+    handleSearchLocation(event)
+  }
+
   render() {
-    const { courses = {}, className, userLocation, checkout } = this.props
-    const { viewport } = this.state
+    const { className, userLocation, checkout, lng, lat } = this.props
+    const { viewport, courses = {} } = this.state
     const { available, unavailable } = courses
 
     return (
@@ -240,18 +292,28 @@ class MapComponent extends Component {
           {...viewport}
           mapStyle="mapbox://styles/mapbox/streets-v9"
           mapboxApiAccessToken={MAPBOX_KEY}
-          onViewportChange={viewport => this.setState({ viewport })}>
+          onViewportChange={viewport => this.setState({ viewport })}
+          onTouchEnd={this.handlePinClick}
+          onMouseUp={this.handlePinClick}>
           {userLocation && (
             <Marker
-              longitude={userLocation.lng}
-              latitude={userLocation.lat}
+              longitude={lng}
+              latitude={lat}
               offsetLeft={-25}
-              offsetTop={-64}>
+              offsetTop={-64}
+              style={{
+                zIndex: '9'
+              }}>
               <div id={`user-pin`} className={styles.coursePin}>
                 {!checkout ? (
                   <Fragment>
-                    <IconMapPin className={styles.mapPinBg} />
-                    <IconUser className={styles.userIcon} />
+                    <Desktop>
+                      <IconMapPin className={styles.mapPinBg} />
+                      <IconUser className={styles.userIcon} />
+                    </Desktop>
+                    <Mobile>
+                      <IconUserNew className={styles.NewUserIcon} />
+                    </Mobile>
                   </Fragment>
                 ) : (
                   <IconBike className={styles.userIcon} />

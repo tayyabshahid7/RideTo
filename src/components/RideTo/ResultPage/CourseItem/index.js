@@ -1,5 +1,6 @@
 import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
+import InstantBookingIcon from 'assets/icons/IconInstantBookingWhite.svg'
 import React, { Component, Fragment } from 'react'
 import { parseQueryString } from 'services/api'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
@@ -10,6 +11,7 @@ import classnames from 'classnames'
 import CallUsCard from 'components/RideTo/ResultPage/CallUsCard'
 import POMCard from 'components/RideTo/ResultPage/POMCard'
 import StarsComponent from 'components/RideTo/StarsComponent'
+import YellowStarsComponent from 'components/RideTo/StarsYellowComponent'
 import get from 'lodash/get'
 import moment from 'moment'
 import { LazyLoadImage } from 'react-lazy-load-image-component'
@@ -59,6 +61,21 @@ class CourseItem extends Component {
           <div className={styles.tooltipTitle}>{featureInfo.title}</div>
           <div className={styles.tooltipInfo}>{featureInfo.description}</div>
         </UncontrolledTooltip>
+      </div>
+    )
+  }
+
+  renderIconMobile(feature) {
+    const { course } = this.props
+    let featureInfo = getFeatureInfo(feature)
+    return (
+      <div className={styles.mobileIcon}>
+        <img
+          src={FeatureIcons[featureInfo.icon]}
+          alt="feature"
+          id={`feature-icon-${course.id}-${feature}`}
+        />
+        <span>{featureInfo.title}</span>
       </div>
     )
   }
@@ -190,6 +207,14 @@ class CourseItem extends Component {
           <div
             className={styles.photo}
             onClick={() => this.priceClicked(course)}>
+            <Mobile>
+              {!isFullLicence && course.instant_book && (
+                <div className={styles.mobileInstantBook}>
+                  <img src={InstantBookingIcon} alt="" />
+                  <span>Instant booking</span>
+                </div>
+              )}
+            </Mobile>
             <LazyLoadImage
               src={course.image_thumbnail || course.image}
               className={styles.image}
@@ -207,6 +232,25 @@ class CourseItem extends Component {
                     onClick={() => this.priceClicked(course)}>
                     {course.location_slug.replace('-', ' ')}
                   </button>
+                  <Mobile>
+                    <span
+                      className={styles.mobileDistance}
+                      onClick={() => this.priceClicked(course)}>
+                      {course.distance_miles.toFixed(2)}mi
+                    </span>
+
+                    <div className={styles.mobileStartContainer}>
+                      <YellowStarsComponent
+                        rating={course.rating}
+                        className={styles.starComponent}
+                        starClassName={styles.mobileStarComponent}
+                        onClick={() => this.reviewClicked(course)}
+                      />
+                      <div onClick={() => this.reviewClicked(course)}>
+                        <span>{course.number_of_reviews}</span>
+                      </div>
+                    </div>
+                  </Mobile>
                 </div>
                 <Desktop>
                   {this.checkNextDayAvailable() && (
@@ -226,51 +270,76 @@ class CourseItem extends Component {
                 onClick={() => this.priceClicked(course)}>
                 {course.place}, {course.postcode}
               </div>
-              <div className={styles.icons}>
-                {course.mciac_approved && this.renderIcon('mciac_approved')}
-                {course.bike_hire && this.renderIcon('bike_hire')}
-                {course.helmet_hire && this.renderIcon('helmet_hire')}
-                {course.gloves_jacket_included &&
-                  this.renderIcon('gloves_jacket_included')}
-                {course.on_site_cafe && this.renderIcon('on_site_cafe')}
-                {course.on_site_parking && this.renderIcon('on_site_parking')}
-                {course.indoor_classroom && this.renderIcon('indoor_classroom')}
-                {!isFullLicence &&
-                  course.instant_book &&
-                  this.renderIcon('instant_book')}
-              </div>
+              <Desktop>
+                <div className={styles.icons}>
+                  {course.mciac_approved && this.renderIcon('mciac_approved')}
+                  {course.bike_hire && this.renderIcon('bike_hire')}
+                  {course.helmet_hire && this.renderIcon('helmet_hire')}
+                  {course.gloves_jacket_included &&
+                    this.renderIcon('gloves_jacket_included')}
+                  {course.on_site_cafe && this.renderIcon('on_site_cafe')}
+                  {course.on_site_parking && this.renderIcon('on_site_parking')}
+                  {course.indoor_classroom &&
+                    this.renderIcon('indoor_classroom')}
+                  {!isFullLicence &&
+                    course.instant_book &&
+                    this.renderIcon('instant_book')}
+                </div>
+              </Desktop>
+              <Mobile>
+                <div
+                  onClick={() => this.priceClicked(course)}
+                  className={styles.iconsMobile}>
+                  {course.mciac_approved &&
+                    this.renderIconMobile('mciac_approved')}
+                  {course.bike_hire && this.renderIconMobile('bike_hire')}
+                  {course.helmet_hire && this.renderIconMobile('helmet_hire')}
+                  {course.gloves_jacket_included &&
+                    this.renderIconMobile('gloves_jacket_included')}
+                  {course.on_site_cafe && this.renderIconMobile('on_site_cafe')}
+                  {course.on_site_parking &&
+                    this.renderIconMobile('on_site_parking')}
+                  {course.indoor_classroom &&
+                    this.renderIconMobile('indoor_classroom')}
+                  {!isFullLicence &&
+                    course.instant_book &&
+                    this.renderIconMobile('instant_book')}
+                </div>
+              </Mobile>
             </div>
-            <div
-              className={classnames(
-                styles.extraInfo,
-                courseType !== 'FULL_LICENCE' && styles.extraInfoMobile
-              )}>
-              <div>
-                <IconDistance className={styles.mileIcon} />{' '}
-                {course.distance_miles.toFixed(2)}
-                mi
+            <Desktop>
+              <div
+                className={classnames(
+                  styles.extraInfo,
+                  courseType !== 'FULL_LICENCE' && styles.extraInfoMobile
+                )}>
+                <div>
+                  <IconDistance className={styles.mileIcon} />{' '}
+                  {course.distance_miles.toFixed(2)}
+                  mi
+                </div>
+                <div>
+                  <IconInfo className={styles.detailIcon} />{' '}
+                  <span
+                    onClick={() => this.detailClicked(course)}
+                    className={classnames(styles.detail, styles.detailsLink)}>
+                    Details
+                  </span>
+                </div>
+                <div>
+                  <StarsComponent
+                    rating={course.rating}
+                    className={styles.starComponent}
+                    onClick={() => this.reviewClicked(course)}
+                  />
+                  <span
+                    onClick={() => this.reviewClicked(course)}
+                    className={styles.detail}>
+                    {course.number_of_reviews}
+                  </span>
+                </div>
               </div>
-              <div>
-                <IconInfo className={styles.detailIcon} />{' '}
-                <span
-                  onClick={() => this.detailClicked(course)}
-                  className={classnames(styles.detail, styles.detailsLink)}>
-                  Details
-                </span>
-              </div>
-              <div>
-                <StarsComponent
-                  rating={course.rating}
-                  className={styles.starComponent}
-                  onClick={() => this.reviewClicked(course)}
-                />
-                <span
-                  onClick={() => this.reviewClicked(course)}
-                  className={styles.detail}>
-                  {course.number_of_reviews}
-                </span>
-              </div>
-            </div>
+            </Desktop>
           </div>
           <div className={footer}>
             {!isTypeform ? (
