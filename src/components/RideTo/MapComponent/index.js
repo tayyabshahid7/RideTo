@@ -203,6 +203,7 @@ class MapComponent extends Component {
 
   renderPin(course, available) {
     const { instant_book: isInstantBook, supplier_pricing } = course
+    const { handlePinClick } = this.props
 
     let formattedPricing = null
     if (supplier_pricing) {
@@ -233,9 +234,11 @@ class MapComponent extends Component {
         </Desktop>
         <Mobile>
           <NewIconMapPin
+            course={course}
             pricing={formattedPricing}
             isInstantBooking={isInstantBook}
             getPricing={this.getPricing.bind(this)}
+            handlePinClick={handlePinClick}
           />
         </Mobile>
       </>
