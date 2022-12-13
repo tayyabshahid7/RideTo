@@ -1,0 +1,14 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.wrapper {
+  width: 100%;
+  flex: 1;
+}
+
+.searchIcon {
+  color: #898989;
+}
