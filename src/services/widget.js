@@ -107,7 +107,9 @@ export const asPoundSterling = pennies => {
 }
 
 export const showOwnBikeHire = courseType => {
-  return courseType.name === 'CBT Training Renewal'
+  return (
+    courseType.name === 'CBT Training Renewal' || courseType.constant === 'MOT'
+  )
 }
 
 export const getValidCourses = courses => {
