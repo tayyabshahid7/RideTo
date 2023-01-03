@@ -63,7 +63,7 @@ class ResultPageContainer extends Component {
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
-    this.handeUpdateOption = this.handeUpdateOption.bind(this)
+    this.handleUpdateOption = this.handleUpdateOption.bind(this)
   }
 
   async componentDidMount() {
@@ -141,7 +141,7 @@ class ResultPageContainer extends Component {
     this.setState({ date: moment(date).format(DATE_FORMAT) })
   }
 
-  handeUpdateOption(data) {
+  handleUpdateOption(data) {
     this.setState({ ...data })
   }
 
@@ -171,7 +171,7 @@ class ResultPageContainer extends Component {
                 date={date}
                 sortByOption={sortByOption}
                 handleSetDate={this.handleSetDate}
-                handeUpdateOption={this.handeUpdateOption}
+                handleUpdateOption={this.handleUpdateOption}
                 navigation={navigation}
                 userLocation={userLocation}
               />

@@ -484,7 +484,7 @@ class ResultPage extends Component {
   }
 
   renderSortByDropdown(shortOptions) {
-    const { handeUpdateOption, sortByOption, courseType } = this.props
+    const { handleUpdateOption, sortByOption, courseType } = this.props
     return (
       <UncontrolledDropdown className={styles.sortButtonWrap}>
         <DropdownToggle caret color="lightgrey" className={styles.sortButton}>
@@ -500,7 +500,7 @@ class ResultPage extends Component {
             return (
               <DropdownItem
                 onClick={() =>
-                  handeUpdateOption({ sortByOption: sortOption.value })
+                  handleUpdateOption({ sortByOption: sortOption.value })
                 }
                 id={sortOption.value.replace('-', '')}
                 key={sortOption.value}>
@@ -813,6 +813,7 @@ class ResultPage extends Component {
       loading,
       userLocation,
       sortByOption,
+      handleUpdateOption,
       location: { pathname, search }
     } = this.props
     const {
@@ -931,7 +932,10 @@ class ResultPage extends Component {
           />
         </Desktop>
         <Mobile>
-          <ResultsHeaderMobile />
+          <ResultsHeaderMobile
+            courseTypesOptions={courseTypesOptions}
+            handleUpdateOption={handleUpdateOption}
+          />
         </Mobile>
 
         <Container className={styles.pageContainer}>
