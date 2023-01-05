@@ -17,6 +17,9 @@
 
     .modal-body {
       padding: 0;
+      max-height: 70vh;
+      overflow-y: scroll;
+      margin-right: -15px;
     }
     .modal-header {
       font-family: var(--font-rift-bold);
@@ -61,6 +64,7 @@
 .modalBody {
   display: flex;
   flex-direction: column;
+  margin-right: 15px;
 
   span {
     font-family: var(--font-rift);
@@ -190,7 +194,7 @@
       font-size: 13px;
       line-height: 16px;
       margin-left: 12px;
-      width: 90%;
+      width: 60%;
       border: 0;
       outline: 0;
 
@@ -215,6 +219,12 @@
   margin-top: 32px;
   width: 100%;
   justify-content: center;
+}
+
+.loading {
+  &::after {
+    margin-top: 16px;
+  }
 }
 
 .boxSearchIcon {

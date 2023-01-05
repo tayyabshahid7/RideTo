@@ -1,31 +1,27 @@
 import { IconArrowDown, IconCalendarMobile, IconSearch } from 'assets/icons'
 import classNames from 'classnames'
 import React, { useState } from 'react'
+import { getCourseTitle } from 'services/course'
 import SearchModal from './SearchModal'
 
 import styles from './styles.scss'
 
-function ResultsHeaderMobile({ courseTypesOptions, handleUpdateOption }) {
-  const [searchModal, setSearchModal] = useState(true)
+function ResultsHeaderMobile({
+  courseTypesOptions,
+  postcode,
+  courseType,
+  radius_miles
+}) {
+  const [searchModal, setSearchModal] = useState(false)
   const [chooseADateModal, setChooseADateModal] = useState(false)
 
-  const courseTitle = 'CBT training'
-  const postcode = 'London'
-  const miles = `+ ${0} miles`
+  const courseTitle = getCourseTitle(courseType)
+  const miles = radius_miles === '1' ? '+ 0 miles' : `+ ${radius_miles} miles`
 
   const date = 'Choose a Date'
 
   const handleSearchClick = (radius, postcode, courseTypeState) => {
-    console.log(radius, postcode, courseTypeState)
     setSearchModal(!searchModal)
-
-    const options = {
-      radius_miles: radius,
-      postcode,
-      courseType: courseTypeState
-    }
-
-    handleUpdateOption(options)
   }
 
   const handleOnCloseSearchModal = e => {

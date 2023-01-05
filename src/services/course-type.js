@@ -1,9 +1,10 @@
 import { get } from 'services/api'
 
-export const fetchCoursesTypes = async postCode => {
+export const fetchCoursesTypes = async (postCode, radius_miles = null) => {
   const path = `course-types`
   const params = {
-    postcode: postCode
+    postcode: postCode,
+    radius_miles
   }
 
   return await get(path, params, false)

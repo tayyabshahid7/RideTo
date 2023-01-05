@@ -3,85 +3,37 @@ import IconLocale from 'assets/icons/IconLocate'
 import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import Loading from 'components/Loading'
 import RideToButton from 'components/RideTo/Button'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import Radiobox from '../../../../Radiobox'
 import styles from './styles.scss'
 
-import postcodes from 'node-postcodes.io'
+import { normalizePostCode } from 'utils/helper'
+import { ResultPageProvider } from '../../StateProvider'
 
 const options = [
-  { value: '0', label: `+ 0 miles` },
+  { value: '1', label: `+ 0 miles` },
   { value: '10', label: `+ 10 miles` },
   { value: '20', label: `+ 20 miles` },
   { value: '30', label: `+ 30 miles` }
 ]
 
-const optionsLocation = {
-  enableHighAccuracy: true,
-  timeout: 5000,
-  maximumAge: 0
-}
+const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
+  const {
+    getPosition,
+    postcode,
+    timestamp,
+    positionError,
+    handleCourseTypeChange,
+    courseType,
+    radiusMiles
+  } = useContext(ResultPageProvider)
 
-const SearchModal = ({ isOpen, onClose, onSearch, courseTypesOptions }) => {
-  const [courseTypeState, setCourseTypeState] = useState('LICENCE_CBT')
+  const [isLoading, setIsLoading] = useState(false)
+  const [postcodeModal, setPostcodeModal] = useState('')
 
-  const [postcode, setPostcode] = useState('CR6 9EE')
-  const [radius, setRadius] = useState(0)
-  const [isLoading, setLoading] = useState(false)
-
-  useEffect(() => {
-    if (isLoading) {
-      console.log('Loading state', isLoading)
-      navigator.geolocation.getCurrentPosition(
-        getCurrentLocationSuccess,
-        getCurrentLocationError,
-        optionsLocation
-      )
-      setLoading(false)
-    }
-  }, [isLoading])
-
-  const getCurrentLocationSuccess = async pos => {
-    // const crd = pos.coords
-
-    // const lat = crd.latitude // 51.7923246977375
-    // const lng = crd.longitude // 0.629834723775309
-
-    const lat = 51.7923246977375
-    const lng = 0.629834723775309
-
-    console.log(lat, lng)
-
-    try {
-      let postcodeIo = await postcodes.geo(
-        51.7923246977375,
-        0.629834723775309,
-        {
-          limit: 1,
-          radius: 1,
-          wideSearch: false
-        }
-      )
-
-      console.log(postcodeIo.result)
-      if (postcodeIo.result.length > 0) {
-        console.log('here')
-        console.log(postcodeIo.result[0].postcode)
-        setPostcode(postcodeIo.result[0].postcode)
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }
-
-  const getCurrentLocationError = err => {
-    console.warn(`ERROR(${err.code}): ${err.message}`)
-    setLoading(false)
-  }
-
-  const handleGetCurrentLocation = () => setLoading(true)
+  const [radius, setRadius] = useState(30)
 
   const CloseButtonIcon = (
     <button onClick={onClose} className={styles.buttonClose}>
@@ -95,7 +47,6 @@ const SearchModal = ({ isOpen, onClose, onSearch, courseTypesOptions }) => {
         <div className={styles.boxSelectRadiusIcon}>
           <IconRadius />
         </div>
-
         {children}
       </components.Control>
     )
@@ -136,12 +87,44 @@ const SearchModal = ({ isOpen, onClose, onSearch, courseTypesOptions }) => {
   }
 
   const onChangeValue = event => {
-    setCourseTypeState(event.target.value)
+    handleCourseTypeChange(event.target.value)
   }
 
-  const handleSearchClick = () => {
-    onSearch(radius, postcode, courseTypeState)
+  function handleSearchClick() {
+    const normalizedPostCode = normalizePostCode(postcodeModal)
+    const sortByOption = 'distance'
+    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius}&sortBy=${sortByOption}`
   }
+
+  function handleCurrentLocationClick() {
+    if (!timestamp) {
+      setIsLoading(true)
+      getPosition()
+    }
+  }
+  useEffect(() => {
+    handleCourseTypeChange(courseType)
+  }, [courseType])
+
+  useEffect(() => {
+    setPostcodeModal(postcode)
+  }, [postcode])
+
+  useEffect(() => {
+    const filteredRadiusMiles = options.filter(
+      radius => radius.value === radiusMiles
+    )
+
+    if (filteredRadiusMiles.length > 0) {
+      setRadius(filteredRadiusMiles)
+    } else {
+      setRadius(options[3])
+    }
+  }, [radiusMiles])
+
+  useEffect(() => {
+    setIsLoading(false)
+  }, [timestamp, setIsLoading, positionError])
 
   return (
     <Modal isOpen={isOpen} backdrop="static" className={styles.modal}>
@@ -151,21 +134,25 @@ const SearchModal = ({ isOpen, onClose, onSearch, courseTypesOptions }) => {
       <ModalBody>
         <div className={styles.modalBody}>
           <span className={styles.courseTitle}>Course</span>
-          {courseTypesOptions.map((courseType, id) => {
-            const { name, constant, number_of_suppliers } = courseType
+          {courseTypesOptions.map(course => {
+            const { name, constant, number_of_suppliers } = course
             return (
-              <div key={id} className={styles.courseTypesWrapper}>
-                <Radiobox
-                  id={constant}
-                  onChange={onChangeValue}
-                  checked={constant === courseTypeState}
-                  children={name}
-                  extraClass={styles.inputRadio}
-                  value={courseType.constant}
-                />
-                <span className={styles.coursesCounter}>
-                  {number_of_suppliers}
-                </span>
+              <div key={constant} className={styles.courseTypesWrapper}>
+                {number_of_suppliers > 0 && (
+                  <>
+                    <Radiobox
+                      id={constant}
+                      onChange={onChangeValue}
+                      checked={constant === courseType}
+                      children={name}
+                      extraClass={styles.inputRadio}
+                      value={course.constant}
+                    />
+                    <span className={styles.coursesCounter}>
+                      {number_of_suppliers}
+                    </span>
+                  </>
+                )}
               </div>
             )
           })}
@@ -175,7 +162,7 @@ const SearchModal = ({ isOpen, onClose, onSearch, courseTypesOptions }) => {
 
             <span
               className={styles.currentLocation}
-              onClick={handleGetCurrentLocation}>
+              onClick={handleCurrentLocationClick}>
               <IconLocale />
               Use current location
             </span>
@@ -186,9 +173,9 @@ const SearchModal = ({ isOpen, onClose, onSearch, courseTypesOptions }) => {
               <input
                 className={styles.boxSearchInput}
                 type="text"
-                value={postcode}
+                value={postcodeModal}
                 name="postcode"
-                onChange={e => setPostcode(e.target.value)}
+                onChange={e => setPostcodeModal(e.target.value)}
               />
             </label>
 
@@ -201,7 +188,7 @@ const SearchModal = ({ isOpen, onClose, onSearch, courseTypesOptions }) => {
 
           <span className={styles.courseTitle}>Radius</span>
           <Select
-            defaultValue={options[0]}
+            defaultValue={radius}
             options={options}
             menuPlacement="auto"
             components={{
@@ -213,7 +200,7 @@ const SearchModal = ({ isOpen, onClose, onSearch, courseTypesOptions }) => {
             }}
             onChange={r => setRadius(r.value)}
           />
-          <Loading loading={isLoading}>
+          <Loading loading={isLoading} className={styles.loading}>
             <RideToButton
               className={styles.searchButton}
               onClick={handleSearchClick}>

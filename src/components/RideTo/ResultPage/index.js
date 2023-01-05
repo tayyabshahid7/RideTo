@@ -154,7 +154,8 @@ class ResultPageContainer extends Component {
       loading,
       courseType,
       postcode,
-      navigation
+      navigation,
+      radius_miles
     } = this.state
 
     return (
@@ -166,6 +167,7 @@ class ResultPageContainer extends Component {
                 {...props}
                 postcode={postcode}
                 courseType={courseType}
+                radius_miles={radius_miles}
                 courses={courses}
                 loading={loading}
                 date={date}

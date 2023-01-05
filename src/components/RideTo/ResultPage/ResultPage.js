@@ -41,6 +41,7 @@ import styles from './ResultPage.scss'
 import ResultsHeader from './ResultsHeader'
 import ResultsHeaderMobile from './ResultsHeaderMobile'
 import SortAndFilter from './SortAndFilter'
+import { ResultPageProvider } from './StateProvider'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -168,18 +169,29 @@ class ResultPage extends Component {
   }
 
   async componentDidMount() {
+    const { context } = this.props
+    const {
+      handlePostCodeChange,
+      handleCourseTypeChange,
+      handleMileRadiusChange
+    } = context
+
     // Prevent the results from loading half way down the page
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
     }
     window.scrollTo(0, 0)
 
-    const { postcode, courseType } = this.props
-    const result = await fetchCoursesTypes(postcode || '')
+    const { postcode, courseType, radius_miles } = this.props
+    const result = await fetchCoursesTypes(postcode || '', radius_miles || '')
     const courseTypes = result.results.filter(
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
+
+    handlePostCodeChange(postcode)
+    handleCourseTypeChange(courseType)
+    handleMileRadiusChange(radius_miles)
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -814,6 +826,7 @@ class ResultPage extends Component {
       userLocation,
       sortByOption,
       handleUpdateOption,
+      radius_miles,
       location: { pathname, search }
     } = this.props
     const {
@@ -933,6 +946,9 @@ class ResultPage extends Component {
         </Desktop>
         <Mobile>
           <ResultsHeaderMobile
+            postcode={postcode}
+            courseType={courseType}
+            radius_miles={radius_miles}
             courseTypesOptions={courseTypesOptions}
             handleUpdateOption={handleUpdateOption}
           />
@@ -1297,4 +1313,16 @@ class ResultPage extends Component {
   }
 }
 
-export default ResultPage
+const withContext = Component => {
+  return props => {
+    return (
+      <ResultPageProvider.Consumer>
+        {context => {
+          return <Component {...props} context={context} />
+        }}
+      </ResultPageProvider.Consumer>
+    )
+  }
+}
+
+export default withContext(ResultPage)
