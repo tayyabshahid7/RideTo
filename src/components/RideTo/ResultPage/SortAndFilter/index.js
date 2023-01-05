@@ -3,9 +3,7 @@ import React from 'react'
 
 import styles from './styles.scss'
 
-function SortAndFilter(props) {
-  const { handleMapButton } = props
-
+function SortAndFilter({ handleMapButton, isMobileMapVisible }) {
   return (
     <div className={styles.container}>
       <div
@@ -18,7 +16,7 @@ function SortAndFilter(props) {
       </div>
       <div className={styles.wrapper} onClick={handleMapButton}>
         <IconMap />
-        <span>Map</span>
+        {!!isMobileMapVisible ? <span>List</span> : <span>Map</span>}
       </div>
     </div>
   )
