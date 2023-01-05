@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 16px 0px;
+  margin-top: 8px;
+
+  background: #ffffff;
+}
+
+.wrapper {
+  justify-content: center;
+
+  font-family: var(--font-rift);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+  cursor: pointer;
+  margin-left: -10px;
+
+  svg {
+    margin-right: 8px;
+  }
+
+  span {
+  }
+
+  &:after {
+    cursor: default;
+    content: '';
+    background-color: #cecece;
+    position: absolute;
+    width: 1px;
+    height: 15px;
+    top: 65px;
+    left: 53%;
+    display: block;
+  }
+}

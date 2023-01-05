@@ -11,7 +11,8 @@ const Radiobox = ({
   size = 'small',
   extraClass = '',
   error,
-  onChange
+  onChange,
+  value
 }) => {
   const radioboxId = id || `radio_${Math.floor(Math.random() * 10000)}`
   const className = error
@@ -27,6 +28,7 @@ const Radiobox = ({
         checked={checked}
         onChange={onChange}
         disabled={disabled}
+        value={value}
       />
       <label htmlFor={radioboxId}>{children}</label>
     </div>

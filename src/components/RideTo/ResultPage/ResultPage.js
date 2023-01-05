@@ -2,6 +2,7 @@ import loadable from '@loadable/component'
 import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import classnames from 'classnames'
+import { Desktop, Mobile } from 'common/breakpoints'
 import { LICENCE_TYPES, SORTBY } from 'common/constants'
 import { getTitleFor, SortByOptions } from 'common/info'
 import Loading from 'components/Loading'
@@ -32,11 +33,15 @@ import { flashDiv, getStaticData } from 'services/page'
 import { deleteParam, normalizePostCode, setParam } from 'utils/helper'
 import { createPOM } from '../../../utils/helper'
 import POMSelector from '../CheckoutPage/POMSelector'
+import KlarnaBanner from '../KlarnaBanner'
 import CourseItem from './CourseItem'
 import DateSelector from './DateSelector'
 import POMBanner from './POMBanner'
 import styles from './ResultPage.scss'
 import ResultsHeader from './ResultsHeader'
+import ResultsHeaderMobile from './ResultsHeaderMobile'
+import SortAndFilter from './SortAndFilter'
+import { ResultPageProvider } from './StateProvider'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -112,6 +117,7 @@ class ResultPage extends Component {
       this
     )
     this.handleMyLocation = this.handleMyLocation.bind(this)
+    this.handleMapButton = this.handleMapButton.bind(this)
 
     window.sessionStorage.removeItem('trainings')
 
@@ -131,6 +137,14 @@ class ResultPage extends Component {
       coursesOnMap: props.courses,
       lat,
       lng
+    })
+  }
+
+  handleMapButton() {
+    const { isMobileMapVisible } = this.state
+
+    this.setState({
+      isMobileMapVisible: !isMobileMapVisible
     })
   }
 
@@ -155,18 +169,29 @@ class ResultPage extends Component {
   }
 
   async componentDidMount() {
+    const { context } = this.props
+    const {
+      handlePostCodeChange,
+      handleCourseTypeChange,
+      handleMileRadiusChange
+    } = context
+
     // Prevent the results from loading half way down the page
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
     }
     window.scrollTo(0, 0)
 
-    const { postcode, courseType } = this.props
-    const result = await fetchCoursesTypes(postcode || '')
+    const { postcode, courseType, radius_miles } = this.props
+    const result = await fetchCoursesTypes(postcode || '', radius_miles || '')
     const courseTypes = result.results.filter(
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
+
+    handlePostCodeChange(postcode)
+    handleCourseTypeChange(courseType)
+    handleMileRadiusChange(radius_miles)
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -471,7 +496,7 @@ class ResultPage extends Component {
   }
 
   renderSortByDropdown(shortOptions) {
-    const { handeUpdateOption, sortByOption, courseType } = this.props
+    const { handleUpdateOption, sortByOption, courseType } = this.props
     return (
       <UncontrolledDropdown className={styles.sortButtonWrap}>
         <DropdownToggle caret color="lightgrey" className={styles.sortButton}>
@@ -487,7 +512,7 @@ class ResultPage extends Component {
             return (
               <DropdownItem
                 onClick={() =>
-                  handeUpdateOption({ sortByOption: sortOption.value })
+                  handleUpdateOption({ sortByOption: sortOption.value })
                 }
                 id={sortOption.value.replace('-', '')}
                 key={sortOption.value}>
@@ -800,6 +825,8 @@ class ResultPage extends Component {
       loading,
       userLocation,
       sortByOption,
+      handleUpdateOption,
+      radius_miles,
       location: { pathname, search }
     } = this.props
     const {
@@ -903,18 +930,30 @@ class ResultPage extends Component {
 
     return (
       <div className={styles.container}>
-        <ResultsHeader
-          searchForLocationRequests={searchForLocationRequests}
-          courseType={courseType}
-          postcode={postcode}
-          date={date}
-          courseTypesOptions={courseTypesOptions}
-          handlePostcodeChange={this.handlePostcodeChange}
-          handleCourseChange={this.handleCourseChange}
-          handleMobileDateClick={this.handleMobileDateClick}
-          isFullLicence={isFullLicence}
-          showCourseTypeInfo={this.showCourseTypeInfo}
-        />
+        <Desktop>
+          <ResultsHeader
+            searchForLocationRequests={searchForLocationRequests}
+            courseType={courseType}
+            postcode={postcode}
+            date={date}
+            courseTypesOptions={courseTypesOptions}
+            handlePostcodeChange={this.handlePostcodeChange}
+            handleCourseChange={this.handleCourseChange}
+            handleMobileDateClick={this.handleMobileDateClick}
+            isFullLicence={isFullLicence}
+            showCourseTypeInfo={this.showCourseTypeInfo}
+          />
+        </Desktop>
+        <Mobile>
+          <ResultsHeaderMobile
+            postcode={postcode}
+            courseType={courseType}
+            radius_miles={radius_miles}
+            courseTypesOptions={courseTypesOptions}
+            handleUpdateOption={handleUpdateOption}
+          />
+        </Mobile>
+
         <Container className={styles.pageContainer}>
           <Row className={styles.row}>
             <Col className={styles.col}>
@@ -971,17 +1010,21 @@ class ResultPage extends Component {
                               </span>
                             </div>
                           </MediaQuery>
-                          <MediaQuery query="(max-width: 768px)">
-                            <div
+                          <Mobile>
+                            <KlarnaBanner />
+                            <SortAndFilter
+                              handleMapButton={this.handleMapButton}
+                            />
+                            {/* <div
                               className={classnames(
                                 styles.instruction,
                                 isFullLicence && styles.instructionFullLicence
                               )}>
                               <div className={classnames(styles.schoolCount)}>
                                 <span>{resultsCount} Results by </span>
-                                {this.renderSortByDropdown(true)}
-                                {/* <i className="fas fa-caret-down"></i> */}
-                                <span className={styles.desktopSortByValue}>
+                                {this.renderSortByDropdown(true)} */}
+                            {/* <i className="fas fa-caret-down"></i> */}
+                            {/* <span className={styles.desktopSortByValue}>
                                   {sortByOption.replace('-', '')}
                                 </span>
                               </div>
@@ -995,8 +1038,8 @@ class ResultPage extends Component {
                                 }}>
                                 Map View
                               </button>
-                            </div>
-                          </MediaQuery>
+                            </div> */}
+                          </Mobile>
                         </React.Fragment>
                       )}
                     </React.Fragment>
@@ -1270,4 +1313,16 @@ class ResultPage extends Component {
   }
 }
 
-export default ResultPage
+const withContext = Component => {
+  return props => {
+    return (
+      <ResultPageProvider.Consumer>
+        {context => {
+          return <Component {...props} context={context} />
+        }}
+      </ResultPageProvider.Consumer>
+    )
+  }
+}
+
+export default withContext(ResultPage)
