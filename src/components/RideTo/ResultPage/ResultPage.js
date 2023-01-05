@@ -1014,6 +1014,7 @@ class ResultPage extends Component {
                             <KlarnaBanner />
                             <SortAndFilter
                               handleMapButton={this.handleMapButton}
+                              isMobileMapVisible={isMobileMapVisible}
                             />
                             {/* <div
                               className={classnames(
