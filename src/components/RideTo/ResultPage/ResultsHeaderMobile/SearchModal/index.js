@@ -2,11 +2,11 @@ import { dropdownLine, IconRadius, IconSearch } from 'assets/icons'
 import IconLocale from 'assets/icons/IconLocate'
 import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import Loading from 'components/Loading'
+import Radiobox from 'components/Radiobox'
 import RideToButton from 'components/RideTo/Button'
 import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
-import Radiobox from '../../../../Radiobox'
 import styles from './styles.scss'
 
 import { normalizePostCode } from 'utils/helper'
@@ -33,7 +33,7 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [postcodeModal, setPostcodeModal] = useState('')
 
-  const [radius, setRadius] = useState(30)
+  const [radius, setRadius] = useState(options[3])
 
   const CloseButtonIcon = (
     <button onClick={onClose} className={styles.buttonClose}>
@@ -93,7 +93,8 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
   function handleSearchClick() {
     const normalizedPostCode = normalizePostCode(postcodeModal)
     const sortByOption = 'distance'
-    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius}&sortBy=${sortByOption}`
+    const formattedRadius = radius.value
+    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}`
   }
 
   function handleCurrentLocationClick() {
@@ -116,7 +117,7 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
     )
 
     if (filteredRadiusMiles.length > 0) {
-      setRadius(filteredRadiusMiles)
+      setRadius(filteredRadiusMiles[0])
     } else {
       setRadius(options[3])
     }
@@ -127,12 +128,19 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
   }, [timestamp, setIsLoading, positionError])
 
   return (
-    <Modal isOpen={isOpen} backdrop="static" className={styles.modal}>
-      <ModalHeader toggle={onClose} close={CloseButtonIcon}>
+    <Modal
+      isOpen={isOpen}
+      backdrop="static"
+      className={styles.modal}
+      contentClassName={styles.modalContent}>
+      <ModalHeader
+        className={styles.modalHeader}
+        toggle={onClose}
+        close={CloseButtonIcon}>
         Search
       </ModalHeader>
-      <ModalBody>
-        <div className={styles.modalBody}>
+      <ModalBody className={styles.modalBody}>
+        <>
           <span className={styles.courseTitle}>Course</span>
           {courseTypesOptions.map(course => {
             const { name, constant, number_of_suppliers } = course
@@ -198,7 +206,7 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
               SingleValue,
               Option
             }}
-            onChange={r => setRadius(r.value)}
+            onChange={r => setRadius(r)}
           />
           <Loading loading={isLoading} className={styles.loading}>
             <RideToButton
@@ -207,7 +215,7 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
               Search
             </RideToButton>
           </Loading>
-        </div>
+        </>
       </ModalBody>
     </Modal>
   )
