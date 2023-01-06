@@ -20,7 +20,7 @@ function ResultsHeaderMobile({
 
   const date = 'Choose a Date'
 
-  const handleSearchClick = (radius, postcode, courseTypeState) => {
+  const handleSearchClick = () => {
     setSearchModal(!searchModal)
   }
 
