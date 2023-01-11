@@ -16,7 +16,7 @@
     color: black !important;
   }
   @media (min-width: 576px) {
-    max-width: none;
+    max-width: 100% !important;
   }
 
   @media (max-width: 768px) {
