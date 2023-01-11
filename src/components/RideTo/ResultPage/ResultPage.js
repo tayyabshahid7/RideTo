@@ -37,6 +37,7 @@ import KlarnaBanner from '../KlarnaBanner'
 import SortAndFilter from './components/SortAndFilter'
 import CourseItem from './CourseItem'
 import DateSelector from './DateSelector'
+import { FilterProvider } from './FilterStateProvider'
 import POMBanner from './POMBanner'
 import styles from './ResultPage.scss'
 import ResultsHeader from './ResultsHeader'
@@ -169,11 +170,17 @@ class ResultPage extends Component {
   }
 
   async componentDidMount() {
-    const { context } = this.props
+    const {
+      context,
+      postcode,
+      courseType,
+      radius_miles /*, courses*/
+    } = this.props
     const {
       handlePostCodeChange,
       handleCourseTypeChange,
       handleMileRadiusChange
+      // handleCourseListChange
     } = context
 
     // Prevent the results from loading half way down the page
@@ -182,7 +189,6 @@ class ResultPage extends Component {
     }
     window.scrollTo(0, 0)
 
-    const { postcode, courseType, radius_miles } = this.props
     const result = await fetchCoursesTypes(postcode || '', radius_miles || '')
     const courseTypes = result.results.filter(
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
@@ -192,6 +198,7 @@ class ResultPage extends Component {
     handlePostCodeChange(postcode)
     handleCourseTypeChange(courseType)
     handleMileRadiusChange(radius_miles)
+    // handleCourseListChange(courses)
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -1317,11 +1324,15 @@ class ResultPage extends Component {
 const withContext = Component => {
   return props => {
     return (
-      <ResultPageProvider.Consumer>
-        {context => {
-          return <Component {...props} context={context} />
-        }}
-      </ResultPageProvider.Consumer>
+      <FilterProvider.Consumer>
+        {filter => (
+          <ResultPageProvider.Consumer>
+            {context => {
+              return <Component {...props} context={context} filter={filter} />
+            }}
+          </ResultPageProvider.Consumer>
+        )}
+      </FilterProvider.Consumer>
     )
   }
 }

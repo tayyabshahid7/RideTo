@@ -9,6 +9,7 @@ import { parseQueryString } from 'services/api'
 import { fetchSearchLocation } from 'services/geolocation'
 import { getStaticData } from 'services/page'
 import { SORTBY } from '../../../common/constants'
+import { FilterStateProvider } from './FilterStateProvider'
 import ResultPage from './ResultPage'
 import StateProvider from './StateProvider'
 
@@ -159,28 +160,30 @@ class ResultPageContainer extends Component {
     } = this.state
 
     return (
-      <StateProvider>
-        <Router>
-          <Route
-            render={props => (
-              <ResultPage
-                {...props}
-                postcode={postcode}
-                courseType={courseType}
-                radius_miles={radius_miles}
-                courses={courses}
-                loading={loading}
-                date={date}
-                sortByOption={sortByOption}
-                handleSetDate={this.handleSetDate}
-                handleUpdateOption={this.handleUpdateOption}
-                navigation={navigation}
-                userLocation={userLocation}
-              />
-            )}
-          />
-        </Router>
-      </StateProvider>
+      <FilterStateProvider>
+        <StateProvider>
+          <Router>
+            <Route
+              render={props => (
+                <ResultPage
+                  {...props}
+                  postcode={postcode}
+                  courseType={courseType}
+                  radius_miles={radius_miles}
+                  courses={courses}
+                  loading={loading}
+                  date={date}
+                  sortByOption={sortByOption}
+                  handleSetDate={this.handleSetDate}
+                  handleUpdateOption={this.handleUpdateOption}
+                  navigation={navigation}
+                  userLocation={userLocation}
+                />
+              )}
+            />
+          </Router>
+        </StateProvider>
+      </FilterStateProvider>
     )
   }
 }

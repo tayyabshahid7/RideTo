@@ -6,7 +6,7 @@ import { SortAndFilterModal } from './components/SortAndFilterModal'
 import styles from './styles.scss'
 
 function SortAndFilter({ handleMapButton, isMobileMapVisible }) {
-  const [modal, setModal] = useState(false)
+  const [modal, setModal] = useState(true)
 
   const handleSortAndFilter = () => {
     setModal(!modal)
