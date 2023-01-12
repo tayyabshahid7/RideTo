@@ -1,11 +1,15 @@
 import { IconMap, IconSortAndFilter } from 'assets/icons'
 import React, { useState } from 'react'
 import { SortAndFilterModal } from './components/SortAndFilterModal'
-// import { SortAndFilterModal } from './components/SortAndFilterModal'
 
 import styles from './styles.scss'
 
-function SortAndFilter({ handleMapButton, isMobileMapVisible }) {
+function SortAndFilter({
+  handleMapButton,
+  isMobileMapVisible,
+  handleUpdateOption,
+  courses
+}) {
   const [modal, setModal] = useState(true)
 
   const handleSortAndFilter = () => {
@@ -19,7 +23,12 @@ function SortAndFilter({ handleMapButton, isMobileMapVisible }) {
   return (
     <>
       {modal && (
-        <SortAndFilterModal onClose={handleOnCloseModal} isOpen={modal} />
+        <SortAndFilterModal
+          onClose={handleOnCloseModal}
+          isOpen={modal}
+          handleUpdateOption={handleUpdateOption}
+          courses={courses}
+        />
       )}
       <div className={styles.container}>
         <div className={styles.wrapper} onClick={handleSortAndFilter}>

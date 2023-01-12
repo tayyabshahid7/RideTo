@@ -170,17 +170,11 @@ class ResultPage extends Component {
   }
 
   async componentDidMount() {
-    const {
-      context,
-      postcode,
-      courseType,
-      radius_miles /*, courses*/
-    } = this.props
+    const { context, postcode, courseType, radius_miles } = this.props
     const {
       handlePostCodeChange,
       handleCourseTypeChange,
       handleMileRadiusChange
-      // handleCourseListChange
     } = context
 
     // Prevent the results from loading half way down the page
@@ -198,7 +192,6 @@ class ResultPage extends Component {
     handlePostCodeChange(postcode)
     handleCourseTypeChange(courseType)
     handleMileRadiusChange(radius_miles)
-    // handleCourseListChange(courses)
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -1022,6 +1015,8 @@ class ResultPage extends Component {
                             <SortAndFilter
                               handleMapButton={this.handleMapButton}
                               isMobileMapVisible={isMobileMapVisible}
+                              handleUpdateOption={handleUpdateOption}
+                              courses={courses}
                             />
                             {/* <div
                               className={classnames(
@@ -1328,7 +1323,13 @@ const withContext = Component => {
         {filter => (
           <ResultPageProvider.Consumer>
             {context => {
-              return <Component {...props} context={context} filter={filter} />
+              return (
+                <Component
+                  {...props}
+                  context={context}
+                  filterContext={filter}
+                />
+              )
             }}
           </ResultPageProvider.Consumer>
         )}
