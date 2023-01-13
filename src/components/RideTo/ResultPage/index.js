@@ -126,7 +126,8 @@ class ResultPageContainer extends Component {
         this.setState({
           courses: {
             available: results.filter(({ is_available_on: a }) => a),
-            unavailable: results.filter(({ is_available_on: a }) => !a)
+            unavailable: results.filter(({ is_available_on: a }) => !a),
+            filtered: []
           },
           loading: false
         })
