@@ -239,7 +239,8 @@ class ResultPage extends Component {
         this.setState({
           coursesOnMap: {
             available: results.filter(({ is_available_on: a }) => a),
-            unavailable: results.filter(({ is_available_on: a }) => !a)
+            unavailable: results.filter(({ is_available_on: a }) => !a),
+            filtered: []
           },
           loading: false
         })
@@ -892,12 +893,19 @@ class ResultPage extends Component {
     // }
 
     let resultsCount = 0
+    let showCourses = null
 
     if (courses) {
       const unavailableCount = courses.unavailable
         ? courses.unavailable.length
         : 0
       resultsCount = courses.available.length + unavailableCount
+
+      if (courses.filtered.length > 0) {
+        showCourses = courses.filtered
+      } else {
+        showCourses = courses.available
+      }
     }
 
     if (addCourseIdParam) {
@@ -1054,7 +1062,7 @@ class ResultPage extends Component {
                     </div>
                   )}
 
-                  {courses ? (
+                  {showCourses ? (
                     <div
                       className={classnames(
                         styles.mainContent,
@@ -1070,17 +1078,17 @@ class ResultPage extends Component {
                             href="/"
                           />
                         )}
-                        {courses.available.length > 0 && (
+                        {showCourses && (
                           <React.Fragment>
-                            {courses.available.map(
+                            {showCourses.map(
                               (course, index) =>
                                 course.is_partner && (
                                   <CourseItem
                                     showCallMessage={
                                       index === 1 ||
                                       (index - 1) % 5 === 0 ||
-                                      (courses.available.length < 3 &&
-                                        index === courses.available.length - 1)
+                                      (showCourses.length < 3 &&
+                                        index === showCourses.length - 1)
                                     }
                                     showPomMessage={
                                       courseType === 'LICENCE_CBT' &&

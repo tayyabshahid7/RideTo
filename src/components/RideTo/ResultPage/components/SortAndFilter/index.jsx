@@ -1,5 +1,6 @@
 import { IconMap, IconSortAndFilter } from 'assets/icons'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { FilterProvider } from '../../FilterStateProvider'
 import { SortAndFilterModal } from './components/SortAndFilterModal'
 
 import styles from './styles.scss'
@@ -10,6 +11,7 @@ function SortAndFilter({
   handleUpdateOption,
   courses
 }) {
+  const { totalFiltersUsed } = useContext(FilterProvider)
   const [modal, setModal] = useState(false)
 
   const handleSortAndFilter = () => {
@@ -19,6 +21,10 @@ function SortAndFilter({
   function handleOnCloseModal() {
     setModal(false)
   }
+
+  const showTotalFilters = totalFiltersUsed
+    ? `Sort & Filter (${totalFiltersUsed})`
+    : `Sort & Filter`
 
   return (
     <>
@@ -33,7 +39,7 @@ function SortAndFilter({
       <div className={styles.container}>
         <div className={styles.wrapper} onClick={handleSortAndFilter}>
           <IconSortAndFilter />
-          <span>Sort & Filter (3)</span>
+          <span>{showTotalFilters}</span>
         </div>
         <div className={styles.wrapper} onClick={handleMapButton}>
           <IconMap />

@@ -3,9 +3,11 @@ import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import classnames from 'classnames'
 import Checkbox from 'components/Checkbox'
 import RideToButton from 'components/RideTo/Button'
-import React, { useEffect, useState } from 'react'
+// import * as _ from 'lodash'
+import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { FilterProvider } from '../../../../FilterStateProvider'
 
 import styles from './styles.scss'
 
@@ -23,10 +25,15 @@ export function SortAndFilterModal({
   handleUpdateOption
 }) {
   const [filters, setFilters] = useState([])
+  const [sort, setSort] = useState(options[0])
+
+  const {
+    handleFilterTotalUsed,
+    handleCheckBoxSelection,
+    selectedFilters
+  } = useContext(FilterProvider)
 
   useEffect(() => {
-    console.log(courses)
-
     if (courses) {
       const { available } = courses
 
@@ -75,9 +82,13 @@ export function SortAndFilterModal({
         const equipmentProvidedObj = {
           title: 'Equipment Provided',
           items: [
-            { name: 'Helmet', count: helmetHireCount },
-            { name: 'Jacket & Gloves', count: jacketGlovesCount },
-            { name: 'Bike Hire', count: bikeHireIncludedCount }
+            { id: 'helmet_hire', name: 'Helmet', count: helmetHireCount },
+            {
+              id: 'gloves_jacket_included',
+              name: 'Jacket & Gloves',
+              count: jacketGlovesCount
+            },
+            { id: 'bike_hire', name: 'Bike Hire', count: bikeHireIncludedCount }
           ]
         }
 
@@ -88,9 +99,17 @@ export function SortAndFilterModal({
         const siteFacilitiesObj = {
           title: 'Site Facilities',
           items: [
-            { name: 'Cafe', count: onSiteCoffeeCount },
-            { name: 'Free Parking', count: onSiteParkingCount },
-            { name: 'Indoor Classroom', count: indoorClassroomCount }
+            { id: 'on_site_cafe', name: 'Cafe', count: onSiteCoffeeCount },
+            {
+              id: 'on_site_parking',
+              name: 'Free Parking',
+              count: onSiteParkingCount
+            },
+            {
+              id: 'indoor_classroom',
+              name: 'Indoor Classroom',
+              count: indoorClassroomCount
+            }
           ]
         }
 
@@ -101,8 +120,16 @@ export function SortAndFilterModal({
         const bookingOptionsObj = {
           title: 'Booking options',
           items: [
-            { name: 'Instant book', count: instantBookCount },
-            { name: 'MCIAC Approved', count: mciacApprovedCount }
+            {
+              id: 'instant_book',
+              name: 'Instant book',
+              count: instantBookCount
+            },
+            {
+              id: 'mciac_approved',
+              name: 'MCIAC Approved',
+              count: mciacApprovedCount
+            }
           ]
         }
 
@@ -111,17 +138,49 @@ export function SortAndFilterModal({
     }
   }, [courses])
 
-  function handleCheckBoxSelection(e) {
-    console.log(e.target)
-
-    // setFilters(prev => prev.filter(item => item !== e.target.name))
-
-    console.log(filters)
+  function handleSelectSortBySelect(e) {
+    setSort(e)
   }
 
-  function handleSearchClick(event) {
-    console.log(event)
-    // handleUpdateOption()
+  function handleSearchClick() {
+    const { available, unavailable } = courses
+
+    const filtered = available.filter(el => {
+      return selectedFilters.every(f => {
+        return el[f] === true
+      })
+    })
+
+    // switch (sort) {
+    //   default:
+    //     const newAvailable = _.sortBy(available, 'distance_miles')
+    //     const newUnavailable = _.sortBy(unavailable, 'distance_miles')
+    //     const newFiltered = _.sortBy(filtered, 'distance_miles')
+
+    //     break
+    //   case 'price':
+    //     break
+    //   case 'date':
+    //     available.sort((a, b) =>
+    //       a.next_date_available > b.next_date_available ? 1 : -1
+    //     )
+    //     unavailable.sort((a, b) =>
+    //       a.next_date_available > b.next_date_available ? 1 : -1
+    //     )
+    //     filtered.sort((a, b) =>
+    //       a.next_date_available > b.next_date_available ? 1 : -1
+    //     )
+    //     break
+    //   case 'rating':
+    //     available.sort((a, b) => (a.rating > b.rating ? 1 : -1))
+    //     unavailable.sort((a, b) => (a.rating > b.rating ? 1 : -1))
+    //     filtered.sort((a, b) => (a.rating > b.rating ? 1 : -1))
+    //     break
+    // }
+
+    onClose()
+    handleFilterTotalUsed(selectedFilters.length)
+    handleUpdateOption({ courses: { available, unavailable, filtered } })
   }
 
   const CloseButtonIcon = (
@@ -183,7 +242,7 @@ export function SortAndFilterModal({
         <div className={styles.space}>
           <span className={styles.title}>Sort By</span>
           <Select
-            defaultValue={options[0]}
+            defaultValue={sort}
             options={options}
             menuPlacement="auto"
             components={{
@@ -193,7 +252,7 @@ export function SortAndFilterModal({
               SingleValue,
               Option
             }}
-            onChange={e => console.log(e.value)}
+            onChange={handleSelectSortBySelect}
             className={styles.select}
           />
         </div>
@@ -207,7 +266,7 @@ export function SortAndFilterModal({
                   filters.items.map(item => (
                     <div key={item.name} className={styles.itemWrapper}>
                       <Checkbox
-                        id={item.name}
+                        id={item.id}
                         name={item.name}
                         extraClass={styles.checkbox}
                         size="smallBlack"

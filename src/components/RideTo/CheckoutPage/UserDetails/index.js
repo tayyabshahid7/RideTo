@@ -117,7 +117,6 @@ class UserDetails extends Component {
 
   validatePhone(e) {
     const { handleErrors, errors, getErrorDivId } = this.props
-    console.log(e.target.value)
     if (!e.target.value.match(/^(?:0|\+?44)(?:\d\s?){9,10}$/)) {
       errors['phone'] = 'Invalid phone number'
       if (!errors.divId) errors.divId = getErrorDivId('phone')
