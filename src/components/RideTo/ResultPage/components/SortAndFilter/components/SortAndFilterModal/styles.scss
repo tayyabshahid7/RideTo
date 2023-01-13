@@ -11,13 +11,16 @@
 
   border-radius: 0;
 
+  @media (min-width: 576px) {
+    max-width: 100% !important;
+  }
+
   .modalContent {
     padding: 24px;
     border-radius: 0;
 
     max-height: 90vh;
     min-height: 50vh;
-    overflow-y: scroll;
   }
 }
 
@@ -53,6 +56,9 @@
   display: flex;
   flex-direction: column;
   padding: 0;
+  overflow-y: scroll;
+  margin-right: -15px;
+  padding-right: 15px;
 
   .title {
     font-family: var(--font-rift);
@@ -124,6 +130,7 @@
             margin-bottom: 0px;
             padding-left: 32px;
             height: 16px;
+            min-width: 170px;
 
             span {
               display: inline-block;
@@ -134,8 +141,6 @@
               font-size: 13px;
               line-height: 19px;
               color: #141414;
-
-              min-width: 100px;
             }
 
             &::before {

@@ -10,7 +10,7 @@ function SortAndFilter({
   handleUpdateOption,
   courses
 }) {
-  const [modal, setModal] = useState(true)
+  const [modal, setModal] = useState(false)
 
   const handleSortAndFilter = () => {
     setModal(!modal)

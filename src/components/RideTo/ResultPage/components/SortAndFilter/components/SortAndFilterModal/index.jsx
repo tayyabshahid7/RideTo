@@ -1,8 +1,9 @@
 import { dropdownLine } from 'assets/icons'
 import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import classnames from 'classnames'
+import Checkbox from 'components/Checkbox'
 import RideToButton from 'components/RideTo/Button'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
@@ -11,25 +12,9 @@ import styles from './styles.scss'
 const options = [
   { value: 'distance', label: 'Distance' },
   { value: 'price', label: 'Price' },
-  { value: 'price', label: 'Price' },
-  { value: 'price', label: 'Price' }
+  { value: 'date', label: 'Date' },
+  { value: 'rating', label: 'Rating' }
 ]
-
-// const coursesExample = [
-//   {
-//     title: 'Equipment Provided',
-//     items: [
-//       { name: 'Helmet', count: 9 },
-//       { name: 'Jacket & Gloves', count: 9 },
-//       { name: 'Bike Hire', count: 9 }
-//     ]
-//   },
-//   {
-//     title: 'Site Facilities',
-//     items: [{ name: 'Cafe', count: 9 }, { name: 'Free Parking', count: 9 }]
-//   },
-//   { title: 'Booking options', items: [{ name: 'Instant book', count: 9 }] }
-// ]
 
 export function SortAndFilterModal({
   isOpen,
@@ -37,19 +22,102 @@ export function SortAndFilterModal({
   courses,
   handleUpdateOption
 }) {
-  // const [filters, setFilters] = useState([])
+  const [filters, setFilters] = useState([])
 
   useEffect(() => {
     console.log(courses)
+
+    if (courses) {
+      const { available } = courses
+
+      // Equipment Provided
+      const helmetHireCount = available.reduce(
+        (n, course) => n + (course.helmet_hire === true),
+        0
+      )
+
+      const jacketGlovesCount = available.reduce(
+        (n, course) => n + (course.gloves_jacket_included === true),
+        0
+      )
+      const bikeHireIncludedCount = available.reduce(
+        (n, course) => n + (course.bike_hire === true),
+        0
+      )
+
+      // Site Facilities
+      const onSiteCoffeeCount = available.reduce(
+        (n, course) => n + (course.on_site_cafe === true),
+        0
+      )
+
+      const onSiteParkingCount = available.reduce(
+        (n, course) => n + (course.on_site_parking === true),
+        0
+      )
+
+      const indoorClassroomCount = available.reduce(
+        (n, course) => n + (course.indoor_classroom === true),
+        0
+      )
+
+      // Booking options
+      const instantBookCount = available.reduce(
+        (n, course) => n + (course.instant_book === true),
+        0
+      )
+      const mciacApprovedCount = available.reduce(
+        (n, course) => n + (course.mciac_approved === true),
+        0
+      )
+
+      if (helmetHireCount || jacketGlovesCount || bikeHireIncludedCount) {
+        const equipmentProvidedObj = {
+          title: 'Equipment Provided',
+          items: [
+            { name: 'Helmet', count: helmetHireCount },
+            { name: 'Jacket & Gloves', count: jacketGlovesCount },
+            { name: 'Bike Hire', count: bikeHireIncludedCount }
+          ]
+        }
+
+        setFilters(previousState => [...previousState, equipmentProvidedObj])
+      }
+
+      if (onSiteCoffeeCount || onSiteParkingCount || indoorClassroomCount) {
+        const siteFacilitiesObj = {
+          title: 'Site Facilities',
+          items: [
+            { name: 'Cafe', count: onSiteCoffeeCount },
+            { name: 'Free Parking', count: onSiteParkingCount },
+            { name: 'Indoor Classroom', count: indoorClassroomCount }
+          ]
+        }
+
+        setFilters(previousState => [...previousState, siteFacilitiesObj])
+      }
+
+      if (instantBookCount || mciacApprovedCount) {
+        const bookingOptionsObj = {
+          title: 'Booking options',
+          items: [
+            { name: 'Instant book', count: instantBookCount },
+            { name: 'MCIAC Approved', count: mciacApprovedCount }
+          ]
+        }
+
+        setFilters(previousState => [...previousState, bookingOptionsObj])
+      }
+    }
   }, [courses])
 
-  // function handleCheckBoxSelection(e) {
-  //   console.log(e.target)
+  function handleCheckBoxSelection(e) {
+    console.log(e.target)
 
-  //   setFilters(prev => prev.filter(item => item !== e.target.name))
+    // setFilters(prev => prev.filter(item => item !== e.target.name))
 
-  //   console.log(filters)
-  // }
+    console.log(filters)
+  }
 
   function handleSearchClick(event) {
     console.log(event)
@@ -132,7 +200,7 @@ export function SortAndFilterModal({
         <div className={styles.space}>
           <span className={styles.title}>Filter By</span>
           <div className={styles.filterWrapper}>
-            {/* {courses.map(filters => (
+            {filters.map(filters => (
               <div key={filters.title} className={styles.checkboxWrapper}>
                 <span className={styles.subtitle}>{filters.title}</span>
                 {filters.items &&
@@ -150,7 +218,7 @@ export function SortAndFilterModal({
                     </div>
                   ))}
               </div>
-            ))} */}
+            ))}
           </div>
 
           <RideToButton
