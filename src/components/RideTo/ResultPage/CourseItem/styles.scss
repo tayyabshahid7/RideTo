@@ -47,9 +47,13 @@
   top: 8px;
   // z-index: 1000;
 
-  background-color: #141414;
+  background-color: #ffffff;
   padding: 6px;
-  color: #ffffff;
+  color: #141414;
+
+  img {
+    margin-top: -2px;
+  }
 
   span {
     margin-left: 8px;
@@ -69,7 +73,10 @@
   justify-content: space-between;
   padding: 28px 30px;
   @media (max-width: 768px) {
-    padding: 20px 16px 10px;
+    // padding: 20px 16px 0px 10px;
+    padding-left: 16px;
+    padding-top: 20px;
+    padding-right: 0px;
   }
   @media (min-width: 769px) {
     max-width: 365px;
@@ -494,7 +501,7 @@
 
 .outer {
   width: 100%;
-  max-width: calc(100vw - 20px);
+  max-width: calc(100vw - 16px);
   height: 96px;
   display: inline-flex;
   white-space: nowrap;
@@ -517,17 +524,20 @@
   }
 }
 
+.iconsMobileBottomLine {
+  margin-right: 16px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
 .iconsMobile {
   width: 100%;
-  max-width: calc(100vw - 20px);
+  // max-width: calc(100vw - 20px);
   display: inline-flex;
   padding-bottom: 16px;
   white-space: nowrap;
   overflow-x: scroll;
   overflow-y: hidden;
   margin-top: 8px;
-
-  border-bottom: 1px solid #e7e7e7;
 
   &::-webkit-scrollbar {
     display: none;
@@ -569,4 +579,8 @@
     align-content: center;
     margin-left: 8px;
   }
+}
+
+.textLineThough {
+  text-decoration: line-through;
 }
