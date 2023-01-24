@@ -1,6 +1,6 @@
 import { IconArrowRight, IconDistance, IconInfo } from 'assets/icons'
 import * as FeatureIcons from 'assets/icons/features'
-import InstantBookingIcon from 'assets/icons/IconInstantBookingWhite.svg'
+import InstantBookingIcon from 'assets/icons/IconInstantBookingBlack.svg'
 import React, { Component, Fragment } from 'react'
 import { parseQueryString } from 'services/api'
 import { getFeatureInfo, getMediumCourseType } from 'services/course'
@@ -65,9 +65,11 @@ class CourseItem extends Component {
     )
   }
 
-  renderIconMobile(feature) {
+  renderIconMobile(feature, show) {
     const { course } = this.props
     let featureInfo = getFeatureInfo(feature)
+
+    const textLineThough = !show ? styles.textLineThough : ''
     return (
       <div className={styles.mobileIcon}>
         <img
@@ -75,7 +77,7 @@ class CourseItem extends Component {
           alt="feature"
           id={`feature-icon-${course.id}-${feature}`}
         />
-        <span>{featureInfo.title}</span>
+        <span className={textLineThough}>{featureInfo.title}</span>
       </div>
     )
   }
@@ -272,15 +274,15 @@ class CourseItem extends Component {
               </div>
               <Desktop>
                 <div className={styles.icons}>
-                  {course.mciac_approved && this.renderIcon('mciac_approved')}
                   {course.bike_hire && this.renderIcon('bike_hire')}
                   {course.helmet_hire && this.renderIcon('helmet_hire')}
                   {course.gloves_jacket_included &&
                     this.renderIcon('gloves_jacket_included')}
-                  {course.on_site_cafe && this.renderIcon('on_site_cafe')}
-                  {course.on_site_parking && this.renderIcon('on_site_parking')}
                   {course.indoor_classroom &&
                     this.renderIcon('indoor_classroom')}
+                  {course.on_site_parking && this.renderIcon('on_site_parking')}
+                  {course.on_site_cafe && this.renderIcon('on_site_cafe')}
+                  {course.mciac_approved && this.renderIcon('mciac_approved')}
                   {!isFullLicence &&
                     course.instant_book &&
                     this.renderIcon('instant_book')}
@@ -290,21 +292,29 @@ class CourseItem extends Component {
                 <div
                   onClick={() => this.priceClicked(course)}
                   className={styles.iconsMobile}>
-                  {course.mciac_approved &&
-                    this.renderIconMobile('mciac_approved')}
-                  {course.bike_hire && this.renderIconMobile('bike_hire')}
-                  {course.helmet_hire && this.renderIconMobile('helmet_hire')}
-                  {course.gloves_jacket_included &&
-                    this.renderIconMobile('gloves_jacket_included')}
-                  {course.on_site_cafe && this.renderIconMobile('on_site_cafe')}
-                  {course.on_site_parking &&
-                    this.renderIconMobile('on_site_parking')}
-                  {course.indoor_classroom &&
-                    this.renderIconMobile('indoor_classroom')}
+                  {this.renderIconMobile(
+                    'mciac_approved',
+                    course.mciac_approved
+                  )}
+                  {this.renderIconMobile('bike_hire', course.bike_hire)}
+                  {this.renderIconMobile('helmet_hire', course.helmet_hire)}
+                  {this.renderIconMobile(
+                    'gloves_jacket_included',
+                    course.gloves_jacket_included
+                  )}
+                  {this.renderIconMobile('on_site_cafe', course.on_site_cafe)}
+                  {this.renderIconMobile(
+                    'on_site_parking',
+                    course.on_site_parking
+                  )}
+                  {this.renderIconMobile(
+                    'indoor_classroom',
+                    course.indoor_classroom
+                  )}
                   {!isFullLicence &&
-                    course.instant_book &&
-                    this.renderIconMobile('instant_book')}
+                    this.renderIconMobile('instant_book', course.instant_book)}
                 </div>
+                <div className={styles.iconsMobileBottomLine}></div>
               </Mobile>
             </div>
             <Desktop>
