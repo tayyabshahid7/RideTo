@@ -47,10 +47,27 @@ class MapComponent extends Component {
     this.updateDimensions = this.updateDimensions.bind(this)
     this.highlightResultCard = this.highlightResultCard.bind(this)
     this.handlePinClick = this.handlePinClick.bind(this)
+    this.handleViewPortChange = this.handleViewPortChange.bind(this)
+    this.handleOnTransitionEnd = this.handleOnTransitionEnd.bind(this)
   }
 
   componentWillReceiveProps(props) {
-    this.setState({ courses: props.courses })
+    this.setState({
+      courses: props.courses
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng) {
+      this.setState(prevState => ({
+        viewport: {
+          ...prevState.viewport,
+          zoom: 7,
+          latitude: this.props.lat,
+          longitude: this.props.lng
+        }
+      }))
+    }
   }
 
   componentDidMount() {
@@ -279,6 +296,18 @@ class MapComponent extends Component {
     handleSearchLocation(event)
   }
 
+  handleViewPortChange(viewport) {
+    this.setState({ ...viewport })
+  }
+
+  handleOnTransitionEnd() {
+    const { handleSearchLocation, lat, lng } = this.props
+    const event = {
+      lngLat: [lng, lat]
+    }
+    handleSearchLocation(event)
+  }
+
   render() {
     const { className, userLocation, checkout, lng, lat } = this.props
     const { viewport, courses = {} } = this.state
@@ -292,9 +321,10 @@ class MapComponent extends Component {
           {...viewport}
           mapStyle="mapbox://styles/mapbox/streets-v9"
           mapboxApiAccessToken={MAPBOX_KEY}
-          onViewportChange={viewport => this.setState({ viewport })}
+          onViewportChange={this.handleViewPortChange}
           onTouchEnd={this.handlePinClick}
-          onMouseUp={this.handlePinClick}>
+          onMouseUp={this.handlePinClick}
+          onTransitionEnd={this.handleOnTransitionEnd}>
           {userLocation && (
             <Marker
               longitude={lng}
