@@ -148,6 +148,21 @@ class ResultPage extends Component {
     this.setState({
       isMobileMapVisible: !isMobileMapVisible
     })
+
+    if (isMobileMapVisible) {
+      let lat = 51.711712
+      let lng = -0.327693
+
+      const { userLocation } = this.props
+      if (userLocation) {
+        lat = userLocation.lat
+        lng = userLocation.lng
+      }
+      this.setState({
+        lat,
+        lng
+      })
+    }
   }
 
   handleBackClick() {
@@ -795,7 +810,8 @@ class ResultPage extends Component {
   }
 
   async handleMyLocation() {
-    this.setState({ loading: true })
+    this.setState({ isLoadingMap: true })
+
     if (!navigator.geolocation) {
       return
     }
@@ -810,16 +826,16 @@ class ResultPage extends Component {
             lat,
             lng,
             hasSearchLocation: true,
-            loading: false
+            isLoadingMap: false
           })
         }
       },
       err => {
         console.log(err)
         alert('fetching the position failed')
-        this.setState({ loading: false })
+        this.setState({ isLoadingMap: false })
       },
-      { enableHighAccuracy: false, timeout: 20000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 }
     )
   }
 
