@@ -75,3 +75,9 @@ $top: 296px;
     width: 100%;
   }
 }
+
+.loading {
+  position: fixed;
+  left: 50%;
+  z-index: 1000;
+}
