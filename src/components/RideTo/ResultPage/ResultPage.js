@@ -87,6 +87,7 @@ class ResultPage extends Component {
       addedPOM: false,
       addons: [],
       hasSearchLocation: false,
+      isLoadingMap: false,
       lat: 51.711712,
       lng: -0.327693,
       coursesOnMap: {}
@@ -216,13 +217,18 @@ class ResultPage extends Component {
             available: results.filter(({ is_available_on: a }) => a),
             unavailable: results.filter(({ is_available_on: a }) => !a)
           },
-          loading: false
+          loading: false,
+          isLoadingMap: false
         })
       } else {
-        this.setState({ coursesOnMap: null })
+        this.setState({
+          coursesOnMap: null,
+          isLoadingMap: false,
+          loading: false
+        })
       }
     } catch (error) {
-      this.setState({ coursesOnMap: null })
+      this.setState({ coursesOnMap: null, isLoadingMap: false, loading: false })
     }
   }
 
@@ -753,7 +759,8 @@ class ResultPage extends Component {
     const lng = lngLat[0]
     const lat = lngLat[1]
 
-    this.setState({ lat, lng, hasSearchLocation: true })
+    this.setState({ isLoadingMap: true })
+    this.loadCoursesLatLng(lat, lng)
   }
 
   handleSearchLocationButton() {
@@ -823,7 +830,7 @@ class ResultPage extends Component {
       isMobileMapVisible,
       openedCourseTypeDetails,
       addedPOM,
-      hasSearchLocation,
+      isLoadingMap,
       lat,
       lng,
       coursesOnMap
@@ -1179,9 +1186,8 @@ class ResultPage extends Component {
         <MediaQuery maxWidth={768}>
           {isMobileMapVisible && courses && userLocation && (
             <MobileMap
-              hasSearchLocation={hasSearchLocation}
-              handleSearchLocationButton={this.handleSearchLocationButton}
-              handleMyLocation={this.handleMyLocation}>
+              handleMyLocation={this.handleMyLocation}
+              isLoadingMap={isLoadingMap}>
               <MapComponent
                 lat={lat}
                 lng={lng}
