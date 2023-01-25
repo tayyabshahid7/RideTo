@@ -4,7 +4,7 @@ import klarna from '../../../assets/icons/cards/klarnaPink.svg'
 import styles from './styles.scss'
 
 export default function KlarnaBanner() {
-  const isMobile = useMediaQuery({ maxWidth: 767 })
+  const isMobile = useMediaQuery({ maxWidth: 768 })
   return (
     <a
       href="https://www.rideto.com/blog/motorcycle-cbt-on-finance"

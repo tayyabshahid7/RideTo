@@ -2,6 +2,7 @@ import loadable from '@loadable/component'
 import ArrowLeftGreen from 'assets/images/rideto/ArrowLeftGreen.svg'
 import ButtonArrowWhite from 'assets/images/rideto/ButtonArrowWhite.svg'
 import classnames from 'classnames'
+import { Desktop, Mobile } from 'common/breakpoints'
 import { LICENCE_TYPES, SORTBY } from 'common/constants'
 import { getTitleFor, SortByOptions } from 'common/info'
 import Loading from 'components/Loading'
@@ -32,11 +33,16 @@ import { flashDiv, getStaticData } from 'services/page'
 import { deleteParam, normalizePostCode, setParam } from 'utils/helper'
 import { createPOM } from '../../../utils/helper'
 import POMSelector from '../CheckoutPage/POMSelector'
+import KlarnaBanner from '../KlarnaBanner'
+import SortAndFilter from './components/SortAndFilter'
 import CourseItem from './CourseItem'
 import DateSelector from './DateSelector'
+import { FilterProvider } from './FilterStateProvider'
 import POMBanner from './POMBanner'
 import styles from './ResultPage.scss'
 import ResultsHeader from './ResultsHeader'
+import ResultsHeaderMobile from './ResultsHeaderMobile'
+import { ResultPageProvider } from './StateProvider'
 
 const MapComponent = loadable(() => import('components/RideTo/MapComponent'))
 const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
@@ -113,6 +119,7 @@ class ResultPage extends Component {
       this
     )
     this.handleMyLocation = this.handleMyLocation.bind(this)
+    this.handleMapButton = this.handleMapButton.bind(this)
 
     window.sessionStorage.removeItem('trainings')
 
@@ -132,6 +139,14 @@ class ResultPage extends Component {
       coursesOnMap: props.courses,
       lat,
       lng
+    })
+  }
+
+  handleMapButton() {
+    const { isMobileMapVisible } = this.state
+
+    this.setState({
+      isMobileMapVisible: !isMobileMapVisible
     })
   }
 
@@ -156,18 +171,28 @@ class ResultPage extends Component {
   }
 
   async componentDidMount() {
+    const { context, postcode, courseType, radius_miles } = this.props
+    const {
+      handlePostCodeChange,
+      handleCourseTypeChange,
+      handleMileRadiusChange
+    } = context
+
     // Prevent the results from loading half way down the page
     if ('scrollRestoration' in window) {
       window.scrollRestoration = 'manual'
     }
     window.scrollTo(0, 0)
 
-    const { postcode, courseType } = this.props
-    const result = await fetchCoursesTypes(postcode || '')
+    const result = await fetchCoursesTypes(postcode || '', radius_miles || '')
     const courseTypes = result.results.filter(
       courseType => courseType.constant !== 'TFL_ONE_ON_ONE'
     )
     const { courseTypes: staticCourseTypes } = getStaticData('RIDETO_PAGE')
+
+    handlePostCodeChange(postcode)
+    handleCourseTypeChange(courseType)
+    handleMileRadiusChange(radius_miles)
 
     // If there are no courseTypes for this area just throw in all the course
     // course types for the 'non partner results' page
@@ -215,7 +240,8 @@ class ResultPage extends Component {
         this.setState({
           coursesOnMap: {
             available: results.filter(({ is_available_on: a }) => a),
-            unavailable: results.filter(({ is_available_on: a }) => !a)
+            unavailable: results.filter(({ is_available_on: a }) => !a),
+            filtered: []
           },
           loading: false,
           isLoadingMap: false
@@ -477,7 +503,7 @@ class ResultPage extends Component {
   }
 
   renderSortByDropdown(shortOptions) {
-    const { handeUpdateOption, sortByOption, courseType } = this.props
+    const { handleUpdateOption, sortByOption, courseType } = this.props
     return (
       <UncontrolledDropdown className={styles.sortButtonWrap}>
         <DropdownToggle caret color="lightgrey" className={styles.sortButton}>
@@ -493,7 +519,7 @@ class ResultPage extends Component {
             return (
               <DropdownItem
                 onClick={() =>
-                  handeUpdateOption({ sortByOption: sortOption.value })
+                  handleUpdateOption({ sortByOption: sortOption.value })
                 }
                 id={sortOption.value.replace('-', '')}
                 key={sortOption.value}>
@@ -807,6 +833,8 @@ class ResultPage extends Component {
       loading,
       userLocation,
       sortByOption,
+      handleUpdateOption,
+      radius_miles,
       location: { pathname, search }
     } = this.props
     const {
@@ -872,12 +900,19 @@ class ResultPage extends Component {
     // }
 
     let resultsCount = 0
+    let showCourses = null
 
     if (courses) {
       const unavailableCount = courses.unavailable
         ? courses.unavailable.length
         : 0
       resultsCount = courses.available.length + unavailableCount
+
+      if (courses.filtered.length > 0) {
+        showCourses = courses.filtered
+      } else {
+        showCourses = courses.available
+      }
     }
 
     if (addCourseIdParam) {
@@ -910,18 +945,30 @@ class ResultPage extends Component {
 
     return (
       <div className={styles.container}>
-        <ResultsHeader
-          searchForLocationRequests={searchForLocationRequests}
-          courseType={courseType}
-          postcode={postcode}
-          date={date}
-          courseTypesOptions={courseTypesOptions}
-          handlePostcodeChange={this.handlePostcodeChange}
-          handleCourseChange={this.handleCourseChange}
-          handleMobileDateClick={this.handleMobileDateClick}
-          isFullLicence={isFullLicence}
-          showCourseTypeInfo={this.showCourseTypeInfo}
-        />
+        <Desktop>
+          <ResultsHeader
+            searchForLocationRequests={searchForLocationRequests}
+            courseType={courseType}
+            postcode={postcode}
+            date={date}
+            courseTypesOptions={courseTypesOptions}
+            handlePostcodeChange={this.handlePostcodeChange}
+            handleCourseChange={this.handleCourseChange}
+            handleMobileDateClick={this.handleMobileDateClick}
+            isFullLicence={isFullLicence}
+            showCourseTypeInfo={this.showCourseTypeInfo}
+          />
+        </Desktop>
+        <Mobile>
+          <ResultsHeaderMobile
+            postcode={postcode}
+            courseType={courseType}
+            radius_miles={radius_miles}
+            courseTypesOptions={courseTypesOptions}
+            handleUpdateOption={handleUpdateOption}
+          />
+        </Mobile>
+
         <Container className={styles.pageContainer}>
           <Row className={styles.row}>
             <Col className={styles.col}>
@@ -978,17 +1025,24 @@ class ResultPage extends Component {
                               </span>
                             </div>
                           </MediaQuery>
-                          <MediaQuery query="(max-width: 768px)">
-                            <div
+                          <Mobile>
+                            <KlarnaBanner />
+                            <SortAndFilter
+                              handleMapButton={this.handleMapButton}
+                              isMobileMapVisible={isMobileMapVisible}
+                              handleUpdateOption={handleUpdateOption}
+                              courses={courses}
+                            />
+                            {/* <div
                               className={classnames(
                                 styles.instruction,
                                 isFullLicence && styles.instructionFullLicence
                               )}>
                               <div className={classnames(styles.schoolCount)}>
                                 <span>{resultsCount} Results by </span>
-                                {this.renderSortByDropdown(true)}
-                                {/* <i className="fas fa-caret-down"></i> */}
-                                <span className={styles.desktopSortByValue}>
+                                {this.renderSortByDropdown(true)} */}
+                            {/* <i className="fas fa-caret-down"></i> */}
+                            {/* <span className={styles.desktopSortByValue}>
                                   {sortByOption.replace('-', '')}
                                 </span>
                               </div>
@@ -1002,8 +1056,8 @@ class ResultPage extends Component {
                                 }}>
                                 Map View
                               </button>
-                            </div>
-                          </MediaQuery>
+                            </div> */}
+                          </Mobile>
                         </React.Fragment>
                       )}
                     </React.Fragment>
@@ -1015,7 +1069,7 @@ class ResultPage extends Component {
                     </div>
                   )}
 
-                  {courses ? (
+                  {showCourses ? (
                     <div
                       className={classnames(
                         styles.mainContent,
@@ -1031,17 +1085,17 @@ class ResultPage extends Component {
                             href="/"
                           />
                         )}
-                        {courses.available.length > 0 && (
+                        {showCourses && (
                           <React.Fragment>
-                            {courses.available.map(
+                            {showCourses.map(
                               (course, index) =>
                                 course.is_partner && (
                                   <CourseItem
                                     showCallMessage={
                                       index === 1 ||
                                       (index - 1) % 5 === 0 ||
-                                      (courses.available.length < 3 &&
-                                        index === courses.available.length - 1)
+                                      (showCourses.length < 3 &&
+                                        index === showCourses.length - 1)
                                     }
                                     showPomMessage={
                                       courseType === 'LICENCE_CBT' &&
@@ -1276,4 +1330,26 @@ class ResultPage extends Component {
   }
 }
 
-export default ResultPage
+const withContext = Component => {
+  return props => {
+    return (
+      <FilterProvider.Consumer>
+        {filter => (
+          <ResultPageProvider.Consumer>
+            {context => {
+              return (
+                <Component
+                  {...props}
+                  context={context}
+                  filterContext={filter}
+                />
+              )
+            }}
+          </ResultPageProvider.Consumer>
+        )}
+      </FilterProvider.Consumer>
+    )
+  }
+}
+
+export default withContext(ResultPage)
