@@ -22,6 +22,10 @@
     max-height: 90vh;
     min-height: 50vh;
   }
+
+  :global(.modal-body) {
+    padding: 0;
+  }
 }
 
 .modalHeader {
