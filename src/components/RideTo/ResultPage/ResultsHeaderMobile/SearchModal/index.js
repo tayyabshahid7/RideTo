@@ -13,10 +13,10 @@ import { normalizePostCode } from 'utils/helper'
 import { ResultPageProvider } from '../../StateProvider'
 
 const options = [
-  { value: '1', label: `+ 0 miles` },
   { value: '10', label: `+ 10 miles` },
-  { value: '20', label: `+ 20 miles` },
-  { value: '30', label: `+ 30 miles` }
+  { value: '25', label: `+ 25 miles` },
+  { value: '50', label: `+ 50 miles` },
+  { value: '100', label: `+ 100 miles` }
 ]
 
 const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
@@ -33,7 +33,7 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [postcodeModal, setPostcodeModal] = useState('')
 
-  const [radius, setRadius] = useState(options[3])
+  const [radius, setRadius] = useState(options[0])
 
   const CloseButtonIcon = (
     <button onClick={onClose} className={styles.buttonClose}>

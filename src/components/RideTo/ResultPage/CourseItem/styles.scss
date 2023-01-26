@@ -566,7 +566,7 @@
 
 .mobileIcon {
   border: 1px solid #d9d9d9;
-  padding: 6px 8px;
+  padding: 3px 8px;
 
   span {
     font-family: var(--font-inter);
@@ -578,6 +578,10 @@
     align-items: center;
     align-content: center;
     margin-left: 8px;
+  }
+
+  img {
+    max-height: 16px;
   }
 }
 

@@ -22,23 +22,37 @@
     max-height: 90vh;
     min-height: 50vh;
   }
+
+  :global(.modal-body) {
+    padding: 0;
+  }
 }
 
 .modalHeader {
-  padding: 0 !important;
-  border-bottom: none !important;
-
   font-family: var(--font-rift);
 
-  font-style: normal;
-  font-weight: 700;
   font-size: 24px;
   line-height: 24px;
   letter-spacing: 1px;
 
+  padding: 0 !important;
+  border-bottom: none !important;
+
   padding: 0;
   border-bottom: none;
   margin-bottom: 16px;
+
+  .modal-title {
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  h5 {
+    font-weight: 700 !important;
+    font-size: 24px !important;
+    line-height: 24px !important;
+    letter-spacing: 1px !important;
+  }
 
   .buttonClose {
     background-color: transparent;
@@ -55,10 +69,9 @@
 .modalBody {
   display: flex;
   flex-direction: column;
-  padding: 0;
+  padding: 0 15px 0 0 !important;
   overflow-y: scroll;
   margin-right: -15px;
-  padding-right: 15px;
 
   .title {
     font-family: var(--font-rift);
@@ -187,6 +200,6 @@
 
   .selectDropDownIndicator {
     color: #141414;
-    opacity: 0.3;
+    opacity: 0.8;
   }
 }

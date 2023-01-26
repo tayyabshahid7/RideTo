@@ -3,7 +3,7 @@ import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import classnames from 'classnames'
 import Checkbox from 'components/Checkbox'
 import RideToButton from 'components/RideTo/Button'
-// import * as _ from 'lodash'
+import * as _ from 'lodash'
 import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
@@ -73,10 +73,6 @@ export function SortAndFilterModal({
         (n, course) => n + (course.instant_book === true),
         0
       )
-      const mciacApprovedCount = available.reduce(
-        (n, course) => n + (course.mciac_approved === true),
-        0
-      )
 
       if (helmetHireCount || jacketGlovesCount || bikeHireIncludedCount) {
         const equipmentProvidedObj = {
@@ -116,7 +112,7 @@ export function SortAndFilterModal({
         setFilters(previousState => [...previousState, siteFacilitiesObj])
       }
 
-      if (instantBookCount || mciacApprovedCount) {
+      if (instantBookCount) {
         const bookingOptionsObj = {
           title: 'Booking options',
           items: [
@@ -124,11 +120,6 @@ export function SortAndFilterModal({
               id: 'instant_book',
               name: 'Instant book',
               count: instantBookCount
-            },
-            {
-              id: 'mciac_approved',
-              name: 'MCIAC Approved',
-              count: mciacApprovedCount
             }
           ]
         }
@@ -151,36 +142,97 @@ export function SortAndFilterModal({
       })
     })
 
-    // switch (sort) {
-    //   default:
-    //     const newAvailable = _.sortBy(available, 'distance_miles')
-    //     const newUnavailable = _.sortBy(unavailable, 'distance_miles')
-    //     const newFiltered = _.sortBy(filtered, 'distance_miles')
+    let newAvailable
+    let newUnavailable
+    let newFiltered
 
-    //     break
-    //   case 'price':
-    //     break
-    //   case 'date':
-    //     available.sort((a, b) =>
-    //       a.next_date_available > b.next_date_available ? 1 : -1
-    //     )
-    //     unavailable.sort((a, b) =>
-    //       a.next_date_available > b.next_date_available ? 1 : -1
-    //     )
-    //     filtered.sort((a, b) =>
-    //       a.next_date_available > b.next_date_available ? 1 : -1
-    //     )
-    //     break
-    //   case 'rating':
-    //     available.sort((a, b) => (a.rating > b.rating ? 1 : -1))
-    //     unavailable.sort((a, b) => (a.rating > b.rating ? 1 : -1))
-    //     filtered.sort((a, b) => (a.rating > b.rating ? 1 : -1))
-    //     break
-    // }
+    const sortId = sort ? sort.value : null
+    switch (sortId) {
+      default:
+        newAvailable = _.sortBy(available, 'distance_miles')
+        newUnavailable = _.sortBy(unavailable, 'distance_miles')
+        newFiltered = _.sortBy(filtered, 'distance_miles')
+
+        break
+      case 'price':
+        newAvailable = available.sort((a, b) => {
+          if (a.price === b.price) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.price > b.price ? 1 : -1
+        })
+
+        newUnavailable = unavailable.sort((a, b) => {
+          if (a.price === b.price) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.price > b.price ? 1 : -1
+        })
+
+        newFiltered = unavailable.sort((a, b) => {
+          if (a.price === b.price) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.price > b.price ? 1 : -1
+        })
+
+        break
+
+      case 'date':
+        newAvailable = available.sort((a, b) => {
+          if (a.next_date_available === b.next_date_available) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.next_date_available > b.next_date_available ? 1 : -1
+        })
+
+        newUnavailable = unavailable.sort((a, b) => {
+          if (a.next_date_available === b.next_date_available) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.next_date_available > b.next_date_available ? 1 : -1
+        })
+
+        newFiltered = unavailable.sort((a, b) => {
+          if (a.next_date_available === b.next_date_available) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.next_date_available > b.next_date_available ? 1 : -1
+        })
+
+        break
+
+      case 'rating':
+        newAvailable = available.sort((a, b) => {
+          if (a.rating === b.rating) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.rating > b.rating ? -1 : 1
+        })
+        newUnavailable = unavailable.sort((a, b) => {
+          if (a.rating === b.rating) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.rating > b.rating ? -1 : 1
+        })
+        newFiltered = filtered.sort((a, b) => {
+          if (a.rating === b.rating) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.rating > b.rating ? -1 : 1
+        })
+        break
+    }
 
     onClose()
     handleFilterTotalUsed(selectedFilters.length)
-    handleUpdateOption({ courses: { available, unavailable, filtered } })
+    handleUpdateOption({
+      courses: {
+        available: newAvailable,
+        unavailable: newUnavailable,
+        filtered: newFiltered
+      }
+    })
   }
 
   const CloseButtonIcon = (
@@ -270,7 +322,8 @@ export function SortAndFilterModal({
                         name={item.name}
                         extraClass={styles.checkbox}
                         size="smallBlack"
-                        onChange={handleCheckBoxSelection}>
+                        onChange={handleCheckBoxSelection}
+                        checked={selectedFilters.indexOf(item.id) > -1}>
                         <span className={styles.item}>{item.name}</span>
                       </Checkbox>
                       <span className={styles.itemCount}>{item.count}</span>
