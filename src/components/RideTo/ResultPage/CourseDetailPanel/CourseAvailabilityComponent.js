@@ -6,11 +6,13 @@ import {
 } from 'services/course'
 
 import classnames from 'classnames'
+import { Desktop, Mobile } from 'common/breakpoints'
 import Loading from 'components/Loading'
 import AvailabilityCalendar from 'components/RideTo/AvailabilityCalendar'
 import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicker'
 import moment from 'moment'
 import React from 'react'
+import { PlatformCalendar } from '../../PlatformCalendar'
 import styles from './styles.scss'
 
 class CourseAvailabilityComponent extends React.Component {
@@ -466,28 +468,34 @@ class CourseAvailabilityComponent extends React.Component {
     return (
       <Loading loading={loadingCourses || loadingTimes}>
         <div className={classnames(styles.content, fromSupplier && 'px-0')}>
-          <AvailabilityCalendar
-            days={days}
-            calendar={{
-              ...calendar,
-              selectedCourse: instantCourse,
-              selectedDate: instantDate
-            }}
-            handleDateSelect={this.handleDateSelect}
-            handleTimeSelect={this.handleTimeSelect}
-            handlePrevMonth={this.handlePrevMonth}
-            handleNextMonth={this.handleNextMonth}
-            isInstantBook={!!supplier.instant_book}
-            nonInstantPrices={supplier.week_prices}
-            nonInstantStartTimes={this.getNonInstantStartTimes(supplier)}
-            showChooseDate={true}
-            courses={courses}
-            disablePreviousDates
-            course={supplier}
-            courseType={courseType}
-            checkFutureMonth
-            loading={loadingCourses}
-          />
+          <Desktop>
+            <AvailabilityCalendar
+              days={days}
+              calendar={{
+                ...calendar,
+                selectedCourse: instantCourse,
+                selectedDate: instantDate
+              }}
+              handleDateSelect={this.handleDateSelect}
+              handleTimeSelect={this.handleTimeSelect}
+              handlePrevMonth={this.handlePrevMonth}
+              handleNextMonth={this.handleNextMonth}
+              isInstantBook={!!supplier.instant_book}
+              nonInstantPrices={supplier.week_prices}
+              nonInstantStartTimes={this.getNonInstantStartTimes(supplier)}
+              showChooseDate={true}
+              courses={courses}
+              disablePreviousDates
+              course={supplier}
+              courseType={courseType}
+              checkFutureMonth
+              loading={loadingCourses}
+            />
+          </Desktop>
+          <Mobile>
+            <PlatformCalendar />
+          </Mobile>
+
           <BikePicker
             isCbt={isCbt}
             isItm={isItm}

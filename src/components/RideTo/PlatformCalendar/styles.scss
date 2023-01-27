@@ -1,0 +1,119 @@
+.calendar {
+  margin-top: 32px;
+  margin-bottom: 20px;
+
+  :global {
+    .react-calendar {
+      &__navigation {
+        padding-right: 15px;
+        margin-bottom: 57px;
+
+        &__label {
+          background-color: white;
+          position: absolute;
+          left: 15;
+          border: none;
+
+          padding: 0;
+          text-align: center;
+          text-decoration: none;
+          pointer-events: none;
+
+          font-family: var(--font-rift);
+          font-style: normal;
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 24px;
+          /* identical to box height, or 150% */
+
+          letter-spacing: 1px;
+
+          color: #141414;
+
+          &:hover {
+            pointer-events: none;
+          }
+        }
+
+        &__prev-button {
+          position: absolute;
+          right: 50px;
+          width: 24px;
+          height: 24px;
+          margin-right: 5px;
+
+          line-height: 1px;
+
+          background: rgba(51, 51, 51, 0.1);
+          padding-bottom: 4px;
+          color: #333333;
+          border: 0;
+          border-radius: 100px;
+          font-size: 1.5rem;
+        }
+
+        &__next-button {
+          position: absolute;
+          right: 15px;
+          width: 24px;
+          height: 24px;
+          margin-right: 10px;
+
+          line-height: 1px;
+
+          background: rgba(51, 51, 51, 0.1);
+          padding-bottom: 4px;
+          color: #333333;
+          border: 0;
+          border-radius: 100px;
+          font-size: 1.5rem;
+        }
+      }
+
+      &__viewContainer {
+        font-family: var(--font-rift);
+        height: 250px;
+      }
+
+      &__month-view {
+        &__weekdays {
+          margin-bottom: 12px;
+
+          &__weekday {
+            text-align: center;
+
+            abbr[title],
+            abbr[data-original-title] {
+              text-decoration: none;
+            }
+          }
+        }
+      }
+
+      &__tile {
+        width: 45px;
+        height: 40px;
+        background: #e2e8f0;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid white;
+        outline: none;
+
+        &--active {
+          color: white;
+          background: #141414;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        &:hover {
+          outline: none;
+          color: white;
+          background: #141414;
+        }
+      }
+    }
+  }
+}
