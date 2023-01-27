@@ -1,12 +1,203 @@
 .modal {
+  border-radius: 0;
+  width: 100%;
+
+  .modal-dialog {
+    background-color: red;
+  }
 }
 
-.closeButton {
+.modalContent {
+  padding: 24px;
+  border-radius: 0;
+  max-height: 80vh;
+}
+
+.modalDialog {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+
+  position: fixed;
+  top: auto;
+  right: auto;
+  left: auto;
+  bottom: 0;
+}
+.modalWrapper {
+}
+
+.modalBackDrop {
+}
+
+.modalHeader {
+  padding: 0 !important;
+  border-bottom: none !important;
+
+  // font-family: var(--font-rift) !important;
+
+  font-style: normal !important;
+  font-weight: 700 !important;
+  font-size: 24px !important;
+  line-height: 24px !important;
+  letter-spacing: 1px !important;
+
+  padding: 0;
+  border-bottom: none;
+
+  :global {
+    .modal-title {
+      border-bottom: none;
+      font-family: var(--font-rift);
+
+      font-style: normal;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 24px;
+    }
+  }
+}
+
+.buttonClose {
   background-color: transparent;
   border: none;
-  right: 0px;
-  top: 0px;
-  position: absolute;
-  margin: 24px;
   z-index: 1000;
+  padding: 0;
+  outline: none;
+  img {
+    width: 19px;
+    height: 19px;
+  }
+}
+
+.modalBody {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0;
+  overflow-y: scroll;
+  margin-right: -15px;
+  padding-right: 15px;
+}
+
+.calendar {
+  margin-top: 32px;
+  margin-bottom: 20px;
+
+  :global {
+    .react-calendar {
+      &__navigation {
+        padding-right: 15px;
+        margin-bottom: 57px;
+
+        &__label {
+          background-color: white;
+          position: absolute;
+          left: 0;
+          border: none;
+
+          padding: 0;
+          text-align: center;
+          text-decoration: none;
+          pointer-events: none;
+
+          font-family: var(--font-rift);
+          font-style: normal;
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 24px;
+          /* identical to box height, or 150% */
+
+          letter-spacing: 1px;
+
+          color: #141414;
+
+          &:hover {
+            pointer-events: none;
+          }
+        }
+
+        &__prev-button {
+          position: absolute;
+          right: 50px;
+          width: 24px;
+          height: 24px;
+
+          line-height: 1px;
+
+          background: rgba(51, 51, 51, 0.1);
+          padding-bottom: 4px;
+          color: #333333;
+          border: 0;
+          border-radius: 100px;
+        }
+
+        &__next-button {
+          position: absolute;
+          right: 15px;
+          width: 24px;
+          height: 24px;
+
+          line-height: 1px;
+
+          background: rgba(51, 51, 51, 0.1);
+          padding-bottom: 4px;
+          color: #333333;
+          border: 0;
+          border-radius: 100px;
+        }
+      }
+
+      &__viewContainer {
+        font-family: var(--font-rift);
+        height: 250px;
+      }
+
+      &__month-view {
+        &__weekdays {
+          margin-bottom: 12px;
+
+          &__weekday {
+            text-align: center;
+
+            abbr[title],
+            abbr[data-original-title] {
+              text-decoration: none;
+            }
+          }
+        }
+      }
+
+      &__tile {
+        width: 45px;
+        height: 40px;
+        background: #e2e8f0;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid white;
+        outline: none;
+
+        &--active {
+          color: white;
+          background: #141414;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        &:hover {
+          outline: none;
+          color: white;
+          background: #141414;
+        }
+      }
+    }
+  }
+}
+
+.searchButton {
+  margin-top: 32px;
+  width: 100%;
+  justify-content: center;
 }
