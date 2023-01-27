@@ -1,7 +1,10 @@
 import { IconArrowDown, IconCalendarMobile, IconSearch } from 'assets/icons'
 import classNames from 'classnames'
+import moment from 'moment'
+
 import React, { useState } from 'react'
 import { getCourseTitle } from 'services/course'
+import CalendarModal from './CalendarModal'
 import SearchModal from './SearchModal'
 
 import styles from './styles.scss'
@@ -15,10 +18,16 @@ function ResultsHeaderMobile({
   const [searchModal, setSearchModal] = useState(false)
   const [chooseADateModal, setChooseADateModal] = useState(false)
 
+  const dateParam = new URLSearchParams(window.location.search).get('date')
+
   const courseTitle = getCourseTitle(courseType)
   const miles = radius_miles === '1' ? '+ 0 miles' : `+ ${radius_miles} miles`
 
-  const date = 'Choose a Date'
+  const date = moment(dateParam, 'YYYY-MM-DD')
+
+  const formattedDate = date.isValid()
+    ? moment(dateParam).format('ll')
+    : 'Choose a Date'
 
   const handleSearchClick = () => {
     setSearchModal(!searchModal)
@@ -28,20 +37,28 @@ function ResultsHeaderMobile({
     setSearchModal(!searchModal)
   }
 
+  function handleOnCloseCalendarModal() {
+    setChooseADateModal(!chooseADateModal)
+  }
+
   const handleChooseADateClick = e => {
     setChooseADateModal(!chooseADateModal)
   }
 
   return (
     <>
-      {searchModal && (
-        <SearchModal
-          isOpen={searchModal}
-          onClose={handleOnCloseSearchModal}
-          onSearch={handleSearchClick}
-          courseTypesOptions={courseTypesOptions}
-        />
-      )}
+      <SearchModal
+        isOpen={searchModal}
+        onClose={handleOnCloseSearchModal}
+        onSearch={handleSearchClick}
+        courseTypesOptions={courseTypesOptions}
+      />
+
+      <CalendarModal
+        isOpen={chooseADateModal}
+        onClose={handleOnCloseCalendarModal}
+      />
+
       <div className={styles.container}>
         <div
           className={classNames(styles.wrapper, styles.searchWrapper)}
@@ -58,7 +75,7 @@ function ResultsHeaderMobile({
           className={classNames(styles.wrapper, styles.wrapperChooseADate)}
           onClick={handleChooseADateClick}>
           <IconCalendarMobile className={styles.icon} />
-          <div className={styles.date}>{date}</div>
+          <div className={styles.date}>{formattedDate}</div>
           <IconArrowDown className={styles.dropDownIcon} />
         </div>
       </div>
