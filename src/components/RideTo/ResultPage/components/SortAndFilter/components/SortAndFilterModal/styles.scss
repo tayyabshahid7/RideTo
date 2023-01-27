@@ -44,6 +44,7 @@
     background-color: transparent;
     border: none;
     z-index: 1000;
+    padding: 0;
 
     img {
       width: 19px;
@@ -93,6 +94,7 @@
 
   .select {
     margin-top: 16px;
+    font-size: 100%;
   }
 
   .filterWrapper {
