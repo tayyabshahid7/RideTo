@@ -297,6 +297,7 @@ export function SortAndFilterModal({
             defaultValue={sort}
             options={options}
             menuPlacement="auto"
+            isSearchable={false}
             components={{
               Control,
               DropdownIndicator,
