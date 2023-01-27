@@ -1,6 +1,6 @@
 import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import RideToButton from 'components/RideTo/Button'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Calendar from 'react-calendar'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import styles from './styles.scss'
@@ -10,6 +10,16 @@ import { parseQueryString } from 'services/api'
 
 function CalendarModal({ isOpen, onClose }) {
   const [calendarValue, setCalendarValue] = useState(new Date())
+
+  useEffect(() => {
+    const dateParam = new URLSearchParams(window.location.search).get('date')
+
+    if (dateParam && moment(dateParam).isValid()) {
+      const currentDate = moment(dateParam).toDate()
+
+      setCalendarValue(currentDate)
+    }
+  }, [])
 
   function handleCalendarChange(e) {
     setCalendarValue(e)
