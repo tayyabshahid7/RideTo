@@ -73,10 +73,10 @@
   justify-content: space-between;
   padding: 28px 30px;
   @media (max-width: 768px) {
-    // padding: 20px 16px 0px 10px;
-    padding-left: 16px;
-    padding-top: 20px;
-    padding-right: 0px;
+    padding-bottom: 20px;
+    padding-top: 10px;
+    padding-left: 0;
+    padding-right: 0;
   }
   @media (min-width: 769px) {
     max-width: 365px;
