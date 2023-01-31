@@ -6,7 +6,7 @@ export function PlatformCalendar(props) {
   const [calendarValue, setCalendarValue] = useState(new Date())
 
   function handleCalendarChange(e) {
-    console.log(e)
+    setCalendarValue(e)
   }
   return (
     <Calendar
