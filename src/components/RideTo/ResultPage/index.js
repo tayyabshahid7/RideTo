@@ -60,7 +60,8 @@ class ResultPageContainer extends Component {
       courseType,
       courses: null,
       loading: false,
-      navigation: this.navigation
+      navigation: this.navigation,
+      sortByModal: sortByOption
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
@@ -157,7 +158,8 @@ class ResultPageContainer extends Component {
       courseType,
       postcode,
       navigation,
-      radius_miles
+      radius_miles,
+      sortByModal
     } = this.state
 
     return (
@@ -175,6 +177,7 @@ class ResultPageContainer extends Component {
                   loading={loading}
                   date={date}
                   sortByOption={sortByOption}
+                  sortByModal={sortByModal}
                   handleSetDate={this.handleSetDate}
                   handleUpdateOption={this.handleUpdateOption}
                   navigation={navigation}

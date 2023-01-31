@@ -22,7 +22,8 @@ export function SortAndFilterModal({
   isOpen,
   onClose,
   courses,
-  handleUpdateOption
+  handleUpdateOption,
+  sortByModal
 }) {
   const [filters, setFilters] = useState([])
   const [sort, setSort] = useState(options[0])
@@ -133,6 +134,16 @@ export function SortAndFilterModal({
     setSort(e)
   }
 
+  useEffect(() => {
+    const objIndex = options.findIndex(sort => sort.value === sortByModal)
+
+    if (objIndex) {
+      setSort(options[objIndex])
+    } else {
+      setSort(options[0])
+    }
+  }, [])
+
   function handleSearchClick() {
     const { available, unavailable } = courses
 
@@ -145,6 +156,7 @@ export function SortAndFilterModal({
     let newAvailable
     let newUnavailable
     let newFiltered
+    let newSortBy
 
     const sortId = sort ? sort.value : null
     switch (sortId) {
@@ -152,6 +164,7 @@ export function SortAndFilterModal({
         newAvailable = _.sortBy(available, 'distance_miles')
         newUnavailable = _.sortBy(unavailable, 'distance_miles')
         newFiltered = _.sortBy(filtered, 'distance_miles')
+        newSortBy = options[0].value
 
         break
       case 'price':
@@ -175,6 +188,7 @@ export function SortAndFilterModal({
           }
           return a.price > b.price ? 1 : -1
         })
+        newSortBy = options[1].value
 
         break
 
@@ -199,6 +213,7 @@ export function SortAndFilterModal({
           }
           return a.next_date_available > b.next_date_available ? 1 : -1
         })
+        newSortBy = options[2].value
 
         break
 
@@ -221,6 +236,7 @@ export function SortAndFilterModal({
           }
           return a.rating > b.rating ? -1 : 1
         })
+        newSortBy = options[3].value
         break
     }
 
@@ -231,7 +247,8 @@ export function SortAndFilterModal({
         available: newAvailable,
         unavailable: newUnavailable,
         filtered: newFiltered
-      }
+      },
+      sortByModal: newSortBy
     })
   }
 

@@ -851,6 +851,7 @@ class ResultPage extends Component {
       sortByOption,
       handleUpdateOption,
       radius_miles,
+      sortByModal,
       location: { pathname, search }
     } = this.props
     const {
@@ -1049,6 +1050,7 @@ class ResultPage extends Component {
                               isMobileMapVisible={isMobileMapVisible}
                               handleUpdateOption={handleUpdateOption}
                               courses={courses}
+                              sortByModal={sortByModal}
                             />
                             {/* <div
                               className={classnames(
