@@ -929,7 +929,7 @@ class ResultPage extends Component {
       if (courses.filtered.length > 0) {
         showCourses = courses.filtered
       } else {
-        showCourses = courses.available
+        showCourses = []
       }
     }
 
@@ -1104,7 +1104,7 @@ class ResultPage extends Component {
                             href="/"
                           />
                         )}
-                        {showCourses && (
+                        {showCourses.length > 0 && (
                           <React.Fragment>
                             {showCourses.map(
                               (course, index) =>
@@ -1149,6 +1149,61 @@ class ResultPage extends Component {
                             )}
                           </React.Fragment>
                         )}
+                        {showCourses.length === 0 &&
+                          courses.available.length > 0 && (
+                            <>
+                              <div className={styles.noCriteria}>
+                                <span>
+                                  No results meet your criteria. But we have the
+                                  following training locations in your area.
+                                </span>
+                              </div>
+                              {courses.available.map(
+                                (course, index) =>
+                                  course.is_partner && (
+                                    <CourseItem
+                                      showCallMessage={
+                                        index === 1 ||
+                                        (index - 1) % 5 === 0 ||
+                                        (showCourses.length < 3 &&
+                                          index === showCourses.length - 1)
+                                      }
+                                      showPomMessage={
+                                        courseType === 'LICENCE_CBT' &&
+                                        index === 3
+                                      }
+                                      courseType={courseType}
+                                      id={`card-course-${course.id}`}
+                                      course={course}
+                                      className={styles.courseSpacing}
+                                      key={course.id}
+                                      showCourseTypeInfo={() =>
+                                        this.showCourseTypeInfo('pom')
+                                      }
+                                      handleDetailClick={course =>
+                                        this.loadCourseDetail(course, 1)
+                                      }
+                                      handlePriceClick={course =>
+                                        this.loadCourseDetail(course, 3)
+                                      }
+                                      handleReviewClick={course =>
+                                        this.loadCourseDetail(course, 2)
+                                      }
+                                      handleNextAvailableClick={(
+                                        course,
+                                        date
+                                      ) =>
+                                        this.loadCourseDetailNextAvailableDate(
+                                          course,
+                                          3,
+                                          date
+                                        )
+                                      }
+                                    />
+                                  )
+                              )}
+                            </>
+                          )}
                         {courses.unavailable && courses.unavailable.length > 0 && (
                           <React.Fragment>
                             {hasPartnerResults && (

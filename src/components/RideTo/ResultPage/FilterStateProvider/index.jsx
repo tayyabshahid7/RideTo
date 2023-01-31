@@ -11,13 +11,14 @@ export function FilterStateProvider({ children }) {
   }
 
   function handleCheckBoxSelection(e) {
+    const { id } = e.target
     setSelectedFilters(prev => {
-      if (prev.includes(e.target.id)) {
+      if (prev.includes(id)) {
         const clone = [...prev]
-        clone.splice(prev.indexOf(e.target.id), 1)
+        clone.splice(prev.indexOf(id), 1)
         return clone
       } else {
-        return [...prev, e.target.id]
+        return [...prev, id]
       }
     })
   }

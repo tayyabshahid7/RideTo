@@ -240,7 +240,6 @@ export function SortAndFilterModal({
         break
     }
 
-    onClose()
     handleFilterTotalUsed(selectedFilters.length)
     handleUpdateOption({
       courses: {
@@ -250,6 +249,7 @@ export function SortAndFilterModal({
       },
       sortByModal: newSortBy
     })
+    onClose()
   }
 
   const CloseButtonIcon = (
