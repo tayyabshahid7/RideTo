@@ -477,6 +477,7 @@ class CourseAvailabilityComponent extends React.Component {
     return (
       <Loading loading={loadingCourses || loadingTimes}>
         <div className={classnames(styles.content, fromSupplier && 'px-0')}>
+          {/* <Desktop> */}
           <AvailabilityCalendar
             days={days}
             calendar={{
@@ -499,6 +500,11 @@ class CourseAvailabilityComponent extends React.Component {
             checkFutureMonth
             loading={loadingCourses}
           />
+          {/* </Desktop> */}
+          {/* <Mobile>
+            <PlatformCalendar />
+          </Mobile> */}
+
           <BikePicker
             isCbt={isCbt}
             isItm={isItm}
