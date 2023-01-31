@@ -292,25 +292,15 @@ class CourseItem extends Component {
                 <div
                   onClick={() => this.priceClicked(course)}
                   className={styles.iconsMobile}>
-                  {this.renderIconMobile(
-                    'mciac_approved',
-                    course.mciac_approved
-                  )}
-                  {this.renderIconMobile('bike_hire', course.bike_hire)}
-                  {this.renderIconMobile('helmet_hire', course.helmet_hire)}
-                  {this.renderIconMobile(
-                    'gloves_jacket_included',
-                    course.gloves_jacket_included
-                  )}
-                  {this.renderIconMobile('on_site_cafe', course.on_site_cafe)}
-                  {this.renderIconMobile(
-                    'on_site_parking',
-                    course.on_site_parking
-                  )}
-                  {this.renderIconMobile(
-                    'indoor_classroom',
-                    course.indoor_classroom
-                  )}
+                  {course.bike_hire && this.renderIconMobile('bike_hire')}
+                  {course.helmet_hire && this.renderIconMobile('helmet_hire')}
+                  {course.gloves_jacket_included &&
+                    this.renderIconMobile('gloves_jacket_included')}
+                  {course.indoor_classroom &&
+                    this.renderIconMobile('indoor_classroom')}
+                  {course.on_site_cafe && this.renderIconMobile('on_site_cafe')}
+                  {course.on_site_parking &&
+                    this.renderIconMobile('on_site_parking')}
                   {!isFullLicence &&
                     this.renderIconMobile('instant_book', course.instant_book)}
                 </div>
