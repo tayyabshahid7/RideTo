@@ -58,7 +58,12 @@ class MapComponent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng) {
+    console.log(this.props)
+    console.log(prevProps)
+    if (
+      this.props.hasSearchLocation &&
+      (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng)
+    ) {
       this.setState(prevState => ({
         viewport: {
           ...prevState.viewport,
