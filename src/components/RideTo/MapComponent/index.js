@@ -297,7 +297,11 @@ class MapComponent extends Component {
   }
 
   handleViewPortChange(viewport) {
-    this.setState({ ...viewport })
+    this.setState(prevState => ({
+      viewport: {
+        ...viewport
+      }
+    }))
   }
 
   handleOnTransitionEnd() {
