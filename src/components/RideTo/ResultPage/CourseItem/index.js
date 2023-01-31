@@ -304,7 +304,7 @@ class CourseItem extends Component {
                   {!isFullLicence &&
                     this.renderIconMobile('instant_book', course.instant_book)}
                 </div>
-                <div className={styles.iconsMobileBottomLine}></div>
+                <div className={styles.divider}></div>
               </Mobile>
             </div>
             <Desktop>
