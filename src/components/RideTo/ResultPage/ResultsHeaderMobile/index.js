@@ -26,8 +26,10 @@ function ResultsHeaderMobile({
   const date = moment(dateParam, 'YYYY-MM-DD')
 
   const formattedDate = date.isValid()
-    ? moment(dateParam).format('ll')
+    ? moment(dateParam).format('dddd MMMM D, YYYY')
     : 'Choose a Date'
+
+  const classes = `${styles.date} ${date.isValid() ? styles.dateBlacked : ''}`
 
   const handleSearchClick = () => {
     setSearchModal(!searchModal)
@@ -41,7 +43,7 @@ function ResultsHeaderMobile({
     setChooseADateModal(!chooseADateModal)
   }
 
-  const handleChooseADateClick = e => {
+  function handleChooseADateClick() {
     setChooseADateModal(!chooseADateModal)
   }
 
@@ -75,7 +77,7 @@ function ResultsHeaderMobile({
           className={classNames(styles.wrapper, styles.wrapperChooseADate)}
           onClick={handleChooseADateClick}>
           <IconCalendarMobile className={styles.icon} />
-          <div className={styles.date}>{formattedDate}</div>
+          <div className={classes}>{formattedDate}</div>
           <IconArrowDown className={styles.dropDownIcon} />
         </div>
       </div>
