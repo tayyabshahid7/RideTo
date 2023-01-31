@@ -857,7 +857,8 @@ class ResultPage extends Component {
       isLoadingMap,
       lat,
       lng,
-      coursesOnMap
+      coursesOnMap,
+      hasSearchLocation
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -1183,6 +1184,7 @@ class ResultPage extends Component {
                               width="100%"
                               hiddenOnMobile
                               handlePinClick={this.loadCourseDetail}
+                              hasSearchLocation={hasSearchLocation}
                             />
                           </MediaQuery>
                         )}
@@ -1223,6 +1225,7 @@ class ResultPage extends Component {
                 width="100%"
                 hiddenOnMobile
                 handlePinClick={this.loadCourseDetail}
+                hasSearchLocation={hasSearchLocation}
               />
             </MobileMap>
           )}
