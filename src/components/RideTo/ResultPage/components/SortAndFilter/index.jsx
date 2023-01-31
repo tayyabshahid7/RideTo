@@ -9,7 +9,8 @@ function SortAndFilter({
   handleMapButton,
   isMobileMapVisible,
   handleUpdateOption,
-  courses
+  courses,
+  sortByModal
 }) {
   const { totalFiltersUsed } = useContext(FilterProvider)
   const [modal, setModal] = useState(false)
@@ -34,6 +35,7 @@ function SortAndFilter({
           isOpen={modal}
           handleUpdateOption={handleUpdateOption}
           courses={courses}
+          sortByModal={sortByModal}
         />
       )}
       <div className={styles.container}>
