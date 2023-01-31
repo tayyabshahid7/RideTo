@@ -69,5 +69,14 @@
     line-height: 16px;
     font-size: 14px;
     color: #141414;
+
+    &:hover,
+    &:active {
+      border: 1px solid #141414;
+    }
+    &:active,
+    &:focus {
+      outline: none;
+    }
   }
 }
