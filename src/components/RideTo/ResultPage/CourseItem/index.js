@@ -303,6 +303,7 @@ class CourseItem extends Component {
                     course.instant_book &&
                     this.renderIconMobile('instant_book')}
                 </div>
+                <div className={styles.divider}></div>
               </Mobile>
             </div>
             <Desktop>
