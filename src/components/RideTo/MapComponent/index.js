@@ -58,8 +58,6 @@ class MapComponent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.props)
-    console.log(prevProps)
     if (
       this.props.hasSearchLocation &&
       (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng)
