@@ -3,20 +3,12 @@ import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import classnames from 'classnames'
 import Checkbox from 'components/Checkbox'
 import RideToButton from 'components/RideTo/Button'
-import * as _ from 'lodash'
 import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 import { FilterProvider } from '../../../../FilterStateProvider'
 
 import styles from './styles.scss'
-
-const options = [
-  { value: 'distance', label: 'Distance' },
-  { value: 'price', label: 'Price' },
-  { value: 'date', label: 'Date' },
-  { value: 'rating', label: 'Rating' }
-]
 
 export function SortAndFilterModal({
   isOpen,
@@ -25,14 +17,15 @@ export function SortAndFilterModal({
   handleUpdateOption,
   sortByModal
 }) {
+  const {
+    handleCheckBoxSelection,
+    selectedFilters,
+    handleFilter,
+    options
+  } = useContext(FilterProvider)
+
   const [filters, setFilters] = useState([])
   const [sort, setSort] = useState(options[0])
-
-  const {
-    handleFilterTotalUsed,
-    handleCheckBoxSelection,
-    selectedFilters
-  } = useContext(FilterProvider)
 
   useEffect(() => {
     if (courses) {
@@ -145,110 +138,7 @@ export function SortAndFilterModal({
   }, [])
 
   function handleSearchClick() {
-    const { available, unavailable } = courses
-
-    const filtered = available.filter(el => {
-      return selectedFilters.every(f => {
-        return el[f] === true
-      })
-    })
-
-    let newAvailable
-    let newUnavailable
-    let newFiltered
-    let newSortBy
-
-    const sortId = sort ? sort.value : null
-    switch (sortId) {
-      default:
-        newAvailable = _.sortBy(available, 'distance_miles')
-        newUnavailable = _.sortBy(unavailable, 'distance_miles')
-        newFiltered = _.sortBy(filtered, 'distance_miles')
-        newSortBy = options[0].value
-
-        break
-      case 'price':
-        newAvailable = available.sort((a, b) => {
-          if (a.price === b.price) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.price > b.price ? 1 : -1
-        })
-
-        newUnavailable = unavailable.sort((a, b) => {
-          if (a.price === b.price) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.price > b.price ? 1 : -1
-        })
-
-        newFiltered = unavailable.sort((a, b) => {
-          if (a.price === b.price) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.price > b.price ? 1 : -1
-        })
-        newSortBy = options[1].value
-
-        break
-
-      case 'date':
-        newAvailable = available.sort((a, b) => {
-          if (a.next_date_available === b.next_date_available) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.next_date_available > b.next_date_available ? 1 : -1
-        })
-
-        newUnavailable = unavailable.sort((a, b) => {
-          if (a.next_date_available === b.next_date_available) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.next_date_available > b.next_date_available ? 1 : -1
-        })
-
-        newFiltered = unavailable.sort((a, b) => {
-          if (a.next_date_available === b.next_date_available) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.next_date_available > b.next_date_available ? 1 : -1
-        })
-        newSortBy = options[2].value
-
-        break
-
-      case 'rating':
-        newAvailable = available.sort((a, b) => {
-          if (a.rating === b.rating) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.rating > b.rating ? -1 : 1
-        })
-        newUnavailable = unavailable.sort((a, b) => {
-          if (a.rating === b.rating) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.rating > b.rating ? -1 : 1
-        })
-        newFiltered = filtered.sort((a, b) => {
-          if (a.rating === b.rating) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.rating > b.rating ? -1 : 1
-        })
-        newSortBy = options[3].value
-        break
-    }
-
-    handleFilterTotalUsed(selectedFilters.length)
-    handleUpdateOption({
-      courses: {
-        available: newAvailable,
-        unavailable: newUnavailable,
-        filtered: newFiltered
-      },
-      sortByModal: newSortBy
-    })
+    handleFilter(courses, handleUpdateOption, sort)
     onClose()
   }
 
