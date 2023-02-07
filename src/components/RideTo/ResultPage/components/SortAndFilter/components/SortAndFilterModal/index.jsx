@@ -99,7 +99,7 @@ export function SortAndFilterModal({
             { id: 'on_site_cafe', name: 'Cafe', count: onSiteCoffeeCount },
             {
               id: 'on_site_parking',
-              name: 'Free Parking',
+              name: 'Parking',
               count: onSiteParkingCount
             },
             {
