@@ -1161,8 +1161,12 @@ class ResultPage extends Component {
                           courses.available.length > 0 && (
                             <>
                               <div className={styles.noCriteria}>
-                                <span>
-                                  No results meet your criteria. But we have the
+                                <span className={styles.noCriteriaTitle}>
+                                  no results found
+                                </span>
+                                <span className={styles.noCriteriaText}>
+                                  We can’t find any suitable training locations
+                                  that match your filters, but we do have the
                                   following training locations in your area.
                                 </span>
                               </div>
