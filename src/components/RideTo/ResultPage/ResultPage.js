@@ -263,13 +263,21 @@ class ResultPage extends Component {
         })
       } else {
         this.setState({
-          coursesOnMap: null,
+          coursesOnMap: [],
           isLoadingMap: false,
           loading: false
         })
       }
     } catch (error) {
-      this.setState({ coursesOnMap: null, isLoadingMap: false, loading: false })
+      this.setState({
+        coursesOnMap: {
+          available: [],
+          unavailable: [],
+          filtered: []
+        },
+        isLoadingMap: false,
+        loading: false
+      })
     }
   }
 

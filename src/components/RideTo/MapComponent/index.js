@@ -58,8 +58,6 @@ class MapComponent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.props)
-    console.log(prevProps)
     if (
       this.props.hasSearchLocation &&
       (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng)
@@ -332,8 +330,7 @@ class MapComponent extends Component {
           mapboxApiAccessToken={MAPBOX_KEY}
           onViewportChange={this.handleViewPortChange}
           onTouchEnd={this.handlePinClick}
-          onMouseUp={this.handlePinClick}
-          onTransitionEnd={this.handleOnTransitionEnd}>
+          onMouseUp={this.handlePinClick}>
           {userLocation && (
             <Marker
               longitude={lng}
