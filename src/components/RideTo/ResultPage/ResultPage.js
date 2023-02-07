@@ -1089,11 +1089,28 @@ class ResultPage extends Component {
                       )}
                     </React.Fragment>
                   ) : (
-                    <div className={styles.nonPartnerResultsMessage}>
-                      We don't have any partner schools to book with in your
-                      area, however feel free to use our directory to contact a
-                      school near you.
-                    </div>
+                    <>
+                      <Desktop>
+                        <div className={styles.nonPartnerResultsMessage}>
+                          We don't have any partner schools to book with in your
+                          area, however feel free to use our directory to
+                          contact a school near you.
+                        </div>
+                      </Desktop>
+                      <Mobile>
+                        {' '}
+                        <div className={styles.noCriteria}>
+                          <span className={styles.noCriteriaTitle}>
+                            no results found
+                          </span>
+                          <span className={styles.noCriteriaText}>
+                            We don't have any partner schools to book with in
+                            your area, however feel free to use our directory to
+                            contact a school near you.
+                          </span>
+                        </div>
+                      </Mobile>
+                    </>
                   )}
 
                   {showCourses ? (

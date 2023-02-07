@@ -1,11 +1,11 @@
-import { Col, Row } from 'reactstrap'
 import React, { useEffect, useState } from 'react'
+import { Col, Row } from 'reactstrap'
 
 import CourseTypeItem from 'components/RideTo/CourseTypeItem'
 import CourseTypeSelectionFilters from 'components/RideTo/CourseTypeSelectionFilters'
-import { SORTBY } from '../../../common/constants'
 import { getFilters } from 'services/course-type'
 import { normalizePostCode } from 'utils/helper'
+import { SORTBY } from '../../../common/constants'
 import styles from './CourseTypeList.scss'
 
 const isTypeform = courseType => {
@@ -22,7 +22,7 @@ const getBookUrl = (courseType, postcode) => {
   if (courseType === 'TFL_ONE_ON_ONE') {
     return 'https://rideto.typeform.com/to/axybpw'
   } else {
-    return `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=30&sortBy=${SORTBY.DISTANCE}`
+    return `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=25&sortBy=${SORTBY.DISTANCE}`
   }
 }
 
