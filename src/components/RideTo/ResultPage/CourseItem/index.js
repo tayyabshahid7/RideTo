@@ -308,6 +308,7 @@ class CourseItem extends Component {
                     course.indoor_classroom
                   )}
                   {!isFullLicence &&
+                    course.instant_book &&
                     this.renderIconMobile('instant_book', course.instant_book)}
                 </div>
                 <div className={styles.iconsMobileBottomLine}></div>
