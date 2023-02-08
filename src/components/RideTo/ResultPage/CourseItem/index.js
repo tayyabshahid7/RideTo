@@ -292,10 +292,6 @@ class CourseItem extends Component {
                 <div
                   onClick={() => this.priceClicked(course)}
                   className={styles.iconsMobile}>
-                  {this.renderIconMobile(
-                    'mciac_approved',
-                    course.mciac_approved
-                  )}
                   {this.renderIconMobile('bike_hire', course.bike_hire)}
                   {this.renderIconMobile('helmet_hire', course.helmet_hire)}
                   {this.renderIconMobile(
