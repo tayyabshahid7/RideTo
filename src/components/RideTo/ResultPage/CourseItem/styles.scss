@@ -553,13 +553,13 @@
 
     span {
       font-size: 13px;
-      line-height: 16px;
+      line-height: 16px !important;
     }
   }
 
   @media (max-width: 575px) {
     img {
-      width: 20px;
+      width: 18px;
     }
   }
 }
