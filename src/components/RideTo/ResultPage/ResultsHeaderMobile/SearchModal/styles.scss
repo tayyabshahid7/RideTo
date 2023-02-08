@@ -26,20 +26,20 @@
   padding: 0 !important;
   border-bottom: none !important;
 
-  font-family: var(--font-rift);
+  font-family: var(--font-rift-bold);
 
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
   line-height: 24px;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 
   padding: 0;
   border-bottom: none;
 }
 
 .courseTitle {
-  margin-top: 32px;
+  margin-top: 20px;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -124,7 +124,7 @@
 
     color: #141414;
 
-    margin-top: 32px;
+    margin-top: 25px;
 
     svg {
       width: 16px;
