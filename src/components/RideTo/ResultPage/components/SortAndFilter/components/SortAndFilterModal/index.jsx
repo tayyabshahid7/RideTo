@@ -5,7 +5,7 @@ import Checkbox from 'components/Checkbox'
 import RideToButton from 'components/RideTo/Button'
 import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
-import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { Modal, ModalBody, ModalHeader, Spinner } from 'reactstrap'
 import { FilterProvider } from '../../../../FilterStateProvider'
 
 import styles from './styles.scss'
@@ -26,6 +26,7 @@ export function SortAndFilterModal({
 
   const [filters, setFilters] = useState([])
   const [sort, setSort] = useState(options[0])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (courses) {
@@ -138,8 +139,12 @@ export function SortAndFilterModal({
   }, [])
 
   function handleSearchClick() {
-    handleFilter(courses, handleUpdateOption, sort)
-    onClose()
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+      handleFilter(courses, handleUpdateOption, sort)
+      onClose()
+    }, 1000)
   }
 
   const CloseButtonIcon = (
@@ -242,9 +247,14 @@ export function SortAndFilterModal({
           </div>
 
           <RideToButton
-            className={styles.searchButton}
-            onClick={handleSearchClick}>
-            Search
+            className={classnames(
+              styles.searchButton,
+              isLoading && styles.disableButton
+            )}
+            onClick={handleSearchClick}
+            disable={true}>
+            {isLoading && <Spinner size={'md'} />}
+            {!isLoading && <span>Search</span>}
           </RideToButton>
         </div>
       </ModalBody>
