@@ -25,6 +25,7 @@ class ResultPageContainer extends Component {
     const sortByOption = staticData.sortBy || qs.sortBy || SORTBY.DISTANCE
     const date = qs.date || null
     const radius_miles = qs.radius_miles || 30
+    const filters = qs.filters ? qs.filters.split(',') : []
 
     this.navigation = [
       {
@@ -55,6 +56,7 @@ class ResultPageContainer extends Component {
       date,
       radius_miles,
       sortByOption,
+      filters,
       userLocation: null,
       postcode,
       courseType,
@@ -112,7 +114,8 @@ class ResultPageContainer extends Component {
         sortByOption,
         courseType,
         postcode,
-        radius_miles
+        radius_miles,
+        filters
       } = this.state
       this.setState({ loading: true })
       let results = await fetchRidetoCourses({
@@ -123,12 +126,23 @@ class ResultPageContainer extends Component {
         ordering: sortByOption,
         available: 'True'
       })
+
+      let filtered = results.filter(({ is_available_on: a }) => a)
+
+      if (filters) {
+        filtered = filtered.filter(el => {
+          return filters.every(f => {
+            return el[f] === true
+          })
+        })
+      }
+
       if (results) {
         this.setState({
           courses: {
             available: results.filter(({ is_available_on: a }) => a),
             unavailable: results.filter(({ is_available_on: a }) => !a),
-            filtered: results.filter(({ is_available_on: a }) => a)
+            filtered
           },
           loading: false
         })
