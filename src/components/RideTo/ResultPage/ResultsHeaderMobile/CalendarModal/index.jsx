@@ -55,11 +55,13 @@ function CalendarModal({ isOpen, onClose }) {
         <Calendar
           onChange={handleCalendarChange}
           value={calendarValue}
+          minDate={new Date()}
           locale="en-GB"
           next2Label={null}
           prev2Label={null}
           className={styles.calendar}
           showNeighboringMonth={false}
+          tileClassName={styles.tile}
         />
         <RideToButton
           className={styles.searchButton}

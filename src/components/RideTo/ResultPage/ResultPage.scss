@@ -466,9 +466,32 @@
 }
 
 .noCriteria {
+  display: flex;
+  flex-direction: column;
   background: #ffffff;
-  padding: 40px 20px;
-  span {
+  height: 240px;
+
+  justify-content: space-between;
+  padding: 48px;
+  text-align: center;
+  margin-bottom: 8px;
+
+  .noCriteriaTitle {
+    font-family: var(--font-rift);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .noCriteriaText {
+    padding: 0 20px;
+    font-family: var(--font-proxima);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+    /* or 160% */
+
     text-align: center;
   }
 }

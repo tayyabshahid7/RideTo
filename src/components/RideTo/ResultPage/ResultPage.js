@@ -659,6 +659,9 @@ class ResultPage extends Component {
   }
 
   checkPartnerResults(courses) {
+    const qs = parseQueryString(window.location.search.slice(1))
+    const radius_miles = qs.radius_miles
+
     if (courses) {
       const availableCourses = courses.available.filter(
         course => course.is_partner
@@ -670,6 +673,19 @@ class ResultPage extends Component {
         )
       } else {
         unavailableCourses = []
+      }
+
+      const isCourseList =
+        availableCourses.length > 0 || unavailableCourses.length > 0
+
+      if (!isCourseList && radius_miles !== '100') {
+        const postcode = qs.postcode ? qs.postcode.toUpperCase() : 'London'
+        const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
+        const sortby = qs.sortBy || SORTBY.DISTANCE
+        const radius_miles = 100
+        const normalizedPostCode = normalizePostCode(postcode)
+
+        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortby}`
       }
       return availableCourses.length > 0 || unavailableCourses.length > 0
     }
@@ -1089,11 +1105,27 @@ class ResultPage extends Component {
                       )}
                     </React.Fragment>
                   ) : (
-                    <div className={styles.nonPartnerResultsMessage}>
-                      We don't have any partner schools to book with in your
-                      area, however feel free to use our directory to contact a
-                      school near you.
-                    </div>
+                    <>
+                      <Desktop>
+                        <div className={styles.nonPartnerResultsMessage}>
+                          We don't have any partner schools to book with in your
+                          area, however feel free to use our directory to
+                          contact a school near you.
+                        </div>
+                      </Desktop>
+                      <Mobile>
+                        <div className={styles.noCriteria}>
+                          <span className={styles.noCriteriaTitle}>
+                            no results found
+                          </span>
+                          <span className={styles.noCriteriaText}>
+                            We don't have any partner schools to book with in
+                            your area, however feel free to use our directory to
+                            contact a school near you.
+                          </span>
+                        </div>
+                      </Mobile>
+                    </>
                   )}
 
                   {showCourses ? (
@@ -1161,8 +1193,12 @@ class ResultPage extends Component {
                           courses.available.length > 0 && (
                             <>
                               <div className={styles.noCriteria}>
-                                <span>
-                                  No results meet your criteria. But we have the
+                                <span className={styles.noCriteriaTitle}>
+                                  no results found
+                                </span>
+                                <span className={styles.noCriteriaText}>
+                                  We can’t find any suitable training locations
+                                  that match your filters, but we do have the
                                   following training locations in your area.
                                 </span>
                               </div>

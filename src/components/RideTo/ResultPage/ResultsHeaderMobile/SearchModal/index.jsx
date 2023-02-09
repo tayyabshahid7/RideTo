@@ -7,6 +7,7 @@ import RideToButton from 'components/RideTo/Button'
 import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { parseQueryString } from 'services/api'
 import styles from './styles.scss'
 
 import { normalizePostCode } from 'utils/helper'
@@ -91,10 +92,16 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
   }
 
   function handleSearchClick() {
+    const { filters } = parseQueryString(window.location.search.slice(1))
+
     const normalizedPostCode = normalizePostCode(postcodeModal)
     const sortByOption = 'distance'
     const formattedRadius = radius.value
-    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}`
+
+    const formatedFilters = filters
+      ? `&filters=${encodeURIComponent(filters)}`
+      : ''
+    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}${formatedFilters}`
   }
 
   function handleCurrentLocationClick() {

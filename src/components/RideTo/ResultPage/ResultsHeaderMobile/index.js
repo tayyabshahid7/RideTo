@@ -1,8 +1,14 @@
-import { IconArrowDown, IconCalendarMobile, IconSearch } from 'assets/icons'
+import {
+  IconArrowDown,
+  IconCalendarMobile,
+  IconClear,
+  IconSearch
+} from 'assets/icons'
 import classNames from 'classnames'
 import moment from 'moment'
 
 import React, { useState } from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 import { getCourseTitle } from 'services/course'
 import CalendarModal from './CalendarModal'
 import SearchModal from './SearchModal'
@@ -17,6 +23,9 @@ function ResultsHeaderMobile({
 }) {
   const [searchModal, setSearchModal] = useState(false)
   const [chooseADateModal, setChooseADateModal] = useState(false)
+
+  const location = useLocation()
+  const history = useHistory()
 
   const dateParam = new URLSearchParams(window.location.search).get('date')
 
@@ -45,6 +54,17 @@ function ResultsHeaderMobile({
 
   function handleChooseADateClick() {
     setChooseADateModal(!chooseADateModal)
+  }
+
+  function handleClearDate() {
+    const queryParams = new URLSearchParams(location.search)
+    if (queryParams.has('date')) {
+      queryParams.delete('date')
+      history.replace({
+        search: queryParams.toString()
+      })
+      window.location = history.location.search
+    }
   }
 
   return (
@@ -76,9 +96,20 @@ function ResultsHeaderMobile({
         <div
           className={classNames(styles.wrapper, styles.wrapperChooseADate)}
           onClick={handleChooseADateClick}>
-          <IconCalendarMobile className={styles.icon} />
-          <div className={classes}>{formattedDate}</div>
-          <IconArrowDown className={styles.dropDownIcon} />
+          <div style={{ display: 'flex' }}>
+            <IconCalendarMobile className={styles.icon} />
+            <div className={classes}>{formattedDate}</div>
+          </div>
+          <div className={styles.iconsWrapper}>
+            <IconClear
+              className={styles.iconClear}
+              onClick={e => {
+                e.stopPropagation()
+                handleClearDate()
+              }}
+            />
+            <IconArrowDown className={styles.dropDownIcon} />
+          </div>
         </div>
       </div>
     </>
