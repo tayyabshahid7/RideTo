@@ -30,7 +30,7 @@
   padding: 0 !important;
   border-bottom: none !important;
 
-  // font-family: var(--font-rift) !important;
+  font-family: var(--font-rift) !important;
 
   font-style: normal !important;
   font-weight: 700 !important;
@@ -185,6 +185,23 @@
           outline: none;
           color: white;
           background: #141414;
+          &:disabled {
+            color: black;
+            opacity: 0.3;
+          }
+        }
+
+        &:disabled {
+          color: black;
+          opacity: 0.3;
+          background: white;
+          text-decoration: line-through;
+
+          &:hover {
+            color: black;
+            opacity: 0.3;
+            outline: none;
+          }
         }
       }
     }
