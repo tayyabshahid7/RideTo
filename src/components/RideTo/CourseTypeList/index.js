@@ -16,13 +16,15 @@ const isTypeform = courseType => {
   }
 }
 
-const getBookUrl = (courseType, postcode) => {
+const getBookUrl = (courseType, postcode, numberOfSuppliers) => {
   const normalizedPostCode = normalizePostCode(postcode)
+
+  const radiusMiles = numberOfSuppliers < 5 ? 50 : 25
 
   if (courseType === 'TFL_ONE_ON_ONE') {
     return 'https://rideto.typeform.com/to/axybpw'
   } else {
-    return `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=25&sortBy=${SORTBY.DISTANCE}`
+    return `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radiusMiles}&sortBy=${SORTBY.DISTANCE}`
   }
 }
 
@@ -75,7 +77,11 @@ const CourseTypeList = ({ courseTypes, postcode, onLinkClick, onDetail }) => {
               courseType={courseType}
               onClickDetails={onDetail}
               onLinkClick={onLinkClick}
-              url={getBookUrl(courseType.constant, postcode)}
+              url={getBookUrl(
+                courseType.constant,
+                postcode,
+                courseType.number_of_suppliers
+              )}
             />
           </Col>
         ))}
