@@ -48,6 +48,7 @@
 .wrapperChooseADate {
   display: flex;
   color: #141414;
+  justify-content: space-between;
 
   .date {
     opacity: 0.5;
@@ -84,5 +85,22 @@
 .dropDownIcon {
   margin-top: 2px;
   margin-right: 0px;
+  // margin-left: auto;
+}
+
+.closeButton {
+  margin-top: 2px;
+  margin-right: 0px;
   margin-left: auto;
+}
+
+.iconsWrapper {
+  display: flex;
+  justify-content: space-between;
+  width: 40px;
+}
+
+.iconClear {
+  z-index: 999;
+  margin-top: 3px;
 }

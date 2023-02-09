@@ -1,8 +1,8 @@
 import React from 'react'
 
-const IconArrowDown = ({ className }) => (
+const IconArrowDown = props => (
   <svg
-    className={className}
+    {...props}
     width="15"
     height="16"
     viewBox="0 0 15 16"
