@@ -61,6 +61,7 @@ function CalendarModal({ isOpen, onClose }) {
           prev2Label={null}
           className={styles.calendar}
           showNeighboringMonth={false}
+          tileClassName={styles.tile}
         />
         <RideToButton
           className={styles.searchButton}
