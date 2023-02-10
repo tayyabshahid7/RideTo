@@ -68,6 +68,7 @@ class ResultPageContainer extends Component {
 
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handleUpdateOption = this.handleUpdateOption.bind(this)
+    this.loadCourses = this.loadCourses.bind(this)
   }
 
   async componentDidMount() {
@@ -105,9 +106,15 @@ class ResultPageContainer extends Component {
       }
       window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}`
     }
+
+    if (normalizedPostCode !== prevState.postcode) {
+      const url = new URL(window.location)
+      url.searchParams.set('postcode', normalizedPostCode)
+      window.history.pushState(null, '', url.toString())
+    }
   }
 
-  async loadCourses() {
+  async loadCourses(loading = true, lat = null, lng = null) {
     try {
       const {
         date,
@@ -117,11 +124,13 @@ class ResultPageContainer extends Component {
         radius_miles,
         filters
       } = this.state
-      this.setState({ loading: true })
+      this.setState({ loading: loading })
       let results = await fetchRidetoCourses({
         course_type: courseType,
         postcode: postcode,
         radius_miles: radius_miles,
+        lat,
+        lng,
         date,
         ordering: sortByOption,
         available: 'True'
@@ -196,6 +205,7 @@ class ResultPageContainer extends Component {
                   handleUpdateOption={this.handleUpdateOption}
                   navigation={navigation}
                   userLocation={userLocation}
+                  loadCourses={this.loadCourses}
                 />
               )}
             />
