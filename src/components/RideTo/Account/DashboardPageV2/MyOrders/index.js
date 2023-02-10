@@ -22,15 +22,20 @@ function MyOrders({ orders, handleClick }) {
         {orders.length > 0 ? (
           <Fragment>
             <ul className={styles.list}>
-              {orders.slice(0, visibleLength).map(order => (
-                <li key={order.friendly_id}>
-                  <UpComingCourse
-                    course={order}
-                    title={`Order #${order.friendly_id}`}
-                    handleClick={handleClick}
-                  />
-                </li>
-              ))}
+              {orders.slice(0, visibleLength).map(order => {
+                if (order.status === 'CREATED') {
+                  return <div></div>
+                }
+                return (
+                  <li key={order.friendly_id}>
+                    <UpComingCourse
+                      course={order}
+                      title={`Order #${order.friendly_id}`}
+                      handleClick={handleClick}
+                    />
+                  </li>
+                )
+              })}
             </ul>
             {visibleLength !== totalLength && (
               <button onClick={handleViewAllClick} className={styles.viewAll}>
