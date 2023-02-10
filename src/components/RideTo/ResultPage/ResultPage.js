@@ -238,7 +238,7 @@ class ResultPage extends Component {
   async loadCoursesLatLng(lat, lng) {
     const { handleUpdateOption, loadCourses } = this.props
 
-    const postcode = retrievePostCode(lat, lng).then(postcode => {
+    retrievePostCode(lat, lng).then(postcode => {
       handleUpdateOption({ postcode: postcode })
       loadCourses(false, lat, lng)
       this.setState({ loading: false, isLoadingMap: false })
