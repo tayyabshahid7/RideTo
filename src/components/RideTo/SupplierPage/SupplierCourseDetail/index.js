@@ -45,6 +45,7 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
   useEffect(() => {
     setCourseType(course)
     refreshForm()
+    window.sessionStorage.removeItem('trainings')
   }, [course])
 
   const handleCourseChange = event => {
@@ -161,18 +162,9 @@ const SupplierCourseDetail = ({ courseTypes, course }) => {
 
     window.sessionStorage.setItem('trainings', JSON.stringify(trainings))
 
-    // const next = `/${supplierData.supplier_slug}/checkout`
     let next
 
-    if (isFullLicence) {
-      next = `/course-addons/?postcode=${postcode}&courseType=${courseType.constant}&bike_hire=${bike_hire}&supplierId=${supplierData.id}`
-    } else if (supplierData.instant_book) {
-      if (instantCourse) {
-        next = `/course-addons/?postcode=${postcode}&courseType=${courseType.constant}&bike_hire=${bike_hire}&courseId=${instantCourse.id}&supplierId=${supplierData.id}&date=${instantDate}`
-      }
-    } else {
-      next = `/course-addons/?postcode=${postcode}&courseType=${courseType.constant}&bike_hire=${bike_hire}&supplierId=${supplierData.id}&date=${instantDate}`
-    }
+    next = `/${supplierData.slug}/checkout`
 
     let checkoutData = {
       postcode,
