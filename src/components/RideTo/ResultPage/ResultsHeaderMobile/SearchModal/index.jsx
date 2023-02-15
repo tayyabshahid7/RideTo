@@ -101,7 +101,7 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
     const formatedFilters = filters
       ? `&filters=${encodeURIComponent(filters)}`
       : ''
-    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}${formatedFilters}`
+    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}${formatedFilters}&search=${true}`
   }
 
   function handleCurrentLocationClick() {

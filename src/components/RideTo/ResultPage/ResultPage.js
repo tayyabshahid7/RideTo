@@ -661,6 +661,7 @@ class ResultPage extends Component {
   checkPartnerResults(courses) {
     const qs = parseQueryString(window.location.search.slice(1))
     const radius_miles = qs.radius_miles
+    const search = qs.search
 
     if (courses) {
       const availableCourses = courses.available.filter(
@@ -678,7 +679,7 @@ class ResultPage extends Component {
       const isCourseList =
         availableCourses.length > 0 || unavailableCourses.length > 0
 
-      if (!isCourseList && radius_miles !== '100') {
+      if (!isCourseList && radius_miles !== '100' && !search) {
         const postcode = qs.postcode ? qs.postcode.toUpperCase() : 'London'
         const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
         const sortby = qs.sortBy || SORTBY.DISTANCE
