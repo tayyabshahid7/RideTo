@@ -172,6 +172,7 @@ class MapComponent extends Component {
 
   renderMarker(course, index, available = true) {
     const { sidebar } = this.props
+    const { price } = course
 
     if (sidebar && course.lng && course.lat) {
       return (
@@ -188,7 +189,7 @@ class MapComponent extends Component {
       )
     }
 
-    if (course.lng && course.lat) {
+    if (course.lng && course.lat && price > 0) {
       return (
         <Marker
           key={course.id}
@@ -222,7 +223,11 @@ class MapComponent extends Component {
   }
 
   renderPin(course, available) {
-    const { instant_book: isInstantBook, supplier_pricing } = course
+    const {
+      instant_book: isInstantBook,
+      supplier_pricing,
+      price_per_hour
+    } = course
     const { handlePinClick } = this.props
 
     let formattedPricing = null
@@ -256,7 +261,7 @@ class MapComponent extends Component {
           <NewIconMapPin
             course={course}
             pricing={formattedPricing}
-            isInstantBooking={isInstantBook}
+            isInstantBooking={isInstantBook && price_per_hour === 0}
             getPricing={this.getPricing.bind(this)}
             handlePinClick={handlePinClick}
           />

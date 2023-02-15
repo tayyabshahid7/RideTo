@@ -20,9 +20,11 @@ function StateProvider({ children }) {
 
   const { getPosition, timestamp, positionError, coords } = useGeolocated({
     positionOptions: {
-      enableHighAccuracy: true
+      enableHighAccuracy: true,
+      maximumAge: 0,
+      timeout: 30000
     },
-    userDecisionTimeout: 5000,
+    userDecisionTimeout: 60000,
     watchPosition: true,
     suppressLocationOnMount: true,
     onError: geoLocationError,
