@@ -22,14 +22,11 @@ import {
   UncontrolledDropdown
 } from 'reactstrap'
 import { parseQueryString } from 'services/api'
-import {
-  fetchRidetoCourses,
-  fetchSingleRidetoCourse,
-  getCourseIdFromSearch
-} from 'services/course'
+import { fetchSingleRidetoCourse, getCourseIdFromSearch } from 'services/course'
 import { fetchCoursesTypes } from 'services/course-type'
 import { isBankHoliday } from 'services/misc'
 import { flashDiv, getStaticData } from 'services/page'
+import { retrievePostCode } from 'services/postcode'
 import { deleteParam, normalizePostCode, setParam } from 'utils/helper'
 import { createPOM } from '../../../utils/helper'
 import POMSelector from '../CheckoutPage/POMSelector'
@@ -50,7 +47,6 @@ const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
 const FullLicenceGuide = loadable(() => import('./FullLicenceGuide'))
 const FullLicenceIncluded = loadable(() => import('./FullLicenceIncluded'))
 const FullLicenceFaq = loadable(() => import('./FullLicenceFaq'))
-const FullLicenceBanner = loadable(() => import('./FullLicenceBanner'))
 
 const SidePanel = loadable(() => import('components/RideTo/SidePanel'))
 const CourseTypeDetails = loadable(() =>
@@ -240,45 +236,13 @@ class ResultPage extends Component {
   }
 
   async loadCoursesLatLng(lat, lng) {
-    try {
-      const { courseType, postcode } = this.props
-      this.setState({ loading: true })
-      let results = await fetchRidetoCourses({
-        postcode: postcode,
-        course_type: courseType,
-        lat,
-        lng,
-        available: 'True',
-        all_suppliers: 'True'
-      })
-      if (results) {
-        this.setState({
-          coursesOnMap: {
-            available: results.filter(({ is_available_on: a }) => a),
-            unavailable: results.filter(({ is_available_on: a }) => !a),
-            filtered: []
-          },
-          loading: false,
-          isLoadingMap: false
-        })
-      } else {
-        this.setState({
-          coursesOnMap: [],
-          isLoadingMap: false,
-          loading: false
-        })
-      }
-    } catch (error) {
-      this.setState({
-        coursesOnMap: {
-          available: [],
-          unavailable: [],
-          filtered: []
-        },
-        isLoadingMap: false,
-        loading: false
-      })
-    }
+    const { handleUpdateOption, loadCourses } = this.props
+
+    retrievePostCode(lat, lng).then(postcode => {
+      handleUpdateOption({ postcode: postcode })
+      loadCourses(false, lat, lng)
+      this.setState({ loading: false, isLoadingMap: false })
+    })
   }
 
   loadCourseDetail = async (course, activeTab, date = null) => {
@@ -1015,6 +979,16 @@ class ResultPage extends Component {
         <Container className={styles.pageContainer}>
           <Row className={styles.row}>
             <Col className={styles.col}>
+              <Mobile>
+                <KlarnaBanner />
+                <SortAndFilter
+                  handleMapButton={this.handleMapButton}
+                  isMobileMapVisible={isMobileMapVisible}
+                  handleUpdateOption={handleUpdateOption}
+                  courses={courses}
+                  sortByModal={sortByModal}
+                />
+              </Mobile>
               <Loading
                 loading={loading}
                 position="top"
@@ -1068,40 +1042,6 @@ class ResultPage extends Component {
                               </span>
                             </div>
                           </MediaQuery>
-                          <Mobile>
-                            <KlarnaBanner />
-                            <SortAndFilter
-                              handleMapButton={this.handleMapButton}
-                              isMobileMapVisible={isMobileMapVisible}
-                              handleUpdateOption={handleUpdateOption}
-                              courses={courses}
-                              sortByModal={sortByModal}
-                            />
-                            {/* <div
-                              className={classnames(
-                                styles.instruction,
-                                isFullLicence && styles.instructionFullLicence
-                              )}>
-                              <div className={classnames(styles.schoolCount)}>
-                                <span>{resultsCount} Results by </span>
-                                {this.renderSortByDropdown(true)} */}
-                            {/* <i className="fas fa-caret-down"></i> */}
-                            {/* <span className={styles.desktopSortByValue}>
-                                  {sortByOption.replace('-', '')}
-                                </span>
-                              </div>
-                              <button
-                                id="results-mobile-map-button"
-                                className={styles.showMap}
-                                onClick={() => {
-                                  this.setState({
-                                    isMobileMapVisible: !isMobileMapVisible
-                                  })
-                                }}>
-                                Map View
-                              </button>
-                            </div> */}
-                          </Mobile>
                         </React.Fragment>
                       )}
                     </React.Fragment>
@@ -1130,21 +1070,11 @@ class ResultPage extends Component {
                   )}
 
                   {showCourses ? (
-                    <div
-                      className={classnames(
-                        styles.mainContent,
-                        isFullLicence && styles.noMargin
-                      )}>
+                    <div className={classnames(styles.mainContent)}>
                       <div className={styles.coursesPanel}>
                         <MediaQuery query="(min-width: 769px)">
                           {hasPOM && hasPartnerResults && <POMBanner />}
                         </MediaQuery>
-                        {isFullLicence && (
-                          <FullLicenceBanner
-                            className={styles.fastTrackAdvert}
-                            href="/"
-                          />
-                        )}
                         {showCourses.length > 0 && (
                           <React.Fragment>
                             {showCourses.map(

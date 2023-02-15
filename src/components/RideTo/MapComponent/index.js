@@ -335,7 +335,11 @@ class MapComponent extends Component {
           mapboxApiAccessToken={MAPBOX_KEY}
           onViewportChange={this.handleViewPortChange}
           onTouchEnd={this.handlePinClick}
-          onMouseUp={this.handlePinClick}>
+          onMouseUp={this.handlePinClick}
+          doubleClickZoom={true}
+          maxZoom={12}
+          minZoom={7}
+          scrollZoom={true}>
           {userLocation && (
             <Marker
               longitude={lng}
