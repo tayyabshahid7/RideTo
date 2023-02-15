@@ -100,14 +100,20 @@ function ResultsHeaderMobile({
             <IconCalendarMobile className={styles.icon} />
             <div className={classes}>{formattedDate}</div>
           </div>
-          <div className={styles.iconsWrapper}>
-            <IconClear
-              className={styles.iconClear}
-              onClick={e => {
-                e.stopPropagation()
-                handleClearDate()
-              }}
-            />
+          <div
+            className={classNames(
+              styles.iconsWrapper,
+              date.isValid() && styles.spacing
+            )}>
+            {date.isValid() && (
+              <IconClear
+                className={styles.iconClear}
+                onClick={e => {
+                  e.stopPropagation()
+                  handleClearDate()
+                }}
+              />
+            )}
             <IconArrowDown className={styles.dropDownIcon} />
           </div>
         </div>

@@ -97,10 +97,13 @@
 .iconsWrapper {
   display: flex;
   justify-content: space-between;
+}
+
+.spacing {
   width: 40px;
 }
 
 .iconClear {
-  z-index: 999;
+  z-index: 10;
   margin-top: 3px;
 }
