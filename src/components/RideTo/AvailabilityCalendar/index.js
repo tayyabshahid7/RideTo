@@ -1,15 +1,14 @@
-import React, { Component, Fragment } from 'react'
 import classnames from 'classnames'
-import CalendarHeader from './CalendarHeader'
-import styles from './index.scss'
-import CalendarContent from './CalendarContent'
-import CalendarTime from './CalendarTime'
-import NonInstantCalendarTime from './NonInstantCalendarTime'
-import CalendarSpacesAvailable from './CalendarSpacesAvailable'
-import moment from 'moment'
 import _ from 'lodash'
+import moment from 'moment'
+import React, { Component, Fragment } from 'react'
+import CalendarContent from './CalendarContent'
+import CalendarHeader from './CalendarHeader'
+import CalendarSpacesAvailable from './CalendarSpacesAvailable'
+import CalendarTime from './CalendarTime'
+import styles from './index.scss'
+import NonInstantCalendarTime from './NonInstantCalendarTime'
 // import { fetchPlatformCourses } from 'services/course'
-
 
 class AvailabilityCalendar extends Component {
   constructor(props) {

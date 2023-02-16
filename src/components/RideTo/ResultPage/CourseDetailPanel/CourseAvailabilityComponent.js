@@ -19,7 +19,7 @@ class CourseAvailabilityComponent extends React.Component {
     super(props)
 
     let date = this.props.supplier.next_date_available
-      ? new Date(this.props.supplier.next_date_available)
+      ? moment(this.props.supplier.next_date_available).toDate()
       : new Date()
 
     if (moment().isAfter(moment(date))) {
@@ -398,6 +398,7 @@ class CourseAvailabilityComponent extends React.Component {
       courseType,
       fromSupplier
     } = this.props
+
     const { calendar, courses, loadingCourses, loadingTimes } = this.state
     let days = this.generateDaysDataFromCalendar(supplier, calendar)
 
