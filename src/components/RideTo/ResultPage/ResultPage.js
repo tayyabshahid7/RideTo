@@ -274,7 +274,7 @@ class ResultPage extends Component {
     this.setState({
       selectedCourse,
       activeTab: activeTab,
-      instantDate: date
+      instantDate: this.props.date
     })
   }
 

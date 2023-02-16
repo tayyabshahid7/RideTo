@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
-import CalendarDayCell from './CalendarDayCell'
-import styles from './CalendarContent.scss'
-import moment from 'moment'
 import get from 'lodash/get'
+import moment from 'moment'
+import React, { Component } from 'react'
 import { BankHolidayProvider } from '../ResultPage/StateProvider'
+import styles from './CalendarContent.scss'
+import CalendarDayCell from './CalendarDayCell'
 class CalendarContent extends Component {
   constructor(props) {
     super(props)

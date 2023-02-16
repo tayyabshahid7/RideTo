@@ -1,6 +1,6 @@
-import React from 'react'
-import moment from 'moment'
 import classnames from 'classnames'
+import moment from 'moment'
+import React from 'react'
 import styles from './CalendarDayCell.scss'
 
 const CalendarDayCell = ({ day, price, calendar, handleDateSelect }) => {
