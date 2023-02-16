@@ -125,10 +125,10 @@ class ResultPageContainer extends Component {
     }
   }
 
-  async loadRangeCourses() {
+  async loadRangeCourses(isLoading = true) {
     const { date, sortByOption, courseType, postcode } = this.state
 
-    this.setState({ loading: true })
+    this.setState({ loading: isLoading })
 
     const results = await fetchRidetoCourses({
       course_type: courseType,

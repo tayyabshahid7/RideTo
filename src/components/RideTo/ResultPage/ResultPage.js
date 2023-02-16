@@ -236,11 +236,16 @@ class ResultPage extends Component {
   }
 
   async loadCoursesLatLng(lat, lng) {
-    const { handleUpdateOption, loadCourses } = this.props
+    const { handleUpdateOption, loadCourses, loadRangeCourses } = this.props
 
     retrievePostCode(lat, lng).then(postcode => {
       handleUpdateOption({ postcode: postcode })
       loadCourses(false, lat, lng)
+
+      if (this.props.courses.available.length < 1) {
+        loadRangeCourses(false)
+      }
+
       this.setState({ loading: false, isLoadingMap: false })
     })
   }

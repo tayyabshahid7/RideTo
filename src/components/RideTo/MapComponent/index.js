@@ -13,6 +13,7 @@ import get from 'lodash/get'
 import mapboxgl from 'mapbox-gl'
 import moment from 'moment'
 import WebMercatorViewport from 'viewport-mercator-project'
+import { insertUrlParam } from '../../../services/page'
 import { BankHolidayProvider } from '../ResultPage/StateProvider'
 import NewIconMapPin from './NewIconMapPin'
 import styles from './styles.scss'
@@ -301,6 +302,7 @@ class MapComponent extends Component {
 
   handlePinClick(event) {
     const { handleSearchLocation } = this.props
+    insertUrlParam('search', 'false')
     handleSearchLocation(event)
   }
 
