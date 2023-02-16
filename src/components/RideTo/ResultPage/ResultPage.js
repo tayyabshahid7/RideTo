@@ -235,18 +235,21 @@ class ResultPage extends Component {
     })
   }
 
-  async loadCoursesLatLng(lat, lng) {
+  async loadCoursesLatLng(lat, lng, radius = 25) {
     const { handleUpdateOption, loadCourses, loadRangeCourses } = this.props
 
     retrievePostCode(lat, lng).then(postcode => {
-      handleUpdateOption({ postcode: postcode })
-      loadCourses(false, lat, lng)
+      handleUpdateOption({ postcode: postcode, radius_miles: radius })
+
+      new Promise(res => {
+        return loadCourses(false, lat, lng).then(_ => {
+          this.setState({ loading: false, isLoadingMap: false })
+        })
+      })
 
       if (this.props.courses.available.length < 1) {
         loadRangeCourses(false)
       }
-
-      this.setState({ loading: false, isLoadingMap: false })
     })
   }
 
@@ -790,13 +793,13 @@ class ResultPage extends Component {
     })
   }
 
-  handleSearchLocation(event) {
+  handleSearchLocation(event, radius = 100) {
     const { lngLat } = event
     const lng = lngLat[0]
     const lat = lngLat[1]
 
     this.setState({ isLoadingMap: true })
-    this.loadCoursesLatLng(lat, lng)
+    this.loadCoursesLatLng(lat, lng, radius)
   }
 
   handleSearchLocationButton() {
