@@ -302,8 +302,25 @@ class MapComponent extends Component {
 
   handlePinClick(event) {
     const { handleSearchLocation } = this.props
+    const { viewport } = this.state
+    const { zoom } = viewport
+
+    let radius = 100
+
+    if (zoom > 7.5 && zoom < 8) {
+      radius = 50
+    }
+
+    if (zoom > 8 && zoom < 10) {
+      radius = 25
+    }
+
+    if (zoom > 10) {
+      radius = 10
+    }
+
     insertUrlParam('search', 'false')
-    handleSearchLocation(event)
+    handleSearchLocation(event, radius)
   }
 
   handleViewPortChange(viewport) {
@@ -377,9 +394,11 @@ class MapComponent extends Component {
             unavailable === undefined &&
             !checkout &&
             courses.map(this.renderMarker)}
-          <div className="nav" style={navStyle}>
-            <NavigationControl onViewportChange={this.updateViewport} />
-          </div>
+          <Desktop>
+            <div className="nav" style={navStyle}>
+              <NavigationControl onViewportChange={this.updateViewport} />
+            </div>
+          </Desktop>
         </MapGL>
       </div>
     )
