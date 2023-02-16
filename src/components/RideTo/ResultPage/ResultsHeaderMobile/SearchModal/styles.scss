@@ -149,6 +149,9 @@
 .boxSelectRadiusIndicator {
   color: #141414;
   opacity: 0.3;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .boxSelectRadiusText {
@@ -215,6 +218,10 @@
   .searchCloseIcon {
     height: 12px;
     opacity: 0.5;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 

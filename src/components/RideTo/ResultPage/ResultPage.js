@@ -269,7 +269,7 @@ class ResultPage extends Component {
     this.setState({
       selectedCourse,
       activeTab: activeTab,
-      instantDate: this.props.date
+      instantDate: date
     })
   }
 
@@ -625,7 +625,7 @@ class ResultPage extends Component {
   checkPartnerResults(courses) {
     const qs = parseQueryString(window.location.search.slice(1))
     const radius_miles = qs.radius_miles
-    const search = qs.search
+    const search = qs.search ? qs.search : false
 
     if (courses) {
       const availableCourses = courses.available.filter(
@@ -650,9 +650,10 @@ class ResultPage extends Component {
         const radius_miles = 100
         const normalizedPostCode = normalizePostCode(postcode)
 
-        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortby}`
+        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortby}&search=${search}`
       }
-      return availableCourses.length > 0 || unavailableCourses.length > 0
+
+      return isCourseList
     }
     return true
   }
@@ -841,7 +842,8 @@ class ResultPage extends Component {
       handleUpdateOption,
       radius_miles,
       sortByModal,
-      location: { pathname, search }
+      location: { pathname, search },
+      spareCourses
     } = this.props
     const {
       selectedCourse,
@@ -1065,6 +1067,51 @@ class ResultPage extends Component {
                             contact a school near you.
                           </span>
                         </div>
+                        {spareCourses.length > 0 && (
+                          <React.Fragment>
+                            {spareCourses.map(
+                              (course, index) =>
+                                course.is_partner && (
+                                  <CourseItem
+                                    showCallMessage={
+                                      index === 1 ||
+                                      (index - 1) % 5 === 0 ||
+                                      (spareCourses.length < 3 &&
+                                        index === spareCourses.length - 1)
+                                    }
+                                    showPomMessage={
+                                      courseType === 'LICENCE_CBT' &&
+                                      index === 3
+                                    }
+                                    courseType={courseType}
+                                    id={`card-course-${course.id}`}
+                                    course={course}
+                                    className={styles.courseSpacing}
+                                    key={course.id}
+                                    showCourseTypeInfo={() =>
+                                      this.showCourseTypeInfo('pom')
+                                    }
+                                    handleDetailClick={course =>
+                                      this.loadCourseDetail(course, 1)
+                                    }
+                                    handlePriceClick={course =>
+                                      this.loadCourseDetail(course, 3)
+                                    }
+                                    handleReviewClick={course =>
+                                      this.loadCourseDetail(course, 2)
+                                    }
+                                    handleNextAvailableClick={(course, date) =>
+                                      this.loadCourseDetailNextAvailableDate(
+                                        course,
+                                        3,
+                                        date
+                                      )
+                                    }
+                                  />
+                                )
+                            )}
+                          </React.Fragment>
+                        )}
                       </Mobile>
                     </>
                   )}

@@ -1,6 +1,7 @@
 import get from 'lodash/get'
 import React, { memo, useEffect, useState } from 'react'
 import { useGeolocated } from 'react-geolocated'
+import { parseQueryString } from 'services/api'
 import { fetchBankHolidays } from 'services/course'
 import { retrievePostCode } from 'services/postcode'
 
@@ -9,6 +10,9 @@ export const BankHolidayProvider = React.createContext()
 export const ResultPageProvider = React.createContext()
 
 function StateProvider({ children }) {
+  const qs = parseQueryString(window.location.search.slice(1))
+  const postcodeURL = qs.postcode ? qs.postcode : 'london'
+
   const [bankHoliday, setBankHoliday] = useState([])
   const [currentLocation, setCurrentLocation] = useState({
     lat: 51.507359,
@@ -64,6 +68,11 @@ function StateProvider({ children }) {
   useEffect(() => {
     getBankHolidays()
   }, [])
+
+  useEffect(() => {
+    const formattedPostCode = postcodeURL.split('+').join(' ')
+    setPostcode(formattedPostCode)
+  }, [postcodeURL])
 
   function handlePostCodeChange(postcode) {
     setPostcode(postcode)

@@ -92,7 +92,12 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
   }
 
   function handleSearchClick() {
-    const { filters } = parseQueryString(window.location.search.slice(1))
+    const {
+      filters,
+      courseType: urlCourseType,
+      postcode,
+      radius_miles
+    } = parseQueryString(window.location.search.slice(1))
 
     const normalizedPostCode = normalizePostCode(postcodeModal)
     const sortByOption = 'distance'
@@ -101,7 +106,13 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
     const formatedFilters = filters
       ? `&filters=${encodeURIComponent(filters)}`
       : ''
-    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}${formatedFilters}&search=${true}`
+
+    const search =
+      urlCourseType === courseType &&
+      postcode === normalizedPostCode &&
+      radius_miles < 100
+
+    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}${formatedFilters}&search=${search}`
   }
 
   function handleCurrentLocationClick() {
@@ -109,6 +120,10 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
       setIsLoading(true)
       getPosition()
     }
+  }
+
+  function handleClearLocationButton() {
+    setPostcodeModal('')
   }
   useEffect(() => {
     handleCourseTypeChange(courseType)
@@ -198,6 +213,7 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
               className={styles.searchCloseIcon}
               src={CloseDark}
               alt="close-modal"
+              onClick={handleClearLocationButton}
             />
           </div>
 
