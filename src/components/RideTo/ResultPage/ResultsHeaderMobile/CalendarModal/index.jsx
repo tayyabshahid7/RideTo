@@ -29,8 +29,8 @@ function CalendarModal({ isOpen, onClose }) {
     const formattedDate = moment(calendarValue).format('YYYY-MM-DD')
     const qs = parseQueryString(window.location.search.slice(1))
     qs['date'] = formattedDate
-    const paramString = new URLSearchParams(qs).toString()
-    window.location = `/course-location/?${paramString}`
+    const paramString = new URLSearchParams(qs)
+    window.location = `/course-location/?${decodeURIComponent(paramString)}`
   }
 
   const CloseButtonIcon = (

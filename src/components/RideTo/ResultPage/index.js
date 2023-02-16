@@ -26,6 +26,7 @@ class ResultPageContainer extends Component {
     const date = qs.date || null
     const radius_miles = qs.radius_miles || 30
     const filters = qs.filters ? qs.filters.split(',') : []
+    const search = qs.search ? qs.search : false
 
     this.navigation = [
       {
@@ -63,15 +64,20 @@ class ResultPageContainer extends Component {
       courses: null,
       loading: false,
       navigation: this.navigation,
-      sortByModal: sortByOption
+      sortByModal: sortByOption,
+      search: search,
+      spareCourses: []
     }
 
     this.handleSetDate = this.handleSetDate.bind(this)
     this.handleUpdateOption = this.handleUpdateOption.bind(this)
     this.loadCourses = this.loadCourses.bind(this)
+    this.loadRangeCourses = this.loadRangeCourses.bind(this)
   }
 
   async componentDidMount() {
+    const { search } = this.state
+
     this.loadCourses()
 
     const userLocation = await fetchSearchLocation(this.state.postcode)
@@ -86,6 +92,10 @@ class ResultPageContainer extends Component {
         }
       })
     }
+
+    if (search) {
+      this.loadRangeCourses()
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -94,23 +104,45 @@ class ResultPageContainer extends Component {
       sortByOption,
       postcode,
       courseType,
-      radius_miles
+      radius_miles,
+      search
     } = this.state
     const normalizedPostCode = normalizePostCode(postcode)
     let dateChecked = null
     if (date !== prevState.date || sortByOption !== prevState.sortByOption) {
       if (date) {
         dateChecked = checkDateAvailability(date)
-        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}&date=${dateChecked}`
+        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}&date=${dateChecked}&search=${search}`
         return
       }
-      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}`
+      window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortByOption}&search=${search}`
     }
 
     if (normalizedPostCode !== prevState.postcode) {
       const url = new URL(window.location)
       url.searchParams.set('postcode', normalizedPostCode)
       window.history.pushState(null, '', url.toString())
+    }
+  }
+
+  async loadRangeCourses() {
+    const { date, sortByOption, courseType, postcode } = this.state
+
+    this.setState({ loading: true })
+
+    const results = await fetchRidetoCourses({
+      course_type: courseType,
+      postcode: postcode,
+      radius_miles: 100,
+      date,
+      ordering: sortByOption,
+      available: 'True'
+    })
+
+    let spareCourses = results.filter(({ is_available_on: a }) => a)
+
+    if (results) {
+      this.setState({ spareCourses: spareCourses, loading: false })
     }
   }
 
@@ -182,7 +214,9 @@ class ResultPageContainer extends Component {
       postcode,
       navigation,
       radius_miles,
-      sortByModal
+      sortByModal,
+      spareCourses,
+      search
     } = this.state
 
     return (
@@ -206,6 +240,9 @@ class ResultPageContainer extends Component {
                   navigation={navigation}
                   userLocation={userLocation}
                   loadCourses={this.loadCourses}
+                  loadRangeCourses={this.loadRangeCourses}
+                  spareCourses={spareCourses}
+                  searchStatus={search}
                 />
               )}
             />
