@@ -9,7 +9,9 @@ import moment from 'moment'
 import { parseQueryString } from 'services/api'
 
 function CalendarModal({ isOpen, onClose }) {
-  const [calendarValue, setCalendarValue] = useState(new Date())
+  const [calendarValue, setCalendarValue] = useState(
+    new Date(Date.now() + 3600 * 1000 * 24)
+  )
 
   useEffect(() => {
     const dateParam = new URLSearchParams(window.location.search).get('date')
@@ -55,7 +57,7 @@ function CalendarModal({ isOpen, onClose }) {
         <Calendar
           onChange={handleCalendarChange}
           value={calendarValue}
-          minDate={new Date()}
+          minDate={new Date(Date.now() + 3600 * 1000 * 24)}
           locale="en-GB"
           next2Label={null}
           prev2Label={null}
