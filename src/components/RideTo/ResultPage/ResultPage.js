@@ -145,6 +145,10 @@ class ResultPage extends Component {
       isMobileMapVisible: !isMobileMapVisible
     })
 
+    if (!isMobileMapVisible) {
+      window.scrollTo(0, 0)
+    }
+
     if (isMobileMapVisible) {
       let lat = 51.711712
       let lng = -0.327693
@@ -961,7 +965,7 @@ class ResultPage extends Component {
     }
 
     return (
-      <div className={styles.container}>
+      <div className={classnames(styles.container)}>
         <Desktop>
           <ResultsHeader
             searchForLocationRequests={searchForLocationRequests}
