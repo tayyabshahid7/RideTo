@@ -1074,9 +1074,9 @@ class ResultPage extends Component {
                             no results found
                           </span>
                           <span className={styles.noCriteriaText}>
-                            We don't have any partner schools to book with in
-                            your area, however feel free to use our directory to
-                            contact a school near you.
+                            We can’t find any suitable training locations that
+                            match your filters, but we do have the following
+                            training locations in your area.
                           </span>
                         </div>
                         {spareCourses.length > 0 && (
