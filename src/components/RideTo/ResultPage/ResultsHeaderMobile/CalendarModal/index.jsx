@@ -9,9 +9,7 @@ import moment from 'moment'
 import { parseQueryString } from 'services/api'
 
 function CalendarModal({ isOpen, onClose }) {
-  const [calendarValue, setCalendarValue] = useState(
-    new Date(Date.now() + 3600 * 1000 * 24)
-  )
+  const [calendarValue, setCalendarValue] = useState('')
 
   useEffect(() => {
     const dateParam = new URLSearchParams(window.location.search).get('date')
