@@ -357,7 +357,7 @@ class MapComponent extends Component {
           onMouseUp={this.handlePinClick}
           doubleClickZoom={true}
           maxZoom={12}
-          minZoom={7}
+          minZoom={5}
           scrollZoom={true}>
           {userLocation && (
             <Marker

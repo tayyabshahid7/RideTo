@@ -1,4 +1,4 @@
-import { IconMap, IconSortAndFilter } from 'assets/icons'
+import { IconList, IconMap, IconSortAndFilter } from 'assets/icons'
 import React, { useContext, useState } from 'react'
 import { FilterProvider } from '../../FilterStateProvider'
 import { SortAndFilterModal } from './components/SortAndFilterModal'
@@ -44,8 +44,17 @@ function SortAndFilter({
           <span>{showTotalFilters}</span>
         </div>
         <div className={styles.wrapper} onClick={handleMapButton}>
-          <IconMap />
-          {!!isMobileMapVisible ? <span>List</span> : <span>Map</span>}
+          {!!isMobileMapVisible ? (
+            <>
+              <IconList />
+              <span>List</span>
+            </>
+          ) : (
+            <>
+              <IconMap />
+              <span>Map</span>
+            </>
+          )}
         </div>
       </div>
     </>

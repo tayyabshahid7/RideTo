@@ -145,6 +145,10 @@ class ResultPage extends Component {
       isMobileMapVisible: !isMobileMapVisible
     })
 
+    if (!isMobileMapVisible) {
+      window.scrollTo(0, 0)
+    }
+
     if (isMobileMapVisible) {
       let lat = 51.711712
       let lng = -0.327693
@@ -961,7 +965,7 @@ class ResultPage extends Component {
     }
 
     return (
-      <div className={styles.container}>
+      <div className={classnames(styles.container)}>
         <Desktop>
           <ResultsHeader
             searchForLocationRequests={searchForLocationRequests}
@@ -1070,9 +1074,9 @@ class ResultPage extends Component {
                             no results found
                           </span>
                           <span className={styles.noCriteriaText}>
-                            We don't have any partner schools to book with in
-                            your area, however feel free to use our directory to
-                            contact a school near you.
+                            We can’t find any suitable training locations that
+                            match your filters, but we do have the following
+                            training locations in your area.
                           </span>
                         </div>
                         {spareCourses.length > 0 && (
