@@ -31,10 +31,17 @@ class MapComponent extends Component {
   constructor(props) {
     super(props)
 
+    const lat = this.props.userLocation
+      ? this.props.userLocation.lat
+      : 51.509865
+    const lng = this.props.userLocation
+      ? this.props.userLocation.lng
+      : -0.118092
+
     this.state = {
       viewport: {},
-      lat: this.props.userLocation.lat,
-      lng: this.props.userLocation.lng,
+      lat: lat,
+      lng: lng,
       updatedPin: false,
       courses: {
         available: [],
@@ -142,7 +149,8 @@ class MapComponent extends Component {
         latitude: locations[0][0],
         longitude: locations[0][1],
         height,
-        width
+        width,
+        zoom: 9
       }
     }
 
@@ -341,7 +349,7 @@ class MapComponent extends Component {
 
   render() {
     const { className, userLocation, checkout, lng, lat } = this.props
-    const { viewport, courses = {} } = this.state
+    const { viewport, courses } = this.state
     const { available, unavailable } = courses
 
     return (

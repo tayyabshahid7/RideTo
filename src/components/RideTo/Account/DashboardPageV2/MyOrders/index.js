@@ -24,7 +24,7 @@ function MyOrders({ orders, handleClick }) {
             <ul className={styles.list}>
               {orders.slice(0, visibleLength).map(order => {
                 if (order.status === 'CREATED') {
-                  return <div></div>
+                  return <div key={order.friendly_id}></div>
                 }
                 return (
                   <li key={order.friendly_id}>
