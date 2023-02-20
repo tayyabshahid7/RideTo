@@ -233,6 +233,7 @@ class OrderDetails extends React.Component {
     const { order } = this.props
     const { reviewSubmitted, cancellationReasonValue, loading } = this.state
     const { training_location } = order
+    const { latitude, longitude } = training_location
     const marker = {
       id: 1,
       lat: parseFloat(training_location.latitude),
@@ -396,7 +397,15 @@ class OrderDetails extends React.Component {
 
         <div className={styles.map}>
           <br />
-          <MapComponent courses={[marker]} width="auto" height={240} />
+          <MapComponent
+            lat={parseFloat(latitude)}
+            lng={parseFloat(longitude)}
+            courses={[marker]}
+            width="auto"
+            height={240}
+            handleSearchLocation={e => {}}
+            sidebar={true}
+          />
         </div>
       </div>
     )
