@@ -137,7 +137,7 @@ function CourseInformation({
               userLocation={{ lat, lng }}
               width={'auto'}
               height={200}
-              checkout
+              handleSearchLocation={e => {}}
             />
           )}
         </div>
