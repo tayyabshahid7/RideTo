@@ -102,6 +102,7 @@ class CourseInformationComponent extends React.Component {
             className={styles.mapWrapper}
             courses={[course]}
             sidebar
+            handleSearchLocation={e => {}}
           />
         </div>
         <div className={styles.instructor}>

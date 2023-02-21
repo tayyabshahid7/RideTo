@@ -69,6 +69,7 @@ function UpComingCourse({ course, title, handleClick }) {
               width={'auto'}
               height={200}
               checkout
+              handleSearchLocation={e => {}}
             />
           </div>
         )}

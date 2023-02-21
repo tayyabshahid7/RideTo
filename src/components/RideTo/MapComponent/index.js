@@ -198,7 +198,11 @@ class MapComponent extends Component {
       )
     }
 
-    if (course.lng && course.lat && price > 0) {
+    if (course.lng && course.lat) {
+      if (price && price < 0) {
+        return null
+      }
+
       return (
         <Marker
           key={course.id}
