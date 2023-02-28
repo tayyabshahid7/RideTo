@@ -101,6 +101,9 @@ class CourseInformationComponent extends React.Component {
           <MapComponent
             className={styles.mapWrapper}
             courses={[course]}
+            courseLat={course.lat}
+            courseLgn={course.lng}
+            courseSidePanel={course}
             sidebar
             handleSearchLocation={e => {}}
           />
