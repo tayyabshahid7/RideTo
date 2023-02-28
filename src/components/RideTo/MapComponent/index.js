@@ -352,7 +352,16 @@ class MapComponent extends Component {
   }
 
   render() {
-    const { className, userLocation, checkout, lng, lat } = this.props
+    const {
+      className,
+      userLocation,
+      checkout,
+      lng,
+      lat,
+      courseLat,
+      courseLgn,
+      courseSidePanel
+    } = this.props
     const { viewport, courses } = this.state
     const { available, unavailable } = courses
 
@@ -406,6 +415,7 @@ class MapComponent extends Component {
             unavailable === undefined &&
             !checkout &&
             courses.map(this.renderMarker)}
+          {courseLat && courseLgn && this.renderMarker(courseSidePanel)}
           <Desktop>
             <div className="nav" style={navStyle}>
               <NavigationControl onViewportChange={this.updateViewport} />
