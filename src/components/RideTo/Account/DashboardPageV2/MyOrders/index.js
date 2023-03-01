@@ -23,7 +23,7 @@ function MyOrders({ orders, handleClick }) {
           <Fragment>
             <ul className={styles.list}>
               {orders.slice(0, visibleLength).map(order => {
-                if (order.status === 'CREATED') {
+                if (order.training_status === 'TRAINING_CREATED') {
                   return <div key={order.friendly_id}></div>
                 }
                 return (
