@@ -40,6 +40,8 @@ function ResultsHeaderMobile({
 
   const classes = `${styles.date} ${date.isValid() ? styles.dateBlacked : ''}`
 
+  const showDatePicker = courseType === 'FULL_LICENCE' ? false : true
+
   const handleSearchClick = () => {
     setSearchModal(!searchModal)
   }
@@ -93,30 +95,32 @@ function ResultsHeaderMobile({
           </div>
         </div>
         <div className={styles.divider} />
-        <div
-          className={classNames(styles.wrapper, styles.wrapperChooseADate)}
-          onClick={handleChooseADateClick}>
-          <div style={{ display: 'flex' }}>
-            <IconCalendarMobile className={styles.icon} />
-            <div className={classes}>{formattedDate}</div>
-          </div>
+        {showDatePicker && (
           <div
-            className={classNames(
-              styles.iconsWrapper,
-              date.isValid() && styles.spacing
-            )}>
-            {date.isValid() && (
-              <IconClear
-                className={styles.iconClear}
-                onClick={e => {
-                  e.stopPropagation()
-                  handleClearDate()
-                }}
-              />
-            )}
-            <IconArrowDown className={styles.dropDownIcon} />
+            className={classNames(styles.wrapper, styles.wrapperChooseADate)}
+            onClick={handleChooseADateClick}>
+            <div style={{ display: 'flex' }}>
+              <IconCalendarMobile className={styles.icon} />
+              <div className={classes}>{formattedDate}</div>
+            </div>
+            <div
+              className={classNames(
+                styles.iconsWrapper,
+                date.isValid() && styles.spacing
+              )}>
+              {date.isValid() && (
+                <IconClear
+                  className={styles.iconClear}
+                  onClick={e => {
+                    e.stopPropagation()
+                    handleClearDate()
+                  }}
+                />
+              )}
+              <IconArrowDown className={styles.dropDownIcon} />
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </>
   )

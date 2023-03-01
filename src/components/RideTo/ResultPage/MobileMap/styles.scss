@@ -1,5 +1,7 @@
 $top: 268px;
 
+$topFullLicence: 218px;
+
 :global(body.map-open) {
   overflow-y: hidden;
 }
@@ -14,6 +16,11 @@ $top: 268px;
   width: 100vw;
   background-color: black;
   z-index: 2;
+}
+
+.containerFullLicence {
+  top: 218px !important;
+  height: calc(100vh - 218px) !important;
 }
 
 .closeButton {
