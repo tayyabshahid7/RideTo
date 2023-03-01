@@ -224,11 +224,11 @@ export function SortAndFilterModal({
         <div className={styles.space}>
           <span className={styles.title}>Filter By</span>
           <div className={styles.filterWrapper}>
-            {filters.map(filters => (
-              <div key={filters.title} className={styles.checkboxWrapper}>
-                <span className={styles.subtitle}>{filters.title}</span>
-                {filters.items &&
-                  filters.items.map(item => (
+            {filters.map((filter, index) => (
+              <div key={index} className={styles.checkboxWrapper}>
+                <span className={styles.subtitle}>{filter.title}</span>
+                {filter.items &&
+                  filter.items.map(item => (
                     <div key={item.name} className={styles.itemWrapper}>
                       <Checkbox
                         id={item.id}
