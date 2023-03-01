@@ -59,9 +59,16 @@ export function FilterStateProvider({ children }) {
       })
     })
 
+    const unavailableFiltered = unavailable.filter(el => {
+      return selectedFilters.every(f => {
+        return el[f] === true
+      })
+    })
+
     let newAvailable
     let newUnavailable
     let newFiltered
+    let newUnavailableFiltered
     let newSortBy
 
     const sortId = sort ? sort.value : null
@@ -70,6 +77,7 @@ export function FilterStateProvider({ children }) {
         newAvailable = _.sortBy(available, 'distance_miles')
         newUnavailable = _.sortBy(unavailable, 'distance_miles')
         newFiltered = _.sortBy(filtered, 'distance_miles')
+        newUnavailableFiltered = _.sortBy(unavailableFiltered, 'distance_miles')
         newSortBy = options[0].value
 
         break
@@ -94,6 +102,14 @@ export function FilterStateProvider({ children }) {
           }
           return a.price > b.price ? 1 : -1
         })
+
+        newUnavailableFiltered = unavailableFiltered.sort((a, b) => {
+          if (a.price === b.price) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.price > b.price ? 1 : -1
+        })
+
         newSortBy = options[1].value
 
         break
@@ -119,6 +135,14 @@ export function FilterStateProvider({ children }) {
           }
           return a.next_date_available > b.next_date_available ? 1 : -1
         })
+
+        newUnavailableFiltered = unavailableFiltered.sort((a, b) => {
+          if (a.next_date_available === b.next_date_available) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.next_date_available > b.next_date_available ? 1 : -1
+        })
+
         newSortBy = options[2].value
 
         break
@@ -142,6 +166,13 @@ export function FilterStateProvider({ children }) {
           }
           return a.rating > b.rating ? -1 : 1
         })
+
+        newUnavailableFiltered = unavailableFiltered.sort((a, b) => {
+          if (a.rating === b.rating) {
+            return a.distance_miles - b.distance_miles
+          }
+          return a.rating > b.rating ? -1 : 1
+        })
         newSortBy = options[3].value
         break
     }
@@ -151,7 +182,8 @@ export function FilterStateProvider({ children }) {
       courses: {
         available: newAvailable,
         unavailable: newUnavailable,
-        filtered: newFiltered
+        filtered: newFiltered,
+        unavailableFiltered: newUnavailableFiltered
       },
       sortByModal: newSortBy
     })

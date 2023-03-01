@@ -169,9 +169,15 @@ class ResultPageContainer extends Component {
       })
 
       let filtered = results.filter(({ is_available_on: a }) => a)
+      let unavailableFiltered = results.filter(({ is_available_on: a }) => a)
 
       if (filters) {
         filtered = filtered.filter(el => {
+          return filters.every(f => {
+            return el[f] === true
+          })
+        })
+        unavailableFiltered = unavailableFiltered.filter(el => {
           return filters.every(f => {
             return el[f] === true
           })
@@ -183,7 +189,8 @@ class ResultPageContainer extends Component {
           courses: {
             available: results.filter(({ is_available_on: a }) => a),
             unavailable: results.filter(({ is_available_on: a }) => !a),
-            filtered
+            filtered,
+            unavailableFiltered
           },
           loading: false
         })

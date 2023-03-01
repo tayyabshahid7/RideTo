@@ -922,6 +922,7 @@ class ResultPage extends Component {
 
     let resultsCount = 0
     let showCourses = null
+    let showUnavailableCourses
 
     if (courses) {
       const unavailableCount = courses.unavailable
@@ -933,6 +934,12 @@ class ResultPage extends Component {
         showCourses = courses.filtered
       } else {
         showCourses = []
+      }
+
+      if (courses.unavailableFiltered.length > 0) {
+        showUnavailableCourses = courses.unavailableFiltered
+      } else {
+        showUnavailableCourses = []
       }
     }
 
@@ -1238,55 +1245,57 @@ class ResultPage extends Component {
                               )}
                             </>
                           )}
-                        {courses.unavailable && courses.unavailable.length > 0 && (
-                          <React.Fragment>
-                            {hasPartnerResults && (
-                              <div className={styles.subTitle}>
-                                Available on other dates
-                              </div>
-                            )}
-                            {courses.unavailable.map((course, index) =>
-                              course.is_partner ? (
-                                <CourseItem
-                                  showCallMessage={
-                                    index === 2 ||
-                                    (courses.unavailable.length < 3 &&
-                                      index === courses.unavailable.length - 1)
-                                  }
-                                  courseType={courseType}
-                                  id={`card-course-${course.id}`}
-                                  unavaiableDate={true}
-                                  course={course}
-                                  className={styles.courseSpacing}
-                                  key={course.id}
-                                  handleDetailClick={course =>
-                                    this.loadCourseDetail(course, 1)
-                                  }
-                                  handlePriceClick={course =>
-                                    this.loadCourseDetail(course, 3)
-                                  }
-                                  handleReviewClick={course =>
-                                    this.loadCourseDetail(course, 2)
-                                  }
-                                  handleNextAvailableClick={(course, date) =>
-                                    this.loadCourseDetailNextAvailableDate(
-                                      course,
-                                      3,
-                                      date
-                                    )
-                                  }
-                                />
-                              ) : (
-                                <CourseItemNonPartner
-                                  id={`card-course-${course.id}`}
-                                  course={course}
-                                  className="mt-3"
-                                  key={course.id}
-                                />
-                              )
-                            )}
-                          </React.Fragment>
-                        )}
+                        {showUnavailableCourses &&
+                          showUnavailableCourses.length > 0 && (
+                            <React.Fragment>
+                              {hasPartnerResults && (
+                                <div className={styles.subTitle}>
+                                  Available on other dates
+                                </div>
+                              )}
+                              {showUnavailableCourses.map((course, index) =>
+                                course.is_partner ? (
+                                  <CourseItem
+                                    showCallMessage={
+                                      index === 2 ||
+                                      (showUnavailableCourses.length < 3 &&
+                                        index ===
+                                          showUnavailableCourses.length - 1)
+                                    }
+                                    courseType={courseType}
+                                    id={`card-course-${course.id}`}
+                                    unavaiableDate={true}
+                                    course={course}
+                                    className={styles.courseSpacing}
+                                    key={course.id}
+                                    handleDetailClick={course =>
+                                      this.loadCourseDetail(course, 1)
+                                    }
+                                    handlePriceClick={course =>
+                                      this.loadCourseDetail(course, 3)
+                                    }
+                                    handleReviewClick={course =>
+                                      this.loadCourseDetail(course, 2)
+                                    }
+                                    handleNextAvailableClick={(course, date) =>
+                                      this.loadCourseDetailNextAvailableDate(
+                                        course,
+                                        3,
+                                        date
+                                      )
+                                    }
+                                  />
+                                ) : (
+                                  <CourseItemNonPartner
+                                    id={`card-course-${course.id}`}
+                                    course={course}
+                                    className="mt-3"
+                                    key={course.id}
+                                  />
+                                )
+                              )}
+                            </React.Fragment>
+                          )}
                         {!hasPartnerResults && courses.available.length > 0 && (
                           <React.Fragment>
                             {courses.available.map(
