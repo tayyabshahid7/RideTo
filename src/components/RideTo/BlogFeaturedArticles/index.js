@@ -55,6 +55,7 @@ function BlogFeaturedArticles() {
   }
 
   return (
+    articleList.length>0 && (
     <div className={styles.featuredArticles}>
       <div className={styles.contentWrapper}>
         <h2 className={styles.heading}>featured articles</h2>
@@ -75,7 +76,7 @@ function BlogFeaturedArticles() {
         </Container>
       </div>
     </div>
-  )
+  ))
 }
 
 function DesktopContainer({ children }) {
