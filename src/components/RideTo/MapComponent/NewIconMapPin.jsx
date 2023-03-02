@@ -5,6 +5,7 @@ import styles from './NewIconMapPin.scss'
 const NewIconMapPin = props => {
   const { pricing, isInstantBooking = false, handlePinClick, course } = props
 
+  const formattedPrice = `£${pricing}`
   return (
     <div
       className={styles.container}
@@ -13,7 +14,7 @@ const NewIconMapPin = props => {
       }}>
       <div>
         {isInstantBooking && <img src={InstantBookingIcon} alt="" />}
-        <span className={styles.pinPrice}>{pricing}</span>
+        <span className={styles.pinPrice}>{formattedPrice}</span>
       </div>
 
       <div className={styles.triangleTopLeft} />
