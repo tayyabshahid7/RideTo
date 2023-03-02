@@ -4,7 +4,6 @@ import { get as callApi } from 'services/api'
 import styles from './styles.scss'
 import RideToSlider from 'components/RideToSlider'
 import { useMediaQuery } from 'react-responsive'
-import ReactDOM from "react-dom";
 
 const settings = {
   customPaging: i => {
