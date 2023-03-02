@@ -183,7 +183,7 @@ class CourseItem extends Component {
       courseType
     } = this.props
 
-    const { next_9_available_dates: availableDates } = course
+    const { next_9_available_dates: availableDates, bike_hire_cost } = course
 
     const isTypeform = this.isFullLicenceTypeform(course)
 
@@ -293,10 +293,9 @@ class CourseItem extends Component {
                   onClick={() => this.priceClicked(course)}
                   className={styles.iconsMobile}>
                   {this.renderIconMobile(
-                    'mciac_approved',
-                    course.mciac_approved
+                    'bike_hire',
+                    course.bike_hire && bike_hire_cost === 0
                   )}
-                  {this.renderIconMobile('bike_hire', course.bike_hire)}
                   {this.renderIconMobile('helmet_hire', course.helmet_hire)}
                   {this.renderIconMobile(
                     'gloves_jacket_included',
@@ -312,9 +311,10 @@ class CourseItem extends Component {
                     course.indoor_classroom
                   )}
                   {!isFullLicence &&
+                    course.instant_book &&
                     this.renderIconMobile('instant_book', course.instant_book)}
                 </div>
-                <div className={styles.iconsMobileBottomLine}></div>
+                <div className={styles.divider}></div>
               </Mobile>
             </div>
             <Desktop>

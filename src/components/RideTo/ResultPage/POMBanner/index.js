@@ -1,14 +1,14 @@
 import React from 'react'
 import { useMediaQuery } from 'react-responsive'
 const mobile =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner_Mobile-01.jpg'
+  'https://rideto-production.imgix.net/static/images/RideTo+POM+Banner_Mobile-01.jpg?q=80&auto=format,compress,true'
 const desktop =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner-02.jpg'
+  'https://rideto-production.imgix.net/static/images/RideTo+POM+Banner-02.jpg?q=90&auto=format,compress,true&fit=crop&w=666&max-h=666'
 
 const mobileDiscount =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner_Buy+Now_Mobile_600x300px.jpg'
+  'https://rideto-production.imgix.net/static/images/RideTo+POM+Banner_Buy+Now_Mobile_600x300px.jpg?q=80&auto=format,compress,true'
 const desktopDiscount =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/RideTo+POM+Banner_Buy+Now_1000x400px.jpg'
+  'https://rideto-production.imgix.net/static/images/RideTo+POM+Banner_Buy+Now_1000x400px.jpg?q=80&auto=format,compress,true'
 
 const style = {
   width: '100%',

@@ -9,7 +9,7 @@ import moment from 'moment'
 import { parseQueryString } from 'services/api'
 
 function CalendarModal({ isOpen, onClose }) {
-  const [calendarValue, setCalendarValue] = useState(new Date())
+  const [calendarValue, setCalendarValue] = useState('')
 
   useEffect(() => {
     const dateParam = new URLSearchParams(window.location.search).get('date')
@@ -29,8 +29,8 @@ function CalendarModal({ isOpen, onClose }) {
     const formattedDate = moment(calendarValue).format('YYYY-MM-DD')
     const qs = parseQueryString(window.location.search.slice(1))
     qs['date'] = formattedDate
-    const paramString = new URLSearchParams(qs).toString()
-    window.location = `/course-location/?${paramString}`
+    const paramString = new URLSearchParams(qs)
+    window.location = `/course-location/?${decodeURIComponent(paramString)}`
   }
 
   const CloseButtonIcon = (
@@ -55,11 +55,13 @@ function CalendarModal({ isOpen, onClose }) {
         <Calendar
           onChange={handleCalendarChange}
           value={calendarValue}
+          minDate={new Date(Date.now() + 3600 * 1000 * 24)}
           locale="en-GB"
           next2Label={null}
           prev2Label={null}
           className={styles.calendar}
           showNeighboringMonth={false}
+          tileClassName={styles.tile}
         />
         <RideToButton
           className={styles.searchButton}

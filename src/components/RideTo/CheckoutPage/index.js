@@ -74,6 +74,7 @@ class CheckoutPageContainer extends Component {
       )
         ? true
         : false,
+
       addedPOMFromResultsPage: this.checkoutData.addons.find(
         ({ name }) => name === 'Peace Of Mind Policy'
       )
@@ -346,10 +347,10 @@ class CheckoutPageContainer extends Component {
       trainings,
       hasPOM,
       isInexperienced,
-      addedPOMFromResultsPage,
       clientSecret,
       stripePaymentIntentID,
-      priceInfo
+      priceInfo,
+      addedPOMFromResultsPage
     } = this.state
     const offersPOM = ['LICENCE_CBT_RENEWAL', 'LICENCE_CBT'].includes(
       checkoutData.courseType
@@ -412,11 +413,11 @@ class CheckoutPageContainer extends Component {
               handlePOMToggleClick={this.handlePOMToggleClick}
               hasPOM={hasPOM}
               showPromoNotification={this.showPromoNotification}
-              addedPOMFromResultsPage={addedPOMFromResultsPage}
               handleUpdateOption={this.handleUpdateOption}
               clientSecret={clientSecret}
               stripePaymentIntentID={stripePaymentIntentID}
               priceInfo={priceInfo}
+              addedPOMFromResultsPage={addedPOMFromResultsPage}
             />
           </Elements>
         )}

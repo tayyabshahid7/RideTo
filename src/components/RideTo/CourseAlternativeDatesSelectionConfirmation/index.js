@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { getStaticData } from 'services/page'
 import styles from './CourseAlternativeDatesSelectionConfirmation.scss'
 const rideToMinimalGreenImg =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
+  'https://rideto-production.imgix.net/static/images/rideToMinimalGreen.jpg?q=80&auto=format,compress,true'
 
 const shopImageMobile =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/shop-now-banner-mobile.jpg'
+  'https://rideto-production.imgix.net/static/images/shop-now-banner-mobile.jpg?q=80&auto=format,compress,true'
 
 const shopImage =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/shop-now-banner.jpg'
+  'https://rideto-production.imgix.net/static/images/shop-now-banner.jpg?q=80&auto=format,compress,true'
 
 const Header = ({ userName }) => {
   return (

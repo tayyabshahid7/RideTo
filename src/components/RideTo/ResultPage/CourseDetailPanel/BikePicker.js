@@ -19,17 +19,20 @@ const BikePicker = React.forwardRef(
       isAutoFull,
       isAuto50Full,
       isAuto125Full,
+      isAutoElectricFull,
       isManualFull,
       isManual50Full,
 
       isAutoAvailable,
       isAuto50Available,
       isAuto125Available,
+      isAutoElectricAvailable,
       isManualAvailable,
       isManual50Available,
 
       has_auto_bikes,
       has_auto_bikes_50cc,
+      has_auto_bikes_electric,
       has_auto_bikes_125cc,
       has_manual_bikes,
       has_manual_50cc,
@@ -48,6 +51,7 @@ const BikePicker = React.forwardRef(
       (isOwnFull && bike_hire === BIKE_HIRE.NO) ||
       (isAutoFull && bike_hire === BIKE_HIRE.AUTO) ||
       (isAuto50Full && bike_hire === BIKE_HIRE.AUTO_50CC) ||
+      (isAutoElectricFull && bike_hire === BIKE_HIRE.AUTO_ELECTRIC) ||
       (isAuto125Full && bike_hire === BIKE_HIRE.AUTO_125CC) ||
       (isManualFull && bike_hire === BIKE_HIRE.MANUAL) ||
       (isConnectManual && bike_hire === BIKE_HIRE.MANUAL_50CC)
@@ -276,6 +280,43 @@ const BikePicker = React.forwardRef(
                   course.manual_bikes_pricing > 0 &&
                   ` ( + £${course.manual_bikes_pricing / 100} )`}
                 {isManualFull ? fullText : null}
+              </button>
+            )}
+
+            {/* auto Electric */}
+
+            {has_auto_bikes_electric && (
+              <button
+                className={classnames(
+                  styles.bikeHireBtn,
+                  isWidget && styles.widgetBtn,
+                  bike_hire === BIKE_HIRE.AUTO_ELECTRIC && styles.activeBtn
+                )}
+                onClick={() =>
+                  onUpdate({
+                    bike_hire: BIKE_HIRE.AUTO_ELECTRIC,
+                    selectedLicenceType: null,
+                    selectedPackageDays: '',
+                    selectedPackageDates: [],
+                    manual_bike_hire_cost,
+                    auto_bike_hire_cost
+                  })
+                }
+                disabled={
+                  (isFullLicence && !has_auto_bikes_electric) ||
+                  (!isFullLicence &&
+                    (isAutoElectricFull || !isAutoElectricAvailable))
+                }>
+                {getMotorbikeLabel(
+                  BIKE_HIRE.AUTO_ELECTRIC,
+                  isFullLicence,
+                  isInstantBook
+                )}{' '}
+                {isCbtRenewal && ` £${course.bike_hire_cost / 100}`}
+                {!isCbtRenewal &&
+                  course.auto_bikes_electric_pricing > 0 &&
+                  ` ( + £${course.auto_bikes_electric_pricing / 100} )`}
+                {isAutoElectricFull ? fullText : null}
               </button>
             )}
           </div>

@@ -1,23 +1,23 @@
 import calculator from './images/calculator.svg'
+import finish from './images/finish.svg'
 import instructor from './images/instructor.svg'
 import quote from './images/quote.svg'
 import revise from './images/revise.svg'
-import finish from './images/finish.svg'
 
 const boots =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/boots.d137b94c.jpg'
+  'https://rideto-production.imgix.net/static/images/boots.d137b94c.jpg?q=80&auto=format,compress,true'
 const gloves =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/gloves.7be989ec.jpg'
+  'https://rideto-production.imgix.net/static/images/gloves.7be989ec.jpg?q=80&auto=format,compress,true'
 const helmets =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/helmets.6a4fbdb6.jpg'
+  'https://rideto-production.imgix.net/static/images/helmets.6a4fbdb6.jpg?q=80&auto=format,compress,true'
 const jackets =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/jackets.64cfde3b.jpg'
+  'https://rideto-production.imgix.net/static/images/jackets.64cfde3b.jpg?q=80&auto=format,compress,true'
 const jeans =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/jeans.37322ea1.jpg'
+  'https://rideto-production.imgix.net/static/images/jeans.37322ea1.jpg?q=80&auto=format,compress,true'
 const locks =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/locks.03d39d75.jpg'
+  'https://rideto-production.imgix.net/static/images/locks.03d39d75.jpg?q=80&auto=format,compress,true'
 const luggage =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/luggage.1e304f60.jpg'
+  'https://rideto-production.imgix.net/static/images/luggage.1e304f60.jpg?q=80&auto=format,compress,true'
 
 export const STEP_START = {
   name: 'Start',

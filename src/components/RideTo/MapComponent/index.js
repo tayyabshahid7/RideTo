@@ -13,6 +13,7 @@ import get from 'lodash/get'
 import mapboxgl from 'mapbox-gl'
 import moment from 'moment'
 import WebMercatorViewport from 'viewport-mercator-project'
+import { insertUrlParam } from '../../../services/page'
 import { BankHolidayProvider } from '../ResultPage/StateProvider'
 import NewIconMapPin from './NewIconMapPin'
 import styles from './styles.scss'
@@ -30,10 +31,17 @@ class MapComponent extends Component {
   constructor(props) {
     super(props)
 
+    const lat = this.props.userLocation
+      ? this.props.userLocation.lat
+      : 51.509865
+    const lng = this.props.userLocation
+      ? this.props.userLocation.lng
+      : -0.118092
+
     this.state = {
       viewport: {},
-      lat: this.props.userLocation.lat,
-      lng: this.props.userLocation.lng,
+      lat: lat,
+      lng: lng,
       updatedPin: false,
       courses: {
         available: [],
@@ -58,7 +66,10 @@ class MapComponent extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng) {
+    if (
+      this.props.hasSearchLocation &&
+      (prevProps.lat !== this.props.lat || prevProps.lng !== this.props.lng)
+    ) {
       this.setState(prevState => ({
         viewport: {
           ...prevState.viewport,
@@ -138,7 +149,8 @@ class MapComponent extends Component {
         latitude: locations[0][0],
         longitude: locations[0][1],
         height,
-        width
+        width,
+        zoom: 9
       }
     }
 
@@ -169,6 +181,7 @@ class MapComponent extends Component {
 
   renderMarker(course, index, available = true) {
     const { sidebar } = this.props
+    const { price } = course
 
     if (sidebar && course.lng && course.lat) {
       return (
@@ -186,6 +199,10 @@ class MapComponent extends Component {
     }
 
     if (course.lng && course.lat) {
+      if (price && price < 0) {
+        return null
+      }
+
       return (
         <Marker
           key={course.id}
@@ -219,14 +236,10 @@ class MapComponent extends Component {
   }
 
   renderPin(course, available) {
-    const { instant_book: isInstantBook, supplier_pricing } = course
+    const { instant_book: isInstantBook, price_per_hour } = course
     const { handlePinClick } = this.props
 
-    let formattedPricing = null
-    if (supplier_pricing) {
-      formattedPricing = `£${this.getPricing(course)}`
-    }
-
+    const pricing = this.getPricing(course)
     return (
       <>
         <Desktop>
@@ -242,21 +255,19 @@ class MapComponent extends Component {
                 !available && styles.mapPinBgUnavailable
               )}
             />
-            {course.supplier_pricing && (
-              <span className={styles.pinPrice}>
-                £{this.getPricing(course)}
-              </span>
-            )}
+            {pricing > 0 && <span className={styles.pinPrice}>£{pricing}</span>}
           </div>
         </Desktop>
         <Mobile>
-          <NewIconMapPin
-            course={course}
-            pricing={formattedPricing}
-            isInstantBooking={isInstantBook}
-            getPricing={this.getPricing.bind(this)}
-            handlePinClick={handlePinClick}
-          />
+          {pricing > 0 && (
+            <NewIconMapPin
+              course={course}
+              pricing={pricing}
+              isInstantBooking={isInstantBook && price_per_hour === 0}
+              getPricing={this.getPricing.bind(this)}
+              handlePinClick={handlePinClick}
+            />
+          )}
         </Mobile>
       </>
     )
@@ -293,11 +304,33 @@ class MapComponent extends Component {
 
   handlePinClick(event) {
     const { handleSearchLocation } = this.props
-    handleSearchLocation(event)
+    const { viewport } = this.state
+    const { zoom } = viewport
+
+    let radius = 100
+
+    if (zoom > 7.5 && zoom < 8) {
+      radius = 50
+    }
+
+    if (zoom > 8 && zoom < 10) {
+      radius = 25
+    }
+
+    if (zoom > 10) {
+      radius = 10
+    }
+
+    insertUrlParam('search', 'false')
+    handleSearchLocation(event, radius)
   }
 
   handleViewPortChange(viewport) {
-    this.setState({ ...viewport })
+    this.setState(prevState => ({
+      viewport: {
+        ...viewport
+      }
+    }))
   }
 
   handleOnTransitionEnd() {
@@ -309,8 +342,17 @@ class MapComponent extends Component {
   }
 
   render() {
-    const { className, userLocation, checkout, lng, lat } = this.props
-    const { viewport, courses = {} } = this.state
+    const {
+      className,
+      userLocation,
+      checkout,
+      lng,
+      lat,
+      courseLat,
+      courseLgn,
+      courseSidePanel
+    } = this.props
+    const { viewport, courses } = this.state
     const { available, unavailable } = courses
 
     return (
@@ -324,7 +366,10 @@ class MapComponent extends Component {
           onViewportChange={this.handleViewPortChange}
           onTouchEnd={this.handlePinClick}
           onMouseUp={this.handlePinClick}
-          onTransitionEnd={this.handleOnTransitionEnd}>
+          doubleClickZoom={true}
+          maxZoom={12}
+          minZoom={5}
+          scrollZoom={true}>
           {userLocation && (
             <Marker
               longitude={lng}
@@ -360,9 +405,12 @@ class MapComponent extends Component {
             unavailable === undefined &&
             !checkout &&
             courses.map(this.renderMarker)}
-          <div className="nav" style={navStyle}>
-            <NavigationControl onViewportChange={this.updateViewport} />
-          </div>
+          {courseLat && courseLgn && this.renderMarker(courseSidePanel)}
+          <Desktop>
+            <div className="nav" style={navStyle}>
+              <NavigationControl onViewportChange={this.updateViewport} />
+            </div>
+          </Desktop>
         </MapGL>
       </div>
     )

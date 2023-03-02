@@ -201,6 +201,7 @@ const SupplierInfo = ({ onShowExtra }) => {
             className={styles.mapWrapper}
             courses={[supplier]}
             sidebar
+            handleSearchLocation={e => {}}
           />
         </div>
 

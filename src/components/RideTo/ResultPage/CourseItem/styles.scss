@@ -73,9 +73,9 @@
   justify-content: space-between;
   padding: 28px 30px;
   @media (max-width: 768px) {
-    padding-bottom: 20px;
+    padding-bottom: 10px;
     padding-top: 10px;
-    padding-left: 0;
+    padding-left: 15px;
     padding-right: 0;
   }
   @media (min-width: 769px) {
@@ -501,7 +501,7 @@
 
 .outer {
   width: 100%;
-  max-width: calc(100vw - 16px);
+  max-width: calc(100vw - 17px);
   height: 96px;
   display: inline-flex;
   white-space: nowrap;
@@ -531,7 +531,7 @@
 
 .iconsMobile {
   width: 100%;
-  // max-width: calc(100vw - 20px);
+  max-width: calc(100vw - 15px);
   display: inline-flex;
   padding-bottom: 16px;
   white-space: nowrap;
@@ -553,13 +553,13 @@
 
     span {
       font-size: 13px;
-      line-height: 16px;
+      line-height: 16px !important;
     }
   }
 
   @media (max-width: 575px) {
     img {
-      width: 20px;
+      width: 18px;
     }
   }
 }
@@ -587,4 +587,11 @@
 
 .textLineThough {
   text-decoration: line-through;
+}
+
+.divider {
+  width: 100%;
+  max-width: calc(100vw - 30px);
+  height: 1px;
+  background: #e7e7e7;
 }

@@ -29,7 +29,7 @@
 }
 
 .modalHeader {
-  font-family: var(--font-rift);
+  font-family: var(--font-rift-bold);
 
   font-size: 24px;
   line-height: 24px;
@@ -183,6 +183,11 @@
     margin-top: 16px;
     width: 100%;
     justify-content: center;
+    outline: none;
+  }
+
+  .disableButton {
+    pointer-events: none;
   }
 }
 

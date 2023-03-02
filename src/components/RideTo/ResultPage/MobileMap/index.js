@@ -1,12 +1,21 @@
+import classNames from 'classnames'
 import React from 'react'
 import { ThreeDots } from 'react-loader-spinner'
+import { parseQueryString } from 'services/api'
 import styles from './styles.scss'
 
 import { IconLocale } from 'assets/icons'
 
 function MobileMap({ children, isLoadingMap, handleMyLocation }) {
+  const qs = parseQueryString(window.location.search.slice(1))
+  const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
+
   return (
-    <div className={styles.container}>
+    <div
+      className={classNames(
+        styles.container,
+        courseType === 'FULL_LICENCE' && styles.containerFullLicence
+      )}>
       <button className={styles.closeButton} onClick={handleMyLocation}>
         <IconLocale />
       </button>

@@ -11,6 +11,7 @@ import LicenceInput from 'components/RideTo/LicenceInput'
 import PhoneInput from 'components/RideTo/PhoneInput'
 import Select from 'components/RideTo/Select'
 import React, { Component } from 'react'
+
 import {
   CardCVCElement,
   CardExpiryElement,
@@ -117,6 +118,7 @@ class UserDetails extends Component {
 
   validatePhone(e) {
     const { handleErrors, errors, getErrorDivId } = this.props
+
     if (!e.target.value.match(/^(?:0|\+?44)(?:\d\s?){9,10}$/)) {
       errors['phone'] = 'Invalid phone number'
       if (!errors.divId) errors.divId = getErrorDivId('phone')

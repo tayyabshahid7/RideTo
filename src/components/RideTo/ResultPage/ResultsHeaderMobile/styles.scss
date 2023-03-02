@@ -48,6 +48,7 @@
 .wrapperChooseADate {
   display: flex;
   color: #141414;
+  justify-content: space-between;
 
   .date {
     opacity: 0.5;
@@ -56,6 +57,10 @@
     font-size: 13px;
     line-height: 20px;
     margin-left: 8px;
+  }
+
+  .dateBlacked {
+    opacity: 1;
   }
 
   svg {
@@ -80,5 +85,25 @@
 .dropDownIcon {
   margin-top: 2px;
   margin-right: 0px;
+  // margin-left: auto;
+}
+
+.closeButton {
+  margin-top: 2px;
+  margin-right: 0px;
   margin-left: auto;
+}
+
+.iconsWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spacing {
+  width: 40px;
+}
+
+.iconClear {
+  z-index: 10;
+  margin-top: 3px;
 }

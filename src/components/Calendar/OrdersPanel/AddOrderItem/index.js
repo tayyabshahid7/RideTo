@@ -1,30 +1,30 @@
-import React from 'react'
-import styles from './styles.scss'
+import classnames from 'classnames'
 import {
-  getFullLicenseType,
   getAvailableBikeHires,
+  getFullLicenseType,
   getTestResultOptions
 } from 'common/info'
+import { filter, omit } from 'lodash'
+import React from 'react'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { getDefaultBikeHire } from 'services/course'
-import { getPaymentOptions } from 'services/order'
 import {
   checkCustomerExists,
   getCurrentLicenceOptions
 } from 'services/customer'
-import CheckoutForm from './CheckoutForm'
-import classnames from 'classnames'
+import { getPaymentOptions } from 'services/order'
 import { handleStripePayment } from 'services/stripe'
-import { filter, omit } from 'lodash'
-import { connect } from 'react-redux'
 import { fetchWidgetSettings } from 'store/settings'
-import { bindActionCreators } from 'redux'
+import CheckoutForm from './CheckoutForm'
+import styles from './styles.scss'
 
 import {
+  Button,
+  ConnectAgeInput,
+  ConnectCheckbox,
   ConnectInput,
   ConnectSelect,
-  Button,
-  ConnectCheckbox,
-  ConnectAgeInput,
   ConnectTextArea
 } from 'components/ConnectForm'
 
@@ -86,6 +86,7 @@ class AddOrderItem extends React.Component {
       const {
         available_auto_50cc_bikes,
         available_auto_125cc_bikes,
+        available_auto_electric_bikes,
         available_manual_50cc_bikes,
         available_manual_125cc_bikes,
         available_own_bikes
@@ -102,6 +103,12 @@ class AddOrderItem extends React.Component {
         availableBikeHireTypes = filter(
           availableBikeHireTypes,
           bikeHireType => bikeHireType.title !== 'Automatic 125cc'
+        )
+      }
+      if (!available_auto_electric_bikes) {
+        availableBikeHireTypes = filter(
+          availableBikeHireTypes,
+          bikeHireType => bikeHireType.title !== 'Electric Moped'
         )
       }
       if (!available_manual_50cc_bikes) {

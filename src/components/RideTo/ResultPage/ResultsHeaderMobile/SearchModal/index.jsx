@@ -7,6 +7,7 @@ import RideToButton from 'components/RideTo/Button'
 import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { parseQueryString } from 'services/api'
 import styles from './styles.scss'
 
 import { normalizePostCode } from 'utils/helper'
@@ -91,10 +92,27 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
   }
 
   function handleSearchClick() {
+    const {
+      filters,
+      courseType: urlCourseType,
+      postcode,
+      radius_miles
+    } = parseQueryString(window.location.search.slice(1))
+
     const normalizedPostCode = normalizePostCode(postcodeModal)
     const sortByOption = 'distance'
     const formattedRadius = radius.value
-    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}`
+
+    const formatedFilters = filters
+      ? `&filters=${encodeURIComponent(filters)}`
+      : ''
+
+    const search =
+      urlCourseType === courseType &&
+      postcode === normalizedPostCode &&
+      radius_miles < 100
+
+    window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${formattedRadius}&sortBy=${sortByOption}${formatedFilters}&search=${search}`
   }
 
   function handleCurrentLocationClick() {
@@ -102,6 +120,10 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
       setIsLoading(true)
       getPosition()
     }
+  }
+
+  function handleClearLocationButton() {
+    setPostcodeModal('')
   }
   useEffect(() => {
     handleCourseTypeChange(courseType)
@@ -191,6 +213,7 @@ const SearchModal = ({ isOpen, onClose, courseTypesOptions }) => {
               className={styles.searchCloseIcon}
               src={CloseDark}
               alt="close-modal"
+              onClick={handleClearLocationButton}
             />
           </div>
 

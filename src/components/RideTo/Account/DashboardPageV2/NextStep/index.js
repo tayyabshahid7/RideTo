@@ -59,7 +59,7 @@ function NextStep({
             link:
               'https://www.rideto.com/blog/Rent-To-Buy-Electric-Scooters-RideTo-Scooter-Hire',
             image:
-              'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/askoll-es3-evolution-3000w--248-p.jpg'
+              'https://rideto-production.imgix.net/static/images/askoll-es3-evolution-3000w--248-p.jpg?q=80&auto=format,compress,true'
           },
           ...response.results.map(bike => {
             return {

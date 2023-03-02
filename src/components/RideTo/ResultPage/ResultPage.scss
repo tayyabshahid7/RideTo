@@ -15,16 +15,14 @@
   a:visited {
     color: black !important;
   }
-  @media (min-width: 576px) {
-    max-width: 100% !important;
-  }
 
   @media (max-width: 768px) {
-    // padding-top: 24px;
+    max-width: 100% !important;
     padding-top: 0;
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
+
   @media (max-width: 280px) {
     padding-top: 5px;
     padding-left: 0 !important;
@@ -464,5 +462,37 @@
   @media (max-width: 576px) {
     padding-right: 0 !important;
     padding-left: 0 !important;
+  }
+}
+
+.noCriteria {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  height: 240px;
+
+  justify-content: space-between;
+  margin-top: 8px;
+  padding: 48px;
+  text-align: center;
+  margin-bottom: 8px;
+
+  .noCriteriaTitle {
+    font-family: var(--font-rift);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+  }
+  .noCriteriaText {
+    padding: 0 20px;
+    font-family: var(--font-proxima);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 24px;
+    /* or 160% */
+
+    text-align: center;
   }
 }

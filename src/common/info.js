@@ -12,6 +12,7 @@ export const BikeHires = [
   { value: BIKE_HIRE.NO, title: 'Own Bike' },
   { value: BIKE_HIRE.AUTO, title: 'Automatic' },
   { value: BIKE_HIRE.AUTO_50CC, title: 'Automatic 50cc' },
+  { value: BIKE_HIRE.AUTO_ELECTRIC, title: 'Electric Moped' },
   { value: BIKE_HIRE.AUTO_125CC, title: 'Automatic 125cc' },
   { value: BIKE_HIRE.MANUAL, title: 'Manual 125cc' },
   { value: BIKE_HIRE.MANUAL_50CC, title: 'Manual 50cc' },
@@ -107,6 +108,9 @@ export function getAvailableBikeHires(course, prevBikeType) {
     auto_50cc_bikes,
     auto_50cc_count,
 
+    auto_electric_bikes,
+    auto_electric_count,
+
     manual_50cc_bikes,
     manual_50cc_count,
 
@@ -137,6 +141,14 @@ export function getAvailableBikeHires(course, prevBikeType) {
           ? BIKE_HIRE.AUTO_125CC
           : null,
       title: 'Automatic 125cc Scooter'
+    },
+    {
+      value:
+        auto_electric_bikes > auto_electric_count ||
+        prevBikeType === BIKE_HIRE.AUTO_ELECTRIC
+          ? BIKE_HIRE.AUTO_ELECTRIC
+          : null,
+      title: 'Automatic Electric Scooter'
     },
 
     {
@@ -237,6 +249,8 @@ export function formatBikeConstant(constant) {
     case 'auto_50cc':
     case 'BIKE_TYPE_AUTO_50CC':
       return BIKE_HIRE.AUTO_50CC
+    case 'BIKE_TYPE_AUTO_ELECTRIC':
+      return BIKE_HIRE.AUTO_ELECTRIC
     case 'AUTO_125CC':
     case 'BIKE_TYPE_AUTO_125CC':
     case 'BIKE_TYPE_BIKE_125CC':

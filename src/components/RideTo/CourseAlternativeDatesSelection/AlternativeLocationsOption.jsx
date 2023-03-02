@@ -261,6 +261,10 @@ class AlternativeLocationsOption extends React.Component {
           case 'Automatic 125cc Scooter':
             parsedBikeType = 'BIKE_TYPE_AUTO_125CC'
             break
+          case 'AUTO_ELECTRIC':
+          case 'BIKE_TYPE_AUTO_ELECTRIC':
+            parsedBikeType = 'BIKE_TYPE_AUTO_ELECTRIC'
+            break
           case 'BIKE_TYPE_MANUAL':
           case 'manual':
           case 'Manual':

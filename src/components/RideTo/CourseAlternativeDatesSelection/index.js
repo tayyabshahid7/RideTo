@@ -6,7 +6,7 @@ import styles from './CourseAlternativeDatesSelection.scss'
 import CourseLocationSelection from './CourseLocationSelection'
 
 const rideToMinimalGreenImg =
-  'https://bike-tests.s3.eu-west-2.amazonaws.com/static/images/rideToMinimalGreen.jpg'
+  'https://rideto-production.imgix.net/static/images/rideToMinimalGreen.jpg?q=80&auto=format,compress,true'
 
 const Header = ({ userName, alreadyResponded }) => {
   const HeaderText = ({ userName, alreadyResponded }) => {

@@ -1,10 +1,10 @@
-import React from 'react'
 import moment from 'moment'
-import { Container, Row, Col } from 'reactstrap'
+import React from 'react'
+import { Col, Container, Row } from 'reactstrap'
 
-import Button from 'components/RideTo/Button'
-import Complete from 'assets/images/rideto/Complete.svg'
 import ArrowRight from 'assets/images/rideto/ArrowRight.svg'
+import Complete from 'assets/images/rideto/Complete.svg'
+import Button from 'components/RideTo/Button'
 import styles from './BookingCompleteBanner.scss'
 
 const BookingCompleteBanner = ({ order, onDetails }) => {

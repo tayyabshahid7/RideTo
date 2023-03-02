@@ -15,7 +15,7 @@
     padding: 24px;
     border-radius: 0;
 
-    max-height: 80vh;
+    max-height: calc(100vh - 15%);
   }
 }
 
@@ -26,20 +26,24 @@
   padding: 0 !important;
   border-bottom: none !important;
 
-  font-family: var(--font-rift);
+  font-family: var(--font-rift-bold);
 
   font-style: normal;
   font-weight: 700;
   font-size: 24px;
   line-height: 24px;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
 
   padding: 0;
   border-bottom: none;
+
+  h5 {
+    font-size: 24px;
+  }
 }
 
 .courseTitle {
-  margin-top: 32px;
+  margin-top: 20px;
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
@@ -64,10 +68,8 @@
   display: flex;
   flex-direction: column;
 
-  padding: 0;
+  padding: 0 !important;
   overflow-y: scroll;
-  margin-right: -15px;
-  padding-right: 15px;
 
   span {
     font-family: var(--font-rift);
@@ -126,7 +128,7 @@
 
     color: #141414;
 
-    margin-top: 32px;
+    margin-top: 25px;
 
     svg {
       width: 16px;
@@ -151,6 +153,9 @@
 .boxSelectRadiusIndicator {
   color: #141414;
   opacity: 0.3;
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .boxSelectRadiusText {
@@ -217,6 +222,10 @@
   .searchCloseIcon {
     height: 12px;
     opacity: 0.5;
+
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 

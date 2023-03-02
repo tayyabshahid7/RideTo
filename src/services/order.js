@@ -175,6 +175,7 @@ export const getBikeHireOptions = isFullLicence => {
     [BIKE_HIRE.AUTO_50CC]: !isFullLicence
       ? 'Automatic 50cc Scooter'
       : 'Automatic',
+    [BIKE_HIRE.AUTO_ELECTRIC]: 'Electric Moped',
     [BIKE_HIRE.AUTO_125CC]: 'Automatic 125cc Scooter',
     [BIKE_HIRE.MANUAL_50CC]: 'Manual 50cc Motorcycle',
     [BIKE_HIRE.MANUAL]: !isFullLicence ? 'Manual 125cc Motorcycle' : 'Manual'

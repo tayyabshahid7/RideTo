@@ -3,35 +3,30 @@ import CloseDark from 'assets/images/rideto/CloseDark.svg'
 import classnames from 'classnames'
 import Checkbox from 'components/Checkbox'
 import RideToButton from 'components/RideTo/Button'
-import * as _ from 'lodash'
 import React, { useContext, useEffect, useState } from 'react'
 import Select, { components } from 'react-select'
-import { Modal, ModalBody, ModalHeader } from 'reactstrap'
+import { Modal, ModalBody, ModalHeader, Spinner } from 'reactstrap'
 import { FilterProvider } from '../../../../FilterStateProvider'
 
 import styles from './styles.scss'
-
-const options = [
-  { value: 'distance', label: 'Distance' },
-  { value: 'price', label: 'Price' },
-  { value: 'date', label: 'Date' },
-  { value: 'rating', label: 'Rating' }
-]
 
 export function SortAndFilterModal({
   isOpen,
   onClose,
   courses,
-  handleUpdateOption
+  handleUpdateOption,
+  sortByModal
 }) {
+  const {
+    handleCheckBoxSelection,
+    selectedFilters,
+    handleFilter,
+    options
+  } = useContext(FilterProvider)
+
   const [filters, setFilters] = useState([])
   const [sort, setSort] = useState(options[0])
-
-  const {
-    handleFilterTotalUsed,
-    handleCheckBoxSelection,
-    selectedFilters
-  } = useContext(FilterProvider)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     if (courses) {
@@ -98,7 +93,7 @@ export function SortAndFilterModal({
             { id: 'on_site_cafe', name: 'Cafe', count: onSiteCoffeeCount },
             {
               id: 'on_site_parking',
-              name: 'Free Parking',
+              name: 'Parking',
               count: onSiteParkingCount
             },
             {
@@ -133,106 +128,23 @@ export function SortAndFilterModal({
     setSort(e)
   }
 
-  function handleSearchClick() {
-    const { available, unavailable } = courses
+  useEffect(() => {
+    const objIndex = options.findIndex(sort => sort.value === sortByModal)
 
-    const filtered = available.filter(el => {
-      return selectedFilters.every(f => {
-        return el[f] === true
-      })
-    })
-
-    let newAvailable
-    let newUnavailable
-    let newFiltered
-
-    const sortId = sort ? sort.value : null
-    switch (sortId) {
-      default:
-        newAvailable = _.sortBy(available, 'distance_miles')
-        newUnavailable = _.sortBy(unavailable, 'distance_miles')
-        newFiltered = _.sortBy(filtered, 'distance_miles')
-
-        break
-      case 'price':
-        newAvailable = available.sort((a, b) => {
-          if (a.price === b.price) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.price > b.price ? 1 : -1
-        })
-
-        newUnavailable = unavailable.sort((a, b) => {
-          if (a.price === b.price) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.price > b.price ? 1 : -1
-        })
-
-        newFiltered = unavailable.sort((a, b) => {
-          if (a.price === b.price) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.price > b.price ? 1 : -1
-        })
-
-        break
-
-      case 'date':
-        newAvailable = available.sort((a, b) => {
-          if (a.next_date_available === b.next_date_available) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.next_date_available > b.next_date_available ? 1 : -1
-        })
-
-        newUnavailable = unavailable.sort((a, b) => {
-          if (a.next_date_available === b.next_date_available) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.next_date_available > b.next_date_available ? 1 : -1
-        })
-
-        newFiltered = unavailable.sort((a, b) => {
-          if (a.next_date_available === b.next_date_available) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.next_date_available > b.next_date_available ? 1 : -1
-        })
-
-        break
-
-      case 'rating':
-        newAvailable = available.sort((a, b) => {
-          if (a.rating === b.rating) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.rating > b.rating ? -1 : 1
-        })
-        newUnavailable = unavailable.sort((a, b) => {
-          if (a.rating === b.rating) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.rating > b.rating ? -1 : 1
-        })
-        newFiltered = filtered.sort((a, b) => {
-          if (a.rating === b.rating) {
-            return a.distance_miles - b.distance_miles
-          }
-          return a.rating > b.rating ? -1 : 1
-        })
-        break
+    if (objIndex) {
+      setSort(options[objIndex])
+    } else {
+      setSort(options[0])
     }
+  }, [])
 
-    onClose()
-    handleFilterTotalUsed(selectedFilters.length)
-    handleUpdateOption({
-      courses: {
-        available: newAvailable,
-        unavailable: newUnavailable,
-        filtered: newFiltered
-      }
-    })
+  function handleSearchClick() {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+      handleFilter(courses, handleUpdateOption, sort)
+      onClose()
+    }, 1000)
   }
 
   const CloseButtonIcon = (
@@ -312,11 +224,11 @@ export function SortAndFilterModal({
         <div className={styles.space}>
           <span className={styles.title}>Filter By</span>
           <div className={styles.filterWrapper}>
-            {filters.map(filters => (
-              <div key={filters.title} className={styles.checkboxWrapper}>
-                <span className={styles.subtitle}>{filters.title}</span>
-                {filters.items &&
-                  filters.items.map(item => (
+            {filters.map((filter, index) => (
+              <div key={index} className={styles.checkboxWrapper}>
+                <span className={styles.subtitle}>{filter.title}</span>
+                {filter.items &&
+                  filter.items.map(item => (
                     <div key={item.name} className={styles.itemWrapper}>
                       <Checkbox
                         id={item.id}
@@ -335,9 +247,14 @@ export function SortAndFilterModal({
           </div>
 
           <RideToButton
-            className={styles.searchButton}
-            onClick={handleSearchClick}>
-            Search
+            className={classnames(
+              styles.searchButton,
+              isLoading && styles.disableButton
+            )}
+            onClick={handleSearchClick}
+            disable={true}>
+            {isLoading && <Spinner size={'md'} />}
+            {!isLoading && <span>Search</span>}
           </RideToButton>
         </div>
       </ModalBody>

@@ -22,14 +22,11 @@ import {
   UncontrolledDropdown
 } from 'reactstrap'
 import { parseQueryString } from 'services/api'
-import {
-  fetchRidetoCourses,
-  fetchSingleRidetoCourse,
-  getCourseIdFromSearch
-} from 'services/course'
+import { fetchSingleRidetoCourse, getCourseIdFromSearch } from 'services/course'
 import { fetchCoursesTypes } from 'services/course-type'
 import { isBankHoliday } from 'services/misc'
 import { flashDiv, getStaticData } from 'services/page'
+import { retrievePostCode } from 'services/postcode'
 import { deleteParam, normalizePostCode, setParam } from 'utils/helper'
 import { createPOM } from '../../../utils/helper'
 import POMSelector from '../CheckoutPage/POMSelector'
@@ -50,7 +47,6 @@ const DateSelectorModal = loadable(() => import('./DateSelectorModal'))
 const FullLicenceGuide = loadable(() => import('./FullLicenceGuide'))
 const FullLicenceIncluded = loadable(() => import('./FullLicenceIncluded'))
 const FullLicenceFaq = loadable(() => import('./FullLicenceFaq'))
-const FullLicenceBanner = loadable(() => import('./FullLicenceBanner'))
 
 const SidePanel = loadable(() => import('components/RideTo/SidePanel'))
 const CourseTypeDetails = loadable(() =>
@@ -149,6 +145,10 @@ class ResultPage extends Component {
       isMobileMapVisible: !isMobileMapVisible
     })
 
+    if (!isMobileMapVisible) {
+      window.scrollTo(0, 0)
+    }
+
     if (isMobileMapVisible) {
       let lat = 51.711712
       let lng = -0.327693
@@ -239,38 +239,22 @@ class ResultPage extends Component {
     })
   }
 
-  async loadCoursesLatLng(lat, lng) {
-    try {
-      const { courseType, postcode } = this.props
-      this.setState({ loading: true })
-      let results = await fetchRidetoCourses({
-        postcode: postcode,
-        course_type: courseType,
-        lat,
-        lng,
-        available: 'True',
-        all_suppliers: 'True'
+  async loadCoursesLatLng(lat, lng, radius = 25) {
+    const { handleUpdateOption, loadCourses, loadRangeCourses } = this.props
+
+    retrievePostCode(lat, lng).then(postcode => {
+      handleUpdateOption({ postcode: postcode, radius_miles: radius })
+
+      new Promise(res => {
+        return loadCourses(false, lat, lng).then(_ => {
+          this.setState({ loading: false, isLoadingMap: false })
+        })
       })
-      if (results) {
-        this.setState({
-          coursesOnMap: {
-            available: results.filter(({ is_available_on: a }) => a),
-            unavailable: results.filter(({ is_available_on: a }) => !a),
-            filtered: []
-          },
-          loading: false,
-          isLoadingMap: false
-        })
-      } else {
-        this.setState({
-          coursesOnMap: null,
-          isLoadingMap: false,
-          loading: false
-        })
+
+      if (this.props.courses.available.length < 1) {
+        loadRangeCourses(false)
       }
-    } catch (error) {
-      this.setState({ coursesOnMap: null, isLoadingMap: false, loading: false })
-    }
+    })
   }
 
   loadCourseDetail = async (course, activeTab, date = null) => {
@@ -651,6 +635,10 @@ class ResultPage extends Component {
   }
 
   checkPartnerResults(courses) {
+    const qs = parseQueryString(window.location.search.slice(1))
+    const radius_miles = qs.radius_miles
+    const search = qs.search ? qs.search : false
+
     if (courses) {
       const availableCourses = courses.available.filter(
         course => course.is_partner
@@ -663,7 +651,21 @@ class ResultPage extends Component {
       } else {
         unavailableCourses = []
       }
-      return availableCourses.length > 0 || unavailableCourses.length > 0
+
+      const isCourseList =
+        availableCourses.length > 0 || unavailableCourses.length > 0
+
+      if (!isCourseList && radius_miles !== '100' && !search) {
+        const postcode = qs.postcode ? qs.postcode.toUpperCase() : 'London'
+        const courseType = qs.courseType ? qs.courseType : 'LICENCE_CBT'
+        const sortby = qs.sortBy || SORTBY.DISTANCE
+        const radius_miles = 100
+        const normalizedPostCode = normalizePostCode(postcode)
+
+        window.location = `/course-location/?postcode=${normalizedPostCode}&courseType=${courseType}&radius_miles=${radius_miles}&sortBy=${sortby}&search=${search}`
+      }
+
+      return isCourseList
     }
     return true
   }
@@ -795,13 +797,13 @@ class ResultPage extends Component {
     })
   }
 
-  handleSearchLocation(event) {
+  handleSearchLocation(event, radius = 100) {
     const { lngLat } = event
     const lng = lngLat[0]
     const lat = lngLat[1]
 
     this.setState({ isLoadingMap: true })
-    this.loadCoursesLatLng(lat, lng)
+    this.loadCoursesLatLng(lat, lng, radius)
   }
 
   handleSearchLocationButton() {
@@ -851,7 +853,9 @@ class ResultPage extends Component {
       sortByOption,
       handleUpdateOption,
       radius_miles,
-      location: { pathname, search }
+      sortByModal,
+      location: { pathname, search },
+      spareCourses
     } = this.props
     const {
       selectedCourse,
@@ -877,7 +881,8 @@ class ResultPage extends Component {
       isLoadingMap,
       lat,
       lng,
-      coursesOnMap
+      coursesOnMap,
+      hasSearchLocation
     } = this.state
     // const courseTitle = getCourseTitle(courseType)
 
@@ -917,6 +922,7 @@ class ResultPage extends Component {
 
     let resultsCount = 0
     let showCourses = null
+    let showUnavailableCourses
 
     if (courses) {
       const unavailableCount = courses.unavailable
@@ -927,7 +933,13 @@ class ResultPage extends Component {
       if (courses.filtered.length > 0) {
         showCourses = courses.filtered
       } else {
-        showCourses = courses.available
+        showCourses = []
+      }
+
+      if (courses.unavailableFiltered.length > 0) {
+        showUnavailableCourses = courses.unavailableFiltered
+      } else {
+        showUnavailableCourses = []
       }
     }
 
@@ -960,7 +972,7 @@ class ResultPage extends Component {
     }
 
     return (
-      <div className={styles.container}>
+      <div className={classnames(styles.container)}>
         <Desktop>
           <ResultsHeader
             searchForLocationRequests={searchForLocationRequests}
@@ -988,6 +1000,16 @@ class ResultPage extends Component {
         <Container className={styles.pageContainer}>
           <Row className={styles.row}>
             <Col className={styles.col}>
+              <Mobile>
+                <KlarnaBanner />
+                <SortAndFilter
+                  handleMapButton={this.handleMapButton}
+                  isMobileMapVisible={isMobileMapVisible}
+                  handleUpdateOption={handleUpdateOption}
+                  courses={courses}
+                  sortByModal={sortByModal}
+                />
+              </Mobile>
               <Loading
                 loading={loading}
                 position="top"
@@ -1041,67 +1063,85 @@ class ResultPage extends Component {
                               </span>
                             </div>
                           </MediaQuery>
-                          <Mobile>
-                            <KlarnaBanner />
-                            <SortAndFilter
-                              handleMapButton={this.handleMapButton}
-                              isMobileMapVisible={isMobileMapVisible}
-                              handleUpdateOption={handleUpdateOption}
-                              courses={courses}
-                            />
-                            {/* <div
-                              className={classnames(
-                                styles.instruction,
-                                isFullLicence && styles.instructionFullLicence
-                              )}>
-                              <div className={classnames(styles.schoolCount)}>
-                                <span>{resultsCount} Results by </span>
-                                {this.renderSortByDropdown(true)} */}
-                            {/* <i className="fas fa-caret-down"></i> */}
-                            {/* <span className={styles.desktopSortByValue}>
-                                  {sortByOption.replace('-', '')}
-                                </span>
-                              </div>
-                              <button
-                                id="results-mobile-map-button"
-                                className={styles.showMap}
-                                onClick={() => {
-                                  this.setState({
-                                    isMobileMapVisible: !isMobileMapVisible
-                                  })
-                                }}>
-                                Map View
-                              </button>
-                            </div> */}
-                          </Mobile>
                         </React.Fragment>
                       )}
                     </React.Fragment>
                   ) : (
-                    <div className={styles.nonPartnerResultsMessage}>
-                      We don't have any partner schools to book with in your
-                      area, however feel free to use our directory to contact a
-                      school near you.
-                    </div>
+                    <>
+                      <Desktop>
+                        <div className={styles.nonPartnerResultsMessage}>
+                          We don't have any partner schools to book with in your
+                          area, however feel free to use our directory to
+                          contact a school near you.
+                        </div>
+                      </Desktop>
+                      <Mobile>
+                        <div className={styles.noCriteria}>
+                          <span className={styles.noCriteriaTitle}>
+                            no results found
+                          </span>
+                          <span className={styles.noCriteriaText}>
+                            We can’t find any suitable training locations that
+                            match your filters, but we do have the following
+                            training locations in your area.
+                          </span>
+                        </div>
+                        {spareCourses.length > 0 && (
+                          <React.Fragment>
+                            {spareCourses.map(
+                              (course, index) =>
+                                course.is_partner && (
+                                  <CourseItem
+                                    showCallMessage={
+                                      index === 1 ||
+                                      (index - 1) % 5 === 0 ||
+                                      (spareCourses.length < 3 &&
+                                        index === spareCourses.length - 1)
+                                    }
+                                    showPomMessage={
+                                      courseType === 'LICENCE_CBT' &&
+                                      index === 3
+                                    }
+                                    courseType={courseType}
+                                    id={`card-course-${course.id}`}
+                                    course={course}
+                                    className={styles.courseSpacing}
+                                    key={course.id}
+                                    showCourseTypeInfo={() =>
+                                      this.showCourseTypeInfo('pom')
+                                    }
+                                    handleDetailClick={course =>
+                                      this.loadCourseDetail(course, 1)
+                                    }
+                                    handlePriceClick={course =>
+                                      this.loadCourseDetail(course, 3)
+                                    }
+                                    handleReviewClick={course =>
+                                      this.loadCourseDetail(course, 2)
+                                    }
+                                    handleNextAvailableClick={(course, date) =>
+                                      this.loadCourseDetailNextAvailableDate(
+                                        course,
+                                        3,
+                                        date
+                                      )
+                                    }
+                                  />
+                                )
+                            )}
+                          </React.Fragment>
+                        )}
+                      </Mobile>
+                    </>
                   )}
 
                   {showCourses ? (
-                    <div
-                      className={classnames(
-                        styles.mainContent,
-                        isFullLicence && styles.noMargin
-                      )}>
+                    <div className={classnames(styles.mainContent)}>
                       <div className={styles.coursesPanel}>
                         <MediaQuery query="(min-width: 769px)">
                           {hasPOM && hasPartnerResults && <POMBanner />}
                         </MediaQuery>
-                        {isFullLicence && (
-                          <FullLicenceBanner
-                            className={styles.fastTrackAdvert}
-                            href="/"
-                          />
-                        )}
-                        {showCourses && (
+                        {showCourses.length > 0 && (
                           <React.Fragment>
                             {showCourses.map(
                               (course, index) =>
@@ -1146,55 +1186,116 @@ class ResultPage extends Component {
                             )}
                           </React.Fragment>
                         )}
-                        {courses.unavailable && courses.unavailable.length > 0 && (
-                          <React.Fragment>
-                            {hasPartnerResults && (
-                              <div className={styles.subTitle}>
-                                Available on other dates
+                        {showCourses.length === 0 &&
+                          courses.available.length > 0 && (
+                            <>
+                              <div className={styles.noCriteria}>
+                                <span className={styles.noCriteriaTitle}>
+                                  no results found
+                                </span>
+                                <span className={styles.noCriteriaText}>
+                                  We can’t find any suitable training locations
+                                  that match your filters, but we do have the
+                                  following training locations in your area.
+                                </span>
                               </div>
-                            )}
-                            {courses.unavailable.map((course, index) =>
-                              course.is_partner ? (
-                                <CourseItem
-                                  showCallMessage={
-                                    index === 2 ||
-                                    (courses.unavailable.length < 3 &&
-                                      index === courses.unavailable.length - 1)
-                                  }
-                                  courseType={courseType}
-                                  id={`card-course-${course.id}`}
-                                  unavaiableDate={true}
-                                  course={course}
-                                  className={styles.courseSpacing}
-                                  key={course.id}
-                                  handleDetailClick={course =>
-                                    this.loadCourseDetail(course, 1)
-                                  }
-                                  handlePriceClick={course =>
-                                    this.loadCourseDetail(course, 3)
-                                  }
-                                  handleReviewClick={course =>
-                                    this.loadCourseDetail(course, 2)
-                                  }
-                                  handleNextAvailableClick={(course, date) =>
-                                    this.loadCourseDetailNextAvailableDate(
-                                      course,
-                                      3,
-                                      date
-                                    )
-                                  }
-                                />
-                              ) : (
-                                <CourseItemNonPartner
-                                  id={`card-course-${course.id}`}
-                                  course={course}
-                                  className="mt-3"
-                                  key={course.id}
-                                />
-                              )
-                            )}
-                          </React.Fragment>
-                        )}
+                              {courses.available.map(
+                                (course, index) =>
+                                  course.is_partner && (
+                                    <CourseItem
+                                      showCallMessage={
+                                        index === 1 ||
+                                        (index - 1) % 5 === 0 ||
+                                        (showCourses.length < 3 &&
+                                          index === showCourses.length - 1)
+                                      }
+                                      showPomMessage={
+                                        courseType === 'LICENCE_CBT' &&
+                                        index === 3
+                                      }
+                                      courseType={courseType}
+                                      id={`card-course-${course.id}`}
+                                      course={course}
+                                      className={styles.courseSpacing}
+                                      key={course.id}
+                                      showCourseTypeInfo={() =>
+                                        this.showCourseTypeInfo('pom')
+                                      }
+                                      handleDetailClick={course =>
+                                        this.loadCourseDetail(course, 1)
+                                      }
+                                      handlePriceClick={course =>
+                                        this.loadCourseDetail(course, 3)
+                                      }
+                                      handleReviewClick={course =>
+                                        this.loadCourseDetail(course, 2)
+                                      }
+                                      handleNextAvailableClick={(
+                                        course,
+                                        date
+                                      ) =>
+                                        this.loadCourseDetailNextAvailableDate(
+                                          course,
+                                          3,
+                                          date
+                                        )
+                                      }
+                                    />
+                                  )
+                              )}
+                            </>
+                          )}
+                        {showUnavailableCourses &&
+                          showUnavailableCourses.length > 0 && (
+                            <React.Fragment>
+                              {hasPartnerResults && (
+                                <div className={styles.subTitle}>
+                                  Available on other dates
+                                </div>
+                              )}
+                              {showUnavailableCourses.map((course, index) =>
+                                course.is_partner ? (
+                                  <CourseItem
+                                    showCallMessage={
+                                      index === 2 ||
+                                      (showUnavailableCourses.length < 3 &&
+                                        index ===
+                                          showUnavailableCourses.length - 1)
+                                    }
+                                    courseType={courseType}
+                                    id={`card-course-${course.id}`}
+                                    unavaiableDate={true}
+                                    course={course}
+                                    className={styles.courseSpacing}
+                                    key={course.id}
+                                    handleDetailClick={course =>
+                                      this.loadCourseDetail(course, 1)
+                                    }
+                                    handlePriceClick={course =>
+                                      this.loadCourseDetail(course, 3)
+                                    }
+                                    handleReviewClick={course =>
+                                      this.loadCourseDetail(course, 2)
+                                    }
+                                    handleNextAvailableClick={(course, date) =>
+                                      this.loadCourseDetailNextAvailableDate(
+                                        course,
+                                        3,
+                                        date
+                                      )
+                                    }
+                                  />
+                                ) : (
+                                  <CourseItemNonPartner
+                                    id={`card-course-${course.id}`}
+                                    course={course}
+                                    className="mt-3"
+                                    key={course.id}
+                                  />
+                                )
+                              )}
+                            </React.Fragment>
+                          )}
                         {!hasPartnerResults && courses.available.length > 0 && (
                           <React.Fragment>
                             {courses.available.map(
@@ -1229,6 +1330,7 @@ class ResultPage extends Component {
                               width="100%"
                               hiddenOnMobile
                               handlePinClick={this.loadCourseDetail}
+                              hasSearchLocation={hasSearchLocation}
                             />
                           </MediaQuery>
                         )}
@@ -1269,6 +1371,7 @@ class ResultPage extends Component {
                 width="100%"
                 hiddenOnMobile
                 handlePinClick={this.loadCourseDetail}
+                hasSearchLocation={hasSearchLocation}
               />
             </MobileMap>
           )}

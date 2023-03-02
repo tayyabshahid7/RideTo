@@ -45,6 +45,7 @@ export const BIKE_HIRE = {
   AUTO: 'BIKE_TYPE_AUTO',
   AUTO_50CC: 'BIKE_TYPE_AUTO_50CC',
   AUTO_125CC: 'BIKE_TYPE_AUTO_125CC',
+  AUTO_ELECTRIC: 'BIKE_TYPE_AUTO_ELECTRIC',
   MANUAL: 'BIKE_TYPE_MANUAL',
   MANUAL_50CC: 'BIKE_TYPE_MANUAL_50CC',
   BIKE_TYPE_A_MANUAL: 'BIKE_TYPE_A_MANUAL',
@@ -182,6 +183,10 @@ export const DEFAULT_SETTINGS = {
   default_number_auto_125cc_bikes: 0,
   pricing_auto_125cc_bikes: 0.0,
 
+  available_auto_electric_bikes: false,
+  default_number_auto_electric_bikes: 0,
+  pricing_auto_electric_bikes: 0.0,
+
   available_manual_50cc_bikes: false,
   default_number_manual_50cc_bikes: 0,
   pricing_manual_50cc_bikes: 0.0,
@@ -222,10 +227,11 @@ export const DEFAULT_SETTINGS = {
 export const COURSE_ORDER = {
   available_auto_bikes: 1,
   available_auto_50cc_bikes: 2,
-  available_auto_125cc_bikes: 3,
-  available_manual_50cc_bikes: 4,
-  available_manual_125cc_bikes: 5,
-  available_own_bikes: 6
+  available_auto_electric_bikes: 3,
+  available_auto_125cc_bikes: 4,
+  available_manual_50cc_bikes: 5,
+  available_manual_125cc_bikes: 6,
+  available_own_bikes: 7
 }
 
 export const INVOICE_STATUS_COLOR = {
