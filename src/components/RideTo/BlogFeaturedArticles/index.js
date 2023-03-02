@@ -4,7 +4,7 @@ import { get as callApi } from 'services/api'
 import styles from './styles.scss'
 import RideToSlider from 'components/RideToSlider'
 import { useMediaQuery } from 'react-responsive'
-import ReactDOM from "react-dom";
+
 
 const settings = {
   customPaging: i => {
@@ -25,13 +25,13 @@ const settings = {
   centerPadding: '0px'
 }
 
-export const getArticles = async () => {
-  const path = 'blog/featured/'
+export const getArticles = async (pathname) => {
+  const path = `blog/blog-featured/?slug=${pathname}`
   const response = await callApi(path, {}, false)
   return response
 }
 
-function FeaturedArticles() {
+function BlogFeaturedArticles() {
   const [response, setResponse] = useState(null)
   const isMobile = useMediaQuery({ maxWidth: 768 })
 
@@ -39,8 +39,13 @@ function FeaturedArticles() {
 
   const articleList = get(response, 'results', [])
 
+  const {
+    location: { pathname }
+  } = window
+
   useEffect(() => {
-    getArticles().then(res => {
+
+    getArticles(pathname).then(res => {
       setResponse(res)
     })
   }, [])
@@ -77,4 +82,4 @@ function DesktopContainer({ children }) {
   return <div className={styles.cardWrapper}>{children} </div>
 }
 
-export default memo(FeaturedArticles)
+export default memo(BlogFeaturedArticles)

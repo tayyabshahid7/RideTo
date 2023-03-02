@@ -35,6 +35,7 @@ mountComponent(
   'CourseAlternativeDatesSelectionConfirmation',
   'alternative-dates-confirmation-root'
 )
+
 mountComponent('UserMenuItem', 'rideto-nav-account', {}, false)
 
 mountComponent('CourseTypeSelection', 'rideto-course-type-selection', {}, false)
@@ -63,3 +64,5 @@ mountComponent('Contact', 'contact-root')
 mountComponent('GettingStarted', 'getting-started-root')
 
 mountComponent('FaqsNewContainer', 'rideto-faqs-new')
+
+mountComponent('BlogFeaturedArticles', 'blog-featured-articles')
