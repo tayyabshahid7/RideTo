@@ -243,11 +243,7 @@ class MapComponent extends Component {
     } = course
     const { handlePinClick } = this.props
 
-    let formattedPricing = null
-    if (supplier_pricing) {
-      formattedPricing = `£${this.getPricing(course)}`
-    }
-
+    const pricing = this.getPricing(course)
     return (
       <>
         <Desktop>
@@ -263,21 +259,19 @@ class MapComponent extends Component {
                 !available && styles.mapPinBgUnavailable
               )}
             />
-            {course.supplier_pricing && (
-              <span className={styles.pinPrice}>
-                £{this.getPricing(course)}
-              </span>
-            )}
+            {pricing > 0 && <span className={styles.pinPrice}>£{pricing}</span>}
           </div>
         </Desktop>
         <Mobile>
-          <NewIconMapPin
-            course={course}
-            pricing={formattedPricing}
-            isInstantBooking={isInstantBook && price_per_hour === 0}
-            getPricing={this.getPricing.bind(this)}
-            handlePinClick={handlePinClick}
-          />
+          {pricing > 0 && (
+            <NewIconMapPin
+              course={course}
+              pricing={pricing}
+              isInstantBooking={isInstantBook && price_per_hour === 0}
+              getPricing={this.getPricing.bind(this)}
+              handlePinClick={handlePinClick}
+            />
+          )}
         </Mobile>
       </>
     )
