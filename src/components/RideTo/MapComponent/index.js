@@ -236,11 +236,7 @@ class MapComponent extends Component {
   }
 
   renderPin(course, available) {
-    const {
-      instant_book: isInstantBook,
-      supplier_pricing,
-      price_per_hour
-    } = course
+    const { instant_book: isInstantBook, price_per_hour } = course
     const { handlePinClick } = this.props
 
     const pricing = this.getPricing(course)
