@@ -1,4 +1,8 @@
-﻿###To install everything needed for development
+﻿# Getting Started with Create React App
+
+![Project Image](public/rideTo.png)
+
+###To install everything needed for development
 
 `yarn install`
 
