@@ -12,6 +12,8 @@ import BikePicker from 'components/RideTo/ResultPage/CourseDetailPanel/BikePicke
 import moment from 'moment'
 import React from 'react'
 import styles from './styles.scss'
+import {Desktop, Mobile} from "../../../../common/breakpoints";
+import {PlatformCalendar} from "../../PlatformCalendar";
 
 class CourseAvailabilityComponent extends React.Component {
   _isMounted = false
@@ -478,7 +480,7 @@ class CourseAvailabilityComponent extends React.Component {
     return (
       <Loading loading={loadingCourses || loadingTimes}>
         <div className={classnames(styles.content, fromSupplier && 'px-0')}>
-          {/* <Desktop> */}
+          <Desktop>
           <AvailabilityCalendar
             days={days}
             calendar={{
@@ -501,10 +503,11 @@ class CourseAvailabilityComponent extends React.Component {
             checkFutureMonth
             loading={loadingCourses}
           />
-          {/* </Desktop> */}
-          {/* <Mobile>
+
+          </Desktop>
+           <Mobile>
             <PlatformCalendar />
-          </Mobile> */}
+          </Mobile>
 
           <BikePicker
             isCbt={isCbt}
